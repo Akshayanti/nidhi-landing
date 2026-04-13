@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nidhi — Your Financial Treasure</title>
+    <meta name="description" content="Nidhi — a smarter way to plan your financial future. Coming soon.">
+    <meta property="og:title" content="Nidhi — Your Financial Treasure">
+    <meta property="og:description" content="A smarter way to plan your financial future. Coming soon.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nidhi.today">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #F8F9FA;
+            color: #212121;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .baba {
+            margin-bottom: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .baba img {
+            width: 160px;
+            height: auto;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .brand {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: #0D47A1;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .tagline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #00897B;
+            margin-bottom: 20px;
+        }
+
+        .cheeky {
+            font-weight: 300;
+            font-size: 0.95rem;
+            color: #616161;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .cheeky strong {
+            font-weight: 500;
+            color: #212121;
+        }
+
+        .roadmap {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 420px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .roadmap-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #0D47A1;
+            margin-bottom: 12px;
+            text-align: center;
+            border-bottom: 2px solid #F0F0F0;
+            padding-bottom: 8px;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 5px 0;
+            font-size: 0.85rem;
+            color: #616161;
+        }
+
+        .item .icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            width: 24px;
+            text-align: center;
+        }
+
+        .item .text {
+            padding-top: 1px;
+        }
+
+        .item.done .text {
+            text-decoration: line-through;
+            color: #9E9E9E;
+        }
+
+        .item.current .text {
+            color: #0D47A1;
+            font-weight: 500;
+        }
+
+        .item .aside {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 300;
+            color: #9E9E9E;
+            margin-top: 1px;
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: #9E9E9E;
+            font-weight: 300;
+        }
+
+        .footer a {
+            color: #00897B;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-height: 750px) {
+            .baba img { width: 120px; }
+            .baba { margin-bottom: 4px; }
+            .brand { font-size: 2.2rem; }
+            .cheeky { margin-bottom: 16px; }
+            .item { padding: 3px 0; }
+            .footer { margin-top: 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .baba img { width: 120px; }
+            .brand { font-size: 2rem; }
+            .tagline { font-size: 0.9rem; margin-bottom: 14px; }
+            .cheeky { font-size: 0.85rem; margin-bottom: 16px; }
+            .cheeky br { display: none; }
+            .roadmap { max-width: 100%; }
+            .item { font-size: 0.8rem; padding: 4px 0; }
+            .item .aside { font-size: 0.65rem; }
+            .footer { margin-top: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="baba">
+            <img src="baba_money.png" alt="Meditating baba contemplating your finances">
+        </div>
+        <h1 class="brand">Nidhi</h1>
+        <p class="tagline">Your financial treasure</p>
+
+        <p class="cheeky">
+            Our legendary baba has been meditating on<br>
+            where everyone's money keeps going.<br>
+            He has thoughts. You'll hear them soon.
+        </p>
+
+        <div class="roadmap">
+            <div class="roadmap-title">The sacred roadmap</div>
+
+            <div class="item done">
+                <span class="icon">&#x2705;</span>
+                <span class="text">
+                    Have an existential crisis about finances
+                </span>
+            </div>
+
+            <div class="item done">
+                <span class="icon">&#x2705;</span>
+                <span class="text">
+                    Decide to build an app instead of using Excel
+                    <span class="aside">...because that's the rational thing to do, right?</span>
+                </span>
+            </div>
+
+            <div class="item done">
+                <span class="icon">&#x2705;</span>
+                <span class="text">
+                    Pick a name that means "treasure" in Sanskrit
+                </span>
+            </div>
+
+            <div class="item current">
+                <span class="icon">&#x1F6A7;</span>
+                <span class="text">
+                    Actually build the thing
+                    <span class="aside">current status: caffeinated and optimistic</span>
+                </span>
+            </div>
+
+            <div class="item">
+                <span class="icon">&#x1F570;&#xFE0F;</span>
+                <span class="text">
+                    Let real humans try it
+                </span>
+            </div>
+
+            <div class="item">
+                <span class="icon">&#x1F30D;</span>
+                <span class="text">
+                    World domination (financial literacy edition)
+                </span>
+            </div>
+        </div>
+
+        <p class="footer">
+            Built with unreasonable ambition in Prague
+        </p>
+    </div>
+</body>
+</html>
