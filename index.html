@@ -163,6 +163,13 @@
             text-decoration: underline;
         }
 
+        .visitor-count {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #9E9E9E;
+            font-weight: 300;
+        }
+
         @media (max-height: 750px) {
             .baba img { width: 120px; }
             .baba { margin-bottom: 4px; }
@@ -194,7 +201,7 @@
         <p class="tagline">Your financial treasure</p>
 
         <p class="cheeky">
-            Our legendary baba has been meditating on<br>
+            Our finosopher has been meditating on<br>
             where everyone's money keeps going.<br>
             He has thoughts. You'll hear them soon.
         </p>
@@ -250,6 +257,21 @@
         <p class="footer">
             Built with unreasonable ambition in Prague
         </p>
+        <p class="visitor-count"><span id="view-count">...</span> curious souls have visited</p>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counter = new Counter({ workspace: 'nidhi-today' });
+            counter.up('page-views')
+                .then(result => {
+                    document.getElementById('view-count').textContent = result.value;
+                })
+                .catch(() => {
+                    document.getElementById('view-count').parentElement.style.display = 'none';
+                });
+        });
+    </script>
 </body>
 </html>
