@@ -24,11 +24,11 @@ referentialReading:
 
 Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €800.
 
-Same income. Completely different outcomes. The difference isn't what came in -- it's what stayed.
+Same income. Completely different outcomes. The difference isn't what came in, it's what remained.
 
 ## What income really tells you
 
-Income is a flow. It tells you how much money moves into your accounts over a period of time. Your salary, freelance earnings, rental income -- these are all income.
+Income is a flow. It tells you how much money moves into your accounts over a period of time. Your salary, freelance earnings, rental income - these are all income.
 
 Income answers one question: how much is coming in?
 
@@ -36,7 +36,7 @@ It does not answer the more important question: how much is staying?
 
 ## What wealth actually is
 
-Wealth is a stock. It's what you've accumulated over time -- your net worth. As we covered in the net worth post, wealth is the gap between everything you own and everything you owe.
+Wealth is a stock. It's what you've accumulated over time, i.e., your net worth. As we covered in the net worth post, wealth is the gap between everything you own and everything you owe.
 
 Wealth answers: what do you have to show for all your earning years?
 
@@ -46,7 +46,7 @@ A person earning €3,000 who saves €1,000 a month will be wealthier after fiv
 
 It's easy to fall into the trap of thinking a higher salary solves everything. But income without discipline just creates more expensive habits.
 
-This pattern has a name: lifestyle inflation. When your income rises, your spending rises with it. A bigger apartment, a newer car, more frequent dinners out. The income went up, but the wealth gap stayed the same -- or even shrank.
+This pattern has a name: lifestyle inflation. When your income rises, your spending rises with it. A bigger apartment, a newer car, more frequent dinners out. The income went up, but the wealth gap stayed the same, or even shrank.
 
 **The math is simple:** if your spending always matches your income, your net worth stays flat regardless of how much you earn.
 
@@ -56,21 +56,21 @@ Wealth isn't complicated. It comes down to one relationship:
 
 > Wealth = Income - Spending (over time)
 
-You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both -- but if you had to pick one to focus on first, reducing spending gives you faster results because every euro saved is a euro earned, tax-free.
+You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both. But if you had to pick one to focus on first, reducing spending gives you faster results because every euro saved is a euro earned, tax-free.
 
-## How to shift from income thinking to wealth thinking
+## How to shift from income thinking to wealth thinking?
 
 **Income thinking** asks: "How can I earn more?"
 **Wealth thinking** asks: "How can I keep more of what I earn?"
 
 Three practical shifts:
 
-1. **Track the gap.** Not your salary -- the difference between what comes in and what goes out. That gap is your wealth engine.
-2. **Automate the save.** Move a fixed amount to savings the day your salary arrives, not at the end of the month with whatever is left.
-3. **Resist the upgrade.** When your income grows, keep your spending steady for at least three months. Let the extra flow into savings first.
+1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine
+2. **Automate the save.** Move a fixed amount to savings the day your salary arrives, not at the end of the month with whatever is left
+3. **Resist the upgrade.** When your income grows, keep your spending steady for at least three months. Let the extra flow into savings first
 
-## Why this matters
+## Why this matters?
 
-Income gives you options today. Wealth gives you options tomorrow. If your income stops -- job loss, health issue, career break -- wealth is what keeps you afloat.
+Income gives you options today. Wealth gives you options tomorrow. If your income stops in the form of a job loss, health issue, career break, wealth is what keeps you afloat.
 
 Understanding this distinction is the first step toward making decisions that actually build your financial future, not just fund your present.

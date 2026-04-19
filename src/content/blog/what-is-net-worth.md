@@ -24,7 +24,7 @@ referentialReading:
 
 If someone asked you how you're doing financially, what would you say?
 
-Most people reach for their salary. "I make €3,500 a month" or "I got a raise last quarter." But salary is income, not wealth. Income tells you what comes in. Net worth tells you what stays.
+Most people reach for their salary. "I make €3,500 a month" or "I got a raise last quarter". But salary is income, not wealth. Income tells you what comes in. Net worth tells you what stays.
 
 ## The definition
 
@@ -47,7 +47,7 @@ Net worth captures the full picture: how much you earn, how much you spend, how 
 
 ## But isn't net worth just for rich people?
 
-No. A negative net worth is incredibly common, especially early in your career. If you have a €20,000 student loan and €2,000 in the bank, your net worth is €-18,000. That's not a failure -- it's a starting point.
+No. A negative net worth is incredibly common, especially early in your career. If you have a €20,000 student loan and €2,000 in the bank, your net worth is €-18,000. That's not a failure, it's a starting point.
 
 What matters is the direction. Is your net worth growing or shrinking? That trend tells you more than the absolute number.
 
@@ -62,6 +62,6 @@ There's no universal "good" number. It depends on your age, location, and goals.
 
 ## The first step
 
-You can't improve what you don't measure. Knowing your net worth -- even if it's not where you want it to be -- is the first step toward changing it.
+You can't improve what you don't measure. Knowing your net worth, even if it's not where you want it to be, is the first step toward changing it.
 
 In the next post, we'll walk through how to calculate your net worth in about ten minutes. No spreadsheet wizardry required.

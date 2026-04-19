@@ -30,20 +30,20 @@ An asset is something you own that has monetary value. It's either cash, somethi
 
 Common assets:
 
-- **Cash and bank accounts** -- current accounts, savings accounts, cash on hand
-- **Investments** -- stocks (shares of companies), bonds (loans you make to governments or companies), index funds (collections that track a broad market), ETFs (exchange-traded funds, similar to index funds but bought and sold like stocks), retirement accounts
-- **Property** -- real estate, land
-- **Vehicles** -- cars, motorcycles (though they depreciate fast)
-- **Valuables** -- jewelry, art, collectibles (if you can actually sell them)
+- **Cash and bank accounts**: current accounts, savings accounts, cash on hand
+- **Investments**: stocks (shares of companies), bonds (loans you make to governments or companies), index funds (collections that track a broad market), ETFs (exchange-traded funds, similar to index funds but bought and sold like stocks), retirement accounts
+- **Property**: real estate, land
+- **Vehicles**: cars, motorcycles (though they depreciate fast)
+- **Valuables**: jewelry, art, collectibles (if you can actually sell them)
 
 ## What doesn't count as an asset
 
 This is where people go wrong. These are not assets:
 
-- **Your salary** -- income is a flow, not a stock. It becomes an asset only when you save it.
-- **Your degree** -- education increases your earning potential, but you can't sell your diploma.
-- **Your job** -- you don't own your employer. Your job produces income, but the job itself is not on your balance sheet.
-- **Your potential** -- future earnings are not present assets. They might fund assets later, but they aren't assets now.
+- **Your salary**: income is a flow, not a stock. It becomes an asset only when you save it
+- **Your degree**: education increases your earning potential, but you can't sell your diploma
+- **Your job**: you don't own your employer. Your job produces income, but the job itself is not on your balance sheet
+- **Your potential**: future earnings are not present assets. They might fund assets later, but they aren't assets now
 
 The distinction matters because padding your asset list with things that aren't really assets gives you a false picture of your financial position. A doctor earning €200,000 a year with €50,000 in savings is not in the same position as someone with €200,000 in investments and no income.
 
@@ -51,11 +51,11 @@ The distinction matters because padding your asset list with things that aren't 
 
 Two people with €100,000 in assets are not necessarily in the same position. What matters is the quality of those assets.
 
-**Liquidity** -- how quickly can you convert the asset to cash without losing value? A savings account is fully liquid. A house is not. You can't pay for an emergency with your front door.
+**Liquidity**: how quickly can you convert the asset to cash without losing value? A savings account is fully liquid. A house is not. You can't pay for an emergency with your front door.
 
-**Direction** -- does the asset tend to grow in value (appreciate) or shrink (depreciate) over time? We'll dig into this in the next post, but the short version: index funds tend to appreciate. Cars depreciate. Fast.
+**Direction**: does the asset tend to grow in value (appreciate) or shrink (depreciate) over time? We'll dig into this in the next post, but the short version: index funds tend to appreciate. Cars depreciate. Fast.
 
-**Stability** -- how predictable is the asset's value? Cash is stable. Stocks fluctuate. Cryptocurrency can swing wildly.
+**Stability**: how predictable is the asset's value? Cash is stable. Stocks fluctuate. Cryptocurrency can swing wildly.
 
 ## The asset spectrum
 
@@ -76,8 +76,8 @@ Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real 
 
 When you look at your assets, ask yourself:
 
-1. **Are these real assets?** Make sure you're not counting things that can't be sold or converted.
-2. **Are they working for me?** An asset sitting in a low-yield account is better than nothing, but it's not doing much.
-3. **Are they balanced?** All cash means slow erosion from inflation. All stocks means volatility you might not be able to handle. Some of each gives you stability and growth.
+1. **Are these real assets?** Make sure you're not counting things that can't be sold or converted
+2. **Are they working for me?** An asset sitting in a low-yield account is better than nothing, but it's not doing much
+3. **Are they balanced?** All cash means slow erosion from inflation. All stocks means volatility you might not be able to handle. Some of each gives you stability and growth
 
-Understanding what you own -- and how well it's actually performing -- is half the net worth equation. The other half is what you owe, which we'll cover next.
+Understanding what you own and how well it's actually performing is half the net worth equation. The other half is what you owe, which we'll cover next.

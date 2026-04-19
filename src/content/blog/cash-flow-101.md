@@ -26,21 +26,21 @@ If net worth is a snapshot of your finances, cash flow is the video. It shows yo
 
 ## What is cash flow?
 
-Cash flow is simply the difference between money coming in and money going out over a specific period -- usually a month.
+Cash flow is simply the difference between money coming in and money going out over a specific period, usually a month.
 
 > Cash Flow = Income - Expenses
 
 **Positive cash flow**: You earn more than you spend. The difference can be saved, invested, or used to pay down debt. This is how wealth starts.
 
-**Negative cash flow**: You spend more than you earn. The gap has to be filled somehow -- usually with debt. This is how wealth erodes.
+**Negative cash flow**: You spend more than you earn. The gap has to be filled somehow, usually with debt. This is how wealth erodes.
 
 **Zero cash flow**: Every euro that comes in goes right back out. You're treading water.
 
-## Why most people don't know their number
+## Why most people don't know their number?
 
 Ask someone how much they earn, and they can usually tell you. Ask them how much they spend, and the answer gets fuzzy.
 
-That's because income is simple -- it's usually one or two sources. Expenses are scattered across a dozen categories and multiple accounts. The gym membership, the streaming services, the occasional dinner out, the groceries, the insurance payments -- it all adds up, but rarely in a way you can see at a glance.
+That's because income is simple: it's usually one or two sources. Expenses are scattered across a dozen categories and multiple accounts. The gym membership, the streaming services, the occasional dinner out, the groceries, the insurance payments - it all adds up, but rarely in a way you can see at a glance.
 
 Without visibility, small leaks become big problems.
 
@@ -56,14 +56,14 @@ Not all spending is the same. Breaking it into categories helps you see where th
 
 You don't need a complex budget to start. Here's a minimal approach:
 
-1. **List your monthly income.** Salary, side income, any regular inflow.
-2. **List your fixed expenses.** Rent, loans, insurance, subscriptions.
-3. **Track your variable spending for one month.** Use your bank statement. Every transaction.
-4. **Subtract.** Income minus all expenses.
+1. **List your monthly income.** Salary, side income, any regular inflow
+2. **List your fixed expenses.** Rent, loans, insurance, subscriptions
+3. **Track your variable spending for one month.** Use your bank statement. Every transaction
+4. **Subtract.** Income minus all expenses
 
 The result is your monthly cash flow. If it's positive, you have a surplus to work with. If it's negative, something needs to change.
 
-## What a healthy cash flow looks like
+## What does a healthy cash flow look like?
 
 There's no single right number, but a useful guideline:
 

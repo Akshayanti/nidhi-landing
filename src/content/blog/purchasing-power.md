@@ -24,21 +24,21 @@ referentialReading:
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it. Not even close.
 
-That's not a guess. That's purchasing power -- and it's the concept that makes sense of why saving alone isn't enough.
+That's not a guess. That's purchasing power, and it's the concept that makes sense of why saving alone isn't enough.
 
 ## What purchasing power means
 
 Purchasing power is simple: how much stuff can your money actually buy?
 
-If a basket of groceries costs €100 today and €110 next year, your purchasing power has dropped by roughly 10% -- even though your bank balance hasn't changed at all.
+If a basket of groceries costs €100 today and €110 next year, your purchasing power has dropped by roughly 10%, even though your bank balance hasn't changed at all.
 
 The number on your account is the **nominal** value. What that number can buy is the **real** value. They're different, and the gap only grows over time.
 
-## The force behind it: inflation
+## The force behind it: Inflation
 
-The reason purchasing power declines is inflation -- the general increase in prices over time.
+The reason purchasing power declines is inflation – the general increase in prices over time.
 
-When inflation is 3%, something that costs €100 today will cost €103 next year. Central banks target a low, steady rate -- around 2% in the eurozone. A little inflation is considered normal and even healthy for the economy. The problem is what it does to your money over long periods.
+When inflation is 3%, something that costs €100 today will cost €103 next year. Central banks target a low, steady rate – around 2% in the eurozone. A little inflation is considered normal and even healthy for the economy. The problem is what it does to your money over long periods.
 
 Inflation is easy to ignore because it doesn't take money away from you visibly. Your bank balance stays the same. The number on the screen hasn't changed. But what that number can buy has quietly shrunk.
 
@@ -92,9 +92,9 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 ## What you can do
 
-1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters.
-2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design.
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned 6-8% after inflation. That's how you preserve -- and grow -- your purchasing power.
-4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate -- all of these need periodic adjustment.
+1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
+2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
+3. **Invest for growth.** Over the long term, broad stock market investments have historically returned 6-8% after inflation. That's how you preserve and grow your purchasing power
+4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
-Understanding purchasing power -- and the inflation that erodes it -- is the key to understanding why standing still financially is actually moving backward.
+Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

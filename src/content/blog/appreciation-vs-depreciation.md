@@ -28,9 +28,9 @@ You've got assets on one side and liabilities on the other. But the story doesn'
 
 Appreciation is when something increases in value over time.
 
-- A home bought for €200,000 that's now worth €280,000 has appreciated by €80,000.
-- An index fund purchased for €5,000 that grows to €12,000 has appreciated.
-- Even a savings account appreciates (slowly) when it earns interest.
+- A home bought for €200,000 that's now worth €280,000 has appreciated by €80,000
+- An index fund purchased for €5,000 that grows to €12,000 has appreciated
+- Even a savings account appreciates (slowly) when it earns interest
 
 Historically, broad stock market investments have returned around 7-8% per year after inflation. Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees, but they're the long-term trend.
 
@@ -40,9 +40,9 @@ The key insight: appreciation rewards patience. The longer you hold an appreciat
 
 Depreciation is when something loses value over time.
 
-- A new car loses roughly 15-20% of its value in the first year. After five years, it's worth about 40% of what you paid.
-- A laptop bought for €1,200 is worth a few hundred within a few years.
-- Furniture, electronics, clothing -- almost everything you buy for personal use depreciates.
+- A new car loses roughly 15-20% of its value in the first year. After five years, it's worth about 40% of what you paid
+- A laptop bought for €1,200 is worth a few hundred within a few years
+- Furniture, electronics, clothing -- almost everything you buy for personal use depreciates
 
 This isn't a moral judgment. It's just how things work. Cars get you from A to B. Laptops help you work. But they are not investments. They're expenses that happen to be physical objects.
 
@@ -65,11 +65,11 @@ Same starting amount. Same rate. A factor of more than two difference. And the g
 
 Compound interest has three variables:
 
-1. **The rate** -- higher returns mean faster growth. A 7% return compounds much faster than a 2% return.
-2. **The amount** -- more money compounding means more growth. This is why saving matters.
-3. **Time** -- the most important lever. The longer your money compounds, the more dramatic the effect.
+1. **The rate** - higher returns mean faster growth. A 7% return compounds much faster than a 2% return
+2. **The amount** - more money compounding means more growth. This is why saving matters
+3. **Time** - the most important lever. The longer your money compounds, the more dramatic the effect
 
-When these levers work **for** you -- when you're saving and investing -- the result is wealth building. When they work **against** you -- when you're carrying high-interest debt -- the result is a debt spiral.
+When these levers work **for** you, when you're saving and investing, the result is wealth building. When they work **against** you, when you're carrying high-interest debt, the result is a debt spiral.
 
 ## Compound interest on debt: the dark side
 
@@ -86,7 +86,7 @@ Two savers. Both invest €200 per month at a 7% average return.
 **Person A** starts at age 25 and stops at 35. Total invested: €24,000.
 **Person B** starts at age 35 and keeps going until 65. Total invested: €72,000.
 
-At age 65, Person A has roughly €260,000. Person B has roughly €243,000.
+At age 65, Person A has roughly €281,000. Person B has roughly €244,000.
 
 Person A invested one-third as much money and ended up with more. Ten extra years of compounding beat thirty years of triple contributions. Time is the lever you can't get back.
 
@@ -110,4 +110,4 @@ This doesn't mean you should never buy depreciating assets. You need a car to ge
 3. **Eliminate high-interest debt as fast as possible.** As we covered in the liabilities post, this is the highest guaranteed return available to you.
 4. **Start now.** Time is the most powerful lever in compounding, and it's the one you can't get back.
 
-Understanding appreciation and depreciation -- and the compound interest that drives both -- changes how you see every financial decision. In the next post, we'll look at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.
+Understanding appreciation and depreciation; and the compound interest that drives both; changes how you see every financial decision. In the next post, we'll look at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.

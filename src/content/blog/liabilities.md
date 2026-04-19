@@ -22,7 +22,7 @@ referentialReading:
     type: "book"
 ---
 
-We've looked at what you own. Now let's look at what you owe. Liabilities are the other side of the net worth equation -- and for most people, they're the side that hurts.
+We've looked at what you own. Now let's look at what you owe. Liabilities are the other side of the net worth equation. And for most people, they're the side that hurts.
 
 ## What is a liability?
 
@@ -30,29 +30,29 @@ A liability is any financial obligation you have to someone else. It's money you
 
 Common liabilities:
 
-- **Mortgage** -- the loan on your home
-- **Student loans** -- money borrowed for education
-- **Car loan** -- financing for a vehicle
-- **Credit card balances** -- revolving debt, often at high interest
-- **Personal loans** -- borrowed money from banks or individuals
+- **Mortgage**: the loan on your home
+- **Student loans**: money borrowed for education
+- **Car loan**: financing for a vehicle
+- **Credit card balances**: revolving debt, often at high interest
+- **Personal loans**: borrowed money from banks or individuals
 
-## Why the interest rate matters more than the balance
+## Why the interest rate matters more than the balance?
 
 Not all liabilities are equally dangerous. The interest rate determines how expensive a debt is over time.
 
 A mortgage at 3.5% on €200,000 costs roughly €100,000 in interest over 25 years. That's significant, but the home may appreciate and you're building equity.
 
-A credit card at 22% on a €3,000 balance, if you only make minimum payments, can cost more than the original amount in interest alone. You pay for your purchases twice -- once at the register, once to the bank.
+A credit card at 22% on a €3,000 balance, if you only make minimum payments, can cost more than the original amount in interest alone. You pay for your purchases twice – once at the register, once to the bank.
 
-The same concept -- borrowing money -- with wildly different outcomes. The interest rate is the difference.
+The same concept: borrowing money but with wildly different outcomes. The interest rate is the difference.
 
 ## A framework for evaluating debt
 
-Instead of "good debt" and "bad debt" -- which oversimplifies things -- ask three questions:
+Instead of "good debt" and "bad debt", which oversimplifies things, ask three questions:
 
-1. **What is the interest rate?** Anything above 8-10% is expensive and should be addressed quickly.
-2. **What did the debt buy?** Debt that funds something appreciating (education, a home) has a different character than debt that funded consumption (a holiday, a dinner).
-3. **Can you comfortably make the payments?** Even low-interest debt becomes a problem if it eats too much of your cash flow.
+1. **What is the interest rate?** Anything above 8-10% is expensive and should be addressed quickly
+2. **What did the debt buy?** Debt that funds something appreciating (education, a home) has a different character than debt that funded consumption (a holiday, a dinner)
+3. **Can you comfortably make the payments?** Even low-interest debt becomes a problem if it eats too much of your cash flow
 
 ## The main types of debt
 
@@ -62,18 +62,18 @@ Instead of "good debt" and "bad debt" -- which oversimplifies things -- ask thre
 
 **Credit card debt** is the most common trap. High interest, compounding daily, easy to accumulate and hard to eliminate. If you carry a balance, every purchase effectively costs more than the price tag.
 
-**Consumer loans for depreciating assets** -- financing a car or furniture at high rates means you're paying interest on something that loses value from the day you buy it.
+**Consumer loans for depreciating assets**, for example, financing a car or furniture at high rates means you're paying interest on something that loses value from the day you buy it.
 
 ## The rule of thumb
 
-If the interest rate on your debt is higher than the return you could reasonably expect from investing that money, pay the debt first. There is no reliable investment that pays 20% guaranteed -- but your credit card is charging you exactly that.
+If the interest rate on your debt is higher than the return you could reasonably expect from investing that money, pay the debt first. There is no reliable investment that pays 20% guaranteed, but your credit card is charging you exactly that.
 
 ## What this means for your net worth
 
 Every liability subtracts from your net worth. But the way you handle them makes a huge difference:
 
-- Pay off high-interest debt as fast as possible -- it's the highest guaranteed return you can get.
-- Don't rush to pay off low-interest debt if you can invest the difference at a higher rate.
-- Always make at least the minimum payment on every debt. Missed payments damage your credit and trigger penalties.
+- Pay off high-interest debt as fast as possible – it's the highest guaranteed return you can get
+- Don't rush to pay off low-interest debt if you can invest the difference at a higher rate
+- Always make at least the minimum payment on every debt. Missed payments damage your credit and trigger penalties
 
-In the next post, we'll look at two proven strategies for paying off debt -- and how to pick the one that works for you.
+In the next post, we'll look at two proven strategies for paying off debt, and how to pick the one that works for you.
