@@ -37,6 +37,7 @@ jobs:
         run: npm run build
         env:
           COUNTERAPI_TOKEN: ${{ secrets.COUNTERAPI_TOKEN }}
+          PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

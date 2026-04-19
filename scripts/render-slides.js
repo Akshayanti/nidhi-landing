@@ -16,30 +16,31 @@ function textToHtml(text) {
   const lines = text.split('\n');
   const htmlParts = [];
   let inList = false;
+  let inOl = false;
 
   for (const line of lines) {
     const trimmed = line.trim();
 
-    // List item
+    // Bullet list item
     if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-      if (!inList) { htmlParts.push('<ul>'); inList = true; }
-      const itemText = trimmed.slice(2);
-      htmlParts.push(`<li>${applyInline(itemText)}</li>`);
+      if (!inList) { htmlParts.push('<ul>'); inList = true; inOl = false; }
+      htmlParts.push(`<li>${applyInline(trimmed.slice(2))}</li>`);
       continue;
     }
 
-    // Numbered list
+    // Numbered list item
     const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
     if (numMatch) {
-      if (!inList) { htmlParts.push('<ol>'); inList = true; }
+      if (!inList) { htmlParts.push('<ol>'); inList = true; inOl = true; }
       htmlParts.push(`<li>${applyInline(numMatch[2])}</li>`);
       continue;
     }
 
     // Close list if we were in one
     if (inList) {
-      htmlParts.push(htmlParts[htmlParts.length - 1]?.includes('<ol>') ? '</ol>' : '</ul>');
+      htmlParts.push(inOl ? '</ol>' : '</ul>');
       inList = false;
+      inOl = false;
     }
 
     // Empty line = spacing
@@ -48,12 +49,24 @@ function textToHtml(text) {
       continue;
     }
 
-    // Regular text line
+    // Center-aligned text: >> text
+    if (trimmed.startsWith('>> ')) {
+      htmlParts.push(`<div style="text-align:center">${applyInline(trimmed.slice(3))}</div>`);
+      continue;
+    }
+
+    // Right-aligned text: >>> text
+    if (trimmed.startsWith('>>> ')) {
+      htmlParts.push(`<div style="text-align:right">${applyInline(trimmed.slice(4))}</div>`);
+      continue;
+    }
+
+    // Regular text line (left-aligned)
     htmlParts.push(`<div>${applyInline(trimmed)}</div>`);
   }
 
-  if (inList) htmlParts.push('</ul>');
-  return htmlParts.join('\n');
+  if (inList) htmlParts.push(inOl ? '</ol>' : '</ul>');
+  return htmlParts.join('');
 }
 
 function applyInline(text) {
@@ -73,12 +86,9 @@ async function renderSlides(post, browser) {
 
   for (const slide of post.slides) {
     const isFirst = slide.number === 1;
-    const isLast = slide.number === post.totalSlides;
 
     // Determine slide class
-    let slideClass = 'slide slide-middle';
-    if (isFirst) slideClass = 'slide slide-first';
-    if (isLast) slideClass = 'slide slide-last';
+    let slideClass = isFirst ? 'slide slide-first' : 'slide slide-middle';
 
     // Build content HTML
     let contentHtml = textToHtml(slide.text);
@@ -89,35 +99,44 @@ async function renderSlides(post, browser) {
       extras = `<div class="handle">@nidhi.today</div>`;
     }
 
-    // Last slide: add blog URL
-    if (isLast && post.blogUrl) {
-      contentHtml += `<div class="blog-url">${post.blogUrl.replace('https://', '')}</div>`;
-    }
-
     // Inject into template
     const html = templateHtml
       .replace('id="slide" class="slide"', `id="slide" class="${slideClass}"`)
       .replace('<div class="content" id="content"></div>',
         `<div class="content" id="content">${contentHtml}</div>${extras}`)
       .replace('<span class="slide-counter" id="counter"></span>',
-        `<span class="slide-counter" id="counter">${slide.number} / ${post.totalSlides}</span>`);
+        `<span class="slide-counter" id="counter">${slide.number} / ${post.totalSlides}</span>`)
+      .replace(/<span class="brand" id="brand-link">[^<]*<\/span>/,
+        `<span class="brand" id="brand-link">https://nidhi.today</span>`);
 
     await page.setViewport({ width: 1080, height: 1080, deviceScaleFactor: 1 });
     await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 10000 });
     await page.evaluate(() => document.fonts.ready);
 
-    // Auto-scale content to fit within the slide
+    // Auto-scale content per slide: shrink to fit if needed
     await page.evaluate(() => {
       const slide = document.getElementById('slide');
       const content = document.getElementById('content');
       if (!slide || !content) return;
 
-      const maxH = slide.offsetHeight - 180; // padding top/bottom + bottom bar
-      let scale = 1;
-      while (content.scrollHeight > maxH && scale > 0.5) {
-        scale -= 0.05;
-        content.style.fontSize = `${scale}em`;
+      const style = getComputedStyle(slide);
+      const padTop = parseFloat(style.paddingTop);
+      const padBot = parseFloat(style.paddingBottom);
+      const bar = 44; // bottom bar height
+      const maxH = (slide.offsetHeight - padTop - padBot - bar) * 0.85;
+
+      const baseFontSize = parseFloat(getComputedStyle(content).fontSize);
+      if (content.scrollHeight <= maxH) return; // already fits
+
+      // Shrink: binary search down to smallest font that fits
+      let lo = baseFontSize * 0.7, hi = baseFontSize;
+      while (hi - lo > 1) {
+        const mid = (lo + hi) / 2;
+        content.style.fontSize = `${mid}px`;
+        if (content.scrollHeight <= maxH) hi = mid;
+        else lo = mid;
       }
+      content.style.fontSize = `${hi}px`;
     });
 
     const filename = `slide-${String(slide.number).padStart(2, '0')}.png`;
@@ -125,28 +144,6 @@ async function renderSlides(post, browser) {
 
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
-  }
-
-  // Render story image (first slide at 1080x1920)
-  const storySlide = post.slides[0];
-  if (storySlide) {
-    const storyHtml = templateHtml
-      .replace('id="slide" class="slide"', 'id="slide" class="slide slide-story"')
-      .replace('width: 1080px;\n    height: 1080px;', 'width: 1080px;\n    height: 1920px;')
-      .replace('<div class="content" id="content"></div>',
-        `<div class="content" id="content">${textToHtml(storySlide.text)}</div>
-         <div class="swipe-cta">Swipe up to read more</div>
-         <div class="handle" style="position:absolute;bottom:200px;left:0;right:0;text-align:center;font-family:Inter,sans-serif;font-weight:600;font-size:24px;color:#4EBAAA;">@nidhi.today</div>`)
-      .replace('<span class="slide-counter" id="counter"></span>',
-        '<span class="slide-counter" id="counter"></span>');
-
-    await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
-    await page.setContent(storyHtml, { waitUntil: 'domcontentloaded', timeout: 10000 });
-    await page.evaluate(() => document.fonts.ready);
-
-    const storyPath = join(outDir, 'story.png');
-    await page.screenshot({ path: storyPath, type: 'png' });
-    rendered.push(storyPath);
   }
 
   await page.close();

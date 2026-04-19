@@ -10,50 +10,48 @@ hashtags: "#networth #personalfinance #financialliteracy #moneytips #financialpl
 
 You know that net worth = assets - liabilities. But how do you actually sit down and calculate it?
 
-Here's a step-by-step walkthrough that takes about 10 minutes. No fancy tools needed -- just honesty and a calculator.
+Here's a step-by-step walkthrough that takes about 10 minutes. No fancy tools needed, just honesty and a calculator.
 
 Full guide: https://nidhi.today/blog/how-to-calculate-net-worth
 
-#networth #personalfinance #financialliteracy #moneytips #financialplanning #budgeting #wealthbuilding #nidhi #gettingstarted #moneygoals
+#networth #personalfinance #financialliteracy #nidhi #financialplanning
 
 ---
 
 ## Slide 1
 
-How to calculate your net worth
+>> **How to calculate your net worth in 10 minutes**
 
-In 10 minutes.
-No spreadsheet required.
+>> No spreadsheet required
 
 ---
 
 ## Slide 2
 
-Step 1: List your assets
+>> **Step 1: List your assets**
 
 Grab your phone. Open every banking and investment app.
 
-Write down every balance at TODAY's value -- not what you originally paid.
+Write down every balance at TODAY's value, not what you originally paid.
 
 ---
 
 ## Slide 3
 
-Your assets:
+**Assets to list**
 
-- Checking account balance
-- Savings account balance
-- Investment portfolio (current value)
-- Pension / retirement account
-- Real estate (estimated market value)
-- Vehicle (check a used car site)
-- Anything valuable you could sell
+1. Account balances
+2. Pension / retirement account balances
+3. Investment portfolio (current value)
+4. Real estate (estimated market value)
+5. Vehicle (check a used car site)
+6. Anything valuable you could sell
 
 ---
 
 ## Slide 4
 
-Step 2: List your liabilities
+>> **Step 2: List your liabilities**
 
 Now write down everything you owe.
 
@@ -63,7 +61,7 @@ Use the outstanding balance, not the monthly payment.
 
 ## Slide 5
 
-Your liabilities:
+**Liabilities to list**
 
 - Mortgage balance (remaining principal)
 - Student loans
@@ -76,12 +74,13 @@ Your liabilities:
 
 ## Slide 6
 
-Step 3: Subtract
+>> **Step 3: Subtract**
 
 Total Assets: €_____
+
 Total Liabilities: €_____
 
-Net Worth = Assets - Liabilities
+Net Worth = Total Assets - Total Liabilities
 
 That's your number.
 
@@ -89,7 +88,7 @@ That's your number.
 
 ## Slide 7
 
-Common surprise #1:
+>> **Common surprise #1**
 
 "My car is worth way less than I thought."
 
@@ -101,7 +100,7 @@ Always use current market value.
 
 ## Slide 8
 
-Common surprise #2:
+>> **Common surprise #2**
 
 "My net worth is negative."
 
@@ -113,27 +112,33 @@ Not failure. A starting point.
 
 ## Slide 9
 
-Common surprise #3:
+>> **Common surprise #3**
 
 "I have more than I realized."
 
-That old savings account with €800. The pension your employer contributes to. Small accounts add up.
+That old savings account with €800. 
+
+The pension your employer contributes to. 
+
+Small accounts add up.
 
 ---
 
 ## Slide 10
 
-The key: consistency.
+>> **The key: consistency**
 
 The first calculation is the hardest. After that, update once a month.
 
-Watch the trend -- it tells you more than the number ever could.
+Watch the trend. 
+
+It tells you more than the number ever could.
 
 ---
 
 ## Slide 11
 
-Your 10-minute checklist:
+>> **Your 10-minute checklist**
 
 1. Open all banking apps
 2. Write down every asset (current value)
@@ -141,6 +146,8 @@ Your 10-minute checklist:
 4. Subtract
 5. Do it again next month
 
-Start now. Full guide -- link in caption.
+---
 
-@nidhi.today
+## Slide 12
+
+>> **Start now. Full guide link in caption and bio.**
