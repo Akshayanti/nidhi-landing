@@ -3,7 +3,7 @@ title: "Liquidity: Why Being Unable to Access Your Money Is a Risk"
 description: "Having money and being able to use it are not the same thing. Liquidity determines how quickly you can turn an asset into cash without losing value -- and it can make or break your financial plan."
 tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
 order: 7
-pubDate: 2026-04-25
+pubDate: 2026-04-14
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
