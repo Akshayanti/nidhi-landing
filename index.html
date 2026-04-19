@@ -260,17 +260,22 @@
         <p class="visitor-count"><span id="view-count">...</span> curious souls have visited</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const counter = new Counter({ workspace: 'nidhi-today' });
-            counter.up('page-views')
-                .then(result => {
-                    document.getElementById('view-count').textContent = result.value;
-                })
-                .catch(() => {
-                    document.getElementById('view-count').parentElement.style.display = 'none';
-                });
+            var BASE = 'https://api.counterapi.dev/v2';
+            var workspace = 'nidhi-todays-team-3807';
+            var name = 'page-views';
+
+            fetch(BASE + '/' + workspace + '/' + name + '/up', {
+              headers: { 'Authorization': 'Bearer ut_fJm7AOiePZi0jb6UHkmqLhgmvroORmtDEY72RLLu' }
+            })
+              .then(function(r) { return r.json(); })
+              .then(function(data) {
+                  document.getElementById('view-count').textContent = data.value;
+              })
+              .catch(function() {
+                  document.getElementById('view-count').parentElement.style.display = 'none';
+              });
         });
     </script>
 </body>

@@ -97,15 +97,20 @@ const webSiteSchema = {
   </section>
 </BaseLayout>
 
-<script is:inline src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
-<script is:inline>
+<script is:inline define:vars={{ counterToken: import.meta.env.COUNTERAPI_TOKEN }}>
   document.addEventListener('DOMContentLoaded', function() {
-    const counter = new Counter({ workspace: 'nidhi-today' });
-    counter.up('page-views')
-      .then(result => {
-        document.getElementById('view-count').textContent = result.value;
+    var BASE = 'https://api.counterapi.dev/v2';
+    var workspace = 'nidhi-todays-team-3807';
+    var name = 'page-views';
+
+    fetch(BASE + '/' + workspace + '/' + name + '/up', {
+      headers: { 'Authorization': 'Bearer ' + counterToken }
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById('view-count').textContent = data.value;
       })
-      .catch(() => {
+      .catch(function() {
         document.getElementById('view-count').parentElement.style.display = 'none';
       });
   });

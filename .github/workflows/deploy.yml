@@ -35,6 +35,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          COUNTERAPI_TOKEN: ${{ secrets.COUNTERAPI_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
