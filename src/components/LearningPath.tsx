@@ -235,21 +235,21 @@ export function LearningPath({ posts }: LearningPathProps) {
           const meta = LEVELS[level];
           const group = levelGroups.find((g) => g.level === level);
           const count = group ? group.posts.length : 0;
+          if (count === 0) return null;
           const readCount = group ? group.posts.filter((p) => readPosts.has(p.id)).length : 0;
-          const isActive = count > 0;
           return (
             <a
               key={level}
               href={`#level-${level}`}
-              className={`lp-levelNavLink ${!isActive ? 'lp-levelNavLinkEmpty' : ''}`}
-              style={isActive ? { '--level-color': meta.color } as React.CSSProperties : undefined}
+              className="lp-levelNavLink"
+              style={{ '--level-color': meta.color } as React.CSSProperties}
             >
               <span className="lp-levelNavLinkNum">{LEVEL_ORDER.indexOf(level) + 1}</span>
               <div className="lp-levelNavLinkText">
                 <span className="lp-levelNavLinkLabel">{meta.label}</span>
                 <span className="lp-levelNavLinkPrereq">{meta.prerequisite}</span>
               </div>
-              <span className="lp-levelNavLinkCount">{count > 0 ? `${readCount}/${count}` : 'Soon'}</span>
+              <span className="lp-levelNavLinkCount">{readCount}/{count}</span>
             </a>
           );
         })}
@@ -319,17 +319,15 @@ export function LearningPath({ posts }: LearningPathProps) {
       )}
 
       {levelGroups.map((group, index) => {
-        const hasPosts = group.posts.length > 0;
-        // When filtering, hide levels with no matching posts
-        if ((selectedTag || searchQuery.trim()) && !hasPosts) return null;
+        if (group.posts.length === 0) return null;
         const levelRead = group.posts.filter((p) => readPosts.has(p.id)).length;
-        const levelPercent = group.posts.length > 0 ? (levelRead / group.posts.length) * 100 : 0;
+        const levelPercent = (levelRead / group.posts.length) * 100;
 
         return (
           <div key={group.level} id={`level-${group.level}`} className="lp-levelSection">
             <div
-              className={`lp-levelWaypoint ${!hasPosts ? 'lp-levelWaypointEmpty' : ''}`}
-              style={hasPosts ? { background: group.meta.color } : undefined}
+              className="lp-levelWaypoint"
+              style={{ background: group.meta.color }}
             >
               {index + 1}
             </div>
@@ -339,41 +337,31 @@ export function LearningPath({ posts }: LearningPathProps) {
                 {group.meta.label}
               </div>
               <p className="lp-levelDesc">{group.meta.description}</p>
-              {hasPosts && (
-                <div className="lp-levelMeta">
-                  <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
-                  <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
-                </div>
-              )}
-              {hasPosts && (
-                <>
-                  <span className="lp-levelProgress">{levelRead}/{group.posts.length} read</span>
-                  <div className="lp-levelProgressBar">
-                    <div
-                      className="lp-levelProgressFill"
-                      style={{ width: `${levelPercent}%`, background: group.meta.color }}
-                    />
-                  </div>
-                </>
-              )}
+              <div className="lp-levelMeta">
+                <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
+                <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
+              </div>
+              <span className="lp-levelProgress">{levelRead}/{group.posts.length} read</span>
+              <div className="lp-levelProgressBar">
+                <div
+                  className="lp-levelProgressFill"
+                  style={{ width: `${levelPercent}%`, background: group.meta.color }}
+                />
+              </div>
             </div>
 
-            {hasPosts ? (
-              group.posts.map((post) => (
-                <PostNode
-                  key={post.id}
-                  post={post}
-                  isRead={readPosts.has(post.id)}
-                  isStartHere={post.id === firstUnreadId}
-                  levelColor={group.meta.color}
-                  selectedTag={selectedTag}
-                  onToggleRead={toggleRead}
-                  onTagClick={setSelectedTag}
-                />
-              ))
-            ) : (
-              <p className="lp-comingSoon">Coming soon</p>
-            )}
+            {group.posts.map((post) => (
+              <PostNode
+                key={post.id}
+                post={post}
+                isRead={readPosts.has(post.id)}
+                isStartHere={post.id === firstUnreadId}
+                levelColor={group.meta.color}
+                selectedTag={selectedTag}
+                onToggleRead={toggleRead}
+                onTagClick={setSelectedTag}
+              />
+            ))}
           </div>
         );
       })}
