@@ -1,0 +1,536 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import LevelBadge from '../components/LevelBadge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  tldr: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  level: string;
+  tags: string[];
+  readingTime?: number;
+  regulatoryNote?: string;
+  referentialReading?: Array<{
+    title: string;
+    author?: string;
+    url?: string;
+    type: string;
+  }>;
+  prevSlug?: string | null;
+  prevTitle?: string | null;
+  nextSlug?: string | null;
+  nextTitle?: string | null;
+}
+
+const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props;
+
+const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const siteUrl = 'https://nidhi.today';
+const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: description,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+  author: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: siteUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: siteUrl,
+  },
+  image: `${siteUrl}/baba_money.webp`,
+  url: `${siteUrl}/blog/${slug}`,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${siteUrl}/blog/${slug}`,
+  },
+  keywords: tags.join(', '),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Blog',
+      item: `${siteUrl}/blog`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: title,
+      item: `${siteUrl}/blog/${slug}`,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={tags}
+  article={{
+    publishedTime: pubDate,
+    modifiedTime: updatedDate,
+    tags: tags,
+  }}
+  prevUrl={prevSlug ? `/blog/${prevSlug}` : null}
+  nextUrl={nextSlug ? `/blog/${nextSlug}` : null}
+  jsonLd={[blogPostingSchema, breadcrumbSchema]}
+>
+  <article class="blog-post">
+    <div class="container">
+      <header class="post-header">
+        <div class="post-meta">
+          <LevelBadge level={level} />
+          {readingTime && <span class="post-reading-time">{readingTime} min read</span>}
+          <time datetime={pubDate.toISOString()} class="post-date">{dateStr}</time>
+        </div>
+        <h1 class="post-title">{title}</h1>
+        <div class="post-tldr">
+          <span class="tldr-label">TL;DR</span>
+          <p>{tldr}</p>
+        </div>
+        {tags.length > 0 && (
+          <div class="post-tags">
+            {tags.map((tag) => (
+              <a class="post-tag" href={`/blog?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+            ))}
+          </div>
+        )}
+      </header>
+
+      {regulatoryNote === 'caution' && (
+        <div class="notice-caution">
+          <strong>Note:</strong> This article discusses concepts that involve financial projections. nidhi is a financial planning calculator. This content is for educational purposes only and does not constitute investment advice or personal financial recommendations.
+        </div>
+      )}
+
+      {regulatoryNote === 'danger' && (
+        <div class="notice-danger">
+          <strong>Important:</strong> This article touches on tax-related concepts for educational purposes only. nidhi does not provide tax advice. Consult a qualified tax professional for your specific situation.
+        </div>
+      )}
+    </div>
+
+    <div class="post-body-wrapper">
+      <nav class="toc" id="toc" aria-label="Table of Contents">
+        <div class="toc-inner">
+          <h4 class="toc-title">On this page</h4>
+          <ul class="toc-list" id="toc-list"></ul>
+        </div>
+      </nav>
+      <div class="prose" id="post-content">
+        <slot />
+      </div>
+    </div>
+
+    <div class="container">
+      {referentialReading && referentialReading.length > 0 && (
+        <section class="suggested-reading">
+          <h2 class="suggested-reading-title">Suggested Reading</h2>
+          <ul class="suggested-reading-list">
+            {referentialReading.map((ref) => (
+              <li>
+                {ref.url ? (
+                  <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
+                ) : (
+                  <span>{ref.title}</span>
+                )}
+                {ref.author && <span class="ref-author"> by {ref.author}</span>}
+                <span class="ref-type">{ref.type}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {level !== 'discovery' && (
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong> nidhi is a financial planning calculator. This article is for educational purposes only and does not constitute investment advice, tax advice, or personal financial recommendations. Always consult a qualified financial advisor before making financial decisions.
+        </div>
+      )}
+
+      {(prevSlug || nextSlug) && (
+        <nav class="post-nav">
+          {prevSlug && prevTitle && (
+            <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`}>
+              <span class="post-nav-direction">Previous</span>
+              <span class="post-nav-title">{prevTitle}</span>
+            </a>
+          )}
+          {nextSlug && nextTitle && (
+            <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`}>
+              <span class="post-nav-direction">Next</span>
+              <span class="post-nav-title">{nextTitle}</span>
+            </a>
+          )}
+        </nav>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    var content = document.getElementById('post-content');
+    var tocList = document.getElementById('toc-list');
+    if (!content || !tocList) return;
+
+    var headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) return;
+
+    function slugify(text) {
+      return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+    }
+
+    var usedIds = {};
+    headings.forEach(function(h) {
+      var base = slugify(h.textContent);
+      var id = base;
+      var counter = 1;
+      while (usedIds[id]) { id = base + '-' + counter; counter++; }
+      usedIds[id] = true;
+      h.id = id;
+      var li = document.createElement('li');
+      li.className = 'toc-item toc-item--' + h.tagName.toLowerCase();
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Highlight active section on scroll
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var id = entry.target.id;
+        var link = tocList.querySelector('a[href="#' + id + '"]');
+        if (link) {
+          if (entry.isIntersecting) {
+            tocList.querySelectorAll('a').forEach(function(a) { a.classList.remove('toc-active'); });
+            link.classList.add('toc-active');
+          }
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function(h) { observer.observe(h); });
+  })();
+
+  // Auto-mark this post as read
+  (function() {
+    var path = window.location.pathname;
+    var slug = path.split('/').filter(Boolean).pop();
+    if (!slug) return;
+    var key = 'nidhi-reading-progress';
+    try {
+      var data = JSON.parse(localStorage.getItem(key) || '[]');
+      if (data.indexOf(slug) === -1) {
+        data.push(slug);
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+    } catch(e) {}
+  })();
+</script>
+
+<style>
+  .blog-post {
+    padding: var(--space-10) 0 var(--space-16);
+  }
+
+  .post-header {
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .post-reading-time {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .post-title {
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+  }
+
+  .post-tldr {
+    background: var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-5);
+    margin-bottom: var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .tldr-label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-deep-blue);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .post-tldr p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .post-tag {
+    background: var(--color-border-light);
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .post-tag:hover {
+    background: var(--color-deep-blue);
+    color: white;
+    border-color: var(--color-deep-blue);
+  }
+
+  /* Post body: wide grid — left gutter | TOC | content | right gutter */
+  .post-body-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px minmax(0, 720px) 1fr;
+    column-gap: var(--space-6);
+    align-items: flex-start;
+  }
+
+  .toc {
+    grid-column: 2;
+    position: sticky;
+    top: 80px;
+    display: none;
+    overflow: hidden;
+  }
+
+  .toc-inner {
+    border-left: 2px solid var(--color-border-light);
+    padding-left: var(--space-4);
+  }
+
+  .prose {
+    grid-column: 3;
+  }
+
+  .toc-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin-bottom: var(--space-1);
+  }
+
+  .toc-item + .toc-item:not(.toc-item--h3) {
+    margin-top: var(--space-2);
+  }
+
+  .toc-item a {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: 3px 0;
+    transition: color 0.15s ease;
+    line-height: 1.4;
+  }
+
+  .toc-item a:hover {
+    color: var(--color-text-primary);
+  }
+
+  .toc-item a.toc-active {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+  }
+
+  .toc-item--h3 {
+    padding-left: var(--space-4);
+  }
+
+  .toc-item--h3 a {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+  }
+
+  .toc-item--h3 a.toc-active {
+    font-weight: 500;
+  }
+
+  @media (min-width: 1200px) {
+    .toc {
+      display: block;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .post-body-wrapper {
+      display: block;
+    }
+    .toc {
+      display: none;
+    }
+    .prose {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+  }
+
+  /* Suggested reading */
+  .suggested-reading {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .suggested-reading-title {
+    font-size: 1.1rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .suggested-reading-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .suggested-reading-list li {
+    padding: var(--space-2) 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .suggested-reading-list a {
+    color: var(--color-deep-blue);
+    font-weight: 500;
+  }
+
+  .ref-author {
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .ref-type {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--color-border-light);
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Post navigation */
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    max-width: 45%;
+    transition: color 0.15s ease;
+  }
+
+  .post-nav-next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .post-nav-direction {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .post-nav-title {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    line-height: 1.35;
+  }
+
+  .post-nav-link:hover .post-nav-title {
+    color: var(--color-teal);
+  }
+
+  @media (max-width: 480px) {
+    .post-title { font-size: 1.5rem; }
+    .post-nav { flex-direction: column; gap: var(--space-3); }
+    .post-nav-link { max-width: 100%; }
+    .post-nav-next { text-align: left; }
+  }
+</style>

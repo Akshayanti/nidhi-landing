@@ -1,0 +1,51 @@
+---
+import BlogPost from '../../layouts/BlogPost.astro';
+import { getCollection, render } from 'astro:content';
+import { getReadingTime } from '../../utils/readingTime';
+
+export async function getStaticPaths() {
+  const now = new Date();
+  const allPosts = await getCollection('blog');
+  const posts = allPosts
+    .filter(post => post.data.pubDate <= now)
+    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  return posts.map((post, index) => {
+    const prevPost = index > 0 ? posts[index - 1] : null;
+    const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
+    return {
+      params: { slug: post.id },
+      props: {
+        post,
+        prevSlug: prevPost?.id ?? null,
+        prevTitle: prevPost?.data.title ?? null,
+        nextSlug: nextPost?.id ?? null,
+        nextTitle: nextPost?.data.title ?? null,
+      },
+    };
+  });
+}
+
+const { post, prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props;
+const { Content } = await render(post);
+
+const readingTime = getReadingTime(post.body || '');
+---
+
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  tldr={post.data.tldr}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  level={post.data.level}
+  tags={post.data.tags}
+  readingTime={readingTime}
+  regulatoryNote={post.data.regulatoryNote}
+  referentialReading={post.data.referentialReading}
+  prevSlug={prevSlug}
+  prevTitle={prevTitle}
+  nextSlug={nextSlug}
+  nextTitle={nextTitle}
+>
+  <Content />
+</BlogPost>

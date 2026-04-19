@@ -1,0 +1,302 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'nidhi',
+  url: 'https://nidhi.today',
+  description: 'A smarter way to understand and plan your financial future.',
+  logo: 'https://nidhi.today/favicon-32.png',
+};
+
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'nidhi',
+  url: 'https://nidhi.today',
+  description: 'Money, understood. Financial literacy and net worth tracking.',
+};
+---
+
+<BaseLayout title="nidhi — Your Financial Treasure" description="nidhi — a smarter way to plan your financial future. Coming soon." jsonLd={[organizationSchema, webSiteSchema]}>
+  <section class="landing">
+    <div class="landing-container">
+      <div class="baba">
+        <img src="/baba_money.webp" alt="Meditating finosopher contemplating your finances" />
+      </div>
+      <h1 class="brand">nidhi</h1>
+      <p class="tagline">Money, understood</p>
+
+      <p class="cheeky">
+        Our finosopher has been meditating on<br />
+        where everyone's money keeps going.<br />
+        He has thoughts. You'll hear them soon.
+      </p>
+
+      <div class="roadmap">
+        <div class="roadmap-title">The sacred roadmap</div>
+
+        <div class="item done">
+          <span class="icon">&#x2705;</span>
+          <span class="text">
+            Have an existential crisis about finances
+          </span>
+        </div>
+
+        <div class="item done">
+          <span class="icon">&#x2705;</span>
+          <span class="text">
+            Decide to build an app instead of using Excel
+            <span class="aside">...because that's the rational thing to do, right?</span>
+          </span>
+        </div>
+
+        <div class="item done">
+          <span class="icon">&#x2705;</span>
+          <span class="text">
+            Pick a name that means "treasure" in Sanskrit
+          </span>
+        </div>
+
+        <div class="item current">
+          <span class="icon">&#x1F6A7;</span>
+          <span class="text">
+            Actually build the thing
+            <span class="aside">current status: caffeinated and optimistic</span>
+          </span>
+        </div>
+
+        <div class="item">
+          <span class="icon">&#x1F570;&#xFE0F;</span>
+          <span class="text">
+            Let real humans try it
+          </span>
+        </div>
+
+        <div class="item">
+          <span class="icon">&#x1F30D;</span>
+          <span class="text">
+            World domination (financial literacy edition)
+          </span>
+        </div>
+      </div>
+
+      <div class="learn-more">
+        <p class="learn-more-text">While you wait, learn about your money:</p>
+        <div class="learn-links">
+          <a href="/blog" class="learn-link">Blog</a>
+        </div>
+      </div>
+
+      <p class="footer">
+        Built with unreasonable ambition in Prague
+      </p>
+      <p class="visitor-count"><span id="view-count">...</span> curious souls have visited</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const counter = new Counter({ workspace: 'nidhi-today' });
+    counter.up('page-views')
+      .then(result => {
+        document.getElementById('view-count').textContent = result.value;
+      })
+      .catch(() => {
+        document.getElementById('view-count').parentElement.style.display = 'none';
+      });
+  });
+</script>
+
+<style>
+  .landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: var(--space-4);
+    text-align: center;
+  }
+
+  .landing-container {
+    max-width: 560px;
+  }
+
+  .baba {
+    margin-bottom: var(--space-1);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .baba img {
+    width: 100px;
+    height: auto;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .tagline {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-teal);
+    margin-bottom: var(--space-3);
+  }
+
+  .cheeky {
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-5);
+  }
+
+  .cheeky strong {
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .roadmap {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 400px;
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-md);
+  }
+
+  .roadmap-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-2);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border-light);
+    padding-bottom: var(--space-1);
+  }
+
+  .item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+  }
+
+  .item .icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+  }
+
+  .item .text {
+    padding-top: 0;
+  }
+
+  .item.done .text {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  .item.current .text {
+    color: var(--color-deep-blue);
+    font-weight: 500;
+  }
+
+  .item .aside {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    margin-top: 0;
+    font-style: italic;
+  }
+
+  .learn-more {
+    margin-top: var(--space-5);
+  }
+
+  .learn-more-text {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+  }
+
+  .learn-links {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+
+  .learn-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .learn-link {
+    color: white;
+    background: var(--color-deep-blue);
+  }
+
+  .learn-link:hover {
+    background: var(--color-deep-blue-dark);
+  }
+
+  [data-theme="dark"] .learn-link {
+    color: #121212;
+    background: var(--color-deep-blue);
+  }
+
+  .footer {
+    margin-top: var(--space-4);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  .visitor-count {
+    margin-top: var(--space-1);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  @media (max-width: 480px) {
+    .baba img { width: 80px; }
+    .brand { font-size: 1.8rem; }
+    .tagline { font-size: 0.85rem; margin-bottom: var(--space-2); }
+    .cheeky { font-size: 0.8rem; margin-bottom: var(--space-4); }
+    .cheeky br { display: none; }
+    .roadmap { max-width: 100%; }
+    .item { font-size: 0.75rem; }
+    .item .aside { font-size: 0.6rem; }
+  }
+</style>

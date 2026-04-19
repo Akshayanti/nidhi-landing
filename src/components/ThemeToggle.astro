@@ -1,0 +1,114 @@
+---
+/* 3-way theme toggle: light | system | dark */
+---
+
+<div class="theme-toggle" id="theme-toggle" role="radiogroup" aria-label="Theme">
+  <button class="theme-btn" data-mode="light" role="radio" aria-label="Light" title="Light theme">
+    <svg class="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10" cy="10" r="3.5"/>
+      <path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1 1M14.9 14.9l1 1M4.1 15.9l1-1M14.9 5.1l1-1"/>
+    </svg>
+  </button>
+  <button class="theme-btn" data-mode="system" role="radio" aria-label="System" title="Follow system theme">
+    <svg class="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="16" height="11" rx="2"/>
+      <path d="M7 17h6M10 14v3"/>
+    </svg>
+  </button>
+  <button class="theme-btn" data-mode="dark" role="radio" aria-label="Dark" title="Dark theme">
+    <svg class="theme-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.5 10.5A7.5 7.5 0 019 .5 7.5 7.5 0 1017.5 10.5z"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    background: var(--color-border);
+    border-radius: 8px;
+    padding: 3px;
+  }
+
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+
+  .theme-btn:hover {
+    color: var(--color-text-primary);
+    background: rgba(128, 128, 128, 0.15);
+  }
+
+  .theme-btn[data-active="true"] {
+    background: var(--color-bg);
+    color: var(--color-deep-blue);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  .theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    var STORAGE_KEY = 'nidhi-theme-mode';
+    var toggle = document.getElementById('theme-toggle');
+
+    function getSystemPreference() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(mode) {
+      if (mode === 'system') {
+        document.documentElement.setAttribute('data-theme', getSystemPreference());
+      } else {
+        document.documentElement.setAttribute('data-theme', mode);
+      }
+    }
+
+    function updateButtons(mode) {
+      if (!toggle) return;
+      var buttons = toggle.querySelectorAll('.theme-btn');
+      buttons.forEach(function(btn) {
+        btn.setAttribute('data-active', btn.getAttribute('data-mode') === mode ? 'true' : 'false');
+        btn.setAttribute('aria-checked', btn.getAttribute('data-mode') === mode ? 'true' : 'false');
+      });
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+      var current = localStorage.getItem(STORAGE_KEY) || 'system';
+      if (current === 'system') {
+        applyTheme('system');
+      }
+    });
+
+    if (toggle) {
+      var currentMode = localStorage.getItem(STORAGE_KEY) || 'system';
+      updateButtons(currentMode);
+
+      toggle.querySelectorAll('.theme-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var mode = btn.getAttribute('data-mode');
+          localStorage.setItem(STORAGE_KEY, mode);
+          applyTheme(mode);
+          updateButtons(mode);
+        });
+      });
+    }
+  })();
+</script>

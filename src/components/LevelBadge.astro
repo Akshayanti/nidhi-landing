@@ -1,0 +1,42 @@
+---
+interface Props {
+  level: 'discovery' | 'building' | 'optimizing' | 'mastery';
+}
+
+const { level } = Astro.props;
+
+const levels: Record<string, { label: string; color: string; icon: string }> = {
+  discovery: { label: 'Discovery', color: '#00897B', icon: '&#x1F4A1;' },
+  building: { label: 'Building', color: '#1565C0', icon: '&#x1F3D7;' },
+  optimizing: { label: 'Optimizing', color: '#E65100', icon: '&#x2699;' },
+  mastery: { label: 'Mastery', color: '#7B1FA2', icon: '&#x1F3C6;' },
+};
+
+const { label, color, icon } = levels[level];
+---
+
+<span class="level-badge" style={`--badge-color: ${color}`}>
+  <span class="level-icon" set:html={icon} />
+  {label}
+</span>
+
+<style>
+  .level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--badge-color) 12%, var(--color-bg-white));
+    color: var(--badge-color);
+  }
+
+  .level-icon {
+    font-size: 0.8rem;
+  }
+</style>

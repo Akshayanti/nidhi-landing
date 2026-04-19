@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  /* Fonts loaded via link tags below for reliability */
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: #0D47A1;
+    color: #FFFFFF;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 90px 100px;
+    position: relative;
+  }
+
+  /* Teal accent bar at top */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 90px;
+    right: 90px;
+    height: 4px;
+    background: #00897B;
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* --- First slide (hook/title) --- */
+  .slide.slide-first {
+    justify-content: center;
+    text-align: center;
+    padding: 100px 80px 120px;
+  }
+
+  .slide.slide-first .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 58px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .slide.slide-first .handle {
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #4EBAAA;
+  }
+
+  /* --- Last slide (CTA) --- */
+  .slide.slide-last {
+    justify-content: center;
+    text-align: center;
+    padding: 100px 80px 120px;
+  }
+
+  .slide.slide-last .content {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.45;
+  }
+
+  .slide.slide-last .blog-url {
+    margin-top: 40px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: #4EBAAA;
+    word-break: break-all;
+  }
+
+  /* --- Middle slides --- */
+  .slide.slide-middle .content {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+
+  /* Lists in content */
+  .content ul, .content ol {
+    margin-left: 36px;
+    margin-top: 12px;
+  }
+
+  .content li {
+    margin-bottom: 10px;
+    font-size: 44px;
+    line-height: 1.35;
+  }
+
+  /* Bold text */
+  .content strong {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.15em;
+    color: #FFFFFF;
+  }
+
+  /* Teal accent for secondary emphasis */
+  .content em {
+    font-style: normal;
+    color: #4EBAAA;
+  }
+
+  /* --- Bottom bar --- */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 90px;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .brand {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #FFFFFF;
+    opacity: 0.9;
+  }
+
+  .slide-counter {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #FFFFFF;
+    opacity: 0.6;
+  }
+
+  /* --- Story variant (9:16 ratio, 1080x1920) --- */
+  .slide.slide-story {
+    width: 1080px;
+    height: 1920px;
+    justify-content: center;
+    text-align: center;
+    padding: 200px 80px 250px;
+  }
+
+  .slide.slide-story .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.3;
+  }
+
+  .slide.slide-story .swipe-cta {
+    position: absolute;
+    bottom: 300px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 28px;
+    color: #4EBAAA;
+  }
+
+  .slide.slide-story .bottom-bar {
+    height: 90px;
+  }
+</style>
+</head>
+<body>
+  <div id="slide" class="slide">
+    <div class="content" id="content"></div>
+    <div class="bottom-bar">
+      <span class="brand">nidhi</span>
+      <span class="slide-counter" id="counter"></span>
+    </div>
+  </div>
+</body>
+</html>

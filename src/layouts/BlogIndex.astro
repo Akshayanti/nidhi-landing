@@ -1,0 +1,87 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { LearningPath } from '../components/LearningPath';
+
+interface Props {
+  posts: Array<{
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      pubDate: Date;
+      level: string;
+      tags: string[];
+    };
+    readingTime: number;
+  }>;
+}
+
+const { posts } = Astro.props;
+
+const serializedPosts = posts.map(p => ({
+  id: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  pubDate: p.data.pubDate.toISOString(),
+  level: p.data.level,
+  readingTime: p.readingTime,
+  tags: p.data.tags,
+}));
+
+const blogBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Blog',
+      item: 'https://nidhi.today/blog',
+    },
+  ],
+};
+
+const allKeywords = [...new Set(posts.flatMap(p => p.data.tags))];
+---
+
+<BaseLayout
+  title="Blog — nidhi"
+  description="Financial literacy from the ground up. Start with the basics, build your understanding, and master your financial future."
+  keywords={allKeywords}
+  jsonLd={[blogBreadcrumbSchema]}
+>
+  <section class="blog-index">
+    <div class="container">
+      <header class="blog-index-header">
+        <h1>Blog</h1>
+        <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
+      </header>
+      <LearningPath client:load posts={serializedPosts} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index {
+    padding: var(--space-10) 0 var(--space-16);
+  }
+
+  .blog-index-header {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .blog-index-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .blog-index-subtitle {
+    color: var(--color-text-secondary);
+    max-width: 540px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import BlogIndex from '../../layouts/BlogIndex.astro';
+import { getCollection } from 'astro:content';
+import { getReadingTime } from '../../utils/readingTime';
+
+const now = new Date();
+const posts = (await getCollection('blog'))
+  .filter(post => post.data.pubDate <= now)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map(post => ({
+    id: post.id,
+    data: post.data,
+    readingTime: getReadingTime(post.body || ''),
+  }));
+---
+
+<BlogIndex posts={posts} />
