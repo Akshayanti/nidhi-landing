@@ -10,20 +10,21 @@ hashtags: "#assets #networth #personalfinance #financialliteracy #investing #wea
 
 Not everything that feels like an asset actually is one. Your salary? Not an asset. Your degree? Not an asset.
 
-Here's how to tell what actually counts -- and why the quality of your assets matters as much as having them.
+Here's how to tell what actually counts, and why the quality of your assets matters as much as having them.
 
 Full post: https://nidhi.today/blog/assets
 
-#assets #networth #personalfinance #financialliteracy #investing #wealthbuilding #moneytips #nidhi #financialplanning #smartmoney
+#assets #personalfinance #financialliteracy #nidhi #financialplanning
 
 ---
 
 ## Slide 1
 
-Assets: What you own
-and what actually counts
+>> **Let's talk about ASSETS**
 
-(They're not the same thing)
+>> What they are AND what actually counts
+
+>> (The difference is essential)
 
 ---
 
@@ -40,30 +41,30 @@ If it can't do either, it's not an asset.
 
 ## Slide 3
 
-These ARE assets:
+>> **What constitutes an asset?**
 
 - Cash & bank accounts
 - Investments (stocks, bonds, index funds)
 - Property & real estate
-- Vehicles (though they lose value fast)
+- Vehicles, even though they lose value fast
 - Valuables you could actually sell
 
 ---
 
 ## Slide 4
 
-These are NOT assets:
+>> **What does NOT constitute an asset?**
 
-- Your salary (it's a flow, not a stock)
-- Your degree (you can't sell it)
-- Your job (you don't own your employer)
+- Your salary (counts in cash flow)
+- Your degree, you can't sell it
+- Your job, you don't own your employer
 - Your "potential" (future earnings aren't present assets)
 
 ---
 
 ## Slide 5
 
-Why does this matter?
+>> **Why does this matter?**
 
 A doctor earning €200,000/year with €50,000 in savings
 
@@ -75,74 +76,82 @@ someone with €200,000 in investments and no income.
 
 ## Slide 6
 
-Not all assets are equal.
+>> **Not all assets are equal**
 
 Two people with €100,000 in assets can be in completely different positions.
 
-What matters is quality.
+What matters is quality
 
 ---
 
 ## Slide 7
 
-Asset quality #1: Liquidity
+>> **Asset quality #1: Liquidity**
 
 How fast can you turn it into cash?
 
-Savings account -- instantly
-Stocks -- a few days
-Real estate -- weeks to months
+- Savings account: instantly
+- Stocks: few days
+- Real estate: weeks to months
 
-You can't pay for an emergency with your front door.
+You can't pay for an emergency with your front door
 
 ---
 
 ## Slide 8
 
-Asset quality #2: Direction
+>> **Asset quality #2: Direction**
 
 Does it grow or shrink over time?
 
-Index funds -- tend to go up (historically)
-Real estate -- usually up
-Cars -- definitely down
-Cash -- flat (loses to inflation)
+- Index funds: tend to go up (historically)
+- Real estate: usually up
+- Vehicles: definitely down
+- Cash: flat (loses to inflation)
 
 ---
 
 ## Slide 9
 
-Asset quality #3: Stability
+>> **Asset quality #3: Stability**
 
 How predictable is the value?
 
-Cash -- very stable
-Bonds -- mostly stable
-Stocks -- moderate swings
-Crypto -- wildly unpredictable
+- Cash: very stable
+- Bonds: mostly stable
+- Stocks: moderate swings
+- Crypto: wildly unpredictable
 
 ---
 
 ## Slide 10
 
-Ask yourself:
+Ask yourself these questions:
 
 1. Are these real assets?
 2. Are they working for me?
 3. Is my mix balanced?
 
-All cash = slow inflation erosion.
-All stocks = too much volatility.
-Some of each = balance.
+All cash = slow inflation erosion
+
+All stocks = too much volatility
+
+Some of each = balance
 
 ---
 
 ## Slide 11
 
-Know what you own.
-Know what it's actually worth.
-Know how well it's working for you.
+>> **Just having assets is not enough**
 
-Full breakdown -- link in caption.
+- Know what you own 
+- Know what it's actually worth 
+- Know how well it's working for you
 
-@nidhi.today
+## Slide 12
+
+>> **Liked this content?**
+
+>> Full guide link in caption and bio
+
+>> Follow @nidhi.today for more

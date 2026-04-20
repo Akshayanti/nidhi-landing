@@ -150,4 +150,8 @@ It tells you more than the number ever could.
 
 ## Slide 12
 
->> **Start now. Full guide link in caption and bio.**
+>> **Liked this content?**
+
+>> Full guide link in caption and bio
+
+>> Follow @nidhi.today for more
