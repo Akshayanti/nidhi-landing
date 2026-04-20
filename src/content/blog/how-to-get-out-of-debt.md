@@ -53,7 +53,7 @@ When that debt is paid off, roll its minimum payment plus your extra into the ne
 | Credit card | €6,500 | 22% | €160 |
 | Student loan | €14,000 | 4% | €150 |
 
-With €300 extra per month, the snowball method attacks the store card first as it's the smallest balance. You'd clear it in about 4 months. Then you roll that €40 into the personal loan. Quick wins, visible progress, growing momentum.
+With €300 extra per month, the snowball method attacks the store card first as it's the smallest balance. You'd clear it in about 5 months. Then you roll that €40 into the personal loan. Quick wins, visible progress, growing momentum.
 
 **Why it works:** Quick wins build momentum. When you eliminate a debt entirely, even a small one, you feel progress. That motivation carries you to the next one.
 
@@ -67,7 +67,7 @@ List your debts from the highest interest rate to the lowest. Make minimum payme
 
 ### Same example, different target
 
-Using the same debts, the avalanche method attacks the credit card first as it's the highest rate at 22%. You'd put all €300 extra toward it every month. It takes longer to see a debt fully eliminated (about 17 months), but every euro is attacking your most expensive debt.
+Using the same debts, the avalanche method attacks the credit card first as it's the highest rate at 22%. You'd put all €300 extra toward it every month. It takes longer to see a debt fully eliminated (about 28 months), but every euro is attacking your most expensive debt.
 
 Once the credit card is gone, you roll the full €460 (€300 extra + €160 minimum) into the store card at 12%. Then the personal loan at 9%. Then the student loan at 4%.
 
