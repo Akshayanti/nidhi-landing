@@ -45,6 +45,7 @@ If it can't do either, it's not an asset.
 
 - Cash & bank accounts
 - Investments (stocks, bonds, index funds)
+- Retirement accounts (pensions, employer plans - investments, but with limited access until retirement)
 - Property & real estate
 - Vehicles, even though they lose value fast
 - Valuables you could actually sell
