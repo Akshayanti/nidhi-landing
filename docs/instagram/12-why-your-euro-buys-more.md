@@ -153,6 +153,8 @@ What you can do:
 
 Understanding exchange rates and PPP is the foundation for managing money across borders.
 
+Last post covered how purchasing power erodes over time (inflation). This one covers how it varies across space. Both shape what your money is actually worth.
+
 Full guide with examples and frameworks -- link in caption.
 
 @nidhi.today

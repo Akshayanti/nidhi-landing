@@ -119,7 +119,7 @@ Both matter. But the second one gives you faster results.
 
 Three practical shifts:
 
-1. Track the gap -- not your salary, the difference between in and out
+1. Track the gap -- not your salary, the difference between in and out. As a percentage, that's your savings rate: (Income - Expenses) / Income
 2. Automate the save -- move money to savings the day salary arrives
 3. Resist the upgrade -- when income grows, keep spending steady for 3 months
 

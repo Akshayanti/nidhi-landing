@@ -116,6 +116,8 @@ Positive cash flow each month = your assets grow or your liabilities shrink.
 
 Negative cash flow = the opposite.
 
+That surplus fuels everything: emergency fund first, then debt payoff, then investing.
+
 Track one, and you're managing the other.
 
 ---

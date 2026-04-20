@@ -141,6 +141,8 @@ is actually moving backward.
 
 Understand inflation. Invest accordingly.
 
+Next up: purchasing power doesn't just change over time -- it changes across borders too.
+
 Full breakdown -- link in caption.
 
 @nidhi.today
