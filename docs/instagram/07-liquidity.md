@@ -20,91 +20,94 @@ Full post: https://nidhi.today/blog/liquidity
 
 ## Slide 1
 
-Liquidity:
-Why having money
-and being able to USE it
-are not the same thing
+>> **Let's talk about Liquidity**
+
+>> Why having money and being able to use it are NOT the same thing
 
 ---
 
 ## Slide 2
 
-Liquidity = how quickly you can convert an asset to cash at its full value.
+>> **What is Liquidity?**
 
-Cash in your account? Fully liquid.
-A house? Very much not.
+Liquidity is how quickly you can convert an asset to cash at its full value
+
+- Cash in your account? Fully liquid
+- A house? Very much not
 
 ---
 
 ## Slide 3
 
-The liquidity spectrum:
+>> **The liquidity spectrum**
 
-Cash -- instantly
-Savings account -- 1-2 days
-Stocks / index funds -- 2-3 days
-Bonds -- 2-3 days
-Retirement accounts -- days, but with tax penalties
-Real estate -- weeks to months
-Car -- days to weeks, at a loss
+- Cash: instantly
+- Savings account: 1-2 days
+- Stocks / index funds: 2-3 days
+- Bonds: 2-3 days
+- Retirement accounts: days, but with tax penalties
+- Real estate: weeks to months
+- Vehicles: days to weeks, at a loss
 
 ---
 
 ## Slide 4
 
-Why low liquidity is dangerous:
+>> **Why low liquidity is dangerous**
 
-Person A: €50,000 in a house + €2,000 in savings.
-Net worth: €52,000.
+Person A: 
+- €50,000 in a house + €2,000 in savings.
+- Net worth: €52,000.
 
-Person B: €20,000 in index funds + €10,000 in savings.
-Net worth: €30,000.
+Person B: 
+- €20,000 in index funds + €10,000 in savings.
+- Net worth: €30,000.
 
 ---
 
 ## Slide 5
 
-The car breaks down. Repair costs €3,000.
+The car breaks down. Repair costs €3,000
 
-Person A can't access the house's value without selling or borrowing -- both take time and cost money.
+Person A can't access the house's value without selling or borrowing since both take time and cost money
 
-Person B covers it without stress and still has €27,000 invested.
+Person B covers it without stress and still has €27,000 invested
 
 ---
 
 ## Slide 6
 
-Higher net worth doesn't always mean better financial position.
+Higher net worth doesn't always mean better financial position
 
-Liquidity matters.
+>> **Liquidity matters**
 
 ---
 
 ## Slide 7
 
-When illiquidity is fine:
+>> **When illiquidity is fine**
 
-Real estate -- builds equity over decades
-Retirement accounts -- tax advantages worth the lock-up
-Long-term investments -- higher returns for staying invested
+- Real estate: builds equity over decades
+- Retirement accounts: tax advantages worth the lock-up
+- Long-term investments: higher returns for staying invested
 
-The key: match your liquidity to your timeline.
+The key: match your liquidity to your timeline
 
 ---
 
 ## Slide 8
 
-The right balance:
+>> **Finding the right balance**
 
-1. Emergency fund first -- 3-6 months of expenses in savings
-2. Medium-term savings -- money you need in 1-5 years in accessible places
-3. Long-term investments -- money you won't touch for 5+ years
+1. Emergency fund first: 3-6 months of expenses in savings
+2. Medium-term savings: money you need in 1-5 years in accessible places
+3. Long-term investments: money you won't touch for 5+ years
 
 ---
 
 ## Slide 9
 
-Common liquidity mistakes:
+>> **Common liquidity mistakes**
 
 - Too much in cash (inflation eats it)
 - Too little in cash (forced to sell investments at a loss)
@@ -115,20 +118,27 @@ Common liquidity mistakes:
 
 ## Slide 10
 
-Your net worth tells you what you have.
+Your net worth tells you what you have
 
-Liquidity tells you what you can actually use.
+Liquidity tells you what you can actually use
 
-A plan that ignores liquidity is like a car with a powerful engine but no fuel gauge.
+A plan that ignores liquidity is like a car with a powerful engine but no fuel gauge
 
 ---
 
 ## Slide 11
 
-Know what you have.
-Know what you can access.
-Keep enough liquid for emergencies.
+>> Know what you have
+>> Know what you can access
+>> Keep enough liquid for emergencies
 
-Full guide -- link in caption.
+---
 
-@nidhi.today
+## Slide 12
+
+>> **Liked this content?**
+
+>> Full guide link in caption and bio
+
+>> Follow @nidhi.today for more
+
