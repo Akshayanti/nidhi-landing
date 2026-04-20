@@ -102,13 +102,23 @@ Rough targets, not rules.
 
 ## Slide 8
 
+Your savings rate = (Income - Expenses) x 100 / Income
+
+Earn €3,000, spend €2,400 = 20% savings rate.
+
+That single number tells you more about your trajectory than your salary.
+
+---
+
+## Slide 9
+
 If your needs eat 80% of your income, there's very little room to build anything.
 
 The 20% savings target is where wealth actually comes from.
 
 ---
 
-## Slide 9
+## Slide 10
 
 Cash flow and net worth are linked.
 
@@ -122,7 +132,7 @@ Track one, and you're managing the other.
 
 ---
 
-## Slide 10
+## Slide 11
 
 You don't need a complex budget.
 

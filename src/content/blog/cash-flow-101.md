@@ -7,7 +7,7 @@ pubDate: 2026-04-17
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["cash-flow", "budgeting", "fundamentals", "income", "expenses"]
+tags: ["cash-flow", "budgeting", "fundamentals", "income", "expenses", "savings-rate"]
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
@@ -72,6 +72,16 @@ There's no single right number, but a useful guideline:
 - The remaining 30% covers wants
 
 These are rough targets, not rules. But if your needs eat up 80% of your income, there's very little room to build anything.
+
+## Your savings rate: cash flow as a percentage
+
+Once you know your cash flow number, turn it into a percentage:
+
+> Savings Rate = (Income - Expenses) x 100 / Income
+
+If you earn €3,000 and spend €2,400, your savings rate is 20%. That single number tells you more about your financial trajectory than your salary does. Someone earning €6,000 with a 5% savings rate is building wealth slower than someone earning €3,000 with a 20% savings rate.
+
+A common benchmark is 20% -- matching the savings/debt slice in the guideline above. But the number matters less than the direction. Track it monthly. If it's going up, your wealth engine is accelerating. If it's going down, something changed.
 
 ## The connection to net worth
 
