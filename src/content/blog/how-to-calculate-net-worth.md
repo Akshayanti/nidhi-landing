@@ -6,7 +6,7 @@ order: 2
 pubDate: 2026-04-09
 level: "discovery"
 primaryPersona: "eva"
-personas: ["eva", "petra"]
+personas: ["eva", "petra", "jiri"]
 tags: ["net-worth", "calculating", "getting-started", "step-by-step"]
 referentialReading:
   - title: "The Total Money Makeover"

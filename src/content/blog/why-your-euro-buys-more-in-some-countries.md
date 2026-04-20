@@ -97,3 +97,5 @@ Both are real. Both can be managed – but only if you're aware of them.
 4. **Account for PPP in major decisions.** Comparing job offers across countries? Adjust for local price levels first
 
 Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others – thinking in real terms instead of nominal ones is the skill that ties it all together.
+
+In the previous post, we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.

@@ -6,7 +6,7 @@ order: 1
 pubDate: 2026-04-08
 level: "discovery"
 primaryPersona: "eva"
-personas: ["eva", "petra"]
+personas: ["eva", "petra", "jiri"]
 tags: ["net-worth", "fundamentals", "getting-started"]
 referentialReading:
   - title: "The Simple Path to Wealth"

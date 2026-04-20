@@ -65,7 +65,7 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
 
 Three practical shifts:
 
-1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine
+1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income -- and it's one of the strongest predictors of long-term wealth
 2. **Automate the save.** Move a fixed amount to savings the day your salary arrives, not at the end of the month with whatever is left
 3. **Resist the upgrade.** When your income grows, keep your spending steady for at least three months. Let the extra flow into savings first
 

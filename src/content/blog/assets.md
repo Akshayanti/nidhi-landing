@@ -31,7 +31,8 @@ An asset is something you own that has monetary value. It's either cash, somethi
 Common assets:
 
 - **Cash and bank accounts**: current accounts, savings accounts, cash on hand
-- **Investments**: stocks (shares of companies), bonds (loans you make to governments or companies), index funds (collections that track a broad market), ETFs (exchange-traded funds, similar to index funds but bought and sold like stocks), retirement accounts
+- **Investments**: stocks (shares of companies), bonds (loans you make to governments or companies), index funds (collections that track a broad market), ETFs (exchange-traded funds, similar to index funds but bought and sold like stocks)
+- **Retirement accounts**: pension funds, employer-sponsored plans, private retirement savings. These are investments, but they deserve their own category because you usually can't access the money until a certain age and withdrawing early often means penalties or taxes. They count toward your net worth, but their liquidity is very different from a regular brokerage account
 - **Property**: real estate, land
 - **Vehicles**: cars, motorcycles (though they depreciate fast)
 - **Valuables**: jewelry, art, collectibles (if you can actually sell them)

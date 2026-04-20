@@ -78,3 +78,5 @@ These are rough targets, not rules. But if your needs eat up 80% of your income,
 Cash flow and net worth are linked. As we discussed in the income vs. wealth post, the gap between what you earn and what you spend is what feeds your net worth over time.
 
 Positive cash flow each month means your assets grow (or your liabilities shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
+
+That surplus is the fuel for everything else. If you don't have an emergency fund yet, that's where it should go first – your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the snowball or avalanche strategies we covered earlier. The order matters: stabilize, then optimize.

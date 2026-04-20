@@ -98,3 +98,5 @@ A negative real return means you're getting poorer on paper, even as your accoun
 4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.
+
+But purchasing power doesn't just change over time. It also changes across borders. The same salary buys very different lives in different countries. In the next post, we'll look at exchange rates and purchasing power parity, and why your euro stretches further in some places than others.
