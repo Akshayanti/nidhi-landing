@@ -3,7 +3,7 @@ title: "How to Get Out of Debt: Snowball vs. Avalanche"
 description: "Once you've decided to tackle your debt, there are two proven strategies. One prioritizes motivation. The other prioritizes math. Here's how each works and how to pick the right one."
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
-pubDate: 2026-04-12
+pubDate: 2026-04-27
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

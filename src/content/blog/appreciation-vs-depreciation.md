@@ -3,7 +3,7 @@ title: "Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink"
 description: "Not all assets are created equal. Some grow in value over time, others lose it. The difference between appreciation and depreciation -- and the force of compound interest behind both -- determines whether your net worth is building or eroding."
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
-pubDate: 2026-04-13
+pubDate: 2026-04-29
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

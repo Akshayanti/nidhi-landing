@@ -3,7 +3,7 @@ title: "Income vs. Wealth: They're Not the Same Thing"
 description: "Earning more doesn't automatically mean being wealthier. Here's why the distinction matters and how to shift from income thinking to wealth thinking."
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
-pubDate: 2026-04-16
+pubDate: 2026-05-05
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]

@@ -3,7 +3,7 @@ title: "How to Calculate Your Net Worth in 10 Minutes"
 description: "A step-by-step guide to listing everything you own and everything you owe. No fancy tools needed -- just honesty and a calculator."
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
-pubDate: 2026-04-09
+pubDate: 2026-04-21
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

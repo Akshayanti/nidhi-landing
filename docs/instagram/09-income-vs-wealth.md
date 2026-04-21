@@ -20,31 +20,34 @@ Full post: https://nidhi.today/blog/income-vs-wealth
 
 ## Slide 1
 
-Income vs. Wealth
+>> **On Income vs. Wealth**
 
-They're not the same thing.
-
-(And confusing them is the most expensive mistake in personal finance)
+>> And why confusing them is the most expensive mistake in personal finance
 
 ---
 
 ## Slide 2
 
-Two people earn €4,000/month.
+Two people earn €4,000/month
 
 After a year:
-Person A has €12,000 saved.
-Person B has €800.
 
-Same income. Completely different outcomes.
+Person A has €12,000 saved
+Person B has €800
+
+Same income but completely different outcomes
 
 ---
 
 ## Slide 3
 
-Income is a flow.
+>> **Income**
 
-It tells you how much money moves into your accounts. Salary, freelance earnings, rental income.
+Income is a flow
+
+It tells you how much money moves into your accounts
+
+Salary, freelance earnings, rental income
 
 It answers: how much is coming in?
 
@@ -52,9 +55,11 @@ It answers: how much is coming in?
 
 ## Slide 4
 
-Wealth is a stock.
+>> **Wealth**
 
-It's what you've accumulated over time -- your net worth.
+Wealth is a stock
+
+It's what you've accumulated over time – your net worth
 
 It answers: what do you have to show for all your earning years?
 
@@ -66,19 +71,20 @@ A person earning €3,000 who saves €1,000/month
 
 will be wealthier after five years than
 
-someone earning €6,000 who saves €200.
+someone earning €6,000 who saves €200
 
 ---
 
 ## Slide 6
 
-The income trap: lifestyle inflation.
 
-When income rises, spending rises with it.
+>> **The income trap: lifestyle inflation**
 
-Bigger apartment. Newer car. More dinners out.
+When income rises, spending rises with it
 
-Income went up. Wealth gap stayed the same -- or shrank.
+Bigger apartment. Newer car. More dinners out
+
+Income went up. The wealth gap stayed the same, or maybe even shrank
 
 ---
 
@@ -86,9 +92,9 @@ Income went up. Wealth gap stayed the same -- or shrank.
 
 The math is simple:
 
-If your spending always matches your income, your net worth stays flat.
+If your spending always matches your income, your net worth stays flat
 
-No matter how much you earn.
+No matter how much you earn
 
 ---
 
@@ -98,10 +104,10 @@ The wealth formula:
 
 Wealth = Income - Spending (over time)
 
-You can grow wealth by earning more.
-You can grow wealth by spending less.
+You can grow wealth by earning more
+You can grow wealth by spending less
 
-But every euro saved is a euro earned, tax-free.
+But every euro saved is a euro earned, tax-free
 
 ---
 
@@ -111,34 +117,54 @@ Income thinking: "How can I earn more?"
 
 Wealth thinking: "How can I keep more of what I earn?"
 
-Both matter. But the second one gives you faster results.
+Both matter. But the second one gives you faster results
 
 ---
 
 ## Slide 10
 
-Three practical shifts:
+>> **Practical shifts**
 
-1. Track the gap -- not your salary, the difference between in and out. As a percentage, that's your savings rate: (Income - Expenses) / Income
-2. Automate the save -- move money to savings the day salary arrives
-3. Resist the upgrade -- when income grows, keep spending steady for 3 months
+1. Track the gap: not your salary, the difference between in and out
+2. Automate the save: move money to savings the day salary arrives
+3. Resist the upgrade: when income grows, keep spending steady for 3 months
 
 ---
 
 ## Slide 11
 
-Income gives you options today.
-Wealth gives you options tomorrow.
+>> **Your savings rate**
 
-If your income stops, wealth is what keeps you afloat.
+(Income - Expenses) × 100 / Income
+
+Example: Earn €4,000, spend €3,000
+
+Savings rate = 25%
 
 ---
 
 ## Slide 12
 
-Stop optimizing for income alone.
-Start optimizing for what stays.
+Income gives you options today
 
-Full guide -- link in caption.
+Wealth gives you options tomorrow
 
-@nidhi.today
+If your income stops, wealth is what keeps you afloat
+
+---
+
+## Slide 13
+
+>> Stop optimizing for income alone
+
+>> Start optimizing for what stays
+
+---
+
+## Slide 14
+
+>> **Liked this content?**
+
+>> Full guide link in caption and bio
+
+>> Follow @nidhi.today for more
