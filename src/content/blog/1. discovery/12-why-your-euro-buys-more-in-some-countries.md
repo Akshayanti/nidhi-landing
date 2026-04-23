@@ -1,7 +1,8 @@
 ---
+slug: "why-your-euro-buys-more-in-some-countries"
 title: "Why Your Euro Buys More in Some Countries Than Others"
 description: "Exchange rates tell you how much one currency is worth in another. But they don't tell you how much it actually buys. That's where purchasing power parity comes in."
-tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries -- a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
+tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries, a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
 order: 12
 pubDate: 2026-05-11
 level: "discovery"
@@ -87,7 +88,7 @@ Both are real. Both can be managed – but only if you're aware of them.
 
 - **"PPP means exchange rates should be equal."** PPP doesn't say the exchange rate should be 1:1. It says the exchange rate should reflect what money can buy. The actual rate can differ from PPP for long periods due to trade barriers, productivity differences, and capital flows
 
-- **"You should always convert to the cheapest currency."** Conversion has costs -- fees, spread, timing risk. Chasing the best rate on every transaction usually costs more than it saves
+- **"You should always convert to the cheapest currency."** Conversion has costs: fees, spread, timing risk. Chasing the best rate on every transaction usually costs more than it saves
 
 ## What you can do
 
@@ -99,3 +100,5 @@ Both are real. Both can be managed – but only if you're aware of them.
 Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others – thinking in real terms instead of nominal ones is the skill that ties it all together.
 
 In the previous post, we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
+
+There's one concept that ties all of this together: the time value of money. It explains why a euro today is worth more than a euro tomorrow, and it's the foundation of every financial decision you'll ever make. That's where we're heading next.

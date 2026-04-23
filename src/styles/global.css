@@ -540,6 +540,62 @@ strong {
   transition: width 0.4s ease;
 }
 
+.lp-levelSectionCollapsed {
+  opacity: 0.75;
+}
+
+.lp-levelHeaderToggle {
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin: calc(-1 * var(--space-3));
+  transition: background 0.15s ease;
+}
+
+.lp-levelHeaderToggle:hover {
+  background: var(--color-bg-subtle, #f5f5f5);
+}
+
+[data-theme="dark"] .lp-levelHeaderToggle:hover {
+  background: var(--color-bg-subtle, #2a2a2a);
+}
+
+.lp-levelLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.lp-levelHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.lp-levelCompletedBadge {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1.5px solid;
+  border-radius: var(--radius-sm);
+  padding: 1px 8px;
+  line-height: 1.5;
+}
+
+.lp-levelCollapseChevron {
+  transition: transform 0.2s ease;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.lp-levelCollapseChevronDown {
+  transform: rotate(180deg);
+}
+
 .lp-comingSoon {
   font-size: 0.85rem;
   color: var(--color-text-muted);
@@ -935,4 +991,6 @@ strong {
   .lp-levelNavLinkCount { font-size: 0.6rem; }
   .lp-levelCovered { font-size: 0.65rem; }
   .lp-levelPrereq { font-size: 0.65rem; }
+  .lp-levelCompletedBadge { font-size: 0.6rem; padding: 1px 6px; }
+  .lp-levelCollapseChevron { width: 14px; height: 14px; }
 }

@@ -9,7 +9,7 @@ const posts = (await getCollection('blog'))
   .filter(post => isDev || post.data.pubDate <= now)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map(post => ({
-    id: post.id,
+    id: post.data.slug,
     data: post.data,
     readingTime: getReadingTime(post.body || ''),
   }));

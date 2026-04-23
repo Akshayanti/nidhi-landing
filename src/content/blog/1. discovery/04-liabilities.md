@@ -1,4 +1,5 @@
 ---
+slug: "liabilities"
 title: "Liabilities: What You Owe and Why the Interest Rate Matters"
 description: "Liabilities are the other side of your net worth equation -- everything you owe. Not all debt is equal. The interest rate determines whether a liability is manageable or dangerous."
 tldr: "A liability is money you owe to someone else, usually with interest. The interest rate is the most important detail: a mortgage at 3.5% and a credit card at 22% are fundamentally different obligations. Ask three questions about any debt: what is the rate, what did it buy, and can you afford the payments? If the interest rate exceeds what you could earn investing, pay the debt first."

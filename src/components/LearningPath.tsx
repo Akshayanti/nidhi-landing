@@ -149,6 +149,7 @@ export function LearningPath({ posts }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     try {
@@ -162,6 +163,35 @@ export function LearningPath({ posts }: LearningPathProps) {
     if (tagParam) {
       setSelectedTag(tagParam);
     }
+  }, []);
+
+  // Auto-collapse sections when all posts are read
+  useEffect(() => {
+    const newlyCompleted = LEVEL_ORDER.filter((level) => {
+      const levelPosts = posts.filter((p) => p.level === level);
+      return levelPosts.length > 0 && levelPosts.every((p) => readPosts.has(p.id));
+    });
+    if (newlyCompleted.length > 0) {
+      setCollapsedSections((prev) => {
+        const next = new Set(prev);
+        for (const level of newlyCompleted) {
+          next.add(level);
+        }
+        return next;
+      });
+    }
+  }, [readPosts, posts]);
+
+  const toggleSection = useCallback((level: string) => {
+    setCollapsedSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(level)) {
+        next.delete(level);
+      } else {
+        next.add(level);
+      }
+      return next;
+    });
   }, []);
 
   const saveProgress = useCallback((newSet: Set<string>) => {
@@ -322,9 +352,11 @@ export function LearningPath({ posts }: LearningPathProps) {
         if (group.posts.length === 0) return null;
         const levelRead = group.posts.filter((p) => readPosts.has(p.id)).length;
         const levelPercent = (levelRead / group.posts.length) * 100;
+        const isCompleted = levelRead === group.posts.length;
+        const isCollapsed = collapsedSections.has(group.level);
 
         return (
-          <div key={group.level} id={`level-${group.level}`} className="lp-levelSection">
+          <div key={group.level} id={`level-${group.level}`} className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}>
             <div
               className="lp-levelWaypoint"
               style={{ background: group.meta.color }}
@@ -332,15 +364,42 @@ export function LearningPath({ posts }: LearningPathProps) {
               {index + 1}
             </div>
 
-            <div className="lp-levelHeader">
-              <div className="lp-levelLabel" style={{ color: group.meta.color }}>
-                {group.meta.label}
+            <div
+              className={`lp-levelHeader ${isCompleted ? 'lp-levelHeaderToggle' : ''}`}
+              onClick={isCompleted ? () => toggleSection(group.level) : undefined}
+              role={isCompleted ? 'button' : undefined}
+              tabIndex={isCompleted ? 0 : undefined}
+              aria-expanded={isCompleted ? !isCollapsed : undefined}
+              aria-label={isCompleted ? `${isCollapsed ? 'Expand' : 'Collapse'} ${group.meta.label}` : undefined}
+            >
+              <div className="lp-levelLabelRow">
+                <div className="lp-levelLabel" style={{ color: group.meta.color }}>
+                  {group.meta.label}
+                </div>
+                {isCompleted && (
+                  <div className="lp-levelHeaderRight">
+                    <span className="lp-levelCompletedBadge" style={{ color: group.meta.color, borderColor: group.meta.color }}>Completed</span>
+                    <svg
+                      className={`lp-levelCollapseChevron ${isCollapsed ? 'lp-levelCollapseChevronDown' : ''}`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      width="16"
+                      height="16"
+                    >
+                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
+                    </svg>
+                  </div>
+                )}
               </div>
-              <p className="lp-levelDesc">{group.meta.description}</p>
-              <div className="lp-levelMeta">
-                <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
-                <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
-              </div>
+              {!(isCompleted && isCollapsed) && (
+                <>
+                  <p className="lp-levelDesc">{group.meta.description}</p>
+                  <div className="lp-levelMeta">
+                    <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
+                    <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
+                  </div>
+                </>
+              )}
               <span className="lp-levelProgress">{levelRead}/{group.posts.length} read</span>
               <div className="lp-levelProgressBar">
                 <div
@@ -350,7 +409,7 @@ export function LearningPath({ posts }: LearningPathProps) {
               </div>
             </div>
 
-            {group.posts.map((post) => (
+            {!isCollapsed && group.posts.map((post) => (
               <PostNode
                 key={post.id}
                 post={post}

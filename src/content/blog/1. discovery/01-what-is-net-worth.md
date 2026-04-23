@@ -1,4 +1,5 @@
 ---
+slug: "what-is-net-worth"
 title: "What Is Net Worth and Why Does It Matter?"
 description: "Your net worth is the single number that tells you whether you're building wealth or standing still. Here's why it matters more than your salary."
 tldr: "Net worth is everything you own minus everything you owe. It's the one number that captures your full financial picture -- how much you earn, spend, save, and owe. Track it over time and you'll see whether you're actually building wealth or just earning money."

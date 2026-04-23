@@ -14,12 +14,12 @@ export async function getStaticPaths() {
     const prevPost = index > 0 ? posts[index - 1] : null;
     const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
     return {
-      params: { slug: post.id },
+      params: { slug: post.data.slug },
       props: {
         post,
-        prevSlug: prevPost?.id ?? null,
+        prevSlug: prevPost?.data.slug ?? null,
         prevTitle: prevPost?.data.title ?? null,
-        nextSlug: nextPost?.id ?? null,
+        nextSlug: nextPost?.data.slug ?? null,
         nextTitle: nextPost?.data.title ?? null,
       },
     };
