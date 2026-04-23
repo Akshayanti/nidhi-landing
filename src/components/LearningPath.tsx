@@ -22,14 +22,14 @@ const LEVELS: Record<string, LevelMeta> = {
   discovery: {
     label: 'Discovery',
     description: 'The fundamentals. If you\'re new to personal finance, start here.',
-    covered: 'Net worth, cash flow, debt, compound interest, emergency funds, inflation',
+    covered: 'Net worth, assets, liabilities, cash flow, debt, compound interest, liquidity, emergency funds, purchasing power, time value of money, saving vs investing, credit, insurance',
     prerequisite: 'For beginners',
     color: '#00897B',
   },
   building: {
     label: 'Building',
     description: 'Putting the pieces together. Budgets, savings systems, and first investments.',
-    covered: 'Budgeting systems, savings automation, first investment, index funds',
+    covered: 'Budgeting, risk, asset classes, investment accounts, diversification, financial independence intro, multi-currency, real estate, loan terms, passive income, goals, dashboard, health metrics, taxes',
     prerequisite: 'For those comfortable with the basics',
     color: '#1565C0',
   },
@@ -375,6 +375,7 @@ export function LearningPath({ posts }: LearningPathProps) {
               <div className="lp-levelLabelRow">
                 <div className="lp-levelLabel" style={{ color: group.meta.color }}>
                   {group.meta.label}
+                  <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
                 </div>
                 {isCompleted && (
                   <div className="lp-levelHeaderRight">
@@ -396,7 +397,6 @@ export function LearningPath({ posts }: LearningPathProps) {
                   <p className="lp-levelDesc">{group.meta.description}</p>
                   <div className="lp-levelMeta">
                     <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
-                    <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
                   </div>
                 </>
               )}

@@ -485,6 +485,7 @@ strong {
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1.15rem;
+  margin-bottom: var(--space-2);
   margin-bottom: 2px;
 }
 
@@ -516,7 +517,9 @@ strong {
 .lp-levelPrereq {
   font-size: 0.7rem;
   color: var(--color-text-muted);
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
+  margin-left: var(--space-2);
 }
 
 .lp-levelProgress {
