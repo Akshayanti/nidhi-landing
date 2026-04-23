@@ -146,8 +146,8 @@ What you can do:
 
 >> **What's next?**
 
->> The time value of money - why a euro
->> today is worth more than a euro tomorrow
+>> Saving vs investing - when should you
+>> do which? They're not the same thing
 
 >> **Basics of money · 12/16**
 

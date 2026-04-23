@@ -101,4 +101,4 @@ Understanding exchange rates and PPP is the foundation for managing money across
 
 In the previous post, we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
 
-There's one concept that ties all of this together: the time value of money. It explains why a euro today is worth more than a euro tomorrow, and it's the foundation of every financial decision you'll ever make. That's where we're heading next.
+So we know that money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and getting the sequence right matters more than most people think.
