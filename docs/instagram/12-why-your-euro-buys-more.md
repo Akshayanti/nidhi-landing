@@ -1,7 +1,7 @@
 ---
 title: "Why Your Euro Buys More in Some Countries Than Others"
 blog_url: "https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries"
-hashtags: "#exchangerates #purchasingpowerparity #personalfinance #expat #bigmacindex #financialliteracy #moneytips #nidhi #multicurrency #globalfinance"
+hashtags: "#purchasingpower #expatlife #personalfinance #financialliteracy #nidhi"
 ---
 
 # Why Your Euro Buys More in Some Countries Than Others
@@ -14,32 +14,35 @@ Understanding exchange rates and purchasing power parity is essential for anyone
 
 Full post: https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries
 
-#exchangerates #purchasingpowerparity #personalfinance #expat #bigmacindex #financialliteracy #moneytips #nidhi #multicurrency #globalfinance
+#purchasingpower #expatlife #personalfinance #financialliteracy #nidhi
 
 ---
 
 ## Slide 1
 
-Why your euro buys more
-in some countries
-than others
+**Why your euro buys more in some countries than others?**
 
 (It's not just about exchange rates)
+
+!! Basics of Money · 12/16 · @nidhi.today
 
 ---
 
 ## Slide 2
 
-An exchange rate is simply the price of one currency in terms of another.
+An exchange rate is simply the price of one currency in terms of another
 
-EUR/USD = 1.08 means one euro buys $1.08.
+EUR/USD = 1.08 means €1 buys $1.08
 
-But exchange rates tell you how much you GET.
-Not how much you can BUY.
+But exchange rates tell you how much you GET
+
+Not how much you can BUY
 
 ---
 
 ## Slide 3
+
+>> **Introducing Purchasing Power Parity (PPP)**
 
 How much does a cappuccino cost?
 
@@ -48,47 +51,49 @@ Berlin: €3.20
 Lisbon: €1.60
 Bangkok: €1.20
 
-Same drink. Very different prices.
+Same drink. Very different prices
 
 ---
 
 ## Slide 4
 
-The reason isn't that coffee beans cost more in Finland.
+The reason isn't that coffee beans cost more in Finland
 
-It's that wages, rents, taxes, and overall price levels differ across countries.
+It's that wages, rents, taxes, and overall price levels differ across countries
 
-This is purchasing power parity (PPP).
+This is purchasing power parity (PPP)
 
 ---
 
 ## Slide 5
 
-PPP = the idea that exchange rates should reflect what money can actually buy.
+PPP is the idea that exchange rates should reflect what money can actually buy
 
-In practice, they don't -- and the gap is where things get interesting.
+In practice, they don't, and the gap is where things get interesting
 
 ---
 
 ## Slide 6
 
-The Big Mac Index:
+>> **Big Mac Index**
 
-A Big Mac is roughly identical everywhere -- same ingredients, same process.
+A Big Mac is roughly identical everywhere: same ingredients, same process
 
-If it costs €5.50 in the eurozone and $5.70 in the US, you can compare what money actually buys.
+If it costs €5.50 in the eurozone and $5.70 in the US, you can compare what money actually buys
 
-It's not precise. But it illustrates the principle.
+It's not precise. But it illustrates the principle
 
 ---
 
 ## Slide 7
 
+>> **How it affects you?**
+
 If you live and earn in one country:
 
-PPP mostly affects you when you travel.
+PPP mostly affects you when you travel
 
-Your euros go further in Portugal than in Denmark, even at the same exchange rate.
+Your euros go further in Portugal than in Denmark, even at the same exchange rate
 
 ---
 
@@ -96,9 +101,9 @@ Your euros go further in Portugal than in Denmark, even at the same exchange rat
 
 If you earn in one currency, spend in another:
 
-Exchange rate movements directly change your real income.
+Exchange rate movements directly change your real income
 
-A 10% swing in EUR/GBP can add or subtract hundreds from your monthly budget.
+A 10% swing in EUR/GBP can add or subtract hundreds from your monthly budget
 
 ---
 
@@ -106,39 +111,27 @@ A 10% swing in EUR/GBP can add or subtract hundreds from your monthly budget.
 
 If you're considering moving countries:
 
-A salary cut doesn't necessarily mean a lower standard of living.
+A salary cut doesn't necessarily mean a lower standard of living
 
-€2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
+€2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen
 
-What matters is real income -- salary adjusted for local prices.
+What matters is real income: salary adjusted for local prices
 
 ---
 
 ## Slide 10
 
-Two types of currency risk:
+>> **Common misconceptions**
 
-Transaction risk:
-The rate changes between when you agree to pay and when you actually pay.
+- "A strong currency = a rich country": Not necessarily. Japan has a historically weak yen but high domestic purchasing power
 
-Living-cost risk:
-Your cost of living changes every time the exchange rate moves.
+- "You should always convert to the cheapest currency": Conversion has costs. Chasing the best rate usually costs more than it saves
 
 ---
 
 ## Slide 11
 
-Common misconceptions:
-
-"A strong currency = a rich country."
-Not necessarily. Japan has a historically weak yen but high domestic purchasing power.
-
-"You should always convert to the cheapest currency."
-Conversion has costs. Chasing the best rate usually costs more than it saves.
-
----
-
-## Slide 12
+>> **Bottom Line**
 
 What you can do:
 
@@ -149,12 +142,14 @@ What you can do:
 
 ---
 
-## Slide 13
+## Slide 12
 
-Understanding exchange rates and PPP is the foundation for managing money across borders.
+>> **What's next?**
 
-Last post covered how purchasing power erodes over time (inflation). This one covers how it varies across space. Both shape what your money is actually worth.
+>> The time value of money - why a euro
+>> today is worth more than a euro tomorrow
 
-Full guide with examples and frameworks -- link in caption.
+>> **Basics of money · 12/16**
 
-@nidhi.today
+>> Full guide link in caption and bio
+>> Follow @nidhi.today for more
