@@ -75,7 +75,7 @@ function applyInline(text) {
 }
 
 async function renderSlides(post, browser) {
-  const outDir = join(OUTPUT_DIR, post.slug);
+  const outDir = join(OUTPUT_DIR, post.subDir, post.slug);
   await mkdir(outDir, { recursive: true });
 
   const templateHtml = await readFile(TEMPLATE_PATH, 'utf-8');
@@ -93,11 +93,12 @@ async function renderSlides(post, browser) {
     // Build content HTML
     let contentHtml = textToHtml(slide.text);
 
-    // First slide: add handle
-    let extras = '';
-    if (isFirst) {
-      extras = `<div class="handle">@nidhi.today</div>`;
-    }
+    // Handle annotation: !! lines from any slide; fall back to @nidhi.today on first slide
+    const handleHtml = slide.handle.map(line => `<div>${applyInline(line)}</div>`).join('');
+    const handleContent = handleHtml
+      ? handleHtml
+      : (isFirst ? '<div>@nidhi.today</div>' : '');
+    const extras = handleContent ? `<div class="handle">${handleContent}</div>` : '';
 
     // Inject into template
     const html = templateHtml
@@ -165,7 +166,7 @@ async function main() {
     for (const post of posts) {
       console.log(`Rendering: ${post.title} (${post.totalSlides} slides)`);
       const files = await renderSlides(post, browser);
-      console.log(`  → ${files.length} images saved to output/instagram/${post.slug}/\n`);
+      console.log(`  → ${files.length} images saved to output/instagram/${post.subDir ? post.subDir + '/' : ''}${post.slug}/\n`);
     }
 
     console.log('Done.');

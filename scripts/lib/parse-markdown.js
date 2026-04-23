@@ -1,7 +1,24 @@
-import { readFile, readdir } from 'node:fs/promises';
-import { join, basename } from 'node:path';
+import { readFile, readdir, stat } from 'node:fs/promises';
+import { join, basename, relative } from 'node:path';
 
 const INSTAGRAM_DIR = join(import.meta.dirname, '..', '..', 'docs', 'instagram');
+
+/**
+ * Recursively find all .md files under a directory, returning relative paths.
+ */
+async function findMarkdownFiles(dir, base = dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await findMarkdownFiles(fullPath, base));
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      files.push(relative(base, fullPath));
+    }
+  }
+  return files.sort();
+}
 
 /**
  * Parse YAML-like frontmatter from a markdown string.
@@ -25,7 +42,7 @@ function parseFrontmatter(content) {
  * Parse an instagram markdown file into structured data.
  * Returns: { slug, title, blogUrl, hashtags, caption, slides: [{ number, text }] }
  */
-export function parseInstagramPost(content, filename) {
+export function parseInstagramPost(content, relPath) {
   const { frontmatter, body } = parseFrontmatter(content);
 
   // Extract caption section
@@ -37,17 +54,34 @@ export function parseInstagramPost(content, filename) {
   const slideRegex = /## Slide (\d+)\n\n([\s\S]*?)(?=\n---\n|$)/g;
   let m;
   while ((m = slideRegex.exec(body)) !== null) {
+    const raw = m[2].trim();
+    // Split handle annotation lines (!! prefix) from regular content
+    const lines = raw.split('\n');
+    const handleLines = [];
+    const contentLines = [];
+    for (const line of lines) {
+      if (line.trimStart().startsWith('!! ')) {
+        handleLines.push(line.trimStart().slice(3));
+      } else {
+        contentLines.push(line);
+      }
+    }
+
     slides.push({
       number: parseInt(m[1], 10),
-      text: m[2].trim(),
+      text: contentLines.join('\n').trim(),
+      handle: handleLines,
     });
   }
 
-  const slug = basename(filename, '.md');
+  // Slug preserves subdirectory structure: "samples/variant-a" instead of just "variant-a"
+  const slug = basename(relPath, '.md');
+  const dir = relPath.includes('/') ? relPath.slice(0, relPath.lastIndexOf('/')) : '';
 
   return {
     slug,
-    filename,
+    relPath,
+    subDir: dir,
     title: frontmatter.title || '',
     blogUrl: frontmatter.blog_url || '',
     hashtags: frontmatter.hashtags || '',
@@ -58,27 +92,25 @@ export function parseInstagramPost(content, filename) {
 }
 
 /**
- * Load and parse all instagram markdown files.
- * Returns array sorted by filename (01-, 02-, etc.)
+ * Load and parse all instagram markdown files (recursive).
+ * Returns array sorted by relative path (01-, 02-, etc.)
  */
 export async function loadAllPosts() {
-  const files = (await readdir(INSTAGRAM_DIR))
-    .filter(f => f.endsWith('.md'))
-    .sort();
+  const relPaths = await findMarkdownFiles(INSTAGRAM_DIR);
 
   const posts = [];
-  for (const file of files) {
-    const content = await readFile(join(INSTAGRAM_DIR, file), 'utf-8');
-    posts.push(parseInstagramPost(content, file));
+  for (const relPath of relPaths) {
+    const content = await readFile(join(INSTAGRAM_DIR, relPath), 'utf-8');
+    posts.push(parseInstagramPost(content, relPath));
   }
 
   return posts;
 }
 
 /**
- * Load and parse a single instagram markdown file by filename.
+ * Load and parse a single instagram markdown file by relative path.
  */
-export async function loadPost(filename) {
-  const content = await readFile(join(INSTAGRAM_DIR, filename), 'utf-8');
-  return parseInstagramPost(content, filename);
+export async function loadPost(relPath) {
+  const content = await readFile(join(INSTAGRAM_DIR, relPath), 'utf-8');
+  return parseInstagramPost(content, relPath);
 }

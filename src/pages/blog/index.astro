@@ -3,9 +3,10 @@ import BlogIndex from '../../layouts/BlogIndex.astro';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../../utils/readingTime';
 
+const isDev = import.meta.env.DEV;
 const now = new Date();
 const posts = (await getCollection('blog'))
-  .filter(post => post.data.pubDate <= now)
+  .filter(post => isDev || post.data.pubDate <= now)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map(post => ({
     id: post.id,

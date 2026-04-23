@@ -136,48 +136,50 @@ const breadcrumbSchema = {
       </div>
     </div>
 
-    <div class="container">
-      {referentialReading && referentialReading.length > 0 && (
-        <section class="suggested-reading">
-          <h2 class="suggested-reading-title">Suggested Reading</h2>
-          <ul class="suggested-reading-list">
-            {referentialReading.map((ref) => (
-              <li>
-                {ref.url ? (
-                  <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
-                ) : (
-                  <span>{ref.title}</span>
-                )}
-                {ref.author && <span class="ref-author"> by {ref.author}</span>}
-                <span class="ref-type">{ref.type}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+    <div class="post-bottom-wrapper">
+      <div class="post-bottom-content">
+        {referentialReading && referentialReading.length > 0 && (
+          <section class="suggested-reading">
+            <h2 class="suggested-reading-title">Suggested Reading</h2>
+            <ul class="suggested-reading-list">
+              {referentialReading.map((ref) => (
+                <li>
+                  {ref.url ? (
+                    <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
+                  ) : (
+                    <span>{ref.title}</span>
+                  )}
+                  {ref.author && <span class="ref-author"> by {ref.author}</span>}
+                  <span class="ref-type">{ref.type}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-      {level !== 'discovery' && (
-        <div class="disclaimer">
-          <strong>A quick note:</strong> This article is here to help you learn, not to tell you what to do. Everyone's financial situation is different -- if you're making big decisions, a qualified financial advisor can help you apply these ideas to your life.
-        </div>
-      )}
+        {level !== 'discovery' && (
+          <div class="disclaimer">
+            <strong>A quick note:</strong> This article is here to help you learn, not to tell you what to do. Everyone's financial situation is different -- if you're making big decisions, a qualified financial advisor can help you apply these ideas to your life.
+          </div>
+        )}
 
-      {(prevSlug || nextSlug) && (
-        <nav class="post-nav">
-          {prevSlug && prevTitle && (
-            <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`}>
-              <span class="post-nav-direction">Previous</span>
-              <span class="post-nav-title">{prevTitle}</span>
-            </a>
-          )}
-          {nextSlug && nextTitle && (
-            <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`}>
-              <span class="post-nav-direction">Next</span>
-              <span class="post-nav-title">{nextTitle}</span>
-            </a>
-          )}
-        </nav>
-      )}
+        {(prevSlug || nextSlug) && (
+          <nav class="post-nav">
+            {prevSlug && prevTitle && (
+              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`}>
+                <span class="post-nav-direction">Previous</span>
+                <span class="post-nav-title">{prevTitle}</span>
+              </a>
+            )}
+            {nextSlug && nextTitle && (
+              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`}>
+                <span class="post-nav-direction">Next</span>
+                <span class="post-nav-title">{nextTitle}</span>
+              </a>
+            )}
+          </nav>
+        )}
+      </div>
     </div>
   </article>
 </BaseLayout>
@@ -431,6 +433,27 @@ const breadcrumbSchema = {
       display: none;
     }
     .prose {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+  }
+
+  /* Post bottom: same grid as body so content aligns with prose */
+  .post-bottom-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px minmax(0, 720px) 1fr;
+    column-gap: var(--space-6);
+  }
+
+  .post-bottom-content {
+    grid-column: 3;
+  }
+
+  @media (max-width: 1199px) {
+    .post-bottom-wrapper {
+      display: block;
+    }
+    .post-bottom-content {
       max-width: var(--max-width);
       margin: 0 auto;
     }
