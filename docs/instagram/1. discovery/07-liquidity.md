@@ -1,7 +1,7 @@
 ---
 title: "Liquidity: Why Being Unable to Access Your Money Is a Risk"
 blog_url: "https://nidhi.today/blog/liquidity"
-hashtags: "#liquidity #personalfinance #financialliteracy #emergencyfund #investing #moneytips #nidhi #cashflow #financialplanning #wealthbuilding"
+hashtags: "#liquidity #personalfinance #financialliteracy #emergencyfund #nidhi"
 ---
 
 # Liquidity: Why Being Unable to Access Your Money Is a Risk
@@ -14,15 +14,17 @@ That's liquidity -- and ignoring it is one of the most common ways a solid finan
 
 Full post: https://nidhi.today/blog/liquidity
 
-#liquidity #personalfinance #financialliteracy #emergencyfund #investing #moneytips #nidhi #cashflow #financialplanning #wealthbuilding
+#liquidity #personalfinance #financialliteracy #emergencyfund #nidhi
 
 ---
 
 ## Slide 1
 
->> **Let's talk about Liquidity**
+**€100K in net worth but can't cover a €2K bill?**
 
->> Why having money and being able to use it are NOT the same thing
+That's a liquidity problem
+
+!! Basics of Money · 7/16 · @nidhi.today
 
 ---
 
@@ -136,9 +138,13 @@ A plan that ignores liquidity is like a car with a powerful engine but no fuel g
 
 ## Slide 12
 
->> **Liked this content?**
+>> **What's next?**
+
+>> The emergency fund - your first
+>> financial safety net
+
+>> **Basics of money · 7/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more
 

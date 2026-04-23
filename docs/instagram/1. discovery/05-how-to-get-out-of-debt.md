@@ -1,7 +1,7 @@
 ---
 title: "How to Get Out of Debt: Snowball vs. Avalanche"
 blog_url: "https://nidhi.today/blog/how-to-get-out-of-debt"
-hashtags: "#debtfree #debtpayoff #snowballmethod #avalanchemethod #personalfinance #financialliteracy #moneytips #nidhi #debtfreecommunity #budgeting"
+hashtags: "#debtfree #debtpayoff #personalfinance #moneytips #nidhi"
 ---
 
 # How to Get Out of Debt: Snowball vs. Avalanche
@@ -14,18 +14,17 @@ Swipe through to see how each method works with real numbers, and pick the one t
 
 Full post: https://nidhi.today/blog/how-to-get-out-of-debt
 
-#snowballmethod #avalanchemethod #personalfinance #financialliteracy #nidhi
+#debtfree #debtpayoff #personalfinance #moneytips #nidhi
 
 ---
 
 ## Slide 1
 
->> **Getting out of debt**
->> **Snowball vs Avalanche**
+**Snowball vs. Avalanche**
 
-Two strategies. One goal.
+Two ways to crush your debt. Which one fits you?
 
-Which one fits you?
+!! Basics of Money · 5/16 · @nidhi.today
 
 ---
 
@@ -154,8 +153,12 @@ Once the debt is gone, that monthly payment becomes money for building wealth
 
 ## Slide 12
 
->> **Liked this content?**
+>> **What's next?**
 
->> Full guide with tables and examples - link in caption and bio
+>> Why some assets grow and others
+>> shrink - and the force behind both
 
+>> **Basics of money · 5/16**
+
+>> Full guide link in caption and bio
 >> Follow @nidhi.today for more

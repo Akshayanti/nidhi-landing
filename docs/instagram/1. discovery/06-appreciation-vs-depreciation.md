@@ -1,7 +1,7 @@
 ---
 title: "Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink"
 blog_url: "https://nidhi.today/blog/appreciation-vs-depreciation"
-hashtags: "#compoundinterest #investing #appreciation #depreciation #personalfinance #financialliteracy #wealthbuilding #nidhi #moneytips #startinvesting"
+hashtags: "#compoundinterest #investing #personalfinance #wealthbuilding #nidhi"
 ---
 
 # Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink
@@ -14,15 +14,17 @@ This is the most important concept in personal finance. Swipe through to see how
 
 Full post: https://nidhi.today/blog/appreciation-vs-depreciation
 
-#assetappreciation #assetdepreciation #personalfinance #financialliteracy #nidhi
+#compoundinterest #investing #personalfinance #wealthbuilding #nidhi
 
 ---
 
 ## Slide 1
 
->> **Why some assets grow and others shrink**
+**Why some assets grow and others shrink**
 
->> **(And the force behind both)**
+(And the one force behind both)
+
+!! Basics of Money · 6/16 · @nidhi.today
 
 ---
 
@@ -179,8 +181,12 @@ Make sure it's working for you, not against you
 
 ## Slide 14
 
->> **Liked this content?**
+>> **What's next?**
+
+>> Liquidity - why having money and
+>> being able to use it aren't the same
+
+>> **Basics of money · 6/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more

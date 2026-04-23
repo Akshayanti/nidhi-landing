@@ -1,7 +1,7 @@
 ---
 title: "The Emergency Fund: Your First Financial Safety Net"
 blog_url: "https://nidhi.today/blog/emergency-fund"
-hashtags: "#emergencyfund #personalfinance #savingmoney #financialliteracy #moneytips #nidhi #financialplanning #safetynet #budgeting #savingsgoals"
+hashtags: "#emergencyfund #personalfinance #savingmoney #financialliteracy #nidhi"
 ---
 
 # The Emergency Fund: Your First Financial Safety Net
@@ -14,15 +14,17 @@ An emergency fund is the foundation that keeps the rest of your financial plan f
 
 Full post: https://nidhi.today/blog/emergency-fund
 
-#emergencyfund #personalfinance #savingmoney #financialliteracy #moneytips #nidhi #financialplanning #safetynet #budgeting #savingsgoals
+#emergencyfund #personalfinance #savingmoney #financialliteracy #nidhi
 
 ---
 
 ## Slide 1
 
->> **The Emergency Fund: Your first financial safety net**
+**The Emergency Fund**
 
->> Why you should build this before anything else
+Build this before you invest a single euro
+
+!! Basics of Money · 8/16 · @nidhi.today
 
 ---
 
@@ -156,8 +158,12 @@ One surprise expense and the whole plan collapses into debt
 
 ## Slide 13
 
->> **Liked this content?**
+>> **What's next?**
+
+>> Income vs wealth - they're not the
+>> same thing, and confusing them is expensive
+
+>> **Basics of money · 8/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more

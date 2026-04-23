@@ -1,7 +1,7 @@
 ---
 title: "Assets: What You Own and What Actually Counts"
 blog_url: "https://nidhi.today/blog/assets"
-hashtags: "#assets #networth #personalfinance #financialliteracy #investing #wealthbuilding #moneytips #nidhi #financialplanning #smartmoney"
+hashtags: "#assets #personalfinance #financialliteracy #wealthbuilding #nidhi"
 ---
 
 # Assets: What You Own and What Actually Counts
@@ -14,17 +14,17 @@ Here's how to tell what actually counts, and why the quality of your assets matt
 
 Full post: https://nidhi.today/blog/assets
 
-#assets #personalfinance #financialliteracy #nidhi #financialplanning
+#assets #personalfinance #financialliteracy #wealthbuilding #nidhi
 
 ---
 
 ## Slide 1
 
->> **Let's talk about ASSETS**
+**Not everything you own is an asset**
 
->> What they are AND what actually counts
+Here's what actually counts
 
->> (The difference is essential)
+!! Basics of Money · 3/16 · @nidhi.today
 
 ---
 
@@ -149,10 +149,16 @@ Some of each = balance
 - Know what it's actually worth 
 - Know how well it's working for you
 
+---
+
 ## Slide 12
 
->> **Liked this content?**
+>> **What's next?**
+
+>> Liabilities - what you owe and
+>> why the interest rate matters most
+
+>> **Basics of money · 3/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more

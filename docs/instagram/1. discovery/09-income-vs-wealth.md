@@ -1,7 +1,7 @@
 ---
 title: "Income vs. Wealth: They're Not the Same Thing"
 blog_url: "https://nidhi.today/blog/income-vs-wealth"
-hashtags: "#incomevswealth #personalfinance #financialliteracy #wealthbuilding #moneymindset #lifestyleinflation #savingmoney #nidhi #financialfreedom #moneytips"
+hashtags: "#incomevswealth #personalfinance #wealthbuilding #moneymindset #nidhi"
 ---
 
 # Income vs. Wealth: They're Not the Same Thing
@@ -10,19 +10,21 @@ hashtags: "#incomevswealth #personalfinance #financialliteracy #wealthbuilding #
 
 Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €800.
 
-Same income. Completely different outcomes. The difference isn't what came in -- it's what stayed.
+Same income. Completely different outcomes. The difference isn't what came in, it's what stayed.
 
 Full post: https://nidhi.today/blog/income-vs-wealth
 
-#incomevswealth #personalfinance #financialliteracy #wealthbuilding #moneymindset #lifestyleinflation #savingmoney #nidhi #financialfreedom #moneytips
+#incomevswealth #personalfinance #wealthbuilding #moneymindset #nidhi
 
 ---
 
 ## Slide 1
 
->> **On Income vs. Wealth**
+**Income vs. Wealth**
 
->> And why confusing them is the most expensive mistake in personal finance
+Same salary. Completely different outcomes.
+
+!! Basics of Money · 9/16 · @nidhi.today
 
 ---
 
@@ -163,8 +165,12 @@ If your income stops, wealth is what keeps you afloat
 
 ## Slide 14
 
->> **Liked this content?**
+>> **What's next?**
+
+>> Cash flow 101 - where your money
+>> actually goes
+
+>> **Basics of money · 9/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more

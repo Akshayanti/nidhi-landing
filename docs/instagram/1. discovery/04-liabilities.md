@@ -1,7 +1,7 @@
 ---
 title: "Liabilities: What You Owe and Why the Interest Rate Matters"
 blog_url: "https://nidhi.today/blog/liabilities"
-hashtags: "#debt #liabilities #interestrates #personalfinance #debtfree #financialliteracy #moneytips #nidhi #creditcard #mortgage"
+hashtags: "#debtfree #personalfinance #financialliteracy #moneytips #nidhi"
 ---
 
 # Liabilities: What You Owe and Why the Interest Rate Matters
@@ -14,15 +14,17 @@ Here's a framework for evaluating any debt, without the guilt.
 
 Full post: https://nidhi.today/blog/liabilities
 
-#liabilities #personalfinance #financialliteracy #nidhi #financialplanning
+#debtfree #personalfinance #financialliteracy #moneytips #nidhi
 
 ---
 
 ## Slide 1
 
->> **Liabilities: What you owe**
+**Not all debt is created equal**
 
->> and why the interest rate matters
+Why the interest rate matters more than the balance
+
+!! Basics of Money · 4/16 · @nidhi.today
 
 ---
 
@@ -125,8 +127,12 @@ But how you handle them makes all the difference
 
 ## Slide 11
 
->> **Liked this content?**
+>> **What's next?**
+
+>> Two proven strategies for getting
+>> out of debt - snowball vs avalanche
+
+>> **Basics of money · 4/16**
 
 >> Full guide link in caption and bio
-
 >> Follow @nidhi.today for more
