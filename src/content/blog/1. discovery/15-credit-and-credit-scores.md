@@ -25,13 +25,13 @@ referentialReading:
 
 You've been paying your bills on time for years. You have no outstanding debt. You apply for a mortgage and the bank offers you 4.2%. Your colleague, who earns roughly the same salary, gets offered 3.5%. Over 25 years on a €200,000 mortgage, that 0.7% difference costs you over €22,000 more in interest.
 
-The reason isn't your income, your job, or your savings. It's your credit history -- or more precisely, the score that summarizes it.
+The reason isn't your income, your job, or your savings. It's your credit history; or more precisely, the score that summarizes it.
 
 ## What a credit score is
 
 A credit score is a number that represents how reliably you've handled borrowed money in the past. Lenders use it to predict how likely you are to repay in the future.
 
-The higher the score, the lower the perceived risk. The lower the risk, the better the terms you're offered -- lower interest rates, higher borrowing limits, and faster approvals.
+The higher the score, the lower the perceived risk. The lower the risk, the better the terms you're offered - lower interest rates, higher borrowing limits, and faster approvals.
 
 Different countries use different scoring systems. In the EU, credit bureaus vary by country (SCHUFA in Germany, Experian/Equifax in the UK and Ireland, CRK in the Czech Republic, BIK in Poland). The details differ, but the core principle is the same everywhere: lenders check your history before deciding whether (and at what price) to lend.
 
@@ -45,7 +45,7 @@ Have you paid your bills on time? Every late payment, missed payment, or default
 
 ### 2. Credit utilization
 
-How much of your available credit are you actually using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization -- a red flag. Lenders see high utilization as a sign of financial stress. A common guideline is to stay below 30%.
+How much of your available credit are you actually using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization: a red flag. Lenders see high utilization as a sign of financial stress. A common guideline is to stay below 30%.
 
 ### 3. Length of credit history
 
@@ -70,7 +70,7 @@ The most direct impact is on borrowing costs. A higher credit score gets you a l
 | Average | 4.5% | €1,112 | €133,600 |
 | Poor | 5.5% | €1,228 | €168,400 |
 
-The difference between excellent and poor credit on the same mortgage: over €77,000 in additional interest. Same house. Same income. Different cost -- entirely because of credit history.
+The difference between excellent and poor credit on the same mortgage: over €77,000 in additional interest. Same house. Same income. Different cost, entirely because of credit history.
 
 ## Why it matters even if you avoid debt
 
@@ -92,7 +92,7 @@ Building credit is simple. It just takes consistency and time.
 3. **Keep utilization low.** Use less than 30% of your available limit. If your limit is €3,000, try to keep your balance below €900 at any point
 4. **Don't close old accounts unnecessarily.** Your oldest credit card contributes to the length of your history. Even if you rarely use it, keeping it open (with a small purchase occasionally) helps
 5. **Avoid applying for multiple credit products at once.** Each hard inquiry has a small, temporary impact. Spacing out applications reduces this
-6. **Pay all bills on time.** Not just credit cards -- rent, utilities, phone bills. In many systems, these are tracked too
+6. **Pay all bills on time.** Not just credit cards – rent, utilities, phone bills. In many systems, these are tracked too
 
 ## Common myths
 
@@ -115,8 +115,8 @@ As we covered in the liabilities post, the interest rate is the most important n
 1. **Check your credit report.** Know where you stand. Most countries offer free annual credit reports. Look for errors and understand what's being tracked
 2. **Start building if you haven't.** If you have no credit history, open a basic credit card, use it for small purchases, and pay in full each month
 3. **Protect what you've built.** Pay on time, every time. Don't let a forgotten bill damage years of good history
-4. **Think long-term.** Credit scores reward consistency over time. There are no shortcuts, but the payoff -- thousands saved on future borrowing -- is worth the patience
+4. **Think long-term.** Credit scores reward consistency over time. There are no shortcuts, but the payoff, thousands saved on future borrowing, is worth the patience
 
 Your credit score is the invisible thread connecting your past financial behavior to your future borrowing costs. Take care of it early, and it quietly works in your favor for decades.
 
-Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance -- what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.
+Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance – what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.

@@ -165,7 +165,7 @@ When you know where your money is going, you stop wondering where it went
 >> **What's next?**
 
 >> Credit scores - what they are and why
->> they matter, even if you never plan to borrow
+>> they matter, even if you never p[15-credit-and-credit-scores.md](15-credit-and-credit-scores.md)lan to borrow
 
 >> **Basics of money · 14/16**
 
