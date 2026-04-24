@@ -86,6 +86,7 @@ const webSiteSchema = {
         <p class="learn-more-text">While you wait, learn about your money:</p>
         <div class="learn-links">
           <a href="/blog" class="learn-link">Blog</a>
+          <a href="/beliefs" class="learn-link learn-link--outline">Our Beliefs</a>
         </div>
       </div>
 
@@ -273,6 +274,27 @@ const webSiteSchema = {
 
   .learn-link:hover {
     background: var(--color-deep-blue-dark);
+  }
+
+  .learn-link--outline {
+    color: var(--color-deep-blue);
+    background: transparent;
+    border: 1px solid var(--color-deep-blue);
+  }
+
+  .learn-link--outline:hover {
+    background: var(--color-deep-blue);
+    color: white;
+  }
+
+  [data-theme="dark"] .learn-link--outline {
+    color: var(--color-deep-blue);
+    background: transparent;
+    border-color: var(--color-deep-blue);
+  }
+
+  [data-theme="dark"] .learn-link--outline:hover {
+    color: #121212;
   }
 
   [data-theme="dark"] .learn-link {
