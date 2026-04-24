@@ -139,6 +139,14 @@ Automation removes it:
 
 This is the core of pay-yourself-first, but it works with any budgeting method. Even zero-based budgeters benefit from automating the categories that don't change.
 
+## Use a tracking tool
+
+You don't need to build your own system from scratch. There are plenty of budgeting and spending tracker apps that do the heavy lifting for you – categorizing transactions, showing where your money went, and alerting you when you're drifting from your plan.
+
+If your bank's app already offers spending insights or category breakdowns, start there. Many European banks now group transactions automatically and show monthly summaries. If you want something more structured, dedicated apps like [YNAB](https://www.ynab.com/), [Spendee](https://www.spendee.com/), or [Wallet](https://budgetbakers.com/) let you set budgets by category and track against them in real time.
+
+The tool matters less than using one. A budgeting method paired with a tracker you actually check is far more effective than a perfect spreadsheet you open once and forget.
+
 ## Common mistakes
 
 **Starting too strict.** A budget that cuts everything enjoyable lasts about two weeks. Build in room for wants. A budget you follow 80% is better than a perfect budget you abandon.
@@ -152,10 +160,11 @@ This is the core of pay-yourself-first, but it works with any budgeting method. 
 ## What you can do
 
 1. **Pick one method and start.** If you've never budgeted, 50/30/20 is the simplest entry point. If you want more control, try zero-based. If you want minimum friction, automate with pay-yourself-first
-2. **Automate your savings.** Set up a standing order on payday. The amount matters less than the consistency. Even €50 per month is infinitely better than €0
-3. **Review weekly for the first two months.** Check your spending against your plan. Adjust categories that don't reflect reality. A budget should fit your life, not the other way around
-4. **Handle irregular expenses.** List all annual and semi-annual costs, divide by 12, and include them in your monthly budget
-5. **Revisit quarterly.** Life changes. Income changes. Expenses change. A quarterly check keeps your budget aligned with reality
+2. **Use a tracker.** Check if your bank app already has spending insights. If not, try a dedicated budgeting app. The best tool is the one you'll actually open
+3. **Automate your savings.** Set up a standing order on payday. The amount matters less than the consistency. Even €50 per month is infinitely better than €0
+4. **Review weekly for the first two months.** Check your spending against your plan. Adjust categories that don't reflect reality. A budget should fit your life, not the other way around
+5. **Handle irregular expenses.** List all annual and semi-annual costs, divide by 12, and include them in your monthly budget
+6. **Revisit quarterly.** Life changes. Income changes. Expenses change. A quarterly check keeps your budget aligned with reality
 
 A budget doesn't restrict your freedom. It creates it. When you know exactly where your money is going, you stop wondering where it went, and you start building toward everything that comes next.
 
