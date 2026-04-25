@@ -10,7 +10,7 @@ hashtags: "#liquidity #personalfinance #financialliteracy #emergencyfund #nidhi"
 
 You might have €100,000 in net worth and still not be able to pay a €2,000 car repair bill. If most of your wealth is locked in a house or retirement account, you can't get to it quickly.
 
-That's liquidity -- and ignoring it is one of the most common ways a solid financial plan falls apart.
+That's liquidity, and ignoring it is one of the most common ways a solid financial plan falls apart.
 
 Full post: https://nidhi.today/blog/liquidity
 

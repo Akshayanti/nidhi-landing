@@ -8,7 +8,7 @@ hashtags: "#emergencyfund #personalfinance #savingmoney #financialliteracy #nidh
 
 ## Caption
 
-Before you invest. Before you pay extra on debt. Before anything else -- build a buffer.
+Before you invest. Before you pay extra on debt. Before anything else, build a buffer.
 
 An emergency fund is the foundation that keeps the rest of your financial plan from collapsing. Here's how to build one, how much you need, and where to keep it.
 
