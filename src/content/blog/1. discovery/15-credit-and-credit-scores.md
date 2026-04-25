@@ -23,7 +23,7 @@ referentialReading:
     type: "book"
 ---
 
-You've been paying your bills on time for years. You have no outstanding debt. You apply for a mortgage and the bank offers you 4.2%. Your colleague, who earns roughly the same salary, gets offered 3.5%. Over 25 years on a €200,000 mortgage, that 0.7% difference costs you over €22,000 more in interest.
+You've been paying your bills on time for years. You have no outstanding debt. You apply for a mortgage and the bank offers you 3.8%. Your colleague, who earns roughly the same salary, gets offered 3.2%. Over 25 years on a €200,000 mortgage, that 0.6% difference costs you over €19,000 more in interest.
 
 The reason isn't your income, your job, or your savings. It's your credit history; or more precisely, the score that summarizes it.
 
@@ -37,27 +37,31 @@ Different countries use different scoring systems. In the EU, credit bureaus var
 
 ## What goes into your score
 
-While every scoring system weighs factors slightly differently, five categories consistently matter:
+Credit scoring varies significantly by country. In the US, the FICO model assigns a single score based on five weighted factors. In Europe, there is no single equivalent -- each country's bureau uses its own methodology. Germany's SCHUFA, the Netherlands' BKR, France's FICP, and the Czech Republic's CRK all work differently.
 
-### 1. Payment history (most important)
+Despite these differences, several factors matter across nearly all systems:
 
-Have you paid your bills on time? Every late payment, missed payment, or default is recorded. A single missed payment can stay on your record for years. Consistent on-time payment is the single strongest factor.
+### 1. Payment history (universally the most important)
 
-### 2. Credit utilization
+Have you paid your bills on time? Every late payment, missed payment, or default is recorded. A single missed payment can stay on your record for years. Consistent on-time payment is the single strongest factor in virtually every scoring system worldwide.
 
-How much of your available credit are you actually using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization: a red flag. Lenders see high utilization as a sign of financial stress. A common guideline is to stay below 30%.
+### 2. Outstanding debt and credit utilization
 
-### 3. Length of credit history
+How much do you currently owe, and how much of your available credit are you using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization -- a red flag. Lenders see high utilization as a sign of financial stress. In systems that track revolving credit (like credit cards), staying below 30% utilization is a common guideline.
 
-How long have your accounts been open? Longer history gives lenders more data. Closing your oldest credit card, even if you don't use it much, can shorten your average account age and lower your score.
+### 3. Length and stability of credit history
+
+How long have your accounts been open? Longer history gives lenders more data. In many European systems, stability matters too -- frequent address changes or job changes can be factored in alongside account age.
 
 ### 4. Types of credit
 
-Having a mix of credit types (credit card, installment loan, mortgage) shows you can manage different forms of borrowing. This matters less than payment history or utilization, but it contributes.
+Having experience with different forms of borrowing (credit card, installment loan, mortgage) can strengthen your profile. This matters less than payment history, but it demonstrates that you can manage various obligations.
 
-### 5. New credit inquiries
+### 5. Recent credit activity
 
-Applying for multiple new credit lines in a short period suggests financial pressure. Each application typically triggers a "hard inquiry" that temporarily lowers your score. Checking your own score (a "soft inquiry") does not affect it.
+Applying for multiple new credit lines in a short period suggests financial pressure. Each application typically triggers a check that can temporarily affect your score. Checking your own score does not affect it.
+
+**A note on European systems:** Many EU credit bureaus focus more heavily on negative data (defaults, arrears, court judgments) than on building a positive score over time. In Germany, for example, SCHUFA tracks contract data and negative events, and a clean record with no negative entries is itself a strong indicator. This is different from the US model, where you need to actively build a positive history. The advice in this post -- pay on time, keep utilization low, avoid unnecessary applications -- works well regardless of which system your country uses.
 
 ## How it affects you: the interest rate gap
 
@@ -65,10 +69,10 @@ The most direct impact is on borrowing costs. A higher credit score gets you a l
 
 | Credit Score | Mortgage Rate (example) | Monthly Payment (€200,000, 25 years) | Total Interest Paid |
 |---|---|---|---|
-| Excellent | 3.2% | €969 | €90,700 |
-| Good | 3.8% | €1,033 | €109,900 |
-| Average | 4.5% | €1,112 | €133,600 |
-| Poor | 5.5% | €1,228 | €168,400 |
+| Excellent | 3.2% | €969 | €90,800 |
+| Good | 3.8% | €1,034 | €110,100 |
+| Average | 4.5% | €1,112 | €133,500 |
+| Poor | 5.5% | €1,228 | €168,500 |
 
 The difference between excellent and poor credit on the same mortgage: over €77,000 in additional interest. Same house. Same income. Different cost, entirely because of credit history.
 

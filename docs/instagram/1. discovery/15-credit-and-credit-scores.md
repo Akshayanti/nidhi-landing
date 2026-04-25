@@ -44,11 +44,13 @@ It's based on your past behavior, not your income
 
 >> **What goes into your score**
 
-1. Payment history (most important)
-2. Credit utilization (how much of your limit you use)
-3. Length of credit history
+Every system is different (SCHUFA, BKR, FICP...) but these factors matter almost everywhere:
+
+1. Payment history (universally most important)
+2. Outstanding debt and credit utilization
+3. Length and stability of credit history
 4. Types of credit (mix of cards, loans, etc.)
-5. New credit inquiries
+5. Recent credit activity
 
 ---
 
@@ -58,10 +60,10 @@ It's based on your past behavior, not your income
 
 €200,000 mortgage over 25 years:
 
-- Excellent credit: 3.2% = €90,700 total interest
-- Good credit: 3.8% = €109,900
-- Average credit: 4.5% = €133,600
-- Poor credit: 5.5% = €168,400
+- Excellent credit: 3.2% = €90,800 total interest
+- Good credit: 3.8% = €110,100
+- Average credit: 4.5% = €133,500
+- Poor credit: 5.5% = €168,500
 
 Same house. Up to €77,000 difference
 
