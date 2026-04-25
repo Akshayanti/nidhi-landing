@@ -62,7 +62,7 @@ Order: smallest balance first
 - Credit card: €6,500 at 22%
 - Student loan: €14,000 at 4%
 
-With €300 extra/month, the store card is gone in ~5 months. Quick win.
+With €300 extra/month, the store card is gone in ~4 months. Quick win.
 
 Followed by Personal loan, Credit card, and Student loan
 
@@ -102,7 +102,7 @@ Order: highest interest rate first.
 
 With €300 extra/month, attack the credit card first (22%)
 
-Takes ~28 months to clear it BUT every euro is fighting your most expensive debt
+Takes ~17 months to clear it BUT every euro is fighting your most expensive debt
 
 ---
 
