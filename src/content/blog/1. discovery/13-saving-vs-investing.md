@@ -65,7 +65,7 @@ Typical investment vehicles:
 The defining features of investing:
 
 - **Higher risk**: values fluctuate, sometimes sharply
-- **Higher return**: historically 6-8% per year (stocks, after inflation)
+- **Higher return**: historically 7-8% per year (stocks, after inflation)
 - **Lower liquidity**: selling takes days; some accounts lock money for years
 - **Long time horizon**: best for money you won't need for 5+ years
 
@@ -77,7 +77,7 @@ Investing is about making money grow over time, accepting that the path won't be
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |
-| **Return** | 0-3% | 6-8% historically (stocks) |
+| **Return** | 0-3% | 7-8% historically (stocks) |
 | **Liquidity** | Immediate | Days to months |
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |
@@ -123,10 +123,10 @@ As we showed in the purchasing power post, €10,000 in a savings account earnin
 | Years | Nominal Balance | Real Purchasing Power |
 |-------|----------------|----------------------|
 | 0 | €10,000 | €10,000 |
-| 10 | €10,511 | €7,836 |
-| 20 | €11,049 | €6,138 |
+| 10 | €11,046 | €8,629 |
+| 20 | €12,202 | €7,446 |
 
-You gained €1,049 in interest. You lost almost €4,000 in purchasing power. "Safe" money is quietly shrinking.
+You gained €2,202 in interest. You lost over €2,500 in purchasing power. "Safe" money is quietly shrinking.
 
 ## The hidden cost: opportunity cost
 
@@ -140,11 +140,11 @@ This applies directly to the save-vs-invest decision. Money sitting in a savings
 
 | Years | €10,000 in savings (1%) | €10,000 invested (7%) | Difference |
 |-------|------------------------|----------------------|-------------|
-| 10 | €11,049 | €19,672 | €8,623 |
+| 10 | €11,046 | €19,672 | €8,625 |
 | 20 | €12,202 | €38,697 | €26,495 |
-| 30 | €13,478 | €76,123 | €62,645 |
+| 30 | €13,478 | €76,123 | €62,644 |
 
-The "safe" choice costs you €62,645 over 30 years. Opportunity cost isn't theoretical. It's the most expensive mistake that doesn't feel like one.
+The "safe" choice costs you over €62,000 over 30 years. Opportunity cost isn't theoretical. It's the most expensive mistake that doesn't feel like one.
 
 ## The risk of investing too early
 

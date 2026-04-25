@@ -51,7 +51,7 @@ Putting money into assets that can grow over time
 
 - Goal: long-term growth
 - Risk: moderate to high
-- Return: 6-8% historically (stocks)
+- Return: 7-8% historically (stocks)
 - Liquidity: days to months
 - Best for: money you won't need for 5+ years
 
@@ -86,11 +86,11 @@ The longer your time horizon, the stronger the case for investing
 >> **The cost of only saving**
 
 - €10,000 in savings at 1%, with 2.5% inflation:
-- After 10 years: €10,511 in the account
-- But only €7,836 in purchasing power
+- After 10 years: €11,046 in the account
+- But only €8,629 in purchasing power
 
-You gained €1,049 in interest
-You lost almost €4,000 in real value
+You gained €1,046 in interest
+You lost over €1,300 in real value
 
 ---
 
