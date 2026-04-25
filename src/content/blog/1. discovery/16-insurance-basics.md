@@ -41,7 +41,9 @@ This is rational whenever the potential loss is large enough to disrupt your fin
 
 ## The main types of insurance
 
-Insurance exists for almost any risk, but five categories cover the situations that affect most people's financial plans.
+If you live in the EU, you already have significant protection through public systems in the form of statutory health insurance, social security disability benefits, public pension contributions, and in many countries, mandatory liability coverage. These public programs form a strong baseline that doesn't exist in many other parts of the world.
+
+The question for Europeans isn't usually "do I need insurance from scratch?" but rather "where are the gaps in my public coverage?" The five categories below cover the situations that affect most people's financial plans. For each, consider what your country's public system already provides and where supplemental private coverage fills a meaningful gap.
 
 ### Health insurance
 
@@ -77,13 +79,13 @@ Covers damage to or loss of physical property. The two most common forms:
 
 ### Disability insurance
 
-Replaces a portion of your income if you're unable to work due to illness or injury. This is the insurance most people overlook and most financial planners consider essential.
+Replaces a portion of your income if you're unable to work due to illness or injury. Most EU countries provide some level of statutory disability or sickness benefits, but these typically replace only a fraction of your salary (often 60-70%) and may have waiting periods or time limits. Private disability insurance can close the gap between what the state provides and what you actually need.
 
-**Why it matters financially:** Your ability to earn income is your most valuable financial asset, especially early in your career. A 30-year-old earning €40,000 per year will earn over €1 million in the next 25 years. A disability that prevents you from working cuts off that entire stream.
+**Why it matters financially:** Your ability to earn income is your most valuable financial asset, especially early in your career. A 30-year-old earning €40,000 per year will earn over €1 million in the next 25 years. A disability that prevents you from working cuts off that entire stream. Even with public benefits, the income reduction can be severe.
 
 **Cash flow impact:** Typically €30-€80 per month, depending on coverage amount, waiting period, and definition of disability.
 
-**The overlooked risk:** Most people insure their car and their phone but not their income. Yet the probability of a working-age person experiencing a disability lasting 90+ days is higher than most people expect.
+**The overlooked risk:** Most people insure their car and their phone but not the gap between public disability benefits and their actual income. Check what your country's social insurance system covers and then decide if the remaining gap is worth insuring privately.
 
 ### Liability insurance
 

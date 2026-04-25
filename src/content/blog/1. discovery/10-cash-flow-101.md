@@ -2,7 +2,7 @@
 slug: "cash-flow-101"
 title: "Cash Flow 101: Where Your Money Actually Goes"
 description: "Money comes in, money goes out. Cash flow is the map that shows you exactly where it all travels -- and whether you're running a surplus or a deficit."
-tldr: "Cash flow is the movement of money in and out of your life over a period of time. Positive cash flow means you earn more than you spend. Negative cash flow means you're slowly falling behind. Tracking cash flow is the first step to controlling it. Most people don't know their number -- and that's the problem."
+tldr: "Cash flow is the movement of money in and out of your life over a period of time. Positive cash flow means you earn more than you spend. Negative cash flow means you're slowly falling behind. Tracking cash flow is the first step to controlling it. Most people don't know their number, and that's the problem."
 order: 10
 pubDate: 2026-05-07
 level: "discovery"
@@ -23,7 +23,7 @@ referentialReading:
     type: "book"
 ---
 
-If net worth is a snapshot of your finances, cash flow is the video. It shows you the movement -- where money comes from, where it goes, and whether you're moving forward or standing still.
+If net worth is a snapshot of your finances, cash flow is the video. It shows you the movement. Where money comes from, where it goes, and whether you're moving forward or standing still.
 
 ## What is cash flow?
 
@@ -82,7 +82,7 @@ Once you know your cash flow number, turn it into a percentage:
 
 If you earn €3,000 and spend €2,400, your savings rate is 20%. That single number tells you more about your financial trajectory than your salary does. Someone earning €6,000 with a 5% savings rate is building wealth slower than someone earning €3,000 with a 20% savings rate.
 
-A common benchmark is 20% -- matching the savings/debt slice in the guideline above. But the number matters less than the direction. Track it monthly. If it's going up, your wealth engine is accelerating. If it's going down, something changed.
+A common benchmark is 20%, matching the savings/debt slice in the guideline above. But the number matters less than the direction. Track it monthly. If it's going up, your wealth engine is accelerating. If it's going down, something changed.
 
 ## The connection to net worth
 

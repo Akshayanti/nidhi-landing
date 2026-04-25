@@ -1,7 +1,7 @@
 ---
 slug: "appreciation-vs-depreciation"
 title: "Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink"
-description: "Not all assets are created equal. Some grow in value over time, others lose it. The difference between appreciation and depreciation -- and the force of compound interest behind both -- determines whether your net worth is building or eroding."
+description: "Not all assets are created equal. Some grow in value over time, others lose it. The difference between appreciation and depreciation, and the force of compound interest behind both, determines whether your net worth is building or eroding."
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
@@ -43,7 +43,7 @@ Depreciation is when something loses value over time.
 
 - A new car loses roughly 15-20% of its value in the first year. After five years, it's worth about 40% of what you paid
 - A laptop bought for €1,200 is worth a few hundred within a few years
-- Furniture, electronics, clothing -- almost everything you buy for personal use depreciates
+- Furniture, electronics, clothing: almost everything you buy for personal use depreciates
 
 This isn't a moral judgment. It's just how things work. Cars get you from A to B. Laptops help you work. But they are not investments. They're expenses that happen to be physical objects.
 
@@ -76,7 +76,7 @@ When these levers work **for** you, when you're saving and investing, the result
 
 The same force that grows your savings also grows your debt. When you carry a credit card balance at 22%, the interest is added to what you owe. Next month, you're paying interest on the interest. The debt snowballs.
 
-€3,000 at 22% with minimum payments can cost you over €6,000 in total. You paid for the original purchases twice -- once at the register, and once to the bank.
+€3,000 at 22% with minimum payments can cost you over €6,000 in total. You paid for the original purchases twice: once at the register, and once to the bank.
 
 This is why high-interest debt is so dangerous. It's compound interest working against you with a vengeance.
 

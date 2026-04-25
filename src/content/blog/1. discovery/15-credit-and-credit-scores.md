@@ -37,7 +37,7 @@ Different countries use different scoring systems. In the EU, credit bureaus var
 
 ## What goes into your score
 
-Credit scoring varies significantly by country. In the US, the FICO model assigns a single score based on five weighted factors. In Europe, there is no single equivalent -- each country's bureau uses its own methodology. Germany's SCHUFA, the Netherlands' BKR, France's FICP, and the Czech Republic's CRK all work differently.
+Credit scoring varies significantly by country. In the US, the FICO model assigns a single score based on five weighted factors. In Europe, there is no single equivalent. Each country's bureau uses its own methodology. Germany's SCHUFA, the Netherlands' BKR, France's FICP, and the Czech Republic's CRK all work differently.
 
 Despite these differences, several factors matter across nearly all systems:
 
@@ -47,11 +47,11 @@ Have you paid your bills on time? Every late payment, missed payment, or default
 
 ### 2. Outstanding debt and credit utilization
 
-How much do you currently owe, and how much of your available credit are you using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization -- a red flag. Lenders see high utilization as a sign of financial stress. In systems that track revolving credit (like credit cards), staying below 30% utilization is a common guideline.
+How much do you currently owe, and how much of your available credit are you using? If you have a credit card with a €5,000 limit and you're consistently using €4,500, that's 90% utilization: a red flag. Lenders see high utilization as a sign of financial stress. In systems that track revolving credit (like credit cards), staying below 30% utilization is a common guideline.
 
 ### 3. Length and stability of credit history
 
-How long have your accounts been open? Longer history gives lenders more data. In many European systems, stability matters too -- frequent address changes or job changes can be factored in alongside account age.
+How long have your accounts been open? Longer history gives lenders more data. In many European systems, stability matters too. Frequent address changes or job changes can be factored in alongside account age.
 
 ### 4. Types of credit
 
@@ -61,7 +61,7 @@ Having experience with different forms of borrowing (credit card, installment lo
 
 Applying for multiple new credit lines in a short period suggests financial pressure. Each application typically triggers a check that can temporarily affect your score. Checking your own score does not affect it.
 
-**A note on European systems:** Many EU credit bureaus focus more heavily on negative data (defaults, arrears, court judgments) than on building a positive score over time. In Germany, for example, SCHUFA tracks contract data and negative events, and a clean record with no negative entries is itself a strong indicator. This is different from the US model, where you need to actively build a positive history. The advice in this post -- pay on time, keep utilization low, avoid unnecessary applications -- works well regardless of which system your country uses.
+**A note on European systems:** Many EU credit bureaus focus more heavily on negative data (defaults, arrears, court judgments) than on building a positive score over time. In Germany, for example, SCHUFA tracks contract data and negative events, and a clean record with no negative entries is itself a strong indicator. This is different from the US model, where you need to actively build a positive history. The advice in this post, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
 
 ## How it affects you: the interest rate gap
 
