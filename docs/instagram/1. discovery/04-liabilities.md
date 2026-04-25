@@ -90,7 +90,7 @@ Ask three questions instead:
 
 >> **Low-rate debt**
 
-- Mortgage – cheapest rate, appreciating asset, tax-advantaged
+- Mortgage – cheapest rate, appreciating asset, sometimes tax-advantaged (varies by country)
 - Student loans – invests in earning potential, worth it if the career pays off
 
 ---

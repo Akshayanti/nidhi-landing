@@ -57,7 +57,7 @@ Instead of "good debt" and "bad debt", which oversimplifies things, ask three qu
 
 ## The main types of debt
 
-**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. Tax-advantaged in many countries. The catch: it's a long commitment and you need stable income.
+**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. In some countries, mortgage interest is tax-deductible, though this benefit is being phased out or restricted across much of Europe. The catch: it's a long commitment and you need stable income.
 
 **Student loan debt** invests in your earning potential. It makes sense if the education leads to a career that meaningfully increases your income. It doesn't make sense if the degree costs more than the salary increase it delivers.
 
