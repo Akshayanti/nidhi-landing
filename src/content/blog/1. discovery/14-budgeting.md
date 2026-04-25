@@ -5,10 +5,11 @@ description: "You track your income. You know your expenses. But unless you tell
 tldr: "A budget is a plan for your money, not a restriction on it. It turns the gap between income and expenses, your savings rate, into something intentional. The three most common approaches are: the 50/30/20 rule (simple, percentage-based), zero-based budgeting (every euro assigned a job), and pay-yourself-first (automate savings, spend the rest). The best budget is the one you'll actually follow. Automating your savings and bill payments removes willpower from the equation and makes consistency the default."
 order: 14
 pubDate: 2026-05-15
+updatedDate: 2026-05-15
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["budgeting", "cash-flow", "saving", "getting-started", "fundamentals"]
+tags: ["budgeting", "cash-flow", "saving", "getting-started", "fundamentals", "personal finance", "financial literacy"]
 referentialReading:
   - title: "What Is Budgeting?"
     url: "https://www.investopedia.com/terms/b/budget.asp"
@@ -27,19 +28,19 @@ You know how much you earn. You have a rough idea of your expenses. At the end o
 
 That's tracking, not budgeting. Tracking tells you what happened. Budgeting tells your money what to do before the month starts.
 
-The previous posts gave you the vocabulary: net worth, assets, liabilities, cash flow, saving, investing. Budgeting is where those concepts become a system.
+The previous posts gave you the vocabulary: [net worth](/blog/what-is-net-worth), [assets](/blog/assets), [liabilities](/blog/liabilities), [cash flow](/blog/cash-flow-101), [saving, investing](/blog/saving-vs-investing). Budgeting is where those concepts become a system.
 
 ## What a budget actually is
 
 A budget is a plan that assigns every euro of income to a specific purpose before you spend it. It's not a spending limit. It's a spending instruction.
 
-Think of it this way. Your cash flow post showed that income minus expenses equals surplus (or deficit). A budget is how you decide, in advance, what the expenses will be and what happens to the surplus.
+Think of it this way. Your [cash flow post](/blog/cash-flow-101) showed that income minus expenses equals surplus (or deficit). A budget is how you decide, in advance, what the expenses will be and what happens to the surplus.
 
 Without a budget, your surplus is whatever's left after spending. With a budget, your surplus is a deliberate choice.
 
 ## Why budgeting matters
 
-In the cash flow post, we introduced the savings rate – the percentage of income that doesn't get spent. That number determines more about your financial future than your salary does.
+In the [cash flow post](/blog/cash-flow-101), we introduced the [savings rate](/blog/income-vs-wealth) — the percentage of income that doesn't get spent. That number determines more about your financial future than your salary does.
 
 But a savings rate only helps if it's intentional. A 15% savings rate that happens by accident one month and disappears the next isn't a plan, it's luck. A budget turns your savings rate from a measurement into a target.
 

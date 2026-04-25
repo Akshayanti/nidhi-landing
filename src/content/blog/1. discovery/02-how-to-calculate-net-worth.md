@@ -5,10 +5,11 @@ description: "A step-by-step guide to listing everything you own and everything 
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
 pubDate: 2026-04-21
+updatedDate: 2026-04-25
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["net-worth", "calculating", "getting-started", "step-by-step"]
+tags: ["net-worth", "calculating", "getting-started", "step-by-step", "personal finance", "financial literacy"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -23,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-You know that net worth equals assets minus liabilities. But how do you actually sit down and figure out your number?
+You know that [net worth equals assets minus liabilities](/blog/what-is-net-worth). But how do you actually sit down and figure out your number?
 
 Here's a method that takes about ten minutes. Grab a pen, open your banking apps, and let's go.
 

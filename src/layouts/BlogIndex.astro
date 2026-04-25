@@ -41,14 +41,28 @@ const blogBreadcrumbSchema = {
   ],
 };
 
-const allKeywords = [...new Set(posts.flatMap(p => p.data.tags))];
+const allKeywords = [...new Set(['personal finance', 'financial literacy', 'personal finance literacy', 'money management', ...posts.flatMap(p => p.data.tags)])];
+
+const blogItemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Financial Literacy Articles',
+  description: 'A structured learning path through personal finance fundamentals.',
+  numberOfItems: posts.length,
+  itemListElement: posts.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://nidhi.today/blog/${p.id}`,
+    name: p.title,
+  })),
+};
 ---
 
 <BaseLayout
-  title="Blog — nidhi"
-  description="Financial literacy from the ground up. Start with the basics, build your understanding, and master your financial future."
+  title="Personal Finance Blog — Financial Literacy from the Ground Up | nidhi"
+  description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
   keywords={allKeywords}
-  jsonLd={[blogBreadcrumbSchema]}
+  jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
 >
   <section class="blog-index">
     <div class="container">

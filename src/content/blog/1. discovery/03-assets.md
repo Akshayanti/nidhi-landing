@@ -5,10 +5,11 @@ description: "Your assets are everything you own that has value. But not everyth
 tldr: "An asset is something you own that can be converted into money or generates income. Cash, investments, and property are assets. Your salary, your degree, and your potential are not. The quality of an asset matters as much as its existence - liquidity, appreciation, and stability all affect how much an asset actually does for your net worth."
 order: 3
 pubDate: 2026-04-23
+updatedDate: 2026-04-25
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["assets", "net-worth", "fundamentals", "liquidity", "appreciation"]
+tags: ["assets", "net-worth", "fundamentals", "liquidity", "appreciation", "personal finance", "financial literacy"]
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
@@ -23,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-Your net worth is the gap between what you own and what you owe. We calculated that number in the previous post. Now let's look at the first side of that equation: assets.
+Your [net worth](/blog/what-is-net-worth) is the gap between what you own and what you owe. We [calculated that number](/blog/how-to-calculate-net-worth) in the previous post. Now let's look at the first side of that equation: assets.
 
 ## What counts as an asset
 

@@ -5,10 +5,11 @@ description: "Saving and investing are both ways to grow your wealth, but they s
 tldr: "Saving means setting money aside in low-risk, accessible accounts; think emergency funds and short-term goals. Investing means putting money into assets that can grow over time but carry risk and are less liquid (stocks, bonds, and index funds) for goals five or more years away. The right sequence is: emergency fund first, high-interest debt second, then invest. Doing them in the wrong order creates unnecessary risk."
 order: 13
 pubDate: 2026-05-13
+updatedDate: 2026-05-13
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["saving", "investing", "fundamentals", "risk", "getting-started", "time-value-of-money", "opportunity-cost"]
+tags: ["saving", "investing", "fundamentals", "risk", "getting-started", "time-value-of-money", "opportunity-cost", "personal finance", "financial literacy"]
 referentialReading:
   - title: "Saving vs. Investing"
     url: "https://www.investopedia.com/articles/investing/022516/saving-vs-investing-understanding-key-differences.asp"
@@ -59,7 +60,7 @@ Typical investment vehicles:
 - **Stocks**: ownership in companies; highest long-term returns, most volatile
 - **Bonds**: lending to governments or companies; lower returns, more stable
 - **Index funds/ETFs**: baskets that track broad markets; diversified by default
-- **Real estate**: property; appreciates over time but is highly illiquid
+- **Real estate**: property; [appreciates](/blog/appreciation-vs-depreciation) over time but is highly [illiquid](/blog/liquidity)
 - **Retirement accounts**: tax-advantaged investment accounts; restricted access until retirement age
 
 The defining features of investing:
@@ -86,7 +87,7 @@ Investing is about making money grow over time, accepting that the path won't be
 
 Save when you need the money **soon** or **unpredictably**.
 
-- **Emergency fund**: This is the foundation. As we covered in the emergency fund post, you need 3-6 months of expenses in a place you can access within 24 hours. Savings account. Not invested
+- **[Emergency fund](/blog/emergency-fund)**: This is the foundation. As we covered in the emergency fund post, you need 3-6 months of expenses in a place you can access within 24 hours. Savings account. Not invested
 - **Short-term goals (under 3 years)**: A holiday next year. A deposit you're building for 18 months. A new car in two years. Money you need on a specific timeline shouldn't be exposed to market risk, because markets can drop 20% in a month and take years to recover
 - **Known upcoming expenses**: Tax bill in April. Insurance renewal in six months. If you know you'll need the money, keep it safe
 
@@ -97,7 +98,7 @@ The question isn't "will I earn more by investing this?" The question is "can I 
 Invest when you have **time** and **stability**.
 
 - **Retirement (5+ years away)**: Money you won't touch for decades. Market dips recover over time. Compound interest rewards patience. This is the strongest case for investing
-- **Long-term wealth building**: Beyond your emergency fund and debt payoff, surplus cash that sits in a savings account loses purchasing power every year. As we covered in the purchasing power post, a savings account earning 1% while inflation runs at 2.5% means you're losing 1.5% per year in real terms
+- **Long-term wealth building**: Beyond your emergency fund and debt payoff, surplus cash that sits in a savings account loses purchasing power every year. As we covered in the [purchasing power post](/blog/purchasing-power), a savings account earning 1% while inflation runs at 2.5% means you're losing 1.5% per year in real terms
 - **Goals more than 5 years away**: A house deposit in 7 years. Your child's education in 15 years. With time on your side, the higher average returns of investments outweigh the short-term volatility
 
 The longer your time horizon, the stronger the case for investing over saving.
@@ -118,7 +119,7 @@ There's no universally right answer here. It depends on how flexible your timeli
 
 If you keep all your money in savings accounts, you're safe from market risk. But you're exposed to a quieter risk: inflation.
 
-As we showed in the purchasing power post, €10,000 in a savings account earning 1% with inflation at 2.5% becomes worth less every year in real terms:
+As we showed in the [purchasing power post](/blog/purchasing-power), €10,000 in a savings account earning 1% with inflation at 2.5% becomes worth less every year in real terms:
 
 | Years | Nominal Balance | Real Purchasing Power |
 |-------|----------------|----------------------|
@@ -159,7 +160,7 @@ Investing money you might need soon is speculation, not planning.
 The order matters more than the specific amounts:
 
 1. **Build a starter emergency fund** (1 month of expenses in a savings account)
-2. **Pay off high-interest debt** (anything above 5-6%, credit cards first)
+2. **Pay off [high-interest debt](/blog/how-to-get-out-of-debt)** (anything above 5-6%, credit cards first)
 3. **Complete your emergency fund** (3-6 months of expenses)
 4. **Start investing** (long-term surplus into diversified investments)
 

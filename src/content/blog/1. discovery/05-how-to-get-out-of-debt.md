@@ -5,10 +5,11 @@ description: "Once you've decided to tackle your debt, there are two proven stra
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
+updatedDate: 2026-04-27
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["debt", "snowball", "avalanche", "interest-rates", "fundamentals"]
+tags: ["debt", "snowball", "avalanche", "interest-rates", "fundamentals", "personal finance", "financial literacy"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -23,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-You know what you owe. You know which debts are the most expensive. Now it's time to get rid of them.
+You know [what you owe](/blog/liabilities). You know which debts are the most expensive. Now it's time to get rid of them.
 
 There are two proven strategies for paying off debt. Both work. The difference is in how they sequence your payments; and what that does to your motivation and your wallet.
 
@@ -93,6 +94,6 @@ It depends on what drives you:
 
 ## What comes after
 
-Getting out of debt is not the finish line, it's the starting line. Once your high-interest liabilities are gone, that monthly payment doesn't disappear. It becomes money you can redirect toward assets that appreciate over time.
+Getting out of debt is not the finish line, it's the starting line. Once your high-interest [liabilities](/blog/liabilities) are gone, that monthly payment doesn't disappear. It becomes money you can redirect toward [assets](/blog/assets) that appreciate over time.
 
 In the next post, we'll look at why some assets grow your net-worth while others shrink it, the difference between appreciation and depreciation, and the force of compound interest behind both.

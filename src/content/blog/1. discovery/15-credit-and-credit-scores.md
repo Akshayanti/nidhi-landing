@@ -5,10 +5,11 @@ description: "You've never missed a payment. You have no debt. But the rate you'
 tldr: "A credit score is a number that summarizes how reliably you've handled borrowed money. It's based on your payment history, how much of your available credit you use, how long your accounts have been open, and the types of credit you hold. A higher score means lower interest rates on loans and mortgages, saving you thousands over a lifetime. Even if you avoid debt entirely, your credit history affects rental applications, insurance, and financial flexibility. Building good credit is simple: use a small amount, pay it off in full every month, and give it time."
 order: 15
 pubDate: 2026-05-17
+updatedDate: 2026-05-17
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["credit", "credit-score", "fundamentals", "debt", "borrowing"]
+tags: ["credit", "credit-score", "fundamentals", "debt", "borrowing", "personal finance", "financial literacy"]
 referentialReading:
   - title: "Credit Score"
     url: "https://www.investopedia.com/terms/c/credit_score.asp"
@@ -110,9 +111,9 @@ Building credit is simple. It just takes consistency and time.
 
 ## The credit score and your net worth
 
-Your credit score doesn't appear on your balance sheet. It's not an asset and it's not a liability. But it directly affects how much your liabilities cost you. A better score means lower interest rates, which means less money going to the bank and more staying with you.
+Your credit score doesn't appear on your balance sheet. It's not an [asset](/blog/assets) and it's not a [liability](/blog/liabilities). But it directly affects how much your liabilities cost you. A better score means lower [interest rates](/blog/liabilities), which means less money going to the bank and more staying with you — directly improving your [cash flow](/blog/cash-flow-101).
 
-As we covered in the liabilities post, the interest rate is the most important number on any debt. Your credit score is what determines that rate. Think of it as the meta-number behind your borrowing costs.
+As we covered in the [liabilities post](/blog/liabilities), the interest rate is the most important number on any debt. Your credit score is what determines that rate. Think of it as the meta-number behind your borrowing costs.
 
 ## What you can do
 

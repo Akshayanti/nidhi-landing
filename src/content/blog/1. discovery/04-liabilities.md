@@ -5,10 +5,11 @@ description: "Liabilities are the other side of your net worth equation - everyt
 tldr: "A liability is money you owe to someone else, usually with interest. The interest rate is the most important detail: a mortgage at 3.5% and a credit card at 22% are fundamentally different obligations. Ask three questions about any debt: what is the rate, what did it buy, and can you afford the payments? If the interest rate exceeds what you could earn investing, pay the debt first."
 order: 4
 pubDate: 2026-04-25
+updatedDate: 2026-04-25
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["liabilities", "debt", "interest-rates", "fundamentals", "net-worth"]
+tags: ["liabilities", "debt", "interest-rates", "fundamentals", "net-worth", "personal finance", "financial literacy"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -23,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-We've looked at what you own. Now let's look at what you owe. Liabilities are the other side of the net worth equation. And for most people, they're the side that hurts.
+We've looked at [what you own](/blog/assets). Now let's look at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth) equation. And for most people, they're the side that hurts.
 
 ## What is a liability?
 
@@ -52,7 +53,7 @@ The same concept: borrowing money but with wildly different outcomes. The intere
 Instead of "good debt" and "bad debt", which oversimplifies things, ask three questions:
 
 1. **What is the interest rate?** Anything above 8-10% is expensive and should be addressed quickly
-2. **What did the debt buy?** Debt that funds something appreciating (education, a home) has a different character than debt that funded consumption (a holiday, a dinner)
+2. **What did the debt buy?** Debt that funds something [appreciating](/blog/assets) (education, a home) has a different character than debt that funded consumption (a holiday, a dinner)
 3. **Can you comfortably make the payments?** Even low-interest debt becomes a problem if it eats too much of your cash flow
 
 ## The main types of debt

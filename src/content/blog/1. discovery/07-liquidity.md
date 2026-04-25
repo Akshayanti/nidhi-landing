@@ -5,10 +5,11 @@ description: "Having money and being able to use it are not the same thing. Liqu
 tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
 order: 7
 pubDate: 2026-05-01
+updatedDate: 2026-05-01
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["liquidity", "fundamentals", "net-worth", "saving", "investing"]
+tags: ["liquidity", "fundamentals", "net-worth", "saving", "investing", "personal finance", "financial literacy"]
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
@@ -23,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-You might have €100,000 in net worth and still not be able to pay a €2,000 car repair bill. 
+You might have €100,000 in [net worth](/blog/what-is-net-worth) and still not be able to pay a €2,000 car repair bill. 
 
 How? If most of that net worth is tied up in a house or a retirement account, you can't get to it quickly without penalty or loss.
 
@@ -73,9 +74,9 @@ Higher net worth doesn't always mean better financial position. Liquidity matter
 
 This doesn't mean you should keep everything in cash. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
 
-- **Real estate** builds equity over the long term and can appreciate significantly
+- **Real estate** builds equity over the long term and can [appreciate](/blog/appreciation-vs-depreciation) significantly
 - **Retirement accounts** have tax advantages that make them worth the lock-up period
-- **Long-term investments** earn higher returns precisely because you're committing to staying invested
+- **Long-term investments** earn higher returns precisely because you're committing to staying invested, and [compound interest](/blog/appreciation-vs-depreciation) rewards that patience
 
 The key is matching your liquidity to your timeline. Money you need in the next few years should be more liquid. Money you won't touch for decades can afford to be less liquid.
 
@@ -96,7 +97,7 @@ There's no single correct ratio, but a practical framework:
 
 ## How this connects to net worth
 
-In the assets post, we looked at asset quality. Liquidity is one of the most important dimensions of that quality. Your net worth tells you what you have. Liquidity tells you what you can actually use.
+In the [assets post](/blog/assets), we looked at asset quality. Liquidity is one of the most important dimensions of that quality. Your net worth tells you what you have. Liquidity tells you what you can actually use.
 
 A financial plan that ignores liquidity is like a car with a powerful engine but no fuel gauge. It runs great until it doesn't.
 
