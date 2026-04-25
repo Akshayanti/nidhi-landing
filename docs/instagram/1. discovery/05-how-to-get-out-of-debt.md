@@ -36,7 +36,7 @@ Two ways to crush your debt. Which one fits you?
 2. Commit to minimum payments on everything
 3. Find your extra amount after minimum payments and essential expenses. Even €50/month helps
 
-That extra is your weapon.
+That extra is your weapon
 Both methods just aim it differently
 
 ---
@@ -57,14 +57,14 @@ Order: smallest balance first
 
 >> **Snowball Example**
 
-- Store card: €1,200 at 12%
-- Personal loan: €4,000 at 9%
-- Credit card: €6,500 at 22%
-- Student loan: €14,000 at 4%
+- Store card: €1,200 at 12% · €40/mo min
+- Personal loan: €4,000 at 9% · €120/mo min
+- Credit card: €6,500 at 22% · €160/mo min
+- Student loan: €14,000 at 4% · €150/mo min
 
-With €300 extra/month, the store card is gone in ~4 months. Quick win.
+Target the smallest balance first: store card gets €40 min + €300 extra = **€340/month**
 
-Followed by Personal loan, Credit card, and Student loan
+Gone in ~4 months. Then that €340 rolls into the personal loan
 
 ---
 
@@ -95,14 +95,13 @@ Order: highest interest rate first.
 
 >> **Avalanche Example**
 
-- Store card: €1,200 at 12%
-- Personal loan: €4,000 at 9%
-- Credit card: €6,500 at 22%
-- Student loan: €14,000 at 4%
+Same debts, same €300 extra
 
-With €300 extra/month, attack the credit card first (22%)
+Target the highest rate first: credit card gets €160 min + €300 extra = **€460/month**
 
-Takes ~17 months to clear it BUT every euro is fighting your most expensive debt
+Takes ~17 months to clear BUT every euro fights your most expensive debt (22%)
+
+Then that €460 rolls into the store card (12%), and so on down
 
 ---
 
@@ -147,7 +146,7 @@ It's the starting line
 
 Once the debt is gone, that monthly payment becomes money for building wealth
 
->> Start **TODAY**
+>> **Start TODAY**
 
 ---
 
