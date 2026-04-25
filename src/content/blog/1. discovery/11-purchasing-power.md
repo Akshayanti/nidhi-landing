@@ -60,11 +60,11 @@ Even in a savings account, the erosion continues. Consider €10,000 earning 0.5
 | Year | Nominal Value | Real Purchasing Power |
 |------|--------------|----------------------|
 | Today | €10,000 | €10,000 |
-| 10 years | €10,511 | €7,836 |
-| 20 years | €11,049 | €6,138 |
-| 30 years | €11,612 | €4,808 |
+| 10 years | €10,511 | €8,211 |
+| 20 years | €11,049 | €6,743 |
+| 30 years | €11,614 | €5,537 |
 
-The number went up. The value went down. You gained over €1,600 in interest but lost over €5,000 in purchasing power.
+The number went up. The value went down. You gained over €1,600 in interest but lost over €4,400 in purchasing power.
 
 ## The real return: what actually matters
 
@@ -95,7 +95,7 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
 2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned 6-8% after inflation. That's how you preserve and grow your purchasing power
+3. **Invest for growth.** Over the long term, broad stock market investments have historically returned 7-8% after inflation. That's how you preserve and grow your purchasing power
 4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

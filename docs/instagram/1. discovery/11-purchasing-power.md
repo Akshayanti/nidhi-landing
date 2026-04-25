@@ -82,8 +82,8 @@ Even in a savings account:
 
 €10,000 earning 0.5%, inflation at 2.5%
 
-- After 10 years: €10,511 in the account, but only €7,836 in purchasing power
-- After 30 years: €11,612 in the account, but only €4,808 in purchasing power
+- After 10 years: €10,511 in the account, but only €8,211 in purchasing power
+- After 30 years: €11,614 in the account, but only €5,537 in purchasing power
 
 The number went up but the value went down
 
@@ -145,7 +145,7 @@ What you can do:
 
 1. Think in real terms. Always subtract inflation
 2. Don't let cash sit idle beyond your emergency fund
-3. Invest for growth: stocks have historically returned 6-8% after inflation
+3. Invest for growth: stocks have historically returned 7-8% after inflation
 4. Revisit your plan regularly
 
 ---
