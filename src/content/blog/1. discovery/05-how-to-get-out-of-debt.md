@@ -22,6 +22,26 @@ referentialReading:
     author: "Morgan Housel"
     url: "https://www.goodreads.com/book/show/41881472-the-psychology-of-money"
     type: "book"
+howTo:
+  name: "How to Get Out of Debt"
+  steps:
+    - name: "List every debt"
+      text: "Write down every debt you have: the balance, interest rate, and minimum payment. Include credit cards, student loans, personal loans, and any other outstanding balances."
+    - name: "Commit to minimum payments on everything"
+      text: "Never skip a minimum payment. Late fees and credit damage will undo any progress you make."
+    - name: "Find your extra money"
+      text: "After minimum payments and essential expenses, determine how much money is left each month. Even 50 euros makes a difference."
+    - name: "Choose your strategy: snowball or avalanche"
+      text: "Snowball targets the smallest balance first for quick wins and motivation. Avalanche targets the highest interest rate first to minimise total interest paid. Both work. Pick the one you'll stick with."
+    - name: "Attack your target debt"
+      text: "Put every extra euro toward your chosen target debt while making minimum payments on everything else. When that debt is cleared, roll its payment into the next one."
+faq:
+  - question: "What is the debt snowball method?"
+    answer: "The snowball method pays off debts from smallest balance to largest. You make minimum payments on everything and put every extra euro toward the smallest debt. When it's gone, you roll that payment into the next smallest. Quick wins build momentum."
+  - question: "What is the debt avalanche method?"
+    answer: "The avalanche method pays off debts from highest interest rate to lowest. You target the most expensive debt first to minimise total interest paid. It's mathematically optimal but requires patience since the first debt may take longer to clear."
+  - question: "Should I use snowball or avalanche to pay off debt?"
+    answer: "Choose snowball if you're motivated by visible progress and quick wins. Choose avalanche if you're disciplined and want to minimise total cost. A hybrid approach also works: start with snowball to build momentum, then switch to avalanche."
 ---
 
 You know [what you owe](/blog/liabilities). You know which debts are the most expensive. Now it's time to get rid of them.

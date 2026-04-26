@@ -22,6 +22,15 @@ referentialReading:
     author: "Dave Ramsey"
     url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
+faq:
+  - question: "What is the 50/30/20 budgeting rule?"
+    answer: "The 50/30/20 rule splits your after-tax income into three buckets: 50% for needs (rent, groceries, insurance), 30% for wants (dining out, entertainment, hobbies), and 20% for savings and debt repayment. It's the simplest budgeting method and a good starting point for beginners."
+  - question: "What is zero-based budgeting?"
+    answer: "Zero-based budgeting assigns every euro of income to a specific purpose so that income minus all planned spending (including savings) equals exactly zero. It doesn't mean you spend everything — it means every euro is accounted for. Best for people who want full control and visibility."
+  - question: "What is the pay-yourself-first method?"
+    answer: "Pay-yourself-first means automatically transferring a fixed amount to savings and investments the day your salary arrives, then spending whatever remains. It guarantees your savings rate without requiring detailed category tracking."
+  - question: "Which budgeting method is best?"
+    answer: "The best budget is the one you'll actually follow. The 50/30/20 rule is simplest for beginners. Zero-based budgeting gives the most control. Pay-yourself-first requires the least effort. You can also combine methods or switch between them."
 ---
 
 You know how much you earn. You have a rough idea of your expenses. At the end of the month, there's sometimes money left over, sometimes not. You're not sure where the difference goes.

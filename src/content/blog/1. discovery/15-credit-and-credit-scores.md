@@ -22,6 +22,15 @@ referentialReading:
     author: "Dave Ramsey"
     url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
+faq:
+  - question: "Does checking my own credit score lower it?"
+    answer: "No. Checking your own score is a soft inquiry and has no effect. Only applications for new credit (like applying for a loan or credit card) trigger hard inquiries that can temporarily affect your score."
+  - question: "Do I need to carry a credit card balance to build credit?"
+    answer: "No. Paying your full balance every month builds credit just as effectively as carrying a balance, and you avoid paying any interest. The key is using the card regularly and paying on time."
+  - question: "What happens if I have no credit history?"
+    answer: "No history can be as problematic as bad history. Lenders have nothing to base their assessment on. This is common for people new to a country or young adults. Start building history early with a basic credit card, use it for small purchases, and pay in full each month."
+  - question: "How does my credit score affect mortgage rates?"
+    answer: "A higher credit score gets you a lower interest rate. On a 200,000 euro mortgage over 25 years, the difference between excellent and poor credit can cost over 77,000 euros in additional interest. Same house, same income, different cost entirely because of credit history."
 ---
 
 You've been paying your bills on time for years. You have no outstanding debt. You apply for a mortgage and the bank offers you 3.8%. Your colleague, who earns roughly the same salary, gets offered 3.2%. Over 25 years on a €200,000 mortgage, that 0.6% difference costs you over €19,000 more in interest.

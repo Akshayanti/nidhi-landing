@@ -24,6 +24,18 @@ const blog = defineCollection({
     })).optional(),
     regulatoryNote: z.enum(['safe', 'caution', 'danger']).optional(),
     heroImage: z.string().optional(),
+    faq: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).optional(),
+    howTo: z.object({
+      name: z.string(),
+      totalTime: z.string().optional(),
+      steps: z.array(z.object({
+        name: z.string(),
+        text: z.string(),
+      })),
+    }).optional(),
   }),
 });
 

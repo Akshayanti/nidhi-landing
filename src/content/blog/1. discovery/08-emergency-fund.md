@@ -22,6 +22,15 @@ referentialReading:
     author: "J.L. Collins"
     url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
     type: "book"
+faq:
+  - question: "What is an emergency fund?"
+    answer: "An emergency fund is money set aside specifically for unexpected, necessary expenses like job loss, medical bills, urgent car repairs, or home repairs. It's cash you can access immediately, not investments."
+  - question: "How much should I have in my emergency fund?"
+    answer: "Start with one month of salary as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months if your income is stable, six months if it's variable."
+  - question: "Where should I keep my emergency fund?"
+    answer: "In a separate savings account, high-yield savings account, or money market account. It must be accessible within 24 hours and not exposed to market risk. Keep it separate from your everyday spending account so it doesn't get spent accidentally."
+  - question: "What counts as an emergency?"
+    answer: "An emergency is unexpected, urgent, and necessary. Car broke down and you need it for work? Emergency. Flight deal to Barcelona? Not an emergency. Dental emergency? Emergency. Phone upgrade? Not an emergency."
 ---
 
 If there's one thing that separates people who recover from financial shocks from people who get knocked down by them, it's this: a cash reserve for emergencies.

@@ -22,9 +22,15 @@ interface Props {
   prevTitle?: string | null;
   nextSlug?: string | null;
   nextTitle?: string | null;
+  faq?: Array<{ question: string; answer: string }>;
+  howTo?: {
+    name: string;
+    totalTime?: string;
+    steps: Array<{ name: string; text: string }>;
+  };
 }
 
-const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props;
+const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo } = Astro.props;
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 const siteUrl = 'https://nidhi.today';
@@ -74,6 +80,33 @@ const breadcrumbSchema = {
     },
   ],
 };
+const faqSchema = faq && faq.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map(item => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+
+const howToSchema = howTo ? {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: howTo.name,
+  ...(howTo.totalTime ? { totalTime: howTo.totalTime } : {}),
+  step: howTo.steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+  })),
+} : null;
+
+const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema].filter(Boolean);
 ---
 
 <BaseLayout
@@ -87,7 +120,7 @@ const breadcrumbSchema = {
   }}
   prevUrl={prevSlug ? `/blog/${prevSlug}` : null}
   nextUrl={nextSlug ? `/blog/${nextSlug}` : null}
-  jsonLd={[blogPostingSchema, breadcrumbSchema]}
+  jsonLd={allSchemas}
 >
   <article class="blog-post">
     <div class="container">
@@ -164,13 +197,13 @@ const breadcrumbSchema = {
         {(prevSlug || nextSlug) && (
           <nav class="post-nav">
             {prevSlug && prevTitle && (
-              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`}>
+              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`} data-attr="post-nav-prev">
                 <span class="post-nav-direction">Previous</span>
                 <span class="post-nav-title">{prevTitle}</span>
               </a>
             )}
             {nextSlug && nextTitle && (
-              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`}>
+              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`} data-attr="post-nav-next">
                 <span class="post-nav-direction">Next</span>
                 <span class="post-nav-title">{nextTitle}</span>
               </a>

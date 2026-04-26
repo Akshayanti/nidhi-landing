@@ -5,11 +5,11 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header">
   <nav class="site-nav container container--wide">
-    <a href="/" class="logo">
+    <a href="/" class="logo" data-attr="nav-logo">
       <span class="logo-text">nidhi</span>
     </a>
     <div class="nav-right">
-      <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]}>Blog</a>
+      <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
       <ThemeToggle />
     </div>
   </nav>

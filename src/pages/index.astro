@@ -85,37 +85,17 @@ const webSiteSchema = {
       <div class="learn-more">
         <p class="learn-more-text">While you wait, get to know us or dive into personal finance:</p>
         <div class="learn-links">
-          <a href="/blog" class="learn-link">Blog</a>
-          <a href="/beliefs" class="learn-link learn-link--outline">Our Beliefs</a>
+          <a href="/blog" class="learn-link" data-attr="home-cta-blog">Blog</a>
+          <a href="/beliefs" class="learn-link learn-link--outline" data-attr="home-cta-beliefs">Our Beliefs</a>
         </div>
       </div>
 
       <p class="footer">
         Built with unreasonable ambition in Prague
       </p>
-      <p class="visitor-count"><span id="view-count">...</span> curious souls have visited</p>
     </div>
   </section>
 </BaseLayout>
-
-<script is:inline define:vars={{ counterToken: import.meta.env.COUNTERAPI_TOKEN }}>
-  document.addEventListener('DOMContentLoaded', function() {
-    var BASE = 'https://api.counterapi.dev/v2';
-    var workspace = 'nidhi-todays-team-3807';
-    var name = 'page-views';
-
-    fetch(BASE + '/' + workspace + '/' + name + '/up', {
-      headers: { 'Authorization': 'Bearer ' + counterToken }
-    })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        document.getElementById('view-count').textContent = data.value;
-      })
-      .catch(function() {
-        document.getElementById('view-count').parentElement.style.display = 'none';
-      });
-  });
-</script>
 
 <style>
   .landing {
@@ -312,13 +292,6 @@ const webSiteSchema = {
 
   .footer {
     margin-top: var(--space-4);
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    font-weight: 300;
-  }
-
-  .visitor-count {
-    margin-top: var(--space-1);
     font-size: 0.7rem;
     color: var(--color-text-muted);
     font-weight: 300;

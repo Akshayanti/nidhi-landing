@@ -22,6 +22,16 @@ referentialReading:
     author: "Ramit Sethi"
     url: "https://www.goodreads.com/book/show/40591670-i-will-teach-you-to-be-rich"
     type: "book"
+howTo:
+  name: "How to Calculate Your Net Worth"
+  totalTime: "PT10M"
+  steps:
+    - name: "List your assets"
+      text: "Go through every account and asset you have. Include cash, bank accounts, investments, retirement accounts, property, and vehicles. Use current balances, not what you originally paid."
+    - name: "List your liabilities"
+      text: "List everything you owe: mortgage balance, student loans, car loan, credit card balances, and personal loans. Use the current outstanding balance, not the monthly payment."
+    - name: "Subtract liabilities from assets"
+      text: "Add up all assets. Add up all liabilities. Subtract liabilities from assets. That number is your net worth. Update it monthly to track the trend."
 ---
 
 You know that [net worth equals assets minus liabilities](/blog/what-is-net-worth). But how do you actually sit down and figure out your number?
