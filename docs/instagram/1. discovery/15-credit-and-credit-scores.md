@@ -44,7 +44,7 @@ It's based on your past behavior, not your income
 
 >> **What goes into your score**
 
-Every system is different (SCHUFA, BKR, FICP...) but these factors matter almost everywhere:
+Every country's system is different, but these factors matter almost everywhere:
 
 1. Payment history (universally most important)
 2. Outstanding debt and credit utilization

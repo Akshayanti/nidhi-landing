@@ -42,13 +42,13 @@ This is rational whenever the potential loss is large enough to disrupt your fin
 
 ## The main types of insurance
 
-If you live in the EU, you already have significant protection through public systems in the form of statutory health insurance, social security disability benefits, public pension contributions, and in many countries, mandatory liability coverage. These public programs form a strong baseline that doesn't exist in many other parts of the world.
+How much private insurance you need depends heavily on where you live. Some countries provide strong public safety nets: statutory health insurance, social security disability benefits, public pensions, mandatory liability coverage. Others leave most of the responsibility to individuals.
 
-The question for Europeans isn't usually "do I need insurance from scratch?" but rather "where are the gaps in my public coverage?" The five categories below cover the situations that affect most people's financial plans. For each, consider what your country's public system already provides and where supplemental private coverage fills a meaningful gap.
+The question isn't "do I need insurance?" but "where are the gaps in my existing coverage?" The five categories below cover the situations that affect most people's financial plans. For each, consider what your country's public system already provides and where private coverage fills a meaningful gap.
 
 ### Health insurance
 
-Covers medical expenses – hospital stays, surgeries, prescriptions, specialist visits. In many European countries, basic health coverage is provided through public systems funded by taxes or mandatory contributions. Private health insurance supplements this with shorter wait times, broader provider choice, or coverage for treatments not included in the public system.
+Covers medical expenses -- hospital stays, surgeries, prescriptions, specialist visits. In some countries, basic health coverage is provided through public systems funded by taxes or mandatory contributions. In others (like the US), most coverage comes through employers or private plans. Private health insurance can supplement public coverage with shorter wait times, broader provider choice, or additional treatments -- or it may be your primary coverage entirely, depending on where you live.
 
 **Why it matters financially:** A serious illness or injury without adequate coverage can generate bills that take years to pay off. Medical debt is one of the fastest ways to destroy a financial plan.
 
@@ -80,19 +80,19 @@ Covers damage to or loss of physical property. The two most common forms:
 
 ### Disability insurance
 
-Replaces a portion of your income if you're unable to work due to illness or injury. Most EU countries provide some level of statutory disability or sickness benefits, but these typically replace only a fraction of your salary (often 60-70%) and may have waiting periods or time limits. Private disability insurance can close the gap between what the state provides and what you actually need.
+Replaces a portion of your income if you're unable to work due to illness or injury. Some countries provide statutory disability or sickness benefits, but these typically replace only a fraction of your salary (often 60-70%) and may have waiting periods or time limits. In countries with weaker public safety nets, private disability insurance may be your only protection. Either way, private coverage can close the gap between what you'd receive and what you actually need.
 
 **Why it matters financially:** Your ability to earn income is your most valuable financial asset, especially early in your career. A 30-year-old earning €40,000 per year will earn over €1 million in the next 25 years. A disability that prevents you from working cuts off that entire stream. Even with public benefits, the income reduction can be severe.
 
 **Cash flow impact:** Typically €30-€80 per month, depending on coverage amount, waiting period, and definition of disability.
 
-**The overlooked risk:** Most people insure their car and their phone but not the gap between public disability benefits and their actual income. Check what your country's social insurance system covers and then decide if the remaining gap is worth insuring privately.
+**The overlooked risk:** Most people insure their car and their phone but not their ability to earn. Check what your country's social insurance system covers (if anything) and decide if the remaining gap is worth insuring privately.
 
 ### Liability insurance
 
 Covers the cost if you're legally responsible for damage to someone else or their property. This includes personal liability (your child breaks a neighbor's window, someone slips on your icy walkway) and professional liability (errors in your work cause financial loss to a client).
 
-**Why it matters financially:** Liability claims can reach tens or hundreds of thousands of euros. Without coverage, you'd pay from your own assets. Personal liability insurance is inexpensive and widely available as part of household policies in many European countries.
+**Why it matters financially:** Liability claims can reach tens or hundreds of thousands of euros. Without coverage, you'd pay from your own assets. Personal liability insurance is inexpensive and in many countries available as a standalone policy or bundled with homeowner's or renter's insurance.
 
 **Cash flow impact:** Often €5-€15 per month for personal liability, sometimes bundled with homeowner's or renter's insurance.
 
