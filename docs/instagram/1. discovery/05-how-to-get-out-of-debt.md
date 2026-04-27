@@ -22,7 +22,8 @@ Full post: https://nidhi.today/blog/how-to-get-out-of-debt
 
 **Snowball vs. Avalanche**
 
-Two ways to crush your debt. Which one fits you?
+Two ways to crush your debt
+Which one fits you?
 
 !! Basics of Money · 5/16 · @nidhi.today
 
