@@ -2,7 +2,7 @@
 # Generates all brand assets including favicons, logos, and social media images
 
 # Default source SVG file
-SOURCE_SVG ?= public/test/favicon.svg
+SOURCE_SVG ?= public/favicon.svg
 
 # Output directory derived from source
 OUTPUT_DIR = $(dir $(SOURCE_SVG))
@@ -28,7 +28,7 @@ help:
 	@echo "  make SOURCE_SVG=path/to/icon.svg"
 	@echo ""
 	@echo "Example:"
-	@echo "  make SOURCE_SVG=assets/branding/nidhi-icon.svg"
+	@echo "  make SOURCE_SVG=public/favicon.svg"
 
 # Generate all brand assets
 brand:
