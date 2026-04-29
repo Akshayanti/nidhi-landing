@@ -1,12 +1,20 @@
 ---
+import LogoMark from './LogoMark.astro';
 const year = new Date().getFullYear();
+
+// TODO (brand-rollout): remove the `showMark` gate and always render
+// <LogoMark /> once the rebrand is live in production.
+const showMark = import.meta.env.DEV;
 ---
 
 <footer class="site-footer">
   <div class="container container--wide">
     <div class="footer-grid">
       <div class="footer-brand">
-        <span class="footer-logo">nidhi</span>
+        <div class="footer-brand-row">
+          {showMark && <LogoMark size={28} />}
+          <span class="footer-logo">nidhi</span>
+        </div>
         <p class="footer-tagline">Money, understood</p>
       </div>
       <div class="footer-links">
@@ -60,11 +68,18 @@ const year = new Date().getFullYear();
     margin-bottom: var(--space-8);
   }
 
+  .footer-brand-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
   .footer-logo {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1.2rem;
     color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
   }
 
   .footer-tagline {
