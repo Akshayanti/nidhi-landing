@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="512" rx="96" fill="#0D47A1"/>
+
+  <!-- Horizontal bar -->
+  <path d="M120 200 H360" stroke="white" stroke-width="16" stroke-linecap="round"/>
+
+
+  <!-- n (with proper vertical legs) -->
+  <path d="M150 360 V290 Q150 250 195 250 Q240 250 240 290 V360"
+        fill="none" stroke="white" stroke-width="24"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- d bowl -->
+  <circle cx="320" cy="310" r="45" fill="none" stroke="white" stroke-width="24"/>
+
+  <!-- d stem -->
+  <path d="M365 310 V205" stroke="white" stroke-width="24" stroke-linecap="round"/>
+
+  <!--   Arrow shaft (45°, shorter)-->
+  <path d="M365 200 L425 140" stroke="white" stroke-width="16" stroke-linecap="round"/>
+<!--  Arrow head -->
+  <path d="M385 140 H425 V180" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- orange dot -->
+  <circle cx="410" cy="220" r="14" fill="#00897B"/>
+</svg>
