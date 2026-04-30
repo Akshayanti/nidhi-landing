@@ -33,7 +33,7 @@ const webSiteSchema = {
       <p class="tagline">Money, understood</p>
 
       <p class="cheeky">
-        Our finosopher has been meditating on<br />
+        Our <abbr class="finosopher" data-tooltip="Finance + philosopher, smushed together" aria-label="finosopher — finance and philosopher, smushed together" tabindex="0">finosopher</abbr> has been meditating on<br />
         where everyone's money keeps going.<br />
         He has thoughts. You'll hear them soon.
       </p>
@@ -159,6 +159,70 @@ const webSiteSchema = {
   .cheeky strong {
     font-weight: 500;
     color: var(--color-text-primary);
+  }
+
+  .finosopher {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+    color: inherit;
+    font-weight: inherit;
+    cursor: help;
+    transition: border-color 0.2s ease;
+    outline: none;
+  }
+
+  .finosopher:hover,
+  .finosopher:focus-visible {
+    border-bottom-color: var(--color-teal);
+  }
+
+  .finosopher::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--color-deep-blue);
+    color: white;
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+  }
+
+  .finosopher::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: var(--color-deep-blue) transparent transparent transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+  }
+
+  .finosopher:hover::after,
+  .finosopher:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .finosopher:hover::before,
+  .finosopher:focus-visible::before {
+    opacity: 1;
   }
 
   .roadmap {
