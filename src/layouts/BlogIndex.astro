@@ -59,7 +59,7 @@ const blogItemListSchema = {
 ---
 
 <BaseLayout
-  title="Personal Finance Blog — Financial Literacy from the Ground Up | nidhi"
+  title="Personal Finance Blog | nidhi"
   description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
   keywords={allKeywords}
   jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
@@ -67,7 +67,7 @@ const blogItemListSchema = {
   <section class="blog-index">
     <div class="container">
       <header class="blog-index-header">
-        <h1>Blog</h1>
+        <h1>Learn about your money</h1>
         <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
       </header>
       <LearningPath client:load posts={serializedPosts} />

@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Our Beliefs — nidhi" description="What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and a blog that's free forever." keywords={['personal finance', 'financial literacy', 'money management', 'multi-currency', 'about nidhi']}>
+<BaseLayout title="Our Beliefs | nidhi" description="What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and a blog that's free forever." keywords={['personal finance', 'financial literacy', 'money management', 'multi-currency', 'about nidhi']}>
   <section class="beliefs-page">
     <div class="beliefs-container">
       <div class="hero">
@@ -10,7 +10,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <img src="/baba_money.webp" alt="finosopher" />
         </div>
         <h1 class="beliefs-title">What We Believe</h1>
-        <p class="beliefs-intro">nidhi started because one person couldn't find a decent finance tool. Got annoyed enough to build one.</p>
+        <p class="beliefs-intro">nidhi started because one person couldn't find a decent finance tool, and got annoyed enough to build one</p>
       </div>
 
       <div class="beliefs-list">
@@ -36,11 +36,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <div class="belief" style="--accent: var(--color-teal);">
           <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <div class="belief-body">
+            <strong>Built for everyone tech keeps forgetting</strong>
+            <p>A lot of apps conveniently forget that money tools should work whether you're colour blind, use a screen reader, or wired differently. Being queer, neurodivergent, and a person of colour, we never had that luxury. Leaving anyone out of their own money just feels cheap.</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-deep-blue);">
+          <div class="belief-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
           </div>
           <div class="belief-body">
             <strong>The blog is free, forever</strong>
-            <p>No paywalls, no "subscribe for the good stuff" nonsense. If something we wrote helped you make a better decision — even if you never touch our product — that's the whole point. Tell us about it. We run on that kind of fuel. Drop us a line at <a href="mailto:hello@nidhi.today">hello@nidhi.today</a> or find us on <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+            <p>No paywalls, no "subscribe for the good stuff" nonsense. If something we wrote helped you make a better decision, even if you never touch our product, that's the whole point. Tell us about it. We run on that kind of fuel. Drop us a line at <a href="mailto:hello@nidhi.today">hello@nidhi.today</a> or find us on <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
           </div>
         </div>
 
@@ -81,11 +91,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="cta-links">
           <a href="mailto:hello@nidhi.today" class="cta-link" data-attr="beliefs-cta-email">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            hello@nidhi.today
+            Drop us a love letter
           </a>
           <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer" class="cta-link" data-attr="beliefs-cta-instagram">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @nidhi.today
+            Slide into our DMs
           </a>
         </div>
       </div>
