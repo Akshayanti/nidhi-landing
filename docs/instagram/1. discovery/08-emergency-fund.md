@@ -1,30 +1,92 @@
 ---
 title: "The Emergency Fund: Your First Financial Safety Net"
 blog_url: "https://nidhi.today/blog/emergency-fund"
-hashtags: "#emergencyfund #personalfinance #savingmoney #financialliteracy #nidhi"
+hashtags: "#emergencyfundeurope #financialbuffer #desifinance #moneyineurope #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — EU afternoon + India 19:00 IST evening peak"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  3 months
+  No salary
+
+  Could your bank account survive?
+story_stat: "3 months · no income · how long do you last?"
+story_poll_q: "How many months of expenses do you have saved?"
+story_poll_opts: "<1 | 1-3 | 3-6 | 6+"
+story_quiz_q: "Which of these is NOT an emergency?"
+story_quiz_opts: "Car breakdown | Broken phone screen | Flight deal to Bali | Medical copay"
+story_quiz_answer: "Flight deal to Bali"
+story_prompt: "Save this before your next financial decision"
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "Before investing, before anything else → this"
+story_caption_poll: "Most people underestimate their emergency fund size"
+story_caption_quiz: "Hint: one of them is the shiny one"
+story_caption_stat: "One bad month is how debt starts"
+story_caption_cta: "Size yours correctly → link in bio"
+
+story_hashtag: "#emergencyfundeurope"
 ---
 
 # The Emergency Fund: Your First Financial Safety Net
 
 ## Caption
 
-Before you invest. Before you pay extra on debt. Before anything else, build a buffer.
+Before investing. Before paying extra on debt.
+Before anything else — this.
 
-An emergency fund is the foundation that keeps the rest of your financial plan from collapsing. Here's how to build one, how much you need, and where to keep it.
+Without a buffer, every surprise becomes debt.
+With one, the same surprise is just an inconvenience.
 
-Full post: https://nidhi.today/blog/emergency-fund
+The question isn't whether to build one.
+It's how big yours actually needs to be —
+and the answer isn't always 6 months.
 
-#emergencyfund #personalfinance #savingmoney #financialliteracy #nidhi
+→ Save this if yours isn't sized right yet.
+→ Tag someone who's been meaning to start.
+
+Full guide → link in bio
+
+#emergencyfundeurope #financialbuffer #desifinance #moneyineurope #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** Slide 1 screenshot (new hook)
+- **Text overlay:** "Quick check: if your salary stopped tomorrow, how long could you last?"
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #emergencyfundeurope
+
+### Frame 2 — Poll (@ 16:00 CET)
+- **Sticker:** Poll
+- **Question:** How many months of expenses do you have saved?
+- **Options:** <1 / 1-3 / 3-6 / 6+
+
+### Frame 3 — Quiz (@ 18:00 CET)
+- **Sticker:** Quiz
+- **Question:** Which of these is NOT an emergency?
+- **Options:** Car breakdown / Broken phone screen / Flight deal to Bali / Medical copay
+- **Correct answer:** Flight deal to Bali
+
+### Frame 4 — Save CTA (@ 20:30 CET)
+- **Visual:** Slide 11 or 12 (the foundation slide)
+- **Text overlay:** "Save this before your next financial decision."
+- **Link sticker:** Blog URL
 
 ---
 
 ## Slide 1
 
-**The Emergency Fund**
+**3 months without salary**
 
-Build this before you invest a single euro
+Could your bank account survive?
 
-!! Basics of Money · 8/16 · @nidhi.today
+(If not, you don't have an investing problem
+You have a foundation problem)
 
 ---
 
@@ -158,12 +220,14 @@ One surprise expense and the whole plan collapses into debt
 
 ## Slide 13
 
->> **What's next?**
+>> **Basics of Money · 8/16**
 
->> Income vs wealth - they're not the
->> same thing, and confusing them is expensive
+>> Next up →
+>> Income vs wealth:
+>> they're not the same thing,
+>> and confusing them is expensive.
 
->> **Basics of money · 8/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 9

@@ -1,7 +1,38 @@
 ---
 title: "Discovery Level Complete: You Have the Foundation"
 blog_url: "https://nidhi.today/blog"
-hashtags: "#personalfinance #financialliteracy #moneytips #moneybasics #nidhi"
+hashtags: "#financialfoundation #moneybasics #desifinance #moneyineurope #nidhi"
+post_time: "14:30 CET (Thu/Fri) — milestone post; EU afternoon + India peak; shareability ramps into weekend"
+
+# Story content reference — 2-day story campaign (this is a milestone post)
+story_hook: |
+  16 posts
+  1 foundation
+
+  You made it
+story_stat: |
+  16 / 16
+
+  You now know more about money
+  than 90% of people you'll meet this week
+story_poll_q: "Which topic from the series hit hardest for you?"
+story_poll_opts: "Net worth | Compound interest | Liquidity | Inflation"
+story_quiz_q: ""
+story_quiz_opts: ""
+story_quiz_answer: ""
+story_prompt: |
+  Save this
+
+  Share with someone just starting
+  their financial journey
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "16 posts · 1 foundation · you did it"
+story_caption_poll: "Which concept clicked hardest for you?"
+story_caption_stat: "More than 90% of people never learn this"
+story_caption_cta: "Money in Action series drops next → follow"
+
+story_hashtag: "#financialfoundation"
 ---
 
 # Discovery Level Complete: You Have the Foundation
@@ -10,17 +41,69 @@ hashtags: "#personalfinance #financialliteracy #moneytips #moneybasics #nidhi"
 
 16 posts. One foundation.
 
-You now understand the building blocks behind every financial decision you'll make: net worth, assets, liabilities, cash flow, compound growth, inflation, purchasing power, saving vs investing, credit, and insurance.
+You now understand the building blocks behind
+every financial decision you'll make for the rest
+of your life:
 
-Most people never learn this. You did.
+✓ Net worth & how to calculate it
+✓ Assets, liabilities, and what actually counts
+✓ How to get out of debt (snowball vs avalanche)
+✓ Compound growth — for and against you
+✓ Liquidity and emergency funds
+✓ Income vs wealth
+✓ Cash flow & purchasing power
+✓ Saving vs investing
+✓ Budgeting, credit, and insurance
 
-But knowing the concepts isn't enough. Next, we put them to work.
+Most people never learn this.
+You did. Quietly. 16 posts at a time.
 
-The next series -- Money in Action -- covers how to actually use what you've learned: understanding risk, asset classes, building a portfolio, and making your money grow.
+All 16 live permanently on the blog — searchable,
+always up to date, linked in bio.
 
+→ Save this as a reference.
+→ Share with someone just starting their financial journey.
+
+Next series — Money in Action — drops soon.
 Follow @nidhi.today so you don't miss it.
 
-#personalfinance #financialliteracy #moneytips #moneybasics #nidhi
+#financialfoundation #moneybasics #desifinance #moneyineurope #nidhi
+
+---
+
+## Story Sequence
+
+**Milestone post — 2-day story campaign.** Use this to maximize shareability and set up the next series launch.
+
+### Day 1 — Launch day
+
+**Frame 1 — Hook (@ 14:30 CET — post time)**
+- **Visual:** Slide 1 screenshot
+- **Text overlay:** "16 posts. 1 foundation. You made it."
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #financialfoundation
+
+**Frame 2 — Poll (@ 16:00 CET)**
+- **Sticker:** Poll
+- **Question:** Which topic from the series hit hardest for you?
+- **Options:** Net worth / Compound interest / Liquidity / Inflation
+
+**Frame 3 — Value (@ 18:00 CET)**
+- **Visual:** A "Basics of Money — all 16 posts" tile or screenshot of the blog category page
+- **Text overlay:** "The full library lives on the blog. Link in bio."
+- **Link sticker:** Blog URL (category page listing all 16 discovery posts)
+
+**Frame 4 — Share CTA (@ 20:30 CET)**
+- **Visual:** Slide 8 (follow for next series)
+- **Text overlay:** "Share this with someone just starting their financial journey."
+- **Sticker:** None
+
+### Day 2 — Tease the next series
+
+**Frame 1** — Teaser visual: "Next: Money in Action"
+**Frame 2** — Poll: "Which topic first?" [Risk] [Asset classes] [Portfolio building]
+**Frame 3** — Text story: "Follow so you don't miss post #1 of the new series."
+**Frame 4** — Slider sticker: "How ready do you feel to start investing?" [emoji: 📈]
 
 ---
 
@@ -29,8 +112,6 @@ Follow @nidhi.today so you don't miss it.
 **Basic Level complete**
 
 You now have the full foundation
-
-!! Basics of Money · Recap · @nidhi.today
 
 ---
 
@@ -105,4 +186,12 @@ Now we put the foundation concepts to work:
 
 >> **Basics of Money · Complete**
 
->> Follow @nidhi.today for the next series
+>> You now have the foundation.
+
+>> ———
+
+>> Coming next:
+>> Money in Action series
+
+>> Full library → link in bio
+>> Follow @nidhi.today so you don't miss it

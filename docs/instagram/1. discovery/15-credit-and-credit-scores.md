@@ -1,30 +1,98 @@
 ---
 title: "Credit and Credit Scores: What They Are and Why They Matter"
 blog_url: "https://nidhi.today/blog/credit-and-credit-scores"
-hashtags: "#creditscore #personalfinance #financialliteracy #moneytips #nidhi"
+hashtags: "#creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — credit-score content largely EU-focused (India uses CIBIL); still lean EU evening for best reach"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  Same house
+  Same salary
+
+  One person pays €77,000 more
+  over 25 years
+story_stat: "€77,000 = the cost of a 3-digit number you've probably never checked"
+story_poll_q: "Do you know your current credit score?"
+story_poll_opts: "Yes, exactly | Rough idea | No clue"
+story_quiz_q: ""
+story_quiz_opts: ""
+story_quiz_answer: ""
+story_prompt: |
+  Save this
+
+  Check your score this week
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "3 digits · €77,000 of real cost over 25 years"
+story_caption_poll: "Most people have never checked theirs"
+story_caption_stat: "A second home in interest, for the same house"
+story_caption_cta: "Check your credit score this week"
+
+story_hashtag: "#creditscore"
 ---
 
 # Credit and Credit Scores: What They Are and Why They Matter
 
 ## Caption
 
-Same house. Same income. But one person pays €77,000 more in interest over 25 years.
+Two people buy the same €200,000 house.
+Both earn the same salary.
+One pays €90,800 in interest over 25 years.
+The other pays €168,500.
 
-The difference? Their credit score. Here's what it is, why it matters even if you don't plan to borrow, and how to build it.
+The difference: a 3-digit number most people
+have never checked.
 
-Full post: https://nidhi.today/blog/credit-and-credit-scores
+Your credit score won't show up on your net worth.
+But it silently determines the interest rate on
+every loan, the deposit on every apartment,
+and sometimes even the premium on your insurance.
 
-#creditscore #personalfinance #financialliteracy #moneytips #nidhi
+→ Save this and check your score this week.
+→ Tag someone who's about to apply for a mortgage.
+
+Full guide → link in bio
+
+#creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** Big number — "€77,000"
+- **Text overlay:** "The price of a 3-digit number you've probably never checked ↓"
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #creditscore
+
+### Frame 2 — Poll (@ 16:00 CET)
+- **Sticker:** Poll
+- **Question:** Do you know your current credit score?
+- **Options:** Yes, exactly / Rough idea / No clue
+
+### Frame 3 — Value (@ 18:00 CET)
+- **Visual:** Slide 4 (the interest rate gap table)
+- **Text overlay:** "Same house. Up to €77,000 difference."
+- **Link sticker:** Blog URL
+
+### Frame 4 — Save CTA (@ 20:30 CET)
+- **Visual:** Slide 8 (the myths slide)
+- **Text overlay:** "Save this. Check your score this week."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**Your credit score matters**
+**Same house · Same salary**
 
-Even if you never plan to borrow
+One person pays **€77,000 more**
+over 25 years
 
-!! Basics of Money · 15/16 · @nidhi.today
+The only difference?
+3 digits
 
 ---
 
@@ -157,13 +225,14 @@ The other is protecting what you've built from sudden, unexpected loss
 
 ## Slide 12
 
->> **What's next?**
+>> **Basics of Money · 15/16**
 
->> Insurance basics - what it protects,
->> what it costs, and how it works with
->> your emergency fund
+>> Next up →
+>> Insurance basics:
+>> what it protects, what it costs,
+>> and how it works with your emergency fund.
 
->> **Basics of money · 15/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 16

@@ -1,30 +1,94 @@
 ---
 title: "Budgeting: Controlling the Gap Between Income and Spending"
 blog_url: "https://nidhi.today/blog/budgeting"
-hashtags: "#budgeting #personalfinance #savingmoney #moneytips #nidhi"
+hashtags: "#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi"
+post_time: "08:00 CET (Tue/Thu) — morning planning energy + India lunch slot (12:30 IST); stories cascade whole day"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  "I don't know where my money went"
+
+  is the most expensive sentence
+  in personal finance
+story_stat: "3 methods · 1 hour · lifetime of clarity"
+story_poll_q: "Have you ever actually stuck to a budget for 6+ months?"
+story_poll_opts: "Yes 💪 | No, I always quit"
+story_quiz_q: "Best budgeting method for variable income?"
+story_quiz_opts: "50/30/20 | Zero-based | Pay-yourself-first | All equally"
+story_quiz_answer: "Zero-based"
+story_prompt: "Tag someone who's been 'planning to budget' for 2+ years"
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "The most expensive sentence in personal finance"
+story_caption_poll: "Most people quit budgeting in two weeks"
+story_caption_quiz: "Match the method to how your income flows"
+story_caption_stat: "3 methods · pick one · done"
+story_caption_cta: "Pick your method by Sunday → start Monday"
+
+story_hashtag: "#budgetingtips"
 ---
 
 # Budgeting: Controlling the Gap Between Income and Spending
 
 ## Caption
 
-You know how much you earn. You know what you spend. But at the end of the month, you're not sure where the difference went.
+You know what you earn.
+You know roughly what you spend.
+But at the end of the month, you can't quite
+account for the difference.
 
-That's tracking, not budgeting. Here are 3 methods to turn your cash flow into a system -- and why automating it beats willpower every time.
+That's not budgeting. That's hoping.
 
-Full post: https://nidhi.today/blog/budgeting
+3 methods. Pick the one that matches how you
+actually think — not the one that sounds most
+disciplined on a podcast.
 
-#budgeting #personalfinance #savingmoney #moneytips #nidhi
+→ Save this and pick your method by Sunday.
+→ Tag someone who's been "planning to budget"
+  for 2 years.
+
+Full guide → link in bio
+
+#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 08:00 CET — post time)
+- **Visual:** Slide 1 screenshot (new hook)
+- **Text overlay:** "Which of the 3 methods are you? Swipe to find out."
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #budgetingtips
+
+### Frame 2 — Poll (@ 12:30 CET — EU lunch / India afternoon)
+- **Sticker:** Poll
+- **Question:** Have you ever actually stuck to a budget for 6+ months?
+- **Options:** Yes 💪 / No, I always quit
+
+### Frame 3 — Quiz (@ 17:00 CET — EU pre-evening / India peak)
+- **Sticker:** Quiz
+- **Question:** Best budgeting method for variable income?
+- **Options:** 50/30/20 / Zero-based / Pay-yourself-first / All equally
+- **Correct answer:** Zero-based
+
+### Frame 4 — Tag CTA (@ 19:30 CET — EU evening / India late)
+- **Visual:** Slide 11 (bottom line: a budget creates freedom)
+- **Text overlay:** "Tag someone who's been 'planning to budget' for 2+ years."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**Budgeting isn't about restriction**
+**"I don't know where my money went"**
 
-It's about direction
+is the most expensive sentence
+in personal finance
 
-!! Money in Action · 1/14 · @nidhi.today
+A budget fixes that in under an hour
 
 ---
 
@@ -162,12 +226,14 @@ When you know where your money is going, you stop wondering where it went
 
 ## Slide 12
 
->> **What's next?**
+>> **Basics of Money · 14/16**
 
->> Credit scores - what they are and why
->> they matter, even if you never p[15-credit-and-credit-scores.md](15-credit-and-credit-scores.md)lan to borrow
+>> Next up →
+>> Credit scores: what they are
+>> and why they matter,
+>> even if you never plan to borrow.
 
->> **Basics of money · 14/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 15

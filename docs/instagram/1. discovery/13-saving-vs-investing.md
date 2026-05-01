@@ -1,31 +1,89 @@
 ---
 title: "Saving vs. Investing: When to Do Which"
 blog_url: "https://nidhi.today/blog/saving-vs-investing"
-hashtags: "#savingvsinvesting #investing #personalfinance #financialliteracy #nidhi"
+hashtags: "#savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — investing resonates with SIP-culture Indian audience in evening peak"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  Emergency fund ≠ stock market
+
+  Retirement fund ≠ savings account
+story_stat: "Time horizon = the dividing line"
+story_poll_q: ""
+story_poll_opts: ""
+story_quiz_q: "Money you need in 2 years should go into:"
+story_quiz_opts: "High-yield savings | Index fund | Crypto | Checking"
+story_quiz_answer: "High-yield savings"
+story_prompt: "Save this before your next money move"
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "The two most-confused words in personal finance"
+story_caption_quiz: "Time horizon is the whole answer"
+story_caption_stat: "Wrong sequence makes everything fragile"
+story_caption_cta: "4-step ladder in bio → budgeting next"
+
+story_hashtag: "#savingvsinvesting"
 ---
 
 # Saving vs. Investing: When to Do Which
 
 ## Caption
 
-Your emergency fund should not be in the stock market. Your retirement fund should not be in a savings account.
+Your emergency fund should NOT be in the stock market.
+Your retirement fund should NOT be in a savings account.
 
-Both are mistakes. Both come from confusing saving with investing. Here's when to do which -- and why the sequence matters.
+Both are mistakes. Both come from confusing
+"saving" with "investing" — two words everyone uses
+interchangeably but that do completely different jobs.
 
-Full post: https://nidhi.today/blog/saving-vs-investing
+One protects you. The other grows you.
+Put them in the wrong order, and everything else
+gets fragile.
 
-#savingvsinvesting #investing #personalfinance #financialliteracy #nidhi
+→ Save this before your next money move.
+→ Tag someone who keeps "investing" in a savings account.
+
+Full guide → link in bio
+
+#savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** Two-column image — "SAVE" vs "INVEST"
+- **Text overlay:** "Which goes where? Most people get one of these wrong."
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #savingvsinvesting
+
+### Frame 2 — Quiz (@ 16:00 CET)
+- **Sticker:** Quiz
+- **Question:** Money you need in 2 years should go into:
+- **Options:** High-yield savings / Index fund / Crypto / Checking
+- **Correct answer:** High-yield savings
+
+### Frame 3 — Value (@ 18:00 CET)
+- **Visual:** Slide 8 (the right sequence)
+- **Text overlay:** "Skip a step here and you create fragility."
+- **Link sticker:** Blog URL
+
+### Frame 4 — Save CTA (@ 20:30 CET)
+- **Visual:** Slide 11 (saving + investing are complementary)
+- **Text overlay:** "Save this before your next money move."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**Saving vs. Investing**
+**Saving vs Investing**
 
 They're not the same thing 
 And the order matters
-
-!! Basics of Money · 14/16 · @nidhi.today
 
 ---
 
@@ -156,12 +214,14 @@ Use each one where it belongs, in the right order
 
 ## Slide 12
 
->> **What's next?**
+>> **Basics of Money · 13/16**
 
->> Budgeting - how to tell each euro
->> where to go before the month begins
+>> Next up →
+>> Budgeting:
+>> how to tell each euro where to go
+>> before the month begins.
 
->> **Basics of money · 14/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 14

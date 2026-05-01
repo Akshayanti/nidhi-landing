@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #002171 0%, #005B4F 100%);
+    color: #FFFFFF;
+  }
+
+  .story {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    padding: 220px 80px 320px; /* IG safe zones: top profile bar ~220, bottom reply bar ~320 */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top teal accent bar */
+  .story::before {
+    content: '';
+    position: absolute;
+    top: 220px;
+    left: 80px;
+    right: 80px;
+    height: 4px;
+    background: #00897B;
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* Brand handle just under accent bar */
+  .top-brand {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: #4EBAAA;
+    letter-spacing: 0.02em;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  /* --- Hook variant --- */
+  .story.story-hook .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 112px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  .story.story-hook .content strong {
+    color: #4EBAAA;
+  }
+
+  /* --- Stat variant (big number/fact) --- */
+  .story.story-stat .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 140px;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: #4EBAAA;
+  }
+
+  .story.story-stat .content strong {
+    color: #FFFFFF;
+  }
+
+  /* --- Poll / Quiz variants --- */
+  .story.story-poll .content,
+  .story.story-quiz .content {
+    justify-content: flex-start;
+    padding-top: 40px;
+  }
+
+  .question {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 80px;
+    text-align: center;
+  }
+
+  .sticker-area {
+    margin-top: 60px;
+    padding: 48px 40px 56px;
+    border: 3px dashed rgba(78, 186, 170, 0.6);
+    border-radius: 32px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .sticker-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: #4EBAAA;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0.9;
+  }
+
+  .sticker-options {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    color: #FFFFFF;
+  }
+
+  .sticker-options .opt {
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+  }
+
+  .quiz-answer {
+    margin-top: 32px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    color: #4EBAAA;
+    opacity: 0.75;
+  }
+
+  /* --- CTA variant (save/tag/share prompt) --- */
+  .story.story-cta .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 86px;
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+  }
+
+  .story.story-cta .content::before {
+    content: '❝';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 120px;
+    line-height: 1;
+    color: #4EBAAA;
+    opacity: 0.4;
+    margin-bottom: 24px;
+  }
+
+  .story.story-cta .content strong {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #4EBAAA;
+  }
+
+  /* --- Hashtag corner (small, above bottom safe zone) --- */
+  .hashtag-corner {
+    position: absolute;
+    bottom: 340px;
+    right: 80px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    color: #4EBAAA;
+    opacity: 0.7;
+  }
+
+  /* Bold emphasis across all variants */
+  .content strong {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+  <div id="story" class="story">
+    <div class="top-brand">@nidhi.today</div>
+    <div class="content" id="content"></div>
+    <div class="hashtag-corner" id="hashtag-corner"></div>
+  </div>
+</body>
+</html>

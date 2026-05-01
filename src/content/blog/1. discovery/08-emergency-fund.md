@@ -4,8 +4,8 @@ title: "The Emergency Fund: Your First Financial Safety Net"
 description: "Before you invest, before you pay extra on debt, before anything else, build a buffer. An emergency fund is the foundation that keeps the rest of your plan from collapsing."
 tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of salary, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
 order: 8
-pubDate: 2026-05-03
-updatedDate: 2026-05-03
+pubDate: 2026-05-04
+updatedDate: 2026-05-04
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]

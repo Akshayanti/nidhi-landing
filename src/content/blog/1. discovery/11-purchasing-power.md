@@ -4,8 +4,8 @@ title: "Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow"
 description: "A euro today buys more than a euro in ten years. Purchasing power explains why, and the force behind its decline, inflation, is why saving alone isn't enough."
 tldr: "Purchasing power is what your money can actually buy. It declines over time as prices rise, a force called inflation. At 2-3% per year, your money loses roughly half its purchasing power over 25 years. Earning 2% in a savings account when prices rise 3% means you're losing ground. The only way to preserve purchasing power is to earn returns that outpace inflation."
 order: 11
-pubDate: 2026-05-09
-updatedDate: 2026-05-09
+pubDate: 2026-05-11
+updatedDate: 2026-05-11
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

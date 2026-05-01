@@ -1,32 +1,101 @@
 ---
 title: "Insurance Basics: Protecting What You've Built"
 blog_url: "https://nidhi.today/blog/insurance-basics"
-hashtags: "#insurance #personalfinance #financialliteracy #moneytips #nidhi"
+hashtags: "#insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — insurance topics resonate strongly with Indian families in evening scroll"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  You saved 6 months
+  Apartment floods
+  €4,500 gone
+
+  Your neighbor paid €150
+  and kept everything
+story_stat: "Same disaster · 30x cost difference"
+story_poll_q: ""
+story_poll_opts: ""
+story_quiz_q: "The #1 insurance most people skip, and the one that protects your biggest asset:"
+story_quiz_opts: "Health | Life | Disability | Travel"
+story_quiz_answer: "Disability (your ability to earn)"
+story_prompt: "Tag someone who's over- or under-insured"
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "Same disaster, two completely different recoveries"
+story_caption_quiz: "The one that protects your earning potential"
+story_caption_stat: "€150 vs €4,500 · same flood"
+story_caption_cta: "Audit your policies this weekend"
+
+story_hashtag: "#insurancebasics"
 ---
 
 # Insurance Basics: Protecting What You've Built
 
 ## Caption
 
-You spent six months building an emergency fund. Then your apartment floods. €4,500 in damage. Your emergency fund covers it -- but now it's nearly gone.
+You spent six months building an emergency fund.
+Then your apartment floods.
+€4,500 gone. Your fund is nearly empty.
 
-Your neighbor filed a claim, paid a €150 deductible, and got a payout in two weeks. Her emergency fund is untouched. The difference? Insurance.
+Your neighbor filed a claim, paid a €150 deductible,
+and got a payout in two weeks.
+Her fund is untouched.
 
-Here's what it protects, what it costs, and how it works with your emergency fund.
+Same disaster. Two completely different recoveries.
+That's what insurance actually is — and it's also
+why "insure everything" and "skip insurance" are
+both wrong answers.
 
-Full post: https://nidhi.today/blog/insurance-basics
+Here's the honest rule: insure what you can't
+afford to lose. Self-insure the rest.
 
-#insurance #personalfinance #financialliteracy #moneytips #nidhi
+→ Save this and audit your policies this weekend.
+→ Tag someone who's either over-insured or
+  completely uninsured.
+
+Full guide → link in bio
+
+#insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** Slide 1 screenshot (new hook)
+- **Text overlay:** "Same disaster. Two different outcomes. Swipe →"
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #insurancebasics
+
+### Frame 2 — Quiz (@ 16:00 CET)
+- **Sticker:** Quiz
+- **Question:** The #1 insurance most people skip — and the one that protects your biggest asset:
+- **Options:** Health / Life / Disability / Travel
+- **Correct answer:** Disability (your ability to earn)
+
+### Frame 3 — Value (@ 18:00 CET)
+- **Visual:** Slide 8 (when insurance makes sense)
+- **Text overlay:** "Rule: insure what you can't afford to lose. Self-insure the rest."
+- **Link sticker:** Blog URL
+
+### Frame 4 — Tag CTA (@ 20:30 CET)
+- **Visual:** Slide 12 (bottom line)
+- **Text overlay:** "Tag someone who's over- or under-insured."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**One event can wipe out years of progress**
+**You saved for 6 months**
 
-Insurance: the layer that protects your net worth
+The apartment floods
+€4,500 gone in one afternoon
 
-!! Basics of Money · 16/16 · @nidhi.today
+Your neighbor paid €150
+and kept everything
 
 ---
 
@@ -158,12 +227,13 @@ It prevents one event from destroying it
 
 ## Slide 12
 
->> **Insure what you can't afford to lose**
->> **Self-insure the rest**
-
->> Save this for when you need it
-
 >> **Basics of Money · 16/16**
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> **Insure what you can't afford to lose.**
+>> **Self-insure the rest.**
+
+>> ———
+
+>> Next up → 16-post recap
+>> Full library → link in bio
+>> Follow @nidhi.today

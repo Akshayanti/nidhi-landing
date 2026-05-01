@@ -1,30 +1,94 @@
 ---
 title: "Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow"
 blog_url: "https://nidhi.today/blog/purchasing-power"
-hashtags: "#inflation #personalfinance #financialliteracy #investing #nidhi"
+hashtags: "#inflationawareness #purchasingpower #desifinance #moneyineurope #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — inflation topic lands strongly with Indian audience in evening peak"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  €10,000 in 2005
+  = €6,100 of stuff today
+
+  You lost 40% without spending a cent
+story_stat: "€10,000 → €6,100 · no withdrawals · 20 years"
+story_poll_q: "Where's most of your money right now?"
+story_poll_opts: "Savings account | Invested"
+story_quiz_q: ""
+story_quiz_opts: ""
+story_quiz_answer: ""
+story_prompt: |
+  Save this
+
+  Share with anyone still keeping
+  all their money in a savings account
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "Doing nothing with money is not safe"
+story_caption_poll: "One of these loses to inflation silently"
+story_caption_stat: "Inflation is the tax no one warns you about"
+story_caption_cta: "Full purchasing-power math in bio"
+
+story_hashtag: "#inflationawareness"
 ---
 
 # Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow
 
 ## Caption
 
-You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it.
+You have €10,000 in the bank.
+Ten years from now, you'll still have €10,000
+(plus a little interest).
 
-That's purchasing power -- and it's why saving alone isn't enough.
+But you won't be able to buy the same things with it.
 
-Full post: https://nidhi.today/blog/purchasing-power
+This is the silent tax nobody warns you about —
+the one that makes "being careful with money"
+sometimes the riskiest thing you can do.
 
-#inflation #personalfinance #financialliteracy #investing #nidhi
+→ Save this if you keep most of your money
+  in a savings account.
+→ Share with anyone who says "investing is risky."
+
+Full breakdown → link in bio
+
+#inflationawareness #purchasingpower #desifinance #moneyineurope #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** Big number graphic — "€10,000 → €6,100"
+- **Text overlay:** "Same account. No withdrawals. Here's what happened ↓"
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #inflationawareness
+
+### Frame 2 — Poll (@ 16:00 CET)
+- **Sticker:** Poll
+- **Question:** Where's most of your money right now?
+- **Options:** Savings account / Invested
+
+### Frame 3 — Value (@ 18:00 CET)
+- **Visual:** Slide 7 (the real return table)
+- **Text overlay:** "Check your own number. Is it positive or negative right now?"
+- **Link sticker:** Blog URL
+
+### Frame 4 — Share CTA (@ 20:30 CET)
+- **Visual:** Slide 5 (the €10,000 decay example)
+- **Text overlay:** "Share this with anyone who still keeps all their money in a savings account."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**Why €1,000 today isn't €1,000 tomorrow**
+**€10,000 under your mattress in 2005**
+**= €6,100 of stuff today**
 
-The silent force behind every financial decision
-
-!! Basics of Money · 11/16 · @nidhi.today
+You lost 40%
+Without spending a cent
 
 ---
 
@@ -152,12 +216,13 @@ What you can do:
 
 ## Slide 12
 
->> **What's next?**
+>> **Basics of Money · 11/16**
 
->> Why your euro buys more in some
->> countries than others?
+>> Next up →
+>> Why your euro buys more
+>> in some countries than others.
 
->> **Basics of money · 11/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 12

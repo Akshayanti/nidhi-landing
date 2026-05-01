@@ -1,30 +1,102 @@
 ---
 title: "Why Your Euro Buys More in Some Countries Than Others"
 blog_url: "https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries"
-hashtags: "#purchasingpower #expatlife #personalfinance #financialliteracy #nidhi"
+hashtags: "#indiansineurope #expatlife #movingabroad #costoflivingcomparison #nidhi"
+post_time: "14:30 CET (Tue/Wed) — PRIMARY Indian-diaspora post; EU afternoon + India 19:00 IST peak; both at their best"
+
+# Story content reference — 4-frame sequence on post day
+# High viral potential — consider also cutting as a Reel
+# This is your flagship post for the Indian-in-Europe audience segment
+story_hook: |
+  Same cappuccino
+
+  Helsinki €4.50
+  Lisbon €1.60
+  Bangkok €1.20
+story_stat: "€2,000 in Lisbon = €4,000 in Copenhagen (roughly)"
+story_poll_q: "Would you take a 30% pay cut to move somewhere 50% cheaper?"
+story_poll_opts: "Yes, in a heartbeat | No, salary matters more"
+story_quiz_q: ""
+story_quiz_opts: ""
+story_quiz_answer: ""
+story_prompt: "Tag a friend considering a move abroad"
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "Same drink · 4 countries · 4 realities"
+story_caption_poll: "Real income > nominal salary, always"
+story_caption_stat: "Location beats paycheck more often than you think"
+story_caption_cta: "Tag a friend considering moving abroad"
+
+story_hashtag: "#expatlife"
 ---
 
 # Why Your Euro Buys More in Some Countries Than Others
 
 ## Caption
 
-You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off?
+You earn €3,000 a month in Helsinki.
+Move to Lisbon and your salary drops to €1,800.
+But your rent, groceries, and coffee all cost half.
 
-Understanding exchange rates and purchasing power parity is essential for anyone living, working, or spending across borders.
+Are you poorer? Richer? Neither?
 
-Full post: https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries
+This is the math that trips up everyone considering
+a move abroad — and the reason "a higher salary"
+sometimes means "a worse life."
 
-#purchasingpower #expatlife #personalfinance #financialliteracy #nidhi
+If you've ever thought about moving countries,
+or you earn in one currency and spend in another,
+this one's for you.
+
+→ Save this before your next big move.
+→ Tag a friend who's considering relocating.
+
+Full post → link in bio
+
+#indiansineurope #expatlife #movingabroad #costoflivingcomparison #nidhi
+
+---
+
+## Story Sequence
+
+**High viral potential post.** Also consider cutting a 15-second Reel version of the cappuccino stack with voiceover — expat content travels furthest on Reels.
+
+Run stories across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 14:30 CET — post time)
+- **Visual:** 4-cappuccino-prices stack graphic
+- **Text overlay:** "Same drink. Different country. Different reality. ↓"
+- **Sticker:** Tap-to-post + Location sticker (your city)
+- **Hashtag sticker (small):** #expatlife
+
+### Frame 2 — Poll (@ 16:00 CET)
+- **Sticker:** Poll
+- **Question:** Would you take a 30% pay cut to move somewhere 50% cheaper?
+- **Options:** Yes, in a heartbeat / No, salary matters more
+
+### Frame 3 — Value (@ 18:00 CET)
+- **Visual:** Slide 9 (€2,000 Lisbon = €4,000 Copenhagen example)
+- **Text overlay:** "A pay cut isn't always a pay cut. Here's the math."
+- **Link sticker:** Blog URL
+
+### Frame 4 — Tag CTA (@ 20:30 CET)
+- **Visual:** Slide 11 (Bottom Line) or a bold text quote
+- **Text overlay:** "Tag a friend who's considering moving abroad."
+- **Sticker:** None
 
 ---
 
 ## Slide 1
 
-**Why your euro buys more in some countries than others?**
+**Same cappuccino**
 
-(It's not just about exchange rates)
+Helsinki: €4.50
+Berlin: €3.20
+Lisbon: €1.60
+Bangkok: €1.20
 
-!! Basics of Money · 12/16 · @nidhi.today
+This is why a pay cut
+isn't always a pay cut
 
 ---
 
@@ -144,12 +216,14 @@ What you can do:
 
 ## Slide 12
 
->> **What's next?**
+>> **Basics of Money · 12/16**
 
->> Saving vs investing - when should you
->> do which? They're not the same thing
+>> Next up →
+>> Saving vs investing:
+>> when to do which,
+>> and why the sequence matters.
 
->> **Basics of money · 12/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 13

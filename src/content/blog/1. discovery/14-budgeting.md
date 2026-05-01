@@ -4,8 +4,8 @@ title: "Budgeting: Controlling the Gap Between Income and Spending"
 description: "You track your income. You know your expenses. But unless you tell each euro where to go before the month begins, you're not budgeting, you're just watching."
 tldr: "A budget is a plan for your money, not a restriction on it. It turns the gap between income and expenses, your savings rate, into something intentional. The three most common approaches are: the 50/30/20 rule (simple, percentage-based), zero-based budgeting (every euro assigned a job), and pay-yourself-first (automate savings, spend the rest). The best budget is the one you'll actually follow. Automating your savings and bill payments removes willpower from the equation and makes consistency the default."
 order: 14
-pubDate: 2026-05-15
-updatedDate: 2026-05-15
+pubDate: 2026-05-17
+updatedDate: 2026-05-17
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

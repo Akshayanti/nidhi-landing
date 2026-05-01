@@ -74,7 +74,7 @@ function applyInline(text) {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }
 
-async function renderSlides(post, browser) {
+export async function renderSlides(post, browser) {
   const outDir = join(OUTPUT_DIR, post.subDir, post.slug);
   await mkdir(outDir, { recursive: true });
 
@@ -175,7 +175,10 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Render failed:', err);
-  process.exit(1);
-});
+import { fileURLToPath } from 'node:url';
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch(err => {
+    console.error('Render failed:', err);
+    process.exit(1);
+  });
+}

@@ -1,20 +1,86 @@
 ---
 title: "Cash Flow 101: Where Your Money Actually Goes"
 blog_url: "https://nidhi.today/blog/cash-flow-101"
-hashtags: "#cashflow #budgeting #personalfinance #moneytips #nidhi"
+hashtags: "#cashflowmanagement #moneyleaks #desifinance #subscriptionaudit #nidhi"
+post_time: "08:00 CET (Tue/Thu) — morning tracking mindset + India lunch slot (12:30 IST); stories cascade through whole day"
+
+# Story content reference — 4-frame sequence on post day
+story_hook: |
+  Ask anyone their salary
+  Instant
+
+  Ask where their money goes
+  Silence
+story_stat: "Most people can't name 5 of their monthly expenses"
+story_poll_q: "Have you checked your bank statement in the last 7 days?"
+story_poll_opts: "Yes | No"
+story_quiz_q: "The average annual leak on forgotten subscriptions is:"
+story_quiz_opts: "€50 | €150 | €300+ | €500+"
+story_quiz_answer: "€300+"
+story_prompt: |
+  Save this
+
+  Do the 10-min exercise this weekend
+
+# Tiny captions for IG story native caption field (paste when posting; ~10 words each)
+story_caption_hook: "Where does your money actually go each month?"
+story_caption_poll: "The silence is usually the answer"
+story_caption_quiz: "Forgotten subscriptions add up fast"
+story_caption_stat: "The gap between earn and spend = your future"
+story_caption_cta: "Try the 10-min cash flow exercise this weekend"
+
+story_hashtag: "#cashflowmanagement"
 ---
 
 # Cash Flow 101: Where Your Money Actually Goes
 
 ## Caption
 
-If net worth is a snapshot of your finances, cash flow is the video. It shows you the movement -- where money comes from, where it goes, and whether you're moving forward or standing still.
+Ask anyone their salary — instant answer.
+Ask where their money actually goes — silence.
 
-Most people know what they earn. Very few know what they spend.
+That silence is where wealth leaks.
 
-Full post: https://nidhi.today/blog/cash-flow-101
+Small ones: the €9 subscription you forgot about.
+Big ones: the "occasional" dinners that aren't occasional.
 
-#cashflow #budgeting #personalfinance #moneytips #nidhi
+Cash flow is the one number that tells you more
+about your financial future than your paycheck ever will.
+
+→ Save this and do the 10-minute exercise on slide 6.
+→ Tag someone who says "I don't know where my money goes."
+
+Full post → link in bio
+
+#cashflowmanagement #moneyleaks #desifinance #subscriptionaudit #nidhi
+
+---
+
+## Story Sequence
+
+Run across post day to drive story viewers → post → blog.
+
+### Frame 1 — Hook (@ 08:00 CET — post time)
+- **Visual:** Slide 1 screenshot
+- **Text overlay:** "Spoiler: most people genuinely can't answer this ↓"
+- **Sticker:** Tap-to-post
+- **Hashtag sticker (small):** #cashflowmanagement
+
+### Frame 2 — Poll (@ 12:30 CET — EU lunch / India afternoon)
+- **Sticker:** Poll
+- **Question:** Have you checked your bank statement in the last 7 days?
+- **Options:** Yes / No
+
+### Frame 3 — Quiz (@ 17:00 CET — EU pre-evening / India peak)
+- **Sticker:** Quiz
+- **Question:** The average annual leak on forgotten subscriptions is:
+- **Options:** €50 / €150 / €300+ / €500+
+- **Correct answer:** €300+
+
+### Frame 4 — Save CTA (@ 19:30 CET — EU evening / India late)
+- **Visual:** Slide 6 (the tracking method) or the savings rate formula
+- **Text overlay:** "Save this. Do the 10-minute exercise this weekend."
+- **Link sticker:** Blog URL
 
 ---
 
@@ -23,8 +89,6 @@ Full post: https://nidhi.today/blog/cash-flow-101
 **Where does your money actually go?**
 
 (Spoiler: most people can't answer this)
-
-!! Basics of Money · 10/16 · @nidhi.today
 
 ---
 
@@ -140,12 +204,13 @@ Track one, and you're managing the other
 
 ## Slide 11
 
->> **What's next?**
+>> **Basics of Money · 10/16**
 
->> Purchasing power - why €1,000 today
->> isn't €1,000 tomorrow
+>> Next up →
+>> Purchasing power:
+>> why €1,000 today isn't €1,000 tomorrow.
 
->> **Basics of money · 10/16**
+>> ———
 
->> Full guide link in caption and bio
->> Follow @nidhi.today for more
+>> Full library → link in bio
+>> Follow @nidhi.today for post 11

@@ -22,20 +22,80 @@ async function findMarkdownFiles(dir, base = dir) {
 
 /**
  * Parse YAML-like frontmatter from a markdown string.
- * Handles simple key: "value" and key: value pairs.
+ *
+ * Supports:
+ *  - Simple single-line:  key: "value"  or  key: value
+ *  - Block scalar:        key: |           (preserves newlines)
+ *                           line one
+ *                           line two
+ *  - Folded scalar:       key: >           (joins wrapped lines with spaces)
+ *                           line one
+ *                           line two
+ *  - Comments (# ...) are skipped.
  */
 function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return { frontmatter: {}, body: content };
 
   const frontmatter = {};
-  for (const line of match[1].split('\n')) {
+  const lines = match[1].split('\n');
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Skip comments
+    if (line.trimStart().startsWith('#')) { i++; continue; }
+
+    // Block scalar: key: |   or   key: >
+    const blockMatch = line.match(/^(\w+):\s*([|>])\s*$/);
+    if (blockMatch) {
+      const [, key, marker] = blockMatch;
+      i++;
+      const blockLines = [];
+      let indent = null;
+
+      while (i < lines.length) {
+        const cur = lines[i];
+        if (cur === '') {
+          blockLines.push('');
+          i++;
+          continue;
+        }
+        const leadingSpaces = cur.match(/^ */)[0].length;
+        if (indent === null) indent = leadingSpaces;
+        if (leadingSpaces < indent) break; // dedent ends the block
+        blockLines.push(cur.slice(indent));
+        i++;
+      }
+
+      // Trim trailing blank lines
+      while (blockLines.length && blockLines[blockLines.length - 1] === '') {
+        blockLines.pop();
+      }
+
+      frontmatter[key] = marker === '|'
+        ? blockLines.join('\n')                                    // preserve newlines
+        : blockLines.join(' ').replace(/\s+/g, ' ').trim();        // fold to single line
+      continue;
+    }
+
+    // Simple key: "value" or key: value
     const m = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
     if (m) frontmatter[m[1]] = m[2];
+    i++;
   }
 
   const body = content.slice(match[0].length).trim();
   return { frontmatter, body };
+}
+
+/**
+ * Split a pipe-delimited string into a trimmed, non-empty array.
+ * Example: "Yes, easily | No, I'd panic" -> ["Yes, easily", "No, I'd panic"]
+ */
+function splitPipe(s) {
+  return (s || '').split('|').map(x => x.trim()).filter(Boolean);
 }
 
 /**
@@ -85,9 +145,21 @@ export function parseInstagramPost(content, relPath) {
     title: frontmatter.title || '',
     blogUrl: frontmatter.blog_url || '',
     hashtags: frontmatter.hashtags || '',
+    postTime: frontmatter.post_time || '',
     caption,
     slides,
     totalSlides: slides.length,
+    story: {
+      hook: frontmatter.story_hook || '',
+      stat: frontmatter.story_stat || '',
+      pollQ: frontmatter.story_poll_q || '',
+      pollOpts: splitPipe(frontmatter.story_poll_opts),
+      quizQ: frontmatter.story_quiz_q || '',
+      quizOpts: splitPipe(frontmatter.story_quiz_opts),
+      quizAnswer: frontmatter.story_quiz_answer || '',
+      prompt: frontmatter.story_prompt || '',
+      hashtag: frontmatter.story_hashtag || '',
+    },
   };
 }
 
