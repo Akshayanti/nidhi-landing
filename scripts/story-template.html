@@ -85,65 +85,72 @@
     color: #FFFFFF;
   }
 
-  /* --- Poll / Quiz variants --- */
-  .story.story-poll .content,
-  .story.story-quiz .content {
-    justify-content: flex-start;
-    padding-top: 40px;
+  /* --- Blank poll-backdrop variant (quiz mode only) --- */
+  /* Intentionally empty content so the native IG poll sticker has a clean
+     canvas. Brand chrome (accent bar + @handle + hashtag corner) is enough
+     to keep the frame consistent with the rest of the cascade. */
+  .story.story-poll .content {
+    /* inherits centered layout from .content; no additional styling needed */
   }
 
-  .question {
+  /* --- Answer-reveal variant (quiz mode, step-3 link backdrop) --- */
+  /* Two-part layout: the "ANSWER" eyebrow + answer text up top, then the
+     continuing stat/insight below, separated by a small teal divider. In
+     quiz mode the stat no longer backs step 2 (the blank poll frame does),
+     so it lives here as the "why" behind the reveal — continuing the
+     narrative under the link sticker instead of dropping it. When
+     story_stat is absent, only the ANSWER block renders. */
+  .story.story-answer .content {
     font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 64px;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 80px;
-    text-align: center;
+    gap: 80px;
   }
 
-  .sticker-area {
-    margin-top: 60px;
-    padding: 48px 40px 56px;
-    border: 3px dashed rgba(78, 186, 170, 0.6);
-    border-radius: 32px;
-    background: rgba(0, 0, 0, 0.12);
-  }
-
-  .sticker-label {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 26px;
-    color: #4EBAAA;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-    opacity: 0.9;
-  }
-
-  .sticker-options {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    font-size: 40px;
+  .story.story-answer .answer-main {
+    font-weight: 800;
+    font-size: 100px;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
     color: #FFFFFF;
   }
 
-  .sticker-options .opt {
-    padding: 20px 24px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+  .story.story-answer .answer-main strong {
+    color: #4EBAAA;
   }
 
-  .quiz-answer {
-    margin-top: 32px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-style: italic;
+  .story.story-answer .answer-main::before {
+    content: 'ANSWER';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    letter-spacing: 0.22em;
     color: #4EBAAA;
-    opacity: 0.75;
+    margin-bottom: 44px;
+  }
+
+  /* Continuing stat/insight — only present when story_stat is set */
+  .story.story-answer .answer-stat {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: #4EBAAA;
+  }
+
+  .story.story-answer .answer-stat strong {
+    color: #FFFFFF;
+  }
+
+  .story.story-answer .answer-stat::before {
+    content: '';
+    display: block;
+    width: 96px;
+    height: 3px;
+    background: #00897B;
+    border-radius: 2px;
+    margin: 0 auto 40px;
+    opacity: 0.6;
   }
 
   /* --- CTA variant (save/tag/share prompt) --- */

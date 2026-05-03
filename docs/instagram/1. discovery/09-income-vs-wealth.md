@@ -1,6 +1,6 @@
 ---
 title: "Income vs. Wealth: They're Not the Same Thing"
-blog_url: "https://nidhi.today/blog/income-vs-wealth"
+blog_url: "https://nidhi.today/blog/income-vs-wealth/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_income_v_wealth"
 hashtags: "#lifestyleinflation #savingsrate #desifinance #fireeurope #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — lifestyle inflation resonates strongly with Indian middle-class evening audience"
 
@@ -17,9 +17,6 @@ story_stat: |
   Same income
 story_poll_q: "After a raise, do you usually:"
 story_poll_opts: "Upgrade lifestyle | Keep spending flat"
-story_quiz_q: ""
-story_quiz_opts: ""
-story_quiz_answer: ""
 story_prompt: "Tag someone who needs to hear this today"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)

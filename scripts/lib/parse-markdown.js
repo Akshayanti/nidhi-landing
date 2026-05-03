@@ -150,13 +150,18 @@ export function parseInstagramPost(content, relPath) {
     slides,
     totalSlides: slides.length,
     story: {
+      // Quiz stickers were removed by Instagram; story_quiz_* fields in
+      // legacy frontmatter are intentionally not surfaced here. Multi-option
+      // polls (up to 4 options) cover the former quiz use case.
+      //
+      // story_answer is the optional reveal-frame text for quiz-style polls:
+      // when set, the stat frame renders the answer-reveal variant instead
+      // of the stat, pairing with the link sticker to route to the blog.
       hook: frontmatter.story_hook || '',
       stat: frontmatter.story_stat || '',
+      answer: frontmatter.story_answer || '',
       pollQ: frontmatter.story_poll_q || '',
       pollOpts: splitPipe(frontmatter.story_poll_opts),
-      quizQ: frontmatter.story_quiz_q || '',
-      quizOpts: splitPipe(frontmatter.story_quiz_opts),
-      quizAnswer: frontmatter.story_quiz_answer || '',
       prompt: frontmatter.story_prompt || '',
       hashtag: frontmatter.story_hashtag || '',
     },

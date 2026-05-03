@@ -1,6 +1,6 @@
 ---
 title: "Why Your Euro Buys More in Some Countries Than Others"
-blog_url: "https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries"
+blog_url: "https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_why_euro_buys_more"
 hashtags: "#indiansineurope #expatlife #movingabroad #costoflivingcomparison #nidhi"
 post_time: "14:30 CET (Tue/Wed) — PRIMARY Indian-diaspora post; EU afternoon + India 19:00 IST peak; both at their best"
 
@@ -16,9 +16,6 @@ story_hook: |
 story_stat: "€2,000 in Lisbon = €4,000 in Copenhagen (roughly)"
 story_poll_q: "Would you take a 30% pay cut to move somewhere 50% cheaper?"
 story_poll_opts: "Yes, in a heartbeat | No, salary matters more"
-story_quiz_q: ""
-story_quiz_opts: ""
-story_quiz_answer: ""
 story_prompt: "Tag a friend considering a move abroad"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)

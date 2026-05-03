@@ -1,6 +1,6 @@
 ---
 title: "The Emergency Fund: Your First Financial Safety Net"
-blog_url: "https://nidhi.today/blog/emergency-fund"
+blog_url: "https://nidhi.today/blog/emergency-fund/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_emergency_fund"
 hashtags: "#emergencyfundeurope #financialbuffer #desifinance #moneyineurope #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — EU afternoon + India 19:00 IST evening peak"
 
@@ -10,18 +10,15 @@ story_hook: |
   No salary
 
   Could your bank account survive?
-story_stat: "3 months · no income · how long do you last?"
-story_poll_q: "How many months of expenses do you have saved?"
-story_poll_opts: "<1 | 1-3 | 3-6 | 6+"
-story_quiz_q: "Which of these is NOT an emergency?"
-story_quiz_opts: "Car breakdown | Broken phone screen | Flight deal to Bali | Medical copay"
-story_quiz_answer: "Flight deal to Bali"
+story_stat: "Unexpected · Urgent · Necessary"
+story_poll_q: "Which of these is NOT an emergency?"
+story_poll_opts: "Car breakdown | Broken phone screen | Flight deal to Bali | Medical copay"
+story_answer: "Flight deal to Bali"
 story_prompt: "Save this before your next financial decision"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)
 story_caption_hook: "Before investing, before anything else → this"
-story_caption_poll: "Most people underestimate their emergency fund size"
-story_caption_quiz: "Hint: one of them is the shiny one"
+story_caption_poll: "Hint: one of them is the shiny one"
 story_caption_stat: "One bad month is how debt starts"
 story_caption_cta: "Size yours correctly → link in bio"
 

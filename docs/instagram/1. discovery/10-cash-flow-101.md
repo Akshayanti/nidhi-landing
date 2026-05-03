@@ -1,6 +1,6 @@
 ---
 title: "Cash Flow 101: Where Your Money Actually Goes"
-blog_url: "https://nidhi.today/blog/cash-flow-101"
+blog_url: "https://nidhi.today/blog/cash-flow-101/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_cash_flow_101"
 hashtags: "#cashflowmanagement #moneyleaks #desifinance #subscriptionaudit #nidhi"
 post_time: "08:00 CET (Tue/Thu) — morning tracking mindset + India lunch slot (12:30 IST); stories cascade through whole day"
 
@@ -11,12 +11,10 @@ story_hook: |
 
   Ask where their money goes
   Silence
-story_stat: "Most people can't name 5 of their monthly expenses"
-story_poll_q: "Have you checked your bank statement in the last 7 days?"
-story_poll_opts: "Yes | No"
-story_quiz_q: "The average annual leak on forgotten subscriptions is:"
-story_quiz_opts: "€50 | €150 | €300+ | €500+"
-story_quiz_answer: "€300+"
+story_stat: "Your savings rate predicts your wealth || Not your salary"
+story_poll_q: "The average annual leak on forgotten subscriptions is:"
+story_poll_opts: "€50 | €150 | €300+ | €500+"
+story_answer: "€300+"
 story_prompt: |
   Save this
 
@@ -24,8 +22,7 @@ story_prompt: |
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)
 story_caption_hook: "Where does your money actually go each month?"
-story_caption_poll: "The silence is usually the answer"
-story_caption_quiz: "Forgotten subscriptions add up fast"
+story_caption_poll: "Forgotten subscriptions add up fast"
 story_caption_stat: "The gap between earn and spend = your future"
 story_caption_cta: "Try the 10-min cash flow exercise this weekend"
 

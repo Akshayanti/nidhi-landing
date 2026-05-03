@@ -1,6 +1,6 @@
 ---
 title: "Insurance Basics: Protecting What You've Built"
-blog_url: "https://nidhi.today/blog/insurance-basics"
+blog_url: "https://nidhi.today/blog/insurance-basics/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_insurance_basics"
 hashtags: "#insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — insurance topics resonate strongly with Indian families in evening scroll"
 
@@ -12,17 +12,15 @@ story_hook: |
 
   Your neighbor paid €150
   and kept everything
-story_stat: "Same disaster · 30x cost difference"
-story_poll_q: ""
-story_poll_opts: ""
-story_quiz_q: "The #1 insurance most people skip, and the one that protects your biggest asset:"
-story_quiz_opts: "Health | Life | Disability | Travel"
-story_quiz_answer: "Disability (your ability to earn)"
+story_stat: "Your salary is your biggest asset || Protect it first"
+story_poll_q: "The #1 insurance most people skip, and the one that protects your biggest asset:"
+story_poll_opts: "Health | Life | Disability | Travel"
+story_answer: "Disability (your ability to earn)"
 story_prompt: "Tag someone who's over- or under-insured"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)
 story_caption_hook: "Same disaster, two completely different recoveries"
-story_caption_quiz: "The one that protects your earning potential"
+story_caption_poll: "The one that protects your earning potential"
 story_caption_stat: "€150 vs €4,500 · same flood"
 story_caption_cta: "Audit your policies this weekend"
 

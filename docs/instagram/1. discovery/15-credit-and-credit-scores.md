@@ -1,6 +1,6 @@
 ---
 title: "Credit and Credit Scores: What They Are and Why They Matter"
-blog_url: "https://nidhi.today/blog/credit-and-credit-scores"
+blog_url: "https://nidhi.today/blog/credit-and-credit-scores/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_credit_and_scores"
 hashtags: "#creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — credit-score content largely EU-focused (India uses CIBIL); still lean EU evening for best reach"
 
@@ -14,9 +14,6 @@ story_hook: |
 story_stat: "€77,000 = the cost of a 3-digit number you've probably never checked"
 story_poll_q: "Do you know your current credit score?"
 story_poll_opts: "Yes, exactly | Rough idea | No clue"
-story_quiz_q: ""
-story_quiz_opts: ""
-story_quiz_answer: ""
 story_prompt: |
   Save this
 

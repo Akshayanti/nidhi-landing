@@ -1,6 +1,6 @@
 ---
 title: "Saving vs. Investing: When to Do Which"
-blog_url: "https://nidhi.today/blog/saving-vs-investing"
+blog_url: "https://nidhi.today/blog/saving-vs-investing/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_saving_v_investing"
 hashtags: "#savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — investing resonates with SIP-culture Indian audience in evening peak"
 
@@ -10,16 +10,14 @@ story_hook: |
 
   Retirement fund ≠ savings account
 story_stat: "Time horizon = the dividing line"
-story_poll_q: ""
-story_poll_opts: ""
-story_quiz_q: "Money you need in 2 years should go into:"
-story_quiz_opts: "High-yield savings | Index fund | Crypto | Checking"
-story_quiz_answer: "High-yield savings"
+story_poll_q: "Money you need in 2 years should go into:"
+story_poll_opts: "High-yield savings | Index fund | Crypto | Checking"
+story_answer: "High-yield savings"
 story_prompt: "Save this before your next money move"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)
 story_caption_hook: "The two most-confused words in personal finance"
-story_caption_quiz: "Time horizon is the whole answer"
+story_caption_poll: "Time horizon is the whole answer"
 story_caption_stat: "Wrong sequence makes everything fragile"
 story_caption_cta: "4-step ladder in bio → budgeting next"
 

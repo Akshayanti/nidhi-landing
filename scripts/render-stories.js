@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import puppeteer from 'puppeteer';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { loadAllPosts, loadPost } from './lib/parse-markdown.js';
 
@@ -104,35 +104,47 @@ async function renderFrame(page, templateHtml, variant, contentHtml, opts = {}) 
 }
 
 /**
- * Build the sticker-area HTML for poll/quiz frames.
- */
-function buildStickerArea(label, options, answer = '') {
-  if (!options || options.length === 0) return '';
-  const optsHtml = options
-    .map(o => `<div class="opt">${escapeHtml(o)}</div>`)
-    .join('');
-  const answerHtml = answer
-    ? `<div class="quiz-answer">Correct: ${escapeHtml(answer)}</div>`
-    : '';
-  return `
-    <div class="sticker-area">
-      <div class="sticker-label">${escapeHtml(label)}</div>
-      <div class="sticker-options">${optsHtml}</div>
-      ${answerHtml}
-    </div>
-  `;
-}
-
-/**
  * Render all story frames for a single post.
+ *
+ * Poll questions are NOT rendered into PNGs — they go into the native IG poll
+ * sticker when posting. The PNGs are brand-consistent backdrops:
+ *
+ *   Default mode (no story_answer):
+ *     - frame-2-stat.png: big stat/insight. Doubles as backdrop for step 2
+ *       (poll sticker) AND step 3 (link sticker). Works well when the poll is
+ *       self-assessment and the stat is cohesive context, not a spoiler.
+ *
+ *   Quiz mode (story_answer set):
+ *     - frame-2-poll.png: blank brand-chrome-only canvas. Backs step 2 so the
+ *       native poll sticker reads cleanly with nothing competing underneath.
+ *     - frame-2-answer.png: two-part layout — "ANSWER" + reveal text up top,
+ *       continuing stat/insight below. Backs step 3 under the link sticker.
+ *       The stat that would otherwise back step 2 is folded in here so the
+ *       narrative continues instead of dropping on the answer frame.
+ *
+ * Quiz stickers were removed by IG — multi-option polls (up to 4) cover the
+ * same interaction now. See PLAYBOOK.md §7 for the full cascade.
  */
 export async function renderStoriesForPost(post, browser) {
   const s = post.story || {};
-  const hasAnyContent = s.hook || s.stat || s.pollQ || s.quizQ || s.prompt;
+  const hasAnyContent = s.hook || s.stat || s.answer || s.prompt;
   if (!hasAnyContent) return { skipped: true };
+
+  const hasQuiz = !!s.answer;
 
   const outDir = join(OUTPUT_DIR, post.subDir, post.slug, 'stories');
   await mkdir(outDir, { recursive: true });
+
+  // Clean stale frame-*.png files so the final output dir reflects exactly
+  // what this render produced. Critical because quiz-mode emits a different
+  // set of frames than default mode (frame-2-poll.png + frame-2-answer.png
+  // vs. frame-2-stat.png) — otherwise toggling story_answer on an already-
+  // rendered post leaves stale PNGs behind and creates confusion on post day.
+  for (const name of await readdir(outDir).catch(() => [])) {
+    if (/^frame-.*\.png$/.test(name)) {
+      await unlink(join(outDir, name));
+    }
+  }
 
   const templateHtml = await readFile(TEMPLATE_PATH, 'utf-8');
   const page = await browser.newPage();
@@ -147,44 +159,45 @@ export async function renderStoriesForPost(post, browser) {
     rendered.push(filepath);
   }
 
-  // Frame 2: Poll (question + placeholder for native IG poll sticker)
-  if (s.pollQ) {
-    const body = `
-      <div class="question">${renderText(s.pollQ)}</div>
-      ${buildStickerArea('Add IG poll sticker here ↓', s.pollOpts)}
-    `;
-    await renderFrame(page, templateHtml, 'poll', body, { hashtag: s.hashtag });
+  // Frame 2: Step-2 backdrop.
+  //   Quiz mode    → blank poll canvas (frame-2-poll.png). No competing text,
+  //                  so the native poll sticker reads cleanly.
+  //   Default mode → stat frame (frame-2-stat.png) doubles as backdrop for
+  //                  both step 2 (poll sticker) and step 3 (link sticker).
+  if (hasQuiz) {
+    await renderFrame(page, templateHtml, 'poll', '', { hashtag: s.hashtag });
     const filepath = join(outDir, 'frame-2-poll.png');
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
-  }
-
-  // Frame 3: Quiz (question + placeholder for native IG quiz sticker)
-  if (s.quizQ) {
-    const body = `
-      <div class="question">${renderText(s.quizQ)}</div>
-      ${buildStickerArea('Add IG quiz sticker here ↓', s.quizOpts, s.quizAnswer)}
-    `;
-    await renderFrame(page, templateHtml, 'quiz', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-3-quiz.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
-  }
-
-  // Frame 4: Stat / Value frame (big number or key fact)
-  if (s.stat) {
+  } else if (s.stat) {
     const body = `<div>${renderText(s.stat)}</div>`;
     await renderFrame(page, templateHtml, 'stat', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-4-stat.png');
+    const filepath = join(outDir, 'frame-2-stat.png');
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
   }
 
-  // Frame 5: CTA (save / tag / share prompt)
+  // Frame 2 (answer reveal, quiz mode only): Backs step 3 under the link
+  // sticker. Combines the "ANSWER" reveal with the continuing stat/insight
+  // so the cascade doesn't drop the narrative on the reveal frame. Stat is
+  // optional — answer-only still renders cleanly.
+  if (hasQuiz) {
+    const mainHtml = `<div class="answer-main">${renderText(s.answer)}</div>`;
+    const statHtml = s.stat
+      ? `<div class="answer-stat">${renderText(s.stat)}</div>`
+      : '';
+    const body = mainHtml + statHtml;
+    await renderFrame(page, templateHtml, 'answer', body, { hashtag: s.hashtag });
+    const filepath = join(outDir, 'frame-2-answer.png');
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  }
+
+  // Frame 3: CTA (save / tag / share prompt)
   if (s.prompt) {
     const body = `<div>${renderText(s.prompt)}</div>`;
     await renderFrame(page, templateHtml, 'cta', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-5-cta.png');
+    const filepath = join(outDir, 'frame-3-cta.png');
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
   }

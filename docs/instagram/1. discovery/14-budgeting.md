@@ -1,6 +1,6 @@
 ---
 title: "Budgeting: Controlling the Gap Between Income and Spending"
-blog_url: "https://nidhi.today/blog/budgeting"
+blog_url: "https://nidhi.today/blog/budgeting/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_budgeting"
 hashtags: "#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi"
 post_time: "08:00 CET (Tue/Thu) — morning planning energy + India lunch slot (12:30 IST); stories cascade whole day"
 
@@ -11,17 +11,14 @@ story_hook: |
   is the most expensive sentence
   in personal finance
 story_stat: "3 methods · 1 hour · lifetime of clarity"
-story_poll_q: "Have you ever actually stuck to a budget for 6+ months?"
-story_poll_opts: "Yes 💪 | No, I always quit"
-story_quiz_q: "Best budgeting method for variable income?"
-story_quiz_opts: "50/30/20 | Zero-based | Pay-yourself-first | All equally"
-story_quiz_answer: "Zero-based"
+story_poll_q: "Best budgeting method for variable income?"
+story_poll_opts: "50/30/20 | Zero-based | Pay-yourself-first | All equally"
+story_answer: "Zero-based"
 story_prompt: "Tag someone who's been 'planning to budget' for 2+ years"
 
 # Tiny captions for IG story native caption field (paste when posting; ~10 words each)
 story_caption_hook: "The most expensive sentence in personal finance"
-story_caption_poll: "Most people quit budgeting in two weeks"
-story_caption_quiz: "Match the method to how your income flows"
+story_caption_poll: "Match the method to how your income flows"
 story_caption_stat: "3 methods · pick one · done"
 story_caption_cta: "Pick your method by Sunday → start Monday"
 

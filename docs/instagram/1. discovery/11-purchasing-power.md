@@ -1,6 +1,6 @@
 ---
 title: "Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow"
-blog_url: "https://nidhi.today/blog/purchasing-power"
+blog_url: "https://nidhi.today/blog/purchasing-power/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_purchasing_power"
 hashtags: "#inflationawareness #purchasingpower #desifinance #moneyineurope #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — inflation topic lands strongly with Indian audience in evening peak"
 
@@ -13,9 +13,6 @@ story_hook: |
 story_stat: "€10,000 → €6,100 · no withdrawals · 20 years"
 story_poll_q: "Where's most of your money right now?"
 story_poll_opts: "Savings account | Invested"
-story_quiz_q: ""
-story_quiz_opts: ""
-story_quiz_answer: ""
 story_prompt: |
   Save this
 

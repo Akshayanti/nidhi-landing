@@ -1,6 +1,6 @@
 ---
 title: "Discovery Level Complete: You Have the Foundation"
-blog_url: "https://nidhi.today/blog"
+blog_url: "https://nidhi.today/blog/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=discovery_end"
 hashtags: "#financialfoundation #moneybasics #desifinance #moneyineurope #nidhi"
 post_time: "14:30 CET (Thu/Fri) — milestone post; EU afternoon + India peak; shareability ramps into weekend"
 
@@ -17,9 +17,6 @@ story_stat: |
   than 90% of people you'll meet this week
 story_poll_q: "Which topic from the series hit hardest for you?"
 story_poll_opts: "Net worth | Compound interest | Liquidity | Inflation"
-story_quiz_q: ""
-story_quiz_opts: ""
-story_quiz_answer: ""
 story_prompt: |
   Save this
 
