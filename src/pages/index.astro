@@ -1,17 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// TODO (brand-rollout): once the rebrand ships, drop the legacy logo URL
-// and keep only the /brand/favicons/android-chrome-512x512.png path.
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'nidhi',
   url: 'https://nidhi.today',
   description: 'Personal finance tools and financial literacy education. A smarter way to understand and plan your financial future.',
-  logo: import.meta.env.DEV
-    ? 'https://nidhi.today/brand/favicons/android-chrome-512x512.png'
-    : 'https://nidhi.today/favicon-32.png',
+  logo: 'https://nidhi.today/brand/favicons/android-chrome-512x512.png',
 };
 
 const webSiteSchema = {

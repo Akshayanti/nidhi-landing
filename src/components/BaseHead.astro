@@ -15,11 +15,7 @@ interface Props {
   robots?: string;
 }
 
-// TODO (brand-rollout): remove the dev/prod split and keep only the new
-// /brand/* references once the rebrand is ready to ship. Search the repo for
-// "TODO (brand-rollout)" to find every fork point.
-const isDev = import.meta.env.DEV;
-const defaultImage = isDev ? '/brand/social/og-image.png' : '/baba_money.webp';
+const defaultImage = '/brand/social/og-image.png';
 const { title, description, image = defaultImage, keywords, article, prevUrl, nextUrl, jsonLd = [], robots } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -36,26 +32,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-{/* TODO (brand-rollout): delete the legacy block and keep only the dev block. */}
-{isDev ? (
-  <>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16.png" />
-    <link rel="shortcut icon" href="/brand/favicons/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-    <link rel="manifest" href="/brand/site.webmanifest" />
-    <meta name="theme-color" content="#0D47A1" />
-    <meta name="msapplication-TileColor" content="#0D47A1" />
-    <meta name="msapplication-TileImage" content="/brand/favicons/mstile-150x150.png" />
-  </>
-) : (
-  <>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
-    <link rel="apple-touch-icon" href="/favicon-32.png" />
-  </>
-)}
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16.png" />
+<link rel="shortcut icon" href="/brand/favicons/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/site.webmanifest" />
+<meta name="theme-color" content="#0D47A1" />
+<meta name="msapplication-TileColor" content="#0D47A1" />
+<meta name="msapplication-TileImage" content="/brand/favicons/mstile-150x150.png" />
 <title>{title}</title>
 <meta name="description" content={description} />
 {robots && <meta name="robots" content={robots} />}

@@ -3,15 +3,12 @@ import ThemeToggle from './ThemeToggle.astro';
 import LogoMark from './LogoMark.astro';
 const currentPath = Astro.url.pathname;
 
-// TODO (brand-rollout): remove the `showMark` gate and always render
-// <LogoMark /> once the rebrand is live in production.
-const showMark = import.meta.env.DEV;
 ---
 
 <header class="site-header">
   <nav class="site-nav container container--wide">
     <a href="/" class="logo" data-attr="nav-logo" aria-label="nidhi — home">
-      {showMark && <LogoMark size={32} />}
+      <LogoMark size={32} />
       <span class="logo-text">nidhi</span>
     </a>
     <div class="nav-right">
