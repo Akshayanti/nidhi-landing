@@ -236,7 +236,7 @@ If your income stops, wealth is what keeps you afloat
 
 >> Next up →
 >> Cash flow 101:
->> where your money actually goes.
+>> where your money actually goes
 
 >> ———
 
