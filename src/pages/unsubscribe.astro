@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
+const isDev = import.meta.env.DEV;
+---
+
+<BaseLayout
+  title="Unsubscribe | nidhi"
+  description="Unsubscribe from the nidhi blog newsletter."
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--muted" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+          <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">Unsubscribe from nidhi</h1>
+      <p class="transactional-body">
+        Click the button below and you&rsquo;ll stop receiving emails from us.
+        No questions, no &ldquo;are you sure,&rdquo; no re-engagement sequence.
+      </p>
+
+      <button
+        id="unsubscribe-button"
+        class="transactional-cta transactional-cta--destructive"
+        type="button"
+        disabled
+        data-endpoint={endpoint}
+      >
+        Unsubscribe me
+      </button>
+
+      <p id="unsubscribe-status" class="transactional-status" role="status" aria-live="polite"></p>
+
+      <p class="transactional-secondary">
+        Changed your mind? Just close this tab. You&rsquo;ll stay subscribed.
+      </p>
+
+      {isDev && !endpoint && (
+        <p class="transactional-dev-warning">
+          ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set locally. See
+          <code>docs/blog-subscription-setup.md</code>.
+        </p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('unsubscribe-button');
+    var status = document.getElementById('unsubscribe-status');
+    if (!btn || !status) return;
+
+    var params = new URLSearchParams(window.location.search);
+    var token = params.get('t') || '';
+    if (token) {
+      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+    }
+
+    var endpoint = btn.getAttribute('data-endpoint') || '';
+
+    function setStatus(text, kind) {
+      status.textContent = text;
+      status.className = 'transactional-status transactional-status--' + kind;
+    }
+
+    if (!token) {
+      btn.disabled = true;
+      setStatus('This link is missing its unsubscribe token. Try the link from your email again.', 'error');
+      return;
+    }
+    if (!endpoint) {
+      btn.disabled = true;
+      setStatus('Unsubscribe endpoint is not configured on this environment.', 'error');
+      return;
+    }
+
+    btn.disabled = false;
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      btn.textContent = 'Unsubscribing…';
+      setStatus('', 'idle');
+
+      var body = new URLSearchParams();
+      body.set('action', 'unsubscribe');
+      body.set('t', token);
+
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).then(function () {
+        if (window.posthog) {
+          window.posthog.capture('blog_unsubscribe_clicked');
+        }
+        window.location.replace('/unsubscribed');
+      }).catch(function () {
+        setStatus('Something went wrong. Please try again in a moment.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Unsubscribe me';
+      });
+    });
+  })();
+</script>

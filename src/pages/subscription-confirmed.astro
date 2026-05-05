@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Subscribed | nidhi"
+  description="You're subscribed to the nidhi blog. Expect an email when a new post is published."
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--success" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">You&rsquo;re in.</h1>
+      <p class="transactional-body">
+        Thanks for confirming. We&rsquo;ll ping you from
+        <strong>hello@nidhi.today</strong> whenever a new post goes up &mdash;
+        nothing else. Until then, there&rsquo;s already a pile of them to read.
+      </p>
+
+      <a class="transactional-cta" href="/blog">Start reading the blog</a>
+
+      <p class="transactional-secondary">
+        <a href="/">Or head back to the home page</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

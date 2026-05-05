@@ -1,0 +1,39 @@
+{#
+  Plain-text fallback email. Rendered alongside post.html.j2.
+
+  The literal string `{{UNSUBSCRIBE_URL}}` is left in the output verbatim —
+  Apps Script swaps it in per-recipient at send time with a URL pointing at
+  the branded /unsubscribe/ landing page on nidhi.today. Note the Jinja
+  escape: `{{ '{{UNSUBSCRIBE_URL}}' }}`.
+#}
+nidhi — Money, understood.
+==========================
+
+{{ title }}
+{{ '=' * title|length }}
+{% if level or reading_time %}
+
+{% if level %}{{ level }}{% if reading_time %} · {% endif %}{% endif %}{% if reading_time %}{{ reading_time }} min read{% endif %}
+{% endif %}
+{% if tldr %}
+
+TL;DR: {{ tldr }}
+{% endif %}
+
+{{ content_text }}
+
+---
+
+Read on the web: {{ post_url_tracked }}
+
+Reply to this email if anything landed wrong — a real person reads it.
+
+---
+
+You're getting this because you subscribed to {{ blog_url }}.
+
+Unsubscribe: {{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}
+Privacy:     {{ site_url }}/privacy?{{ utm_query }}
+RSS:         {{ site_url }}/rss.xml?{{ utm_query }}
+
+Educational, not financial advice. Everyone's situation is different.

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
+const isDev = import.meta.env.DEV;
+---
+
+<BaseLayout
+  title="Confirm your subscription | nidhi"
+  description="One click to confirm your subscription to the nidhi blog."
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">Confirm your subscription</h1>
+      <p class="transactional-body">
+        You asked to get new posts from <strong>nidhi</strong> by email. One click
+        below and you&rsquo;re set &mdash; we&rsquo;ll email you when something new
+        is published. Nothing else.
+      </p>
+
+      <button
+        id="confirm-button"
+        class="transactional-cta"
+        type="button"
+        disabled
+        data-endpoint={endpoint}
+      >
+        Yes, subscribe me
+      </button>
+
+      <p id="confirm-status" class="transactional-status" role="status" aria-live="polite"></p>
+
+      <p class="transactional-secondary">
+        Didn&rsquo;t sign up? You can just close this tab &mdash;
+        without your click, nothing happens.
+      </p>
+
+      {isDev && !endpoint && (
+        <p class="transactional-dev-warning">
+          ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set locally. The button
+          will be visible but click submissions will no-op. See
+          <code>docs/blog-subscription-setup.md</code>.
+        </p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('confirm-button');
+    var status = document.getElementById('confirm-status');
+    if (!btn || !status) return;
+
+    // Pull the token out of the URL, then immediately strip it so it's not
+    // in the address bar, browser history, or accidental screenshots.
+    var params = new URLSearchParams(window.location.search);
+    var token = params.get('t') || '';
+    if (token) {
+      try {
+        history.replaceState(null, '', window.location.pathname);
+      } catch (_) {}
+    }
+
+    var endpoint = btn.getAttribute('data-endpoint') || '';
+
+    function setStatus(text, kind) {
+      status.textContent = text;
+      status.className = 'transactional-status transactional-status--' + kind;
+    }
+
+    if (!token) {
+      btn.disabled = true;
+      setStatus('This link is missing its confirmation token. Try the link from your email again, or subscribe once more from the blog.', 'error');
+      return;
+    }
+    if (!endpoint) {
+      btn.disabled = true;
+      setStatus('Subscriptions are not configured on this environment.', 'error');
+      return;
+    }
+
+    btn.disabled = false;
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      btn.textContent = 'Confirming…';
+      setStatus('', 'idle');
+
+      var body = new URLSearchParams();
+      body.set('action', 'confirm');
+      body.set('t', token);
+
+      // Apps Script doesn't emit CORS headers, so we can't read the
+      // response — fire and redirect. Apps Script is authoritative: if
+      // the token was valid, the row is now confirmed; if not, nothing
+      // changed and the user will see /subscription-invalid/ on retry
+      // if they click the original email link a second time.
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).then(function () {
+        if (window.posthog) {
+          window.posthog.capture('blog_subscribe_confirm_clicked');
+        }
+        window.location.replace('/subscription-confirmed');
+      }).catch(function () {
+        setStatus('Something went wrong. Please try the link again in a moment.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Yes, subscribe me';
+      });
+    });
+  })();
+</script>

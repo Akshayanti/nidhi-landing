@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Link not valid | nidhi"
+  description="This subscription link is no longer valid."
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--warning" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="13"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">This link isn&rsquo;t valid.</h1>
+      <p class="transactional-body" id="invalid-copy">
+        Either it&rsquo;s been used already, it&rsquo;s expired, or something
+        got mangled in transit. Nothing on your account has changed.
+      </p>
+
+      <div class="transactional-actions">
+        <a class="transactional-cta" href="/blog">Go to the blog</a>
+        <a class="transactional-cta transactional-cta--subtle" href="mailto:hello@nidhi.today?subject=subscription link issue">
+          Email us
+        </a>
+      </div>
+
+      <p class="transactional-secondary">
+        If you meant to <strong>unsubscribe</strong> and nothing happened,
+        reply to any of our emails and we&rsquo;ll remove you manually.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var copy = document.getElementById('invalid-copy');
+    if (!copy) return;
+    var reason = new URLSearchParams(window.location.search).get('reason') || '';
+    if (reason === 'confirm') {
+      copy.textContent = 'This confirmation link has already been used or has expired. If you meant to subscribe, pop your email back into the form on the blog and we\u2019ll send a new confirmation.';
+    } else if (reason === 'unsubscribe') {
+      copy.textContent = 'This unsubscribe link isn\u2019t valid anymore. If you want to stop getting our emails, reply to any of them and we\u2019ll remove you manually.';
+    }
+  })();
+</script>

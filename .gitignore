@@ -8,3 +8,6 @@ dist
 output/
 .env
 .env.*
+
+# Local newsletter dry-run previews
+emails/_preview/

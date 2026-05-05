@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
+import SubscribeSection from '../components/SubscribeSection.astro';
 
 interface Props {
   title: string;
@@ -210,6 +211,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             )}
           </nav>
         )}
+
+        <SubscribeSection variant="full" />
       </div>
     </div>
   </article>

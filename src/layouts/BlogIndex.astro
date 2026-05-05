@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { LearningPath } from '../components/LearningPath';
+import SubscribeSection from '../components/SubscribeSection.astro';
 
 interface Props {
   posts: Array<{
@@ -70,6 +71,7 @@ const blogItemListSchema = {
         <h1>Learn about your money</h1>
         <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
       </header>
+      <SubscribeSection variant="compact" />
       <LearningPath client:load posts={serializedPosts} />
     </div>
   </section>

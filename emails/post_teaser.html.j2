@@ -1,0 +1,104 @@
+{#
+  HTML email template — *teaser* variant.
+
+  Used by scripts/send_newsletter.py when the full-body email would exceed
+  TEASER_SIZE_THRESHOLD_BYTES (default 50KB). Keeps the inbox light for
+  long explainers and avoids Gmail's ~102KB clip point by sending just
+  enough to hook the reader, then CTA-ing them to the full post on the
+  site. Brand, UTM, and footer conventions stay identical to post.html.j2.
+
+  Variables (same shape as post.html.j2 context, see render_email in
+  scripts/send_newsletter.py):
+    - title, description, tldr, reading_time, level
+    - first_paragraph_html  — extracted from content_node in extract_post
+    - post_url_tracked, blog_url
+    - site_url, utm_query
+#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>{{ title | e }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ description | e }}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">
+    <tr><td align="center" style="padding:24px 12px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">
+
+        {# ───────────────────────── Brand banner ─────────────────────── #}
+        <tr><td style="padding:0;">
+          <div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>
+          <div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">
+            <a href="{{ blog_url }}" style="text-decoration:none;color:inherit;display:inline-block;">
+              <img src="{{ site_url }}/brand/logo/full/logo-full-400-light.png"
+                   alt="nidhi — Money, understood."
+                   width="200"
+                   height="auto"
+                   style="display:block;max-width:200px;height:auto;border:0;outline:none;">
+            </a>
+          </div>
+        </td></tr>
+
+        {# ───────────────────────── Teaser body ──────────────────────── #}
+        <tr><td style="padding:28px 28px 4px;">
+          {% if level or reading_time %}
+          <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
+            {% if level %}{{ level | e }}{% if reading_time %} &middot; {% endif %}{% endif %}
+            {% if reading_time %}{{ reading_time }} min read{% endif %}
+          </div>
+          {% endif %}
+          <h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">{{ title | e }}</h1>
+
+          {% if tldr %}
+          <div style="background:#f0f4f8;border-left:3px solid #0D47A1;border-radius:4px;padding:14px 18px;margin:18px 0 24px;font-size:14px;color:#334155;line-height:1.6;">
+            <div style="color:#0D47A1;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">TL;DR</div>
+            {{ tldr | e }}
+          </div>
+          {% endif %}
+
+          {% if first_paragraph_html %}
+          <p style="margin:0 0 18px;font-size:16px;line-height:1.7;color:#222;">
+            {{ first_paragraph_html | safe }}
+          </p>
+          {% endif %}
+
+          <p style="margin:4px 0 20px;font-size:14px;color:#666;font-style:italic;">
+            This one&rsquo;s a longer read &mdash; continues on the site with examples, tables, and links.
+          </p>
+        </td></tr>
+
+        {# ───────────── Divider + read-on-site CTA ──────────────────── #}
+        <tr><td style="padding:0 28px 28px;">
+          <div style="border-top:1px solid #eee;padding-top:20px;">
+            <a href="{{ post_url_tracked }}" style="display:inline-block;padding:14px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">Read the full post &rarr;</a>
+            <div style="margin-top:14px;font-size:13px;color:#999;">Reply to this email if anything landed wrong &mdash; a real person reads it.</div>
+          </div>
+        </td></tr>
+
+        {# ───────────────────────── Footer ────────────────────────── #}
+        <tr><td style="padding:22px 28px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.5;">
+          <p style="margin:0 0 8px;">
+            You&rsquo;re getting this because you subscribed to
+            <a href="{{ blog_url }}" style="color:#0D47A1;text-decoration:underline;">nidhi.today/blog</a>.
+          </p>
+          <p style="margin:0 0 8px;">
+            <a href="{{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}" style="color:#777;text-decoration:underline;">Unsubscribe</a>
+            &middot;
+            <a href="{{ site_url }}/privacy?{{ utm_query }}" style="color:#777;text-decoration:underline;">Privacy</a>
+            &middot;
+            <a href="{{ site_url }}/rss.xml?{{ utm_query }}" style="color:#777;text-decoration:underline;">RSS</a>
+          </p>
+          <p style="margin:0;color:#999;">
+            Educational, not financial advice. Everyone&rsquo;s situation is different.
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

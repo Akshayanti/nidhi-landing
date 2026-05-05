@@ -3,13 +3,19 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # Pushes that only update the newsletter marker file shouldn't trigger
+    # a rebuild/redeploy — prevents a self-triggering loop after the send
+    # step commits .last-sent-guid.txt back to main.
+    paths-ignore:
+      - '.last-sent-guid.txt'
   schedule:
-    # Daily rebuild at 06:03 UTC (08:03 CEST) to publish date-gated posts
+    # Daily rebuild at 06:03 UTC (08:03 CEST) to publish date-gated posts.
+    # Also picks up newsletter sends for newly-revealed posts.
     - cron: '3 6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # need write to push .last-sent-guid.txt back to main
   pages: write
   id-token: write
 
@@ -23,6 +29,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # persist-credentials defaults to true; keeping explicit for clarity
+          # since the newsletter-send step pushes the marker file back.
+          persist-credentials: true
+          # Full history so src/pages/privacy.astro can derive its "Last updated"
+          # from `git log -1 --format=%aI -- src/pages/privacy.astro` at build
+          # time (see the gitLastCommitDate helper in that file). With the
+          # default fetch-depth: 1, that query returns empty when the most
+          # recent commit didn't happen to touch privacy.astro, which would
+          # silently fall back to the changelog entry's date and defeat the
+          # whole point of the automation.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,11 +51,81 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Privacy-notice changelog guard
+        # Nudges (doesn't fail) when src/pages/privacy.astro was edited in
+        # the latest commit but the `changelog` array at the top of the file
+        # wasn't also touched. The top-of-page "Last updated" bumps itself
+        # from git regardless; this guard is about the human-readable
+        # changelog staying in sync with real edits.
+        run: |
+          FILE=src/pages/privacy.astro
+          # Did the latest commit touch the file at all?
+          if ! git diff --quiet HEAD~1 HEAD -- "$FILE" 2>/dev/null; then
+            # Did that same commit also modify the `changelog` array?
+            # We look for added lines that contain ChangelogEntry-ish keys.
+            ADDED=$(git diff HEAD~1 HEAD -- "$FILE" | grep -E '^\+[[:space:]]*(date|iso|material|summary):' || true)
+            if [ -z "$ADDED" ]; then
+              echo "::warning file=$FILE::privacy.astro was modified but no new changelog entry was added. If the change is material (new processor, data category, retention), please add an entry to the \`changelog\` array."
+            else
+              echo "privacy.astro changed and changelog entry was updated — ok."
+            fi
+          fi
+
       - name: Build
         run: npm run build
         env:
           COUNTERAPI_TOKEN: ${{ secrets.COUNTERAPI_TOKEN }}
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
+          PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies for newsletter script
+        run: pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
+
+      - name: Send newsletter for new posts
+        id: newsletter
+        env:
+          NEWSLETTER_ENDPOINT: ${{ secrets.NEWSLETTER_ENDPOINT }}
+          NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
+          SITE_URL: https://nidhi.today
+          DIST_DIR: ${{ github.workspace }}/dist
+          MARKER_FILE: ${{ github.workspace }}/.last-sent-guid.txt
+          # On first setup you can set `vars.BACKFILL_OK = '1'` in the repo
+          # "Actions variables" to allow sending all historical posts. By
+          # default the script sends only the newest on a fresh run.
+          BACKFILL_OK: ${{ vars.NEWSLETTER_BACKFILL_OK }}
+        run: python scripts/send_newsletter.py
+        # Don't break the deploy if newsletter send fails; the marker file
+        # only records successful sends, so next run will retry.
+        continue-on-error: true
+
+      - name: Commit updated newsletter marker
+        if: steps.newsletter.outcome == 'success'
+        run: |
+          if git diff --quiet -- .last-sent-guid.txt; then
+            echo "No marker changes to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .last-sent-guid.txt
+          git commit -m "chore(newsletter): record sent post GUIDs [skip deploy]"
+          # Race-proof push: rebase on top of any newer main commits, retry once.
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash origin main || true
+            if git push origin HEAD:main; then
+              echo "Marker pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep 5
+          done
+          echo "::warning::Failed to push newsletter marker after 3 attempts"
+          exit 0
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

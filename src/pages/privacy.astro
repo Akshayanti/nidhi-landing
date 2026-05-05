@@ -1,0 +1,594 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { relative } from 'node:path';
+
+/**
+ * Privacy-notice changelog. Newest first. Every edit to this page gets an
+ * entry — no matter how small — so the history is auditable.
+ *
+ * Mark `material: true` when the change affects how we handle personal data
+ * (new processor, new data category, retention change, legal-basis change).
+ * Typos and phrasing tweaks are not material.
+ *
+ * The top-of-page "Last updated" date is derived at build time from git's
+ * last-commit timestamp of this file (see `lastUpdated` / `lastUpdatedIso`
+ * below). That means: editing this file updates the date automatically on
+ * the next build — you can't forget to bump it, and the two can't drift.
+ * Local dev and shallow CI checkouts gracefully fall back to the top
+ * changelog entry's date.
+ */
+interface ChangelogEntry {
+  date: string;          // "Month D, YYYY" for display
+  iso: string;           // YYYY-MM-DD for machines + <time datetime>
+  material: boolean;
+  summary: string;
+  details?: string[];
+}
+
+const changelog: ChangelogEntry[] = [
+  {
+    date: 'May 5, 2026',
+    iso: '2026-05-05',
+    material: true,
+    summary: 'Initial publication.',
+    details: [
+      'First version of this notice.',
+      'Describes PostHog Cloud EU (analytics), Google Workspace EU (newsletter storage + sending), GitHub Pages (static hosting), and browser localStorage (local preferences) as the only processors.',
+      'Newsletter uses double opt-in with a one-click unsubscribe in every email.',
+    ],
+  },
+];
+
+/**
+ * Ask git when this file was last committed. Runs only at build time.
+ *
+ * We use **author date** (`%aI`) rather than committer date (`%cI`) so the
+ * timestamp reflects when the change was actually made, not when it was
+ * rebased/cherry-picked onto main. Both are "commit-based" in the sense
+ * that both come from `git log`, but author date is the one that stays
+ * stable across history rewrites.
+ *
+ * We fall back to the newest changelog entry if:
+ *  - we're outside a git checkout (e.g. a deployed preview from a tarball)
+ *  - the CI checkout is too shallow to see the relevant commit (workflow
+ *    uses fetch-depth: 0 in prod precisely to avoid this)
+ *  - git isn't on the PATH (weird local setups)
+ */
+function gitLastCommitDate(filePath: string): { date: string; iso: string } | null {
+  try {
+    const iso = execSync(
+      `git log -1 --format=%aI -- "${filePath}"`,
+      { stdio: ['ignore', 'pipe', 'ignore'] },
+    ).toString().trim();
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return null;
+    const display = d.toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+    return { date: display, iso: iso.slice(0, 10) };
+  } catch {
+    return null;
+  }
+}
+
+const thisFileAbs = fileURLToPath(import.meta.url);
+const thisFileRel = relative(process.cwd(), thisFileAbs);
+const gitMeta = gitLastCommitDate(thisFileRel);
+
+const lastUpdated = gitMeta?.date ?? changelog[0]?.date ?? '';
+const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
+---
+
+<BaseLayout
+  title="Privacy | nidhi"
+  description="Plain-language privacy notice for nidhi.today — what we collect, why, where it lives, and how to get rid of it."
+  keywords={['privacy', 'nidhi privacy policy', 'personal finance blog privacy']}
+  robots="index,follow"
+>
+  <section class="privacy">
+    <div class="privacy-container">
+
+      <header class="privacy-hero">
+        <h1 class="privacy-title">Privacy, honestly</h1>
+        <p class="privacy-intro">
+          The short version: we collect as little as we can, we don&rsquo;t sell anything, and you can
+          get rid of what we have whenever you want.
+        </p>
+        <p class="privacy-updated">
+          Last updated: <time datetime={lastUpdatedIso}>{lastUpdated}</time> &middot;
+          <a href="#changelog">see what changed</a>
+        </p>
+      </header>
+
+      <h2>What we collect, and when</h2>
+
+      <p>
+        <strong>Always, to keep the site working and improving:</strong>
+      </p>
+      <ul>
+        <li>
+          Anonymous pageview and page-leave events, via <a href="https://posthog.com/eu" target="_blank" rel="noopener noreferrer">PostHog Cloud EU</a>.
+          That includes the URL you visited, the URL you came from, your approximate country
+          (derived from your IP address, which PostHog then discards), and your browser, OS,
+          and viewport size. No name, no email, no user ID.
+        </li>
+        <li>
+          Campaign parameters (<code>utm_source</code>, <code>utm_medium</code>, etc.) if you
+          arrived from a link we or someone else tagged.
+        </li>
+      </ul>
+
+      <p>
+        <strong>Only if you click &ldquo;Sure, that&rsquo;s fine&rdquo; on the cookie banner:</strong>
+      </p>
+      <ul>
+        <li>
+          Click heatmaps and autocaptured events &mdash; basically, which elements on a page
+          get clicked. We use this to spot broken links and layouts that confuse people.
+        </li>
+      </ul>
+
+      <p>
+        <strong>If you subscribe to the blog newsletter:</strong>
+      </p>
+      <ul>
+        <li>Your email address.</li>
+        <li>The page you subscribed from (so we know whether the blog index or a specific post got you there).</li>
+        <li>Timestamps for when you subscribed, confirmed, and &mdash; if you do &mdash; unsubscribed.</li>
+        <li>Your subscription status: pending, confirmed, or unsubscribed.</li>
+      </ul>
+
+      <p>
+        <strong>Stored only in your browser, never sent to us:</strong>
+      </p>
+      <ul>
+        <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
+        <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
+        <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
+      </ul>
+
+      <p>
+        Clearing your browser&rsquo;s site data wipes all of the above instantly.
+      </p>
+
+      <h2>Why we collect it</h2>
+      <ul>
+        <li>
+          <strong>Analytics:</strong> to figure out which posts actually help people and which ones
+          lose them halfway through. We can&rsquo;t fix what we can&rsquo;t see.
+        </li>
+        <li>
+          <strong>Newsletter:</strong> to email you when a new blog post is published. Nothing else.
+          No promos, no &ldquo;we miss you&rdquo; sequences, no cross-promoting other products.
+        </li>
+        <li>
+          <strong>Local preferences:</strong> to make the site feel consistent for you without a
+          server round-trip. All of that stays on your device.
+        </li>
+      </ul>
+
+      <h2>Where it lives</h2>
+      <ul>
+        <li>
+          <strong>PostHog Cloud EU</strong> (Frankfurt, Germany) &mdash; our analytics processor.
+          Session recording is disabled. We use their standard product, with no custom person
+          properties that would identify you, unless you subscribe &mdash; in which case your
+          subscription status becomes a property on the anonymous person record for funnel
+          analysis.
+        </li>
+        <li>
+          <strong>Google Workspace</strong> (Google Cloud EU regions) &mdash; our email address
+          (<code>hello@nidhi.today</code>) and the Google Sheet that stores newsletter
+          subscribers. Only we can read it.
+        </li>
+        <li>
+          <strong>GitHub Pages</strong> (a GitHub / Microsoft service) &mdash; hosts the static
+          files of this website. GitHub keeps short-lived server access logs for abuse
+          prevention. We don&rsquo;t read them and don&rsquo;t get copies.
+        </li>
+        <li>
+          <strong>Your browser</strong> &mdash; for the local preferences listed above.
+        </li>
+      </ul>
+
+      <p>
+        That&rsquo;s the whole list. There&rsquo;s no fourth processor in a footnote somewhere.
+      </p>
+
+      <h2>What we don&rsquo;t do</h2>
+      <ul>
+        <li>We don&rsquo;t run ads. No ad tech on this site at all.</li>
+        <li>We don&rsquo;t sell, rent, license, or syndicate your data to anyone.</li>
+        <li>
+          We don&rsquo;t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn
+          Insight, no TikTok pixel, no retargeting of any kind.
+        </li>
+        <li>We don&rsquo;t record your screen, scrolls, or keystrokes.</li>
+        <li>
+          We don&rsquo;t read replies to newsletter emails and feed them back into any analytics
+          or ads system.
+        </li>
+        <li>We don&rsquo;t import the newsletter list into any other tool or mailing system.</li>
+      </ul>
+
+      <h2>How long we keep it</h2>
+      <ul>
+        <li>
+          <strong>Analytics events:</strong> 12 months (PostHog&rsquo;s default retention &mdash;
+          we haven&rsquo;t extended it), then auto-deleted.
+        </li>
+        <li>
+          <strong>Newsletter subscribers:</strong> while you&rsquo;re subscribed, plus up to 30 days
+          after you unsubscribe so we can make sure you don&rsquo;t get one more email by
+          accident. After that, the row is deleted.
+        </li>
+        <li>
+          <strong>Bounced or invalid emails:</strong> removed as soon as we notice them, usually
+          within a week.
+        </li>
+        <li>
+          <strong>Your localStorage:</strong> until you clear your browser data. Again, we never
+          see it.
+        </li>
+      </ul>
+
+      <h2>Your rights</h2>
+      <p>
+        Under the GDPR (and similar regulations), you have the right to ask us what we hold
+        about you, correct it, export it, restrict how we use it, object to it, or delete it.
+      </p>
+      <ul>
+        <li>
+          For the newsletter, unsubscribing is a one-click link in every email we send, and
+          that also schedules the deletion described above. You can also email us and
+          we&rsquo;ll do it manually.
+        </li>
+        <li>
+          For analytics, the events are anonymous &mdash; we don&rsquo;t have a way to look up
+          &ldquo;your&rdquo; events because we don&rsquo;t know who you are. If this bothers
+          you, just decline the cookie banner, or use a content blocker. Nothing on the site
+          breaks.
+        </li>
+        <li>
+          For anything else, email <a href="mailto:hello@nidhi.today?subject=privacy">hello@nidhi.today</a>
+          with the word <strong>privacy</strong> in the subject. We reply within a few days.
+        </li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>
+        This site is written for adults trying to figure out their own money. We don&rsquo;t
+        knowingly collect anything from children under 16. If you think we have, email us and
+        we&rsquo;ll delete it.
+      </p>
+
+      <section class="changelog-section" aria-labelledby="changelog">
+        <p class="changelog-eyebrow">Changelog</p>
+        <h2 id="changelog">Changes to this notice</h2>
+        <p class="changelog-intro">
+          We update this page in place. Every change gets an entry in the log
+          below &mdash; newest first, no matter how small. Changes that affect
+          how we handle personal data (a new processor, a new category of data,
+          a retention change) are flagged <strong>material</strong>.
+        </p>
+        <p class="changelog-intro">
+          We don&rsquo;t push &ldquo;we updated our privacy policy&rdquo; emails.
+          If you want to keep an eye on it, bookmark this page or read the log
+          below when you&rsquo;re curious. If a change ever makes you
+          uncomfortable, unsubscribing from the newsletter is a one-click link
+          in every email, and clearing your browser&rsquo;s site data wipes
+          everything stored locally.
+        </p>
+
+        <ol class="changelog">
+          {changelog.map((entry) => (
+            <li class="changelog-entry">
+              <div class="changelog-marker" aria-hidden="true"></div>
+              <div class="changelog-body">
+                <div class="changelog-head">
+                  <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
+                  {entry.material && (
+                    <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
+                  )}
+                </div>
+                <p class="changelog-summary">{entry.summary}</p>
+                {entry.details && entry.details.length > 0 && (
+                  <ul class="changelog-details">
+                    {entry.details.map((d) => <li>{d}</li>)}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <h2>Who we are</h2>
+      <p>
+        nidhi is a small independent project. No investors, no growth team, no ad budget.
+        Currently built and run by one person in Prague.
+      </p>
+      <ul class="contact-list">
+        <li><a href="mailto:hello@nidhi.today">hello@nidhi.today</a> &mdash; for anything, privacy or otherwise</li>
+        <li><a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">@nidhi.today</a> &mdash; if you prefer DMs</li>
+        <li><a href="/beliefs">Our beliefs</a> &mdash; if you want the why</li>
+      </ul>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .privacy-container {
+    max-width: 640px;
+    width: 100%;
+  }
+
+  .privacy-hero {
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .privacy-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+
+  .privacy-intro {
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  .privacy-updated {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .privacy-container h2 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-8) 0 var(--space-3);
+    letter-spacing: -0.01em;
+  }
+
+  .privacy-container h2:first-of-type {
+    margin-top: var(--space-2);
+  }
+
+  .privacy-container p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .privacy-container ul {
+    margin: 0 0 var(--space-4);
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .privacy-container li {
+    margin-bottom: var(--space-2);
+  }
+
+  .privacy-container li:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-container strong {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+  }
+
+  .privacy-container a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .privacy-container a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .privacy-container code {
+    background: var(--color-border-light);
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--color-deep-blue);
+  }
+
+  .contact-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .contact-list li {
+    padding-left: 0;
+  }
+
+  /* --- Changelog section ----------------------------------------------
+     A visually-distinct block that signals "this is meta/audit content,
+     not policy text". Card background + an eyebrow label, plus entries
+     rendered in a timeline style with a left rail and date markers. */
+  .changelog-section {
+    margin-top: var(--space-10);
+    padding: var(--space-6) var(--space-6) var(--space-5);
+    background: var(--color-border-light);
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--color-deep-blue);
+  }
+
+  .changelog-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+  }
+
+  /* Override the generic h2 treatment inside this section — it's a meta
+     section, not a primary policy chapter, so dial the visual weight back. */
+  .changelog-section h2 {
+    font-size: 1.1rem;
+    margin: 0 0 var(--space-3);
+  }
+
+  .changelog-intro {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  .changelog-intro strong {
+    color: var(--color-deep-blue);
+  }
+
+  .changelog {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    position: relative;
+  }
+
+  /* The vertical timeline rail, offset to sit under the marker dots. */
+  .changelog::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--color-border-light);
+    border-radius: 1px;
+    /* Override: the section's own background IS border-light, so draw the
+       rail in something slightly darker for contrast. */
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .changelog-entry {
+    position: relative;
+    padding-left: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+
+  .changelog-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .changelog-marker {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-bg-white);
+    border: 2px solid var(--color-deep-blue);
+    box-sizing: border-box;
+  }
+
+  .changelog-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-1);
+  }
+
+  .changelog-date {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .changelog-tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+  }
+
+  .changelog-tag--material {
+    background: var(--color-teal);
+    color: white;
+  }
+
+  /* Scope the changelog summary/details typography so they don't inherit
+     the default .privacy-container p/ul styles. */
+  .changelog-summary {
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .changelog-details {
+    margin: var(--space-2) 0 0;
+    padding-left: var(--space-4);
+    list-style: disc;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .changelog-details li {
+    margin-bottom: var(--space-1);
+  }
+
+  .changelog-details li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 480px) {
+    .privacy-title { font-size: 1.6rem; }
+    .privacy-intro { font-size: 1rem; }
+    .privacy-container h2 { font-size: 1.1rem; }
+    .privacy-container p,
+    .privacy-container ul { font-size: 0.9rem; }
+
+    .changelog-section {
+      padding: var(--space-5) var(--space-4);
+    }
+    .changelog-section h2 { font-size: 1rem; }
+    .changelog-entry { padding-left: var(--space-4); }
+    .changelog-details { font-size: 0.8rem; }
+  }
+</style>

@@ -1,0 +1,5 @@
+# One GUID per line. Managed by scripts/send_newsletter.py.
+# Each entry is an RSS <guid> (currently equal to the post link) that has
+# already been sent as a newsletter email. Do not edit by hand unless you
+# know what you're doing — removing a line will cause that post to be
+# re-sent to every confirmed subscriber on the next deploy.

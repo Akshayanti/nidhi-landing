@@ -1,0 +1,490 @@
+---
+// Subscribe form. Posts to a Google Apps Script Web App that stores the email
+// in a Google Sheet and sends a double-opt-in confirmation email. Fully free,
+// fully self-hosted (Apps Script + Workspace Gmail + GitHub Actions).
+//
+// Configure PUBLIC_NEWSLETTER_ENDPOINT to the Apps Script Web App exec URL.
+// See docs/blog-subscription-setup.md for full setup instructions.
+
+export interface Props {
+  /**
+   * `full`    — large centered box with heading + copy. Use at the end of a
+   *             blog post (high-intent moment after reading).
+   * `compact` — single inline row with input + button. Use near the top of
+   *             the blog index as a slim visible CTA.
+   */
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
+const isDev = import.meta.env.DEV;
+
+// Stable per-variant IDs so the inline script can wire up the right instance
+// even if both variants somehow ended up on the same page.
+const formId = `subscribe-form-${variant}`;
+const statusId = `subscribe-status-${variant}`;
+const inputId = `subscribe-email-${variant}`;
+---
+
+<section class={`subscribe subscribe--${variant}`} aria-label="Newsletter subscription" data-variant={variant}>
+  {variant === 'full' && (
+    <div class="subscribe-box">
+      {/* Pre-submit: form. */}
+      <div class="subscribe-pre" data-subscribe-state="pre">
+        <h3 class="subscribe-title">Get notified about new posts</h3>
+        <p class="subscribe-text">One email when something new goes up. No spam, unsubscribe anytime.</p>
+
+        <form
+          id={formId}
+          class="subscribe-form"
+          data-endpoint={endpoint}
+        >
+          <div class="subscribe-input-group">
+            <label class="sr-only" for={inputId}>Email address</label>
+            <input
+              id={inputId}
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+              class="subscribe-input"
+            />
+            <button type="submit" class="subscribe-button">Subscribe</button>
+          </div>
+          <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
+          <p class="subscribe-privacy">
+            Double opt-in. Unsubscribe anytime. <a href="/privacy">Privacy policy</a>.
+            {' · '}<a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>
+          </p>
+        </form>
+        {isDev && !endpoint && (
+          <p class="subscribe-dev-warning">
+            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set — the form is visible
+            but submissions will no-op. See <code>docs/blog-subscription-setup.md</code>.
+          </p>
+        )}
+      </div>
+
+      {/* Post-submit: success card. Swapped in by JS on successful POST. */}
+      <div class="subscribe-post" data-subscribe-state="post" hidden>
+        <div class="subscribe-success-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h3 class="subscribe-success-title">Check your inbox</h3>
+        <p class="subscribe-success-body">
+          We sent a confirmation link to <strong data-subscribe-email>your email</strong>.
+          Click the button in that email to finish subscribing &mdash; takes a second.
+        </p>
+        <p class="subscribe-success-hint">
+          No email after a minute? Check spam, or
+          <button type="button" class="subscribe-success-retry" data-subscribe-retry>try a different address</button>.
+        </p>
+      </div>
+    </div>
+  )}
+
+  {variant === 'compact' && (
+    <div class="subscribe-compact">
+      <div class="subscribe-pre" data-subscribe-state="pre">
+        <div class="subscribe-compact-row">
+          <span class="subscribe-compact-label">Get notified about new posts</span>
+          <form
+            id={formId}
+            class="subscribe-form subscribe-form--compact"
+            data-endpoint={endpoint}
+          >
+            <label class="sr-only" for={inputId}>Email address</label>
+            <input
+              id={inputId}
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+              class="subscribe-input"
+            />
+            <button type="submit" class="subscribe-button">Subscribe</button>
+          </form>
+          <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml" aria-label="RSS feed">
+            or RSS
+          </a>
+        </div>
+        <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
+        {isDev && !endpoint && (
+          <p class="subscribe-dev-warning">
+            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set — the form is visible
+            but submissions will no-op.
+          </p>
+        )}
+      </div>
+
+      <div class="subscribe-post subscribe-post--compact" data-subscribe-state="post" hidden>
+        <div class="subscribe-success-icon subscribe-success-icon--compact" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <p class="subscribe-success-title subscribe-success-title--compact">Check your inbox</p>
+          <p class="subscribe-success-body subscribe-success-body--compact">
+            Confirmation link sent to <strong data-subscribe-email>your email</strong>.
+            <button type="button" class="subscribe-success-retry" data-subscribe-retry>Use a different email</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  )}
+</section>
+
+<script is:inline define:vars={{ formId, statusId, variant }}>
+  (function () {
+    var form = document.getElementById(formId);
+    var status = document.getElementById(statusId);
+    if (!form || !status) return;
+
+    var section = form.closest('[data-variant]');
+    var preEl   = section && section.querySelector('[data-subscribe-state="pre"]');
+    var postEl  = section && section.querySelector('[data-subscribe-state="post"]');
+    var emailEcho = postEl && postEl.querySelector('[data-subscribe-email]');
+    var retryBtn  = postEl && postEl.querySelector('[data-subscribe-retry]');
+
+    var endpoint = form.getAttribute('data-endpoint') || '';
+    var button = form.querySelector('button[type="submit"]');
+    var input = form.querySelector('input[type="email"]');
+
+    function setStatus(text, kind) {
+      status.textContent = text;
+      status.className = 'subscribe-status subscribe-status--' + kind;
+    }
+
+    // Swap the visible panel. The "success card" replaces the form so the
+    // user gets a clear, unmissable confirmation that the next step is in
+    // their inbox — the previous tiny inline status line was too easy to
+    // scroll past.
+    function showSuccess(email) {
+      if (emailEcho) emailEcho.textContent = email;
+      if (preEl)  preEl.hidden = true;
+      if (postEl) postEl.hidden = false;
+      // Move focus so screen readers announce the new panel.
+      if (postEl) {
+        postEl.setAttribute('tabindex', '-1');
+        try { postEl.focus({ preventScroll: false }); } catch (_) {}
+      }
+    }
+
+    function showForm() {
+      if (postEl) postEl.hidden = true;
+      if (preEl)  preEl.hidden = false;
+      setStatus('', 'idle');
+      if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
+      if (input)  { input.value = ''; try { input.focus(); } catch (_) {} }
+    }
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () {
+        showForm();
+        if (window.posthog) window.posthog.capture('blog_subscribe_retry_clicked', { variant: variant });
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = (input && input.value || '').trim();
+      if (!email) return;
+
+      // Unconfigured (local preview or misconfigured prod): surface a
+      // dev-visible warning but never silently "succeed" so we don't
+      // mislead the user into thinking they're subscribed.
+      if (!endpoint) {
+        console.warn('[SubscribeSection] PUBLIC_NEWSLETTER_ENDPOINT is not set. Submissions are no-ops.');
+        setStatus('Subscriptions are not configured yet. Check back soon, or grab the RSS feed.', 'error');
+        return;
+      }
+
+      if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+      setStatus('', 'idle');
+
+      // PostHog: attempt (fires regardless of outcome, useful for funnel)
+      if (window.posthog) {
+        var domain = email.split('@')[1] || '';
+        window.posthog.capture('blog_subscribe_submit', {
+          email_domain: domain,
+          source: window.location.pathname,
+          variant: variant,
+        });
+      }
+
+      var body = new URLSearchParams();
+      body.set('action', 'subscribe');
+      body.set('email', email);
+      body.set('source', window.location.pathname);
+
+      // Apps Script web apps don't set CORS headers, so we POST with
+      // mode: 'no-cors'. We can't read the response, but we also don't
+      // need to — the Apps Script always replies with a confirmation
+      // email on any valid submission, so the UX message is the same
+      // either way: "check your inbox to confirm".
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).then(function () {
+        form.reset();
+        showSuccess(email);
+        if (window.posthog) {
+          window.posthog.capture('blog_subscribe_sent', { variant: variant });
+          window.posthog.setPersonProperties({
+            is_blog_subscriber_pending: true,
+            subscriber_source: window.location.pathname,
+          });
+        }
+      }).catch(function () {
+        setStatus('Something went wrong. Please try again in a moment.', 'error');
+        if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
+      });
+    });
+  })();
+</script>
+
+<style>
+  /* --- Shared ------------------------------------------------------ */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .subscribe-form { max-width: 420px; margin: 0; }
+  .subscribe-form--compact { max-width: none; margin: 0; flex: 1; min-width: 0; }
+
+  .subscribe-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+  @media (min-width: 480px) {
+    .subscribe-input-group { flex-direction: row; }
+  }
+
+  .subscribe-input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    background: white;
+    color: var(--color-text-primary);
+  }
+  .subscribe-input::placeholder { color: var(--color-text-muted); }
+  .subscribe-input:focus { outline: 2px solid var(--color-teal); outline-offset: 0; }
+
+  .subscribe-button {
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-teal);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+    white-space: nowrap;
+  }
+  .subscribe-button:hover:not(:disabled) { background: #26a69a; }
+  .subscribe-button:active:not(:disabled) { transform: translateY(1px); }
+  .subscribe-button:disabled { opacity: 0.6; cursor: wait; }
+
+  .subscribe-status {
+    font-size: 0.85rem;
+    margin: var(--space-2) 0 0;
+    min-height: 1.2em;
+  }
+  .subscribe-status--success { color: var(--color-teal); }
+  .subscribe-status--error { color: #c0392b; }
+  .subscribe-status--idle { color: var(--color-text-muted); }
+
+  /* --- Full variant (end of blog post) ----------------------------- */
+  .subscribe--full { margin-top: var(--space-10); padding: var(--space-8) 0; border-top: 1px solid var(--color-border-light); }
+  .subscribe--full .subscribe-box {
+    background: var(--color-deep-blue);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-5);
+    text-align: center;
+  }
+  @media (min-width: 640px) {
+    .subscribe--full .subscribe-box { padding: var(--space-8); }
+  }
+  .subscribe--full .subscribe-form { margin: 0 auto; }
+  .subscribe-title { font-size: 1.25rem; color: white; margin-bottom: var(--space-2); font-weight: 600; }
+  .subscribe-text { color: rgba(255, 255, 255, 0.8); font-size: 0.95rem; margin-bottom: var(--space-5); line-height: 1.5; }
+  .subscribe--full .subscribe-input { border-color: transparent; }
+  .subscribe-privacy {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: var(--space-3) 0 0;
+  }
+  .subscribe-privacy a { color: rgba(255, 255, 255, 0.85); text-decoration: underline; }
+  .subscribe-privacy a:hover { color: white; }
+  .subscribe--full .subscribe-status { color: rgba(255, 255, 255, 0.85); }
+  .subscribe--full .subscribe-status--success { color: #b2f2ea; }
+  .subscribe--full .subscribe-status--error { color: #ffb3ad; }
+
+  /* --- Compact variant (top of blog index) ------------------------- */
+  .subscribe--compact {
+    margin: 0 auto var(--space-8);
+    max-width: var(--max-width);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-border-light);
+    border-radius: var(--radius-md);
+  }
+  .subscribe-compact-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .subscribe-compact-label {
+    font-weight: 600;
+    color: var(--color-deep-blue);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .subscribe-form--compact .subscribe-input-group { margin-bottom: 0; }
+  .subscribe-rss {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-text-muted);
+    flex-shrink: 0;
+  }
+  .subscribe-rss:hover { color: var(--color-deep-blue); border-bottom-color: var(--color-deep-blue); }
+  @media (max-width: 640px) {
+    .subscribe-compact-row { flex-direction: column; align-items: stretch; }
+    .subscribe-compact-label { text-align: center; }
+    .subscribe-rss { text-align: center; }
+  }
+
+  /* --- Post-submit success card ----------------------------------- */
+  /* Replaces the form entirely so the user can't miss that the next
+     step is in their inbox. Mirrors the visual weight of the form so
+     layout doesn't jump. */
+  .subscribe-post { text-align: center; }
+  .subscribe-post:focus { outline: none; }
+
+  .subscribe-success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 150, 136, 0.15);
+    color: var(--color-teal);
+  }
+  .subscribe--full .subscribe-success-icon {
+    background: rgba(255, 255, 255, 0.18);
+    color: #b2f2ea;
+  }
+
+  .subscribe-success-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 var(--space-2);
+    color: var(--color-deep-blue);
+  }
+  .subscribe--full .subscribe-success-title { color: white; }
+
+  .subscribe-success-body {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-primary);
+  }
+  .subscribe--full .subscribe-success-body { color: rgba(255, 255, 255, 0.9); }
+  .subscribe-success-body strong {
+    color: var(--color-deep-blue);
+    word-break: break-word;
+  }
+  .subscribe--full .subscribe-success-body strong { color: #fff; }
+
+  .subscribe-success-hint {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .subscribe--full .subscribe-success-hint { color: rgba(255, 255, 255, 0.7); }
+
+  .subscribe-success-retry {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+  }
+  .subscribe-success-retry:hover { color: var(--color-teal); }
+  .subscribe--full .subscribe-success-retry:hover { color: #fff; }
+
+  /* Compact variant: inline success row (no icon overhead). */
+  .subscribe-post--compact {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: left;
+  }
+  .subscribe-success-icon--compact {
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .subscribe-success-title--compact {
+    font-size: 1rem;
+    margin: 0 0 2px;
+  }
+  .subscribe-success-body--compact {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* --- Dev warning (unconfigured endpoint, dev server only) -------- */
+  .subscribe-dev-warning {
+    margin: var(--space-3) 0 0;
+    padding: var(--space-2) var(--space-3);
+    background: #fff3cd;
+    border: 1px solid #ffe082;
+    border-radius: var(--radius-sm);
+    color: #665100;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    text-align: left;
+  }
+  .subscribe-dev-warning code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.85em;
+  }
+  /* Override dark-on-dark inside the .subscribe-box of the full variant */
+  .subscribe--full .subscribe-dev-warning {
+    background: #fff3cd;
+    color: #665100;
+  }
+</style>

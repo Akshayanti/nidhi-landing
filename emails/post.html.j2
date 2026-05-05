@@ -1,0 +1,110 @@
+{#
+  HTML email template for a single blog post.
+
+  Rendered per-send by scripts/send_newsletter.py using Jinja2. Every <a>
+  inside `content_html` is also re-styled inline by the render script (see
+  absolutize_urls() + style_anchors() in scripts/send_newsletter.py) so
+  post-body links match the brand even though the extracted article HTML
+  from `dist/` doesn't carry inline styles.
+
+  The literal string `{{UNSUBSCRIBE_URL}}` is left in the output verbatim
+  (note the `{{ '{{UNSUBSCRIBE_URL}}' }}` escape below). Apps Script swaps
+  that placeholder in per-recipient at send time with a URL pointing at the
+  branded /unsubscribe/ landing page on nidhi.today.
+
+  Inline styles are mandatory — Gmail and most major clients strip <style>
+  blocks. Keep the total HTML well under 102KB to avoid Gmail clipping.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>{{ title | e }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">
+  {# Preheader — the little preview snippet shown in inbox lists. Hidden
+     visually but readable by clients that surface preview text. #}
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ description | e }}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">
+    <tr><td align="center" style="padding:24px 12px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">
+
+        {# ───────────────────────── Brand banner ─────────────────────── #}
+        {# The PNG already contains the wordmark AND the tagline
+           "Money, understood." — don't repeat the tagline as text.
+           Image is 400px wide, displayed at 200px for a crisp 2x on retina. #}
+        <tr><td style="padding:0;">
+          <div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>
+          <div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">
+            <a href="{{ blog_url }}" style="text-decoration:none;color:inherit;display:inline-block;">
+              <img src="{{ site_url }}/brand/logo/full/logo-full-400-light.png"
+                   alt="nidhi — Money, understood."
+                   width="200"
+                   height="auto"
+                   style="display:block;max-width:200px;height:auto;border:0;outline:none;">
+            </a>
+          </div>
+        </td></tr>
+
+        {# ───────────────────────── Post header ──────────────────────── #}
+        <tr><td style="padding:28px 28px 0;">
+          {% if level or reading_time %}
+          <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
+            {% if level %}{{ level | e }}{% if reading_time %} &middot; {% endif %}{% endif %}
+            {% if reading_time %}{{ reading_time }} min read{% endif %}
+          </div>
+          {% endif %}
+          <h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">{{ title | e }}</h1>
+          {% if tldr %}
+          <div style="background:#f0f4f8;border-left:3px solid #0D47A1;border-radius:4px;padding:14px 18px;margin:18px 0 24px;font-size:14px;color:#334155;line-height:1.6;">
+            <div style="color:#0D47A1;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">TL;DR</div>
+            {{ tldr | e }}
+          </div>
+          {% endif %}
+        </td></tr>
+
+        {# ───────────────── Post body (from dist/*/index.html) ───────── #}
+        <tr><td style="padding:0 28px 24px;font-size:16px;line-height:1.7;color:#222;">
+          {{ content_html | safe }}
+        </td></tr>
+
+        {# ───────────── Divider + read-on-site CTA ──────────────────── #}
+        <tr><td style="padding:0 28px 28px;">
+          <div style="border-top:1px solid #eee;padding-top:20px;">
+            <a href="{{ post_url_tracked }}" style="display:inline-block;padding:12px 24px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Read on nidhi.today &rarr;</a>
+            <div style="margin-top:14px;font-size:13px;color:#999;">Reply to this email if anything landed wrong &mdash; a real person reads it.</div>
+          </div>
+        </td></tr>
+
+        {# ───────────────────────── Footer ────────────────────────── #}
+        <tr><td style="padding:22px 28px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.5;">
+          <p style="margin:0 0 8px;">
+            You&rsquo;re getting this because you subscribed to
+            <a href="{{ blog_url }}" style="color:#0D47A1;text-decoration:underline;">nidhi.today/blog</a>.
+          </p>
+          <p style="margin:0 0 8px;">
+            {# UNSUBSCRIBE_URL is swapped per-recipient by Apps Script at
+               send time, so the value written here stays as a literal
+               string in the Jinja output. #}
+            {# UNSUBSCRIBE_URL is injected per-recipient by Apps Script. It
+               already has `?t=TOKEN`, so UTMs join with `&`. Privacy and RSS
+               are bare paths, so they start the query with `?`. #}
+            <a href="{{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}" style="color:#777;text-decoration:underline;">Unsubscribe</a>
+            &middot;
+            <a href="{{ site_url }}/privacy?{{ utm_query }}" style="color:#777;text-decoration:underline;">Privacy</a>
+            &middot;
+            <a href="{{ site_url }}/rss.xml?{{ utm_query }}" style="color:#777;text-decoration:underline;">RSS</a>
+          </p>
+          <p style="margin:0;color:#999;">
+            Educational, not financial advice. Everyone&rsquo;s situation is different.
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

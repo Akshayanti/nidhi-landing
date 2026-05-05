@@ -1,0 +1,44 @@
+{#
+  Plain-text teaser fallback, rendered alongside post_teaser.html.j2 when
+  the full-body HTML would exceed TEASER_SIZE_THRESHOLD_BYTES. Same copy
+  spine as post.txt.j2 with the body trimmed to first paragraph + CTA.
+
+  The literal string `{{UNSUBSCRIBE_URL}}` is left verbatim — Apps Script
+  swaps it per-recipient at send time. The `&{{ utm_query }}` suffix joins
+  after the `?t=TOKEN` the script injects.
+#}
+nidhi — Money, understood.
+==========================
+
+{{ title }}
+{{ '=' * title|length }}
+{% if level or reading_time %}
+
+{% if level %}{{ level }}{% if reading_time %} · {% endif %}{% endif %}{% if reading_time %}{{ reading_time }} min read{% endif %}
+{% endif %}
+{% if tldr %}
+
+TL;DR: {{ tldr }}
+{% endif %}
+
+{% if first_paragraph_text %}
+{{ first_paragraph_text }}
+{% endif %}
+
+This one's a longer read — continues on the site with examples, tables, and links.
+
+---
+
+Read the full post: {{ post_url_tracked }}
+
+Reply to this email if anything landed wrong — a real person reads it.
+
+---
+
+You're getting this because you subscribed to {{ blog_url }}.
+
+Unsubscribe: {{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}
+Privacy:     {{ site_url }}/privacy?{{ utm_query }}
+RSS:         {{ site_url }}/rss.xml?{{ utm_query }}
+
+Educational, not financial advice. Everyone's situation is different.
