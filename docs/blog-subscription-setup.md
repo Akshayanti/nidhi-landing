@@ -279,16 +279,39 @@ is set as a script property, from Apps Script too:
 | `blog_subscribe_confirm_clicked` | frontend (landing page) | user clicked "Yes, subscribe me" |
 | `blog_subscribe_confirmed` | Apps Script | confirm flow reached server, row flipped to confirmed |
 | `blog_unsubscribe_clicked` | frontend (landing page) | user clicked "Unsubscribe me" |
-| `blog_unsubscribe` | Apps Script | unsubscribe flow reached server, row flipped |
+| `blog_unsubscribe` | Apps Script | unsubscribe flow reached server, row flipped (idempotent: a second POST with the same token is a no-op, so a double-click produces one event) |
 | `blog_newsletter_sent` | Apps Script | a post was mailed out (aggregate `{sent, failed}` counts) |
 | `blog_newsletter_send_failed` | Apps Script | a single recipient failed during fan-out (includes `email_domain`, truncated `error`) — use for domain-level anomaly detection |
 | `blog_newsletter_quota_warning` | Apps Script | confirmed subscribers ≥ 80% of the Workspace 1,500/day cap — prompts planning for a transactional provider |
 | `blog_welcome_failed` | Apps Script | welcome email threw after a successful confirm — user IS confirmed, but didn't get the "you're in" email |
 | `blog_subscriber_bounced` | Apps Script | `scan_bounces` marked a row as bounced |
 
-Useful PostHog funnel: `blog_subscribe_submit` → `blog_subscribe_pending` →
-`blog_subscribe_confirm_clicked` → `blog_subscribe_confirmed` → (retention)
-`blog_unsubscribe`.
+### Identity stitching (distinct_id)
+
+Subscriber-keyed events on both sides use the same distinct_id:
+`SHA-256(email.toLowerCase().trim())` hex-encoded. The frontend computes this
+in `SubscribeSection.astro`'s `subscriberDistinctId()` and calls
+`posthog.identify(hash)` on submit so the browser's anon ID is aliased to the
+hash. The server computes the identical hash in `newsletter.gs`'s
+`distinctIdForEmail_()` and uses it for `blog_subscribe_pending`,
+`_confirmed`, `blog_unsubscribe`, `blog_welcome_failed`,
+`blog_subscribe_duplicate`, and `blog_subscriber_bounced`. Aggregate
+newsletter-send events (`blog_newsletter_sent`, `_send_failed`,
+`_quota_warning`) deliberately use the sender mailbox (`FROM_EMAIL`) as
+distinct_id — they're operator metrics, not subscriber-keyed.
+
+Raw emails are never sent to PostHog (only the hash + `email_domain`), so
+the list can't be reconstructed from PostHog data.
+
+The frontend landing pages for confirm / unsubscribe only have a token, not
+the email, so `blog_subscribe_confirm_clicked` and `blog_unsubscribe_clicked`
+stay under the landing-page browser's anon distinct_id — they're UI-level
+signals, not funnel anchors. Use the server-side `blog_subscribe_confirmed`
+and `blog_unsubscribe` for per-subscriber funnel/retention analysis.
+
+Useful PostHog funnel (all subscriber-keyed, so they share distinct_id):
+`blog_subscribe_submit` → `blog_subscribe_pending` → `blog_subscribe_confirmed`
+→ (retention exit) `blog_unsubscribe`.
 
 ## Failure notifications
 

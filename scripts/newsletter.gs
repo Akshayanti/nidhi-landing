@@ -607,7 +607,7 @@ function handleSubscribe_(e) {
     var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
     if (status === 'confirmed') {
       // Already subscribed — don't leak that fact. Silently succeed.
-      trackPosthog_('blog_subscribe_duplicate', email, { source: source });
+      trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
       return jsonResponse_({ ok: true });
     }
     // pending or unsubscribed: reset to pending with fresh tokens.
@@ -617,7 +617,7 @@ function handleSubscribe_(e) {
   }
 
   sendConfirmationEmail_(email, confirmToken);
-  trackPosthog_('blog_subscribe_pending', email, { source: source });
+  trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
 }
 
@@ -657,13 +657,13 @@ function handleConfirm_(e) {
     // nobody ever gets their "you're in" email. Aggregate event + console
     // log is the minimum useful alert surface.
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
-    trackPosthog_('blog_welcome_failed', email, {
+    trackPosthog_('blog_welcome_failed', distinctIdForEmail_(email), {
       email_domain: emailDomain_(email),
       error: String(err && err.message ? err.message : err).slice(0, 300),
     });
   }
 
-  trackPosthog_('blog_subscribe_confirmed', email, {});
+  trackPosthog_('blog_subscribe_confirmed', distinctIdForEmail_(email), {});
   return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
 }
 
@@ -685,10 +685,20 @@ function handleUnsubscribe_(e, method) {
   }
 
   var email = String(sh.getRange(row, COL.email).getValue()).trim();
-  sh.getRange(row, COL.status).setValue('unsubscribed');
-  sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+  var currentStatus = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
 
-  trackPosthog_('blog_unsubscribe', email, { method: method });
+  // Idempotency: a second unsubscribe for the same token is a no-op. This
+  // happens in practice when the user double-clicks the "Unsubscribe me"
+  // button, when Gmail's RFC 8058 one-click POST fires AND the user also
+  // clicks the email-body link's landing page, or when the row was already
+  // auto-marked by the bounce scanner. Without this guard we'd re-stamp
+  // unsubscribed_at and re-fire blog_unsubscribe, double-counting exits in
+  // PostHog retention.
+  if (currentStatus !== 'unsubscribed') {
+    sh.getRange(row, COL.status).setValue('unsubscribed');
+    sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+    trackPosthog_('blog_unsubscribe', distinctIdForEmail_(email), { method: method });
+  }
 
   // Gmail's RFC 8058 one-click unsubscribe POSTs and expects a 2xx JSON
   // response (it doesn't follow redirects). Browser-initiated (clicking a
@@ -1007,7 +1017,7 @@ function handleScanBounces_(e) {
     marked++;
     markedAddrs.push(rowEmail);
 
-    trackPosthog_('blog_subscriber_bounced', rowEmail, {
+    trackPosthog_('blog_subscriber_bounced', distinctIdForEmail_(rowEmail), {
       email_domain: emailDomain_(rowEmail),
       via: 'mailer_daemon_scan',
     });
@@ -1459,4 +1469,32 @@ function trackPosthog_(event, distinctId, properties) {
       }),
     });
   } catch (_) { /* non-fatal */ }
+}
+
+// Stable, PII-minimised subscriber identifier for PostHog. SHA-256 of the
+// normalised email (lowercase, trimmed), hex-encoded. Must match the client's
+// sha256Hex() in src/components/SubscribeSection.astro exactly — both sides
+// normalise with .toLowerCase().trim() before hashing so the browser's
+// posthog.identify(hash) call aliases to the same distinct_id the server
+// uses for blog_subscribe_pending / _confirmed / blog_unsubscribe, which is
+// what makes the PostHog funnel actually stitch across client + server.
+function distinctIdForEmail_(email) {
+  return sha256Hex_(String(email).toLowerCase().trim());
+}
+
+function sha256Hex_(str) {
+  var bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    String(str),
+    Utilities.Charset.UTF_8
+  );
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    // Apps Script returns signed bytes (-128..127). Convert to unsigned
+    // before hex formatting so we get the canonical 64-char lowercase digest.
+    var b = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+    var h = b.toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  return hex;
 }
