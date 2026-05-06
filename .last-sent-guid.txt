@@ -3,3 +3,12 @@
 # already been sent as a newsletter email. Do not edit by hand unless you
 # know what you're doing — removing a line will cause that post to be
 # re-sent to every confirmed subscriber on the next deploy.
+https://nidhi.today/blog/emergency-fund/
+https://nidhi.today/blog/liquidity/
+https://nidhi.today/blog/appreciation-vs-depreciation/
+https://nidhi.today/blog/how-to-get-out-of-debt/
+https://nidhi.today/blog/liabilities/
+https://nidhi.today/blog/assets/
+https://nidhi.today/blog/how-to-calculate-net-worth/
+https://nidhi.today/blog/what-is-net-worth/
+https://nidhi.today/blog/income-vs-wealth/

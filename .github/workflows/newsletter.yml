@@ -53,18 +53,30 @@ concurrency:
   # Queue instead: back-to-back triggers run sequentially.
   cancel-in-progress: false
 
-# Promote the shared newsletter secrets + config to the workflow level so
-# step-level `if:` expressions can gate on them (e.g. "only run the bounce
-# scan if the HMAC secret is configured"). GitHub Actions doesn't allow
-# `secrets.X` in `if:` but does allow `env.X`.
-env:
-  NEWSLETTER_ENDPOINT: ${{ secrets.NEWSLETTER_ENDPOINT }}
-  NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
-  SITE_URL: https://nidhi.today
-
 jobs:
   send:
     runs-on: ubuntu-latest
+    # Newsletter secrets + shared config live at JOB level (not workflow
+    # level) so they're reliably available to step-level `if:` expressions
+    # via the `env` context. GitHub Actions does not allow `secrets.X` in
+    # `if:` directly — going through `env` is the documented workaround.
+    #
+    # NEWSLETTER_ENDPOINT is read from `secrets.PUBLIC_NEWSLETTER_ENDPOINT`
+    # — the same URL the browser uses. We use one secret for both the
+    # build-time baked-into-JS endpoint and the server-side workflow
+    # endpoint, because it's literally the same Apps Script `/exec` URL
+    # and is already public by design (every page's JS references it).
+    # The `PUBLIC_` prefix is just Astro/Vite convention for
+    # "exposed at build time"; it has no bearing on Actions secret scoping.
+    #
+    # NEWSLETTER_HMAC_SECRET is a genuinely separate secret — a shared
+    # signing key proving to Apps Script that send_post / scan_bounces
+    # requests came from our CI and not from someone who saw the public
+    # endpoint URL.
+    env:
+      NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
+      NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
+      SITE_URL: https://nidhi.today
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,9 +91,61 @@ jobs:
       - name: Install Python dependencies
         run: pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
 
+      - name: Check newsletter configuration
+        # Explicit preflight so a missing secret produces a visible
+        # diagnostic in the Actions log instead of silently cascading into
+        # four skipped steps and zero signal about what's wrong.
+        # Sets `configured=true|false` as a step output that every
+        # subsequent gated step depends on. Never touches secret values
+        # directly in echo — only presence checks, so nothing leaks.
+        id: preflight
+        run: |
+          set -e
+          OK=1
+          if [ -z "${NEWSLETTER_ENDPOINT:-}" ]; then
+            echo "::warning title=Missing secret::PUBLIC_NEWSLETTER_ENDPOINT is not configured. Add it under Settings → Secrets and variables → Actions → Secrets (same URL the site build uses). See docs/blog-subscription-setup.md."
+            OK=0
+          else
+            echo "PUBLIC_NEWSLETTER_ENDPOINT: configured"
+          fi
+          if [ -z "${NEWSLETTER_HMAC_SECRET:-}" ]; then
+            echo "::warning title=Missing secret::NEWSLETTER_HMAC_SECRET is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See docs/blog-subscription-setup.md."
+            OK=0
+          else
+            # Length is the cheapest and most useful mismatch signal.
+            # `openssl rand -hex 32` produces exactly 64 hex chars; any
+            # other length means something went wrong during copy/paste
+            # (trailing newline, extra space, truncated value). The
+            # number itself is not the secret so GitHub's log masking
+            # doesn't hide it.
+            #
+            # Pair with the Apps Script debugHmacSecret() function: if
+            # both sides report 64 but bad_signature still happens,
+            # compare the HMAC of the literal string "scan_bounces"
+            # from both sides — they'll match iff the secrets match.
+            LEN=${#NEWSLETTER_HMAC_SECRET}
+            SIG_PROBE=$(printf 'scan_bounces' \
+              | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" \
+              | awk '{print $NF}')
+            echo "NEWSLETTER_HMAC_SECRET: configured (length=$LEN, expected=64)"
+            echo "HMAC(\"scan_bounces\", secret) = $SIG_PROBE"
+            echo "  ↳ Run debugHmacSecret() in the Apps Script editor."
+            echo "     Matching output means the two secrets are byte-identical."
+            if [ "$LEN" != "64" ]; then
+              echo "::warning title=Unexpected secret length::NEWSLETTER_HMAC_SECRET is $LEN characters, expected 64. Likely a copy-paste included extra whitespace. Regenerate with 'openssl rand -hex 32' and paste carefully."
+            fi
+          fi
+          if [ "$OK" = "1" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Newsletter pipeline is fully configured."
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Newsletter pipeline will be skipped::One or more required secrets are missing. All subsequent steps (send, commit marker, scan bounces, notify) will be skipped. Fix by adding the secrets flagged above."
+          fi
+
       - name: Send newsletter for new posts
         id: newsletter
-        if: env.NEWSLETTER_HMAC_SECRET != '' && env.NEWSLETTER_ENDPOINT != ''
+        if: steps.preflight.outputs.configured == 'true'
         env:
           # Live-fetch mode: read /rss.xml and per-post HTML over HTTPS
           # directly from the deployed site. No `npm run build` in this
@@ -132,8 +196,7 @@ jobs:
         # is fine (see verifyScanBouncesSig_).
         id: bounce_scan
         if: >-
-          env.NEWSLETTER_HMAC_SECRET != '' &&
-          env.NEWSLETTER_ENDPOINT != '' &&
+          steps.preflight.outputs.configured == 'true' &&
           github.event.inputs.skip_bounce_scan != 'true'
         run: |
           set -euo pipefail

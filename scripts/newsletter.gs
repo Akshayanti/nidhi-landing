@@ -136,12 +136,26 @@ function randomToken_() {
 }
 
 /**
- * HMAC-SHA256 → hex, for signing GH-Actions-originated send_post requests
- * only. NOT used for per-subscriber confirm/unsub tokens — those are opaque
- * random (see randomToken_).
+ * HMAC-SHA256 → hex, for signing GH-Actions-originated send_post and
+ * scan_bounces requests. NOT used for per-subscriber confirm/unsub tokens
+ * — those are opaque random (see randomToken_).
+ *
+ * Why the explicit UTF-8 charset:
+ *   The two-arg overload computeHmacSha256Signature(value, key) uses an
+ *   implementation-defined charset when converting the String args to
+ *   bytes, which is not guaranteed stable across Apps Script runtime
+ *   versions (Rhino vs V8) or Google's request-ingress normalization.
+ *   That produced a subtle `bad_signature` bug when the signed body
+ *   contained non-ASCII bytes (em-dashes, curly quotes, etc. baked into
+ *   rendered blog HTML): Python signed the UTF-8 bytes, but Apps Script
+ *   re-hashed the decoded String using a different charset, and the two
+ *   HMACs disagreed. Passing UTF_8 explicitly makes the output
+ *   deterministic. Paired with Python now using ensure_ascii=True on
+ *   the send side, this is belt-and-suspenders — either half would fix
+ *   it, both guarantee it can't come back.
  */
 function hmacHex_(secret, data) {
-  var bytes = Utilities.computeHmacSha256Signature(data, secret);
+  var bytes = Utilities.computeHmacSha256Signature(data, secret, Utilities.Charset.UTF_8);
   return bytes.map(function (b) {
     var v = (b < 0 ? b + 256 : b).toString(16);
     return v.length === 1 ? '0' + v : v;
@@ -331,7 +345,17 @@ function encodeSubject_(subject) {
 }
 
 function sendRaw_(mimeMessage) {
-  var raw = Utilities.base64EncodeWebSafe(mimeMessage);
+  // Explicit UTF-8 when base64-encoding the full MIME payload. Without
+  // the charset arg, Utilities.base64EncodeWebSafe(String) falls back to
+  // an implementation-defined default that has historically been Latin-1
+  // in Apps Script's legacy code paths — which can't represent characters
+  // above U+00FF. The practical symptom is a correctly-rendered subject
+  // line (encodeSubject_ passes UTF_8 explicitly below) but every
+  // em-dash / curly quote / ellipsis / any non-Latin-1 char in the body
+  // arriving at Gmail as "?". The MIME headers already declare
+  // charset="UTF-8" + Content-Transfer-Encoding: 8bit, so once we hand
+  // Gmail correct UTF-8 bytes the end-to-end rendering is fine.
+  var raw = Utilities.base64EncodeWebSafe(mimeMessage, Utilities.Charset.UTF_8);
   // eslint-disable-next-line no-undef
   return Gmail.Users.Messages.send({ raw: raw }, 'me');
 }
@@ -583,7 +607,7 @@ function handleSubscribe_(e) {
     var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
     if (status === 'confirmed') {
       // Already subscribed — don't leak that fact. Silently succeed.
-      trackPosthog_('blog_subscribe_duplicate', email, { source: source });
+      trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
       return jsonResponse_({ ok: true });
     }
     // pending or unsubscribed: reset to pending with fresh tokens.
@@ -593,7 +617,7 @@ function handleSubscribe_(e) {
   }
 
   sendConfirmationEmail_(email, confirmToken);
-  trackPosthog_('blog_subscribe_pending', email, { source: source });
+  trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
 }
 
@@ -633,13 +657,13 @@ function handleConfirm_(e) {
     // nobody ever gets their "you're in" email. Aggregate event + console
     // log is the minimum useful alert surface.
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
-    trackPosthog_('blog_welcome_failed', email, {
+    trackPosthog_('blog_welcome_failed', distinctIdForEmail_(email), {
       email_domain: emailDomain_(email),
       error: String(err && err.message ? err.message : err).slice(0, 300),
     });
   }
 
-  trackPosthog_('blog_subscribe_confirmed', email, {});
+  trackPosthog_('blog_subscribe_confirmed', distinctIdForEmail_(email), {});
   return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
 }
 
@@ -661,10 +685,20 @@ function handleUnsubscribe_(e, method) {
   }
 
   var email = String(sh.getRange(row, COL.email).getValue()).trim();
-  sh.getRange(row, COL.status).setValue('unsubscribed');
-  sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+  var currentStatus = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
 
-  trackPosthog_('blog_unsubscribe', email, { method: method });
+  // Idempotency: a second unsubscribe for the same token is a no-op. This
+  // happens in practice when the user double-clicks the "Unsubscribe me"
+  // button, when Gmail's RFC 8058 one-click POST fires AND the user also
+  // clicks the email-body link's landing page, or when the row was already
+  // auto-marked by the bounce scanner. Without this guard we'd re-stamp
+  // unsubscribed_at and re-fire blog_unsubscribe, double-counting exits in
+  // PostHog retention.
+  if (currentStatus !== 'unsubscribed') {
+    sh.getRange(row, COL.status).setValue('unsubscribed');
+    sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+    trackPosthog_('blog_unsubscribe', distinctIdForEmail_(email), { method: method });
+  }
 
   // Gmail's RFC 8058 one-click unsubscribe POSTs and expects a 2xx JSON
   // response (it doesn't follow redirects). Browser-initiated (clicking a
@@ -983,7 +1017,7 @@ function handleScanBounces_(e) {
     marked++;
     markedAddrs.push(rowEmail);
 
-    trackPosthog_('blog_subscriber_bounced', rowEmail, {
+    trackPosthog_('blog_subscriber_bounced', distinctIdForEmail_(rowEmail), {
       email_domain: emailDomain_(rowEmail),
       via: 'mailer_daemon_scan',
     });
@@ -1228,6 +1262,65 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
 // ============================================================================
 
 /**
+ * Diagnose a persistent `bad_signature` error without having to redeploy.
+ *
+ * Run from the Apps Script editor (Run → debugHmacSecret). No redeploy
+ * required — editor runs use the latest SAVED code against the LIVE
+ * script properties. So as long as you've pasted this file into the
+ * editor and hit Save, this function works.
+ *
+ * What it does:
+ *   1. Reads HMAC_SECRET from Script Properties.
+ *   2. Prints its length, first/last 4 chars, and format sanity checks
+ *      (hex-only? whitespace? newline at end?). Safe to share the first/
+ *      last 4 chars — they're not enough to reconstruct the secret.
+ *   3. Computes HMAC-SHA256 of the literal string "scan_bounces" with
+ *      the current secret, and prints it. You can then run the same
+ *      HMAC locally with your GH Actions copy of the secret:
+ *
+ *        printf 'scan_bounces' \
+ *          | openssl dgst -sha256 -hmac 'PASTE-SECRET-HERE' \
+ *          | awk '{print $NF}'
+ *
+ *      If the hex strings match → the two secrets are byte-identical
+ *      and bad_signature is NOT a secret issue (something else is going
+ *      wrong; open an issue with the outputs). If they DIFFER → the two
+ *      copies of the secret are not the same. Check for invisible chars
+ *      first (length mismatch, trailing whitespace), then regenerate
+ *      fresh on both sides with `openssl rand -hex 32`.
+ */
+function debugHmacSecret() {
+  var s = PropertiesService.getScriptProperties().getProperty('HMAC_SECRET') || '';
+
+  console.log('--- HMAC_SECRET (Apps Script Script Properties) ---');
+  console.log('length           : ' + s.length + '  (expected: 64 for `openssl rand -hex 32`)');
+  console.log('first 4 chars    : ' + JSON.stringify(s.slice(0, 4)));
+  console.log('last 4 chars     : ' + JSON.stringify(s.slice(-4)));
+  console.log('hex-only         : ' + /^[0-9a-f]+$/i.test(s));
+  console.log('contains space   : ' + /\s/.test(s));
+  console.log('ends with newline: ' + /\n$/.test(s));
+  console.log('');
+
+  if (!s) {
+    console.log('ERROR: HMAC_SECRET is empty. Set it in Project Settings → Script properties.');
+    return;
+  }
+
+  // Sign the same fixed string the GH Actions bounce-scan step signs.
+  // Reproduce locally with:
+  //   printf 'scan_bounces' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
+  var sig = hmacHex_(s, 'scan_bounces');
+  console.log('HMAC-SHA256("scan_bounces") with this secret:');
+  console.log('  ' + sig);
+  console.log('');
+  console.log('Reproduce on your terminal (with the SAME secret value you pasted into the GH Actions NEWSLETTER_HMAC_SECRET):');
+  console.log('  printf \'scan_bounces\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
+  console.log('');
+  console.log('Match? secrets are byte-identical — bad_signature is NOT a secret problem.');
+  console.log('Differ? the two copies are different values. Regenerate with openssl rand -hex 32 and paste to both.');
+}
+
+/**
  * Run this once from the Apps Script editor (Run → migrateAddTokens) after
  * upgrading to the token-based schema. For every row that's missing a
  * confirm_token or unsub_token, generates fresh random tokens and writes
@@ -1376,4 +1469,32 @@ function trackPosthog_(event, distinctId, properties) {
       }),
     });
   } catch (_) { /* non-fatal */ }
+}
+
+// Stable, PII-minimised subscriber identifier for PostHog. SHA-256 of the
+// normalised email (lowercase, trimmed), hex-encoded. Must match the client's
+// sha256Hex() in src/components/SubscribeSection.astro exactly — both sides
+// normalise with .toLowerCase().trim() before hashing so the browser's
+// posthog.identify(hash) call aliases to the same distinct_id the server
+// uses for blog_subscribe_pending / _confirmed / blog_unsubscribe, which is
+// what makes the PostHog funnel actually stitch across client + server.
+function distinctIdForEmail_(email) {
+  return sha256Hex_(String(email).toLowerCase().trim());
+}
+
+function sha256Hex_(str) {
+  var bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    String(str),
+    Utilities.Charset.UTF_8
+  );
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    // Apps Script returns signed bytes (-128..127). Convert to unsigned
+    // before hex formatting so we get the canonical 64-char lowercase digest.
+    var b = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+    var h = b.toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  return hex;
 }
