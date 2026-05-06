@@ -345,7 +345,17 @@ function encodeSubject_(subject) {
 }
 
 function sendRaw_(mimeMessage) {
-  var raw = Utilities.base64EncodeWebSafe(mimeMessage);
+  // Explicit UTF-8 when base64-encoding the full MIME payload. Without
+  // the charset arg, Utilities.base64EncodeWebSafe(String) falls back to
+  // an implementation-defined default that has historically been Latin-1
+  // in Apps Script's legacy code paths — which can't represent characters
+  // above U+00FF. The practical symptom is a correctly-rendered subject
+  // line (encodeSubject_ passes UTF_8 explicitly below) but every
+  // em-dash / curly quote / ellipsis / any non-Latin-1 char in the body
+  // arriving at Gmail as "?". The MIME headers already declare
+  // charset="UTF-8" + Content-Transfer-Encoding: 8bit, so once we hand
+  // Gmail correct UTF-8 bytes the end-to-end rendering is fine.
+  var raw = Utilities.base64EncodeWebSafe(mimeMessage, Utilities.Charset.UTF_8);
   // eslint-disable-next-line no-undef
   return Gmail.Users.Messages.send({ raw: raw }, 'me');
 }
