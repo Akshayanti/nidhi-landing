@@ -31,18 +31,14 @@ story_hashtag: "#budgetingtips"
 
 You know what you earn.
 You know roughly what you spend.
-But at the end of the month, you can't quite
-account for the difference.
+But at the end of the month, you can't quite account for the difference.
 
 That's not budgeting. That's hoping.
 
-3 methods. Pick the one that matches how you
-actually think — not the one that sounds most
-disciplined on a podcast.
+3 methods. Pick the one that matches how you actually think — not the one that sounds most disciplined on a podcast.
 
 → Save this and pick your method by Sunday.
-→ Tag someone who's been "planning to budget"
-  for 2 years.
+→ Tag someone who's been "planning to budget" for 2 years.
 
 Full guide → link in bio
 

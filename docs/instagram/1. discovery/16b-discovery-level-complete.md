@@ -38,9 +38,7 @@ story_hashtag: "#financialfoundation"
 
 16 posts. One foundation.
 
-You now understand the building blocks behind
-every financial decision you'll make for the rest
-of your life:
+You now understand the building blocks behind every financial decision you'll make for the rest of your life:
 
 ✓ Net worth & how to calculate it
 ✓ Assets, liabilities, and what actually counts
@@ -55,8 +53,7 @@ of your life:
 Most people never learn this.
 You did. Quietly. 16 posts at a time.
 
-All 16 live permanently on the blog — searchable,
-always up to date, linked in bio.
+All 16 live permanently on the blog — searchable, always up to date, linked in bio.
 
 → Save this as a reference.
 → Share with someone just starting their financial journey.

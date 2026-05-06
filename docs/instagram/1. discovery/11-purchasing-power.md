@@ -32,18 +32,14 @@ story_hashtag: "#inflationawareness"
 
 ## Caption
 
-You have €10,000 in the bank.
-Ten years from now, you'll still have €10,000
-(plus a little interest).
+You have €10,000 in the bank. 
+Ten years from now, you'll still have €10,000 (plus a little interest).
 
 But you won't be able to buy the same things with it.
 
-This is the silent tax nobody warns you about —
-the one that makes "being careful with money"
-sometimes the riskiest thing you can do.
+This is the silent tax nobody warns you about — the one that makes "being careful with money" sometimes the riskiest thing you can do.
 
-→ Save this if you keep most of your money
-  in a savings account.
+→ Save this if you keep most of your money in a savings account.
 → Share with anyone who says "investing is risky."
 
 Full breakdown → link in bio

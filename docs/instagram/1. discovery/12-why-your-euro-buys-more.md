@@ -37,13 +37,9 @@ But your rent, groceries, and coffee all cost half.
 
 Are you poorer? Richer? Neither?
 
-This is the math that trips up everyone considering
-a move abroad — and the reason "a higher salary"
-sometimes means "a worse life."
+This is the math that trips up everyone considering a move abroad — and the reason "a higher salary" sometimes means "a worse life."
 
-If you've ever thought about moving countries,
-or you earn in one currency and spend in another,
-this one's for you.
+If you've ever thought about moving countries, or you earn in one currency and spend in another, this one's for you.
 
 → Save this before your next big move.
 → Tag a friend who's considering relocating.

@@ -37,13 +37,10 @@ Both earn the same salary.
 One pays €90,800 in interest over 25 years.
 The other pays €168,500.
 
-The difference: a 3-digit number most people
-have never checked.
+The difference: a 3-digit number most people have never checked.
 
 Your credit score won't show up on your net worth.
-But it silently determines the interest rate on
-every loan, the deposit on every apartment,
-and sometimes even the premium on your insurance.
+But it silently determines the interest rate on every loan, the deposit on every apartment, and sometimes even the premium on your insurance.
 
 → Save this and check your score this week.
 → Tag someone who's about to apply for a mortgage.

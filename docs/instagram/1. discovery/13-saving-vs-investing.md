@@ -31,13 +31,10 @@ story_hashtag: "#savingvsinvesting"
 Your emergency fund should NOT be in the stock market.
 Your retirement fund should NOT be in a savings account.
 
-Both are mistakes. Both come from confusing
-"saving" with "investing" — two words everyone uses
-interchangeably but that do completely different jobs.
+Both are mistakes. Both come from confusing "saving" with "investing" — two words everyone uses interchangeably but that do completely different jobs.
 
 One protects you. The other grows you.
-Put them in the wrong order, and everything else
-gets fragile.
+Put them in the wrong order, and everything else gets fragile.
 
 → Save this before your next money move.
 → Tag someone who keeps "investing" in a savings account.

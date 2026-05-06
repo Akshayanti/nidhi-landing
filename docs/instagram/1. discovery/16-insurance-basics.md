@@ -35,17 +35,13 @@ You spent six months building an emergency fund.
 Then your apartment floods.
 €4,500 gone. Your fund is nearly empty.
 
-Your neighbor filed a claim, paid a €150 deductible,
-and got a payout in two weeks.
+Your neighbor filed a claim, paid a €150 deductible, and got a payout in two weeks.
 Her fund is untouched.
 
 Same disaster. Two completely different recoveries.
-That's what insurance actually is — and it's also
-why "insure everything" and "skip insurance" are
-both wrong answers.
+That's what insurance actually is — and it's also why "insure everything" and "skip insurance" are both wrong answers.
 
-Here's the honest rule: insure what you can't
-afford to lose. Self-insure the rest.
+Here's the honest rule: insure what you can't afford to lose. Self-insure the rest.
 
 → Save this and audit your policies this weekend.
 → Tag someone who's either over-insured or
