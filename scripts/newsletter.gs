@@ -136,12 +136,26 @@ function randomToken_() {
 }
 
 /**
- * HMAC-SHA256 → hex, for signing GH-Actions-originated send_post requests
- * only. NOT used for per-subscriber confirm/unsub tokens — those are opaque
- * random (see randomToken_).
+ * HMAC-SHA256 → hex, for signing GH-Actions-originated send_post and
+ * scan_bounces requests. NOT used for per-subscriber confirm/unsub tokens
+ * — those are opaque random (see randomToken_).
+ *
+ * Why the explicit UTF-8 charset:
+ *   The two-arg overload computeHmacSha256Signature(value, key) uses an
+ *   implementation-defined charset when converting the String args to
+ *   bytes, which is not guaranteed stable across Apps Script runtime
+ *   versions (Rhino vs V8) or Google's request-ingress normalization.
+ *   That produced a subtle `bad_signature` bug when the signed body
+ *   contained non-ASCII bytes (em-dashes, curly quotes, etc. baked into
+ *   rendered blog HTML): Python signed the UTF-8 bytes, but Apps Script
+ *   re-hashed the decoded String using a different charset, and the two
+ *   HMACs disagreed. Passing UTF_8 explicitly makes the output
+ *   deterministic. Paired with Python now using ensure_ascii=True on
+ *   the send side, this is belt-and-suspenders — either half would fix
+ *   it, both guarantee it can't come back.
  */
 function hmacHex_(secret, data) {
-  var bytes = Utilities.computeHmacSha256Signature(data, secret);
+  var bytes = Utilities.computeHmacSha256Signature(data, secret, Utilities.Charset.UTF_8);
   return bytes.map(function (b) {
     var v = (b < 0 ? b + 256 : b).toString(16);
     return v.length === 1 ? '0' + v : v;
@@ -1226,6 +1240,65 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
 // ============================================================================
 // One-shot migration: backfill tokens on pre-upgrade rows
 // ============================================================================
+
+/**
+ * Diagnose a persistent `bad_signature` error without having to redeploy.
+ *
+ * Run from the Apps Script editor (Run → debugHmacSecret). No redeploy
+ * required — editor runs use the latest SAVED code against the LIVE
+ * script properties. So as long as you've pasted this file into the
+ * editor and hit Save, this function works.
+ *
+ * What it does:
+ *   1. Reads HMAC_SECRET from Script Properties.
+ *   2. Prints its length, first/last 4 chars, and format sanity checks
+ *      (hex-only? whitespace? newline at end?). Safe to share the first/
+ *      last 4 chars — they're not enough to reconstruct the secret.
+ *   3. Computes HMAC-SHA256 of the literal string "scan_bounces" with
+ *      the current secret, and prints it. You can then run the same
+ *      HMAC locally with your GH Actions copy of the secret:
+ *
+ *        printf 'scan_bounces' \
+ *          | openssl dgst -sha256 -hmac 'PASTE-SECRET-HERE' \
+ *          | awk '{print $NF}'
+ *
+ *      If the hex strings match → the two secrets are byte-identical
+ *      and bad_signature is NOT a secret issue (something else is going
+ *      wrong; open an issue with the outputs). If they DIFFER → the two
+ *      copies of the secret are not the same. Check for invisible chars
+ *      first (length mismatch, trailing whitespace), then regenerate
+ *      fresh on both sides with `openssl rand -hex 32`.
+ */
+function debugHmacSecret() {
+  var s = PropertiesService.getScriptProperties().getProperty('HMAC_SECRET') || '';
+
+  console.log('--- HMAC_SECRET (Apps Script Script Properties) ---');
+  console.log('length           : ' + s.length + '  (expected: 64 for `openssl rand -hex 32`)');
+  console.log('first 4 chars    : ' + JSON.stringify(s.slice(0, 4)));
+  console.log('last 4 chars     : ' + JSON.stringify(s.slice(-4)));
+  console.log('hex-only         : ' + /^[0-9a-f]+$/i.test(s));
+  console.log('contains space   : ' + /\s/.test(s));
+  console.log('ends with newline: ' + /\n$/.test(s));
+  console.log('');
+
+  if (!s) {
+    console.log('ERROR: HMAC_SECRET is empty. Set it in Project Settings → Script properties.');
+    return;
+  }
+
+  // Sign the same fixed string the GH Actions bounce-scan step signs.
+  // Reproduce locally with:
+  //   printf 'scan_bounces' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
+  var sig = hmacHex_(s, 'scan_bounces');
+  console.log('HMAC-SHA256("scan_bounces") with this secret:');
+  console.log('  ' + sig);
+  console.log('');
+  console.log('Reproduce on your terminal (with the SAME secret value you pasted into the GH Actions NEWSLETTER_HMAC_SECRET):');
+  console.log('  printf \'scan_bounces\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
+  console.log('');
+  console.log('Match? secrets are byte-identical — bad_signature is NOT a secret problem.');
+  console.log('Differ? the two copies are different values. Regenerate with openssl rand -hex 32 and paste to both.');
+}
 
 /**
  * Run this once from the Apps Script editor (Run → migrateAddTokens) after

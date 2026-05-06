@@ -662,7 +662,19 @@ def sign(secret: str, body: bytes) -> str:
 
 
 def post_to_apps_script(cfg: Config, payload: dict) -> dict:
-    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    # ASCII-only JSON body (default ensure_ascii=True). Why it matters:
+    # the HMAC is computed by Python over these bytes and re-verified by
+    # Apps Script over whatever bytes it re-derives from e.postData.contents
+    # + its internal charset. Blog post HTML contains non-ASCII typography
+    # (em-dashes, curly quotes, etc.), and the roundtrip
+    #   Python-bytes → HTTP → Apps-Script-string → Apps-Script-bytes
+    # over multi-byte UTF-8 sequences is not guaranteed to be byte-identical
+    # across Apps Script runtime versions / Google's ingress normalization.
+    # Encoding non-ASCII as \uXXXX escapes makes the wire format ASCII-only,
+    # so every intermediate layer preserves bytes exactly and HMAC always
+    # matches. JSON.parse on the receiving side faithfully reconstructs
+    # the original characters, so the email content is unaffected.
+    body = json.dumps(payload).encode("utf-8")
     signature = sign(cfg.secret, body)
     # Apps Script doesn't reliably expose custom request headers to the script
     # context, so we send the signature as a query-string parameter alongside
