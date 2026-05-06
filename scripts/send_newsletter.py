@@ -58,6 +58,8 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -212,6 +214,46 @@ def parse_rss(src: Path | bytes) -> list[RssItem]:
 
 def _text(el) -> str:
     return (el.text or "").strip() if el is not None else ""
+
+
+# Sentinel "very old" datetime used as the sort key for RSS items with a
+# missing or unparseable pubDate. Timezone-aware so comparisons with
+# parsed pubDates (which can be either naive or aware) are safe after
+# we normalise in _parse_pub_date_for_sort.
+_EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
+
+
+def _parse_pub_date_for_sort(pub_date: str) -> datetime:
+    """
+    Parse an RSS pubDate (RFC 822 / 2822) into a tz-aware datetime for
+    sorting.
+
+    Previous versions sorted RssItem.pub_date as a string, which ordered
+    items by the lexicographic form of the date — so "Wed, 29 Apr 2026"
+    (starts "Wed, 2…") sorted after "Wed, 06 May 2026" (starts "Wed, 0…")
+    even though the second date is actually later. That bug quietly
+    picked the wrong "newest" post for backfill protection and
+    SEND_ONLY_MOST_RECENT, and sent emails in the wrong chronological
+    order too. Parsing via email.utils fixes all three.
+
+    Falls back to _EPOCH on unparseable input so a single malformed
+    pubDate never breaks the whole send — that item just drifts to the
+    bottom of the sort.
+    """
+    if not pub_date:
+        return _EPOCH
+    try:
+        dt = parsedate_to_datetime(pub_date)
+    except (TypeError, ValueError):
+        return _EPOCH
+    if dt is None:
+        return _EPOCH
+    # parsedate_to_datetime returns naive when the input lacks a timezone
+    # (e.g. "Mon, 06 May 2026 00:00:00"). Anchor to UTC so every key we
+    # produce is tz-aware and sortable against the others.
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 # ---------------------------------------------------------------------------
@@ -695,22 +737,24 @@ def main() -> int:
         print(f"[send_newsletter] First run with {len(pending)} unsent posts. "
               f"Marking all but the newest as already-sent to avoid backfill "
               f"spam. Set BACKFILL_OK=1 to override.")
-        pending.sort(key=lambda it: it.pub_date, reverse=True)
+        pending.sort(key=lambda it: _parse_pub_date_for_sort(it.pub_date), reverse=True)
         newest = pending[0]
+        print(f"[send_newsletter]   keeping newest: {newest.title} "
+              f"({newest.pub_date})")
         if not cfg.dry_run:
             for it in pending[1:]:
                 record_sent(cfg.marker_file, it.guid)
         pending = [newest]
 
     if cfg.only_most_recent and len(pending) > 1:
-        pending.sort(key=lambda it: it.pub_date, reverse=True)
+        pending.sort(key=lambda it: _parse_pub_date_for_sort(it.pub_date), reverse=True)
         if not cfg.dry_run:
             for it in pending[1:]:
                 record_sent(cfg.marker_file, it.guid)
         pending = pending[:1]
 
     # Send oldest first so subscribers see them in chronological order.
-    pending.sort(key=lambda it: it.pub_date)
+    pending.sort(key=lambda it: _parse_pub_date_for_sort(it.pub_date))
 
     env = build_jinja()
     print(f"[send_newsletter] {len(pending)} post(s) to send.")
@@ -775,6 +819,33 @@ def main() -> int:
 
         if not resp.get("ok"):
             print(f"[send_newsletter]   Apps Script rejected: {resp}", file=sys.stderr)
+            # Actionable hints for the common misconfigurations that
+            # produce a well-formed !ok response. bad_signature is
+            # almost always a secret-mismatch between the Actions secret
+            # (NEWSLETTER_HMAC_SECRET) and the Apps Script Script
+            # Property (HMAC_SECRET) — they share one key and must be
+            # byte-identical. from_email_not_sendable means someone
+            # removed the "Send mail as" alias in Gmail settings.
+            err = str(resp.get("error", ""))
+            if err == "bad_signature":
+                print(
+                    "[send_newsletter]   HINT: GitHub Actions secret "
+                    "NEWSLETTER_HMAC_SECRET does not match the Apps "
+                    "Script property HMAC_SECRET. Both must be the SAME "
+                    "value (output of `openssl rand -hex 32`). Copy one "
+                    "side to the other, redeploy the Apps Script (Deploy "
+                    "→ Manage deployments → ✏️ → New version), and re-run.",
+                    file=sys.stderr,
+                )
+            elif err.startswith("from_email_not_sendable"):
+                print(
+                    "[send_newsletter]   HINT: the Gmail account that "
+                    "owns the Apps Script can't send as FROM_EMAIL. Go "
+                    "to Gmail settings → Accounts and Import → \"Send "
+                    "mail as\" on the owner account and verify that "
+                    "address. Then curl ?action=health to confirm.",
+                    file=sys.stderr,
+                )
             any_failed = True
             continue
 
