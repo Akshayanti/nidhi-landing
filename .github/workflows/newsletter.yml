@@ -112,7 +112,28 @@ jobs:
             echo "::warning title=Missing secret::NEWSLETTER_HMAC_SECRET is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See docs/blog-subscription-setup.md."
             OK=0
           else
-            echo "NEWSLETTER_HMAC_SECRET: configured"
+            # Length is the cheapest and most useful mismatch signal.
+            # `openssl rand -hex 32` produces exactly 64 hex chars; any
+            # other length means something went wrong during copy/paste
+            # (trailing newline, extra space, truncated value). The
+            # number itself is not the secret so GitHub's log masking
+            # doesn't hide it.
+            #
+            # Pair with the Apps Script debugHmacSecret() function: if
+            # both sides report 64 but bad_signature still happens,
+            # compare the HMAC of the literal string "scan_bounces"
+            # from both sides — they'll match iff the secrets match.
+            LEN=${#NEWSLETTER_HMAC_SECRET}
+            SIG_PROBE=$(printf 'scan_bounces' \
+              | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" \
+              | awk '{print $NF}')
+            echo "NEWSLETTER_HMAC_SECRET: configured (length=$LEN, expected=64)"
+            echo "HMAC(\"scan_bounces\", secret) = $SIG_PROBE"
+            echo "  ↳ Run debugHmacSecret() in the Apps Script editor."
+            echo "     Matching output means the two secrets are byte-identical."
+            if [ "$LEN" != "64" ]; then
+              echo "::warning title=Unexpected secret length::NEWSLETTER_HMAC_SECRET is $LEN characters, expected 64. Likely a copy-paste included extra whitespace. Regenerate with 'openssl rand -hex 32' and paste carefully."
+            fi
           fi
           if [ "$OK" = "1" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
