@@ -144,6 +144,39 @@ const inputId = `subscribe-email-${variant}`;
 
 <script is:inline define:vars={{ formId, statusId, variant }}>
   (function () {
+    // Single localStorage key shared across all SubscribeSection instances
+    // and the confirm/unsubscribe pages. See /privacy.
+    //   - { status: 'pending',   email, at }  → submit succeeded, waiting for
+    //                                            the user to click the link
+    //                                            in the confirmation email
+    //   - { status: 'confirmed',        at }  → confirm.astro saw success
+    //   - (absent)                            → not subscribed (or cleared by
+    //                                            unsubscribe, "try a different
+    //                                            email", or user wiping data)
+    //
+    // Either status hides the subscribe CTA everywhere on the site, so once
+    // you've signed up you stop seeing the pitch on every blog post.
+    var STORAGE_KEY = 'nidhi-newsletter-subscription';
+
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        if (parsed.status !== 'pending' && parsed.status !== 'confirmed') return null;
+        return parsed;
+      } catch (_) {
+        return null;
+      }
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function clearState() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    }
+
     var form = document.getElementById(formId);
     var status = document.getElementById(statusId);
     if (!form || !status) return;
@@ -158,16 +191,44 @@ const inputId = `subscribe-email-${variant}`;
     var button = form.querySelector('button[type="submit"]');
     var input = form.querySelector('input[type="email"]');
 
+    // Reentrancy guard. `button.disabled` already blocks clicks, but Enter-key
+    // submits and programmatic `.submit()` calls can sneak past that, and we
+    // never want to POST twice for the same user.
+    var submitting = false;
+
     function setStatus(text, kind) {
       status.textContent = text;
       status.className = 'subscribe-status subscribe-status--' + kind;
     }
 
-    // Swap the visible panel. The "success card" replaces the form so the
-    // user gets a clear, unmissable confirmation that the next step is in
-    // their inbox — the previous tiny inline status line was too easy to
-    // scroll past.
-    function showSuccess(email) {
+    // Single source of truth for which panel is visible. Called on first
+    // paint and whenever external state could have changed (bfcache restore,
+    // another tab updating localStorage). Keeps the UI honest even if the
+    // browser restored a stale DOM (e.g. a disabled "Sending…" button from
+    // a mid-flight submit before the user hit back).
+    function applyState() {
+      var state = readState();
+      if (state) {
+        // Already subscribed (pending or confirmed): don't render the CTA
+        // anywhere. The confirmation email (or the confirm page) is the
+        // next step — nagging them from every blog post isn't.
+        if (section) section.hidden = true;
+        return;
+      }
+      if (section) section.hidden = false;
+      if (postEl) postEl.hidden = true;
+      if (preEl)  preEl.hidden = false;
+      setStatus('', 'idle');
+      if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
+      submitting = false;
+    }
+
+    // In-session success view. We still show the "Check your inbox" panel
+    // on the page the user just submitted from, even though applyState()
+    // would hide the whole section on any subsequent load — the immediate
+    // feedback is important, the persistent "shut up about subscribing"
+    // behavior kicks in on next navigation.
+    function showSuccessInSession(email) {
       if (emailEcho) emailEcho.textContent = email;
       if (preEl)  preEl.hidden = true;
       if (postEl) postEl.hidden = false;
@@ -178,23 +239,21 @@ const inputId = `subscribe-email-${variant}`;
       }
     }
 
-    function showForm() {
-      if (postEl) postEl.hidden = true;
-      if (preEl)  preEl.hidden = false;
-      setStatus('', 'idle');
-      if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
-      if (input)  { input.value = ''; try { input.focus(); } catch (_) {} }
-    }
-
     if (retryBtn) {
       retryBtn.addEventListener('click', function () {
-        showForm();
+        // "Try a different email" means the user didn't actually want the
+        // address they just typed. Clear the persisted flag too — otherwise
+        // the form stays hidden on every other page and they can't recover.
+        clearState();
+        applyState();
+        if (input) { try { input.focus(); } catch (_) {} }
         if (window.posthog) window.posthog.capture('blog_subscribe_retry_clicked', { variant: variant });
       });
     }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (submitting) return;
       var email = (input && input.value || '').trim();
       if (!email) return;
 
@@ -207,6 +266,7 @@ const inputId = `subscribe-email-${variant}`;
         return;
       }
 
+      submitting = true;
       if (button) { button.disabled = true; button.textContent = 'Sending…'; }
       setStatus('', 'idle');
 
@@ -236,8 +296,13 @@ const inputId = `subscribe-email-${variant}`;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
       }).then(function () {
+        // Persist BEFORE flipping UI: if the user immediately navigates
+        // away (or the page is bfcache'd), the flag is already stored so
+        // the next page load correctly treats them as subscribed.
+        writeState({ status: 'pending', email: email, at: Date.now() });
         form.reset();
-        showSuccess(email);
+        submitting = false;
+        showSuccessInSession(email);
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_sent', { variant: variant });
           window.posthog.setPersonProperties({
@@ -246,10 +311,34 @@ const inputId = `subscribe-email-${variant}`;
           });
         }
       }).catch(function () {
+        submitting = false;
         setStatus('Something went wrong. Please try again in a moment.', 'error');
         if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
       });
     });
+
+    // bfcache: hitting back after submitting can restore the DOM with the
+    // button stuck disabled as "Sending…" or the success panel showing the
+    // previous email. Re-derive visibility from localStorage so whatever
+    // the browser restored is overridden by actual state.
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) applyState();
+    });
+
+    // Cross-tab sync: if a user subscribes / confirms / unsubscribes in
+    // another tab, this tab's CTA should update without a reload.
+    // The `storage` event only fires in *other* tabs for the origin that
+    // wrote the change, which is exactly the behavior we want.
+    window.addEventListener('storage', function (e) {
+      if (e.key === STORAGE_KEY || e.key === null /* storage cleared */) {
+        applyState();
+      }
+    });
+
+    // Initial paint. Runs synchronously before first paint in normal
+    // parsing order, so users already subscribed don't see a flash of
+    // the form before it's hidden.
+    applyState();
   })();
 </script>
 
@@ -385,6 +474,16 @@ const inputId = `subscribe-email-${variant}`;
      layout doesn't jump. */
   .subscribe-post { text-align: center; }
   .subscribe-post:focus { outline: none; }
+
+  /* `display: flex` on .subscribe-post--compact below (and any future
+     non-block display we add) beats the browser's default
+     [hidden] { display: none }, which would leave both the form AND the
+     success card rendered at the same time. Make [hidden] authoritative
+     for these panels regardless of whatever display mode they use. */
+  .subscribe-pre[hidden],
+  .subscribe-post[hidden] {
+    display: none !important;
+  }
 
   .subscribe-success-icon {
     width: 56px;

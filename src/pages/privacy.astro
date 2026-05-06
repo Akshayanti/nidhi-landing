@@ -29,6 +29,17 @@ interface ChangelogEntry {
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'May 6, 2026',
+    iso: '2026-05-06',
+    material: true,
+    summary: 'Added a local-only key that remembers whether you’ve subscribed.',
+    details: [
+      'New localStorage key nidhi-newsletter-subscription. Stored only in your browser, never sent to us or any third party.',
+      'Purpose: once you’ve submitted the newsletter form (or confirmed via email), we hide the subscribe prompt on the rest of the site so you don’t get pitched on every blog post.',
+      'Cleared automatically when you unsubscribe via the one-click link, when you use the “try a different email” link on the success card, or when you clear your browser site data. No category of personal data on our servers changed.',
+    ],
+  },
+  {
     date: 'May 5, 2026',
     iso: '2026-05-05',
     material: true,
@@ -148,6 +159,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
         <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
         <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
         <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
+        <li>Whether you&rsquo;ve subscribed to the newsletter (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve signed up. Contains your subscription status and, while confirmation is pending, the email address you typed &mdash; in your browser only, never sent anywhere else.</li>
       </ul>
 
       <p>

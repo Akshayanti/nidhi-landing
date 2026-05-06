@@ -1,0 +1,230 @@
+name: Newsletter pipeline
+
+# Sends newsletter emails for newly-published posts and scans the
+# FROM_EMAIL inbox for bounces. Completely decoupled from the deploy
+# workflow — a failure here never delays or blocks a site deploy.
+#
+# How this workflow gets triggered:
+#   1. Automatically, ~45s after every successful `Deploy to GitHub Pages`
+#      run, via the `trigger-newsletter` job in deploy.yml. The delay is
+#      intentional — it gives the GitHub Pages CDN time to make the new
+#      /rss.xml globally visible before we fetch it. See deploy.yml for
+#      the reasoning.
+#   2. Manually, from the Actions tab → "Newsletter pipeline" → Run
+#      workflow. Useful for retrying a failed send or triggering a
+#      bounce scan on demand.
+#   3. On a daily cron, as a safety net — if deploy happens to be broken
+#      on a given day, the bounce scan still runs and any unsent posts
+#      from previous runs are retried.
+#
+# The newsletter content itself comes from the DEPLOYED site (not a local
+# build): we fetch https://nidhi.today/rss.xml and the HTML of each new
+# post directly. This guarantees subscribers receive exactly what's live
+# on the web at send time — no "the email mentions content that the site
+# doesn't have yet" skew. See NEWSLETTER_FETCH_LIVE in send_newsletter.py.
+
+on:
+  workflow_dispatch:
+    inputs:
+      only_most_recent:
+        description: "Send only the newest unsent post (SEND_ONLY_MOST_RECENT=1)"
+        type: boolean
+        default: false
+      skip_bounce_scan:
+        description: "Skip the mailer-daemon inbox scan"
+        type: boolean
+        default: false
+  schedule:
+    # Daily safety-net run at 07:30 UTC. Independent from (and after) the
+    # deploy cron at 06:03 UTC + its 45s hand-off, so this won't collide
+    # under normal operation — but if a deploy fails for the day, this
+    # still gives us a daily bounce scan and a chance to pick up any
+    # partial-send resumes.
+    - cron: '30 7 * * *'
+
+permissions:
+  contents: write   # commit .last-sent-guid.txt back to main
+  issues: write     # open failure-notification issues
+
+concurrency:
+  group: newsletter
+  # Never cancel an in-flight send mid-fan-out — we'd lose recipients
+  # between the Apps Script's progress marker and the Python marker file.
+  # Queue instead: back-to-back triggers run sequentially.
+  cancel-in-progress: false
+
+# Promote the shared newsletter secrets + config to the workflow level so
+# step-level `if:` expressions can gate on them (e.g. "only run the bounce
+# scan if the HMAC secret is configured"). GitHub Actions doesn't allow
+# `secrets.X` in `if:` but does allow `env.X`.
+env:
+  NEWSLETTER_ENDPOINT: ${{ secrets.NEWSLETTER_ENDPOINT }}
+  NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
+  SITE_URL: https://nidhi.today
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
+
+      - name: Send newsletter for new posts
+        id: newsletter
+        if: env.NEWSLETTER_HMAC_SECRET != '' && env.NEWSLETTER_ENDPOINT != ''
+        env:
+          # Live-fetch mode: read /rss.xml and per-post HTML over HTTPS
+          # directly from the deployed site. No `npm run build` in this
+          # workflow — the Astro project's source tree isn't even needed
+          # for rendering, only the emails/ templates and the script.
+          NEWSLETTER_FETCH_LIVE: '1'
+          MARKER_FILE: ${{ github.workspace }}/.last-sent-guid.txt
+          BACKFILL_OK: ${{ vars.NEWSLETTER_BACKFILL_OK }}
+          # Inputs only exist on workflow_dispatch; fall back to '' on
+          # schedule / other triggers. The script treats empty as "off".
+          SEND_ONLY_MOST_RECENT: ${{ (github.event.inputs.only_most_recent == 'true' && '1') || '' }}
+        run: python scripts/send_newsletter.py
+        continue-on-error: true
+
+      - name: Commit updated newsletter marker
+        if: steps.newsletter.outcome == 'success'
+        run: |
+          if git diff --quiet -- .last-sent-guid.txt; then
+            echo "No marker changes to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .last-sent-guid.txt
+          git commit -m "chore(newsletter): record sent post GUIDs [skip deploy]"
+          # Race-proof push: rebase on top of any newer main commits, retry.
+          # deploy.yml has `paths-ignore: ['.last-sent-guid.txt']` on its
+          # push trigger, so this commit does NOT re-trigger a deploy — no
+          # infinite loop.
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash origin main || true
+            if git push origin HEAD:main; then
+              echo "Marker pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep 5
+          done
+          echo "::warning::Failed to push newsletter marker after 3 attempts"
+          exit 0
+
+      - name: Scan for newsletter bounces
+        # Asks Apps Script to sweep the FROM_EMAIL inbox for mailer-daemon
+        # replies from the last 14 days and flip matching Sheet rows to
+        # status=bounced. Idempotent — safe to run multiple times.
+        # Signed with HMAC-SHA256(HMAC_SECRET, "scan_bounces") — the Apps
+        # Script action is idempotent so replay over the constant string
+        # is fine (see verifyScanBouncesSig_).
+        id: bounce_scan
+        if: >-
+          env.NEWSLETTER_HMAC_SECRET != '' &&
+          env.NEWSLETTER_ENDPOINT != '' &&
+          github.event.inputs.skip_bounce_scan != 'true'
+        run: |
+          set -euo pipefail
+          SIG=$(printf 'scan_bounces' \
+                | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" \
+                | awk '{print $NF}')
+          SEP='?'
+          case "$NEWSLETTER_ENDPOINT" in *\?*) SEP='&' ;; esac
+          URL="${NEWSLETTER_ENDPOINT}${SEP}action=scan_bounces&sig=${SIG}"
+          echo "Scanning bounces…"
+          RESP=$(curl -sSL --max-time 120 "$URL" || true)
+          echo "Response: $RESP"
+          # Best-effort parse; don't fail the run if Apps Script is flaky,
+          # just surface a warning. Next run will try again.
+          if ! echo "$RESP" | grep -q '"ok":true'; then
+            echo "::warning::bounce scan did not return ok=true"
+          fi
+        continue-on-error: true
+
+      - name: Notify on newsletter failure
+        # Opens (or comments on an existing daily) GitHub Issue labeled
+        # `newsletter-alert` when the newsletter pipeline did anything
+        # other than cleanly succeed. Because this workflow is decoupled
+        # from deploy, the Actions UI's "workflow status" for deploys
+        # no longer reflects newsletter health — the issue is the primary
+        # push-based alert.
+        #
+        # Skip when the step was skipped (missing secrets in a fresh
+        # setup) — no work was attempted, nothing to alert on.
+        if: >-
+          always() &&
+          steps.newsletter.outcome != 'skipped' &&
+          (
+            steps.newsletter.outcome == 'failure' ||
+            steps.newsletter.outputs.any_failed == '1' ||
+            (steps.newsletter.outputs.total_failed != '' && steps.newsletter.outputs.total_failed != '0') ||
+            (steps.newsletter.outputs.total_partial != '' && steps.newsletter.outputs.total_partial != '0')
+          )
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTCOME: ${{ steps.newsletter.outcome }}
+          ANY_FAILED: ${{ steps.newsletter.outputs.any_failed }}
+          TOTAL_SENT: ${{ steps.newsletter.outputs.total_sent }}
+          TOTAL_FAILED: ${{ steps.newsletter.outputs.total_failed }}
+          TOTAL_PARTIAL: ${{ steps.newsletter.outputs.total_partial }}
+          POSTS_ATTEMPTED: ${{ steps.newsletter.outputs.posts_attempted }}
+        run: |
+          set -euo pipefail
+          TITLE="Newsletter send needs attention ($(date -u +%Y-%m-%d))"
+          # De-dupe: one open issue per UTC day, so a cron-triggered retry
+          # that also fails just adds a comment rather than spamming a new
+          # issue.
+          EXISTING=$(gh issue list --state open --label newsletter-alert \
+            --search "$TITLE in:title" --json number --jq '.[0].number' || echo "")
+
+          BODY=$(cat <<EOF
+          The newsletter step finished with issues. Please investigate.
+
+          | | |
+          |---|---|
+          | Step outcome | \`$OUTCOME\` |
+          | Posts attempted | \`${POSTS_ATTEMPTED:-?}\` |
+          | Total sent | \`${TOTAL_SENT:-?}\` |
+          | Total failed | \`${TOTAL_FAILED:-?}\` |
+          | Partial responses | \`${TOTAL_PARTIAL:-?}\` |
+          | any_failed flag | \`${ANY_FAILED:-?}\` |
+
+          - Workflow run: $RUN_URL
+          - Apps Script executions: https://script.google.com (Executions pane)
+          - Health check: \`curl -sL "\$PUBLIC_NEWSLETTER_ENDPOINT?action=health" | jq\`
+
+          **What to check first**
+          1. If \`outcome\` is anything but \`success\`, read the step log.
+          2. If \`total_partial > 0\`, the next run should resume automatically — the guid was NOT written to .last-sent-guid.txt. Just re-run this workflow from the Actions tab.
+          3. If \`total_failed > 0\` but \`total_sent > 0\`, inspect PostHog for \`blog_newsletter_send_failed\` events (grouped by email_domain).
+          4. If the health check's \`from_email_sendable.ok\` is false, the "Send mail as" alias in Gmail was removed. Re-add it.
+          EOF
+          )
+
+          if [ -n "${EXISTING:-}" ]; then
+            echo "Appending to existing issue #$EXISTING"
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            echo "Opening new issue"
+            gh issue create \
+              --title "$TITLE" \
+              --label newsletter-alert \
+              --body "$BODY" || {
+                # If the label doesn't exist yet, create it and retry once.
+                gh label create newsletter-alert --color D93F0B --description "Newsletter pipeline failures" || true
+                gh issue create --title "$TITLE" --label newsletter-alert --body "$BODY"
+              }
+          fi

@@ -10,7 +10,7 @@ tools already in the stack:
 | Result pages       | `src/pages/subscription-confirmed.astro`, `/unsubscribed.astro`, `/subscription-invalid.astro` |
 | Backend / storage  | Google Apps Script Web App + Google Sheet                   |
 | Transport          | Gmail API (from Google Workspace account on `nidhi.today`)  |
-| Trigger            | GitHub Actions on every deploy                              |
+| Trigger            | Two GitHub Actions workflows: `deploy.yml` (build + deploy) triggers `newsletter.yml` (send + bounce scan) after a propagation delay. Newsletter also has a daily cron + manual dispatch. |
 | Templating         | Jinja2 (`emails/post.html.j2`, `emails/post.txt.j2`)        |
 | Compliance         | Double opt-in + opaque-token unsubscribe + RFC 8058 `List-Unsubscribe` + `List-Unsubscribe-Post` headers |
 
@@ -26,7 +26,7 @@ nidhi.today form ─ POST(action=subscribe) ────────▶│      
 nidhi.today/confirm/?t=... (landing + POST) ──────▶│    doPost: subscribe / confirm /    │
                                                    │            unsubscribe / send_post  │
 nidhi.today/unsubscribe/?t=... (landing + POST) ──▶│    doGet:  health / confirm /       │
-                                                   │            unsubscribe (via redir)  │
+                                                   │            unsubscribe / scan_bounces│
 Gmail RFC 8058 native "Unsubscribe" ─────────────▶│                                     │
   (POST direct to Apps Script /exec)               │    Storage: Google Sheet (8 cols)   │
                                                    │    Send:    Gmail API raw MIME      │
@@ -35,19 +35,44 @@ Gmail RFC 8058 native "Unsubscribe" ─────────────▶�
                                                                   │ { subject, html, text,
                                                                   │   url, guid, ... }
                                                                   │
-                                         ┌────────────────────────┴────────────────────────┐
-                                         │ GitHub Actions (.github/workflows/deploy.yml)   │
-                                         │   1. npm run build                              │
-                                         │   2. python scripts/send_newsletter.py          │
-                                         │        ↳ parse dist/rss.xml                     │
-                                         │        ↳ diff against .last-sent-guid.txt       │
-                                         │        ↳ for each new item: extract post HTML,  │
-                                         │          inject brand-aligned inline styles,    │
-                                         │          render Jinja2, sign, POST to Apps Script│
-                                         │   3. commit .last-sent-guid.txt back to main    │
-                                         │   4. upload pages artifact → deploy             │
-                                         └─────────────────────────────────────────────────┘
+    ┌─────────────────────────────────────┐    ┌─────────────────┴───────────────────┐
+    │ .github/workflows/deploy.yml        │    │ .github/workflows/newsletter.yml    │
+    │                                     │    │                                     │
+    │  build:                             │    │  triggers:                          │
+    │   1. npm ci                         │    │    • workflow_dispatch (manual UI)  │
+    │   2. npm run build                  │    │    • daily cron 07:30 UTC (safety)  │
+    │   3. upload pages artifact          │    │    • dispatched by deploy.yml after │
+    │  deploy:                            │    │      a 45s propagation delay        │
+    │   4. actions/deploy-pages@v4        │    │                                     │
+    │  trigger-newsletter:                │───▶│  send:                              │
+    │   5. sleep 45s  (CDN propagation)   │    │   1. fetch https://nidhi.today/     │
+    │   6. gh workflow run newsletter.yml │    │      rss.xml (live, not local build)│
+    │                                     │    │   2. diff vs .last-sent-guid.txt    │
+    └─────────────────────────────────────┘    │   3. for each new item: fetch live  │
+                                               │      post HTML, render email, sign, │
+                                               │      POST to Apps Script            │
+                                               │   4. commit .last-sent-guid.txt     │
+                                               │   5. scan_bounces (HMAC-signed GET) │
+                                               │   6. open GH issue on any failure   │
+                                               └─────────────────────────────────────┘
 ```
+
+### Why two workflows
+
+- **Deploy stays fast and green.** The Actions UI's "deploy" status now
+  reflects whether the *site* is live, not whether every subscriber got
+  their email. A slow or broken newsletter send never delays a deploy.
+- **Live-fetch means no content skew.** Newsletter reads from the
+  deployed `/rss.xml` — subscribers receive exactly what's visible on
+  the web at send time.
+- **Manual retries are first-class.** If a newsletter run fails (e.g.
+  Apps Script timeout), re-running it from the Actions tab is all that's
+  needed. No redeploy, no pushing a dummy commit.
+- **The 45-second hand-off** in `deploy.yml`'s `trigger-newsletter` job
+  gives the GitHub Pages CDN time to make the new feed globally visible
+  before newsletter fetches it. Tune via the `PAGES_PROPAGATION_SECONDS`
+  Actions variable if you ever see a new post missing from the
+  newsletter's view of /rss.xml.
 
 ## Sheet schema
 
@@ -212,8 +237,8 @@ to inspect the branded banner, inline styles, and footer.
 - **Apps Script requires a version bump on every code change.** Deploy → Manage deployments → ✏️ → Version: New version → Deploy. Test deployments (`/dev` URLs) require the owner to be logged in and are not what your users hit.
 - **Workspace admin policy** can block "Anyone" access on Apps Script. If "Anyone" greys out, your Workspace admin has restricted sharing. Change the policy or move the script to a personal Google account.
 - **Gmail Workspace caps sending at 1,500 recipients/day.** Past that, chunk across days or swap the `sendRaw_()` call in `scripts/newsletter.gs` for a transactional provider (Resend, Mailgun, SES). Your `nidhi.today` domain already DKIM-aligns via Workspace, so a new provider only needs SPF/DKIM DNS records added.
-- **Apps Script 6-minute execution limit.** `handleSendPost_()` has a 5-minute time budget and returns `partial: true` if exceeded. The de-dupe marker is only set after the full loop — partial runs cause duplicate sends to early recipients on the next retry. Not a concern under the 1,500/day Workspace ceiling but flagged for future you.
-- **Bounces are invisible** via the Gmail API advanced service. Periodically check `hello@nidhi.today`'s inbox for `mailer-daemon` messages and manually mark those Sheet rows `status=bounced` or delete them.
+- **Apps Script 6-minute execution limit.** `handleSendPost_()` has a 5-minute time budget and returns `partial: true` if exceeded. On a partial return the Apps Script persists a `send_progress:<guid>` marker (the email address of the last recipient processed) and the idempotency marker (`sent_guid:<guid>`) is NOT set. `send_newsletter.py` treats `partial: true` as a failure and does **not** record the guid in `.last-sent-guid.txt`, so the next workflow run retries and resumes from the persisted marker (recipients are sorted lexicographically by email; we skip everyone `<= lastSent`). Worst-case duplication on a mid-batch Apps Script crash is `SEND_PROGRESS_CHECKPOINT = 25` recipients.
+- **Bounces are scanned automatically** on every deploy. The `Scan for newsletter bounces` workflow step calls `?action=scan_bounces` (HMAC-signed), which sweeps `hello@nidhi.today`'s inbox for `mailer-daemon` / `postmaster` / `Delivery Status Notification` messages in the last 14 days, cross-references found addresses against the Sheet, and flips matching confirmed rows to `status=bounced`. Bounced rows are filtered out of `listConfirmedSubscribers_()` so future sends skip them. Over-matching on "any email in the bounce body" is safe because we only touch rows already in the Sheet. Re-subscribing via the form restarts the normal double-opt-in flow and acts as "this address works again" proof.
 - **Gmail bulk-sender rules (Feb 2024)** apply at 5k+/day — we're already compliant (`List-Unsubscribe` + `List-Unsubscribe-Post` + `Precedence: bulk` + `Auto-Submitted: auto-generated` + proper DKIM via Workspace).
 - **Backfill protection:** first real run with existing posts sends only the newest, silently marking older ones as already-sent. Set the Actions variable `NEWSLETTER_BACKFILL_OK=1` for the one run where you want the full backfill to go out.
 
@@ -234,7 +259,8 @@ to inspect the branded banner, inline styles, and footer.
 | `scripts/send_newsletter.py` | CI script: RSS diff, extract body, inject inline styles, render, sign, POST |
 | `emails/post.html.j2` | HTML email template with brand banner and inline styles |
 | `emails/post.txt.j2` | Plain-text email template |
-| `.github/workflows/deploy.yml` | build → newsletter send → commit marker → deploy |
+| `.github/workflows/deploy.yml` | build → deploy → wait 45s → dispatch newsletter workflow |
+| `.github/workflows/newsletter.yml` | fetch live RSS → send per-post emails → commit marker → scan bounces → notify on failure |
 | `.last-sent-guid.txt` | Committed marker of RSS GUIDs already sent |
 
 ## Observability
@@ -252,8 +278,45 @@ is set as a script property, from Apps Script too:
 | `blog_subscribe_confirmed` | Apps Script | confirm flow reached server, row flipped to confirmed |
 | `blog_unsubscribe_clicked` | frontend (landing page) | user clicked "Unsubscribe me" |
 | `blog_unsubscribe` | Apps Script | unsubscribe flow reached server, row flipped |
-| `blog_newsletter_sent` | Apps Script | a post was mailed out |
+| `blog_newsletter_sent` | Apps Script | a post was mailed out (aggregate `{sent, failed}` counts) |
+| `blog_newsletter_send_failed` | Apps Script | a single recipient failed during fan-out (includes `email_domain`, truncated `error`) — use for domain-level anomaly detection |
+| `blog_newsletter_quota_warning` | Apps Script | confirmed subscribers ≥ 80% of the Workspace 1,500/day cap — prompts planning for a transactional provider |
+| `blog_welcome_failed` | Apps Script | welcome email threw after a successful confirm — user IS confirmed, but didn't get the "you're in" email |
+| `blog_subscriber_bounced` | Apps Script | `scan_bounces` marked a row as bounced |
 
 Useful PostHog funnel: `blog_subscribe_submit` → `blog_subscribe_pending` →
 `blog_subscribe_confirm_clicked` → `blog_subscribe_confirmed` → (retention)
 `blog_unsubscribe`.
+
+## Failure notifications
+
+Whenever the `Send newsletter for new posts` step finishes with anything
+other than clean success, the `Notify on newsletter failure` workflow step
+opens (or comments on the existing daily) GitHub Issue labeled
+`newsletter-alert`. Triggers:
+
+- Step outcome ≠ `success` (crash, auth failure, network timeout).
+- Apps Script returned `ok: false` for any post.
+- Any post returned `partial: true` (resume needed on next run).
+- Per-recipient `failed` count > 0 on any post.
+
+The issue body links to the workflow run, the Apps Script executions pane,
+and the health-check curl command — enough context to triage in under a
+minute. Subscribing to issue notifications on the repo makes this a
+push-based alerting channel with zero external services.
+
+## Manual operational commands
+
+```bash
+# Live health check (safe, read-only):
+curl -sL "$PUBLIC_NEWSLETTER_ENDPOINT?action=health" | jq
+
+# Manual bounce scan (HMAC-signed, idempotent):
+SIG=$(printf 'scan_bounces' | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" | awk '{print $NF}')
+curl -sL "$NEWSLETTER_ENDPOINT?action=scan_bounces&sig=$SIG" | jq
+
+# One-liner reliability probe (non-zero exit if any sub-check failed):
+curl -sfL "$PUBLIC_NEWSLETTER_ENDPOINT?action=health" \
+  | jq -e 'all(.checks[]; .ok == true)' > /dev/null \
+  || echo "ALERT: newsletter health check failed"
+```

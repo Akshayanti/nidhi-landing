@@ -4,20 +4,23 @@ on:
   push:
     branches: [main]
     # Pushes that only update the newsletter marker file shouldn't trigger
-    # a rebuild/redeploy — prevents a self-triggering loop after the send
-    # step commits .last-sent-guid.txt back to main.
+    # a rebuild/redeploy — prevents a self-triggering loop after the
+    # newsletter workflow commits .last-sent-guid.txt back to main.
     paths-ignore:
       - '.last-sent-guid.txt'
   schedule:
     # Daily rebuild at 06:03 UTC (08:03 CEST) to publish date-gated posts.
-    # Also picks up newsletter sends for newly-revealed posts.
+    # The newsletter workflow is triggered downstream of this (via the
+    # trigger-newsletter job below), so scheduled deploys also end up
+    # firing a newsletter pass — which, if nothing is pending, is a no-op
+    # plus a bounce scan.
     - cron: '3 6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write   # need write to push .last-sent-guid.txt back to main
   pages: write
   id-token: write
+  actions: write   # required so trigger-newsletter can workflow_dispatch newsletter.yml
 
 concurrency:
   group: "pages"
@@ -30,9 +33,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # persist-credentials defaults to true; keeping explicit for clarity
-          # since the newsletter-send step pushes the marker file back.
-          persist-credentials: true
           # Full history so src/pages/privacy.astro can derive its "Last updated"
           # from `git log -1 --format=%aI -- src/pages/privacy.astro` at build
           # time (see the gitLastCommitDate helper in that file). With the
@@ -78,55 +78,6 @@ jobs:
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
           PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install Python dependencies for newsletter script
-        run: pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
-
-      - name: Send newsletter for new posts
-        id: newsletter
-        env:
-          NEWSLETTER_ENDPOINT: ${{ secrets.NEWSLETTER_ENDPOINT }}
-          NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
-          SITE_URL: https://nidhi.today
-          DIST_DIR: ${{ github.workspace }}/dist
-          MARKER_FILE: ${{ github.workspace }}/.last-sent-guid.txt
-          # On first setup you can set `vars.BACKFILL_OK = '1'` in the repo
-          # "Actions variables" to allow sending all historical posts. By
-          # default the script sends only the newest on a fresh run.
-          BACKFILL_OK: ${{ vars.NEWSLETTER_BACKFILL_OK }}
-        run: python scripts/send_newsletter.py
-        # Don't break the deploy if newsletter send fails; the marker file
-        # only records successful sends, so next run will retry.
-        continue-on-error: true
-
-      - name: Commit updated newsletter marker
-        if: steps.newsletter.outcome == 'success'
-        run: |
-          if git diff --quiet -- .last-sent-guid.txt; then
-            echo "No marker changes to commit."
-            exit 0
-          fi
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .last-sent-guid.txt
-          git commit -m "chore(newsletter): record sent post GUIDs [skip deploy]"
-          # Race-proof push: rebase on top of any newer main commits, retry once.
-          for attempt in 1 2 3; do
-            git pull --rebase --autostash origin main || true
-            if git push origin HEAD:main; then
-              echo "Marker pushed on attempt $attempt"
-              exit 0
-            fi
-            echo "Push attempt $attempt failed, retrying..."
-            sleep 5
-          done
-          echo "::warning::Failed to push newsletter marker after 3 attempts"
-          exit 0
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -142,3 +93,54 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Hand off to the newsletter workflow (see .github/workflows/newsletter.yml)
+  # AFTER a propagation delay — GitHub Pages reports deploy success when the
+  # deployment API call succeeds, but the CDN can take up to ~60s to make
+  # the new /rss.xml globally visible. Newsletter's live-fetch mode reads
+  # /rss.xml to discover unsent posts, so firing it too early would see
+  # yesterday's feed and silently send nothing.
+  #
+  # This job is intentionally a separate job (not a step) so:
+  #  - the `deploy` job completes and shows green immediately, giving a
+  #    clean "site is live" signal in the Actions UI;
+  #  - the newsletter workflow shows up as its own run in the Actions tab,
+  #    making its success/failure independently auditable;
+  #  - a slow or broken newsletter send never delays or blocks the deploy.
+  #
+  # The trigger is via `gh workflow run`, which fires a workflow_dispatch
+  # event — the same trigger the Actions UI's "Run workflow" button uses,
+  # so manual and automatic invocations share one code path in
+  # newsletter.yml.
+  trigger-newsletter:
+    needs: deploy
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for GitHub Pages propagation
+        # 45s is comfortably above the typical 10-30s GitHub Pages takes to
+        # make a fresh deploy globally visible, but below the 5-minute
+        # Apps Script budget the newsletter send itself will consume.
+        # Tune via PAGES_PROPAGATION_SECONDS if you ever see the newsletter
+        # fetch stale RSS (symptom: a push that added a new post doesn't
+        # result in any newsletter email on the next run).
+        run: |
+          DELAY="${PAGES_PROPAGATION_SECONDS:-45}"
+          echo "Sleeping ${DELAY}s to let the CDN propagate the new deploy…"
+          sleep "$DELAY"
+        env:
+          PAGES_PROPAGATION_SECONDS: ${{ vars.PAGES_PROPAGATION_SECONDS }}
+
+      - name: Trigger newsletter workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # --ref is the branch to run against (newsletter.yml must exist on
+        # that ref). We always run the version of newsletter.yml that's on
+        # main, regardless of which commit triggered this deploy — the two
+        # workflows are independently versioned by design, and we avoid
+        # dispatching an old newsletter.yml by accident.
+        run: |
+          echo "Dispatching newsletter workflow on main…"
+          gh workflow run newsletter.yml \
+            --repo "${{ github.repository }}" \
+            --ref main

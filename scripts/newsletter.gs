@@ -73,6 +73,15 @@
  *   GET  ?action=health             Per-dependency ok/error JSON report.
  *                                   Safe to call; never modifies anything.
  *
+ *   GET  ?action=scan_bounces       Signed (&sig=hmac-of-"scan_bounces").
+ *                                   Scans the FROM_EMAIL inbox for
+ *                                   mailer-daemon replies in the last 14
+ *                                   days, marks matching Sheet rows as
+ *                                   `bounced` so future sends skip them.
+ *                                   Idempotent. Triggered daily by the
+ *                                   deploy workflow; can be curled
+ *                                   manually with a signed URL.
+ *
  * One-shot maintenance:
  *   migrateAddTokens  — run from the Apps Script editor after upgrading
  *                       to this version if the Sheet has pre-existing
@@ -152,6 +161,20 @@ function verifyRequestSignature_(rawBody, signatureHex) {
   if (!/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
   var cfg = config_();
   var expected = hmacHex_(cfg.hmacSecret, rawBody);
+  return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
+}
+
+/**
+ * Verify scan-bounces signature. No body (GET-style trigger), so we sign a
+ * fixed constant. The action is idempotent (marking bounced rows as
+ * bounced is a no-op on repeat), so replay-safety over the constant isn't
+ * a risk worth solving with a timestamp.
+ */
+function verifyScanBouncesSig_(signatureHex) {
+  if (!signatureHex) return false;
+  if (!/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
+  var cfg = config_();
+  var expected = hmacHex_(cfg.hmacSecret, 'scan_bounces');
   return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
 }
 
@@ -323,6 +346,7 @@ function doGet(e) {
     if (action === 'confirm')      return handleConfirm_(e);
     if (action === 'unsubscribe')  return handleUnsubscribe_(e, 'GET');
     if (action === 'health')       return handleHealth_();
+    if (action === 'scan_bounces') return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
       'Nothing here',
       'This endpoint powers newsletter signups on nidhi.today.',
@@ -346,6 +370,7 @@ function doPost(e) {
     if (action === 'confirm')      return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')  return handleUnsubscribe_(e, 'POST');
     if (action === 'send_post')    return handleSendPost_(e);
+    if (action === 'scan_bounces') return handleScanBounces_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
@@ -441,19 +466,99 @@ function handleHealth_() {
   });
 
   check('from_email_sendable', function () {
-    var cfg = config_();
-    var aliases = GmailApp.getAliases();
-    var primary = Session.getActiveUser().getEmail();
-    if (cfg.fromEmail === primary) return { matches: 'primary' };
-    if (aliases.indexOf(cfg.fromEmail) !== -1) return { matches: 'alias' };
-    throw new Error(
-      'FROM_EMAIL "' + cfg.fromEmail + '" is neither the script owner\'s primary address (' +
-      primary + ') nor a verified "Send mail as" alias (' + aliases.join(', ') +
-      '). Add it in Gmail → Settings → Accounts → Send mail as, or change FROM_EMAIL.'
-    );
+    return fromEmailSendableReport_();
   });
 
   return jsonResponse_(report);
+}
+
+/**
+ * Resolve the script owner's primary address + "Send mail as" aliases, and
+ * determine whether FROM_EMAIL is actually sendable from this account.
+ *
+ * Returns { matches: 'primary'|'alias', primary, aliases } on success.
+ * Throws a human-readable Error otherwise.
+ *
+ * Implementation notes:
+ *  - Uses `Session.getEffectiveUser().getEmail()` rather than
+ *    `Session.getActiveUser().getEmail()`. The active-user lookup returns
+ *    an empty string for anonymous web-app callers (when the caller isn't
+ *    in the same Workspace domain as the script owner — Google's
+ *    cross-domain privacy policy). Effective-user returns the identity
+ *    the script is running *as*, which, under "Execute as: Me", is the
+ *    script owner — exactly the account whose mail identities we care
+ *    about. This is the fix for the classic "primary: (), aliases: ()"
+ *    health-check failure.
+ *  - `GmailApp.getAliases()` can throw if the necessary Gmail scope hasn't
+ *    been granted yet. Surface a clear next step instead of a raw stack.
+ */
+function fromEmailSendableReport_() {
+  var cfg = config_();
+
+  var primary = '';
+  try { primary = Session.getEffectiveUser().getEmail() || ''; } catch (_) { /* leave empty */ }
+
+  var aliases = [];
+  try {
+    aliases = GmailApp.getAliases() || [];
+  } catch (err) {
+    throw new Error(
+      'Could not list "Send mail as" aliases: ' + err +
+      '. This usually means the Gmail scope has not been authorized for this ' +
+      'script yet. From the Apps Script editor, run sendConfirmationEmail_ or ' +
+      'any email-sending function once manually to trigger the authorization ' +
+      'prompt, then re-run ?action=health.'
+    );
+  }
+
+  if (cfg.fromEmail === primary) {
+    return { matches: 'primary', primary: primary, aliases: aliases };
+  }
+  if (aliases.indexOf(cfg.fromEmail) !== -1) {
+    return { matches: 'alias', primary: primary, aliases: aliases };
+  }
+
+  throw new Error(
+    'FROM_EMAIL "' + cfg.fromEmail + '" is neither the script owner\'s primary address (' +
+    (primary || '<could not resolve — deploy "Execute as: Me">') +
+    ') nor a verified "Send mail as" alias (' +
+    (aliases.length ? aliases.join(', ') : '<none configured>') +
+    '). Fix: in the Gmail account that owns this Apps Script, go to ' +
+    'Settings → Accounts and Import → "Send mail as" and add + verify ' +
+    cfg.fromEmail + '. Or change the FROM_EMAIL script property to an ' +
+    'address already listed above.'
+  );
+}
+
+/**
+ * Lightweight preflight called at the top of handleSendPost_. Caches a
+ * "checked today" marker in Script Properties so we don't redo the Gmail
+ * metadata lookups on every send — but we DO catch silent breakages
+ * (someone removed the "Send mail as" alias in Gmail settings) within 24h
+ * instead of only when the operator happens to curl /health.
+ *
+ * Throws on misconfiguration, which handleSendPost_ surfaces to the
+ * caller as { ok: false, error }. GitHub Actions' continue-on-error
+ * prevents this from breaking the deploy, and the failure notification
+ * step files a GitHub issue.
+ */
+function ensureFromEmailSendable_() {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  var cacheKey = 'alias_check:' + today;
+  if (prop_(cacheKey)) return;
+
+  fromEmailSendableReport_();    // throws on misconfig
+
+  props_().setProperty(cacheKey, '1');
+
+  // Opportunistic cleanup of yesterday's (and older) markers so the
+  // property store doesn't accumulate one dead key per day forever.
+  var allProps = props_().getProperties();
+  for (var k in allProps) {
+    if (k.indexOf('alias_check:') === 0 && k !== cacheKey) {
+      props_().deleteProperty(k);
+    }
+  }
 }
 
 // ============================================================================
@@ -523,7 +628,15 @@ function handleConfirm_(e) {
   try {
     sendWelcomeEmail_(email, unsubToken);
   } catch (err) {
+    // Welcome email is non-blocking (the subscriber IS confirmed regardless),
+    // but we still want a signal so a silent Gmail outage doesn't mean
+    // nobody ever gets their "you're in" email. Aggregate event + console
+    // log is the minimum useful alert surface.
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
+    trackPosthog_('blog_welcome_failed', email, {
+      email_domain: emailDomain_(email),
+      error: String(err && err.message ? err.message : err).slice(0, 300),
+    });
   }
 
   trackPosthog_('blog_subscribe_confirmed', email, {});
@@ -570,6 +683,18 @@ function handleUnsubscribe_(e, method) {
 // Newsletter send (called by GitHub Actions)
 // ============================================================================
 
+// Workspace (verified domain) caps outbound mail at 1,500 recipients/day.
+// Warn the operator when we're close to that so they can either compress
+// the send schedule, move to a paid tier, or slice the list.
+var QUOTA_DAILY_RECIPIENTS = 1500;
+var QUOTA_WARN_THRESHOLD   = 0.80;
+
+// How often we persist progress during a large fan-out. Each write is a
+// round-trip to Google's properties service; 25 is a compromise between
+// progress-granularity-on-crash (~25 dupes worst case on retry) and
+// wall-clock overhead during the send loop.
+var SEND_PROGRESS_CHECKPOINT = 25;
+
 function handleSendPost_(e) {
   var cfg = config_();
 
@@ -577,6 +702,16 @@ function handleSendPost_(e) {
   var sig = (e && e.parameter && e.parameter.sig) || '';
   if (!verifyRequestSignature_(raw, sig)) {
     return jsonResponse_({ ok: false, error: 'bad_signature' });
+  }
+
+  // Preflight: fail fast (and loud) if FROM_EMAIL isn't sendable from this
+  // account. Without this, every per-recipient sendRaw_ would throw inside
+  // the catch block and show up as N individual "send failed" warnings
+  // while the root cause is one missing alias in Gmail settings.
+  try {
+    ensureFromEmailSendable_();
+  } catch (err) {
+    return jsonResponse_({ ok: false, error: 'from_email_not_sendable: ' + err.message });
   }
 
   var payload = JSON.parse(raw);
@@ -595,24 +730,80 @@ function handleSendPost_(e) {
     return jsonResponse_({ ok: true, sent: 0 });
   }
 
+  // Quota warning (PostHog + console) — fires when the confirmed-subscriber
+  // count crosses the Workspace daily-recipient threshold. The send still
+  // proceeds; this is an early-warning for the operator.
+  if (subscribers.length >= QUOTA_DAILY_RECIPIENTS * QUOTA_WARN_THRESHOLD) {
+    console.warn('newsletter: confirmed subscribers (' + subscribers.length +
+      ') approaching Workspace daily cap of ' + QUOTA_DAILY_RECIPIENTS);
+    trackPosthog_('blog_newsletter_quota_warning', cfg.fromEmail, {
+      subscriber_count: subscribers.length,
+      cap: QUOTA_DAILY_RECIPIENTS,
+      utilization: Math.round((subscribers.length / QUOTA_DAILY_RECIPIENTS) * 100) / 100,
+      guid: payload.guid,
+    });
+  }
+
+  // Deterministic ordering across retries. The fan-out may not finish in
+  // one Apps Script invocation (6-minute cap, 5-minute budget); on the
+  // next invocation we use this ordering + a persisted high-water mark
+  // to skip recipients already handled. Lexicographic email sort is
+  // stable even if subscribers are added/removed between invocations —
+  // the only effect is that a new subscriber inserted before the marker
+  // is missed for this post (picked up on the next post), and one
+  // inserted after the marker is included.
+  subscribers.sort(function (a, b) {
+    var ae = (a.email || '').toLowerCase();
+    var be = (b.email || '').toLowerCase();
+    return ae < be ? -1 : ae > be ? 1 : 0;
+  });
+
+  var progressKey = 'send_progress:' + payload.guid;
+  var lastSentEmail = (prop_(progressKey) || '').toLowerCase();
+
   var listId = 'nidhi blog newsletter <newsletter.' + host_(cfg.siteUrl) + '>';
 
   var started = Date.now();
   var timeBudgetMs = 5 * 60 * 1000;
 
-  var sent = 0, failed = 0;
+  var sent = 0, failed = 0, skipped_already_sent = 0;
+  var checkpointEmail = lastSentEmail;
+
   for (var i = 0; i < subscribers.length; i++) {
-    if (Date.now() - started > timeBudgetMs) {
-      return jsonResponse_({ ok: true, sent: sent, failed: failed, partial: true });
+    var sub = subscribers[i];
+    var subEmailLower = (sub.email || '').toLowerCase();
+
+    // Resume: lexicographic skip of recipients handled by a previous
+    // partial run. O(1) space for the marker regardless of list size.
+    if (lastSentEmail && subEmailLower <= lastSentEmail) {
+      skipped_already_sent++;
+      continue;
     }
 
-    var sub = subscribers[i];
+    if (Date.now() - started > timeBudgetMs) {
+      // Persist progress so the next invocation picks up where we left off.
+      props_().setProperty(progressKey, checkpointEmail);
+      return jsonResponse_({
+        ok: true, sent: sent, failed: failed,
+        skipped_already_sent: skipped_already_sent,
+        partial: true,
+        resume_after: checkpointEmail,
+      });
+    }
+
     if (!sub.unsubToken) {
       // Row has no unsub token — probably an old row predating this schema.
       // Skip rather than send without the one-click unsubscribe URL, which
       // would be non-compliant with Gmail's bulk-sender rules.
       failed++;
       console.warn('skipping ' + sub.email + ': missing unsub_token. Run migrateAddTokens().');
+      trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
+        guid: payload.guid,
+        email_domain: emailDomain_(sub.email),
+        reason: 'missing_unsub_token',
+      });
+      // Advance the marker past this row so we don't re-hit it on resume.
+      checkpointEmail = subEmailLower;
       continue;
     }
 
@@ -641,20 +832,173 @@ function handleSendPost_(e) {
       });
       sendRaw_(mime);
       sent++;
+      checkpointEmail = subEmailLower;
+
+      // Persist progress periodically so a crash loses at most
+      // SEND_PROGRESS_CHECKPOINT recipients on retry (they'd get a dupe,
+      // acceptable vs. silent gaps).
+      if (sent % SEND_PROGRESS_CHECKPOINT === 0) {
+        props_().setProperty(progressKey, checkpointEmail);
+      }
     } catch (err) {
       failed++;
       console.warn('send failed for ' + sub.email + ': ' + err);
+      // Per-recipient failure event — captures domain + error message so we
+      // can spot patterns (e.g. one domain blocklisting us) without leaking
+      // full subscriber addresses into PostHog.
+      trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
+        guid: payload.guid,
+        email_domain: emailDomain_(sub.email),
+        error: String(err && err.message ? err.message : err).slice(0, 300),
+      });
+      // Advance the marker past the failed row — next retry will skip it
+      // (by design: per-recipient failures don't block the fan-out, and
+      // systematic failures surface via the aggregate blog_newsletter_sent
+      // event's `failed` count).
+      checkpointEmail = subEmailLower;
     }
   }
 
+  // Full fan-out complete. Drop the progress marker and set the
+  // idempotency marker so any retry of this guid short-circuits.
+  props_().deleteProperty(progressKey);
   props_().setProperty(seenKey, String(new Date().getTime()));
   trackPosthog_('blog_newsletter_sent', cfg.fromEmail, {
     guid: payload.guid,
     sent: sent,
     failed: failed,
+    skipped_already_sent: skipped_already_sent,
     url: payload.url,
   });
-  return jsonResponse_({ ok: true, sent: sent, failed: failed });
+  return jsonResponse_({
+    ok: true,
+    sent: sent,
+    failed: failed,
+    skipped_already_sent: skipped_already_sent,
+  });
+}
+
+function emailDomain_(email) {
+  var s = String(email || '').trim().toLowerCase();
+  var at = s.indexOf('@');
+  return at >= 0 ? s.slice(at + 1) : '';
+}
+
+// ============================================================================
+// Bounce scanner — runs from GitHub Actions (HMAC-authed)
+// ============================================================================
+//
+// Gmail's advanced API doesn't expose bounce webhooks for consumer accounts
+// / free Workspace tiers. The only way to notice that a subscriber's
+// address is dead is to look at `mailer-daemon` bounce replies sitting in
+// the FROM_EMAIL inbox. This job scans the last 14 days of such replies,
+// extracts failed recipient addresses, and flips matching Sheet rows from
+// `confirmed` → `bounced` so we stop burning Workspace quota on dead
+// addresses.
+//
+// `bounced` is outside the enum in listConfirmedSubscribers_() — which
+// filters on status==='confirmed' — so marked rows are implicitly dropped
+// from all future fan-outs. Re-subscribing via the public form overwrites
+// the row back to `pending` and goes through the normal double-opt-in
+// flow, which acts as a manual "we think this address works again" check.
+//
+// Why a single 14-day window:
+//  - Shorter than 14d and a weekly cron would miss bounces that arrived
+//    between runs;
+//  - Longer and we'd repeatedly re-process the same old bounces on every
+//    daily run (harmless, just wasteful).
+//
+// The extracted address set intentionally over-matches (any `<…@…>` in the
+// bounce body) and we filter to addresses actually present in our sheet,
+// so we can't accidentally mark a stranger's email.
+
+function handleScanBounces_(e) {
+  var sig = (e && e.parameter && e.parameter.sig) || '';
+  if (!verifyScanBouncesSig_(sig)) {
+    return jsonResponse_({ ok: false, error: 'bad_signature' });
+  }
+
+  var cfg = config_();
+
+  // Broad Gmail query — we over-match on purpose and then filter candidates
+  // against the Sheet. Bounces come from `mailer-daemon@googlemail.com`
+  // in most cases; the subject heuristic catches forwarding-service
+  // bounces that spoof a different From.
+  var query = 'in:inbox (from:mailer-daemon OR from:postmaster OR subject:"Delivery Status Notification") newer_than:14d';
+  var threads;
+  try {
+    threads = GmailApp.search(query, 0, 200);
+  } catch (err) {
+    return jsonResponse_({ ok: false, error: 'gmail_search_failed: ' + err });
+  }
+
+  // Build a Set of all addresses appearing in bounce bodies.
+  var candidates = {};
+  for (var t = 0; t < threads.length; t++) {
+    var msgs = threads[t].getMessages();
+    for (var m = 0; m < msgs.length; m++) {
+      var msg = msgs[m];
+      var haystack = '';
+      try { haystack += (msg.getSubject() || '') + '\n'; } catch (_) {}
+      try { haystack += (msg.getPlainBody() || ''); } catch (_) {}
+      // Match both `<user@host>` bracketed forms and bare addresses — bounce
+      // reports vary wildly between providers.
+      var re = /([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})/g;
+      var match;
+      while ((match = re.exec(haystack)) !== null) {
+        var addr = match[1].toLowerCase();
+        if (addr.indexOf('mailer-daemon') === 0) continue;
+        if (addr.indexOf('postmaster@') === 0)   continue;
+        if (addr === cfg.fromEmail.toLowerCase())  continue;
+        // Skip common noise: Google-generated bounce-report from lines.
+        if (/@googlemail\.com$/i.test(addr)) continue;
+        if (/@google\.com$/i.test(addr))     continue;
+        candidates[addr] = true;
+      }
+    }
+  }
+
+  // Filter to addresses that actually exist in the Sheet (and are currently
+  // confirmed) — everything else is noise from the bounce body.
+  var sh = sheet_();
+  var last = sh.getLastRow();
+  if (last < 2) {
+    return jsonResponse_({
+      ok: true, threads_scanned: threads.length,
+      candidates: Object.keys(candidates).length, marked_bounced: 0,
+    });
+  }
+
+  var marked = 0;
+  var markedAddrs = [];
+  var rows = sh.getRange(2, 1, last - 1, 8).getValues();
+  for (var r = 0; r < rows.length; r++) {
+    var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
+    var rowStatus = String(rows[r][1] || '').toLowerCase();
+    if (rowStatus !== 'confirmed') continue;
+    if (!candidates[rowEmail]) continue;
+
+    sh.getRange(r + 2, COL.status).setValue('bounced');
+    sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
+    marked++;
+    markedAddrs.push(rowEmail);
+
+    trackPosthog_('blog_subscriber_bounced', rowEmail, {
+      email_domain: emailDomain_(rowEmail),
+      via: 'mailer_daemon_scan',
+    });
+  }
+
+  if (marked > 0) {
+    console.warn('scan_bounces: marked ' + marked + ' row(s) as bounced: ' + markedAddrs.join(', '));
+  }
+
+  return jsonResponse_({
+    ok: true,
+    threads_scanned: threads.length,
+    candidates: Object.keys(candidates).length,
+    marked_bounced: marked,
+  });
 }
 
 // ============================================================================

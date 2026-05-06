@@ -99,6 +99,12 @@ const isDev = import.meta.env.DEV;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
       }).then(function () {
+        // Clear the local subscription flag so the SubscribeSection CTA
+        // reappears on the site — symmetrical to confirm.astro writing it.
+        // See /privacy.
+        try {
+          localStorage.removeItem('nidhi-newsletter-subscription');
+        } catch (_) {}
         if (window.posthog) {
           window.posthog.capture('blog_unsubscribe_clicked');
         }

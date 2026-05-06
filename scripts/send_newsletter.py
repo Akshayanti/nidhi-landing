@@ -24,8 +24,19 @@ Env:
   NEWSLETTER_HMAC_SECRET     64 hex chars, must match Apps Script
                              HMAC_SECRET script property. Required.
   SITE_URL                   Default https://nidhi.today. Used to make
-                             relative hrefs/images absolute in email HTML.
-  DIST_DIR                   Default "dist".
+                             relative hrefs/images absolute in email HTML,
+                             and — when NEWSLETTER_FETCH_LIVE=1 — as the
+                             base URL to fetch /rss.xml and per-post HTML
+                             from.
+  NEWSLETTER_FETCH_LIVE      If set to "1", read the RSS feed and each
+                             post's HTML from SITE_URL over HTTPS instead
+                             of from DIST_DIR on disk. Used by
+                             newsletter.yml so the workflow doesn't need
+                             to `npm run build`; guarantees subscribers
+                             receive exactly what's live on the web at
+                             send time.
+  DIST_DIR                   Default "dist". Used only when
+                             NEWSLETTER_FETCH_LIVE is not set.
   MARKER_FILE                Default ".last-sent-guid.txt".
   DRY_RUN                    If set to "1", renders but does not POST.
   SEND_ONLY_MOST_RECENT      If set to "1", only the most-recent unsent
@@ -85,6 +96,7 @@ class Config:
     marker_file: Path
     dry_run: bool
     only_most_recent: bool
+    fetch_live: bool
 
 
 def load_config() -> Config | None:
@@ -100,6 +112,7 @@ def load_config() -> Config | None:
     marker_file = Path(os.environ.get("MARKER_FILE", str(REPO_ROOT / ".last-sent-guid.txt")))
     dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
     only_most_recent = os.environ.get("SEND_ONLY_MOST_RECENT", "").strip() == "1"
+    fetch_live = os.environ.get("NEWSLETTER_FETCH_LIVE", "").strip() == "1"
 
     return Config(
         endpoint=endpoint,
@@ -109,7 +122,37 @@ def load_config() -> Config | None:
         marker_file=marker_file,
         dry_run=dry_run,
         only_most_recent=only_most_recent,
+        fetch_live=fetch_live,
     )
+
+
+# ---------------------------------------------------------------------------
+# Live-fetch helpers (used when NEWSLETTER_FETCH_LIVE=1)
+# ---------------------------------------------------------------------------
+
+_LIVE_USER_AGENT = "nidhi-newsletter/1.0 (+https://nidhi.today)"
+
+
+def _http_get_bytes(url: str, timeout: int = 60) -> bytes:
+    """GET a URL, return raw bytes. Small wrapper for consistent UA + timeout."""
+    req = urllib.request.Request(url, headers={"User-Agent": _LIVE_USER_AGENT})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read()
+
+
+def _live_post_url(site_url: str, relative: str) -> str:
+    """
+    Build the URL to fetch a post's HTML from the live site.
+
+    Astro is configured with `trailingSlash: 'never'`, so `/blog/foo/` 404s
+    but `/blog/foo` serves the content (GH Pages handles the index.html
+    resolution internally). We strip any trailing slash from the relative
+    path to match, and don't append one.
+    """
+    rel = relative.rstrip("/")
+    if not rel.startswith("/"):
+        rel = "/" + rel
+    return site_url.rstrip("/") + rel
 
 
 # ---------------------------------------------------------------------------
@@ -127,12 +170,19 @@ class RssItem:
     categories: list[str]
 
 
-def parse_rss(xml_path: Path) -> list[RssItem]:
-    if not xml_path.exists():
-        raise FileNotFoundError(f"RSS feed not found at {xml_path}. "
-                                f"Did the build step run?")
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
+def parse_rss(src: Path | bytes) -> list[RssItem]:
+    """
+    Parse an RSS feed from either a filesystem path (Path) or in-memory bytes
+    (typical output of _http_get_bytes in live-fetch mode).
+    """
+    if isinstance(src, Path):
+        if not src.exists():
+            raise FileNotFoundError(f"RSS feed not found at {src}. "
+                                    f"Did the build step run?")
+        tree = ET.parse(src)
+        root = tree.getroot()
+    else:
+        root = ET.fromstring(src)
     channel = root.find("channel")
     if channel is None:
         raise ValueError("RSS feed has no <channel> element")
@@ -193,29 +243,50 @@ def record_sent(path: Path, guid: str) -> None:
 # ---------------------------------------------------------------------------
 
 def extract_post(
-    dist_dir: Path,
+    source: Path | str,
     relative: str,
     site_url: str,
     utm_query: str | None = None,
 ) -> dict[str, str | int | None]:
-    """Read dist/<relative>/index.html, pull article content + meta.
+    """Pull article content + meta for a single post.
+
+    `source` selects where to read the post HTML from:
+      - Path  → a local dist directory (used by DRY_RUN and the legacy
+                build-in-the-workflow mode).
+      - str   → a base URL (e.g. https://nidhi.today), used in live-fetch
+                mode. The deployed page is fetched over HTTPS.
 
     When `utm_query` is provided, every in-body <a> pointing to site_url
     also gets UTM params appended (see absolutize_urls()).
     """
-    # Astro's static output lives at dist<relative>/index.html (with trailing /).
-    rel = relative.strip("/")
-    candidate = dist_dir / rel / "index.html"
-    if not candidate.exists():
-        # Fallback for trailing-slash variations
-        candidate = dist_dir / (rel + ".html")
-    if not candidate.exists():
-        raise FileNotFoundError(
-            f"Could not locate built post HTML for {relative} "
-            f"(tried {dist_dir / rel / 'index.html'})"
-        )
+    if isinstance(source, Path):
+        # Astro's static output lives at dist<relative>/index.html (with trailing /).
+        rel = relative.strip("/")
+        candidate = source / rel / "index.html"
+        if not candidate.exists():
+            # Fallback for trailing-slash variations
+            candidate = source / (rel + ".html")
+        if not candidate.exists():
+            raise FileNotFoundError(
+                f"Could not locate built post HTML for {relative} "
+                f"(tried {source / rel / 'index.html'})"
+            )
+        html_source = candidate.read_text(encoding="utf-8")
+    else:
+        # Live fetch. Astro serves without trailing slash (trailingSlash:
+        # 'never'), and GH Pages does the index.html resolution server-side.
+        url = _live_post_url(source, relative)
+        try:
+            html_source = _http_get_bytes(url).decode("utf-8", errors="replace")
+        except Exception as err:
+            raise RuntimeError(
+                f"Could not fetch post HTML from live site ({url}): {err}. "
+                f"If this is a deploy-to-send race, the 45s propagation "
+                f"delay in deploy.yml's trigger-newsletter job may need "
+                f"tuning via the PAGES_PROPAGATION_SECONDS Actions variable."
+            ) from err
 
-    soup = BeautifulSoup(candidate.read_text(encoding="utf-8"), "html.parser")
+    soup = BeautifulSoup(html_source, "html.parser")
 
     # Strip chrome we don't want in email — TOC, suggested reading, post-nav,
     # subscribe section, disclaimer (we include our own in the email footer).
@@ -588,8 +659,25 @@ def main() -> int:
     if cfg is None:
         return 0
 
-    rss_path = cfg.dist_dir / "rss.xml"
-    items = parse_rss(rss_path)
+    # Source of truth: either the deployed site (live mode, used by the
+    # decoupled newsletter.yml workflow) or the local dist/ directory
+    # (legacy path + DRY_RUN testing).
+    if cfg.fetch_live:
+        rss_url = f"{cfg.site_url}/rss.xml"
+        print(f"[send_newsletter] live fetch: {rss_url}")
+        try:
+            rss_bytes = _http_get_bytes(rss_url)
+        except Exception as err:
+            print(f"[send_newsletter] could not fetch live RSS from {rss_url}: {err}",
+                  file=sys.stderr)
+            return 2
+        items = parse_rss(rss_bytes)
+        post_source: Path | str = cfg.site_url
+    else:
+        rss_path = cfg.dist_dir / "rss.xml"
+        items = parse_rss(rss_path)
+        post_source = cfg.dist_dir
+
     sent = load_sent_guids(cfg.marker_file)
 
     pending = [it for it in items if it.guid not in sent]
@@ -628,6 +716,9 @@ def main() -> int:
     print(f"[send_newsletter] {len(pending)} post(s) to send.")
 
     any_failed = False
+    total_sent = 0
+    total_failed = 0
+    total_partial = 0
     for item in pending:
         print(f"[send_newsletter] → {item.title}  ({item.link})")
         try:
@@ -637,7 +728,7 @@ def main() -> int:
             campaign = _post_slug(item.relative)
             utm_query = _utm_query(campaign)
             post = extract_post(
-                cfg.dist_dir, item.relative, cfg.site_url,
+                post_source, item.relative, cfg.site_url,
                 utm_query=utm_query,
             )
             html_out, text_out = render_email(
@@ -687,11 +778,66 @@ def main() -> int:
             any_failed = True
             continue
 
+        sent_count = int(resp.get("sent", 0) or 0)
+        failed_count = int(resp.get("failed", 0) or 0)
+        total_sent += sent_count
+        total_failed += failed_count
+
+        # Partial responses mean Apps Script ran out of its 5-minute budget
+        # and has persisted a per-guid `send_progress:<guid>` marker. The
+        # idempotency marker (`sent_guid:<guid>`) has NOT been written yet.
+        # If we recorded the guid in .last-sent-guid.txt here, the workflow
+        # would never retry and the remaining subscribers would silently
+        # never get the email. Skip recording and flag as failure so the
+        # next workflow run picks up where this one left off.
+        if resp.get("partial"):
+            total_partial += 1
+            resume_after = resp.get("resume_after", "")
+            print(
+                f"[send_newsletter]   PARTIAL: sent={sent_count} failed={failed_count}"
+                + (f" resume_after={resume_after}" if resume_after else "")
+                + " — guid NOT marked; next workflow run will resume.",
+                file=sys.stderr,
+            )
+            any_failed = True
+            continue
+
         record_sent(cfg.marker_file, item.guid)
-        print(f"[send_newsletter]   sent={resp.get('sent', 0)} "
-              f"failed={resp.get('failed', 0)}")
+        print(f"[send_newsletter]   sent={sent_count} failed={failed_count}")
+
+    # Emit step outputs so the workflow can make smart decisions about
+    # failure notification without re-parsing stderr.
+    _write_gh_output({
+        "any_failed": "1" if any_failed else "0",
+        "total_sent": str(total_sent),
+        "total_failed": str(total_failed),
+        "total_partial": str(total_partial),
+        "posts_attempted": str(len(pending)),
+    })
 
     return 2 if any_failed else 0
+
+
+def _write_gh_output(kv: dict[str, str]) -> None:
+    """
+    Append key=value pairs to the file pointed to by $GITHUB_OUTPUT, which
+    is how GitHub Actions reads step outputs. No-op if the env var isn't
+    set (local runs, DRY_RUN, manual invocations). Uses the documented
+    heredoc form so values with newlines would survive if we ever emit
+    any — though we don't today.
+    """
+    out_path = os.environ.get("GITHUB_OUTPUT", "").strip()
+    if not out_path:
+        return
+    try:
+        with open(out_path, "a", encoding="utf-8") as fh:
+            for k, v in kv.items():
+                if "\n" in v:
+                    fh.write(f"{k}<<__END__\n{v}\n__END__\n")
+                else:
+                    fh.write(f"{k}={v}\n")
+    except OSError as err:
+        print(f"[send_newsletter] could not write GITHUB_OUTPUT: {err}", file=sys.stderr)
 
 
 def slugify(s: str) -> str:

@@ -110,6 +110,17 @@ const isDev = import.meta.env.DEV;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
       }).then(function () {
+        // Upgrade the shared subscription flag from "pending" → "confirmed"
+        // (or set it directly if the confirm was opened in a different
+        // browser/profile than where the subscribe happened). This is what
+        // keeps the SubscribeSection hidden across the site after signup.
+        // See /privacy for what this stores.
+        try {
+          localStorage.setItem(
+            'nidhi-newsletter-subscription',
+            JSON.stringify({ status: 'confirmed', at: Date.now() })
+          );
+        } catch (_) {}
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_confirm_clicked');
         }
