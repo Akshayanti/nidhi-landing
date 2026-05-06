@@ -60,8 +60,21 @@ jobs:
     # level) so they're reliably available to step-level `if:` expressions
     # via the `env` context. GitHub Actions does not allow `secrets.X` in
     # `if:` directly — going through `env` is the documented workaround.
+    #
+    # NEWSLETTER_ENDPOINT is read from `secrets.PUBLIC_NEWSLETTER_ENDPOINT`
+    # — the same URL the browser uses. We use one secret for both the
+    # build-time baked-into-JS endpoint and the server-side workflow
+    # endpoint, because it's literally the same Apps Script `/exec` URL
+    # and is already public by design (every page's JS references it).
+    # The `PUBLIC_` prefix is just Astro/Vite convention for
+    # "exposed at build time"; it has no bearing on Actions secret scoping.
+    #
+    # NEWSLETTER_HMAC_SECRET is a genuinely separate secret — a shared
+    # signing key proving to Apps Script that send_post / scan_bounces
+    # requests came from our CI and not from someone who saw the public
+    # endpoint URL.
     env:
-      NEWSLETTER_ENDPOINT: ${{ secrets.NEWSLETTER_ENDPOINT }}
+      NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
       NEWSLETTER_HMAC_SECRET: ${{ secrets.NEWSLETTER_HMAC_SECRET }}
       SITE_URL: https://nidhi.today
     steps:
@@ -90,10 +103,10 @@ jobs:
           set -e
           OK=1
           if [ -z "${NEWSLETTER_ENDPOINT:-}" ]; then
-            echo "::warning title=Missing secret::NEWSLETTER_ENDPOINT is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See docs/blog-subscription-setup.md."
+            echo "::warning title=Missing secret::PUBLIC_NEWSLETTER_ENDPOINT is not configured. Add it under Settings → Secrets and variables → Actions → Secrets (same URL the site build uses). See docs/blog-subscription-setup.md."
             OK=0
           else
-            echo "NEWSLETTER_ENDPOINT: configured"
+            echo "PUBLIC_NEWSLETTER_ENDPOINT: configured"
           fi
           if [ -z "${NEWSLETTER_HMAC_SECRET:-}" ]; then
             echo "::warning title=Missing secret::NEWSLETTER_HMAC_SECRET is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See docs/blog-subscription-setup.md."

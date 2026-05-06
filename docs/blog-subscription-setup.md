@@ -176,8 +176,10 @@ In GitHub → Settings → Secrets and variables → Actions → **Secrets**:
 
 | Secret | Value |
 |---|---|
-| `NEWSLETTER_ENDPOINT` | Same Apps Script `/exec` URL |
-| `NEWSLETTER_HMAC_SECRET` | Same value as the Apps Script `HMAC_SECRET` property |
+| `PUBLIC_NEWSLETTER_ENDPOINT` | Apps Script `/exec` URL. Already set in step 4 for the site build — reused here. One secret, two contexts. The `PUBLIC_` prefix is Astro/Vite convention for "exposed to the browser at build time"; it has no bearing on Actions secret scoping. |
+| `NEWSLETTER_HMAC_SECRET` | **Different value.** Same random 64-hex string as the Apps Script `HMAC_SECRET` property (`openssl rand -hex 32`). Proves to Apps Script that `send_post` / `scan_bounces` requests came from our CI and not from anyone who saw the public endpoint URL. Never expose this one to the browser. |
+
+Why two secrets but not three: the URL is already public (every page's JS references it, so it's literally in the build output), so we don't need a separate "CI URL" — we can reuse `PUBLIC_NEWSLETTER_ENDPOINT` server-side. The HMAC secret is the only truly secret value: it's the signing key that authenticates CI-originated sends.
 
 Optionally, in the **Variables** tab:
 
