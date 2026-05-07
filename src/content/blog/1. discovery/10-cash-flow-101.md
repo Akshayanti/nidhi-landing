@@ -9,7 +9,7 @@ updatedDate: 2026-05-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["cash-flow", "budgeting", "fundamentals", "income", "expenses", "savings-rate", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals", "saving"]
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
@@ -42,7 +42,7 @@ Cash flow is simply the difference between money coming in and money going out o
 
 Ask someone how much they earn, and they can usually tell you. Ask them how much they spend, and the answer gets fuzzy.
 
-That's because income is simple: it's usually one or two sources. Expenses are scattered across a dozen categories and multiple accounts. The gym membership, the streaming services, the occasional dinner out, the groceries, the insurance payments - it all adds up, but rarely in a way you can see at a glance.
+That's because income is simple: it's usually one or two sources. Expenses are scattered across a dozen categories and multiple accounts. The gym membership, the streaming services, the occasional dinner out, the groceries, the insurance payments: it all adds up, but rarely in a way you can see at a glance.
 
 Without visibility, small leaks become big problems.
 
@@ -91,4 +91,4 @@ Cash flow and net worth are linked. As we discussed in the [income vs. wealth po
 
 Positive cash flow each month means your [assets](/blog/assets) grow (or your [liabilities](/blog/liabilities) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
 
-That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund) yet, that's where it should go first — your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt) we covered earlier. The order matters: stabilize, then optimize.
+That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund) yet, that's where it should go first: your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt) we covered earlier. The order matters: stabilize, then optimize.

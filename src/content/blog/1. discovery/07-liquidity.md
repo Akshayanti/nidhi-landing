@@ -5,11 +5,11 @@ description: "Having money and being able to use it are not the same thing. Liqu
 tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-05-01
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["liquidity", "fundamentals", "net-worth", "saving", "investing", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals"]
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
@@ -101,4 +101,4 @@ In the [assets post](/blog/assets), we looked at asset quality. Liquidity is one
 
 A financial plan that ignores liquidity is like a car with a powerful engine but no fuel gauge. It runs great until it doesn't.
 
-Now that you understand how accessible your money is, the next question is: how much should you keep liquid? That's where the emergency fund comes in – the practical application of everything we've covered here.
+Now that you understand how accessible your money is, the next question is: how much should you keep liquid? That's where the emergency fund comes in: the practical application of everything we've covered here.

@@ -5,11 +5,11 @@ description: "Not all assets are created equal. Some grow in value over time, ot
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-04-29
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["appreciation", "depreciation", "compound-interest", "investing", "fundamentals", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals", "investing"]
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
@@ -34,7 +34,7 @@ Appreciation is when something increases in value over time.
 - An index fund purchased for €5,000 that grows to €12,000 has appreciated
 - Even a savings account appreciates (slowly) when it earns interest
 
-Historically, broad stock market investments have returned around 7-8% per year after inflation. Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees, but they're the long-term trend.
+Historically, broad stock market investments have returned around 5-7% per year after inflation across major developed markets (US historical data sits at the higher end of this range). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees, but they're the long-term trend.
 
 The key insight: appreciation rewards patience. The longer you hold an appreciating asset, the more it compounds.
 
@@ -67,9 +67,9 @@ Same starting amount. Same rate. A factor of more than two difference. And the g
 
 Compound interest has three variables:
 
-1. **The rate** - higher returns mean faster growth. A 7% return compounds much faster than a 2% return
-2. **The amount** - more money compounding means more growth. This is why saving matters
-3. **Time** - the most important lever. The longer your money compounds, the more dramatic the effect
+1. **The rate.** Higher returns mean faster growth. A 7% return compounds much faster than a 2% return
+2. **The amount.** More money compounding means more growth. This is why saving matters
+3. **Time.** The most important lever. The longer your money compounds, the more dramatic the effect
 
 When these levers work **for** you, when you're saving and investing, the result is wealth building. When they work **against** you, when you're carrying high-interest debt, the result is a debt spiral.
 
@@ -88,7 +88,7 @@ Two savers. Both invest €200 per month at a 7% average return.
 **Person A** starts at age 25 and stops at 35. Total invested: €24,000.
 **Person B** starts at age 35 and keeps going until 65. Total invested: €72,000.
 
-At age 65, Person A has roughly €281,000. Person B has roughly €244,000.
+At age 65, Person A has roughly €263,000. Person B has roughly €244,000.
 
 Person A invested one-third as much money and ended up with more. Ten extra years of compounding beat thirty years of triple contributions. Time is the lever you can't get back.
 

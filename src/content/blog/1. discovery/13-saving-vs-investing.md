@@ -9,7 +9,7 @@ updatedDate: 2026-05-15
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["saving", "investing", "fundamentals", "risk", "getting-started", "time-value-of-money", "opportunity-cost", "personal finance", "financial literacy"]
+tags: ["discovery", "saving", "investing"]
 referentialReading:
   - title: "Saving vs. Investing"
     url: "https://www.investopedia.com/articles/investing/022516/saving-vs-investing-understanding-key-differences.asp"
@@ -53,7 +53,7 @@ Saving is about having money when you need it, not about making it grow.
 
 ## What investing actually means
 
-Investing is putting money into assets that have the potential to grow in value over time. The trade-off is risk – your money can go down as well as up.
+Investing is putting money into assets that have the potential to grow in value over time. The trade-off is risk: your money can go down as well as up.
 
 Typical investment vehicles:
 
@@ -66,7 +66,7 @@ Typical investment vehicles:
 The defining features of investing:
 
 - **Higher risk**: values fluctuate, sometimes sharply
-- **Higher return**: historically 7-8% per year (stocks, after inflation)
+- **Higher return**: historically around 5-7% per year after inflation (broad stocks, across major developed markets)
 - **Lower liquidity**: selling takes days; some accounts lock money for years
 - **Long time horizon**: best for money you won't need for 5+ years
 
@@ -78,7 +78,7 @@ Investing is about making money grow over time, accepting that the path won't be
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |
-| **Return** | 0-3% | 7-8% historically (stocks) |
+| **Return** | 0-3% | 5-7% historically after inflation (broad stocks) |
 | **Liquidity** | Immediate | Days to months |
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |
@@ -137,7 +137,7 @@ This is called opportunity cost, and it's the practical side of a concept called
 
 If you could earn 7% on investments, €10,000 promised to you in 10 years is only worth about €5,083 today, because you could turn €5,083 into €10,000 in that time. The further away the money, the less it's worth now. €10,000 in 30 years is worth only €1,314 in today's terms.
 
-This applies directly to the save-vs-invest decision. Money sitting in a savings account at 1% isn't just losing to inflation — it's also losing the returns it could have earned elsewhere. That gap widens dramatically over time:
+This applies directly to the save-vs-invest decision. Money sitting in a savings account at 1% isn't just losing to inflation. It's also losing the returns it could have earned elsewhere. That gap widens dramatically over time:
 
 | Years | €10,000 in savings (1%) | €10,000 invested (7%) | Difference |
 |-------|------------------------|----------------------|-------------|
@@ -175,4 +175,4 @@ Skip a step and you create fragility. Invest before your emergency fund is built
 
 Saving and investing aren't competing strategies. They're complementary tools with different jobs. Use each one where it belongs, in the right order, and your money works as hard as you do.
 
-Knowing when to save and when to invest is half the battle. The other half is making sure your money actually goes where you intended each month. That's what budgeting is for — and it's where we're heading next.
+Knowing when to save and when to invest is half the battle. The other half is making sure your money actually goes where you intended each month. That's what budgeting is for, and it's where we're heading next.

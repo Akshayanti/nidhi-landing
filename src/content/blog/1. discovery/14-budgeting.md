@@ -9,7 +9,7 @@ updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["budgeting", "cash-flow", "saving", "getting-started", "fundamentals", "personal finance", "financial literacy"]
+tags: ["discovery", "saving", "fundamentals"]
 referentialReading:
   - title: "What Is Budgeting?"
     url: "https://www.investopedia.com/terms/b/budget.asp"
@@ -26,7 +26,7 @@ faq:
   - question: "What is the 50/30/20 budgeting rule?"
     answer: "The 50/30/20 rule splits your after-tax income into three buckets: 50% for needs (rent, groceries, insurance), 30% for wants (dining out, entertainment, hobbies), and 20% for savings and debt repayment. It's the simplest budgeting method and a good starting point for beginners."
   - question: "What is zero-based budgeting?"
-    answer: "Zero-based budgeting assigns every euro of income to a specific purpose so that income minus all planned spending (including savings) equals exactly zero. It doesn't mean you spend everything — it means every euro is accounted for. Best for people who want full control and visibility."
+    answer: "Zero-based budgeting assigns every euro of income to a specific purpose so that income minus all planned spending (including savings) equals exactly zero. It doesn't mean you spend everything. It means every euro is accounted for. Best for people who want full control and visibility."
   - question: "What is the pay-yourself-first method?"
     answer: "Pay-yourself-first means automatically transferring a fixed amount to savings and investments the day your salary arrives, then spending whatever remains. It guarantees your savings rate without requiring detailed category tracking."
   - question: "Which budgeting method is best?"
@@ -49,14 +49,14 @@ Without a budget, your surplus is whatever's left after spending. With a budget,
 
 ## Why budgeting matters
 
-In the [cash flow post](/blog/cash-flow-101), we introduced the [savings rate](/blog/income-vs-wealth) — the percentage of income that doesn't get spent. That number determines more about your financial future than your salary does.
+In the [cash flow post](/blog/cash-flow-101), we introduced the [savings rate](/blog/income-vs-wealth): the percentage of income that doesn't get spent. That number determines more about your financial future than your salary does.
 
 But a savings rate only helps if it's intentional. A 15% savings rate that happens by accident one month and disappears the next isn't a plan, it's luck. A budget turns your savings rate from a measurement into a target.
 
 There are two core reasons budgeting works:
 
 1. **Awareness**: The act of planning forces you to confront where your money actually goes. Most people who start budgeting are surprised by how much they spend on categories they considered "small"
-2. **Intentionality**: Without a plan, spending follows the path of least resistance – convenience, impulse, habit. A budget redirects that path
+2. **Intentionality**: Without a plan, spending follows the path of least resistance: convenience, impulse, habit. A budget redirects that path
 
 ## The three most common approaches
 
@@ -117,7 +117,7 @@ The logic is simple: if savings happen first, spending is constrained by what's 
 - Automatic transfer to investments: €300
 - Available for spending: €2,000
 
-**Best for**: People who struggle with discipline or hate tracking categories. It guarantees your savings rate. What you do with the remaining €2,000 is up to you – no guilt, no tracking, no spreadsheets.
+**Best for**: People who struggle with discipline or hate tracking categories. It guarantees your savings rate. What you do with the remaining €2,000 is up to you. No guilt, no tracking, no spreadsheets.
 
 **Limitation**: It doesn't help you optimize where the €2,000 goes. If you're overspending on one category and underspending on another, you won't notice. Pair it with periodic reviews to catch drift.
 
@@ -127,7 +127,7 @@ Not all expenses respond to budgeting equally.
 
 **Fixed expenses** are the same every month: rent, insurance, loan payments, subscriptions. You can optimize these (switching to a cheaper provider, refinancing a loan), but they don't change month to month.
 
-**Discretionary expenses** vary based on your choices: dining out, entertainment, clothing, impulse purchases. This is where most budgets create value – not by eliminating these categories, but by putting a number on them before you start spending.
+**Discretionary expenses** vary based on your choices: dining out, entertainment, clothing, impulse purchases. This is where most budgets create value, not by eliminating these categories, but by putting a number on them before you start spending.
 
 The biggest gains come from two places:
 
@@ -151,7 +151,7 @@ This is the core of pay-yourself-first, but it works with any budgeting method. 
 
 ## Use a tracking tool
 
-You don't need to build your own system from scratch. There are plenty of budgeting and spending tracker apps that do the heavy lifting for you – categorizing transactions, showing where your money went, and alerting you when you're drifting from your plan.
+You don't need to build your own system from scratch. There are plenty of budgeting and spending tracker apps that do the heavy lifting for you: categorizing transactions, showing where your money went, and alerting you when you're drifting from your plan.
 
 If your bank's app already offers spending insights or category breakdowns, start there. Many European banks now group transactions automatically and show monthly summaries. If you want something more structured, dedicated apps like [YNAB](https://www.ynab.com/), [Spendee](https://www.spendee.com/), or [Wallet](https://budgetbakers.com/) let you set budgets by category and track against them in real time.
 

@@ -9,7 +9,7 @@ updatedDate: 2026-05-11
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["purchasing-power", "inflation", "fundamentals", "saving", "real-returns", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals"]
 referentialReading:
   - title: "The Economics of Money, Banking and Financial Markets"
     author: "Frederic Mishkin"
@@ -38,9 +38,9 @@ The number on your account is the **nominal** value. What that number can buy is
 
 ## The force behind it: Inflation
 
-The reason purchasing power declines is inflation – the general increase in prices over time.
+The reason purchasing power declines is inflation: the general increase in prices over time.
 
-When inflation is 3%, something that costs €100 today will cost €103 next year. Central banks target a low, steady rate – around 2% in the eurozone. A little inflation is considered normal and even healthy for the economy. The problem is what it does to your money over long periods.
+When inflation is 3%, something that costs €100 today will cost €103 next year. Central banks target a low, steady rate, around 2% in the eurozone. A little inflation is considered normal and even healthy for the economy. The problem is what it does to your money over long periods.
 
 Inflation is easy to ignore because it doesn't take money away from you visibly. Your bank balance stays the same. The number on the screen hasn't changed. But what that number can buy has quietly shrunk.
 
@@ -96,7 +96,7 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
 2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned 7-8% after inflation, thanks to [compound interest](/blog/appreciation-vs-depreciation). That's how you preserve and grow your purchasing power
+3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 5-7% after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation). That's how you preserve and grow your purchasing power
 4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

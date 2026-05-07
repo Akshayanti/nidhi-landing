@@ -5,11 +5,11 @@ description: "Earning more doesn't automatically mean being wealthier. Here's wh
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-05-06
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
-tags: ["income", "wealth", "fundamentals", "saving", "mindset", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals", "saving"]
 referentialReading:
   - title: "The Millionaire Next Door"
     author: "Thomas J. Stanley"
@@ -30,7 +30,7 @@ Same income. Completely different outcomes. The difference isn't what came in, i
 
 ## What income really tells you
 
-Income is a flow. It tells you how much money moves into your accounts over a period of time. Your salary, freelance earnings, rental income - these are all income.
+Income is a flow. It tells you how much money moves into your accounts over a period of time. Your salary, freelance earnings, rental income: these are all income.
 
 Income answers one question: how much is coming in?
 
@@ -73,6 +73,6 @@ Three practical shifts:
 
 ## Why this matters?
 
-Income gives you options today. Wealth gives you options tomorrow. If your income stops in the form of a job loss, health issue, career break, wealth — and your [emergency fund](/blog/emergency-fund) — is what keeps you afloat.
+Income gives you options today. Wealth gives you options tomorrow. If your income stops (a job loss, a health issue, a career break), wealth, along with your [emergency fund](/blog/emergency-fund), is what keeps you afloat.
 
 Understanding this distinction is the first step toward making decisions that actually build your financial future, not just fund your present.

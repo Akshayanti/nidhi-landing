@@ -1,7 +1,7 @@
 ---
 slug: "insurance-basics"
 title: "Insurance Basics: Protecting What You've Built"
-description: "You've spent months building an emergency fund. A single event - an accident, a fire, a health crisis - could wipe it out overnight. Insurance exists so it doesn't have to."
+description: "You've spent months building an emergency fund. A single event (an accident, a fire, a health crisis) could wipe it out overnight. Insurance exists so it doesn't have to."
 tldr: "Insurance transfers catastrophic financial risk from you to an insurer in exchange for a predictable premium. The main types are health, life, property, disability, and liability. Premiums are a cash flow cost, but they protect your net worth from sudden, devastating loss. Insurance and your emergency fund work as a team: more coverage means you can keep a smaller emergency fund, and vice versa. The right amount of insurance isn't zero (one event could derail your finances) and it isn't maximum (over-insuring wastes cash flow on unlikely scenarios). The goal is covering the losses you couldn't absorb on your own."
 order: 16
 pubDate: 2026-05-22
@@ -9,7 +9,7 @@ updatedDate: 2026-05-22
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["insurance", "risk-management", "fundamentals", "emergency-fund", "cash-flow", "personal finance", "financial literacy"]
+tags: ["discovery", "risk", "fundamentals"]
 referentialReading:
   - title: "Insurance"
     url: "https://www.investopedia.com/terms/i/insurance.asp"
@@ -32,7 +32,7 @@ The difference isn't luck. It's insurance.
 
 ## What insurance actually does
 
-Insurance is a contract. You pay a regular amount (the premium) to an insurance company. In return, if a specific bad event happens, the insurer pays for the financial damage – up to the limits of your policy.
+Insurance is a contract. You pay a regular amount (the premium) to an insurance company. In return, if a specific bad event happens, the insurer pays for the financial damage, up to the limits of your policy.
 
 You're transferring risk. Instead of bearing the full cost of an unlikely but expensive event, you pay a smaller, predictable amount to make sure you never have to.
 
@@ -48,7 +48,7 @@ The question isn't "do I need insurance?" but "where are the gaps in my existing
 
 ### Health insurance
 
-Covers medical expenses -- hospital stays, surgeries, prescriptions, specialist visits. In some countries, basic health coverage is provided through public systems funded by taxes or mandatory contributions. In others (like the US), most coverage comes through employers or private plans. Private health insurance can supplement public coverage with shorter wait times, broader provider choice, or additional treatments -- or it may be your primary coverage entirely, depending on where you live.
+Covers medical expenses: hospital stays, surgeries, prescriptions, specialist visits. In some countries, basic health coverage is provided through public systems funded by taxes or mandatory contributions. In others (like the US), most coverage comes through employers or private plans. Private health insurance can supplement public coverage with shorter wait times, broader provider choice, or additional treatments, or it may be your primary coverage entirely, depending on where you live.
 
 **Why it matters financially:** A serious illness or injury without adequate coverage can generate bills that take years to pay off. Medical debt is one of the fastest ways to destroy a financial plan.
 
@@ -61,7 +61,7 @@ Pays a sum of money to your beneficiaries if you die. There are two basic types:
 - **Term life insurance**: Covers you for a set period (10, 20, 30 years). If you die during the term, it pays out. If you don't, it expires. Simple, affordable
 - **Whole life insurance (or endowment)**: Covers you for life and includes a savings component that builds cash value over time. More expensive, more complex
 
-**Why it matters financially:** If anyone depends on your income - a partner, children, aging parents, your death would create an immediate financial gap. Life insurance fills it. If no one depends on your income, you may not need it.
+**Why it matters financially:** If anyone depends on your income (a partner, children, aging parents), your death would create an immediate financial gap. Life insurance fills it. If no one depends on your income, you may not need it.
 
 **Cash flow impact:** Term life insurance for a healthy 30-year-old might cost €15-€40 per month for €200,000 of coverage. Whole life costs significantly more.
 
@@ -76,7 +76,7 @@ Covers damage to or loss of physical property. The two most common forms:
 
 **Why it matters financially:** Your home is likely your largest asset. Your belongings; electronics, furniture, clothing, appliances; add up to more than most people realize. A fire, flood, or burglary without coverage means replacing everything out of pocket.
 
-**Cash flow impact:** Homeowner's insurance varies enormously by location and property value. Renter's insurance is often €10-€25 per month – one of the highest-value insurance products available relative to its cost.
+**Cash flow impact:** Homeowner's insurance varies enormously by location and property value. Renter's insurance is often €10-€25 per month, one of the highest-value insurance products available relative to its cost.
 
 ### Disability insurance
 
@@ -98,7 +98,7 @@ Covers the cost if you're legally responsible for damage to someone else or thei
 
 ## How insurance affects your cash flow
 
-Insurance premiums are a recurring expense — they reduce your monthly [cash flow](/blog/cash-flow-101) whether or not you ever file a claim. This is the cost of protection, and it's real.
+Insurance premiums are a recurring expense: they reduce your monthly [cash flow](/blog/cash-flow-101) whether or not you ever file a claim. This is the cost of protection, and it's real.
 
 | Insurance Type | Typical Monthly Cost | What It Protects |
 |----------------|---------------------|------------------|
@@ -109,7 +109,7 @@ Insurance premiums are a recurring expense — they reduce your monthly [cash fl
 | Personal liability | €5-€15 | Legal liability claims |
 | **Total range** | **€110-€460** | |
 
-For someone earning €2,500 net per month, insurance might represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting) decisions — which is why they belong in your financial plan, not as an afterthought.
+For someone earning €2,500 net per month, insurance might represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting) decisions, which is why they belong in your financial plan, not as an afterthought.
 
 The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk.
 

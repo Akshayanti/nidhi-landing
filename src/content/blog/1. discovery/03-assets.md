@@ -2,14 +2,14 @@
 slug: "assets"
 title: "Assets: What You Own and What Actually Counts"
 description: "Your assets are everything you own that has value. But not everything that looks like an asset behaves like one. Here's how to tell the difference."
-tldr: "An asset is something you own that can be converted into money or generates income. Cash, investments, and property are assets. Your salary, your degree, and your potential are not. The quality of an asset matters as much as its existence - liquidity, appreciation, and stability all affect how much an asset actually does for your net worth."
+tldr: "An asset is something you own that can be converted into money or generates income. Cash, investments, and property are assets. Your salary, your degree, and your potential are not. The quality of an asset matters as much as its existence: liquidity, appreciation, and stability all affect how much an asset actually does for your net worth."
 order: 3
 pubDate: 2026-04-23
-updatedDate: 2026-04-25
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["assets", "net-worth", "fundamentals", "liquidity", "appreciation", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals", "investing"]
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"

@@ -5,11 +5,11 @@ description: "Once you've decided to tackle your debt, there are two proven stra
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-04-27
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["debt", "snowball", "avalanche", "interest-rates", "fundamentals", "personal finance", "financial literacy"]
+tags: ["discovery", "debt"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -56,7 +56,7 @@ Before choosing a strategy, do this:
 2. **Commit to minimum payments on everything.** Never skip a minimum payment. Late fees and credit damage will undo any progress you make
 3. **Find your extra.** After minimum payments and essential expenses, how much money is left? Even €50 a month makes a difference. More is better
 
-That extra amount is your weapon. Both methods use the same weapon – they just aim it differently.
+That extra amount is your weapon. Both methods use the same weapon. They just aim it differently.
 
 ## The snowball method
 
@@ -95,7 +95,7 @@ Once the credit card is gone, you roll the full €460 into the store card at 12
 
 **Why it works:** Mathematically optimal. You pay the least amount of total interest over time. In this example, the avalanche saves you hundreds of euros in interest compared to the snowball, simply because that 22% credit card was compounding fast while you were busy with the 12% store card.
 
-**Trade-off:** The credit card takes much longer to eliminate. For those 17 months, it can feel like you're not making progress – even though you're actually saving the most money.
+**Trade-off:** The credit card takes much longer to eliminate. For those 17 months, it can feel like you're not making progress, even though you're actually saving the most money.
 
 ## Which one should you use?
 

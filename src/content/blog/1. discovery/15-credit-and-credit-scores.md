@@ -9,7 +9,7 @@ updatedDate: 2026-05-20
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["credit", "credit-score", "fundamentals", "debt", "borrowing", "personal finance", "financial literacy"]
+tags: ["discovery", "debt", "fundamentals"]
 referentialReading:
   - title: "Credit Score"
     url: "https://www.investopedia.com/terms/c/credit_score.asp"
@@ -41,7 +41,7 @@ The reason isn't your income, your job, or your savings. It's your credit histor
 
 A credit score is a number that represents how reliably you've handled borrowed money in the past. Lenders use it to predict how likely you are to repay in the future.
 
-The higher the score, the lower the perceived risk. The lower the risk, the better the terms you're offered - lower interest rates, higher borrowing limits, and faster approvals.
+The higher the score, the lower the perceived risk. The lower the risk, the better the terms you're offered: lower interest rates, higher borrowing limits, and faster approvals.
 
 Different countries use different scoring systems. In the US, FICO and VantageScore dominate. In Germany, it's SCHUFA. In the UK, Experian, Equifax, and TransUnion. In India, CIBIL. In Australia, there are three competing bureaus. The details differ, but the core principle is the same everywhere: lenders check your history before deciding whether (and at what price) to lend.
 
@@ -106,7 +106,7 @@ Building credit is simple. It just takes consistency and time.
 3. **Keep utilization low.** Use less than 30% of your available limit. If your limit is €3,000, try to keep your balance below €900 at any point
 4. **Don't close old accounts unnecessarily.** Your oldest credit card contributes to the length of your history. Even if you rarely use it, keeping it open (with a small purchase occasionally) helps
 5. **Avoid applying for multiple credit products at once.** Each hard inquiry has a small, temporary impact. Spacing out applications reduces this
-6. **Pay all bills on time.** Not just credit cards – rent, utilities, phone bills. In many systems, these are tracked too
+6. **Pay all bills on time.** Not just credit cards: rent, utilities, phone bills. In many systems, these are tracked too
 
 ## Common myths
 
@@ -120,7 +120,7 @@ Building credit is simple. It just takes consistency and time.
 
 ## The credit score and your net worth
 
-Your credit score doesn't appear on your balance sheet. It's not an [asset](/blog/assets) and it's not a [liability](/blog/liabilities). But it directly affects how much your liabilities cost you. A better score means lower [interest rates](/blog/liabilities), which means less money going to the bank and more staying with you — directly improving your [cash flow](/blog/cash-flow-101).
+Your credit score doesn't appear on your balance sheet. It's not an [asset](/blog/assets) and it's not a [liability](/blog/liabilities). But it directly affects how much your liabilities cost you. A better score means lower [interest rates](/blog/liabilities), which means less money going to the bank and more staying with you, directly improving your [cash flow](/blog/cash-flow-101).
 
 As we covered in the [liabilities post](/blog/liabilities), the interest rate is the most important number on any debt. Your credit score is what determines that rate. Think of it as the meta-number behind your borrowing costs.
 
@@ -133,4 +133,4 @@ As we covered in the [liabilities post](/blog/liabilities), the interest rate is
 
 Your credit score is the invisible thread connecting your past financial behavior to your future borrowing costs. Take care of it early, and it quietly works in your favor for decades.
 
-Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance – what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.
+Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.

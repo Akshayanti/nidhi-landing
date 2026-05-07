@@ -5,11 +5,11 @@ description: "A step-by-step guide to listing everything you own and everything 
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-04-25
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["net-worth", "calculating", "getting-started", "step-by-step", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -55,7 +55,7 @@ Go through every account and asset you have. Use current balances, not what you 
 
 **Property:**
 - Real estate at current estimated market value, not purchase price
-- Vehicle – check a used car site for your model and year
+- Vehicle: check a used car site for your model and year
 
 **Other:**
 - Valuable items you could realistically sell
@@ -66,14 +66,14 @@ If you're unsure about a value, estimate conservatively. A number that's roughly
 
 Now list everything you owe.
 
-- Mortgage balance – the remaining principal, not the original loan
+- Mortgage balance: the remaining principal, not the original loan
 - Student loans
 - Car loan
 - Credit card balances
 - Personal loans from friends or family
 - Any other debt
 
-Use the current outstanding balance, not the monthly payment. If your mortgage has €180,000 remaining, that's your liability – regardless of what you pay each month.
+Use the current outstanding balance, not the monthly payment. If your mortgage has €180,000 remaining, that's your liability, regardless of what you pay each month.
 
 ## Step 3: Do the math
 
@@ -95,7 +95,7 @@ When people do this exercise for the first time, a few things tend to catch them
 
 **"My net worth is negative."** If you have a large student loan or mortgage, this is quite common, especially in your twenties and thirties. A negative net worth isn't failure; it's a starting point.
 
-**"I have more than I realized."** Small accounts add up. That old savings account with €800, the pension your employer contributes to – people often forget these.
+**"I have more than I realized."** Small accounts add up. That old savings account with €800, the pension your employer contributes to. People often forget these.
 
 ## The key is consistency
 

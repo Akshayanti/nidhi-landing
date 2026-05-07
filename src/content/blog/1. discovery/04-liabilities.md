@@ -1,15 +1,15 @@
 ---
 slug: "liabilities"
 title: "Liabilities: What You Owe and Why the Interest Rate Matters"
-description: "Liabilities are the other side of your net worth equation - everything you owe. Not all debt is equal. The interest rate determines whether a liability is manageable or dangerous."
+description: "Liabilities are the other side of your net worth equation: everything you owe. Not all debt is equal. The interest rate determines whether a liability is manageable or dangerous."
 tldr: "A liability is money you owe to someone else, usually with interest. The interest rate is the most important detail: a mortgage at 3.5% and a credit card at 22% are fundamentally different obligations. Ask three questions about any debt: what is the rate, what did it buy, and can you afford the payments? If the interest rate exceeds what you could earn investing, pay the debt first."
 order: 4
 pubDate: 2026-04-25
-updatedDate: 2026-04-25
+updatedDate: 2026-05-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["liabilities", "debt", "interest-rates", "fundamentals", "net-worth", "personal finance", "financial literacy"]
+tags: ["discovery", "fundamentals", "debt"]
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -44,7 +44,7 @@ Not all liabilities are equally dangerous. The interest rate determines how expe
 
 A mortgage at 3.5% on €200,000 costs roughly €100,000 in interest over 25 years. That's significant, but the home may appreciate and you're building equity.
 
-A credit card at 22% on a €3,000 balance, if you only make minimum payments, can cost more than the original amount in interest alone. You pay for your purchases twice – once at the register, once to the bank.
+A credit card at 22% on a €3,000 balance, if you only make minimum payments, can cost more than the original amount in interest alone. You pay for your purchases twice: once at the register, once to the bank.
 
 The same concept: borrowing money but with wildly different outcomes. The interest rate is the difference.
 
@@ -74,7 +74,7 @@ If the interest rate on your debt is higher than the return you could reasonably
 
 Every liability subtracts from your net worth. But the way you handle them makes a huge difference:
 
-- Pay off high-interest debt as fast as possible – it's the highest guaranteed return you can get
+- Pay off high-interest debt as fast as possible. It's the highest guaranteed return you can get
 - Don't rush to pay off low-interest debt if you can invest the difference at a higher rate
 - Always make at least the minimum payment on every debt. Missed payments damage your credit and trigger penalties
 

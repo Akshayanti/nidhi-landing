@@ -9,7 +9,7 @@ updatedDate: 2026-05-13
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
-tags: ["exchange-rates", "purchasing-power-parity", "fx", "fundamentals", "multi-currency", "personal finance", "financial literacy"]
+tags: ["discovery", "currency", "fundamentals"]
 referentialReading:
   - title: "Purchasing Power Parity"
     url: "https://www.investopedia.com/terms/p/purchasingpowerparity.asp"
@@ -25,7 +25,7 @@ referentialReading:
 
 You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off? Maybe not.
 
-This isn't a trick. It's the difference between what you earn and what you can buy with it — your [purchasing power](/blog/purchasing-power) — and it depends on where you are.
+This isn't a trick. It's the difference between what you earn and what you can buy with it (your [purchasing power](/blog/purchasing-power)), and it depends on where you are.
 
 ## What is an exchange rate?
 
@@ -71,7 +71,7 @@ This is where exchange rates become personal. If you earn in euros but have expe
 
 ### If you're considering moving countries
 
-A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income – salary adjusted for local prices. €2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
+A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income: salary adjusted for local prices. €2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
 
 ## Two types of currency risk
 
@@ -81,7 +81,7 @@ When your money crosses borders, you face two risks:
 
 2. **Living-cost risk**: If you earn in one currency and spend in another, your cost of living changes every time the exchange rate moves. This is ongoing and unpredictable
 
-Both are real. Both can be managed – but only if you're aware of them.
+Both are real. Both can be managed, but only if you're aware of them.
 
 ## Common misconceptions
 
@@ -98,7 +98,7 @@ Both are real. Both can be managed – but only if you're aware of them.
 3. **Don't over-optimize on exchange rates.** Convert when you need to. Time the market with currency and you'll usually lose
 4. **Account for PPP in major decisions.** Comparing job offers across countries? Adjust for local price levels first
 
-Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others – thinking in real terms instead of nominal ones is the skill that ties it all together.
+Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others, thinking in real terms instead of nominal ones is the skill that ties it all together.
 
 In the [previous post](/blog/purchasing-power), we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
 
