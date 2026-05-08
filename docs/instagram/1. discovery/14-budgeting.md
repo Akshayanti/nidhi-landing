@@ -44,6 +44,13 @@ Full guide → link in bio
 
 #budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi
 
+[ 50 30 20 rule, pay yourself first, budgeting method,
+budget app, monthly budget, savings automation,
+expense tracker, young professionals, expat finance,
+personal finance, Haushaltsbudget, budżet domowy,
+presupuesto mensual, budget mensuel, budget familiale,
+osobní rozpočet, privatekonomi ]
+
 ---
 
 ## Story Sequence

@@ -164,6 +164,17 @@ export function parseInstagramPost(content, relPath) {
       pollOpts: splitPipe(frontmatter.story_poll_opts),
       prompt: frontmatter.story_prompt || '',
       hashtag: frontmatter.story_hashtag || '',
+      // Day 2 (optional, milestone posts only). Mirrors the Day 1 shape.
+      // Renderer emits day2-frame-*.png when any day2.* field is present.
+      day2: {
+        hook: frontmatter.story_day2_hook || '',
+        stat: frontmatter.story_day2_stat || '',
+        answer: frontmatter.story_day2_answer || '',
+        pollQ: frontmatter.story_day2_poll_q || '',
+        pollOpts: splitPipe(frontmatter.story_day2_poll_opts),
+        prompt: frontmatter.story_day2_prompt || '',
+        hashtag: frontmatter.story_day2_hashtag || '',
+      },
     },
   };
 }

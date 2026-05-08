@@ -43,6 +43,14 @@ Full guide → link in bio
 
 #savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi
 
+[ financial independence, index funds, compound
+interest, opportunity cost, first time investor, ETF
+investing, long term investing, retire early,
+emergency fund first, expat finance, personal finance,
+finanzielle freiheit, ETF sparen, indépendance
+financière, libertà finanziaria, wolność finansowa,
+ekonomisk frihet, inwestowanie ]
+
 ---
 
 ## Story Sequence

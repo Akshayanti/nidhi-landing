@@ -46,6 +46,13 @@ Full breakdown → link in bio
 
 #inflationawareness #purchasingpower #desifinance #moneyineurope #nidhi
 
+[ real return, high yield savings, inflation hedge,
+cash drag, conservative investing, savings vs
+inflation, expat savings, personal finance, Kaufkraft,
+Realzins, pouvoir d'achat, poder adquisitivo, potere
+d'acquisto, koopkracht, siła nabywcza, köpkraft,
+privatøkonomi ]
+
 ---
 
 ## Story Sequence

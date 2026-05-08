@@ -51,6 +51,15 @@ Full guide → link in bio
 
 #insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi
 
+[ health insurance abroad, expat insurance, liability
+insurance, income protection, term life insurance,
+home contents insurance, insurance audit, parents
+money, homeowners finance, expat finance, personal
+finance, Haftpflichtversicherung, Berufsunfähigkeitsversicherung,
+assurance habitation, assurance responsabilité civile,
+seguro de hogar, assicurazione sulla vita,
+privatekonomi ]
+
 ---
 
 ## Story Sequence

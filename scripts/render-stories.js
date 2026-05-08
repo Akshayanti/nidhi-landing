@@ -125,23 +125,82 @@ async function renderFrame(page, templateHtml, variant, contentHtml, opts = {}) 
  * Quiz stickers were removed by IG — multi-option polls (up to 4) cover the
  * same interaction now. See PLAYBOOK.md §7 for the full cascade.
  */
+/**
+ * Render one day's worth of story frames (hook / stat-or-poll+answer / cta)
+ * given a `cascade` sub-object shaped { hook, stat, answer, prompt, hashtag }.
+ *
+ * `filePrefix` is prepended to each PNG filename so multi-day campaigns
+ * can share a directory without collision:
+ *   - '' (default) → frame-1-hook.png, frame-2-stat.png, frame-3-cta.png
+ *   - 'day2-'      → day2-frame-1-hook.png, day2-frame-2-stat.png, ...
+ */
+async function renderCascade(page, templateHtml, outDir, cascade, filePrefix = '') {
+  const hasAnyContent = cascade.hook || cascade.stat || cascade.answer || cascade.prompt;
+  if (!hasAnyContent) return [];
+
+  const hasQuiz = !!cascade.answer;
+  const rendered = [];
+
+  if (cascade.hook) {
+    const body = `<div>${renderText(cascade.hook)}</div>`;
+    await renderFrame(page, templateHtml, 'hook', body, { hashtag: cascade.hashtag });
+    const filepath = join(outDir, `${filePrefix}frame-1-hook.png`);
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  }
+
+  if (hasQuiz) {
+    await renderFrame(page, templateHtml, 'poll', '', { hashtag: cascade.hashtag });
+    const filepath = join(outDir, `${filePrefix}frame-2-poll.png`);
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  } else if (cascade.stat) {
+    const body = `<div>${renderText(cascade.stat)}</div>`;
+    await renderFrame(page, templateHtml, 'stat', body, { hashtag: cascade.hashtag });
+    const filepath = join(outDir, `${filePrefix}frame-2-stat.png`);
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  }
+
+  if (hasQuiz) {
+    const mainHtml = `<div class="answer-main">${renderText(cascade.answer)}</div>`;
+    const statHtml = cascade.stat
+      ? `<div class="answer-stat">${renderText(cascade.stat)}</div>`
+      : '';
+    const body = mainHtml + statHtml;
+    await renderFrame(page, templateHtml, 'answer', body, { hashtag: cascade.hashtag });
+    const filepath = join(outDir, `${filePrefix}frame-2-answer.png`);
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  }
+
+  if (cascade.prompt) {
+    const body = `<div>${renderText(cascade.prompt)}</div>`;
+    await renderFrame(page, templateHtml, 'cta', body, { hashtag: cascade.hashtag });
+    const filepath = join(outDir, `${filePrefix}frame-3-cta.png`);
+    await page.screenshot({ path: filepath, type: 'png' });
+    rendered.push(filepath);
+  }
+
+  return rendered;
+}
+
 export async function renderStoriesForPost(post, browser) {
   const s = post.story || {};
-  const hasAnyContent = s.hook || s.stat || s.answer || s.prompt;
-  if (!hasAnyContent) return { skipped: true };
-
-  const hasQuiz = !!s.answer;
+  const day2 = s.day2 || {};
+  const hasDay1 = s.hook || s.stat || s.answer || s.prompt;
+  const hasDay2 = day2.hook || day2.stat || day2.answer || day2.prompt;
+  if (!hasDay1 && !hasDay2) return { skipped: true };
 
   const outDir = join(OUTPUT_DIR, post.subDir, post.slug, 'stories');
   await mkdir(outDir, { recursive: true });
 
-  // Clean stale frame-*.png files so the final output dir reflects exactly
-  // what this render produced. Critical because quiz-mode emits a different
-  // set of frames than default mode (frame-2-poll.png + frame-2-answer.png
-  // vs. frame-2-stat.png) — otherwise toggling story_answer on an already-
-  // rendered post leaves stale PNGs behind and creates confusion on post day.
+  // Clean stale frame-*.png and day2-frame-*.png files so the final output
+  // dir reflects exactly what this render produced. Critical because quiz-
+  // mode emits a different set of frames than default mode — and toggling
+  // story_day2_* fields on/off needs to clean up abandoned day2 PNGs too.
   for (const name of await readdir(outDir).catch(() => [])) {
-    if (/^frame-.*\.png$/.test(name)) {
+    if (/^(day2-)?frame-.*\.png$/.test(name)) {
       await unlink(join(outDir, name));
     }
   }
@@ -150,56 +209,29 @@ export async function renderStoriesForPost(post, browser) {
   const page = await browser.newPage();
   const rendered = [];
 
-  // Frame 1: Hook
-  if (s.hook) {
-    const body = `<div>${renderText(s.hook)}</div>`;
-    await renderFrame(page, templateHtml, 'hook', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-1-hook.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
+  // Day 1 — standard cascade, no filename prefix
+  if (hasDay1) {
+    const day1Cascade = {
+      hook: s.hook,
+      stat: s.stat,
+      answer: s.answer,
+      prompt: s.prompt,
+      hashtag: s.hashtag,
+    };
+    rendered.push(...await renderCascade(page, templateHtml, outDir, day1Cascade));
   }
 
-  // Frame 2: Step-2 backdrop.
-  //   Quiz mode    → blank poll canvas (frame-2-poll.png). No competing text,
-  //                  so the native poll sticker reads cleanly.
-  //   Default mode → stat frame (frame-2-stat.png) doubles as backdrop for
-  //                  both step 2 (poll sticker) and step 3 (link sticker).
-  if (hasQuiz) {
-    await renderFrame(page, templateHtml, 'poll', '', { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-2-poll.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
-  } else if (s.stat) {
-    const body = `<div>${renderText(s.stat)}</div>`;
-    await renderFrame(page, templateHtml, 'stat', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-2-stat.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
-  }
-
-  // Frame 2 (answer reveal, quiz mode only): Backs step 3 under the link
-  // sticker. Combines the "ANSWER" reveal with the continuing stat/insight
-  // so the cascade doesn't drop the narrative on the reveal frame. Stat is
-  // optional — answer-only still renders cleanly.
-  if (hasQuiz) {
-    const mainHtml = `<div class="answer-main">${renderText(s.answer)}</div>`;
-    const statHtml = s.stat
-      ? `<div class="answer-stat">${renderText(s.stat)}</div>`
-      : '';
-    const body = mainHtml + statHtml;
-    await renderFrame(page, templateHtml, 'answer', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-2-answer.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
-  }
-
-  // Frame 3: CTA (save / tag / share prompt)
-  if (s.prompt) {
-    const body = `<div>${renderText(s.prompt)}</div>`;
-    await renderFrame(page, templateHtml, 'cta', body, { hashtag: s.hashtag });
-    const filepath = join(outDir, 'frame-3-cta.png');
-    await page.screenshot({ path: filepath, type: 'png' });
-    rendered.push(filepath);
+  // Day 2 — optional, milestone posts only. Same cascade shape, day2- prefix.
+  // Use story_day2_hashtag to override the Day 1 hashtag sticker when needed.
+  if (hasDay2) {
+    const day2Cascade = {
+      hook: day2.hook,
+      stat: day2.stat,
+      answer: day2.answer,
+      prompt: day2.prompt,
+      hashtag: day2.hashtag || s.hashtag,
+    };
+    rendered.push(...await renderCascade(page, templateHtml, outDir, day2Cascade, 'day2-'));
   }
 
   await page.close();

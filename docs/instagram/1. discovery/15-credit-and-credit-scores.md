@@ -49,6 +49,13 @@ Full guide → link in bio
 
 #creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi
 
+[ SCHUFA, credit history, first mortgage, mortgage
+interest rate, build credit abroad, credit for expats,
+credit cards Europe, rent application, expat finance,
+personal finance, Bonität, Kreditwürdigkeit, score de
+crédit, historial crediticio, historia kredytowa,
+privatekonomi ]
+
 ---
 
 ## Story Sequence

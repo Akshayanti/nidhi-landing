@@ -7,17 +7,17 @@ This is the working reference. Update as decisions change.
 
 ## 1. Target Audience
 
-**Primary:**
-- Europeans (EU residents)
-- Expats living in Europe
-- Indians (in India)
-- Indian expats in non-US countries
+**Primary: global expats — from anywhere, living anywhere, except North America.**
+
+- Europeans (EU residents) are the **largest single segment** because content is priced in €, references EU cities, and covers EU-relevant credit/tax/savings structures. But the audience is global, not EU-only.
+- Global expat communities outside North America: Middle East (Dubai, Abu Dhabi, Doha), APAC (Singapore, Bangkok, KL, Hong Kong), Australia/NZ, LATAM, Africa.
+- Indian audiences are a natural fit for the `nidhi` brand handshake (the word itself is Indian-origin) — one advantage among several, not the positioning centerpiece. Don't over-index on India-specific framing in content or keywords.
 
 **Explicitly avoid:**
-- US-focused hashtags or audience targeting
-- US-specific credit / tax / retirement content
+- US / Canada targeting — no US-focused hashtags, no `#americanexpat`, no US-specific credit (FICO) / tax (IRA, 401k, Roth) / retirement content.
+- Framing that makes the account feel like a single-country publication (EU-only, India-only).
 
-**Language:** English, EU-localized money context (€, local references like Helsinki, Lisbon, Berlin, Bangkok).
+**Language:** English, with a money context that's EU-dominant (€, EU examples) but cosmopolitan — expat hubs globally (Lisbon, Berlin, Helsinki, Bangkok, Dubai, Singapore) rotate in as examples.
 
 ---
 
@@ -153,6 +153,80 @@ Series position badge lives here (moved from Slide 1). Clean format:
 ### Hashtags
 - Final 5, on their own lines, separated from visible caption by 3–5 dots/line breaks
 
+### Keywords block (after hashtags)
+
+Instagram now indexes a bracketed keyword block placed **after** the hashtags. It feeds the topic classifier and surfaces the post in keyword search across languages — without counting toward the 5-hashtag cap and without looking like hashtag stuffing.
+
+**Hashtags and keywords cover different ground.** Hashtags are a community/browse surface — users follow `#expatlife`, scroll `#fireeurope`, and IG places posts in those feeds. Keywords feed the search-query index — users type `50 30 20 rule` or `finanzielle freiheit` into IG search and IG matches the post. The two surfaces overlap in IG's topic classifier, but the reach mechanisms differ enough that using them for **the same terms is waste**. Split the work:
+
+- **Hashtags** → single-word compound community tags (`#purchasingpower`, `#indiansineurope`, `#fireeurope`). English-dominant. Community membership, not search.
+- **Keywords** → natural search phrases (`50 30 20 rule`, `compound interest`, `digital nomad`), multilingual terms, long-tail queries. Search-facing, not community-facing.
+
+Rule of thumb when picking hashtags: pick the community someone *follows*. When picking keywords: pick the phrase someone *types*. If a term works as both, put it in the hashtag (tags are scarcer — make them count); use the keyword slot for something the hashtag can't carry (a multi-word phrase, a non-English term, or a niche long-tail).
+
+**Rules:**
+- **Placement:** after the final hashtag line, separated by one blank line. Last element of the caption.
+- **Format:** a **single** square-bracketed array, comma-separated, lowercase where natural. Wrap to ~60 char lines for readability.
+- **One array per post, not per language.** Every language's keywords get merged into the same bracket, then deduplicated on exact string match. IG's search index treats each comma-separated token as a keyword regardless of language — splitting into per-language blocks adds no reach and wastes caption characters.
+- **Caption body stays English.** Only the keyword array goes multilingual.
+- **Per-post, topic-grounded.** Keywords are sourced from the corresponding blog post (topic terms, slug, TLDR) plus a stable audience/geo base. Avoid generic filler.
+- **Languages covered in the merged array:**
+  EN · DE · FR · ES · IT · PT · NL · CS · PL · SV · NO · DA
+- **Deduplicate on exact match.** When a word is identical across multiple languages (e.g. `euro`, `budget`, `Europa`, `inflation`), include it once — not once per language.
+- **No language labels, no flags, no section breaks.** Native-word recognition is enough; labels add clutter and don't help IG search.
+- **No hashtag symbols inside the brackets.** Keywords, not tags.
+- **Overlap with hashtags is fine** — brackets are a separate search surface. Don't duplicate verbatim when a synonym works (e.g. hashtag `#fireeurope` → keyword `financial independence europe`).
+
+**Sweet spot: 18–24 keywords per post, lean tighter over looser.** More than ~30 triggers IG's spam/low-quality filters; below ~15 leaves reach on the table. Creator benchmarks (Later, Metricool, IG partner reports 2024–2025) peak in the 10–25 range. Above 60 keywords, posts get flagged out of the "recommended to non-followers" surface.
+
+**Searchability test.** Every keyword must be a term a real person would type into IG's search bar. Check each one against: "would anyone actually search this, in this language?" If no, drop it. Weak candidates that fail the test: `money` (too generic, nobody searches it alone), `europe` (not a finance search — it's a continent), `finance` alone (better: `personal finance`), generic renderings of cognates like `Geld` or `pengar` that are never used as standalone search queries. Strong candidates that pass: `personal finance`, `privatekonomi`, `finanse osobiste`, `finanzielle freiheit`, `épargne`, `FIRE`, `index funds`, `zero-based budgeting`, `emergency fund`, `köpkraft`, `savings rate`.
+
+**Vary the audience segment per post.** Don't anchor every post to the same cluster of keywords — that makes IG show every post to the same audience slice and stalls growth. Each post should lean toward a **distinct sub-audience**:
+
+| Post type | Lean audience angle (examples) |
+|---|---|
+| Cash flow / subscription leaks | millennials/gen-z adulting, money-leak hunters, subscription-audit crowd |
+| Purchasing power / inflation | older risk-averse savers, inflation-worried, conservative savers |
+| Cost of living / relocation | digital nomads, relocators, geoarbitrage, expat movers |
+| Saving vs. investing | FIRE / financial independence, first-time investors, long-term planners |
+| Budgeting | young professionals, debt-conscious, 50/30/20 seekers |
+| Credit scores | first-time borrowers, mortgage seekers, cross-border movers |
+| Insurance | parents, homeowners, relocators, risk-aware expats |
+| Milestones / series | beginner finance, money literacy seekers, "basics of money" browsers |
+
+Audience anchors (`global expats`, `expat life`, `expat finance`) can repeat — but the topic- and lifestyle-flavored keywords should rotate so IG's classifier reads each post as a different offering.
+
+**Composition target for ~22 tokens:**
+- 4–6 **topic concepts** — sourced from the blog post body, slug, and TLDR. Render each in EN + the 2–3 highest-reach languages where the word is **meaningfully different** from English (DE, FR, ES, sometimes IT/NL). Skip the translation if it's identical or near-identical (`inflation`, `budget`, `euro` already cover most European search).
+- 2–3 **audience concepts** — `global expats`, `expat life`, `expat finance`, `moving abroad` where relevant. English dominates in this search space; don't translate.
+- 2–3 **geo concepts** — `europe` is the stable default (largest segment). Add expat-hub specifics (`lisbon`, `berlin`, `helsinki`, `bangkok`, `dubai`, `singapore`) only when the post references them or the topic is relocation/cost-of-living. **Don't anchor on `india`** unless the post is genuinely about Indian diaspora finance (remittances, NRI context, etc.) — over-indexing narrows reach toward one country when the audience is global ex-North America.
+- 1–2 **money anchors** — `personal finance` + one localized form like `privatøkonomi` or `finanza personale` to reach Nordic/Italian searchers who don't default to English.
+
+**Which translations earn their slot:** only include a non-English form when (a) it's the word a native speaker would type into search, and (b) it's not already visually identical to the English form. Five renderings of "money" in five languages wastes characters nobody searches for.
+
+**Example** (post 09 Income vs. Wealth, ~22-token target):
+
+```
+[ salary, income, wealth, savings rate, lifestyle
+inflation, personal finance, finance, global expats,
+expat life, expat finance, europe, money, savings,
+Gehalt, Vermögen, Einkommen, salaire, patrimoine,
+revenu, patrimonio, ingresos, finanza personale,
+privatøkonomi ]
+```
+
+Breakdown: 5 topic concepts (salary/income/wealth/savings rate/lifestyle inflation), 3 audience (global expats, expat life, expat finance), 1 geo (europe), 2 money anchors (personal finance, finance), plus localized forms for the highest-differentiating terms in the top-reach languages. Total: ~23 keywords.
+
+**Format template for the caption tail:**
+
+```
+#topic1 #topic2 #audience1 #geo1 #nidhi
+
+[ concept1, concept1_de, concept1_fr, concept2, ... ]
+```
+
+**Per-post lookup:** pre-tuned hashtags + keyword arrays for upcoming posts live in `docs/plans/IG-KEYWORDS.md`. When drafting a new IG post, copy the hashtag line and keyword array from that reference into the `## Caption` section rather than re-deriving from scratch. The reference is organized by series (Building = posts 17–31, future sections appended as Money in Action / Mastery posts land).
+
 ---
 
 ## 7. Story Structure
@@ -194,6 +268,14 @@ The renderer emits `frame-2-poll.png` + `frame-2-answer.png` (instead of `frame-
 - Instagram has quietly removed quiz stickers from story composition. **Do not plan for quiz frames.**
 - Multi-option **polls now support up to 4 options** — use those when you want the quiz-like "which of these" feel, then reveal the answer on step 3 using `story_answer`.
 - `story_quiz_*` fields in existing frontmatter are ignored at render time and should be migrated to `story_poll_*` + `story_answer` when touched. New posts should not include `story_quiz_*` fields.
+
+### 2-day campaign (milestone posts only)
+
+Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run the cascade twice — Day 1 as the standard launch cascade, Day 2 as a next-series / subscribe / handoff cascade.
+
+- **Frontmatter:** mirror the `story_*` fields with `story_day2_*` equivalents — `story_day2_hook`, `story_day2_stat`, `story_day2_answer` (optional), `story_day2_poll_q`, `story_day2_poll_opts`, `story_day2_prompt`, `story_day2_hashtag` (optional — falls back to `story_hashtag`), plus `story_day2_caption_*` for the native IG caption field.
+- **Rendered output:** PNGs written into the same `stories/` directory with a `day2-` filename prefix (`day2-frame-1-hook.png`, `day2-frame-2-stat.png`, etc.). Both days share the same template, palette, and safe zones — visually one campaign.
+- **When to use:** reserved for true milestones (series complete, beta launch, major announcements). Don't use Day 2 as a crutch for overflow from Day 1 — if the cascade needs more than 4 frames, the content probably needs trimming.
 
 ### Native stickers own the interaction
 - Poll **question → native IG sticker, NOT the PNG.** Reference text is in `story_poll_q` / `story_poll_opts` — copy into the sticker when posting.
@@ -284,10 +366,16 @@ output/instagram/{subdir}/{slug}/
     ├── frame-2-stat.png                  # default mode only (if story_stat defined, story_answer NOT defined); backdrop for step 2 poll + step 3 link
     ├── frame-2-poll.png                  # quiz mode only (if story_answer defined); blank canvas for step 2 poll sticker
     ├── frame-2-answer.png                # quiz mode only (if story_answer defined); ANSWER reveal + continuing stat, backs step 3 link
-    └── frame-3-cta.png                   # (if story_prompt defined)
+    ├── frame-3-cta.png                   # (if story_prompt defined)
+    │
+    ├── day2-frame-1-hook.png             # milestone posts only (if story_day2_hook defined)
+    ├── day2-frame-2-stat.png             # same rules as Day 1, day2- prefix
+    ├── day2-frame-2-poll.png
+    ├── day2-frame-2-answer.png
+    └── day2-frame-3-cta.png
 ```
 
-Stories auto-skip frames whose source field is absent. The `story_poll_*` fields stay in frontmatter as reference content to type into the native IG poll sticker when posting. Quiz stickers are no longer supported by IG — `story_quiz_*` fields are legacy and ignored.
+Stories auto-skip frames whose source field is absent. The `story_poll_*` fields stay in frontmatter as reference content to type into the native IG poll sticker when posting. Quiz stickers are no longer supported by IG — `story_quiz_*` fields are legacy and ignored. `story_day2_*` fields (milestone posts only) drive a parallel Day 2 cascade using the `day2-` filename prefix.
 
 ---
 
@@ -324,6 +412,22 @@ story_caption_stat: "..."
 story_caption_cta: "..."
 
 story_hashtag: "#one-story-tag"
+
+# Optional — milestone posts only. Parallel Day 2 cascade rendered as
+# day2-frame-*.png in the same stories/ directory. Same semantics as the
+# Day 1 fields above (story_day2_answer flips Day 2 into quiz mode).
+story_day2_hook: |
+  Multi-line hook for Day 2
+story_day2_stat: "Day 2 stat"
+story_day2_poll_q: "..."
+story_day2_poll_opts: "A | B | C | D"
+story_day2_answer: "..."          # optional; set → quiz mode for Day 2
+story_day2_prompt: "Day 2 CTA"
+story_day2_hashtag: "#day2-tag"   # optional; defaults to story_hashtag
+story_day2_caption_hook: "..."
+story_day2_caption_poll: "..."
+story_day2_caption_stat: "..."
+story_day2_caption_cta: "..."
 ---
 ```
 
@@ -362,6 +466,11 @@ Chronological log of decisions made during playbook development. Update as you i
 | 18 | **Quiz mode: blank poll backdrop + combined answer/stat frame** (supersedes #17 for quiz posts only) | Revisiting #17 in practice: on true quiz posts (`story_answer` set), the stat text *was* unrelated to the poll options — exactly the disconnect #17 meant to avoid. Fix: step 2 becomes a blank `frame-2-poll.png` (just brand chrome) so the poll sticker stands alone, and the stat moves onto `frame-2-answer.png` below the "ANSWER" reveal so the narrative continues under the link sticker instead of dropping. Default (self-assessment) mode still uses the single stat backdrop — #17 still applies there |
 | 19 | In quiz mode, `story_stat` must *advance* from the answer, not echo the hook | Consequence of #18: now that `stat` renders directly under the answer reveal, any hook ↔ stat semantic overlap reads as the cascade restating itself. Rule of thumb: hook poses the premise, answer lands the reveal, stat introduces the *why* or the underlying principle. Audited posts 08/10/16 and rewrote each to forward-look (e.g. 08 stat "3 months · no income · how long do you last?" → "Unexpected · Urgent · Necessary"; 10 "Most people can't name 5 of their monthly expenses" → "Your savings rate predicts your wealth / Not your salary"; 16 "Same disaster · 30x cost difference" → "Your salary is your biggest asset / Protect it first"). 13 and 14 were already clean |
 | 20 | Bump "ANSWER" eyebrow to 48px / weight 700 / full opacity | Original 32px @ 0.75 opacity read as decorative rather than a section label, so the reveal felt under-announced. Larger bolder full-opacity eyebrow sits as a clear "new frame, new beat" marker without competing with the answer text below |
+| 21 | Add optional Day 2 cascade via `story_day2_*` frontmatter fields and `day2-` filename prefix | Milestone posts (16b, series launches, beta reveals) already ran a documented 2-day campaign per playbook §2, but only Day 1 frames were actually rendered as PNGs — Day 2 frames lived in prose and had to be composed manually on post day. That inconsistency meant Day 2 either launched under-branded or got silently dropped. Fix: parallel `story_day2_*` fields mirror the Day 1 shape, renderer emits `day2-frame-*.png` into the same stories dir. Default behavior unchanged for non-milestone posts (no day2 fields → no extra PNGs) |
+| 22 | Bracketed multilingual keyword array after hashtags, caption body stays English | IG's 2026 update added a post-hashtag keyword surface that feeds the topic classifier and powers multilingual search indexing without triggering hashtag-stuffing penalties. Full multilingual *captions* would balloon post length past the 2,200-char limit and dilute the English voice; a compact deduplicated keyword array covering EN + DE + FR + ES + IT + PT + NL + CS + PL + SV + NO + DA gets most of the non-English reach for a fraction of the effort. Keywords are sourced per-post from the corresponding blog article (topic terms) plus a stable audience/geo base, so each array stays grounded in what the post is actually about |
+| 23 | 18–24 keywords per post (not 100+), translate only when the word is meaningfully different | First pass generated ~120 tokens per post (every concept in every language). That overshoots the sweet spot documented in creator benchmarks (Later, Metricool, IG partner data 2024–2025 → peak performance at 10–25 keywords; reach drops above ~30; >60 triggers the "recommended to non-followers" spam filter). Fix: 4–6 topic concepts + 2–3 audience + 2–3 geo + 1–2 anchors = ~22 keywords. Translate a concept only when the native word is (a) meaningfully different from English and (b) a plausible search query in that language. Skip `inflation`, `budget`, `euro`-class cognates — they already cover cross-lingual search |
+| 24 | Keyword searchability test + per-post audience variation | Round 2 revealed two more traps. (a) Including a keyword "because the concept exists" doesn't help — if no one searches it, it's just caption clutter that dilutes the array. Rule: every keyword must pass the "would anyone actually type this into IG search, in this language?" test. Cognate renderings like `Geld`, `pengar`, `dinero` fail — they're too generic to be search queries on their own. (b) Using the same keyword cluster on every post anchors the account to a single audience slice and stalls growth. Rule: each post leans toward a distinct sub-audience (FIRE crowd on investing, relocators on cost-of-living, parents on insurance, etc.) so IG's classifier reads each post as a different offering and widens the reach graph |
+| 25 | Hashtags and keywords split: community vs. search, no overlap | Verified IG's two surfaces work differently: hashtags = community/browse (users follow `#expatlife`), keywords = search-index (users type `geoarbitrage`). Using the same term on both surfaces pays twice for the same reach. Split the work: hashtags stay English-dominant, pick communities someone follows; keywords carry multilingual load + long-tail phrases someone would type. When a term fits both surfaces, put it in the hashtag (5-slot cap makes tags more scarce) and spend the keyword slot on something tags can't carry |
 
 ---
 

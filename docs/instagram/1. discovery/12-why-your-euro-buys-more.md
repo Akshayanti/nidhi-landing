@@ -1,7 +1,7 @@
 ---
 title: "Why Your Euro Buys More in Some Countries Than Others"
 blog_url: "https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_why_euro_buys_more"
-hashtags: "#indiansineurope #expatlife #movingabroad #costoflivingcomparison #nidhi"
+hashtags: "#expatfinance #expatlife #movingabroad #costoflivingcomparison #nidhi"
 post_time: "14:30 CET (Tue/Wed) — PRIMARY Indian-diaspora post; EU afternoon + India 19:00 IST peak; both at their best"
 
 # Story content reference — 4-frame sequence on post day
@@ -46,7 +46,13 @@ If you've ever thought about moving countries, or you earn in one currency and s
 
 Full post → link in bio
 
-#indiansineurope #expatlife #movingabroad #costoflivingcomparison #nidhi
+#expatfinance #expatlife #movingabroad #costoflivingcomparison #nidhi
+
+[ purchasing power parity, geoarbitrage, digital nomad,
+relocation salary, cross border finance, real income,
+lisbon, berlin, helsinki, bangkok, dubai, singapore,
+Lebenshaltungskosten, Kaufkraftparität, coût de la vie,
+coste de vida, custo de vida, koszt życia ]
 
 ---
 

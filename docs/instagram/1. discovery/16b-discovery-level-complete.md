@@ -30,6 +30,39 @@ story_caption_stat: "More than 90% of people never learn this"
 story_caption_cta: "Money in Action series drops next → follow"
 
 story_hashtag: "#financialfoundation"
+
+# -----------------------------------------------------------------------------
+# Day 2 cascade (milestone post). Renders as day2-frame-*.png in same dir.
+# Narrative: teaser for next series → self-assessment poll → subscribe push
+# via the stat+link-sticker frame → share/follow CTA.
+# -----------------------------------------------------------------------------
+story_day2_hook: |
+  Discovery is the foundation
+
+  Money in Action is the build
+
+  Starts next week
+story_day2_stat: |
+  Three new posts a week
+
+  Straight to your inbox
+
+  No ads · No spam · Free forever
+story_day2_poll_q: "How ready do you feel to start investing?"
+story_day2_poll_opts: "Ready | Curious | Nervous | No idea"
+story_day2_prompt: |
+  Share this series with someone
+  who needs the foundation
+
+  Follow so you don't miss post 1
+  of the new one
+story_day2_hashtag: "#moneyinaction"
+
+# Tiny captions for Day 2 IG story native caption field
+story_day2_caption_hook: "Money in Action starts next week"
+story_day2_caption_poll: "How ready do you feel to start investing?"
+story_day2_caption_stat: "Three posts a week, straight to your inbox"
+story_day2_caption_cta: "Share with someone who needs the foundation"
 ---
 
 # Discovery Level Complete: You Have the Foundation
@@ -57,47 +90,45 @@ All 16 live permanently on the blog — searchable, always up to date, linked in
 
 → Save this as a reference.
 → Share with someone just starting their financial journey.
+→ Want the next 15 in your inbox? Subscribe at the bottom of any post on nidhi.today/blog. Three times a week. No ads. No spam.
 
 Next series — Money in Action — drops soon.
 Follow @nidhi.today so you don't miss it.
 
 #financialfoundation #moneybasics #desifinance #moneyineurope #nidhi
 
+[ money literacy, financial literacy, basics of money,
+financial education, learn personal finance, beginner
+finance, adulting money, expat finance, personal
+finance, Finanzbildung, éducation financière,
+educación financiera, educazione finanziaria,
+edukacja finansowa, privatekonomi ]
+
 ---
 
 ## Story Sequence
 
-**Milestone post — 2-day story campaign.** Use this to maximize shareability and set up the next series launch.
+**Milestone post — 2-day story campaign.** All 8 frames are rendered as PNGs by `npm run render-ig` (3 Day-1 + 3 Day-2; the stat frames double as step-2 and step-3 backdrops per playbook §7 default mode).
 
-### Day 1 — Launch day
+### Day 1 — Launch day (Fri May 22, 14:30 CET)
 
-**Frame 1 — Hook (@ 14:30 CET — post time)**
-- **Visual:** Slide 1 screenshot
-- **Text overlay:** "16 posts. 1 foundation. You made it."
-- **Sticker:** Tap-to-post
-- **Hashtag sticker (small):** #financialfoundation
+| Step | Time | PNG backdrop | Native sticker | Purpose |
+|---|---|---|---|---|
+| 1 — Hook | 14:30 | `frame-1-hook.png` | Tap-to-post + `#financialfoundation` hashtag sticker (small) | Announce the milestone |
+| 2 — Poll | 16:00 | `frame-2-stat.png` (stat backs the poll) | Native poll sticker — Q: "Which topic from the series hit hardest for you?" · Opts: Net worth / Compound interest / Liquidity / Inflation | Interaction + nostalgia |
+| 3 — Value | 18:00 | `frame-2-stat.png` (same backdrop, link sticker on top) | Link sticker → blog URL | Drive traffic to the library |
+| 4 — CTA | 20:30 | `frame-3-cta.png` | None (text is the message) | Save + share prompt |
 
-**Frame 2 — Poll (@ 16:00 CET)**
-- **Sticker:** Poll
-- **Question:** Which topic from the series hit hardest for you?
-- **Options:** Net worth / Compound interest / Liquidity / Inflation
+### Day 2 — Next-series setup + subscribe push (Sat May 23, 14:30 CET)
 
-**Frame 3 — Value (@ 18:00 CET)**
-- **Visual:** A "Basics of Money — all 16 posts" tile or screenshot of the blog category page
-- **Text overlay:** "The full library lives on the blog. Link in bio."
-- **Link sticker:** Blog URL (category page listing all 16 discovery posts)
+| Step | Time | PNG backdrop | Native sticker | Purpose |
+|---|---|---|---|---|
+| 1 — Hook | 14:30 | `day2-frame-1-hook.png` | `#moneyinaction` hashtag sticker (small) | Tease what's next |
+| 2 — Poll | 16:00 | `day2-frame-2-stat.png` | Native poll — Q: "How ready do you feel to start investing?" · Opts: Ready / Curious / Nervous / No idea | Self-assessment (no content dependency) |
+| 3 — Subscribe | 18:00 | `day2-frame-2-stat.png` (same backdrop, link sticker on top) | Link sticker → https://nidhi.today/blog/ (lands at the SubscribeSection on BlogIndex + BlogPost) | Convert highest-intent cohort |
+| 4 — CTA | 20:30 | `day2-frame-3-cta.png` | None | Share/follow prompt |
 
-**Frame 4 — Share CTA (@ 20:30 CET)**
-- **Visual:** Slide 8 (follow for next series)
-- **Text overlay:** "Share this with someone just starting their financial journey."
-- **Sticker:** None
-
-### Day 2 — Tease the next series
-
-**Frame 1** — Teaser visual: "Next: Money in Action"
-**Frame 2** — Poll: "Which topic first?" [Risk] [Asset classes] [Portfolio building]
-**Frame 3** — Text story: "Follow so you don't miss post #1 of the new series."
-**Frame 4** — Slider sticker: "How ready do you feel to start investing?" [emoji: 📈]
+**Why the subscribe push sits here, not in its own post:** readers who finished Discovery are the highest-intent cohort we've had. Surfacing subscribe right after the milestone and right before the new series starts is the natural convert point — a standalone feature-announcement post would underperform because "you can subscribe now" isn't content.
 
 ---
 
