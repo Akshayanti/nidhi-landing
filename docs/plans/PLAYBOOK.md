@@ -472,79 +472,118 @@ Chronological log of decisions made during playbook development. Update as you i
 | 24 | Keyword searchability test + per-post audience variation | Round 2 revealed two more traps. (a) Including a keyword "because the concept exists" doesn't help — if no one searches it, it's just caption clutter that dilutes the array. Rule: every keyword must pass the "would anyone actually type this into IG search, in this language?" test. Cognate renderings like `Geld`, `pengar`, `dinero` fail — they're too generic to be search queries on their own. (b) Using the same keyword cluster on every post anchors the account to a single audience slice and stalls growth. Rule: each post leans toward a distinct sub-audience (FIRE crowd on investing, relocators on cost-of-living, parents on insurance, etc.) so IG's classifier reads each post as a different offering and widens the reach graph |
 | 25 | Hashtags and keywords split: community vs. search, no overlap | Verified IG's two surfaces work differently: hashtags = community/browse (users follow `#expatlife`), keywords = search-index (users type `geoarbitrage`). Using the same term on both surfaces pays twice for the same reach. Split the work: hashtags stay English-dominant, pick communities someone follows; keywords carry multilingual load + long-tail phrases someone would type. When a term fits both surfaces, put it in the hashtag (5-slot cap makes tags more scarce) and spend the keyword slot on something tags can't carry |
 | 26 | Meme & comic policy: carousels-only, opt-in by series, never on Slide 1, MiFID-safe directive applies (§13) | Question raised whether memes (xkcd, popular-media reactions) would lift engagement on the blog and from the next IG series onwards. Reframed against the brand voice ("Money, understood" — closer to authority than relatability), the global ex-North America audience (US sitcom references don't carry; AI-generated memes flagged as low-effort in 2026), and the MiFID II posture the rest of the content already holds. Conclusion: memes are a sharpening tool, not a default ingredient. Carousel only (stories stay brand-chrome consistent), max 1 per carousel, never on Slide 1 (same low-effort signal that pushed the series badge off Slide 1 in #5). Cadence varies by series: ~0% Discovery, ~25% Building/Optimizing/Mastery, ~70% Psychology (highest leverage — the topic *is* memes), 0% on stress/fear-state posts (Debt, Insurance, Loan Terms, Real Estate, beta launch). Source priority: xkcd → screenshot/POV formats → globally legible movie stills. Hard avoids: 2020-2023 templates, AI-generated, US-only cultural references, Bollywood-default. **MiFID-safe directive promoted to top-level subsection of §13:** no named instruments / tickers / coins / brokerages, no return forecasts presented as fact (any number in a meme requires an inline "illustrative + assumptions" disclaimer visible *inside the image* because slides circulate standalone on IG), no jurisdiction-locked tax math, no advice phrasing, no before/after performance of real products, no screenshots of brokerage / exchange UIs, no product-vs-product comparisons. Behavioural and conceptual zone only. Pre-publish checklist (7 items) attached. A/B test threshold: 15%+ lift on saves or sends after ~6 paired posts, otherwise drop. Blog-side mirror in `blog-content-plan.md` Editorial Rule 8 with same directive |
+| 27 | Reframe: memes removed from blog posts and educational carousels entirely; live as a separate IG-only stream (quote cards + Reels) | Decision #26's policy attempted to embed memes inside educational carousels with a per-series cadence and a MiFID-safe checklist. In practice the constraint stack (MiFID-clean, audience-globalized, no AI, no 2020-2023 templates, slot inside an authority-voice teaching arc) squeezed real memes out and produced illustrated comics pretending to be memes. Sight-unseen archive scans of supplementary sources (SMBC) couldn't validate panel-level fit through automated tooling. The locked 5-post Building cohort (#21, #23, #24, #25, #30) was demonstrably 4 educational comics + 1 real meme (xkcd #927), which is the wrong return on production effort. **Reframe:** decouple memes from the educational surface. Carousels stay clean information design (diagrams, charts, key-number heroes); blog posts ship without memes (Editorial Rule 8 rewritten to "no memes in post bodies"); memes live as standalone IG content in two formats — **quote cards** (single-image standalone posts of sharp Nidhi lines, 2x/week, ~5 min production each, KPI: 2x carousel saves/sends per post) and **Reels** (10-15s text-on-background video, 1 per Building post during the June 2026 pilot, KPI: 3x reach or 1.5x new followers vs. matched-period carousels). The original 5-post locked cohort dissolves: those visuals become Reels source material, not carousel slides. xkcd #927 stays planned for #23 as a blog post HTML embed (not as a carousel slide). MiFID-safe directive remains binding on every image asset that includes financial numbers, regardless of which stream it ships in. **Source-priority cleanup:** added Dilbert to the off-limits list (Scott Adams' post-2023 reputation makes any Dilbert reference a brand-association risk regardless of strip vintage). AI-generated images allowed for layout ideation only, never as final assets. SMBC scan deferred — Weinersmith licensing not verified, and the strategic case for chasing more third-party sources is weak now that the standalone IG stream is the right surface for memes |
 
 ---
 
-## 13. Meme & Comic Policy (carousels only, opt-in by series)
+## 13. Meme & Reels Stream Policy (standalone IG content, separate from carousels and blog)
 
-Memes can lift saves and shares for the right post type, but the brand voice — "Money, understood" — sits closer to the authority end than the relatability end. Memes work here when they read as "smart joke from someone who understands the topic." They don't work when they read as "creator chasing a trend." Apply sparingly, and only in carousels.
+Memes belong on Instagram, not in blog post bodies and not inside educational carousels. The earlier policy (memes as a slide inside the educational carousel) collapsed in practice: every constraint that kept a meme brand-safe (MiFID-clean, audience-globalized, no AI, no dated templates, slot inside an authority-voice teaching arc) squeezed real memes out and produced illustrated comics pretending to be memes. Decoupling the two surfaces solves the problem.
 
-### Where memes go
+The new shape:
 
-- **Carousel only.** Stories stay brand-chrome consistent — the 4-step cascade (§7) is too tight and too templated to absorb a meme without breaking visual coherence. Stories are the brand surface; carousels are where personality can flex.
-- **Slide placement:**
-  - **Slide 2 or 3** (relatability slot, after the hook has done its job), OR
-  - **Penultimate slide** (punchline before the next-up tease + follow CTA on the final slide).
-  - **Never on Slide 1.** Slide 1 is the scroll-stopper; a meme there reads as low-effort to non-followers, same failure mode as the series-badge hurt reach (Decision #5).
-- **Max 1 meme slide per carousel.** Two starts to read as a meme account, which is the wrong signal for this brand.
+- **Educational carousels** stay clean information design. Diagrams, charts, key-number heroes, before/after layouts. No memes, no humor slides, no "relatability" beats. The carousel earns its slot as the authority surface.
+- **Blog posts** ship without memes (see `blog-content-plan.md` Editorial Rule 8).
+- **Memes and humor live as a separate IG stream**, in two formats: **quote cards** (single-image standalone posts) and **Reels** (short-form video). Different cadence, different KPI, different production discipline. The two streams reinforce each other: the educational carousel teaches, the meme stream broadcasts the most quotable line from that teaching to a different segment of IG's algorithm.
 
-### Cadence by series
+### Format 1: Quote cards (start immediately)
 
-| Series | Meme rate | Notes |
-|---|---|---|
-| Discovery (07-16b, current) | ~0% | Audience is orienting. Ship clean carousels. |
-| Building (17-32) | ~25% (4-5 of 16 posts) | Lifestyle inflation, investing fundamentals, FIRE, planning topics earn it. |
-| Psychology (33-42) | ~70% (6-7 of 10 posts) | Highest-leverage series. The topic *is* memes — biases, present bias, herd behaviour, money scripts, planning fallacy. |
-| Optimizing / Mastery | ~25% | Skip on heavy topics (estate, longevity, drawdown, healthcare). |
-| Stress / fear-state posts | 0% | Debt (#5), Insurance (#16), Loan Terms (#27), Real Estate (#28), beta launch announcement, future Mastery on estate / longevity / healthcare. |
+Single-image standalone posts. Sharp Nidhi lines, formatted as a square (1:1) or portrait (4:5) image, dark background, Nidhi mark in the corner, the line in the center, nothing else.
 
-### Source priority
+These function as memes in the 2026 IG sense (saved, sent in DMs, screenshot-shared) without humor as the vector. The shareability is "this is true" rather than "this is funny."
 
-1. **xkcd** — globally legible, smart-coded, pre-AI visual signature (a credibility signal in 2026), CC BY-NC 2.5. Best for Building, Psychology, Optimizing posts. Embed via canonical `xkcd.com` URL, attribute and link to the source comic. If the account ever runs paid sponsorships or non-nidhi commercial placements, revisit Munroe's commercial-use stance.
-2. **Screenshot-style memes** — fake DMs, fake search results, fake bank notifications. Universal format, language-light, ages well across the global expat audience.
-3. **Globally released movie stills** — Lord of the Rings, Spider-Man pointing, Inception, Shrek. Avoid Disney/Nintendo where any commercial footprint exists.
+**Source material.** Pull lines from already-published blog posts. Examples drawn from the existing Building corpus:
 
-### Avoid
+- "A goal without a number is a wish." (#30)
+- "Inflation is the silent eraser." (Discovery / Building)
+- "Most internet 'passive income' is active business income in disguise." (#26)
+- "The biggest risk most people overlook is doing nothing." (#17)
+- "Your primary home is an asset on the balance sheet, a liability in the cash flow." (#28)
+- "Diversification is often called the only free lunch in finance." (#20)
+- "Renting is throwing money away is a myth." (#28)
+- "At a 50% savings rate, financial independence is roughly 17 years away regardless of salary." (#25)
+- "Compounding does most of the work in the last decade." (#30)
 
-- **2020-2023 templates** — Drake-pointing, Distracted Boyfriend, Galaxy Brain, "nobody: / me:", Woman Yelling at Cat. These read as out-of-touch in 2026 and signal a creator who stopped paying attention.
-- **AI-generated memes** — even a good joke registers as low-effort once the visual signature is recognized; audience is hypersensitive in 2026.
-- **US-only cultural memes** — The Office, Parks & Rec, Seinfeld reaction stills. Audience is global ex-North America (§1); the references carry no signal in Berlin, Lisbon, Helsinki, Bangkok, Dubai, Singapore.
-- **Country-specific memes** — Bollywood, German humor formats, Asterix. Only appropriate when the post is specifically about that geography. Don't bias toward Indian-diaspora memes because of the brand name; §1 explicitly pushes back on over-indexing on India.
-### MiFID-safe directive (hard rules — every meme is bound by these)
+**Production:** the line is the entire asset. Set in the existing carousel typography (DM Sans / Inter / whatever the carousel uses), centered, large enough to read at thumbnail. No illustration, no decoration. Asset takes ~5 minutes per card to produce; the writing was the work.
 
-The account and the linked blog are positioned as education, not advice. The same regulatory posture that governs prose (no specific instruments named as buys, no return forecasts, no advice phrasing) governs every meme — and more strictly, because meme slides circulate on IG standalone, often re-shared without the surrounding caption. A meme that breaks any of the rules below is dropped, regardless of how good the joke is.
+**Cadence:** 2x/week between educational carousels. Post weeks: Mon educational carousel, Wed quote card, Fri educational carousel, Sun quote card (or similar).
 
-1. **No named investment products.** No stock tickers, fund names, ETF tickers, crypto coins, brokerage names, robo-advisor names, bank product names. The only named "products" allowed are tax-advantaged-account *categories* already named in the post body under blog Rule 7 (e.g., 401(k), ISA, NPS), and only as a category list — never as a recommendation.
-2. **No return guarantees, no forecasts presented as fact.** Any number in a meme slide that depends on a return assumption (cost-of-delay tables, savings-rate-to-FI math, future value of monthly contribution) must carry an inline disclaimer *visible inside the image itself* — not just in the surrounding caption. Required wording: "illustrative," "example," or "assumes X% return — past performance is not a forecast." If the disclaimer doesn't fit visually, drop the meme or rewrite without the number.
-3. **No specific tax rates or jurisdiction-locked tax math.** Conceptual "tax drag eats your return" framings are fine. "30% capital gains in Germany" or "0% under ISA up to £20K" inside a meme is not.
-4. **No advice phrasing.** Forbidden inside meme art or surrounding caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "the math says," "common patterns," "research suggests," "behavioural framing."
-5. **No before/after performance of a real product.** "If you'd invested in [Apple / Bitcoin / Tesla] in 2010..." is hindsight performance marketing in meme costume. Forbidden. Generic compound-interest curves with no product name attached are fine.
-6. **No screenshots of brokerage apps, exchanges, or trading interfaces.** They read as endorsement of the platform shown. Use generic phone-UI styling instead.
-7. **No comparing specific named products.** "ETF A vs ETF B" is comparative advice. "Active funds tend to underperform passive funds over 10+ years (research aggregate)" with no name attached is fine.
-8. **Behavioural and conceptual content only.** Safe territory: cognitive biases, lifestyle inflation, planning fallacy, present bias, compounding regret, "everyone thinks they're above average," the gap between knowing and doing, time-horizon framing, savings-rate paradox, the absurdity of differing tax-account standards across countries.
+### Format 2: Reels (pilot June 2026 alongside Building 21-26)
 
-**Pre-publish checklist (run on every meme slide before posting):**
-- [ ] No named instrument, fund, ticker, coin, exchange, or platform in image or caption?
-- [ ] If numbers are shown: labeled "illustrative" with assumptions (X% return, Y% inflation, Z% SWR) visible *inside the image* — not just in caption?
+10-15 second short-form video. Text-on-background, no face/voice required, optional trending finance-adjacent audio. One concept per Reel.
+
+**Reel concepts ready from Building topics:**
+
+- The 4 FIRE flavors as a quick visual lineup (Lean / Traditional / Fat / Coast) — alongside #25.
+- "Your eggs in one basket vs. diversified" before/after — alongside #20.
+- The rebalancing reflex: "what most investors do (chase winners) vs. what rebalancing does (sell what's up, buy what's down)" — alongside #24.
+- Wish vs. plan: same goal stated as wish ("be financially secure") then as plan ("€45,000 deposit, 5 years, €662/month at 5%") — alongside #30.
+- Currency-juggling for expats: "earn in EUR, spend in CZK, retire in INR" — alongside #29.
+
+These are exactly the visuals previously slotted as carousel-meme slides. They function as memes when shipped as Reels (sound-on, fast, shareable) but did not function as memes when slotted into a 7-slide carousel arc.
+
+**Production:** simple text-on-background animation. Tools that work: CapCut, Canva Pro, or hand-edited in any video editor. ~30-60 minutes per Reel including audio selection. No illustrator commission required for the pilot.
+
+**Cadence:** 1 Reel per Building post during the pilot (~6 Reels across June 2026), released same day as the corresponding educational carousel. After 6 Reels, evaluate and decide whether to continue, expand, or drop.
+
+### What's still off-limits
+
+- **No memes inside educational carousels.** Carousel-side visual content is information design only.
+- **No memes in blog post bodies.** Per blog Editorial Rule 8.
+- **No memes in stories.** Story 4-step cascade (§7) stays brand-chrome consistent.
+- **No separate meme account.** One account, two streams — the volume doesn't justify a second handle and dilution risk is real.
+
+### Sources still allowed (when humor IS the vector, e.g. for occasional reactive memes)
+
+The original source priority remains valid for any future case where a humor-vector meme is appropriate (rare, not part of the standing cadence, used reactively to news/markets):
+
+1. **xkcd** — CC BY-NC 2.5, safe to embed with attribution. Best fit for conceptual humor. Note: xkcd #927 "Standards" is referenced in `blog-content-plan.md` post #23 (Tax-Advantaged Accounts) — as an embed in the blog HTML, not as a carousel slide.
+2. **Screenshot-style memes** — fake DMs, fake search results, fake bank notifications, real public-figure tweet screenshots when the joke is descriptive (not directive).
+3. **Globally released movie stills** — usable but rarely worth the production effort once production cost is honest.
+
+### Sources still off-limits
+
+- **Dilbert** — Scott Adams' public reputation post-2023 makes any Dilbert reference a brand-association risk regardless of strip vintage.
+- **2020-2023 meme templates** — Drake-pointing, Distracted Boyfriend, Galaxy Brain, "nobody: / me:", Woman Yelling at Cat. Out-of-touch in 2026.
+- **AI-generated images** as final assets. Allowed for layout ideation only — AI-generated pixels never ship.
+- **US-only cultural memes** — The Office, Parks & Rec, Seinfeld. Audience is global ex-North America (§1).
+- **Country-specific memes** — Bollywood, German humor formats, Asterix. Only on geography-specific posts, and §1 pushes back against Indian-diaspora bias.
+
+### MiFID-safe directive (still binding on every image asset that includes numbers)
+
+Quote cards, Reels, and any other image content that includes financial numbers carry the same regulatory rules that govern blog prose:
+
+1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Tax-advantaged-account *categories* (401(k), ISA, NPS) are allowed as descriptive references when the surrounding context is educational, never as a directive.
+2. **No return guarantees, no forecasts presented as fact.** Any number that depends on a return assumption must carry the disclaimer *visible inside the image itself* (not just in the caption, since images circulate standalone): "illustrative," "example," or "assumes X% return — past performance is not a forecast."
+3. **No specific tax rates or jurisdiction-locked tax math** in the image. Conceptual framings are fine; specific numbers are not.
+4. **No advice phrasing** in the image or caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "the math says," "common patterns," "research suggests."
+5. **No before/after performance of a real product.** Generic compound-interest curves with no product name attached are fine.
+6. **No screenshots of brokerage apps, exchanges, or trading interfaces.** Generic phone-UI styling only.
+7. **No product-vs-product comparisons** by name. Category-level comparisons (active vs. passive at the asset-class level, with no fund named) are fine.
+
+### Pre-publish checklist (every quote card and Reel)
+
+- [ ] No named instrument, fund, ticker, coin, exchange, or platform in image, video, or caption?
+- [ ] If numbers are shown: labelled "illustrative" with assumptions (X% return, Y% inflation, Z% SWR) visible *inside the image or video frame* — not just in caption?
 - [ ] No phrasing that reads as "buy this" / "do this now" / "miss out otherwise"?
 - [ ] No specific tax rates, contribution limits, or jurisdiction-locked math inside the image?
 - [ ] No before/after performance of a real product?
 - [ ] No screenshot of a real brokerage / exchange / trading UI?
-- [ ] If unsure on any of the above: drop the meme or replace with a clean carousel slide.
-
-### Captions and accessibility
-
-- **Caption around the meme should not explain the joke.** If the meme needs explaining, it's the wrong meme — let the comment section do that work.
-- **Alt text is mandatory** on every meme PNG (accessibility + IG's image-content classifier reads it for the topic graph).
-- Caption keywords for the meme slide still feed the keyword array (§6) — pick a topic-grounded keyword for the slide caption, not a description of the joke.
+- [ ] Alt text written (accessibility + IG's image-content classifier)?
+- [ ] If unsure on any of the above: drop the asset.
 
 ### A/B test plan
 
-After ~6 Building posts ship with memes and ~6 without, compare **saves + sends + reach** between the two cohorts. Threshold to keep the policy: **15%+ lift on saves OR sends in the meme cohort.** Below that, memes are decoration in this brand's voice — drop them and double down on the data-and-clarity register the audience already comes for.
+The two streams have separate KPIs and separate evaluation horizons.
+
+- **Quote cards.** Evaluate after 12 cards shipped (~6 weeks at 2x/week). Compare against the educational carousel cohort over the same period. Threshold to keep: **2x lift on saves OR sends per post relative to carousel baseline**, since a quote card is a smaller production investment than a carousel and only needs to outperform on a per-effort basis.
+- **Reels.** Evaluate after the 6-Reel June pilot. Compare reach and follower acquisition against the matched-period educational carousels. Threshold to keep: **3x lift on reach OR 1.5x lift on new followers**, since Reels' algorithmic upside is reach-driven and the entire reason to invest production effort is discovery.
+
+If either stream falls below threshold, drop it. The educational carousel stream is the authority surface and earns its slot independently.
 
 ### Cross-reference
 
-The blog-side rules (max 1-2 per post, never as hero, MiFID-clean source list) live in `docs/plans/blog-content-plan.md` Editorial Rule 8. Blog and Instagram share source priorities and avoid lists; cadence and placement differ because the formats differ.
+Blog-side rule (no memes in posts): `blog-content-plan.md` Editorial Rule 8.
 
 ---
 

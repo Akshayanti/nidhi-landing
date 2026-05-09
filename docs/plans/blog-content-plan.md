@@ -118,63 +118,17 @@ Replace with one of:
 
 **Check before shipping a Building+ post:** does it name its eurozone defaults, and does it supplement with at least one cross-continent comparison (named equivalents, a comparison table, a range, or an explicit caveat) where readers in other regions would otherwise get stuck?
 
-### 8. Memes and comics in post bodies
+### 8. No memes or comics in blog post bodies
 
-Memes and comics (xkcd panels, screenshot-style humor, globally legible reaction stills) are permitted to break up dense sections, soften pain points, and improve dwell time. They are not required, and most posts ship without them. Treat them as a sharpening tool, not a default ingredient.
+Blog posts ship without memes, reaction comics, or humor images. The medium is long-form prose; the value the reader comes for is the writing, not the punchline. Visual humor adds production overhead, regulatory surface, and brand-voice inconsistency without a matching distribution upside on the blog channel.
 
-**Cadence by level (rough targets, not quotas):**
-- **Discovery (1-16):** ~0 per post. Readers are orienting; in-jokes alienate. Ship clean prose.
-- **Building (17-32):** 0-1 per post, ~25% of posts overall. Best fit on lifestyle inflation, investing fundamentals, FIRE, planning topics.
-- **Psychology (33-42):** 1-2 per post, ~70% of posts. Highest-leverage series for memes — the topic *is* "your brain sabotages the math," which is what memes have always been good at.
-- **Optimizing / Mastery:** 0-1 per post. Skip on heavy topics (estate planning, longevity, drawdown, healthcare).
+Posts use **diagrams, charts, tables, and conceptual illustrations** where visualization helps comprehension. They do not use memes, even where a meme would technically fit the topic.
 
-**Skip entirely on stress / fear-state posts:** #5 (Debt), #16 (Insurance Basics), #27 (Loan Terms), #28 (Real Estate as an Investment), the beta launch announcement, and any future Mastery posts on estate planning, longevity risk, healthcare costs. Readers arrive worried; humor reads as flippant.
+**Memes and humor are an Instagram-only stream**, running as standalone content (quote cards and Reels) on a separate cadence from the educational carousels. The full IG-side meme/Reels policy lives in `PLAYBOOK.md` §13. Blog posts feed that stream — sharp lines, key contrasts, key numbers become quote cards and Reels — but those assets do not appear inside the post bodies themselves.
 
-**Source priority:**
-1. **xkcd** — globally legible, smart-coded, pre-AI visual signature (a credibility signal in 2026), CC BY-NC 2.5 license. Best fit for Building, Psychology, Optimizing posts. Embed via the canonical `xkcd.com` URL with attribution and a link back to the source comic. If the blog ever adds ads, sponsorships, or commercial CTAs beyond the nidhi app handoff, revisit Munroe's commercial-use policy — strict reading puts that into "permission required" territory.
-2. **Screenshot-style memes** — fake DMs, fake search results, fake notifications. Universal format, language-light, ages well across the global expat audience.
-3. **Globally released movie stills** — Lord of the Rings, Spider-Man pointing, Inception, Shrek. Avoid Disney/Nintendo where any commercial footprint exists.
+**Implication for already-drafted posts.** Any post that previously planned an embedded meme drops it. If the surrounding prose was leaning on the meme to do work, that prose is the thing to sharpen.
 
-**Avoid:**
-- **2020-2023 templates** — Drake-pointing, Distracted Boyfriend, Galaxy Brain, "nobody: / me:", Woman Yelling at Cat. These read as out-of-touch.
-- **AI-generated memes.** Audience is hypersensitive to AI visual signatures in 2026; even a good joke registers as low-effort once the look is recognized.
-- **US-only cultural memes** — The Office, Parks & Rec, Seinfeld reaction stills. The audience is global ex-North America (PLAYBOOK §1); these references don't carry.
-- **Country-specific memes** (Bollywood, Asterix, German humor formats) unless the post is specifically about that geography. Don't bias toward Indian-diaspora memes because of the brand name — PLAYBOOK §1 explicitly pushes back on over-indexing on India.
-
-**MiFID-safe directive (hard rules — every meme is bound by these).** The site is positioned as education, not advice, and the rest of the editorial guard rails (Rule 7, MiFID/CNB section at the foot of this document) apply equally to images, comics, and meme captions. A meme that breaks any of the rules below is dropped, regardless of how good the joke is. The cost of a regulatory issue is much higher than the upside of one extra meme.
-
-1. **No named investment products.** No specific stock tickers, fund names, ETF tickers, crypto coins, brokerage names, robo-advisor names, bank product names. The only named "products" allowed are tax-advantaged-account *categories* already named in the post body under Rule 7 (e.g., 401(k), ISA, NPS), and only as a category list, never as a recommendation.
-2. **No return guarantees, no forecasts presented as fact.** Any number in a meme that depends on a return assumption (cost-of-delay, savings-rate-to-FI, future value of monthly contribution) must carry an inline label visible inside the image: "illustrative," "example," or "assumes X% return — past performance is not a forecast." If the meme can't fit the disclaimer visually, drop the meme or rewrite without the number.
-3. **No specific tax rates or jurisdiction-locked tax math.** A meme can show "tax drag eats your return" conceptually; it cannot show "30% capital gains in Germany" or "0% under ISA up to £20K." Jurisdiction-specific numbers are body content under Rule 7, not meme content.
-4. **No language that reads as advice.** Forbidden phrasings inside meme art or its surrounding caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "common patterns," "the math says," "research suggests," "behavioural framing."
-5. **No before/after wealth charts tied to a specific product.** "If you'd invested €1,000 in [Apple / Bitcoin / Tesla] in 2010..." is hindsight performance marketing dressed as a meme. Forbidden. Generic compound-interest curves with no product name attached are fine.
-6. **No screenshots of brokerage apps, exchange UIs, or trading interfaces.** They read as endorsement (or anti-endorsement) of the platform shown. Use generic phone-UI styling instead.
-7. **No comparing specific named products.** "ETF A vs ETF B" is comparative advice. "Active funds tend to underperform passive funds over 10+ years (research aggregate)" with no product named is fine.
-8. **Behavioural and conceptual content only.** The MiFID-safe meme zone is: cognitive biases, lifestyle inflation, planning fallacy, present bias, compounding regret, "everyone thinks they're above average," the gap between knowing and doing, time-horizon framing, savings-rate paradox, the freedom-vs-salary point.
-
-**Pre-publish checklist (every meme, both blog and IG):**
-- [ ] No named instrument, fund, ticker, coin, exchange, or platform in image or caption?
-- [ ] If numbers are shown: are they labeled "illustrative" with the assumption (X% return, Y% inflation, Z% SWR) visible *inside the image* (not just in surrounding prose, since the image circulates standalone on IG)?
-- [ ] No phrasing that reads as "buy this" / "do this now" / "miss out otherwise"?
-- [ ] No specific tax rates, contribution limits, or jurisdiction-locked math inside the image?
-- [ ] No before/after performance of a real product?
-- [ ] If unsure on any of the above: drop the meme or replace with prose.
-
-**Safe meme territory recap.** Behavioural traps, lifestyle inflation, the gap between knowing and doing, compounding regret, "everyone thinks they're an above-average investor," planning fallacy, present bias, savings-rate-as-master-lever, the absurdity of differing tax-account standards across countries.
-
-**Placement rules:**
-- **Never the hero image.** The first thing a reader sees should be the concept, not a joke.
-- Place after a pain point (amplification) or before a solution reveal (tension break), not in introductions.
-- **Max 1-2 per post.** More than that reads as a meme post, not an authority post.
-
-**Mechanical rules:**
-- **Alt text is mandatory** on every embedded meme. Accessibility plus Google's multimodal indexing reads it (more important post-AI Overviews).
-- **Surrounding prose complies with Rule 6** — no typographic dashes in caption/alt text.
-- **Don't explain the joke in the body.** If the meme needs explaining, it's the wrong meme.
-
-**Check before shipping:** does the meme add genuine value (pain-point amplification, tension break, punchline) or is it decoration? If decoration, drop it. A weak meme is worse than no meme.
-
-**Cross-reference:** the carousel-side rules (Slide placement, no memes in stories, source priority for IG) live in `PLAYBOOK.md` §14. Blog and Instagram share source priorities and avoid lists; the cadence and placement rules differ because the formats differ.
+**For embedded images that aren't memes** (charts, diagrams, conceptual illustrations), the MiFID II / CNB rules at the foot of this document still apply: no named products in image annotations, no forecasts presented as fact in chart axes, illustrative numbers labelled as such inside the image (since RSS readers, link previews, and IG quote cards may circulate the image without surrounding prose).
 
 ---
 
