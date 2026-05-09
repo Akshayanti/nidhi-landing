@@ -128,7 +128,60 @@ Posts use **diagrams, charts, tables, and conceptual illustrations** where visua
 
 **Implication for already-drafted posts.** Any post that previously planned an embedded meme drops it. If the surrounding prose was leaning on the meme to do work, that prose is the thing to sharpen.
 
-**For embedded images that aren't memes** (charts, diagrams, conceptual illustrations), the MiFID II / CNB rules at the foot of this document still apply: no named products in image annotations, no forecasts presented as fact in chart axes, illustrative numbers labelled as such inside the image (since RSS readers, link previews, and IG quote cards may circulate the image without surrounding prose).
+**For embedded images that aren't memes** (charts, diagrams, conceptual illustrations), see Editorial Rule 9 below for the figure language and the MiFID II / CNB constraints applied to image content.
+
+### 9. Blog figures: clean conceptual SVG, audience-anxiety-aware
+
+Blog posts include figures where visualization genuinely closes a comprehension gap that prose can't close on its own. The Eva-type primary audience reads personal finance because money makes them anxious; **a figure that reads as math homework makes the post worse, not better**. The figure language is shaped accordingly.
+
+**What figures are for:**
+- Crystallizing a single conceptual idea the prose has just made (a structural "shape," not a data dump).
+- Anchoring a reframe the post depends on (e.g. asset/liability duality, wish vs. plan).
+- Providing a hero visual that scans cleanly on mobile and exports cleanly to IG quote cards or Reels source frames.
+
+**What figures are not for:**
+- Re-presenting tabular data the post already has in a table.
+- Decorative variety. Every figure must earn its place against the comprehension test.
+- Showing seven data points on a curve when the conceptual insight is the curve's *shape*, not its values.
+
+**Format.** Inline SVG inside the markdown body, wrapped in `<figure><svg>...</svg><figcaption>...</figcaption></figure>`. Brand-consistent typography (Inter via existing self-hosted webfont) and palette (deep blue, teal, success green, warning orange — all via CSS custom properties so dark mode works automatically). The reusable SVG class library lives in `src/layouts/BlogPost.astro` (`.fig-title`, `.fig-fill-blue`, `.fig-stroke-muted`, etc.). No external chart library, no MDX, no asset pipeline — the SVG ships as part of the post.
+
+**Audience-anxiety-aware design rules:**
+- Prefer conceptual diagrams (boxes, ladders, spectra, before/after pairs, shape-only line drawings) over data charts.
+- If numbers must appear, use the minimum (typically 0–4 numbers per figure) in service of one comparison the post has already led the reader to.
+- No gridlines, no axis tick marks beyond what's strictly necessary, no decimals.
+- One title, one optional subtitle, one short caption. Captions can run an italic line of context; they should not re-explain the figure.
+- All numerical figures carry an "Illustrative" tag inside the figure or in the caption — same MiFID-on-images rule as image content elsewhere.
+
+**Currently shipped figures (May 2026):** five figures across five Building posts. Down from nine in an earlier draft — the cuts were figures that visualized concepts the prose already stated cleanly (decorative). The kept five each show something prose can't: a *shape*, a *trajectory*, or a *crossing point*.
+
+| Post | Figure | Why it earns the slot |
+|---|---|---|
+| #17 Understanding Risk | Time narrows the range | Bars of historical return ranges over 1y / 5y / 10y / 20y horizons. Loss tail (warning) shrinks to zero as horizon grows. Visualizes the post's central insight: time changes the *character* of risk, not just the magnitude |
+| #20 Diversification | Two volatile companies, one steady portfolio | Plots the post's actual table data as 3 line series. Two zigzag lines (Sunscreen ±, Umbrella ∓) and one perfectly flat line at +5%. Same numbers as the table; the *visual flatness* is the diversification benefit made obvious |
+| #23 Tax-Advantaged Accounts | xkcd #927 embed | Cultural reference whose joke ("behind every standard, more standards") *is* the post's framing. Genuine context-add, not decoration |
+| #24 Rebalancing | Silent drift trajectory | Single curve showing % stocks creeping from 70 → 78 across 12 months. Shows the *silent* part: no single month looks dramatic, but the cumulative trajectory is the trap. Dot opacity rises along the curve to reinforce the accumulation |
+| #25 FIRE | The crossover point | Two lines on a time axis — flat monthly expenses (dashed warning), rising monthly investment income (teal curve) — meeting at a marked crossover. The visual *moment* the post is named after. Only the figure can show "the meeting" as a moment; prose can only describe it |
+
+**Reuse on IG.** Four of these figures are the canonical static "hero" frame for the corresponding Reels concept (PLAYBOOK §13, Format 2): #17 (range narrows), #20 (free-lunch flatness), #24 (silent drift), #25 (crossover). The static SVG is the design source of truth; the Reel adds motion and audio over the same scaffold.
+
+**MiFID II / CNB constraints on figure content** (mirrors PLAYBOOK §13 directive on every image asset):
+- No named investment products, tickers, fund names, brokerage or exchange names inside the figure or its caption. Tax-advantaged-account *categories* (401(k), ISA, NPS) are allowed as descriptive references in educational context, never as a directive.
+- Any number that depends on a return or growth assumption is labelled "illustrative" with the assumption (e.g. "5% assumed return") visible inside the figure or the caption directly below it.
+- No specific tax rates or jurisdiction-locked tax math inside the figure.
+- No advice phrasing in figure or caption ("you should buy," "now is a good time").
+- No before/after performance of a real product, no screenshots of brokerage UIs, no product-vs-product comparisons by name.
+
+**Pre-publish checklist (every figure):**
+- [ ] Closes a real comprehension gap, or it gets cut.
+- [ ] Math-anxiety check: would an Eva-type reader treat this as homework? If yes, simplify.
+- [ ] Brand palette via CSS custom properties (no hard-coded hex except `#ffffff` for text-on-color).
+- [ ] Renders cleanly at 320px width (mobile) — text inside SVG ≥ ~14px at viewBox scale, equivalent to ~6–7px at narrowest mobile but still legible because the figure scales smoothly.
+- [ ] Dark-mode pass: no element invisible against `#121212` background.
+- [ ] `<title>` and `<desc>` populated for screen readers; `aria-labelledby` wired up.
+- [ ] If numbers shown: "illustrative" qualifier inside figure or in caption.
+- [ ] No named instrument, ticker, brokerage, or product anywhere in figure or caption.
+- [ ] Caption is one short italic line of context, not a re-explanation.
 
 ---
 

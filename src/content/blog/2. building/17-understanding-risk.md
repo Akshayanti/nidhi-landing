@@ -78,6 +78,32 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 
 *Based on historical returns of broad stock market indices. Past performance does not indicate future results.*
 
+<figure>
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-time-title fig-time-desc">
+  <title id="fig-time-title">Time narrows the range of stock returns</title>
+  <desc id="fig-time-desc">Annualized stock returns over a single year have ranged from roughly minus forty-three percent to plus fifty-four percent in historical data. Over five-year holding periods the range narrows to roughly minus seven to plus twenty-eight. Over ten years it narrows further. Over twenty-year holding periods every observed range was positive, between roughly two and seventeen percent.</desc>
+  <text class="fig-title" x="360" y="48" text-anchor="middle">Time narrows the range</text>
+  <text class="fig-subtitle" x="360" y="76" text-anchor="middle">Range of historical annualized stock returns by holding period</text>
+  <text class="fig-tick" x="190" y="108" text-anchor="start">losses</text>
+  <text class="fig-tick" x="610" y="108" text-anchor="end">gains</text>
+  <line x1="400" y1="118" x2="400" y2="305" class="fig-stroke-rule" stroke-dasharray="3 4" />
+  <text class="fig-tick" x="400" y="324" text-anchor="middle">0%</text>
+  <text class="fig-sublabel" x="100" y="138" text-anchor="end">1 year</text>
+  <rect class="fig-fill-warn" x="185" y="126" width="215" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="400" y="126" width="270" height="22" rx="2" />
+  <text class="fig-sublabel" x="100" y="186" text-anchor="end">5 years</text>
+  <rect class="fig-fill-warn" x="365" y="174" width="35" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="400" y="174" width="140" height="22" rx="2" />
+  <text class="fig-sublabel" x="100" y="234" text-anchor="end">10 years</text>
+  <rect class="fig-fill-warn" x="385" y="222" width="15" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="400" y="222" width="95" height="22" rx="2" />
+  <text class="fig-sublabel" x="100" y="282" text-anchor="end">20 years</text>
+  <rect class="fig-fill-blue" x="410" y="270" width="75" height="22" rx="2" />
+  <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks — then disappears.</text>
+</svg>
+<figcaption>Illustrative; based on broad historical equity index returns. Bar widths represent the historical range, not a forecast.</figcaption>
+</figure>
+
 The pattern is clear: the longer you hold, the narrower the range of outcomes, and the more likely those outcomes are positive. Time doesn't eliminate risk, but it dramatically changes its character.
 
 This is why the [saving vs. investing](/blog/saving-vs-investing) distinction from the previous post maps directly to time horizons. Short-term money (high risk from volatility) goes into savings. Long-term money (low effective risk if you can wait) goes into investments.

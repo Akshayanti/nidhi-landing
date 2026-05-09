@@ -317,6 +317,131 @@ strong {
   background: var(--color-border);
 }
 
+/* ----------------------------------------------------------------- */
+/* Inline figures: SVG diagrams + image embeds inside .prose blocks. */
+/* These rules live in the global stylesheet (not BlogPost.astro)    */
+/* because Astro's scoped CSS does NOT cascade into markdown-rendered */
+/* slot content — the SVG elements never receive the data-astro-cid  */
+/* attribute the scoped selectors require, so scoped rules silently   */
+/* don't apply. Global rules sidestep that entirely.                  */
+/* ----------------------------------------------------------------- */
+
+.prose figure {
+  margin: var(--space-8) 0;
+  text-align: center;
+}
+
+.prose figure svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-white);
+  padding: var(--space-5) var(--space-3);
+  border: 1px solid var(--color-border-light);
+  box-sizing: border-box;
+}
+
+.prose figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-light);
+  box-sizing: border-box;
+}
+
+/* Default figcaption (SVG diagrams): italic narrative context */
+.prose figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: var(--space-3) auto 0;
+  line-height: 1.55;
+  font-style: italic;
+  max-width: 92%;
+}
+
+.prose figcaption a {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+}
+
+.prose figcaption a:hover {
+  color: var(--color-deep-blue);
+  text-decoration-color: currentColor;
+}
+
+/* Photo / image figcaption: attribution + context (non-italic, source-credit feel) */
+.prose figure.figure-photo figcaption {
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  max-width: 88%;
+}
+
+.prose figure.figure-photo figcaption a {
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--color-deep-blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.prose figure.figure-photo figcaption a:hover {
+  color: var(--color-teal);
+  text-decoration-color: currentColor;
+}
+
+/* Semantic SVG classes (referenced inside each figure's <svg>) */
+.prose figure svg .fig-title { font: 700 24px var(--font-heading); fill: var(--color-text-primary); letter-spacing: -0.01em; }
+.prose figure svg .fig-subtitle { font: 400 15px var(--font-heading); fill: var(--color-text-secondary); }
+.prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
+.prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
+.prose figure svg .fig-tick { font: 400 12px var(--font-heading); fill: var(--color-text-muted); }
+.prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: #ffffff; }
+.prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: #ffffff; }
+.prose figure svg .fig-num-blue { font: 700 28px var(--font-heading); fill: var(--color-deep-blue); }
+.prose figure svg .fig-quote-large { font: 600 20px var(--font-heading); fill: var(--color-text-primary); }
+.prose figure svg .fig-quote-small { font: 400 14px var(--font-heading); fill: var(--color-text-muted); font-style: italic; }
+.prose figure svg .fig-eyebrow { font: 700 11px var(--font-heading); fill: var(--color-text-muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+.prose figure svg .fig-fill-blue { fill: var(--color-deep-blue); }
+.prose figure svg .fig-fill-blue-soft { fill: var(--color-deep-blue); fill-opacity: 0.12; }
+.prose figure svg .fig-fill-teal { fill: var(--color-teal); }
+.prose figure svg .fig-fill-teal-soft { fill: var(--color-teal); fill-opacity: 0.14; }
+.prose figure svg .fig-fill-warn { fill: var(--color-warning); }
+.prose figure svg .fig-fill-warn-soft { fill: var(--color-warning); fill-opacity: 0.14; }
+.prose figure svg .fig-fill-success { fill: var(--color-success); }
+.prose figure svg .fig-fill-text { fill: var(--color-text-primary); }
+.prose figure svg .fig-fill-muted { fill: var(--color-border-light); }
+.prose figure svg .fig-fill-card { fill: var(--color-bg); }
+
+.prose figure svg .fig-stroke-blue { stroke: var(--color-deep-blue); fill: none; }
+.prose figure svg .fig-stroke-teal { stroke: var(--color-teal); fill: none; }
+.prose figure svg .fig-stroke-warn { stroke: var(--color-warning); fill: none; }
+.prose figure svg .fig-stroke-muted { stroke: var(--color-text-muted); fill: none; }
+.prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
+.prose figure svg .fig-stroke-card { stroke: var(--color-border); fill: none; }
+
+/* Photo embeds (e.g. xkcd) read better against off-white in dark mode */
+[data-theme="dark"] .prose figure img {
+  background: #f5f5f5;
+}
+
+/* Mobile: tighten figure padding so wide figures fit */
+@media (max-width: 640px) {
+  .prose figure svg { padding: var(--space-3) var(--space-1); }
+  .prose figcaption { font-size: 0.8rem; }
+}
+
 /* Regulatory notice boxes */
 .notice-caution {
   background: var(--notice-caution-bg);

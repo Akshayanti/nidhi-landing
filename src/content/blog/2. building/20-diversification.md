@@ -103,6 +103,45 @@ Imagine two companies. One makes sunscreen, one makes umbrellas. Both are decent
 | **Average return** | **+2.5%** | **+7.5%** | **+5%** |
 | **Volatility** | Very high | Very high | Flat |
 
+<figure>
+<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-divers-title fig-divers-desc">
+  <title id="fig-divers-title">Year-by-year returns: Sunscreen, Umbrella, and a 50/50 portfolio</title>
+  <desc id="fig-divers-desc">Two stylized companies have wildly volatile returns that swing in opposite directions across four years. The 50/50 portfolio combining them returns a steady 5 percent each year. Same average return as either component would have produced over time, almost none of the year-to-year volatility.</desc>
+  <text class="fig-title" x="360" y="48" text-anchor="middle">Two volatile companies, one steady portfolio</text>
+  <text class="fig-subtitle" x="360" y="76" text-anchor="middle">The same numbers from the table above, plotted year by year</text>
+  <line x1="80" y1="273" x2="640" y2="273" class="fig-stroke-rule" stroke-dasharray="3 4" />
+  <text class="fig-tick" x="74" y="277" text-anchor="end">0%</text>
+  <line x1="80" y1="255" x2="640" y2="255" class="fig-stroke-rule" stroke-dasharray="2 3" opacity="0.5" />
+  <text class="fig-tick" x="74" y="259" text-anchor="end">+5%</text>
+  <text class="fig-tick" x="150" y="402" text-anchor="middle">Year 1</text>
+  <text class="fig-tick" x="290" y="402" text-anchor="middle">Year 2</text>
+  <text class="fig-tick" x="430" y="402" text-anchor="middle">Year 3</text>
+  <text class="fig-tick" x="570" y="402" text-anchor="middle">Year 4</text>
+  <polyline class="fig-stroke-warn" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" points="150,166 290,362 430,184 570,344" />
+  <circle cx="150" cy="166" r="5" class="fig-fill-warn" />
+  <circle cx="290" cy="362" r="5" class="fig-fill-warn" />
+  <circle cx="430" cy="184" r="5" class="fig-fill-warn" />
+  <circle cx="570" cy="344" r="5" class="fig-fill-warn" />
+  <polyline class="fig-stroke-teal" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" points="150,344 290,148 430,326 570,166" />
+  <circle cx="150" cy="344" r="5" class="fig-fill-teal" />
+  <circle cx="290" cy="148" r="5" class="fig-fill-teal" />
+  <circle cx="430" cy="326" r="5" class="fig-fill-teal" />
+  <circle cx="570" cy="166" r="5" class="fig-fill-teal" />
+  <polyline class="fig-stroke-blue" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" points="150,255 290,255 430,255 570,255" />
+  <circle cx="150" cy="255" r="6" class="fig-fill-blue" />
+  <circle cx="290" cy="255" r="6" class="fig-fill-blue" />
+  <circle cx="430" cy="255" r="6" class="fig-fill-blue" />
+  <circle cx="570" cy="255" r="6" class="fig-fill-blue" />
+  <line x1="120" y1="436" x2="160" y2="436" class="fig-stroke-warn" stroke-width="2.5" stroke-linecap="round" />
+  <text class="fig-sublabel" x="170" y="440">Sunscreen</text>
+  <line x1="290" y1="436" x2="330" y2="436" class="fig-stroke-teal" stroke-width="2.5" stroke-linecap="round" />
+  <text class="fig-sublabel" x="340" y="440">Umbrella</text>
+  <line x1="455" y1="436" x2="495" y2="436" class="fig-stroke-blue" stroke-width="4" stroke-linecap="round" />
+  <text class="fig-sublabel" x="505" y="440">50 / 50 portfolio</text>
+</svg>
+<figcaption>Illustrative; the values are the ones in the table just above. The two single-company lines whip through wide swings while the combined portfolio stays flat at +5% — that visual flatness is the diversification benefit, made obvious.</figcaption>
+</figure>
+
 Holding either company alone is a rollercoaster. Holding both, in this stylised example, is a steady 5% every year, the average of their returns, with almost none of their volatility, because their movements cancel out. Same average return as you'd get by splitting, much less stress along the way.
 
 Real markets never line up this cleanly, and real correlations shift over time. But the underlying idea is right: combine things that behave differently, and the portfolio becomes smoother than its components.

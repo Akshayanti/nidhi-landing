@@ -590,4 +590,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     .post-nav-link { max-width: 100%; }
     .post-nav-next { text-align: left; }
   }
+
+  /* Note: figure styling (.prose figure, .fig-* classes) lives in
+     src/styles/global.css — Astro's scoped CSS does not cascade into
+     markdown slot content, so figure rules must be global. */
 </style>
