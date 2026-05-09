@@ -180,14 +180,14 @@ A full content audit of the 16 Discovery + (then) 13 Building posts surfaced two
 | **#22 Tax-Advantaged Accounts** | #21 (Taxes) is deliberately abstract — concepts and functional patterns, no jurisdictional products, per MiFID guardrails. But readers making concrete account-selection decisions had no bridge between the concept and regional vehicles. Post #22 maps five functional categories (employer-matched retirement, tax-deferred personal retirement, tax-free-growth personal retirement, purpose-specific, equity-linked with lockup) to regional equivalents (401(k), EPF, ISA, NPS, Roth IRA, SIPP, TFSA, etc.) via comparison tables under rule 7. |
 | **#23 Rebalancing** | Mentioned in passing in #19 (diversification), #21 (taxes), and #31 (dashboard), but no post covered the mechanics — calendar vs threshold vs contribution-based methods, tax-awareness across account types, frequency research, common pitfalls. Load-bearing for readers investing across multiple accounts from #20 onward. |
 
-Plus the Psychology level (10 posts, now #32-41) was added on May 4, 2026 between Building and Optimizing, as behavioural prep for the advanced topics in Optimizing and Mastery where behavioural mistakes cost the most.
+Plus the Psychology level (10 posts, now #33-42) was added on May 4, 2026 between Building and Optimizing, as behavioural prep for the advanced topics in Optimizing and Mastery where behavioural mistakes cost the most.
 
 ### Inline additions folded into existing Building posts
 
 Rather than new standalone posts:
 
 - **Rule of 72** (mental shortcut for compounding) + **lump-sum vs DCA** (evidence-based treatment) → Post #20 Getting Started
-- **Commodities** (raw materials and inflation hedges) + **deliberate cryptocurrency stance** (speculation vs investment, position sizing) → Post #18 Asset Classes
+- **Commodities** (raw materials and inflation hedges) + **deliberate cryptocurrency stance** (speculation vs investment, position sizing) → originally folded into Post #18 Asset Classes; **split out in May 2026** into a dedicated Post #19 *Beyond the Core: Commodities and Cryptocurrency* once it became clear the satellite material distorted the four-core-class framing of #18
 - **Rule 7 supplementation** (regional equity index parallels, cross-continent transaction cost ranges, non-US rent-vs-buy calculators, 4% rule caveats for non-US markets) → Posts #18, #24, #25, #27, #30
 - **Return-convention harmonisation** (5-7% real for developed markets as eurozone default, replacing inconsistent 7-8% claims) → Posts #03, #06, #11, #13, #17, #18
 
@@ -204,7 +204,7 @@ Rather than new standalone posts:
 
 | Concept | Target phase |
 |---------|--------------|
-| Behavioural finance / psychology of money | Psychology (#32-41) |
+| Behavioural finance / psychology of money | Psychology (#33-42) |
 | Sequence-of-returns risk | Mastery |
 | Drawdown strategies, longevity risk | Mastery |
 | Estate planning, wills, beneficiaries | Mastery |
@@ -215,7 +215,7 @@ Rather than new standalone posts:
 ### Known technical debt
 
 - Optimizing currently has a post titled "Portfolio Rebalancing" at its old slot #45. With rebalancing now in Building #23, that slot should either be repurposed (advanced topics: glide paths, sequence-aware rebalancing) or removed when the Optimizing phase is drafted.
-- Post numbers for Psychology, Optimizing, and Mastery in the per-post sections of this document still use pre-May-2026 numbering (30+ instead of 32+). To be renumbered when those phases are drafted.
+- Post numbers for Psychology, Optimizing, and Mastery in the per-post sections of this document still use pre-May-2026 numbering (30+ instead of 33+). To be renumbered when those phases are drafted.
 
 ---
 
@@ -244,9 +244,9 @@ Rather than new standalone posts:
 
 ---
 
-# BUILDING (Posts 17-31)
+# BUILDING (Posts 17-32)
 
-> Putting the pieces together. Risk, investing, and first financial systems. **Reordered and expanded May 2026.** The original Building plan was 13 posts; a coverage audit surfaced two genuine Building-scope gaps (tax-advantaged account selection as distinct from tax concepts, and portfolio rebalancing mechanics) and several in-line content additions (Rule of 72, commodities as an asset class, a deliberate cryptocurrency stance, lump-sum vs DCA). Two new posts added at #22 and #23; inline edits landed in #18 (commodities + crypto) and #20 (Rule of 72 + lump-sum vs DCA). Rule 7 (universal concepts, eurozone defaults, cross-continent examples) applied to #18, #24, #25, #27, #30. The arc now walks a beginner from risk → asset classes → diversification → how to start investing → tax concepts → tax-advantaged vehicles → rebalancing → FIRE → passive income → loans → real estate → multi-currency → goals → metrics → dashboard.
+> Putting the pieces together. Risk, investing, and first financial systems. **Reordered and expanded May 2026.** The original Building plan was 13 posts; a coverage audit surfaced two genuine Building-scope gaps (tax-advantaged account selection as distinct from tax concepts, and portfolio rebalancing mechanics) and several in-line content additions (Rule of 72, commodities as an asset class, a deliberate cryptocurrency stance, lump-sum vs DCA). Two new posts added at #22 and #23; inline edits originally landed in #18 (commodities + crypto) and #20 (Rule of 72 + lump-sum vs DCA). **Further refactor (May 9, 2026):** the commodities + cryptocurrency material was split out of #18 into a new dedicated Post #19, *Beyond the Core: Commodities and Cryptocurrency*, after a length and topic-coherence review concluded the satellite material distorted the four-core-class framing of #18. Posts #19-#31 were renumbered to #20-#32; in-prose "next post" transitions were rewritten to match the new ordering. Rule 7 (universal concepts, eurozone defaults, cross-continent examples) applied to #18, #25, #26, #28, #31. The arc now walks a beginner from risk → asset classes → satellite assets → diversification → how to start investing → tax concepts → tax-advantaged vehicles → rebalancing → FIRE → passive income → loans → real estate → multi-currency → goals → metrics → dashboard.
 
 ### Post 17: Understanding Risk -- What It Actually Means for Your Money
 **Builds on:** Assets (#3), Appreciation/Depreciation (#6), Saving vs Investing (#13)
@@ -258,72 +258,81 @@ Rather than new standalone posts:
 
 ### Post 18: Investing 101 -- Asset Classes and How They Work
 **Builds on:** Assets (#3), Appreciation/Depreciation (#6), Understanding Risk (#17)
-**Key concept:** The four core asset classes: stocks (ownership), bonds (lending), real estate (property), cash equivalents (safety). Plus two satellite sections: commodities (raw materials and inflation hedges) and a deliberate cryptocurrency aside (speculation vs investment, reasonable position sizing). How each generates returns. Historical return ranges (eurozone default 5-7% real for broad stocks, with US data at higher end and emerging markets higher-volatility). Why stocks are volatile short-term but the strongest long-term grower. Why bonds are stable but barely beat inflation. How they work together. Regional equity index parallels named (S&P 500, FTSE All-Share, STOXX 600, Nifty 50, MSCI World).
-**Gloss requirements:** "leverage" (borrowing to invest — amplifies both gains and losses); clarify "capital gains" as the tax-on-sale concept vs "capital appreciation" (rise in asset value before sale); "yield" (annual cash return from the asset as a percentage); "commodity ETF" (fund tracking commodity prices or producers, avoiding physical storage).
-**Forward reference:** Diversification in the next post (#19). Fine per editorial rule 2.
+**Key concept:** The four core asset classes most diversified portfolios are built from: stocks (ownership), bonds (lending), real estate (property), cash equivalents (safety). How each generates returns. Historical return ranges (eurozone default 5-7% real for broad stocks, with US data at higher end and emerging markets higher-volatility). Why stocks are volatile short-term but the strongest long-term grower. Why bonds are stable but barely beat inflation. How they work together. Index funds as the practical entry point. Regional equity index parallels named (S&P 500, FTSE All-Share, STOXX 600, Nifty 50, MSCI World). Commodities and cryptocurrency are mentioned at the end of the comparison and immediately handed off to the dedicated satellite-assets post (#19).
+**Gloss requirements:** "leverage" (borrowing to invest — amplifies both gains and losses); clarify "capital gains" as the tax-on-sale concept vs "capital appreciation" (rise in asset value before sale); "yield" (annual cash return from the asset as a percentage).
+**Forward reference:** Satellite assets in the next post (#19); diversification in the post after (#20). Fine per editorial rule 2.
 **App tie-in (add on launch day):** nidhi tracks all these asset classes with per-asset growth rates and projects their future value.
 
 ---
 
-### Post 19: Diversification -- Why You Don't Put All Your Eggs in One Basket
-**Builds on:** Investing 101 (#18), Assets (#3), Liquidity (#7)
-**Key concept:** Risk reduction through spreading across asset types, geographies, and time (DCA). Concentration risk. How diversification works at the portfolio level. Correlation basics (without the math). The free lunch of finance. Asset allocation introduced here (the specific mix you pick), with a one-paragraph preview of rebalancing that gets fully treated in #23.
+### Post 19: Beyond the Core -- Commodities and Cryptocurrency as Satellite Assets (NEW, May 2026 split)
+**Builds on:** Investing 101 (#18), Understanding Risk (#17), Purchasing Power (#11)
+**Key concept:** **[SPLIT FROM #18 — May 2026]** Two asset types that come up in every investing conversation but don't fit the four-core-class framework. **Commodities** (gold, oil, agricultural products, industrial metals): no cash flow; returns are pure price appreciation; near-zero real returns over long periods (gold ~1% real long-term); legitimate role as inflation and crisis hedge; common 5-10% allocation ceiling, many investors hold none. **Cryptocurrency**: a deliberate aside; closer to speculation than traditional investment because no underlying cash flow; honest treatment of the "digital gold" case; multiple 70-85% drawdowns; reasonable stance is small allocation or none, never borrow to buy, custody risk is real. **Core vs satellite framing**: a comparison table making the structural difference explicit (cash-flow source vs price-only, positive expected real return vs near-zero/unproven, foundation vs satellite). Common mistakes (treating gold as a wealth engine, confusing volatility with return, late-cycle allocation creep, futures complexity, custody risk).
+**Gloss requirements:** "commodity ETF" (fund tracking commodity prices or producers, avoiding physical storage); "satellite allocation"; "self-custody"; "futures roll cost / contango" (one-line teaser if mentioned).
+**Forward reference:** Diversification in the next post (#20). Fine per editorial rule 2.
+**App tie-in (add on launch day):** nidhi tracks commodity and crypto allocations as dedicated asset types and lets users cap them as a satellite percentage of total portfolio.
+
+---
+
+### Post 20: Diversification -- Why You Don't Put All Your Eggs in One Basket
+**Builds on:** Investing 101 (#18), Satellite Assets (#19), Assets (#3), Liquidity (#7)
+**Key concept:** Risk reduction through spreading across asset types, geographies, and time (DCA). Concentration risk. How diversification works at the portfolio level. Correlation basics (without the math). The free lunch of finance. Asset allocation introduced here (the specific mix you pick), with a one-paragraph preview of rebalancing that gets fully treated in #24.
 **Gloss requirements:** "asset allocation" (the specific mix you hold, e.g., 70% stocks / 30% bonds); "rebalancing" (selling what's grown and buying what's lagged to return to your target mix); "correlation" (how two assets move relative to each other).
 **App tie-in (add on launch day):** nidhi shows your asset allocation breakdown -- liquid vs illiquid, by type, by currency -- so you can see concentration at a glance.
 
 ---
 
-### Post 20: Getting Started -- Investment Accounts, Automation, and Your First Steps
-**Builds on:** Diversification (#19), Investing 101 (#18), Budgeting (#14), Cash Flow 101 (#10)
+### Post 21: Getting Started -- Investment Accounts, Automation, and Your First Steps
+**Builds on:** Diversification (#20), Investing 101 (#18), Budgeting (#14), Cash Flow 101 (#10)
 **Key concept:** Types of investment accounts: regular brokerage, tax-advantaged retirement, employer-sponsored (generic, not jurisdiction-specific). Why index funds are commonly cited as a starting point. Dollar-cost averaging: investing a fixed amount regularly removes timing decisions. **Lump-sum vs DCA (new section):** when a one-off amount lands (bonus, inheritance, proceeds), lump-sum investing beats DCA roughly two-thirds of the time historically; DCA on lump sums is a behavioural choice, not a mathematical one. **Rule of 72 (new section):** mental shortcut for doubling time (72 ÷ return rate), placed alongside the existing start-early compounding table. Automation: set it up once, let it run. The power of starting small and early over starting big and late.
-**Gloss requirements:** "index fund" (a fund that mechanically tracks a broad market index, delivering instant diversification at low cost); "dollar-cost averaging" (DCA — investing a fixed amount on a schedule regardless of price); "tax-advantaged" (keep it brief — full treatment in #22); "realize" (tax sense: you owe tax when you sell, not while you hold); "Rule of 72" (divide 72 by your expected annual return to get the number of years for money to double).
-**Forward reference:** Tax concepts in #21, tax-advantaged vehicles in #22, rebalancing in #23. All distance-1 or close to it.
+**Gloss requirements:** "index fund" (a fund that mechanically tracks a broad market index, delivering instant diversification at low cost); "dollar-cost averaging" (DCA — investing a fixed amount on a schedule regardless of price); "tax-advantaged" (keep it brief — full treatment in #23); "realize" (tax sense: you owe tax when you sell, not while you hold); "Rule of 72" (divide 72 by your expected annual return to get the number of years for money to double).
+**Forward reference:** Tax concepts in #22, tax-advantaged vehicles in #23, rebalancing in #24. All distance-1 or close to it.
 **App tie-in (add on launch day):** nidhi tracks recurring contributions (DCA, pension top-ups) as a dedicated asset type and shows their compound impact in projections.
 
 ---
 
-### Post 21: Taxes and Your Financial Plan -- How Taxation Affects Every Decision
-**Builds on:** Getting Started (#20), Cash Flow 101 (#10), Investing 101 (#18)
-**Key concept:** **[GAP FILL — bridges to all downstream Building posts; supports is_tax_advantaged flag]** Taxes reduce your cash flow, your investment returns, and your retirement income. Income tax basics: why your take-home pay differs from your salary. Capital gains: the cost of selling investments at a profit (and why holding period matters). Tax-advantaged accounts: the *concept* of deferring or eliminating tax on investment growth (generic patterns only; vehicle-specific mapping lives in #22). Why pre-tax vs. post-tax contributions matter for retirement. How to think about after-tax returns. The key insight: a 7% return taxed at 25% is a 5.25% return -- and that difference compounds over decades. Kept entirely generic per MiFID II guardrails -- concepts only, no specific tax rates, rules, or products.
+### Post 22: Taxes and Your Financial Plan -- How Taxation Affects Every Decision
+**Builds on:** Getting Started (#21), Cash Flow 101 (#10), Investing 101 (#18)
+**Key concept:** **[GAP FILL — bridges to all downstream Building posts; supports is_tax_advantaged flag]** Taxes reduce your cash flow, your investment returns, and your retirement income. Income tax basics: why your take-home pay differs from your salary. Capital gains: the cost of selling investments at a profit (and why holding period matters). Tax-advantaged accounts: the *concept* of deferring or eliminating tax on investment growth (generic patterns only; vehicle-specific mapping lives in #23). Why pre-tax vs. post-tax contributions matter for retirement. How to think about after-tax returns. The key insight: a 7% return taxed at 25% is a 5.25% return -- and that difference compounds over decades. Kept entirely generic per MiFID II guardrails -- concepts only, no specific tax rates, rules, or products.
 **Gloss requirements:** "marginal vs effective tax rate"; "realized vs unrealized gains"; "tax drag"; "withholding."
 **App tie-in (add on launch day):** nidhi's `is_tax_advantaged` flag on retirement investments and configurable tax rates let you see the impact of taxation on your projections without jurisdiction-specific calculations.
 
 ---
 
-### Post 22: Tax-Advantaged Accounts -- Where to Hold Your Investments (NEW)
-**Builds on:** Taxes (#21), Getting Started (#20)
+### Post 23: Tax-Advantaged Accounts -- Where to Hold Your Investments (NEW)
+**Builds on:** Taxes (#22), Getting Started (#21)
 **Key concept:** **[GAP FILL — jurisdiction-specific vehicle decision, separate from tax concepts]** Every developed economy has purpose-built accounts that reduce or defer tax on investments. Five functional categories: (1) employer-matched retirement (401(k), EPF, Superannuation, KiwiSaver, CPF); (2) tax-deferred personal retirement (Traditional IRA, SIPP, NPS, RRSP); (3) tax-free-growth personal retirement (Roth IRA, ISA, TFSA); (4) purpose-specific (HSA, 529, JISA, Sukanya Samriddhi, FHSA, RESP); (5) equity-linked with lockup (ELSS, VCT, SRS). Universal priority order: employer match → high-interest debt → emergency fund → tax-advantaged retirement → purpose-specific → equity-linked → taxable brokerage. Written under Rule 7: teach by function, map to regional equivalents via comparison tables. Explicit callouts on what the post does not cover (specific contribution limits, withdrawal rules, cross-border complications, inheritance treatment).
 **Gloss requirements:** Every regional vehicle name glossed on first use. "Tax deferral," "tax-free growth," "employer match," "contribution limit" all glossed.
 **App tie-in (add on launch day):** nidhi's `is_tax_advantaged` flag maps cleanly to any of the five functional categories; users can model the tax drag savings across account mixes.
 
 ---
 
-### Post 23: Rebalancing -- How to Keep Your Portfolio on Target (NEW)
-**Builds on:** Diversification (#19), Tax-Advantaged Accounts (#22), Investing 101 (#18)
-**Key concept:** **[GAP FILL — previously only mentioned in passing across #19, #21, #31]** Over time, market movements drift portfolios away from target allocation. A 70/30 drifts to 80/20 after a strong equity year, quietly raising risk. Three methods: calendar-based (annual), threshold-based (5% absolute or 20% relative bands), contribution-based (redirect new money to under-weight assets). Research consensus: more frequent rebalancing does not improve returns; annual or 5%-band is the sweet spot. Tax awareness: rebalance tax-advantaged accounts first (no tax drag); use contribution-based methods for taxable. When not to rebalance (tiny drift, near-retirement glide paths, small accounts). Common mistakes (emotional rebalancing as disguised market timing; ignoring drift for years).
+### Post 24: Rebalancing -- How to Keep Your Portfolio on Target (NEW)
+**Builds on:** Diversification (#20), Tax-Advantaged Accounts (#23), Investing 101 (#18)
+**Key concept:** **[GAP FILL — previously only mentioned in passing across #20, #22, #32]** Over time, market movements drift portfolios away from target allocation. A 70/30 drifts to 80/20 after a strong equity year, quietly raising risk. Three methods: calendar-based (annual), threshold-based (5% absolute or 20% relative bands), contribution-based (redirect new money to under-weight assets). Research consensus: more frequent rebalancing does not improve returns; annual or 5%-band is the sweet spot. Tax awareness: rebalance tax-advantaged accounts first (no tax drag); use contribution-based methods for taxable. When not to rebalance (tiny drift, near-retirement glide paths, small accounts). Common mistakes (emotional rebalancing as disguised market timing; ignoring drift for years).
 **Gloss requirements:** "target allocation," "drift," "rebalancing bands," "tax-loss harvesting" (brief mention), "glide path."
-**Forward reference:** #24 FIRE (distance 1). Fine.
+**Forward reference:** #25 FIRE (distance 1). Fine.
 **App tie-in (add on launch day):** nidhi shows current vs target allocation, flags drift beyond thresholds, and projects the impact of rebalancing across tax-advantaged vs taxable accounts.
 
 ---
 
-### Post 24: Introduction to Financial Independence -- What It Means and Why It Matters
-**Builds on:** Taxes (#21), Tax-Advantaged Accounts (#22), Rebalancing (#23), Saving vs Investing (#13), Investing 101 (#18), Cash Flow 101 (#10)
-**Key concept:** **[GAP FILL — critical for beta FIRE features]** Financial independence = your investments generate enough to cover expenses indefinitely. The core formula: FIRE number = annual expenses / safe withdrawal rate. Four flavors: Lean FIRE (bare minimum), Traditional FIRE (current lifestyle), Fat FIRE (comfortable margin), Coast FIRE (stop saving, let growth do the work). Savings rate as the key lever: why a 50% savings rate reaches FI in ~17 years regardless of income level. **4% rule caveat (strengthened):** US-derived from Trinity Study; non-US readers in higher-inflation or lower-return markets should use 3-3.5% as a more conservative baseline, translating to a target of 28-33× annual expenses rather than 25×. Advanced FIRE (sequence risk, drawdown, SWR deep dive) deferred to Mastery. Crossover point mentioned here; canonical treatment in Passive Income (#25).
+### Post 25: Introduction to Financial Independence -- What It Means and Why It Matters
+**Builds on:** Taxes (#22), Tax-Advantaged Accounts (#23), Rebalancing (#24), Saving vs Investing (#13), Investing 101 (#18), Cash Flow 101 (#10)
+**Key concept:** **[GAP FILL — critical for beta FIRE features]** Financial independence = your investments generate enough to cover expenses indefinitely. The core formula: FIRE number = annual expenses / safe withdrawal rate. Four flavors: Lean FIRE (bare minimum), Traditional FIRE (current lifestyle), Fat FIRE (comfortable margin), Coast FIRE (stop saving, let growth do the work). Savings rate as the key lever: why a 50% savings rate reaches FI in ~17 years regardless of income level. **4% rule caveat (strengthened):** US-derived from Trinity Study; non-US readers in higher-inflation or lower-return markets should use 3-3.5% as a more conservative baseline, translating to a target of 28-33× annual expenses rather than 25×. Advanced FIRE (sequence risk, drawdown, SWR deep dive) deferred to Mastery. Crossover point mentioned here; canonical treatment in Passive Income (#26).
 **Gloss requirements:** "safe withdrawal rate" (SWR); "sequence risk" (one-line teaser); "Coast FIRE."
 **App tie-in (add on launch day):** nidhi calculates all four FIRE numbers and shows when you'll cross each threshold. The free FIRE calculator and Coast FIRE calculator let you explore this before signing up.
 
 ---
 
-### Post 25: Passive Income Streams -- Making Your Money Work Without You
-**Builds on:** Introduction to FI (#24), Income vs Wealth (#9), Investing 101 (#18), Cash Flow 101 (#10)
-**Key concept:** Types of passive income: dividends, rental income, interest, royalties, side business revenue. **The crossover point (canonical introduction here):** when investment income exceeds expenses — the moment you're financially independent in cash-flow terms. Realistic expectations: truly passive income requires upfront capital or effort. Yield vs total return. How passive income accelerates FIRE. Tax treatment of different passive income types references #21. **4% caveat added:** non-US readers typically use 3-3.5% SWR (28-33× expenses) instead of 25×.
+### Post 26: Passive Income Streams -- Making Your Money Work Without You
+**Builds on:** Introduction to FI (#25), Income vs Wealth (#9), Investing 101 (#18), Cash Flow 101 (#10)
+**Key concept:** Types of passive income: dividends, rental income, interest, royalties, side business revenue. **The crossover point (canonical introduction here):** when investment income exceeds expenses — the moment you're financially independent in cash-flow terms. Realistic expectations: truly passive income requires upfront capital or effort. Yield vs total return. How passive income accelerates FIRE. Tax treatment of different passive income types references #22. **4% caveat added:** non-US readers typically use 3-3.5% SWR (28-33× expenses) instead of 25×.
 **Gloss requirements:** "dividend"; "coupon"; "yield vs total return"; "crossover point."
 **App tie-in (add on launch day):** nidhi tracks active and passive income separately and projects the crossover point where passive income covers your expenses.
 
 ---
 
-### Post 26: Understanding Loan Terms -- How to Compare Borrowing Options
+### Post 27: Understanding Loan Terms -- How to Compare Borrowing Options
 **Builds on:** Liabilities (#4), Credit and Credit Scores (#15), Cash Flow 101 (#10)
 **Key concept:** **[GAP FILL — critical for loan comparison feature]** When you borrow, the interest rate is only part of the cost. APR vs. nominal rate. Fixed vs. variable rates. Amortisation mechanics. Total cost of borrowing. How to compare loan offers side by side. Discount points and break-even analysis. Refinancing. Prepayment. Kept generic -- jurisdiction-agnostic.
 **Gloss requirements:** "APR"; "amortisation"; "principal"; "IRR" (if used).
@@ -331,51 +340,51 @@ Rather than new standalone posts:
 
 ---
 
-### Post 27: Real Estate as an Investment -- Beyond Just Owning a Home
-**Builds on:** Loan Terms (#26), Assets (#3), Investing 101 (#18), Liabilities (#4)
+### Post 28: Real Estate as an Investment -- Beyond Just Owning a Home
+**Builds on:** Loan Terms (#27), Assets (#3), Investing 101 (#18), Liabilities (#4)
 **Key concept:** Real estate as an asset class vs stocks/bonds. Leverage. Illiquidity. Rental yield vs appreciation. Total return including maintenance, taxes, vacancy. Why "renting is throwing money away" is a myth. Rent-vs-buy calculations. The dual nature of a home. **Rule 7 applied:** transaction-cost-variation callout (2-4% US / 5-8% UK / 7-12% India / 10-15% parts of EU); regional rent-vs-buy calculator references (NYT US-tuned, UK MoneyHelper, India's Magicbricks/NoBroker).
 **Gloss requirements:** "home equity"; "underwater"; "gross yield vs net yield."
 **App tie-in (add on launch day):** nidhi tracks real estate with appreciation rates and models mortgage amortisation.
 
 ---
 
-### Post 28: Managing Money Across Currencies -- When Your Finances Cross Borders
-**Builds on:** Diversification (#19), Euro Buys More (#12), Purchasing Power (#11)
+### Post 29: Managing Money Across Currencies -- When Your Finances Cross Borders
+**Builds on:** Diversification (#20), Euro Buys More (#12), Purchasing Power (#11)
 **Key concept:** Multi-currency net worth fluctuates with exchange rates even when nothing else changes. Currency concentration as undiversification. Which currency to hold savings in. When currency diversification helps vs adds complexity.
 **Gloss requirements:** "FX spread"; "currency hedging."
 **App tie-in (add on launch day):** nidhi tracks 150+ currencies with live ECB rates, shows net worth by currency, and flags currency concentration.
 
 ---
 
-### Post 29: Setting Financial Goals -- From Vague Wishes to Concrete Targets
-**Builds on:** Investing 101 (#18), Taxes (#21), Introduction to FI (#24), Emergency Fund (#8), Cash Flow 101 (#10)
-**Key concept:** A goal without a number and a date is just a wish. Translating "buy a house" into "€40,000 in 5 years = €X/month at Y% return." Short/medium/long-term buckets. Prioritising competing goals. The cost of delaying. All target amounts presented in after-tax terms (uses #21).
+### Post 30: Setting Financial Goals -- From Vague Wishes to Concrete Targets
+**Builds on:** Investing 101 (#18), Taxes (#22), Introduction to FI (#25), Emergency Fund (#8), Cash Flow 101 (#10)
+**Key concept:** A goal without a number and a date is just a wish. Translating "buy a house" into "€40,000 in 5 years = €X/month at Y% return." Short/medium/long-term buckets. Prioritising competing goals. The cost of delaying. All target amounts presented in after-tax terms (uses #22).
 **Gloss requirements:** "future value"; "present value."
 **App tie-in (add on launch day):** nidhi's projection engine lets you model whether you'll hit your targets at your current pace.
 
 ---
 
-### Post 30: Financial Health Metrics -- How to Know If You're on Track
-**Builds on:** Goals (#29), Cash Flow 101 (#10), Emergency Fund (#8), Liabilities (#4)
+### Post 31: Financial Health Metrics -- How to Know If You're on Track
+**Builds on:** Goals (#30), Cash Flow 101 (#10), Emergency Fund (#8), Liabilities (#4)
 **Key concept:** Beyond net worth: the key ratios. Debt-to-asset ratio. Emergency fund coverage. Savings rate. Income replacement ratio. Liquid asset percentage. Debt-to-income ratio. What "healthy" looks like for each. **4% caveat added near the 100% income replacement threshold:** non-US readers should use 3-3.5% SWR; the FI threshold shifts to roughly 28-33× expenses.
 **Gloss requirements:** "loan-to-value"; "debt-to-income"; "income replacement ratio."
 **App tie-in (add on launch day):** nidhi calculates debt-to-asset ratio, liquid/illiquid split, savings rate, and income replacement metrics automatically.
 
 ---
 
-### Post 31: Your Financial Dashboard -- What to Track and How Often
+### Post 32: Your Financial Dashboard -- What to Track and How Often
 **Builds on:** All previous posts (capstone for Building)
-**Key concept:** What to monitor: net worth (monthly), savings rate (monthly), cash flow (monthly), asset allocation (quarterly), projection vs actual (annually). Over-checking creates anxiety, under-checking creates drift. Signals vs noise. Pulls together every metric from #30 into a review cadence. Natural handoff into the beta launch post.
+**Key concept:** What to monitor: net worth (monthly), savings rate (monthly), cash flow (monthly), asset allocation (quarterly), projection vs actual (annually). Over-checking creates anxiety, under-checking creates drift. Signals vs noise. Pulls together every metric from #31 into a review cadence. Natural handoff into the beta launch post.
 **Gloss requirements:** "drift"; "lifestyle creep / lifestyle inflation."
 **App tie-in (add on launch day):** nidhi is designed as your financial dashboard -- net worth snapshots, cash flow tracking, FIRE progress, and projection updates, all in one place.
 
 ---
 
-# PSYCHOLOGY (Posts 32-41)
+# PSYCHOLOGY (Posts 33-42)
 
 > You know the fundamentals and have built first systems. Now meet the opponent: your own brain. Behavioural finance explains why smart people consistently make predictable money mistakes — and how to build systems that beat your biases. This series is the bridge into Optimizing: you can't fine-tune what your biases keep undoing.
 
-> **Renumbering note:** the per-post entries below still carry their pre-May-2026 numbers (30-39). These will be bumped by +2 (to 32-41) when the Psychology posts are actually drafted. Cross-references in this document that point *to* Psychology posts still use the old numbers internally; cross-references that point from Psychology *back to* Building have been updated to the new Building numbering.
+> **Renumbering note:** the per-post entries below still carry their pre-May-2026 numbers (30-39). These will be bumped by +3 (to 33-42) when the Psychology posts are actually drafted. Cross-references in this document that point *to* Psychology posts still use the old numbers internally; cross-references that point from Psychology *back to* Building have been updated to the new Building numbering.
 
 ### Post 30: Why Smart People Make Dumb Money Decisions
 **Builds on:** All Discovery and Building content (capstone intro to the series)
@@ -447,7 +456,7 @@ Rather than new standalone posts:
 
 ---
 
-# OPTIMIZING (Posts 42-53)
+# OPTIMIZING (Posts 43-54)
 
 > Fine-tuning what works. Projections, scenario modelling, and applied planning. With Psychology as prep, you're less likely to let biases undo the optimisation.
 
@@ -537,7 +546,7 @@ Rather than new standalone posts:
 
 ---
 
-# MASTERY (Posts 54-65)
+# MASTERY (Posts 55-66)
 
 > The long game. Financial independence, retirement, and advanced strategies.
 
@@ -663,37 +672,38 @@ Net worth → assets → liabilities → debt payoff → compounding → liquidi
 15. Credit and Credit Scores
 16. Insurance Basics
 
-### Building (17-31) — first systems
+### Building (17-32) — first systems
 
-Risk → asset classes (incl. commodities + crypto stance) → diversification → getting started (incl. DCA, lump-sum, Rule of 72) → tax concepts → tax-advantaged vehicles → rebalancing → FIRE intro → passive income → loan terms → real estate → multi-currency → goals → health metrics → dashboard.
+Risk → asset classes (four core) → satellite assets (commodities + crypto stance) → diversification → getting started (incl. DCA, lump-sum, Rule of 72) → tax concepts → tax-advantaged vehicles → rebalancing → FIRE intro → passive income → loan terms → real estate → multi-currency → goals → health metrics → dashboard.
 
 17. Understanding Risk — Mon May 25
 18. Investing 101: Asset Classes — Wed May 27
-19. Diversification — Fri May 29
-20. Getting Started — Mon Jun 1
-21. Taxes and Your Financial Plan — Wed Jun 3
-22. **Tax-Advantaged Accounts** (NEW) — Fri Jun 5
-23. **Rebalancing** (NEW) — Mon Jun 8
-24. Introduction to Financial Independence — Wed Jun 10
-25. Passive Income Streams — Fri Jun 12
-26. Understanding Loan Terms — Mon Jun 15
-27. Real Estate as Investment — Wed Jun 17
-28. Multi-Currency — Fri Jun 19
-29. Setting Financial Goals — Mon Jun 22
-30. Financial Health Metrics — Wed Jun 24
-31. Financial Dashboard — **Fri Jun 26 → BETA LAUNCH**
+19. **Beyond the Core: Commodities and Cryptocurrency** (NEW, May 2026 split from #18) — Fri May 29
+20. Diversification — Mon Jun 1
+21. Getting Started — Wed Jun 3
+22. Taxes and Your Financial Plan — Fri Jun 5
+23. **Tax-Advantaged Accounts** (NEW) — Mon Jun 8
+24. **Rebalancing** (NEW) — Wed Jun 10
+25. Introduction to Financial Independence — Fri Jun 12
+26. Passive Income Streams — Mon Jun 15
+27. Understanding Loan Terms — Wed Jun 17
+28. Real Estate as Investment — Fri Jun 19
+29. Multi-Currency — Mon Jun 22
+30. Setting Financial Goals — Wed Jun 24
+31. Financial Health Metrics — Fri Jun 26
+32. Financial Dashboard — **Mon Jun 29 → BETA LAUNCH**
 
-### Psychology (32-41) — behavioural layer
+### Psychology (33-42) — behavioural layer
 
 Added May 2026. Bridges Building → Optimizing. Bias-awareness before fine-tuning. Why Smart People → loss aversion → mental accounting → present bias → overconfidence → framing/anchoring → herd behaviour → narrative economics → money scripts → anti-bias systems.
 
-### Optimizing (42-53) — fine-tuning
+### Optimizing (43-54) — fine-tuning
 
 Projections → cash flow forecasting → what-if → life events → invest-vs-debt → portfolio review → fees → benchmarking → Monte Carlo → geographic arbitrage → income replacement → invest-vs-debt advanced.
 
-> Note: "Portfolio Rebalancing" previously in this phase at #45 is now redundant with Building #23. Slot to be repurposed (advanced rebalancing: glide paths, sequence-aware) or removed when Optimizing is drafted.
+> Note: "Portfolio Rebalancing" previously in this phase at the old #45 is now redundant with Building #24. Slot to be repurposed (advanced rebalancing: glide paths, sequence-aware) or removed when Optimizing is drafted.
 
-### Mastery (54-65) — late-stage
+### Mastery (55-66) — late-stage
 
 Advanced FIRE → SWR → retirement planning → sequence risk → longevity → pensions → tax-aware investing → withdrawal sequencing → international retirement → estate planning → generational wealth → capstone.
 

@@ -178,4 +178,4 @@ Think of insurance as the defensive layer around your net worth. It doesn't grow
 
 Insurance isn't exciting. It doesn't grow your wealth or move your net worth chart upward. But it prevents a single bad day from undoing years of progress. The best insurance is the kind you never need to use, and having it lets you take the right financial risks knowing your downside is contained.
 
-This completes the Discovery level. You now have the full foundation: net worth, assets, liabilities, debt, cash flow, compound growth, inflation, purchasing power, time value of money, saving versus investing, credit, and insurance. Next, we move to the Building level, where you start turning knowledge into a working system, beginning with budgeting.
+This completes the Discovery level. You now have the full foundation: net worth, assets, liabilities, debt, cash flow, compound growth, inflation, purchasing power, time value of money, saving versus investing, credit, and insurance. Next, we move to the Building level, where you start turning knowledge into a working system, beginning with what risk actually means once you stop avoiding it and start using it.
