@@ -17,15 +17,21 @@ bond, yield, leverage, amortisation, APR, dollar-cost averaging, index fund, ETF
 
 If a reader encounters the term without the gloss, the post has failed. Use a parenthetical ("bonds — loans you make to governments or companies") or a one-sentence aside before relying on the term.
 
-### 2. Forward references are cheap only at distance 1
+### 2. Forward references are cheap only at distance 1, and never as hyperlinks
 
 A post may say "we'll cover X in the next post" or "more on Y in post N+1." That's acceptable.
 
 A post may **not** use a term as if understood when the dedicated introduction is 3+ posts away. If you find yourself writing "diversification" three posts before the Diversification post, either:
 - Move the Diversification post earlier, or
-- Add a paragraph-long inline introduction here and cross-link forward.
+- Add a paragraph-long inline introduction here.
 
 Whenever a post depends on a concept introduced later, that's a structural bug. Reorder, don't paper over.
+
+**No hyperlinks to unpublished posts.** Every internal `/blog/<slug>` link in a post body must point to a post whose `pubDate` is on or before the linking post's own `pubDate`. The site is built statically with `getStaticPaths` filtering on `pubDate <= now` (see `src/pages/blog/[slug].astro`), so a link to a future-dated post 404s for every reader who clicks it between the linking post going live and the target post going live, which can be days or weeks. Backward links (to earlier-dated posts in the same series) are fine and encouraged.
+
+When you need to flag a topic that's covered later in the series, write it as plain prose: *"we cover this in a later post on managing money across currencies"* or *"the rebalancing post later in this series goes into detail."* No `[anchor](/blog/...)` markup. Once the target post ships, you can come back and add the link if it adds reader value, but shipping the link before the target is live is never acceptable.
+
+**Check before shipping:** for every `/blog/<slug>` in the post body, confirm the target's `pubDate` is `<=` this post's `pubDate`. The grep `rg '\]\(/blog/[a-z0-9-]+\)' src/content/blog/<this-post>.md` lists them all in seconds.
 
 ### 3. Reading-order check before publishing
 
@@ -111,6 +117,64 @@ Replace with one of:
 **Not in scope:** the site's own operating currency (INR for pricing). This rule governs educational content, not commercial or pricing copy.
 
 **Check before shipping a Building+ post:** does it name its eurozone defaults, and does it supplement with at least one cross-continent comparison (named equivalents, a comparison table, a range, or an explicit caveat) where readers in other regions would otherwise get stuck?
+
+### 8. Memes and comics in post bodies
+
+Memes and comics (xkcd panels, screenshot-style humor, globally legible reaction stills) are permitted to break up dense sections, soften pain points, and improve dwell time. They are not required, and most posts ship without them. Treat them as a sharpening tool, not a default ingredient.
+
+**Cadence by level (rough targets, not quotas):**
+- **Discovery (1-16):** ~0 per post. Readers are orienting; in-jokes alienate. Ship clean prose.
+- **Building (17-32):** 0-1 per post, ~25% of posts overall. Best fit on lifestyle inflation, investing fundamentals, FIRE, planning topics.
+- **Psychology (33-42):** 1-2 per post, ~70% of posts. Highest-leverage series for memes — the topic *is* "your brain sabotages the math," which is what memes have always been good at.
+- **Optimizing / Mastery:** 0-1 per post. Skip on heavy topics (estate planning, longevity, drawdown, healthcare).
+
+**Skip entirely on stress / fear-state posts:** #5 (Debt), #16 (Insurance Basics), #27 (Loan Terms), #28 (Real Estate as an Investment), the beta launch announcement, and any future Mastery posts on estate planning, longevity risk, healthcare costs. Readers arrive worried; humor reads as flippant.
+
+**Source priority:**
+1. **xkcd** — globally legible, smart-coded, pre-AI visual signature (a credibility signal in 2026), CC BY-NC 2.5 license. Best fit for Building, Psychology, Optimizing posts. Embed via the canonical `xkcd.com` URL with attribution and a link back to the source comic. If the blog ever adds ads, sponsorships, or commercial CTAs beyond the nidhi app handoff, revisit Munroe's commercial-use policy — strict reading puts that into "permission required" territory.
+2. **Screenshot-style memes** — fake DMs, fake search results, fake notifications. Universal format, language-light, ages well across the global expat audience.
+3. **Globally released movie stills** — Lord of the Rings, Spider-Man pointing, Inception, Shrek. Avoid Disney/Nintendo where any commercial footprint exists.
+
+**Avoid:**
+- **2020-2023 templates** — Drake-pointing, Distracted Boyfriend, Galaxy Brain, "nobody: / me:", Woman Yelling at Cat. These read as out-of-touch.
+- **AI-generated memes.** Audience is hypersensitive to AI visual signatures in 2026; even a good joke registers as low-effort once the look is recognized.
+- **US-only cultural memes** — The Office, Parks & Rec, Seinfeld reaction stills. The audience is global ex-North America (PLAYBOOK §1); these references don't carry.
+- **Country-specific memes** (Bollywood, Asterix, German humor formats) unless the post is specifically about that geography. Don't bias toward Indian-diaspora memes because of the brand name — PLAYBOOK §1 explicitly pushes back on over-indexing on India.
+
+**MiFID-safe directive (hard rules — every meme is bound by these).** The site is positioned as education, not advice, and the rest of the editorial guard rails (Rule 7, MiFID/CNB section at the foot of this document) apply equally to images, comics, and meme captions. A meme that breaks any of the rules below is dropped, regardless of how good the joke is. The cost of a regulatory issue is much higher than the upside of one extra meme.
+
+1. **No named investment products.** No specific stock tickers, fund names, ETF tickers, crypto coins, brokerage names, robo-advisor names, bank product names. The only named "products" allowed are tax-advantaged-account *categories* already named in the post body under Rule 7 (e.g., 401(k), ISA, NPS), and only as a category list, never as a recommendation.
+2. **No return guarantees, no forecasts presented as fact.** Any number in a meme that depends on a return assumption (cost-of-delay, savings-rate-to-FI, future value of monthly contribution) must carry an inline label visible inside the image: "illustrative," "example," or "assumes X% return — past performance is not a forecast." If the meme can't fit the disclaimer visually, drop the meme or rewrite without the number.
+3. **No specific tax rates or jurisdiction-locked tax math.** A meme can show "tax drag eats your return" conceptually; it cannot show "30% capital gains in Germany" or "0% under ISA up to £20K." Jurisdiction-specific numbers are body content under Rule 7, not meme content.
+4. **No language that reads as advice.** Forbidden phrasings inside meme art or its surrounding caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "common patterns," "the math says," "research suggests," "behavioural framing."
+5. **No before/after wealth charts tied to a specific product.** "If you'd invested €1,000 in [Apple / Bitcoin / Tesla] in 2010..." is hindsight performance marketing dressed as a meme. Forbidden. Generic compound-interest curves with no product name attached are fine.
+6. **No screenshots of brokerage apps, exchange UIs, or trading interfaces.** They read as endorsement (or anti-endorsement) of the platform shown. Use generic phone-UI styling instead.
+7. **No comparing specific named products.** "ETF A vs ETF B" is comparative advice. "Active funds tend to underperform passive funds over 10+ years (research aggregate)" with no product named is fine.
+8. **Behavioural and conceptual content only.** The MiFID-safe meme zone is: cognitive biases, lifestyle inflation, planning fallacy, present bias, compounding regret, "everyone thinks they're above average," the gap between knowing and doing, time-horizon framing, savings-rate paradox, the freedom-vs-salary point.
+
+**Pre-publish checklist (every meme, both blog and IG):**
+- [ ] No named instrument, fund, ticker, coin, exchange, or platform in image or caption?
+- [ ] If numbers are shown: are they labeled "illustrative" with the assumption (X% return, Y% inflation, Z% SWR) visible *inside the image* (not just in surrounding prose, since the image circulates standalone on IG)?
+- [ ] No phrasing that reads as "buy this" / "do this now" / "miss out otherwise"?
+- [ ] No specific tax rates, contribution limits, or jurisdiction-locked math inside the image?
+- [ ] No before/after performance of a real product?
+- [ ] If unsure on any of the above: drop the meme or replace with prose.
+
+**Safe meme territory recap.** Behavioural traps, lifestyle inflation, the gap between knowing and doing, compounding regret, "everyone thinks they're an above-average investor," planning fallacy, present bias, savings-rate-as-master-lever, the absurdity of differing tax-account standards across countries.
+
+**Placement rules:**
+- **Never the hero image.** The first thing a reader sees should be the concept, not a joke.
+- Place after a pain point (amplification) or before a solution reveal (tension break), not in introductions.
+- **Max 1-2 per post.** More than that reads as a meme post, not an authority post.
+
+**Mechanical rules:**
+- **Alt text is mandatory** on every embedded meme. Accessibility plus Google's multimodal indexing reads it (more important post-AI Overviews).
+- **Surrounding prose complies with Rule 6** — no typographic dashes in caption/alt text.
+- **Don't explain the joke in the body.** If the meme needs explaining, it's the wrong meme.
+
+**Check before shipping:** does the meme add genuine value (pain-point amplification, tension break, punchline) or is it decoration? If decoration, drop it. A weak meme is worse than no meme.
+
+**Cross-reference:** the carousel-side rules (Slide placement, no memes in stories, source priority for IG) live in `PLAYBOOK.md` §14. Blog and Instagram share source priorities and avoid lists; the cadence and placement rules differ because the formats differ.
 
 ---
 
@@ -785,6 +849,28 @@ Blog posts are public educational content ("issued exclusively for the public") 
 
 Reference: `/docs/strategy/regulatory-advisory-classification.md` (7 bright lines)
 
+### Directive philosophy: bright lines are narrow on purpose
+
+The bright lines below cover a small, specific set of regulatory risks. They are **not** a license to hedge every direct sentence, soften every imperative verb, or insert defensive parentheticals into body prose. Educational content for non-finance-degree readers (Eva, Marcus, Petra, Tomas, Jiri) lives or dies on directness; defensive hedging is itself a content-quality failure.
+
+What MiFID II / CNB actually cares about for a public educational blog:
+- Specific financial **instruments** named as buys ("buy ETF X," "Tesla stock will keep climbing")
+- **Forecasts** presented as facts ("stocks will return 7% next year")
+- **Personalized** tax math ("your German capital gains tax on this sale would be €X")
+- **Ranked** personal actions for an individual reader ("for you, the #1 thing to do is…")
+- **Monte Carlo / probability** results presented as predictions ("you have a 73% chance of retiring at 55")
+- Specific **products / platforms / fund families** recommended as buys
+
+What MiFID II / CNB does **not** care about:
+- Imperative voice in general behavioural guidance ("pay off high-interest debt first")
+- The word "guaranteed" in clear math or inflation contexts ("paying off a 20% credit card is the highest guaranteed return you can get" — that's debt arithmetic, not a product return claim)
+- Direct teaching style with strong opinions ("don't let account choice delay investing")
+- General financial common-sense rules ("capture the full employer match before optimising elsewhere")
+
+When in doubt, ask: **is this a personal recommendation about a specific financial instrument to a specific reader, or is it general behavioural / mathematical / educational content?** Only the former triggers the bright lines. The latter is what the blog exists to publish.
+
+The single highest-leverage compliance fix is **D-4 (site-wide compliance footer rendered into the blog template)**, which carries the residual risk and lets body prose stay direct. Implement that first; treat everything else as fine-tuning.
+
 ### Per-Post Guardrails
 
 | Post | Risk | Guardrail |
@@ -820,6 +906,103 @@ Reference: `/docs/strategy/regulatory-advisory-classification.md` (7 bright line
 3. **Use "common guideline" language.** "A common guideline is 3-6 months" not "you need 6 months."
 4. **Keep tax references generic.** Never name jurisdiction-specific rules, rates, or products.
 5. **Historical framing for returns.** "Stocks have historically returned ~7% annually" not "stocks return 7%."
+
+### D-Series Directives (added May 2026 from compliance audit; revised same-month after over-correction review)
+
+These supplement the 7 bright lines and the 5 general rules above. Failures observed in the May 2026 audit are codified here. The audit's first pass produced over-broad rules that hurt readability without reducing real risk; the directives below are the narrowed versions that survived a second-pass review with the founder. **Read the "Directive philosophy" section above before applying any of these.**
+
+#### D-1. "Guaranteed" word ban — narrow scope
+
+**Banned only when modifying a financial instrument or product.** Examples that remain banned:
+- "ETF X has guaranteed returns of 8%"
+- "This fund offers a guaranteed yield"
+- "Crypto Y has guaranteed upside"
+- "Buy this and you're guaranteed to make money"
+- Any context where "guaranteed" attaches to a tradeable security or named investment product
+
+**Allowed:** "guaranteed" in clear math, inflation, or behavioural-arithmetic contexts where the subject is a financial *action* (debt payoff) or a *mathematical certainty* (inflation eroding cash), not an investment product. Examples that stay unchanged:
+- "Paying off a 20% credit card is the highest guaranteed return you can get" (debt math)
+- "Cash held at 0% in 2% inflation is a guaranteed slow loss" (inflation math)
+- "Capturing a 100% employer match is a guaranteed doubling of every euro up to the cap" (contractual scheme math)
+- "Prepayment is a guaranteed return equal to the loan's rate" (debt math)
+
+Rule of thumb: if the word "guaranteed" attaches to *the name of a financial product or instrument*, drop it. If it attaches to *math* (debt rates, inflation, employer-scheme contracts), it stays.
+
+#### D-2. Citation hygiene for fund families and asset managers — body vs footnote
+
+**Body prose:** don't name fund families or asset managers (Vanguard, BlackRock, Fidelity, Morningstar, Schwab, T. Rowe Price, etc.) as the authority for a research claim. Use generic attribution ("industry research," "academic and industry studies," "multi-decade market research") instead.
+
+**Referential reading section:** named sources are fine; this is where citations belong. Where a source is structurally important and the firm's name is unavoidable, use a softer title ("Industry research on rebalancing frequency" rather than "Vanguard research on rebalancing frequency") with the URL preserved.
+
+**Avoid the body-prose parenthetical "(citation, not endorsement)"** — it's compliance theatre that hurts readability without protecting against anything. Keep citation hygiene out of body voice; handle it through choice of attribution and through the referential-reading list.
+
+If the named source is academic (e.g., the Trinity Study), use the academic name. The Trinity Study is fine in body prose; "Vanguard's safe withdrawal research" is not.
+
+#### D-3. Mandatory acronym gloss list
+
+Every occurrence of these acronyms requires a first-use gloss within ~50 characters of the first appearance. The gloss must appear in the body the first time the term is used outside the tldr.
+
+**Retirement / tax-advantaged:** 401(k), 403(b), IRA, Roth IRA, ISA, SIPP, NPS, EPF, RRSP, TFSA, ELSS, HSA, FHSA, JISA, RESP, KiwiSaver, CPF, Superannuation.
+
+**Credit / scoring:** FICO, SCHUFA, CIBIL, Experian, Equifax.
+
+**Investing:** ETF, REIT, ESG, NAV, AUM, AMC.
+
+**Lending / planning:** APR, APY, IRR, NPV, SWR, FIRE, DCA, LTV, DTI, PMI.
+
+**Tax:** LTCG, STCG, GST, VAT.
+
+Canonical gloss patterns (use these, don't reinvent):
+- 401(k) → "(US employer-sponsored retirement account)"
+- IRA → "(Individual Retirement Account, US)"
+- Roth IRA → "(US tax-free-growth retirement account)"
+- ETF → "(Exchange-Traded Fund — a fund traded on an exchange like a stock)"
+- ISA → "(Individual Savings Account, UK)"
+- NPS → "(National Pension System, India)"
+- EPF → "(Employees' Provident Fund, India)"
+- FICO → "(US credit-scoring system)"
+- SCHUFA → "(German credit-scoring system)"
+- CIBIL → "(Indian credit-scoring system)"
+- SWR → "(Safe Withdrawal Rate)"
+- DCA → "(Dollar-Cost Averaging — investing a fixed amount on a schedule)"
+
+This is just Rule 1 enforced consistently for the acronyms most prone to drift through unglossed.
+
+#### D-4. Site-wide MiFID II / CNB compliance footer (template-rendered) — SHIPPED
+
+Every blog post renders a standard compliance footer at the bottom, rendered into `src/layouts/BlogPost.astro` (the `.disclaimer` div near the foot of the article). Current copy:
+
+> *A quick note: This article is educational content, not investment advice or a personal recommendation under MiFID II. Examples, historical figures, and any projections are illustrative and don't predict future results. Tax treatment depends on your country and personal situation. For decisions that meaningfully affect your finances, a qualified or regulated adviser can help apply these ideas to your circumstances.*
+
+The footer is unconditional — it appears on every post, no frontmatter flag required, no per-post authoring. Updating the copy is a one-line change in the layout.
+
+**Why this is the highest-leverage rule:** it carries the residual regulatory risk in one structural place and lets body prose stay direct, punchy, and Eva-readable. Almost every "soften this sentence" reflex in finance writing is a workaround for the absence of a standing disclaimer; this disclaimer makes those workarounds unnecessary.
+
+**Complementary inline notices** (already in the layout, separate from D-4): for posts flagged `regulatoryNote: "caution"` (projections-heavy posts) and `regulatoryNote: "danger"` (tax-touching posts), `BlogPost.astro` renders an additional notice block at the *top* of the post body. That covers the higher-risk subset; D-4 covers everything universally.
+
+**Status:** SHIPPED (May 2026). Audit-flagged inline caveats (#25 4% rule, #28 transaction costs, etc.) remain in body prose where they add reader value — they're now reinforcement, not the primary regulatory anchor.
+
+#### D-5. Priority-order framing — soften the header, keep the list direct
+
+When a post lists a numbered ordering of recommended actions (priority of debt vs investing vs emergency fund, account contribution order, etc.), **the header and lede should signal "this is widely cited, not personally prescribed"** — but the list items themselves can stay direct.
+
+Header / lede patterns:
+- ✅ "A widely cited priority order"
+- ✅ "The general rule"
+- ✅ "Most personal-finance literature converges on this ordering"
+- ❌ "The universal priority order"
+- ❌ "The rule for everyone"
+- ❌ "Mandatory ordering"
+
+List items: imperative voice is fine. "Capture the employer match first," "Pay down high-interest debt," "Build an emergency fund" — these are general behavioural rules of thumb, not personal recommendations about specific instruments. Keep them direct.
+
+Closer paragraph: state that legitimate reasons exist to deviate (debt distress, irregular income, near-term liquidity, jurisdictional quirks) and that the list is a strong default rather than a forced sequence.
+
+#### D-6. Struck
+
+The original D-6 was an imperative-mood lint extending Rule 2 into general writing style. It was scope creep: imperative voice on general behavioural guidance ("pay off high-interest debt") is not what MiFID II flags. Rule 2 already covers the actual risk ("you should buy [specific instrument]"). D-6 is removed from this section.
+
+If a future audit surfaces specific imperative-voice patterns that genuinely cross into instrument-recommendation territory, address them as Rule 2 violations on a case-by-case basis — not as a general writing-style ban.
 
 ---
 

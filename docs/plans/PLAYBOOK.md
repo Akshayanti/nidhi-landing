@@ -471,10 +471,84 @@ Chronological log of decisions made during playbook development. Update as you i
 | 23 | 18–24 keywords per post (not 100+), translate only when the word is meaningfully different | First pass generated ~120 tokens per post (every concept in every language). That overshoots the sweet spot documented in creator benchmarks (Later, Metricool, IG partner data 2024–2025 → peak performance at 10–25 keywords; reach drops above ~30; >60 triggers the "recommended to non-followers" spam filter). Fix: 4–6 topic concepts + 2–3 audience + 2–3 geo + 1–2 anchors = ~22 keywords. Translate a concept only when the native word is (a) meaningfully different from English and (b) a plausible search query in that language. Skip `inflation`, `budget`, `euro`-class cognates — they already cover cross-lingual search |
 | 24 | Keyword searchability test + per-post audience variation | Round 2 revealed two more traps. (a) Including a keyword "because the concept exists" doesn't help — if no one searches it, it's just caption clutter that dilutes the array. Rule: every keyword must pass the "would anyone actually type this into IG search, in this language?" test. Cognate renderings like `Geld`, `pengar`, `dinero` fail — they're too generic to be search queries on their own. (b) Using the same keyword cluster on every post anchors the account to a single audience slice and stalls growth. Rule: each post leans toward a distinct sub-audience (FIRE crowd on investing, relocators on cost-of-living, parents on insurance, etc.) so IG's classifier reads each post as a different offering and widens the reach graph |
 | 25 | Hashtags and keywords split: community vs. search, no overlap | Verified IG's two surfaces work differently: hashtags = community/browse (users follow `#expatlife`), keywords = search-index (users type `geoarbitrage`). Using the same term on both surfaces pays twice for the same reach. Split the work: hashtags stay English-dominant, pick communities someone follows; keywords carry multilingual load + long-tail phrases someone would type. When a term fits both surfaces, put it in the hashtag (5-slot cap makes tags more scarce) and spend the keyword slot on something tags can't carry |
+| 26 | Meme & comic policy: carousels-only, opt-in by series, never on Slide 1, MiFID-safe directive applies (§13) | Question raised whether memes (xkcd, popular-media reactions) would lift engagement on the blog and from the next IG series onwards. Reframed against the brand voice ("Money, understood" — closer to authority than relatability), the global ex-North America audience (US sitcom references don't carry; AI-generated memes flagged as low-effort in 2026), and the MiFID II posture the rest of the content already holds. Conclusion: memes are a sharpening tool, not a default ingredient. Carousel only (stories stay brand-chrome consistent), max 1 per carousel, never on Slide 1 (same low-effort signal that pushed the series badge off Slide 1 in #5). Cadence varies by series: ~0% Discovery, ~25% Building/Optimizing/Mastery, ~70% Psychology (highest leverage — the topic *is* memes), 0% on stress/fear-state posts (Debt, Insurance, Loan Terms, Real Estate, beta launch). Source priority: xkcd → screenshot/POV formats → globally legible movie stills. Hard avoids: 2020-2023 templates, AI-generated, US-only cultural references, Bollywood-default. **MiFID-safe directive promoted to top-level subsection of §13:** no named instruments / tickers / coins / brokerages, no return forecasts presented as fact (any number in a meme requires an inline "illustrative + assumptions" disclaimer visible *inside the image* because slides circulate standalone on IG), no jurisdiction-locked tax math, no advice phrasing, no before/after performance of real products, no screenshots of brokerage / exchange UIs, no product-vs-product comparisons. Behavioural and conceptual zone only. Pre-publish checklist (7 items) attached. A/B test threshold: 15%+ lift on saves or sends after ~6 paired posts, otherwise drop. Blog-side mirror in `blog-content-plan.md` Editorial Rule 8 with same directive |
 
 ---
 
-## 13. Review Cadence
+## 13. Meme & Comic Policy (carousels only, opt-in by series)
+
+Memes can lift saves and shares for the right post type, but the brand voice — "Money, understood" — sits closer to the authority end than the relatability end. Memes work here when they read as "smart joke from someone who understands the topic." They don't work when they read as "creator chasing a trend." Apply sparingly, and only in carousels.
+
+### Where memes go
+
+- **Carousel only.** Stories stay brand-chrome consistent — the 4-step cascade (§7) is too tight and too templated to absorb a meme without breaking visual coherence. Stories are the brand surface; carousels are where personality can flex.
+- **Slide placement:**
+  - **Slide 2 or 3** (relatability slot, after the hook has done its job), OR
+  - **Penultimate slide** (punchline before the next-up tease + follow CTA on the final slide).
+  - **Never on Slide 1.** Slide 1 is the scroll-stopper; a meme there reads as low-effort to non-followers, same failure mode as the series-badge hurt reach (Decision #5).
+- **Max 1 meme slide per carousel.** Two starts to read as a meme account, which is the wrong signal for this brand.
+
+### Cadence by series
+
+| Series | Meme rate | Notes |
+|---|---|---|
+| Discovery (07-16b, current) | ~0% | Audience is orienting. Ship clean carousels. |
+| Building (17-32) | ~25% (4-5 of 16 posts) | Lifestyle inflation, investing fundamentals, FIRE, planning topics earn it. |
+| Psychology (33-42) | ~70% (6-7 of 10 posts) | Highest-leverage series. The topic *is* memes — biases, present bias, herd behaviour, money scripts, planning fallacy. |
+| Optimizing / Mastery | ~25% | Skip on heavy topics (estate, longevity, drawdown, healthcare). |
+| Stress / fear-state posts | 0% | Debt (#5), Insurance (#16), Loan Terms (#27), Real Estate (#28), beta launch announcement, future Mastery on estate / longevity / healthcare. |
+
+### Source priority
+
+1. **xkcd** — globally legible, smart-coded, pre-AI visual signature (a credibility signal in 2026), CC BY-NC 2.5. Best for Building, Psychology, Optimizing posts. Embed via canonical `xkcd.com` URL, attribute and link to the source comic. If the account ever runs paid sponsorships or non-nidhi commercial placements, revisit Munroe's commercial-use stance.
+2. **Screenshot-style memes** — fake DMs, fake search results, fake bank notifications. Universal format, language-light, ages well across the global expat audience.
+3. **Globally released movie stills** — Lord of the Rings, Spider-Man pointing, Inception, Shrek. Avoid Disney/Nintendo where any commercial footprint exists.
+
+### Avoid
+
+- **2020-2023 templates** — Drake-pointing, Distracted Boyfriend, Galaxy Brain, "nobody: / me:", Woman Yelling at Cat. These read as out-of-touch in 2026 and signal a creator who stopped paying attention.
+- **AI-generated memes** — even a good joke registers as low-effort once the visual signature is recognized; audience is hypersensitive in 2026.
+- **US-only cultural memes** — The Office, Parks & Rec, Seinfeld reaction stills. Audience is global ex-North America (§1); the references carry no signal in Berlin, Lisbon, Helsinki, Bangkok, Dubai, Singapore.
+- **Country-specific memes** — Bollywood, German humor formats, Asterix. Only appropriate when the post is specifically about that geography. Don't bias toward Indian-diaspora memes because of the brand name; §1 explicitly pushes back on over-indexing on India.
+### MiFID-safe directive (hard rules — every meme is bound by these)
+
+The account and the linked blog are positioned as education, not advice. The same regulatory posture that governs prose (no specific instruments named as buys, no return forecasts, no advice phrasing) governs every meme — and more strictly, because meme slides circulate on IG standalone, often re-shared without the surrounding caption. A meme that breaks any of the rules below is dropped, regardless of how good the joke is.
+
+1. **No named investment products.** No stock tickers, fund names, ETF tickers, crypto coins, brokerage names, robo-advisor names, bank product names. The only named "products" allowed are tax-advantaged-account *categories* already named in the post body under blog Rule 7 (e.g., 401(k), ISA, NPS), and only as a category list — never as a recommendation.
+2. **No return guarantees, no forecasts presented as fact.** Any number in a meme slide that depends on a return assumption (cost-of-delay tables, savings-rate-to-FI math, future value of monthly contribution) must carry an inline disclaimer *visible inside the image itself* — not just in the surrounding caption. Required wording: "illustrative," "example," or "assumes X% return — past performance is not a forecast." If the disclaimer doesn't fit visually, drop the meme or rewrite without the number.
+3. **No specific tax rates or jurisdiction-locked tax math.** Conceptual "tax drag eats your return" framings are fine. "30% capital gains in Germany" or "0% under ISA up to £20K" inside a meme is not.
+4. **No advice phrasing.** Forbidden inside meme art or surrounding caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "the math says," "common patterns," "research suggests," "behavioural framing."
+5. **No before/after performance of a real product.** "If you'd invested in [Apple / Bitcoin / Tesla] in 2010..." is hindsight performance marketing in meme costume. Forbidden. Generic compound-interest curves with no product name attached are fine.
+6. **No screenshots of brokerage apps, exchanges, or trading interfaces.** They read as endorsement of the platform shown. Use generic phone-UI styling instead.
+7. **No comparing specific named products.** "ETF A vs ETF B" is comparative advice. "Active funds tend to underperform passive funds over 10+ years (research aggregate)" with no name attached is fine.
+8. **Behavioural and conceptual content only.** Safe territory: cognitive biases, lifestyle inflation, planning fallacy, present bias, compounding regret, "everyone thinks they're above average," the gap between knowing and doing, time-horizon framing, savings-rate paradox, the absurdity of differing tax-account standards across countries.
+
+**Pre-publish checklist (run on every meme slide before posting):**
+- [ ] No named instrument, fund, ticker, coin, exchange, or platform in image or caption?
+- [ ] If numbers are shown: labeled "illustrative" with assumptions (X% return, Y% inflation, Z% SWR) visible *inside the image* — not just in caption?
+- [ ] No phrasing that reads as "buy this" / "do this now" / "miss out otherwise"?
+- [ ] No specific tax rates, contribution limits, or jurisdiction-locked math inside the image?
+- [ ] No before/after performance of a real product?
+- [ ] No screenshot of a real brokerage / exchange / trading UI?
+- [ ] If unsure on any of the above: drop the meme or replace with a clean carousel slide.
+
+### Captions and accessibility
+
+- **Caption around the meme should not explain the joke.** If the meme needs explaining, it's the wrong meme — let the comment section do that work.
+- **Alt text is mandatory** on every meme PNG (accessibility + IG's image-content classifier reads it for the topic graph).
+- Caption keywords for the meme slide still feed the keyword array (§6) — pick a topic-grounded keyword for the slide caption, not a description of the joke.
+
+### A/B test plan
+
+After ~6 Building posts ship with memes and ~6 without, compare **saves + sends + reach** between the two cohorts. Threshold to keep the policy: **15%+ lift on saves OR sends in the meme cohort.** Below that, memes are decoration in this brand's voice — drop them and double down on the data-and-clarity register the audience already comes for.
+
+### Cross-reference
+
+The blog-side rules (max 1-2 per post, never as hero, MiFID-clean source list) live in `docs/plans/blog-content-plan.md` Editorial Rule 8. Blog and Instagram share source priorities and avoid lists; cadence and placement differ because the formats differ.
+
+---
+
+## 14. Review Cadence
 
 - **After 3 posts** → review reach vs. pre-playbook baseline; adjust timing and hashtag mix
 - **After 6 posts** → if growth is slow, revisit engagement philosophy (consider ManyChat auto-DM for "comment X" flows)

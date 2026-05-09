@@ -64,9 +64,9 @@ You diversify along several dimensions at once. Most people think only about the
 
 **4. Company size.** Large established companies behave differently from small growing ones. Broad "total market" index funds include both; narrower indexes may only include large caps.
 
-**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a [later post on managing money across currencies](/blog/managing-money-across-currencies).
+**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies.
 
-**6. Time.** Spreading purchases across months or years through [dollar-cost averaging](/blog/getting-started-investing) diversifies your *entry price*, so no single date determines your cost basis.
+**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis. We come back to this in the next post.
 
 | Dimension | Concentrated | Diversified |
 |---|---|---|
@@ -131,7 +131,7 @@ That's not a glamorous portfolio. It also captures most of the benefit of divers
 
 More complexity isn't automatically better. Every additional fund adds cost, cognitive load, and rebalancing work. The question to ask before adding a fund is: does this actually cover an exposure I don't already have?
 
-> **Two terms that will come up often:** **asset allocation** is the specific mix you choose to hold, for example 70% stocks and 30% bonds. Diversification is the *principle*; asset allocation is the *number*. **Rebalancing** is the discipline of selling some of what's grown and buying some of what's lagged to return to that target mix. We cover rebalancing in detail in the [rebalancing post](/blog/rebalancing-your-portfolio) later in this series.
+> **Two terms that will come up often:** **asset allocation** is the specific mix you choose to hold, for example 70% stocks and 30% bonds. Diversification is the *principle*; asset allocation is the *number*. **Rebalancing** is the discipline of selling some of what's grown and buying some of what's lagged to return to that target mix. We cover rebalancing in detail in a later post in this series.
 
 ## When diversification hits its limits
 
@@ -147,7 +147,7 @@ Diversification is powerful but not magical:
 1. **Audit your concentrations first.** Employer stock, home country exposure, currency exposure, sector exposure. Which of these is large because you chose it, and which is large because you never noticed?
 2. **Default to broad index funds.** One global stock fund plus one bond fund diversifies most retail investors well. Simplicity is a feature, not a compromise
 3. **Diversify across dimensions, not just count.** Twenty stocks in the same country and sector is one bet. A single global fund is many bets
-4. **Watch your [currency exposure](/blog/managing-money-across-currencies).** Earning and saving in one currency while your expenses, retirement plans, or family support happen in another is a hidden concentration most people miss
+4. **Watch your currency exposure.** Earning and saving in one currency while your expenses, retirement plans, or family support happen in another is a hidden concentration most people miss. A later post in this series goes into the mechanics
 5. **Don't over-engineer.** Adding a ninth fund to a portfolio that was already well diversified is usually noise. Check whether each holding adds an exposure you don't already have
 6. **Accept the trade-off.** A diversified portfolio will never be your best-performing asset in any given year. It is much less likely to be your worst
 

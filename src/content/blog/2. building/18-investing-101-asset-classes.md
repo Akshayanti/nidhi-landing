@@ -159,7 +159,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 *Returns shown are historical averages. Past performance is not indicative of future results.*
 
-Two other groups of assets sit outside this core: commodities (raw materials like gold, oil, agricultural products), used as inflation and crisis hedges, and cryptocurrency, a speculative asset whose long-term role in diversified portfolios is unsettled. Neither is load-bearing for a basic investment plan, but both come up often enough that they deserve their own treatment. The [next post](/blog/satellite-assets-commodities-and-cryptocurrency) covers them as satellite assets.
+Two other groups of assets sit outside this core: commodities (raw materials like gold, oil, agricultural products), used as inflation and crisis hedges, and cryptocurrency, a speculative asset whose long-term role in diversified portfolios is unsettled. Neither is load-bearing for a basic investment plan, but both come up often enough that they deserve their own treatment. The next post covers them as satellite assets.
 
 ## Why no single asset class is enough
 
@@ -188,4 +188,4 @@ Index funds are commonly cited in personal finance literature as a practical sta
 4. **Start simple.** A global stock index fund plus a bond index fund covers the basics for most people starting out. You can add complexity later
 5. **Remember the [risk lesson](/blog/understanding-risk).** Higher returns require higher tolerance for volatility. That tolerance comes from time
 
-Now you know the four building blocks most diversified portfolios are made from. Two more asset types — commodities and cryptocurrency — sit alongside the core four and come up in almost every conversation about investing, but with a very different role and a much weaker case for being load-bearing. The next post covers them honestly: what they are, what they're for, and where the line sits between hedge, satellite, and speculation.
+Now you know the four building blocks most diversified portfolios are made from. Two more asset types (commodities and cryptocurrency) sit alongside the core four and come up in almost every conversation about investing, but with a very different role and a much weaker case for being load-bearing. The next post covers them honestly: what they are, what they're for, and where the line sits between hedge, satellite, and speculation.
