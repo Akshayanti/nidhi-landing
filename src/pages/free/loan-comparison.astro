@@ -1,0 +1,614 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LoanCompare from '../../components/LoanCompare.tsx';
+import { getCollection } from 'astro:content';
+
+// -----------------------------------------------------------------------------
+// Related-reading candidates, ranked by relevance to a reader who has just
+// used the calculator. We match on slug against the blog content collection
+// and filter out any post whose pubDate is in the future, mirroring the
+// site-wide rule used by /blog/index.astro and /blog/[slug].astro. Unpublished
+// candidates are skipped silently and the next published candidate fills in,
+// so this page never links to a 404. The list is intentionally longer than
+// the three slots we render; extra candidates serve as fallbacks until the
+// preferred ones go live.
+// -----------------------------------------------------------------------------
+const RELATED_CANDIDATES = [
+  {
+    slug: 'understanding-loan-terms',
+    kicker: 'How to compare',
+    title: 'Understanding loan terms',
+    desc: 'APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer is actually cheapest.',
+    dataAttr: 'related-loan-terms',
+  },
+  {
+    slug: 'emergency-fund',
+    kicker: 'Before you borrow',
+    title: 'Emergency fund first',
+    desc: "If one bad month would force you to skip a payment, the loan is too big. Build a buffer before you take it on.",
+    dataAttr: 'related-emergency',
+  },
+  {
+    slug: 'appreciation-vs-depreciation',
+    kicker: 'Mental model',
+    title: 'Appreciation vs depreciation',
+    desc: 'A house gains value while you pay it off. A car loses it. The same monthly payment is not the same deal.',
+    dataAttr: 'related-appreciation',
+  },
+  {
+    slug: 'how-to-get-out-of-debt',
+    kicker: 'After you sign',
+    title: 'How to get out of debt',
+    desc: 'A practical method for paying down what you owe without burning out halfway through.',
+    dataAttr: 'related-debt',
+  },
+  {
+    slug: 'liabilities',
+    kicker: 'Fundamentals',
+    title: 'What counts as a liability',
+    desc: 'The difference between debt that builds something and debt that just drains the household.',
+    dataAttr: 'related-liabilities',
+  },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog'))
+    .filter((post) => isDev || post.data.pubDate <= now)
+    .map((post) => post.data.slug),
+);
+const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
+
+const title =
+  'Loan Comparison Calculator: Compare 3 Loan Offers Side by Side | nidhi';
+const description =
+  'Free loan comparison calculator. Compare up to three loan offers (mortgage, auto, personal, or student loans) and see monthly payment, payoff time, total interest, and total cost. Calculations are precise to the cent and run entirely in your browser.';
+const keywords = [
+  'loan comparison calculator',
+  'compare loans',
+  'mortgage comparison',
+  'loan calculator',
+  'amortization calculator',
+  'monthly payment calculator',
+  'total interest calculator',
+  'compare lenders',
+  'auto loan comparison',
+  'personal loan comparison',
+  'student loan comparison',
+  'APR comparison',
+];
+
+const faqs = [
+  {
+    q: 'How does this loan comparison calculator work?',
+    a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for up to three lenders. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, and total amount paid (including any origination or closing fees you enter).',
+  },
+  {
+    q: 'How accurate are the calculations?',
+    a: 'All amortization is computed in integer cents to avoid floating-point rounding error. The closed-form monthly-payment formula is rounded to the nearest cent, and the final payment in each schedule is reconciled so that the sum of principal payments matches the original loan amount exactly.',
+  },
+  {
+    q: 'Can I compare loans with different terms or rates?',
+    a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across the three loans. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+  },
+  {
+    q: 'Does the calculator handle origination fees and closing costs?',
+    a: 'Yes. Use the "More options" panel on each vendor card to add origination, closing, or other up-front fees. Fees are added to the total amount paid so the cheapest-overall comparison reflects the true cost of the loan.',
+  },
+  {
+    q: 'Can I model paying extra principal each month?',
+    a: 'Yes. Enter an "Extra principal per month" amount under "More options" and the calculator will apply it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
+  },
+  {
+    q: 'Is my data sent anywhere?',
+    a: 'No. Everything runs in your browser; no inputs are sent to any server. The shareable link encodes your values into the URL only when you copy it, so you can choose what to share.',
+  },
+  {
+    q: 'What kinds of loans can I compare?',
+    a: 'The math is the same for any fixed-rate, fully-amortizing loan: mortgages, auto loans, personal loans, and student loans on standard repayment plans. Variable-rate loans, interest-only periods, and balloon payments are not modeled.',
+  },
+  {
+    q: 'Which currencies are supported?',
+    a: 'You can pick from US Dollar, Euro, British Pound, Indian Rupee, Japanese Yen, Czech Koruna, Canadian Dollar, Australian Dollar, Swiss Franc, Singapore Dollar, and South Korean Won. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
+  },
+];
+
+const canonicalUrl = 'https://nidhi.today/free/loan-comparison';
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'nidhi Loan Comparison Calculator',
+  url: canonicalUrl,
+  description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (web browser)',
+  browserRequirements: 'Requires JavaScript. Modern browser.',
+  isAccessibleForFree: true,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: 'https://nidhi.today',
+  },
+};
+
+// Two-level breadcrumb: there is no /free/ hub page (yet), so we don't
+// claim one in structured data. Adding a phantom "Free tools" middle item
+// that points back to this same URL would be misleading to crawlers.
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today' },
+    { '@type': 'ListItem', position: 2, name: 'Loan comparison calculator', item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+>
+  <section class="lc-page">
+    <nav class="lc-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">Loan comparison calculator</li>
+      </ol>
+    </nav>
+
+    <header class="lc-pageHeader">
+      <p class="lc-eyebrow">Free tools</p>
+      <h1 class="lc-pageTitle">Compare loan offers side by side</h1>
+      <p class="lc-pageLead">
+        Plug in three lenders. See the monthly payment, how long it takes to
+        pay off, and the total amount you'll pay, calculated to the cent.
+        Everything runs in your browser; nothing is sent to a server.
+      </p>
+    </header>
+
+    <LoanCompare client:load />
+
+    <section class="lc-explainer" aria-labelledby="lc-explainer-h">
+      <h2 id="lc-explainer-h" class="lc-sectionTitle">How the comparison works</h2>
+      <p>
+        For each lender, the calculator builds a full amortization schedule using
+        the standard fully-amortizing formula:
+      </p>
+      <p class="lc-formula">
+        <code>M = P · r / (1 − (1 + r)<sup>−n</sup>)</code>
+      </p>
+      <ul class="lc-explainerList">
+        <li>
+          <strong>P</strong> is the loan principal, <strong>r</strong> is the
+          monthly interest rate (annual rate ÷ 12), and <strong>n</strong> is the
+          number of monthly payments.
+        </li>
+        <li>
+          The schedule runs month by month in integer cents. Each month's interest
+          is computed on the remaining balance, then the rest of the payment is
+          applied to principal. The final payment is reconciled so the principal
+          column sums to exactly the original loan amount, with no rounding drift.
+        </li>
+        <li>
+          When you enter a fixed monthly payment instead of a term, the calculator
+          uses <code>n = −ln(1 − P·r/M) / ln(1 + r)</code> to compute the payoff
+          time, then walks the same integer-cent schedule.
+        </li>
+        <li>
+          Origination and closing fees are added to the total amount paid so the
+          "cheapest overall" winner reflects the real cost, not just the headline
+          rate.
+        </li>
+      </ul>
+    </section>
+
+    <section class="lc-faq" aria-labelledby="lc-faq-h">
+      <h2 id="lc-faq-h" class="lc-sectionTitle">Frequently asked questions</h2>
+      <div class="lc-faqList">
+        {faqs.map((f) => (
+          <details class="lc-faqItem">
+            <summary class="lc-faqQ">{f.q}</summary>
+            <p class="lc-faqA">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <aside class="lc-related" aria-labelledby="lc-related-h">
+      <header class="lc-relatedHeader">
+        <h2 id="lc-related-h" class="lc-sectionTitle">Before you sign anything</h2>
+        <p class="lc-relatedLead">
+          Make a choice that still feels right in five years.
+        </p>
+      </header>
+
+      <div class="lc-relatedGrid">
+        {RELATED.map((post) => (
+          <a href={`/blog/${post.slug}`} class="lc-relatedCard" data-attr={post.dataAttr}>
+            <span class="lc-relatedKicker">{post.kicker}</span>
+            <span class="lc-relatedTitle">{post.title}</span>
+            <span class="lc-relatedDesc">{post.desc}</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="lc-relatedFooter">
+        <a href="/blog/tag/debt" class="lc-relatedAll" data-attr="related-tag-debt">
+          Read more on debt and loans
+          <span aria-hidden="true">&nbsp;&rsaquo;</span>
+        </a>
+        <a href="/blog" class="lc-relatedAllSecondary" data-attr="related-all">
+          Or browse every article
+        </a>
+      </p>
+    </aside>
+  </section>
+</BaseLayout>
+
+<style>
+  .lc-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+
+  .lc-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .lc-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .lc-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+    color: var(--color-text-muted);
+  }
+  .lc-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .lc-breadcrumbs a:hover,
+  .lc-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .lc-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+
+  .lc-pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .lc-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+
+  .lc-pageTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+
+  .lc-pageLead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  /* Explainer & FAQ */
+  .lc-explainer,
+  .lc-faq,
+  .lc-related {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .lc-explainer p,
+  .lc-explainerList li,
+  .lc-faqA {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .lc-formula {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .lc-formula code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .lc-explainerList {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-5);
+  }
+
+  .lc-explainerList li {
+    margin-bottom: var(--space-2);
+  }
+
+  .lc-explainerList li strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .lc-explainerList code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--color-bg);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  .lc-faqList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .lc-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+  }
+
+  .lc-faqItem[open] {
+    background: var(--color-bg-white);
+    border-color: var(--color-border);
+  }
+
+  .lc-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+
+  .lc-faqQ::-webkit-details-marker { display: none; }
+
+  .lc-faqQ::before {
+    content: '+';
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    width: 1em;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .lc-faqItem[open] .lc-faqQ::before {
+    content: '−';
+  }
+
+  .lc-faqQ:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-faqA {
+    margin: var(--space-2) 0 0;
+  }
+
+  .lc-relatedHeader {
+    margin-bottom: var(--space-4);
+  }
+
+  .lc-relatedLead {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: var(--space-2) 0 0;
+    max-width: 60ch;
+    /* `balance` is purpose-built for short headings and leads: it
+       redistributes the whole paragraph evenly across lines, avoiding the
+       "long line + orphan clause" pattern that `pretty` only partially
+       solves. Browsers cap it to ~6 lines and ignore it for longer text,
+       so it's safe to apply broadly. */
+    text-wrap: balance;
+  }
+
+  .lc-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 800px) {
+    .lc-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lc-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 100%;
+  }
+
+  .lc-relatedCard:hover,
+  .lc-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .lc-relatedCard:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .lc-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+  }
+
+  .lc-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .lc-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .lc-relatedFooter {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: flex-end;
+    align-items: baseline;
+  }
+
+  .lc-relatedAll {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-deep-blue);
+    padding-bottom: 1px;
+    transition: border-bottom-style 0.15s ease;
+  }
+
+  .lc-relatedAll:hover,
+  .lc-relatedAll:focus-visible {
+    border-bottom-style: solid;
+  }
+
+  .lc-relatedAllSecondary {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-text-muted);
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .lc-relatedAllSecondary:hover,
+  .lc-relatedAllSecondary:focus-visible {
+    color: var(--color-deep-blue);
+    border-bottom-color: var(--color-deep-blue);
+    border-bottom-style: solid;
+  }
+
+  @media (max-width: 480px) {
+    .lc-relatedFooter {
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-relatedCard {
+      transition: none;
+    }
+    .lc-relatedCard:hover,
+    .lc-relatedCard:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lc-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .lc-pageHeader {
+      margin-bottom: var(--space-6);
+      text-align: left;
+    }
+    .lc-pageLead {
+      font-size: 0.95rem;
+    }
+    .lc-explainer,
+    .lc-faq,
+    .lc-related {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+</style>

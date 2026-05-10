@@ -12,6 +12,7 @@ const currentPath = Astro.url.pathname;
       <span class="logo-text">nidhi</span>
     </a>
     <div class="nav-right">
+      <a href="/free/loan-comparison" class:list={['nav-link', { active: currentPath.startsWith('/free') }]} data-attr="nav-free-tools">Free Tools</a>
       <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
       <ThemeToggle />
     </div>

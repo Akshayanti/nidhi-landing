@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "lint": "node scripts/lint.mjs",
     "lint:figures": "node scripts/lint-figures.mjs",
+    "test": "node --test --test-reporter=spec src/utils/loanMath.test.ts src/utils/dependencies.test.ts",
     "render-ig": "node scripts/render-ig.js",
     "render-figures": "node scripts/render-figures.mjs"
   },
