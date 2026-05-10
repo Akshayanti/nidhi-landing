@@ -99,7 +99,7 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
   <rect class="fig-fill-blue" x="400" y="222" width="95" height="22" rx="2" />
   <text class="fig-sublabel" x="100" y="282" text-anchor="end">20 years</text>
   <rect class="fig-fill-blue" x="410" y="270" width="75" height="22" rx="2" />
-  <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks — then disappears.</text>
+  <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks, then disappears.</text>
 </svg>
 <figcaption>Illustrative; based on broad historical equity index returns. Bar widths represent the historical range, not a forecast.</figcaption>
 </figure>

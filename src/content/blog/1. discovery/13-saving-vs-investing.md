@@ -147,6 +147,38 @@ This applies directly to the save-vs-invest decision. Money sitting in a savings
 
 The "safe" choice costs you over €62,000 over 30 years. Opportunity cost isn't theoretical. It's the most expensive mistake that doesn't feel like one.
 
+<figure>
+  <svg viewBox="0 0 880 480" role="img" aria-labelledby="fig-oc-title fig-oc-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-oc-title">The opportunity-cost gap between saving and investing over 30 years</title>
+    <desc id="fig-oc-desc">Two curves starting from €10,000 at year zero. The savings line at 1% rises almost flat to €13,478 at year 30. The investing line at 7% rises along an exponential curve to €76,123 at year 30. The shaded area between them grows dramatically over time.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">What 30 years of patience looks like</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">€10,000 sitting still vs. €10,000 invested</text>
+    <line x1="120" y1="400" x2="720" y2="400" class="fig-stroke-rule" stroke-width="1.5"/>
+    <line x1="120" y1="80" x2="120" y2="400" class="fig-stroke-rule" stroke-width="1"/>
+    <text x="120" y="420" text-anchor="middle" class="fig-tick">Year 0</text>
+    <text x="320" y="420" text-anchor="middle" class="fig-tick">Year 10</text>
+    <text x="520" y="420" text-anchor="middle" class="fig-tick">Year 20</text>
+    <text x="720" y="420" text-anchor="middle" class="fig-tick">Year 30</text>
+    <path d="M 120,360 L 220,343.9 L 320,321.3 L 420,289.6 L 520,245.2 L 620,182.9 L 720,95.5 L 720,346.1 L 620,348.7 L 520,351.2 L 420,353.6 L 320,355.8 L 220,358 L 120,360 Z"
+          class="fig-fill-teal-soft" stroke="none"/>
+    <polyline class="fig-stroke-muted" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              points="120,360 220,358 320,355.8 420,353.6 520,351.2 620,348.7 720,346.1"/>
+    <polyline class="fig-stroke-teal" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+              points="120,360 220,343.9 320,321.3 420,289.6 520,245.2 620,182.9 720,95.5"/>
+    <circle cx="120" cy="360" r="5" class="fig-fill-text"/>
+    <circle cx="720" cy="346.1" r="5" class="fig-fill-muted"/>
+    <circle cx="720" cy="95.5" r="5" class="fig-fill-teal"/>
+    <text x="110" y="368" text-anchor="end" class="fig-sublabel">€10,000</text>
+    <text x="730" y="92" class="fig-label" style="fill: var(--color-teal);">€76,123</text>
+    <text x="730" y="106" class="fig-tick">invested at 7%</text>
+    <text x="730" y="343" class="fig-sublabel" style="fill: var(--color-text-muted);">€13,478</text>
+    <text x="730" y="357" class="fig-tick">saved at 1%</text>
+    <text x="500" y="310" text-anchor="middle" class="fig-eyebrow" style="fill: var(--color-teal);">€62,644 OPPORTUNITY COST</text>
+  </svg>
+  <figcaption>Illustrative: 1% savings yield, 7% blended investment return after inflation, both compounded annually; past performance does not predict future results. The savings line rises so gently that it looks flat next to the investing curve. That widening gap is the opportunity cost of "safe": it's the wealth you didn't earn while your money waited politely in a low-yield account. The longer the timeline, the more dramatic the divergence.</figcaption>
+</figure>
+
+
 ## The risk of investing too early
 
 The opposite mistake is investing before you're ready.

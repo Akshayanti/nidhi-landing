@@ -139,7 +139,7 @@ Imagine two companies. One makes sunscreen, one makes umbrellas. Both are decent
   <line x1="455" y1="436" x2="495" y2="436" class="fig-stroke-blue" stroke-width="4" stroke-linecap="round" />
   <text class="fig-sublabel" x="505" y="440">50 / 50 portfolio</text>
 </svg>
-<figcaption>Illustrative; the values are the ones in the table just above. The two single-company lines whip through wide swings while the combined portfolio stays flat at +5% — that visual flatness is the diversification benefit, made obvious.</figcaption>
+<figcaption>Illustrative; the values are the ones in the table just above. The two single-company lines whip through wide swings while the combined portfolio stays flat at +5%. That visual flatness is the diversification benefit, made obvious.</figcaption>
 </figure>
 
 Holding either company alone is a rollercoaster. Holding both, in this stylised example, is a steady 5% every year, the average of their returns, with almost none of their volatility, because their movements cancel out. Same average return as you'd get by splitting, much less stress along the way.
