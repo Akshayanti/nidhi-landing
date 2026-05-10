@@ -97,6 +97,48 @@ Once the credit card is gone, you roll the full €460 into the store card at 12
 
 **Trade-off:** The credit card takes much longer to eliminate. For those 17 months, it can feel like you're not making progress, even though you're actually saving the most money.
 
+<figure>
+  <svg viewBox="0 0 800 480" role="img" aria-labelledby="fig-debt-title fig-debt-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-debt-title">Snowball and avalanche reach zero at almost the same time, but the order of kills is completely different</title>
+    <desc id="fig-debt-desc">Two horizontal Gantt-style charts. The top chart shows the snowball method: the store card is cleared after 4 months (a short bar), then the personal loan at month 14, the credit card at month 30 with 22% interest still compounding throughout, and the student loan at month 44. The bottom chart shows the avalanche method: the credit card is cleared first at month 17, then the store card at month 19, the personal loan at month 30, and the student loan at month 43. Same debts, different order of attack.</desc>
+    <text x="400" y="36" text-anchor="middle" class="fig-title">Same debts, two paths to zero</text>
+    <text x="400" y="58" text-anchor="middle" class="fig-subtitle">€25,700 across 4 debts · €300 extra per month</text>
+    <text x="80" y="92" class="fig-eyebrow">SNOWBALL · SMALLEST FIRST</text>
+    <text x="80" y="118" class="fig-sublabel">Store card · €1,200 · 12%</text>
+    <rect x="380" y="106" width="26.7" height="16" rx="3" class="fig-fill-warn"/>
+    <text x="412.7" y="118" class="fig-tick">M4 · cleared</text>
+    <text x="80" y="144" class="fig-sublabel">Personal loan · €4,000 · 9%</text>
+    <rect x="380" y="132" width="93.3" height="16" rx="3" class="fig-fill-teal"/>
+    <text x="479.3" y="144" class="fig-tick">M14</text>
+    <text x="80" y="170" class="fig-sublabel">Credit card · €6,500 · 22%</text>
+    <rect x="380" y="158" width="200" height="16" rx="3" class="fig-fill-warn-soft" stroke="var(--color-warning)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="586" y="170" class="fig-tick" style="fill: var(--color-warning); font-weight: 600;">M30 · 22% compounding throughout</text>
+    <text x="80" y="196" class="fig-sublabel">Student loan · €14,000 · 4%</text>
+    <rect x="380" y="184" width="293.3" height="16" rx="3" class="fig-fill-blue"/>
+    <text x="679.3" y="196" class="fig-tick">M44</text>
+    <line x1="80" y1="226" x2="720" y2="226" class="fig-stroke-rule" stroke-width="1" stroke-dasharray="2 4"/>
+    <text x="80" y="256" class="fig-eyebrow" style="fill: var(--color-deep-blue);">AVALANCHE · HIGHEST RATE FIRST</text>
+    <text x="80" y="282" class="fig-sublabel">Credit card · €6,500 · 22%</text>
+    <rect x="380" y="270" width="113.3" height="16" rx="3" class="fig-fill-warn"/>
+    <text x="499.3" y="282" class="fig-tick">M17 · cleared</text>
+    <text x="80" y="308" class="fig-sublabel">Store card · €1,200 · 12%</text>
+    <rect x="380" y="296" width="126.7" height="16" rx="3" class="fig-fill-warn-soft"/>
+    <text x="512.7" y="308" class="fig-tick">M19</text>
+    <text x="80" y="334" class="fig-sublabel">Personal loan · €4,000 · 9%</text>
+    <rect x="380" y="322" width="200" height="16" rx="3" class="fig-fill-teal"/>
+    <text x="586" y="334" class="fig-tick">M30</text>
+    <text x="80" y="360" class="fig-sublabel">Student loan · €14,000 · 4%</text>
+    <rect x="380" y="348" width="286.7" height="16" rx="3" class="fig-fill-blue"/>
+    <text x="672.7" y="360" class="fig-tick">M43</text>
+    <line x1="380" y1="100" x2="380" y2="370" class="fig-stroke-rule" stroke-width="1"/>
+    <line x1="700" y1="100" x2="700" y2="370" class="fig-stroke-rule" stroke-width="1" stroke-dasharray="2 3"/>
+    <text x="380" y="392" text-anchor="middle" class="fig-tick">Month 0</text>
+    <text x="700" y="392" text-anchor="middle" class="fig-tick">~Month 48</text>
+    <text x="400" y="450" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · same €770 total monthly payment, only the target debt changes</text>
+  </svg>
+  <figcaption>Snowball gives you a small early win (the store card vanishes at month 4) but lets the 22% credit card keep compounding for 30 months (the dashed bar). Avalanche makes you wait 17 months for the first kill, but kills the most expensive debt first. Both methods reach zero within a month of each other; the difference is total interest paid (lower with avalanche) versus motivational momentum (stronger with snowball).</figcaption>
+</figure>
+
 ## Which one should you use?
 
 It depends on what drives you:

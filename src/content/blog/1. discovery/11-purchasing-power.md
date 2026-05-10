@@ -67,6 +67,38 @@ Even in a savings account, the erosion continues. Consider €10,000 earning 0.5
 
 The number went up. The value went down. You gained over €1,600 in interest but lost over €4,400 in purchasing power.
 
+<figure>
+  <svg viewBox="0 0 880 480" role="img" aria-labelledby="fig-pp-title fig-pp-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-pp-title">The widening gap between what you have and what it buys</title>
+    <desc id="fig-pp-desc">Two lines starting from €10,000 at year zero. The nominal balance rises gently to €11,614 at year 30. The real purchasing power falls to €5,537 over the same period. The shaded region between them widens as time passes.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">The widening gap</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">€10,000 in a savings account · 0.5% interest · 2.5% inflation</text>
+    <line x1="120" y1="400" x2="720" y2="400" class="fig-stroke-rule" stroke-width="1.5"/>
+    <line x1="120" y1="80" x2="120" y2="400" class="fig-stroke-rule" stroke-width="1"/>
+    <text x="120" y="420" text-anchor="middle" class="fig-tick">Year 0</text>
+    <text x="320" y="420" text-anchor="middle" class="fig-tick">Year 10</text>
+    <text x="520" y="420" text-anchor="middle" class="fig-tick">Year 20</text>
+    <text x="720" y="420" text-anchor="middle" class="fig-tick">Year 30</text>
+    <path d="M 120,160 L 320,139.6 L 520,118 L 720,95.4 L 720,338.5 L 520,290.3 L 320,231.6 L 120,160 Z"
+          class="fig-fill-warn-soft" stroke="none"/>
+    <polyline class="fig-stroke-blue" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              points="120,160 320,139.6 520,118 720,95.4"/>
+    <polyline class="fig-stroke-warn" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              points="120,160 320,231.6 520,290.3 720,338.5"/>
+    <circle cx="120" cy="160" r="5" class="fig-fill-text"/>
+    <circle cx="720" cy="95.4" r="5" class="fig-fill-blue"/>
+    <circle cx="720" cy="338.5" r="5" class="fig-fill-warn"/>
+    <text x="110" y="155" text-anchor="end" class="fig-sublabel">€10,000</text>
+    <text x="730" y="92" class="fig-label" style="fill: var(--color-deep-blue);">€11,614</text>
+    <text x="730" y="106" class="fig-tick">nominal balance</text>
+    <text x="730" y="335" class="fig-label" style="fill: var(--color-warning);">€5,537</text>
+    <text x="730" y="349" class="fig-tick">what it buys</text>
+    <text x="600" y="225" text-anchor="middle" class="fig-eyebrow">PURCHASING POWER LOST</text>
+    <text x="440" y="465" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · 0.5% nominal interest, 2.5% inflation, compounded annually</text>
+  </svg>
+  <figcaption>The bank balance grows. What it can buy shrinks. The shaded band is purchasing power that quietly disappeared while the number on the screen kept ticking up.</figcaption>
+</figure>
+
 ## The real return: what actually matters
 
 When you put money in a savings account earning 1%, and prices rise 2.5%, you didn't gain 1%. You lost 1.5%.
