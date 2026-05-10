@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/lint-figures.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "render-ig": "node scripts/render-ig.js"
+    "lint:figures": "node scripts/lint-figures.mjs",
+    "render-ig": "node scripts/render-ig.js",
+    "render-figures": "node scripts/render-figures.mjs"
   },
   "keywords": [],
   "author": "",

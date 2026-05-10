@@ -144,7 +144,14 @@ Blog posts include figures where visualization genuinely closes a comprehension 
 - Decorative variety. Every figure must earn its place against the comprehension test.
 - Showing seven data points on a curve when the conceptual insight is the curve's *shape*, not its values.
 
-**Format.** Inline SVG inside the markdown body, wrapped in `<figure><svg>...</svg><figcaption>...</figcaption></figure>`. Brand-consistent typography (Inter via existing self-hosted webfont) and palette (deep blue, teal, success green, warning orange — all via CSS custom properties so dark mode works automatically). The reusable SVG class library lives in `src/layouts/BlogPost.astro` (`.fig-title`, `.fig-fill-blue`, `.fig-stroke-muted`, etc.). No external chart library, no MDX, no asset pipeline — the SVG ships as part of the post.
+**Format.** Inline SVG inside the markdown body, wrapped in `<figure><svg>...</svg><figcaption>...</figcaption></figure>`. Brand-consistent typography (Inter via existing self-hosted webfont) and palette (deep blue, teal, success green, warning orange — all via CSS custom properties so dark mode works automatically). The reusable SVG class library (`.fig-title`, `.fig-fill-blue`, `.fig-stroke-muted`, etc.) lives in `src/styles/global.css`, **not** in the `BlogPost.astro` `<style>` block. No external chart library, no MDX, no asset pipeline — the SVG ships as part of the post.
+
+**Two non-obvious rendering pipeline gotchas worth flagging up-front, both of which fail silently and pass `curl` checks while looking broken in the browser:**
+
+1. **Astro scoped CSS does not cascade into markdown-slotted children.** Component `<style>` blocks add a `[data-astro-cid-*]` qualifier to every selector, which markdown-rendered descendants (the `<svg>` nodes) never receive. Scoped figure rules silently fail to match — polylines render with no stroke, fills default to black, dark mode is unreadable. **Fix:** keep figure CSS in `global.css` (unscoped). The `BlogPost.astro` style block must not contain `.fig-*` rules.
+2. **CommonMark closes raw HTML blocks at the first blank line.** Blank lines inside `<figure>...</figure>` for visual readability of the SVG markup terminate the HTML block — everything after the first blank line gets parsed as markdown and rendered as escaped text below an empty figure box. **Fix:** keep the entire `<figure>` block contiguous, no blank lines between SVG sub-elements. Comments inside the SVG are fine; blank lines are not. (Mitigation: a future lint pass could scan blog posts for blank lines between `<figure>` and `</figure>` and fail the build.)
+
+Verification rule that catches both: a `curl` of the rendered page only proves the DOM is structurally correct. Always pair with a screenshot when a figure ships, in both light and dark mode.
 
 **Audience-anxiety-aware design rules:**
 - Prefer conceptual diagrams (boxes, ladders, spectra, before/after pairs, shape-only line drawings) over data charts.
@@ -153,17 +160,20 @@ Blog posts include figures where visualization genuinely closes a comprehension 
 - One title, one optional subtitle, one short caption. Captions can run an italic line of context; they should not re-explain the figure.
 - All numerical figures carry an "Illustrative" tag inside the figure or in the caption — same MiFID-on-images rule as image content elsewhere.
 
-**Currently shipped figures (May 2026):** five figures across five Building posts. Down from nine in an earlier draft — the cuts were figures that visualized concepts the prose already stated cleanly (decorative). The kept five each show something prose can't: a *shape*, a *trajectory*, or a *crossing point*.
+**Currently shipped figures (May 2026):** eight figures across eight posts (four Building, four Discovery), all inline SVG with one consistent visual grammar. xkcd #927 was retained briefly on #23 as the only photo embed but cut on consistency grounds — see PLAYBOOK Decision #30. Each kept figure shows something prose alone cannot.
 
 | Post | Figure | Why it earns the slot |
 |---|---|---|
-| #17 Understanding Risk | Time narrows the range | Bars of historical return ranges over 1y / 5y / 10y / 20y horizons. Loss tail (warning) shrinks to zero as horizon grows. Visualizes the post's central insight: time changes the *character* of risk, not just the magnitude |
-| #20 Diversification | Two volatile companies, one steady portfolio | Plots the post's actual table data as 3 line series. Two zigzag lines (Sunscreen ±, Umbrella ∓) and one perfectly flat line at +5%. Same numbers as the table; the *visual flatness* is the diversification benefit made obvious |
-| #23 Tax-Advantaged Accounts | xkcd #927 embed | Cultural reference whose joke ("behind every standard, more standards") *is* the post's framing. Genuine context-add, not decoration |
-| #24 Rebalancing | Silent drift trajectory | Single curve showing % stocks creeping from 70 → 78 across 12 months. Shows the *silent* part: no single month looks dramatic, but the cumulative trajectory is the trap. Dot opacity rises along the curve to reinforce the accumulation |
-| #25 FIRE | The crossover point | Two lines on a time axis — flat monthly expenses (dashed warning), rising monthly investment income (teal curve) — meeting at a marked crossover. The visual *moment* the post is named after. Only the figure can show "the meeting" as a moment; prose can only describe it |
+| #5 Get Out of Debt (Discovery) | Same debts, two paths to zero | Horizontal Gantt of 4 debts under each method. Snowball's first cleared bar is short (4 months) but the credit card sits dashed-warn for 30 months while interest compounds. Avalanche's first cleared bar is long (17 months) but expensive debt dies first. Both reach zero at ~month 43-44; the *order of attack* is the visible argument |
+| #11 Purchasing Power (Discovery) | The widening gap | Two lines from €10,000 at year 0: nominal climbing gently to €11,614, real falling to €5,537. Shaded gap = purchasing power lost while the bank balance kept ticking up. The post's core claim made geometric |
+| #13 Saving vs Investing (Discovery) | What 30 years of patience looks like | Two curves over 30 years — savings (1%) almost flat, investing (7%) curving up to €76,123. Shaded €62,644 gap labelled. The exponential curve and flat line side-by-side render opportunity cost as inarguable |
+| #17 Understanding Risk (Building) | Time narrows the range | Bars of historical return ranges over 1y / 5y / 10y / 20y horizons. Loss tail (warning) shrinks to zero as horizon grows. Time changes the *character* of risk, not just the magnitude |
+| #20 Diversification (Building) | Two volatile companies, one steady portfolio | Plots the post's actual table data as 3 line series. Two zigzag lines and one perfectly flat line at +5%. Same numbers as the table; the *visual flatness* is the diversification benefit made obvious |
+| #24 Rebalancing (Building) | Silent drift trajectory | Single curve showing % stocks creeping from 70 → 78 across 12 months. Shows the *silent* part: no single month looks dramatic, but the cumulative trajectory is the trap |
+| #25 FIRE (Building) | The crossover point | Two lines on a time axis — flat monthly expenses (dashed warning), rising monthly investment income (teal curve) — meeting at a marked crossover. The literal moment the post is named after |
+| #27 Loan Terms (Building) | The amortisation skew | Six stacked bars at years 1, 5, 10, 15, 20, 25. Same €1,185 monthly payment, but the interest portion (orange) collapses from €625 to ~€3 while principal (deep blue) takes over. Why early prepayments are 5–10× more powerful than late ones |
 
-**Reuse on IG.** Four of these figures are the canonical static "hero" frame for the corresponding Reels concept (PLAYBOOK §13, Format 2): #17 (range narrows), #20 (free-lunch flatness), #24 (silent drift), #25 (crossover). The static SVG is the design source of truth; the Reel adds motion and audio over the same scaffold.
+**Reuse on IG.** All eight figures double as the canonical static "hero" frame for the corresponding Reels concept (PLAYBOOK §13, Format 2). The static SVG is the design source of truth; the Reel adds motion and audio over the same scaffold. Production pipeline: `npm run render-figures` rasterises each figure (SVG + figcaption) into 1080×1920 PNGs at `output/instagram/figures/{slug}/{fig-id}.png`.
 
 **MiFID II / CNB constraints on figure content** (mirrors PLAYBOOK §13 directive on every image asset):
 - No named investment products, tickers, fund names, brokerage or exchange names inside the figure or its caption. Tax-advantaged-account *categories* (401(k), ISA, NPS) are allowed as descriptive references in educational context, never as a directive.

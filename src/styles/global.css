@@ -343,19 +343,7 @@ strong {
   box-sizing: border-box;
 }
 
-.prose figure img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: var(--radius-sm);
-  background: #ffffff;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border-light);
-  box-sizing: border-box;
-}
-
-/* Default figcaption (SVG diagrams): italic narrative context */
+/* Figcaption (SVG diagrams): italic narrative context */
 .prose figcaption {
   font-size: 0.85rem;
   color: var(--color-text-muted);
@@ -373,30 +361,6 @@ strong {
 
 .prose figcaption a:hover {
   color: var(--color-deep-blue);
-  text-decoration-color: currentColor;
-}
-
-/* Photo / image figcaption: attribution + context (non-italic, source-credit feel) */
-.prose figure.figure-photo figcaption {
-  font-size: 0.78rem;
-  font-style: normal;
-  color: var(--color-text-muted);
-  letter-spacing: 0.01em;
-  line-height: 1.5;
-  max-width: 88%;
-}
-
-.prose figure.figure-photo figcaption a {
-  color: var(--color-deep-blue);
-  text-decoration: underline;
-  text-decoration-color: var(--color-deep-blue);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  font-weight: 500;
-}
-
-.prose figure.figure-photo figcaption a:hover {
-  color: var(--color-teal);
   text-decoration-color: currentColor;
 }
 
@@ -430,11 +394,6 @@ strong {
 .prose figure svg .fig-stroke-muted { stroke: var(--color-text-muted); fill: none; }
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
 .prose figure svg .fig-stroke-card { stroke: var(--color-border); fill: none; }
-
-/* Photo embeds (e.g. xkcd) read better against off-white in dark mode */
-[data-theme="dark"] .prose figure img {
-  background: #f5f5f5;
-}
 
 /* Mobile: tighten figure padding so wide figures fit */
 @media (max-width: 640px) {
