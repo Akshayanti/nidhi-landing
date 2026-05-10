@@ -1,0 +1,168 @@
+name: PR Checks (free tools)
+
+# Runs the test, lint, audit, and build gates whenever a PR touches files
+# that power /free/* tools. The path filter keeps the gate fast and
+# focused; unrelated PRs (a typo fix in the privacy page, for example)
+# don't pay the cost of running the full suite.
+#
+# Branch protection (configured in the GitHub UI under
+# Settings -> Branches -> Branch protection rules for `main`) should mark
+# the jobs in this workflow as REQUIRED status checks. See
+# docs/free-tools-pr-checks.md for the exact required-checks list and
+# rationale.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      # The /free/* pages and any utility/component they pull in.
+      - 'src/pages/free/**'
+      - 'src/pages/privacy.astro'
+      - 'src/components/LoanCompare.tsx'
+      - 'src/utils/loanMath.ts'
+      - 'src/utils/loanMath.test.ts'
+      - 'src/utils/dependencies.test.ts'
+      # Anything that affects the build or dep graph.
+      - 'package.json'
+      - 'package-lock.json'
+      - 'astro.config.mjs'
+      - 'tsconfig.json'
+      # The lint script and this workflow itself.
+      - 'scripts/lint.mjs'
+      - 'scripts/lint-figures.mjs'
+      - '.github/workflows/pr-checks.yml'
+
+  # Allow manual runs for debugging.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A second push to the same PR cancels the previous in-flight run.
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Lockfile + dependency integrity. `npm ci` fails fast if package.json and
+  # package-lock.json disagree, which is the cheapest possible signal to
+  # surface for any dep change.
+  # ---------------------------------------------------------------------------
+  install:
+    name: Install (lockfile integrity)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install (strict)
+        # `npm ci` errors out if package.json and package-lock.json diverge,
+        # so a PR that bumps a version in one but not the other is rejected
+        # before any other check runs.
+        run: npm ci
+
+  # ---------------------------------------------------------------------------
+  # Static / code-quality lint. Custom Node script, zero new deps.
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+  # ---------------------------------------------------------------------------
+  # Unit tests + dependency-snapshot test. The snapshot test fails any PR
+  # that adds, removes, or version-bumps a dep without updating the inline
+  # EXPECTED_* maps in src/utils/dependencies.test.ts, making dep changes
+  # an explicit, code-reviewable event.
+  # ---------------------------------------------------------------------------
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  # ---------------------------------------------------------------------------
+  # Vulnerability audit. Lets a freshly-introduced known-vulnerable
+  # transitive dep block the merge.
+  # ---------------------------------------------------------------------------
+  audit:
+    name: npm audit (high+)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Audit
+        # Only fail on `high` and `critical`. `npm audit` is noisy in the
+        # JS ecosystem and lower-severity findings often have no available
+        # fix; gating on every advisory leads to dismissal fatigue.
+        run: npm audit --omit=dev --audit-level=high
+
+  # ---------------------------------------------------------------------------
+  # Final build. Catches any regressions that only surface during the static
+  # build (Astro template errors, broken imports, missing assets, etc.).
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build (static)
+    runs-on: ubuntu-latest
+    needs: [lint, test, audit]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
