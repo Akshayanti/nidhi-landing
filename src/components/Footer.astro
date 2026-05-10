@@ -20,6 +20,10 @@ const year = new Date().getFullYear();
           <a href="/blog" data-attr="footer-blog">Blog</a>
         </div>
         <div class="footer-col">
+          <h4>Free Tools</h4>
+          <a href="/free/loan-comparison" data-attr="footer-loan-comparison">Loan comparison</a>
+        </div>
+        <div class="footer-col">
           <h4>Product</h4>
           <a href="/" data-attr="footer-home">Home</a>
         </div>
@@ -89,7 +93,8 @@ const year = new Date().getFullYear();
 
   .footer-links {
     display: flex;
-    gap: var(--space-10);
+    flex-wrap: wrap;
+    gap: var(--space-8);
   }
 
   .footer-col {

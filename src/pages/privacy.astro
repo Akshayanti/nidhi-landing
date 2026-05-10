@@ -6,7 +6,7 @@ import { relative } from 'node:path';
 
 /**
  * Privacy-notice changelog. Newest first. Every edit to this page gets an
- * entry — no matter how small — so the history is auditable.
+ * entry, no matter how small, so the history is auditable.
  *
  * Mark `material: true` when the change affects how we handle personal data
  * (new processor, new data category, retention change, legal-basis change).
@@ -15,7 +15,7 @@ import { relative } from 'node:path';
  * The top-of-page "Last updated" date is derived at build time from git's
  * last-commit timestamp of this file (see `lastUpdated` / `lastUpdatedIso`
  * below). That means: editing this file updates the date automatically on
- * the next build — you can't forget to bump it, and the two can't drift.
+ * the next build, so you can't forget to bump it and the two can't drift.
  * Local dev and shallow CI checkouts gracefully fall back to the top
  * changelog entry's date.
  */
@@ -28,6 +28,17 @@ interface ChangelogEntry {
 }
 
 const changelog: ChangelogEntry[] = [
+  {
+    date: 'May 10, 2026',
+    iso: '2026-05-10',
+    material: true,
+    summary: 'Disclosed a small set of anonymous interaction events on the Free Tools pages.',
+    details: [
+      'New anonymous events on /free/loan-comparison: which currency you select, whether you toggle solve-for-term vs solve-for-payment, whether you open the "More options" panel, whether you copy the shareable link, and whether you click Reset to defaults.',
+      'These events do not include any of the financial values you type (loan amount, interest rate, fees, monthly payment, vendor name). The point of the calculator is that the math runs in your browser; we are not exfiltrating the inputs.',
+      'These events fire whether or not you accept the cookie banner; they are categorised the same way as pageview and page-leave: anonymous, no name, no email, no user ID.',
+    ],
+  },
   {
     date: 'May 6, 2026',
     iso: '2026-05-06',
@@ -95,7 +106,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
 
 <BaseLayout
   title="Privacy | nidhi"
-  description="Plain-language privacy notice for nidhi.today — what we collect, why, where it lives, and how to get rid of it."
+  description="Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it."
   keywords={['privacy', 'nidhi privacy policy', 'personal finance blog privacy']}
   robots="index,follow"
 >
@@ -127,6 +138,15 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
           and viewport size. No name, no email, no user ID.
         </li>
         <li>
+          Anonymous interaction events on the Free Tools pages: which currency you pick on
+          the loan-comparison calculator, whether you toggle between solving for term vs
+          monthly payment, whether you open the &ldquo;More options&rdquo; panel, whether you
+          copy the shareable link, and whether you reset the form. <strong>The financial
+          values you type are never sent</strong>: not the loan amount, not the
+          interest rate, not the fees, not the vendor name. The whole point of the calculator
+          is that the math runs in your browser.
+        </li>
+        <li>
           Campaign parameters (<code>utm_source</code>, <code>utm_medium</code>, etc.) if you
           arrived from a link we or someone else tagged.
         </li>
@@ -137,7 +157,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
       </p>
       <ul>
         <li>
-          Click heatmaps and autocaptured events &mdash; basically, which elements on a page
+          Click heatmaps and autocaptured events: basically, which elements on a page
           get clicked. We use this to spot broken links and layouts that confuse people.
         </li>
       </ul>
@@ -148,7 +168,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
       <ul>
         <li>Your email address.</li>
         <li>The page you subscribed from (so we know whether the blog index or a specific post got you there).</li>
-        <li>Timestamps for when you subscribed, confirmed, and &mdash; if you do &mdash; unsubscribed.</li>
+        <li>Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.</li>
         <li>Your subscription status: pending, confirmed, or unsubscribed.</li>
       </ul>
 
@@ -159,7 +179,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
         <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
         <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
         <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
-        <li>Whether you&rsquo;ve subscribed to the newsletter (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve signed up. Contains your subscription status and, while confirmation is pending, the email address you typed &mdash; in your browser only, never sent anywhere else.</li>
+        <li>Whether you&rsquo;ve subscribed to the newsletter (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve signed up. Contains your subscription status and, while confirmation is pending, the email address you typed, in your browser only, never sent anywhere else.</li>
       </ul>
 
       <p>
@@ -185,24 +205,24 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
       <h2>Where it lives</h2>
       <ul>
         <li>
-          <strong>PostHog Cloud EU</strong> (Frankfurt, Germany) &mdash; our analytics processor.
+          <strong>PostHog Cloud EU</strong> (Frankfurt, Germany): our analytics processor.
           Session recording is disabled. We use their standard product, with no custom person
-          properties that would identify you, unless you subscribe &mdash; in which case your
+          properties that would identify you, unless you subscribe, in which case your
           subscription status becomes a property on the anonymous person record for funnel
           analysis.
         </li>
         <li>
-          <strong>Google Workspace</strong> (Google Cloud EU regions) &mdash; our email address
+          <strong>Google Workspace</strong> (Google Cloud EU regions): our email address
           (<code>hello@nidhi.today</code>) and the Google Sheet that stores newsletter
           subscribers. Only we can read it.
         </li>
         <li>
-          <strong>GitHub Pages</strong> (a GitHub / Microsoft service) &mdash; hosts the static
+          <strong>GitHub Pages</strong> (a GitHub / Microsoft service): hosts the static
           files of this website. GitHub keeps short-lived server access logs for abuse
           prevention. We don&rsquo;t read them and don&rsquo;t get copies.
         </li>
         <li>
-          <strong>Your browser</strong> &mdash; for the local preferences listed above.
+          <strong>Your browser</strong>: for the local preferences listed above.
         </li>
       </ul>
 
@@ -229,7 +249,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
       <h2>How long we keep it</h2>
       <ul>
         <li>
-          <strong>Analytics events:</strong> 12 months (PostHog&rsquo;s default retention &mdash;
+          <strong>Analytics events:</strong> 12 months (PostHog&rsquo;s default retention;
           we haven&rsquo;t extended it), then auto-deleted.
         </li>
         <li>
@@ -259,7 +279,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
           we&rsquo;ll do it manually.
         </li>
         <li>
-          For analytics, the events are anonymous &mdash; we don&rsquo;t have a way to look up
+          For analytics, the events are anonymous; we don&rsquo;t have a way to look up
           &ldquo;your&rdquo; events because we don&rsquo;t know who you are. If this bothers
           you, just decline the cookie banner, or use a content blocker. Nothing on the site
           breaks.
@@ -282,7 +302,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
         <h2 id="changelog">Changes to this notice</h2>
         <p class="changelog-intro">
           We update this page in place. Every change gets an entry in the log
-          below &mdash; newest first, no matter how small. Changes that affect
+          below, newest first, no matter how small. Changes that affect
           how we handle personal data (a new processor, a new category of data,
           a retention change) are flagged <strong>material</strong>.
         </p>
@@ -324,9 +344,9 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
         Currently built and run by one person in Prague.
       </p>
       <ul class="contact-list">
-        <li><a href="mailto:hello@nidhi.today">hello@nidhi.today</a> &mdash; for anything, privacy or otherwise</li>
-        <li><a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">@nidhi.today</a> &mdash; if you prefer DMs</li>
-        <li><a href="/beliefs">Our beliefs</a> &mdash; if you want the why</li>
+        <li><a href="mailto:hello@nidhi.today">hello@nidhi.today</a>: for anything, privacy or otherwise</li>
+        <li><a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">@nidhi.today</a>: if you prefer DMs</li>
+        <li><a href="/beliefs">Our beliefs</a>: if you want the why</li>
       </ul>
 
     </div>
@@ -467,7 +487,7 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
     margin: 0 0 var(--space-1);
   }
 
-  /* Override the generic h2 treatment inside this section — it's a meta
+  /* Override the generic h2 treatment inside this section. It's a meta
      section, not a primary policy chapter, so dial the visual weight back. */
   .changelog-section h2 {
     font-size: 1.1rem;
