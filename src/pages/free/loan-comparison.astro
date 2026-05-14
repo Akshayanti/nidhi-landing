@@ -60,29 +60,69 @@ const publishedSlugs = new Set(
 );
 const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
 
+// Title and description prioritise the search phrasings real users have
+// typed. Primary terms are "loan", "comparison", and "side by side";
+// "multi-currency" (and its punctuation variants) is the secondary
+// modifier. We keep both "comparator" and "comparison" present because
+// they're not interchangeable in search intent: "comparator" trends
+// international/UK/IN, "comparison" trends US.
 const title =
-  'Loan Comparison Calculator: Compare 3 Loan Offers Side by Side | nidhi';
+  'Loan Comparison Calculator: Compare Loan Offers Side by Side (Multi-Currency) | nidhi';
 const description =
-  'Free loan comparison calculator. Compare up to three loan offers (mortgage, auto, personal, or student loans) and see monthly payment, payoff time, total interest, and total cost. Calculations are precise to the cent and run entirely in your browser.';
+  'Free loan comparison calculator. Compare two to five loan offers side by side: monthly payment, payoff time, total interest, fees, and total cost, calculated to the cent. Works for mortgages, auto loans, personal loans, and student loans. Multi-currency support: USD, EUR, GBP, INR, JPY, CAD, AUD, CHF, SGD, KRW, and CZK. No signup, no data sent to any server.';
 const keywords = [
+  // Primary intent: loan / comparison / side-by-side phrasings.
   'loan comparison calculator',
+  'loan comparison',
+  'compare loans side by side',
+  'compare loan offers side by side',
+  'loan calculator side by side',
+  'side by side loan calculator',
+  'side-by-side loan comparison',
   'compare loans',
-  'mortgage comparison',
-  'loan calculator',
-  'amortization calculator',
-  'monthly payment calculator',
-  'total interest calculator',
+  'compare loan offers',
   'compare lenders',
+  'loan comparator',
+  'loan comparison tool',
+  // Loan types still in the comparison/side-by-side family.
+  'mortgage comparison calculator',
+  'compare mortgages side by side',
   'auto loan comparison',
+  'compare car loans',
   'personal loan comparison',
   'student loan comparison',
+  // Secondary modifier: multi-currency permutations. Search engines
+  // treat hyphen, space, and concatenation as different surface forms
+  // for matching; we list each so we don't lose long-tail traffic.
+  'multi-currency loan calculator',
+  'multi currency loan calculator',
+  'multicurrency loan calculator',
+  'multi-currency loan comparator',
+  'multi currency loan comparator',
+  'multicurrency loan comparator',
+  'multi-currency loan comparison',
+  'multi currency loan comparison',
+  'multicurrency loan comparison',
+  'international loan calculator',
+  // Math/feature surface (also fed into JSON-LD featureList).
+  'amortization calculator',
+  'amortisation calculator',
+  'monthly payment calculator',
+  'total interest calculator',
   'APR comparison',
+  'origination fee calculator',
+  'extra principal calculator',
+  // Currency-specific long tail.
+  'INR loan calculator',
+  'rupee loan calculator',
+  'EUR loan calculator',
+  'JPY loan calculator',
 ];
 
 const faqs = [
   {
     q: 'How does this loan comparison calculator work?',
-    a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for up to three lenders. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, and total amount paid (including any origination or closing fees you enter).',
+    a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for each lender you want to compare. You can compare two to five loan offers side by side. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, and total amount paid (including any origination or closing fees you enter).',
   },
   {
     q: 'How accurate are the calculations?',
@@ -90,7 +130,11 @@ const faqs = [
   },
   {
     q: 'Can I compare loans with different terms or rates?',
-    a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across the three loans. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+    a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across all of the loans you compare. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+  },
+  {
+    q: 'How many loans can I compare at once?',
+    a: 'Two to five. The page starts with two side-by-side cards and an obvious "Add vendor" tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
   },
   {
     q: 'Does the calculator handle origination fees and closing costs?',
@@ -110,7 +154,11 @@ const faqs = [
   },
   {
     q: 'Which currencies are supported?',
-    a: 'You can pick from US Dollar, Euro, British Pound, Indian Rupee, Japanese Yen, Czech Koruna, Canadian Dollar, Australian Dollar, Swiss Franc, Singapore Dollar, and South Korean Won. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
+    a: 'You can pick from US Dollar (USD), Euro (EUR), British Pound (GBP), Indian Rupee (INR), Japanese Yen (JPY), Czech Koruna (CZK), Canadian Dollar (CAD), Australian Dollar (AUD), Swiss Franc (CHF), Singapore Dollar (SGD), and South Korean Won (KRW). Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
+  },
+  {
+    q: 'What does "multi-currency" mean here?',
+    a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a live FX rate) would be misleading.',
   },
 ];
 
@@ -119,13 +167,36 @@ const canonicalUrl = 'https://nidhi.today/free/loan-comparison';
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
+  // Primary `name` mirrors the title's leading phrase so search engines
+  // surface a single canonical brand name. alternateName collects the
+  // other phrasings users actually search for so brand-search variants
+  // ("nidhi loan comparator", "nidhi multi-currency loan calculator")
+  // still resolve to the same entity in engines that respect
+  // schema.org's alternateName.
   name: 'nidhi Loan Comparison Calculator',
+  alternateName: [
+    'nidhi Loan Comparator',
+    'nidhi Loan Calculator',
+    'nidhi Multi-Currency Loan Comparator',
+    'nidhi Multi-Currency Loan Calculator',
+    'nidhi Side-by-Side Loan Comparison',
+  ],
   url: canonicalUrl,
   description,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any (web browser)',
   browserRequirements: 'Requires JavaScript. Modern browser.',
   isAccessibleForFree: true,
+  // featureList helps Google understand what the app does at a glance,
+  // which feeds the rich-result and answer-box surfaces.
+  featureList: [
+    'Compare 2 to 5 loan offers side by side',
+    'Multi-currency support: USD, EUR, GBP, INR, JPY, CZK, CAD, AUD, CHF, SGD, KRW',
+    'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
+    'Model origination fees and extra monthly principal',
+    'Cent-precise integer amortization schedule',
+    'Shareable URL for any comparison state',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -177,14 +248,22 @@ const faqSchema = {
         <li aria-current="page">Loan comparison calculator</li>
       </ol>
     </nav>
+    {/* Visible breadcrumb label is "Loan comparison calculator" (the
+        primary intent phrase) rather than "Multi-currency loan comparator"
+        so the on-page text aligns with the H1 and the structured-data
+        breadcrumb below. */}
 
     <header class="lc-pageHeader">
       <p class="lc-eyebrow">Free tools</p>
-      <h1 class="lc-pageTitle">Compare loan offers side by side</h1>
+      <h1 class="lc-pageTitle">
+        Loan comparison calculator: compare loan offers side by side
+      </h1>
       <p class="lc-pageLead">
-        Plug in three lenders. See the monthly payment, how long it takes to
-        pay off, and the total amount you'll pay, calculated to the cent.
-        Everything runs in your browser; nothing is sent to a server.
+        Plug in two to five lenders. See the monthly payment, how long it
+        takes to pay off, and the total amount you'll pay, calculated to
+        the cent. Multi-currency support for USD, EUR, GBP, INR, JPY, and
+        more. Everything runs in your browser; nothing is sent to a
+        server.
       </p>
     </header>
 

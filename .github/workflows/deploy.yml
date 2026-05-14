@@ -78,10 +78,33 @@ jobs:
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
           PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
 
+      - name: Compute IndexNow URL hash manifest
+        # SHA-256 the rendered HTML for every URL in dist/sitemap-index.xml
+        # and write the per-URL manifest to .indexnow/current.json. The
+        # post-deploy `indexnow-ping` job downloads this artifact, diffs
+        # it against the previous run's manifest (restored from cache),
+        # and submits only URLs whose hash changed. See scripts/indexnow.mjs.
+        # The manifest lives OUTSIDE dist/ on purpose so it doesn't end up
+        # in the GitHub Pages artifact and get served at /.indexnow/.
+        run: |
+          mkdir -p .indexnow
+          node scripts/indexnow.mjs hash dist > .indexnow/current.json
+          echo "Wrote $(wc -l < .indexnow/current.json) lines, $(wc -c < .indexnow/current.json) bytes"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
+      - name: Upload IndexNow manifest as artifact
+        # Separate from the Pages artifact: the manifest is internal
+        # build metadata, not site content. Short retention because the
+        # only consumer (`indexnow-ping`) runs in the same workflow run.
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-hashes
+          path: .indexnow/current.json
+          retention-days: 1
 
   deploy:
     environment:
@@ -93,6 +116,126 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Notify IndexNow-participating search engines (Bing, DuckDuckGo,
+  # Yandex, Seznam, Naver, Yep) that our content has changed. Google does
+  # NOT participate in IndexNow; its index is updated on its own crawl
+  # schedule via the sitemap and Search Console.
+  #
+  # Diff-based submission. Each run uploads a SHA-256-per-URL manifest
+  # as the `indexnow-hashes` artifact (computed in the build job). This
+  # job restores the previous run's manifest from cache, runs
+  # scripts/indexnow.mjs `submit`, which diffs the two and POSTs only
+  # URLs whose hash is new or has changed.
+  #
+  # Because the diff is what drives submission, the schedule trigger is
+  # SAFE to include here: a no-op rebuild produces an empty diff and
+  # silently skips the API call. We removed the previous `event_name !=
+  # 'schedule'` guard so date-gated posts crossing their pubDate during
+  # the daily rebuild are also pinged immediately.
+  #
+  # The key file is committed at public/<key>.txt and ships as part of
+  # the static site, which is what IndexNow validates before accepting a
+  # submission. The key is *not* secret: by design, it has to be
+  # publicly readable at <host>/<key>.txt to function. We hardcode it
+  # here rather than pull from a secret so the source of truth lives
+  # next to the file it must match.
+  #
+  # `continue-on-error: true` keeps a rejected or rate-limited IndexNow
+  # ping from turning the deploy red. The deploy itself has already
+  # succeeded by the time this job runs; failing the workflow because a
+  # third-party search engine API was flaky would be misleading.
+  indexnow-ping:
+    needs: deploy
+    if: success()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      # The key MUST match public/<key>.txt. Rotating it requires
+      # renaming the file in public/ and updating this single constant
+      # in lockstep — keep them as close to literally adjacent as the
+      # tooling allows.
+      INDEXNOW_KEY: f5c9f51a26d65196884f3dc7a7687284
+    steps:
+      - name: Checkout (for scripts/indexnow.mjs)
+        # Shallow checkout: we only need the script file to run.
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Wait for GitHub Pages propagation
+        # IndexNow validates keyLocation is reachable AND contains the
+        # expected key BEFORE accepting a submission. 45s mirrors the
+        # propagation budget the trigger-newsletter job already uses
+        # successfully, so it's a known-good number for this CDN.
+        run: sleep 45
+
+      - name: Verify IndexNow key file is reachable
+        # Cheap pre-flight: surfaces "wrong key file content" or "404
+        # because the new public/<key>.txt didn't deploy" as a workflow
+        # warning instead of a silent IndexNow rejection later.
+        # `exit 0` keeps the workflow green; the warning is enough.
+        run: |
+          set -euo pipefail
+          got=$(curl -fsS "https://nidhi.today/${INDEXNOW_KEY}.txt" | tr -d '[:space:]' || echo "")
+          if [ "$got" != "$INDEXNOW_KEY" ]; then
+            echo "::warning::Key file at https://nidhi.today/${INDEXNOW_KEY}.txt returned '$got' (length ${#got}); expected '${INDEXNOW_KEY}'. Skipping submission."
+            exit 0
+          fi
+          echo "Key file OK."
+
+      - name: Download current run's URL hash manifest
+        # Produced by the build job above; lands at .indexnow/current.json.
+        uses: actions/download-artifact@v4
+        with:
+          name: indexnow-hashes
+          path: .indexnow/
+
+      - name: Restore previous run's URL hash manifest from cache
+        # On first run nothing is restored and indexnow.mjs treats the
+        # missing previous manifest as empty (so every URL counts as
+        # new). The unique key per run guarantees a fresh save below;
+        # the prefix-only restore-keys grabs the most recent prior
+        # manifest regardless of which run created it.
+        uses: actions/cache/restore@v4
+        with:
+          path: .indexnow/manifest.json
+          key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            indexnow-hashes-
+
+      - name: Submit changed URLs to IndexNow
+        # `submit` reads the previous manifest if it exists (cache hit)
+        # or treats it as empty (cache miss / first run), diffs against
+        # the current run's manifest, and POSTs only the changed list.
+        # If the diff is empty it logs and exits without making the
+        # network call. Documented exit semantics in scripts/indexnow.mjs.
+        run: |
+          node scripts/indexnow.mjs submit \
+            .indexnow/manifest.json \
+            .indexnow/current.json \
+            "${INDEXNOW_KEY}"
+
+      - name: Stage current manifest as next run's "previous"
+        # Always run this step (even if submit hit a non-2xx) so the
+        # next run's diff stays accurate. If we only saved on success, a
+        # flaky IndexNow API would cause us to re-submit the same URLs
+        # on every run until it succeeded, which is exactly the spam
+        # pattern the protocol asks submitters to avoid.
+        if: always()
+        run: cp .indexnow/current.json .indexnow/manifest.json
+
+      - name: Save manifest as cache for next run
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .indexnow/manifest.json
+          key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
 
   # Hand off to the newsletter workflow (see .github/workflows/newsletter.yml)
   # AFTER a propagation delay — GitHub Pages reports deploy success when the
