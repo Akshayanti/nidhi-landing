@@ -11,3 +11,9 @@ output/
 
 # Local newsletter dry-run previews
 emails/_preview/
+
+# IndexNow URL hash manifest. Computed during the build job by
+# scripts/indexnow.mjs and consumed only by the post-deploy ping job
+# (passed between jobs as a workflow artifact, not via git). Never
+# checked in.
+.indexnow/

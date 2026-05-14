@@ -20,7 +20,19 @@ on:
       - 'src/components/LoanCompare.tsx'
       - 'src/utils/loanMath.ts'
       - 'src/utils/loanMath.test.ts'
+      # URL-state helpers + tests for the loan comparator. Extracted out
+      # of LoanCompare.tsx so the round-trip and count-inference logic
+      # could be tested directly; the tests must run on PRs that touch
+      # either the helper or its test file.
+      - 'src/utils/loanCompareUrl.ts'
+      - 'src/utils/loanCompareUrl.test.ts'
       - 'src/utils/dependencies.test.ts'
+      # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
+      # would silently break the deploy workflow's post-deploy step;
+      # gating it on the same checks the rest of the deploy depends on
+      # is the cheapest way to catch regressions before merge.
+      - 'scripts/indexnow.mjs'
+      - 'scripts/indexnow.test.mjs'
       # Anything that affects the build or dep graph.
       - 'package.json'
       - 'package-lock.json'

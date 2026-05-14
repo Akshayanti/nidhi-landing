@@ -8,6 +8,16 @@ import {
   toMinor,
   type LoanResult,
 } from '../utils/loanMath';
+import {
+  DEFAULT_VENDORS,
+  MAX_VENDORS,
+  MIN_VENDORS,
+  VENDOR_LABELS,
+  decodeFromQueryString,
+  encodeToQueryString,
+  makeDefaultVendor,
+  type VendorInput,
+} from '../utils/loanCompareUrl';
 
 // -----------------------------------------------------------------------------
 // PostHog telemetry helper.
@@ -41,108 +51,16 @@ function track(event: string, properties?: Record<string, unknown>) {
   }
 }
 
-type ModeKind = 'term' | 'payment';
-
-interface VendorInput {
-  name: string;
-  principal: string;          // major-unit amount, as typed
-  annualRatePct: string;      // percent, as typed (e.g. "6.5")
-  modeKind: ModeKind;
-  termMonths: string;         // months, as typed
-  monthlyPayment: string;     // major-unit amount, as typed
-  feeMajor: string;           // origination/closing fee, major units
-  extraMonthly: string;       // extra principal per month, major units
-}
-
-const VENDOR_COUNT = 3;
-const VENDOR_LABELS = ['A', 'B', 'C'] as const;
-const VENDOR_COLORS = ['var(--color-deep-blue)', 'var(--color-teal)', '#E65100'];
-
-const DEFAULT_VENDORS: VendorInput[] = [
-  {
-    name: 'Vendor A',
-    principal: '250000',
-    annualRatePct: '6.5',
-    modeKind: 'term',
-    termMonths: '360',
-    monthlyPayment: '',
-    feeMajor: '0',
-    extraMonthly: '0',
-  },
-  {
-    name: 'Vendor B',
-    principal: '250000',
-    annualRatePct: '6.0',
-    modeKind: 'term',
-    termMonths: '360',
-    monthlyPayment: '',
-    feeMajor: '2500',
-    extraMonthly: '0',
-  },
-  {
-    name: 'Vendor C',
-    principal: '250000',
-    annualRatePct: '5.75',
-    modeKind: 'term',
-    termMonths: '360',
-    monthlyPayment: '',
-    feeMajor: '4000',
-    extraMonthly: '0',
-  },
+// VENDOR_COLORS is intentionally kept here, not in loanCompareUrl.ts:
+// it's a UI-only concern (how vendors render in the grid and chart) and
+// has no place in URL state. Indices align with VENDOR_LABELS A-E.
+const VENDOR_COLORS = [
+  'var(--color-deep-blue)',
+  'var(--color-teal)',
+  '#E65100', // orange
+  '#6A1B9A', // purple
+  '#2E7D32', // green
 ];
-
-// ---- URL <-> state ----------------------------------------------------------
-
-const QS_KEYS: (keyof VendorInput)[] = [
-  'name',
-  'principal',
-  'annualRatePct',
-  'modeKind',
-  'termMonths',
-  'monthlyPayment',
-  'feeMajor',
-  'extraMonthly',
-];
-
-function encodeToQueryString(vendors: VendorInput[], currency: string): string {
-  const params = new URLSearchParams();
-  if (currency !== DEFAULT_CURRENCY) params.set('cur', currency);
-  vendors.forEach((v, i) => {
-    const idx = i + 1;
-    QS_KEYS.forEach((k) => {
-      const value = v[k];
-      if (value !== '' && value != null) {
-        params.set(`v${idx}_${k}`, String(value));
-      }
-    });
-  });
-  return params.toString();
-}
-
-function decodeFromQueryString(
-  qs: string,
-  fallback: VendorInput[],
-): { vendors: VendorInput[]; currency: string | null } {
-  const params = new URLSearchParams(qs);
-  const currency = params.get('cur');
-  if ([...params.keys()].length === 0) return { vendors: fallback, currency: null };
-  const vendors = fallback.map((def, i) => {
-    const idx = i + 1;
-    const next: VendorInput = { ...def };
-    QS_KEYS.forEach((k) => {
-      const value = params.get(`v${idx}_${k}`);
-      if (value !== null) {
-        if (k === 'modeKind') {
-          next.modeKind = value === 'payment' ? 'payment' : 'term';
-        } else {
-          (next as Record<string, string>)[k] = value;
-        }
-      }
-    });
-    return next;
-  });
-  return { vendors, currency };
-}
 
 // ---- Computation -----------------------------------------------------------
 
@@ -401,7 +319,6 @@ export default function LoanCompare() {
     if (typeof window === 'undefined') return;
     const { vendors: decoded, currency: decodedCurrency } = decodeFromQueryString(
       window.location.search.slice(1),
-      DEFAULT_VENDORS,
     );
     setVendors(decoded);
     if (decodedCurrency && CURRENCIES.some((c) => c.code === decodedCurrency)) {
@@ -421,6 +338,34 @@ export default function LoanCompare() {
     setVendors((prev) => {
       const next = prev.slice();
       next[index] = { ...next[index], ...patch };
+      return next;
+    });
+  }, []);
+
+  const addVendor = useCallback(() => {
+    setVendors((prev) => {
+      if (prev.length >= MAX_VENDORS) return prev;
+      const next = [...prev, makeDefaultVendor(prev.length)];
+      // Track *after* state update is queued so the count we report is the
+      // post-add count, which is what funnels actually want to filter on.
+      track('loan_compare_vendor_added', { count: next.length });
+      return next;
+    });
+  }, []);
+
+  const removeVendor = useCallback((index: number) => {
+    setVendors((prev) => {
+      if (prev.length <= MIN_VENDORS) return prev;
+      const removedLabel = VENDOR_LABELS[index];
+      const next = prev.filter((_, i) => i !== index);
+      track('loan_compare_vendor_removed', {
+        // `vendor` is the slot label that was removed (A-E). After removal,
+        // the remaining vendors shift up positionally; that's fine for
+        // analytics because we report the slot the user *clicked*, not its
+        // post-removal identity.
+        vendor: removedLabel,
+        count: next.length,
+      });
       return next;
     });
   }, []);
@@ -458,7 +403,7 @@ export default function LoanCompare() {
       <div className="lc-toolbar" role="toolbar" aria-label="Loan comparison actions">
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
-            Currency
+            Display currency
           </label>
           <select
             id={currencySelectId}
@@ -469,11 +414,35 @@ export default function LoanCompare() {
               setCurrency(next);
               track('loan_compare_currency_changed', { currency: next });
             }}
+            aria-describedby={`${currencySelectId}-hint`}
           >
             {CURRENCIES.map((c) => (
               <option key={c.code} value={c.code}>{c.label}</option>
             ))}
           </select>
+          {/* The currency selector controls *display formatting only*: symbol,
+              decimal places, and digit grouping. The amortization math is
+              identical across currencies, and all vendors in a single
+              comparison share one currency, so we surface that scope
+              explicitly to avoid implying any FX conversion is happening. */}
+          <p id={`${currencySelectId}-hint`} className="lc-fieldHelp">
+            All loans in this comparison use this format.
+          </p>
+          {/* Live preview. The sample number 12,345,678.90 is deliberately
+              chosen to exercise grouping differences across locales:
+              Western groups every 3 digits ("12,345,678.90"), Indian uses
+              lakh/crore ("1,23,45,678.90"), German swaps separators
+              ("12.345.678,90"), and JPY/KRW round to whole units. Seeing
+              the actual rendered number removes the "what does INR
+              formatting mean?" ambiguity from the dropdown label.
+              aria-live=polite so screen readers announce the format when
+              the user changes the picker. */}
+          <p className="lc-fieldPreview" aria-live="polite">
+            <span className="lc-fieldPreviewLabel">Sample:</span>{' '}
+            <span className="lc-fieldPreviewValue">
+              {formatMoney(toMinor(12345678.9, currency), currency)}
+            </span>
+          </p>
         </div>
         <div className="lc-toolbarActions">
           <button
@@ -517,8 +486,26 @@ export default function LoanCompare() {
             currency={currency}
             isBest={validResults.length > 1 && i === cheapestByTotal}
             onChange={(patch) => updateVendor(i, patch)}
+            // The remove button is only renderable when we're above the
+            // minimum; passing undefined hides it. Doing the gating here
+            // (instead of inside the card) keeps the card stateless.
+            onRemove={vendors.length > MIN_VENDORS ? () => removeVendor(i) : undefined}
           />
         ))}
+        {vendors.length < MAX_VENDORS && (
+          <button
+            type="button"
+            className="lc-cardAdd"
+            onClick={addVendor}
+            aria-label={`Add another vendor to compare (${vendors.length + 1} of ${MAX_VENDORS})`}
+          >
+            <span className="lc-cardAddIcon" aria-hidden="true">+</span>
+            <span className="lc-cardAddLabel">Add vendor</span>
+            <span className="lc-cardAddHint">
+              Compare up to {MAX_VENDORS}
+            </span>
+          </button>
+        )}
       </div>
 
       <DeltaSummary
@@ -566,9 +553,11 @@ interface VendorCardProps {
   currency: string;
   isBest: boolean;
   onChange: (patch: Partial<VendorInput>) => void;
+  /** Omitted when removing would drop below the minimum vendor count. */
+  onRemove?: () => void;
 }
 
-function VendorCard({ label, color, vendor, result, currency, isBest, onChange }: VendorCardProps) {
+function VendorCard({ label, color, vendor, result, currency, isBest, onChange, onRemove }: VendorCardProps) {
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
@@ -589,6 +578,17 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange }
           <span className="lc-cardBestBadge">
             <span aria-hidden="true">★ </span>Lowest total cost
           </span>
+        )}
+        {onRemove && (
+          <button
+            type="button"
+            className="lc-cardRemove"
+            onClick={onRemove}
+            aria-label={`Remove vendor ${label} from comparison`}
+            title="Remove from comparison"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
         )}
       </header>
 
