@@ -161,6 +161,27 @@ jobs:
         continue-on-error: true
 
       - name: Commit updated newsletter marker
+        # Pushes .last-sent-guid.txt directly to `main` using the default
+        # GITHUB_TOKEN (made available by `persist-credentials: true` on the
+        # checkout step above).
+        #
+        # This requires that the `main` branch protection rule does NOT
+        # include "Require a pull request before merging" — that rule
+        # blocks every direct push from Actions (the default GITHUB_TOKEN
+        # cannot bypass it without an explicit bypass-list entry, which
+        # the classic Branch Protection UI doesn't let you add for the
+        # github-actions[bot] identity). Other protections — required
+        # status checks, force-push restrictions, deletion blocks — are
+        # all compatible with this step. If you ever turn the PR rule back
+        # on, you'll need to either:
+        #   (a) migrate to Rulesets and add GitHub Actions (Integration ID
+        #       15368) to the bypass list, or
+        #   (b) move the marker to an unprotected branch (see
+        #       docs/plans/blog-subscription-setup.md for the pattern).
+        #
+        # If the push fails despite no PR rule, the most likely cause is a
+        # newly-added "Restrict who can push" actor list that excludes the
+        # bot — re-check the protection rule.
         if: steps.newsletter.outcome == 'success'
         run: |
           if git diff --quiet -- .last-sent-guid.txt; then
@@ -174,7 +195,9 @@ jobs:
           # Race-proof push: rebase on top of any newer main commits, retry.
           # deploy.yml has `paths-ignore: ['.last-sent-guid.txt']` on its
           # push trigger, so this commit does NOT re-trigger a deploy — no
-          # infinite loop.
+          # infinite loop. Retries here only help with the concurrent-deploy
+          # race; they cannot rescue a branch-protection rejection (see
+          # block comment above the step).
           for attempt in 1 2 3; do
             git pull --rebase --autostash origin main || true
             if git push origin HEAD:main; then
@@ -184,8 +207,8 @@ jobs:
             echo "Push attempt $attempt failed, retrying..."
             sleep 5
           done
-          echo "::warning::Failed to push newsletter marker after 3 attempts"
-          exit 0
+          echo "::error::Failed to push newsletter marker after 3 attempts. If this started failing after a branch-protection change, the most likely cause is that 'Require a pull request before merging' was re-enabled on main — see the comment block above this step for remediation."
+          exit 1
 
       - name: Scan for newsletter bounces
         # Asks Apps Script to sweep the FROM_EMAIL inbox for mailer-daemon
