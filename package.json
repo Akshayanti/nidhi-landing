@@ -6,13 +6,15 @@
     "dev": "astro dev",
     "prebuild": "node scripts/lint-figures.mjs",
     "build": "astro build",
+    "postbuild": "node scripts/render-email-figures.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "node scripts/lint.mjs",
     "lint:figures": "node scripts/lint-figures.mjs",
     "test": "node --test --test-reporter=spec src/utils/loanMath.test.ts src/utils/loanCompareUrl.test.ts src/utils/dependencies.test.ts scripts/indexnow.test.mjs",
     "render-ig": "node scripts/render-ig.js",
-    "render-figures": "node scripts/render-figures.mjs"
+    "render-figures": "node scripts/render-figures.mjs",
+    "render-email-figures": "node scripts/render-email-figures.mjs"
   },
   "keywords": [],
   "author": "",
