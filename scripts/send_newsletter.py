@@ -501,6 +501,200 @@ _BRAND_STYLES: dict[str, str] = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Figure (inline-SVG diagram) inlining
+# ---------------------------------------------------------------------------
+#
+# Blog posts include hand-authored inline <figure><svg>…</svg><figcaption/>
+# diagrams (see src/styles/global.css "Inline figures" section). On the live
+# site these render correctly because:
+#   1. .prose figure / .prose figure svg / .prose figcaption rules give them
+#      a white card frame, padding, max-width, and figcaption typography.
+#   2. .fig-title / .fig-fill-blue / .fig-stroke-warn / etc. classes on
+#      <text>, <rect>, <path>, … resolve to fill / stroke / font declarations
+#      via :root CSS custom properties (--color-deep-blue, --color-warning, …).
+#
+# In email, **all** of this dies:
+#   - Gmail (and most clients) strip <style> blocks and external <link>s.
+#   - The :root custom-property declarations don't survive either, so even
+#     inline `style="fill: var(--color-warning)"` resolves to `currentColor`/
+#     black in the email client.
+#
+# Without intervention, that means: shaded regions render as solid black
+# (default SVG fill), polylines disappear (default stroke is `none`), text
+# loses sizing/colour, and the SVG itself renders at the browser default
+# 300×150 because the `max-width:100%; height:auto;` rule is gone.
+#
+# Fix: walk every <figure> in the article and bake the resolved declarations
+# directly onto each element via the `style=""` attribute. Same brand colour
+# palette, just statically resolved — see _BRAND_COLORS below.
+
+# Light-theme colour palette (the email template advertises
+# `color-scheme: light` so dark-theme overrides are intentionally NOT mirrored
+# here — emails always render against the light palette).
+# Source of truth: :root in src/styles/global.css.
+_BRAND_COLORS: dict[str, str] = {
+    "--color-deep-blue":         "#0D47A1",
+    "--color-deep-blue-light":   "#5472D3",
+    "--color-deep-blue-dark":    "#002171",
+    "--color-teal":              "#00897B",
+    "--color-teal-light":        "#4EBAAA",
+    "--color-teal-dark":         "#005B4F",
+    "--color-success":           "#2E7D32",
+    "--color-warning":           "#F57C00",
+    "--color-text-primary":      "#212121",
+    "--color-text-secondary":    "#616161",
+    "--color-text-muted":        "#757575",
+    "--color-bg":                "#F8F9FA",
+    "--color-bg-white":          "#FFFFFF",
+    "--color-border":            "#E0E0E0",
+    "--color-border-light":      "#F0F0F0",
+    # Font stack: Inter isn't loaded in email clients, so include sensible
+    # system fallbacks. Keep alphabetically/visually similar to the live site
+    # so figcaptions feel of-a-piece with the rest of the email body copy.
+    "--font-heading":            "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif",
+}
+
+_CSS_VAR_RE = re.compile(r"var\(\s*(--[a-zA-Z0-9_-]+)\s*(?:,\s*([^)]+))?\)")
+
+
+def _resolve_css_vars(value: str) -> str:
+    """
+    Replace `var(--token[, fallback])` occurrences with their resolved value
+    from _BRAND_COLORS. Used to repair inline `style=""` declarations on SVG
+    elements (e.g. `<text style="fill: var(--color-warning);">`) that would
+    otherwise resolve to currentColor/black once the :root rules are gone.
+    Unknown tokens fall back to the explicit fallback if provided, else
+    "currentColor" (which at least inherits the SVG's parent text colour).
+    """
+    if not value or "var(" not in value:
+        return value
+
+    def repl(m: re.Match) -> str:
+        name = m.group(1)
+        fallback = (m.group(2) or "").strip()
+        return _BRAND_COLORS.get(name, fallback or "currentColor")
+
+    return _CSS_VAR_RE.sub(repl, value)
+
+
+# Resolved declarations for every .fig-* class used inside <figure><svg>.
+# Mirrors src/styles/global.css "Semantic SVG classes" + fill/stroke helpers,
+# but with hex colours baked in (no var(), so no :root dependency).
+_FIG_CLASS_STYLES: dict[str, str] = {
+    # Typography (applied to <text>)
+    "fig-title":        "font:700 24px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#212121;letter-spacing:-0.01em;",
+    "fig-subtitle":     "font:400 15px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#616161;",
+    "fig-label":        "font:600 16px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#212121;",
+    "fig-sublabel":     "font:400 13px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#616161;",
+    "fig-tick":         "font:400 12px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#757575;",
+    "fig-num-lg":       "font:700 36px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#ffffff;",
+    "fig-num-md":       "font:700 22px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#ffffff;",
+    "fig-num-blue":     "font:700 28px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#0D47A1;",
+    "fig-quote-large":  "font:600 20px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#212121;",
+    "fig-quote-small":  "font:400 14px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#757575;font-style:italic;",
+    "fig-eyebrow":      "font:700 11px Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;fill:#757575;letter-spacing:0.12em;text-transform:uppercase;",
+    # Fills (applied to <rect>, <path>, <circle>, …)
+    "fig-fill-blue":        "fill:#0D47A1;",
+    "fig-fill-blue-soft":   "fill:#0D47A1;fill-opacity:0.12;",
+    "fig-fill-teal":        "fill:#00897B;",
+    "fig-fill-teal-soft":   "fill:#00897B;fill-opacity:0.14;",
+    "fig-fill-warn":        "fill:#F57C00;",
+    "fig-fill-warn-soft":   "fill:#F57C00;fill-opacity:0.14;",
+    "fig-fill-success":     "fill:#2E7D32;",
+    "fig-fill-text":        "fill:#212121;",
+    "fig-fill-muted":       "fill:#F0F0F0;",
+    "fig-fill-card":        "fill:#F8F9FA;",
+    # Strokes (applied to <line>, <polyline>, <path>, <rect>; CRITICAL —
+    # without these, the SVG default `stroke: none` makes the lines vanish).
+    "fig-stroke-blue":      "stroke:#0D47A1;fill:none;",
+    "fig-stroke-teal":      "stroke:#00897B;fill:none;",
+    "fig-stroke-warn":      "stroke:#F57C00;fill:none;",
+    "fig-stroke-muted":     "stroke:#757575;fill:none;",
+    "fig-stroke-rule":      "stroke:#E0E0E0;fill:none;",
+    "fig-stroke-card":      "stroke:#E0E0E0;fill:none;",
+}
+
+
+def _inline_figure_styles(node) -> None:
+    """
+    Bake resolved figure / figcaption / SVG styles inline so figures survive
+    the trip into Gmail / Outlook / etc. (which strip <style> and don't
+    resolve :root CSS custom properties).
+
+    For each <figure> in `node`:
+      1. Apply the brand `figure` container styling (margin + centred).
+      2. Apply the `figcaption` typography.
+      3. For each <svg>:
+           a. Add a white card frame (background, border, padding, radius)
+              that the live `.prose figure svg` rule normally provides.
+           b. Set `width="544"` (600px email column minus 28px×2 padding) as
+              an attribute so Outlook — which ignores CSS sizing on SVG —
+              renders at a sensible size.
+           c. Walk every descendant. For any element carrying a `.fig-*`
+              class, prepend the resolved declarations from _FIG_CLASS_STYLES
+              (multiple classes accumulate). Also resolve any `var(--…)` in
+              the element's existing inline style.
+
+    Existing inline `style=""` always wins (we prepend, CSS last-declaration-
+    wins) so authored overrides like `style="fill: var(--color-warning);"`
+    still take effect after var-resolution.
+    """
+    for fig in node.find_all("figure"):
+        fig_base = "margin:24px 0;text-align:center;"
+        existing_fig = (fig.get("style") or "").strip()
+        fig["style"] = fig_base + existing_fig
+
+        for cap in fig.find_all("figcaption"):
+            cap_base = (
+                "font-size:13px;color:#757575;margin:10px auto 0;"
+                "line-height:1.55;font-style:italic;max-width:92%;"
+                "text-align:center;"
+            )
+            existing_cap = (cap.get("style") or "").strip()
+            cap["style"] = cap_base + existing_cap
+
+        for svg in fig.find_all("svg"):
+            framing = (
+                "max-width:100%;height:auto;display:block;margin:0 auto;"
+                "background:#FFFFFF;border:1px solid #F0F0F0;border-radius:8px;"
+                "padding:20px 12px;box-sizing:border-box;"
+            )
+            existing_svg = _resolve_css_vars((svg.get("style") or "").strip())
+            svg["style"] = framing + existing_svg
+            if not svg.has_attr("width"):
+                svg["width"] = "544"
+
+            for el in svg.find_all(True):
+                cls = el.get("class")
+                if isinstance(cls, str):
+                    classes = cls.split()
+                elif isinstance(cls, list):
+                    classes = cls
+                else:
+                    classes = []
+
+                accumulated = "".join(
+                    _FIG_CLASS_STYLES[c] for c in classes if c in _FIG_CLASS_STYLES
+                )
+                existing_el = _resolve_css_vars((el.get("style") or "").strip())
+                if existing_el and not existing_el.endswith(";"):
+                    existing_el += ";"
+
+                if accumulated or existing_el:
+                    el["style"] = accumulated + existing_el
+
+                # SVG presentation attributes can also reference CSS vars
+                # directly (e.g. stroke="var(--color-warning)"). These need
+                # the same resolution treatment as inline styles, otherwise
+                # the colour falls back to currentColor/black in the email.
+                for attr in ("fill", "stroke", "stop-color",
+                             "flood-color", "lighting-color", "color"):
+                    val = el.get(attr)
+                    if val and "var(" in val:
+                        el[attr] = _resolve_css_vars(val)
+
+
 def style_inline(node) -> None:
     """
     Prepend brand-default inline styles onto every element in `node` that
@@ -523,6 +717,12 @@ def style_inline(node) -> None:
             continue
         existing = tag.get("style", "").strip()
         tag["style"] = base + (existing if not existing or existing.endswith(";") else existing + ";")
+
+    # Inline-SVG figures need their own treatment: <figure>/<figcaption> aren't
+    # in _BRAND_STYLES (because their layout differs from regular body
+    # elements), and the SVG's .fig-* class rules + var(--color-*) refs are
+    # both stripped by Gmail. _inline_figure_styles bakes them in.
+    _inline_figure_styles(node)
 
 
 def html_to_text(node) -> str:
