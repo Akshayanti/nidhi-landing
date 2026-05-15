@@ -1,7 +1,7 @@
 ---
 title: "Budgeting: Controlling the Gap Between Income and Spending"
 blog_url: "https://nidhi.today/blog/budgeting/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_budgeting"
-hashtags: "#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi"
+hashtags: "#budgetingtips #zerobasedbudget #paycheckplanning #expatfinance #nidhi"
 post_time: "08:00 CET (Tue/Thu) — morning planning energy + India lunch slot (12:30 IST); stories cascade whole day"
 
 # Story content reference — 4-frame sequence on post day
@@ -42,7 +42,7 @@ That's not budgeting. That's hoping.
 
 Full guide → link in bio
 
-#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi
+#budgetingtips #zerobasedbudget #paycheckplanning #expatfinance #nidhi
 
 [ 50 30 20 rule, pay yourself first, budgeting method,
 budget app, monthly budget, savings automation,

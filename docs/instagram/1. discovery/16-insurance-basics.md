@@ -1,8 +1,8 @@
 ---
 title: "Insurance Basics: Protecting What You've Built"
 blog_url: "https://nidhi.today/blog/insurance-basics/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_insurance_basics"
-hashtags: "#insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi"
-post_time: "14:30 CET (Tue/Wed/Thu) — insurance topics resonate strongly with Indian families in evening scroll"
+hashtags: "#insurancebasics #disabilityinsurance #expatinsurance #financialsafetynet #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — insurance is fear-state content; EU afternoon scroll lands when readers have time to absorb, not commute-skim"
 
 # Story content reference — 4-frame sequence on post day
 story_hook: |
@@ -49,7 +49,7 @@ Here's the honest rule: insure what you can't afford to lose. Self-insure the re
 
 Full guide → link in bio
 
-#insurancebasics #disabilityinsurance #desifinance #financialsafetynet #nidhi
+#insurancebasics #disabilityinsurance #expatinsurance #financialsafetynet #nidhi
 
 [ health insurance abroad, expat insurance, liability
 insurance, income protection, term life insurance,

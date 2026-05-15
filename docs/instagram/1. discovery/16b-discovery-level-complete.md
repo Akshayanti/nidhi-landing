@@ -1,7 +1,7 @@
 ---
 title: "Discovery Level Complete: You Have the Foundation"
 blog_url: "https://nidhi.today/blog/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=discovery_end"
-hashtags: "#financialfoundation #moneybasics #desifinance #moneyineurope #nidhi"
+hashtags: "#financialfoundation #moneybasics #beginnerfinance #moneyliteracy #nidhi"
 post_time: "14:30 CET (Thu/Fri) — milestone post; EU afternoon + India peak; shareability ramps into weekend"
 
 # Story content reference — 2-day story campaign (this is a milestone post)
@@ -95,7 +95,7 @@ All 16 live permanently on the blog — searchable, always up to date, linked in
 Next series — Money in Action — drops soon.
 Follow @nidhi.today so you don't miss it.
 
-#financialfoundation #moneybasics #desifinance #moneyineurope #nidhi
+#financialfoundation #moneybasics #beginnerfinance #moneyliteracy #nidhi
 
 [ money literacy, financial literacy, basics of money,
 financial education, learn personal finance, beginner

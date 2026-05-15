@@ -1,8 +1,8 @@
 ---
 title: "Saving vs. Investing: When to Do Which"
 blog_url: "https://nidhi.today/blog/saving-vs-investing/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_saving_v_investing"
-hashtags: "#savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi"
-post_time: "14:30 CET (Tue/Wed/Thu) — investing resonates with SIP-culture Indian audience in evening peak"
+hashtags: "#savingvsinvesting #firemath #investingbasics #fireeurope #nidhi"
+post_time: "14:30 CET (Tue/Wed/Thu) — EU afternoon + India evening peak (19:00 IST) for the FIRE / first-time-investor cohort"
 
 # Story content reference — 4-frame sequence on post day
 story_hook: |
@@ -41,7 +41,7 @@ Put them in the wrong order, and everything else gets fragile.
 
 Full guide → link in bio
 
-#savingvsinvesting #investingbasics #desifinance #fireeurope #nidhi
+#savingvsinvesting #firemath #investingbasics #fireeurope #nidhi
 
 [ financial independence, index funds, compound
 interest, opportunity cost, first time investor, ETF

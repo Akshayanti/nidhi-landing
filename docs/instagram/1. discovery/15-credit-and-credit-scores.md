@@ -1,7 +1,7 @@
 ---
 title: "Credit and Credit Scores: What They Are and Why They Matter"
 blog_url: "https://nidhi.today/blog/credit-and-credit-scores/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_credit_and_scores"
-hashtags: "#creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi"
+hashtags: "#creditscore #creditbuildingtips #mortgagetips #movingabroad #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — credit-score content largely EU-focused (India uses CIBIL); still lean EU evening for best reach"
 
 # Story content reference — 4-frame sequence on post day
@@ -47,7 +47,7 @@ But it silently determines the interest rate on every loan, the deposit on every
 
 Full guide → link in bio
 
-#creditscore #creditbuildingtips #mortgagetips #moneyineurope #nidhi
+#creditscore #creditbuildingtips #mortgagetips #movingabroad #nidhi
 
 [ SCHUFA, credit history, first mortgage, mortgage
 interest rate, build credit abroad, credit for expats,

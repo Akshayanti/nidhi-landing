@@ -58,25 +58,47 @@ This is the working reference. Update as decisions change.
 
 ### Rules
 - **Max 5 hashtags per post.** IG deprioritizes more than 5.
-- **No repeats** across consecutive posts — IG treats it as hashtag stuffing.
+- **No repeats** across consecutive posts — IG treats it as hashtag stuffing. The brand tag `#nidhi` is the only allowed exception (single-tag brand handshake doesn't count as stuffing in 2026 IG signals).
 - **Composition:** 1 topic tag (medium-large) + 2 niche/community + 1 geo/audience + 1 branded `#nidhi`
 - **Placement:** in caption body, separated by 3–5 line breaks from visible caption. NOT in first comment (IG weights caption hashtags higher).
 - **Keywords in first 125 chars of caption** matter more than hashtags now — IG topic classifier reads there.
+- **Hashtags are evaluated at the account level, not just the post level.** IG's classifier rolls hashtag history into an account-level audience graph. Repeating an audience-narrowing identity tag across multiple posts shapes who IG considers the *whole account* to be for — and that classification then governs which non-followers see *every subsequent post*, regardless of that post's own tags. See "Account-level cohort hygiene" below.
 
 ### Anchor tags by axis
 | Axis | Tags |
 |---|---|
-| Europe core | `#moneyineurope`, `#fireeurope`, `#expatfinance`, `#personalfinanceeurope` |
-| Indian diaspora | `#desifinance`, `#indiansineurope`, `#indianfinance` |
-| Expat / relocation | `#expatlife`, `#movingabroad`, `#costoflivingcomparison` |
-| Topic niches | `#liquidityrisk`, `#emergencyfundeurope`, `#savingvsinvesting`, `#inflationawareness`, `#creditscore`, etc. |
+| Europe core | `#fireeurope`, `#expatfinance`, `#personalfinanceeurope` |
+| Expat / relocation | `#expatlife`, `#movingabroad` |
+| Topic niches | `#liquidityrisk`, `#emergencyfundeurope`, `#savingvsinvesting`, `#creditscore`, `#zerobasedbudget`, `#firemath`, `#paycheckplanning`, etc. |
 | Brand | `#nidhi` (always include) |
 
+### Account-level cohort hygiene
+
+The audience defined in §1 is *global expats ex-North America*, with EU as the largest single segment but the audience itself is intentionally broad. Any hashtag that narrows to a single national/cultural cohort — even when the topic is universal — pulls IG's account-level classifier toward that cohort and shrinks the non-follower reach pool for *every future post* until the signal is reversed (typically 3–4 posts of consistent counter-signal).
+
+The failure mode is most acute when an audience-narrowing tag co-exists with the multilingual keyword block (§6). The hashtag tells IG "ship to cohort A," the keyword block tells IG "ship to cohort B" (a multilingual EU cohort). When IG's recs engine can't resolve a clear primary cohort, it defaults to "show to existing followers only" rather than guess — exactly the symptom that surfaces as a sudden non-follower-reach drop.
+
+Recovery rule: ship 3–4 consecutive posts with no audience-narrowing identity tags before evaluating reach. IG re-classifies on a rolling window; one clean post does not reverse five anchored ones.
+
 ### Avoid
+
+**Saturated / low-quality:**
 - `#personalfinance` — 30M+ posts, saturated
 - `#financialliteracy` — 6M+, same issue
 - `#moneytips`, `#wealthbuilding`, `#financialfreedom` — vague, attract bots not followers
-- Any `#...us`, `#americanexpat`, `#personalfinanceus` — wrong audience
+
+**Wrong audience:**
+- Any `#...us`, `#americanexpat`, `#personalfinanceus` — wrong audience per §1
+
+**Audience-narrowing identity tags (avoid as defaults; use only when the post is genuinely about that specific cohort, e.g. a remittance / NRI / dual-tax post):**
+- `#desifinance`, `#indiansineurope`, `#indianfinance` — over-anchor the account-level classifier to South-Asian / Indian-diaspora cohort. Directly contradicts §1 ("don't over-index on India-specific framing"). The brand handshake `#nidhi` already carries the Indian-origin signal without needing a community tag — these add narrowing on top of an already-positioned brand. Most damaging when stacked with the multilingual EU keyword block (§6) because the two surfaces signal opposite cohorts and IG defaults to follower-only delivery (see "Account-level cohort hygiene").
+
+**Dead / content-farm-associated compound tags (May 2026 update):**
+- `#moneyineurope` — small, mostly dormant; not a real follow-able community
+- `#inflationawareness` — same; "awareness"-suffix tags rarely have active scrolling communities
+- `#costoflivingcomparison` — long compound tag heavily used by content-farm accounts, guilt by association on IG's quality signal
+
+If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, `#purchasingpower`, `#movingabroad`) or a topic-specific tag instead.
 
 ---
 
@@ -176,6 +198,7 @@ Rule of thumb when picking hashtags: pick the community someone *follows*. When 
 - **No language labels, no flags, no section breaks.** Native-word recognition is enough; labels add clutter and don't help IG search.
 - **No hashtag symbols inside the brackets.** Keywords, not tags.
 - **Overlap with hashtags is fine** — brackets are a separate search surface. Don't duplicate verbatim when a synonym works (e.g. hashtag `#fireeurope` → keyword `financial independence europe`).
+- **No city-name stacks above 3 in one block, and never mix continents.** Listing 4+ cities in a row (`lisbon, berlin, helsinki, bangkok, dubai, singapore`) is the signature pattern IG's spam-detection layer was tuned against in Q1 2026 — it reads as geo-SEO bait and demotes the post out of non-follower recommendations. Mixing EU and Asia/ME cities (`berlin … bangkok`) compounds the problem because the topic classifier reads two different geographic cohorts from the same block and can't resolve which cohort to ship the post to. If a post genuinely covers multiple expat hubs, name 1–2 in the keyword block and let the caption body carry the rest as examples; the caption body is not subject to the same spam pattern.
 
 **Sweet spot: 18–24 keywords per post, lean tighter over looser.** More than ~30 triggers IG's spam/low-quality filters; below ~15 leaves reach on the table. Creator benchmarks (Later, Metricool, IG partner reports 2024–2025) peak in the 10–25 range. Above 60 keywords, posts get flagged out of the "recommended to non-followers" surface.
 
@@ -226,6 +249,14 @@ Breakdown: 5 topic concepts (salary/income/wealth/savings rate/lifestyle inflati
 ```
 
 **Per-post lookup:** pre-tuned hashtags + keyword arrays for upcoming posts live in `docs/plans/IG-KEYWORDS.md`. When drafting a new IG post, copy the hashtag line and keyword array from that reference into the `## Caption` section rather than re-deriving from scratch. The reference is organized by series (Building = posts 17–31, future sections appended as Money in Action / Mastery posts land).
+
+### May 2026 algo notes (keyword surface specifics)
+
+The keyword block was new and lenient when IG launched it in 2025. By Q1 2026 the spam-detection layer matured and the recommendations engine started using the block as a primary input for the non-follower surfaces. Three behaviors govern reach:
+
+- **"Inspired by your interest in [topic]" surface** broadened in March 2026 to be the dominant non-follower discovery card in the home feed. Eligibility requires a clean single-topic classification — when the keyword block sprays across multiple unrelated topics, or fights the hashtag line, the post is excluded from this surface entirely. Posts with strong cohort signal can see 3–5× the non-follower reach of posts that miss the surface; posts that fight themselves see ~0.
+- **Language-cohort match is enforced more strictly than 2025.** A post with 8+ languages in the keyword block needs a clear primary-language signal somewhere — caption body in English (the default) is the standard signal. Don't put 8 equally-weighted non-English keywords with no EN dominance; lead with EN concepts, follow with 2–3 high-volume EU languages (DE/FR/ES/IT), tail with 1–2 niche (PL/SV/NL). The order inside the bracket is not strictly weighted by IG, but the *count distribution* across languages is — keep EN ≥ any single non-EN language.
+- **Cohort-fight failure mode** (the most common 2026 break): when the hashtag line targets one audience cohort (e.g. `#desifinance` → South-Asian) and the keyword block targets another (multilingual EU search terms), IG's recs engine can't resolve the primary cohort and defaults to "show to existing followers only" rather than guess. Symptom: sudden non-follower-reach drop after introducing the multilingual block, even though the block itself is well-formed. Fix: align the hashtag line and keyword block on the same audience cohort. See §3 "Account-level cohort hygiene" for the recovery cadence.
 
 ---
 
@@ -475,6 +506,9 @@ Chronological log of decisions made during playbook development. Update as you i
 | 27 | Reframe: memes removed from blog posts and educational carousels entirely; live as a separate IG-only stream (quote cards + Reels) | Decision #26's policy attempted to embed memes inside educational carousels with a per-series cadence and a MiFID-safe checklist. In practice the constraint stack (MiFID-clean, audience-globalized, no AI, no 2020-2023 templates, slot inside an authority-voice teaching arc) squeezed real memes out and produced illustrated comics pretending to be memes. Sight-unseen archive scans of supplementary sources (SMBC) couldn't validate panel-level fit through automated tooling. The locked 5-post Building cohort (#21, #23, #24, #25, #30) was demonstrably 4 educational comics + 1 real meme (xkcd #927), which is the wrong return on production effort. **Reframe:** decouple memes from the educational surface. Carousels stay clean information design (diagrams, charts, key-number heroes); blog posts ship without memes (Editorial Rule 8 rewritten to "no memes in post bodies"); memes live as standalone IG content in two formats — **quote cards** (single-image standalone posts of sharp Nidhi lines, 2x/week, ~5 min production each, KPI: 2x carousel saves/sends per post) and **Reels** (10-15s text-on-background video, 1 per Building post during the June 2026 pilot, KPI: 3x reach or 1.5x new followers vs. matched-period carousels). The original 5-post locked cohort dissolves: those visuals become Reels source material, not carousel slides. xkcd #927 stays planned for #23 as a blog post HTML embed (not as a carousel slide). MiFID-safe directive remains binding on every image asset that includes financial numbers, regardless of which stream it ships in. **Source-priority cleanup:** added Dilbert to the off-limits list (Scott Adams' post-2023 reputation makes any Dilbert reference a brand-association risk regardless of strip vintage). AI-generated images allowed for layout ideation only, never as final assets. SMBC scan deferred — Weinersmith licensing not verified, and the strategic case for chasing more third-party sources is weak now that the standalone IG stream is the right surface for memes |
 | 28 | Blog figure language: clean conceptual SVG diagrams as a distinct visual surface inside blog post bodies, designed to avoid math-anxiety triggers for the Eva-type primary audience | Decision #27 left a gap: it ruled memes out of carousels and blog bodies and named the carousel as the "clean information design" surface, but didn't specify what *blog* figures should look like. The infrastructure audit confirmed greenfield — `public/images/blog/` empty, no `<figure>` styles in `BlogPost.astro`, no MDX, no chart library, `heroImage` schema field declared but never rendered. **Direction:** figures are inline SVG inside markdown, wrapped in `<figure><svg/><figcaption/></figure>`, brand-styled via reusable CSS classes (`.fig-title`, `.fig-fill-blue`, etc.) added once to `BlogPost.astro`. Astro markdown passes raw HTML through unchanged, so no MDX migration and no asset pipeline. SVG via CSS custom properties = automatic dark-mode parity with no per-figure work. **Audience-anxiety constraint shaped design language:** Eva-type readers treat dense data charts (axes, gridlines, 7-row data series) as homework — exactly the wrong response. Figures use conceptual shapes (boxes, ladders, spectra, before/after pairs, shape-only line drawings) over data charts; ≤4 numbers per figure, in service of a single comparison the post has already led the reader to; no gridlines, no decimals; one short italic caption only. **Initial cohort (May 2026):** nine figures across eight Building posts establish the grammar — risk-return spectrum (#17), free-lunch wave cancellation (#20), xkcd #927 + 5-pattern functional map (#23), silent drift (#24), four FIRE flavors (#25), passive-to-active spectrum (#26), home asset/liability duality (#28), wish vs. plan (#30). Two figures replaced math-heavy candidates: FIRE savings-rate curve and #30 cost-of-delay bars were both rejected as math-anxiety triggers and replaced with conceptual versions of the same insight (4-flavors lineup; wish-vs-plan typographic). **Cross-stream reuse:** #20, #24, #25, #30 figures double as Reels source material per §13 — blog SVG is the design source of truth; the Reel adds motion and audio over the same scaffold. **MiFID-safe directive applies to every figure with numbers** (illustrative tag in-image or in caption, no named instruments, no jurisdiction-locked tax math) — same rule as IG image content. **Skipped scope:** posts #21 (Getting Started, table-heavy already) and #29 (Currencies, decorative not conceptual) deliberately excluded; #23 priority ladder considered but skipped (prose ordering already covers it). Editorial Rule 9 added to `blog-content-plan.md` codifying the figure language and the pre-publish checklist; PLAYBOOK §13 amended to cross-reference the figure stream as a third visual surface alongside carousels and the meme/Reels stream |
 | 29 | Figure cohort cut from 9 to 5 on a stricter "what does the figure show that prose cannot" test; surviving figures redesigned around data-anchored shapes; figure CSS moved out of scoped `<style>` into `src/styles/global.css` after a silent rendering bug | First-pass review of the nine-figure cohort surfaced that four were decorative restatements of prose the reader had already absorbed (#23 5-pattern map, #26 passive-to-active spectrum, #28 home asset/liability duality, #30 wish-vs-plan) — they failed the "shape, trajectory, or crossing the prose can't carry" bar that Editorial Rule 9 was supposed to enforce. Cuts taken; xkcd #927 retained on #23 as the only kept image. Four remaining figures redesigned with data-anchored math (Python-verified coordinates before placement): #17 split into per-horizon return-range bars showing the loss tail collapsing as horizon grows; #20 plotted the post's own worked-example table as three line series with the portfolio line perfectly flat; #24 became a single-curve silent-drift trajectory with rising dot opacity; #25 became the literal crossover moment (flat dashed expense line meeting a rising teal income curve at a marked point). **Rendering-pipeline lesson:** initial implementation put figure CSS in `BlogPost.astro`'s component `<style>` block. The figures rendered visibly broken (polylines invisible, fills defaulted to black, dark mode unreadable) because Astro adds a `[data-astro-cid-*]` qualifier to every selector in a scoped block, and markdown-slotted SVG nodes never receive that attribute — so the rules silently fail to match. The DOM looked correct in `curl` output (classes present, structure intact); only a screenshot would have caught the bug. **Fix:** all `.prose figure`, `.prose figcaption`, and `.fig-*` rules moved to `src/styles/global.css` (which is unscoped and already houses the rest of `.prose`). `BlogPost.astro` retains a one-line comment pointing at the global file so the next maintainer doesn't repeat the mistake. **Process amendments:** (a) figures with quantitative shapes get coordinate math verified in Python before SVG placement; (b) "rendered correctly" verification means a screenshot, never just a `curl` of the DOM; (c) Editorial Rule 9 amended with the rendering-pipeline note. **Updated cohort (May 2026):** five figures total — #17 time narrows the range, #20 two volatile companies one steady portfolio, #23 xkcd #927, #24 silent drift, #25 the crossover point. Four of the five (excluding #23) double as canonical "hero" frames for the corresponding Reels concept in §13's Format 2 stream |
+| 30 | Drop South-Asian community tags (`#desifinance`, `#indiansineurope`, `#indianfinance`) from default rotation; brand handshake `#nidhi` carries the Indian-origin signal alone (May 2026) | Discovery posts 11 and 12 dropped sharply on the non-follower-recommendations surface after the multilingual keyword block was introduced. Diagnosis: `#desifinance` was running on 5 of 7 Discovery posts (11, 13, 14, 16, 16b), training IG's account-level classifier to file the account as a South-Asian-finance creator. Once the multilingual EU keyword block landed on top of that anchor, every post sent two non-overlapping cohort signals — South-Asian (hashtag) vs. multilingual EU (keywords). IG's recs engine, faced with a cohort it can't resolve, defaults to "show to existing followers only" rather than guess. Direct violation of §1's "don't over-index on India-specific framing" — the brand handshake `#nidhi` already carries the Indian-origin signal without needing a community tag layered on top. **Fix applied to 13–16b:** dropped `#desifinance` everywhere; replaced with topic- and audience-axis tags consistent with the global-expat positioning (`#firemath`, `#paycheckplanning`, `#movingabroad`, `#expatinsurance`, `#beginnerfinance`). South-Asian tags remain available for posts genuinely about that audience (remittances, NRI tax, dual-currency families) — not as defaults. **Recovery cadence:** 3–4 consecutive clean posts before evaluating reach; one clean post does not reverse five anchored ones |
+| 31 | Geo-keyword stuffing rule: no city-name stacks above 3 in one keyword block; never mix continents | Discovery post 12 carried `lisbon, berlin, helsinki, bangkok, dubai, singapore` — six cities mixing EU and Asia/ME. IG's spam-detection layer matured between Q4 2025 and Q1 2026, and city-name stacks (>3 cities, especially mixed continents) are now a signature pattern flagged as geo-SEO bait and demoted from non-follower recommendations. The continent-mix compounds it: the topic classifier reads "EU expat content" from the caption (Helsinki/Berlin/Lisbon examples) but "Asia nomad content" from `bangkok, dubai, singapore`, forcing the same cohort-confusion failure mode as #30. **Rule:** ≤2 cities in the keyword block, kept on one continent; if a post genuinely spans multiple expat hubs, name 1–2 in the block and let the caption body carry the rest as examples (caption body is not subject to this spam pattern). **Side rule:** drop dead/content-farm-associated compound tags from §3 anchor table — `#moneyineurope`, `#inflationawareness`, `#costoflivingcomparison` are slot waste at best and quality-signal drag at worst |
+| 32 | May 2026 algo notes added to §6: Inspired-by-your-interest surface, language-cohort-match strictness, cohort-fight failure mode | The keyword block's role inside IG changed enough between launch (2025, lenient) and Q1 2026 to warrant explicit documentation in the playbook rather than tribal knowledge. Three behaviors now govern non-follower reach: (a) the "Inspired by your interest in [topic]" home-feed card broadened in March 2026 and dominates non-follower discovery — eligibility requires single-topic classification, posts that fight themselves are excluded entirely; (b) language-cohort match enforced more strictly — a post with 8+ languages needs a clear primary-language signal (English caption body, EN ≥ any single non-EN language in keyword count); (c) cohort-fight is now the most common 2026 break, where hashtag and keyword block target non-overlapping audiences and IG defaults to follower-only delivery. Documented in §6 as a standalone subsection so the next post-author doesn't have to re-discover it from a reach drop. Cross-references §3 "Account-level cohort hygiene" for the recovery cadence |
 
 ---
 
@@ -599,26 +633,3 @@ Blog-side rules:
 - **Quarterly** → review hashtag landscape; niche tags shift faster than broad ones
 
 ---
-
-## Appendix — Posts published vs. upcoming
-
-**Published (pre-playbook or during):**
-- 01 What Is Net Worth
-- 02 How to Calculate Net Worth
-- 03 Assets
-- 04 Liabilities
-- 05 How to Get Out of Debt
-- 06 Appreciation vs. Depreciation
-- 07 Liquidity *(first post under this playbook)*
-
-**Upcoming (playbook applies):**
-- 08 Emergency Fund
-- 09 Income vs. Wealth
-- 10 Cash Flow *(08:00 CET morning slot)*
-- 11 Purchasing Power
-- 12 Why Your Euro Buys More *(flagship Indian-diaspora post)*
-- 13 Saving vs. Investing
-- 14 Budgeting *(08:00 CET morning slot)*
-- 15 Credit and Credit Scores
-- 16 Insurance Basics
-- 16b Discovery Level Complete *(milestone — 2-day story campaign)*
