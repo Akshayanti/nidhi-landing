@@ -60,6 +60,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.site)} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:site_name" content="nidhi" />
 <meta property="og:locale" content="en_US" />
 
@@ -77,6 +79,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={new URL(image, Astro.site)} />
+<meta name="twitter:image:alt" content="nidhi: Money, understood. Personal finance tools and financial literacy." />
 
 <!-- Prev/Next -->
 {prevUrl && <link rel="prev" href={prevUrl} />}

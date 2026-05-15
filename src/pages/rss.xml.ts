@@ -9,7 +9,7 @@ export async function GET(context: APIContext) {
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
   return rss({
-    title: 'nidhi — Personal Finance Blog',
+    title: 'nidhi: Personal Finance Blog',
     description: 'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
     site: context.site!,
     items: posts.map(post => ({
@@ -19,6 +19,6 @@ export async function GET(context: APIContext) {
       link: `/blog/${post.data.slug}`,
       categories: post.data.tags,
     })),
-    customData: '<language>en</language>',
+    customData: `<language>en</language>\n    <lastBuildDate>${now.toUTCString()}</lastBuildDate>`,
   });
 }
