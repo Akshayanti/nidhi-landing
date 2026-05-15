@@ -4,8 +4,20 @@
 <meta charset="utf-8" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400;500&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet" />
 <style>
+  :root {
+    /* Cream editorial palette. May 2026 */
+    --paper: #FAF7F2;       /* warm off-white background */
+    --paper-deep: #F1ECDF;  /* eyebrow chips, hairlines */
+    --ink: #002171;         /* brand deep blue, primary text */
+    --ink-soft: #4A5878;    /* secondary text */
+    --ink-faint: #8892A6;   /* tertiary / metadata */
+    --accent: #00897B;      /* brand teal */
+    --accent-soft: rgba(0, 137, 123, 0.10);
+    --rule: #E5DECF;        /* warm divider */
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -13,131 +25,502 @@
     height: 1080px;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #002171 0%, #005B4F 100%);
-    color: #FFFFFF;
+    color: var(--ink);
+    background: var(--paper);
+    /* subtle warm grain to avoid the "flat color" look */
+    background-image:
+      radial-gradient(at 18% 8%, rgba(0,137,123,0.04) 0%, transparent 38%),
+      radial-gradient(at 82% 92%, rgba(0,33,113,0.04) 0%, transparent 42%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .slide {
     width: 1080px;
     height: 1080px;
+    padding: 80px 80px 72px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 36px 64px 48px;
-    position: relative;
   }
 
-  /* Teal accent bar at top */
-  .slide::before {
-    content: '';
+  /* ========== Chrome: eyebrow (top) and progress (bottom) ========== */
+  .chrome-top {
     position: absolute;
-    top: 0;
-    left: 64px;
-    right: 64px;
-    height: 4px;
-    background: #00897B;
-    border-radius: 0 0 2px 2px;
-  }
-
-  /* --- First slide (hook/title) --- */
-  .slide.slide-first {
-    justify-content: center;
-    text-align: center;
-    padding: 72px 64px 72px;
-  }
-
-  .slide.slide-first .content {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 68px;
-    line-height: 1.18;
-    letter-spacing: -0.02em;
-  }
-
-  .slide.slide-first .handle {
-    position: absolute;
-    bottom: 80px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    color: #4EBAAA;
-  }
-
-  /* --- Middle slides (and last slide) --- */
-  .slide.slide-middle .content {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-size: 54px;
-    line-height: 1.28;
-  }
-
-  /* Lists in content */
-  .content ul, .content ol {
-    margin-left: 0.8em;
-    margin-top: 0.15em;
-  }
-
-  .content li {
-    margin-bottom: 0.1em;
-    line-height: 1.35;
-  }
-
-  /* Bold text */
-  .content strong {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 1.15em;
-    color: #4EBAAA;
-  }
-
-  /* Teal accent for secondary emphasis */
-  .content em {
-    font-style: normal;
-    color: #4EBAAA;
-  }
-
-  /* --- Bottom bar --- */
-  .bottom-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 44px;
+    top: 56px;
+    left: 80px;
+    right: 80px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0 64px;
-    background: rgba(0, 0, 0, 0.15);
+    justify-content: space-between;
   }
 
-  .brand {
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  /* Only render the teal rule when the chip has text. */
+  .eyebrow:not(:empty)::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .chrome-bottom {
+    position: absolute;
+    bottom: 48px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 22px;
+  }
+  .progress {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .progress .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+  }
+  .progress .dot.active {
+    background: var(--accent);
+    width: 22px;
+    border-radius: 4px;
+  }
+  .handle {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 18px;
-    color: #4EBAAA;
+    color: var(--ink-soft);
   }
+  .handle.muted { color: var(--ink-faint); font-weight: 500; }
 
-  .slide-counter {
-    position: absolute;
-    right: 64px;
+  /* ========== Content area shared ========== */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+  .content strong { font-weight: 700; color: var(--ink); }
+  .content em { font-style: normal; color: var(--accent); font-weight: 500; }
+
+  /* ========== Layout: HOOK ========== */
+  .slide[data-layout="hook"] .content {
+    justify-content: center;
+    /* Sized in px so the renderer's auto-fit can scale this root and
+       em-units below cascade. Default 88px; shrinks when content overflows. */
+    font-size: 88px;
+  }
+  .slide[data-layout="hook"] .hook-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1em;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-align: left;
+  }
+  .slide[data-layout="hook"] .hook-headline strong {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .slide[data-layout="hook"] .hook-headline em {
+    color: var(--accent);
+    font-weight: 800;
+    font-style: normal;
+  }
+  .slide[data-layout="hook"] .hook-sub {
+    margin-top: 0.32em;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    font-size: 16px;
-    color: #FFFFFF;
-    opacity: 0.6;
+    font-size: 0.36em;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    max-width: 820px;
+  }
+  .slide[data-layout="hook"] .swipe-cue {
+    position: absolute;
+    bottom: 100px;
+    right: 80px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .slide[data-layout="hook"] .swipe-cue::after {
+    content: '→';
+    font-size: 22px;
+    transform: translateY(-1px);
   }
 
+  /* ========== Layout: PROSE (default middle slide) ========== */
+  .slide[data-layout="prose"] .prose-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 32px;
+    max-width: 880px;
+  }
+  .slide[data-layout="prose"] .prose-body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 1.42;
+    color: var(--ink);
+    max-width: 880px;
+    border-left: 4px solid var(--accent);
+    padding-left: 28px;
+  }
+  .slide[data-layout="prose"] .prose-body p { margin-bottom: 22px; }
+  .slide[data-layout="prose"] .prose-body p:last-child { margin-bottom: 0; }
+  /* Custom bullet/number styling so list markers clear the teal accent rule
+     on the left of the prose-body. Without this, the global `* { padding: 0 }`
+     reset collapses the default <ul>/<ol> indent and markers sit on the rule. */
+  .slide[data-layout="prose"] .prose-body ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 22px;
+  }
+  .slide[data-layout="prose"] .prose-body ul:last-child,
+  .slide[data-layout="prose"] .prose-body ol:last-child { margin-bottom: 0; }
+  .slide[data-layout="prose"] .prose-body ul li {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 12px;
+  }
+  .slide[data-layout="prose"] .prose-body ul li:last-child { margin-bottom: 0; }
+  .slide[data-layout="prose"] .prose-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0.62em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .slide[data-layout="prose"] .prose-body ol {
+    list-style: decimal;
+    padding-left: 40px;
+    margin-bottom: 22px;
+  }
+  .slide[data-layout="prose"] .prose-body ol li {
+    margin-bottom: 12px;
+    padding-left: 6px;
+  }
+  .slide[data-layout="prose"] .prose-body ol li:last-child { margin-bottom: 0; }
+  .slide[data-layout="prose"] .prose-body ol li::marker {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ========== Layout: STAT (hero number) ========== */
+  .slide[data-layout="stat"] .content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .slide[data-layout="stat"] .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    max-width: 820px;
+  }
+  .slide[data-layout="stat"] .stat-hero {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 220px;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: var(--accent);
+    margin-bottom: 16px;
+    /* Always one line. Renderer scales font-size down to fit. */
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  .slide[data-layout="stat"] .stat-caption {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+  .slide[data-layout="stat"] .stat-note {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--ink-soft);
+    line-height: 1.42;
+    max-width: 820px;
+  }
+
+  /* ========== Layout: LIST (numbered cards with dividers) ========== */
+  .slide[data-layout="list"] .list-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 36px;
+    max-width: 880px;
+  }
+  .slide[data-layout="list"] .list-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .slide[data-layout="list"] .row {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 22px 0;
+    border-top: 1px solid var(--rule);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.36;
+    color: var(--ink);
+  }
+  .slide[data-layout="list"] .row:last-child { border-bottom: 1px solid var(--rule); }
+  .slide[data-layout="list"] .row .marker {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide[data-layout="list"] .row .marker.dot::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* ========== Layout: COMPARISON (split, two columns) ========== */
+  /* The .content parent is `flex-direction: column; justify-content: center`,
+     so we let the title + cols form a natural-height block that centers
+     vertically inside the slide. Avoid `flex: 1` on .cmp-cols here, otherwise
+     it consumes all spare height (overriding the parent's centering) and the
+     content piles up at the top with a long empty bottom. */
+  .slide[data-layout="comparison"] .cmp-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 44px;
+    max-width: 880px;
+  }
+  .slide[data-layout="comparison"] .cmp-cols {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 36px;
+  }
+  .slide[data-layout="comparison"] .cmp-rule {
+    background: var(--rule);
+    width: 1px;
+    align-self: stretch;
+  }
+  .slide[data-layout="comparison"] .cmp-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .slide[data-layout="comparison"] .cmp-col h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .slide[data-layout="comparison"] .cmp-col p,
+  .slide[data-layout="comparison"] .cmp-col li {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.36;
+    color: var(--ink);
+  }
+  .slide[data-layout="comparison"] .cmp-col ul { list-style: none; padding: 0; }
+  .slide[data-layout="comparison"] .cmp-col li {
+    padding-left: 22px;
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .slide[data-layout="comparison"] .cmp-col li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ========== Layout: CLOSER (CTA ladder) ========== */
+  .slide[data-layout="closer"] .closer-kicker {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    max-width: 880px;
+  }
+  .slide[data-layout="closer"] .closer-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    margin-bottom: 38px;
+    align-self: flex-start;
+  }
+  .slide[data-layout="closer"] .closer-next::before { content: '→'; }
+  .slide[data-layout="closer"] .closer-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .slide[data-layout="closer"] .crow {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    color: var(--ink);
+  }
+  .slide[data-layout="closer"] .crow:last-child { border-bottom: 1px solid var(--rule); }
+  .slide[data-layout="closer"] .crow .icon {
+    flex: 0 0 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+  .slide[data-layout="closer"] .crow .icon svg { width: 28px; height: 28px; }
+  .slide[data-layout="closer"] .crow .verb {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    flex: 0 0 auto;
+    min-width: 130px;
+  }
+  .slide[data-layout="closer"] .crow .text {
+    flex: 1;
+    line-height: 1.36;
+  }
+
+  /* ========== Source / trust signal (any layout) ========== */
+  .source {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    max-width: 820px;
+  }
+  .source::before {
+    content: 'SOURCE';
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-right: 10px;
+  }
+
+  /* Blog nudge: secondary pointer to the long-form post on nidhi.today.
+     Renders below the source citation when a post has a blogUrl. */
+  .blog-nudge {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    margin-top: 10px;
+    max-width: 820px;
+  }
+  .blog-nudge::before {
+    content: 'READ';
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-right: 10px;
+  }
+  .blog-nudge strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
 </style>
 </head>
 <body>
-  <div id="slide" class="slide">
+  <div id="slide" class="slide" data-layout="prose">
+    <div class="chrome-top">
+      <div class="eyebrow" id="eyebrow"></div>
+    </div>
     <div class="content" id="content"></div>
-    <div class="bottom-bar">
-      <span class="brand" id="brand-link">https://nidhi.today/</span>
-      <span class="slide-counter" id="counter"></span>
+    <div class="chrome-bottom">
+      <div class="progress" id="progress"></div>
+      <div class="handle" id="handle"></div>
     </div>
   </div>
 </body>

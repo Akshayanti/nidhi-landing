@@ -125,34 +125,54 @@ If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, 
 
 ## 5. Carousel Structure
 
-### Slide 1 — Hook
-- Scroll-stopper in the first 3 seconds
-- Short question or stat + pattern-interrupt
-- **No series badge** on Slide 1 — signals "you missed content" to non-followers, hurts reach
-- Examples:
-  - "€100K in net worth but can't cover a €2K bill? / That's a liquidity problem"
-  - "Same house · Same salary / One person pays €77,000 more"
+The carousel system has two formats. Series 1 (Discovery, posts 1 through 16b) ships in the original dark-gradient format. **Series 2 onwards (Building, post 17+) ships exclusively on the new cream editorial template.** Do not mix formats within a series; grid coherence beats marginal per-post performance.
 
-### Slides 2 through N-1 — Content
-- One idea per slide
-- Short, scannable, no long paragraphs
-- Concrete examples beat abstract definitions
+### 5.1 Series 2 carousel system (current spec)
 
-### Final slide — Next-up tease + follow CTA
-Series position badge lives here (moved from Slide 1). Clean format:
+**Visual:** cream paper background (`#FAF7F2`), deep-blue ink (`#002171`), teal accent (`#00897B`) reserved for *one* intentional emphasis per slide. No gradient. Subtle radial warm-grain to avoid flat-color reading. Brand chrome: small teal-stroke eyebrow chip top-left (`SERIES · POSITION`), progress dots and `@nidhi.today` handle bottom row.
 
-```
->> **Basics of Money · 7/16**
+**Slide cap: 8.** Down from 12. Completion rate is the metric IG's recommendation engine rewards in 2026; 6–8 is the documented sweet spot. Beyond 8, reach drops sharply.
 
->> Next up →
->> The emergency fund:
->> your first financial safety net.
+**Six layout variants, one per slide, picked by author.** Inline directive in the slide header: `## Slide N (layout)`. Default for Slide 1 is `hook`; default for Slides 2 through N-1 is `prose`; the closer slide is explicitly tagged `(closer)`.
 
->> ———
+| Layout | When to use | Authored as |
+|---|---|---|
+| `hook` | Slide 1 only. Scroll-stopper. Asymmetric headline, single bolded teal accent word, bottom-right `SWIPE →` cue. No eyebrow chip (its absence reads as "this is the start"). | One headline as body text + optional `sub:` field |
+| `prose` | Default middle slide. Single idea, short prose body with teal left-rule. Optional title via `title:` field. | Free body text + `title:` field |
+| `stat` | One number / phrase as the slide. Hero auto-scales to fit on one line at full width; everything else is supporting context. The slide design IS the data. | `label:`, `hero:`, `caption:`, `note:` fields |
+| `list` | Numbered or bulleted procedural content. Renders as cards with row dividers and circular markers; no list-bunching. | Numbered or bulleted body; auto-converts to row cards |
+| `comparison` | Two-option choices, framework comparisons, before/after framings. Two columns, vertical rule between, eyebrow chip per column. | Body split by `===` between columns; first `**bold**` line per column becomes the column heading |
+| `closer` | Last slide. CTA ladder: `READ` row at top (auto-derived from `blog_url` frontmatter, with "(link in bio)" navigation cue), then `SAVE`, `SHARE`, `FOLLOW`. Plus a small "Up next" pill above the ladder. | `kicker:` (anchor line), `next:` (pill text), `save:`, `share:`, `follow:`, optional `read:` (override) fields |
 
->> Full library → link in bio
->> Follow @nidhi.today for post 8
-```
+**Trust signal slot (any non-closer layout).** Optional `source:` field renders as a small grey citation under the body, prefixed `SOURCE` in teal. When a slide has both a `source:` field and the post has a `blog_url`, a secondary `READ` line auto-renders below the citation: `Full breakdown on nidhi.today/blog/<slug> (link in bio)`. This is the "curiosity peak" placement: readers asking "where's this number from?" get a natural pointer to the long-form.
+
+**Eyebrow chip:** rendered top-left on every slide except the hook. Sourced from frontmatter:
+- `series:` field: the visible chip text, e.g. `"Building Wealth · 4 of 12"`
+- `category:` field: fallback if `series:` is absent
+- Hook slide intentionally has no eyebrow; the headline is the anchor.
+
+**Progress dots:** bottom-left, replace the `1/12` counter from Series 1. Current slide highlighted teal as a longer pill; remaining as small grey dots.
+
+**Handle placement:** `@nidhi.today` bottom-right. Visible on hook + closer; muted-grey (de-emphasized) on middle slides. URL is never printed on slides; it's only ever spoken as `nidhi.today/blog/<slug>` inside the READ row or source nudge.
+
+**No em-dashes.** Globally enforced by the renderer (the `---` to em-dash substitution that was in the old smart-typography pass has been removed). Use commas, colons, or periods. See §8.
+
+**No legacy `>>` / `>>>` / `———` directives.** The Series 1 format used these for centered/right-aligned text and divider rendering; the new layout system handles alignment via CSS per-layout, so authors don't write alignment markup. The renderer silently strips legacy markers if it encounters them, so old markdown re-renders without crashing, but Series 2 markdown should never use them.
+
+**Stories use the same visual system.** `scripts/story-template.html` was redesigned alongside the carousel template to share palette, type, eyebrow chip, and chrome conventions. A Series 2 post's feed carousel and 4-frame story cascade read as one branded surface. See §7 for the story spec.
+
+### 5.2 Series 1 legacy format (used through Discovery 16b)
+
+The Discovery series ran on a dark-gradient template (`#002171` to `#005B4F` at 135°), single layout (centered prose), 12-slide cap, with directive-based authoring:
+
+- `>> text`: center-aligned line
+- `>>> text`: right-aligned line
+- `!! text`: handle annotation block (positioned bottom-center)
+- `———`: visual divider on closer slide
+- Bold `**word**` rendered teal + 1.15em (the "title" treatment)
+- Series badge (`Basics of Money · N/16`) lived on the final slide; never on Slide 1 (decision #5)
+
+This format remains the spec for any unshipped Discovery posts (13 onwards) so the series finishes coherent on the grid. The original `slide-template.html` and `render-slides.js` for this format are recoverable from git history pre-redesign, and the original Series 1 PNG renderings are already on hand for the remaining drops, so re-rendering is not required. **Do not mix Series 1 and Series 2 visual systems within the same series, ever.** The redesign launches at the Series 1 to Series 2 boundary as a deliberate relaunch beat (decision #34).
 
 ---
 
@@ -264,6 +284,18 @@ The keyword block was new and lenient when IG launched it in 2025. By Q1 2026 th
 
 **Stories pull ~4× the views of carousels.** Treat them as the primary channel; carousels are the library.
 
+### Visual system (Series 2 onwards)
+
+Stories share the cream editorial system with the feed carousel (decision #35). Same palette (`#FAF7F2` paper, `#002171` ink, `#00897B` accent), same fonts (Inter for headlines, Roboto for body), same eyebrow-chip chrome. The differences are size and zone, not language:
+
+- **Canvas:** 1080×1920 with 260px top / 360px bottom padding to clear IG's profile bar (~220px) and reply bar (~320px).
+- **Top chrome:** small teal-stroke eyebrow chip showing `series:` (or `category:`) from the post's frontmatter. Series 1 posts that lack `series`/`category` render no chip — gracefully empty, not broken.
+- **Bottom chrome:** `@nidhi.today` handle bottom-left (muted ink), `story_hashtag` value bottom-right (faint ink).
+- **Bold = teal accent** across all variants, mirroring the hook layout in carousels. The brand voice carries between formats.
+- **Variants:** `hook` (big editorial headline), `stat` (centered hero number), `poll` (blank canvas for the native poll sticker, quiz mode only), `answer` (`ANSWER` reveal + thin teal divider + supporting stat, quiz mode only), `cta` (teal rule + closing prompt). Same frontmatter fields drive everything; only the styling changed in May 2026.
+
+Series 1 (Discovery, posts 1 to 16b) stories are already on hand on disk / Instagram in the original dark-gradient design; they will not be re-rendered. The redesign applies only to Series 2 onwards (post 17+).
+
 ### 4-step cascade per post
 
 | Step | Timing (14:30 post) | PNG to upload | Native sticker to add | Purpose |
@@ -328,10 +360,15 @@ Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run t
 
 ## 8. Typography & Voice Rules
 
-### Reduce em dashes in stories
-- Em dashes (—) lump text together visually
-- Prefer line breaks (block scalar `|`) or commas
-- Em dashes OK in long-form `## Caption` prose
+### No em dashes anywhere (Series 2 onwards)
+- The renderer no longer generates em dashes from `---` substitutions; the conversion has been removed from the smart-typography pass.
+- House style: use commas, colons, semicolons, or periods. Em dashes lump text together visually and read as filler.
+- Applies to **slide bodies, captions, story text, and frontmatter fields**. Every surface that reaches a reader.
+- Pre-existing em dashes in Series 1 (Discovery) frontmatter and captions are grandfathered for those posts. Anything authored from Building (post 17) onwards has zero em dashes.
+
+### Curly quotes and real apostrophes
+- The renderer auto-converts straight `"..."` to `"..."` and straight `'` to `'` in carousel slide text. Authors don't need to type curly quotes manually; just write naturally and the smart-typography pass handles it.
+- En dashes are correct for numeric ranges (`25–34`, `2024–2025`); don't convert these to hyphens.
 
 ### Drop unnecessary periods in stories
 - Stories: drop trailing periods on standalone lines
@@ -342,11 +379,12 @@ Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run t
 - YAML block scalar `|` for multi-line values
 - **Blank lines inside block scalar** for rhythm / breathing room
 - `||` convenience marker works anywhere in value (single-line quoted strings too)
-- Multiple blank lines are preserved (not collapsed) — `||||` = 2 blank lines, etc.
+- Multiple blank lines are preserved (not collapsed). `||||` = 2 blank lines, etc.
 
-### Slide 1 hooks
-- Same rules: short, minimal periods, no em dashes
-- Question marks stay — they're the punch
+### Slide 1 hooks (Series 2 onwards)
+- Layout dispatched as `hook`. Asymmetric headline; one bolded teal accent word maximum; optional one-line `sub:` underneath in muted ink.
+- Short, minimal periods, no em dashes, question marks earn their place.
+- Auto-shrink scales the headline to fit the safe zone; trust the layout, don't pre-shrink the copy.
 
 ---
 
@@ -366,6 +404,20 @@ Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run t
 - Bio link → swap daily to match the current day's post
 - **Recommended:** build a `/basics` hub page listing all 16 discovery posts — lets Post 16b ("Discovery Complete") point to a single durable URL
 
+### Carousel-side blog pointer pattern (Series 2 onwards)
+
+URLs are not tappable inside Instagram posts. The carousel must therefore *direct* the reader to the blog rather than pretend a URL is a link. Two coordinated placements per carousel:
+
+1. **Closer slide: primary CTA, top of the ladder.**
+   The `closer` layout's CTA ladder leads with a `READ` row (above SAVE / SHARE / FOLLOW). Auto-derived from the post's `blog_url` frontmatter and rendered as `Full breakdown on **nidhi.today/blog/<slug>** (link in bio)`. This is the dominant action on the closer; placing it first signals it's the intended next step, with social CTAs as secondary.
+
+2. **Source slide: secondary nudge, curiosity placement.**
+   When any non-closer slide carries a `source:` field (a citation), the renderer auto-renders a small `READ` line directly under the citation: `Full breakdown on **nidhi.today/blog/<slug>** (link in bio)`. This fires at the moment curiosity peaks ("where's this number from?"), routing the engaged reader to the long-form before they finish the carousel.
+
+The URL is rendered with protocol and UTM parameters stripped (`nidhi.today/blog/budgeting`, not `https://nidhi.today/blog/budgeting/?utm_source=instagram&...`) for legibility. UTMs survive in the actual link-in-bio destination because the bio link is built with full UTM tagging at swap time.
+
+**Do not place the URL on every slide.** It reads as desperation and burns canvas. Two placements (closer + source slide) are enough; everything else stays content-only.
+
 ---
 
 ## 10. Tool Chain
@@ -382,11 +434,11 @@ One command. Generates both carousel slides (1080×1080) and story frames (1080�
 | Path | Purpose |
 |---|---|
 | `scripts/render-ig.js` | Orchestrator; calls both renderers per post |
-| `scripts/render-slides.js` | Carousel renderer (exports `renderSlides`) |
-| `scripts/render-stories.js` | Story renderer (exports `renderStoriesForPost`) |
-| `scripts/slide-template.html` | Carousel template (1080×1080) |
-| `scripts/story-template.html` | Story template (1080×1920) |
-| `scripts/lib/parse-markdown.js` | Frontmatter + content parser (YAML block scalar support + `||` convenience) |
+| `scripts/render-slides.js` | Carousel renderer (Series 2 cream editorial template, 6 layout variants, smart-typography pass, blog pointer auto-derivation). Exports `renderSlides`. |
+| `scripts/render-stories.js` | Story renderer (exports `renderStoriesForPost`). Threads `series:` / `category:` from post frontmatter through every frame as the eyebrow chip text; legacy posts that lack those fields render no chip. |
+| `scripts/slide-template.html` | Carousel template (1080×1080). Series 2 cream editorial system. CSS-driven layout dispatch via `data-layout="hook|prose|stat|list|comparison|closer"`. |
+| `scripts/story-template.html` | Story template (1080×1920). Series 2 cream editorial system, palette and chrome shared with the carousel template. CSS-driven variant dispatch via `class="story story-{hook|stat|poll|answer|cta}"`. |
+| `scripts/lib/parse-markdown.js` | Frontmatter + content parser. Supports YAML block scalar, `\|\|` convenience, inline `## Slide N (layout)` directive, and per-slide field-block extraction (`eyebrow:`, `hero:`, `caption:`, `note:`, `sub:`, `title:`, `next:`, `save:`, `share:`, `follow:`, `read:`, `source:`). |
 
 ### Output
 ```
@@ -418,6 +470,12 @@ title: "Post title"
 blog_url: "https://nidhi.today/blog/slug"
 hashtags: "#a #b #c #d #nidhi"
 post_time: "14:30 CET (Tue/Wed/Thu) — reasoning"
+
+# Series 2 onwards. Eyebrow chip rendered top-left on every non-hook slide.
+# Skip both fields on Series 1 posts (legacy format ignores them).
+category: "Building Wealth"                  # fallback chip text
+series: "Building Wealth · 4 of 12"          # preferred chip text (used when set)
+byline: "@nidhi.today"                       # optional; not currently rendered, reserved
 
 # Story content — reference for 4-frame story sequence on post day
 story_hook: |
@@ -469,6 +527,86 @@ story_day2_caption_cta: "..."
 - `#` comment lines inside frontmatter are ignored
 - `||` in any value is expanded to `\n\n` (one blank line) at render time
 
+### Per-slide authoring (Series 2 onwards)
+
+Each slide block uses an inline layout directive in the header. Body is free-form markdown; structured layouts (`stat`, `closer`, sometimes `list`/`prose`/`comparison`) read additional `key: value` lines from the slide block as fields.
+
+```markdown
+## Slide 1 (hook)
+
+"I don't know where my **money** went"
+
+sub: The most expensive sentence in personal finance. A budget fixes it in under an hour.
+
+---
+
+## Slide 3 (stat)
+
+label: The first method, in three numbers
+hero: 50 / 30 / 20
+caption: Needs · Wants · Save & repay
+note: On €2,500 net → €1,250 needs · €750 wants · €500 saved.
+
+---
+
+## Slide 4 (comparison)
+
+title: Pick the method that matches how you think
+
+**Zero-based**
+
+Every euro gets a job before payday.
+Income − planned spending = 0.
+
+===
+
+**Pay-yourself-first**
+
+Auto-transfer savings & investments first.
+Whatever's left is yours to spend.
+
+---
+
+## Slide 7 (prose)
+
+title: The bottom line
+
+A budget does not restrict your freedom. It creates it.
+
+source: Eurostat 2024. 36% of EU adults aged 25 to 34 cannot cover an unexpected €1,000 expense from savings.
+
+---
+
+## Slide 8 (closer)
+
+kicker: Pick a method by Sunday. Start Monday.
+next: Up next: Credit scores, decoded
+save: this for your next paycheck review
+share: with someone still budgeting in their head
+follow: @nidhi.today for posts 15 & 16
+```
+
+**Field key vocabulary:**
+
+| Key | Used by | Renders as |
+|---|---|---|
+| `eyebrow` | non-title layouts | small caps eyebrow above body (when not consumed as title) |
+| `title` | prose, list, comparison | bold heading above body |
+| `label` | stat | small label above the hero number |
+| `hero` | stat | giant number/phrase, auto-fits to one line at full canvas width |
+| `caption` | stat | bold one-line caption beneath the hero |
+| `note` | stat | smaller supporting paragraph beneath the caption |
+| `sub` | hook | muted subhead beneath the headline |
+| `kicker` | closer | bold anchor line at top of the closer |
+| `next` | closer | small teal pill: "Up next: …" |
+| `save` / `share` / `follow` | closer | row text in the CTA ladder |
+| `read` | closer | override for the auto-derived blog pointer (rare; default is auto from `blog_url`) |
+| `source` | any non-closer | citation rendered with `SOURCE` eyebrow; auto-pairs with a `READ` blog nudge when `blog_url` is set |
+
+**Comparison column separator:** `===` on its own line. Do not use `---` inside a slide body; that's the slide-block terminator and would split the slide in two.
+
+**Legacy directives** (`>>`, `>>>`, `!!`, `———`): not used in Series 2; the renderer silently strips them if present, so old markdown does not crash. Series 2 markdown should never contain them.
+
 ---
 
 ## 12. Decisions Log
@@ -509,6 +647,9 @@ Chronological log of decisions made during playbook development. Update as you i
 | 30 | Drop South-Asian community tags (`#desifinance`, `#indiansineurope`, `#indianfinance`) from default rotation; brand handshake `#nidhi` carries the Indian-origin signal alone (May 2026) | Discovery posts 11 and 12 dropped sharply on the non-follower-recommendations surface after the multilingual keyword block was introduced. Diagnosis: `#desifinance` was running on 5 of 7 Discovery posts (11, 13, 14, 16, 16b), training IG's account-level classifier to file the account as a South-Asian-finance creator. Once the multilingual EU keyword block landed on top of that anchor, every post sent two non-overlapping cohort signals — South-Asian (hashtag) vs. multilingual EU (keywords). IG's recs engine, faced with a cohort it can't resolve, defaults to "show to existing followers only" rather than guess. Direct violation of §1's "don't over-index on India-specific framing" — the brand handshake `#nidhi` already carries the Indian-origin signal without needing a community tag layered on top. **Fix applied to 13–16b:** dropped `#desifinance` everywhere; replaced with topic- and audience-axis tags consistent with the global-expat positioning (`#firemath`, `#paycheckplanning`, `#movingabroad`, `#expatinsurance`, `#beginnerfinance`). South-Asian tags remain available for posts genuinely about that audience (remittances, NRI tax, dual-currency families) — not as defaults. **Recovery cadence:** 3–4 consecutive clean posts before evaluating reach; one clean post does not reverse five anchored ones |
 | 31 | Geo-keyword stuffing rule: no city-name stacks above 3 in one keyword block; never mix continents | Discovery post 12 carried `lisbon, berlin, helsinki, bangkok, dubai, singapore` — six cities mixing EU and Asia/ME. IG's spam-detection layer matured between Q4 2025 and Q1 2026, and city-name stacks (>3 cities, especially mixed continents) are now a signature pattern flagged as geo-SEO bait and demoted from non-follower recommendations. The continent-mix compounds it: the topic classifier reads "EU expat content" from the caption (Helsinki/Berlin/Lisbon examples) but "Asia nomad content" from `bangkok, dubai, singapore`, forcing the same cohort-confusion failure mode as #30. **Rule:** ≤2 cities in the keyword block, kept on one continent; if a post genuinely spans multiple expat hubs, name 1–2 in the block and let the caption body carry the rest as examples (caption body is not subject to this spam pattern). **Side rule:** drop dead/content-farm-associated compound tags from §3 anchor table — `#moneyineurope`, `#inflationawareness`, `#costoflivingcomparison` are slot waste at best and quality-signal drag at worst |
 | 32 | May 2026 algo notes added to §6: Inspired-by-your-interest surface, language-cohort-match strictness, cohort-fight failure mode | The keyword block's role inside IG changed enough between launch (2025, lenient) and Q1 2026 to warrant explicit documentation in the playbook rather than tribal knowledge. Three behaviors now govern non-follower reach: (a) the "Inspired by your interest in [topic]" home-feed card broadened in March 2026 and dominates non-follower discovery — eligibility requires single-topic classification, posts that fight themselves are excluded entirely; (b) language-cohort match enforced more strictly — a post with 8+ languages needs a clear primary-language signal (English caption body, EN ≥ any single non-EN language in keyword count); (c) cohort-fight is now the most common 2026 break, where hashtag and keyword block target non-overlapping audiences and IG defaults to follower-only delivery. Documented in §6 as a standalone subsection so the next post-author doesn't have to re-discover it from a reach drop. Cross-references §3 "Account-level cohort hygiene" for the recovery cadence |
+| 33 | Carousel design overhaul: cream editorial template, 6 layout variants, 8-slide cap, no em-dashes globally, blog pointer pattern, source/trust signal slot. Authoring switches from `>>` directives to inline `## Slide N (layout)` plus per-slide field blocks. **Series 2 onwards (Building, post 17+) only. Series 1 finishes in original format** (May 2026) | Audit of the original Series 1 carousels surfaced systemic mechanical-feel issues: (a) layout monotony (every slide centered text on the same diagonal blue-to-teal gradient), (b) inverted hierarchy (the `**bold** = teal + 1.15em` rule made setup text louder than punchlines on hooks), (c) uniform teal middle-slide titles by slide 3 reading as noise rather than headings, (d) 12-slide cap working against 2026 IG completion-rate weighting (sweet spot 6 to 8), (e) bottom bar over-branded (full URL printed every slide), (f) gradient itself dated against May 2026 finance-IG editorial palettes (Money with Katie, Tori Dunlap, FT Money), (g) no trust-signal slot anywhere, (h) closer was a text wall ("Follow @nidhi.today for post N"), the weakest possible CTA. **Fix:** new template at `scripts/slide-template.html` runs cream paper (`#FAF7F2`) with brand navy (`#002171`) ink and brand teal (`#00897B`) reserved for one intentional accent per slide; 8-slide cap; six CSS-driven layout variants dispatched via `data-layout`; eyebrow chip top-left (sourced from `series:`/`category:` frontmatter) replaces top accent stripe; progress dots replace the `1/12` counter; `@nidhi.today` handle bottom-right (visible on hook + closer, muted on middle slides) replaces the per-slide URL print. Authors pick one of `hook | prose | stat | list | comparison | closer` per slide via inline `## Slide N (layout)` directive in the markdown header; structured layouts read additional `key: value` lines as fields (`hero:`, `caption:`, `note:`, `kicker:`, `next:`, `save:`, `share:`, `follow:`, `read:`, `source:`, etc.). Em-dash conversion removed from the renderer's smart-typography pass entirely; house style now bans em-dashes globally (slides, captions, story text, frontmatter). Trust-signal slot (`source:` field) renders a `SOURCE` citation under any non-closer slide, and when paired with `blog_url` auto-generates a secondary `READ Full breakdown on nidhi.today/blog/<slug> (link in bio)` line beneath the citation. Closer redesigned as a 4-row CTA ladder leading with `READ` (primary blog pointer, auto-derived from `blog_url`) followed by `SAVE / SHARE / FOLLOW`, with an "Up next" pill above the ladder. Reference rewrite: `14-budgeting` from 12 slides to 8, demonstrates each layout in service of one piece of content; preserved as the Series 2 design spec under git history. Old `>>` / `>>>` / `———` directives are silently stripped by the renderer if encountered in legacy markdown, but Series 2 markdown should never contain them. See §5.1 for the full spec, §11 for the per-slide field vocabulary, §8 for typography rules |
+| 34 | Hold the redesign for the Series 1 to Series 2 boundary; do not switch mid-Discovery. **Series 1 (Discovery, posts 1 to 16b) finishes on the original dark-gradient template; Series 2 (Building, post 17+) launches on the new cream editorial template from day one.** The redesigned `14-budgeting` carousel is a design spec, not a publication asset (May 2026) | Three options on the table when the new template was ready: (a) re-render unshipped Discovery posts (14, 15, 16, 16b) on the new template and ship them out, (b) keep original format through Discovery 16b and launch the redesign at the next series boundary, (c) ship the redesigned `14-budgeting` standalone as a "preview." Chose (b). Reasoning: grid coherence is the strongest argument. When a follower taps the profile they see a 9-grid; mixing two visual systems mid-series reads as "couldn't decide" rather than "evolved," and the seam disrupts the whole grid not just one post. Marginal upside on 4 posts is small (slightly higher saves and completion rate) and does not outweigh the cost of grid disruption + the lost relaunch beat. Series boundary is the strongest relaunch moment a small account gets: "Discovery wraps. Building begins. New look. Same voice." gives existing followers a reason to pay attention and lapsed followers a reason to re-engage; mid-series redesign with no announcement gets none of that. **Action:** original Series 1 markdown (pre-rewrite) was preserved in git for posts 13 to 16b and is the version that ships; original Series 1 PNG renderings are already produced and on hand for the remaining drops; the new renderer + template + parser changes stay in the repo as Series 2 assets. Series 2 (Building, post 17+) is authored from scratch on the new system; every post starts in the layout dispatch from day one, never as a retrofit. Series 1 to Series 2 transition gets 1 to 2 stories teasing the visual shift before the first Building post drops |
+| 35 | Story template (`scripts/story-template.html`) redesigned alongside the carousel template for Series 2 visual parity; same cream/editorial palette, fonts, and chrome conventions as the feed (May 2026) | The carousel-only redesign in #33 left a known mismatch: a Series 2 post's feed slides would render cream/editorial while its 4-frame story cascade would still ship in the legacy dark-gradient look. On a single profile that mismatch reads as two brands sharing one handle. **Fix:** ported the cream system end-to-end. New `story-template.html` uses `#FAF7F2` paper, `#002171` ink, `#00897B` accent, Inter + Roboto type, and the same eyebrow-chip + bottom-handle-and-hashtag chrome as feed slides — sized up for the 1080×1920 canvas and offset by IG's safe zones (~220px top, ~320px bottom). All five frame variants (`hook`, `stat`, `poll`, `answer`, `cta`) restyled in place; the renderer's frontmatter contract (`story_*` and `story_day2_*` fields) is unchanged, so no authoring migration is required. `render-stories.js` now threads the post's `series:` (or `category:`) value through every frame as the eyebrow chip text, with empty-string fallback so legacy Series 1 posts that lack those fields render no chip rather than crashing. **Decision rationale:** an alternative was to ship Series 2 launch with mismatched stories and redesign later. Rejected: stories pull ~4× the views of the carousel (per §7), so they're the higher-impact surface to keep on-brand; deferring leaves the most-viewed format on the old visual system precisely when the relaunch beat is asking the audience to notice the new look. Cost was small (~one session of work, no data model changes), so parity wins. Series 1 stories already on hand are not re-rendered — the redesign applies only Series 2 onwards |
 
 ---
 

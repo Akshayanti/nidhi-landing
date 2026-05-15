@@ -52,10 +52,26 @@ function renderText(raw) {
 }
 
 /**
+ * Pick the eyebrow chip text for a story frame.
+ *
+ * Mirrors the carousel `buildEyebrow` precedence so feed and stories carry
+ * the same brand chip when a post sets `series` or `category`. Series 1
+ * posts that don't set either field will render no chip (the chrome treats
+ * an empty eyebrow as no rule + no text).
+ */
+function buildStoryEyebrow(post) {
+  return post.series || post.category || '';
+}
+
+/**
  * Inject content into the template and screenshot a PNG.
+ *
+ * `eyebrow` and `hashtag` are optional brand chrome bits. Empty string
+ * means "render nothing" (the rule before the eyebrow chip is hidden via
+ * `:not(:empty)`, and the hashtag node simply renders empty text).
  */
 async function renderFrame(page, templateHtml, variant, contentHtml, opts = {}) {
-  const { hashtag = '' } = opts;
+  const { hashtag = '', eyebrow = '' } = opts;
 
   const html = templateHtml
     .replace(
@@ -63,14 +79,20 @@ async function renderFrame(page, templateHtml, variant, contentHtml, opts = {}) 
       `id="story" class="story story-${variant}"`
     )
     .replace(
+      '<div class="eyebrow" id="eyebrow"></div>',
+      eyebrow
+        ? `<div class="eyebrow" id="eyebrow">${escapeHtml(eyebrow).toUpperCase()}</div>`
+        : '<div class="eyebrow" id="eyebrow"></div>'
+    )
+    .replace(
       '<div class="content" id="content"></div>',
       `<div class="content" id="content">${contentHtml}</div>`
     )
     .replace(
-      '<div class="hashtag-corner" id="hashtag-corner"></div>',
+      '<div class="hashtag" id="hashtag"></div>',
       hashtag
-        ? `<div class="hashtag-corner" id="hashtag-corner">${escapeHtml(hashtag)}</div>`
-        : ''
+        ? `<div class="hashtag" id="hashtag">${escapeHtml(hashtag)}</div>`
+        : '<div class="hashtag" id="hashtag"></div>'
     );
 
   await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
@@ -140,23 +162,26 @@ async function renderCascade(page, templateHtml, outDir, cascade, filePrefix = '
 
   const hasQuiz = !!cascade.answer;
   const rendered = [];
+  // Same chrome on every frame in the cascade. Eyebrow + hashtag come from
+  // the post / cascade and stay constant so the frames read as a series.
+  const chrome = { hashtag: cascade.hashtag, eyebrow: cascade.eyebrow };
 
   if (cascade.hook) {
     const body = `<div>${renderText(cascade.hook)}</div>`;
-    await renderFrame(page, templateHtml, 'hook', body, { hashtag: cascade.hashtag });
+    await renderFrame(page, templateHtml, 'hook', body, chrome);
     const filepath = join(outDir, `${filePrefix}frame-1-hook.png`);
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
   }
 
   if (hasQuiz) {
-    await renderFrame(page, templateHtml, 'poll', '', { hashtag: cascade.hashtag });
+    await renderFrame(page, templateHtml, 'poll', '', chrome);
     const filepath = join(outDir, `${filePrefix}frame-2-poll.png`);
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
   } else if (cascade.stat) {
     const body = `<div>${renderText(cascade.stat)}</div>`;
-    await renderFrame(page, templateHtml, 'stat', body, { hashtag: cascade.hashtag });
+    await renderFrame(page, templateHtml, 'stat', body, chrome);
     const filepath = join(outDir, `${filePrefix}frame-2-stat.png`);
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
@@ -168,7 +193,7 @@ async function renderCascade(page, templateHtml, outDir, cascade, filePrefix = '
       ? `<div class="answer-stat">${renderText(cascade.stat)}</div>`
       : '';
     const body = mainHtml + statHtml;
-    await renderFrame(page, templateHtml, 'answer', body, { hashtag: cascade.hashtag });
+    await renderFrame(page, templateHtml, 'answer', body, chrome);
     const filepath = join(outDir, `${filePrefix}frame-2-answer.png`);
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
@@ -176,7 +201,7 @@ async function renderCascade(page, templateHtml, outDir, cascade, filePrefix = '
 
   if (cascade.prompt) {
     const body = `<div>${renderText(cascade.prompt)}</div>`;
-    await renderFrame(page, templateHtml, 'cta', body, { hashtag: cascade.hashtag });
+    await renderFrame(page, templateHtml, 'cta', body, chrome);
     const filepath = join(outDir, `${filePrefix}frame-3-cta.png`);
     await page.screenshot({ path: filepath, type: 'png' });
     rendered.push(filepath);
@@ -209,6 +234,11 @@ export async function renderStoriesForPost(post, browser) {
   const page = await browser.newPage();
   const rendered = [];
 
+  // Eyebrow chip: post.series wins over post.category. Both unset → no chip.
+  // Series 1 posts that predate `series`/`category` simply render no eyebrow,
+  // so legacy Series 1 stories stay clean if ever re-rendered.
+  const eyebrow = buildStoryEyebrow(post);
+
   // Day 1 — standard cascade, no filename prefix
   if (hasDay1) {
     const day1Cascade = {
@@ -217,6 +247,7 @@ export async function renderStoriesForPost(post, browser) {
       answer: s.answer,
       prompt: s.prompt,
       hashtag: s.hashtag,
+      eyebrow,
     };
     rendered.push(...await renderCascade(page, templateHtml, outDir, day1Cascade));
   }
@@ -230,6 +261,7 @@ export async function renderStoriesForPost(post, browser) {
       answer: day2.answer,
       prompt: day2.prompt,
       hashtag: day2.hashtag || s.hashtag,
+      eyebrow,
     };
     rendered.push(...await renderCascade(page, templateHtml, outDir, day2Cascade, 'day2-'));
   }
