@@ -20,6 +20,7 @@ on:
       - 'src/components/LoanCompare.tsx'
       - 'src/utils/loanMath.ts'
       - 'src/utils/loanMath.test.ts'
+      - 'scripts/**/*'
       # URL-state helpers + tests for the loan comparator. Extracted out
       # of LoanCompare.tsx so the round-trip and count-inference logic
       # could be tested directly; the tests must run on PRs that touch
