@@ -1388,6 +1388,51 @@ strong {
   font-size: 0.95em;
 }
 
+/* Small help text below a control; used under the Display currency
+   select to make explicit that the picker is locale formatting, not
+   per-vendor or FX. Margin-top:4px matches the field gap above. */
+.lc-fieldHelp {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  max-width: 32ch;
+}
+
+/* Live preview row under the Display currency picker. Renders one
+   sample formatted number using the active locale so users see
+   exactly what they'll get (Western vs lakh/crore grouping, decimal
+   separator, decimal count) before the comparison cards reflect it. */
+.lc-fieldPreview {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lc-fieldPreviewLabel {
+  color: var(--color-text-muted);
+  font-weight: 500;
+  /* Slightly tighter so "Sample:" doesn't compete visually with the
+     formatted value, which is the thing the user is meant to read. */
+  letter-spacing: 0.01em;
+}
+
+.lc-fieldPreviewValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  /* Tabular figures keep digit columns aligned across the live updates
+     when the user cycles through currencies, which prevents a jarring
+     width-shift on each change. */
+  font-variant-numeric: tabular-nums;
+}
+
 .lc-shareBtn,
 .lc-resetBtn {
   font-family: var(--font-heading);
@@ -1499,6 +1544,103 @@ strong {
 [data-theme="dark"] .lc-cardBestBadge {
   color: #003a32;
   background: var(--color-teal-light);
+}
+
+/* Remove-vendor button (small × in card header).
+   Pushed to the far right with margin-left:auto so it sits opposite the
+   "Vendor A" badge regardless of whether the "Lowest total cost" pill is
+   present between them. */
+.lc-cardRemove {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.lc-cardRemove:hover,
+.lc-cardRemove:focus-visible {
+  background: var(--color-bg);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+  outline: none;
+}
+
+.lc-cardRemove:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+/* Add-vendor slot: a dashed-border card-shaped button rendered as the
+   last grid cell. We mirror the basic card geometry (radius, padding,
+   min-width:0) so it doesn't blow out the grid track widths, but skip
+   the colored top border since it's not a real vendor. */
+.lc-cardAdd {
+  --lc-color: var(--color-text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--color-bg);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  min-height: 200px;
+  min-width: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.lc-cardAdd:hover,
+.lc-cardAdd:focus-visible {
+  border-color: var(--color-deep-blue);
+  color: var(--color-deep-blue);
+  background: var(--color-bg-white);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.lc-cardAdd:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+.lc-cardAddIcon {
+  font-size: 2.25rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--color-deep-blue);
+}
+
+.lc-cardAddLabel {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.lc-cardAddHint {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-cardAdd { transition: none; }
+  .lc-cardAdd:hover,
+  .lc-cardAdd:focus-visible { transform: none; }
 }
 
 /* Field */
