@@ -1,11 +1,11 @@
 ---
 slug: "why-your-euro-buys-more-in-some-countries"
 title: "Why Your Euro Buys More in Some Countries Than Others"
-description: "Exchange rates tell you how much one currency is worth in another. But they don't tell you how much it actually buys. That's where purchasing power parity comes in."
+description: "Exchange rates show how much one currency is worth in another, not what it actually buys. That gap is where purchasing power parity comes in."
 tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries, a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-05-13
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

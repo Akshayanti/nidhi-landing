@@ -74,7 +74,7 @@ Investing is about making money grow over time, accepting that the path won't be
 
 ## The key differences at a glance
 
-| | Saving | Investing |
+| Dimension | Saving | Investing |
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |

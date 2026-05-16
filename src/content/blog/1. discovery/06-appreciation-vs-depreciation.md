@@ -1,11 +1,11 @@
 ---
 slug: "appreciation-vs-depreciation"
 title: "Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink"
-description: "Not all assets are created equal. Some grow in value over time, others lose it. The difference between appreciation and depreciation, and the force of compound interest behind both, determines whether your net worth is building or eroding."
+description: "Some assets grow over time; others lose value. Appreciation, depreciation, and the compound interest behind both decide whether your net worth builds or erodes."
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-05-07
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -54,7 +54,7 @@ Compound interest is the engine that makes appreciation powerful and depreciatio
 
 Simple interest is straightforward: you earn a set percentage on your original amount every period. Compound interest is different: you earn a percentage on your original amount **plus all the interest you've already accumulated**. Your interest earns interest.
 
-| | Simple Interest | Compound Interest |
+| Metric | Simple Interest | Compound Interest |
 |---|---|---|
 | Starting amount | €1,000 | €1,000 |
 | Rate | 7% | 7% |
