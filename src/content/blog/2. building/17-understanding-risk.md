@@ -50,7 +50,7 @@ These two concepts sound similar but work differently.
 
 **Risk capacity** is financial: how much loss can you actually absorb without it affecting your life? This depends on your time horizon, your income stability, your emergency fund, and how soon you need the money.
 
-| | Low | High |
+| Dimension | Low | High |
 |---|---|---|
 | **Risk tolerance** | Can't sleep if portfolio drops 10% | Understands drops are temporary; doesn't check daily |
 | **Risk capacity** | Needs the money in 2 years; no emergency fund | Won't need the money for 20 years; stable income; full emergency fund |

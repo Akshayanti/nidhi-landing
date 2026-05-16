@@ -1,7 +1,7 @@
 ---
 slug: "taxes-and-your-financial-plan"
 title: "Taxes and Your Financial Plan: How Taxation Affects Every Decision"
-description: "Taxes quietly reshape every number in your financial plan: your take-home pay, your investment returns, your retirement income. Ignoring them doesn't make them disappear; it just makes you misread your own progress."
+description: "Taxes reshape every number in your financial plan: take-home pay, investment returns, retirement income. Ignoring them just makes you misread your progress."
 tldr: "Taxes reduce your cash flow, your investment returns, and your retirement income. Income tax is why take-home pay is lower than gross salary. Capital gains tax is the cost of selling an investment at a profit. Tax-advantaged accounts defer or eliminate tax on investment growth in exchange for rules about when you can access the money. The key insight: a 7% return taxed at 25% is really a 5.25% return, and that gap compounds into enormous differences over decades. This post stays generic across jurisdictions (no specific rates, no jurisdiction-specific products), because the principles apply everywhere even if the numbers don't."
 order: 22
 pubDate: 2026-06-05

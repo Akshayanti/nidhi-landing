@@ -1,7 +1,7 @@
 ---
 slug: "understanding-loan-terms"
 title: "Understanding Loan Terms: How to Compare Borrowing Options"
-description: "When you borrow, the interest rate is only one part of the story. APR, amortisation, fixed vs. variable, prepayment rules: these are what actually decide how much the loan costs you."
+description: "When you borrow, interest rate is only part of the story. APR, amortisation, fixed vs. variable, and prepayment rules decide what the loan really costs."
 tldr: "The advertised rate on a loan is almost never the whole cost. APR (annual percentage rate) includes fees and is the number you should actually compare. Amortisation explains why early payments go mostly to interest and late payments mostly to principal, which matters hugely for refinancing and prepayment decisions. Fixed rates trade predictability for potentially higher cost; variable rates can be cheaper but carry the risk of future payment shock. To compare two loans honestly, normalise for term and amount and compare the total cost of borrowing (or equivalently, the IRR of the cash flows). Prepayment is one of the most powerful ways to reduce total interest paid, as long as your loan allows it without penalty. Kept generic: specific rules and products vary heavily by country and provider."
 order: 27
 pubDate: 2026-06-17
@@ -53,14 +53,16 @@ APR, or annual percentage rate, expresses the total cost of borrowing as a singl
 
 Specific definitions of APR vary by jurisdiction. Some countries require more costs to be included than others, and products like insurance may or may not count. But directionally, APR is always a more honest comparison number than the headline rate.
 
-| Loan | Rate | Fees | Term | APR (approx.) |
+| Loan | Rate | Costs included in APR | Term | APR |
 |---|---|---|---|---|
-| A | 3.2% | €0 | 25 years | ~3.2% |
-| B | 3.1% | €3,000 | 25 years | ~3.3% |
-| C | 3.5% | €0 | 25 years | ~3.5% |
-| D | 2.9% | €5,000 + bundled insurance | 25 years | ~3.6% |
+| A | 3.2% | €0 | 25 years | 3.20% |
+| B | 3.1% | €3,000 fee + ~€2,500 bundled insurance | 25 years | 3.30% |
+| C | 3.5% | €0 | 25 years | 3.50% |
+| D | 2.9% | €5,000 fee + ~€13,000 bundled insurance | 25 years | 3.59% |
 
 The loan with the lowest rate (D) is actually the most expensive once you include its fees and bundled products. The lowest *APR* is the lowest actual cost.
+
+*The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product priced into APR; they're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
 
 > **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.
 
@@ -202,11 +204,11 @@ Here's a side-by-side comparison framework that won't mislead you:
 5. **Stress-test variable elements.** If the rate can change, what's the worst realistic scenario? Can you afford it?
 6. **Only then compare headline rates.** They're the last thing to look at, not the first
 
-| Offer | Amount | Term | Rate | Fees | APR | Fixed/Variable | Prepayment | Total cost |
+| Offer | Amount | Term | Rate | Fees + bundled | APR | Fixed/Variable | Prepayment | Total cost |
 |---|---|---|---|---|---|---|---|---|
-| A | €250,000 | 25y | 3.2% | €0 | 3.2% | Fixed 25y | Free | €363,500 |
-| B | €250,000 | 25y | 3.1% | €3,000 | ~3.3% | Fixed 5y, then variable | Penalty first 5y | Depends on rate path |
-| C | €250,000 | 25y | 3.5% | €0 | 3.5% | Fixed 25y | Free | €375,500 |
+| A | €250,000 | 25y | 3.2% | €0 | 3.20% | Fixed 25y | Free | €363,510 |
+| B | €250,000 | 25y | 3.1% | €3,000 + €2,500 insurance | 3.30% | Fixed 5y, then variable | Penalty first 5y | Depends on rate path |
+| C | €250,000 | 25y | 3.5% | €0 | 3.50% | Fixed 25y | Free | €375,470 |
 
 *Illustrative.*
 
