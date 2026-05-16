@@ -4,7 +4,12 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://nidhi.today',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap({
+    filter: (page) => {
+      const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed'];
+      return !transactional.some(p => page.includes(p));
+    },
+  })],
   output: 'static',
   trailingSlash: 'never',
   vite: {

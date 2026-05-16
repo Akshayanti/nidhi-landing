@@ -1,8 +1,13 @@
 ---
 title: "Budgeting: Controlling the Gap Between Income and Spending"
 blog_url: "https://nidhi.today/blog/budgeting/?utm_source=instagram&utm_medium=social&utm_campaign=discovery_stories&utm_content=story_budgeting"
-hashtags: "#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi"
+hashtags: "#budgetingtips #zerobasedbudget #paycheckplanning #expatfinance #nidhi"
 post_time: "08:00 CET (Tue/Thu) — morning planning energy + India lunch slot (12:30 IST); stories cascade whole day"
+
+# Eyebrow chip rendered on every non-hook slide.
+category: "Budgeting"
+series: "Basics of Money · 14 of 16"
+byline: "@nidhi.today"
 
 # Story content reference — 4-frame sequence on post day
 story_hook: |
@@ -42,7 +47,7 @@ That's not budgeting. That's hoping.
 
 Full guide → link in bio
 
-#budgetingtips #zerobasedbudget #desifinance #moneyineurope #nidhi
+#budgetingtips #zerobasedbudget #paycheckplanning #expatfinance #nidhi
 
 [ 50 30 20 rule, pay yourself first, budgeting method,
 budget app, monthly budget, savings automation,
@@ -81,159 +86,94 @@ Run across post day to drive story viewers → post → blog.
 
 ---
 
-## Slide 1
+## Slide 1 (hook)
 
-**"I don't know where my money went"**
+"I don't know where my **money** went"
 
-is the most expensive sentence
-in personal finance
-
-A budget fixes that in under an hour
+sub: The most expensive sentence in personal finance. A budget fixes it in under an hour.
 
 ---
 
-## Slide 2
+## Slide 2 (prose)
 
->> **Budgeting vs. tracking**
+title: Tracking is not budgeting
 
-Tracking tells you what happened
+Tracking tells you what *happened* last month.
 
-Budgeting tells your money what to do before the month starts
-
-A budget is a plan that assigns every euro a purpose before you spend it
+Budgeting tells your money what to do *before* the month starts. Every euro assigned a job.
 
 ---
 
-## Slide 3
+## Slide 3 (stat)
 
->> **Why it matters**
-
-Your savings rate determines more about your financial future than your salary
-
-But it only works if it's intentional
-
-A budget turns your savings rate from a measurement into a target
+label: The first method, in three numbers
+hero: 50 / 30 / 20
+caption: Needs · Wants · Save & repay
+note: On €2,500 net → €1,250 needs · €750 wants · €500 saved. Simple, flexible, a clean place to start.
 
 ---
 
-## Slide 4
+## Slide 4 (comparison)
 
->> **Method 1: The 50/30/20 Rule**
+title: Pick the method that matches how you think
 
-50% Needs (rent, groceries, insurance)
-30% Wants (dining out, entertainment, hobbies)
-20% Savings & debt payoff
+**Zero-based**
 
-On €2,500 net income:
-Needs: €1,250 | Wants: €750 | Savings: €500
+Every euro gets a job before payday.
+Income − planned spending = 0.
+Best for variable income or full control.
 
-Simple. Flexible. A great starting point
+===
 
----
+**Pay-yourself-first**
 
-## Slide 5
-
->> **Method 2: Zero-Based Budgeting**
-
-Every euro gets assigned a job
-
-Income minus all planned spending = exactly zero
-
-You're not spending everything – you're accounting for everything
-
-Best for: full control and variable income
+Auto-transfer savings & investments first.
+Whatever's left is yours to spend.
+Best for "set it and forget it."
 
 ---
 
-## Slide 6
+## Slide 5 (list)
 
->> **Method 3: Pay-Yourself-First**
+title: Automate the decision, not the discipline
 
-Salary arrives: €2,500
-Auto-transfer to savings: €200
-Auto-transfer to investments: €300
-Available for spending: €2,000
-
-Savings happen first. Spending is whatever's left
-
-No tracking. No guilt. Just consistency
+1. Direct debit every fixed bill
+2. Standing order on payday → savings
+3. Standing order on payday → investments
+4. One spending account for everything else
+5. What's left in that account on day 28 is genuinely yours
 
 ---
 
-## Slide 7
+## Slide 6 (list)
 
->> **The automation advantage**
+title: Where most budgets actually break
 
-- Direct debit for bills
-- Standing order for savings on payday
-- Standing order for investments
-- Use your bank's spending tracker or a budgeting app
-- What's left is genuinely yours to spend
-
-Automate the decision. Remove the vulnerability
+1. Starting too strict, then quitting in two weeks
+2. Forgetting annual costs (insurance, gifts, dental). Divide by 12
+3. Budgeting money you haven't received yet
+4. Tracking nothing. A plan you don't check is a wish
 
 ---
 
-## Slide 8
+## Slide 7 (prose)
 
->> **Where the flexibility lives**
+title: The bottom line
 
-Fixed costs (rent, insurance): optimize once, save forever
+A budget does not restrict your freedom. It creates it.
 
-Variable costs (dining, entertainment): set a number before you start spending
+When you know where your money is going, you stop wondering where it went.
 
-Biggest wins:
-1. Switch to a cheaper phone plan – €180/year saved
-2. "€150 for dining out this month" beats "I should eat out less"
+source: Eurostat 2024. 36% of EU adults aged 25 to 34 cannot cover an unexpected €1,000 expense from savings.
 
 ---
 
-## Slide 9
+## Slide 8 (closer)
 
->> **Common mistakes**
+kicker: Pick a method by Sunday. Start Monday.
 
-- Starting too strict (you'll quit in 2 weeks)
-- Not tracking (a plan you don't check is just a wish)
-- Ignoring irregular expenses (car insurance, gifts, dental visits)
-- Budgeting money you don't have yet
+next: Up next: Credit scores, decoded
 
----
-
-## Slide 10
-
->> **What you can do**
-
-1. Pick one method and start
-2. Use a tracker (your bank app or a budgeting app)
-3. Automate savings on payday – even €50/month
-4. Review weekly for the first 2 months
-5. Budget for annual costs (divide by 12)
-6. Revisit quarterly as life changes
-
----
-
-## Slide 11
-
->> **Bottom Line**
-
-A budget doesn't restrict your freedom
-
-It creates it
-
-When you know where your money is going, you stop wondering where it went
-
----
-
-## Slide 12
-
->> **Basics of Money · 14/16**
-
->> Next up →
->> Credit scores: what they are
->> and why they matter,
->> even if you never plan to borrow.
-
->> ———
-
->> Full library → link in bio
->> Follow @nidhi.today for post 15
+save: this for your next paycheck review
+share: with someone still budgeting in their head
+follow: @nidhi.today for posts 15 & 16

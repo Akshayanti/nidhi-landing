@@ -109,12 +109,28 @@ export function parseInstagramPost(content, relPath) {
   const captionMatch = body.match(/## Caption\n\n([\s\S]*?)(?=\n---\n)/);
   const caption = captionMatch ? captionMatch[1].trim() : '';
 
-  // Extract slides
+  // Extract slides. Header may include an optional layout directive:
+  //   ## Slide 1 (hook)
+  //   ## Slide 4 (stat)
+  // Default layout is `prose`; slide 1 defaults to `hook` if unspecified;
+  // slide N defaults to `closer` only when explicitly tagged.
   const slides = [];
-  const slideRegex = /## Slide (\d+)\n\n([\s\S]*?)(?=\n---\n|$)/g;
+  // Layout directive is lenient on whitespace: `(hook)`, `( hook )`, `(  hook  )` all valid.
+  const slideRegex = /## Slide (\d+)(?:\s*\(\s*([a-z]+)\s*\))?\n\n([\s\S]*?)(?=\n---\n|$)/g;
   let m;
+  // Recognized field keys for structured layouts. Anything else stays in body.
+  const FIELD_KEYS = new Set([
+    'eyebrow', 'label', 'hero', 'caption', 'note', 'sub',
+    'title', 'left', 'right', 'left_title', 'right_title',
+    'next', 'save', 'share', 'follow', 'read', 'kicker',
+    'source',
+  ]);
+
   while ((m = slideRegex.exec(body)) !== null) {
-    const raw = m[2].trim();
+    const number = parseInt(m[1], 10);
+    const layoutHint = m[2] || null;
+    const raw = m[3].trim();
+
     // Split handle annotation lines (!! prefix) from regular content
     const lines = raw.split('\n');
     const handleLines = [];
@@ -127,9 +143,33 @@ export function parseInstagramPost(content, relPath) {
       }
     }
 
+    // Pull `key: value` lines as structured fields wherever they appear in
+    // the slide block; the rest becomes free-form body. A `key: value` line
+    // counts only when the key is in FIELD_KEYS, so legitimate prose like
+    // "Method: do X" stays in body.
+    const fields = {};
+    const bodyLines = [];
+    for (const ln of contentLines) {
+      const fm = ln.match(/^([a-z_]+):\s+(.+)$/);
+      if (fm && FIELD_KEYS.has(fm[1])) {
+        fields[fm[1]] = fm[2].trim();
+      } else {
+        bodyLines.push(ln);
+      }
+    }
+    // Trim leading/trailing blank lines from body.
+    while (bodyLines.length && bodyLines[0].trim() === '') bodyLines.shift();
+    while (bodyLines.length && bodyLines[bodyLines.length - 1].trim() === '') bodyLines.pop();
+    const bodyText = bodyLines.join('\n');
+
+    // Default layout: slide 1 → hook unless overridden.
+    const layout = layoutHint || (number === 1 ? 'hook' : 'prose');
+
     slides.push({
-      number: parseInt(m[1], 10),
-      text: contentLines.join('\n').trim(),
+      number,
+      layout,
+      fields,
+      text: bodyText,                  // remaining markdown body
       handle: handleLines,
     });
   }
@@ -146,6 +186,11 @@ export function parseInstagramPost(content, relPath) {
     blogUrl: frontmatter.blog_url || '',
     hashtags: frontmatter.hashtags || '',
     postTime: frontmatter.post_time || '',
+    // Eyebrow chip rendered on every non-hook slide.
+    // e.g. category="BUDGETING", series="Basics of Money · 14/16"
+    category: frontmatter.category || '',
+    series: frontmatter.series || '',
+    byline: frontmatter.byline || '',
     caption,
     slides,
     totalSlides: slides.length,

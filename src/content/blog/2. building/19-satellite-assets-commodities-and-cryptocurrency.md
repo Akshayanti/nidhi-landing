@@ -1,7 +1,7 @@
 ---
 slug: "satellite-assets-commodities-and-cryptocurrency"
 title: "Beyond the Core: Commodities and Cryptocurrency as Satellite Assets"
-description: "Two asset types come up in almost every investing conversation but don't behave like the core four. Knowing what they're for, and what they aren't, keeps them from quietly distorting a portfolio."
+description: "Commodities and cryptocurrency come up in every investing conversation but don't behave like the core four. Use them as small satellites, not core holdings."
 tldr: "Commodities (gold, oil, agricultural products, industrial metals) and cryptocurrency sit outside the four core asset classes. Commodities have no cash flow; their returns come purely from price changes. They're a legitimate hedge against inflation and currency crises, but a poor long-term wealth engine. Most have produced near-zero real returns over very long periods, with gold around 1% real. A 5-10% allocation is a common ceiling; many investors hold none. Cryptocurrency is closer to a speculative asset than a traditional investment. It produces no cash flow, has a short track record, and has gone through multiple 70-85% drawdowns. The honest stance: don't borrow to buy it, don't concentrate in it, and treat any holding as money you could lose entirely. Both belong, if at all, as small satellites around a core of stocks, bonds, real estate, and cash. Never as the foundation of a plan."
 order: 19
 pubDate: 2026-05-29
@@ -35,7 +35,7 @@ Commodities are physical goods traded in bulk: gold, silver, oil, natural gas, a
 
 **Typical characteristics**:
 
-| | Commodities |
+| Dimension | Commodities |
 |---|---|
 | Return source | Price appreciation only (no cash flow) |
 | Historical real return | Near 0% over very long periods for most; gold ~1% real long-term |
@@ -78,7 +78,7 @@ The core four asset classes share a structural property: each generates returns 
 
 Satellites don't have that. Their returns come purely from price movement, which means they depend on a future buyer paying more than the current owner did.
 
-| | Core asset classes (stocks, bonds, real estate, cash) | Satellites (commodities, crypto) |
+| Dimension | Core asset classes (stocks, bonds, real estate, cash) | Satellites (commodities, crypto) |
 |---|---|---|
 | Source of return | Underlying cash flow + appreciation | Price change only |
 | Long-run real return | Positive on average, by structure | Near zero or unproven |

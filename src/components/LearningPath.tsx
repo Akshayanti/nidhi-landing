@@ -15,6 +15,9 @@ interface LevelMeta {
   description: string;
   covered: string;
   prerequisite: string;
+  // CSS color resolved at runtime. References per-theme variables defined
+  // in global.css so the same level identity stays legible in light and
+  // dark mode.
   color: string;
 }
 
@@ -24,28 +27,28 @@ const LEVELS: Record<string, LevelMeta> = {
     description: 'The fundamentals. If you\'re new to personal finance, start here.',
     covered: 'Net worth, assets, liabilities, cash flow, debt, compound interest, liquidity, emergency funds, purchasing power, time value of money, saving vs investing, credit, insurance',
     prerequisite: 'For beginners',
-    color: '#00897B',
+    color: 'var(--level-discovery)',
   },
   building: {
     label: 'Building',
     description: 'Putting the pieces together. Budgets, savings systems, and first investments.',
     covered: 'Budgeting, risk, asset classes, investment accounts, diversification, financial independence intro, multi-currency, real estate, loan terms, passive income, goals, dashboard, health metrics, taxes',
     prerequisite: 'For those comfortable with the basics',
-    color: '#1565C0',
+    color: 'var(--level-building)',
   },
   optimizing: {
     label: 'Optimizing',
     description: 'Fine-tuning what works. Tax efficiency, portfolio rebalancing, and advanced strategies.',
     covered: 'Tax-loss harvesting, portfolio rebalancing, asset location, diversification',
     prerequisite: 'For those with a budget and investment plan',
-    color: '#E65100',
+    color: 'var(--level-optimizing)',
   },
   mastery: {
     label: 'Mastery',
     description: 'The long game. Generational wealth, estate planning, and financial independence.',
     covered: 'Estate planning, FIRE, generational wealth, withdrawal strategies',
     prerequisite: 'For experienced planners',
-    color: '#7B1FA2',
+    color: 'var(--level-mastery)',
   },
 };
 
@@ -109,7 +112,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
           }}
         />
       </div>
-      <div className="lp-nodeConnector" />
+      <div className="lp-nodeConnector" aria-hidden="true" />
       <div className={cardClasses} style={!isRead && !isStartHere ? { borderLeftColor: levelColor } : undefined}>
         {isStartHere && <span className="lp-startHereLabel">Start here</span>}
         <div className="lp-cardTop">
@@ -130,6 +133,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
                 key={tag}
                 className={`lp-cardTag ${selectedTag === tag ? 'lp-cardTagActive' : ''}`}
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTagClick(tag); }}
+                aria-pressed={selectedTag === tag}
               >
                 {tag}
               </button>
@@ -260,7 +264,7 @@ export function LearningPath({ posts }: LearningPathProps) {
     <div className="lp-pathContainer">
       <div className="lp-pathLine" />
 
-      <nav className="lp-levelNav">
+      <nav className="lp-levelNav" aria-label="Learning path levels">
         {LEVEL_ORDER.map((level) => {
           const meta = LEVELS[level];
           const group = levelGroups.find((g) => g.level === level);
@@ -288,7 +292,7 @@ export function LearningPath({ posts }: LearningPathProps) {
       {allTags.length > 0 && (
         <div className="lp-filterBar">
           <div className="lp-searchWrapper">
-            <svg className="lp-searchIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="lp-searchIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="9" cy="9" r="6" />
               <line x1="13.5" y1="13.5" x2="18" y2="18" />
             </svg>
@@ -296,6 +300,7 @@ export function LearningPath({ posts }: LearningPathProps) {
               type="text"
               className="lp-searchInput"
               placeholder="Search posts..."
+              aria-label="Search posts"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -314,6 +319,7 @@ export function LearningPath({ posts }: LearningPathProps) {
                 key={tag}
                 className={`lp-tagFilterBtn ${selectedTag === tag ? 'lp-tagFilterBtnActive' : ''}`}
                 onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+                aria-pressed={selectedTag === tag}
               >
                 {tag}
               </button>
@@ -367,6 +373,12 @@ export function LearningPath({ posts }: LearningPathProps) {
             <div
               className={`lp-levelHeader ${isCompleted ? 'lp-levelHeaderToggle' : ''}`}
               onClick={isCompleted ? () => toggleSection(group.level) : undefined}
+              onKeyDown={isCompleted ? (e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleSection(group.level);
+                }
+              } : undefined}
               role={isCompleted ? 'button' : undefined}
               tabIndex={isCompleted ? 0 : undefined}
               aria-expanded={isCompleted ? !isCollapsed : undefined}

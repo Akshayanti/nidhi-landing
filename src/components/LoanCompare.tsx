@@ -1,14 +1,21 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   CURRENCIES,
   DEFAULT_CURRENCY,
-  computeLoan,
+  equityAtMonth,
+  formatApr,
   formatMoney,
   formatMonths,
+  getCurrency,
+  pickSplitSamples,
+  pointsBreakEven,
+  refinanceComparison,
   toMinor,
+  type AmortizationRow,
   type LoanResult,
 } from '../utils/loanMath';
 import {
+  DEFAULT_GLOBAL_STATE,
   DEFAULT_VENDORS,
   MAX_VENDORS,
   MIN_VENDORS,
@@ -16,8 +23,15 @@ import {
   decodeFromQueryString,
   encodeToQueryString,
   makeDefaultVendor,
+  type AnalysisTab,
+  type GlobalState,
   type VendorInput,
 } from '../utils/loanCompareUrl';
+import {
+  computeFromInput,
+  computeNoPointsBaseline,
+  parseNumber,
+} from '../utils/loanCompareInputs';
 
 // -----------------------------------------------------------------------------
 // PostHog telemetry helper.
@@ -51,6 +65,17 @@ function track(event: string, properties?: Record<string, unknown>) {
   }
 }
 
+function preserveUtmParams(search: string): string {
+  const params = new URLSearchParams(search);
+  const utm = new URLSearchParams();
+  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+    const val = params.get(key);
+    if (val) utm.set(key, val);
+  }
+  const s = utm.toString();
+  return s ? '&' + s : '';
+}
+
 // VENDOR_COLORS is intentionally kept here, not in loanCompareUrl.ts:
 // it's a UI-only concern (how vendors render in the grid and chart) and
 // has no place in URL state. Indices align with VENDOR_LABELS A-E.
@@ -61,35 +86,6 @@ const VENDOR_COLORS = [
   '#6A1B9A', // purple
   '#2E7D32', // green
 ];
-
-// ---- Computation -----------------------------------------------------------
-
-function parseNumber(s: string): number {
-  const cleaned = s.replace(/[\s,]/g, '');
-  if (cleaned === '') return NaN;
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : NaN;
-}
-
-function computeFromInput(v: VendorInput, currency: string): LoanResult {
-  const principalMinor = toMinor(parseNumber(v.principal), currency);
-  const annualRate = parseNumber(v.annualRatePct) / 100;
-  const feeMinor = toMinor(parseNumber(v.feeMajor) || 0, currency);
-  const extraMonthlyMinor = toMinor(parseNumber(v.extraMonthly) || 0, currency);
-
-  if (v.modeKind === 'term') {
-    const months = Math.round(parseNumber(v.termMonths));
-    return computeLoan(
-      { principalMinor, annualRate, feeMinor, extraMonthlyMinor },
-      { kind: 'term', months },
-    );
-  }
-  const monthlyMinor = toMinor(parseNumber(v.monthlyPayment), currency);
-  return computeLoan(
-    { principalMinor, annualRate, feeMinor, extraMonthlyMinor },
-    { kind: 'payment', monthlyMinor },
-  );
-}
 
 // ---- Chart -----------------------------------------------------------------
 
@@ -306,33 +302,270 @@ function compactMoney(minor: number, currency: string): string {
   }
 }
 
+// ---- Amortisation split (stacked bar) chart --------------------------------
+//
+// Mirrors the figure in `27-understanding-loan-terms.md`: bars at six
+// evenly-spaced points across the contract, each split into the interest
+// portion (top) and the principal portion (bottom). Same monthly payment,
+// every bar; only the split changes. The educational point only lands when
+// the bar heights are visibly identical and the split is visibly extreme
+// in early years.
+//
+// We sample from the *contract* schedule (no extra principal). Voluntary
+// extra principal would compress the term and make the "see how the
+// split skews early" point harder to read; the shape we want to teach is
+// the contract shape.
+
+interface SplitChartProps {
+  schedule: AmortizationRow[];
+  currency: string;
+  vendorName: string;
+  vendorColor: string;
+}
+
+function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartProps) {
+  if (schedule.length === 0) {
+    return (
+      <p className="lc-chartEmpty">
+        Enter valid inputs above to see how each payment splits between interest and principal.
+      </p>
+    );
+  }
+
+  const samples = pickSplitSamples(schedule.length, 6);
+  const rows = samples.map((m) => schedule[m - 1]);
+
+  // Bar height represents the total payment for that month. For a fully-
+  // amortising fixed-rate loan all bars are the same height, which is
+  // exactly the visual point. The final bar may be a few cents off due
+  // to schedule reconciliation; we scale to the max anyway so any
+  // reconciliation fudge is invisible.
+  const maxPayment = Math.max(...rows.map((r) => r.payment));
+  if (maxPayment <= 0) return null;
+
+  const width = 800;
+  const height = 360;
+  const padT = 56;
+  const padB = 64;
+  const padL = 56;
+  const padR = 24;
+  const plotH = height - padT - padB;
+  const plotW = width - padL - padR;
+  const barWidth = Math.min(70, (plotW - 20) / rows.length - 14);
+  const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
+
+  const ariaSummary =
+    `Where each monthly payment goes for ${vendorName}. ` +
+    rows
+      .map((r) => {
+        const pctInterest = (r.interest / r.payment) * 100;
+        const yearLabel = formatYearLabel(r.month);
+        return `${yearLabel}: interest ${formatMoney(r.interest, currency)} (${pctInterest.toFixed(0)}%), principal ${formatMoney(r.principal, currency)}.`;
+      })
+      .join(' ');
+
+  return (
+    <>
+      <svg
+        className="lc-splitChart"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label={ariaSummary}
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+      >
+        <title>Where each payment goes</title>
+        <desc>{ariaSummary}</desc>
+
+        {/* Eyebrow legend, mirroring the blog figure */}
+        <text x={padL} y={padT - 16} className="lc-splitEyebrowInterest">
+          INTEREST
+        </text>
+        <text x={padL} y={height - padB + 18} className="lc-splitEyebrowPrincipal">
+          PRINCIPAL
+        </text>
+
+        {rows.map((row, idx) => {
+          const x = padL + gap + idx * (barWidth + gap);
+          const totalH = plotH * (row.payment / maxPayment);
+          const interestH = totalH * (row.interest / row.payment);
+          const principalH = totalH - interestH;
+          const yTop = padT + (plotH - totalH);
+          const yPrincipal = yTop + interestH;
+
+          // Show inline labels for the values when the segment has enough
+          // vertical room; otherwise skip to keep the chart legible.
+          const interestLabelInside = interestH >= 22;
+          const principalLabelInside = principalH >= 22;
+
+          return (
+            <g key={row.month}>
+              <rect
+                x={x}
+                y={yTop}
+                width={barWidth}
+                height={interestH}
+                className="lc-splitBarInterest"
+              />
+              <rect
+                x={x}
+                y={yPrincipal}
+                width={barWidth}
+                height={principalH}
+                className="lc-splitBarPrincipal"
+                style={{ fill: vendorColor }}
+              />
+              {/* Interest value */}
+              <text
+                x={x + barWidth / 2}
+                y={interestLabelInside ? yTop + 14 : yTop - 4}
+                className="lc-splitValueInterest"
+                textAnchor="middle"
+                style={{
+                  // When the segment is too thin, render the label above
+                  // the bar in interest's accent colour for contrast on
+                  // the page background.
+                  fill: interestLabelInside ? '#ffffff' : 'var(--color-warning)',
+                  fontWeight: 600,
+                }}
+              >
+                {compactMoney(row.interest, currency)}
+              </text>
+              {/* Principal value */}
+              <text
+                x={x + barWidth / 2}
+                y={principalLabelInside ? yPrincipal + 16 : yPrincipal + principalH + 14}
+                className="lc-splitValuePrincipal"
+                textAnchor="middle"
+                style={{
+                  fill: principalLabelInside ? '#ffffff' : 'var(--color-text-primary)',
+                  fontWeight: 600,
+                }}
+              >
+                {compactMoney(row.principal, currency)}
+              </text>
+              {/* X-axis label: "Year N" or "Month N" for very short loans */}
+              <text
+                x={x + barWidth / 2}
+                y={height - padB + 36}
+                className="lc-splitTickX"
+                textAnchor="middle"
+              >
+                {formatYearLabel(row.month)}
+              </text>
+            </g>
+          );
+        })}
+
+        <text
+          x={width / 2}
+          y={height - 6}
+          className="lc-splitFootnote"
+          textAnchor="middle"
+        >
+          Same payment every month, the split changes
+        </text>
+      </svg>
+
+      {/* SR-only table mirrors the same data for assistive tech users. */}
+      <table className="lc-srOnly">
+        <caption>Interest and principal split for {vendorName}, sampled across the loan</caption>
+        <thead>
+          <tr>
+            <th scope="col">Month</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Interest</th>
+            <th scope="col">Principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.month}>
+              <th scope="row">{formatYearLabel(r.month)}</th>
+              <td>{formatMoney(r.payment, currency)}</td>
+              <td>{formatMoney(r.interest, currency)}</td>
+              <td>{formatMoney(r.principal, currency)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
+
+/** Render a sampled month as a "Year N" label, falling back to "Month N"
+ *  for short-term loans where year framing would be misleading. */
+function formatYearLabel(month: number): string {
+  if (month <= 12) {
+    return month === 1 ? 'Year 1' : `Month ${month}`;
+  }
+  // Months that fall on a year boundary read as "Year N"; off-boundary
+  // months read as "Year N (mo M)" so the user can still locate them.
+  if (month % 12 === 0) return `Year ${month / 12}`;
+  return `Year ${Math.floor(month / 12) + 1}`;
+}
+
 // ---- Main component --------------------------------------------------------
 
 export default function LoanCompare() {
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
-  const [currency, setCurrency] = useState<string>(DEFAULT_CURRENCY);
+  const [globalState, setGlobalState] = useState<GlobalState>(DEFAULT_GLOBAL_STATE);
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+  // Index of the vendor whose amortisation split is currently rendered.
+  // null means "auto"; track the cheapest-by-total winner. We store an
+  // explicit index only when the user has manually picked one, so adding
+  // or reordering vendors doesn't trap them on a stale selection.
+  const [splitVendorIdx, setSplitVendorIdx] = useState<number | null>(null);
   const currencySelectId = useId();
+
+  // Convenience accessor: the currency lives on globalState but most
+  // call sites read it directly. Updates always go through setGlobalState
+  // so there is one source of truth.
+  const currency = globalState.currency;
+  const setCurrency = useCallback(
+    (next: string) => setGlobalState((g) => ({ ...g, currency: next })),
+    [],
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const { vendors: decoded, currency: decodedCurrency } = decodeFromQueryString(
+    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(
       window.location.search.slice(1),
     );
     setVendors(decoded);
-    if (decodedCurrency && CURRENCIES.some((c) => c.code === decodedCurrency)) {
-      setCurrency(decodedCurrency);
+    // Validate the currency we got back; an unknown code falls back to
+    // the default rather than putting the dropdown into a broken state.
+    if (!CURRENCIES.some((c) => c.code === decodedGlobal.currency)) {
+      decodedGlobal.currency = DEFAULT_CURRENCY;
     }
+    setGlobalState(decodedGlobal);
     setHydrated(true);
+
+    // Mirrors `free_currency_risk_shared_view_opened` on the analyzer.
+    // We fire only when the URL actually carries encoded state (any
+    // non-utm param), so a plain `?utm_source=...` campaign click does
+    // not get mislabelled as a shared comparison view. The utm-source
+    // value is reported as a property so funnels can split direct
+    // shares (utm_source=share) from organic landings.
+    const params = new URLSearchParams(window.location.search.slice(1));
+    const hasEncodedState = [...params.keys()].some((k) => !k.startsWith('utm_'));
+    if (hasEncodedState) {
+      track('free_loan_comparison_shared_view_opened', {
+        vendors: decoded.length,
+        utm_source: params.get('utm_source') ?? null,
+      });
+    }
   }, []);
 
   useEffect(() => {
     if (!hydrated || typeof window === 'undefined') return;
-    const qs = encodeToQueryString(vendors, currency);
-    const next = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    const qs = encodeToQueryString(vendors, globalState);
+    const utm = preserveUtmParams(window.location.search);
+    const next = qs ? `${window.location.pathname}?${qs}${utm}` : `${window.location.pathname}${utm}`;
     window.history.replaceState(null, '', next);
-  }, [vendors, currency, hydrated]);
+  }, [vendors, globalState, hydrated]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -348,7 +581,7 @@ export default function LoanCompare() {
       const next = [...prev, makeDefaultVendor(prev.length)];
       // Track *after* state update is queued so the count we report is the
       // post-add count, which is what funnels actually want to filter on.
-      track('loan_compare_vendor_added', { count: next.length });
+      track('free_loan_comparison_vendor_added', { count: next.length });
       return next;
     });
   }, []);
@@ -358,7 +591,7 @@ export default function LoanCompare() {
       if (prev.length <= MIN_VENDORS) return prev;
       const removedLabel = VENDOR_LABELS[index];
       const next = prev.filter((_, i) => i !== index);
-      track('loan_compare_vendor_removed', {
+      track('free_loan_comparison_vendor_removed', {
         // `vendor` is the slot label that was removed (A-E). After removal,
         // the remaining vendors shift up positionally; that's fine for
         // analytics because we report the slot the user *clicked*, not its
@@ -375,6 +608,14 @@ export default function LoanCompare() {
     [vendors, currency],
   );
 
+  // Per-vendor "no-points baseline" results, used to compute the
+  // points break-even. When a vendor hasn't paid points the entry is
+  // null and the UI hides the row.
+  const noPointsBaselines = useMemo(
+    () => vendors.map((v) => computeNoPointsBaseline(v, currency)),
+    [vendors, currency],
+  );
+
   const validResults = results
     .map((r, i) => ({ r, i }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
@@ -387,16 +628,20 @@ export default function LoanCompare() {
 
   const copyShareLink = useCallback(async () => {
     if (typeof window === 'undefined') return;
-    const url = `${window.location.origin}${window.location.pathname}?${encodeToQueryString(vendors, currency)}`;
+    const url = `${window.location.origin}${window.location.pathname}?${encodeToQueryString(vendors, globalState)}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison`;
     try {
       await navigator.clipboard.writeText(url);
+      setShareUrl(url);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-      track('loan_compare_share_copied');
+      setTimeout(() => setCopied(false), 2500);
+      track('free_loan_comparison_share_copied');
     } catch {
+      setShareUrl(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
       window.prompt('Copy this link:', url);
     }
-  }, [vendors, currency]);
+  }, [vendors, globalState]);
 
   return (
     <div className="lc-root">
@@ -412,7 +657,7 @@ export default function LoanCompare() {
             onChange={(e) => {
               const next = e.target.value;
               setCurrency(next);
-              track('loan_compare_currency_changed', { currency: next });
+              track('free_loan_comparison_currency_changed', { currency: next });
             }}
             aria-describedby={`${currencySelectId}-hint`}
           >
@@ -450,6 +695,7 @@ export default function LoanCompare() {
             className="lc-shareBtn"
             onClick={copyShareLink}
             aria-describedby="lc-share-status"
+            title="Copy a link that includes all your loan details"
           >
             {copied ? 'Link copied' : 'Copy shareable link'}
           </button>
@@ -458,12 +704,25 @@ export default function LoanCompare() {
             className="lc-resetBtn"
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
-              setCurrency(DEFAULT_CURRENCY);
-              track('loan_compare_reset');
+              setGlobalState(DEFAULT_GLOBAL_STATE);
+              track('free_loan_comparison_reset');
             }}
+            title="Clear all data and start fresh"
           >
             Reset to defaults
           </button>
+          {copied && shareUrl && (
+            <div className="lc-shareUrlBar" role="status" aria-live="polite">
+              <span className="lc-shareUrlLabel">Link copied to clipboard</span>
+              <input
+                className="lc-shareUrlInput"
+                value={shareUrl}
+                readOnly
+                onFocus={(e) => e.target.select()}
+                aria-label="Shareable link URL"
+              />
+            </div>
+          )}
           <span
             id="lc-share-status"
             className="lc-srOnly"
@@ -483,6 +742,7 @@ export default function LoanCompare() {
             color={VENDOR_COLORS[i]}
             vendor={v}
             result={results[i]}
+            noPointsBaseline={noPointsBaselines[i]}
             currency={currency}
             isBest={validResults.length > 1 && i === cheapestByTotal}
             onChange={(patch) => updateVendor(i, patch)}
@@ -515,30 +775,35 @@ export default function LoanCompare() {
         bestIndex={cheapestByTotal}
       />
 
-      <section className="lc-chartSection">
-        <h2 className="lc-sectionTitle">Balance over time</h2>
-        <div className="lc-legend">
-          {vendors.map((v, i) => (
-            <span key={i} className="lc-legendItem">
-              <span className="lc-legendSwatch" style={{ background: VENDOR_COLORS[i] }} />
-              {v.name || `Vendor ${VENDOR_LABELS[i]}`}
-            </span>
-          ))}
-        </div>
-        <BalanceChart
-          results={results}
-          colors={VENDOR_COLORS}
-          vendorNames={vendors.map((v, i) => v.name || `Vendor ${VENDOR_LABELS[i]}`)}
-          currency={currency}
-        />
-      </section>
+      <AnalysisTabs
+        vendors={vendors}
+        results={results}
+        currency={currency}
+        cheapestByTotal={cheapestByTotal}
+        splitVendorIdx={splitVendorIdx}
+        onSplitVendorChange={setSplitVendorIdx}
+        globalState={globalState}
+        onGlobalChange={(patch) => setGlobalState((g) => ({ ...g, ...patch }))}
+      />
 
-      <p className="lc-disclaimer">
-        Calculations assume a fixed interest rate, monthly compounding, and on-time
-        payments. Real loans may include taxes, insurance, escrow, prepayment
-        penalties, or variable rates that this calculator does not model. This page
-        is for educational comparison and is not financial advice.
-      </p>
+      <details className="lc-disclaimerWrap" open>
+        <summary className="lc-disclaimerSummary">Assumptions and disclaimers</summary>
+        <p className="lc-disclaimer">
+          Calculations assume monthly compounding and on-time payments. APR
+          is shown as a nominal annualized rate (monthly rate × 12)
+          computed against the contractual schedule (without voluntary
+          extras), folding the origination/closing fee into the effective
+          cost of borrowing; jurisdictions differ on which other costs
+          (mandatory insurance, account products, taxes) must be included
+          in their official APR/APRC disclosure, so add those into the
+          fee field if you want them reflected. Real adjustable-rate
+          loans track an index plus a margin and may have rate caps that
+          this calculator does not enforce; the subsequent rate you
+          enter is your best stress-test guess. Property taxes, building
+          or community service charges, and home insurance are not
+          modeled. Educational comparison only; not financial advice.
+        </p>
+      </details>
     </div>
   );
 }
@@ -550,6 +815,9 @@ interface VendorCardProps {
   color: string;
   vendor: VendorInput;
   result: LoanResult;
+  /** Hypothetical "no points paid" baseline; null when vendor isn't
+   *  using points. */
+  noPointsBaseline: LoanResult | null;
   currency: string;
   isBest: boolean;
   onChange: (patch: Partial<VendorInput>) => void;
@@ -557,7 +825,17 @@ interface VendorCardProps {
   onRemove?: () => void;
 }
 
-function VendorCard({ label, color, vendor, result, currency, isBest, onChange, onRemove }: VendorCardProps) {
+function VendorCard({
+  label,
+  color,
+  vendor,
+  result,
+  noPointsBaseline,
+  currency,
+  isBest,
+  onChange,
+  onRemove,
+}: VendorCardProps) {
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
@@ -573,7 +851,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
       aria-labelledby={headingId}
     >
       <header className="lc-cardHeader">
-        <h3 id={headingId} className="lc-cardBadge">Vendor {label}</h3>
+        <h2 id={headingId} className="lc-cardBadge">Vendor {label}</h2>
         {isBest && (
           <span className="lc-cardBestBadge">
             <span aria-hidden="true">★ </span>Lowest total cost
@@ -592,6 +870,13 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
         )}
       </header>
 
+      {/* ------------------------------------------------------------ */}
+      {/*  Required fields. Marked with a visible asterisk and          */}
+      {/*  aria-required so screen readers and sighted users both know  */}
+      {/*  the loan can't be priced without them. The vendor name is    */}
+      {/*  intentionally left optional.                                  */}
+      {/* ------------------------------------------------------------ */}
+
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('name')}>Vendor name</label>
         <input
@@ -607,7 +892,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
 
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          Loan amount <span className="lc-fieldHint">({currency})</span>
+          Loan amount <RequiredMark /> <span className="lc-fieldHint">({currency})</span>
         </label>
         <input
           id={id('principal')}
@@ -617,13 +902,16 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
           value={vendor.principal}
           onChange={(e) => onChange({ principal: e.target.value })}
           aria-invalid={hasError || undefined}
+          aria-required="true"
           aria-describedby={hasError ? errorId : undefined}
           autoComplete="off"
         />
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('rate')}>Annual interest rate (%)</label>
+        <label className="lc-fieldLabel" htmlFor={id('rate')}>
+          Annual interest rate (%) <RequiredMark />
+        </label>
         <input
           id={id('rate')}
           type="text"
@@ -632,13 +920,14 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
           value={vendor.annualRatePct}
           onChange={(e) => onChange({ annualRatePct: e.target.value })}
           aria-invalid={hasError || undefined}
+          aria-required="true"
           aria-describedby={hasError ? errorId : undefined}
           autoComplete="off"
         />
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">Solve for</legend>
+        <legend className="lc-fieldLabel">Solve for <RequiredMark /></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -648,7 +937,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
               checked={vendor.modeKind === 'term'}
               onChange={() => {
                 onChange({ modeKind: 'term' });
-                track('loan_compare_mode_changed', { vendor: label, mode: 'term' });
+                track('free_loan_comparison_mode_changed', { vendor: label, mode: 'term' });
               }}
             />
             <span>Monthly payment</span>
@@ -661,7 +950,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
               checked={vendor.modeKind === 'payment'}
               onChange={() => {
                 onChange({ modeKind: 'payment' });
-                track('loan_compare_mode_changed', { vendor: label, mode: 'payment' });
+                track('free_loan_comparison_mode_changed', { vendor: label, mode: 'payment' });
               }}
             />
             <span>Payoff months</span>
@@ -671,7 +960,9 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
 
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('term')}>Term (months)</label>
+          <label className="lc-fieldLabel" htmlFor={id('term')}>
+            Term (months) <RequiredMark />
+          </label>
           <input
             id={id('term')}
             type="text"
@@ -680,6 +971,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
             value={vendor.termMonths}
             onChange={(e) => onChange({ termMonths: e.target.value })}
             aria-invalid={hasError || undefined}
+            aria-required="true"
             aria-describedby={hasError ? errorId : undefined}
             autoComplete="off"
           />
@@ -687,7 +979,7 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
       ) : (
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            Monthly payment <span className="lc-fieldHint">({currency})</span>
+            Monthly payment <RequiredMark /> <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={id('monthly')}
@@ -697,24 +989,117 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
             value={vendor.monthlyPayment}
             onChange={(e) => onChange({ monthlyPayment: e.target.value })}
             aria-invalid={hasError || undefined}
+            aria-required="true"
             aria-describedby={hasError ? errorId : undefined}
             autoComplete="off"
           />
         </div>
       )}
 
-      <details
-        className="lc-extras"
-        onToggle={(e) => {
-          // The `toggle` event fires for both open and close; only emit on
-          // open so the count reflects "users who actually wanted these
-          // fields", not raw on/off churn.
-          if ((e.currentTarget as HTMLDetailsElement).open) {
-            track('loan_compare_extras_opened', { vendor: label });
-          }
-        }}
-      >
-        <summary className="lc-extrasSummary">More options</summary>
+      {/* ------------------------------------------------------------ */}
+      {/*  Optional groups. All visible by default so the user can see  */}
+      {/*  the available knobs at a glance, but visually de-emphasised  */}
+      {/*  vs. the required block above. Each group has a small         */}
+      {/*  sub-heading so the purpose is scannable.                      */}
+      {/* ------------------------------------------------------------ */}
+
+      <FieldGroup title="Rate structure" hint="Fixed or fixed-then-variable (ARM)">
+        <fieldset className="lc-modeFieldset">
+          <legend className="lc-srOnly">Rate type</legend>
+          <div className="lc-modeRow">
+            <label className={`lc-modeOption ${vendor.rateKind === 'fixed' ? 'lc-modeOptionActive' : ''}`}>
+              <input
+                type="radio"
+                name={`rateKind-${baseId}`}
+                value="fixed"
+                checked={vendor.rateKind === 'fixed'}
+                onChange={() => {
+                  onChange({ rateKind: 'fixed' });
+                  track('free_loan_comparison_rate_kind_changed', {
+                    vendor: label,
+                    rateKind: 'fixed',
+                  });
+                }}
+              />
+              <span>Fixed</span>
+            </label>
+            <label className={`lc-modeOption ${vendor.rateKind === 'hybrid' ? 'lc-modeOptionActive' : ''}`}>
+              <input
+                type="radio"
+                name={`rateKind-${baseId}`}
+                value="hybrid"
+                // Hybrid is only meaningful in term mode; we disable the
+                // radio when the vendor is in payment mode rather than
+                // auto-flipping their selection. The disabled-state hint
+                // below is wired via aria-describedby so screen-reader
+                // users hear the reason without sighted-only context.
+                disabled={vendor.modeKind !== 'term'}
+                aria-describedby={
+                  vendor.modeKind !== 'term' ? id('hybrid-hint') : undefined
+                }
+                checked={vendor.rateKind === 'hybrid'}
+                onChange={() => {
+                  onChange({ rateKind: 'hybrid' });
+                  track('free_loan_comparison_rate_kind_changed', {
+                    vendor: label,
+                    rateKind: 'hybrid',
+                  });
+                }}
+              />
+              <span>Hybrid (ARM)</span>
+            </label>
+          </div>
+        </fieldset>
+        {vendor.modeKind !== 'term' && (
+          // Always render this hint when hybrid is disabled, even if the
+          // user has not picked hybrid yet, so the disabled state is
+          // explained on first encounter (and aria-describedby has a
+          // target to point at).
+          <p id={id('hybrid-hint')} className="lc-fieldHelp">
+            Hybrid (ARM) loans need a fixed term. Switch <em>Solve for</em>{' '}
+            above to <em>Monthly payment</em> to enable the ARM fields.
+          </p>
+        )}
+        {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
+          <>
+            <div className="lc-field">
+              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
+                Initial fixed period (months)
+              </label>
+              <input
+                id={id('initialFixedMonths')}
+                type="text"
+                inputMode="numeric"
+                className="lc-input"
+                value={vendor.initialFixedMonths}
+                onChange={(e) => onChange({ initialFixedMonths: e.target.value })}
+                autoComplete="off"
+              />
+              <p className="lc-fieldHelp">Common: 60 (5/1 ARM), 84 (7/1), 120 (10/1).</p>
+            </div>
+            <div className="lc-field">
+              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
+                Subsequent rate (%)
+              </label>
+              <input
+                id={id('subsequentRatePct')}
+                type="text"
+                inputMode="decimal"
+                className="lc-input"
+                value={vendor.subsequentRatePct}
+                onChange={(e) => onChange({ subsequentRatePct: e.target.value })}
+                autoComplete="off"
+              />
+              <p className="lc-fieldHelp">
+                Rate after the fixed window ends. Real ARMs track an index;
+                this is your stress-test guess.
+              </p>
+            </div>
+          </>
+        )}
+      </FieldGroup>
+
+      <FieldGroup title="Costs and fees" hint="Origination, closing, and discount points">
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('fee')}>
             Origination / closing fee <span className="lc-fieldHint">({currency})</span>
@@ -730,6 +1115,42 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
           />
         </div>
         <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('pointsCost')}>
+            Discount points cost <span className="lc-fieldHint">({currency})</span>
+          </label>
+          <input
+            id={id('pointsCost')}
+            type="text"
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.pointsCostMajor}
+            onChange={(e) => onChange({ pointsCostMajor: e.target.value })}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">
+            Already counted in the fee above. Entering it again here lets the
+            calculator show the points break-even.
+          </p>
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('pointsReduction')}>
+            Rate reduction from points (pp)
+          </label>
+          <input
+            id={id('pointsReduction')}
+            type="text"
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.pointsRateReductionPct}
+            onChange={(e) => onChange({ pointsRateReductionPct: e.target.value })}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">e.g. 0.25 means the points cut your rate by 0.25 pp.</p>
+        </div>
+      </FieldGroup>
+
+      <FieldGroup title="Prepayments" hint="Pay extra each month or in lump sums">
+        <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('extra')}>
             Extra principal per month <span className="lc-fieldHint">({currency})</span>
           </label>
@@ -743,7 +1164,62 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
             autoComplete="off"
           />
         </div>
-      </details>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('lumpSums')}>
+            Lump-sum prepayments
+          </label>
+          <input
+            id={id('lumpSums')}
+            type="text"
+            className="lc-input"
+            value={vendor.lumpSumsEncoded}
+            onChange={(e) => onChange({ lumpSumsEncoded: e.target.value })}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="12:5000;36:3000"
+          />
+          <p className="lc-fieldHelp">
+            Format: <code>month:amount</code>, semicolon-separated. e.g.{' '}
+            <code>12:5000;36:3000</code> means 5,000 in month 12 and 3,000 in
+            month 36.
+          </p>
+        </div>
+      </FieldGroup>
+
+      <FieldGroup title="Prepayment penalty" hint="Some loans charge a fee for paying off early">
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
+            Penalty (% of balance)
+          </label>
+          <input
+            id={id('prepayPct')}
+            type="text"
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.prepayPenaltyPct}
+            onChange={(e) => onChange({ prepayPenaltyPct: e.target.value })}
+            autoComplete="off"
+          />
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('prepayUntil')}>
+            Penalty applies through (month)
+          </label>
+          <input
+            id={id('prepayUntil')}
+            type="text"
+            inputMode="numeric"
+            className="lc-input"
+            value={vendor.prepayPenaltyUntilMonth}
+            onChange={(e) => onChange({ prepayPenaltyUntilMonth: e.target.value })}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">
+            Leave at 0 if there is no penalty. Charged only when the loan is
+            paid off on or before this month.
+          </p>
+        </div>
+      </FieldGroup>
 
       <div
         className="lc-results"
@@ -755,43 +1231,128 @@ function VendorCard({ label, color, vendor, result, currency, isBest, onChange, 
             {result.error}
           </p>
         ) : (
-          <dl className="lc-resultList">
-            <ResultRow
-              label="Monthly payment"
-              value={formatMoney(result.effectiveMonthlyMinor, currency)}
-              hint={
-                Number(vendor.extraMonthly) > 0
-                  ? `Scheduled ${formatMoney(result.monthlyPaymentMinor, currency)} + extra ${formatMoney(
-                      result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
-                      currency,
-                    )}`
-                  : undefined
-              }
-            />
-            <ResultRow
-              label="Time to payoff"
-              value={formatMonths(result.months)}
-              hint={`${result.months} payment${result.months === 1 ? '' : 's'}`}
-            />
-            <ResultRow
-              label="Total interest"
-              value={formatMoney(result.totalInterestMinor, currency)}
-            />
-            {result.feeMinor > 0 && (
-              <ResultRow label="Fees" value={formatMoney(result.feeMinor, currency)} />
-            )}
-            <ResultRow
-              label="Total paid"
-              value={formatMoney(result.totalPaidMinor, currency)}
-              emphasized
-            />
-          </dl>
+          <>
+            {/* Top three at-a-glance numbers. APR is the cross-vendor
+                comparator the blog post calls "the number that matters",
+                Total paid is the headline cost, and Monthly payment is
+                what most users look at first. Everything else moves into
+                the "Show details" expander to keep the card compact. */}
+            <dl className="lc-resultList lc-resultListPrimary">
+              <ResultRow
+                label="Monthly"
+                value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                hint={
+                  Number(vendor.extraMonthly) > 0
+                    ? `${formatMoney(result.monthlyPaymentMinor, currency)} + ${formatMoney(
+                        result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
+                        currency,
+                      )} extra`
+                    : undefined
+                }
+              />
+              <ResultRow
+                label="APR"
+                value={formatApr(result.aprNominal, getCurrency(currency).locale)}
+                hint={result.feeMinor > 0 ? 'Includes fees' : 'No fees'}
+              />
+              <ResultRow
+                label="Total paid"
+                value={formatMoney(result.totalPaidMinor, currency)}
+                emphasized
+              />
+            </dl>
+
+            <details
+              className="lc-resultDetails"
+              onToggle={(e) => {
+                if ((e.currentTarget as HTMLDetailsElement).open) {
+                  track('free_loan_comparison_details_toggled', { vendor: label });
+                }
+              }}
+            >
+              <summary className="lc-resultDetailsSummary">Show details</summary>
+              <dl className="lc-resultList">
+                <ResultRow
+                  label="Time to payoff"
+                  value={formatMonths(result.months)}
+                  hint={`${result.months} payment${result.months === 1 ? '' : 's'}`}
+                />
+                <ResultRow
+                  label="Total interest"
+                  value={formatMoney(result.totalInterestMinor, currency)}
+                />
+                {result.feeMinor > 0 && (
+                  <ResultRow label="Fees" value={formatMoney(result.feeMinor, currency)} />
+                )}
+                {result.prepaymentPenaltyMinor > 0 && (
+                  <ResultRow
+                    label="Prepayment penalty"
+                    value={formatMoney(result.prepaymentPenaltyMinor, currency)}
+                    hint="Charged because the loan paid off early within the penalty window"
+                  />
+                )}
+                {noPointsBaseline && !noPointsBaseline.error && (() => {
+                  const be = pointsBreakEven(result, noPointsBaseline);
+                  return (
+                    <ResultRow
+                      label="Points break-even"
+                      value={
+                        Number.isFinite(be.months)
+                          ? formatMonths(be.months)
+                          : 'never'
+                      }
+                      hint={
+                        Number.isFinite(be.months)
+                          ? `Saves ${formatMoney(Math.abs(be.lifetimeSavingsMinor), currency)} over the term`
+                          : 'Points do not lower the monthly enough to recoup'
+                      }
+                    />
+                  );
+                })()}
+              </dl>
+            </details>
+          </>
         )}
         {result.warnings.map((w, i) => (
           <p key={i} className="lc-warning" role="status">{w}</p>
         ))}
       </div>
     </article>
+  );
+}
+
+// ---- Form helpers ----------------------------------------------------------
+
+/** A small red asterisk used to mark required fields. The asterisk is
+ *  presentational; the real semantic signal is the `aria-required` on
+ *  the input itself. We hide the asterisk character from screen readers
+ *  via aria-hidden so they don't read "required asterisk". */
+function RequiredMark() {
+  return (
+    <span className="lc-required" aria-hidden="true" title="Required">
+      *
+    </span>
+  );
+}
+
+interface FieldGroupProps {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}
+
+/** A visually-grouped section of optional fields. The title and hint are
+ *  always visible (no collapsibles) so the user can see at a glance what
+ *  knobs each card exposes. */
+function FieldGroup({ title, hint, children }: FieldGroupProps) {
+  return (
+    <section className="lc-fieldGroup">
+      <header className="lc-fieldGroupHeader">
+        <h3 className="lc-fieldGroupTitle">{title}</h3>
+        {hint && <p className="lc-fieldGroupHint">{hint}</p>}
+      </header>
+      <div className="lc-fieldGroupBody">{children}</div>
+    </section>
   );
 }
 
@@ -842,9 +1403,12 @@ function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryPro
   const best = valid.find((v) => v.i === bestIndex)!;
 
   return (
-    <section className="lc-deltaSection">
-      <h2 className="lc-sectionTitle">Side-by-side</h2>
-      <p className="lc-deltaHero">
+    <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
+      <h2 id="lc-delta-h" className="lc-sectionTitle">Side-by-side</h2>
+      {/* aria-live=polite so screen readers announce the new "cheapest"
+          when the user edits inputs. aria-atomic ensures the entire
+          sentence is re-read instead of only the diff. */}
+      <p className="lc-deltaHero" aria-live="polite" aria-atomic="true">
         <strong>{best.name}</strong> is the cheapest overall at{' '}
         <strong>{formatMoney(best.r.totalPaidMinor, currency)}</strong> total.
       </p>
@@ -852,7 +1416,7 @@ function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryPro
         <table className="lc-deltaTable">
           <thead>
             <tr>
-              <th></th>
+              <th scope="col" aria-label="Metric"><span className="lc-srOnly">Metric</span></th>
               {valid.map((v) => (
                 <th key={v.i}>{v.name}</th>
               ))}
@@ -871,6 +1435,18 @@ function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryPro
               valid={valid}
               get={(r) => r.months}
               format={(n) => formatMonths(n)}
+              lowerIsBetter
+            />
+            <DeltaRow
+              label="APR (incl. fees)"
+              valid={valid}
+              // Multiply by 1e6 so we compare/format integer-ish values
+              // and avoid the floating-point quirks `lowerIsBetter`'s
+              // Math.min would otherwise expose. The format function
+              // converts back. Six decimals of precision is well below
+              // anything we'd ever display.
+              get={(r) => Math.round(r.aprNominal * 1_000_000)}
+              format={(n) => formatApr(n / 1_000_000, getCurrency(currency).locale)}
               lowerIsBetter
             />
             <DeltaRow
@@ -930,10 +1506,713 @@ function DeltaRow({ label, valid, get, format, lowerIsBetter, emphasized }: Delt
         const isBest = !allEqual && values[idx] === best;
         return (
           <td key={v.i} className={isBest ? 'lc-deltaCellBest' : ''}>
+            {/* Glyph + sr-only "best" text so the "best" status is
+                conveyed beyond color. The glyph (✓) stays decorative for
+                screen readers; the sr-only text is the real signal. */}
+            {isBest && (
+              <>
+                <span aria-hidden="true" className="lc-deltaCellBestIcon">✓</span>
+                <span className="lc-srOnly">best for this metric: </span>
+              </>
+            )}
             {format(values[idx])}
           </td>
         );
       })}
     </tr>
+  );
+}
+
+// ---- Analysis tabs ---------------------------------------------------------
+//
+// All the heavy "what does this mean" sections (charts, horizon, refi,
+// methodology) live behind a single tab strip below the main grid. The
+// goal is to keep the page short above the fold without burying the
+// features: every tab is a single click away and the active tab is
+// persisted in the URL so a share link lands the recipient on the same
+// view.
+
+const ANALYSIS_TABS: { id: AnalysisTab; label: string; hint: string }[] = [
+  {
+    id: 'charts',
+    label: 'Charts',
+    hint: 'Balance over time and how each payment splits',
+  },
+  {
+    id: 'horizon',
+    label: 'Horizon',
+    hint: 'Where you stand if you sell or refinance early',
+  },
+  {
+    id: 'refi',
+    label: 'Refinance',
+    hint: 'Compare keep vs. refinance with break-even',
+  },
+  {
+    id: 'how',
+    label: 'How it works',
+    hint: 'Formula and methodology',
+  },
+];
+
+interface AnalysisTabsProps {
+  vendors: VendorInput[];
+  results: LoanResult[];
+  currency: string;
+  cheapestByTotal: number;
+  splitVendorIdx: number | null;
+  onSplitVendorChange: (idx: number | null) => void;
+  globalState: GlobalState;
+  onGlobalChange: (patch: Partial<GlobalState>) => void;
+}
+
+function AnalysisTabs({
+  vendors,
+  results,
+  currency,
+  cheapestByTotal,
+  splitVendorIdx,
+  onSplitVendorChange,
+  globalState,
+  onGlobalChange,
+}: AnalysisTabsProps) {
+  const active = globalState.activeTab;
+  const panelId = useId();
+  // Refs to each tab button so the keyboard handler can move DOM focus
+  // when the user navigates with arrow keys. Per WAI-ARIA APG for tabs,
+  // arrow keys MUST move both selection and focus.
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Keyboard handler implementing the WAI-ARIA Tabs (manual activation
+  // is not used; auto-activation matches the prevailing convention and
+  // matches our small, instant-render panels).
+  //
+  //   ArrowRight / ArrowDown -> next tab (wraps)
+  //   ArrowLeft  / ArrowUp   -> previous tab (wraps)
+  //   Home                   -> first tab
+  //   End                    -> last tab
+  //
+  // We select-and-focus in one step so screen-reader users hear the new
+  // panel announced as soon as they navigate.
+  const onTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIdx = ANALYSIS_TABS.findIndex((t) => t.id === active);
+    let nextIdx = -1;
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        nextIdx = (currentIdx + 1) % ANALYSIS_TABS.length;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        nextIdx = (currentIdx - 1 + ANALYSIS_TABS.length) % ANALYSIS_TABS.length;
+        break;
+      case 'Home':
+        nextIdx = 0;
+        break;
+      case 'End':
+        nextIdx = ANALYSIS_TABS.length - 1;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    const nextTab = ANALYSIS_TABS[nextIdx];
+    onGlobalChange({ activeTab: nextTab.id });
+    track('free_loan_comparison_tab_changed', { tab: nextTab.id, via: 'keyboard' });
+    // Defer focus until React has committed the new active tab so the
+    // ref points at the now-mounted button. requestAnimationFrame is
+    // sufficient; the button always exists because all four are rendered
+    // simultaneously (only their tabindex / aria-selected differ).
+    requestAnimationFrame(() => tabRefs.current[nextIdx]?.focus());
+  };
+
+  return (
+    <section className="lc-analysis" aria-label="Analysis">
+      <div
+        className="lc-tabList"
+        role="tablist"
+        aria-label="Analysis views"
+        onKeyDown={onTabKeyDown}
+      >
+        {ANALYSIS_TABS.map((t, i) => {
+          const selected = active === t.id;
+          return (
+            <button
+              key={t.id}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
+              type="button"
+              role="tab"
+              id={`${panelId}-${t.id}-tab`}
+              aria-selected={selected}
+              aria-controls={`${panelId}-${t.id}-panel`}
+              // Roving tabindex: only the active tab is in the tab order.
+              // Inactive tabs are reachable via arrow keys (handled above).
+              tabIndex={selected ? 0 : -1}
+              className={`lc-tab ${selected ? 'lc-tabActive' : ''}`}
+              onClick={() => {
+                onGlobalChange({ activeTab: t.id });
+                track('free_loan_comparison_tab_changed', { tab: t.id, via: 'click' });
+              }}
+              title={t.hint}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        role="tabpanel"
+        id={`${panelId}-${active}-panel`}
+        aria-labelledby={`${panelId}-${active}-tab`}
+        className="lc-tabPanel"
+      >
+        {active === 'charts' && (
+          <ChartsPanel
+            vendors={vendors}
+            results={results}
+            currency={currency}
+            cheapestByTotal={cheapestByTotal}
+            splitVendorIdx={splitVendorIdx}
+            onSplitVendorChange={onSplitVendorChange}
+          />
+        )}
+        {active === 'horizon' && (
+          <HorizonSection
+            vendors={vendors}
+            results={results}
+            currency={currency}
+            horizonMonths={globalState.horizonMonths}
+            onHorizonChange={(next) => onGlobalChange({ horizonMonths: next })}
+          />
+        )}
+        {active === 'refi' && (
+          <RefinanceSection
+            vendors={vendors}
+            results={results}
+            currency={currency}
+            state={globalState}
+            onChange={onGlobalChange}
+          />
+        )}
+        {active === 'how' && <HowItWorksPanel />}
+      </div>
+    </section>
+  );
+}
+
+// ---- Charts panel ----------------------------------------------------------
+
+interface ChartsPanelProps {
+  vendors: VendorInput[];
+  results: LoanResult[];
+  currency: string;
+  cheapestByTotal: number;
+  splitVendorIdx: number | null;
+  onSplitVendorChange: (idx: number | null) => void;
+}
+
+function ChartsPanel({
+  vendors,
+  results,
+  currency,
+  cheapestByTotal,
+  splitVendorIdx,
+  onSplitVendorChange,
+}: ChartsPanelProps) {
+  const splitSelectId = useId();
+
+  // Resolve the active vendor for the split chart. Manual selection
+  // wins; otherwise we follow the cheapest. If no vendor is currently
+  // valid, the chart renders an empty state inside SplitChart itself.
+  const candidateIdx =
+    splitVendorIdx != null && splitVendorIdx < vendors.length && !results[splitVendorIdx]?.error
+      ? splitVendorIdx
+      : cheapestByTotal >= 0
+        ? cheapestByTotal
+        : results.findIndex((r) => !r.error && r.contractSchedule.length > 0);
+  const activeIdx = candidateIdx >= 0 ? candidateIdx : 0;
+  const activeResult = results[activeIdx];
+  const activeVendor = vendors[activeIdx];
+  const vendorName = activeVendor?.name || `Vendor ${VENDOR_LABELS[activeIdx] ?? 'A'}`;
+
+  return (
+    <div className="lc-chartsPanel">
+      <section className="lc-chartSection" aria-labelledby="lc-balance-h">
+        <header className="lc-chartHeader">
+          <h3 id="lc-balance-h" className="lc-sectionTitle">Balance over time</h3>
+          <p className="lc-chartLead">
+            Each line is one vendor's outstanding balance, month by month.
+          </p>
+        </header>
+        <div className="lc-legend">
+          {vendors.map((v, i) => (
+            <span key={i} className="lc-legendItem">
+              <span className="lc-legendSwatch" style={{ background: VENDOR_COLORS[i] }} />
+              {v.name || `Vendor ${VENDOR_LABELS[i]}`}
+            </span>
+          ))}
+        </div>
+        <BalanceChart
+          results={results}
+          colors={VENDOR_COLORS}
+          vendorNames={vendors.map((v, i) => v.name || `Vendor ${VENDOR_LABELS[i]}`)}
+          currency={currency}
+        />
+      </section>
+
+      <section className="lc-chartSection lc-splitSection" aria-labelledby="lc-split-h">
+        <header className="lc-chartHeader">
+          <h3 id="lc-split-h" className="lc-sectionTitle">Where each payment goes</h3>
+          <p className="lc-chartLead">
+            Same monthly payment every month. Early on, almost all of it
+            is interest; near the end, almost all of it is principal.
+          </p>
+        </header>
+
+        <div className="lc-splitControls">
+          <label className="lc-fieldLabel" htmlFor={splitSelectId}>Vendor</label>
+          <select
+            id={splitSelectId}
+            className="lc-select lc-splitSelect"
+            value={splitVendorIdx == null ? '' : String(splitVendorIdx)}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === '') {
+                onSplitVendorChange(null);
+              } else {
+                const next = Number(v);
+                onSplitVendorChange(Number.isFinite(next) ? next : null);
+                track('free_loan_comparison_split_vendor_changed', {
+                  vendor: VENDOR_LABELS[next],
+                });
+              }
+            }}
+          >
+            <option value="">Auto (cheapest)</option>
+            {vendors.map((v, i) => (
+              <option key={i} value={i} disabled={Boolean(results[i]?.error)}>
+                {v.name || `Vendor ${VENDOR_LABELS[i]}`}
+                {results[i]?.error ? ' (incomplete)' : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {activeResult && !activeResult.error && activeResult.contractSchedule.length > 0 ? (
+          <SplitChart
+            schedule={activeResult.contractSchedule}
+            currency={currency}
+            vendorName={vendorName}
+            vendorColor={VENDOR_COLORS[activeIdx]}
+          />
+        ) : (
+          <p className="lc-chartEmpty">
+            Enter valid inputs above to see how each payment splits between
+            interest and principal.
+          </p>
+        )}
+
+        <p className="lc-splitCaption">
+          Showing <strong>{vendorName}</strong>'s contract schedule
+          {Number(activeVendor?.extraMonthly) > 0 && (
+            <> (without optional extra principal; APR-equivalent view)</>
+          )}
+          . An extra payment in <em>year 1</em> cancels 25 years of
+          interest on that euro; the same payment in <em>year 24</em>{' '}
+          saves almost nothing.
+        </p>
+      </section>
+    </div>
+  );
+}
+
+// ---- How it works panel ----------------------------------------------------
+
+function HowItWorksPanel() {
+  return (
+    <div className="lc-howPanel">
+      <h3 className="lc-sectionTitle">How the comparison works</h3>
+      <p>
+        For each lender, the calculator builds a full amortization schedule
+        using the standard fully-amortizing formula:
+      </p>
+      <p className="lc-formula">
+        <code>
+          M = P · r / (1 − (1 + r)<sup>−n</sup>)
+        </code>
+      </p>
+      <ul className="lc-howList">
+        <li>
+          <strong>P</strong> is the loan principal, <strong>r</strong> is the
+          monthly interest rate (annual rate ÷ 12), and <strong>n</strong> is
+          the number of monthly payments.
+        </li>
+        <li>
+          Each month's interest is computed on the outstanding balance, the
+          payment is split between interest and principal, and the balance
+          is reduced. The loop runs to the cent.
+        </li>
+        <li>
+          <strong>APR</strong> folds the origination/closing fee into the
+          rate by treating the fee as an upfront deduction from what you
+          actually receive, then solving for the monthly rate at which the
+          present value of the contractual payments equals that net amount.
+          Reported as the nominal annual rate (monthly rate × 12), matching
+          US loan disclosures.
+        </li>
+        <li>
+          <strong>Hybrid (ARM) loans</strong> use the initial rate for the
+          fixed window, then recast the payment at the transition month so
+          the loan still amortizes within the original term at the
+          subsequent rate.
+        </li>
+        <li>
+          <strong>Lump-sum prepayments</strong> are applied as principal
+          AFTER the regular monthly payment, so they don't accrue interest
+          the same month.
+        </li>
+        <li>
+          <strong>Prepayment penalties</strong> fire only when the loan is
+          fully paid off on or before the penalty's expiration month.
+        </li>
+      </ul>
+      <p className="lc-howNote">
+        Everything runs in your browser. Nothing is sent to a server. Use
+        the "Copy shareable link" button to encode every input into a URL
+        you can hand to someone else.
+      </p>
+    </div>
+  );
+}
+
+// ---- Horizon analysis ------------------------------------------------------
+
+interface HorizonSectionProps {
+  vendors: VendorInput[];
+  results: LoanResult[];
+  currency: string;
+  horizonMonths: string;
+  onHorizonChange: (next: string) => void;
+}
+
+/**
+ * "If I sell or refinance at month N, where do I stand?" Per-vendor
+ * snapshots of principal repaid, interest paid, remaining balance, and
+ * total cash out of pocket up to the chosen horizon. The horizon slider
+ * is bound to URL state via `horizonMonths`.
+ */
+function HorizonSection({
+  vendors,
+  results,
+  currency,
+  horizonMonths,
+  onHorizonChange,
+}: HorizonSectionProps) {
+  const horizonId = useId();
+  // The slider's max is the longest valid schedule: a horizon past every
+  // vendor's payoff is meaningless. We clamp to a sensible minimum of
+  // 1 month so the slider always renders.
+  const maxMonths = Math.max(
+    1,
+    ...results.filter((r) => !r.error).map((r) => r.schedule.length),
+  );
+  const parsed = Math.round(parseNumber(horizonMonths));
+  const horizon = Number.isFinite(parsed)
+    ? Math.min(maxMonths, Math.max(1, parsed))
+    : 60;
+
+  const validRows = vendors
+    .map((v, i) => ({ v, i, r: results[i] }))
+    .filter((row) => !row.r.error && row.r.schedule.length > 0);
+
+  return (
+    <section className="lc-advancedSection lc-horizonSection" aria-labelledby="lc-horizon-h">
+      <header>
+        <h3 id="lc-horizon-h" className="lc-sectionTitle">If I sell or refinance at...</h3>
+        <p className="lc-sectionLead">
+          Loans look very different at month 36 vs. month 360. Each row
+          shows where the borrower actually stands on that date.
+        </p>
+      </header>
+
+      <div className="lc-horizonControls">
+        <label className="lc-fieldLabel" htmlFor={horizonId}>
+          Horizon: <strong>{formatMonths(horizon)}</strong>
+        </label>
+        <input
+          id={horizonId}
+          type="range"
+          min={1}
+          max={maxMonths}
+          step={1}
+          value={horizon}
+          onChange={(e) => onHorizonChange(e.target.value)}
+          // aria-valuetext lets screen readers announce a human-friendly
+          // value ("2 yr 6 mo") instead of just the raw integer.
+          aria-valuetext={formatMonths(horizon)}
+          className="lc-horizonSlider"
+        />
+        <input
+          type="text"
+          inputMode="numeric"
+          className="lc-input lc-horizonInput"
+          value={horizonMonths}
+          onChange={(e) => onHorizonChange(e.target.value)}
+          aria-label="Horizon in months (text)"
+        />
+      </div>
+
+      {validRows.length === 0 ? (
+        <p className="lc-deltaEmpty">Enter valid inputs to see horizon snapshots.</p>
+      ) : (
+        <div className="lc-deltaTableWrap">
+          <table className="lc-deltaTable">
+            <thead>
+              <tr>
+                <th scope="col"><span className="lc-srOnly">Metric</span></th>
+                {validRows.map((row) => (
+                  <th key={row.i}>
+                    {row.v.name || `Vendor ${VENDOR_LABELS[row.i]}`}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Principal repaid</th>
+                {validRows.map((row) => {
+                  const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
+                  return (
+                    <td key={row.i}>
+                      {formatMoney(snap.principalPaidMinor, currency)}
+                    </td>
+                  );
+                })}
+              </tr>
+              <tr>
+                <th scope="row">Interest paid</th>
+                {validRows.map((row) => {
+                  const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
+                  return (
+                    <td key={row.i}>
+                      {formatMoney(snap.interestPaidMinor, currency)}
+                    </td>
+                  );
+                })}
+              </tr>
+              <tr>
+                <th scope="row">Balance remaining</th>
+                {validRows.map((row) => {
+                  const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
+                  return (
+                    <td key={row.i}>
+                      {formatMoney(snap.balanceMinor, currency)}
+                    </td>
+                  );
+                })}
+              </tr>
+              <tr className="lc-deltaRowEmphasized">
+                <th scope="row">Total cash out</th>
+                {validRows.map((row) => {
+                  const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
+                  return (
+                    <td key={row.i}>
+                      {formatMoney(snap.totalOutOfPocketMinor, currency)}
+                    </td>
+                  );
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ---- Refinance scenario (advanced) -----------------------------------------
+
+interface RefinanceSectionProps {
+  vendors: VendorInput[];
+  results: LoanResult[];
+  currency: string;
+  state: GlobalState;
+  onChange: (patch: Partial<GlobalState>) => void;
+}
+
+/**
+ * Lets the user pick one vendor and ask "what if I refinanced this loan
+ * at month N into a new loan?". Uses the engine's `refinanceComparison`
+ * helper to produce a savings figure and a break-even horizon.
+ */
+function RefinanceSection({
+  vendors,
+  results,
+  currency,
+  state,
+  onChange,
+}: RefinanceSectionProps) {
+  const vendorSelectId = useId();
+  const atMonthId = useId();
+  const newRateId = useId();
+  const newTermId = useId();
+  const newFeeId = useId();
+  const rollFeeId = useId();
+
+  // Resolve the vendor to refinance. We accept any 1-based index that
+  // points to a valid result; on mismatch we fall back to the first
+  // valid vendor.
+  const requestedIdx = Math.round(parseNumber(state.refiVendorIndex)) - 1;
+  const validIndices = vendors
+    .map((_, i) => i)
+    .filter((i) => !results[i].error && results[i].schedule.length > 0);
+  const activeIdx =
+    validIndices.includes(requestedIdx) ? requestedIdx : (validIndices[0] ?? -1);
+
+  const original = activeIdx >= 0 ? results[activeIdx] : null;
+  const atMonth = Math.round(parseNumber(state.refiAtMonth));
+  const newRate = parseNumber(state.refiNewRatePct) / 100;
+  const newTerm = Math.round(parseNumber(state.refiNewTermMonths));
+  const newFeeMinor = toMinor(parseNumber(state.refiNewFeeMajor) || 0, currency);
+
+  const cmp =
+    original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
+      ? refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee)
+      : null;
+
+  return (
+    <section className="lc-advancedSection lc-refiSection" aria-labelledby="lc-refi-h">
+      <header>
+        <h3 id="lc-refi-h" className="lc-sectionTitle">Refinance scenario</h3>
+        <p className="lc-sectionLead">
+          Compare keeping a loan to refinancing it at a future month.
+          Useful when rates drop or you're considering buying out an ARM
+          before it resets.
+        </p>
+      </header>
+
+      <div className="lc-refiInputs">
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={vendorSelectId}>Refinance which loan?</label>
+          <select
+            id={vendorSelectId}
+            className="lc-select"
+            value={state.refiVendorIndex}
+            onChange={(e) => onChange({ refiVendorIndex: e.target.value })}
+          >
+            {vendors.map((v, i) => (
+              <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
+                {v.name || `Vendor ${VENDOR_LABELS[i]}`}
+                {results[i]?.error ? ' (incomplete)' : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={atMonthId}>Refinance at month</label>
+          <input
+            id={atMonthId}
+            type="text"
+            inputMode="numeric"
+            className="lc-input"
+            value={state.refiAtMonth}
+            onChange={(e) => onChange({ refiAtMonth: e.target.value })}
+          />
+        </div>
+
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={newRateId}>New rate (%)</label>
+          <input
+            id={newRateId}
+            type="text"
+            inputMode="decimal"
+            className="lc-input"
+            value={state.refiNewRatePct}
+            onChange={(e) => onChange({ refiNewRatePct: e.target.value })}
+          />
+        </div>
+
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={newTermId}>New term (months)</label>
+          <input
+            id={newTermId}
+            type="text"
+            inputMode="numeric"
+            className="lc-input"
+            value={state.refiNewTermMonths}
+            onChange={(e) => onChange({ refiNewTermMonths: e.target.value })}
+          />
+        </div>
+
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={newFeeId}>
+            New closing costs <span className="lc-fieldHint">({currency})</span>
+          </label>
+          <input
+            id={newFeeId}
+            type="text"
+            inputMode="decimal"
+            className="lc-input"
+            value={state.refiNewFeeMajor}
+            onChange={(e) => onChange({ refiNewFeeMajor: e.target.value })}
+          />
+        </div>
+
+        <div className="lc-field lc-fieldInline">
+          <input
+            id={rollFeeId}
+            type="checkbox"
+            checked={state.refiRollFee}
+            onChange={(e) => onChange({ refiRollFee: e.target.checked })}
+          />
+          <label htmlFor={rollFeeId} className="lc-fieldLabel">
+            Roll closing costs into new principal
+          </label>
+        </div>
+      </div>
+
+      {!cmp ? (
+        <p className="lc-deltaEmpty">
+          Pick a valid vendor and enter a refinance month, rate, and term to see savings.
+        </p>
+      ) : 'error' in cmp ? (
+        <p className="lc-error" role="alert">{cmp.error}</p>
+      ) : (
+        <div className="lc-refiResults">
+          <dl className="lc-resultList">
+            <ResultRow
+              label="Keep current loan: total"
+              value={formatMoney(cmp.keepTotalMinor, currency)}
+            />
+            <ResultRow
+              label="Refinance: total (over both legs)"
+              value={formatMoney(cmp.refinanceTotalMinor, currency)}
+            />
+            <ResultRow
+              label={cmp.savingsMinor >= 0 ? 'Refi saves' : 'Refi costs more'}
+              value={formatMoney(Math.abs(cmp.savingsMinor), currency)}
+              emphasized
+            />
+            <ResultRow
+              label="Break-even (months after refi)"
+              value={
+                Number.isFinite(cmp.breakEvenMonths)
+                  ? formatMonths(cmp.breakEvenMonths)
+                  : 'never'
+              }
+              hint={
+                Number.isFinite(cmp.breakEvenMonths)
+                  ? 'How long the new loan must run for closing costs to pay back'
+                  : 'New monthly is not lower; closing costs do not recoup'
+              }
+            />
+          </dl>
+        </div>
+      )}
+    </section>
   );
 }

@@ -16,30 +16,31 @@ const year = new Date().getFullYear();
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <h4>Learn</h4>
+          <strong class="footer-col-heading">Learn</strong>
           <a href="/blog" data-attr="footer-blog">Blog</a>
         </div>
         <div class="footer-col">
-          <h4>Free Tools</h4>
+          <strong class="footer-col-heading">Free Tools</strong>
+          <a href="/free/currency-risk" data-attr="footer-currency-risk">Currency risk</a>
           <a href="/free/loan-comparison" data-attr="footer-loan-comparison">Loan comparison</a>
         </div>
         <div class="footer-col">
-          <h4>Product</h4>
+          <strong class="footer-col-heading">Product</strong>
           <a href="/" data-attr="footer-home">Home</a>
         </div>
         <div class="footer-col">
-          <h4>About</h4>
+          <strong class="footer-col-heading">About</strong>
           <a href="/beliefs" data-attr="footer-beliefs">Our Beliefs</a>
           <a href="/privacy" data-attr="footer-privacy">Privacy</a>
         </div>
         <div class="footer-col">
-          <h4>Connect</h4>
+          <strong class="footer-col-heading">Connect</strong>
           <a href="mailto:hello@nidhi.today" class="footer-social" data-attr="footer-email">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
             hello@nidhi.today
           </a>
           <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer" class="footer-social" data-attr="footer-instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @nidhi.today
           </a>
         </div>
@@ -103,7 +104,7 @@ const year = new Date().getFullYear();
     gap: var(--space-2);
   }
 
-  .footer-col h4 {
+  .footer-col-heading {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 0.75rem;

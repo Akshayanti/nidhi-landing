@@ -201,7 +201,15 @@ async function main() {
   const totalFigures = posts.reduce((n, p) => n + p.figures.length, 0);
   console.log(`[render-email-figures] rendering ${totalFigures} figure(s) across ${posts.length} post(s)…`);
 
-  const browser = await puppeteer.launch({ headless: true });
+  // GitHub Actions runners (Ubuntu 23.10+) disable unprivileged user
+  // namespaces under AppArmor, which prevents Chromium's sandbox from
+  // initialising and causes `puppeteer.launch` to fail with "No usable
+  // sandbox!". The standard workaround is to disable the sandbox in CI;
+  // we keep it enabled locally where it works fine.
+  const launchArgs = process.env.CI
+    ? ["--no-sandbox", "--disable-setuid-sandbox"]
+    : [];
+  const browser = await puppeteer.launch({ headless: true, args: launchArgs });
   let rendered = 0;
   let failures = 0;
 

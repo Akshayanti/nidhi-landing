@@ -149,7 +149,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 ## How they compare
 
-| | Stocks | Bonds | Real Estate | Cash |
+| Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
 | **Historical real return** | 5-7% (developed markets) | 2-4% | 3-5% + rental yield | 0-2% |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |

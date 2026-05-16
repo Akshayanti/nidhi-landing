@@ -4,8 +4,21 @@
 <meta charset="utf-8" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
 <style>
+  :root {
+    /* Cream editorial palette. Mirrors slide-template.html so feed posts and
+       story frames read as the same brand on a single profile grid. */
+    --paper: #FAF7F2;       /* warm off-white background */
+    --paper-deep: #F1ECDF;  /* eyebrow chips, hairlines */
+    --ink: #002171;         /* brand deep blue, primary text */
+    --ink-soft: #4A5878;    /* secondary text */
+    --ink-faint: #8892A6;   /* tertiary / metadata */
+    --accent: #00897B;      /* brand teal */
+    --accent-soft: rgba(0, 137, 123, 0.10);
+    --rule: #E5DECF;        /* warm divider */
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -13,197 +26,215 @@
     height: 1920px;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #002171 0%, #005B4F 100%);
-    color: #FFFFFF;
+    color: var(--ink);
+    background: var(--paper);
+    /* Same subtle warm grain as feed slides so the story canvas reads
+       as paper rather than flat fill. */
+    background-image:
+      radial-gradient(at 18% 8%, rgba(0,137,123,0.05) 0%, transparent 42%),
+      radial-gradient(at 82% 92%, rgba(0,33,113,0.05) 0%, transparent 46%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* IG safe zones: top profile bar ~220px, bottom reply bar ~320px.
+     Padding lifts content out of those zones; chrome anchors near the
+     edges of the safe band, content fills the centered area. */
   .story {
     width: 1080px;
     height: 1920px;
     position: relative;
-    padding: 220px 80px 320px; /* IG safe zones: top profile bar ~220, bottom reply bar ~320 */
+    padding: 260px 96px 360px;
     display: flex;
     flex-direction: column;
   }
 
-  /* Top teal accent bar */
-  .story::before {
-    content: '';
+  /* ========== Top chrome: eyebrow chip ========== */
+  .eyebrow {
     position: absolute;
-    top: 220px;
-    left: 80px;
-    right: 80px;
-    height: 4px;
-    background: #00897B;
-    border-radius: 0 0 2px 2px;
+    top: 244px;
+    left: 96px;
+    right: 96px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+  /* Only render the teal rule when the chip has text. Series 1 posts that
+     don't define `series` or `category` will simply have no chip. */
+  .eyebrow:not(:empty)::before {
+    content: '';
+    width: 40px;
+    height: 3px;
+    background: var(--accent);
+    display: inline-block;
   }
 
-  /* Brand handle just under accent bar */
-  .top-brand {
+  /* ========== Bottom chrome: handle + hashtag ========== */
+  .chrome-bottom {
+    position: absolute;
+    bottom: 296px;
+    left: 96px;
+    right: 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .handle {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 30px;
-    color: #4EBAAA;
-    letter-spacing: 0.02em;
-    margin-top: 20px;
-    text-align: center;
+    font-size: 28px;
+    color: var(--ink-soft);
+  }
+  .hashtag {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
   }
 
+  /* ========== Content area shared ========== */
   .content {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
-    padding: 0 8px;
+    text-align: left;
+  }
+  /* Convention across variants: bold becomes the teal accent. Mirrors the
+     hook layout on feed slides so the brand voice carries between formats. */
+  .content strong {
+    font-family: 'Inter', sans-serif;
+    color: var(--accent);
+    font-weight: 800;
   }
 
-  /* --- Hook variant --- */
+  /* ========== Hook: opening headline frame ========== */
   .story.story-hook .content {
     font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 112px;
-    line-height: 1.12;
-    letter-spacing: -0.025em;
+    font-weight: 800;
+    font-size: 116px;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    color: var(--ink);
   }
 
-  .story.story-hook .content strong {
-    color: #4EBAAA;
-  }
-
-  /* --- Stat variant (big number/fact) --- */
+  /* ========== Stat: big number / fact frame ========== */
+  /* Centered hero treatment for a single dominant metric. */
   .story.story-stat .content {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
-    font-size: 140px;
-    line-height: 1.05;
-    letter-spacing: -0.035em;
-    color: #4EBAAA;
+    font-size: 152px;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: var(--accent);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
   }
-
   .story.story-stat .content strong {
-    color: #FFFFFF;
+    color: var(--ink);
   }
 
-  /* --- Blank poll-backdrop variant (quiz mode only) --- */
-  /* Intentionally empty content so the native IG poll sticker has a clean
-     canvas. Brand chrome (accent bar + @handle + hashtag corner) is enough
-     to keep the frame consistent with the rest of the cascade. */
+  /* ========== Poll: blank canvas (quiz mode, step 2) ========== */
+  /* Intentionally empty content so the native IG poll sticker has clean
+     paper to sit on. Chrome (eyebrow + handle + hashtag) keeps the frame
+     legible inside the cascade. */
   .story.story-poll .content {
-    /* inherits centered layout from .content; no additional styling needed */
+    /* inherits centered layout from .content */
   }
 
-  /* --- Answer-reveal variant (quiz mode, step-3 link backdrop) --- */
-  /* Two-part layout: the "ANSWER" eyebrow + answer text up top, then the
-     continuing stat/insight below, separated by a small teal divider. In
-     quiz mode the stat no longer backs step 2 (the blank poll frame does),
-     so it lives here as the "why" behind the reveal — continuing the
-     narrative under the link sticker instead of dropping it. When
-     story_stat is absent, only the ANSWER block renders. */
+  /* ========== Answer: quiz reveal + continuing insight ========== */
+  /* Two-part stack: ANSWER eyebrow + reveal up top, supporting stat below
+     a thin teal divider. When story_stat is unset, only the reveal renders. */
   .story.story-answer .content {
     font-family: 'Inter', sans-serif;
-    gap: 80px;
+    gap: 64px;
+    text-align: left;
   }
-
   .story.story-answer .answer-main {
     font-weight: 800;
     font-size: 100px;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    color: #FFFFFF;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--ink);
   }
-
   .story.story-answer .answer-main strong {
-    color: #4EBAAA;
+    color: var(--accent);
   }
-
   .story.story-answer .answer-main::before {
     content: 'ANSWER';
     display: block;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 48px;
+    font-size: 38px;
     letter-spacing: 0.22em;
-    color: #4EBAAA;
-    margin-bottom: 44px;
+    color: var(--accent);
+    margin-bottom: 32px;
   }
-
-  /* Continuing stat/insight — only present when story_stat is set */
   .story.story-answer .answer-stat {
     font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    font-size: 72px;
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    color: #4EBAAA;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--ink-soft);
   }
-
   .story.story-answer .answer-stat strong {
-    color: #FFFFFF;
+    color: var(--accent);
+    font-weight: 800;
   }
-
   .story.story-answer .answer-stat::before {
     content: '';
     display: block;
     width: 96px;
     height: 3px;
-    background: #00897B;
+    background: var(--accent);
     border-radius: 2px;
-    margin: 0 auto 40px;
-    opacity: 0.6;
+    margin-bottom: 32px;
+    opacity: 0.8;
   }
 
-  /* --- CTA variant (save/tag/share prompt) --- */
+  /* ========== CTA: closing prompt frame ========== */
+  /* A teal rule above the prompt sets it off as a deliberate ask rather
+     than another body slide. */
   .story.story-cta .content {
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 86px;
-    line-height: 1.22;
-    letter-spacing: -0.015em;
+    font-weight: 700;
+    font-size: 92px;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    color: var(--ink);
   }
-
-  .story.story-cta .content::before {
-    content: '❝';
-    display: block;
-    font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    font-size: 120px;
-    line-height: 1;
-    color: #4EBAAA;
-    opacity: 0.4;
-    margin-bottom: 24px;
-  }
-
   .story.story-cta .content strong {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    color: #4EBAAA;
+    color: var(--accent);
+    font-weight: 800;
   }
-
-  /* --- Hashtag corner (small, above bottom safe zone) --- */
-  .hashtag-corner {
-    position: absolute;
-    bottom: 340px;
-    right: 80px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 28px;
-    color: #4EBAAA;
-    opacity: 0.7;
-  }
-
-  /* Bold emphasis across all variants */
-  .content strong {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
+  .story.story-cta .content::before {
+    content: '';
+    display: block;
+    width: 96px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 48px;
   }
 </style>
 </head>
 <body>
   <div id="story" class="story">
-    <div class="top-brand">@nidhi.today</div>
+    <div class="eyebrow" id="eyebrow"></div>
     <div class="content" id="content"></div>
-    <div class="hashtag-corner" id="hashtag-corner"></div>
+    <div class="chrome-bottom">
+      <div class="handle" id="handle">@nidhi.today</div>
+      <div class="hashtag" id="hashtag"></div>
+    </div>
   </div>
 </body>
 </html>

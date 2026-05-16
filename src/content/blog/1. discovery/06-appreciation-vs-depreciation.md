@@ -1,11 +1,11 @@
 ---
 slug: "appreciation-vs-depreciation"
 title: "Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink"
-description: "Not all assets are created equal. Some grow in value over time, others lose it. The difference between appreciation and depreciation, and the force of compound interest behind both, determines whether your net worth is building or eroding."
+description: "Some assets grow over time; others lose value. Appreciation, depreciation, and the compound interest behind both decide whether your net worth builds or erodes."
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-05-07
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -34,7 +34,7 @@ Appreciation is when something increases in value over time.
 - An index fund purchased for €5,000 that grows to €12,000 has appreciated
 - Even a savings account appreciates (slowly) when it earns interest
 
-Historically, broad stock market investments have returned around 5-7% per year after inflation across major developed markets (US historical data sits at the higher end of this range). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees, but they're the long-term trend.
+Historically, broad stock market investments have returned around 4-6% per year after inflation across major developed markets, with US historical data sitting at the higher end of this range and most non-US developed markets sitting closer to 4-5% (Dimson, Marsh and Staunton's long-run dataset). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
 
 The key insight: appreciation rewards patience. The longer you hold an appreciating asset, the more it compounds.
 
@@ -54,7 +54,7 @@ Compound interest is the engine that makes appreciation powerful and depreciatio
 
 Simple interest is straightforward: you earn a set percentage on your original amount every period. Compound interest is different: you earn a percentage on your original amount **plus all the interest you've already accumulated**. Your interest earns interest.
 
-| | Simple Interest | Compound Interest |
+| Metric | Simple Interest | Compound Interest |
 |---|---|---|
 | Starting amount | €1,000 | €1,000 |
 | Rate | 7% | 7% |

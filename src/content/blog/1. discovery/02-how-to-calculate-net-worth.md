@@ -5,7 +5,7 @@ description: "A step-by-step guide to listing everything you own and everything 
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-05-07
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -79,7 +79,7 @@ Use the current outstanding balance, not the monthly payment. If your mortgage h
 
 Add up all assets. Add up all liabilities. Subtract.
 
-| | Amount |
+| Item | Amount |
 |---|---|
 | Total Assets | €_____ |
 | Total Liabilities | €_____ |

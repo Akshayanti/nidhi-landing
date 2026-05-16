@@ -1,11 +1,11 @@
 ---
 slug: "how-to-get-out-of-debt"
 title: "How to Get Out of Debt: Snowball vs. Avalanche"
-description: "Once you've decided to tackle your debt, there are two proven strategies. One prioritizes motivation. The other prioritizes math. Here's how each works and how to pick the right one."
+description: "Two proven strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes math. How each works and how to pick the right one."
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-05-07
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -150,7 +150,7 @@ It depends on what drives you:
 ## Common mistakes
 
 - **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage. Never do this
-- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt
+- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
 - **Stopping when the first debt is gone.** The whole point is to roll the freed-up payment into the next one. If you just spend the extra money, you lose the compounding effect
 - **Waiting for the "right time."** The best time to start is now. Even small extra payments make a difference
 
