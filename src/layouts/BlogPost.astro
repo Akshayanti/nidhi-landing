@@ -45,7 +45,7 @@ const blogPostingSchema = {
   datePublished: pubDate.toISOString(),
   ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
   author: {
-    '@type': 'Organization',
+    '@type': 'Person',
     name: 'nidhi',
     url: siteUrl,
   },
@@ -54,7 +54,12 @@ const blogPostingSchema = {
     name: 'nidhi',
     url: siteUrl,
   },
-  image: `${siteUrl}/baba_money.webp`,
+  image: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/baba_money.webp`,
+    width: 800,
+    height: 1200,
+  },
   url: `${siteUrl}/blog/${slug}`,
   mainEntityOfPage: {
     '@type': 'WebPage',
@@ -161,7 +166,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     <div class="post-body-wrapper">
       <nav class="toc" id="toc" aria-label="Table of Contents">
         <div class="toc-inner">
-          <h4 class="toc-title">On this page</h4>
+          <strong class="toc-title">On this page</strong>
           <ul class="toc-list" id="toc-list"></ul>
         </div>
       </nav>
@@ -196,7 +201,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         </div>
 
         {(prevSlug || nextSlug) && (
-          <nav class="post-nav">
+          <nav class="post-nav" aria-label="Adjacent posts">
             {prevSlug && prevTitle && (
               <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`} data-attr="post-nav-prev">
                 <span class="post-nav-direction">Previous</span>

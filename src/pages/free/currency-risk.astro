@@ -1,0 +1,1366 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CurrencyRiskAnalyzer from '../../components/CurrencyRiskAnalyzer.tsx';
+import { getCollection } from 'astro:content';
+
+const RELATED_CANDIDATES = [
+  {
+    slug: 'managing-money-across-currencies',
+    kicker: 'Currency management',
+    title: 'Managing money across currencies',
+    desc: 'Practical strategies for earning, saving, and spending in multiple currencies without losing money to FX fees.',
+    dataAttr: 'related-multi-currency',
+  },
+  {
+    slug: 'setting-financial-goals',
+    kicker: 'Planning',
+    title: 'Setting financial goals',
+    desc: 'Why your goals should drive your asset allocation, including which currencies you hold.',
+    dataAttr: 'related-goals',
+  },
+  {
+    slug: 'net-worth',
+    kicker: 'Fundamentals',
+    title: 'What is net worth and why it matters',
+    desc: 'Assets minus liabilities: the simplest measure of financial health, explained currency by currency.',
+    dataAttr: 'related-net-worth',
+  },
+  {
+    slug: 'introduction-to-financial-independence',
+    kicker: 'FIRE',
+    title: 'Introduction to financial independence',
+    desc: 'The basics of FIRE and why currency diversification matters when your retirement spans countries.',
+    dataAttr: 'related-fire-intro',
+  },
+  {
+    slug: 'assets-vs-liabilities',
+    kicker: 'Fundamentals',
+    title: 'Assets vs liabilities',
+    desc: 'Knowing the difference is the first step to understanding your true net worth in any currency.',
+    dataAttr: 'related-assets-liabilities',
+  },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog'))
+    .filter((post) => isDev || post.data.pubDate <= now)
+    .map((post) => post.data.slug),
+);
+const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
+
+const title =
+  'Currency Risk Analyzer: Multi-Currency Net Worth | nidhi';
+const description =
+  'Free currency risk analyzer for expats and multi-currency households. See your currency concentration with live ECB rates, all in your browser.';
+const keywords = [
+  'currency risk calculator',
+  'multi currency net worth',
+  'expat financial planning',
+  'currency diversification',
+  'currency exposure calculator',
+  'foreign exchange risk',
+  'currency concentration',
+  'net worth by currency',
+  'multi-currency portfolio analyzer',
+  'currency risk assessment',
+  'expat net worth calculator',
+  'cross currency exposure',
+  'currency allocation tool',
+  'FX risk analyzer',
+  'net worth currency breakdown',
+  'functional currency',
+  'EUR USD INR GBP currency calculator',
+];
+
+const faqs = [
+  {
+    q: 'How does the currency risk analyzer work?',
+    a: 'You add your assets and liabilities with their currency and current value. The tool fetches live ECB reference exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your net currency concentration as a donut chart. It then flags any non-functional currency where you have elevated exposure.',
+  },
+  {
+    q: 'What is currency concentration risk?',
+    a: 'If a large portion of your net worth is in a currency you don\'t spend in, a swing in the exchange rate can change your real purchasing power overnight. For example, if you plan to retire in Europe but hold 70% of your wealth in USD, a 15% drop in USD/EUR could meaningfully shrink your retirement fund when measured in euros.',
+  },
+  {
+    q: 'Does this send my financial data anywhere?',
+    a: 'No. Everything runs in your browser. Your asset names, values, and currencies are never sent to any server. The only external request is to the Frankfurter API to fetch exchange rates, and that request only includes your functional currency code, not your asset data. Shareable links encode your data into the URL, and you control whether to share.',
+  },
+  {
+    q: 'Which currencies are supported?',
+    a: 'Twenty-nine currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), and the Nordic, Central European, Latin American, and South-East Asian majors. Exchange rates are fetched from the ECB via Frankfurter, which are reference rates and may differ from the rates available to retail customers at their bank.',
+  },
+  {
+    q: 'What\'s the difference between "Share with data" and "Share anonymously"?',
+    a: '"Share with data" includes all your asset names, values, currencies, and types in the URL, anyone with the link can see your full breakdown and verify the math. "Share anonymously" only includes the currency concentration percentages and risk levels, no amounts, no asset names. Both are copied to your clipboard as a link.',
+  },
+  {
+    q: 'How are exchange rates sourced?',
+    a: 'Rates come from the European Central Bank via the free Frankfurter API (frankfurter.app). They are reference rates updated daily on ECB business days, intended as benchmarks rather than transactable quotes. The rates you actually receive at your bank or broker include a spread and may be materially different, especially for smaller currencies. No API key is required, and the request is made directly from your browser.',
+  },
+  {
+    q: 'What does "functional currency" mean?',
+    a: 'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We exclude it from risk flagging because having most of your wealth in your spending currency is normal and desirable.',
+  },
+  {
+    q: 'What counts as elevated currency exposure?',
+    a: 'We use three thresholds for non-functional currencies: under 20% is low exposure, 20-40% is moderate, and over 40% is elevated. These are guidelines, not hard rules, your personal situation (future spending plans, country of retirement) matters too.',
+  },
+  {
+    q: 'Can I include debts and liabilities?',
+    a: 'Yes. Each row has an Asset/Liability toggle. Liability amounts are subtracted from that currency\'s net position. If you have a USD mortgage alongside USD savings, the tool shows your net USD exposure. A currency where you owe more than you hold gets flagged as "Net debt."',
+  },
+  {
+    q: 'How does the CSV upload work?',
+    a: 'Create a CSV file with columns: name (optional), value (required), currency (required, 3-letter code), type (optional, "asset" or "liability", defaults to asset). Click "Upload CSV", pick the file, and the rows populate automatically. Any invalid rows are listed with line numbers so you can fix them. Uploading replaces existing data after a confirmation prompt.',
+  },
+];
+
+const canonicalUrl = 'https://nidhi.today/free/currency-risk';
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'nidhi Currency Risk Analyzer',
+  alternateName: [
+    'nidhi Multi-Currency Net Worth Analyzer',
+    'nidhi Currency Exposure Calculator',
+    'nidhi FX Risk Tool',
+    'nidhi Currency Concentration Checker',
+  ],
+  url: canonicalUrl,
+  description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (web browser)',
+  browserRequirements: 'Requires JavaScript. Modern browser.',
+  isAccessibleForFree: true,
+  featureList: [
+    'Add unlimited assets and liabilities across 29 currencies',
+    'Live ECB exchange rates via Frankfurter API',
+    'Net currency concentration donut chart',
+    'Per-currency risk assessment (low, moderate, elevated)',
+    'Asset/liability toggle for net position calculation',
+    'CSV bulk upload',
+    'Dual sharing modes: full data and anonymous',
+    'Everything runs in your browser; no data sent to any server',
+  ],
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: 'https://nidhi.today',
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today' },
+    { '@type': 'ListItem', position: 2, name: 'Currency risk analyzer', item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+>
+  <section class="cr-page">
+    <nav class="cr-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">Currency risk analyzer</li>
+      </ol>
+    </nav>
+
+    <header class="cr-pageHeader">
+      <p class="cr-eyebrow">Free tools</p>
+      <h1 class="cr-pageTitle">
+        Currency risk analyzer: check your multi-currency net worth exposure
+      </h1>
+      <p class="cr-pageLead">
+        Add your assets and liabilities across currencies. See your net
+        currency concentration, get a risk assessment, and share your
+        results, all in your browser. Nothing is sent to a server. Live
+        ECB exchange rates for USD, EUR, GBP, INR, JPY, and more.
+      </p>
+    </header>
+
+    <CurrencyRiskAnalyzer client:load />
+
+    <section class="cr-explainer" aria-labelledby="cr-explainer-h">
+      <h2 id="cr-explainer-h" class="cr-sectionTitle">How the analysis works</h2>
+      <p>
+        For each currency, we net your assets and liabilities, then convert
+        the result to your functional currency using live exchange rates:
+      </p>
+      <p class="cr-formula">
+        <code>
+          Concentration % = (Net in currency X &times; Exchange rate) / Total net worth &times; 100
+        </code>
+      </p>
+      <ul class="cr-explainerList">
+        <li>
+          <strong>Net position</strong> per currency = sum of assets minus sum
+          of liabilities in that currency. A negative net means you owe more
+          than you hold in that currency.
+        </li>
+        <li>
+          <strong>Exchange rates</strong> come from the European Central Bank
+          via the Frankfurter API, fetched directly by your browser. Rates
+          update daily on business days.
+        </li>
+        <li>
+          <strong>Risk thresholds</strong> apply only to non-functional
+          currencies (currencies you don't spend in). Under 20% is low, 20-40%
+          is moderate, and over 40% is elevated. Your functional currency is
+          never flagged.
+        </li>
+        <li>
+          <strong>All computation is client-side.</strong> Your asset names,
+          values, and totals never leave your browser. The only network
+          request is a one-time exchange rate fetch from Frankfurter.
+        </li>
+      </ul>
+    </section>
+
+    <details class="cr-faq" aria-labelledby="cr-faq-h">
+      <summary id="cr-faq-h" class="cr-faqHeading">
+        <span class="cr-sectionTitle">Frequently asked questions</span>
+        <span class="cr-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
+      </summary>
+      <div class="cr-faqList">
+        {faqs.map((f) => (
+          <details class="cr-faqItem">
+            <summary class="cr-faqQ">{f.q}</summary>
+            <p class="cr-faqA">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </details>
+
+    <aside class="cr-related" aria-labelledby="cr-related-h">
+      <header class="cr-relatedHeader">
+        <h2 id="cr-related-h" class="cr-sectionTitle">Understand your money across borders</h2>
+        <p class="cr-relatedLead">
+          Reads for the multi-currency household.
+        </p>
+      </header>
+
+      <div class="cr-relatedGrid">
+        {RELATED.map((post) => (
+          <a href={`/blog/${post.slug}`} class="cr-relatedCard" data-attr={post.dataAttr}>
+            <span class="cr-relatedKicker">{post.kicker}</span>
+            <span class="cr-relatedTitle">{post.title}</span>
+            <span class="cr-relatedDesc">{post.desc}</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="cr-relatedFooter">
+        <a href="/blog/tag/currency" class="cr-relatedAll" data-attr="related-tag-currency">
+          Read more on currency management
+          <span aria-hidden="true">&nbsp;&rsaquo;</span>
+        </a>
+        <a href="/blog" class="cr-relatedAllSecondary" data-attr="related-all">
+          Or browse every article
+        </a>
+      </p>
+    </aside>
+  </section>
+</BaseLayout>
+
+<style>
+  .cr-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+
+  .cr-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .cr-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .cr-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+    color: var(--color-text-muted);
+  }
+  .cr-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .cr-breadcrumbs a:hover,
+  .cr-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .cr-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+
+  .cr-pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .cr-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+
+  .cr-pageTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+
+  .cr-pageLead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  .cr-sectionTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-deep-blue);
+    margin: 0;
+  }
+
+  /* Explainer & FAQ */
+  .cr-explainer,
+  .cr-faq,
+  .cr-related {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cr-explainer p,
+  .cr-explainerList li,
+  .cr-faqA {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .cr-formula {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .cr-formula code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .cr-explainerList {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-5);
+  }
+
+  .cr-explainerList li {
+    margin-bottom: var(--space-2);
+  }
+
+  .cr-explainerList li strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  /* FAQ: entire section is collapsible. The summary doubles as the
+     section heading; we keep the visual weight of an h2 and add a tiny
+     count badge so the user knows how many questions are hidden. */
+  .cr-faqHeading {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
+    user-select: none;
+  }
+
+  .cr-faqHeading::-webkit-details-marker { display: none; }
+
+  .cr-faqHeading::before {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    color: var(--color-deep-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+  }
+
+  .cr-faq[open] > .cr-faqHeading::before {
+    content: '−';
+  }
+
+  .cr-faqHeading:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cr-faqHeadingCount {
+    margin-left: auto;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .cr-faqList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cr-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+  }
+
+  .cr-faqItem[open] {
+    background: var(--color-bg-white);
+    border-color: var(--color-border);
+  }
+
+  .cr-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+
+  .cr-faqQ::-webkit-details-marker { display: none; }
+
+  .cr-faqQ::before {
+    content: '+';
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    width: 1em;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .cr-faqItem[open] .cr-faqQ::before {
+    content: '\2212';
+  }
+
+  .cr-faqQ:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cr-faqA {
+    margin: var(--space-2) 0 0;
+  }
+
+  /* Related reading */
+  .cr-relatedHeader {
+    margin-bottom: var(--space-4);
+  }
+
+  .cr-relatedLead {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: var(--space-2) 0 0;
+    max-width: 60ch;
+    text-wrap: balance;
+  }
+
+  .cr-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 800px) {
+    .cr-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cr-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 100%;
+  }
+
+  .cr-relatedCard:hover,
+  .cr-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .cr-relatedCard:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .cr-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+  }
+
+  .cr-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .cr-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .cr-relatedFooter {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: flex-end;
+    align-items: baseline;
+  }
+
+  .cr-relatedAll {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-deep-blue);
+    padding-bottom: 1px;
+    transition: border-bottom-style 0.15s ease;
+  }
+
+  .cr-relatedAll:hover,
+  .cr-relatedAll:focus-visible {
+    border-bottom-style: solid;
+  }
+
+  .cr-relatedAllSecondary {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-text-muted);
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cr-relatedAllSecondary:hover,
+  .cr-relatedAllSecondary:focus-visible {
+    color: var(--color-deep-blue);
+    border-bottom-color: var(--color-deep-blue);
+    border-bottom-style: solid;
+  }
+
+  @media (max-width: 480px) {
+    .cr-relatedFooter {
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cr-relatedCard {
+      transition: none;
+    }
+    .cr-relatedCard:hover,
+    .cr-relatedCard:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cr-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .cr-pageHeader {
+      margin-bottom: var(--space-6);
+      text-align: left;
+    }
+    .cr-pageLead {
+      font-size: 0.95rem;
+    }
+    .cr-explainer,
+    .cr-faq,
+    .cr-related {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+
+  /* =================================================================
+   * Component styles (CurrencyRiskAnalyzer)
+   * ============================================================= */
+
+  .cr-srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .cr-root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    color: var(--color-text-primary);
+  }
+
+  /* Toolbar */
+  .cr-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cr-funcCurrencyField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 260px;
+  }
+
+  .cr-fieldLabel {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .cr-select {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 12px;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .cr-selectSm {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .cr-select:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .cr-select:focus-visible {
+    outline: none;
+    border-color: var(--color-deep-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  }
+
+  .cr-fieldHelp {
+    margin: 4px 0 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    max-width: 36ch;
+  }
+
+  .cr-toolbarActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .cr-shareGroup {
+    display: flex;
+    gap: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-deep-blue);
+  }
+
+  .cr-shareBtn,
+  .cr-shareBtnOutline {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 10px 14px;
+    min-height: 44px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .cr-shareBtn {
+    background: var(--color-deep-blue);
+    color: #fff;
+  }
+
+  .cr-shareBtn:hover:not(:disabled),
+  .cr-shareBtn:focus-visible:not(:disabled) {
+    background: var(--color-deep-blue-dark);
+  }
+
+  .cr-shareBtnOutline {
+    background: transparent;
+    color: var(--color-deep-blue);
+    border-left: 1px solid var(--color-deep-blue);
+  }
+
+  .cr-shareBtnOutline:hover:not(:disabled),
+  .cr-shareBtnOutline:focus-visible:not(:disabled) {
+    background: var(--color-bg);
+  }
+
+  .cr-shareBtn:disabled,
+  .cr-shareBtnOutline:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .cr-resetBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--color-deep-blue);
+    background: transparent;
+    color: var(--color-deep-blue);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .cr-resetBtn:hover,
+  .cr-resetBtn:focus-visible {
+    background: var(--color-deep-blue);
+    color: #fff;
+  }
+
+  /* :global() escapes Astro's component scoping so the rule actually
+     matches when [data-theme="dark"] is set on <html>. */
+  :global([data-theme="dark"]) .cr-shareBtn {
+    color: #121212;
+  }
+
+  :global([data-theme="dark"]) .cr-resetBtn:hover,
+  :global([data-theme="dark"]) .cr-resetBtn:focus-visible {
+    color: #121212;
+  }
+
+  /* Banners */
+  .cr-banner {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .cr-bannerWarn {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #856404;
+  }
+
+  .cr-bannerInfo {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  :global([data-theme="dark"]) .cr-bannerWarn {
+    background: #332b00;
+    border-color: #664d00;
+    color: #ffc107;
+  }
+
+  .cr-retryBtn {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    color: inherit;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* Input */
+  .cr-input {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 12px;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .cr-input:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .cr-input:focus-visible {
+    outline: none;
+    border-color: var(--color-deep-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  }
+
+  /* Asset table */
+  .cr-tableSection {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cr-tableHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+
+  .cr-rowCount {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .cr-tableHead {
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .cr-tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 40px;
+    gap: var(--space-2);
+    align-items: center;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .cr-tableRowHead {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    padding-bottom: var(--space-2);
+  }
+
+  @media (max-width: 700px) {
+    .cr-tableRow {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-1);
+      padding: var(--space-3) 0;
+    }
+    .cr-tableRowHead {
+      display: none;
+    }
+    .cr-cellName { grid-column: 1 / -1; }
+    .cr-cellValue { grid-column: 1; }
+    .cr-cellCurrency { grid-column: 2; }
+    .cr-cellType { grid-column: 1; }
+    .cr-cellActions { grid-column: 2; justify-self: end; }
+  }
+
+  /* Table footer */
+  .cr-tableFooter {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .cr-addBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 2px dashed var(--color-border);
+    background: transparent;
+    color: var(--color-deep-blue);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .cr-addBtn:hover,
+  .cr-addBtn:focus-visible {
+    border-color: var(--color-deep-blue);
+    background: var(--color-bg);
+    outline: none;
+  }
+
+  .cr-csvBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .cr-csvBtn:hover,
+  .cr-csvBtn:focus-visible {
+    border-color: var(--color-deep-blue);
+    color: var(--color-deep-blue);
+    outline: none;
+  }
+
+  .cr-removeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cr-removeBtn:hover,
+  .cr-removeBtn:focus-visible {
+    background: var(--color-bg);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+    outline: none;
+  }
+
+  /* CSV confirm */
+  .cr-csvConfirm {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .cr-csvConfirm p {
+    margin: 0 0 var(--space-2);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+  }
+
+  .cr-csvConfirmActions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .cr-csvConfirmYes {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: var(--color-deep-blue);
+    color: #fff;
+  }
+
+  .cr-csvConfirmNo {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: transparent;
+    color: var(--color-text-secondary);
+  }
+
+  /* CSV errors */
+  .cr-csvErrors {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: #856404;
+  }
+
+  :global([data-theme="dark"]) .cr-csvErrors {
+    background: #332b00;
+    border-color: #664d00;
+    color: #ffc107;
+  }
+
+  .cr-csvErrorsTitle {
+    margin: 0 0 var(--space-1);
+    font-weight: 600;
+  }
+
+  .cr-csvErrors ul {
+    margin: 0;
+    padding-left: var(--space-4);
+  }
+
+  /* Results */
+  .cr-results {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cr-emptyState {
+    text-align: center;
+    padding: var(--space-8) var(--space-4);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .cr-total {
+    text-align: center;
+    margin-bottom: var(--space-5);
+  }
+
+  .cr-totalLabel {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .cr-totalValue {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+  }
+
+  .cr-totalHint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+
+  /* Chart */
+  .cr-chartSection {
+    margin-bottom: var(--space-5);
+  }
+
+  .cr-chartTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+  }
+
+  .cr-chartWrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .cr-chart {
+    flex-shrink: 0;
+    max-width: 240px;
+    height: auto;
+  }
+
+  .cr-chartCenterLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    fill: var(--color-deep-blue);
+  }
+
+  .cr-chartCenterSub {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    fill: var(--color-text-muted);
+  }
+
+  .cr-chartEmpty {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .cr-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cr-legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .cr-legendSwatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .cr-legendCode {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    min-width: 3em;
+  }
+
+  .cr-legendPct {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Risk cards */
+  .cr-riskCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cr-riskCardsTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin: 0;
+  }
+
+  .cr-riskCard {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-light);
+    background: var(--color-bg);
+  }
+
+  .cr-riskCard--functional {
+    border-left: 4px solid var(--color-teal);
+  }
+
+  .cr-riskCard--low {
+    border-left: 4px solid #2E7D32;
+  }
+
+  .cr-riskCard--moderate {
+    border-left: 4px solid #F9A825;
+  }
+
+  .cr-riskCard--elevated,
+  .cr-riskCard--net-debt {
+    border-left: 4px solid #C62828;
+  }
+
+  .cr-riskCardHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-1);
+  }
+
+  .cr-riskBadge {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cr-riskCurrency {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .cr-riskLabel {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+  }
+
+  .cr-riskRec {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Disclaimer */
+  .cr-disclaimer {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 480px) {
+    .cr-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .cr-funcCurrencyField {
+      min-width: auto;
+    }
+    .cr-toolbarActions {
+      justify-content: flex-end;
+    }
+    .cr-shareGroup {
+      flex: 1;
+    }
+    .cr-shareBtn,
+    .cr-shareBtnOutline {
+      flex: 1;
+      text-align: center;
+      font-size: 0.72rem;
+      padding: 10px 8px;
+    }
+    .cr-chartWrap {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

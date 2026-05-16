@@ -5,7 +5,7 @@ description: "A euro today buys more than a euro in ten years. Purchasing power 
 tldr: "Purchasing power is what your money can actually buy. It declines over time as prices rise, a force called inflation. At 2-3% per year, your money loses roughly half its purchasing power over 25 years. Earning 2% in a savings account when prices rise 3% means you're losing ground. The only way to preserve purchasing power is to earn returns that outpace inflation."
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-05-11
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -46,15 +46,15 @@ Inflation is easy to ignore because it doesn't take money away from you visibly.
 
 ## A concrete example
 
-Imagine you put €10,000 under your mattress in 2005. Twenty years later, you take it out. It's still €10,000. But here's what happened to what it can buy:
+Imagine you put €10,000 under your mattress and leave it there for twenty years. The number on the cash never changes. But here's what happens to what it can buy at a steady 2.5% inflation rate:
 
 | Year | Nominal Amount | What It Buys (Approx.) |
 |------|---------------|------------------------|
-| 2005 | €10,000 | €10,000 worth of goods |
-| 2015 | €10,000 | ~€7,800 worth of goods |
-| 2025 | €10,000 | ~€6,100 worth of goods |
+| Today | €10,000 | €10,000 worth of goods |
+| In 10 years | €10,000 | ~€7,800 worth of goods |
+| In 20 years | €10,000 | ~€6,100 worth of goods |
 
-You lost nearly 40% of your purchasing power without spending a cent. The money was sitting still, but prices were moving.
+You lost nearly 40% of your purchasing power without spending a cent. The money was sitting still, but prices were moving. (Real eurozone inflation has run uneven over the last twenty years, with long stretches near 1% and a sharp burst in 2022–2023; 2.5% is used here as an illustrative steady-state, not as a forecast.)
 
 Even in a savings account, the erosion continues. Consider €10,000 earning 0.5% interest, with inflation at 2.5%:
 

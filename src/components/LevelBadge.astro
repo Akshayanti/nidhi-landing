@@ -5,34 +5,42 @@ interface Props {
 
 const { level } = Astro.props;
 
-const levels: Record<string, { label: string; color: string; icon: string }> = {
-  discovery: { label: 'Discovery', color: '#00897B', icon: '&#x1F4A1;' },
-  building: { label: 'Building', color: '#1565C0', icon: '&#x1F3D7;' },
-  optimizing: { label: 'Optimizing', color: '#E65100', icon: '&#x2699;' },
-  mastery: { label: 'Mastery', color: '#7B1FA2', icon: '&#x1F3C6;' },
+const levels: Record<string, { label: string; icon: string }> = {
+  discovery: { label: 'Discovery', icon: '&#x1F4A1;' },
+  building: { label: 'Building', icon: '&#x1F3D7;' },
+  optimizing: { label: 'Optimizing', icon: '&#x2699;' },
+  mastery: { label: 'Mastery', icon: '&#x1F3C6;' },
 };
 
-const { label, color, icon } = levels[level];
+const { label, icon } = levels[level];
 ---
 
-<span class="level-badge" style={`--badge-color: ${color}`}>
+<span class:list={['level-badge', `level-badge--${level}`]}>
   <span class="level-icon" set:html={icon} />
   {label}
 </span>
 
 <style>
+  /* Each level resolves its identity color via a CSS variable that flips
+     between light and dark themes (see :root and [data-theme="dark"] in
+     global.css). This keeps the badge readable in both modes. */
+  .level-badge--discovery { --badge-color: var(--level-discovery); }
+  .level-badge--building { --badge-color: var(--level-building); }
+  .level-badge--optimizing { --badge-color: var(--level-optimizing); }
+  .level-badge--mastery { --badge-color: var(--level-mastery); }
+
   .level-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     font-family: var(--font-heading);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 2px 8px;
     border-radius: var(--radius-sm);
-    background: color-mix(in srgb, var(--badge-color) 12%, var(--color-bg-white));
+    background: color-mix(in srgb, var(--badge-color) 14%, var(--color-bg-white));
     color: var(--badge-color);
   }
 

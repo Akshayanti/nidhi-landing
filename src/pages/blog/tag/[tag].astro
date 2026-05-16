@@ -6,11 +6,11 @@ import { getReadingTime } from '../../../utils/readingTime';
 
 const TAG_META: Record<string, { title: string; description: string }> = {
   'net-worth': {
-    title: 'Net Worth — Personal Finance Literacy',
+    title: 'Net Worth: Personal Finance Literacy',
     description: 'Everything about net worth: what it is, how to calculate it, and why it matters more than your salary. Free personal finance education from nidhi.',
   },
   'fundamentals': {
-    title: 'Financial Fundamentals — Personal Finance Literacy',
+    title: 'Financial Fundamentals: Personal Finance Literacy',
     description: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
   },
   'getting-started': {
@@ -18,39 +18,39 @@ const TAG_META: Record<string, { title: string; description: string }> = {
     description: 'New to personal finance? Start here. Beginner-friendly guides to net worth, budgeting, saving, and building financial literacy from the ground up.',
   },
   'debt': {
-    title: 'Understanding and Managing Debt — Finance Literacy',
+    title: 'Understanding and Managing Debt: Finance Literacy',
     description: 'How debt works, why interest rates matter, and proven strategies to get out of debt. Practical personal finance literacy from nidhi.',
   },
   'saving': {
-    title: 'Saving Money — Personal Finance Basics',
+    title: 'Saving Money: Personal Finance Basics',
     description: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy guides from nidhi.',
   },
   'investing': {
-    title: 'Investing Basics — Financial Literacy',
+    title: 'Investing Basics: Financial Literacy',
     description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
   },
   'budgeting': {
-    title: 'Budgeting — Personal Finance Planning',
+    title: 'Budgeting: Personal Finance Planning',
     description: 'Practical budgeting methods: 50/30/20, zero-based, and pay-yourself-first. Take control of your cash flow with nidhi\'s financial literacy guides.',
   },
   'cash-flow': {
-    title: 'Cash Flow — Understanding Your Money Movement',
+    title: 'Cash Flow: Understanding Your Money Movement',
     description: 'Track where your money goes each month. Cash flow is the engine behind wealth building. Free personal finance education from nidhi.',
   },
   'liquidity': {
-    title: 'Liquidity — Why Access to Your Money Matters',
+    title: 'Liquidity: Why Access to Your Money Matters',
     description: 'What liquidity means for your finances and why being asset-rich but cash-poor is dangerous. Personal finance literacy from nidhi.',
   },
   'risk': {
-    title: 'Understanding Financial Risk — Investing Literacy',
-    description: 'Risk isn\'t danger — it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
+    title: 'Understanding Financial Risk: Investing Literacy',
+    description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
   },
   'insurance': {
-    title: 'Insurance Basics — Protecting Your Finances',
+    title: 'Insurance Basics: Protecting Your Finances',
     description: 'How insurance protects your net worth from catastrophic loss. Health, life, property, disability, and liability explained. Personal finance literacy from nidhi.',
   },
   'credit': {
-    title: 'Credit and Credit Scores — Finance Literacy',
+    title: 'Credit and Credit Scores: Finance Literacy',
     description: 'How credit scores work, why they affect your borrowing costs, and how to build good credit. Personal finance education from nidhi.',
   },
 };
@@ -90,8 +90,8 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 const formatted = formatTag(tag);
 const meta = TAG_META[tag];
-const title = meta?.title ?? `${formatted} — Personal Finance Literacy | nidhi`;
-const description = meta?.description ?? `Articles about ${formatted.toLowerCase()} — practical personal finance literacy and financial education from nidhi.`;
+const title = meta?.title ?? `${formatted}: Personal Finance Literacy | nidhi`;
+const description = meta?.description ?? `Articles about ${formatted.toLowerCase()}: practical personal finance literacy and financial education from nidhi.`;
 const keywords = [tag, 'personal finance', 'financial literacy', 'personal finance literacy', 'money management'];
 
 const tagBreadcrumbSchema = {
@@ -127,7 +127,7 @@ const tagItemListSchema = {
   <section class="blog-index">
     <div class="container">
       <header class="blog-index-header">
-        <nav class="tag-breadcrumb">
+        <nav class="tag-breadcrumb" aria-label="Breadcrumb">
           <a href="/blog">Blog</a> <span class="sep">/</span> <span>{formatted}</span>
         </nav>
         <h1>{formatted}</h1>
@@ -156,11 +156,12 @@ const tagItemListSchema = {
 
   .tag-breadcrumb a {
     color: var(--color-deep-blue);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .tag-breadcrumb a:hover {
-    text-decoration: underline;
+    text-decoration-thickness: 2px;
   }
 
   .tag-breadcrumb .sep {

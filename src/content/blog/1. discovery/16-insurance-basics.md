@@ -1,7 +1,7 @@
 ---
 slug: "insurance-basics"
 title: "Insurance Basics: Protecting What You've Built"
-description: "You've spent months building an emergency fund. A single event (an accident, a fire, a health crisis) could wipe it out overnight. Insurance exists so it doesn't have to."
+description: "You've spent months building an emergency fund. One accident, fire, or health crisis can wipe it out overnight. Insurance exists so it doesn't have to."
 tldr: "Insurance transfers catastrophic financial risk from you to an insurer in exchange for a predictable premium. The main types are health, life, property, disability, and liability. Premiums are a cash flow cost, but they protect your net worth from sudden, devastating loss. Insurance and your emergency fund work as a team: more coverage means you can keep a smaller emergency fund, and vice versa. The right amount of insurance isn't zero (one event could derail your finances) and it isn't maximum (over-insuring wastes cash flow on unlikely scenarios). The goal is covering the losses you couldn't absorb on your own."
 order: 16
 pubDate: 2026-05-22

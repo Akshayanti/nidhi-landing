@@ -5,7 +5,7 @@ description: "Earning more doesn't automatically mean being wealthier. Here's wh
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-05-07
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -24,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €800.
+Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €2,400.
 
 Same income. Completely different outcomes. The difference isn't what came in, it's what remained.
 

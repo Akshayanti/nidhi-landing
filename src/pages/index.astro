@@ -16,6 +16,14 @@ const webSiteSchema = {
   name: 'nidhi',
   url: 'https://nidhi.today',
   description: 'Money, understood. Personal finance literacy, net worth tracking, and money management education.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://nidhi.today/blog?q={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
 };
 ---
 
@@ -29,9 +37,9 @@ const webSiteSchema = {
       <p class="tagline">Money, understood</p>
 
       <p class="cheeky">
-        Our <abbr class="finosopher" data-tooltip="Finance + philosopher, smushed together" aria-label="finosopher — finance and philosopher, smushed together" tabindex="0">finosopher</abbr> has been meditating on<br />
+        Our <abbr class="finosopher" data-tooltip="Finance + philosopher, smushed together" aria-label="finosopher: finance and philosopher, smushed together">finosopher</abbr> has been meditating on<br />
         where everyone's money keeps going.<br />
-        He has thoughts. You'll hear them soon.
+        He's building something to make your money easier to understand. Soon.
       </p>
 
       <div class="roadmap">
@@ -83,12 +91,29 @@ const webSiteSchema = {
       </div>
 
       <div class="learn-more">
-        <p class="learn-more-text">While you wait, try our free tools or dive into personal finance:</p>
-        <div class="learn-links">
-          <a href="/free/loan-comparison" class="learn-link" data-attr="home-cta-loan-comparison">Compare Loans</a>
-          <a href="/blog" class="learn-link learn-link--outline" data-attr="home-cta-blog">Blog</a>
-          <a href="/beliefs" class="learn-link learn-link--outline" data-attr="home-cta-beliefs">Our Beliefs</a>
+        <p class="learn-more-text">While you wait, the finosopher has left a few tools behind:</p>
+
+        <div class="tools-grid">
+          <a href="/free/currency-risk" class="tool-card" data-attr="home-cta-currency-risk">
+            <span class="tool-card__kicker">Free tool</span>
+            <span class="tool-card__title">Currency Risk</span>
+            <span class="tool-card__desc">See what happens when your salary and savings don't share a currency.</span>
+            <span class="tool-card__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+
+          <a href="/free/loan-comparison" class="tool-card" data-attr="home-cta-loan-comparison">
+            <span class="tool-card__kicker">Free tool</span>
+            <span class="tool-card__title">Loan Comparison</span>
+            <span class="tool-card__desc">Compare loan offers and find the one that's actually cheaper.</span>
+            <span class="tool-card__arrow" aria-hidden="true">&rarr;</span>
+          </a>
         </div>
+
+        <p class="aux-links">
+          Or read the <a href="/blog" data-attr="home-cta-blog">blog</a>
+          <span class="aux-sep" aria-hidden="true">&middot;</span>
+          explore <a href="/beliefs" data-attr="home-cta-beliefs">our beliefs</a>
+        </p>
       </div>
 
       <p class="footer">
@@ -126,6 +151,10 @@ const webSiteSchema = {
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-icon img { animation: none; }
   }
 
   .brand {
@@ -291,68 +320,102 @@ const webSiteSchema = {
   .learn-more-text {
     font-size: 0.85rem;
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
-  .learn-links {
-    display: flex;
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-3);
-    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
   }
 
-  .learn-link {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: var(--space-2) var(--space-5);
-    border-radius: var(--radius-md);
+  .tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 4px;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
     text-decoration: none;
-    transition: background 0.15s ease, color 0.15s ease;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
 
-  .learn-link {
-    color: white;
-    background: var(--color-deep-blue);
-  }
-
-  .learn-link:visited {
-    color: white;
-  }
-
-  .learn-link:hover {
-    background: var(--color-deep-blue-dark);
-  }
-
-  .learn-link--outline {
-    color: var(--color-deep-blue);
-    background: transparent;
-    border: 1px solid var(--color-deep-blue);
-  }
-
-  .learn-link--outline:visited {
-    color: var(--color-deep-blue);
-  }
-
-  .learn-link--outline:hover {
-    background: var(--color-deep-blue);
-    color: white;
-  }
-
-  [data-theme="dark"] .learn-link--outline {
-    color: var(--color-deep-blue);
-    background: transparent;
+  .tool-card:hover,
+  .tool-card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
     border-color: var(--color-deep-blue);
+    outline: none;
   }
 
-  [data-theme="dark"] .learn-link--outline:hover {
-    color: #121212;
+  .tool-card:hover .tool-card__arrow,
+  .tool-card:focus-visible .tool-card__arrow {
+    transform: translateX(2px);
+    color: var(--color-deep-blue);
   }
 
-  [data-theme="dark"] .learn-link {
-    color: #121212;
-    background: var(--color-deep-blue);
+  .tool-card__kicker {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+  }
+
+  .tool-card__title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-deep-blue);
+    line-height: 1.2;
+  }
+
+  .tool-card__desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+  }
+
+  .tool-card__arrow {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .aux-links {
+    margin-top: var(--space-4);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .aux-links a {
+    color: var(--color-deep-blue);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+
+  .aux-links a:hover,
+  .aux-links a:focus-visible {
+    border-bottom-color: var(--color-deep-blue);
+  }
+
+  .aux-sep {
+    margin: 0 6px;
+    color: var(--color-border);
   }
 
   .footer {
@@ -371,5 +434,8 @@ const webSiteSchema = {
     .roadmap { max-width: 100%; }
     .item { font-size: 0.75rem; }
     .item .aside { font-size: 0.6rem; }
+    .tools-grid { grid-template-columns: 1fr; gap: var(--space-2); }
+    .tool-card { padding: var(--space-3); }
+    .aux-links { font-size: 0.75rem; }
   }
 </style>

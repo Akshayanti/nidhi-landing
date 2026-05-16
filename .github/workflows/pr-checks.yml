@@ -18,8 +18,13 @@ on:
       - 'src/pages/free/**'
       - 'src/pages/privacy.astro'
       - 'src/components/LoanCompare.tsx'
+      - 'src/components/CurrencyRiskAnalyzer.tsx'
       - 'src/utils/loanMath.ts'
       - 'src/utils/loanMath.test.ts'
+      - 'src/utils/currencyRiskMath.ts'
+      - 'src/utils/currencyRiskMath.test.ts'
+      - 'src/utils/currencyRiskUrl.ts'
+      - 'src/utils/currencyRiskUrl.test.ts'
       - 'scripts/**/*'
       # URL-state helpers + tests for the loan comparator. Extracted out
       # of LoanCompare.tsx so the round-trip and count-inference logic
