@@ -410,16 +410,16 @@ const inputId = `subscribe-email-${variant}`;
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
     font-size: 0.95rem;
-    background: white;
+    background: var(--color-bg-white);
     color: var(--color-text-primary);
   }
   .subscribe-input::placeholder { color: var(--color-text-muted); }
-  .subscribe-input:focus { outline: 2px solid var(--color-teal); outline-offset: 0; }
+  .subscribe-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
 
   .subscribe-button {
     padding: var(--space-3) var(--space-5);
-    background: var(--color-teal);
-    color: white;
+    background: var(--color-cta-bg);
+    color: var(--color-cta-fg);
     border: none;
     border-radius: var(--radius-md);
     font-weight: 600;
@@ -428,9 +428,13 @@ const inputId = `subscribe-email-${variant}`;
     transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
     white-space: nowrap;
   }
-  .subscribe-button:hover:not(:disabled) { background: #26a69a; }
+  .subscribe-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); }
   .subscribe-button:active:not(:disabled) { transform: translateY(1px); }
   .subscribe-button:disabled { opacity: 0.6; cursor: wait; }
+  .subscribe-button:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
 
   .subscribe-status {
     font-size: 0.85rem;
@@ -444,7 +448,7 @@ const inputId = `subscribe-email-${variant}`;
   /* --- Full variant (end of blog post) ----------------------------- */
   .subscribe--full { margin-top: var(--space-10); padding: var(--space-8) 0; border-top: 1px solid var(--color-border-light); }
   .subscribe--full .subscribe-box {
-    background: var(--color-deep-blue);
+    background: var(--color-callout-bg);
     border-radius: var(--radius-lg);
     padding: var(--space-6) var(--space-5);
     text-align: center;
@@ -458,11 +462,11 @@ const inputId = `subscribe-email-${variant}`;
   .subscribe--full .subscribe-input { border-color: transparent; }
   .subscribe-privacy {
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.85);
     margin: var(--space-3) 0 0;
   }
-  .subscribe-privacy a { color: rgba(255, 255, 255, 0.85); text-decoration: underline; }
-  .subscribe-privacy a:hover { color: white; }
+  .subscribe-privacy a { color: white; text-decoration: underline; }
+  .subscribe-privacy a:hover { color: rgba(255, 255, 255, 0.9); }
   .subscribe--full .subscribe-status { color: rgba(255, 255, 255, 0.85); }
   .subscribe--full .subscribe-status--success { color: #b2f2ea; }
   .subscribe--full .subscribe-status--error { color: #ffb3ad; }
@@ -573,6 +577,10 @@ const inputId = `subscribe-email-${variant}`;
     cursor: pointer;
   }
   .subscribe-success-retry:hover { color: var(--color-teal); }
+  .subscribe-success-retry:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
   .subscribe--full .subscribe-success-retry:hover { color: #fff; }
 
   /* Compact variant: inline success row (no icon overhead). */

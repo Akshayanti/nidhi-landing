@@ -63,7 +63,7 @@ Every three months, zoom out. This takes 30-60 minutes.
 
 **Asset allocation.** The mix of [stocks, bonds, cash, and other asset classes](/blog/investing-101-asset-classes). Drift happens naturally. If stocks rise and bonds don't, your stock allocation grows relative to your target. Quarterly is usually enough to notice meaningful drift without over-trading. Full rebalancing doesn't have to be quarterly; noticing whether you need to is.
 
-**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend.
+**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend. The [currency risk analyzer](/free/currency-risk) can stand in for this panel if you don't want to maintain it inside your own spreadsheet: enter assets and obligations by currency once and it returns the breakdown and the concentration, ready to revisit each quarter.
 
 **Progress against goals.** For each written [financial goal](/blog/setting-financial-goals), compare actual position vs. planned position. On track? Ahead? Behind? If behind, is the gap small enough to absorb or large enough to require adjustment?
 

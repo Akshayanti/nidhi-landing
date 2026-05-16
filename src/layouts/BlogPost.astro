@@ -201,7 +201,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         </div>
 
         {(prevSlug || nextSlug) && (
-          <nav class="post-nav">
+          <nav class="post-nav" aria-label="Adjacent posts">
             {prevSlug && prevTitle && (
               <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`} data-attr="post-nav-prev">
                 <span class="post-nav-direction">Previous</span>

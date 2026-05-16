@@ -34,7 +34,7 @@ Appreciation is when something increases in value over time.
 - An index fund purchased for €5,000 that grows to €12,000 has appreciated
 - Even a savings account appreciates (slowly) when it earns interest
 
-Historically, broad stock market investments have returned around 5-7% per year after inflation across major developed markets (US historical data sits at the higher end of this range). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees, but they're the long-term trend.
+Historically, broad stock market investments have returned around 4-6% per year after inflation across major developed markets, with US historical data sitting at the higher end of this range and most non-US developed markets sitting closer to 4-5% (Dimson, Marsh and Staunton's long-run dataset). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
 
 The key insight: appreciation rewards patience. The longer you hold an appreciating asset, the more it compounds.
 

@@ -150,7 +150,7 @@ It depends on what drives you:
 ## Common mistakes
 
 - **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage. Never do this
-- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt
+- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
 - **Stopping when the first debt is gone.** The whole point is to roll the freed-up payment into the next one. If you just spend the extra money, you lose the compounding effect
 - **Waiting for the "right time."** The best time to start is now. Even small extra payments make a difference
 

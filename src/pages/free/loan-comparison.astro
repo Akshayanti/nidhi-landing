@@ -67,9 +67,9 @@ const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).sli
 // they're not interchangeable in search intent: "comparator" trends
 // international/UK/IN, "comparison" trends US.
 const title =
-  'Loan Comparison Calculator: Compare Loan Offers Side by Side (Multi-Currency) | nidhi';
+  'Loan Comparison Calculator: Side-by-Side, Multi-Currency | nidhi';
 const description =
-  'Free loan comparison calculator. Compare two to five loan offers side by side: monthly payment, payoff time, total interest, fees, and total cost, calculated to the cent. Works for mortgages, auto loans, personal loans, and student loans. Multi-currency support: USD, EUR, GBP, INR, JPY, CAD, AUD, CHF, SGD, KRW, and CZK. No signup, no data sent to any server.';
+  'Free loan comparison calculator. Compare two to five offers side by side: monthly payment, payoff time, total interest, APR, and total cost. Multi-currency.';
 const keywords = [
   // Primary intent: loan / comparison / side-by-side phrasings.
   'loan comparison calculator',
@@ -109,7 +109,13 @@ const keywords = [
   'amortisation calculator',
   'monthly payment calculator',
   'total interest calculator',
+  'APR calculator',
   'APR comparison',
+  'APR vs interest rate',
+  'effective interest rate calculator',
+  'true cost of loan calculator',
+  'interest vs principal chart',
+  'amortization split chart',
   'origination fee calculator',
   'extra principal calculator',
   // Currency-specific long tail.
@@ -119,48 +125,155 @@ const keywords = [
   'JPY loan calculator',
 ];
 
-const faqs = [
+// FAQ is split into logical sections so users can scan to the topic
+// they care about (basics, costs, prepayments, etc.) instead of reading
+// a 20-item flat list. The JSON-LD FAQPage schema below flattens the
+// list back out for search engines, which expect a single mainEntity
+// array.
+const faqSections: { id: string; title: string; items: { q: string; a: string }[] }[] = [
   {
-    q: 'How does this loan comparison calculator work?',
-    a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for each lender you want to compare. You can compare two to five loan offers side by side. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, and total amount paid (including any origination or closing fees you enter).',
+    id: 'basics',
+    title: 'Getting started',
+    items: [
+      {
+        q: 'How does this loan comparison calculator work?',
+        a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for each lender you want to compare. You can compare two to five loan offers side by side. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, APR (which folds the fee into the rate), and total amount paid.',
+      },
+      {
+        q: 'What kinds of loans can I compare?',
+        a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and hybrid (ARM-style) loans where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modeled.',
+      },
+      {
+        q: 'How many loans can I compare at once?',
+        a: 'Two to five. The page starts with two side-by-side cards and an obvious "Add vendor" tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
+      },
+      {
+        q: 'Can I compare loans with different terms or rates?',
+        a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across all of the loans you compare. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+      },
+      {
+        q: 'Which fields are required?',
+        a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty, hybrid rate spec) is optional and you can leave it at its default.',
+      },
+      {
+        q: 'Is my data sent anywhere?',
+        a: 'No. Everything runs in your browser; no inputs are sent to any server. The shareable link encodes your values into the URL only when you copy it, so you can choose what to share.',
+      },
+    ],
   },
   {
-    q: 'How accurate are the calculations?',
-    a: 'All amortization is computed in integer cents to avoid floating-point rounding error. The closed-form monthly-payment formula is rounded to the nearest cent, and the final payment in each schedule is reconciled so that the sum of principal payments matches the original loan amount exactly.',
+    id: 'apr-fees',
+    title: 'APR and fees',
+    items: [
+      {
+        q: 'What is APR and how is it calculated here?',
+        a: 'APR (Annual Percentage Rate) folds the upfront fee into the cost of borrowing as a single annualized rate, so two offers with different fees can be compared on one number. This calculator computes APR by treating the fee as an upfront deduction from the principal disbursed to the borrower, then solving for the monthly rate at which the present value of the contractual payment stream equals that net amount. APR is reported as a nominal annual rate (monthly rate × 12), which matches the convention on US loan disclosures and is directionally consistent with the EU APRC. When the fee is zero, APR equals the nominal rate.',
+      },
+      {
+        q: 'Why is APR usually higher than the headline rate?',
+        a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the effective rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. For an in-depth treatment, see the post on understanding loan terms.',
+      },
+      {
+        q: 'Does APR include the extra principal I plan to pay each month?',
+        a: 'No. APR is a measure of the contractual cost the lender is charging, not of any voluntary actions you take. Extra principal payments are optional, and including them would understate the disclosed APR. The "Where each payment goes" chart and the APR row both use the contract schedule (without extra principal); the monthly payment, time-to-payoff, and total-paid figures all reflect the schedule that includes your extra payments.',
+      },
+      {
+        q: 'Should I include mandatory insurance or bundled products in the fee?',
+        a: 'If a lender requires you to buy a product alongside the loan (life insurance, an account, an investment product), the cost of that product is part of your real cost of borrowing. APR rules differ by jurisdiction on whether such products must be included in the official APR disclosure. To compare honestly, add the lifetime cost of any mandatory bundled product to the fee field. The APR shown will then reflect the all-in cost.',
+      },
+      {
+        q: 'Does the calculator handle origination fees and closing costs?',
+        a: 'Yes. Enter them in the "Origination / closing fee" field under "Costs and fees" on each vendor card. Fees are added to the total amount paid so the cheapest-overall comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
+      },
+    ],
   },
   {
-    q: 'Can I compare loans with different terms or rates?',
-    a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across all of the loans you compare. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+    id: 'prepayments-penalties',
+    title: 'Prepayments, points, and penalties',
+    items: [
+      {
+        q: 'Can I model paying extra principal each month?',
+        a: 'Yes. Enter an amount under "Extra principal per month" in the Prepayments group on each vendor card. The calculator applies it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
+      },
+      {
+        q: 'How are lump-sum prepayments entered?',
+        a: 'Use the format month:amount, separated by semicolons. For example, 12:5000;36:3000;60:10000 means a 5,000 prepayment in month 12, 3,000 in month 36, and 10,000 in month 60. Each lump is applied to principal AFTER the regular monthly payment for that month, so it does not earn interest the same month. The loan typically pays off earlier than the contractual term and the total interest drops accordingly.',
+      },
+      {
+        q: 'How does the points break-even work?',
+        a: 'Discount points are an upfront cost that buys a lower interest rate. Whether they pay off depends on how long you keep the loan. Enter the cost of points and the rate reduction they purchased, and the calculator builds a hypothetical "no points paid" baseline (same loan, fee minus points cost, rate plus reduction) and compares the two. The "Points break-even" row shows how many months of lower payments are needed to recoup the upfront cost. If the new monthly payment is not actually lower, the break-even is reported as "never".',
+      },
+      {
+        q: 'How does the prepayment penalty work?',
+        a: 'Some loans charge a penalty if you pay them off early. Enter the penalty as a percent of the remaining balance and the last month at which it applies. The penalty is charged only when the loan is fully paid off (via lumps, extra principal, or a refinance) on or before that month. Penalties are added to the total amount paid, so the cheapest-overall comparison correctly reflects the true cost of an early payoff under penalty.',
+      },
+    ],
   },
   {
-    q: 'How many loans can I compare at once?',
-    a: 'Two to five. The page starts with two side-by-side cards and an obvious "Add vendor" tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
+    id: 'hybrid',
+    title: 'Hybrid (ARM) loans',
+    items: [
+      {
+        q: 'How does the calculator handle hybrid (5/1, 7/1, 10/1 ARM) loans?',
+        a: 'Switch the rate type to Hybrid in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a 5/1 ARM) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The displayed APR uses this as-disclosed schedule, which matches how lenders quote APR on real ARM products.',
+      },
+      {
+        q: 'Why is the hybrid option disabled when I picked "Payoff months"?',
+        a: 'Hybrid loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for "Payoff months" you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch "Solve for" to "Monthly payment" to enable the hybrid radio.',
+      },
+    ],
   },
   {
-    q: 'Does the calculator handle origination fees and closing costs?',
-    a: 'Yes. Use the "More options" panel on each vendor card to add origination, closing, or other up-front fees. Fees are added to the total amount paid so the cheapest-overall comparison reflects the true cost of the loan.',
+    id: 'analysis-tabs',
+    title: 'Analysis tabs',
+    items: [
+      {
+        q: 'What does the "Where each payment goes" chart show?',
+        a: 'It splits a representative monthly payment from each year of the loan into its interest and principal portions, stacked on a single bar. Every bar has the same total height (the same monthly payment), but the split shifts dramatically: in the early years almost all of the payment is interest, while in the final years almost all of it is principal. This is why prepayments in the first few years of a long loan are disproportionately powerful; every euro you knock off the principal early avoids interest for the entire remaining term.',
+      },
+      {
+        q: 'What is the horizon analysis ("if I sell or refinance at...")?',
+        a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This is the right view if you expect to sell, move, or refinance well before the contractual end of the loan, because the cheapest-by-total-cost vendor over 360 months may not be the cheapest if you exit at month 60.',
+      },
+      {
+        q: 'How does the refinance scenario builder work?',
+        a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under "keep the original loan to its end" against "make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end". It also reports a break-even horizon: how many months of lower monthly payments are needed before the closing costs of the refinance are recouped. If the new monthly is not lower, the break-even is "never".',
+      },
+    ],
   },
   {
-    q: 'Can I model paying extra principal each month?',
-    a: 'Yes. Enter an "Extra principal per month" amount under "More options" and the calculator will apply it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
+    id: 'sharing-accuracy',
+    title: 'Sharing and accuracy',
+    items: [
+      {
+        q: 'Are share links self-contained?',
+        a: 'Yes. The share link encodes every input the recipient needs: every per-vendor field (rate type, hybrid schedule, points, lump sums, prepayment penalty), the currency, the active analysis tab, and the horizon and refinance scenario inputs. The recipient lands on the same view you were looking at with all of your inputs reproduced. The URL only contains values that differ from defaults, so a fresh comparison still produces a compact link.',
+      },
+      {
+        q: 'How accurate are the calculations?',
+        a: 'All amortization is computed in integer cents to avoid floating-point rounding error. The closed-form monthly-payment formula is rounded to the nearest cent, and the final payment in each schedule is reconciled so that the sum of principal payments matches the original loan amount exactly. APR is solved by bisection on the present-value equation against the same integer-cent schedule, to a precision well below any real lender disclosure.',
+      },
+    ],
   },
   {
-    q: 'Is my data sent anywhere?',
-    a: 'No. Everything runs in your browser; no inputs are sent to any server. The shareable link encodes your values into the URL only when you copy it, so you can choose what to share.',
-  },
-  {
-    q: 'What kinds of loans can I compare?',
-    a: 'The math is the same for any fixed-rate, fully-amortizing loan: mortgages, auto loans, personal loans, and student loans on standard repayment plans. Variable-rate loans, interest-only periods, and balloon payments are not modeled.',
-  },
-  {
-    q: 'Which currencies are supported?',
-    a: 'You can pick from US Dollar (USD), Euro (EUR), British Pound (GBP), Indian Rupee (INR), Japanese Yen (JPY), Czech Koruna (CZK), Canadian Dollar (CAD), Australian Dollar (AUD), Swiss Franc (CHF), Singapore Dollar (SGD), and South Korean Won (KRW). Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
-  },
-  {
-    q: 'What does "multi-currency" mean here?',
-    a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a live FX rate) would be misleading.',
+    id: 'currency',
+    title: 'Multi-currency support',
+    items: [
+      {
+        q: 'Which currencies are supported?',
+        a: 'Twenty-nine currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), and the Nordic, Central European, Latin American, and South-East Asian majors. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
+      },
+      {
+        q: 'What does "multi-currency" mean here?',
+        a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a live FX rate) would be misleading.',
+      },
+    ],
   },
 ];
+
+// Flatten for the JSON-LD schema. The Question/Answer pairs themselves
+// don't need to know about sections; only the rendered UI does.
+const faqs = faqSections.flatMap((s) => s.items);
 
 const canonicalUrl = 'https://nidhi.today/free/loan-comparison';
 
@@ -191,11 +304,16 @@ const webAppSchema = {
   // which feeds the rich-result and answer-box surfaces.
   featureList: [
     'Compare 2 to 5 loan offers side by side',
-    'Multi-currency support: USD, EUR, GBP, INR, JPY, CZK, CAD, AUD, CHF, SGD, KRW',
+    'APR (Annual Percentage Rate) for each offer, folding fees into a single comparable rate',
+    'Interest vs. principal split chart for each loan, showing where each payment goes across the life of the loan',
+    'Multi-currency support across 29 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
     'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
     'Model origination fees and extra monthly principal',
+    'Advanced mode: hybrid (ARM) loans with payment recast at the transition, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
+    'Horizon analysis ("if I sell at month N") showing principal repaid, interest paid, balance remaining, and total cash out per vendor',
+    'Refinance scenario builder comparing "keep" vs. "refinance" with closing costs and break-even horizon',
     'Cent-precise integer amortization schedule',
-    'Shareable URL for any comparison state',
+    'Shareable URL for any comparison state, including all advanced fields',
   ],
   offers: {
     '@type': 'Offer',
@@ -259,61 +377,36 @@ const faqSchema = {
         Loan comparison calculator: compare loan offers side by side
       </h1>
       <p class="lc-pageLead">
-        Plug in two to five lenders. See the monthly payment, how long it
-        takes to pay off, and the total amount you'll pay, calculated to
-        the cent. Multi-currency support for USD, EUR, GBP, INR, JPY, and
-        more. Everything runs in your browser; nothing is sent to a
-        server.
+        Plug in two to five lenders. See the monthly payment, payoff
+        time, total amount paid, and APR; the one-number cost that
+        folds the fee into the rate. Watch where each payment splits
+        between interest and principal. Multi-currency support for USD,
+        EUR, GBP, INR, JPY, and more. Everything runs in your browser;
+        nothing is sent to a server.
       </p>
     </header>
 
     <LoanCompare client:load />
 
-    <section class="lc-explainer" aria-labelledby="lc-explainer-h">
-      <h2 id="lc-explainer-h" class="lc-sectionTitle">How the comparison works</h2>
-      <p>
-        For each lender, the calculator builds a full amortization schedule using
-        the standard fully-amortizing formula:
-      </p>
-      <p class="lc-formula">
-        <code>M = P · r / (1 − (1 + r)<sup>−n</sup>)</code>
-      </p>
-      <ul class="lc-explainerList">
-        <li>
-          <strong>P</strong> is the loan principal, <strong>r</strong> is the
-          monthly interest rate (annual rate ÷ 12), and <strong>n</strong> is the
-          number of monthly payments.
-        </li>
-        <li>
-          The schedule runs month by month in integer cents. Each month's interest
-          is computed on the remaining balance, then the rest of the payment is
-          applied to principal. The final payment is reconciled so the principal
-          column sums to exactly the original loan amount, with no rounding drift.
-        </li>
-        <li>
-          When you enter a fixed monthly payment instead of a term, the calculator
-          uses <code>n = −ln(1 − P·r/M) / ln(1 + r)</code> to compute the payoff
-          time, then walks the same integer-cent schedule.
-        </li>
-        <li>
-          Origination and closing fees are added to the total amount paid so the
-          "cheapest overall" winner reflects the real cost, not just the headline
-          rate.
-        </li>
-      </ul>
-    </section>
-
-    <section class="lc-faq" aria-labelledby="lc-faq-h">
-      <h2 id="lc-faq-h" class="lc-sectionTitle">Frequently asked questions</h2>
-      <div class="lc-faqList">
-        {faqs.map((f) => (
-          <details class="lc-faqItem">
-            <summary class="lc-faqQ">{f.q}</summary>
-            <p class="lc-faqA">{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </section>
+    <details class="lc-faq" aria-labelledby="lc-faq-h">
+      <summary id="lc-faq-h" class="lc-faqHeading">
+        <span class="lc-sectionTitle">Frequently asked questions</span>
+        <span class="lc-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
+      </summary>
+      {faqSections.map((section) => (
+        <div class="lc-faqGroup" aria-labelledby={`lc-faq-${section.id}-h`}>
+          <h3 id={`lc-faq-${section.id}-h`} class="lc-faqGroupTitle">{section.title}</h3>
+          <div class="lc-faqList">
+            {section.items.map((f) => (
+              <details class="lc-faqItem">
+                <summary class="lc-faqQ">{f.q}</summary>
+                <p class="lc-faqA">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </details>
 
     <aside class="lc-related" aria-labelledby="lc-related-h">
       <header class="lc-relatedHeader">
@@ -440,6 +533,18 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
+  /* Smaller, italicised note used immediately after the APR formula
+     block to qualify it without competing visually with the rest of the
+     explainer copy. */
+  .lc-explainerNote {
+    margin-top: var(--space-2);
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
   .lc-formula {
     font-family: var(--font-body);
     background: var(--color-bg);
@@ -476,6 +581,84 @@ const faqSchema = {
     background: var(--color-bg);
     padding: 1px 4px;
     border-radius: 3px;
+  }
+
+  /* The whole FAQ section is collapsible. The summary doubles as the
+     section heading; we keep the visual weight of an h2 (.lc-sectionTitle)
+     and add a tiny count badge so the user knows how many questions
+     hide behind it. */
+  .lc-faq[class] {
+    /* details elements default to display:block; nothing else needed. */
+  }
+
+  .lc-faqHeading {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
+    user-select: none;
+  }
+
+  .lc-faqHeading::-webkit-details-marker { display: none; }
+
+  .lc-faqHeading::before {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    color: var(--color-deep-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+  }
+
+  .lc-faq[open] > .lc-faqHeading::before {
+    content: '−';
+  }
+
+  .lc-faqHeading:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-faqHeadingCount {
+    margin-left: auto;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .lc-faqGroup {
+    margin-top: var(--space-4);
+  }
+
+  .lc-faqGroup:first-of-type {
+    margin-top: var(--space-3);
+  }
+
+  .lc-faqGroupTitle {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 var(--space-2);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border-light);
   }
 
   .lc-faqList {

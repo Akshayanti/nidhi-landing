@@ -23,8 +23,6 @@ referentialReading:
     url: "https://www.goodreads.com/book/show/37590422-your-money-or-your-life"
     type: "book"
 ---
-[//]: # (seo, a11y, homepage, posthog, integration)
-
 "I want to buy a house someday." "I want to retire comfortably." "I'd like to be debt-free." Every adult has some version of these sentences in their head. Almost none of them, as stated, are goals. They're wishes: directions without a destination, ambitions without a finish line.
 
 The difference between a wish and a goal is a number and a date. "Buy a house" is a wish. "Have €40,000 saved for a deposit by June 2031" is a goal. A goal can be measured, tracked, adjusted, and eventually hit. A wish can only be hoped for.

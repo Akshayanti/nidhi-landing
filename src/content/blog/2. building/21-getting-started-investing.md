@@ -140,8 +140,8 @@ If you want a fast way to reason about compounding without opening a spreadsheet
 | Annual return | Years to double |
 |---|---|
 | 3% (high-yield savings) | ~24 years |
-| 5% (conservative real return) | ~14 years |
-| 7% (mid-range real return) | ~10 years |
+| 5% (balanced portfolio real return) | ~14 years |
+| 7% (equity-heavy real return) | ~10 years |
 | 10% (optimistic nominal) | ~7 years |
 
 So €10,000 invested at a 7% real return doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years. That's four doublings over a working career; each one adds more in absolute euros than the last. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.

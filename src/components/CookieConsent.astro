@@ -17,8 +17,6 @@
     </div>
   </div>
 </div>
-  </div>
-</div>
 
 <script is:inline>
   (function() {
@@ -37,19 +35,39 @@
     overlay.style.display = 'flex';
     requestAnimationFrame(function() { overlay.classList.add('cookie-overlay--visible'); });
 
-    document.getElementById('cookie-accept').addEventListener('click', function() {
-      localStorage.setItem('nidhi-cookie-consent', 'accepted');
-      // Enable heatmaps and autocapture for this session
-      if (window.posthog) {
+    var acceptBtn = document.getElementById('cookie-accept');
+    var declineBtn = document.getElementById('cookie-decline');
+    var focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    function trapFocus(e) {
+      if (e.key !== 'Tab') return;
+      var focusable = overlay.querySelectorAll(focusableSelector);
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+
+    function closeConsent(choice) {
+      localStorage.setItem('nidhi-cookie-consent', choice);
+      if (choice === 'accepted' && window.posthog) {
         posthog.set_config({ autocapture: true, enable_heatmaps: true });
       }
       overlay.style.display = 'none';
-    });
+      document.removeEventListener('keydown', trapFocus);
+      // Return focus to the element that was focused before the overlay opened
+      if (previousFocus) { try { previousFocus.focus(); } catch (_) {} }
+    }
 
-    document.getElementById('cookie-decline').addEventListener('click', function() {
-      localStorage.setItem('nidhi-cookie-consent', 'declined');
-      overlay.style.display = 'none';
-    });
+    var previousFocus = document.activeElement;
+    acceptBtn.addEventListener('click', function() { closeConsent('accepted'); });
+    declineBtn.addEventListener('click', function() { closeConsent('declined'); });
+    document.addEventListener('keydown', trapFocus);
+    // Focus the less-destructive button first
+    declineBtn.focus();
   })();
 </script>
 
@@ -132,10 +150,16 @@
     opacity: 0.85;
   }
 
-  .cookie-btn--accept {
-    background: var(--color-teal);
-    color: #fff;
+  .cookie-btn:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
   }
+
+  .cookie-btn--accept {
+    background: var(--color-cta-bg);
+    color: var(--color-cta-fg);
+  }
+  .cookie-btn--accept:hover { background: var(--color-cta-bg-hover); }
 
   .cookie-btn--decline {
     background: transparent;

@@ -6,13 +6,35 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header">
-  <nav class="site-nav container container--wide">
-    <a href="/" class="logo" data-attr="nav-logo" aria-label="nidhi — home">
+  <nav class="site-nav container container--wide" aria-label="Primary">
+    <a href="/" class="logo" data-attr="nav-logo" aria-label="nidhi home">
       <LogoMark size={32} />
       <span class="logo-text">nidhi</span>
     </a>
     <div class="nav-right">
-      <a href="/free/loan-comparison" class:list={['nav-link', { active: currentPath.startsWith('/free') }]} data-attr="nav-free-tools">Free Tools</a>
+      <div class="nav-dropdown">
+        <button
+          class:list={['nav-link', 'nav-dropdownToggle', { active: currentPath.startsWith('/free') }]}
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-attr="nav-free-tools"
+        >
+          Free Tools
+          <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
+        </button>
+        <ul class="nav-dropdownMenu" role="menu">
+          <li role="none">
+            <a href="/free/currency-risk" class:list={[{ active: currentPath === '/free/currency-risk' }]} role="menuitem" data-attr="nav-tool-currency-risk">
+              Currency Risk Analyzer
+            </a>
+          </li>
+          <li role="none">
+            <a href="/free/loan-comparison" class:list={[{ active: currentPath === '/free/loan-comparison' }]} role="menuitem" data-attr="nav-tool-loan-comparison">
+              Loan Comparison
+            </a>
+          </li>
+        </ul>
+      </div>
       <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
       <ThemeToggle />
     </div>
@@ -56,6 +78,71 @@ const currentPath = Astro.url.pathname;
     gap: var(--space-4);
   }
 
+  /* Dropdown */
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdownToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-dropdownCaret {
+    font-size: 0.65rem;
+    transition: transform 0.15s ease;
+  }
+
+  .nav-dropdown:hover .nav-dropdownCaret,
+  .nav-dropdown:focus-within .nav-dropdownCaret {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdownMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    list-style: none;
+    padding: var(--space-1) 0;
+    min-width: 220px;
+    z-index: 200;
+  }
+
+  .nav-dropdown:hover .nav-dropdownMenu,
+  .nav-dropdown:focus-within .nav-dropdownMenu {
+    display: block;
+  }
+
+  .nav-dropdownMenu a {
+    display: block;
+    padding: 10px 16px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: background 0.1s ease, color 0.1s ease;
+    white-space: nowrap;
+  }
+
+  .nav-dropdownMenu a:hover,
+  .nav-dropdownMenu a:focus-visible,
+  .nav-dropdownMenu a.active {
+    background: var(--color-bg);
+    color: var(--color-deep-blue);
+    outline: none;
+  }
+
   .nav-link {
     font-family: var(--font-heading);
     font-weight: 600;
@@ -73,8 +160,86 @@ const currentPath = Astro.url.pathname;
     text-decoration: none;
   }
 
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   @media (max-width: 480px) {
     .nav-right { gap: var(--space-3); }
     .nav-link { font-size: 0.8rem; }
+    .nav-dropdownMenu { right: -40px; min-width: 200px; }
+  }
+
+  /* JS-managed open state: ensures keyboard toggles also show the menu */
+  .nav-dropdown--open .nav-dropdownMenu {
+    display: block;
   }
 </style>
+
+<script is:inline>
+  (function() {
+    var toggle = document.querySelector('.nav-dropdownToggle');
+    var menu = document.querySelector('.nav-dropdownMenu');
+    if (!toggle || !menu) return;
+
+    function openMenu() {
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.parentElement.classList.add('nav-dropdown--open');
+      document.addEventListener('click', onClickOutside);
+      document.addEventListener('keydown', onMenuKeydown);
+    }
+
+    function closeMenu() {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.parentElement.classList.remove('nav-dropdown--open');
+      document.removeEventListener('click', onClickOutside);
+      document.removeEventListener('keydown', onMenuKeydown);
+    }
+
+    function isOpen() {
+      return toggle.getAttribute('aria-expanded') === 'true';
+    }
+
+    function onClickOutside(e) {
+      if (!toggle.parentElement.contains(e.target)) closeMenu();
+    }
+
+    function onMenuKeydown(e) {
+      if (e.key === 'Escape') { closeMenu(); toggle.focus(); return; }
+      if (e.key !== 'Tab' || !isOpen()) return;
+      var links = menu.querySelectorAll('a');
+      var first = links[0];
+      var last = links[links.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); closeMenu();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); closeMenu();
+      }
+    }
+
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      isOpen() ? closeMenu() : openMenu();
+    });
+
+    toggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isOpen()) openMenu();
+        var firstLink = menu.querySelector('a');
+        if (firstLink) firstLink.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!isOpen()) openMenu();
+        var links = menu.querySelectorAll('a');
+        if (links.length) links[links.length - 1].focus();
+      }
+    });
+
+    menu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() { closeMenu(); });
+    });
+  })();
+</script>

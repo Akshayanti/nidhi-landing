@@ -5,7 +5,7 @@ description: "Saving and investing are both ways to grow your wealth, but they s
 tldr: "Saving means setting money aside in low-risk, accessible accounts; think emergency funds and short-term goals. Investing means putting money into assets that can grow over time but carry risk and are less liquid (stocks, bonds, and index funds) for goals five or more years away. The right sequence is: emergency fund first, high-interest debt second, then invest. Doing them in the wrong order creates unnecessary risk."
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-05-15
+updatedDate: 2026-05-16
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -175,7 +175,7 @@ The "safe" choice costs you over €62,000 over 30 years. Opportunity cost isn't
     <text x="730" y="357" class="fig-tick">saved at 1%</text>
     <text x="500" y="310" text-anchor="middle" class="fig-eyebrow" style="fill: var(--color-teal);">€62,644 OPPORTUNITY COST</text>
   </svg>
-  <figcaption>Illustrative: 1% savings yield, 7% blended investment return after inflation, both compounded annually; past performance does not predict future results. The savings line rises so gently that it looks flat next to the investing curve. That widening gap is the opportunity cost of "safe": it's the wealth you didn't earn while your money waited politely in a low-yield account. The longer the timeline, the more dramatic the divergence.</figcaption>
+  <figcaption>Illustrative: 1% nominal savings yield vs. 7% nominal blended investment return, both compounded annually; figures are not adjusted for inflation, so the real (after-inflation) gap is smaller but still very large. Past performance does not predict future results. The savings line rises so gently that it looks flat next to the investing curve. That widening gap is the opportunity cost of "safe": it's the wealth you didn't earn while your money waited politely in a low-yield account. The longer the timeline, the more dramatic the divergence.</figcaption>
 </figure>
 
 

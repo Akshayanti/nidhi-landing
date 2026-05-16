@@ -151,6 +151,8 @@ Think of it as a two-step audit, not an ongoing trading exercise.
 
 You don't need to match perfectly. You need to notice the mismatches and decide whether they're fine, tolerable, or worth reducing.
 
+If you'd rather not assemble the table by hand, the [currency risk analyzer](/free/currency-risk) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
+
 ## Common mistakes
 
 - **Thinking "I'll deal with it when I retire."** If the mismatch builds for thirty years and then the exchange rate moves 25% against you in the year you need the money, the mismatch became the problem right at the worst time

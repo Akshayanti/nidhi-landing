@@ -76,7 +76,7 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 | 10 years | -3% | +19% | 22 percentage points |
 | 20 years | +2% | +17% | 15 percentage points |
 
-*Based on historical returns of broad stock market indices. Past performance does not indicate future results.*
+*Based on historical returns of broad US stock market indices over the post-1926 period. Past performance does not indicate future results, and individual non-US markets have had 20-year cohorts with negative real returns (Japan after 1989 is the most cited example). The "time narrows risk" effect is robust on average but is not a guarantee for any single market over any single window.*
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-time-title fig-time-desc">
@@ -136,7 +136,7 @@ Not all risks are equal or come from the same place.
 
 **Credit risk**: The entity you lent money to (through bonds, which are loans you make to governments or companies paying a fixed interest rate back to you, or through other loan contracts) can't pay you back.
 
-**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries) affect your returns.
+**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies) post, also includes the currency mix of your future expenses; the [currency risk analyzer](/free/currency-risk) lets you map both sides at once and see where the concentration actually sits.
 
 ## Risk as the price of return
 

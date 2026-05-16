@@ -127,7 +127,7 @@ const tagItemListSchema = {
   <section class="blog-index">
     <div class="container">
       <header class="blog-index-header">
-        <nav class="tag-breadcrumb">
+        <nav class="tag-breadcrumb" aria-label="Breadcrumb">
           <a href="/blog">Blog</a> <span class="sep">/</span> <span>{formatted}</span>
         </nav>
         <h1>{formatted}</h1>
@@ -156,11 +156,12 @@ const tagItemListSchema = {
 
   .tag-breadcrumb a {
     color: var(--color-deep-blue);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .tag-breadcrumb a:hover {
-    text-decoration: underline;
+    text-decoration-thickness: 2px;
   }
 
   .tag-breadcrumb .sep {

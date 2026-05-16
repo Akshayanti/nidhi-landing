@@ -2,7 +2,7 @@
 slug: "emergency-fund"
 title: "The Emergency Fund: Your First Financial Safety Net"
 description: "Before you invest or pay extra on debt, build a buffer. An emergency fund is the foundation that keeps the rest of your plan from collapsing."
-tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of salary, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
+tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of essential expenses, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
 order: 8
 pubDate: 2026-05-04
 updatedDate: 2026-05-16
@@ -26,7 +26,7 @@ faq:
   - question: "What is an emergency fund?"
     answer: "An emergency fund is money set aside specifically for unexpected, necessary expenses like job loss, medical bills, urgent car repairs, or home repairs. It's cash you can access immediately, not investments."
   - question: "How much should I have in my emergency fund?"
-    answer: "Start with one month of salary as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months if your income is stable, six months if it's variable."
+    answer: "Start with one month of essential expenses as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months if your income is stable, six months if it's variable."
   - question: "Where should I keep my emergency fund?"
     answer: "In a separate savings account, high-yield savings account, or money market account. It must be accessible within 24 hours and not exposed to market risk. Keep it separate from your everyday spending account so it doesn't get spent accidentally."
   - question: "What counts as an emergency?"
@@ -60,7 +60,7 @@ Think of it as your financial shock absorber. It doesn't prevent the bump. It st
 
 There are two targets:
 
-**Mini emergency fund: one month of salary.** This covers most small surprises: a car repair, a medical copay, a small home fix. Build this first, before anything else.
+**Mini emergency fund: one month of essential expenses.** This covers most small surprises: a car repair, a medical copay, a small home fix. Build this first, before anything else. Use essential expenses (rent, food, insurance, minimum debt payments, utilities) rather than gross salary so the target is the same regardless of how much you earn or save.
 
 **Full emergency fund: three to six months of essential expenses.** This covers the big ones: primarily job loss but can also mean unexpected emergencies. "Essential expenses" means rent, food, insurance, minimum debt payments, and utilities. Not dining out, not entertainment, not subscriptions.
 
@@ -80,7 +80,7 @@ The key is keeping it separate. If it's in your everyday account, it gets spent.
 
 ## How to build it
 
-1. **Start with one month of salary.** Cut spending, sell something you don't use, redirect a windfall. However you get there, get there quickly
+1. **Start with one month of essential expenses.** Cut spending, sell something you don't use, redirect a windfall. However you get there, get there quickly
 2. **Automate.** Set up a recurring transfer the day after your salary arrives. Even €100 a month gets you there within a year
 3. **Build toward the full target.** After the mini fund, work toward three months of expenses while also tackling high-interest debt. It's not either-or
 

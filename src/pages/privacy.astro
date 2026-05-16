@@ -27,7 +27,82 @@ interface ChangelogEntry {
   details?: string[];
 }
 
+type ChangelogGroup =
+  | { kind: 'single'; entry: ChangelogEntry; open: boolean }
+  | { kind: 'month' | 'year'; label: string; entries: ChangelogEntry[] };
+
+function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | null; groups: ChangelogGroup[] } {
+  if (entries.length === 0) return { first: null, groups: [] };
+
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const thisYear = now.getFullYear();
+
+  const [first, ...rest] = entries;
+  const groups: ChangelogGroup[] = [];
+
+  const recent: ChangelogEntry[] = [];
+  const older: ChangelogEntry[] = [];
+
+  for (const e of rest) {
+    const d = new Date(e.iso);
+    if (d >= thirtyDaysAgo) {
+      recent.push(e);
+    } else {
+      older.push(e);
+    }
+  }
+
+  // Recent entries: each gets its own open details.
+  for (const e of recent) {
+    groups.push({ kind: 'single', entry: e, open: true });
+  }
+
+  // Older entries: group by month or year.
+  if (older.length > 0) {
+    const monthGroups = new Map<string, ChangelogEntry[]>();
+    const yearGroups = new Map<string, ChangelogEntry[]>();
+
+    for (const e of older) {
+      const d = new Date(e.iso);
+      if (d.getFullYear() === thisYear) {
+        const key = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+        const bucket = monthGroups.get(key) ?? [];
+        bucket.push(e);
+        monthGroups.set(key, bucket);
+      } else {
+        const key = String(d.getFullYear());
+        const bucket = yearGroups.get(key) ?? [];
+        bucket.push(e);
+        yearGroups.set(key, bucket);
+      }
+    }
+
+    // Year groups first (oldest), then month groups.
+    for (const [label, items] of yearGroups) {
+      groups.push({ kind: 'year', label, entries: items });
+    }
+    for (const [label, items] of monthGroups) {
+      groups.push({ kind: 'month', label, entries: items });
+    }
+  }
+
+  return { first, groups };
+}
+
 const changelog: ChangelogEntry[] = [
+  {
+    date: 'May 16, 2026',
+    iso: '2026-05-16',
+    material: true,
+    summary: 'Added the Currency Risk Analyzer tool and disclosed a new third-party API call from your browser.',
+    details: [
+      'New free tool at /free/currency-risk: add assets and liabilities across currencies, see your net currency concentration, and get a risk assessment. No data is sent to us, everything runs in your browser.',
+      'New anonymous interaction events on /free/currency-risk: which functional currency you select, when you add or remove an asset, when you upload a CSV file, when you copy a shareable link (and which sharing mode), and when you reset the form. The financial values you type (asset names, amounts, currencies) are never sent; only interaction metadata is captured.',
+      'The tool makes one network request from your browser to api.frankfurter.app (a free, open ECB exchange-rate API). The request includes only the functional currency code you selected (e.g. ?from=EUR). No personal data is sent. This is a direct browser-to-API call; we never see the request or the response.',
+      'The header navigation now includes a dropdown listing all free tools.',
+    ],
+  },
   {
     date: 'May 10, 2026',
     iso: '2026-05-10',
@@ -62,6 +137,9 @@ const changelog: ChangelogEntry[] = [
     ],
   },
 ];
+
+const groupedLog = groupChangelog(changelog);
+const { first, groups } = groupedLog;
 
 /**
  * Ask git when this file was last committed. Runs only at build time.
@@ -100,12 +178,12 @@ const thisFileAbs = fileURLToPath(import.meta.url);
 const thisFileRel = relative(process.cwd(), thisFileAbs);
 const gitMeta = gitLastCommitDate(thisFileRel);
 
-const lastUpdated = gitMeta?.date ?? changelog[0]?.date ?? '';
-const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
+const lastUpdated = gitMeta?.date ?? first?.date ?? '';
+const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
 ---
 
 <BaseLayout
-  title="Privacy | nidhi"
+  title="Privacy Notice: How nidhi Handles Your Data | nidhi"
   description="Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it."
   keywords={['privacy', 'nidhi privacy policy', 'personal finance blog privacy']}
   robots="index,follow"
@@ -316,24 +394,80 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
         </p>
 
         <ol class="changelog">
-          {changelog.map((entry) => (
+          {/* First entry: always fully visible, no collapse */}
+          {first && (
             <li class="changelog-entry">
               <div class="changelog-marker" aria-hidden="true"></div>
               <div class="changelog-body">
                 <div class="changelog-head">
-                  <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
-                  {entry.material && (
+                  <time datetime={first.iso} class="changelog-date">{first.iso}</time>
+                  {first.material && (
                     <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
                   )}
                 </div>
-                <p class="changelog-summary">{entry.summary}</p>
-                {entry.details && entry.details.length > 0 && (
+                <p class="changelog-summary">{first.summary}</p>
+                {first.details && first.details.length > 0 && (
                   <ul class="changelog-details">
-                    {entry.details.map((d) => <li>{d}</li>)}
+                    {first.details.map((d) => <li>{d}</li>)}
                   </ul>
                 )}
               </div>
             </li>
+          )}
+
+          {/* Older entries: grouped progressively */}
+          {groups.map((group) => (
+            group.kind === 'single' ? (
+              <li class="changelog-entry">
+                <details open={group.open} class="changelog-collapse">
+                  <summary class="changelog-collapseSummary">
+                    <div class="changelog-marker" aria-hidden="true"></div>
+                    <div class="changelog-head">
+                      <time datetime={group.entry.iso} class="changelog-date">{group.entry.iso}</time>
+                      {group.entry.material && (
+                        <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
+                      )}
+                    </div>
+                  </summary>
+                  <div class="changelog-body">
+                    <p class="changelog-summary">{group.entry.summary}</p>
+                    {group.entry.details && group.entry.details.length > 0 && (
+                      <ul class="changelog-details">
+                        {group.entry.details.map((d) => <li>{d}</li>)}
+                      </ul>
+                    )}
+                  </div>
+                </details>
+              </li>
+            ) : (
+              <li class="changelog-entry changelog-entry--group">
+                <details class="changelog-collapse">
+                  <summary class="changelog-collapseSummary">
+                    <div class="changelog-marker" aria-hidden="true"></div>
+                    <span class="changelog-groupLabel">{group.label}</span>
+                    <span class="changelog-groupCount">{group.entries.length} change{group.entries.length !== 1 ? 's' : ''}</span>
+                  </summary>
+                  <ol class="changelog-groupEntries">
+                    {group.entries.map((entry) => (
+                      <li class="changelog-groupEntry">
+                        <div class="changelog-head">
+                          <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
+                          {entry.material && (
+                            <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
+                          )}
+                        </div>
+                        <p class="changelog-summary">{entry.summary}</p>
+                        {entry.details && entry.details.length > 0 && (
+                          <ul class="changelog-details">
+                            {entry.details.map((d) => <li>{d}</li>)}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              </li>
+            )
           ))}
         </ol>
       </section>
@@ -607,6 +741,93 @@ const lastUpdatedIso = gitMeta?.iso ?? changelog[0]?.iso ?? '';
 
   .changelog-details li:last-child {
     margin-bottom: 0;
+  }
+
+  /* --- Collapsible changelog groups ----------------------------------- */
+
+  .changelog-collapse {
+    /* Reset default <details> spacing. */
+    margin: 0;
+    padding: 0;
+  }
+
+  .changelog-collapseSummary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    list-style: none;
+    padding: 4px 0;
+  }
+
+  .changelog-collapseSummary::-webkit-details-marker {
+    display: none;
+  }
+
+  .changelog-collapseSummary .changelog-marker {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  /* Chevron indicator before the summary text. */
+  .changelog-collapseSummary::before {
+    content: '▸';
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--color-deep-blue);
+    transition: transform 0.15s ease;
+    width: 14px;
+    flex-shrink: 0;
+  }
+
+  details[open] > .changelog-collapseSummary::before {
+    transform: rotate(90deg);
+  }
+
+  .changelog-collapseSummary .changelog-head {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .changelog-collapse .changelog-body {
+    margin-top: var(--space-2);
+    padding-left: 0;
+  }
+
+  /* Group header (month/year) styling. */
+  .changelog-groupLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-deep-blue);
+  }
+
+  .changelog-groupCount {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+  }
+
+  .changelog-groupEntries {
+    list-style: none;
+    padding: 0 0 0 var(--space-4);
+    margin: var(--space-2) 0 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .changelog-groupEntry {
+    margin-bottom: var(--space-3);
+  }
+
+  .changelog-groupEntry:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Grouped entry marker: smaller dot, no rail connection needed. */
+  .changelog-entry--group .changelog-marker {
+    background: var(--color-border);
+    border-color: var(--color-text-muted);
   }
 
   @media (max-width: 480px) {

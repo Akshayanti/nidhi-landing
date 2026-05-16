@@ -90,7 +90,7 @@ The right choice depends on your cash flow stability, how long you expect to hol
 
 When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realise how extreme the early-years skew is.
 
-Illustrative: €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment around €1,185.
+Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortisation maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment around €1,185.
 
 | Payment number | Interest portion | Principal portion | Balance after |
 |---|---|---|---|
