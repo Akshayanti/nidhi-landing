@@ -268,7 +268,7 @@ Breakdown: 5 topic concepts (salary/income/wealth/savings rate/lifestyle inflati
 [ concept1, concept1_de, concept1_fr, concept2, ... ]
 ```
 
-**Per-post lookup:** pre-tuned hashtags + keyword arrays for upcoming posts live in `docs/plans/IG-KEYWORDS.md`. When drafting a new IG post, copy the hashtag line and keyword array from that reference into the `## Caption` section rather than re-deriving from scratch. The reference is organized by series (Series 2 "Money in Action" = Building level, posts 17–32; future sections appended as Series 3 / Mastery posts land).
+**Per-post audience angle + tuning rationale:** `docs/plans/IG-KEYWORDS.md` is the staging ground and rationale reference. The final hashtag line and keyword array for each post live in the post file's `## Caption` section (canonical once drafted); the reference doc carries the per-post audience angle and any deliberate inclusion/exclusion notes that don't survive into the caption (e.g. "no brokerage names", country-vs-global hashtag trade-offs). Use it when planning a new series and during rewrites or consistency reviews. Organized by series — Series 2 "Money in Action" = Building level (posts 17–32, all drafted); future sections appended as Series 3 / Mastery posts land.
 
 ### May 2026 algo notes (keyword surface specifics)
 
