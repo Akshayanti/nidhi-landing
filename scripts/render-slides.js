@@ -379,18 +379,18 @@ export async function renderSlides(post, browser) {
       if (!content) return;
 
       // Pass 1: stat hero width fit.
+      // Direct ratio calculation: scale = available / measured. Floor at 0.25
+      // (= 55px on 220px base) keeps the hero legibly hero-sized; anything
+      // that can't fit at 0.25 is an editorial signal to shorten the string.
       const hero = content.querySelector('.stat-hero');
       if (hero) {
         const available = content.clientWidth;
         const baseSize = parseFloat(getComputedStyle(hero).fontSize);
-        let lo = 0.4, hi = 1.0;
-        for (let i = 0; i < 10; i++) {
-          const mid = (lo + hi) / 2;
-          hero.style.fontSize = `${baseSize * mid}px`;
-          if (hero.scrollWidth <= available) lo = mid;
-          else hi = mid;
-        }
-        hero.style.fontSize = `${baseSize * lo}px`;
+        hero.style.fontSize = `${baseSize}px`;
+        const measured = hero.scrollWidth;
+        const widthScale = measured > available ? available / measured : 1.0;
+        const finalScale = Math.max(0.25, widthScale);
+        hero.style.fontSize = `${baseSize * finalScale}px`;
       }
 
       // Pass 2: vertical fit.

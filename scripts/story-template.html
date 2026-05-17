@@ -201,9 +201,10 @@
     opacity: 0.8;
   }
 
-  /* ========== CTA: closing prompt frame ========== */
-  /* A teal rule above the prompt sets it off as a deliberate ask rather
-     than another body slide. */
+  /* ========== CTA: closing prompt frame (DEPRECATED, decision #38) ========== */
+  /* Retained only for legacy Series 1 posts that still set story_prompt.
+     New posts (Series 2 onwards) must not author CTA content; the cascade
+     ends at frame 4 (blog extra + link sticker). */
   .story.story-cta .content {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
@@ -224,6 +225,46 @@
     background: var(--accent);
     border-radius: 2px;
     margin-bottom: 48px;
+  }
+
+  /* ========== Extra: blog-bonus frame (cascade frame 4) ========== */
+  /* Designed canvas under the link sticker. Body carries content from the
+     blog post that the carousel intentionally didn't include — a stat, a
+     scenario, a counter-intuitive line — paired with a small "BEYOND THIS
+     POST" eyebrow inside the content area to signal: there's more on the
+     blog if you tap. The eyebrow chip at the top stays as series chrome. */
+  .story.story-extra .content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 76px;
+    line-height: 1.22;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    text-align: left;
+  }
+  .story.story-extra .content strong {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .story.story-extra .content::before {
+    content: 'BEYOND THIS POST';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 40px;
+  }
+  .story.story-extra .content::after {
+    content: 'Read the full breakdown · link below';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    margin-top: 56px;
   }
 </style>
 </head>

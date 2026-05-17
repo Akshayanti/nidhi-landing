@@ -11,7 +11,10 @@ Per-post hashtags and bracketed-keyword arrays for upcoming IG posts, sourced fr
 
 ---
 
-## Series 2 — Building (posts 17–31)
+## Series 2 — Money in Action (Building, posts 17–32)
+
+Eyebrow chip on every non-hook slide reads `Money in Action · N of 16`. The series covers the full Building level (16 posts).
+
 
 ### Post 17 — Understanding Risk
 
@@ -19,16 +22,16 @@ Per-post hashtags and bracketed-keyword arrays for upcoming IG posts, sourced fr
 
 **Hashtags:**
 ```
-#riskmanagement #investingbasics #volatility #expatinvestor #nidhi
+#riskmanagement #marketvolatility #investingforbeginners #expatinvestor #nidhi
 ```
 
 **Keywords:**
 ```
-[ risk tolerance, risk capacity, volatility, permanent
-loss, time in the market, market drawdown, sequence
-risk, first time investor, expat investor,
-Risikotoleranz, Volatilität, volatilité, tolerancia al
-riesgo, rischio investimento, ryzyko inwestycyjne ]
+[ risk tolerance, risk capacity, time in the market,
+market drawdown, first time investor, investing for
+beginners, expat investor, expat life, Risikotoleranz,
+Risikobereitschaft, tolérance au risque, tolerancia
+al riesgo, rischio investimento, ryzyko inwestycyjne ]
 ```
 
 ---
@@ -39,27 +42,47 @@ riesgo, rischio investimento, ryzyko inwestycyjne ]
 
 **Hashtags:**
 ```
-#investingbasics #assetclasses #stocksandbonds #fireeurope #nidhi
+#assetclasses #stocksandbonds #portfoliobuilding #fireeurope #nidhi
 ```
 
 **Keywords:**
 ```
-[ asset allocation, index funds, bond fund, equity
-fund, cash equivalents, core satellite, first
-portfolio, expat investing, Anlageklassen, ETF sparen,
-classes d'actifs, classi di attività, klasy aktywów,
+[ asset classes, asset allocation, index funds, stocks
+vs bonds, equity fund, bond fund, first portfolio,
+expat investing, Anlageklassen, ETF sparen, classes
+d'actifs, classi di attività, klasy aktywów,
 tillgångsslag ]
 ```
 
 ---
 
-### Post 19 — Diversification
+### Post 19 — Satellite Assets: Commodities and Crypto
+
+**Audience angle:** investors weighing whether gold or crypto belongs in their plan; "satellite vs core" framing for the curious-but-cautious.
+
+**Hashtags:**
+```
+#commodities #goldinvesting #cryptoallocation #portfoliosatellites #nidhi
+```
+
+**Keywords:**
+```
+[ commodities investing, gold hedge, inflation hedge,
+bitcoin allocation, satellite assets, store of value,
+crypto portfolio, gold ETF, Goldanlage, Inflationsschutz,
+or investissement, oro inversión, towary inwestycje,
+krypto portfel ]
+```
+
+---
+
+### Post 20 — Diversification
 
 **Audience angle:** intermediate investors auditing concentration — single employer, single country, single sector.
 
 **Hashtags:**
 ```
-#diversification #portfoliorisk #indexfunds #fireeurope #nidhi
+#diversification #concentrationrisk #globalinvesting #indexinvesting #nidhi
 ```
 
 **Keywords:**
@@ -74,66 +97,71 @@ riskspridning, spreiding ]
 
 ---
 
-### Post 20 — Getting Started Investing
+### Post 21 — Getting Started Investing
 
 **Audience angle:** people who've been reading about investing for a year but haven't opened an account yet.
 
 **Hashtags:**
 ```
-#startinvesting #indexfunds #automateinvesting #expatinvestor #nidhi
+#startinvesting #etfinvesting #automateinvesting #firstbrokerage #nidhi
 ```
 
 **Keywords:**
 ```
 [ dollar cost averaging, first brokerage, investing
 automation, ETF savings plan, monthly investing, low
-cost investing, Trade Republic, Interactive Brokers,
-Degiro, Sparplan, plan d'investissement, plan de
-inversión, piano di accumulo, månadssparande ]
+cost investing, automated investing, expat investor,
+Sparplan, plan d'investissement, plan de inversión,
+piano di accumulo, månadssparande ]
 ```
+
+*Brokerage names dropped from the array (decision: avoid product-specific endorsements; the search phrases above route searchers to the topic without naming Trade Republic / Interactive Brokers / Degiro / etc).*
 
 ---
 
-### Post 21 — Taxes and Your Financial Plan
+### Post 22 — Taxes and Your Financial Plan
 
 **Audience angle:** intermediate planners underestimating tax drag on long-term compounding.
 
 **Hashtags:**
 ```
-#taxplanning #capitalgainstax #aftertaxreturn #expatfinance #nidhi
+#taxefficient #capitalgainstax #aftertaxreturn #expatfinance #nidhi
 ```
 
 **Keywords:**
 ```
 [ capital gains tax, tax drag, after tax return, tax
 efficient investing, expat tax, cross border tax,
-Abgeltungssteuer, impôt plus-values, impuesto
-patrimonio, tassa capital gain, podatek od zysków,
-kapitalinkomstskatt ]
+Abgeltungssteuer, Kapitalertragsteuer, impôt
+plus-values, plusvalías inversión, tassa capital gain,
+podatek od zysków, kapitalinkomstskatt ]
 ```
 
 ---
 
-### Post 22 — Tax-Advantaged Accounts
+### Post 23 — Tax-Advantaged Accounts
 
 **Audience angle:** people maxing the wrong accounts, or ignoring the retirement wrapper that fits their country.
 
 **Hashtags:**
 ```
-#ISAaccount #SIPPpension #employermatch #retirementinvesting #nidhi
+#retirementinvesting #employermatch #pensionplanning #expatretirement #nidhi
 ```
+
+*Country-specific tags (`#ISAaccount`, `#SIPPpension`) replaced with broader audience-axis tags. The keyword block carries the localized account names (Riester, PEA, PER, etc.) — that's the surface where they pull search reach, while the hashtag stays globally legible.*
 
 **Keywords:**
 ```
-[ Riester Rente, Rürup Rente, betriebliche altersvorsorge,
-PEA, PER, assurance vie, piano individuale pensionistico,
-pension wrapper, employer match, tax free growth,
-tjänstepension, pensionssparen, expat retirement ]
+[ Riester Rente, Rürup Rente, betriebliche
+altersvorsorge, PEA, PER, assurance vie, piano
+individuale pensionistico, pension wrapper, employer
+match, tax free growth, tjänstepension, pensionssparen,
+expat retirement ]
 ```
 
 ---
 
-### Post 23 — Rebalancing Your Portfolio
+### Post 24 — Rebalancing Your Portfolio
 
 **Audience angle:** existing investors whose portfolios have drifted — 70/30 has quietly become 85/15.
 
@@ -146,14 +174,14 @@ tjänstepension, pensionssparen, expat retirement ]
 ```
 [ rebalancing portfolio, threshold rebalancing,
 calendar rebalancing, target allocation, portfolio
-drift, 60 40 portfolio, Rebalancing, Portfolio-Drift,
-rééquilibrage portefeuille, rebalanceo cartera,
-ribilanciamento portafoglio, rebalansering ]
+drift, 60 40 portfolio, Portfolio-Drift, rééquilibrage
+portefeuille, rebalanceo cartera, ribilanciamento
+portafoglio, rebalansering ]
 ```
 
 ---
 
-### Post 24 — Introduction to Financial Independence
+### Post 25 — Introduction to Financial Independence
 
 **Audience angle:** FIRE newcomers running the math for the first time — "wait, it's savings rate, not salary?"
 
@@ -173,7 +201,7 @@ wolność finansowa ]
 
 ---
 
-### Post 25 — Passive Income Streams
+### Post 26 — Passive Income Streams
 
 **Audience angle:** wealth-builders planning income replacement — crossover point, dividend/rent/interest math.
 
@@ -193,7 +221,7 @@ aksjeutbytte ]
 
 ---
 
-### Post 26 — Understanding Loan Terms
+### Post 27 — Understanding Loan Terms
 
 **Audience angle:** mortgage shoppers and refinancers decoding APR, amortisation, fixed vs variable.
 
@@ -213,7 +241,7 @@ kredytu ]
 
 ---
 
-### Post 27 — Real Estate as Investment
+### Post 28 — Real Estate as Investment
 
 **Audience angle:** rent-vs-buy decision makers and buy-to-let first-timers; "renting is throwing money away" myth-busters.
 
@@ -233,7 +261,7 @@ nieruchomości, fastighetsinvestering ]
 
 ---
 
-### Post 28 — Managing Money Across Currencies
+### Post 29 — Managing Money Across Currencies
 
 **Audience angle:** expats, diaspora, cross-border earners — multi-currency is the normal shape, not an edge case.
 
@@ -253,7 +281,7 @@ valutarisiko ]
 
 ---
 
-### Post 29 — Setting Financial Goals
+### Post 30 — Setting Financial Goals
 
 **Audience angle:** planners stuck with vague "someday" goals — translate wishes into numbers + dates.
 
@@ -273,7 +301,7 @@ ekonomiska mål ]
 
 ---
 
-### Post 30 — Financial Health Metrics
+### Post 31 — Financial Health Metrics
 
 **Audience angle:** spreadsheet trackers wanting a scorecard — debt-to-income, savings rate, income replacement ratio.
 
@@ -293,7 +321,7 @@ ingreso, wskaźnik zadłużenia, skuldkvot ]
 
 ---
 
-### Post 31 — Your Financial Dashboard
+### Post 32 — Your Financial Dashboard
 
 **Audience angle:** personal-CFO-minded users setting a check-in cadence — monthly/quarterly/annual review rhythm.
 
@@ -315,5 +343,5 @@ de mando financiero, financieel dashboard ]
 
 ## Future series
 
-- **Series 3 — Money in Action:** add entries here when blog posts land
-- **Series 4 — Mastery:** add entries here when blog posts land
+- **Series 3:** name TBD (was tentatively "Money in Action" before that name was given to the Building series). Add entries here when blog posts land.
+- **Series 4 — Mastery:** add entries here when blog posts land.

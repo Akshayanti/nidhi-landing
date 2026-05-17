@@ -195,30 +195,66 @@ export function parseInstagramPost(content, relPath) {
     slides,
     totalSlides: slides.length,
     story: {
-      // Quiz stickers were removed by Instagram; story_quiz_* fields in
-      // legacy frontmatter are intentionally not surfaced here. Multi-option
-      // polls (up to 4 options) cover the former quiz use case.
+      // Active fields (decision #38, May 2026 cascade redesign):
       //
-      // story_answer is the optional reveal-frame text for quiz-style polls:
-      // when set, the stat frame renders the answer-reveal variant instead
-      // of the stat, pairing with the link sticker to route to the blog.
+      //   hook         → overlay text typed in IG composer over a tap-to-post
+      //                  share of the carousel feed post (frame 1, no PNG by
+      //                  default; frame-1-hook.png still emits as legacy
+      //                  fallback for posts that genuinely need a standalone
+      //                  first frame, e.g. milestone teasers).
+      //   pollQ +
+      //   pollOpts     → typed into the native IG poll sticker on frame 2.
+      //                  PNG backdrop is the brand-chrome-only frame-2-poll.png
+      //                  (no body text, just chrome).
+      //   insightSlide → carousel slide number (1..N) to re-share via tap-to-
+      //                  post on frame 3. NOT rendered as a PNG — the carousel
+      //                  slide is the visual.
+      //   insight      → overlay text typed in IG composer over the re-shared
+      //                  carousel slide on frame 3.
+      //   blogExtra    → body content for frame 4 (rendered as
+      //                  frame-4-extra.png with a designed canvas; this is the
+      //                  blog content that the carousel didn't cover, paired
+      //                  with the link sticker pointing to the full post).
+      //   hashtag      → small hashtag sticker text, frame 1 only.
+      //
+      // Deprecated (still parsed for backward compat with Series 1 posts):
+      //   stat / answer / prompt — superseded by the new cascade. New posts
+      //   must omit these. Renderer continues to honor them on Series 1 so
+      //   already-shipped posts re-render unchanged.
       hook: frontmatter.story_hook || '',
-      stat: frontmatter.story_stat || '',
-      answer: frontmatter.story_answer || '',
       pollQ: frontmatter.story_poll_q || '',
       pollOpts: splitPipe(frontmatter.story_poll_opts),
-      prompt: frontmatter.story_prompt || '',
+      insightSlide: parseInt(frontmatter.story_insight_slide || '0', 10) || 0,
+      insight: frontmatter.story_insight || '',
+      blogExtra: frontmatter.story_blog_extra || '',
       hashtag: frontmatter.story_hashtag || '',
+      // Opt-in: emit frame-1-hook.png for milestone posts that genuinely
+      // need a standalone first frame. Default cascade does NOT emit a
+      // PNG for frame 1; story_hook is overlay text typed in IG composer
+      // over a tap-to-post share of the carousel. See PLAYBOOK §7, #39.
+      renderHookPng: frontmatter.story_render_hook_png === 'true',
+
+      // Deprecated.
+      stat: frontmatter.story_stat || '',
+      answer: frontmatter.story_answer || '',
+      prompt: frontmatter.story_prompt || '',
+
       // Day 2 (optional, milestone posts only). Mirrors the Day 1 shape.
       // Renderer emits day2-frame-*.png when any day2.* field is present.
       day2: {
         hook: frontmatter.story_day2_hook || '',
-        stat: frontmatter.story_day2_stat || '',
-        answer: frontmatter.story_day2_answer || '',
         pollQ: frontmatter.story_day2_poll_q || '',
         pollOpts: splitPipe(frontmatter.story_day2_poll_opts),
-        prompt: frontmatter.story_day2_prompt || '',
+        insightSlide: parseInt(frontmatter.story_day2_insight_slide || '0', 10) || 0,
+        insight: frontmatter.story_day2_insight || '',
+        blogExtra: frontmatter.story_day2_blog_extra || '',
         hashtag: frontmatter.story_day2_hashtag || '',
+        renderHookPng: frontmatter.story_day2_render_hook_png === 'true',
+
+        // Deprecated.
+        stat: frontmatter.story_day2_stat || '',
+        answer: frontmatter.story_day2_answer || '',
+        prompt: frontmatter.story_day2_prompt || '',
       },
     },
   };

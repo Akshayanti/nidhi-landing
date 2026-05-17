@@ -147,7 +147,7 @@ The carousel system has two formats. Series 1 (Discovery, posts 1 through 16b) s
 **Trust signal slot (any non-closer layout).** Optional `source:` field renders as a small grey citation under the body, prefixed `SOURCE` in teal. When a slide has both a `source:` field and the post has a `blog_url`, a secondary `READ` line auto-renders below the citation: `Full breakdown on nidhi.today/blog/<slug> (link in bio)`. This is the "curiosity peak" placement: readers asking "where's this number from?" get a natural pointer to the long-form.
 
 **Eyebrow chip:** rendered top-left on every slide except the hook. Sourced from frontmatter:
-- `series:` field: the visible chip text, e.g. `"Building Wealth · 4 of 12"`
+- `series:` field: the visible chip text, e.g. `"Money in Action · 4 of 16"`
 - `category:` field: fallback if `series:` is absent
 - Hook slide intentionally has no eyebrow; the headline is the anchor.
 
@@ -268,7 +268,7 @@ Breakdown: 5 topic concepts (salary/income/wealth/savings rate/lifestyle inflati
 [ concept1, concept1_de, concept1_fr, concept2, ... ]
 ```
 
-**Per-post lookup:** pre-tuned hashtags + keyword arrays for upcoming posts live in `docs/plans/IG-KEYWORDS.md`. When drafting a new IG post, copy the hashtag line and keyword array from that reference into the `## Caption` section rather than re-deriving from scratch. The reference is organized by series (Building = posts 17–31, future sections appended as Money in Action / Mastery posts land).
+**Per-post lookup:** pre-tuned hashtags + keyword arrays for upcoming posts live in `docs/plans/IG-KEYWORDS.md`. When drafting a new IG post, copy the hashtag line and keyword array from that reference into the `## Caption` section rather than re-deriving from scratch. The reference is organized by series (Series 2 "Money in Action" = Building level, posts 17–32; future sections appended as Series 3 / Mastery posts land).
 
 ### May 2026 algo notes (keyword surface specifics)
 
@@ -286,89 +286,109 @@ The keyword block was new and lenient when IG launched it in 2025. By Q1 2026 th
 
 ### Visual system (Series 2 onwards)
 
-Stories share the cream editorial system with the feed carousel (decision #35). Same palette (`#FAF7F2` paper, `#002171` ink, `#00897B` accent), same fonts (Inter for headlines, Roboto for body), same eyebrow-chip chrome. The differences are size and zone, not language:
+Stories share the cream editorial system with the feed carousel. Same palette (`#FAF7F2` paper, `#002171` ink, `#00897B` accent), same fonts (Inter for headlines, Roboto for body), same eyebrow-chip chrome.
 
 - **Canvas:** 1080×1920 with 260px top / 360px bottom padding to clear IG's profile bar (~220px) and reply bar (~320px).
-- **Top chrome:** small teal-stroke eyebrow chip showing `series:` (or `category:`) from the post's frontmatter. Series 1 posts that lack `series`/`category` render no chip — gracefully empty, not broken.
-- **Bottom chrome:** `@nidhi.today` handle bottom-left (muted ink), `story_hashtag` value bottom-right (faint ink).
-- **Bold = teal accent** across all variants, mirroring the hook layout in carousels. The brand voice carries between formats.
-- **Variants:** `hook` (big editorial headline), `stat` (centered hero number), `poll` (blank canvas for the native poll sticker, quiz mode only), `answer` (`ANSWER` reveal + thin teal divider + supporting stat, quiz mode only), `cta` (teal rule + closing prompt). Same frontmatter fields drive everything; only the styling changed in May 2026.
+- **Top chrome:** small teal-stroke eyebrow chip showing `series:` (or `category:`). Empty when neither is set (legacy Series 1).
+- **Bottom chrome:** `@nidhi.today` handle bottom-left, `story_hashtag` value bottom-right.
+- **Bold (`**word**`) = teal accent** across all variants.
+- **Active variants:** `poll` (brand-chrome canvas under the poll sticker, frame 2) and `extra` (designed bonus content with "BEYOND THIS POST" eyebrow + "Read the full breakdown · link below" footer, frame 4). `hook` is retained as a legacy fallback. `stat`, `answer`, `cta` are deprecated for new posts (kept in template only so legacy Series 1 stories re-render unchanged).
 
-Series 1 (Discovery, posts 1 to 16b) stories are already on hand on disk / Instagram in the original dark-gradient design; they will not be re-rendered. The redesign applies only to Series 2 onwards (post 17+).
+Series 1 (Discovery, posts 1 to 16b) stories already shipped in the original dark-gradient design; they will not be re-rendered.
 
-### 4-step cascade per post
+### 4-frame cascade
 
-| Step | Timing (14:30 post) | PNG to upload | Native sticker to add | Purpose |
+The cascade is 4 frames over ~6 hours. Two frames are **manual shares + overlay text** in IG's native composer (cheap, brand-safe, route taps back to the post). Two frames are **rendered PNGs** (the poll backdrop and the blog-extra). No "save this" CTA frame: story viewers can't save stories the way they save feed posts, so that ask was always dead text.
+
+**Default cascade emits exactly 2 PNGs:** `frame-2-poll.png` and `frame-4-extra.png`. Frame 1 and frame 3 are manual shares in IG composer, no PNG produced. (Opt-in escape hatch: set `story_render_hook_png: true` to also emit `frame-1-hook.png` for milestone posts that need a standalone first frame, e.g. a beta-launch teaser that ships before any carousel.)
+
+| Step | Timing (14:30 post) | What goes on screen | Native sticker | Rendered PNG? |
 |---|---|---|---|---|
-| 1 — Hook | 14:30 | `frame-1-hook.png` | Tap-to-post + 1 hashtag sticker | Scroll-stopper, announce the drop |
-| 2 — Poll | 16:00 | `frame-2-stat.png` *(default)* or `frame-2-poll.png` *(quiz mode)* | Native **poll** sticker (question from `story_poll_q`, up to 4 options from `story_poll_opts`) | Drive interaction |
-| 3 — Value / Reveal | 18:00 | `frame-2-stat.png` *(default)* or `frame-2-answer.png` *(quiz mode)* | **Link sticker** → blog URL | Educate + drive traffic (reveal quiz answer when applicable) |
-| 4 — CTA | 20:30 | `frame-3-cta.png` | None (text is the message) | Prompt save/tag/share |
+| 1. Announce | 14:30 | **Tap-to-post share of the carousel** + `story_hook` typed as text overlay in IG composer | Tap-to-post + hashtag | No (opt-in fallback) |
+| 2. Engage | 16:00 | `frame-2-poll.png` (brand chrome only, no body text) | **Poll sticker** with question from `story_poll_q` + up to 4 options from `story_poll_opts` | Yes |
+| 3. Insight | 18:00 | **Tap-to-post share of carousel slide #`story_insight_slide`** + `story_insight` typed as text overlay | Tap-to-post | No |
+| 4. Beyond | 20:30 | `frame-4-extra.png` (designed canvas with `story_blog_extra` body + "BEYOND THIS POST" eyebrow + "Read on blog · link below" footer) | **Link sticker** to blog URL | Yes |
 
-### PNG backdrops
-- **Default mode** — one content PNG (`frame-2-stat.png`) serves both step 2 and step 3. The stat is cohesive context under a self-assessment poll and continues to read well under the step-3 link sticker.
-- **Quiz mode** — step 2 uses `frame-2-poll.png` (blank brand-chrome-only canvas) so the multi-option poll sticker has a clean backdrop with no competing text. Step 3 uses `frame-2-answer.png`, which renders the "ANSWER" reveal *and* the continuing stat below it, so the narrative doesn't drop on the reveal frame. The standalone `frame-2-stat.png` is not emitted in quiz mode — the stat is folded into the answer frame.
-- Template, palette, brand chrome, and safe zones are identical across all frame variants — the cascade stays visually consistent whether or not a post has a quiz.
+### Frame-by-frame guidance
 
-### Two poll patterns
+**Frame 1: share + overlay.** Don't render a custom hook PNG. Share the freshly-dropped carousel via tap-to-post, type `story_hook` (2 to 4 short lines, big-text friendly, in voice) as overlay in IG's text tool. A tap routes back to the carousel and the swipe arc is preserved. The renderer only emits `frame-1-hook.png` when the post sets `story_render_hook_png: true`, reserved for milestone teasers, beta launches, and posts that ship before the carousel.
 
-**Self-assessment poll** (default). Poll asks about the user; step 3 shows the same stat with a link sticker.
+**Frame 2: poll.** `frame-2-poll.png` is intentionally bare paper plus brand chrome (eyebrow, handle, hashtag). The native IG poll sticker carries the question and options. No body text on the PNG itself, because anything there competes with the sticker for the viewer's attention. The poll is **self-assessment only** — it asks the viewer about their own situation ("how many months of expenses do you have saved?", "when did you last rebalance?"), not a quiz with a right answer.
+
+**Frame 3: shared slide + insight overlay.** Re-share a specific carousel slide (`story_insight_slide`, e.g. `4`) via tap-to-post, then type `story_insight` as a short overlay highlighting the takeaway. Pick the slide that carries the post's strongest single idea — usually a `stat`, `comparison`, or punchy `prose` slide; rarely the closer. This frame doubles down on the carousel's best beat without designing a third version of the same idea.
+
+**Frame 4: blog extra + link.** `frame-4-extra.png` is the only frame in the cascade carrying genuinely new content — content from the blog that the carousel intentionally didn't cover (a deeper stat, a worked example, a counter-intuitive line, a citation). The "BEYOND THIS POST" eyebrow signals: *the blog has more*. The link sticker carries the tap. This is the cascade's primary funnel beat into the blog.
+
+### Native stickers
+- **Tap-to-post** sticker: shares a feed post inside a story; one-tap return path. Used on frames 1 and 3.
+- **Poll sticker:** question + up to 4 options. Used on frame 2 only. Self-assessment style.
+- **Link sticker** → blog URL. Used on frame 4 only.
+- **Hashtag sticker** (small, tucked corner): used on frame 1 only.
+
+### Why no CTA frame
+
+The previous cascade had a frame 4 reading "Save this for your next paycheck review" or similar. Story viewers can't save stories the way they save feed posts, and the ask read as filler. Replaced by the blog-extra frame, which gives the engaged viewer something genuinely new and routes them to the long-form. See decision #38.
+
+### Self-assessment polls (the only supported pattern)
+
+Polls ask the viewer about their own situation. No quiz-style "which of these" framing, no answer-reveal frame.
+
 - `story_poll_q`: "How many months of expenses do you have saved?"
 - `story_poll_opts`: "<1 | 1-3 | 3-6 | 6+"
-- `story_stat`: "One bad month is how debt starts"
-- Uses `frame-2-stat.png` for both step 2 (poll) and step 3 (link).
 
-**Quiz-style poll + answer reveal** (stronger funnel). Poll creates curiosity gap; step 3 reveals the answer *and* continues into the stat, then hands off to the blog via the link sticker for the "why".
-- `story_poll_q`: "Which of these is NOT an emergency?"
-- `story_poll_opts`: "Car breakdown | Broken phone | Flight deal | Medical copay"
-- `story_stat`: "3 months · no income · how long do you last?"   *(rendered under the answer on `frame-2-answer.png`)*
-- `story_answer`: "Flight deal to Bali"   *(top of `frame-2-answer.png`, under the "ANSWER" eyebrow)*
-- Step 2 is backed by `frame-2-poll.png` (blank canvas) so nothing competes with the poll sticker.
+We previously documented a "quiz-as-poll + answer reveal" pattern; it was retired (see archived decisions #16, #18, #19, #20 in §12). Without IG's native quiz sticker's right/wrong feedback loop, asking a trivia-style question inside a poll reads as a survey followed by an answer key one frame later. Self-assessment polls collapse the cascade into one coherent beat and produce more honest engagement.
 
-The renderer emits `frame-2-poll.png` + `frame-2-answer.png` (instead of `frame-2-stat.png`) when `story_answer` is set.
+### Deprecated story fields (Series 1 only)
 
-### Quiz stickers deprecated
-- Instagram has quietly removed quiz stickers from story composition. **Do not plan for quiz frames.**
-- Multi-option **polls now support up to 4 options** — use those when you want the quiz-like "which of these" feel, then reveal the answer on step 3 using `story_answer`.
-- `story_quiz_*` fields in existing frontmatter are ignored at render time and should be migrated to `story_poll_*` + `story_answer` when touched. New posts should not include `story_quiz_*` fields.
+The renderer keeps parsing these for backward compatibility, but new posts must omit them:
+
+- `story_answer` → emitted `frame-2-poll.png` + `frame-2-answer.png` quiz-mode frames (retired)
+- `story_stat` → emitted `frame-2-stat.png` body backdrop (replaced by frame-3 shared-slide pattern)
+- `story_prompt` → emitted `frame-3-cta.png` save/tag/share frame (replaced by frame-4 blog-extra)
+- `story_quiz_*` → legacy from before IG removed quiz stickers; never honored
 
 ### 2-day campaign (milestone posts only)
 
-Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run the cascade twice — Day 1 as the standard launch cascade, Day 2 as a next-series / subscribe / handoff cascade.
+Milestone posts (series launches, beta reveals, `16b-discovery-level-complete`-style wraps) run the cascade twice. `story_day2_*` mirrors every Day 1 field with the same semantics:
 
-- **Frontmatter:** mirror the `story_*` fields with `story_day2_*` equivalents — `story_day2_hook`, `story_day2_stat`, `story_day2_answer` (optional), `story_day2_poll_q`, `story_day2_poll_opts`, `story_day2_prompt`, `story_day2_hashtag` (optional — falls back to `story_hashtag`), plus `story_day2_caption_*` for the native IG caption field.
-- **Rendered output:** PNGs written into the same `stories/` directory with a `day2-` filename prefix (`day2-frame-1-hook.png`, `day2-frame-2-stat.png`, etc.). Both days share the same template, palette, and safe zones — visually one campaign.
-- **When to use:** reserved for true milestones (series complete, beta launch, major announcements). Don't use Day 2 as a crutch for overflow from Day 1 — if the cascade needs more than 4 frames, the content probably needs trimming.
-
-### Native stickers own the interaction
-- Poll **question → native IG sticker, NOT the PNG.** Reference text is in `story_poll_q` / `story_poll_opts` — copy into the sticker when posting.
-- PNG = brand-consistent backdrop
-- Link sticker on step 3 → blog URL (especially important in quiz mode — the link is the payoff for the curiosity gap)
-- Hashtag sticker (small, one per story, on step 1 only)
+- `story_day2_hook` (overlay text), `story_day2_poll_q` / `story_day2_poll_opts`, `story_day2_insight_slide` / `story_day2_insight`, `story_day2_blog_extra`, `story_day2_hashtag` (optional — falls back to `story_hashtag`)
+- `story_day2_caption_*` mirrors the IG native caption fields
+- Rendered PNGs use the `day2-` prefix (`day2-frame-2-poll.png`, `day2-frame-4-extra.png`) in the same `stories/` directory
+- Reserved for genuine milestones; do not use as overflow from Day 1
 
 ### Story captions (IG native caption field)
-- Max ~10 words / 80 chars
-- One per frame, where it adds value
-- Include a keyword (feeds IG topic classifier + search indexing)
-- Defined per frame in frontmatter as `story_caption_*`
+
+Tiny captions you type into IG's caption text field on each story frame, separate from on-PNG body text and from sticker text. ~10 words / 80 chars max, one per frame:
+
+- `story_caption_announce` → frame 1
+- `story_caption_poll` → frame 2
+- `story_caption_insight` → frame 3
+- `story_caption_extra` → frame 4
+
+Each should include one searchable keyword (IG indexes the caption field for topic classification and search).
 
 ### Story hashtags
-- 1 per story max, on Frame 1 only (or wherever the hashtag most fits)
-- Use the hashtag sticker (small, tucked in corner), NOT the caption field
+
+One per cascade max, on frame 1 (the announce frame). Hashtag sticker, small, tucked in a corner. Not the caption field. `story_hashtag` is the source.
 
 ---
 
 ## 8. Typography & Voice Rules
 
-### No em dashes anywhere (Series 2 onwards)
-- The renderer no longer generates em dashes from `---` substitutions; the conversion has been removed from the smart-typography pass.
-- House style: use commas, colons, semicolons, or periods. Em dashes lump text together visually and read as filler.
-- Applies to **slide bodies, captions, story text, and frontmatter fields**. Every surface that reaches a reader.
-- Pre-existing em dashes in Series 1 (Discovery) frontmatter and captions are grandfathered for those posts. Anything authored from Building (post 17) onwards has zero em dashes.
+### No dashes of any kind anywhere (Series 2 onwards)
+- **No em dashes (`—`), en dashes (`–`), hyphens (`-`), or double hyphens (`--`).** All four are out. Use commas, colons, semicolons, periods, or restructure the sentence.
+- The renderer's smart-typography pass does not generate any of them; whatever appears in output came from source markdown.
+- House style for what each was doing:
+  - **Em dash** → comma, colon, period, or restructure. Em dashes lump text together visually and read as filler.
+  - **En dash** for numeric ranges (`25–34`) → use the word `to` (`years 25 to 34`, `1980 to 2024`, `from 5% to 7%`).
+  - **Hyphen for compound modifiers** (`long-term`, `tax-advantaged`, `20-year`, `cross-border`) → drop the hyphen if the result reads naturally (`long term`, `20 year horizon`), or restructure (`with tax advantages`, `across borders`).
+  - **Hyphen as filler** (` - ` between phrases) → comma or period.
+- Math symbols are not dashes and are allowed: minus sign in negative numbers (`-43%`), arrows (`→`, `←`), comparison (`<`, `>`).
+- Applies to **slide bodies, captions, story text, frontmatter fields, and per-slide field values**. Every surface that ships in a post.
+- Pre-existing em dashes in Series 1 (Discovery) frontmatter and captions are grandfathered for those posts. Anything authored from Building (post 17) onwards has zero dashes of any kind.
 
 ### Curly quotes and real apostrophes
-- The renderer auto-converts straight `"..."` to `"..."` and straight `'` to `'` in carousel slide text. Authors don't need to type curly quotes manually; just write naturally and the smart-typography pass handles it.
-- En dashes are correct for numeric ranges (`25–34`, `2024–2025`); don't convert these to hyphens.
+- The renderer auto-converts straight `"..."` to curly quotes and straight `'` to curly apostrophe in carousel slide text. Authors don't need to type curly quotes manually; just write naturally and the smart-typography pass handles it.
 
 ### Drop unnecessary periods in stories
 - Stories: drop trailing periods on standalone lines
@@ -383,7 +403,7 @@ Milestone posts (e.g. `16b-discovery-level-complete`, series-launch posts) run t
 
 ### Slide 1 hooks (Series 2 onwards)
 - Layout dispatched as `hook`. Asymmetric headline; one bolded teal accent word maximum; optional one-line `sub:` underneath in muted ink.
-- Short, minimal periods, no em dashes, question marks earn their place.
+- Short, minimal periods, no dashes of any kind, question marks earn their place.
 - Auto-shrink scales the headline to fit the safe zone; trust the layout, don't pre-shrink the copy.
 
 ---
@@ -445,15 +465,20 @@ One command. Generates both carousel slides (1080×1080) and story frames (1080�
 output/instagram/{subdir}/{slug}/
 ├── slide-01.png … slide-NN.png           # carousel
 └── stories/
-    ├── frame-1-hook.png                  # (if story_hook defined)
-    ├── frame-2-stat.png                  # default mode only (if story_stat defined, story_answer NOT defined); backdrop for step 2 poll + step 3 link
-    ├── frame-2-poll.png                  # quiz mode only (if story_answer defined); blank canvas for step 2 poll sticker
-    ├── frame-2-answer.png                # quiz mode only (if story_answer defined); ANSWER reveal + continuing stat, backs step 3 link
-    ├── frame-3-cta.png                   # (if story_prompt defined)
+    ├── frame-1-hook.png                  # opt-in fallback. Only emits when post sets story_render_hook_png: true (milestone teasers, beta launches). Default frame 1 is a tap-to-post share + story_hook as overlay text in IG composer
+    ├── frame-2-poll.png                  # active. Brand-chrome canvas under the poll sticker (if story_poll_q set)
+    ├── frame-4-extra.png                 # active. Designed bonus content frame paired with link sticker (if story_blog_extra set)
+    │                                     # (frame 3 is a manual tap-to-post share of carousel slide #story_insight_slide; no PNG)
+    │
+    ├── frame-2-stat.png                  # legacy (Series 1) — story_stat
+    ├── frame-2-answer.png                # legacy (Series 1) — story_answer (quiz mode)
+    ├── frame-3-cta.png                   # legacy (Series 1) — story_prompt (save/tag/share frame)
     │
     ├── day2-frame-1-hook.png             # milestone posts only (if story_day2_hook defined)
-    ├── day2-frame-2-stat.png             # same rules as Day 1, day2- prefix
-    ├── day2-frame-2-poll.png
+    ├── day2-frame-2-poll.png             # same rules as Day 1, day2- prefix
+    ├── day2-frame-4-extra.png
+    │
+    ├── day2-frame-2-stat.png             # legacy day2 fallbacks
     ├── day2-frame-2-answer.png
     └── day2-frame-3-cta.png
 ```
@@ -473,50 +498,67 @@ post_time: "14:30 CET (Tue/Wed/Thu) — reasoning"
 
 # Series 2 onwards. Eyebrow chip rendered top-left on every non-hook slide.
 # Skip both fields on Series 1 posts (legacy format ignores them).
-category: "Building Wealth"                  # fallback chip text
-series: "Building Wealth · 4 of 12"          # preferred chip text (used when set)
+category: "Money in Action"                  # fallback chip text
+series: "Money in Action · 4 of 16"          # preferred chip text (used when set)
 byline: "@nidhi.today"                       # optional; not currently rendered, reserved
 
-# Story content — reference for 4-frame story sequence on post day
+# Story content — 4-frame cascade. Two frames are manual shares + overlay
+# text in IG composer (announce, insight); two are rendered PNGs (poll
+# backdrop, blog extra). See §7 for the full cascade.
+#
+# Frame 1 — Announce: tap-to-post share of carousel + story_hook overlay
 story_hook: |
-  Multi-line hook
-  With line breaks
-
-  Blank line for rhythm
-story_stat: "Big number or fact. Default mode → backs step 2 poll + step 3 link (frame-2-stat.png). Quiz mode → rendered below the ANSWER reveal on frame-2-answer.png"
-story_poll_q: "Question to type into native IG poll sticker"
+  Short overlay line one
+  Short overlay line two
+#
+# Frame 2 — Poll: brand-chrome canvas under the native IG poll sticker
+story_poll_q: "Self-assessment question (asks the viewer about their own situation)"
 story_poll_opts: "Option A | Option B | Option C | Option D"   # up to 4 options
-# Presence of story_answer flips the post into quiz mode:
-#   - Step 2 backdrop becomes frame-2-poll.png (blank canvas, no competing text)
-#   - Step 3 backdrop becomes frame-2-answer.png — renders the ANSWER reveal
-#     up top and the story_stat below as the continuing insight
-# Omit story_answer for self-assessment polls (default mode).
-story_answer: "The correct answer, as a bold reveal"
-story_prompt: "Save/tag/share CTA text"
+#
+# Frame 3 — Insight: tap-to-post share of carousel slide N + overlay text
+story_insight_slide: 4                  # which carousel slide to re-share
+story_insight: "Short overlay text emphasising the key takeaway"
+#
+# Frame 4 — Beyond: designed PNG with content the carousel didn't cover,
+# paired with the link sticker pointing to the blog
+story_blog_extra: |
+  Stat, scenario, or counter-intuitive line from the blog post
+  that the carousel intentionally didn't include.
 
-# Tiny captions for IG native caption field (paste when posting)
-story_caption_hook: "..."
-story_caption_poll: "..."
-story_caption_stat: "..."
-story_caption_cta: "..."
+# Tiny captions for IG native caption field (paste into IG when posting)
+story_caption_announce: "..."   # frame 1
+story_caption_poll: "..."       # frame 2
+story_caption_insight: "..."    # frame 3
+story_caption_extra: "..."      # frame 4
 
-story_hashtag: "#one-story-tag"
+story_hashtag: "#one-story-tag"   # frame 1 only, hashtag sticker
 
-# Optional — milestone posts only. Parallel Day 2 cascade rendered as
-# day2-frame-*.png in the same stories/ directory. Same semantics as the
-# Day 1 fields above (story_day2_answer flips Day 2 into quiz mode).
+# Opt-in: emit frame-1-hook.png as a standalone PNG. Default cascade does
+# NOT emit a frame 1 PNG (story_hook is overlay text typed in IG composer).
+# Set true only for milestone teasers / beta launches / posts that ship
+# before the carousel. Default false.
+story_render_hook_png: false
+
+# DEPRECATED fields (Series 1 only; renderer still parses for back-compat).
+# New posts (Series 2 onwards) must NOT set these:
+#   story_stat    → emitted frame-2-stat.png; replaced by frame-3 shared-slide
+#   story_answer  → emitted frame-2-answer.png quiz reveal; pattern retired
+#   story_prompt  → emitted frame-3-cta.png "save this" frame; retired
+
+# Optional — milestone posts only. Parallel Day 2 cascade rendered with the
+# day2- filename prefix in the same stories/ directory.
 story_day2_hook: |
-  Multi-line hook for Day 2
-story_day2_stat: "Day 2 stat"
+  Day 2 announce overlay text
 story_day2_poll_q: "..."
 story_day2_poll_opts: "A | B | C | D"
-story_day2_answer: "..."          # optional; set → quiz mode for Day 2
-story_day2_prompt: "Day 2 CTA"
-story_day2_hashtag: "#day2-tag"   # optional; defaults to story_hashtag
-story_day2_caption_hook: "..."
+story_day2_insight_slide: 7
+story_day2_insight: "Day 2 insight overlay"
+story_day2_blog_extra: "Day 2 blog-extra body"
+story_day2_hashtag: "#day2-tag"   # optional; falls back to story_hashtag
+story_day2_caption_announce: "..."
 story_day2_caption_poll: "..."
-story_day2_caption_stat: "..."
-story_day2_caption_cta: "..."
+story_day2_caption_insight: "..."
+story_day2_caption_extra: "..."
 ---
 ```
 
@@ -613,6 +655,8 @@ follow: @nidhi.today for posts 15 & 16
 
 Chronological log of decisions made during playbook development. Update as you iterate.
 
+The active table covers what currently governs the playbook. Decisions that were tried, learned from, and superseded live in §12.1 (Archive). Numbers in the archive are not reused, so cross-references in commit messages, blog drafts, and external notes still resolve.
+
 | # | Decision | Rationale |
 |---|---|---|
 | 1 | Target audience = EU + expats + Indians (non-US) | Matches product positioning + available content angles |
@@ -629,12 +673,12 @@ Chronological log of decisions made during playbook development. Update as you i
 | 12 | Reduce em dashes + unnecessary periods in stories | Story format is visual, not prose; rhythm beats grammar |
 | 13 | Stronger Slide 1 hooks for posts 8, 9, 11, 12, 14, 15, 16 | Original openings were soft; carousel reach depends on first 3 seconds |
 | 14 | Final slide format: position badge + next-up tease + follow CTA | Clean close, sets up the next post, drives follows |
-| 15 | Drop quiz stickers; use multi-option polls (up to 4) instead | IG quietly removed quiz stickers from story composition; polls now cover the "which of these" use case |
-| 16 | Quiz-as-poll + answer-reveal pattern via optional `story_answer` | Recovers the quiz affordance under the new poll-only reality: curiosity-gap poll → reveal on the link-sticker frame → blog for the "why". Stronger funnel than self-assessment polls for educational content |
-| 17 | Keep one stat backdrop for both step 2 + step 3; add `frame-2-answer.png` only for quiz posts | Attempted a split poll-specific backdrop earlier — decorative stat text on the poll PNG read as disconnected from the poll question/options. Cohesive stat content serves both stickers well; answer PNG only appears when a reveal is needed |
-| 18 | **Quiz mode: blank poll backdrop + combined answer/stat frame** (supersedes #17 for quiz posts only) | Revisiting #17 in practice: on true quiz posts (`story_answer` set), the stat text *was* unrelated to the poll options — exactly the disconnect #17 meant to avoid. Fix: step 2 becomes a blank `frame-2-poll.png` (just brand chrome) so the poll sticker stands alone, and the stat moves onto `frame-2-answer.png` below the "ANSWER" reveal so the narrative continues under the link sticker instead of dropping. Default (self-assessment) mode still uses the single stat backdrop — #17 still applies there |
-| 19 | In quiz mode, `story_stat` must *advance* from the answer, not echo the hook | Consequence of #18: now that `stat` renders directly under the answer reveal, any hook ↔ stat semantic overlap reads as the cascade restating itself. Rule of thumb: hook poses the premise, answer lands the reveal, stat introduces the *why* or the underlying principle. Audited posts 08/10/16 and rewrote each to forward-look (e.g. 08 stat "3 months · no income · how long do you last?" → "Unexpected · Urgent · Necessary"; 10 "Most people can't name 5 of their monthly expenses" → "Your savings rate predicts your wealth / Not your salary"; 16 "Same disaster · 30x cost difference" → "Your salary is your biggest asset / Protect it first"). 13 and 14 were already clean |
-| 20 | Bump "ANSWER" eyebrow to 48px / weight 700 / full opacity | Original 32px @ 0.75 opacity read as decorative rather than a section label, so the reveal felt under-announced. Larger bolder full-opacity eyebrow sits as a clear "new frame, new beat" marker without competing with the answer text below |
+| 15 | Drop quiz stickers; use multi-option polls (up to 4) instead | IG quietly removed quiz stickers from story composition; multi-option polls cover the "which of these" use case at the platform level. Note: how we *use* polls evolved further in #38 (self-assessment only, no quiz framing), but the underlying platform observation stays |
+| 16 | Quiz-as-poll + answer-reveal pattern via `story_answer` (SUPERSEDED — see Archive) | — |
+| 17 | One stat backdrop for both poll + link frames (SUPERSEDED — see Archive) | — |
+| 18 | Quiz-mode blank poll + combined answer/stat frame (SUPERSEDED — see Archive) | — |
+| 19 | Quiz-mode `story_stat` must advance from the answer (SUPERSEDED — see Archive) | — |
+| 20 | "ANSWER" eyebrow type bump to 48px (SUPERSEDED — see Archive) | — |
 | 21 | Add optional Day 2 cascade via `story_day2_*` frontmatter fields and `day2-` filename prefix | Milestone posts (16b, series launches, beta reveals) already ran a documented 2-day campaign per playbook §2, but only Day 1 frames were actually rendered as PNGs — Day 2 frames lived in prose and had to be composed manually on post day. That inconsistency meant Day 2 either launched under-branded or got silently dropped. Fix: parallel `story_day2_*` fields mirror the Day 1 shape, renderer emits `day2-frame-*.png` into the same stories dir. Default behavior unchanged for non-milestone posts (no day2 fields → no extra PNGs) |
 | 22 | Bracketed multilingual keyword array after hashtags, caption body stays English | IG's 2026 update added a post-hashtag keyword surface that feeds the topic classifier and powers multilingual search indexing without triggering hashtag-stuffing penalties. Full multilingual *captions* would balloon post length past the 2,200-char limit and dilute the English voice; a compact deduplicated keyword array covering EN + DE + FR + ES + IT + PT + NL + CS + PL + SV + NO + DA gets most of the non-English reach for a fraction of the effort. Keywords are sourced per-post from the corresponding blog article (topic terms) plus a stable audience/geo base, so each array stays grounded in what the post is actually about |
 | 23 | 18–24 keywords per post (not 100+), translate only when the word is meaningfully different | First pass generated ~120 tokens per post (every concept in every language). That overshoots the sweet spot documented in creator benchmarks (Later, Metricool, IG partner data 2024–2025 → peak performance at 10–25 keywords; reach drops above ~30; >60 triggers the "recommended to non-followers" spam filter). Fix: 4–6 topic concepts + 2–3 audience + 2–3 geo + 1–2 anchors = ~22 keywords. Translate a concept only when the native word is (a) meaningfully different from English and (b) a plausible search query in that language. Skip `inflation`, `budget`, `euro`-class cognates — they already cover cross-lingual search |
@@ -650,6 +694,24 @@ Chronological log of decisions made during playbook development. Update as you i
 | 33 | Carousel design overhaul: cream editorial template, 6 layout variants, 8-slide cap, no em-dashes globally, blog pointer pattern, source/trust signal slot. Authoring switches from `>>` directives to inline `## Slide N (layout)` plus per-slide field blocks. **Series 2 onwards (Building, post 17+) only. Series 1 finishes in original format** (May 2026) | Audit of the original Series 1 carousels surfaced systemic mechanical-feel issues: (a) layout monotony (every slide centered text on the same diagonal blue-to-teal gradient), (b) inverted hierarchy (the `**bold** = teal + 1.15em` rule made setup text louder than punchlines on hooks), (c) uniform teal middle-slide titles by slide 3 reading as noise rather than headings, (d) 12-slide cap working against 2026 IG completion-rate weighting (sweet spot 6 to 8), (e) bottom bar over-branded (full URL printed every slide), (f) gradient itself dated against May 2026 finance-IG editorial palettes (Money with Katie, Tori Dunlap, FT Money), (g) no trust-signal slot anywhere, (h) closer was a text wall ("Follow @nidhi.today for post N"), the weakest possible CTA. **Fix:** new template at `scripts/slide-template.html` runs cream paper (`#FAF7F2`) with brand navy (`#002171`) ink and brand teal (`#00897B`) reserved for one intentional accent per slide; 8-slide cap; six CSS-driven layout variants dispatched via `data-layout`; eyebrow chip top-left (sourced from `series:`/`category:` frontmatter) replaces top accent stripe; progress dots replace the `1/12` counter; `@nidhi.today` handle bottom-right (visible on hook + closer, muted on middle slides) replaces the per-slide URL print. Authors pick one of `hook | prose | stat | list | comparison | closer` per slide via inline `## Slide N (layout)` directive in the markdown header; structured layouts read additional `key: value` lines as fields (`hero:`, `caption:`, `note:`, `kicker:`, `next:`, `save:`, `share:`, `follow:`, `read:`, `source:`, etc.). Em-dash conversion removed from the renderer's smart-typography pass entirely; house style now bans em-dashes globally (slides, captions, story text, frontmatter). Trust-signal slot (`source:` field) renders a `SOURCE` citation under any non-closer slide, and when paired with `blog_url` auto-generates a secondary `READ Full breakdown on nidhi.today/blog/<slug> (link in bio)` line beneath the citation. Closer redesigned as a 4-row CTA ladder leading with `READ` (primary blog pointer, auto-derived from `blog_url`) followed by `SAVE / SHARE / FOLLOW`, with an "Up next" pill above the ladder. Reference rewrite: `14-budgeting` from 12 slides to 8, demonstrates each layout in service of one piece of content; preserved as the Series 2 design spec under git history. Old `>>` / `>>>` / `———` directives are silently stripped by the renderer if encountered in legacy markdown, but Series 2 markdown should never contain them. See §5.1 for the full spec, §11 for the per-slide field vocabulary, §8 for typography rules |
 | 34 | Hold the redesign for the Series 1 to Series 2 boundary; do not switch mid-Discovery. **Series 1 (Discovery, posts 1 to 16b) finishes on the original dark-gradient template; Series 2 (Building, post 17+) launches on the new cream editorial template from day one.** The redesigned `14-budgeting` carousel is a design spec, not a publication asset (May 2026) | Three options on the table when the new template was ready: (a) re-render unshipped Discovery posts (14, 15, 16, 16b) on the new template and ship them out, (b) keep original format through Discovery 16b and launch the redesign at the next series boundary, (c) ship the redesigned `14-budgeting` standalone as a "preview." Chose (b). Reasoning: grid coherence is the strongest argument. When a follower taps the profile they see a 9-grid; mixing two visual systems mid-series reads as "couldn't decide" rather than "evolved," and the seam disrupts the whole grid not just one post. Marginal upside on 4 posts is small (slightly higher saves and completion rate) and does not outweigh the cost of grid disruption + the lost relaunch beat. Series boundary is the strongest relaunch moment a small account gets: "Discovery wraps. Building begins. New look. Same voice." gives existing followers a reason to pay attention and lapsed followers a reason to re-engage; mid-series redesign with no announcement gets none of that. **Action:** original Series 1 markdown (pre-rewrite) was preserved in git for posts 13 to 16b and is the version that ships; original Series 1 PNG renderings are already produced and on hand for the remaining drops; the new renderer + template + parser changes stay in the repo as Series 2 assets. Series 2 (Building, post 17+) is authored from scratch on the new system; every post starts in the layout dispatch from day one, never as a retrofit. Series 1 to Series 2 transition gets 1 to 2 stories teasing the visual shift before the first Building post drops |
 | 35 | Story template (`scripts/story-template.html`) redesigned alongside the carousel template for Series 2 visual parity; same cream/editorial palette, fonts, and chrome conventions as the feed (May 2026) | The carousel-only redesign in #33 left a known mismatch: a Series 2 post's feed slides would render cream/editorial while its 4-frame story cascade would still ship in the legacy dark-gradient look. On a single profile that mismatch reads as two brands sharing one handle. **Fix:** ported the cream system end-to-end. New `story-template.html` uses `#FAF7F2` paper, `#002171` ink, `#00897B` accent, Inter + Roboto type, and the same eyebrow-chip + bottom-handle-and-hashtag chrome as feed slides — sized up for the 1080×1920 canvas and offset by IG's safe zones (~220px top, ~320px bottom). All five frame variants (`hook`, `stat`, `poll`, `answer`, `cta`) restyled in place; the renderer's frontmatter contract (`story_*` and `story_day2_*` fields) is unchanged, so no authoring migration is required. `render-stories.js` now threads the post's `series:` (or `category:`) value through every frame as the eyebrow chip text, with empty-string fallback so legacy Series 1 posts that lack those fields render no chip rather than crashing. **Decision rationale:** an alternative was to ship Series 2 launch with mismatched stories and redesign later. Rejected: stories pull ~4× the views of the carousel (per §7), so they're the higher-impact surface to keep on-brand; deferring leaves the most-viewed format on the old visual system precisely when the relaunch beat is asking the audience to notice the new look. Cost was small (~one session of work, no data model changes), so parity wins. Series 1 stories already on hand are not re-rendered — the redesign applies only Series 2 onwards |
+| 36 | Retire the quiz-as-poll + answer-reveal pattern. Self-assessment polls only. Decisions #16, #18, #19, #20 superseded (May 2026) | Quiz-as-poll asked a trivia-style question with one "correct" option inside a poll sticker, then revealed the answer one frame later. Without IG's native quiz sticker's right/wrong feedback, the pattern read as a survey followed by an answer key, with extra production overhead (advance-from-answer rule, dedicated reveal frame, ANSWER eyebrow tuning). Self-assessment polls ask the viewer about their own situation ("how many months of expenses do you have saved?"), collapse the cascade into one coherent beat, produce more honest engagement (no "right answer" pressure), and hand off cleanly to the blog. Renderer keeps `story_answer` handling for back-compat with Series 1 posts already shipped (08/10/13/14/16). Folded into the broader cascade redesign in #38 |
+| 37 | Frame 1 is a tap-to-post share + overlay text, not a custom-rendered PNG. `story_hook` repurposed as overlay text typed into IG's composer (May 2026) | Practical observation: in production, the first story in nearly every cascade is the freshly-dropped feed post itself shared via IG's tap-to-post sticker, with a one-line text overlay on top. The pre-rendered hook PNG was unused most of the time because (a) tapping the shared-post sticker routes the viewer straight back to the carousel and preserves the swipe arc — a custom PNG is a third version of the same headline competing with Slide 1, (b) the share+overlay pattern costs ~30 seconds in IG composer vs. designing and re-rendering a hook frame that's strictly worse than the carousel's own slide 1. `story_hook` semantics updated to overlay text (2 to 4 short lines, big-text friendly). Renderer still emits `frame-1-hook.png` as a legacy fallback for posts that need a standalone first frame (milestone teasers, beta launches, posts that ship before the carousel). Folded into #38 |
+| 38 | Story cascade redesign: 4 frames, 2 manual shares + 2 rendered PNGs, no CTA frame, no save-on-stories ask. Decisions #11, #17, #36, #37 incorporated; CTA frame retired (May 2026) | The previous cascade (frame-1-hook.png, frame-2-stat.png, frame-3-cta.png) had three problems: (a) `frame-2-stat.png` was a designed-from-scratch image that competed with carousel slides already designed for the same content, (b) `frame-3-cta.png` carried "save this for your next paycheck review"-style CTAs but story viewers can't save stories the way they save feed posts — that ask was always dead text, (c) the cascade did not route a tap path to the long-form blog with the right shape (the link sticker fired on step 3 under a generic stat, not on a frame carrying genuinely new content). **New cascade (4 frames over ~6h):** (1) Announce — tap-to-post share of the carousel + `story_hook` typed as overlay (per #37), (2) Engage — `frame-2-poll.png` brand-chrome canvas under the native poll sticker, self-assessment only (per #36), (3) Insight — tap-to-post share of carousel slide #`story_insight_slide` + `story_insight` typed as overlay, (4) Beyond — `frame-4-extra.png` carrying genuinely new blog content (a stat, scenario, citation the carousel didn't include) paired with the link sticker into the blog. Reuses what's already designed (frames 1 and 3 are carousel re-shares); only renders PNGs that carry NEW content (the bare poll backdrop and the blog extra). **What changed:** `render-stories.js` cascade rewritten; new `story-extra` variant added to `story-template.html` ("BEYOND THIS POST" eyebrow + "Read on blog · link below" footer); `parse-markdown.js` parses new fields `story_insight_slide`, `story_insight`, `story_blog_extra` plus `story_day2_*` mirrors. **Deprecated fields kept parsable** for Series 1 posts: `story_stat`, `story_answer`, `story_prompt`. **Caption keys renamed:** `story_caption_hook/poll/stat/cta` → `story_caption_announce/poll/insight/extra`. **Posts 17-24 audited and reauthored** on the new shape from day one |
+
+| 39 | Frame-1-hook.png is opt-in only; default cascade emits exactly 2 PNGs (May 2026) | Decision #38 retired the custom frame-1 PNG by intent ("default cascade does NOT emit a PNG for frame 1") but left the renderer hardcoded to emit `frame-1-hook.png` whenever `story_hook` was set. Result on first Series 2 render (post 17): three PNGs in the stories dir (frame-1-hook, frame-2-poll, frame-4-extra) when the playbook spec was two. Either the renderer matched the spec, or the spec was wrong. The spec was right: frame 1 is a tap-to-post share of the carousel feed post with `story_hook` typed as overlay text in IG composer. The PNG is unused except for milestone teasers / beta launches / pre-carousel ships. **Fix:** added `story_render_hook_png` boolean frontmatter flag (default false). Renderer skips `frame-1-hook.png` unless explicitly opted in. `parse-markdown.js` parses the flag for both Day 1 and Day 2 cascades. PLAYBOOK §7 cascade table, §10 output diagram, §11 frontmatter schema all updated. Default Series 2 post now produces exactly 2 story PNGs (poll + extra) plus 8 carousel slides |
+| 40 | Strict no-dash typography: no em dashes, en dashes, hyphens, or double hyphens anywhere in carousel or story posts (May 2026) | Decision #33 retired em dashes globally for Series 2; #28's blog figure rule kept en dashes for numeric ranges (`25–34`). On Series 2 first render the policy was inconsistent across surfaces (post 17 carousel slide 4 had `−43% → +2%` with the ASCII minus reading visually similar to a hyphen, frontmatter `post_time` carried an em dash, source line had `post-1926` and `non-US` hyphens). The reader doesn't know which dash is which; visually they all blur together and the cream/editorial template's tight type makes hyphenated compound modifiers look like dropped en dashes. **Rule:** four characters out everywhere (slides, captions, story text, frontmatter, per-slide field values): `—` em dash, `–` en dash, `-` hyphen, `--` double hyphen. Use `to` for ranges (`years 25 to 34`, `1980 to 2024`). Drop hyphens from compound modifiers (`long term`, `20 year horizon`, `tax advantaged`) when readable; restructure when not (`with tax advantages`, `over the long term`). Math symbols stay in: minus sign in negative numbers, arrows (`→`, `←`), comparison operators. Series 1 grandfathered. PLAYBOOK §8 rewritten. Audit pass against post 17 surfaced ~12 hyphens to remove |
+
+### 12.1 Archive: superseded decisions
+
+These were tried, learned from, and replaced. Numbers are not reused — cross-references in commit messages and external notes still resolve. Each archived entry names the decision that superseded it.
+
+| # | Decision | Why archived |
+|---|---|---|
+| 16 | Quiz-as-poll + answer-reveal pattern via optional `story_answer` (~Mar 2026) | Recovered the quiz affordance after IG removed quiz stickers — curiosity-gap poll on step 2, dedicated reveal frame on step 3 under the link sticker. Worked on paper as a stronger funnel than self-assessment polls for educational content. **Superseded by #36:** without IG's native quiz sticker right/wrong feedback loop, the structure read as a survey followed by an answer key on a different surface, with no sticker mechanic linking the two. Self-assessment polls (the viewer rates their own situation) collapse the cascade into one coherent beat and produce more honest engagement |
+| 17 | Keep one stat backdrop for both step 2 and step 3; add `frame-2-answer.png` only for quiz posts | Earlier attempt at a split poll-specific backdrop produced decorative stat text that read disconnected from the poll question. One cohesive stat backdrop served both step 2 and step 3 well in default (self-assessment) mode. **Superseded by #38:** the entire `frame-2-stat.png` concept was retired; frame 2 is now a brand-chrome-only canvas for the poll sticker, frame 3 is a re-shared carousel slide rather than a stat backdrop |
+| 18 | Quiz-mode blank poll backdrop + combined answer/stat frame (superseded #17 for quiz posts only) | On true quiz posts the stat text *was* unrelated to the poll options — exactly the disconnect #17 meant to avoid. Fix: step 2 → blank `frame-2-poll.png`, stat moves onto `frame-2-answer.png` below the ANSWER reveal so the narrative continues. Default mode still used the single stat backdrop. **Superseded by #36:** quiz mode itself retired; the backdrop split is moot |
+| 19 | In quiz mode, `story_stat` must advance from the answer, not echo the hook | Once `stat` rendered directly under the answer reveal, hook ↔ stat semantic overlap read as the cascade restating itself. Rule of thumb: hook poses the premise, answer lands the reveal, stat introduces the *why* or the principle. Audited posts 08/10/16 and rewrote each to forward-look. **Superseded by #36:** no more answer reveal frame to advance from |
+| 20 | Bump "ANSWER" eyebrow to 48px / weight 700 / full opacity | Original 32px @ 0.75 opacity read as decorative rather than a section label, so the reveal felt under-announced. Larger bolder full-opacity eyebrow sat as a clear "new frame, new beat" marker. **Superseded by #36:** no more answer-reveal frame; the eyebrow it sized doesn't render in the new cascade |
 
 ---
 
