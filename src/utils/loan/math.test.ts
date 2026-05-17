@@ -29,7 +29,7 @@ import {
   refinanceComparison,
   roundMinor,
   toMinor,
-} from './loanMath.ts';
+} from './math.ts';
 
 // ---------------------------------------------------------------------------
 // Money primitives

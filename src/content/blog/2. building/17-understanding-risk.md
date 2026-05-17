@@ -136,7 +136,7 @@ Not all risks are equal or come from the same place.
 
 **Credit risk**: The entity you lent money to (through bonds, which are loans you make to governments or companies paying a fixed interest rate back to you, or through other loan contracts) can't pay you back.
 
-**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies) post, also includes the currency mix of your future expenses; the [currency risk analyzer](/free/currency-risk) lets you map both sides at once and see where the concentration actually sits.
+**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies) post, also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth) lets you map both sides at once and see where the concentration actually sits.
 
 ## Risk as the price of return
 

@@ -151,7 +151,7 @@ Think of it as a two-step audit, not an ongoing trading exercise.
 
 You don't need to match perfectly. You need to notice the mismatches and decide whether they're fine, tolerable, or worth reducing.
 
-If you'd rather not assemble the table by hand, the [currency risk analyzer](/free/currency-risk) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
+If you'd rather not assemble the table by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
 
 ## Common mistakes
 

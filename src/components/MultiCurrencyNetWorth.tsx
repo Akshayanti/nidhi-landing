@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES, DEFAULT_CURRENCY, formatMoney } from '../utils/loanMath';
+import { CURRENCIES, DEFAULT_CURRENCY, formatMoney } from '../utils/loan/math.ts';
 import {
   aggregate,
   formatPct,
@@ -8,14 +8,14 @@ import {
   parseCSV,
   type AssetRow,
   type ParseError,
-} from '../utils/currencyRiskMath';
+} from '../utils/multi-currency-net-worth/math.ts';
 import {
   decodeFromQueryString,
   encodeShared,
   encodeFullData,
   type ShareMode,
   type SharedPositionData,
-} from '../utils/currencyRiskUrl';
+} from '../utils/multi-currency-net-worth/url.ts';
 
 // ---------------------------------------------------------------------------
 // PostHog telemetry
@@ -70,7 +70,7 @@ const RISK_COLORS: Record<string, string> = {
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function CurrencyRiskAnalyzer() {
+export default function MultiCurrencyNetWorth() {
   const [rows, setRows] = useState<AssetRow[]>([
     { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
     { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
@@ -102,7 +102,15 @@ export default function CurrencyRiskAnalyzer() {
     if (decoded.isReadOnly && decoded.sharedPositions) {
       setSharedPositions(decoded.sharedPositions);
       setIsReadOnlyView(true);
-      track('free_currency_risk_shared_view_opened', { mode: decoded.shareMode ?? 'unknown', positions: decoded.sharedPositions.length });
+      // Capture utm_source so funnels can split direct shares (utm_source=share)
+      // from other inbound campaigns. Mirrors the behavior on LoanCompare.tsx
+      // (the cross-tool consistency was an explicit audit finding).
+      const utmSource = new URLSearchParams(window.location.search).get('utm_source');
+      track('free_multi_currency_net_worth_shared_view_opened', {
+        mode: decoded.shareMode ?? 'unknown',
+        positions: decoded.sharedPositions.length,
+        utm_source: utmSource ?? null,
+      });
     }
     setHydrated(true);
   }, []);
@@ -126,10 +134,23 @@ export default function CurrencyRiskAnalyzer() {
         setRates(fetched);
         setRatesLoading(false);
       })
-      .catch(() => {
+      .catch((err: unknown) => {
         if (cancelled) return;
         setRatesError(true);
         setRatesLoading(false);
+        // Surface fetch failures as their own event so we can measure how
+        // often the upstream Frankfurter API actually fails for real users
+        // (separate from the retry click, which only fires after we render
+        // the fallback banner). Property keeps to a coarse reason; we
+        // intentionally don't ship the full error message because it may
+        // contain PII (proxied URLs, etc.).
+        const reason = typeof err === 'object' && err && 'message' in err
+          ? String((err as { message: unknown }).message).slice(0, 80)
+          : 'unknown';
+        track('free_multi_currency_net_worth_rates_error', {
+          functionalCurrency,
+          reason,
+        });
       });
 
     return () => { cancelled = true; };
@@ -163,22 +184,29 @@ export default function CurrencyRiskAnalyzer() {
     });
   }, []);
 
+  // We compute `next` outside the updater and reuse it for both setState
+  // and analytics. Putting `track()` *inside* a setState updater would
+  // double-fire under React 18 StrictMode (the dev-mode invariant
+  // double-invokes updaters); production wouldn't see it, but anyone
+  // running `npm run dev` against a real PostHog key would.
   const addRow = useCallback(() => {
-    setRows((prev) => {
-      const next = [...prev, { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' as const }];
-      track('free_currency_risk_asset_added', { count: next.length });
-      return next;
-    });
-  }, []);
+    setRows((prev) => [
+      ...prev,
+      { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' as const },
+    ]);
+    // Read length from a functional set via a microtask-stable closure:
+    // we already know the new length is `rows.length + 1` because the
+    // updater appends exactly one row. Using `rows.length + 1` here is
+    // safe because StrictMode does not double-invoke the *enclosing*
+    // callback, only the updater.
+    track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
+  }, [rows.length]);
 
   const removeRow = useCallback((index: number) => {
-    setRows((prev) => {
-      if (prev.length <= 1) return prev;
-      const next = prev.filter((_, i) => i !== index);
-      track('free_currency_risk_asset_removed', { count: next.length });
-      return next;
-    });
-  }, []);
+    if (rows.length <= 1) return;
+    setRows((prev) => prev.filter((_, i) => i !== index));
+    track('free_multi_currency_net_worth_asset_removed', { count: rows.length - 1 });
+  }, [rows.length]);
 
   // ---- CSV upload ----
 
@@ -189,6 +217,23 @@ export default function CurrencyRiskAnalyzer() {
         const text = reader.result as string;
         const { rows: parsed, errors: parseErrors } = parseCSV(text);
         setCsvErrors(parseErrors);
+        // Surface parse errors as their own event so we can measure CSV
+        // friction. Properties carry counts and a coarse classification
+        // (we look for the first error keyword); never the bad rows
+        // themselves, which can contain user data.
+        if (parseErrors.length > 0) {
+          const firstMsg = parseErrors[0]?.message ?? '';
+          let firstReason: 'invalid_value' | 'unsupported_currency' | 'empty' | 'columns' | 'other' = 'other';
+          if (firstMsg.includes('not a valid positive number')) firstReason = 'invalid_value';
+          else if (firstMsg.includes('not a supported currency')) firstReason = 'unsupported_currency';
+          else if (firstMsg.includes('empty')) firstReason = 'empty';
+          else if (firstMsg.includes('Expected at least')) firstReason = 'columns';
+          track('free_multi_currency_net_worth_csv_parse_errors', {
+            errorCount: parseErrors.length,
+            validRowCount: parsed.length,
+            firstReason,
+          });
+        }
         if (parsed.length > 0) {
           if (rows.some((r) => r.value.trim() !== '')) {
             // Existing data: confirm before overwriting.
@@ -211,20 +256,20 @@ export default function CurrencyRiskAnalyzer() {
     setRows(padded);
     setCsvConfirmPending(null);
     setCsvErrors([]);
-    track('free_currency_risk_csv_uploaded', { count: newRows.length });
+    track('free_multi_currency_net_worth_csv_uploaded', { count: newRows.length });
   }, []);
 
   const confirmCsvOverwrite = useCallback(() => {
     if (csvConfirmPending) {
       applyCsvRows(csvConfirmPending);
-      track('free_currency_risk_csv_overwrite_confirmed', { count: csvConfirmPending.length });
+      track('free_multi_currency_net_worth_csv_overwrite_confirmed', { count: csvConfirmPending.length });
     }
   }, [csvConfirmPending, applyCsvRows]);
 
   const cancelCsvOverwrite = useCallback(() => {
     setCsvConfirmPending(null);
     setCsvErrors([]);
-    track('free_currency_risk_csv_overwrite_cancelled');
+    track('free_multi_currency_net_worth_csv_overwrite_cancelled');
   }, []);
 
   // ---- Sharing ----
@@ -232,23 +277,26 @@ export default function CurrencyRiskAnalyzer() {
   const hasData = rows.some((r) => r.value.trim() !== '');
 
   const openShareModal = useCallback(() => {
-    if (!hasData || !result.hasRates || result.positions.length === 0) return;
+    // Allow share when rates are 'full' or 'partial' but not 'none':
+    // a partial share encodes what's known and the recipient sees the
+    // same gap the sender saw.
+    if (!hasData || result.hasRates === 'none' || result.positions.length === 0) return;
     setShareUrl('');
     setCopied(false);
     setShareModalOpen(true);
-    track('free_currency_risk_share_modal_opened');
+    track('free_multi_currency_net_worth_share_modal_opened');
   }, [hasData, result.hasRates, result.positions.length]);
 
   const copyShareLinkFromModal = useCallback(async () => {
     if (typeof window === 'undefined') return;
     const qs = encodeShared(rows, result.positions, functionalCurrency, shareMode);
-    const url = `${window.location.origin}${window.location.pathname}?${qs}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=currency_risk`;
+    const url = `${window.location.origin}${window.location.pathname}?${qs}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
-      track('free_currency_risk_share_copied', { mode: shareMode });
+      track('free_multi_currency_net_worth_share_copied', { mode: shareMode });
     } catch {
       setShareUrl(url);
       setCopied(true);
@@ -266,25 +314,25 @@ export default function CurrencyRiskAnalyzer() {
     setSharedPositions(null);
     setCsvErrors([]);
     setCsvConfirmPending(null);
-    track('free_currency_risk_reset');
+    track('free_multi_currency_net_worth_reset');
   }, []);
 
   return (
-    <div className="cr-root">
+    <div className="mcnw-root">
       {/* ---- Toolbar ---- */}
-      <div className="cr-toolbar" role="toolbar" aria-label="Currency risk analyzer actions">
-        <div className="cr-funcCurrencyField">
-          <label className="cr-fieldLabel" htmlFor={functionalCurrencySelectId}>
+      <div className="mcnw-toolbar" role="toolbar" aria-label="Currency risk analyzer actions">
+        <div className="mcnw-funcCurrencyField">
+          <label className="mcnw-fieldLabel" htmlFor={functionalCurrencySelectId}>
             Functional currency (the one you spend in)
           </label>
           <select
             id={functionalCurrencySelectId}
-            className="cr-select"
+            className="mcnw-select"
             value={functionalCurrency}
             onChange={(e) => {
               const next = e.target.value;
               setFunctionalCurrency(next);
-              track('free_currency_risk_func_currency_changed', { currency: next });
+              track('free_multi_currency_net_worth_func_currency_changed', { currency: next });
             }}
           >
             {CURRENCIES.map((c) => (
@@ -293,29 +341,36 @@ export default function CurrencyRiskAnalyzer() {
               </option>
             ))}
           </select>
-          <p className="cr-fieldHelp">
+          <p className="mcnw-fieldHelp">
             Your results are converted into this currency. It won't be flagged as a risk.
           </p>
         </div>
 
-        <div className="cr-toolbarActions">
+        <div className="mcnw-toolbarActions">
           <button
             type="button"
-            className="cr-shareBtn"
+            className="mcnw-shareBtn"
             onClick={openShareModal}
-            disabled={!hasData || !result.hasRates || result.positions.length === 0}
+            disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
             title="Share your currency risk analysis"
+            data-attr="mcnw-share-open"
           >
             Share
           </button>
-          <button type="button" className="cr-resetBtn" onClick={reset} title="Clear all data and start fresh">
+          <button
+            type="button"
+            className="mcnw-resetBtn"
+            onClick={reset}
+            title="Clear all data and start fresh"
+            data-attr="mcnw-reset"
+          >
             Reset
           </button>
           {copied && shareUrl && (
-            <div className="cr-shareUrlBar" role="status" aria-live="polite">
-              <span className="cr-shareUrlLabel">Link copied to clipboard</span>
+            <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
+              <span className="mcnw-shareUrlLabel">Link copied to clipboard</span>
               <input
-                className="cr-shareUrlInput"
+                className="mcnw-shareUrlInput"
                 value={shareUrl}
                 readOnly
                 onFocus={(e) => e.target.select()}
@@ -328,50 +383,72 @@ export default function CurrencyRiskAnalyzer() {
 
       {/* ---- Rate status ---- */}
       {ratesError && (
-        <div className="cr-banner cr-bannerWarn" role="alert">
+        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
           <span>
             Exchange rates unavailable, showing raw amounts without conversion.{' '}
-            <button type="button" className="cr-retryBtn" onClick={() => { setRatesRetryKey((k) => k + 1); track('free_currency_risk_rates_retry'); }}>
+            <button
+              type="button"
+              className="mcnw-retryBtn"
+              data-attr="mcnw-rates-retry"
+              onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
+            >
               Retry
             </button>
           </span>
         </div>
       )}
       {ratesLoading && !ratesError && (
-        <div className="cr-banner cr-bannerInfo" role="status">
+        <div className="mcnw-banner mcnw-bannerInfo" role="status">
           Loading exchange rates&hellip;
+        </div>
+      )}
+      {/*
+        Partial-rates banner: surfaces the case where the rates response
+        came back successfully but is missing one or more currencies the
+        user holds. The headline total excludes those positions, and each
+        affected per-currency card already flags `rateUnavailable`. We
+        still warn at the top so the user doesn't read the total as a
+        complete picture.
+      */}
+      {!ratesError && !ratesLoading && result.hasRates === 'partial' && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
+          <span>
+            One or more currencies are missing a live rate, so they are
+            excluded from the total below. Their original-currency amounts
+            are shown on the per-currency cards.
+          </span>
         </div>
       )}
 
       {/* ---- Read-only view banner ---- */}
       {isReadOnlyView && (
-        <div className="cr-banner cr-bannerInfo">
+        <div className="mcnw-banner mcnw-bannerInfo">
           You're viewing a shared risk profile. The data shown is what the sender chose to include. You can start fresh with the form below.
         </div>
       )}
 
       {/* ---- Asset table ---- */}
-      <div className="cr-tableSection">
-        <div className="cr-tableHeader">
-          <h2 className="cr-sectionTitle">Your assets &amp; liabilities</h2>
-          <span className="cr-rowCount">
+      <div className="mcnw-tableSection">
+        <div className="mcnw-tableHeader">
+          <h2 className="mcnw-sectionTitle">Your assets &amp; liabilities</h2>
+          <span className="mcnw-rowCount">
             {rows.filter((r) => r.value.trim() !== '').length} item{rows.filter((r) => r.value.trim() !== '').length !== 1 ? 's' : ''}
           </span>
         </div>
 
-        <div className="cr-table" role="table" aria-label="Assets and liabilities">
-          <div className="cr-tableHead" role="rowgroup">
-            <div className="cr-tableRow cr-tableRowHead" role="row">
-              <div className="cr-tableCell cr-cellName" role="columnheader">Name</div>
-              <div className="cr-tableCell cr-cellValue" role="columnheader">Value</div>
-              <div className="cr-tableCell cr-cellCurrency" role="columnheader">Currency</div>
-              <div className="cr-tableCell cr-cellType" role="columnheader">Type</div>
-              <div className="cr-tableCell cr-cellActions" role="columnheader">
-                <span className="cr-srOnly">Actions</span>
+        <div className="mcnw-table" role="table" aria-label="Assets and liabilities">
+          <div className="mcnw-tableHead" role="rowgroup">
+            <div className="mcnw-tableRow mcnw-tableRowHead" role="row">
+              <div className="mcnw-tableCell mcnw-cellName" role="columnheader">Name</div>
+              <div className="mcnw-tableCell mcnw-cellValue" role="columnheader">Value</div>
+              <div className="mcnw-tableCell mcnw-cellCurrency" role="columnheader">Currency</div>
+              <div className="mcnw-tableCell mcnw-cellType" role="columnheader">Type</div>
+              <div className="mcnw-tableCell mcnw-cellActions" role="columnheader">
+                <span className="mcnw-srOnly">Actions</span>
               </div>
             </div>
           </div>
-          <div className="cr-tableBody" role="rowgroup">
+          <div className="mcnw-tableBody" role="rowgroup">
             {rows.map((row, i) => (
               <AssetRowInput
                 key={i}
@@ -385,29 +462,36 @@ export default function CurrencyRiskAnalyzer() {
           </div>
         </div>
 
-        <div className="cr-tableFooter">
-          <button type="button" className="cr-addBtn" onClick={addRow}>
+        <div className="mcnw-tableFooter">
+          <button
+            type="button"
+            className="mcnw-addBtn"
+            onClick={addRow}
+            data-attr="mcnw-asset-add"
+          >
             + Add asset
           </button>
           <button
             type="button"
-            className="cr-csvBtn"
+            className="mcnw-csvBtn"
             onClick={() => fileInputRef.current?.click()}
+            data-attr="mcnw-csv-upload"
           >
             Upload CSV
           </button>
           <button
             type="button"
-            className="cr-downloadBtn"
+            className="mcnw-downloadBtn"
             onClick={() => {
               const filled = rows.filter((r) => r.value.trim() !== '');
               if (filled.length > 0) {
                 downloadCSV(filled, 'full');
-                track('free_currency_risk_csv_downloaded', { count: filled.length });
+                track('free_multi_currency_net_worth_csv_downloaded', { count: filled.length });
               }
             }}
             disabled={!hasData || isReadOnlyView}
             title="Download your assets as CSV"
+            data-attr="mcnw-csv-download"
           >
             Download CSV
           </button>
@@ -415,7 +499,7 @@ export default function CurrencyRiskAnalyzer() {
             ref={fileInputRef}
             type="file"
             accept=".csv"
-            className="cr-srOnly"
+            className="mcnw-srOnly"
             aria-label="Upload CSV file"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -438,8 +522,8 @@ export default function CurrencyRiskAnalyzer() {
 
         {/* CSV parse errors */}
         {csvErrors.length > 0 && (
-          <div className="cr-csvErrors" role="alert">
-            <p className="cr-csvErrorsTitle">
+          <div className="mcnw-csvErrors" role="alert">
+            <p className="mcnw-csvErrorsTitle">
               {csvErrors.length} row{csvErrors.length !== 1 ? 's' : ''} could not be imported:
             </p>
             <ul>
@@ -462,10 +546,20 @@ export default function CurrencyRiskAnalyzer() {
       />
 
       {/* ---- Disclaimer ---- */}
-      <p className="cr-disclaimer">
-        Exchange rates are ECB reference rates updated daily via the Frankfurter API.
-        Concentration analysis is based on net positions (assets minus liabilities) per currency.
-        This page is for educational purposes and is not financial advice.
+      {/*
+        The disclaimer mirrors the global template defined in the app
+        repo's docs/strategy/regulatory-advisory-classification.md, scoped
+        to what this calculator can and can't tell you. The deliberate
+        callouts are: (a) reference rates differ from retail rates;
+        (b) future spending plans / tax residency / hedging are not modelled;
+        (c) consult a licensed advisor for personalized advice.
+      */}
+      <p className="mcnw-disclaimer">
+        This calculator shows mathematical concentrations of your net positions across currencies,
+        using ECB reference rates that may differ from rates available at your bank or broker.
+        It does not account for your future spending plans, tax residency, hedging strategies,
+        or risk tolerance, and it is not financial advice. For personalized advice, consult a
+        licensed financial advisor.
       </p>
 
       {/* ---- Share modal ---- */}
@@ -506,44 +600,44 @@ function AssetRowInput({ row, index, total, onChange, onRemove }: AssetRowInputP
   const typeId = `${rowId}-type`;
 
   return (
-    <div className="cr-tableRow" role="row">
-      <div className="cr-tableCell cr-cellName" role="cell">
-        <label htmlFor={nameId} className="cr-srOnly">
+    <div className="mcnw-tableRow" role="row">
+      <div className="mcnw-tableCell mcnw-cellName" role="cell">
+        <label htmlFor={nameId} className="mcnw-srOnly">
           Asset name (row {index + 1} of {total})
         </label>
         <input
           id={nameId}
           type="text"
-          className="cr-input"
+          className="mcnw-input"
           value={row.name}
           onChange={(e) => onChange({ name: e.target.value })}
-          placeholder="e.g. US Stocks"
+          placeholder="Asset/Liability Name"
           autoComplete="off"
           spellCheck={false}
         />
       </div>
-      <div className="cr-tableCell cr-cellValue" role="cell">
-        <label htmlFor={valueId} className="cr-srOnly">
+      <div className="mcnw-tableCell mcnw-cellValue" role="cell">
+        <label htmlFor={valueId} className="mcnw-srOnly">
           Value (row {index + 1})
         </label>
         <input
           id={valueId}
           type="text"
           inputMode="decimal"
-          className="cr-input"
+          className="mcnw-input"
           value={row.value}
           onChange={(e) => onChange({ value: e.target.value })}
           placeholder="50000"
           autoComplete="off"
         />
       </div>
-      <div className="cr-tableCell cr-cellCurrency" role="cell">
-        <label htmlFor={currencyId} className="cr-srOnly">
+      <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
+        <label htmlFor={currencyId} className="mcnw-srOnly">
           Currency (row {index + 1})
         </label>
         <select
           id={currencyId}
-          className="cr-select cr-selectSm"
+          className="mcnw-select mcnw-selectSm"
           value={row.currency}
           onChange={(e) => onChange({ currency: e.target.value })}
         >
@@ -554,13 +648,13 @@ function AssetRowInput({ row, index, total, onChange, onRemove }: AssetRowInputP
           ))}
         </select>
       </div>
-      <div className="cr-tableCell cr-cellType" role="cell">
-        <label htmlFor={typeId} className="cr-srOnly">
+      <div className="mcnw-tableCell mcnw-cellType" role="cell">
+        <label htmlFor={typeId} className="mcnw-srOnly">
           Type (row {index + 1})
         </label>
         <select
           id={typeId}
-          className="cr-select cr-selectSm"
+          className="mcnw-select mcnw-selectSm"
           value={row.type}
           onChange={(e) => onChange({ type: e.target.value as AssetRow['type'] })}
         >
@@ -568,14 +662,15 @@ function AssetRowInput({ row, index, total, onChange, onRemove }: AssetRowInputP
           <option value="liability">Liability</option>
         </select>
       </div>
-      <div className="cr-tableCell cr-cellActions" role="cell">
+      <div className="mcnw-tableCell mcnw-cellActions" role="cell">
         {onRemove && (
           <button
             type="button"
-            className="cr-removeBtn"
+            className="mcnw-removeBtn"
             onClick={onRemove}
             aria-label={`Remove row ${index + 1}`}
             title="Remove"
+            data-attr="mcnw-asset-remove"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -601,31 +696,41 @@ interface ResultsPanelProps {
 function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hidePct = false, hideAmounts = false }: ResultsPanelProps) {
   if (result.positions.length === 0) {
     return (
-      <section className="cr-results">
-        <div className="cr-emptyState">
+      <section className="mcnw-results">
+        <div className="mcnw-emptyState">
           <p>Add at least one asset to see your currency concentration.</p>
         </div>
       </section>
     );
   }
 
-  const displayCurrency = result.hasRates ? functionalCurrency : result.positions[0].code;
-  const totalLabel = !hideAmounts && result.hasRates
+  // 'none' = no rates at all, fall back to original-currency display.
+  // 'full' or 'partial' = converted total is meaningful (partial is a sum
+  // of the positions whose rate was returned; the missing-rate banner
+  // tells the user that the total is incomplete).
+  const ratesUsable = result.hasRates !== 'none';
+  const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
+  const totalLabel = !hideAmounts && ratesUsable
     ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency)
     : null;
 
   return (
-    <section className="cr-results">
+    <section className="mcnw-results">
       {/* Total NW */}
       {hideAmounts ? (
-        <div className="cr-total cr-total--hidden">
-          <span className="cr-totalLabel">Total net worth</span>
-          <span className="cr-totalValue cr-totalValue--hidden">Hidden</span>
+        <div className="mcnw-total mcnw-total--hidden">
+          <span className="mcnw-totalLabel">Total net worth</span>
+          <span className="mcnw-totalValue mcnw-totalValue--hidden">Hidden</span>
         </div>
-      ) : result.hasRates && totalLabel ? (
-        <div className="cr-total">
-          <span className="cr-totalLabel">Total net worth</span>
-          <span className="cr-totalValue">{totalLabel}</span>
+      ) : ratesUsable && totalLabel ? (
+        <div className="mcnw-total">
+          <span className="mcnw-totalLabel">Total net worth</span>
+          <span className="mcnw-totalValue">{totalLabel}</span>
+          {result.hasRates === 'partial' && (
+            <span className="mcnw-totalHint">
+              At least one currency was missing a live rate and is excluded from this total.
+            </span>
+          )}
         </div>
       ) : null}
 
@@ -633,13 +738,13 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hi
       <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} />
 
       {/* Risk cards */}
-      <div className="cr-riskCards">
-        <h3 className="cr-riskCardsTitle">Per-currency risk assessment</h3>
+      <div className="mcnw-riskCards">
+        <h3 className="mcnw-riskCardsTitle">Per-currency risk assessment</h3>
         {result.positions.map((pos) => (
-          <div key={pos.code} className={`cr-riskCard cr-riskCard--${pos.riskLevel}`}>
-            <div className="cr-riskCardHead">
+          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.riskLevel}`}>
+            <div className="mcnw-riskCardHead">
               <span
-                className="cr-riskBadge"
+                className="mcnw-riskBadge"
                 style={{ background: RISK_COLORS[pos.riskLevel] ?? 'var(--color-text-muted)' }}
               >
                 {pos.riskLevel === 'functional'
@@ -652,19 +757,19 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hi
                         ? 'Moderate'
                         : 'Low'}
               </span>
-              <span className="cr-riskCurrency">
+              <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code)}
                 {pos.rateUnavailable ? (
-                  <> - <span className="cr-riskHidden">Rate unavailable</span></>
+                  <> - <span className="mcnw-riskHidden">Rate unavailable</span></>
                 ) : hidePct ? (
-                  <> - <span className="cr-riskHidden">Hidden</span></>
+                  <> - <span className="mcnw-riskHidden">Hidden</span></>
                 ) : (
                   pos.pctOfTotal !== 0 && <> - {formatPct(pos.pctOfTotal)}</>
                 )}
                 {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> - {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
               </span>
             </div>
-            <p className="cr-riskLabel">
+            <p className="mcnw-riskLabel">
               {pos.rateUnavailable
                 ? `No live rate available for ${pos.code} against ${functionalCurrency}; shown without conversion`
                 : pos.riskLabel}
@@ -677,10 +782,23 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hi
   );
 }
 
+/**
+ * Per-currency descriptive line. The voice is intentionally factual:
+ *   - State the size of the position.
+ *   - Quantify the sensitivity of net worth to a hypothetical FX move.
+ *   - Stop. The user decides whether their plan justifies that exposure.
+ *
+ * An earlier revision used phrases like "Consider diversifying" and
+ * "No action needed". Those are recommendations and the platform's
+ * regulatory stance forbids them on free, unauthenticated tools (see
+ * docs/strategy/regulatory-advisory-classification.md in the app repo).
+ * If you ever feel tempted to re-add advisory wording here, treat it as
+ * the same kind of bug as a math error.
+ */
 function Recommendation({ pos, functionalCurrency, hidePct = false }: { pos: ReturnType<typeof aggregate>['positions'][0]; functionalCurrency: string; hidePct?: boolean }) {
   if (pos.rateUnavailable) {
     return (
-      <p className="cr-riskRec">
+      <p className="mcnw-riskRec">
         Live rate for {pos.code} against {functionalCurrency} was not returned by the
         ECB feed, so this position is excluded from the concentration math.
         The original-currency net amount is still shown above.
@@ -689,62 +807,93 @@ function Recommendation({ pos, functionalCurrency, hidePct = false }: { pos: Ret
   }
   if (pos.riskLevel === 'functional') {
     if (hidePct) {
-      return <p className="cr-riskRec">This is your spending currency. The concentration percentage is not included in this share.</p>;
+      return <p className="mcnw-riskRec">This is your spending currency. The concentration percentage is not included in this share.</p>;
     }
-    const pct = pos.pctOfTotal;
+    const pct = Math.max(0, Math.min(100, pos.pctOfTotal));
+    const rest = Math.max(0, 100 - pct);
     if (pct > 50) {
-      return <p className="cr-riskRec">Most of your wealth is in your spending currency. No action needed.</p>;
+      return (
+        <p className="mcnw-riskRec">
+          {pct.toFixed(0)}% of your net worth is in your spending currency ({functionalCurrency}).
+          The remaining {rest.toFixed(0)}% sits in other currencies and moves with their exchange rates.
+        </p>
+      );
     }
     if (pct > 20) {
       return (
-        <p className="cr-riskRec">
-          {pct.toFixed(0)}% of your net worth is in your spending currency.
-          Consider whether this covers your near-term expenses; the rest is exposed to exchange-rate moves.
+        <p className="mcnw-riskRec">
+          {pct.toFixed(0)}% of your net worth is in your spending currency ({functionalCurrency}).
+          The remaining {rest.toFixed(0)}% is held in other currencies, so a meaningful share of your
+          day-to-day purchasing power moves with their exchange rates.
         </p>
       );
     }
     return (
-      <p className="cr-riskRec">
+      <p className="mcnw-riskRec">
         Only {pct.toFixed(0)}% of your net worth is in your spending currency ({functionalCurrency}).
-        Your day-to-day purchasing power is highly sensitive to exchange-rate swings.
-        Consider converting some foreign-currency assets into {functionalCurrency}.
+        The remaining {rest.toFixed(0)}% is held in other currencies, so most of your purchasing
+        power moves with their exchange rates.
       </p>
     );
   }
   if (pos.riskLevel === 'net-debt') {
     return (
-      <p className="cr-riskRec">
-        You owe more than you hold in {pos.code}. This may be intentional (e.g. a mortgage)
-        but the leverage increases your sensitivity to exchange-rate moves.
+      <p className="mcnw-riskRec">
+        You owe more than you hold in {pos.code} (a "net debt" position). When you have more
+        liabilities than assets in a currency, the position's value moves in the opposite
+        direction from a holdings position when the {pos.code}/{functionalCurrency} rate changes.
       </p>
     );
   }
+  // Approximate net-worth sensitivity to a 10% FX move:
+  //   change_to_NW% ≈ pct_of_NW × 10% / 100  =  pct / 10 (in percentage points)
+  // i.e. a 50% USD position with USD/EUR moving 10% nudges NW by ~5%.
+  // We round the displayed sensitivity to one decimal and floor it at 0.1
+  // so a 1% position doesn't render as "0.1%" with confusing precision.
+  const absPct = Math.abs(pos.pctOfTotal);
+  const sensitivity = Math.max(0.1, absPct / 10);
+  const sensitivityStr = sensitivity >= 1 ? sensitivity.toFixed(0) : sensitivity.toFixed(1);
   if (pos.riskLevel === 'elevated') {
     return hidePct ? (
-      <p className="cr-riskRec">
-        A significant concentration in {pos.code} could materially change your purchasing power
-        if the {pos.code}/{functionalCurrency} rate moves. Consider diversifying.
+      <p className="mcnw-riskRec">
+        Your {pos.code} position is a large share of net worth in this share. A 10% move in
+        the {pos.code}/{functionalCurrency} rate would change your net worth by a meaningful
+        amount in the same direction.
       </p>
     ) : (
-      <p className="cr-riskRec">
-        {Math.abs(pos.pctOfTotal).toFixed(0)}% of your net worth is exposed to {pos.code}.
-        A significant swing in {pos.code}/{functionalCurrency} could materially change your purchasing power.
-        Consider diversifying into other currencies or your functional currency.
+      <p className="mcnw-riskRec">
+        {absPct.toFixed(0)}% of your net worth sits in {pos.code}. A 10% move in
+        the {pos.code}/{functionalCurrency} rate would change your net worth by
+        roughly {sensitivityStr}% in the same direction.
       </p>
     );
   }
   if (pos.riskLevel === 'moderate') {
-    return (
-      <p className="cr-riskRec">
-        A meaningful portion of your net worth is in {pos.code}. Monitor the{' '}
-        {pos.code}/{functionalCurrency} rate and consider whether your future spending needs
-        are aligned with this exposure.
+    return hidePct ? (
+      <p className="mcnw-riskRec">
+        A moderate share of your net worth is in {pos.code}. A 10% move in
+        the {pos.code}/{functionalCurrency} rate would change your net worth in
+        the same direction by a similar fraction of this share.
+      </p>
+    ) : (
+      <p className="mcnw-riskRec">
+        {absPct.toFixed(0)}% of your net worth is in {pos.code}. A 10% move in
+        the {pos.code}/{functionalCurrency} rate would change your net worth by
+        roughly {sensitivityStr}% in the same direction.
       </p>
     );
   }
-  return (
-    <p className="cr-riskRec">
-      Your {pos.code} exposure is modest. No urgent action needed.
+  // Low band.
+  return hidePct ? (
+    <p className="mcnw-riskRec">
+      A small share of your net worth is in {pos.code}. The {pos.code}/{functionalCurrency} rate
+      has only a limited effect on your overall net worth.
+    </p>
+  ) : (
+    <p className="mcnw-riskRec">
+      {absPct.toFixed(0)}% of your net worth is in {pos.code}. A 10% move in
+      the {pos.code}/{functionalCurrency} rate would change your net worth by
+      roughly {sensitivityStr}% in the same direction.
     </p>
   );
 }
@@ -831,23 +980,23 @@ function ShareModal({
   const nonEmpty = rows.filter((r) => r.value.trim() !== '');
 
   return (
-    <div className="cr-modalOverlay" onClick={handleOverlayClick}>
+    <div className="mcnw-modalOverlay" onClick={handleOverlayClick}>
       <div
-        className="cr-modalDialog"
+        className="mcnw-modalDialog"
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={modalTitleId}
       >
-        <h2 className="cr-modalTitle" id={modalTitleId}>Share your analysis</h2>
+        <h2 className="mcnw-modalTitle" id={modalTitleId}>Share your analysis</h2>
 
-        <div className="cr-modalBody">
+        <div className="mcnw-modalBody">
           {/* ---- Left pane: options ---- */}
-          <div className="cr-modalOptions">
-            <fieldset className="cr-modalFieldset">
-              <legend className="cr-modalLegend">Choose what to share:</legend>
+          <div className="mcnw-modalOptions">
+            <fieldset className="mcnw-modalFieldset">
+              <legend className="mcnw-modalLegend">Choose what to share:</legend>
 
-              <label className="cr-modalCheck">
+              <label className="mcnw-modalCheck">
                 <input
                   type="radio"
                   name="shareMode"
@@ -861,7 +1010,7 @@ function ShareModal({
                 </span>
               </label>
 
-              <label className="cr-modalCheck">
+              <label className="mcnw-modalCheck">
                 <input
                   type="radio"
                   name="shareMode"
@@ -876,19 +1025,19 @@ function ShareModal({
               </label>
             </fieldset>
 
-            <div className="cr-modalFooter">
-              <button type="button" className="cr-modalCancelBtn" onClick={onClose}>
+            <div className="mcnw-modalFooter">
+              <button type="button" className="mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
                 Cancel
               </button>
-              <button type="button" className="cr-modalCopyBtn" onClick={onCopy}>
+              <button type="button" className="mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
                 {copied ? 'Copied!' : 'Copy link'}
               </button>
             </div>
             {copied && shareUrl && (
-              <div className="cr-shareUrlBar" role="status" aria-live="polite">
-                <span className="cr-shareUrlLabel">Link copied to clipboard</span>
+              <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
+                <span className="mcnw-shareUrlLabel">Link copied to clipboard</span>
                 <input
-                  className="cr-shareUrlInput"
+                  className="mcnw-shareUrlInput"
                   value={shareUrl}
                   readOnly
                   onFocus={(e) => e.target.select()}
@@ -899,16 +1048,16 @@ function ShareModal({
           </div>
 
           {/* ---- Right pane: preview ---- */}
-          <div className="cr-modalPreview">
-            <h3 className="cr-modalPreviewTitle">
+          <div className="mcnw-modalPreview">
+            <h3 className="mcnw-modalPreviewTitle">
               Recipient preview
               {isFull && (
-                <span className="cr-modalPreviewBadge">
+                <span className="mcnw-modalPreviewBadge">
                   {nonEmpty.length} item{nonEmpty.length !== 1 ? 's' : ''}
                 </span>
               )}
             </h3>
-            <div className="cr-modalPreviewBody">
+            <div className="mcnw-modalPreviewBody">
               <ResultsPanel
                 result={previewResult}
                 functionalCurrency={functionalCurrency}
@@ -918,8 +1067,8 @@ function ShareModal({
                 hideAmounts={!isFull}
               />
               {isFull && nonEmpty.length > 0 && (
-                <div className="cr-modalAssetList">
-                  <table className="cr-modalAssetTable">
+                <div className="mcnw-modalAssetList">
+                  <table className="mcnw-modalAssetTable">
                     <thead>
                       <tr>
                         <th>Name</th>
@@ -971,9 +1120,9 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
 
   if (total === 0) {
     return (
-      <div className="cr-chartSection">
-        <h3 className="cr-chartTitle">Currency concentration</h3>
-        <p className="cr-chartEmpty">Enter values above to see a concentration chart.</p>
+      <div className="mcnw-chartSection">
+        <h3 className="mcnw-chartTitle">Currency concentration</h3>
+        <p className="mcnw-chartEmpty">Enter values above to see a concentration chart.</p>
       </div>
     );
   }
@@ -1030,11 +1179,11 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
   });
 
   return (
-    <div className="cr-chartSection">
-      <h3 className="cr-chartTitle">Currency concentration</h3>
-      <div className="cr-chartWrap">
+    <div className="mcnw-chartSection">
+      <h3 className="mcnw-chartTitle">Currency concentration</h3>
+      <div className="mcnw-chartWrap">
         <svg
-          className="cr-chart"
+          className="mcnw-chart"
           viewBox={`0 0 ${size} ${size}`}
           role="img"
           aria-label={`Currency concentration donut chart. ${srRows.map((r) => `${r.label}: ${r.pct}%`).join('. ')}`}
@@ -1056,24 +1205,24 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
             </path>
           ))}
           {/* Center label */}
-          <text x={cx} y={cy - 6} textAnchor="middle" className="cr-chartCenterLabel">
+          <text x={cx} y={cy - 6} textAnchor="middle" className="mcnw-chartCenterLabel">
             {positions.length}
           </text>
-          <text x={cx} y={cy + 12} textAnchor="middle" className="cr-chartCenterSub">
+          <text x={cx} y={cy + 12} textAnchor="middle" className="mcnw-chartCenterSub">
             currenc{positions.length === 1 ? 'y' : 'ies'}
           </text>
         </svg>
 
         {/* Legend */}
-        <div className="cr-legend">
+        <div className="mcnw-legend">
           {positions.map((pos, i) => (
-            <span key={pos.code} className="cr-legendItem">
+            <span key={pos.code} className="mcnw-legendItem">
               <span
-                className="cr-legendSwatch"
+                className="mcnw-legendSwatch"
                 style={{ background: CHART_COLORS[i % CHART_COLORS.length] }}
               />
-              <span className="cr-legendCode">{pos.code}</span>
-              <span className="cr-legendPct">
+              <span className="mcnw-legendCode">{pos.code}</span>
+              <span className="mcnw-legendPct">
                 {((getAmount(pos) / total) * 100).toFixed(1)}%
               </span>
             </span>
@@ -1082,7 +1231,7 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
       </div>
 
       {/* Screen-reader table */}
-      <table className="cr-srOnly">
+      <table className="mcnw-srOnly">
         <caption>Currency concentration by net position</caption>
         <thead>
           <tr>
@@ -1131,7 +1280,7 @@ function CSVConfirmDialog({ currentCount, pendingCount, onConfirm, onCancel }: C
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    const cancelBtn = dialog.querySelector<HTMLElement>('.cr-csvConfirmNo');
+    const cancelBtn = dialog.querySelector<HTMLElement>('.mcnw-csvConfirmNo');
     cancelBtn?.focus();
 
     function handleKeyDown(e: KeyboardEvent) {
@@ -1162,7 +1311,7 @@ function CSVConfirmDialog({ currentCount, pendingCount, onConfirm, onCancel }: C
 
   return (
     <div
-      className="cr-csvConfirm"
+      className="mcnw-csvConfirm"
       ref={dialogRef}
       role="alertdialog"
       aria-modal="true"
@@ -1172,11 +1321,11 @@ function CSVConfirmDialog({ currentCount, pendingCount, onConfirm, onCancel }: C
         Uploading a CSV will replace your current {currentCount} item{currentCount !== 1 ? 's' : ''}
         {' '}with {pendingCount} from the file. Continue?
       </p>
-      <div className="cr-csvConfirmActions">
-        <button type="button" className="cr-csvConfirmYes" onClick={onConfirm}>
+      <div className="mcnw-csvConfirmActions">
+        <button type="button" className="mcnw-csvConfirmYes" onClick={onConfirm} data-attr="mcnw-csv-overwrite-confirm">
           Replace
         </button>
-        <button type="button" className="cr-csvConfirmNo" onClick={onCancel}>
+        <button type="button" className="mcnw-csvConfirmNo" onClick={onCancel} data-attr="mcnw-csv-overwrite-cancel">
           Cancel
         </button>
       </div>
@@ -1188,11 +1337,17 @@ function CSVConfirmDialog({ currentCount, pendingCount, onConfirm, onCancel }: C
 // Helpers
 // ---------------------------------------------------------------------------
 
+/**
+ * Mirrors the descriptive band labels in math.ts. If you change the labels
+ * there, change them here too. We keep the enum-to-label mapping local to
+ * the component because shared (read-only) results don't carry the label
+ * over the wire (only the enum) to keep share-link length tight.
+ */
 function riskLabelFromLevel(level: string): string {
   switch (level) {
     case 'functional': return 'Your spending currency';
     case 'net-debt': return 'Net debt in this currency';
-    case 'elevated': return 'Elevated exposure, consider diversifying';
+    case 'elevated': return 'Elevated exposure';
     case 'moderate': return 'Moderate exposure';
     default: return 'Low exposure';
   }
@@ -1201,7 +1356,7 @@ function riskLabelFromLevel(level: string): string {
 function buildSharedResult(
   sharedPositions: SharedPositionData[],
   functionalCurrency: string,
-): import('../utils/currencyRiskMath').AggregationResult {
+): import('../utils/multi-currency-net-worth/math.ts').AggregationResult {
   const funcCode = functionalCurrency.toUpperCase();
   const positions = sharedPositions.map((p) => ({
     code: p.code,
@@ -1221,7 +1376,19 @@ function buildSharedResult(
 
   const totalNetWorthFunctional = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
 
-  return { positions, totalNetWorthFunctional, hasRates: sharedPositions.some((p) => p.netAmountFunctional !== 0) };
+  // For a shared (read-only) view we don't have the original rates response,
+  // so we infer rate availability from whether the encoded payload carries
+  // any per-position functional amounts. A redacted share has no amounts at
+  // all (`'none'`); a full share that round-tripped at least one non-zero
+  // amount is treated as `'full'`. We never report `'partial'` here because
+  // the wire format doesn't distinguish "amount was zero" from "rate was
+  // missing" once the values are flattened into the URL.
+  const anyAmount = sharedPositions.some((p) => p.netAmountFunctional !== 0);
+  return {
+    positions,
+    totalNetWorthFunctional,
+    hasRates: anyAmount ? 'full' : 'none',
+  };
 }
 
 function buildPreviewResult(
@@ -1241,7 +1408,11 @@ function buildPreviewResult(
   return {
     positions,
     totalNetWorthFunctional,
-    hasRates: isFull ? realResult.hasRates : false,
+    // Anonymous preview suppresses amounts entirely, so it must report
+    // `'none'`. The full preview inherits whatever the underlying result
+    // had ('full' | 'partial' | 'none'); the share modal will not let
+    // the user copy a link if the underlying result is 'none' anyway.
+    hasRates: isFull ? realResult.hasRates : 'none',
   };
 }
 

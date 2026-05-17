@@ -11,7 +11,7 @@
     "astro": "astro",
     "lint": "node scripts/lint.mjs",
     "lint:figures": "node scripts/lint-figures.mjs",
-    "test": "npx tsx --test --test-reporter=spec src/utils/loanMath.test.ts src/utils/loanCompareUrl.test.ts src/utils/loanCompareInputs.test.ts src/utils/currencyRiskMath.test.ts src/utils/currencyRiskUrl.test.ts src/utils/dependencies.test.ts scripts/indexnow.test.mjs",
+    "test": "npx tsx --test --test-reporter=spec src/utils/shared/compactUrl.test.ts src/utils/loan/math.test.ts src/utils/loan/url.test.ts src/utils/loan/inputs.test.ts src/utils/multi-currency-net-worth/math.test.ts src/utils/multi-currency-net-worth/url.test.ts src/utils/dependencies.test.ts scripts/indexnow.test.mjs",
     "render-ig": "node scripts/render-ig.js",
     "render-figures": "node scripts/render-figures.mjs",
     "render-email-figures": "node scripts/render-email-figures.mjs"

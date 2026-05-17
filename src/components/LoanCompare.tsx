@@ -13,7 +13,7 @@ import {
   toMinor,
   type AmortizationRow,
   type LoanResult,
-} from '../utils/loanMath';
+} from '../utils/loan/math.ts';
 import {
   DEFAULT_GLOBAL_STATE,
   DEFAULT_VENDORS,
@@ -26,12 +26,12 @@ import {
   type AnalysisTab,
   type GlobalState,
   type VendorInput,
-} from '../utils/loanCompareUrl';
+} from '../utils/loan/url.ts';
 import {
   computeFromInput,
   computeNoPointsBaseline,
   parseNumber,
-} from '../utils/loanCompareInputs';
+} from '../utils/loan/inputs.ts';
 
 // -----------------------------------------------------------------------------
 // PostHog telemetry helper.
@@ -543,7 +543,7 @@ export default function LoanCompare() {
     setGlobalState(decodedGlobal);
     setHydrated(true);
 
-    // Mirrors `free_currency_risk_shared_view_opened` on the analyzer.
+    // Mirrors `free_multi_currency_net_worth_shared_view_opened` on the analyzer.
     // We fire only when the URL actually carries encoded state (any
     // non-utm param), so a plain `?utm_source=...` campaign click does
     // not get mislabelled as a shared comparison view. The utm-source
@@ -575,38 +575,76 @@ export default function LoanCompare() {
     });
   }, []);
 
+  // track() is intentionally outside the setState updater. React 18
+  // StrictMode double-invokes updaters in dev, which would double-fire
+  // any analytics call inside them. Computing the post-add length from
+  // the closure (`vendors.length + 1`) is safe because the enclosing
+  // callback is *not* double-invoked.
   const addVendor = useCallback(() => {
-    setVendors((prev) => {
-      if (prev.length >= MAX_VENDORS) return prev;
-      const next = [...prev, makeDefaultVendor(prev.length)];
-      // Track *after* state update is queued so the count we report is the
-      // post-add count, which is what funnels actually want to filter on.
-      track('free_loan_comparison_vendor_added', { count: next.length });
-      return next;
-    });
-  }, []);
+    if (vendors.length >= MAX_VENDORS) return;
+    setVendors((prev) => [...prev, makeDefaultVendor(prev.length)]);
+    track('free_loan_comparison_vendor_added', { count: vendors.length + 1 });
+  }, [vendors.length]);
 
   const removeVendor = useCallback((index: number) => {
-    setVendors((prev) => {
-      if (prev.length <= MIN_VENDORS) return prev;
-      const removedLabel = VENDOR_LABELS[index];
-      const next = prev.filter((_, i) => i !== index);
-      track('free_loan_comparison_vendor_removed', {
-        // `vendor` is the slot label that was removed (A-E). After removal,
-        // the remaining vendors shift up positionally; that's fine for
-        // analytics because we report the slot the user *clicked*, not its
-        // post-removal identity.
-        vendor: removedLabel,
-        count: next.length,
-      });
-      return next;
+    if (vendors.length <= MIN_VENDORS) return;
+    const removedLabel = VENDOR_LABELS[index];
+    setVendors((prev) => prev.filter((_, i) => i !== index));
+    track('free_loan_comparison_vendor_removed', {
+      // `vendor` is the slot label that was removed (A-E). After removal,
+      // the remaining vendors shift up positionally; that's fine for
+      // analytics because we report the slot the user *clicked*, not its
+      // post-removal identity.
+      vendor: removedLabel,
+      count: vendors.length - 1,
     });
-  }, []);
+  }, [vendors.length]);
 
   const results = useMemo(
     () => vendors.map((v) => computeFromInput(v, currency)),
     [vendors, currency],
   );
+
+  // Debounced validation-error signal. Without this, we are blind to how
+  // often real users land on a state where one or more vendors fail to
+  // compute (missing principal, rate too high to amortize, etc.). The
+  // effect re-runs on every keystroke because `results` is a fresh
+  // reference, but the timer collapses bursts into one event 600ms after
+  // the user stops typing. We never ship the error message; only the
+  // count and a coarse `firstReason` bucket inferred from keywords.
+  const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (!hydrated) return;
+    if (validationTrackTimer.current) clearTimeout(validationTrackTimer.current);
+    validationTrackTimer.current = setTimeout(() => {
+      const errored = results
+        .map((r, i) => ({ r, i }))
+        .filter((x) => Boolean(x.r.error));
+      if (errored.length === 0) return;
+      const firstMsg = (errored[0].r.error ?? '').toLowerCase();
+      let firstReason:
+        | 'missing_principal'
+        | 'missing_rate'
+        | 'missing_term'
+        | 'payment_below_interest'
+        | 'rate_out_of_range'
+        | 'term_out_of_range'
+        | 'other' = 'other';
+      if (firstMsg.includes('principal')) firstReason = 'missing_principal';
+      else if (firstMsg.includes('payment') && firstMsg.includes('interest')) firstReason = 'payment_below_interest';
+      else if (firstMsg.includes('rate') && firstMsg.includes('range')) firstReason = 'rate_out_of_range';
+      else if (firstMsg.includes('rate')) firstReason = 'missing_rate';
+      else if (firstMsg.includes('term')) firstMsg.includes('range') ? (firstReason = 'term_out_of_range') : (firstReason = 'missing_term');
+      track('free_loan_comparison_validation_error', {
+        count: errored.length,
+        firstReason,
+        firstVendor: VENDOR_LABELS[errored[0].i],
+      });
+    }, 600);
+    return () => {
+      if (validationTrackTimer.current) clearTimeout(validationTrackTimer.current);
+    };
+  }, [results, hydrated]);
 
   // Per-vendor "no-points baseline" results, used to compute the
   // points break-even. When a vendor hasn't paid points the entry is
@@ -696,6 +734,7 @@ export default function LoanCompare() {
             onClick={copyShareLink}
             aria-describedby="lc-share-status"
             title="Copy a link that includes all your loan details"
+            data-attr="lc-share-copy"
           >
             {copied ? 'Link copied' : 'Copy shareable link'}
           </button>
@@ -708,6 +747,7 @@ export default function LoanCompare() {
               track('free_loan_comparison_reset');
             }}
             title="Clear all data and start fresh"
+            data-attr="lc-reset"
           >
             Reset to defaults
           </button>
@@ -744,7 +784,6 @@ export default function LoanCompare() {
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
             currency={currency}
-            isBest={validResults.length > 1 && i === cheapestByTotal}
             onChange={(patch) => updateVendor(i, patch)}
             // The remove button is only renderable when we're above the
             // minimum; passing undefined hides it. Doing the gating here
@@ -758,6 +797,7 @@ export default function LoanCompare() {
             className="lc-cardAdd"
             onClick={addVendor}
             aria-label={`Add another vendor to compare (${vendors.length + 1} of ${MAX_VENDORS})`}
+            data-attr="lc-vendor-add"
           >
             <span className="lc-cardAddIcon" aria-hidden="true">+</span>
             <span className="lc-cardAddLabel">Add vendor</span>
@@ -772,7 +812,6 @@ export default function LoanCompare() {
         results={results}
         vendors={vendors}
         currency={currency}
-        bestIndex={cheapestByTotal}
       />
 
       <AnalysisTabs
@@ -796,12 +835,18 @@ export default function LoanCompare() {
           cost of borrowing; jurisdictions differ on which other costs
           (mandatory insurance, account products, taxes) must be included
           in their official APR/APRC disclosure, so add those into the
-          fee field if you want them reflected. Real adjustable-rate
-          loans track an index plus a margin and may have rate caps that
-          this calculator does not enforce; the subsequent rate you
-          enter is your best stress-test guess. Property taxes, building
-          or community service charges, and home insurance are not
-          modeled. Educational comparison only; not financial advice.
+          fee field if you want them reflected. Canadian residential
+          mortgages compound semi-annually by law and Brazilian and some
+          UK products use other compounding conventions; on those
+          products the monthly-compounding figures here will be slightly
+          off. Real adjustable-rate loans track an index plus a margin
+          and may have rate caps that this calculator does not enforce;
+          the subsequent rate you enter is your best stress-test guess.
+          Property taxes, building or community service charges, home
+          insurance, and the tax treatment of loan interest in your
+          jurisdiction are not modeled. Educational comparison only; not
+          financial advice. For a binding loan comparison or personalized
+          advice, consult a licensed mortgage broker or financial advisor.
         </p>
       </details>
     </div>
@@ -819,12 +864,19 @@ interface VendorCardProps {
    *  using points. */
   noPointsBaseline: LoanResult | null;
   currency: string;
-  isBest: boolean;
   onChange: (patch: Partial<VendorInput>) => void;
   /** Omitted when removing would drop below the minimum vendor count. */
   onRemove?: () => void;
 }
 
+// Note: this card intentionally does not crown a "best" vendor. Earlier
+// revisions rendered a star "Lowest total cost" badge and a thicker
+// border on the cheapest card. Naming a winner among specific commercial
+// loan offers crosses the line from calculation into recommendation under
+// the EU Consumer Credit Directive and the platform's own
+// regulatory-advisory-classification policy. The Side-by-side panel
+// below the cards still shows the differences in money terms, which lets
+// the user see which is cheapest without the calculator declaring it.
 function VendorCard({
   label,
   color,
@@ -832,7 +884,6 @@ function VendorCard({
   result,
   noPointsBaseline,
   currency,
-  isBest,
   onChange,
   onRemove,
 }: VendorCardProps) {
@@ -846,17 +897,19 @@ function VendorCard({
 
   return (
     <article
-      className={`lc-card ${isBest ? 'lc-cardBest' : ''}`}
+      className="lc-card"
       style={{ '--lc-color': color } as React.CSSProperties}
       aria-labelledby={headingId}
     >
       <header className="lc-cardHeader">
-        <h2 id={headingId} className="lc-cardBadge">Vendor {label}</h2>
-        {isBest && (
-          <span className="lc-cardBestBadge">
-            <span aria-hidden="true">★ </span>Lowest total cost
-          </span>
-        )}
+        {/*
+          h3 (not h2): an h2 per vendor card padded the document outline
+          with up to five "Vendor A / B / C…" entries that contributed
+          nothing to SEO and, with autocapture screen-readers, generated
+          noisy nav. h3 keeps the card semantically labelled while letting
+          the surrounding section heading own the h2 slot.
+        */}
+        <h3 id={headingId} className="lc-cardBadge">Vendor {label}</h3>
         {onRemove && (
           <button
             type="button"
@@ -864,6 +917,7 @@ function VendorCard({
             onClick={onRemove}
             aria-label={`Remove vendor ${label} from comparison`}
             title="Remove from comparison"
+            data-attr="lc-vendor-remove"
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -1381,10 +1435,13 @@ interface DeltaSummaryProps {
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
-  bestIndex: number;
+  // Note: previously took a `bestIndex` to highlight the cheapest vendor.
+  // Removed when the winner-crowning was stripped: this component now
+  // derives the lowest/highest vendors from the results internally and
+  // describes the spread without naming a winner.
 }
 
-function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryProps) {
+function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
   const valid = results
     .map((r, i) => ({ r, i, name: vendors[i].name || `Vendor ${VENDOR_LABELS[i]}` }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
@@ -1400,17 +1457,44 @@ function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryPro
     );
   }
 
-  const best = valid.find((v) => v.i === bestIndex)!;
+  // Lowest and highest total-paid figures, used for a neutral range
+  // sentence below. The lowest is also used as the baseline for per-row
+  // diffs so the user can size each vendor's gap without the tool
+  // declaring a "winner". Earlier revisions printed
+  //   "<vendor> is the cheapest overall at $X total"
+  // which is a textbook recommendation under the Consumer Credit
+  // Directive and the platform's regulatory-advisory policy. The math
+  // is the same; the framing now describes the spread instead.
+  const sortedByTotal = [...valid].sort(
+    (a, b) => a.r.totalPaidMinor - b.r.totalPaidMinor,
+  );
+  const lowest = sortedByTotal[0];
+  const highest = sortedByTotal[sortedByTotal.length - 1];
+  const spreadMinor = highest.r.totalPaidMinor - lowest.r.totalPaidMinor;
+  const allSame = spreadMinor === 0;
 
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
       <h2 id="lc-delta-h" className="lc-sectionTitle">Side-by-side</h2>
-      {/* aria-live=polite so screen readers announce the new "cheapest"
-          when the user edits inputs. aria-atomic ensures the entire
-          sentence is re-read instead of only the diff. */}
+      {/*
+        aria-live=polite so screen readers re-announce when inputs change.
+        The wording is deliberately neutral: it states the range and the
+        spread, without pointing the user at a specific vendor as "the
+        cheapest". Naming a winner among real commercial offers risks
+        being read as credit intermediation under the EU Consumer
+        Credit Directive 2008/48/EC (and CCD2 from 2026 onward).
+      */}
       <p className="lc-deltaHero" aria-live="polite" aria-atomic="true">
-        <strong>{best.name}</strong> is the cheapest overall at{' '}
-        <strong>{formatMoney(best.r.totalPaidMinor, currency)}</strong> total.
+        {allSame ? (
+          <>All vendors come out at the same total cost of{' '}
+            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>.</>
+        ) : (
+          <>Total cost ranges from{' '}
+            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
+            {' '}to <strong>{formatMoney(highest.r.totalPaidMinor, currency)}</strong>
+            {' '}across the vendors below: a spread of{' '}
+            <strong>{formatMoney(spreadMinor, currency)}</strong>.</>
+        )}
       </p>
       <div className="lc-deltaTableWrap">
         <table className="lc-deltaTable">
@@ -1428,50 +1512,51 @@ function DeltaSummary({ results, vendors, currency, bestIndex }: DeltaSummaryPro
               valid={valid}
               get={(r) => r.effectiveMonthlyMinor}
               format={(n) => formatMoney(n, currency)}
-              lowerIsBetter
             />
             <DeltaRow
               label="Months to payoff"
               valid={valid}
               get={(r) => r.months}
               format={(n) => formatMonths(n)}
-              lowerIsBetter
             />
             <DeltaRow
               label="APR (incl. fees)"
               valid={valid}
-              // Multiply by 1e6 so we compare/format integer-ish values
-              // and avoid the floating-point quirks `lowerIsBetter`'s
-              // Math.min would otherwise expose. The format function
-              // converts back. Six decimals of precision is well below
-              // anything we'd ever display.
+              // We round APRs to 6 decimal places (multiply by 1e6) so
+              // formatting is stable even at the limits of the bisection
+              // solver. Six decimals is well below anything we'd ever
+              // display in the UI.
               get={(r) => Math.round(r.aprNominal * 1_000_000)}
               format={(n) => formatApr(n / 1_000_000, getCurrency(currency).locale)}
-              lowerIsBetter
             />
             <DeltaRow
               label="Total interest"
               valid={valid}
               get={(r) => r.totalInterestMinor}
               format={(n) => formatMoney(n, currency)}
-              lowerIsBetter
             />
             <DeltaRow
               label="Total paid"
               valid={valid}
               get={(r) => r.totalPaidMinor}
               format={(n) => formatMoney(n, currency)}
-              lowerIsBetter
               emphasized
             />
             <tr className="lc-deltaSavingsRow">
-              <th scope="row">Difference vs. cheapest</th>
+              {/*
+                Renamed from "Difference vs. cheapest" to a neutral,
+                mathematical label. The baseline is the lowest total-paid
+                vendor; that's a fact about the inputs, not a
+                recommendation. The 0-diff cell shows an em-dash instead
+                of "cheapest" so we don't crown a winner.
+              */}
+              <th scope="row">Difference vs. lowest total cost</th>
               {valid.map((v) => {
-                const diff = v.r.totalPaidMinor - best.r.totalPaidMinor;
+                const diff = v.r.totalPaidMinor - lowest.r.totalPaidMinor;
                 return (
                   <td key={v.i}>
                     {diff === 0 ? (
-                      <span className="lc-deltaBest">cheapest</span>
+                      <span className="lc-deltaBaseline" aria-label="baseline (lowest total cost)">baseline</span>
                     ) : (
                       <span className="lc-deltaCost">+{formatMoney(diff, currency)}</span>
                     )}
@@ -1491,34 +1576,22 @@ interface DeltaRowProps {
   valid: { r: LoanResult; i: number; name: string }[];
   get: (r: LoanResult) => number;
   format: (n: number) => string;
-  lowerIsBetter: boolean;
   emphasized?: boolean;
 }
 
-function DeltaRow({ label, valid, get, format, lowerIsBetter, emphasized }: DeltaRowProps) {
+// We deliberately do not flag a "best" cell per metric. Per-metric
+// "winners" turn the framing from "here are the numbers" into "here is
+// the right answer for monthly payment / interest / APR": a series of
+// recommendations the calculator isn't qualified to make. We just print
+// the values; the user reads them.
+function DeltaRow({ label, valid, get, format, emphasized }: DeltaRowProps) {
   const values = valid.map((v) => get(v.r));
-  const best = lowerIsBetter ? Math.min(...values) : Math.max(...values);
-  const allEqual = values.every((v) => v === values[0]);
   return (
     <tr className={emphasized ? 'lc-deltaRowEmphasized' : ''}>
       <th scope="row">{label}</th>
-      {valid.map((v, idx) => {
-        const isBest = !allEqual && values[idx] === best;
-        return (
-          <td key={v.i} className={isBest ? 'lc-deltaCellBest' : ''}>
-            {/* Glyph + sr-only "best" text so the "best" status is
-                conveyed beyond color. The glyph (✓) stays decorative for
-                screen readers; the sr-only text is the real signal. */}
-            {isBest && (
-              <>
-                <span aria-hidden="true" className="lc-deltaCellBestIcon">✓</span>
-                <span className="lc-srOnly">best for this metric: </span>
-              </>
-            )}
-            {format(values[idx])}
-          </td>
-        );
-      })}
+      {valid.map((v, idx) => (
+        <td key={v.i}>{format(values[idx])}</td>
+      ))}
     </tr>
   );
 }
@@ -1651,6 +1724,7 @@ function AnalysisTabs({
               // Inactive tabs are reachable via arrow keys (handled above).
               tabIndex={selected ? 0 : -1}
               className={`lc-tab ${selected ? 'lc-tabActive' : ''}`}
+              data-attr={`lc-tab-${t.id}`}
               onClick={() => {
                 onGlobalChange({ activeTab: t.id });
                 track('free_loan_comparison_tab_changed', { tab: t.id, via: 'click' });
@@ -1791,7 +1865,14 @@ function ChartsPanel({
               }
             }}
           >
-            <option value="">Auto (cheapest)</option>
+            {/*
+              Internal sort fallback: when no vendor is explicitly chosen
+              we follow the lowest-total-paid one so the chart isn't
+              pinned to slot A by default. Label kept neutral (no
+              "cheapest" / "best" wording): see the regulatory rule in
+              docs/strategy/regulatory-advisory-classification.md.
+            */}
+            <option value="">Auto (lowest total cost)</option>
             {vendors.map((v, i) => (
               <option key={i} value={i} disabled={Boolean(results[i]?.error)}>
                 {v.name || `Vendor ${VENDOR_LABELS[i]}`}
@@ -1912,6 +1993,30 @@ function HorizonSection({
   onHorizonChange,
 }: HorizonSectionProps) {
   const horizonId = useId();
+  // Debounced engagement signal. We don't want to fire one event per
+  // slider tick (a single drag would send dozens), so we schedule a
+  // track() 600ms after the last change. The ref persists across
+  // renders; the useEffect cleanup cancels in-flight timers when the
+  // component unmounts. Property is bucketed (months) to avoid leaking
+  // any computed loan figures.
+  const horizonTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handleHorizonChange = useCallback(
+    (next: string) => {
+      onHorizonChange(next);
+      if (horizonTrackTimer.current) {
+        clearTimeout(horizonTrackTimer.current);
+      }
+      horizonTrackTimer.current = setTimeout(() => {
+        const m = Math.round(parseNumber(next));
+        if (!Number.isFinite(m) || m <= 0) return;
+        track('free_loan_comparison_horizon_changed', { months: m });
+      }, 600);
+    },
+    [onHorizonChange],
+  );
+  useEffect(() => () => {
+    if (horizonTrackTimer.current) clearTimeout(horizonTrackTimer.current);
+  }, []);
   // The slider's max is the longest valid schedule: a horizon past every
   // vendor's payoff is meaningless. We clamp to a sensible minimum of
   // 1 month so the slider always renders.
@@ -1949,7 +2054,7 @@ function HorizonSection({
           max={maxMonths}
           step={1}
           value={horizon}
-          onChange={(e) => onHorizonChange(e.target.value)}
+          onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
           aria-valuetext={formatMonths(horizon)}
@@ -1960,7 +2065,7 @@ function HorizonSection({
           inputMode="numeric"
           className="lc-input lc-horizonInput"
           value={horizonMonths}
-          onChange={(e) => onHorizonChange(e.target.value)}
+          onChange={(e) => handleHorizonChange(e.target.value)}
           aria-label="Horizon in months (text)"
         />
       </div>
@@ -2062,6 +2167,24 @@ function RefinanceSection({
   const newFeeId = useId();
   const rollFeeId = useId();
 
+  // Debounced engagement signal for the refinance section. The five
+  // fields are heavily inter-related, and users typically tweak several
+  // in a single session; we want a single event per "burst of activity"
+  // rather than one per keystroke. Property names the field that just
+  // changed; values are never sent.
+  const refiTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trackRefiChange = useCallback((field: keyof GlobalState) => {
+    if (refiTrackTimer.current) {
+      clearTimeout(refiTrackTimer.current);
+    }
+    refiTrackTimer.current = setTimeout(() => {
+      track('free_loan_comparison_refi_changed', { field });
+    }, 600);
+  }, []);
+  useEffect(() => () => {
+    if (refiTrackTimer.current) clearTimeout(refiTrackTimer.current);
+  }, []);
+
   // Resolve the vendor to refinance. We accept any 1-based index that
   // points to a valid result; on mismatch we fall back to the first
   // valid vendor.
@@ -2101,7 +2224,10 @@ function RefinanceSection({
             id={vendorSelectId}
             className="lc-select"
             value={state.refiVendorIndex}
-            onChange={(e) => onChange({ refiVendorIndex: e.target.value })}
+            onChange={(e) => {
+              onChange({ refiVendorIndex: e.target.value });
+              trackRefiChange('refiVendorIndex');
+            }}
           >
             {vendors.map((v, i) => (
               <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
@@ -2120,7 +2246,10 @@ function RefinanceSection({
             inputMode="numeric"
             className="lc-input"
             value={state.refiAtMonth}
-            onChange={(e) => onChange({ refiAtMonth: e.target.value })}
+            onChange={(e) => {
+              onChange({ refiAtMonth: e.target.value });
+              trackRefiChange('refiAtMonth');
+            }}
           />
         </div>
 
@@ -2132,7 +2261,10 @@ function RefinanceSection({
             inputMode="decimal"
             className="lc-input"
             value={state.refiNewRatePct}
-            onChange={(e) => onChange({ refiNewRatePct: e.target.value })}
+            onChange={(e) => {
+              onChange({ refiNewRatePct: e.target.value });
+              trackRefiChange('refiNewRatePct');
+            }}
           />
         </div>
 
@@ -2144,7 +2276,10 @@ function RefinanceSection({
             inputMode="numeric"
             className="lc-input"
             value={state.refiNewTermMonths}
-            onChange={(e) => onChange({ refiNewTermMonths: e.target.value })}
+            onChange={(e) => {
+              onChange({ refiNewTermMonths: e.target.value });
+              trackRefiChange('refiNewTermMonths');
+            }}
           />
         </div>
 
@@ -2158,7 +2293,10 @@ function RefinanceSection({
             inputMode="decimal"
             className="lc-input"
             value={state.refiNewFeeMajor}
-            onChange={(e) => onChange({ refiNewFeeMajor: e.target.value })}
+            onChange={(e) => {
+              onChange({ refiNewFeeMajor: e.target.value });
+              trackRefiChange('refiNewFeeMajor');
+            }}
           />
         </div>
 
@@ -2167,7 +2305,10 @@ function RefinanceSection({
             id={rollFeeId}
             type="checkbox"
             checked={state.refiRollFee}
-            onChange={(e) => onChange({ refiRollFee: e.target.checked })}
+            onChange={(e) => {
+              onChange({ refiRollFee: e.target.checked });
+              trackRefiChange('refiRollFee');
+            }}
           />
           <label htmlFor={rollFeeId} className="lc-fieldLabel">
             Roll closing costs into new principal

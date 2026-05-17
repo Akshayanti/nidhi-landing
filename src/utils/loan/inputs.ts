@@ -1,10 +1,6 @@
 /**
- * Pure helpers that translate the URL-shape `VendorInput` into the
- * typed inputs the engine in `loanMath.ts` expects.
- *
- * Lives outside `LoanCompare.tsx` so it can be unit-tested under
- * `node --test` without spinning up React or a DOM. The vendor card UI
- * just imports from here.
+ * Adapter layer between `VendorInput` (URL-shaped strings) and the typed engine in `math.ts`.
+ * Extracted from the component so it's testable without React or a DOM.
  */
 import {
   computeLoan,
@@ -13,19 +9,12 @@ import {
   type LumpSum,
   type PrepaymentPenalty,
   type RateSpec,
-} from './loanMath.ts';
-import { parseLumpSums, type VendorInput } from './loanCompareUrl.ts';
+} from './math.ts';
+import { parseLumpSums, type VendorInput } from './url.ts';
 
 /**
- * Parse a user-typed money/percentage string into a number.
- *
- * Accepts spaces and commas as cosmetic group separators, so "1,234,567"
- * and "1 234 567" both parse to 1234567. Rejects any other punctuation
- * (e.g. a stray dot in the wrong place) by returning NaN, so callers can
- * decide whether to surface an error or fall back to a default.
- *
- * Returns NaN for empty input. Callers wanting to default-empty-to-zero
- * should explicitly do `parseNumber(s) || 0`.
+ * Strips cosmetic grouping (spaces, commas) so "1,234,567" and "1 234 567" both parse.
+ * Returns NaN for empty or invalid input so callers can choose their own fallback.
  */
 export function parseNumber(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
@@ -35,19 +24,8 @@ export function parseNumber(s: string): number {
 }
 
 /**
- * Translate a vendor's URL-shape inputs into the typed optional fields
- * the engine consumes. Only emits a non-trivial value when the relevant
- * field is "in use"; otherwise the property is omitted and the engine
- * falls back to its default (fixed rate, no lumps, no penalty).
- *
- * Specifically:
- *   - `rateSpec` is emitted only when `rateKind === 'hybrid'` AND both
- *     the initial-period and subsequent-rate fields parse to valid
- *     finite numbers.
- *   - `lumpSums` is emitted only when at least one parseable lump-sum
- *     entry is present in `lumpSumsEncoded`.
- *   - `prepaymentPenalty` is emitted only when both `prepayPenaltyPct`
- *     and `prepayPenaltyUntilMonth` parse to strictly positive numbers.
+ * Translates URL-shape inputs into typed engine fields. Omits properties at their defaults
+ * so the engine's fallback logic runs unchanged when a feature is not in use.
  */
 export function buildAdvancedFields(
   v: VendorInput,
@@ -98,11 +76,9 @@ export function buildAdvancedFields(
 }
 
 /**
- * Drive the engine end-to-end from a `VendorInput`. Picks the right
- * `LoanMode` based on `modeKind` and forwards every optional field via
- * `buildAdvancedFields`. The returned `LoanResult` carries the engine's
- * own `error` string when inputs are invalid (so the caller can show it
- * verbatim without a second validation layer).
+ * Single entry point so every caller gets the same validation, conversion, and error formatting.
+ * The returned `LoanResult` carries the engine's own `error` string when inputs are invalid,
+ * so the caller can show it verbatim without a second validation layer.
  */
 export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   const principalMinor = toMinor(parseNumber(v.principal), currency);
@@ -126,15 +102,9 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
 }
 
 /**
- * Compute the hypothetical "no points paid" baseline `LoanResult` for a
- * vendor that has paid discount points. The baseline is the same vendor
- * with the points cost removed from the fee and the points rate
- * reduction added back to the rate. Used as the second argument to
- * `pointsBreakEven`.
- *
- * Returns `null` when the vendor has not entered both a positive points
- * cost and a positive rate reduction; the caller treats null as
- * "no break-even row to display".
+ * Reconstructs the counterfactual "no points" loan so `pointsBreakEven` can compare with/without.
+ * Returns `null` when the vendor has not entered both a positive points cost and a positive rate
+ * reduction; the caller treats null as "no break-even row to display".
  */
 export function computeNoPointsBaseline(v: VendorInput, currency: string): LoanResult | null {
   const cost = parseNumber(v.pointsCostMajor);

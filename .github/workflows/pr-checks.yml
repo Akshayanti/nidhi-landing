@@ -18,21 +18,17 @@ on:
       - 'src/pages/free/**'
       - 'src/pages/privacy.astro'
       - 'src/components/LoanCompare.tsx'
-      - 'src/components/CurrencyRiskAnalyzer.tsx'
-      - 'src/utils/loanMath.ts'
-      - 'src/utils/loanMath.test.ts'
-      - 'src/utils/currencyRiskMath.ts'
-      - 'src/utils/currencyRiskMath.test.ts'
-      - 'src/utils/currencyRiskUrl.ts'
-      - 'src/utils/currencyRiskUrl.test.ts'
-      - 'scripts/**/*'
-      # URL-state helpers + tests for the loan comparator. Extracted out
-      # of LoanCompare.tsx so the round-trip and count-inference logic
-      # could be tested directly; the tests must run on PRs that touch
-      # either the helper or its test file.
-      - 'src/utils/loanCompareUrl.ts'
-      - 'src/utils/loanCompareUrl.test.ts'
+      - 'src/components/MultiCurrencyNetWorth.tsx'
+      # Loan comparator utilities (math, URL state, validated inputs)
+      # were grouped under src/utils/loan/ so a PR that touches only the
+      # math (e.g. changing an APR formula) still triggers the gate.
+      - 'src/utils/loan/**'
+      # Multi-currency net worth analyzer utilities (math + URL state).
+      # Renamed from the earlier currency-risk dir; without this glob a
+      # PR touching only the math would silently skip CI.
+      - 'src/utils/multi-currency-net-worth/**'
       - 'src/utils/dependencies.test.ts'
+      - 'scripts/**/*'
       # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
       # would silently break the deploy workflow's post-deploy step;
       # gating it on the same checks the rest of the deploy depends on

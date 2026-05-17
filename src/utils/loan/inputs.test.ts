@@ -11,8 +11,8 @@ import {
   computeFromInput,
   computeNoPointsBaseline,
   parseNumber,
-} from './loanCompareInputs.ts';
-import { makeDefaultVendor, type VendorInput } from './loanCompareUrl.ts';
+} from './inputs.ts';
+import { makeDefaultVendor, type VendorInput } from './url.ts';
 
 /** Compose a fully-populated VendorInput by spreading the slot-0 default
  *  and overriding the fields we care about. Keeps each test focused. */

@@ -1,12 +1,9 @@
 /**
- * Currency risk analysis utilities. Pure functions, zero dependencies.
- *
- * Aggregates user assets and liabilities by currency, computes net positions,
- * converts to a functional currency using live rates, and calculates
- * concentration percentages and risk levels.
+ * Pure functions for currency risk math. Extracted from the component so the aggregation,
+ * risk assessment, and CSV parsing are testable without React or a DOM.
  */
 
-import { CURRENCIES, type CurrencyInfo } from './loanMath';
+import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -24,19 +21,19 @@ export interface AssetRow {
 export type RiskLevel = 'functional' | 'low' | 'moderate' | 'elevated' | 'net-debt';
 
 export interface CurrencyPosition {
-  /** 3-letter currency code. */
+  /** Uniquely identifies the currency for rate lookups and display formatting. */
   code: string;
-  /** Net amount in the original currency (assets minus liabilities). */
+  /** Position before conversion; kept so users can verify against their own records. */
   netAmountOriginal: number;
-  /** Net amount converted to the functional currency. */
+  /** Position after conversion; drives the concentration chart and risk percentages. */
   netAmountFunctional: number;
   /** Percentage of total net worth (0-100). */
   pctOfTotal: number;
-  /** Whether this is the user's functional/spending currency. */
+  /** Functional currency is exempt from risk flagging since the user spends in it. */
   isFunctional: boolean;
-  /** Risk assessment for this currency position. */
+  /** Drives the color-coded card border and the recommendation text. */
   riskLevel: RiskLevel;
-  /** Human-readable risk label. */
+  /** Displayed directly in the UI; kept separate from the enum so copy can evolve independently. */
   riskLabel: string;
   /**
    * True when the FX rate for this currency was missing from the rates
@@ -46,10 +43,26 @@ export interface CurrencyPosition {
   rateUnavailable?: boolean;
 }
 
+/**
+ * Tri-state rate availability:
+ *   - 'full'    : every non-functional position has a usable FX rate.
+ *   - 'partial' : at least one non-functional position is missing its rate.
+ *                 The headline total excludes those positions, so the UI
+ *                 must surface a banner; the per-row card also flags the
+ *                 missing rate via `rateUnavailable: true`.
+ *   - 'none'    : the rates fetch failed entirely; positions are returned
+ *                 in original units only and the headline is suppressed.
+ *
+ * This used to be a single `boolean`; partial failures were silently
+ * absorbed into the total. The tri-state lets the UI distinguish "all good"
+ * from "missing one currency" from "rates failed".
+ */
+export type RatesAvailability = 'full' | 'partial' | 'none';
+
 export interface AggregationResult {
   positions: CurrencyPosition[];
   totalNetWorthFunctional: number;
-  hasRates: boolean;
+  hasRates: RatesAvailability;
 }
 
 export interface ParseError {
@@ -61,7 +74,7 @@ export interface ParseError {
 // Aggregation
 // ---------------------------------------------------------------------------
 
-/** Parse a user-entered string to a positive number. Returns NaN on failure. */
+/** Strips cosmetic grouping characters before parsing so "1,00,000" and "100000" both work. Returns NaN on failure. */
 function parseAmount(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
   if (cleaned === '') return NaN;
@@ -73,18 +86,14 @@ function getCurrencyInfo(code: string): CurrencyInfo | undefined {
   return CURRENCIES.find((c) => c.code === code.toUpperCase());
 }
 
-/** Check whether a currency code is in the supported catalogue. */
+/** Guards against typos and unsupported codes before they reach the aggregation engine. */
 export function isSupportedCurrency(code: string): boolean {
   return CURRENCIES.some((c) => c.code === code.toUpperCase());
 }
 
 /**
- * Aggregate asset rows by currency, compute net positions, and (if rates
- * are provided) convert to the functional currency and calculate risk.
- *
- * If `rates` is null, positions are returned in their original currencies
- * without conversion. The caller should display a warning that rates are
- * unavailable.
+ * If `rates` is null, positions are returned in their original currencies without conversion,
+ * so the UI can still show raw amounts with a "rates unavailable" warning.
  */
 export function aggregate(
   rows: AssetRow[],
@@ -112,7 +121,11 @@ export function aggregate(
   }
 
   if (byCurrency.size === 0) {
-    return { positions: [], totalNetWorthFunctional: 0, hasRates: rates !== null };
+    return {
+      positions: [],
+      totalNetWorthFunctional: 0,
+      hasRates: rates === null ? 'none' : 'full',
+    };
   }
 
   // Build positions in original currency.
@@ -135,19 +148,26 @@ export function aggregate(
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
     positions.sort((a, b) => Math.abs(b.netAmountOriginal) - Math.abs(a.netAmountOriginal));
-    return { positions, totalNetWorthFunctional: 0, hasRates: false };
+    return { positions, totalNetWorthFunctional: 0, hasRates: 'none' };
   }
 
-  // Convert to functional currency.
+  // Convert to functional currency, tracking whether any rate was missing.
+  // We count missing rates only for non-functional currencies because the
+  // functional position never needs a conversion (`rate = 1` by definition).
+  let missingRateCount = 0;
   for (const pos of positions) {
     if (pos.code === funcCode) {
       pos.netAmountFunctional = pos.netAmountOriginal;
     } else {
       const rate = rates[pos.code];
       if (rate === undefined || rate === 0) {
-        // Currency not in the rates response, leave unconverted and flag.
+        // Currency not in the rates response: leave unconverted and flag.
+        // Excluding it from the headline total is safer than guessing zero,
+        // because the user shouldn't see a "total" that silently omits part
+        // of their portfolio. The UI surfaces this via `hasRates === 'partial'`.
         pos.netAmountFunctional = 0;
         pos.rateUnavailable = true;
+        missingRateCount++;
       } else {
         // rate is "1 funcCurrency = rate units of pos.code"
         // So pos.netAmountOriginal / rate = amount in funcCurrency
@@ -185,17 +205,30 @@ export function aggregate(
     return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
   });
 
-  return { positions, totalNetWorthFunctional, hasRates: true };
+  return {
+    positions,
+    totalNetWorthFunctional,
+    hasRates: missingRateCount > 0 ? 'partial' : 'full',
+  };
 }
 
 // ---------------------------------------------------------------------------
 // Risk assessment
 // ---------------------------------------------------------------------------
 
+/**
+ * Concentration band thresholds. The labels are intentionally descriptive,
+ * not advisory: the tool reports concentration size and lets the user judge
+ * whether it matches their plan. An earlier revision included phrases like
+ * "consider diversifying" in the labels themselves; that crossed the line
+ * from calculation into recommendation, which the platform's regulatory
+ * stance forbids (see docs/strategy/regulatory-advisory-classification.md
+ * in the app repo). Keep these labels declarative.
+ */
 const RISK_THRESHOLDS: { maxPct: number; level: RiskLevel; label: string }[] = [
   { maxPct: 20, level: 'low', label: 'Low exposure' },
   { maxPct: 40, level: 'moderate', label: 'Moderate exposure' },
-  { maxPct: Infinity, level: 'elevated', label: 'Elevated exposure, consider diversifying' },
+  { maxPct: Infinity, level: 'elevated', label: 'Elevated exposure' },
 ];
 
 function assessRisk(
@@ -213,7 +246,7 @@ function assessRisk(
   for (const t of RISK_THRESHOLDS) {
     if (absPct < t.maxPct) return [t.level, t.label];
   }
-  return ['elevated', 'Elevated exposure, consider diversifying'];
+  return ['elevated', 'Elevated exposure'];
 }
 
 // ---------------------------------------------------------------------------
@@ -221,16 +254,8 @@ function assessRisk(
 // ---------------------------------------------------------------------------
 
 /**
- * Parse a CSV string into AssetRow objects.
- *
- * Expected columns: name,value,currency,type
- * - `name` and `type` are optional (type defaults to "asset").
- * - `value` must be a positive number.
- * - `currency` must be a supported 3-letter code.
- *
- * Returns valid rows and any parse errors encountered. Valid rows from a
- * partially-broken CSV are still returned so the user can fix individual
- * lines in the UI.
+ * Valid rows from a partially-broken CSV are still returned so the user can fix individual
+ * lines in the UI instead of redoing the whole file.
  */
 export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[] } {
   const rows: AssetRow[] = [];
@@ -312,10 +337,7 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
   return { rows, errors };
 }
 
-/**
- * Split a single CSV line into columns, respecting quoted fields.
- * Handles double-quote escaping within quoted fields ("" → ").
- */
+/** Handles double-quote escaping within quoted fields ("" → "). */
 function splitCSVLine(line: string): string[] {
   const cols: string[] = [];
   let current = '';
@@ -354,13 +376,13 @@ function splitCSVLine(line: string): string[] {
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Get a display label for a currency code (e.g. "Euro (EUR)"). */
+/** Resolves a code to a human-readable label for chart legends and risk cards. */
 export function getCurrencyLabel(code: string): string {
   const info = getCurrencyInfo(code);
   return info ? info.label : code;
 }
 
-/** Format a number with up to 1 decimal place. */
+/** One decimal is enough for concentration percentages; more precision is visual noise. */
 export function formatPct(pct: number): string {
   if (!Number.isFinite(pct)) return '0%';
   return pct.toFixed(1) + '%';

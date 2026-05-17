@@ -119,11 +119,11 @@ title: Which account: three to choose from
 
 title: What to put in it: keep it simple
 
-The default first holding most personal finance literature points to is a broad global index fund: thousands of companies, dozens of countries, every major sector, in a single buy.
+A broad global index fund: thousands of companies, dozens of countries, every major sector, in one buy.
 
-Fees typically 0.1 to 0.3% per year. No stock picking, no view on individual companies.
+Fees 0.1 to 0.3% a year. No stock picking required.
 
-Most actively managed funds underperform the index they try to beat, after fees. The boring choice is usually the right one.
+Most actively managed funds lose to their index after fees. Boring usually wins.
 
 ---
 

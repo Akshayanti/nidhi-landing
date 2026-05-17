@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CurrencyRiskAnalyzer from '../../components/CurrencyRiskAnalyzer.tsx';
+import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import { getCollection } from 'astro:content';
 
 const RELATED_CANDIDATES = [
@@ -51,37 +51,41 @@ const publishedSlugs = new Set(
 const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
 
 const title =
-  'Currency Risk Analyzer: Multi-Currency Net Worth | nidhi';
+  'Multi-Currency Net Worth Calculator & Currency Risk Analyzer | nidhi';
+// Trimmed to ~155 chars so Google does not chop the privacy hook
+// ("everything runs in your browser") off the end of the SERP snippet.
+// 60 < title <= 70, 150 < description <= 160 are the practical sweet spots.
 const description =
-  'Free currency risk analyzer for expats and multi-currency households. See your currency concentration with live ECB rates, all in your browser.';
+  'Free multi-currency net worth calculator. See your net worth in any of 29 currencies with live ECB rates. Runs in your browser; nothing is sent.';
 const keywords = [
+  'multi-currency net worth calculator',
+  'net worth in any currency',
+  'expat net worth calculator',
+  'multi-currency net worth',
+  'net worth across countries',
+  'net worth by currency',
+  'net worth currency breakdown',
   'currency risk calculator',
-  'multi currency net worth',
+  'currency exposure calculator',
+  'currency concentration',
+  'foreign exchange risk',
+  'multi-currency portfolio analyzer',
   'expat financial planning',
   'currency diversification',
-  'currency exposure calculator',
-  'foreign exchange risk',
-  'currency concentration',
-  'net worth by currency',
-  'multi-currency portfolio analyzer',
-  'currency risk assessment',
-  'expat net worth calculator',
   'cross currency exposure',
-  'currency allocation tool',
   'FX risk analyzer',
-  'net worth currency breakdown',
   'functional currency',
   'EUR USD INR GBP currency calculator',
 ];
 
 const faqs = [
   {
-    q: 'How does the currency risk analyzer work?',
-    a: 'You add your assets and liabilities with their currency and current value. The tool fetches live ECB reference exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your net currency concentration as a donut chart. It then flags any non-functional currency where you have elevated exposure.',
+    q: 'How does the multi-currency net worth calculator work?',
+    a: 'You add your assets and liabilities with their currency and current value. The tool fetches live ECB reference exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any non-functional currency where you have elevated exposure.',
   },
   {
     q: 'What is currency concentration risk?',
-    a: 'If a large portion of your net worth is in a currency you don\'t spend in, a swing in the exchange rate can change your real purchasing power overnight. For example, if you plan to retire in Europe but hold 70% of your wealth in USD, a 15% drop in USD/EUR could meaningfully shrink your retirement fund when measured in euros.',
+    a: 'If a large portion of your net worth is in a currency you don\'t spend in, a swing in the exchange rate changes your real purchasing power. For example, if you plan to retire in Europe but hold 70% of your wealth in USD, a 10% move in USD/EUR (a magnitude EUR/USD has seen in many calendar years) would shift your retirement fund by roughly 7% measured in euros.',
   },
   {
     q: 'Does this send my financial data anywhere?',
@@ -92,8 +96,8 @@ const faqs = [
     a: 'Twenty-nine currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), and the Nordic, Central European, Latin American, and South-East Asian majors. Exchange rates are fetched from the ECB via Frankfurter, which are reference rates and may differ from the rates available to retail customers at their bank.',
   },
   {
-    q: 'What\'s the difference between "Share with data" and "Share anonymously"?',
-    a: '"Share with data" includes all your asset names, values, currencies, and types in the URL, anyone with the link can see your full breakdown and verify the math. "Share anonymously" only includes the currency concentration percentages and risk levels, no amounts, no asset names. Both are copied to your clipboard as a link.',
+    q: 'What\'s the difference between the "Full" and "Redacted" share modes?',
+    a: 'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the math. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
   },
   {
     q: 'How are exchange rates sourced?',
@@ -104,8 +108,8 @@ const faqs = [
     a: 'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We exclude it from risk flagging because having most of your wealth in your spending currency is normal and desirable.',
   },
   {
-    q: 'What counts as elevated currency exposure?',
-    a: 'We use three thresholds for non-functional currencies: under 20% is low exposure, 20-40% is moderate, and over 40% is elevated. These are guidelines, not hard rules, your personal situation (future spending plans, country of retirement) matters too.',
+    q: 'What do "low", "moderate", and "elevated" mean?',
+    a: 'They are descriptive bands for non-functional currencies: under 20% of net worth is "low", 20-40% is "moderate", and over 40% is "elevated". They describe concentration size, not what you should do about it. Whether a given level fits your situation depends on your future spending plans, where you intend to retire, and how you choose to balance currency risk with other goals.',
   },
   {
     q: 'Can I include debts and liabilities?',
@@ -117,14 +121,16 @@ const faqs = [
   },
 ];
 
-const canonicalUrl = 'https://nidhi.today/free/currency-risk';
+const canonicalUrl = 'https://nidhi.today/free/multi-currency-net-worth';
 
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'nidhi Currency Risk Analyzer',
+  name: 'nidhi Multi-Currency Net Worth & Currency Risk Analyzer',
   alternateName: [
-    'nidhi Multi-Currency Net Worth Analyzer',
+    'nidhi Multi-Currency Net Worth Calculator',
+    'nidhi Net Worth Calculator for Expats',
+    'nidhi Currency Risk Analyzer',
     'nidhi Currency Exposure Calculator',
     'nidhi FX Risk Tool',
     'nidhi Currency Concentration Checker',
@@ -136,9 +142,10 @@ const webAppSchema = {
   browserRequirements: 'Requires JavaScript. Modern browser.',
   isAccessibleForFree: true,
   featureList: [
-    'Add unlimited assets and liabilities across 29 currencies',
-    'Live ECB exchange rates via Frankfurter API',
-    'Net currency concentration donut chart',
+    'Calculate total net worth across 29 currencies in your chosen functional currency',
+    'Add unlimited assets and liabilities in any supported currency',
+    'Live ECB reference exchange rates via Frankfurter API',
+    'Currency concentration donut chart',
     'Per-currency risk assessment (low, moderate, elevated)',
     'Asset/liability toggle for net position calculation',
     'CSV bulk upload',
@@ -162,7 +169,7 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today' },
-    { '@type': 'ListItem', position: 2, name: 'Currency risk analyzer', item: canonicalUrl },
+    { '@type': 'ListItem', position: 2, name: 'Multi-currency net worth & currency risk analyzer', item: canonicalUrl },
   ],
 };
 
@@ -186,104 +193,131 @@ const faqSchema = {
   keywords={keywords}
   jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
 >
-  <section class="cr-page">
-    <nav class="cr-breadcrumbs" aria-label="Breadcrumb">
+  {/*
+    Preconnect to the Frankfurter FX API so the first rates request on
+    page load isn't gated on a fresh DNS lookup + TLS handshake. The
+    rates fetch fires in MultiCurrencyNetWorth.tsx as soon as the React
+    island hydrates; the preconnect typically saves 50-150 ms on the
+    first paint with conversion data.
+  */}
+  <link slot="head" rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
+  <section class="mcnw-page">
+    <nav class="mcnw-breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="/">Home</a></li>
-        <li aria-current="page">Currency risk analyzer</li>
+        <li aria-current="page">Multi-currency net worth &amp; currency risk</li>
       </ol>
     </nav>
 
-    <header class="cr-pageHeader">
-      <p class="cr-eyebrow">Free tools</p>
-      <h1 class="cr-pageTitle">
-        Currency risk analyzer: check your multi-currency net worth exposure
+    <header class="mcnw-pageHeader">
+      <p class="mcnw-eyebrow">Free tools</p>
+      <h1 class="mcnw-pageTitle">
+        Multi-currency net worth calculator and currency risk analyzer
       </h1>
-      <p class="cr-pageLead">
-        Add your assets and liabilities across currencies. See your net
-        currency concentration, get a risk assessment, and share your
-        results, all in your browser. Nothing is sent to a server. Live
-        ECB exchange rates for USD, EUR, GBP, INR, JPY, and more.
+      <p class="mcnw-pageLead">
+        Add your assets and liabilities in any currency. See your real net
+        worth in your chosen currency with live ECB rates, then check how
+        much of it sits in currencies you don&rsquo;t actually spend in.
+        Everything runs in your browser. Nothing is sent to a server.
+        Supports USD, EUR, GBP, INR, JPY, and 24 more.
       </p>
     </header>
 
-    <CurrencyRiskAnalyzer client:load />
+    <MultiCurrencyNetWorth client:load />
 
-    <section class="cr-explainer" aria-labelledby="cr-explainer-h">
-      <h2 id="cr-explainer-h" class="cr-sectionTitle">How the analysis works</h2>
+    <section class="mcnw-explainer" aria-labelledby="mcnw-explainer-h">
+      <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">How the calculation works</h2>
       <p>
         For each currency, we net your assets and liabilities, then convert
-        the result to your functional currency using live exchange rates:
+        the result to your functional currency using live exchange rates.
+        Sum those converted positions and you have your total net worth in
+        one currency. Each currency&rsquo;s share of that total is your
+        concentration:
       </p>
-      <p class="cr-formula">
+      <p class="mcnw-formula">
         <code>
-          Concentration % = (Net in currency X &times; Exchange rate) / Total net worth &times; 100
+          Concentration % = (Net in currency X &times; Rate to functional) / Total net worth &times; 100
         </code>
       </p>
-      <ul class="cr-explainerList">
+      <ul class="mcnw-explainerList">
         <li>
           <strong>Net position</strong> per currency = sum of assets minus sum
           of liabilities in that currency. A negative net means you owe more
           than you hold in that currency.
         </li>
         <li>
-          <strong>Exchange rates</strong> come from the European Central Bank
-          via the Frankfurter API, fetched directly by your browser. Rates
-          update daily on business days.
+          <strong>Rate to functional</strong> is the multiplier that converts
+          one unit of currency X into your functional currency, sourced live
+          from the European Central Bank via the Frankfurter API and fetched
+          directly by your browser. Rates update daily on business days. ECB
+          reference rates are benchmarks and may differ from the rates your
+          bank or broker actually offers.
         </li>
         <li>
-          <strong>Risk thresholds</strong> apply only to non-functional
+          <strong>Concentration bands</strong> apply only to non-functional
           currencies (currencies you don't spend in). Under 20% is low, 20-40%
-          is moderate, and over 40% is elevated. Your functional currency is
-          never flagged.
+          is moderate, and over 40% is elevated. They describe how big a
+          share of net worth sits in that currency, not what to do
+          about it. Your functional currency is never flagged.
+        </li>
+        <li>
+          <strong>Net vs. gross exposure.</strong> Concentration is computed
+          on net positions. If you have a large foreign-currency debt that
+          offsets a foreign-currency asset (for example a USD mortgage and
+          a USD savings account), the net position is small but your gross
+          FX exposure on each side is much larger. This tool measures the
+          net; consider the gross figures separately when sizing real-world
+          exchange-rate risk.
         </li>
         <li>
           <strong>All computation is client-side.</strong> Your asset names,
           values, and totals never leave your browser. The only network
-          request is a one-time exchange rate fetch from Frankfurter.
+          request is a one-time exchange rate fetch from Frankfurter, which
+          carries your functional currency code (e.g. <code>?from=EUR</code>)
+          and nothing about your assets.
         </li>
       </ul>
     </section>
 
-    <details class="cr-faq" aria-labelledby="cr-faq-h">
-      <summary id="cr-faq-h" class="cr-faqHeading">
-        <span class="cr-sectionTitle">Frequently asked questions</span>
-        <span class="cr-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
+    <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
+      <summary id="mcnw-faq-h" class="mcnw-faqHeading">
+        <span class="mcnw-sectionTitle">Frequently asked questions</span>
+        <span class="mcnw-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
       </summary>
-      <div class="cr-faqList">
+      <div class="mcnw-faqList">
         {faqs.map((f) => (
-          <details class="cr-faqItem">
-            <summary class="cr-faqQ">{f.q}</summary>
-            <p class="cr-faqA">{f.a}</p>
+          <details class="mcnw-faqItem">
+            <summary class="mcnw-faqQ">{f.q}</summary>
+            <p class="mcnw-faqA">{f.a}</p>
           </details>
         ))}
       </div>
     </details>
 
-    <aside class="cr-related" aria-labelledby="cr-related-h">
-      <header class="cr-relatedHeader">
-        <h2 id="cr-related-h" class="cr-sectionTitle">Understand your money across borders</h2>
-        <p class="cr-relatedLead">
+    <aside class="mcnw-related" aria-labelledby="mcnw-related-h">
+      <header class="mcnw-relatedHeader">
+        <h2 id="mcnw-related-h" class="mcnw-sectionTitle">Understand your money across borders</h2>
+        <p class="mcnw-relatedLead">
           Reads for the multi-currency household.
         </p>
       </header>
 
-      <div class="cr-relatedGrid">
+      <div class="mcnw-relatedGrid">
         {RELATED.map((post) => (
-          <a href={`/blog/${post.slug}`} class="cr-relatedCard" data-attr={post.dataAttr}>
-            <span class="cr-relatedKicker">{post.kicker}</span>
-            <span class="cr-relatedTitle">{post.title}</span>
-            <span class="cr-relatedDesc">{post.desc}</span>
+          <a href={`/blog/${post.slug}`} class="mcnw-relatedCard" data-attr={post.dataAttr}>
+            <span class="mcnw-relatedKicker">{post.kicker}</span>
+            <span class="mcnw-relatedTitle">{post.title}</span>
+            <span class="mcnw-relatedDesc">{post.desc}</span>
           </a>
         ))}
       </div>
 
-      <p class="cr-relatedFooter">
-        <a href="/blog/tag/currency" class="cr-relatedAll" data-attr="related-tag-currency">
+      <p class="mcnw-relatedFooter">
+        <a href="/blog/tag/currency" class="mcnw-relatedAll" data-attr="related-tag-currency">
           Read more on currency management
           <span aria-hidden="true">&nbsp;&rsaquo;</span>
         </a>
-        <a href="/blog" class="cr-relatedAllSecondary" data-attr="related-all">
+        <a href="/blog" class="mcnw-relatedAllSecondary" data-attr="related-all">
           Or browse every article
         </a>
       </p>
@@ -292,18 +326,18 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
-  .cr-page {
+  .mcnw-page {
     max-width: 1100px;
     margin: 0 auto;
     padding: var(--space-6) var(--space-4) var(--space-12);
   }
 
-  .cr-breadcrumbs {
+  .mcnw-breadcrumbs {
     margin-bottom: var(--space-3);
     font-size: 0.8rem;
     color: var(--color-text-muted);
   }
-  .cr-breadcrumbs ol {
+  .mcnw-breadcrumbs ol {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -311,30 +345,30 @@ const faqSchema = {
     flex-wrap: wrap;
     gap: 4px;
   }
-  .cr-breadcrumbs li + li::before {
+  .mcnw-breadcrumbs li + li::before {
     content: '/';
     margin-right: 4px;
     color: var(--color-text-muted);
   }
-  .cr-breadcrumbs a {
+  .mcnw-breadcrumbs a {
     color: var(--color-text-secondary);
     text-decoration: none;
   }
-  .cr-breadcrumbs a:hover,
-  .cr-breadcrumbs a:focus-visible {
+  .mcnw-breadcrumbs a:hover,
+  .mcnw-breadcrumbs a:focus-visible {
     color: var(--color-deep-blue);
     text-decoration: underline;
   }
-  .cr-breadcrumbs [aria-current="page"] {
+  .mcnw-breadcrumbs [aria-current="page"] {
     color: var(--color-text-primary);
   }
 
-  .cr-pageHeader {
+  .mcnw-pageHeader {
     text-align: center;
     margin-bottom: var(--space-8);
   }
 
-  .cr-eyebrow {
+  .mcnw-eyebrow {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.75rem;
@@ -344,7 +378,7 @@ const faqSchema = {
     margin: 0 0 var(--space-2);
   }
 
-  .cr-pageTitle {
+  .mcnw-pageTitle {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
@@ -355,7 +389,7 @@ const faqSchema = {
     text-wrap: balance;
   }
 
-  .cr-pageLead {
+  .mcnw-pageLead {
     color: var(--color-text-secondary);
     font-size: 1rem;
     line-height: 1.55;
@@ -364,7 +398,7 @@ const faqSchema = {
     text-wrap: balance;
   }
 
-  .cr-sectionTitle {
+  .mcnw-sectionTitle {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1.1rem;
@@ -373,9 +407,9 @@ const faqSchema = {
   }
 
   /* Explainer & FAQ */
-  .cr-explainer,
-  .cr-faq,
-  .cr-related {
+  .mcnw-explainer,
+  .mcnw-faq,
+  .mcnw-related {
     margin-top: var(--space-8);
     background: var(--color-bg-white);
     border: 1px solid var(--color-border);
@@ -384,16 +418,16 @@ const faqSchema = {
     box-shadow: var(--shadow-sm);
   }
 
-  .cr-explainer p,
-  .cr-explainerList li,
-  .cr-faqA {
+  .mcnw-explainer p,
+  .mcnw-explainerList li,
+  .mcnw-faqA {
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
     text-wrap: pretty;
   }
 
-  .cr-formula {
+  .mcnw-formula {
     font-family: var(--font-body);
     background: var(--color-bg);
     border: 1px solid var(--color-border-light);
@@ -403,22 +437,22 @@ const faqSchema = {
     overflow-x: auto;
   }
 
-  .cr-formula code {
+  .mcnw-formula code {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.95rem;
     color: var(--color-text-primary);
   }
 
-  .cr-explainerList {
+  .mcnw-explainerList {
     margin: var(--space-3) 0 0;
     padding-left: var(--space-5);
   }
 
-  .cr-explainerList li {
+  .mcnw-explainerList li {
     margin-bottom: var(--space-2);
   }
 
-  .cr-explainerList li strong {
+  .mcnw-explainerList li strong {
     color: var(--color-text-primary);
     font-weight: 600;
   }
@@ -426,7 +460,7 @@ const faqSchema = {
   /* FAQ: entire section is collapsible. The summary doubles as the
      section heading; we keep the visual weight of an h2 and add a tiny
      count badge so the user knows how many questions are hidden. */
-  .cr-faqHeading {
+  .mcnw-faqHeading {
     cursor: pointer;
     list-style: none;
     display: flex;
@@ -436,9 +470,9 @@ const faqSchema = {
     user-select: none;
   }
 
-  .cr-faqHeading::-webkit-details-marker { display: none; }
+  .mcnw-faqHeading::-webkit-details-marker { display: none; }
 
-  .cr-faqHeading::before {
+  .mcnw-faqHeading::before {
     content: '+';
     display: inline-flex;
     align-items: center;
@@ -454,17 +488,17 @@ const faqSchema = {
     transition: transform 0.15s ease;
   }
 
-  .cr-faq[open] > .cr-faqHeading::before {
+  .mcnw-faq[open] > .mcnw-faqHeading::before {
     content: '−';
   }
 
-  .cr-faqHeading:focus-visible {
+  .mcnw-faqHeading:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 4px;
     border-radius: var(--radius-sm);
   }
 
-  .cr-faqHeadingCount {
+  .mcnw-faqHeadingCount {
     margin-left: auto;
     font-family: var(--font-heading);
     font-size: 0.8rem;
@@ -476,25 +510,25 @@ const faqSchema = {
     border: 1px solid var(--color-border);
   }
 
-  .cr-faqList {
+  .mcnw-faqList {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
   }
 
-  .cr-faqItem {
+  .mcnw-faqItem {
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
     padding: var(--space-3);
     background: var(--color-bg);
   }
 
-  .cr-faqItem[open] {
+  .mcnw-faqItem[open] {
     background: var(--color-bg-white);
     border-color: var(--color-border);
   }
 
-  .cr-faqQ {
+  .mcnw-faqQ {
     font-family: var(--font-heading);
     font-weight: 600;
     color: var(--color-text-primary);
@@ -506,9 +540,9 @@ const faqSchema = {
     font-size: 0.95rem;
   }
 
-  .cr-faqQ::-webkit-details-marker { display: none; }
+  .mcnw-faqQ::-webkit-details-marker { display: none; }
 
-  .cr-faqQ::before {
+  .mcnw-faqQ::before {
     content: '+';
     font-weight: 700;
     color: var(--color-deep-blue);
@@ -517,26 +551,26 @@ const faqSchema = {
     flex-shrink: 0;
   }
 
-  .cr-faqItem[open] .cr-faqQ::before {
+  .mcnw-faqItem[open] .mcnw-faqQ::before {
     content: '\2212';
   }
 
-  .cr-faqQ:focus-visible {
+  .mcnw-faqQ:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
 
-  .cr-faqA {
+  .mcnw-faqA {
     margin: var(--space-2) 0 0;
   }
 
   /* Related reading */
-  .cr-relatedHeader {
+  .mcnw-relatedHeader {
     margin-bottom: var(--space-4);
   }
 
-  .cr-relatedLead {
+  .mcnw-relatedLead {
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.55;
@@ -545,19 +579,19 @@ const faqSchema = {
     text-wrap: balance;
   }
 
-  .cr-relatedGrid {
+  .mcnw-relatedGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-3);
   }
 
   @media (max-width: 800px) {
-    .cr-relatedGrid {
+    .mcnw-relatedGrid {
       grid-template-columns: 1fr;
     }
   }
 
-  .cr-relatedCard {
+  .mcnw-relatedCard {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -571,20 +605,20 @@ const faqSchema = {
     min-height: 100%;
   }
 
-  .cr-relatedCard:hover,
-  .cr-relatedCard:focus-visible {
+  .mcnw-relatedCard:hover,
+  .mcnw-relatedCard:focus-visible {
     border-color: var(--color-deep-blue);
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
     outline: none;
   }
 
-  .cr-relatedCard:focus-visible {
+  .mcnw-relatedCard:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
   }
 
-  .cr-relatedKicker {
+  .mcnw-relatedKicker {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.65rem;
@@ -593,7 +627,7 @@ const faqSchema = {
     color: var(--color-teal);
   }
 
-  .cr-relatedTitle {
+  .mcnw-relatedTitle {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1rem;
@@ -601,95 +635,103 @@ const faqSchema = {
     line-height: 1.3;
   }
 
-  .cr-relatedDesc {
+  .mcnw-relatedDesc {
     font-size: 0.88rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
     text-wrap: pretty;
   }
 
-  .cr-relatedFooter {
+  .mcnw-relatedFooter {
     margin: var(--space-4) 0 0;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
     justify-content: flex-end;
-    align-items: baseline;
+    align-items: center;
   }
 
-  .cr-relatedAll {
+  /* text-decoration (not border-bottom) so the underline follows
+     line wraps correctly on narrow viewports: border-bottom only
+     renders under the last visual line of a wrapped link. */
+  .mcnw-relatedAll {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--color-deep-blue);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--color-deep-blue);
-    padding-bottom: 1px;
-    transition: border-bottom-style 0.15s ease;
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-style 0.15s ease;
   }
 
-  .cr-relatedAll:hover,
-  .cr-relatedAll:focus-visible {
-    border-bottom-style: solid;
+  .mcnw-relatedAll:hover,
+  .mcnw-relatedAll:focus-visible {
+    text-decoration-style: solid;
   }
 
-  .cr-relatedAllSecondary {
+  .mcnw-relatedAllSecondary {
     font-size: 0.82rem;
     color: var(--color-text-muted);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--color-text-muted);
-    padding-bottom: 1px;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    text-decoration: underline dotted;
+    text-decoration-color: var(--color-text-muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
   }
 
-  .cr-relatedAllSecondary:hover,
-  .cr-relatedAllSecondary:focus-visible {
+  .mcnw-relatedAllSecondary:hover,
+  .mcnw-relatedAllSecondary:focus-visible {
     color: var(--color-deep-blue);
-    border-bottom-color: var(--color-deep-blue);
-    border-bottom-style: solid;
+    text-decoration-color: var(--color-deep-blue);
+    text-decoration-style: solid;
   }
 
-  @media (max-width: 480px) {
-    .cr-relatedFooter {
+  /* Switch to stacked layout earlier (640px): at widths between
+     480 and 640px the right-aligned wrap makes the two links sit on
+     ragged staggered lines. Stacking them reads cleaner. */
+  @media (max-width: 640px) {
+    .mcnw-relatedFooter {
       justify-content: flex-start;
       flex-direction: column;
-      gap: var(--space-1);
+      align-items: flex-start;
+      gap: var(--space-2);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cr-relatedCard {
+    .mcnw-relatedCard {
       transition: none;
     }
-    .cr-relatedCard:hover,
-    .cr-relatedCard:focus-visible {
+    .mcnw-relatedCard:hover,
+    .mcnw-relatedCard:focus-visible {
       transform: none;
     }
   }
 
   @media (max-width: 480px) {
-    .cr-page {
+    .mcnw-page {
       padding: var(--space-4) var(--space-3) var(--space-8);
     }
-    .cr-pageHeader {
+    .mcnw-pageHeader {
       margin-bottom: var(--space-6);
       text-align: left;
     }
-    .cr-pageLead {
+    .mcnw-pageLead {
       font-size: 0.95rem;
     }
-    .cr-explainer,
-    .cr-faq,
-    .cr-related {
+    .mcnw-explainer,
+    .mcnw-faq,
+    .mcnw-related {
       padding: var(--space-4) var(--space-3);
     }
   }
 
   /* =================================================================
-   * Component styles (CurrencyRiskAnalyzer)
+   * Component styles (MultiCurrencyNetWorth)
    * ============================================================= */
 
-  .cr-srOnly {
+  .mcnw-srOnly {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -701,7 +743,7 @@ const faqSchema = {
     border: 0;
   }
 
-  .cr-root {
+  .mcnw-root {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
@@ -709,7 +751,7 @@ const faqSchema = {
   }
 
   /* Toolbar */
-  .cr-toolbar {
+  .mcnw-toolbar {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
@@ -717,14 +759,14 @@ const faqSchema = {
     align-items: flex-end;
   }
 
-  .cr-funcCurrencyField {
+  .mcnw-funcCurrencyField {
     display: flex;
     flex-direction: column;
     gap: 4px;
     min-width: 260px;
   }
 
-  .cr-fieldLabel {
+  .mcnw-fieldLabel {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.78rem;
@@ -732,7 +774,7 @@ const faqSchema = {
     letter-spacing: 0.02em;
   }
 
-  .cr-select {
+  .mcnw-select {
     font-family: var(--font-body);
     font-size: 1rem;
     padding: 10px 12px;
@@ -747,23 +789,23 @@ const faqSchema = {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .cr-selectSm {
+  .mcnw-selectSm {
     font-size: 0.9rem;
     padding: 8px 10px;
     min-height: 40px;
   }
 
-  .cr-select:hover {
+  .mcnw-select:hover {
     border-color: var(--color-text-muted);
   }
 
-  .cr-select:focus-visible {
+  .mcnw-select:focus-visible {
     outline: none;
     border-color: var(--color-deep-blue);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
   }
 
-  .cr-fieldHelp {
+  .mcnw-fieldHelp {
     margin: 4px 0 0;
     font-size: 0.75rem;
     font-weight: 400;
@@ -772,14 +814,14 @@ const faqSchema = {
     max-width: 36ch;
   }
 
-  .cr-toolbarActions {
+  .mcnw-toolbarActions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
     align-items: center;
   }
 
-  .cr-shareGroup {
+  .mcnw-shareGroup {
     display: flex;
     gap: 0;
     border-radius: var(--radius-md);
@@ -787,8 +829,8 @@ const faqSchema = {
     border: 1px solid var(--color-deep-blue);
   }
 
-  .cr-shareBtn,
-  .cr-shareBtnOutline {
+  .mcnw-shareBtn,
+  .mcnw-shareBtnOutline {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.8rem;
@@ -799,34 +841,34 @@ const faqSchema = {
     transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .cr-shareBtn {
+  .mcnw-shareBtn {
     background: var(--color-deep-blue);
     color: #fff;
   }
 
-  .cr-shareBtn:hover:not(:disabled),
-  .cr-shareBtn:focus-visible:not(:disabled) {
+  .mcnw-shareBtn:hover:not(:disabled),
+  .mcnw-shareBtn:focus-visible:not(:disabled) {
     background: var(--color-deep-blue-dark);
   }
 
-  .cr-shareBtnOutline {
+  .mcnw-shareBtnOutline {
     background: transparent;
     color: var(--color-deep-blue);
     border-left: 1px solid var(--color-deep-blue);
   }
 
-  .cr-shareBtnOutline:hover:not(:disabled),
-  .cr-shareBtnOutline:focus-visible:not(:disabled) {
+  .mcnw-shareBtnOutline:hover:not(:disabled),
+  .mcnw-shareBtnOutline:focus-visible:not(:disabled) {
     background: var(--color-bg);
   }
 
-  .cr-shareBtn:disabled,
-  .cr-shareBtnOutline:disabled {
+  .mcnw-shareBtn:disabled,
+  .mcnw-shareBtnOutline:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
-  .cr-resetBtn {
+  .mcnw-resetBtn {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.85rem;
@@ -840,50 +882,50 @@ const faqSchema = {
     transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .cr-resetBtn:hover,
-  .cr-resetBtn:focus-visible {
+  .mcnw-resetBtn:hover,
+  .mcnw-resetBtn:focus-visible {
     background: var(--color-deep-blue);
     color: #fff;
   }
 
   /* :global() escapes Astro's component scoping so the rule actually
      matches when [data-theme="dark"] is set on <html>. */
-  :global([data-theme="dark"]) .cr-shareBtn {
+  :global([data-theme="dark"]) .mcnw-shareBtn {
     color: #121212;
   }
 
-  :global([data-theme="dark"]) .cr-resetBtn:hover,
-  :global([data-theme="dark"]) .cr-resetBtn:focus-visible {
+  :global([data-theme="dark"]) .mcnw-resetBtn:hover,
+  :global([data-theme="dark"]) .mcnw-resetBtn:focus-visible {
     color: #121212;
   }
 
   /* Banners */
-  .cr-banner {
+  .mcnw-banner {
     padding: 12px 16px;
     border-radius: var(--radius-md);
     font-size: 0.88rem;
     line-height: 1.5;
   }
 
-  .cr-bannerWarn {
+  .mcnw-bannerWarn {
     background: #fff3cd;
     border: 1px solid #ffc107;
     color: #856404;
   }
 
-  .cr-bannerInfo {
+  .mcnw-bannerInfo {
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     color: var(--color-text-secondary);
   }
 
-  :global([data-theme="dark"]) .cr-bannerWarn {
+  :global([data-theme="dark"]) .mcnw-bannerWarn {
     background: #332b00;
     border-color: #664d00;
     color: #ffc107;
   }
 
-  .cr-retryBtn {
+  .mcnw-retryBtn {
     font-family: inherit;
     font-size: inherit;
     font-weight: 600;
@@ -896,7 +938,7 @@ const faqSchema = {
   }
 
   /* Input */
-  .cr-input {
+  .mcnw-input {
     font-family: var(--font-body);
     font-size: 1rem;
     padding: 10px 12px;
@@ -910,18 +952,18 @@ const faqSchema = {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .cr-input:hover {
+  .mcnw-input:hover {
     border-color: var(--color-text-muted);
   }
 
-  .cr-input:focus-visible {
+  .mcnw-input:focus-visible {
     outline: none;
     border-color: var(--color-deep-blue);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
   }
 
   /* Asset table */
-  .cr-tableSection {
+  .mcnw-tableSection {
     background: var(--color-bg-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -929,23 +971,23 @@ const faqSchema = {
     box-shadow: var(--shadow-sm);
   }
 
-  .cr-tableHeader {
+  .mcnw-tableHeader {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     margin-bottom: var(--space-3);
   }
 
-  .cr-rowCount {
+  .mcnw-rowCount {
     font-size: 0.8rem;
     color: var(--color-text-muted);
   }
 
-  .cr-tableHead {
+  .mcnw-tableHead {
     border-bottom: 2px solid var(--color-border);
   }
 
-  .cr-tableRow {
+  .mcnw-tableRow {
     display: grid;
     grid-template-columns: 2fr 1.5fr 1fr 1fr 40px;
     gap: var(--space-2);
@@ -954,7 +996,7 @@ const faqSchema = {
     border-bottom: 1px solid var(--color-border-light);
   }
 
-  .cr-tableRowHead {
+  .mcnw-tableRowHead {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.72rem;
@@ -965,29 +1007,29 @@ const faqSchema = {
   }
 
   @media (max-width: 700px) {
-    .cr-tableRow {
+    .mcnw-tableRow {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-1);
       padding: var(--space-3) 0;
     }
-    .cr-tableRowHead {
+    .mcnw-tableRowHead {
       display: none;
     }
-    .cr-cellName { grid-column: 1 / -1; }
-    .cr-cellValue { grid-column: 1; }
-    .cr-cellCurrency { grid-column: 2; }
-    .cr-cellType { grid-column: 1; }
-    .cr-cellActions { grid-column: 2; justify-self: end; }
+    .mcnw-cellName { grid-column: 1 / -1; }
+    .mcnw-cellValue { grid-column: 1; }
+    .mcnw-cellCurrency { grid-column: 2; }
+    .mcnw-cellType { grid-column: 1; }
+    .mcnw-cellActions { grid-column: 2; justify-self: end; }
   }
 
   /* Table footer */
-  .cr-tableFooter {
+  .mcnw-tableFooter {
     display: flex;
     gap: var(--space-3);
     margin-top: var(--space-3);
   }
 
-  .cr-addBtn {
+  .mcnw-addBtn {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.85rem;
@@ -1001,14 +1043,14 @@ const faqSchema = {
     transition: border-color 0.15s ease, background 0.15s ease;
   }
 
-  .cr-addBtn:hover,
-  .cr-addBtn:focus-visible {
+  .mcnw-addBtn:hover,
+  .mcnw-addBtn:focus-visible {
     border-color: var(--color-deep-blue);
     background: var(--color-bg);
     outline: none;
   }
 
-  .cr-csvBtn {
+  .mcnw-csvBtn {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.85rem;
@@ -1022,14 +1064,14 @@ const faqSchema = {
     transition: border-color 0.15s ease, color 0.15s ease;
   }
 
-  .cr-csvBtn:hover,
-  .cr-csvBtn:focus-visible {
+  .mcnw-csvBtn:hover,
+  .mcnw-csvBtn:focus-visible {
     border-color: var(--color-deep-blue);
     color: var(--color-deep-blue);
     outline: none;
   }
 
-  .cr-removeBtn {
+  .mcnw-removeBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1046,8 +1088,8 @@ const faqSchema = {
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
-  .cr-removeBtn:hover,
-  .cr-removeBtn:focus-visible {
+  .mcnw-removeBtn:hover,
+  .mcnw-removeBtn:focus-visible {
     background: var(--color-bg);
     color: var(--color-danger);
     border-color: var(--color-danger);
@@ -1055,7 +1097,7 @@ const faqSchema = {
   }
 
   /* CSV confirm */
-  .cr-csvConfirm {
+  .mcnw-csvConfirm {
     margin-top: var(--space-3);
     padding: var(--space-3);
     background: var(--color-bg);
@@ -1063,18 +1105,18 @@ const faqSchema = {
     border-radius: var(--radius-md);
   }
 
-  .cr-csvConfirm p {
+  .mcnw-csvConfirm p {
     margin: 0 0 var(--space-2);
     font-size: 0.9rem;
     color: var(--color-text-primary);
   }
 
-  .cr-csvConfirmActions {
+  .mcnw-csvConfirmActions {
     display: flex;
     gap: var(--space-2);
   }
 
-  .cr-csvConfirmYes {
+  .mcnw-csvConfirmYes {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.8rem;
@@ -1086,7 +1128,7 @@ const faqSchema = {
     color: #fff;
   }
 
-  .cr-csvConfirmNo {
+  .mcnw-csvConfirmNo {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.8rem;
@@ -1099,7 +1141,7 @@ const faqSchema = {
   }
 
   /* CSV errors */
-  .cr-csvErrors {
+  .mcnw-csvErrors {
     margin-top: var(--space-3);
     padding: var(--space-3);
     background: #fff3cd;
@@ -1109,24 +1151,24 @@ const faqSchema = {
     color: #856404;
   }
 
-  :global([data-theme="dark"]) .cr-csvErrors {
+  :global([data-theme="dark"]) .mcnw-csvErrors {
     background: #332b00;
     border-color: #664d00;
     color: #ffc107;
   }
 
-  .cr-csvErrorsTitle {
+  .mcnw-csvErrorsTitle {
     margin: 0 0 var(--space-1);
     font-weight: 600;
   }
 
-  .cr-csvErrors ul {
+  .mcnw-csvErrors ul {
     margin: 0;
     padding-left: var(--space-4);
   }
 
   /* Results */
-  .cr-results {
+  .mcnw-results {
     background: var(--color-bg-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -1134,19 +1176,19 @@ const faqSchema = {
     box-shadow: var(--shadow-sm);
   }
 
-  .cr-emptyState {
+  .mcnw-emptyState {
     text-align: center;
     padding: var(--space-8) var(--space-4);
     color: var(--color-text-muted);
     font-size: 1rem;
   }
 
-  .cr-total {
+  .mcnw-total {
     text-align: center;
     margin-bottom: var(--space-5);
   }
 
-  .cr-totalLabel {
+  .mcnw-totalLabel {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
@@ -1157,7 +1199,7 @@ const faqSchema = {
     margin-bottom: var(--space-1);
   }
 
-  .cr-totalValue {
+  .mcnw-totalValue {
     display: block;
     font-family: var(--font-heading);
     font-weight: 700;
@@ -1166,7 +1208,7 @@ const faqSchema = {
     letter-spacing: -0.02em;
   }
 
-  .cr-totalHint {
+  .mcnw-totalHint {
     display: block;
     font-size: 0.75rem;
     color: var(--color-text-muted);
@@ -1174,11 +1216,11 @@ const faqSchema = {
   }
 
   /* Chart */
-  .cr-chartSection {
+  .mcnw-chartSection {
     margin-bottom: var(--space-5);
   }
 
-  .cr-chartTitle {
+  .mcnw-chartTitle {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1rem;
@@ -1186,44 +1228,44 @@ const faqSchema = {
     margin: 0 0 var(--space-3);
   }
 
-  .cr-chartWrap {
+  .mcnw-chartWrap {
     display: flex;
     align-items: center;
     gap: var(--space-5);
     flex-wrap: wrap;
   }
 
-  .cr-chart {
+  .mcnw-chart {
     flex-shrink: 0;
     max-width: 240px;
     height: auto;
   }
 
-  .cr-chartCenterLabel {
+  .mcnw-chartCenterLabel {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1.5rem;
     fill: var(--color-deep-blue);
   }
 
-  .cr-chartCenterSub {
+  .mcnw-chartCenterSub {
     font-family: var(--font-body);
     font-size: 0.7rem;
     fill: var(--color-text-muted);
   }
 
-  .cr-chartEmpty {
+  .mcnw-chartEmpty {
     color: var(--color-text-muted);
     font-size: 0.9rem;
   }
 
-  .cr-legend {
+  .mcnw-legend {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  .cr-legendItem {
+  .mcnw-legendItem {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1231,32 +1273,32 @@ const faqSchema = {
     color: var(--color-text-secondary);
   }
 
-  .cr-legendSwatch {
+  .mcnw-legendSwatch {
     width: 14px;
     height: 14px;
     border-radius: 3px;
     flex-shrink: 0;
   }
 
-  .cr-legendCode {
+  .mcnw-legendCode {
     font-weight: 600;
     color: var(--color-text-primary);
     min-width: 3em;
   }
 
-  .cr-legendPct {
+  .mcnw-legendPct {
     color: var(--color-text-muted);
     font-variant-numeric: tabular-nums;
   }
 
   /* Risk cards */
-  .cr-riskCards {
+  .mcnw-riskCards {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
   }
 
-  .cr-riskCardsTitle {
+  .mcnw-riskCardsTitle {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1rem;
@@ -1264,31 +1306,31 @@ const faqSchema = {
     margin: 0;
   }
 
-  .cr-riskCard {
+  .mcnw-riskCard {
     padding: var(--space-3);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border-light);
     background: var(--color-bg);
   }
 
-  .cr-riskCard--functional {
+  .mcnw-riskCard--functional {
     border-left: 4px solid var(--color-teal);
   }
 
-  .cr-riskCard--low {
+  .mcnw-riskCard--low {
     border-left: 4px solid #2E7D32;
   }
 
-  .cr-riskCard--moderate {
+  .mcnw-riskCard--moderate {
     border-left: 4px solid #F9A825;
   }
 
-  .cr-riskCard--elevated,
-  .cr-riskCard--net-debt {
+  .mcnw-riskCard--elevated,
+  .mcnw-riskCard--net-debt {
     border-left: 4px solid #C62828;
   }
 
-  .cr-riskCardHead {
+  .mcnw-riskCardHead {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -1296,7 +1338,7 @@ const faqSchema = {
     margin-bottom: var(--space-1);
   }
 
-  .cr-riskBadge {
+  .mcnw-riskBadge {
     display: inline-block;
     font-family: var(--font-heading);
     font-weight: 700;
@@ -1308,20 +1350,20 @@ const faqSchema = {
     border-radius: var(--radius-sm);
   }
 
-  .cr-riskCurrency {
+  .mcnw-riskCurrency {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--color-text-primary);
   }
 
-  .cr-riskLabel {
+  .mcnw-riskLabel {
     font-size: 0.82rem;
     color: var(--color-text-muted);
     margin: 0 0 var(--space-1);
   }
 
-  .cr-riskRec {
+  .mcnw-riskRec {
     font-size: 0.88rem;
     color: var(--color-text-secondary);
     line-height: 1.55;
@@ -1329,7 +1371,7 @@ const faqSchema = {
   }
 
   /* Disclaimer */
-  .cr-disclaimer {
+  .mcnw-disclaimer {
     font-size: 0.75rem;
     color: var(--color-text-muted);
     line-height: 1.5;
@@ -1338,27 +1380,27 @@ const faqSchema = {
   }
 
   @media (max-width: 480px) {
-    .cr-toolbar {
+    .mcnw-toolbar {
       flex-direction: column;
       align-items: stretch;
     }
-    .cr-funcCurrencyField {
+    .mcnw-funcCurrencyField {
       min-width: auto;
     }
-    .cr-toolbarActions {
+    .mcnw-toolbarActions {
       justify-content: flex-end;
     }
-    .cr-shareGroup {
+    .mcnw-shareGroup {
       flex: 1;
     }
-    .cr-shareBtn,
-    .cr-shareBtnOutline {
+    .mcnw-shareBtn,
+    .mcnw-shareBtnOutline {
       flex: 1;
       text-align: center;
       font-size: 0.72rem;
       padding: 10px 8px;
     }
-    .cr-chartWrap {
+    .mcnw-chartWrap {
       flex-direction: column;
       align-items: center;
     }

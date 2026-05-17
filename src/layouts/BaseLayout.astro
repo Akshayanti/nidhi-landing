@@ -28,6 +28,13 @@ const { title, description, image, keywords, article, prevUrl, nextUrl, jsonLd, 
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} image={image} keywords={keywords} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
+    {/*
+      Per-page head additions (preconnects, page-specific link tags). The
+      slot is empty by default so existing pages are unaffected; the
+      multi-currency-net-worth page uses it to preconnect to the
+      Frankfurter FX API so the first rates request lands faster.
+    */}
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

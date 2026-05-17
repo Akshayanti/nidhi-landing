@@ -92,14 +92,27 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'May 17, 2026',
+    iso: '2026-05-17',
+    material: true,
+    summary: 'Renamed the currency tool, refreshed its event list, and added a few error-and-engagement signals on both free tools.',
+    details: [
+      'The free tool at /free/currency-risk is now /free/multi-currency-net-worth (the old URL redirects). The tool itself is unchanged in what it computes; the new name better reflects that the headline output is your net worth converted into one currency, with the concentration / risk view as a secondary panel.',
+      'New anonymous events on /free/multi-currency-net-worth: free_multi_currency_net_worth_rates_error (fired when the exchange-rate fetch from Frankfurter fails outright; carries the functional currency you had selected and a short, generic reason string from the failed fetch, never your asset data), and free_multi_currency_net_worth_csv_parse_errors (fired when a CSV upload contains invalid rows; carries the count of valid and invalid rows and a coarse reason bucket like "invalid_value" or "unsupported_currency"). Neither event ships any of the values you typed.',
+      'The free_multi_currency_net_worth_shared_view_opened event now also includes the utm_source URL parameter. This lets us tell apart someone arriving via a copied share link (utm_source=share) from any other inbound campaign. The utm_source value is the campaign source you yourself sent in the URL; we never invent it.',
+      'New anonymous events on /free/loan-comparison: free_loan_comparison_validation_error (debounced, fires 600ms after a burst of input edits if any vendor card has a validation error; carries the count of errored cards, a coarse error reason like "missing_principal", and the slot label of the first errored vendor, never the actual values), free_loan_comparison_horizon_changed (debounced; carries the chosen horizon in months), and free_loan_comparison_refi_changed (debounced; carries which refinance field was last edited: vendor index, refinance month, new rate, new term, new fees, or "roll fee" toggle). None of these events carry the underlying loan numbers.',
+      'Most React-rendered buttons in both tools now have a stable data-attr label (for example data-attr="lc-share-copy", data-attr="mcnw-asset-add"). For users who consent to interaction analytics, this gives the autocaptured click events a stable selector instead of a fragile auto-generated one. For users who do not consent, this changes nothing: autocapture is gated on consent.',
+    ],
+  },
+  {
     date: 'May 16, 2026',
     iso: '2026-05-16',
     material: true,
     summary: 'Added the Currency Risk Analyzer tool and disclosed a new third-party API call from your browser.',
     details: [
-      'New free tool at /free/currency-risk: add assets and liabilities across currencies, see your net currency concentration, and get a risk assessment. No data is sent to us, everything runs in your browser.',
-      'New anonymous interaction events on /free/currency-risk: which functional currency you select, when you add or remove an asset, when you upload a CSV file, when you copy a shareable link (and which sharing mode), and when you reset the form. The financial values you type (asset names, amounts, currencies) are never sent; only interaction metadata is captured.',
-      'The tool makes one network request from your browser to api.frankfurter.app (a free, open ECB exchange-rate API). The request includes only the functional currency code you selected (e.g. ?from=EUR). No personal data is sent. This is a direct browser-to-API call; we never see the request or the response.',
+      'New free tool at /free/multi-currency-net-worth (formerly /free/currency-risk): add assets and liabilities across currencies, see your net worth in your chosen currency, and check your currency concentration. No data is sent to us, everything runs in your browser.',
+      'New anonymous interaction events on /free/multi-currency-net-worth: which functional currency you select, when you add or remove an asset, when you upload a CSV file, when you copy a shareable link (and which sharing mode: "full" or "redacted"), and when you reset the form. The financial values you type (asset names, amounts, currencies) are never sent; only interaction metadata is captured.',
+      'The tool makes one network request from your browser to api.frankfurter.dev (a free, open ECB exchange-rate API). The request includes only the functional currency code you selected (e.g. ?from=EUR). No personal data is sent. This is a direct browser-to-API call; we never see the request or the response.',
       'The header navigation now includes a dropdown listing all free tools.',
     ],
   },
@@ -109,7 +122,7 @@ const changelog: ChangelogEntry[] = [
     material: true,
     summary: 'Disclosed a small set of anonymous interaction events on the Free Tools pages.',
     details: [
-      'New anonymous events on /free/loan-comparison: which currency you select, whether you toggle solve-for-term vs solve-for-payment, whether you open the "More options" panel, whether you copy the shareable link, and whether you click Reset to defaults.',
+      'New anonymous events on /free/loan-comparison: which currency you select, whether you toggle solve-for-term vs solve-for-payment, whether you switch a vendor between fixed and hybrid (ARM) rate kinds, whether you change the analysis tab (side-by-side, horizon, refinance, etc.), whether you change the vendor selected for the per-vendor split chart, whether you open the per-vendor "Show details" expander, whether you copy the shareable link, and whether you click Reset to defaults.',
       'These events do not include any of the financial values you type (loan amount, interest rate, fees, monthly payment, vendor name). The point of the calculator is that the math runs in your browser; we are not exfiltrating the inputs.',
       'These events fire whether or not you accept the cookie banner; they are categorised the same way as pageview and page-leave: anonymous, no name, no email, no user ID.',
     ],

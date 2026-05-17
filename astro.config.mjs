@@ -10,6 +10,13 @@ export default defineConfig({
       return !transactional.some(p => page.includes(p));
     },
   })],
+  // Permanent redirects for renamed/retired pages.
+  // Static output emits an HTML file with <meta http-equiv="refresh">
+  // and a canonical link, which is the strongest signal available
+  // without server-side 301s.
+  redirects: {
+    '/free/currency-risk': '/free/multi-currency-net-worth',
+  },
   output: 'static',
   trailingSlash: 'never',
   vite: {

@@ -18,7 +18,7 @@ const RELATED_CANDIDATES = [
     slug: 'understanding-loan-terms',
     kicker: 'How to compare',
     title: 'Understanding loan terms',
-    desc: 'APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer is actually cheapest.',
+    desc: 'APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost.',
     dataAttr: 'related-loan-terms',
   },
   {
@@ -183,7 +183,7 @@ const faqSections: { id: string; title: string; items: { q: string; a: string }[
       },
       {
         q: 'Does the calculator handle origination fees and closing costs?',
-        a: 'Yes. Enter them in the "Origination / closing fee" field under "Costs and fees" on each vendor card. Fees are added to the total amount paid so the cheapest-overall comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
+        a: 'Yes. Enter them in the "Origination / closing fee" field under "Costs and fees" on each vendor card. Fees are added to the total amount paid, so the side-by-side comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
       },
     ],
   },
@@ -205,7 +205,7 @@ const faqSections: { id: string; title: string; items: { q: string; a: string }[
       },
       {
         q: 'How does the prepayment penalty work?',
-        a: 'Some loans charge a penalty if you pay them off early. Enter the penalty as a percent of the remaining balance and the last month at which it applies. The penalty is charged only when the loan is fully paid off (via lumps, extra principal, or a refinance) on or before that month. Penalties are added to the total amount paid, so the cheapest-overall comparison correctly reflects the true cost of an early payoff under penalty.',
+        a: 'Some loans charge a penalty if you pay them off early. Enter the penalty as a percent of the remaining balance and the last month at which it applies. The penalty is charged only when the loan is fully paid off (via lumps, extra principal, or a refinance) on or before that month. Penalties are added to the total amount paid, so the side-by-side comparison reflects the true cost of an early payoff under penalty.',
       },
     ],
   },
@@ -233,7 +233,7 @@ const faqSections: { id: string; title: string; items: { q: string; a: string }[
       },
       {
         q: 'What is the horizon analysis ("if I sell or refinance at...")?',
-        a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This is the right view if you expect to sell, move, or refinance well before the contractual end of the loan, because the cheapest-by-total-cost vendor over 360 months may not be the cheapest if you exit at month 60.',
+        a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This is the right view if you expect to sell, move, or refinance well before the contractual end of the loan, because the vendor with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
       },
       {
         q: 'How does the refinance scenario builder work?',
@@ -803,46 +803,55 @@ const faqSchema = {
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
     justify-content: flex-end;
-    align-items: baseline;
+    align-items: center;
   }
 
+  /* text-decoration (not border-bottom) so the underline follows
+     line wraps correctly on narrow viewports: border-bottom only
+     renders under the last visual line of a wrapped link. Mirrors the
+     fix on multi-currency-net-worth.astro. */
   .lc-relatedAll {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--color-deep-blue);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--color-deep-blue);
-    padding-bottom: 1px;
-    transition: border-bottom-style 0.15s ease;
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-style 0.15s ease;
   }
 
   .lc-relatedAll:hover,
   .lc-relatedAll:focus-visible {
-    border-bottom-style: solid;
+    text-decoration-style: solid;
   }
 
   .lc-relatedAllSecondary {
     font-size: 0.82rem;
     color: var(--color-text-muted);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--color-text-muted);
-    padding-bottom: 1px;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    text-decoration: underline dotted;
+    text-decoration-color: var(--color-text-muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
   }
 
   .lc-relatedAllSecondary:hover,
   .lc-relatedAllSecondary:focus-visible {
     color: var(--color-deep-blue);
-    border-bottom-color: var(--color-deep-blue);
-    border-bottom-style: solid;
+    text-decoration-color: var(--color-deep-blue);
+    text-decoration-style: solid;
   }
 
-  @media (max-width: 480px) {
+  /* Switch to stacked layout earlier (640px): at widths between
+     480 and 640px the right-aligned wrap makes the two links sit on
+     ragged staggered lines. Stacking them reads cleaner. */
+  @media (max-width: 640px) {
     .lc-relatedFooter {
       justify-content: flex-start;
       flex-direction: column;
-      gap: var(--space-1);
+      align-items: flex-start;
+      gap: var(--space-2);
     }
   }
 

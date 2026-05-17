@@ -86,7 +86,16 @@ const CURRENCY_BY_CODE: Record<string, CurrencyInfo> = Object.fromEntries(
   CURRENCIES.map((c) => [c.code, c]),
 );
 
-export const DEFAULT_CURRENCY = 'USD';
+/**
+ * Tools default to EUR because the audience is global expats with EU as
+ * the largest single segment (see brand pillar #3 in the messaging guide
+ * in the app repo, and the Instagram playbook §1 for the audience map).
+ * A USD default surprises the typical visitor; EUR defaults better and
+ * users in other currencies switch via the dropdown in one click. The
+ * URL state codec also omits the `cur` param when the user keeps the
+ * default, so a EUR default keeps EU users' share links the shortest.
+ */
+export const DEFAULT_CURRENCY = 'EUR';
 
 export function getCurrency(code: string): CurrencyInfo {
   return CURRENCY_BY_CODE[code] ?? CURRENCY_BY_CODE[DEFAULT_CURRENCY];
@@ -96,30 +105,25 @@ export function getCurrency(code: string): CurrencyInfo {
 // Money primitives
 // -----------------------------------------------------------------------------
 
-/** Round a (possibly fractional) minor-unit value to integer, half-away-from-zero. */
+/** Half-away-from-zero so rounding is symmetric and the schedule never drifts negative. */
 export function roundMinor(units: number): number {
   if (!Number.isFinite(units)) return 0;
   return units >= 0 ? Math.floor(units + 0.5) : -Math.floor(-units + 0.5);
 }
 
-/** Convert a major-unit amount (e.g. dollars, rupees, yen) to integer minor units. */
+/** All math runs in integer minor units so principal sums match the original loan exactly. */
 export function toMinor(amount: number, currencyCode: string): number {
   if (!Number.isFinite(amount)) return 0;
   const { factor } = getCurrency(currencyCode);
   return roundMinor(amount * factor);
 }
 
-/** Convert minor units back to major units (number; lossy display only). */
+/** Display-only; never feed the result back into computation. */
 export function fromMinor(units: number, currencyCode: string): number {
   const { factor } = getCurrency(currencyCode);
   return units / factor;
 }
 
-/**
- * Format an integer minor-units value as a localized currency string.
- * Uses the currency's locale, so INR renders with Indian-style 2,3,3 grouping
- * (e.g. ₹1,23,45,678) and JPY renders with no decimals.
- */
 /** Currencies that share the "$" symbol and need disambiguation. */
 const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);
 
@@ -138,17 +142,14 @@ export function formatMoney(units: number, currencyCode: string): string {
 // -----------------------------------------------------------------------------
 
 export interface AmortizationRow {
-  /** 1-based month index. */
+  /** 1-based so it matches how users count ("month 1"), not how arrays index. */
   month: number;
   /** Total payment for the month, in minor units. Includes the regular
    *  scheduled payment, any extra monthly principal, and any lump sum
    *  applied that month. */
   payment: number;
-  /** Interest portion, in minor units. */
   interest: number;
-  /** Principal portion, in minor units. Equal to `payment - interest`. */
   principal: number;
-  /** Remaining balance after this payment, in minor units. */
   balance: number;
 }
 
@@ -187,9 +188,7 @@ export type RateSpec =
  *  for that month, so the lump sum hits the balance immediately and
  *  earns no interest the same month. */
 export interface LumpSum {
-  /** 1-based month index at which the lump sum is paid. */
   month: number;
-  /** Amount of additional principal, in minor units. */
   amountMinor: number;
 }
 
@@ -208,23 +207,19 @@ export interface PrepaymentPenalty {
   flatMinor?: number;
 }
 
-/** Resolve the annual rate effective for a given 1-based month under the
- *  supplied rate spec. Pure function, safe to call inside loops. */
+/** Single accessor so callers don't branch on `spec.kind` at every call site. Safe to call inside loops. */
 export function rateForMonth(spec: RateSpec, month: number): number {
   if (spec.kind === 'fixed') return spec.annualRate;
   return month <= spec.initialMonths ? spec.initialAnnualRate : spec.subsequentAnnualRate;
 }
 
 export interface LoanInputs {
-  /** Loan principal in minor units. */
   principalMinor: number;
   /** Annual interest rate as a decimal (e.g. 0.065 for 6.5%). For hybrid
    *  loans this is treated as the *initial* rate when no `rateSpec` is
    *  supplied; pass `rateSpec` explicitly to model a hybrid contract. */
   annualRate: number;
-  /** Origination/closing fee in minor units. */
   feeMinor?: number;
-  /** Optional extra principal payment each month, in minor units. */
   extraMonthlyMinor?: number;
   /** Advanced: full rate specification. Overrides `annualRate` when
    *  supplied. Use `{ kind: 'fixed', annualRate }` for parity with the
@@ -400,33 +395,9 @@ export function buildSchedule(
 }
 
 /**
- * Build an amortization schedule for an arbitrarily-shaped loan.
- *
- * Handles every advanced feature the calculator supports:
- *   - Hybrid (fixed-then-variable) rate, with payment recast at the
- *     transition month so the loan still amortizes in the original term.
- *   - Extra monthly principal, applied as principal after each scheduled
- *     payment.
- *   - Lump-sum prepayments, applied as additional principal in their
- *     specified month, AFTER the regular payment and the monthly extra.
- *
- * Returns a schedule whose principal column sums to exactly the original
- * loan amount (integer-cent invariant preserved across all features).
- *
- * @param spec.principalMinor      original loan amount (minor units)
- * @param spec.rateSpec            rate specification (fixed or hybrid)
- * @param spec.totalMonths         contractual term, used for payment
- *                                  recasting in hybrid loans and as the
- *                                  upper bound of the simulation
- * @param spec.basePaymentMinor    initial scheduled payment to use. For
- *                                  fixed-rate term loans this is the
- *                                  closed-form payment; for fixed-rate
- *                                  payment-mode loans it's the user's
- *                                  monthly payment. For hybrid loans
- *                                  this is the closed-form payment at
- *                                  the initial rate over the full term.
- * @param spec.extraMonthlyMinor   optional extra principal each month
- * @param spec.lumpSums            optional list of one-off prepayments
+ * Single scheduler for all loan shapes (fixed, hybrid, with extras, with lumps).
+ * Preserves the integer-cent invariant across every feature so the principal column sums
+ * to exactly the original loan amount.
  */
 export function buildScheduleAdvanced(spec: {
   principalMinor: number;
@@ -571,12 +542,7 @@ export function buildScheduleAdvanced(spec: {
   return { schedule, warnings };
 }
 
-/**
- * Resolve the effective rate spec for a `LoanInputs` object. When a
- * caller supplies an explicit `rateSpec` we use it verbatim; otherwise
- * we synthesize a fixed-rate spec from the simple `annualRate` field.
- * This keeps every code path that needs rate information single-shape.
- */
+/** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
 function resolveRateSpec(inputs: LoanInputs): RateSpec {
   if (inputs.rateSpec) return inputs.rateSpec;
   return { kind: 'fixed', annualRate: inputs.annualRate };
@@ -910,29 +876,18 @@ export function formatApr(apr: number, locale: string = 'en-US'): string {
 // -----------------------------------------------------------------------------
 
 export interface EquitySnapshot {
-  /** 1-based month at which the snapshot is taken. May be clamped to the
-   *  schedule length if the requested month is past payoff. */
+  /** May be clamped to the schedule length if the requested month is past payoff. */
   month: number;
-  /** Cumulative principal repaid through `month`, in minor units. */
   principalPaidMinor: number;
-  /** Cumulative interest paid through `month`, in minor units. */
   interestPaidMinor: number;
-  /** Remaining principal balance at the end of `month`, in minor units. */
   balanceMinor: number;
-  /** Total cash out the door through `month`: cumulative payments plus
-   *  the origination fee. Useful for "how much have I spent so far?". */
+  /** Cumulative payments plus the origination fee. Answers "how much have I spent so far?". */
   totalOutOfPocketMinor: number;
 }
 
 /**
- * Compute a snapshot of where the borrower stands at a given month.
- * Answers the blog's "if I sell in year 3" question directly: how much
- * principal have I built, how much interest have I paid, what's the
- * remaining balance.
- *
- * `month` is 1-based and is clamped into the valid range. If it exceeds
- * the schedule length the snapshot reflects the post-payoff state
- * (zero balance, full principal repaid).
+ * Answers the blog's "if I sell in year 3" question directly. `month` is clamped into the valid
+ * range; if it exceeds the schedule length, the snapshot reflects post-payoff state.
  */
 export function equityAtMonth(
   schedule: AmortizationRow[],
@@ -971,29 +926,16 @@ export function equityAtMonth(
 // -----------------------------------------------------------------------------
 
 export interface PointsBreakEven {
-  /** Months until the upfront points cost is recouped through monthly
-   *  payment savings. `Infinity` when the points scenario doesn't actually
-   *  produce monthly savings. `0` when the upfront cost is zero. */
+  /** `Infinity` when the points don't produce savings; `0` when upfront cost is zero. */
   months: number;
-  /** Monthly savings (positive) or extra cost (negative), in minor units. */
   monthlySavingsMinor: number;
-  /** Lifetime savings (over the full term) when paying points, including
-   *  the upfront cost. Positive means "paying points saves money over the
-   *  full term"; negative means the points are a net loss. */
+  /** Positive means paying points saves money over the full term; negative means it's a net loss. */
   lifetimeSavingsMinor: number;
 }
 
 /**
- * Compare two loans (typically: same loan with vs. without paying for
- * discount points) and report the break-even horizon.
- *
- * Both loans must be valid and represent the same principal and term;
- * pass the result of `computeLoan` for each. The "with points" loan is
- * expected to have a lower rate AND a non-zero fee for the points cost.
- *
- * Returns `Infinity` for `months` when the points scenario does not
- * produce positive monthly savings (e.g. the user picked nonsensical
- * inputs). The UI should treat that as "never recoups; do not pay points".
+ * Both loans must be from `computeLoan` with the same principal and term (one with points, one without).
+ * Returns `Infinity` when points don't produce savings; the UI treats that as "never recoups".
  */
 export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResult): PointsBreakEven {
   const upfrontDelta = withPoints.feeMinor - withoutPoints.feeMinor;
@@ -1021,44 +963,18 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
 // -----------------------------------------------------------------------------
 
 export interface RefinanceComparison {
-  /** Total spent across both loans if the user refinances at the
-   *  specified month: (cash out of pocket on the original through the
-   *  refi date) + (closing costs on the new loan) + (cash out of pocket
-   *  on the new loan over its full term). */
   refinanceTotalMinor: number;
-  /** Total spent if the user keeps the original loan to its end. */
   keepTotalMinor: number;
-  /** Sign-corrected savings: positive means refinancing saves money over
-   *  the combined horizon; negative means it costs more. */
+  /** Positive means refinancing saves money over the combined horizon; negative means it costs more. */
   savingsMinor: number;
-  /** Months from the refinance date until the upfront new-loan fee is
-   *  recouped via lower monthly payments. `Infinity` if monthly payments
-   *  don't drop. `0` if the new-loan fee is zero. */
+  /** `Infinity` if monthly payments don't drop; `0` if the new-loan fee is zero. */
   breakEvenMonths: number;
-  /** Snapshot at the refinance month; useful for showing the user what
-   *  they paid in / where the principal stood at refi. */
   snapshotAtRefi: EquitySnapshot;
 }
 
 /**
- * Compare "keep the original loan" vs. "refinance at month N into a new
- * loan that pays off the remaining balance".
- *
- * The refinance scenario:
- *   - Borrower pays the original loan for `refiAtMonth` months.
- *   - At that point, the remaining balance is paid off by a new loan.
- *   - The new loan's principal equals the remaining balance, plus its
- *     own origination/closing fee (passed separately so the caller can
- *     decide whether the user pays it out of pocket or rolls it into
- *     the new loan).
- *   - The new loan runs for `newTermMonths` at `newAnnualRate`.
- *
- * The "keep" scenario:
- *   - Borrower pays the original loan to its contractual end.
- *
- * The comparison runs at the cash-out-of-pocket level: every euro the
- * borrower hands over (original payments through refi + new origination
- * fee + new loan payments) on one side, vs. every euro on the other.
+ * Compares at the cash-out-of-pocket level: every euro handed over in each scenario
+ * (original through refi + new loan costs vs. original to contractual end).
  */
 export function refinanceComparison(
   original: LoanResult,
@@ -1151,23 +1067,8 @@ export function refinanceComparison(
 }
 
 /**
- * Choose a small set of representative month indices for plotting the
- * interest/principal split across the life of an amortizing loan.
- *
- * Constraints:
- *   - Always include month 1 (the most interest-heavy month) and the
- *     final month (where the entire payment is principal). These two
- *     anchor the educational point.
- *   - Distribute intermediate samples evenly across the remaining range.
- *   - Return strictly-increasing, unique 1-based indices.
- *   - For schedules shorter than `target`, return every month, since
- *     there's nothing to sample.
- *
- * Defaults to six samples (matches the figure in the
- * "understanding loan terms" blog post).
- *
- * Pure function; lives in `loanMath.ts` so it can be tested headlessly
- * without a React renderer.
+ * Always includes month 1 (most interest-heavy) and the final month (all principal).
+ * Defaults to six samples, matching the figure in the "understanding loan terms" blog post.
  */
 export function pickSplitSamples(totalMonths: number, target: number = 6): number[] {
   if (!Number.isFinite(totalMonths) || totalMonths <= 0) return [];

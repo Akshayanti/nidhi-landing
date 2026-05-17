@@ -141,7 +141,7 @@ title: Capital gains are realized only when you sell
 
 Holding an investment that has risen in value triggers no tax. Selling it does.
 
-This is why frequent trading in a taxable account is expensive. Every sale at a profit may be taxed, and the compounding you would otherwise get on the untaxed amount is lost.
+Frequent trading in a taxable account multiplies that event. Each sale at a profit may be taxed.
 
 Buy and hold isn't only a strategy. It is tax efficiency by default.
 

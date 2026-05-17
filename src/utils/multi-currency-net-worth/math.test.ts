@@ -1,5 +1,5 @@
 /**
- * Unit tests for src/utils/currencyRiskMath.ts.
+ * Unit tests for src/utils/multi-currency-net-worth/math.ts.
  *
  * Run with:  npm test
  */
@@ -13,15 +13,16 @@ import {
   formatPct,
   getCurrencyLabel,
   type AssetRow,
-} from './currencyRiskMath.ts';
+} from './math.ts';
 
 // ---------------------------------------------------------------------------
 // isSupportedCurrency
 // ---------------------------------------------------------------------------
 
 describe('isSupportedCurrency', () => {
-  it('returns true for all 30 supported currencies', () => {
+  it('returns true for all 29 supported currencies', () => {
     const supported = ['AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'IDR', 'INR', 'ISK', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR'];
+    assert.equal(supported.length, 29, 'sanity check on the test fixture itself');
     for (const code of supported) {
       assert.ok(isSupportedCurrency(code), `${code} should be supported`);
     }
@@ -57,7 +58,14 @@ describe('aggregate', () => {
     const result = aggregate([], 'EUR', sampleRates);
     assert.equal(result.positions.length, 0);
     assert.equal(result.totalNetWorthFunctional, 0);
-    assert.ok(result.hasRates);
+    // Empty + rates supplied: counts as 'full' (nothing to fail).
+    assert.equal(result.hasRates, 'full');
+  });
+
+  it('returns hasRates=none for empty rows when rates are null', () => {
+    const result = aggregate([], 'EUR', null);
+    assert.equal(result.positions.length, 0);
+    assert.equal(result.hasRates, 'none');
   });
 
   it('skips rows with empty or zero values', () => {
@@ -169,13 +177,13 @@ describe('aggregate', () => {
     assert.equal(gbpPos.riskLevel, 'moderate');
   });
 
-  it('handles missing rates gracefully (hasRates=false)', () => {
+  it("returns hasRates='none' when rates are null and total is suppressed", () => {
     const rows: AssetRow[] = [
       { name: 'Savings', value: '50000', currency: 'EUR', type: 'asset' },
       { name: 'Stocks', value: '30000', currency: 'USD', type: 'asset' },
     ];
     const result = aggregate(rows, 'EUR', null);
-    assert.equal(result.hasRates, false);
+    assert.equal(result.hasRates, 'none');
     assert.equal(result.totalNetWorthFunctional, 0);
     // Positions exist but have no functional-currency amounts.
     assert.equal(result.positions.length, 2);
@@ -206,20 +214,86 @@ describe('aggregate', () => {
     assert.equal(result.positions[0].isFunctional, true);
   });
 
-  it('handles unknown currency in rates (missing rate)', () => {
-    const rows: AssetRow[] = [
-      { name: 'Savings', value: '50000', currency: 'EUR', type: 'asset' },
-    ];
-    // JPY is supported but not in our sampleRates
+  it("returns hasRates='partial' when one supported currency has no rate", () => {
+    // JPY is a supported code but the rates object below doesn't include it.
+    // The result should distinguish "we got rates back, but one was missing"
+    // from "we couldn't fetch rates at all".
     const result = aggregate(
       [{ name: 'Yen', value: '1000000', currency: 'JPY', type: 'asset' }],
       'EUR',
       { EUR: 1.0 },
     );
-    // Should still produce a position with netAmountFunctional = 0
     assert.equal(result.positions.length, 1);
+    // The unconverted position is flagged so the per-row card can warn.
+    assert.equal(result.positions[0].rateUnavailable, true);
     assert.equal(result.positions[0].netAmountFunctional, 0);
-    assert.equal(result.hasRates, true);
+    // The headline total excludes it and the tri-state surfaces the gap.
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.hasRates, 'partial');
+  });
+
+  it("returns hasRates='full' when every non-functional code has a rate", () => {
+    const rows: AssetRow[] = [
+      { name: 'Savings', value: '50000', currency: 'EUR', type: 'asset' },
+      { name: 'Stocks', value: '30000', currency: 'USD', type: 'asset' },
+      { name: 'UK',     value: '5000',  currency: 'GBP', type: 'asset' },
+    ];
+    const result = aggregate(rows, 'EUR', sampleRates);
+    assert.equal(result.hasRates, 'full');
+    // All three positions have a populated functional amount.
+    for (const p of result.positions) {
+      assert.equal(p.rateUnavailable, undefined);
+    }
+  });
+
+  it("treats a zero rate the same as a missing rate (defensive)", () => {
+    // A 0 rate would otherwise divide-by-zero. The aggregator must mark
+    // the position as unavailable rather than emit Infinity/NaN.
+    const result = aggregate(
+      [{ name: 'Yen', value: '1000000', currency: 'JPY', type: 'asset' }],
+      'EUR',
+      { EUR: 1.0, JPY: 0 },
+    );
+    assert.equal(result.positions[0].rateUnavailable, true);
+    assert.equal(result.hasRates, 'partial');
+    assert.ok(Number.isFinite(result.totalNetWorthFunctional));
+  });
+
+  it("functional currency only: hasRates='full' even if other rates missing", () => {
+    // The user's portfolio is entirely in their functional currency, so no
+    // FX conversion is needed. Even if the rates response is sparse, the
+    // headline number is fully accurate.
+    const result = aggregate(
+      [{ name: 'Cash', value: '10000', currency: 'EUR', type: 'asset' }],
+      'EUR',
+      {}, // no rates at all
+    );
+    assert.equal(result.hasRates, 'full');
+    assert.equal(result.totalNetWorthFunctional, 10000);
+  });
+
+  it("strips advisory phrasing from band labels", () => {
+    // Regulatory bright-line: the calculator labels are descriptive, not
+    // recommendations. Earlier revisions emitted "Elevated exposure,
+    // consider diversifying"; this test pins the new descriptive-only
+    // contract so it cannot regress.
+    const rows: AssetRow[] = [
+      { name: 'Big',  value: '500000', currency: 'USD', type: 'asset' },
+      { name: 'Med',  value: '50000',  currency: 'GBP', type: 'asset' },
+      { name: 'Tiny', value: '500',    currency: 'CZK', type: 'asset' },
+      { name: 'Base', value: '1',      currency: 'EUR', type: 'asset' },
+    ];
+    const result = aggregate(rows, 'EUR', sampleRates);
+    for (const p of result.positions) {
+      assert.ok(
+        !/consider|diversif|recommend|should|action|optimal|best/i.test(p.riskLabel),
+        `risk label must not contain advisory language; got "${p.riskLabel}"`,
+      );
+    }
+    // And the actual labels are exactly what the UI/spec expects.
+    const labels = new Set(result.positions.map((p) => p.riskLabel));
+    assert.ok(labels.has('Your spending currency'));
+    assert.ok(labels.has('Low exposure') || labels.has('Moderate exposure') || labels.has('Elevated exposure'));
   });
 });
 
