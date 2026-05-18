@@ -666,6 +666,7 @@ export default function LoanCompare() {
 
   const copyShareLink = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    track('free_loan_comparison_share_modal_opened');
     const url = `${window.location.origin}${window.location.pathname}?${encodeToQueryString(vendors, globalState)}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison`;
     try {
       await navigator.clipboard.writeText(url);
