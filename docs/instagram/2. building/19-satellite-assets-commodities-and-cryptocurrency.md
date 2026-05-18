@@ -65,7 +65,7 @@ Both belong, if at all, as small satellites around a core of stocks, bonds, real
 → Save this before your next "should I buy bitcoin" moment
 → Tag someone whose plan is mostly gold or crypto
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 

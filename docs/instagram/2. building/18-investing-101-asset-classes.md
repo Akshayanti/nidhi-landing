@@ -70,7 +70,7 @@ No single class wins in every condition. The mix is what creates the portfolio.
 → Save this before opening your first investment account
 → Tag someone planning their first portfolio
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 

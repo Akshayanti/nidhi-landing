@@ -251,14 +251,7 @@ function renderCloser(slide, post) {
   const save = slide.fields.save || '';
   const share = slide.fields.share || '';
   const follow = slide.fields.follow || '';
-  // READ row: explicit `read:` field wins; otherwise auto-derive from
-  // post.blogUrl. Empty string disables the row entirely. Copy makes
-  // navigation explicit because URLs are not tappable inside posts.
-  let read = slide.fields.read;
-  if (read === undefined && post?.blogUrl) {
-    const clean = cleanBlogUrl(post.blogUrl);
-    if (clean) read = `Full breakdown on <strong>${clean}</strong> (link in bio)`;
-  }
+  let read = `Instagram penalises long content. Full literature on link in bio`;
 
   const row = (icon, verb, text) => text ? `
     <div class="crow">

@@ -67,7 +67,7 @@ The point of rebalancing is risk control, not return enhancement. Boring, automa
 → Save this and pick a rebalancing date for next year
 → Tag someone whose 70/30 portfolio is now silently 85/15
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 
@@ -114,10 +114,10 @@ Pick one. Combining two is fine. Changing methods every quarter is not.
 
 ## Slide 4 (stat)
 
-label: Worked example, 100,000 portfolio at 70/30
-hero: Sell 3,570 stocks. Buy 3,570 bonds.
+label: Worked example, €100,000 portfolio at 70/30
+hero: Move €3,570 from stocks → bonds
 caption: Same total. Same gains. Original risk profile restored.
-note: After a year of stocks +20% and bonds +3%, balances become 84,000 stocks and 30,900 bonds (73/27 of 114,900). Shifting 3,570 from stocks into bonds returns the mix to 70/30 without changing the total.
+note: After a year of stocks +20% and bonds +3%, balances become €84,000 stocks and €30,900 bonds (73/27 of €114,900). Shifting €3,570 from stocks into bonds returns the mix to 70/30 without changing the total.
 
 ---
 

@@ -66,7 +66,7 @@ You don't avoid risk. You choose which kind, and how much.
 → Save this for your next "should I invest yet" moment
 → Tag someone who's been on the sidelines for years
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 

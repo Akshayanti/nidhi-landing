@@ -70,7 +70,7 @@ The fix is structural, not heroic. Plan in after-tax terms. Use tax-advantaged a
 → Save this before your next "I'll figure out the tax later" moment
 → Tag someone planning their finances in gross numbers
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 

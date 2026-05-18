@@ -75,7 +75,7 @@ Diversification is often called the only free lunch in finance. It is the rare m
 → Save this before your next portfolio audit
 → Tag someone whose net worth is mostly their employer
 
-Full breakdown plus the free currency risk analyzer → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live, plus the free currency risk analyzer → link in bio
 
 
 

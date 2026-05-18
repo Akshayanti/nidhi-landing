@@ -66,7 +66,7 @@ The standard order: starter buffer in place, expensive debt under control, captu
 → Save this before your next account-opening decision
 → Tag someone leaving an employer match on the table
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 

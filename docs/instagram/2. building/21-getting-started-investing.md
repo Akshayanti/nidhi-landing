@@ -70,7 +70,7 @@ A standing order on payday. A recurring buy on a fixed date. Decision made once,
 → Save this before opening your first investment account
 → Tag someone still waiting for the right moment to start
 
-Full breakdown → link in bio
+This carousel is the compressed version. The blog post is where the full literature, sources, and edge cases live → link in bio
 
 
 
