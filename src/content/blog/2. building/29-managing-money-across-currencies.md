@@ -46,7 +46,7 @@ In all of these, the euros on your balance sheet are not literally what you'll s
 
 ## Nominal vs. real, across currencies
 
-We covered in the [purchasing power post](/blog/purchasing-power) that inflation changes what your money can buy over time. Currencies add a second layer: your money can buy different amounts depending on *where* you spend it.
+We covered in the [purchasing power post](/blog/purchasing-power/) that inflation changes what your money can buy over time. Currencies add a second layer: your money can buy different amounts depending on *where* you spend it.
 
 | Scenario | Amount | What it buys |
 |---|---|---|
@@ -56,7 +56,7 @@ We covered in the [purchasing power post](/blog/purchasing-power) that inflation
 
 The number in your account is the same. What it means depends on the currency and the place.
 
-This is just [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries) applied to your own life. It matters especially when:
+This is just [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/) applied to your own life. It matters especially when:
 
 - You plan to retire in a different country than where you earn
 - You might relocate for work
@@ -84,7 +84,7 @@ Most expat or diaspora readers are in the second case. Most international profes
 
 ## Currency concentration: the invisible under-diversification
 
-The [diversification post](/blog/diversification) covered six dimensions of spreading risk. Currency was one of them, and it's the one people miss most.
+The [diversification post](/blog/diversification/) covered six dimensions of spreading risk. Currency was one of them, and it's the one people miss most.
 
 Consider a typical situation: you earn in euros, spend in euros, save in a euro-denominated bank account, invest in a euro-denominated global stock index fund, and contribute to a euro-denominated retirement scheme. Your life is 100% euro-concentrated.
 
@@ -102,7 +102,7 @@ A mismatch isn't automatically a crisis. Short-term it often averages out. Over 
 
 ## Where currency risk actually comes from
 
-Exchange rates move for many reasons: interest rate differences, inflation differentials, trade flows, political events. The long-run direction tends to approximate [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries), meaning currencies of higher-inflation countries tend to weaken against currencies of lower-inflation countries. In the short run, that relationship is almost invisible under market noise.
+Exchange rates move for many reasons: interest rate differences, inflation differentials, trade flows, political events. The long-run direction tends to approximate [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/), meaning currencies of higher-inflation countries tend to weaken against currencies of lower-inflation countries. In the short run, that relationship is almost invisible under market noise.
 
 Three time horizons to keep separate:
 
@@ -151,7 +151,7 @@ Think of it as a two-step audit, not an ongoing trading exercise.
 
 You don't need to match perfectly. You need to notice the mismatches and decide whether they're fine, tolerable, or worth reducing.
 
-If you'd rather not assemble the table by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
+If you'd rather not assemble the table by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
 
 ## Common mistakes
 

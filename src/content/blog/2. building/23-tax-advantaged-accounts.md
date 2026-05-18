@@ -25,7 +25,7 @@ referentialReading:
 
 The previous post treated taxes as a concept: four points of contact, three functional patterns, the long-term cost of ignoring them. This post gets concrete about the *vehicles* those patterns live in. Your country almost certainly has several purpose-built accounts that give you tax breaks in exchange for playing by specific rules. Knowing which ones exist, which order to fill them in, and which trade-offs each involves is often the single highest-leverage decision a new investor makes.
 
-The universal principle: **a tax-advantaged euro grows faster than a taxed one, and the gap compounds**. A 7% pre-tax return inside a tax-advantaged account is 7%. The same investment in a regular brokerage account becomes something like 5.25% after dividend and capital gains tax along the way (illustrative 25% effective drag; actual rates vary by jurisdiction and income). Over 30 years, that gap is enormous. The [taxes post](/blog/taxes-and-your-financial-plan) worked out the exact maths.
+The universal principle: **a tax-advantaged euro grows faster than a taxed one, and the gap compounds**. A 7% pre-tax return inside a tax-advantaged account is 7%. The same investment in a regular brokerage account becomes something like 5.25% after dividend and capital gains tax along the way (illustrative 25% effective drag; actual rates vary by jurisdiction and income). Over 30 years, that gap is enormous. The [taxes post](/blog/taxes-and-your-financial-plan/) worked out the exact maths.
 
 The names and rules differ across countries, but the functional categories are remarkably consistent. This post is organised around those functions, with regional examples in each category so readers can map what they have locally.
 
@@ -45,9 +45,9 @@ Most readers will have access to accounts in at least categories 1, 2, and 3. Ca
 
 ## The order to fill them
 
-Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing) and extends it once you reach the investing stage:
+Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing/) and extends it once you reach the investing stage:
 
-1. **Build a starter emergency fund.** One month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund). This stops a single surprise from undoing everything below.
+1. **Build a starter emergency fund.** One month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
 2. **Pay down high-interest debt.** Anything over roughly 8–10% (credit cards, some personal loans) is a certain saving equal to the interest rate. Because debt is paid down with after-tax money, the equivalent pre-tax investment return needed to beat it is even higher: at a 30% marginal tax rate, paying off 8% debt is equivalent to roughly an 11% pre-tax investment return. Hard to beat with diversified investments.
 3. **Complete your emergency fund.** Three to six months of essential expenses.
 4. **Capture any employer match (Category 1).** A 50–100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place.

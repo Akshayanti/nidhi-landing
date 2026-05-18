@@ -31,7 +31,7 @@ This post covers real estate as an asset class, separately from the lifestyle qu
 
 ## How real estate actually generates returns
 
-Like any [investment asset](/blog/investing-101-asset-classes), real estate produces returns in two forms:
+Like any [investment asset](/blog/investing-101-asset-classes/), real estate produces returns in two forms:
 
 **Rental income.** Tenants pay you. Or, if you live in the property, you avoid paying rent yourself (the "implicit rent" you would otherwise owe). This is a recurring cash flow that, in reasonably well-priced markets, covers some or all of the ongoing ownership costs.
 
@@ -86,7 +86,7 @@ Suppose you buy a €300,000 property with a 20% down payment of €60,000. The 
 
 Leverage is why real estate has made many people wealthy, and also why it has wiped out many others. The asset moved a normal amount; the equity moved a lot more.
 
-This is also why the mortgage interest rate matters enormously. The [previous post on understanding loan terms](/blog/understanding-loan-terms) covered the mechanics in detail: APR, amortisation, fixed vs. variable, prepayment. For real estate specifically, mortgage interest is simultaneously one of the largest expenses of ownership and the cost of access to the leverage that makes the math work. When you're shopping for a mortgage, the [loan comparison calculator](/free/loan-comparison) makes it straightforward to put up to five offers side by side: monthly payment, time to payoff, total interest paid, and the effect of any extra-principal payments. A half-percentage-point difference between banks shows up there as the multi-thousand-currency-unit difference it actually is, rather than as a number that sounds small in a brochure.
+This is also why the mortgage interest rate matters enormously. The [previous post on understanding loan terms](/blog/understanding-loan-terms/) covered the mechanics in detail: APR, amortisation, fixed vs. variable, prepayment. For real estate specifically, mortgage interest is simultaneously one of the largest expenses of ownership and the cost of access to the leverage that makes the math work. When you're shopping for a mortgage, the [loan comparison calculator](/free/loan-comparison/) makes it straightforward to put up to five offers side by side: monthly payment, time to payoff, total interest paid, and the effect of any extra-principal payments. A half-percentage-point difference between banks shows up there as the multi-thousand-currency-unit difference it actually is, rather than as a number that sounds small in a brochure.
 
 ## Illiquidity and concentration
 
@@ -99,7 +99,7 @@ This has practical consequences:
 - Your emergency fund needs to be larger, because the property cannot fund a short-term crisis
 - Real estate locks your money in place at a specific geography
 
-Most people also end up heavily concentrated in one property. If it's your home, the concentration is total: the entire investment is one asset, in one city, in one currency, exposed to one local market. This is the opposite of the [diversification](/blog/diversification) principle covered earlier in this series, which is fine as long as you know that's the trade you're making.
+Most people also end up heavily concentrated in one property. If it's your home, the concentration is total: the entire investment is one asset, in one city, in one currency, exposed to one local market. This is the opposite of the [diversification](/blog/diversification/) principle covered earlier in this series, which is fine as long as you know that's the trade you're making.
 
 ## "Renting is throwing money away": why this is wrong
 

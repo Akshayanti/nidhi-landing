@@ -5,7 +5,7 @@ description: "A step-by-step guide to listing everything you own and everything 
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -34,7 +34,7 @@ howTo:
       text: "Add up all assets. Add up all liabilities. Subtract liabilities from assets. That number is your net worth. Update it monthly to track the trend."
 ---
 
-You know that [net worth equals assets minus liabilities](/blog/what-is-net-worth). But how do you actually sit down and figure out your number?
+You know that [net worth equals assets minus liabilities](/blog/what-is-net-worth/). But how do you actually sit down and figure out your number?
 
 Here's a method that takes about ten minutes. Grab a pen, open your banking apps, and let's go.
 

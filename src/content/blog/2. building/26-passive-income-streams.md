@@ -93,7 +93,7 @@ A few observations:
 - Higher yields usually come with higher risk or higher management load. "8% passive" is rarely as passive or as safe as "2% passive"
 - Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Focus on total return, not yield
 
-This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; readers in higher-inflation or lower-return markets typically use 3 to 3.5%, which moves the target to roughly 28-33× annual expenses.
+This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; readers in higher-inflation or lower-return markets typically use 3 to 3.5%, which moves the target to roughly 28-33× annual expenses.
 
 ## The crossover point
 

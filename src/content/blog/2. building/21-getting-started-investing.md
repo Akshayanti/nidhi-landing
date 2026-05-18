@@ -26,7 +26,7 @@ referentialReading:
 
 Almost everyone who fails to start investing has the same story. They read a book, watched a video, got excited. Then they hit the wall of practical questions: which account? which fund? how much? when? The excitement fades. Six months pass. Nothing happens.
 
-This post is the bridge. You already know [what the asset classes are](/blog/investing-101-asset-classes) and how each generates returns. You've understood that [risk and time are connected](/blog/understanding-risk). What's left is the mechanics: picking an account, choosing what to put in it, and making sure money flows into it without you having to think about it every month.
+This post is the bridge. You already know [what the asset classes are](/blog/investing-101-asset-classes/) and how each generates returns. You've understood that [risk and time are connected](/blog/understanding-risk/). What's left is the mechanics: picking an account, choosing what to put in it, and making sure money flows into it without you having to think about it every month.
 
 ## The three kinds of accounts
 
@@ -117,7 +117,7 @@ A typical automation setup looks like this:
 3. The investment account buys your chosen fund on a schedule
 4. You look at it once a month, maybe less
 
-This is why pay-yourself-first, which we covered in the [budgeting post](/blog/budgeting), is so powerful. When saving and investing come out first, before discretionary spending, they happen whether or not you feel motivated that month.
+This is why pay-yourself-first, which we covered in the [budgeting post](/blog/budgeting/), is so powerful. When saving and investing come out first, before discretionary spending, they happen whether or not you feel motivated that month.
 
 ## Why starting small and early beats starting big and late
 
@@ -131,7 +131,7 @@ The other thing that stops people is the feeling that €50 or €100 a month "i
 
 The early saver contributes less total money than either of the later ones, and ends up with more than both. The difference isn't willpower or income. It's time.
 
-This is the same compound growth we saw in the [appreciation vs depreciation post](/blog/appreciation-vs-depreciation), made concrete. Small amounts, left alone for decades, outgrow larger amounts left alone for years.
+This is the same compound growth we saw in the [appreciation vs depreciation post](/blog/appreciation-vs-depreciation/), made concrete. Small amounts, left alone for decades, outgrow larger amounts left alone for years.
 
 ### A quick mental shortcut: the Rule of 72
 
@@ -154,7 +154,7 @@ If you can contribute €50 a month, contribute €50 a month. You can increase 
 
 Think of this as the minimum viable setup, not a final portfolio:
 
-1. **Confirm your foundation first.** [Emergency fund](/blog/emergency-fund) in place (3-6 months of expenses). [High-interest debt](/blog/how-to-get-out-of-debt) handled. If either of those is missing, fix it before you invest
+1. **Confirm your foundation first.** [Emergency fund](/blog/emergency-fund/) in place (3-6 months of expenses). [High-interest debt](/blog/how-to-get-out-of-debt/) handled. If either of those is missing, fix it before you invest
 2. **Pick one account type to start.** If your employer offers matching, the employer-sponsored scheme is almost always the first move, at least up to the match. Otherwise, open a regular brokerage account or a tax-advantaged retirement account, whichever suits your time horizon
 3. **Pick one or two funds.** A broad global stock index fund covers most of the job. Optionally add a bond fund if you want stability
 4. **Set the automation.** Standing order from current account to investment account on payday. Recurring buy of your chosen fund

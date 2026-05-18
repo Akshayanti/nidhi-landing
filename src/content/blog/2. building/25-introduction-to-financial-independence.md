@@ -179,7 +179,7 @@ We'll return to each in the Mastery level. For now, the goal is to understand wh
 
 ## What you can do
 
-1. **Estimate your current annual expenses.** Not your salary, not your take-home. What you actually spend. Twelve months of cash flow is the right window if you've been tracking [cash flow](/blog/cash-flow-101) or [budgeting](/blog/budgeting)
+1. **Estimate your current annual expenses.** Not your salary, not your take-home. What you actually spend. Twelve months of cash flow is the right window if you've been tracking [cash flow](/blog/cash-flow-101/) or [budgeting](/blog/budgeting/)
 2. **Multiply by 25.** That's a rough traditional FIRE number at today's spending. It's a directional figure, not a promise
 3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage, more than any other single number, decides how far you are from FI
 4. **Pick a flavor that matches your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. Pick the one that you can imagine sustaining for decades

@@ -40,11 +40,11 @@ The dashboard's job is to tell you when something is genuinely off, and otherwis
 
 The monthly check-in is the heartbeat. It should take 15-30 minutes. Four numbers carry most of the signal.
 
-**Net worth.** Your [complete picture](/blog/what-is-net-worth): assets minus liabilities. Tracked as a line over time, not a single moment. Steady growth is the main thing to see; if it stagnates or declines for several months without a clear reason, something is off.
+**Net worth.** Your [complete picture](/blog/what-is-net-worth/): assets minus liabilities. Tracked as a line over time, not a single moment. Steady growth is the main thing to see; if it stagnates or declines for several months without a clear reason, something is off.
 
-**Cash flow for the month.** Income minus expenses for the calendar month, as covered in the [cash flow post](/blog/cash-flow-101). Tells you whether you're actually living below your means this month, not just on average.
+**Cash flow for the month.** Income minus expenses for the calendar month, as covered in the [cash flow post](/blog/cash-flow-101/). Tells you whether you're actually living below your means this month, not just on average.
 
-**Savings rate.** (Income - expenses) ÷ income. This is the single most predictive metric of long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence) showed. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
+**Savings rate.** (Income - expenses) ÷ income. This is the single most predictive metric of long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence/) showed. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
 
 **Debt balances.** Especially for high-interest debt in payoff mode. Are balances falling each month as expected? If not, why?
 
@@ -61,15 +61,15 @@ Anything out of range is the prompt for a short investigation, not a full-system
 
 Every three months, zoom out. This takes 30-60 minutes.
 
-**Asset allocation.** The mix of [stocks, bonds, cash, and other asset classes](/blog/investing-101-asset-classes). Drift happens naturally. If stocks rise and bonds don't, your stock allocation grows relative to your target. Quarterly is usually enough to notice meaningful drift without over-trading. Full rebalancing doesn't have to be quarterly; noticing whether you need to is.
+**Asset allocation.** The mix of [stocks, bonds, cash, and other asset classes](/blog/investing-101-asset-classes/). Drift happens naturally. If stocks rise and bonds don't, your stock allocation grows relative to your target. Quarterly is usually enough to notice meaningful drift without over-trading. Full rebalancing doesn't have to be quarterly; noticing whether you need to is.
 
-**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend. The [multi-currency net worth analyzer](/free/multi-currency-net-worth) can stand in for this panel if you don't want to maintain it inside your own spreadsheet: enter assets and obligations by currency once and it returns the breakdown and the concentration, ready to revisit each quarter.
+**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies/), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend. The [multi-currency net worth analyzer](/free/multi-currency-net-worth/) can stand in for this panel if you don't want to maintain it inside your own spreadsheet: enter assets and obligations by currency once and it returns the breakdown and the concentration, ready to revisit each quarter.
 
-**Progress against goals.** For each written [financial goal](/blog/setting-financial-goals), compare actual position vs. planned position. On track? Ahead? Behind? If behind, is the gap small enough to absorb or large enough to require adjustment?
+**Progress against goals.** For each written [financial goal](/blog/setting-financial-goals/), compare actual position vs. planned position. On track? Ahead? Behind? If behind, is the gap small enough to absorb or large enough to require adjustment?
 
 **Emergency fund coverage.** How many months of current expenses does your emergency fund cover? Expenses rise over time; a fund that covered 6 months a year ago may now cover 4 if your spending has grown.
 
-**Income composition.** Active vs. passive split. Particularly relevant for anyone tracking the [crossover point](/blog/passive-income-streams) toward FI. This grows slowly and is easy to miss unless you look deliberately.
+**Income composition.** Active vs. passive split. Particularly relevant for anyone tracking the [crossover point](/blog/passive-income-streams/) toward FI. This grows slowly and is easy to miss unless you look deliberately.
 
 | Metric | What to watch for | Healthy signal |
 |---|---|---|
@@ -85,7 +85,7 @@ Quarterly issues rarely require urgent action. They require deliberate action, s
 
 Once a year, do the full review. This takes 2-4 hours, ideally with a partner if you share finances. This is where the biggest decisions belong.
 
-**Full [financial health check](/blog/financial-health-metrics).** The six ratios from the previous post: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and income replacement. Annual is the right cadence for the full set.
+**Full [financial health check](/blog/financial-health-metrics/).** The six ratios from the previous post: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and income replacement. Annual is the right cadence for the full set.
 
 **Goal calibration.** For each goal, revisit target amount, date, and monthly contribution. Life changes; goals should too. New goals can be added; stale ones retired.
 
@@ -93,7 +93,7 @@ Once a year, do the full review. This takes 2-4 hours, ideally with a partner if
 
 **Asset and liability audit.** Are any assets obsolete or no longer tracked? Any small forgotten accounts? Any closed credit lines or paid-off loans still listed?
 
-**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance post](/blog/insurance-basics) covers the main triggers: new dependents, new home, significant income changes, changes in health, changes in country.
+**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance post](/blog/insurance-basics/) covers the main triggers: new dependents, new home, significant income changes, changes in health, changes in country.
 
 **Tax position.** Did the year hold any tax surprises? Are there structural changes for next year (retirement contribution capacity, tax-advantaged account use, jurisdiction shifts)?
 
@@ -137,7 +137,7 @@ Minimum useful columns in a monthly tracker:
 
 The `notes` column is underrated. Why did net worth drop this month? A vacation? A car repair? Explanations written at the time prevent misinterpretation six months later.
 
-For goal-tracking, a separate sheet with the template from the [goals post](/blog/setting-financial-goals) is enough: target, date, contribution required, current contribution, on-track status.
+For goal-tracking, a separate sheet with the template from the [goals post](/blog/setting-financial-goals/) is enough: target, date, contribution required, current contribution, on-track status.
 
 ## Common mistakes
 

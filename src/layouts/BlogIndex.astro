@@ -37,7 +37,7 @@ const blogBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Blog',
-      item: 'https://nidhi.today/blog',
+      item: 'https://nidhi.today/blog/',
     },
   ],
 };
@@ -53,7 +53,7 @@ const blogItemListSchema = {
   itemListElement: posts.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}`,
+    url: `https://nidhi.today/blog/${p.id}/`,
     name: p.title,
   })),
 };

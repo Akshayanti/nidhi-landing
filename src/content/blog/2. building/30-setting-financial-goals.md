@@ -27,7 +27,7 @@ referentialReading:
 
 The difference between a wish and a goal is a number and a date. "Buy a house" is a wish. "Have €40,000 saved for a deposit by June 2031" is a goal. A goal can be measured, tracked, adjusted, and eventually hit. A wish can only be hoped for.
 
-This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101), [budgeting](/blog/budgeting), [saving vs. investing](/blog/saving-vs-investing), diversification, and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
+This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), diversification, and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
 
 ## What a financial goal actually needs
 
@@ -36,7 +36,7 @@ A usable financial goal has four components:
 1. **A specific target amount.** Not "enough to be comfortable." Exact euros
 2. **A specific date.** Not "in a few years." A month and year
 3. **A path from here to there.** How much needs to move from income to savings/investment each month, at what assumed rate of return
-4. **A place it will live.** Cash, savings account, investment account: the [right container](/blog/saving-vs-investing) for the timeline
+4. **A place it will live.** Cash, savings account, investment account: the [right container](/blog/saving-vs-investing/) for the timeline
 
 Missing any one of these and the goal degrades. A target without a date can never be "on track" or "behind." A date without a target can never be "enough." A path without a container means the money gets eroded by inflation or exposed to volatility at the wrong time.
 
@@ -68,7 +68,7 @@ That's the value of translating wishes into goals. It replaces comforting vaguen
 
 Every financial goal falls into one of three broad time buckets, each with its own implications:
 
-**Short-term (0-3 years).** The money needs to be there on a specific date. Market fluctuations are unacceptable. Stay in cash or [savings-equivalent](/blog/saving-vs-investing) vehicles. Returns are low; that's the price of certainty.
+**Short-term (0-3 years).** The money needs to be there on a specific date. Market fluctuations are unacceptable. Stay in cash or [savings-equivalent](/blog/saving-vs-investing/) vehicles. Returns are low; that's the price of certainty.
 
 Examples: wedding, next year's holiday, a new appliance, short-term tax obligation, upcoming insurance excess.
 
@@ -78,7 +78,7 @@ Examples: house deposit, starting a business, career break, child's near-term ed
 
 **Long-term (7+ years).** The timeline is long enough that market volatility averages out in historical data, and inflation becomes the bigger enemy. This is where investments belong. Broadly diversified stock-heavy portfolios.
 
-Examples: retirement, [FIRE](/blog/introduction-to-financial-independence), child's university, generational wealth.
+Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), child's university, generational wealth.
 
 | Bucket | Typical container | Risk tolerance | Return expectation |
 |---|---|---|---|
@@ -108,7 +108,7 @@ Classic example: retirement goal of €500,000 at age 65, assuming 7% annual ret
 
 Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. It isn't that the later person saved less total. The late starter contributes hundreds of thousands more and still ends up with the same number.
 
-This is the [compound growth](/blog/appreciation-vs-depreciation) story told from the goal side. The earlier you start, the more compounding does for you. The later you start, the more you have to do yourself.
+This is the [compound growth](/blog/appreciation-vs-depreciation/) story told from the goal side. The earlier you start, the more compounding does for you. The later you start, the more you have to do yourself.
 
 ## Prioritizing competing goals
 
@@ -116,8 +116,8 @@ Almost no one has one goal. They have a house deposit, a retirement target, an e
 
 A reasonable priority framework:
 
-1. **[Starter emergency fund](/blog/emergency-fund) first.** One month of expenses, non-negotiable, before anything else
-2. **[High-interest debt](/blog/how-to-get-out-of-debt).** Anything above 5-6% tends to dominate any investment return you could realistically earn
+1. **[Starter emergency fund](/blog/emergency-fund/) first.** One month of expenses, non-negotiable, before anything else
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** Anything above 5-6% tends to dominate any investment return you could realistically earn
 3. **Full emergency fund.** Three to six months of expenses
 4. **Employer match on retirement (if any).** Free money. Take it
 5. **Long-term retirement / FI contributions.** The compounding engine. Starting late is extremely expensive
@@ -159,7 +159,7 @@ Goals that only live in your head drift. Written goals, even on one page, have m
 - They can be compared to reality
 - They force the translation from wish to number
 - They can be shared with a partner or family
-- They become the input to [tracking](/blog/cash-flow-101) and dashboards
+- They become the input to [tracking](/blog/cash-flow-101/) and dashboards
 
 An annual review is enough for most goals. Life changes; assumptions change; market returns deviate from expectations. Revisiting once a year lets you adjust without over-managing. Checking every week is anxiety, not progress.
 

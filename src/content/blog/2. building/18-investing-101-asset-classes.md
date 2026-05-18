@@ -117,9 +117,9 @@ Real estate means owning physical property: residential, commercial, or land. It
 | Time horizon | 5+ years, often much longer |
 | Special feature | Leverage (mortgages amplify both gains and losses) |
 
-**Why it matters**: Real estate provides both income and [appreciation](/blog/appreciation-vs-depreciation). It's also the most common [asset](/blog/assets) people hold without thinking of it as an investment (your home). And it's one of the few assets where borrowing to invest (via a mortgage) is standard, which amplifies returns when things go well.
+**Why it matters**: Real estate provides both income and [appreciation](/blog/appreciation-vs-depreciation/). It's also the most common [asset](/blog/assets/) people hold without thinking of it as an investment (your home). And it's one of the few assets where borrowing to invest (via a mortgage) is standard, which amplifies returns when things go well.
 
-**The catch**: [Illiquidity](/blog/liquidity). You can't sell a house in a day. Maintenance, taxes, vacancies, and repairs reduce effective returns. And leverage (borrowing to invest, which amplifies both gains and losses) cuts both ways. If property values drop, you still owe the full mortgage.
+**The catch**: [Illiquidity](/blog/liquidity/). You can't sell a house in a day. Maintenance, taxes, vacancies, and repairs reduce effective returns. And leverage (borrowing to invest, which amplifies both gains and losses) cuts both ways. If property values drop, you still owe the full mortgage.
 
 ## Cash equivalents: safety
 
@@ -143,9 +143,9 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 | Liquidity | Very high (instant access) |
 | Time horizon | Immediate to 1 year |
 
-**Why they matter**: Cash equivalents are where you park money you need soon: your [emergency fund](/blog/emergency-fund), your next month's rent, your buffer for unexpected expenses. They're not investments in the growth sense. They're a holding place.
+**Why they matter**: Cash equivalents are where you park money you need soon: your [emergency fund](/blog/emergency-fund/), your next month's rent, your buffer for unexpected expenses. They're not investments in the growth sense. They're a holding place.
 
-**The catch**: As we've seen in the [purchasing power post](/blog/purchasing-power), cash loses real value every year. Holding too much cash for too long is a guaranteed slow loss.
+**The catch**: As we've seen in the [purchasing power post](/blog/purchasing-power/), cash loses real value every year. Holding too much cash for too long is a guaranteed slow loss.
 
 ## How they compare
 
@@ -186,6 +186,6 @@ Index funds are commonly cited in personal finance literature as a practical sta
 2. **Match asset classes to time horizons.** Cash for short-term needs. Bonds for stability and medium-term goals. Stocks for long-term growth. Real estate if you have the capital and timeline
 3. **Don't put everything in one class.** A portfolio of only stocks is volatile. A portfolio of only bonds barely grows. A portfolio of only cash shrinks. The mix is what creates balance
 4. **Start simple.** A global stock index fund plus a bond index fund covers the basics for most people starting out. You can add complexity later
-5. **Remember the [risk lesson](/blog/understanding-risk).** Higher returns require higher tolerance for volatility. That tolerance comes from time
+5. **Remember the [risk lesson](/blog/understanding-risk/).** Higher returns require higher tolerance for volatility. That tolerance comes from time
 
 Now you know the four building blocks most diversified portfolios are made from. Two more asset types (commodities and cryptocurrency) sit alongside the core four and come up in almost every conversation about investing, but with a very different role and a much weaker case for being load-bearing. The next post covers them honestly: what they are, what they're for, and where the line sits between hedge, satellite, and speculation.

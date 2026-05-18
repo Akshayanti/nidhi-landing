@@ -5,7 +5,7 @@ description: "A euro today buys more than a euro in ten years. Purchasing power 
 tldr: "Purchasing power is what your money can actually buy. It declines over time as prices rise, a force called inflation. At 2-3% per year, your money loses roughly half its purchasing power over 25 years. Earning 2% in a savings account when prices rise 3% means you're losing ground. The only way to preserve purchasing power is to earn returns that outpace inflation."
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -118,17 +118,17 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 **Savings**: Cash sitting in a low-interest account is practically guaranteed to lose value over time. If your savings rate is below the inflation rate, you're going backward in real terms.
 
-**[Debt](/blog/liabilities)**: Inflation actually helps borrowers. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
+**[Debt](/blog/liabilities/)**: Inflation actually helps borrowers. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
 
 **Investments**: Stocks, real estate, and other assets that tend to grow over time can outpace inflation. That's one of the main reasons people invest instead of just saving.
 
-**[Emergency fund](/blog/emergency-fund)**: Even your safety net loses purchasing power. A fund that covers six months of expenses today might only cover four months in ten years. You need to revisit it periodically.
+**[Emergency fund](/blog/emergency-fund/)**: Even your safety net loses purchasing power. A fund that covers six months of expenses today might only cover four months in ten years. You need to revisit it periodically.
 
 ## What you can do
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
 2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 5-7% after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation). That's how you preserve and grow your purchasing power
+3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 5-7% after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That's how you preserve and grow your purchasing power
 4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

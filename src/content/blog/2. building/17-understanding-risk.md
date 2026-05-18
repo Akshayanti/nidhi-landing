@@ -106,13 +106,13 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 
 The pattern is clear: the longer you hold, the narrower the range of outcomes, and the more likely those outcomes are positive. Time doesn't eliminate risk, but it dramatically changes its character.
 
-This is why the [saving vs. investing](/blog/saving-vs-investing) distinction from the previous post maps directly to time horizons. Short-term money (high risk from volatility) goes into savings. Long-term money (low effective risk if you can wait) goes into investments.
+This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction from the previous post maps directly to time horizons. Short-term money (high risk from volatility) goes into savings. Long-term money (low effective risk if you can wait) goes into investments.
 
 ## The risk you don't see: doing nothing
 
 Most people intuitively understand the risk of investing: your portfolio might go down. Fewer people recognize the risk of not investing: your money definitely goes down in real terms.
 
-As we covered in the [purchasing power post](/blog/purchasing-power), inflation erodes the value of cash every year. A savings account earning 1% with inflation at 2.5% loses 1.5% of its real value annually. Over 20 years, that adds up to roughly 26% lost.
+As we covered in the [purchasing power post](/blog/purchasing-power/), inflation erodes the value of cash every year. A savings account earning 1% with inflation at 2.5% loses 1.5% of its real value annually. Over 20 years, that adds up to roughly 26% lost.
 
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
@@ -132,11 +132,11 @@ Not all risks are equal or come from the same place.
 
 **Inflation risk**: Your money's purchasing power erodes over time. Affects cash and low-yield investments most severely. (Yield here means the annual cash an investment pays out as a percentage of its price: a bond paying €30 a year on a €1,000 bond has a 3% yield.)
 
-**[Liquidity](/blog/liquidity) risk**: You can't sell your investment when you need to, or can only sell at a steep discount. Real estate is the classic example.
+**[Liquidity](/blog/liquidity/) risk**: You can't sell your investment when you need to, or can only sell at a steep discount. Real estate is the classic example.
 
 **Credit risk**: The entity you lent money to (through bonds, which are loans you make to governments or companies paying a fixed interest rate back to you, or through other loan contracts) can't pay you back.
 
-**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies) post, also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth) lets you map both sides at once and see where the concentration actually sits.
+**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries/) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies/) post, also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) lets you map both sides at once and see where the concentration actually sits.
 
 ## Risk as the price of return
 
@@ -166,7 +166,7 @@ The right amount of risk isn't maximum and it isn't zero. It's the amount that:
 ## What you can do
 
 1. **Separate your money by time horizon.** Money you need within 3 years stays in savings (low volatility, instant access). Money you won't need for 5+ years can be invested (accepting short-term swings for long-term growth)
-2. **Build your [emergency fund](/blog/emergency-fund) before taking investment risk.** This is the buffer that prevents you from selling investments during a downturn
+2. **Build your [emergency fund](/blog/emergency-fund/) before taking investment risk.** This is the buffer that prevents you from selling investments during a downturn
 3. **Recognize the risk of inaction.** Keeping everything "safe" isn't safe. Inflation is certain. Market volatility is temporary
 4. **Match risk to the lower of your tolerance and capacity.** High risk tolerance + low risk capacity = still low risk. Low risk tolerance + high risk capacity = still low risk. Both need to align
 5. **Don't try to eliminate risk.** You can't. You can only choose the type. The goal is the right amount for your situation and timeline

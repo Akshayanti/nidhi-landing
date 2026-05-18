@@ -24,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-You spent six months building an [emergency fund](/blog/emergency-fund). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.
+You spent six months building an [emergency fund](/blog/emergency-fund/). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.
 
 Your neighbor had the same flood. She filed a claim with her contents insurance, paid a €150 deductible, and received a payout within two weeks. Her emergency fund is untouched. She's still on track.
 
@@ -98,7 +98,7 @@ Covers the cost if you're legally responsible for damage to someone else or thei
 
 ## How insurance affects your cash flow
 
-Insurance premiums are a recurring expense: they reduce your monthly [cash flow](/blog/cash-flow-101) whether or not you ever file a claim. This is the cost of protection, and it's real.
+Insurance premiums are a recurring expense: they reduce your monthly [cash flow](/blog/cash-flow-101/) whether or not you ever file a claim. This is the cost of protection, and it's real.
 
 | Insurance Type | Typical Monthly Cost | What It Protects |
 |----------------|---------------------|------------------|
@@ -109,7 +109,7 @@ Insurance premiums are a recurring expense: they reduce your monthly [cash flow]
 | Personal liability | €5-€15 | Legal liability claims |
 | **Total range** | **€110-€460** | |
 
-For someone earning €2,500 net per month, insurance might represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting) decisions, which is why they belong in your financial plan, not as an afterthought.
+For someone earning €2,500 net per month, insurance might represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting/) decisions, which is why they belong in your financial plan, not as an afterthought.
 
 The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk.
 
@@ -129,7 +129,7 @@ Insurance and your emergency fund are two sides of the same coin: both exist to 
 | Moderate (health and property, no disability) | 4-6 months is a common guideline |
 | Minimal (health only) | 6+ months, and even that may not be enough for a major event |
 
-This is why the [emergency fund post](/blog/emergency-fund) said "3-6 months" rather than giving a single number. The right amount depends on how much risk you've already transferred to insurers.
+This is why the [emergency fund post](/blog/emergency-fund/) said "3-6 months" rather than giving a single number. The right amount depends on how much risk you've already transferred to insurers.
 
 ## When insurance is and isn't worth it
 
@@ -151,8 +151,8 @@ A useful rule of thumb: insure what you can't afford to lose. Self-insure what y
 
 Insurance doesn't appear directly on most balance sheets (except for whole life policies with cash value). But it protects almost everything that does:
 
-- **Property insurance** protects your real estate and belongings (the [asset](/blog/assets) side)
-- **Liability insurance** protects against claims that would create new [liabilities](/blog/liabilities)
+- **Property insurance** protects your real estate and belongings (the [asset](/blog/assets/) side)
+- **Liability insurance** protects against claims that would create new [liabilities](/blog/liabilities/)
 - **Disability insurance** protects your income stream, which funds everything else
 - **Life insurance** ensures your dependents' financial security isn't tied to a single point of failure
 

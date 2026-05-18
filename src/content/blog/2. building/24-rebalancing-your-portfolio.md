@@ -29,7 +29,7 @@ That's the problem rebalancing solves. It's the discipline of pulling your portf
 
 ## Why rebalancing matters
 
-The point of a target allocation is that it reflects your [risk tolerance and capacity](/blog/understanding-risk): how much volatility you can stomach emotionally, and how much you can afford financially. That allocation was a deliberate choice.
+The point of a target allocation is that it reflects your [risk tolerance and capacity](/blog/understanding-risk/): how much volatility you can stomach emotionally, and how much you can afford financially. That allocation was a deliberate choice.
 
 Market movements don't care about your choice. Over any period longer than a few months, some asset classes will outperform others, and your portfolio drifts away from its target toward whatever has recently done well. The drift is silent: your account value is usually rising, so nothing looks wrong. But the underlying risk profile is changing.
 
@@ -145,7 +145,7 @@ What did that accomplish? You didn't "miss out" on any gains; you still have the
 
 Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost that should inform *where* you rebalance.
 
-**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts)): rebalance freely.** Trades inside a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation account typically don't trigger any current tax event. Rebalance these first and most often.
+**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): rebalance freely.** Trades inside a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation account typically don't trigger any current tax event. Rebalance these first and most often.
 
 **In taxable accounts: prefer contribution-based rebalancing.** Use new money to rebalance wherever possible. If you must sell to rebalance, consider:
 

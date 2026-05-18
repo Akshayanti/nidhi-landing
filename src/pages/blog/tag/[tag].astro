@@ -98,8 +98,8 @@ const tagBreadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog' },
-    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${tag}` },
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog/' },
+    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${tag}/` },
   ],
 };
 
@@ -112,7 +112,7 @@ const tagItemListSchema = {
   itemListElement: posts.map((p: any, i: number) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}`,
+    url: `https://nidhi.today/blog/${p.id}/`,
     name: p.title,
   })),
 };
@@ -128,7 +128,7 @@ const tagItemListSchema = {
     <div class="container">
       <header class="blog-index-header">
         <nav class="tag-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog">Blog</a> <span class="sep">/</span> <span>{formatted}</span>
+          <a href="/blog/">Blog</a> <span class="sep">/</span> <span>{formatted}</span>
         </nav>
         <h1>{formatted}</h1>
         <p class="blog-index-subtitle">{description}</p>

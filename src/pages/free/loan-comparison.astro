@@ -275,7 +275,7 @@ const faqSections: { id: string; title: string; items: { q: string; a: string }[
 // don't need to know about sections; only the rendered UI does.
 const faqs = faqSections.flatMap((s) => s.items);
 
-const canonicalUrl = 'https://nidhi.today/free/loan-comparison';
+const canonicalUrl = 'https://nidhi.today/free/loan-comparison/';
 
 const webAppSchema = {
   '@context': 'https://schema.org',
@@ -323,7 +323,7 @@ const webAppSchema = {
   publisher: {
     '@type': 'Organization',
     name: 'nidhi',
-    url: 'https://nidhi.today',
+    url: 'https://nidhi.today/',
   },
 };
 
@@ -334,7 +334,7 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today' },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
     { '@type': 'ListItem', position: 2, name: 'Loan comparison calculator', item: canonicalUrl },
   ],
 };
@@ -427,11 +427,11 @@ const faqSchema = {
       </div>
 
       <p class="lc-relatedFooter">
-        <a href="/blog/tag/debt" class="lc-relatedAll" data-attr="related-tag-debt">
+        <a href="/blog/tag/debt/" class="lc-relatedAll" data-attr="related-tag-debt">
           Read more on debt and loans
           <span aria-hidden="true">&nbsp;&rsaquo;</span>
         </a>
-        <a href="/blog" class="lc-relatedAllSecondary" data-attr="related-all">
+        <a href="/blog/" class="lc-relatedAllSecondary" data-attr="related-all">
           Or browse every article
         </a>
       </p>

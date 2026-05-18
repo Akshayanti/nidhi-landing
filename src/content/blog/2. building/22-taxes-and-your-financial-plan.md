@@ -99,10 +99,10 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- For most people, capturing an employer match is one of the highest-leverage early investing moves. Turning down a 50% or 100% immediate uplift on your own contribution is rarely mathematically sensible. It is not always *the* first action, though: clearing very-high-interest debt and having a starter emergency fund typically come first. The [next post](/blog/tax-advantaged-accounts) covers the full priority order
+- For most people, capturing an employer match is one of the highest-leverage early investing moves. Turning down a 50% or 100% immediate uplift on your own contribution is rarely mathematically sensible. It is not always *the* first action, though: clearing very-high-interest debt and having a starter emergency fund typically come first. The [next post](/blog/tax-advantaged-accounts/) covers the full priority order
 - The default contribution settings are often too low. Many plans let you contribute more than the default; doing so is often one of the highest-leverage tax decisions available, because every extra euro contributed grows inside the tax-advantaged shelter for decades
 
-The [getting started post](/blog/getting-started-investing) covered the account hierarchy; taxes are the main reason the hierarchy matters.
+The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.
 
 ## Capital gains: the cost of selling a winner
 

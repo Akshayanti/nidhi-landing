@@ -27,7 +27,7 @@ Two lenders offer you a mortgage. Bank A advertises 3.2%. Bank B advertises 3.1%
 
 Except Bank B charges €3,000 in arrangement fees, requires a mandatory insurance product, and has a variable rate after the first 3 years. Bank A has no fees, a fully fixed rate for the whole term, and allows free prepayment. Once you do the real math, Bank A is thousands of euros cheaper over the life of the loan.
 
-This is how most people lose money on loans: by comparing the wrong number. The [liabilities post](/blog/liabilities) covered why the interest rate matters most when evaluating existing debt. This post is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
+This is how most people lose money on loans: by comparing the wrong number. The [liabilities post](/blog/liabilities/) covered why the interest rate matters most when evaluating existing debt. This post is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
 
 ## Why the advertised rate is misleading
 
@@ -189,7 +189,7 @@ If your loan allows it without penalty, prepaying principal is one of the most p
 
 Example: the €250,000, 3%, 25-year mortgage above has total interest of roughly €105,000 over its life. Adding just €100 a month of principal prepayment reduces the term by roughly 2.75 years and saves around €13,000 in total interest. Doubling that to €200 a month extra cuts the term by around 5 years and saves about €23,000. Larger prepayments scale the savings further.
 
-Prepayment is effectively a guaranteed return equal to the loan's interest rate. A 3% mortgage prepayment delivers a guaranteed 3% after-tax return (in jurisdictions without mortgage interest tax relief; the math is slightly different where such relief exists). A 7% consumer loan delivers a guaranteed 7%. That's why high-interest debt dominates investment returns in the prioritization hierarchy covered in the [saving vs. investing post](/blog/saving-vs-investing).
+Prepayment is effectively a guaranteed return equal to the loan's interest rate. A 3% mortgage prepayment delivers a guaranteed 3% after-tax return (in jurisdictions without mortgage interest tax relief; the math is slightly different where such relief exists). A 7% consumer loan delivers a guaranteed 7%. That's why high-interest debt dominates investment returns in the prioritization hierarchy covered in the [saving vs. investing post](/blog/saving-vs-investing/).
 
 Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy.
 
@@ -212,7 +212,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 
 *Illustrative.*
 
-If you'd rather not work the table by hand, the [loan comparison calculator](/free/loan-comparison) runs the math for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
+If you'd rather not work the table by hand, the [loan comparison calculator](/free/loan-comparison/) runs the math for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
 
 The best offer is not always the one with the lowest rate. It's the one whose total cost, APR, and contractual terms align best with your actual plan.
 
@@ -234,7 +234,7 @@ The best offer is not always the one with the lowest rate. It's the one whose to
 4. **Check prepayment rules before signing.** Free prepayment is a valuable option even if you never use it
 5. **Model the worst case.** For any variable-rate loan, model the highest realistic rate and confirm you can live with the payment
 6. **Do the break-even math on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
-7. **Prepay aggressively when the rate is high.** For high-interest loans, extra principal is a guaranteed return. For low-interest loans, invest the extra money instead. See [saving vs. investing](/blog/saving-vs-investing) for the framing
+7. **Prepay aggressively when the rate is high.** For high-interest loans, extra principal is a guaranteed return. For low-interest loans, invest the extra money instead. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
 
 Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortisation schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
 

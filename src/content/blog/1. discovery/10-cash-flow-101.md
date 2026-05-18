@@ -5,7 +5,7 @@ description: "Money comes in, money goes out. Cash flow is the map that shows yo
 tldr: "Cash flow is the movement of money in and out of your life over a period of time. Positive cash flow means you earn more than you spend. Negative cash flow means you're slowly falling behind. Tracking cash flow is the first step to controlling it. Most people don't know their number, and that's the problem."
 order: 10
 pubDate: 2026-05-08
-updatedDate: 2026-05-08
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -24,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-If [net worth](/blog/what-is-net-worth) is a snapshot of your finances, cash flow is the video. It shows you the movement. Where money comes from, where it goes, and whether you're moving forward or standing still.
+If [net worth](/blog/what-is-net-worth/) is a snapshot of your finances, cash flow is the video. It shows you the movement. Where money comes from, where it goes, and whether you're moving forward or standing still.
 
 ## What is cash flow?
 
@@ -87,8 +87,8 @@ A common benchmark is 20%, matching the savings/debt slice in the guideline abov
 
 ## The connection to net worth
 
-Cash flow and net worth are linked. As we discussed in the [income vs. wealth post](/blog/income-vs-wealth), the gap between what you earn and what you spend is what feeds your [net worth](/blog/what-is-net-worth) over time.
+Cash flow and net worth are linked. As we discussed in the [income vs. wealth post](/blog/income-vs-wealth/), the gap between what you earn and what you spend is what feeds your [net worth](/blog/what-is-net-worth/) over time.
 
-Positive cash flow each month means your [assets](/blog/assets) grow (or your [liabilities](/blog/liabilities) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
+Positive cash flow each month means your [assets](/blog/assets/) grow (or your [liabilities](/blog/liabilities/) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
 
-That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund) yet, that's where it should go first: your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt) we covered earlier. The order matters: stabilize, then optimize.
+That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, that's where it should go first: your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. The order matters: stabilize, then optimize.

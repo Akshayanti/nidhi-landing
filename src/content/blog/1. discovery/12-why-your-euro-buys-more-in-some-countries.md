@@ -5,7 +5,7 @@ description: "Exchange rates show how much one currency is worth in another, not
 tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries, a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -25,7 +25,7 @@ referentialReading:
 
 You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off? Maybe not.
 
-This isn't a trick. It's the difference between what you earn and what you can buy with it (your [purchasing power](/blog/purchasing-power)), and it depends on where you are.
+This isn't a trick. It's the difference between what you earn and what you can buy with it (your [purchasing power](/blog/purchasing-power/)), and it depends on where you are.
 
 ## What is an exchange rate?
 
@@ -100,6 +100,6 @@ Both are real. Both can be managed, but only if you're aware of them.
 
 Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others, thinking in real terms instead of nominal ones is the skill that ties it all together.
 
-In the [previous post](/blog/purchasing-power), we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
+In the [previous post](/blog/purchasing-power/), we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
 
 So we know that money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and getting the sequence right matters more than most people think.

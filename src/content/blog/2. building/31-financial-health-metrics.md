@@ -54,7 +54,7 @@ Ratios handle this automatically by setting one number against another. The resu
 
 A young person with a mortgage naturally starts high (a 90% loan-to-value mortgage means a debt-to-asset ratio close to 0.9 early on). That's not automatically bad. It's the expected shape, and it falls over time as the mortgage is paid down and other assets accumulate. The direction matters more than the absolute level for young homeowners.
 
-**What to do if it's drifting up:** Slow down borrowing, focus on paying down high-interest debts (see [snowball vs. avalanche](/blog/how-to-get-out-of-debt)), avoid taking on consumer loans that don't acquire real assets.
+**What to do if it's drifting up:** Slow down borrowing, focus on paying down high-interest debts (see [snowball vs. avalanche](/blog/how-to-get-out-of-debt/)), avoid taking on consumer loans that don't acquire real assets.
 
 ## Metric 2: Liquid asset percentage
 
@@ -93,7 +93,7 @@ A high-net-worth homeowner with 90% of net worth in property and 10% liquid is s
 | 6-12 months | Conservative; appropriate for single-earner households, variable income, or industries with longer unemployment durations |
 | 12+ months | Very conservative; beyond this, further cash is usually better invested |
 
-The [emergency fund post](/blog/emergency-fund) goes into sizing in more detail. Worth noting: coverage is a moving metric. Expenses drift upward as life expands, and an emergency fund that covered six months a year ago may cover four today. The ratio, not the absolute amount, is what to track.
+The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail. Worth noting: coverage is a moving metric. Expenses drift upward as life expands, and an emergency fund that covered six months a year ago may cover four today. The ratio, not the absolute amount, is what to track.
 
 **What to do if it's drifting down:** Rebuild before resuming aggressive investing. Review what's driving expense growth.
 
@@ -101,7 +101,7 @@ The [emergency fund post](/blog/emergency-fund) goes into sizing in more detail.
 
 **Formula:** (Income - expenses) ÷ income
 
-**What it measures:** The single most predictive metric for long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence) covered. More than any other metric, savings rate controls how quickly wealth builds.
+**What it measures:** The single most predictive metric for long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence/) covered. More than any other metric, savings rate controls how quickly wealth builds.
 
 **Rough zones:**
 
@@ -115,7 +115,7 @@ The [emergency fund post](/blog/emergency-fund) goes into sizing in more detail.
 
 This metric is also the most volatile month to month, so track it as a rolling 3- or 6-month average rather than reacting to single months.
 
-**What to do if it's drifting down:** Look at the [cash flow categories](/blog/cash-flow-101). Has lifestyle inflation crept into discretionary spending? Are recurring subscriptions growing? Did a large one-off expense hit? Revisit the [budgeting](/blog/budgeting) structure.
+**What to do if it's drifting down:** Look at the [cash flow categories](/blog/cash-flow-101/). Has lifestyle inflation crept into discretionary spending? Are recurring subscriptions growing? Did a large one-off expense hit? Revisit the [budgeting](/blog/budgeting/) structure.
 
 ## Metric 5: Debt-to-income ratio
 
@@ -132,15 +132,15 @@ This metric is also the most volatile month to month, so track it as a rolling 3
 | 35-45% | Stretched; little room for surprises |
 | 45%+ | Stressed; a lost income stream could tip into distress quickly |
 
-This metric becomes especially important before considering large new borrowing, like a new [mortgage](/blog/real-estate-as-investment) or other major loan. Lenders and self-check alike should weigh the *total* picture after the new obligation, not the current one.
+This metric becomes especially important before considering large new borrowing, like a new [mortgage](/blog/real-estate-as-investment/) or other major loan. Lenders and self-check alike should weigh the *total* picture after the new obligation, not the current one.
 
-**What to do if it's drifting up:** Slow new borrowing. Prepay high-interest debt where possible (see the [understanding loan terms post](/blog/understanding-loan-terms) on amortisation and prepayment power).
+**What to do if it's drifting up:** Slow new borrowing. Prepay high-interest debt where possible (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortisation and prepayment power).
 
 ## Metric 6: Income replacement ratio
 
 **Formula:** Current passive / portfolio income ÷ current expenses
 
-**What it measures:** How close your existing asset base is to funding your current lifestyle without work. Equivalent to the "crossover point" from the [passive income post](/blog/passive-income-streams) expressed as a ratio.
+**What it measures:** How close your existing asset base is to funding your current lifestyle without work. Equivalent to the "crossover point" from the [passive income post](/blog/passive-income-streams/) expressed as a ratio.
 
 **Rough zones:**
 
@@ -194,7 +194,7 @@ The metrics tell you where to look. They don't tell you what to do. The combinat
 
 ## What you can do
 
-1. **Calculate each metric today.** A single afternoon gives you a baseline. Most metrics need only your [net worth statement](/blog/how-to-calculate-net-worth), your monthly [cash flow](/blog/cash-flow-101), and your liabilities
+1. **Calculate each metric today.** A single afternoon gives you a baseline. Most metrics need only your [net worth statement](/blog/how-to-calculate-net-worth/), your monthly [cash flow](/blog/cash-flow-101/), and your liabilities
 2. **Write the numbers down.** On paper, spreadsheet, anywhere, as long as you can compare to next year
 3. **Identify one or two that are drifting.** Almost nobody is in the healthy zone on all six. The useful question is: which one matters most to fix in the next 12 months?
 4. **Set one adjustment to move the weakest metric.** A specific monthly change, not a vague ambition. "Add €150 to emergency fund each month for six months" beats "save more"

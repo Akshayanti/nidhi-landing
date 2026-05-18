@@ -5,7 +5,7 @@ description: "Earning more doesn't automatically mean being wealthier. Here's wh
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -38,7 +38,7 @@ It does not answer the more important question: how much is staying?
 
 ## What wealth actually is
 
-Wealth is a stock. It's what you've accumulated over time, i.e., your [net worth](/blog/what-is-net-worth). As we covered in the net worth post, wealth is the gap between everything you [own](/blog/assets) and everything you [owe](/blog/liabilities).
+Wealth is a stock. It's what you've accumulated over time, i.e., your [net worth](/blog/what-is-net-worth/). As we covered in the net worth post, wealth is the gap between everything you [own](/blog/assets/) and everything you [owe](/blog/liabilities/).
 
 Wealth answers: what do you have to show for all your earning years?
 
@@ -73,6 +73,6 @@ Three practical shifts:
 
 ## Why this matters?
 
-Income gives you options today. Wealth gives you options tomorrow. If your income stops (a job loss, a health issue, a career break), wealth, along with your [emergency fund](/blog/emergency-fund), is what keeps you afloat.
+Income gives you options today. Wealth gives you options tomorrow. If your income stops (a job loss, a health issue, a career break), wealth, along with your [emergency fund](/blog/emergency-fund/), is what keeps you afloat.
 
 Understanding this distinction is the first step toward making decisions that actually build your financial future, not just fund your present.

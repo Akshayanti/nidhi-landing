@@ -15,10 +15,15 @@ export default defineConfig({
   // and a canonical link, which is the strongest signal available
   // without server-side 301s.
   redirects: {
-    '/free/currency-risk': '/free/multi-currency-net-worth',
+    '/free/currency-risk/': '/free/multi-currency-net-worth/',
   },
   output: 'static',
-  trailingSlash: 'never',
+  // GitHub Pages serves directory URLs with a trailing slash and
+  // 301-redirects no-slash variants. Match that here so canonicals,
+  // og:url, sitemap entries and internal links agree with the URLs
+  // actually served — avoids "Alternate page with proper canonical
+  // tag" reports in Google Search Console and saves crawl budget.
+  trailingSlash: 'always',
   vite: {
     optimizeDeps: {
       exclude: ['puppeteer'],

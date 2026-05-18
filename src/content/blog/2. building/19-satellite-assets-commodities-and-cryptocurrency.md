@@ -23,7 +23,7 @@ referentialReading:
     type: "book"
 ---
 
-The [previous post](/blog/investing-101-asset-classes) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
+The [previous post](/blog/investing-101-asset-classes/) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
 
 The honest treatment is to give them a separate post rather than dilute the core four with sections that have a fundamentally different shape. By the end of this one, you'll know what each is, what it's for, and where the line sits between a sensible satellite allocation and a speculative bet.
 
@@ -45,7 +45,7 @@ Commodities are physical goods traded in bulk: gold, silver, oil, natural gas, a
 
 **Why people hold them**:
 
-- **Inflation hedge**: Commodity prices tend to rise during inflationary periods, partially offsetting the loss of [purchasing power](/blog/purchasing-power) in cash and bonds
+- **Inflation hedge**: Commodity prices tend to rise during inflationary periods, partially offsetting the loss of [purchasing power](/blog/purchasing-power/) in cash and bonds
 - **Crisis hedge**: Gold specifically has historically held value during major market dislocations and currency crises
 - **Diversification**: Commodities are weakly correlated with stocks and bonds, so adding a small allocation can reduce overall portfolio volatility
 
@@ -101,7 +101,7 @@ This isn't a moral judgement. It's a structural one. A portfolio without stocks,
 1. **Decide on a satellite cap before adding any.** A common range is 0-15% of total portfolio across all satellites combined. Pick a number you can live with and stick to it
 2. **Hold commodities, if at all, through low-cost diversified ETFs.** Avoid single-commodity bets unless you genuinely understand the supply-demand picture
 3. **Treat cryptocurrency as speculation in your accounting.** Money you could lose entirely without it affecting your plan. Keep it small, keep it custody-safe, keep it boring
-4. **Don't add satellites until the core is in place.** [Emergency fund](/blog/emergency-fund), [high-interest debt](/blog/how-to-get-out-of-debt), broad index fund exposure across stocks and bonds. Satellites without that foundation is the wrong order of operations
+4. **Don't add satellites until the core is in place.** [Emergency fund](/blog/emergency-fund/), [high-interest debt](/blog/how-to-get-out-of-debt/), broad index fund exposure across stocks and bonds. Satellites without that foundation is the wrong order of operations
 5. **Rebalance them like the rest of the portfolio.** If a satellite balloons from 5% to 15%, trim it back. If it shrinks, top it up, but only if you still believe the original case
 6. **Don't confuse satellite with side-hustle.** Some people buy crypto to learn, to participate, to be part of a community. That's fine. It is not the same as a financial plan
 

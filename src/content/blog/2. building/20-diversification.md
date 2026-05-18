@@ -56,7 +56,7 @@ Diversification smooths the ride. It doesn't make the destination better, on ave
 
 You diversify along several dimensions at once. Most people think only about the first one.
 
-**1. Asset class.** [Stocks, bonds, real estate, cash](/blog/investing-101-asset-classes) each respond differently to economic conditions. A portfolio of only stocks is more volatile than one that also holds bonds. A portfolio of only cash is stable but loses ground to inflation.
+**1. Asset class.** [Stocks, bonds, real estate, cash](/blog/investing-101-asset-classes/) each respond differently to economic conditions. A portfolio of only stocks is more volatile than one that also holds bonds. A portfolio of only cash is stable but loses ground to inflation.
 
 **2. Geography.** Companies and economies in different countries don't always move in sync. A global stock index fund with thousands of companies across dozens of countries is more diversified than a national index fund with 30 companies.
 
@@ -64,7 +64,7 @@ You diversify along several dimensions at once. Most people think only about the
 
 **4. Company size.** Large established companies behave differently from small growing ones. Broad "total market" index funds include both; narrower indexes may only include large caps.
 
-**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth) breaks down assets and future obligations by currency and shows the concentration in each.
+**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) breaks down assets and future obligations by currency and shows the concentration in each.
 
 **6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis. We come back to this in the next post.
 
@@ -164,7 +164,7 @@ A reasonable "minimum diversified" portfolio at the start might look like:
 
 - One global stock index fund (equity exposure across countries, sectors, and company sizes)
 - One bond index fund (stability, different driver than stocks)
-- Cash for [emergency fund](/blog/emergency-fund) and short-term needs (already covered by your [saving layer](/blog/saving-vs-investing))
+- Cash for [emergency fund](/blog/emergency-fund/) and short-term needs (already covered by your [saving layer](/blog/saving-vs-investing/))
 
 That's not a glamorous portfolio. It also captures most of the benefit of diversification that sophisticated institutional investors pay advisors to construct.
 

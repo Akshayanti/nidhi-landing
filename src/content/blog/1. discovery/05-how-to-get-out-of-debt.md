@@ -5,7 +5,7 @@ description: "Two proven strategies for paying off debt: snowball prioritizes mo
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -44,7 +44,7 @@ faq:
     answer: "Choose snowball if you're motivated by visible progress and quick wins. Choose avalanche if you're disciplined and want to minimise total cost. A hybrid approach also works: start with snowball to build momentum, then switch to avalanche."
 ---
 
-You know [what you owe](/blog/liabilities). You know which debts are the most expensive. Now it's time to get rid of them.
+You know [what you owe](/blog/liabilities/). You know which debts are the most expensive. Now it's time to get rid of them.
 
 There are two proven strategies for paying off debt. Both work. The difference is in how they sequence your payments; and what that does to your motivation and your wallet.
 
@@ -150,12 +150,12 @@ It depends on what drives you:
 ## Common mistakes
 
 - **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage. Never do this
-- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
+- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison/) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
 - **Stopping when the first debt is gone.** The whole point is to roll the freed-up payment into the next one. If you just spend the extra money, you lose the compounding effect
 - **Waiting for the "right time."** The best time to start is now. Even small extra payments make a difference
 
 ## What comes after
 
-Getting out of debt is not the finish line, it's the starting line. Once your high-interest [liabilities](/blog/liabilities) are gone, that monthly payment doesn't disappear. It becomes money you can redirect toward [assets](/blog/assets) that appreciate over time.
+Getting out of debt is not the finish line, it's the starting line. Once your high-interest [liabilities](/blog/liabilities/) are gone, that monthly payment doesn't disappear. It becomes money you can redirect toward [assets](/blog/assets/) that appreciate over time.
 
 In the next post, we'll look at why some assets grow your net-worth while others shrink it, the difference between appreciation and depreciation, and the force of compound interest behind both.

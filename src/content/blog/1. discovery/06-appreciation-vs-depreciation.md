@@ -5,7 +5,7 @@ description: "Some assets grow over time; others lose value. Appreciation, depre
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-05-16
+updatedDate: 2026-05-18
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -24,7 +24,7 @@ referentialReading:
     type: "book"
 ---
 
-You've got [assets](/blog/assets) on one side and [liabilities](/blog/liabilities) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.
+You've got [assets](/blog/assets/) on one side and [liabilities](/blog/liabilities/) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.
 
 ## Appreciation: when assets grow
 
@@ -75,7 +75,7 @@ When these levers work **for** you, when you're saving and investing, the result
 
 ## Compound interest on debt: the dark side
 
-The same force that grows your savings also grows your [debt](/blog/liabilities). When you carry a credit card balance at 22%, the interest is added to what you owe. Next month, you're paying interest on the interest. The debt snowballs.
+The same force that grows your savings also grows your [debt](/blog/liabilities/). When you carry a credit card balance at 22%, the interest is added to what you owe. Next month, you're paying interest on the interest. The debt snowballs.
 
 €3,000 at 22% with minimum payments can cost you over €6,000 in total. You paid for the original purchases twice: once at the register, and once to the bank.
 
@@ -109,7 +109,7 @@ This doesn't mean you should never buy depreciating assets. You need a car to ge
 
 1. **Put money into appreciating assets.** Index funds, retirement accounts, and (eventually) real estate are the most accessible ways to let compound interest work for you.
 2. **Minimize depreciating purchases.** Buy reliable used cars instead of new. Don't finance consumer goods at high rates.
-3. **Eliminate high-interest debt as fast as possible.** As we covered in the [liabilities post](/blog/liabilities), this is the highest guaranteed return available to you.
+3. **Eliminate high-interest debt as fast as possible.** As we covered in the [liabilities post](/blog/liabilities/), this is the highest guaranteed return available to you.
 4. **Start now.** Time is the most powerful lever in compounding, and it's the one you can't get back.
 
 Understanding appreciation and depreciation; and the compound interest that drives both; changes how you see every financial decision. In the next post, we'll look at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.
