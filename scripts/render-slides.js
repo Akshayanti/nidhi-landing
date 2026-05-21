@@ -204,9 +204,15 @@ function renderStat(slide) {
   const hero = slide.fields.hero || '';
   const caption = slide.fields.caption || '';
   const note = slide.fields.note || slide.text || '';
+  // `||` in the hero becomes a hard line break. Lets the hero hold a two-line
+  // contrast (e.g. "Year 1: €625 || Year 25: €3") without the renderer
+  // shrinking it to thumbnail size to fit the whole thing on one row.
+  const heroHtml = hero
+    ? applyInline(smartTypography(hero)).replace(/\s*\|\|\s*/g, '<br>')
+    : '';
   return `
     ${label ? `<div class="stat-label">${applyInline(smartTypography(label))}</div>` : ''}
-    ${hero ? `<div class="stat-hero">${applyInline(smartTypography(hero))}</div>` : ''}
+    ${heroHtml ? `<div class="stat-hero">${heroHtml}</div>` : ''}
     ${caption ? `<div class="stat-caption">${applyInline(smartTypography(caption))}</div>` : ''}
     ${note ? `<div class="stat-note">${applyInline(smartTypography(note))}</div>` : ''}
   `;

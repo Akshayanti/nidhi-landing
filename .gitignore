@@ -27,6 +27,3 @@ scripts/__pycache__/
 remotion/outputs/
 remotion/public/audio/
 
-# Per-post Instagram drafts and notes. Working files for the human author,
-# not part of the published codebase.
-docs/instagram/
