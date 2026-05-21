@@ -1,0 +1,5 @@
+{
+  "$schema": "./manifest.schema.json",
+  "_comment": "Drop royalty-free .mp3 files into mood-named subfolders, then add an entry below. The pipeline will pick deterministically per-slug. If this list is empty, reels render with no music bed.",
+  "tracks": []
+}

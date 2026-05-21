@@ -17,3 +17,16 @@ emails/_preview/
 # (passed between jobs as a workflow artifact, not via git). Never
 # checked in.
 .indexnow/
+
+# Python bytecode cache produced by helper scripts (e.g. send_newsletter).
+scripts/__pycache__/
+
+# Reel pipeline scratch directories. The Remotion bundle reads input JSON
+# from `outputs/` and per-reel TTS mp3 + VTT from `public/audio/`; both
+# are deleted after a successful render and only ever exist mid-pipeline.
+remotion/outputs/
+remotion/public/audio/
+
+# Per-post Instagram drafts and notes. Working files for the human author,
+# not part of the published codebase.
+docs/instagram/

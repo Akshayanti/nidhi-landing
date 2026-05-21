@@ -1,0 +1,25 @@
+{
+  "name": "nidhi-reels",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "npx tsx src/render-single.ts"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "^4.0.463",
+    "@remotion/transitions": "^4.0.463",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remotion": "^4.0.462"
+  },
+  "devDependencies": {
+    "@remotion/bundler": "^4.0.462",
+    "@remotion/cli": "^4.0.462",
+    "@remotion/renderer": "^4.0.462",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
