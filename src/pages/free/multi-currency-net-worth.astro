@@ -332,7 +332,7 @@ const faqSchema = {
 
       <div class="mcnw-relatedGrid">
         {RELATED.map((post) => (
-          <a href={`/blog/${post.slug}`} class="mcnw-relatedCard" data-attr={post.dataAttr}>
+          <a href={`/blog/${post.slug}/`} class="mcnw-relatedCard" data-attr={post.dataAttr}>
             <span class="mcnw-relatedKicker">{post.kicker}</span>
             <span class="mcnw-relatedTitle">{post.title}</span>
             <span class="mcnw-relatedDesc">{post.desc}</span>

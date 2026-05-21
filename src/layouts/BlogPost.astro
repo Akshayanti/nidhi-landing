@@ -124,8 +124,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     modifiedTime: updatedDate,
     tags: tags,
   }}
-  prevUrl={prevSlug ? `/blog/${prevSlug}` : null}
-  nextUrl={nextSlug ? `/blog/${nextSlug}` : null}
+  prevUrl={prevSlug ? `/blog/${prevSlug}/` : null}
+  nextUrl={nextSlug ? `/blog/${nextSlug}/` : null}
   jsonLd={allSchemas}
 >
   <article class="blog-post">
@@ -144,7 +144,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {tags.length > 0 && (
           <div class="post-tags">
             {tags.map((tag) => (
-              <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
+              <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>{tag}</a>
             ))}
           </div>
         )}
@@ -203,13 +203,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {(prevSlug || nextSlug) && (
           <nav class="post-nav" aria-label="Adjacent posts">
             {prevSlug && prevTitle && (
-              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}`} data-attr="post-nav-prev">
+              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}/`} data-attr="post-nav-prev">
                 <span class="post-nav-direction">Previous</span>
                 <span class="post-nav-title">{prevTitle}</span>
               </a>
             )}
             {nextSlug && nextTitle && (
-              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}`} data-attr="post-nav-next">
+              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}/`} data-attr="post-nav-next">
                 <span class="post-nav-direction">Next</span>
                 <span class="post-nav-title">{nextTitle}</span>
               </a>

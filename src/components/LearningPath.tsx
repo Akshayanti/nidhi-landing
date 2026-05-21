@@ -122,7 +122,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
           </div>
           <ReadToggle isRead={isRead} onToggle={() => onToggleRead(post.id)} />
         </div>
-        <a href={`/blog/${post.id}`} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
+        <a href={`/blog/${post.id}/`} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
           {post.title}
         </a>
         <p className="lp-cardDesc">{post.description}</p>

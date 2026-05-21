@@ -418,7 +418,7 @@ const faqSchema = {
 
       <div class="lc-relatedGrid">
         {RELATED.map((post) => (
-          <a href={`/blog/${post.slug}`} class="lc-relatedCard" data-attr={post.dataAttr}>
+          <a href={`/blog/${post.slug}/`} class="lc-relatedCard" data-attr={post.dataAttr}>
             <span class="lc-relatedKicker">{post.kicker}</span>
             <span class="lc-relatedTitle">{post.title}</span>
             <span class="lc-relatedDesc">{post.desc}</span>
