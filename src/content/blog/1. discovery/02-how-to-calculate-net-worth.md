@@ -1,15 +1,20 @@
 ---
 slug: "how-to-calculate-net-worth"
 title: "How to Calculate Your Net Worth in 10 Minutes"
-description: "A step-by-step guide to listing everything you own and everything you owe. No fancy tools needed, just honesty and a calculator."
+description: "A step-by-step guide to listing everything you own and everything you owe, with a free multi-currency calculator for assets spread across countries."
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-05-18
+updatedDate: 2026-05-21
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
+relatedTool:
+  url: "/free/multi-currency-net-worth"
+  label: "Multi-currency net-worth calculator"
+  cta: "Calculate yours in any currency"
+reelPromise: "Free multi-currency calculator + worked example for assets spread across countries"
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -86,6 +91,8 @@ Add up all assets. Add up all liabilities. Subtract.
 | **Net Worth** | **€_____** |
 
 That's your number.
+
+If your assets and liabilities sit in more than one currency, the [free multi-currency net-worth calculator](/free/multi-currency-net-worth/) handles the FX work and gives you a single clean total. It uses live mid-market rates and shows you how each currency contributes to the bottom line, so a strong dollar or weak rupiah does not quietly distort what you actually own.
 
 ## Common surprises
 

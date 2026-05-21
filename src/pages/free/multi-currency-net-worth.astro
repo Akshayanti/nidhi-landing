@@ -3,6 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import { getCollection } from 'astro:content';
 
+// Ordered by topical fit to "multi-currency net worth", strongest first.
+// Unpublished posts (future pubDate) are filtered out at build time but kept
+// here so they auto-promote into the visible top three the moment they go
+// live (publishedSlugs is rebuilt every build). Slugs MUST match real entries
+// in src/content/blog/**/*.md or they silently filter out — that was the
+// bug that made this section render blank ("net-worth" and "assets-vs-
+// liabilities" were never real slugs).
 const RELATED_CANDIDATES = [
   {
     slug: 'managing-money-across-currencies',
@@ -12,18 +19,39 @@ const RELATED_CANDIDATES = [
     dataAttr: 'related-multi-currency',
   },
   {
-    slug: 'setting-financial-goals',
-    kicker: 'Planning',
-    title: 'Setting financial goals',
-    desc: 'Why your goals should drive your asset allocation, including which currencies you hold.',
-    dataAttr: 'related-goals',
+    slug: 'why-your-euro-buys-more-in-some-countries',
+    kicker: 'Purchasing power',
+    title: 'Why your euro buys more in some countries than others',
+    desc: 'Exchange rates are only half the story. Local price levels matter as much as FX when you compare wealth across countries.',
+    dataAttr: 'related-purchasing-power-cross-country',
   },
   {
-    slug: 'net-worth',
+    slug: 'how-to-calculate-net-worth',
+    kicker: 'Net worth',
+    title: 'How to calculate your net worth in 10 minutes',
+    desc: 'The two-column method this calculator implements: list what you own, list what you owe, take the difference.',
+    dataAttr: 'related-how-to-calculate-net-worth',
+  },
+  {
+    slug: 'purchasing-power',
+    kicker: 'Inflation',
+    title: "Purchasing power: why €1,000 today isn't €1,000 tomorrow",
+    desc: 'Currency is one lens on real wealth; inflation is the other. Neither is captured by a nominal balance.',
+    dataAttr: 'related-purchasing-power',
+  },
+  {
+    slug: 'what-is-net-worth',
     kicker: 'Fundamentals',
     title: 'What is net worth and why it matters',
-    desc: 'Assets minus liabilities: the simplest measure of financial health, explained currency by currency.',
+    desc: 'Assets minus liabilities is the simplest measure of financial health. This tool extends it to multi-currency holdings.',
     dataAttr: 'related-net-worth',
+  },
+  {
+    slug: 'liabilities',
+    kicker: 'Debt',
+    title: 'Liabilities: what you owe and why the interest rate matters',
+    desc: 'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator nets both.',
+    dataAttr: 'related-liabilities',
   },
   {
     slug: 'introduction-to-financial-independence',
@@ -33,11 +61,11 @@ const RELATED_CANDIDATES = [
     dataAttr: 'related-fire-intro',
   },
   {
-    slug: 'assets-vs-liabilities',
-    kicker: 'Fundamentals',
-    title: 'Assets vs liabilities',
-    desc: 'Knowing the difference is the first step to understanding your true net worth in any currency.',
-    dataAttr: 'related-assets-liabilities',
+    slug: 'setting-financial-goals',
+    kicker: 'Planning',
+    title: 'Setting financial goals',
+    desc: 'Why your goals should drive your asset allocation, including which currencies you hold.',
+    dataAttr: 'related-goals',
   },
 ];
 

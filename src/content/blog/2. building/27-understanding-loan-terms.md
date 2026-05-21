@@ -10,6 +10,11 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
 tags: ["building", "debt", "planning"]
+relatedTool:
+  url: "/free/loan-comparison"
+  label: "Loan comparison calculator"
+  cta: "Compare any two offers including fees"
+reelPromise: "How APR hides fees, why amortisation matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
 referentialReading:
   - title: "Annual Percentage Rate (APR)"
     url: "https://www.investopedia.com/terms/a/apr.asp"

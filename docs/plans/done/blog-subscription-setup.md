@@ -109,7 +109,7 @@ Row 1 must be **exactly these 8 column headers** (lowercase, with underscores):
 1. Go to <https://script.new>, logged in as the Google account that should *own* the script.
    - Simplest: own the script from the account that IS `hello@nidhi.today`.
    - Alternative: own from a different Workspace user; you'll need to add `hello@nidhi.today` as a verified "Send mail as" alias in that user's Gmail settings (step 6 below).
-2. Paste the contents of [`scripts/newsletter.gs`](../../scripts/newsletter.gs) into `Code.gs`, replacing the stub.
+2. Paste the contents of [`scripts/newsletter.gs`](../../../scripts/newsletter.gs) into `Code.gs`, replacing the stub.
 3. **Enable the advanced Gmail service:** Services (left rail) → `+` → `Gmail API` → Add. Required so we can send raw MIME with `List-Unsubscribe` headers.
 4. **Script properties** (⚙ Project Settings → Script properties → Add script property):
 

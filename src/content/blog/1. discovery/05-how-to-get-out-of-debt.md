@@ -5,11 +5,12 @@ description: "Two proven strategies for paying off debt: snowball prioritizes mo
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-05-18
+updatedDate: 2026-05-21
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "debt"]
+reelPromise: "Snowball vs avalanche timing chart on €25,700 across 4 debts and the four common mistakes that stall payoff"
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"

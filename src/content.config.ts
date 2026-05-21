@@ -36,6 +36,25 @@ const blog = defineCollection({
         text: z.string(),
       })),
     }).optional(),
+    /**
+     * If this post has a paired free tool on /free/*, declare it here. The
+     * blog template renders a callout block; the reel caption writer auto-
+     * appends the URL line; the LLM script writer is told the tool exists
+     * (so it CAN — not must — reference it in onscreenText if natural).
+     */
+    relatedTool: z.object({
+      url: z.string(),
+      label: z.string(),
+      cta: z.string(),
+    }).optional(),
+    /**
+     * One-line concrete promise of what the blog adds beyond the 60-second
+     * reel — worked example, country-specific table, depth chart, etc.
+     * Surfaces in the reel caption as the "why click through" line. MUST
+     * reflect content that actually exists in the post body; do not write
+     * promises the reader cannot find on the page.
+     */
+    reelPromise: z.string().optional(),
   }),
 });
 
