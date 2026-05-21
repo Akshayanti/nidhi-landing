@@ -95,59 +95,61 @@ The right choice depends on your cash flow stability, how long you expect to hol
 
 When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realise how extreme the early-years skew is.
 
-Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortisation maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment around €1,185.
+Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortisation maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment of €1,185.53.
 
 | Payment number | Interest portion | Principal portion | Balance after |
 |---|---|---|---|
-| Month 1 | €625 | €561 | €249,440 |
-| Month 60 (year 5) | €536 | €650 | €213,760 |
-| Month 120 (year 10) | €431 | €754 | €171,670 |
-| Month 180 (year 15) | €309 | €876 | €122,775 |
-| Month 240 (year 20) | €167 | €1,018 | €65,980 |
+| Month 1 | €625.00 | €560.53 | €249,439.47 |
+| Month 60 (year 5) | €536.03 | €649.50 | €213,763.62 |
+| Month 120 (year 10) | €431.06 | €754.47 | €171,670.78 |
+| Month 180 (year 15) | €309.13 | €876.40 | €122,775.08 |
+| Month 240 (year 20) | €167.49 | €1,018.04 | €65,976.98 |
 
 *Illustrative figures; exact numbers depend on loan details.*
 
 <figure>
   <svg viewBox="0 0 800 480" role="img" aria-labelledby="fig-amort-title fig-amort-desc" xmlns="http://www.w3.org/2000/svg">
     <title id="fig-amort-title">Where each monthly payment actually goes over the life of the loan</title>
-    <desc id="fig-amort-desc">Six stacked bars at years 1, 5, 10, 15, 20, and 25. Each bar represents the same €1,185 monthly payment, split into the interest portion (orange, on top) and the principal portion (deep blue, on bottom). The interest portion shrinks dramatically over time while the principal portion grows. By year 25, the entire payment is principal.</desc>
-    <text x="400" y="44" text-anchor="middle" class="fig-title">The same €1,185 payment, every month</text>
-    <text x="400" y="66" text-anchor="middle" class="fig-subtitle">€250,000 mortgage · 3% fixed · 25-year term</text>
-    <text x="80" y="84" text-anchor="start" class="fig-eyebrow" style="fill: var(--color-warning);">INTEREST</text>
-    <text x="80" y="396" text-anchor="start" class="fig-eyebrow" style="fill: var(--color-deep-blue);">PRINCIPAL</text>
-    <rect x="115" y="80" width="70" height="168.8" class="fig-fill-warn"/>
-    <rect x="115" y="248.8" width="70" height="151.2" class="fig-fill-blue"/>
-    <text x="150" y="240" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€625</text>
-    <text x="150" y="328" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€561</text>
-    <text x="150" y="420" text-anchor="middle" class="fig-tick">Year 1</text>
-    <rect x="217" y="80" width="70" height="144.7" class="fig-fill-warn"/>
-    <rect x="217" y="224.7" width="70" height="175.3" class="fig-fill-blue"/>
-    <text x="252" y="216" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€536</text>
-    <text x="252" y="316" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€650</text>
-    <text x="252" y="420" text-anchor="middle" class="fig-tick">Year 5</text>
-    <rect x="319" y="80" width="70" height="116.4" class="fig-fill-warn"/>
-    <rect x="319" y="196.4" width="70" height="203.6" class="fig-fill-blue"/>
-    <text x="354" y="188" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€431</text>
-    <text x="354" y="302" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€754</text>
-    <text x="354" y="420" text-anchor="middle" class="fig-tick">Year 10</text>
-    <rect x="421" y="80" width="70" height="83.4" class="fig-fill-warn"/>
-    <rect x="421" y="163.4" width="70" height="236.6" class="fig-fill-blue"/>
+    <desc id="fig-amort-desc">Six stacked bars at months 1, 60, 120, 180, 240, and 300. Each bar represents the same €1,185.53 monthly payment, split into the interest portion (orange, on top) and the principal portion (deep blue, on bottom). The interest portion shrinks dramatically over time while the principal portion grows. By the final payment, almost the entire amount is principal.</desc>
+    <text x="400" y="32" text-anchor="middle" class="fig-title">The same €1,185.53 payment, every month</text>
+    <text x="400" y="54" text-anchor="middle" class="fig-subtitle">€250,000 mortgage · 3% fixed · 25-year term</text>
+    <rect x="290" y="76" width="12" height="12" class="fig-fill-warn"/>
+    <text x="308" y="86" text-anchor="start" class="fig-eyebrow">Interest</text>
+    <rect x="400" y="76" width="12" height="12" class="fig-fill-blue"/>
+    <text x="418" y="86" text-anchor="start" class="fig-eyebrow">Principal</text>
+    <rect x="115" y="110" width="70" height="158.2" class="fig-fill-warn"/>
+    <rect x="115" y="268.2" width="70" height="141.8" class="fig-fill-blue"/>
+    <text x="150" y="195" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€625</text>
+    <text x="150" y="345" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€561</text>
+    <text x="150" y="430" text-anchor="middle" class="fig-tick">Month 1</text>
+    <rect x="217" y="110" width="70" height="135.6" class="fig-fill-warn"/>
+    <rect x="217" y="245.6" width="70" height="164.4" class="fig-fill-blue"/>
+    <text x="252" y="184" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€536</text>
+    <text x="252" y="334" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€650</text>
+    <text x="252" y="430" text-anchor="middle" class="fig-tick">Month 60</text>
+    <rect x="319" y="110" width="70" height="109.1" class="fig-fill-warn"/>
+    <rect x="319" y="219.1" width="70" height="190.9" class="fig-fill-blue"/>
+    <text x="354" y="170" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€431</text>
+    <text x="354" y="320" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€754</text>
+    <text x="354" y="430" text-anchor="middle" class="fig-tick">Month 120</text>
+    <rect x="421" y="110" width="70" height="78.2" class="fig-fill-warn"/>
+    <rect x="421" y="188.2" width="70" height="221.8" class="fig-fill-blue"/>
     <text x="456" y="155" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€309</text>
-    <text x="456" y="290" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€876</text>
-    <text x="456" y="420" text-anchor="middle" class="fig-tick">Year 15</text>
-    <rect x="523" y="80" width="70" height="45.1" class="fig-fill-warn"/>
-    <rect x="523" y="125.1" width="70" height="274.9" class="fig-fill-blue"/>
-    <text x="558" y="118" text-anchor="middle" class="fig-tick" style="fill: var(--color-warning); font-weight: 600;">€167</text>
-    <text x="558" y="270" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,018</text>
-    <text x="558" y="420" text-anchor="middle" class="fig-tick">Year 20</text>
-    <rect x="625" y="80" width="70" height="3" class="fig-fill-warn"/>
-    <rect x="625" y="83" width="70" height="317" class="fig-fill-blue"/>
-    <text x="660" y="76" text-anchor="middle" class="fig-tick" style="fill: var(--color-warning); font-weight: 600;">~€3</text>
-    <text x="660" y="248" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,182</text>
-    <text x="660" y="420" text-anchor="middle" class="fig-tick">Year 25</text>
+    <text x="456" y="305" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€876</text>
+    <text x="456" y="430" text-anchor="middle" class="fig-tick">Month 180</text>
+    <rect x="523" y="110" width="70" height="42.4" class="fig-fill-warn"/>
+    <rect x="523" y="152.4" width="70" height="257.6" class="fig-fill-blue"/>
+    <text x="558" y="136" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€167</text>
+    <text x="558" y="285" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,018</text>
+    <text x="558" y="430" text-anchor="middle" class="fig-tick">Month 240</text>
+    <rect x="625" y="110" width="70" height="2" class="fig-fill-warn"/>
+    <rect x="625" y="112" width="70" height="298" class="fig-fill-blue"/>
+    <text x="660" y="104" text-anchor="middle" class="fig-tick" style="fill: var(--color-text-primary); font-weight: 600;">~€3</text>
+    <text x="660" y="265" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,183</text>
+    <text x="660" y="430" text-anchor="middle" class="fig-tick">Month 300</text>
     <text x="400" y="465" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · constant monthly payment, the split changes every month</text>
   </svg>
-  <figcaption>Same payment, every month, for 25 years. Early on, you're mostly paying interest; the principal barely moves. By the final years, almost the entire payment is principal. This is why an extra €1,000 in year 1 cancels 25 years of interest on that euro, and the same €1,000 in year 24 saves almost nothing.</figcaption>
+  <figcaption>Same payment, every month, for 25 years. Early on, you're mostly paying interest; the principal barely moves. By the final years, almost the entire payment is principal. This is why an extra €1,000 in month 1 cancels 25 years of interest on that euro, and the same €1,000 near month 290 saves almost nothing.</figcaption>
 </figure>
 
 Two consequences people almost always underestimate:
