@@ -1,0 +1,47 @@
+# nidhi.today
+> Personal finance literacy and tools. Clear, honest explanations of money concepts - net worth, investing, debt, taxes, financial independence - with free calculators. Built in Prague. No ads, no data selling.
+
+## Key Pages
+- [Home](https://nidhi.today/): Overview of the platform, navigation to blog and free tools.
+- [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
+- [Blog Index](https://nidhi.today/blog/): All articles in reading order, two series: Discovery (fundamentals) and Building (applying concepts).
+
+## Free Tools
+- [Multi-Currency Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Track assets and liabilities across currencies with real-time FX rates. Privacy-first - data stays in your browser.
+- [Loan Comparison Calculator](https://nidhi.today/free/loan-comparison/): Compare two loan offers side-by-side including fees, APR, amortisation, and total cost of borrowing.
+
+## Blog - Discovery Series (Fundamentals)
+- [What Is Net Worth and Why Does It Matter?](https://nidhi.today/blog/what-is-net-worth/): Net worth as the single number that captures your full financial picture - more important than salary alone.
+- [How to Calculate Your Net Worth in 10 Minutes](https://nidhi.today/blog/how-to-calculate-net-worth/): Step-by-step guide with a free multi-currency calculator for cross-border assets.
+- [Assets: What You Own and What Actually Counts](https://nidhi.today/blog/assets/): What qualifies as an asset, and how liquidity, appreciation, and stability affect real value.
+- [Liabilities: What You Owe and Why the Interest Rate Matters](https://nidhi.today/blog/liabilities/): How to evaluate debt - the interest rate is the most important detail, not the balance.
+- [How to Get Out of Debt: Snowball vs. Avalanche](https://nidhi.today/blog/how-to-get-out-of-debt/): Two proven debt payoff strategies - snowball for motivation, avalanche for math optimization.
+- [Appreciation vs. Depreciation: Why Some Assets Grow and Others Shrink](https://nidhi.today/blog/appreciation-vs-depreciation/): How compound interest works for and against you through appreciation and depreciation.
+- [Liquidity: Why Being Unable to Access Your Money Is a Risk](https://nidhi.today/blog/liquidity/): How fast you can convert assets to cash without losing value, and why it matters.
+- [The Emergency Fund: Your First Financial Safety Net](https://nidhi.today/blog/emergency-fund/): Why an emergency fund comes before investing, and how much to save.
+- [Income vs. Wealth: They're Not the Same Thing](https://nidhi.today/blog/income-vs-wealth/): High salary vs. high net worth - the gap between earning and keeping.
+- [Cash Flow 101: Where Your Money Actually Goes](https://nidhi.today/blog/cash-flow-101/): Tracking money in and out - the first step to controlling your finances.
+- [Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow](https://nidhi.today/blog/purchasing-power/): How inflation erodes money's value and why saving alone isn't enough.
+- [Why Your Euro Buys More in Some Countries Than Others](https://nidhi.today/blog/why-your-euro-buys-more-in-some-countries/): Exchange rates vs. purchasing power parity - what money actually buys across borders.
+- [Saving vs. Investing: When to Do Which](https://nidhi.today/blog/saving-vs-investing/): The right sequence - emergency fund first, high-interest debt second, then invest.
+- [Budgeting: Controlling the Gap Between Income and Spending](https://nidhi.today/blog/budgeting/): 50/30/20, zero-based, and pay-yourself-first budgeting approaches.
+- [Credit and Credit Scores: What They Are and Why They Matter](https://nidhi.today/blog/credit-and-credit-scores/): How credit scores work across countries (FICO, SCHUFA, Experian, CIBIL) and why they affect more than loans.
+- [Insurance Basics: Protecting What You've Built](https://nidhi.today/blog/insurance-basics/): How insurance transfers catastrophic risk and works alongside your emergency fund.
+
+## Blog - Building Series (Applying Concepts)
+- [Understanding Risk: What It Actually Means for Your Money](https://nidhi.today/blog/understanding-risk/): Volatility vs. permanent loss, risk tolerance vs. risk capacity, and why time transforms risk.
+- [Investing 101: Asset Classes and How They Work](https://nidhi.today/blog/investing-101-asset-classes/): Stocks, bonds, real estate, cash equivalents - what they are and why they belong in a portfolio.
+- [Beyond the Core: Commodities and Cryptocurrency as Satellite Assets](https://nidhi.today/blog/satellite-assets-commodities-and-cryptocurrency/): Commodities and crypto as small satellites around a core portfolio, not the foundation.
+- [Diversification: Why You Don't Put All Your Eggs in One Basket](https://nidhi.today/blog/diversification/): The most effective way to reduce risk without reducing return - across assets, geography, industries, and time.
+- [Getting Started: Investment Accounts, Automation, and Your First Steps](https://nidhi.today/blog/getting-started-investing/): Opening accounts, choosing index funds, dollar-cost averaging, and automating contributions.
+- [Taxes and Your Financial Plan: How Taxation Affects Every Decision](https://nidhi.today/blog/taxes-and-your-financial-plan/): Where taxes hit your plan and why you should think in after-tax terms.
+- [Tax-Advantaged Accounts: Where to Hold Your Investments](https://nidhi.today/blog/tax-advantaged-accounts/): Five categories of tax-advantaged accounts with a country-by-country reference table.
+- [Rebalancing: How to Keep Your Portfolio on Target](https://nidhi.today/blog/rebalancing-your-portfolio/): Calendar-based, threshold-based, and contribution-based rebalancing methods.
+- [Introduction to Financial Independence: What It Means and Why It Matters](https://nidhi.today/blog/introduction-to-financial-independence/): The FIRE number, safe withdrawal rates, and the four flavors of financial independence.
+- [Passive Income Streams: Making Your Money Work Without You](https://nidhi.today/blog/passive-income-streams/): Honest passive income sources - dividends, interest, rent, royalties - and the capital required.
+- [Understanding Loan Terms: How to Compare Borrowing Options](https://nidhi.today/blog/understanding-loan-terms/): APR vs. interest rate, amortisation, fixed vs. variable, and how to compare total cost of borrowing.
+- [Real Estate as an Investment: Beyond Just Owning a Home](https://nidhi.today/blog/real-estate-as-investment/): Real estate returns, leverage, illiquidity, and the rent-vs-buy math.
+- [Managing Money Across Currencies: When Your Finances Cross Borders](https://nidhi.today/blog/managing-money-across-currencies/): Multi-currency net worth, exchange rate risk, and matching money to obligations across borders.
+- [Setting Financial Goals: From Vague Wishes to Concrete Targets](https://nidhi.today/blog/setting-financial-goals/): Translating goals into specific amounts, dates, and monthly contribution paths.
+- [Financial Health Metrics: How to Know If You're on Track](https://nidhi.today/blog/financial-health-metrics/): Six ratios that diagnose financial health beyond net worth alone.
+- [Your Financial Dashboard: What to Track and How Often](https://nidhi.today/blog/financial-dashboard/): A four-layer tracking system - monthly, quarterly, annual, and event-driven checkpoints.

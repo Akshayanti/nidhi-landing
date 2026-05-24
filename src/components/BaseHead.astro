@@ -108,4 +108,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     persistence: 'localStorage',
     disable_session_recording: true,
   })
+
+  // Flag AI-sourced traffic for easy dashboard filtering.
+  // PostHog auto-captures $referrer and $referring_domain on every
+  // pageview; this adds a dedicated is_ai_traffic event so you can
+  // create a one-click insight for "AI to site" without manual filters.
+  var aiReferrers = ['chatgpt.com', 'chat.openai.com', 'perplexity.ai', 'claude.ai', 'gemini.google.com', 'copilot.microsoft.com', 'you.com', 'bard.google.com', 'deepseek.com', 'grok.com'];
+  var ref = document.referrer;
+  try { var refHost = new URL(ref).hostname; } catch(_) { var refHost = ''; }
+  var isAI = refHost && aiReferrers.some(function(d) { return refHost === d || refHost.endsWith('.' + d); });
+  if (isAI) {
+    posthog.capture('$ai_referrer', { ai_referrer_domain: refHost, ai_referrer_full: ref });
+  }
 </script>
