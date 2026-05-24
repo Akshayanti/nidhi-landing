@@ -58,17 +58,17 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
     }
   }
 
-  // Tier 1: ≤7 days — each gets its own open details.
+  // Tier 1: ≤7 days, each gets its own open details.
   for (const e of expanded) {
     groups.push({ kind: 'single', entry: e, open: true });
   }
 
-  // Tier 2: 8–30 days — each gets its own collapsed details.
+  // Tier 2: 8-30 days, each gets its own collapsed details.
   for (const e of collapsed) {
     groups.push({ kind: 'single', entry: e, open: false });
   }
 
-  // Tier 3: >30 days — grouped by completed month or year.
+  // Tier 3: >30 days, grouped by completed month or year.
   if (older.length > 0) {
     const monthGroups = new Map<string, ChangelogEntry[]>();
     const yearGroups  = new Map<string, ChangelogEntry[]>();
@@ -79,7 +79,7 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
       const entryMonth = d.getMonth();
 
       // Only group by month when the month is truly finished (we're past it).
-      // A July entry on July 31 is still in the current month — it goes into
+      // A July entry on July 31 is still in the current month, it goes into
       // a year bucket instead so we don't show a premature "July 2026" group.
       const monthComplete = entryYear < thisYear ||
         (entryYear === thisYear && entryMonth < thisMonth);
