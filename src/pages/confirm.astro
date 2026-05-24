@@ -110,10 +110,10 @@ const isDev = import.meta.env.DEV;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
       }).then(function () {
-        // Upgrade the shared subscription flag from "pending" → "confirmed"
-        // (or set it directly if the confirm was opened in a different
-        // browser/profile than where the subscribe happened). This is what
-        // keeps the SubscribeSection hidden across the site after signup.
+        // Set the subscription flag to confirmed. This is the ONLY place
+        // that writes this key — form submit doesn't set it, so the CTA
+        // stays visible until the double-opt-in loop is complete. Works
+        // regardless of which browser/device the confirm link is opened on.
         // See /privacy for what this stores.
         try {
           localStorage.setItem(
