@@ -108,7 +108,11 @@ const isDev = import.meta.env.DEV;
         if (window.posthog) {
           window.posthog.capture('blog_unsubscribe_clicked');
         }
-        window.location.replace('/unsubscribed');
+        // Delay redirect to let PostHog's async flush complete — without
+        // this the navigation cancels the in-flight capture request.
+        setTimeout(function () {
+          window.location.replace('/unsubscribed');
+        }, 300);
       }).catch(function () {
         setStatus('Something went wrong. Please try again in a moment.', 'error');
         btn.disabled = false;

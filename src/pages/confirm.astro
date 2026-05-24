@@ -124,7 +124,11 @@ const isDev = import.meta.env.DEV;
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_confirm_clicked');
         }
-        window.location.replace('/subscription-confirmed');
+        // Delay redirect to let PostHog's async flush complete — without
+        // this the navigation cancels the in-flight capture request.
+        setTimeout(function () {
+          window.location.replace('/subscription-confirmed');
+        }, 300);
       }).catch(function () {
         setStatus('Something went wrong. Please try the link again in a moment.', 'error');
         btn.disabled = false;
