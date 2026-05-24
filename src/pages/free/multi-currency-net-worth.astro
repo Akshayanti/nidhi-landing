@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 // Unpublished posts (future pubDate) are filtered out at build time but kept
 // here so they auto-promote into the visible top three the moment they go
 // live (publishedSlugs is rebuilt every build). Slugs MUST match real entries
-// in src/content/blog/**/*.md or they silently filter out — that was the
+// in src/content/blog/**/*.md or they silently filter out, that was the
 // bug that made this section render blank ("net-worth" and "assets-vs-
 // liabilities" were never real slugs).
 const RELATED_CANDIDATES = [

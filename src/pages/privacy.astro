@@ -35,43 +35,64 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
   if (entries.length === 0) return { first: null, groups: [] };
 
   const now = new Date();
+  const sevenDaysAgo  = new Date(now.getTime() -  7 * 24 * 60 * 60 * 1000);
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-  const thisYear = now.getFullYear();
+  const thisYear  = now.getFullYear();
+  const thisMonth = now.getMonth(); // 0-indexed
 
   const [first, ...rest] = entries;
   const groups: ChangelogGroup[] = [];
 
-  const recent: ChangelogEntry[] = [];
-  const older: ChangelogEntry[] = [];
+  const expanded: ChangelogEntry[]   = [];  // ≤7 days, open
+  const collapsed: ChangelogEntry[] = [];  // 8–30 days, closed
+  const older: ChangelogEntry[]     = [];  // >30 days, grouped
 
   for (const e of rest) {
     const d = new Date(e.iso);
-    if (d >= thirtyDaysAgo) {
-      recent.push(e);
+    if (d >= sevenDaysAgo) {
+      expanded.push(e);
+    } else if (d >= thirtyDaysAgo) {
+      collapsed.push(e);
     } else {
       older.push(e);
     }
   }
 
-  // Recent entries: each gets its own open details.
-  for (const e of recent) {
+  // Tier 1: ≤7 days, each gets its own open details.
+  for (const e of expanded) {
     groups.push({ kind: 'single', entry: e, open: true });
   }
 
-  // Older entries: group by month or year.
+  // Tier 2: 8-30 days, each gets its own collapsed details.
+  for (const e of collapsed) {
+    groups.push({ kind: 'single', entry: e, open: false });
+  }
+
+  // Tier 3: >30 days, grouped by completed month or year.
   if (older.length > 0) {
     const monthGroups = new Map<string, ChangelogEntry[]>();
-    const yearGroups = new Map<string, ChangelogEntry[]>();
+    const yearGroups  = new Map<string, ChangelogEntry[]>();
 
     for (const e of older) {
       const d = new Date(e.iso);
-      if (d.getFullYear() === thisYear) {
+      const entryYear  = d.getFullYear();
+      const entryMonth = d.getMonth();
+
+      // Only group by month when the month is truly finished (we're past it).
+      // A July entry on July 31 is still in the current month, it goes into
+      // a year bucket instead so we don't show a premature "July 2026" group.
+      const monthComplete = entryYear < thisYear ||
+        (entryYear === thisYear && entryMonth < thisMonth);
+
+      if (monthComplete) {
         const key = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
         const bucket = monthGroups.get(key) ?? [];
         bucket.push(e);
         monthGroups.set(key, bucket);
       } else {
-        const key = String(d.getFullYear());
+        // Current-month entries >30d old (edge case, e.g. day-1 entry in a
+        // 31-day month) or prior-year entries: group by year.
+        const key = String(entryYear);
         const bucket = yearGroups.get(key) ?? [];
         bucket.push(e);
         yearGroups.set(key, bucket);
@@ -91,6 +112,17 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 }
 
 const changelog: ChangelogEntry[] = [
+  {
+    date: 'May 24, 2026',
+    iso: '2026-05-24',
+    material: true,
+    summary: 'Dismissible subscribe prompt; subscription key now set only on confirmation.',
+    details: [
+      'New localStorage key nidhi-newsletter-dismissed. Stored only in your browser, never sent to us or any third party. Records your choice when you click "I already subscribed" (permanent) or "Not now" (30-day cooldown) below the subscribe form, so we honor that choice across pages.',
+      'Changed nidhi-newsletter-subscription to be set only when you click the confirmation link in your email (double-opt-in complete). Previously it was also set on form submit, which hid the prompt before you\'d actually confirmed. Does not store your email address.',
+      'Both keys cleared on Undo (for dismiss) or unsubscribe (for subscription), or when you clear your browser site data. No category of personal data on our servers changed.',
+    ],
+  },
   {
     date: 'May 17, 2026',
     iso: '2026-05-17',
@@ -270,7 +302,8 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
         <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
         <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
-        <li>Whether you&rsquo;ve subscribed to the newsletter (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve signed up. Contains your subscription status and, while confirmation is pending, the email address you typed, in your browser only, never sent anywhere else.</li>
+        <li>Whether you&rsquo;ve confirmed your newsletter subscription (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve completed the double-opt-in loop. Set only when you click the confirmation link in your email; never contains your email address.</li>
+        <li>Whether you&rsquo;ve dismissed the newsletter subscribe prompt (<code>nidhi-newsletter-dismissed</code>), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.</li>
       </ul>
 
       <p>
@@ -407,7 +440,7 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         </p>
 
         <ol class="changelog">
-          {/* First entry: always fully visible, no collapse */}
+          {/* First (latest) entry: always fully visible, no collapse */}
           {first && (
             <li class="changelog-entry">
               <div class="changelog-marker" aria-hidden="true"></div>
@@ -428,7 +461,7 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
             </li>
           )}
 
-          {/* Older entries: grouped progressively */}
+          {/* Tiered entries: expanded (≤7d), collapsed (8–30d), grouped (>30d) */}
           {groups.map((group) => (
             group.kind === 'single' ? (
               <li class="changelog-entry">

@@ -32,7 +32,7 @@ const inputId = `subscribe-email-${variant}`;
     <div class="subscribe-box">
       {/* Pre-submit: form. */}
       <div class="subscribe-pre" data-subscribe-state="pre">
-        <h3 class="subscribe-title">Get notified about new posts</h3>
+        <h3 class="subscribe-title">Receive new posts directly in your inbox</h3>
         <p class="subscribe-text">One email when something new goes up. No spam, unsubscribe anytime.</p>
 
         <form
@@ -59,6 +59,11 @@ const inputId = `subscribe-email-${variant}`;
             {' · '}<a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>
           </p>
         </form>
+        <div class="subscribe-dismiss">
+          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">I already subscribed</button>
+          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
+          <button type="button" class="subscribe-dismiss-link" data-action="not-now">Not now</button>
+        </div>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
             ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set — the form is visible
@@ -85,6 +90,12 @@ const inputId = `subscribe-email-${variant}`;
           <button type="button" class="subscribe-success-retry" data-subscribe-retry>try a different address</button>.
         </p>
       </div>
+
+      {/* Dismissed: shown when user clicks "I already subscribed" or "Not now". */}
+      <div class="subscribe-dismissed" data-subscribe-state="dismissed" hidden>
+        <p class="subscribe-dismissed-text" data-dismissed-text></p>
+        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>Undo</button>
+      </div>
     </div>
   )}
 
@@ -92,7 +103,7 @@ const inputId = `subscribe-email-${variant}`;
     <div class="subscribe-compact">
       <div class="subscribe-pre" data-subscribe-state="pre">
         <div class="subscribe-compact-row">
-          <span class="subscribe-compact-label">Get notified about new posts</span>
+          <span class="subscribe-compact-label">Receive new posts directly in your inbox</span>
           <form
             id={formId}
             class="subscribe-form subscribe-form--compact"
@@ -121,6 +132,11 @@ const inputId = `subscribe-email-${variant}`;
             but submissions will no-op.
           </p>
         )}
+        <div class="subscribe-dismiss subscribe-dismiss--compact">
+          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">I already subscribed</button>
+          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
+          <button type="button" class="subscribe-dismiss-link" data-action="not-now">Not now</button>
+        </div>
       </div>
 
       <div class="subscribe-post subscribe-post--compact" data-subscribe-state="post" hidden>
@@ -138,6 +154,12 @@ const inputId = `subscribe-email-${variant}`;
           </p>
         </div>
       </div>
+
+      {/* Dismissed state for compact variant. */}
+      <div class="subscribe-dismissed subscribe-dismissed--compact" data-subscribe-state="dismissed" hidden>
+        <p class="subscribe-dismissed-text" data-dismissed-text></p>
+        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>Undo</button>
+      </div>
     </div>
   )}
 </section>
@@ -146,16 +168,12 @@ const inputId = `subscribe-email-${variant}`;
   (function () {
     // Single localStorage key shared across all SubscribeSection instances
     // and the confirm/unsubscribe pages. See /privacy.
-    //   - { status: 'pending',   email, at }  → submit succeeded, waiting for
-    //                                            the user to click the link
-    //                                            in the confirmation email
-    //   - { status: 'confirmed',        at }  → confirm.astro saw success
-    //   - (absent)                            → not subscribed (or cleared by
-    //                                            unsubscribe, "try a different
-    //                                            email", or user wiping data)
+    //   - { status: 'confirmed', at }  → confirm.astro saw success
+    //   - (absent)                     → not confirmed on this device
     //
-    // Either status hides the subscribe CTA everywhere on the site, so once
-    // you've signed up you stop seeing the pitch on every blog post.
+    // Only written when the user clicks the confirmation link in their email.
+    // Form submit alone does NOT set this — we don't hide the CTA until the
+    // double-opt-in loop is complete.
     var STORAGE_KEY = 'nidhi-newsletter-subscription';
 
     function readState() {
@@ -164,7 +182,7 @@ const inputId = `subscribe-email-${variant}`;
         if (!raw) return null;
         var parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object') return null;
-        if (parsed.status !== 'pending' && parsed.status !== 'confirmed') return null;
+        if (parsed.status !== 'confirmed') return null;
         return parsed;
       } catch (_) {
         return null;
@@ -177,6 +195,45 @@ const inputId = `subscribe-email-${variant}`;
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
     }
 
+    // ---- dismiss state (localStorage) ---------------------------------
+    // Separate from subscription state. Dismiss is user-initiated ("I already
+    // subscribed" or "Not now") and independent of whether they've actually
+    // submitted the form on this device.
+    var DISMISS_KEY = 'nidhi-newsletter-dismissed';
+    var DISMISS_COOLDOWN_DAYS = 30;
+
+    function readDismissState() {
+      try {
+        var raw = localStorage.getItem(DISMISS_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        if (parsed.type === 'permanent') return parsed;
+        if (parsed.type === 'timed' && typeof parsed.until === 'number') {
+          if (Date.now() < parsed.until) return parsed;
+          // Cooldown expired — clean up the stale entry so the form
+          // reappears on next paint.
+          try { localStorage.removeItem(DISMISS_KEY); } catch (_) {}
+          return null;
+        }
+        return null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function writeDismissState(type) {
+      var state = { type: type, at: Date.now() };
+      if (type === 'timed') {
+        state.until = Date.now() + DISMISS_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
+      }
+      try { localStorage.setItem(DISMISS_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+
+    function clearDismissState() {
+      try { localStorage.removeItem(DISMISS_KEY); } catch (_) {}
+    }
+
     var form = document.getElementById(formId);
     var status = document.getElementById(statusId);
     if (!form || !status) return;
@@ -184,8 +241,9 @@ const inputId = `subscribe-email-${variant}`;
     var section = form.closest('[data-variant]');
     var preEl   = section && section.querySelector('[data-subscribe-state="pre"]');
     var postEl  = section && section.querySelector('[data-subscribe-state="post"]');
-    var emailEcho = postEl && postEl.querySelector('[data-subscribe-email]');
-    var retryBtn  = postEl && postEl.querySelector('[data-subscribe-retry]');
+    var emailEcho   = postEl && postEl.querySelector('[data-subscribe-email]');
+    var retryBtn    = postEl && postEl.querySelector('[data-subscribe-retry]');
+    var dismissedEl = section && section.querySelector('[data-subscribe-state="dismissed"]');
 
     var endpoint = form.getAttribute('data-endpoint') || '';
     var button = form.querySelector('button[type="submit"]');
@@ -235,14 +293,34 @@ const inputId = `subscribe-email-${variant}`;
     function applyState() {
       var state = readState();
       if (state) {
-        // Already subscribed (pending or confirmed): don't render the CTA
-        // anywhere. The confirmation email (or the confirm page) is the
-        // next step — nagging them from every blog post isn't.
+        // Confirmed subscriber — hide the CTA everywhere.
         if (section) section.hidden = true;
         return;
       }
+
+      var dismiss = readDismissState();
+      if (dismiss) {
+        // User explicitly dismissed the CTA. Show a minimal confirmation
+        // instead of the form so they know their choice was registered.
+        if (section) section.hidden = false;
+        if (preEl)  preEl.hidden = true;
+        if (postEl) postEl.hidden = true;
+        if (dismissedEl) {
+          dismissedEl.hidden = false;
+          var textEl = dismissedEl.querySelector('[data-dismissed-text]');
+          if (textEl) {
+            textEl.textContent = dismiss.type === 'permanent'
+              ? 'Thanks for subscribing! We won’t show this banner on this device again.'
+              : 'We’ll check back later.';
+          }
+        }
+        return;
+      }
+
+      // No subscription and no dismiss — show the form.
       if (section) section.hidden = false;
       if (postEl) postEl.hidden = true;
+      if (dismissedEl) dismissedEl.hidden = true;
       if (preEl)  preEl.hidden = false;
       setStatus('', 'idle');
       if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
@@ -257,6 +335,7 @@ const inputId = `subscribe-email-${variant}`;
     function showSuccessInSession(email) {
       if (emailEcho) emailEcho.textContent = email;
       if (preEl)  preEl.hidden = true;
+      if (dismissedEl) dismissedEl.hidden = true;
       if (postEl) postEl.hidden = false;
       // Move focus so screen readers announce the new panel.
       if (postEl) {
@@ -274,6 +353,33 @@ const inputId = `subscribe-email-${variant}`;
         applyState();
         if (input) { try { input.focus(); } catch (_) {} }
         if (window.posthog) window.posthog.capture('blog_subscribe_retry_clicked', { variant: variant });
+      });
+    }
+
+    // ---- dismiss link handlers ------------------------------------------
+    var dismissLinks = section ? section.querySelectorAll('[data-action]') : [];
+    for (var di = 0; di < dismissLinks.length; di++) {
+      dismissLinks[di].addEventListener('click', function () {
+        var action = this.getAttribute('data-action');
+        if (action === 'already-subscribed') {
+          writeDismissState('permanent');
+          if (window.posthog) window.posthog.capture('blog_subscribe_dismissed', { action: 'already_subscribed', variant: variant });
+        } else if (action === 'not-now') {
+          writeDismissState('timed');
+          if (window.posthog) window.posthog.capture('blog_subscribe_dismissed', { action: 'not_now', variant: variant });
+        }
+        applyState();
+      });
+    }
+
+    // ---- undo dismiss ---------------------------------------------------
+    var undoBtn = section && section.querySelector('[data-dismiss-undo]');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', function () {
+        clearDismissState();
+        applyState();
+        if (input) { try { input.focus(); } catch (_) {} }
+        if (window.posthog) window.posthog.capture('blog_subscribe_dismiss_undo', { variant: variant });
       });
     }
 
@@ -330,19 +436,17 @@ const inputId = `subscribe-email-${variant}`;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
       }).then(function () {
-        // Persist BEFORE flipping UI: if the user immediately navigates
-        // away (or the page is bfcache'd), the flag is already stored so
-        // the next page load correctly treats them as subscribed.
-        writeState({ status: 'pending', email: email, at: Date.now() });
+        // Clear any prior dismiss — an actual subscribe beats "not now."
+        // We do NOT write subscription state here. The CTA stays visible
+        // until the user clicks the confirmation link in their email
+        // (handled by confirm.astro), which is the only place that sets
+        // status:'confirmed' and hides the CTA across the site.
+        clearDismissState();
         form.reset();
         submitting = false;
         showSuccessInSession(email);
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_sent', { variant: variant });
-          window.posthog.setPersonProperties({
-            is_blog_subscriber_pending: true,
-            subscriber_source: window.location.pathname,
-          });
         }
       }).catch(function () {
         submitting = false;
@@ -364,7 +468,7 @@ const inputId = `subscribe-email-${variant}`;
     // The `storage` event only fires in *other* tabs for the origin that
     // wrote the change, which is exactly the behavior we want.
     window.addEventListener('storage', function (e) {
-      if (e.key === STORAGE_KEY || e.key === null /* storage cleared */) {
+      if (e.key === STORAGE_KEY || e.key === DISMISS_KEY || e.key === null /* storage cleared */) {
         applyState();
       }
     });
@@ -519,7 +623,8 @@ const inputId = `subscribe-email-${variant}`;
      success card rendered at the same time. Make [hidden] authoritative
      for these panels regardless of whatever display mode they use. */
   .subscribe-pre[hidden],
-  .subscribe-post[hidden] {
+  .subscribe-post[hidden],
+  .subscribe-dismissed[hidden] {
     display: none !important;
   }
 
@@ -603,6 +708,98 @@ const inputId = `subscribe-email-${variant}`;
   .subscribe-success-body--compact {
     font-size: 0.85rem;
     margin: 0;
+  }
+
+  /* --- Dismiss links (below the form) ---------------------------------- */
+  .subscribe-dismiss {
+    margin-top: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+  .subscribe-dismiss-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+  }
+  .subscribe-dismiss-link:hover {
+    color: var(--color-text-primary);
+  }
+  .subscribe-dismiss-link:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+  .subscribe-dismiss-sep {
+    margin: 0 var(--space-1);
+  }
+
+  /* Full variant: light text on dark background. */
+  .subscribe--full .subscribe-dismiss {
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .subscribe--full .subscribe-dismiss-link:hover {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Compact variant: left-align to match the row above. */
+  .subscribe-dismiss--compact {
+    text-align: left;
+  }
+
+  /* --- Dismissed state (shown after user dismisses) -------------------- */
+  .subscribe-dismissed {
+    text-align: center;
+    padding: var(--space-4) 0;
+  }
+  .subscribe-dismissed-text {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+  }
+  .subscribe-dismissed-undo {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--color-teal);
+    text-decoration: underline;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .subscribe-dismissed-undo:hover {
+    color: var(--color-teal-dark, #00796b);
+  }
+  .subscribe-dismissed-undo:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  /* Full variant: light text on dark background. */
+  .subscribe--full .subscribe-dismissed-text {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .subscribe--full .subscribe-dismissed-undo {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .subscribe--full .subscribe-dismissed-undo:hover {
+    color: #fff;
+  }
+
+  /* Compact variant: inline row. */
+  .subscribe-dismissed--compact {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: left;
+    padding: var(--space-2) 0;
+  }
+  .subscribe-dismissed--compact .subscribe-dismissed-text {
+    margin: 0;
+    font-size: 0.85rem;
   }
 
   /* --- Dev warning (unconfigured endpoint, dev server only) -------- */
