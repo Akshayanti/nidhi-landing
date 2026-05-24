@@ -44,6 +44,11 @@ on:
       - 'scripts/lint.mjs'
       - 'scripts/lint-figures.mjs'
       - '.github/workflows/pr-checks.yml'
+      # Site-wide base components and public assets that affect every page.
+      - 'src/components/BaseHead.astro'
+      - 'src/layouts/**'
+      - 'public/robots.txt'
+      - 'public/llms.txt'
 
   # Allow manual runs for debugging.
   workflow_dispatch:
