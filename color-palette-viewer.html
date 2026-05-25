@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Palette Viewer — 10 Pairs, 8:1 WCAG AAA</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --text: #212121;
+    --text-secondary: #616161;
+    --border: #E0E0E0;
+    --card-bg: #F8F9FA;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #1E1E1E;
+    --text: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --border: #333333;
+    --card-bg: #2A2A2A;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    transition: background 0.3s, color 0.3s;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.4rem; margin-bottom: 4px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px; }
+
+  .toolbar {
+    display: flex; gap: 12px; align-items: center; margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--card-bg); color: var(--text); cursor: pointer;
+    font-size: 0.85rem; font-weight: 500; transition: all 0.15s;
+  }
+  .btn:hover { box-shadow: var(--shadow); }
+  .btn.active { background: #0D47A1; color: #fff; border-color: #0D47A1; }
+
+  /* ---- Palette grid ---- */
+  .palette-grid {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .pair-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 160px 90px 100px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.15s;
+  }
+  .pair-row:hover { box-shadow: var(--shadow); }
+  .pair-label {
+    font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .swatch-group {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .swatch-label {
+    font-size: 0.65rem; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .swatch-box {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .swatch {
+    width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .swatch-hex {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.8rem; font-weight: 600;
+  }
+  .swatch-ratio {
+    font-size: 0.7rem; color: var(--text-secondary);
+  }
+
+  /* ---- Gradient bar ---- */
+  .gradient-bar {
+    height: 24px; border-radius: 12px; position: relative;
+    border: 1px solid var(--border);
+  }
+
+  /* ---- Color input ---- */
+  .color-input {
+    width: 36px; height: 28px; border: 1px solid var(--border);
+    border-radius: 4px; cursor: pointer; padding: 1px;
+  }
+
+  /* ---- Chart view ---- */
+  .chart-container { margin-top: 24px; }
+  .chart-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+  }
+  .chart-label {
+    width: 100px; font-size: 0.75rem; font-weight: 600; text-align: right;
+    color: var(--text-secondary);
+  }
+  .chart-bar-wrap {
+    flex: 1; display: flex; border-radius: 6px; overflow: hidden; height: 22px;
+  }
+  .chart-bar-light, .chart-bar-dark {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 700; font-family: 'SF Mono', monospace;
+    transition: flex 0.3s;
+  }
+  .chart-divider { width: 2px; background: var(--bg); flex-shrink: 0; }
+
+  /* ---- Comparison strip ---- */
+  .strip-section { margin-top: 24px; }
+  .strip-title {
+    font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .strip-row {
+    display: flex; gap: 4px; margin-bottom: 8px;
+  }
+  .strip-swatch {
+    flex: 1; height: 48px; border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 700; font-family: 'SF Mono', monospace;
+    cursor: pointer; transition: transform 0.15s;
+  }
+  .strip-swatch:hover { transform: scale(1.03); z-index: 1; }
+
+  @media (max-width: 700px) {
+    .pair-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px; padding: 8px;
+    }
+    .pair-row > *:nth-child(3),
+    .pair-row > *:nth-child(5) { display: none; }
+    .chart-label { width: 60px; font-size: 0.65rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Color Palette Viewer</h1>
+<p class="subtitle">10 pairs — same hue across light/dark — all ≥ 8:1 WCAG AAA — <span id="pairCount">10</span> pairs</p>
+
+<div class="toolbar">
+  <button class="btn active" id="btnLight" onclick="setTheme('light')">☀ Light Mode</button>
+  <button class="btn" id="btnDark" onclick="setTheme('dark')">☾ Dark Mode</button>
+  <button class="btn" id="btnReset" onclick="resetColors()">↺ Reset defaults</button>
+  <button class="btn" id="btnChart" onclick="toggleView()">📊 Toggle Chart</button>
+</div>
+
+<div id="paletteGrid" class="palette-grid"></div>
+
+<div id="chartView" class="chart-container" style="display:none;">
+  <div class="strip-section">
+    <div class="strip-title">Light Mode — All 10 Colors</div>
+    <div class="strip-row" id="lightStrip"></div>
+  </div>
+  <div class="strip-section">
+    <div class="strip-title">Dark Mode — All 10 Colors</div>
+    <div class="strip-row" id="darkStrip"></div>
+  </div>
+  <div class="strip-section">
+    <div class="strip-title">Gradient from Light → Dark (same hue pairs)</div>
+    <div id="gradientPairs"></div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_PAIRS = [
+  { name: 'red',           light: '#991100', dark: '#FF9E80' },
+  { name: 'deep-orange',   light: '#8B2E00', dark: '#FFAB91' },
+  { name: 'amber',         light: '#6B4800', dark: '#FFCA28' },
+  { name: 'olive',         light: '#4A4A00', dark: '#E6EE5C' },
+  { name: 'green',         light: '#004D1A', dark: '#81C784' },
+  { name: 'teal',          light: '#005B4F', dark: '#80CBC4' },
+  { name: 'cyan',          light: '#005566', dark: '#80DEEA' },
+  { name: 'blue',          light: '#0A3D8F', dark: '#90CAF9' },
+  { name: 'indigo',        light: '#1A237E', dark: '#D1C4E9' },
+  { name: 'purple',        light: '#311B92', dark: '#E1BEE7' },
+];
+
+let pairs = JSON.parse(JSON.stringify(DEFAULT_PAIRS));
+let chartVisible = false;
+
+// WCAG contrast
+function srgbToLinear(c) {
+  const [r,g,b] = [0,1,2].map(i => parseInt(c.slice(1+i*2,3+i*2),16)/255);
+  const [R,G,B] = [r,g,b].map(c => c <= 0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4));
+  return 0.2126*R + 0.7152*G + 0.0722*B;
+}
+function contrast(a, b) {
+  const [l1,l2] = [srgbToLinear(a), srgbToLinear(b)];
+  return ((Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05));
+}
+function textColor(bg) {
+  return srgbToLinear(bg) > 0.18 ? '#212121' : '#FFFFFF';
+}
+
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btnLight').classList.toggle('active', t === 'light');
+  document.getElementById('btnDark').classList.toggle('active', t === 'dark');
+}
+
+function updateColor(idx, mode, value) {
+  pairs[idx][mode] = value;
+  render();
+}
+
+function resetColors() {
+  pairs = JSON.parse(JSON.stringify(DEFAULT_PAIRS));
+  render();
+}
+
+function toggleView() {
+  chartVisible = !chartVisible;
+  document.getElementById('chartView').style.display = chartVisible ? 'block' : 'none';
+  document.getElementById('btnChart').classList.toggle('active', chartVisible);
+  renderChart();
+}
+
+function renderChart() {
+  if (!chartVisible) return;
+
+  const lightStrip = document.getElementById('lightStrip');
+  const darkStrip = document.getElementById('darkStrip');
+  const gradientPairs = document.getElementById('gradientPairs');
+
+  lightStrip.innerHTML = pairs.map(p => {
+    const ratio = contrast(p.light, '#FFFFFF').toFixed(1);
+    return '<div class="strip-swatch" style="background:' + p.light + ';color:' + textColor(p.light) + '" title="' + p.name + ' ' + p.light + ' (' + ratio + ':1)">' + p.name + '<br>' + ratio + ':1</div>';
+  }).join('');
+
+  darkStrip.innerHTML = pairs.map(p => {
+    const ratio = contrast(p.dark, '#1E1E1E').toFixed(1);
+    return '<div class="strip-swatch" style="background:' + p.dark + ';color:' + textColor(p.dark) + '" title="' + p.name + ' ' + p.dark + ' (' + ratio + ':1)">' + p.name + '<br>' + ratio + ':1</div>';
+  }).join('');
+
+  gradientPairs.innerHTML = pairs.map(p =>
+    '<div class="chart-row">' +
+      '<span class="chart-label">' + p.name + '</span>' +
+      '<div class="chart-bar-wrap">' +
+        '<div class="chart-bar-light" style="background:' + p.light + ';color:' + textColor(p.light) + '">' + p.light + '</div>' +
+        '<div class="chart-divider"></div>' +
+        '<div class="chart-bar-dark" style="background:' + p.dark + ';color:' + textColor(p.dark) + '">' + p.dark + '</div>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
+
+function render() {
+  const grid = document.getElementById('paletteGrid');
+  grid.innerHTML = pairs.map((p, i) => {
+    const lc = contrast(p.light, '#FFFFFF').toFixed(1);
+    const dc = contrast(p.dark, '#1E1E1E').toFixed(1);
+    const lOk = lc >= 8;
+    const dOk = dc >= 8;
+
+    return '<div class="pair-row">' +
+      // Label
+      '<div><span class="pair-label">' + (i+1) + '. ' + p.name + '</span></div>' +
+
+      // Light swatch
+      '<div class="swatch-group">' +
+        '<span class="swatch-label">Light mode</span>' +
+        '<div class="swatch-box">' +
+          '<div class="swatch" style="background:' + p.light + '"></div>' +
+          '<div>' +
+            '<div class="swatch-hex">' + p.light + '</div>' +
+            '<div class="swatch-ratio" style="color:' + (lOk ? '#2E7D32' : '#C62828') + '">' + lc + ':1 ' + (lOk ? '✓' : '✗') + '</div>' +
+          '</div>' +
+          '<input type="color" class="color-input" value="' + p.light + '" onchange="updateColor(' + i + ',\'light\',this.value)">' +
+        '</div>' +
+      '</div>' +
+
+      // Gradient bar
+      '<div class="gradient-bar" style="background:linear-gradient(to right,' + p.light + ',' + p.dark + ')"></div>' +
+
+      // Dark swatch
+      '<div class="swatch-group">' +
+        '<span class="swatch-label">Dark mode</span>' +
+        '<div class="swatch-box">' +
+          '<div class="swatch" style="background:' + p.dark + '"></div>' +
+          '<div>' +
+            '<div class="swatch-hex">' + p.dark + '</div>' +
+            '<div class="swatch-ratio" style="color:' + (dOk ? '#2E7D32' : '#C62828') + '">' + dc + ':1 ' + (dOk ? '✓' : '✗') + '</div>' +
+          '</div>' +
+          '<input type="color" class="color-input" value="' + p.dark + '" onchange="updateColor(' + i + ',\'dark\',this.value)">' +
+        '</div>' +
+      '</div>' +
+
+      // Delete button
+      '<button class="btn" onclick="deletePair(' + i + ')" style="padding:4px 8px;font-size:0.7rem;" title="Remove pair">✕</button>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('pairCount').textContent = pairs.length;
+  if (chartVisible) renderChart();
+}
+
+function deletePair(idx) {
+  if (pairs.length <= 2) return;
+  pairs.splice(idx, 1);
+  render();
+}
+
+// Add pair
+function addPair() {
+  pairs.push({ name: 'custom-' + (pairs.length+1), light: '#444444', dark: '#CCCCCC' });
+  render();
+}
+
+render();
+</script>
+
+<p style="margin-top:16px;">
+  <button class="btn" onclick="addPair()">+ Add Pair</button>
+  <span style="font-size:0.75rem;color:var(--text-secondary);margin-left:12px;">Click color pickers to mutate. Toggle chart view to see all colors side-by-side.</span>
+</p>
+
+</body>
+</html>
