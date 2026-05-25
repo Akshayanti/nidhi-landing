@@ -38,6 +38,15 @@ Configured in `BaseHead.astro:102-108`.
 
 Also calls `window.posthog.identify(sha256(email))` on submit to alias the anonymous `distinct_id` to the subscriber's hashed email, stitching client + server events into a single user timeline.
 
+### Product waitlist — `src/components/WaitlistSection.astro`
+
+| Event | Properties | Trigger |
+|---|---|---|
+| `waitlist_submit` | `email_domain: string` — domain part of email<br>`source: string` — `window.location.pathname` | User submits the waitlist form |
+| `waitlist_sent` | — | Server responds OK (signup recorded) |
+
+No `posthog.identify()` call — the waitlist is a single-step funnel with no follow-up events to stitch, so the `distinct_id` remains anonymous.
+
 ### Subscription confirmation — `src/pages/confirm.astro`
 
 | Event | Properties | Trigger |
@@ -108,6 +117,8 @@ Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_`, lin
 | `blog_subscribe_duplicate` | hashed email | `source: string` | Already-confirmed email tries to re-subscribe |
 | `blog_welcome_failed` | hashed email | `email_domain: string`<br>`error: string` — first 300 chars | Welcome email send fails |
 | `blog_unsubscribe` | hashed email | `method: string` — unsubscribe trigger | User unsubscribes (email link or manual) |
+| `blog_pending_reminded` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 3 days gets a reminder email |
+| `blog_pending_expired` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 7 days is removed from the sheet |
 | `blog_subscriber_bounced` | hashed email | `email_domain: string`<br>`via: "mailer_daemon_scan"` | Mailer-daemon bounce scanner marks a subscriber as bounced |
 
 ### Newsletter send operations
@@ -122,22 +133,41 @@ These use `cfg.fromEmail` as the `distinct_id` (operational events, not tied to 
 
 ---
 
-## Funnel: Blog subscription
+## Funnels
+
+### Blog subscription (with pending reminder)
 
 This funnel stitches across client and server via a shared `distinct_id`:
 
 ```
-blog_subscribe_submit        (client — SubscribeSection.astro)
+blog_subscribe_submit          (client — SubscribeSection.astro)
     │
     ▼
-blog_subscribe_pending       (server — newsletter.gs)
+blog_subscribe_pending         (server — newsletter.gs)
     │
-    ▼
-blog_subscribe_confirm_clicked (client — confirm.astro)
+    ├── 3+ days, no confirm ── blog_pending_reminded  (server — newsletter.gs)
+    │         │
+    │         ▼
+    │   blog_subscribe_confirm_clicked?  (client — confirm.astro)
+    │         │
+    │         ▼
+    │   blog_subscribe_confirmed   (server — newsletter.gs)
     │
-    ▼
-blog_subscribe_confirmed     (server — newsletter.gs)
+    └── 7+ days, no confirm ── blog_pending_expired   (server — newsletter.gs)
 ```
+
+Pending subscribers get one reminder email after 3 days (between 9 AM–12 PM Prague time). If they haven't confirmed after 7 days, the row is deleted. Both events carry `days_since_signup`.
+
+### Product waitlist
+
+```
+waitlist_submit   (client — WaitlistSection.astro)
+    │
+    ▼
+waitlist_sent     (client — WaitlistSection.astro)
+```
+
+Single-step funnel. No `posthog.identify()` — the waitlist has no follow-up events, so the `distinct_id` remains anonymous.
 
 The key to the stitch: both the browser (`SubscribeSection.astro:413`) and the server (`newsletter.gs:1481`) compute `SHA-256(lowercase(trim(email)))` the same way. The browser calls `posthog.identify(hash)` to alias its anonymous `distinct_id`, and the server sends server-side events under that same hash as `distinct_id`.
 
