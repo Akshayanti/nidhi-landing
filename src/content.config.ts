@@ -12,7 +12,7 @@ const blog = defineCollection({
     order: z.number().default(99),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    level: z.enum(['discovery', 'building', 'optimizing', 'mastery']),
+    level: z.enum(['discovery', 'building', 'psychology', 'optimizing', 'mastery']),
     primaryPersona: z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas']),
     personas: z.array(z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas'])),
     tags: z.array(z.string()),
@@ -55,6 +55,13 @@ const blog = defineCollection({
      * promises the reader cannot find on the page.
      */
     reelPromise: z.string().optional(),
+    /**
+     * Ordered list of post slugs to feature as "Keep reading" suggestions.
+     * Slugs that aren't published yet are silently skipped — they auto-promote
+     * once their pubDate passes. If fewer than 3 published candidates match,
+     * the remaining slots are filled by tag-based matching against all posts.
+     */
+    relatedSlugs: z.array(z.string()).optional(),
   }),
 });
 

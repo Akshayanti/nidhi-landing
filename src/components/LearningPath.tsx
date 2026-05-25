@@ -5,7 +5,7 @@ interface PostData {
   title: string;
   description: string;
   pubDate: string;
-  level: 'discovery' | 'building' | 'optimizing' | 'mastery';
+  level: 'discovery' | 'building' | 'psychology' | 'optimizing' | 'mastery';
   readingTime: number;
   tags: string[];
 }
@@ -36,6 +36,13 @@ const LEVELS: Record<string, LevelMeta> = {
     prerequisite: 'For those comfortable with the basics',
     color: 'var(--level-building)',
   },
+  psychology: {
+    label: 'Psychology',
+    description: 'How your mind helps and hurts your money. Behavioural biases, mental models, and building better money habits.',
+    covered: 'Loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, herd behaviour, narrative economics, money scripts, anti-bias systems',
+    prerequisite: 'For those ready to understand behavioural patterns',
+    color: 'var(--level-psychology)',
+  },
   optimizing: {
     label: 'Optimizing',
     description: 'Fine-tuning what works. Tax efficiency, portfolio rebalancing, and advanced strategies.',
@@ -52,7 +59,7 @@ const LEVELS: Record<string, LevelMeta> = {
   },
 };
 
-const LEVEL_ORDER = ['discovery', 'building', 'optimizing', 'mastery'] as const;
+const LEVEL_ORDER = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'] as const;
 const STORAGE_KEY = 'nidhi-reading-progress';
 
 function CheckIcon() {
@@ -95,6 +102,7 @@ interface PostNodeProps {
 function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggleRead, onTagClick }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
+  const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
   const cardClasses = [
     'lp-nodeCard',
     isRead ? 'lp-nodeCardRead' : '',
@@ -114,7 +122,12 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
       </div>
       <div className="lp-nodeConnector" aria-hidden="true" />
       <div className={cardClasses} style={!isRead && !isStartHere ? { borderLeftColor: levelColor } : undefined}>
-        {isStartHere && <span className="lp-startHereLabel">Start here</span>}
+        {(isStartHere || isNew) && (
+          <div className="lp-cardBadges">
+            {isStartHere && <span className="lp-startHereLabel">Start here</span>}
+            {isNew && <span className="lp-newLabel">New</span>}
+          </div>
+        )}
         <div className="lp-cardTop">
           <div className="lp-cardMeta">
             <span className="lp-cardReadingTime">{post.readingTime} min read</span>

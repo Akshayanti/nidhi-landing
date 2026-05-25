@@ -1,6 +1,6 @@
 ---
 interface Props {
-  level: 'discovery' | 'building' | 'optimizing' | 'mastery';
+  level: 'discovery' | 'building' | 'psychology' | 'optimizing' | 'mastery';
 }
 
 const { level } = Astro.props;
@@ -8,6 +8,7 @@ const { level } = Astro.props;
 const levels: Record<string, { label: string; icon: string }> = {
   discovery: { label: 'Discovery', icon: '&#x1F4A1;' },
   building: { label: 'Building', icon: '&#x1F3D7;' },
+  psychology: { label: 'Psychology', icon: '&#x1F9E0;' },
   optimizing: { label: 'Optimizing', icon: '&#x2699;' },
   mastery: { label: 'Mastery', icon: '&#x1F3C6;' },
 };
@@ -26,6 +27,7 @@ const { label, icon } = levels[level];
      global.css). This keeps the badge readable in both modes. */
   .level-badge--discovery { --badge-color: var(--level-discovery); }
   .level-badge--building { --badge-color: var(--level-building); }
+  .level-badge--psychology { --badge-color: var(--level-psychology); }
   .level-badge--optimizing { --badge-color: var(--level-optimizing); }
   .level-badge--mastery { --badge-color: var(--level-mastery); }
 
