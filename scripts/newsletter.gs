@@ -28,9 +28,9 @@
  *        POSTHOG_API_KEY (optional) for server-side event tracking
  *        POSTHOG_HOST    (optional) https://eu.i.posthog.com
  *
- *   3. Create the Sheet with these EXACT headers in row 1 (8 columns):
+ *   3. Create the Sheet with these EXACT headers in row 1 (9 columns):
  *        email | status | source | created_at | confirmed_at |
- *        unsubscribed_at | confirm_token | unsub_token
+ *        unsubscribed_at | confirm_token | unsub_token | reminder_sent_at
  *      Statuses: pending | confirmed | unsubscribed
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
@@ -69,6 +69,16 @@
  *                                   raw send with List-Unsubscribe headers.
  *                                   Chunks by elapsed time to stay under
  *                                   the 6-minute execution cap.
+ *
+ *   GET  ?action=remind_pending     Sends exactly one reminder email to each
+ *         or POST                    pending subscriber whose row is older
+ *                                   than 3 days and hasn't received a reminder
+ *                                   yet. Only operates between 9 AM and 12 PM
+ *                                   Prague time (CET/CEST). Idempotent — safe
+ *                                   to call repeatedly (e.g. every 30 min via
+ *                                   cron). Tracks sent reminders in the
+ *                                   `reminder_sent_at` column so each pending
+ *                                   subscriber gets at most one reminder.
  *
  *   GET  ?action=health             Per-dependency ok/error JSON report.
  *                                   Safe to call; never modifies anything.
@@ -205,11 +215,12 @@ var COL = {
   unsubscribedAt:  6,
   confirmToken:    7,
   unsubToken:      8,
+  reminderSentAt:  9,
 };
 
 var EXPECTED_HEADERS = [
   'email', 'status', 'source', 'created_at', 'confirmed_at',
-  'unsubscribed_at', 'confirm_token', 'unsub_token',
+  'unsubscribed_at', 'confirm_token', 'unsub_token', 'reminder_sent_at',
 ];
 
 /**
@@ -270,7 +281,7 @@ function listConfirmedSubscribers_() {
   var sh = sheet_();
   var last = sh.getLastRow();
   if (last < 2) return [];
-  var rows = sh.getRange(2, 1, last - 1, 8).getValues();
+  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
   var out = [];
   for (var i = 0; i < rows.length; i++) {
     if (String(rows[i][1]).toLowerCase() === 'confirmed') {
@@ -367,10 +378,11 @@ function sendRaw_(mimeMessage) {
 function doGet(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) || '';
-    if (action === 'confirm')      return handleConfirm_(e);
-    if (action === 'unsubscribe')  return handleUnsubscribe_(e, 'GET');
-    if (action === 'health')       return handleHealth_();
-    if (action === 'scan_bounces') return handleScanBounces_(e);
+    if (action === 'confirm')         return handleConfirm_(e);
+    if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
+    if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'health')          return handleHealth_();
+    if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
       'Nothing here',
       'This endpoint powers newsletter signups on nidhi.today.',
@@ -390,11 +402,12 @@ function doGet(e) {
 function doPost(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) || '';
-    if (action === 'subscribe')    return handleSubscribe_(e);
-    if (action === 'confirm')      return handleConfirm_(e);   // JS-initiated confirm
-    if (action === 'unsubscribe')  return handleUnsubscribe_(e, 'POST');
-    if (action === 'send_post')    return handleSendPost_(e);
-    if (action === 'scan_bounces') return handleScanBounces_(e);
+    if (action === 'subscribe')       return handleSubscribe_(e);
+    if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
+    if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
+    if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'send_post')       return handleSendPost_(e);
+    if (action === 'scan_bounces')    return handleScanBounces_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
@@ -474,13 +487,13 @@ function handleHealth_() {
   check('sheet_access', function () {
     var cfg = config_();
     var sh = sheet_();
-    var headers = sh.getRange(1, 1, 1, 8).getValues()[0];
+    var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
     var mismatched = EXPECTED_HEADERS.filter(function (h, i) {
       return String(headers[i] || '').toLowerCase() !== h;
     });
     if (mismatched.length) {
       throw new Error(
-        'Sheet header row mismatch. Expected 8 columns: ' +
+        'Sheet header row mismatch. Expected ' + EXPECTED_HEADERS.length + ' columns: ' +
         EXPECTED_HEADERS.join(' | ') +
         '. Got: ' + headers.join(' | ') +
         '. Missing/wrong: ' + mismatched.join(', ')
@@ -611,14 +624,162 @@ function handleSubscribe_(e) {
       return jsonResponse_({ ok: true });
     }
     // pending or unsubscribed: reset to pending with fresh tokens.
-    sh.getRange(row, COL.status, 1, 8 - COL.email).setValues([[
-      'pending', source, now, '', '', confirmToken, unsubToken,
+    // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
+    sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
+      'pending', source, now, '', '', confirmToken, unsubToken, '',
     ]]);
   }
 
   sendConfirmationEmail_(email, confirmToken);
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
+}
+
+// ============================================================================
+// Pending-subscriber reminder
+// ============================================================================
+//
+// Called via cron (e.g. GitHub Actions scheduled workflow hitting
+// ?action=remind_pending every 30 min). Only operates between 9 AM and
+// 12 PM Prague time. Sends exactly one reminder to each pending subscriber
+// whose row is > 3 days old and hasn't received a reminder yet.
+//
+// Idempotent: the reminder_sent_at column ensures each pending subscriber
+// gets at most one reminder. Repeated calls are harmless no-ops.
+
+function handleRemindPending_() {
+  // Only run between 9:00 and 11:59 Prague time (CET/CEST).
+  var pragueHour = parseInt(Utilities.formatDate(new Date(), 'Europe/Prague', 'H'), 10);
+  if (pragueHour < 9 || pragueHour >= 12) {
+    return jsonResponse_({ ok: true, skipped: 'outside_window', prague_hour: pragueHour });
+  }
+
+  var cfg = config_();
+  var sh = sheet_();
+  var last = sh.getLastRow();
+  if (last < 2) return jsonResponse_({ ok: true, processed: 0 });
+
+  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+  var now = new Date();
+  var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+  var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+  var sent = 0;
+  var deleted = 0;
+  var rowsToDelete = [];
+
+  for (var r = 0; r < rows.length; r++) {
+    var row = rows[r];
+
+    // Must be pending.
+    if (String(row[COL.status - 1] || '').toLowerCase() !== 'pending') continue;
+
+    var createdAt = row[COL.createdAt - 1];
+    var ageMs = createdAt ? now.getTime() - new Date(createdAt).getTime() : 0;
+
+    // Older than 7 days: remove entirely.
+    if (createdAt && ageMs >= sevenDaysMs) {
+      rowsToDelete.push(r);
+      var email = String(row[COL.email - 1] || '').trim();
+      try {
+        trackPosthog_('blog_pending_expired', distinctIdForEmail_(email), {
+          days_since_signup: Math.round(ageMs / (24 * 60 * 60 * 1000)),
+        });
+      } catch (_) {}
+      continue;
+    }
+
+    // Must be older than 3 days to qualify for a reminder.
+    if (!createdAt || ageMs < threeDaysMs) continue;
+
+    // Must not have already received a reminder.
+    if (row[COL.reminderSentAt - 1]) continue;
+
+    var email = String(row[COL.email - 1] || '').trim();
+    var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
+    if (!email || !confirmToken) continue;
+
+    try {
+      sendReminderEmail_(email, confirmToken);
+      sh.getRange(r + 2, COL.reminderSentAt).setValue(now);
+      trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
+        days_since_signup: Math.round(ageMs / (24 * 60 * 60 * 1000)),
+      });
+      sent++;
+    } catch (err) {
+      console.warn('handleRemindPending_: failed for ' + email + ': ' + err);
+    }
+  }
+
+  // Delete rows in reverse order so indices don't shift.
+  for (var d = rowsToDelete.length - 1; d >= 0; d--) {
+    sh.deleteRow(rowsToDelete[d] + 2); // +2: 0-indexed data rows → 1-indexed + header row
+    deleted++;
+  }
+
+  return jsonResponse_({ ok: true, reminded: sent, deleted: deleted, prague_hour: pragueHour });
+}
+
+/**
+ * Single reminder email. Similar to the original confirmation email but with
+ * "you started subscribing, finish here" messaging. Carries the existing
+ * confirm token so the link still works.
+ */
+function sendReminderEmail_(email, confirmToken) {
+  var cfg = config_();
+  var campaign = 'remind';
+
+  var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
+  var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
+
+  var subject = 'Finish subscribing to ' + cfg.fromName + '?';
+
+  var text =
+    cfg.fromName + ' — reminder\r\n\r\n' +
+    'Hi,\r\n\r\n' +
+    'You started subscribing to the ' + cfg.fromName + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
+    'If you still want in, click below:\r\n\r\n' +
+    confirmPageUrl + '\r\n\r\n' +
+    'Changed your mind? No worries — ignore this email and we won’t email you again.\r\n\r\n' +
+    '— ' + cfg.fromName + '\r\n' +
+    withUtm_(cfg.siteUrl, campaign) + '\r\n';
+
+  var html =
+    '<!doctype html><html lang="en"><head>' +
+    '<meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>' + escapeHtml_(subject) + '</title>' +
+    '</head>' +
+    '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
+        '<tr><td align="center" style="padding:24px 12px;">' +
+          '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+            brandBannerHtml_(cfg, campaign) +
+            '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+              '<p style="margin:0 0 16px;">Hi,</p>' +
+              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
+              '<p style="margin:0 0 12px;color:#666;font-size:14px;">Or copy and paste this link:</p>' +
+              '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries — ignore this email and we won’t email you again.</p>' +
+            '</td></tr>' +
+            footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
+          '</table>' +
+        '</td></tr>' +
+      '</table>' +
+    '</body></html>';
+
+  var mime = buildMimeMessage_({
+    from: cfg.fromEmail,
+    fromName: cfg.fromName,
+    to: email,
+    subject: subject,
+    html: html,
+    text: text,
+    listUnsubPostUrl: null,
+    listId: 'nidhi blog newsletter <newsletter.' + host_(cfg.siteUrl) + '>',
+    messageId: 'remind-' + confirmToken.slice(0, 16) + '@' + host_(cfg.siteUrl),
+  });
+  sendRaw_(mime);
 }
 
 // ============================================================================
@@ -1005,7 +1166,7 @@ function handleScanBounces_(e) {
 
   var marked = 0;
   var markedAddrs = [];
-  var rows = sh.getRange(2, 1, last - 1, 8).getValues();
+  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
   for (var r = 0; r < rows.length; r++) {
     var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
     var rowStatus = String(rows[r][1] || '').toLowerCase();
@@ -1332,7 +1493,7 @@ function debugHmacSecret() {
  */
 function migrateAddTokens() {
   var sh = sheet_();
-  var maxCol = Math.max(8, sh.getLastColumn());
+  var maxCol = Math.max(EXPECTED_HEADERS.length, sh.getLastColumn());
 
   // Fix the header row if needed.
   var headers = sh.getRange(1, 1, 1, maxCol).getValues()[0];
@@ -1351,7 +1512,7 @@ function migrateAddTokens() {
     return;
   }
 
-  var rows = sh.getRange(2, 1, last - 1, 8).getValues();
+  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
   var filled = 0;
   for (var r = 0; r < rows.length; r++) {
     var confirmTok = String(rows[r][COL.confirmToken - 1] || '').trim();
