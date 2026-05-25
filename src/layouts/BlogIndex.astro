@@ -70,6 +70,7 @@ const blogItemListSchema = {
       <header class="blog-index-header">
         <h1>Learn about your money</h1>
         <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
+        <p class="blog-index-cadence">New posts every Mon, Wed &amp; Fri</p>
       </header>
       <SubscribeSection variant="compact" />
       <LearningPath client:load posts={serializedPosts} />
@@ -99,5 +100,17 @@ const blogItemListSchema = {
     margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.6;
+  }
+
+  .blog-index-cadence {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: 4px 12px;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-teal);
+    background: rgba(0, 121, 107, 0.08);
+    border-radius: 9999px;
   }
 </style>

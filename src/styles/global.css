@@ -105,10 +105,11 @@
   /* Level identity colors (used for badges, level labels, dots, etc.).
      Light-mode values pair with white text or sit as text on light tints
      and meet WCAG AA on white (>= 4.5:1). */
-  --level-discovery: #00695C;
-  --level-building: #0D47A1;
-  --level-optimizing: #BF360C;
-  --level-mastery: #4A148C;
+  --level-discovery: #005B4F;
+  --level-building: #0A3D8F;
+  --level-psychology: #6B4800;
+  --level-optimizing: #991100;
+  --level-mastery: #311B92;
 
   /* Solid CTA background that always pairs with white foreground. */
   --color-cta-bg: #00796B;
@@ -160,10 +161,11 @@
 
   /* Level identity colors flipped to lighter shades so they remain legible
      as foreground text against the dark surfaces. */
-  --level-discovery: #80CBC4;
+  --level-discovery: #80DEEA;
   --level-building: #90CAF9;
-  --level-optimizing: #FFAB91;
-  --level-mastery: #CE93D8;
+  --level-psychology: #FFCA28;
+  --level-optimizing: #FF9E80;
+  --level-mastery: #E1BEE7;
 
   /* CTA bg stays a saturated dark teal so white text keeps WCAG AA. */
   --color-cta-bg: #00695C;
@@ -898,10 +900,15 @@ strong {
   box-shadow: 0 0 0 2px var(--color-deep-blue), var(--shadow-md);
 }
 
-.lp-startHereLabel {
+.lp-cardBadges {
   position: absolute;
   top: -10px;
   left: var(--space-3);
+  display: flex;
+  gap: 6px;
+}
+
+.lp-startHereLabel {
   font-family: var(--font-heading);
   font-size: 0.65rem;
   font-weight: 700;
@@ -909,6 +916,18 @@ strong {
   letter-spacing: 0.1em;
   color: var(--color-callout-fg);
   background: var(--color-callout-bg);
+  padding: 1px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.lp-newLabel {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-callout-fg);
+  background: var(--color-cta-bg);
   padding: 1px 8px;
   border-radius: var(--radius-sm);
 }

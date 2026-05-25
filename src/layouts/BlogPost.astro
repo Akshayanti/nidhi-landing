@@ -128,6 +128,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   nextUrl={nextSlug ? `/blog/${nextSlug}/` : null}
   jsonLd={allSchemas}
 >
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
   <article class="blog-post">
     <div class="container">
       <header class="post-header">
@@ -596,7 +597,39 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     .post-nav-next { text-align: left; }
   }
 
-  /* Note: figure styling (.prose figure, .fig-* classes) lives in
-     src/styles/global.css — Astro's scoped CSS does not cascade into
-     markdown slot content, so figure rules must be global. */
+  /* Reading progress bar */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--color-teal);
+    z-index: 10001;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
 </style>
+
+<script is:inline>
+  (function() {
+    var bar = document.getElementById('reading-progress');
+    if (!bar) return;
+    var article = document.querySelector('.blog-post');
+    if (!article) return;
+    var ticking = false;
+    function update() {
+      var top = article.getBoundingClientRect().top;
+      var height = article.offsetHeight;
+      var viewH = window.innerHeight;
+      var scrolled = Math.max(0, -top);
+      var total = height - viewH;
+      if (total <= 0) { bar.style.width = '100%'; return; }
+      var pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
+</script>
