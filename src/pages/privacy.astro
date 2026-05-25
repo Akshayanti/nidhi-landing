@@ -113,6 +113,27 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'May 25, 2026',
+    iso: '2026-05-25',
+    material: true,
+    summary: 'Added product-launch waitlist signup on the landing page.',
+    details: [
+      'New waitlist form on the homepage for people who want one email when nidhi launches. Single opt-in (no confirmation email). Separate from the blog newsletter: different Apps Script backend, different sheet tab, different purpose.',
+      'New localStorage key nidhi-waitlist-signedup. Stored only in your browser. Set when you submit the waitlist form, so we hide the form on future visits. Contains only a status flag and timestamp, never your email address. Cleared when you clear your browser site data.',
+      'Waitlist subscribers stored in a dedicated "beta waitlist" tab in the same Google Sheet as the newsletter. Collects: email, source page, signup timestamp. No confirmation tokens, no unsubscribe tokens (single opt-in).',
+    ],
+  },
+  {
+    date: 'May 25, 2026',
+    iso: '2026-05-25',
+    material: true,
+    summary: 'Added a single pending-subscriber reminder for the blog newsletter.',
+    details: [
+      'If you submit the newsletter form but do not click the confirmation link within 3 days, we send exactly one reminder email asking you to finish subscribing. Sent between 9 AM and 12 PM Prague time (CET/CEST). After that, no further reminders.',
+      'No new data collected. No change to processors, storage, or retention. The pending status was already tracked; this only adds a time-bound, single-use email triggered by that status.',
+    ],
+  },
+  {
     date: 'May 24, 2026',
     iso: '2026-05-24',
     material: true,
@@ -296,6 +317,16 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
       </ul>
 
       <p>
+        <strong>If you join the product-launch waitlist:</strong>
+      </p>
+      <ul>
+        <li>Your email address.</li>
+        <li>The page you signed up from.</li>
+        <li>Timestamp for when you signed up.</li>
+        <li>No confirmation step, no status tracking. Single opt-in.</li>
+      </ul>
+
+      <p>
         <strong>Stored only in your browser, never sent to us:</strong>
       </p>
       <ul>
@@ -304,6 +335,7 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
         <li>Whether you&rsquo;ve confirmed your newsletter subscription (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve completed the double-opt-in loop. Set only when you click the confirmation link in your email; never contains your email address.</li>
         <li>Whether you&rsquo;ve dismissed the newsletter subscribe prompt (<code>nidhi-newsletter-dismissed</code>), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.</li>
+        <li>Whether you&rsquo;ve signed up for the product-launch waitlist (<code>nidhi-waitlist-signedup</code>), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.</li>
       </ul>
 
       <p>
@@ -317,8 +349,14 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
           lose them halfway through. We can&rsquo;t fix what we can&rsquo;t see.
         </li>
         <li>
-          <strong>Newsletter:</strong> to email you when a new blog post is published. Nothing else.
-          No promos, no &ldquo;we miss you&rdquo; sequences, no cross-promoting other products.
+          <strong>Newsletter:</strong> to email you when a new blog post is published, plus one
+          reminder if you start subscribing but do not confirm within 3 days (sent between
+          9 AM and 12 PM Prague time). No other emails. No promos, no
+          &ldquo;we miss you&rdquo; sequences, no cross-promoting other products.
+        </li>
+        <li>
+          <strong>Waitlist:</strong> to send you exactly one email when the nidhi product launches.
+          Nothing else. Not a newsletter, not a drip sequence, not cross-promotion.
         </li>
         <li>
           <strong>Local preferences:</strong> to make the site feel consistent for you without a
@@ -338,7 +376,7 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         <li>
           <strong>Google Workspace</strong> (Google Cloud EU regions): our email address
           (<code>hello@nidhi.today</code>) and the Google Sheet that stores newsletter
-          subscribers. Only we can read it.
+          subscribers and waitlist signups (in separate tabs). Only we can read it.
         </li>
         <li>
           <strong>GitHub Pages</strong> (a GitHub / Microsoft service): hosts the static
@@ -367,7 +405,7 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
           We don&rsquo;t read replies to newsletter emails and feed them back into any analytics
           or ads system.
         </li>
-        <li>We don&rsquo;t import the newsletter list into any other tool or mailing system.</li>
+        <li>We don&rsquo;t import the newsletter or waitlist lists into any other tool or mailing system.</li>
       </ul>
 
       <h2>How long we keep it</h2>
@@ -380,6 +418,10 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
           <strong>Newsletter subscribers:</strong> while you&rsquo;re subscribed, plus up to 30 days
           after you unsubscribe so we can make sure you don&rsquo;t get one more email by
           accident. After that, the row is deleted.
+        </li>
+        <li>
+          <strong>Waitlist signups:</strong> until we send the launch email and you&rsquo;ve had time
+          to act on it, or until you ask us to remove you. Email us anytime.
         </li>
         <li>
           <strong>Bounced or invalid emails:</strong> removed as soon as we notice them, usually
@@ -399,8 +441,8 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
       <ul>
         <li>
           For the newsletter, unsubscribing is a one-click link in every email we send, and
-          that also schedules the deletion described above. You can also email us and
-          we&rsquo;ll do it manually.
+          that also schedules the deletion described above. For the waitlist, email us and
+          we&rsquo;ll remove you. We&rsquo;ll do it manually for either.
         </li>
         <li>
           For analytics, the events are anonymous; we don&rsquo;t have a way to look up
