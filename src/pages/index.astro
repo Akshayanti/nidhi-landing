@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WaitlistSection from '../components/WaitlistSection.astro';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -89,6 +90,8 @@ const webSiteSchema = {
           </span>
         </div>
       </div>
+
+      <WaitlistSection />
 
       <div class="learn-more">
         <p class="learn-more-text">While you wait, the finosopher has left a few tools behind:</p>

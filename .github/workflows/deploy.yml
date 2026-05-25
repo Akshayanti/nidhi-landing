@@ -77,6 +77,7 @@ jobs:
           COUNTERAPI_TOKEN: ${{ secrets.COUNTERAPI_TOKEN }}
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
           PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
+          PUBLIC_WAITLIST_ENDPOINT: ${{ secrets.PUBLIC_WAITLIST_ENDPOINT }}
 
       - name: Compute IndexNow URL hash manifest
         # SHA-256 the rendered HTML for every URL in dist/sitemap-index.xml
