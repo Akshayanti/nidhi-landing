@@ -113,6 +113,16 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'May 26, 2026',
+    iso: '2026-05-26',
+    material: false,
+    summary: 'Added updates@nidhi.today as the sending address for automated emails (newsletter, beta invites).',
+    details: [
+      'hello@nidhi.today remains the address for general contact, support, and privacy requests. Replies to updates@ go to the same inbox.',
+      'Same Google Workspace account, same processor, same data. No change to how your information is handled — just clarifying which address you will see in your inbox.',
+    ],
+  },
+  {
     date: 'May 25, 2026',
     iso: '2026-05-25',
     material: true,
@@ -314,6 +324,8 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         <li>The page you subscribed from (so we know whether the blog index or a specific post got you there).</li>
         <li>Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.</li>
         <li>Your subscription status: pending, confirmed, or unsubscribed.</li>
+        <li>Newsletter emails come from <code>updates@nidhi.today</code>. Add it to your
+        contacts so new-post notifications reach your inbox.</li>
       </ul>
 
       <p>
@@ -324,6 +336,8 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
         <li>The page you signed up from.</li>
         <li>Timestamp for when you signed up.</li>
         <li>No confirmation step, no status tracking. Single opt-in.</li>
+        <li>The launch email will come from <code>updates@nidhi.today</code>. Add it to your
+        contacts so it doesn&rsquo;t land in spam.</li>
       </ul>
 
       <p>
@@ -374,8 +388,10 @@ const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
           analysis.
         </li>
         <li>
-          <strong>Google Workspace</strong> (Google Cloud EU regions): our email address
-          (<code>hello@nidhi.today</code>) and the Google Sheet that stores newsletter
+          <strong>Google Workspace</strong> (Google Cloud EU regions): our email addresses
+          (<code>hello@nidhi.today</code> for general contact and support,
+          <code>updates@nidhi.today</code> for automated product emails like beta
+          invites and newsletter sends) and the Google Sheet that stores newsletter
           subscribers and waitlist signups (in separate tabs). Only we can read it.
         </li>
         <li>

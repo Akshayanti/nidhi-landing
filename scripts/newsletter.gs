@@ -16,10 +16,11 @@
  *        SHEET_ID        <id of the Google Sheet — between /d/ and /edit in the URL>
  *        SHEET_NAME      <name of the tab in that Sheet — MUST match exactly>
  *        FROM_NAME       nidhi
- *        FROM_EMAIL      hello@nidhi.today   (MUST be an address this
+ *        FROM_EMAIL      updates@nidhi.today  (MUST be an address this
  *                        Apps Script account is allowed to send from —
  *                        either the script owner's primary address or a
- *                        verified "Send mail as" alias)
+ *                        verified "Send mail as" alias. Replies go to
+ *                        hello@nidhi.today via Reply-To header.)
  *        SITE_URL        https://nidhi.today
  *        HMAC_SECRET     <random 64 hex chars — `openssl rand -hex 32` —
  *                        used ONLY for signing GH-Actions-originated
@@ -303,9 +304,11 @@ function buildMimeMessage_(opts) {
   //         listId, messageId }
   // listUnsubPostUrl is the URL that Gmail/Outlook POST to when the user
   // clicks the native one-click unsubscribe button (RFC 8058).
+  // Replies always go to hello@nidhi.today regardless of the sending address.
   var boundary = 'nidhi-' + Utilities.getUuid();
   var headers = [
     'From: ' + formatAddress_(opts.fromName, opts.from),
+    'Reply-To: ' + formatAddress_(opts.fromName, 'hello@nidhi.today'),
     'To: ' + opts.to,
     'Subject: ' + encodeSubject_(opts.subject),
     'MIME-Version: 1.0',
@@ -381,6 +384,7 @@ function doGet(e) {
     if (action === 'confirm')         return handleConfirm_(e);
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
     if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
@@ -406,6 +410,7 @@ function doPost(e) {
     if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
     if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
@@ -647,6 +652,43 @@ function handleSubscribe_(e) {
 // Idempotent: the reminder_sent_at column ensures each pending subscriber
 // gets at most one reminder. Repeated calls are harmless no-ops.
 
+/**
+ * Sends a single test reminder to a specific email, bypassing the time gate and
+ * without updating reminder_sent_at (so the real bulk handler still processes
+ * the row normally later). Only works on pending subscribers.
+ *
+ * GET/POST ?action=test_remind&email=you@example.com
+ */
+function handleTestRemind_(e) {
+  var email = String((e && e.parameter && e.parameter.email) || '').toLowerCase().trim();
+  if (!email) return jsonResponse_({ ok: false, error: 'missing email parameter' });
+
+  var sh = sheet_();
+  var last = sh.getLastRow();
+  if (last < 2) return jsonResponse_({ ok: false, error: 'no rows in sheet' });
+
+  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+  for (var r = 0; r < rows.length; r++) {
+    var row = rows[r];
+    var rowEmail = String(row[COL.email - 1] || '').toLowerCase().trim();
+    if (rowEmail !== email) continue;
+
+    if (String(row[COL.status - 1] || '').toLowerCase() !== 'pending') {
+      return jsonResponse_({ ok: false, error: 'subscriber is not pending', status: String(row[COL.status - 1] || '') });
+    }
+
+    var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
+    if (!confirmToken) return jsonResponse_({ ok: false, error: 'no confirm token found for this email' });
+
+    sendReminderEmail_(email, confirmToken);
+    trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
+      days_since_signup: 'test',
+    });
+    return jsonResponse_({ ok: true, email: email });
+  }
+  return jsonResponse_({ ok: false, error: 'email not found in sheet' });
+}
+
 function handleRemindPending_() {
   // Only run between 9:00 and 11:59 Prague time (CET/CEST).
   var pragueHour = parseInt(Utilities.formatDate(new Date(), 'Europe/Prague', 'H'), 10);
@@ -734,13 +776,13 @@ function sendReminderEmail_(email, confirmToken) {
   var subject = 'Finish subscribing to ' + cfg.fromName + '?';
 
   var text =
-    cfg.fromName + ' — reminder\r\n\r\n' +
+    cfg.fromName + ', reminder\r\n\r\n' +
     'Hi,\r\n\r\n' +
     'You started subscribing to the ' + cfg.fromName + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
     'If you still want in, click below:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'Changed your mind? No worries — ignore this email and we won’t email you again.\r\n\r\n' +
-    '— ' + cfg.fromName + '\r\n' +
+    'Changed your mind? No worries, ignore this email and we won’t email you again.\r\n\r\n' +
+    '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n';
 
   var html =
@@ -760,7 +802,7 @@ function sendReminderEmail_(email, confirmToken) {
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:#666;font-size:14px;">Or copy and paste this link:</p>' +
               '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries — ignore this email and we won’t email you again.</p>' +
+              '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
           '</table>' +
@@ -1229,12 +1271,12 @@ function sendConfirmationEmail_(email, confirmToken) {
   var logoAlt = cfg.fromName;
 
   var text =
-    cfg.fromName + ' — confirm your subscription\r\n\r\n' +
+    cfg.fromName + ', confirm your subscription\r\n\r\n' +
     'Hi,\r\n\r\n' +
     'Click the link below to confirm you\u2019d like a heads-up from ' + cfg.fromName + ' whenever a new post goes up:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
     'If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.\r\n\r\n' +
-    '— ' + cfg.fromName + '\r\n' +
+    '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n';
 
   var html =
@@ -1305,12 +1347,12 @@ function sendWelcomeEmail_(email, unsubToken) {
   var banner = brandBannerHtml_(cfg, campaign);
 
   var text =
-    cfg.fromName + ' — you\u2019re in.\r\n\r\n' +
-    'Thanks for confirming. We\u2019ll ping you from ' + cfg.fromEmail + ' whenever a new post goes up — nothing else. No digests, no "special offers".\r\n\r\n' +
+    cfg.fromName + ', you\u2019re in.\r\n\r\n' +
+    'Thanks for confirming. We\u2019ll ping you from ' + cfg.fromEmail + ' whenever a new post goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
     'While you wait for the next one, the existing posts are all on the blog:\r\n' +
     blogUrl + '\r\n\r\n' +
-    'Reply to this email if anything ever lands wrong — a real person reads it.\r\n\r\n' +
-    '— ' + cfg.fromName + '\r\n' +
+    'Reply to this email if anything ever lands wrong, a real person reads it.\r\n\r\n' +
+    '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n\r\n' +
     '---\r\n' +
     // Text body shows the clickable URL with UTMs inline (the footerHtml_
@@ -1331,11 +1373,11 @@ function sendWelcomeEmail_(email, unsubToken) {
             banner +
             '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up &mdash; nothing else. No digests, no surprises, no "special offers".</p>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up , nothing else. No digests, no surprises, no "special offers".</p>' +
               '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if anything ever lands wrong &mdash; a real person reads it.</p>' +
-              '<p style="margin:24px 0 0;color:#555;font-size:14px;">&mdash; ' + escapeHtml_(cfg.fromName) + '</p>' +
+              '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if anything ever lands wrong , a real person reads it.</p>' +
+              '<p style="margin:24px 0 0;color:#555;font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in
             // the BARE unsub URL. Using the tracked variant here would
@@ -1378,7 +1420,7 @@ function brandBannerHtml_(cfg, campaign) {
       '<div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
       '<div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">' +
         '<a href="' + escapeHtml_(bannerHref) + '" style="text-decoration:none;color:inherit;display:inline-block;">' +
-          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ' — Money, understood." width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
+          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ' - Money, understood." width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
         '</a>' +
       '</div>' +
     '</td></tr>'

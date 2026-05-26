@@ -26,7 +26,7 @@ PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
 SITE_URL = "https://nidhi.today"
 FROM_NAME = "nidhi"
-FROM_EMAIL = "hello@nidhi.today"
+FROM_EMAIL = "updates@nidhi.today"
 # A plausible token the real Apps Script would generate — 64 hex chars. Not
 # real, never accepted by Apps Script; purely for preview optics.
 SAMPLE_TOKEN = "a" * 64
@@ -60,7 +60,7 @@ def _brand_banner(site_url: str, from_name: str, campaign: str) -> str:
         '<div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>'
         '<div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">'
         f'<a href="{_escape(banner_href)}" style="text-decoration:none;color:inherit;display:inline-block;">'
-        f'<img src="{_escape(logo_url)}" alt="{_escape(from_name)} — Money, understood." '
+        f'<img src="{_escape(logo_url)}" alt="{_escape(from_name)} - Money, understood." '
         'width="200" height="auto" '
         'style="display:block;max-width:200px;height:auto;border:0;outline:none;">'
         '</a>'
@@ -176,7 +176,7 @@ def render_welcome_email(
         'font-weight:700;letter-spacing:-0.01em;">You’re in.</h1>'
         f'<p style="margin:0 0 16px;">Thanks for confirming. We’ll ping you from '
         f'<strong style="color:#0D47A1;">{_escape(from_email)}</strong> whenever a new '
-        'post goes up — nothing else. No digests, no surprises, no "special offers".</p>'
+        'post goes up, nothing else. No digests, no surprises, no "special offers".</p>'
         '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts '
         'are all on the blog:</p>'
         f'<p style="margin:0 0 24px;"><a href="{_escape(blog_url)}" '
@@ -184,8 +184,8 @@ def render_welcome_email(
         'text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">'
         'Start reading →</a></p>'
         '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if '
-        'anything ever lands wrong — a real person reads it.</p>'
-        f'<p style="margin:24px 0 0;color:#555;font-size:14px;">— {_escape(from_name)}</p>'
+        'anything ever lands wrong, a real person reads it.</p>'
+        f'<p style="margin:24px 0 0;color:#555;font-size:14px;">- {_escape(from_name)}</p>'
         '</td></tr>'
     )
     footer = _footer_html(site_url, unsub_page_url, is_newsletter=True, campaign=campaign)
