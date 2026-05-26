@@ -1,6 +1,6 @@
 # Nidhi
 
-The website for [nidhi.today](https://nidhi.today/?utm_source=github&utm_campaign=readme).
+The website for [nidhi.today](https://nidhi.today/?utm_source=github).
 
 ## What's here
 
