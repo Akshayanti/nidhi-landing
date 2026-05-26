@@ -871,7 +871,7 @@ const faqSchema = {
 
   .mcnw-shareBtn {
     background: var(--color-deep-blue);
-    color: #fff;
+    color: var(--neutral-white);
   }
 
   .mcnw-shareBtn:hover:not(:disabled),
@@ -913,18 +913,18 @@ const faqSchema = {
   .mcnw-resetBtn:hover,
   .mcnw-resetBtn:focus-visible {
     background: var(--color-deep-blue);
-    color: #fff;
+    color: var(--neutral-white);
   }
 
   /* :global() escapes Astro's component scoping so the rule actually
      matches when [data-theme="dark"] is set on <html>. */
   :global([data-theme="dark"]) .mcnw-shareBtn {
-    color: #121212;
+    color: var(--neutral-page-bg-dark);
   }
 
   :global([data-theme="dark"]) .mcnw-resetBtn:hover,
   :global([data-theme="dark"]) .mcnw-resetBtn:focus-visible {
-    color: #121212;
+    color: var(--neutral-page-bg-dark);
   }
 
   /* Banners */
@@ -936,9 +936,9 @@ const faqSchema = {
   }
 
   .mcnw-bannerWarn {
-    background: #fff3cd;
-    border: 1px solid #ffc107;
-    color: #856404;
+    background: var(--warning-light-bg);
+    border: 1px solid var(--warning-light-border-strong);
+    color: var(--warning-light-text-strong);
   }
 
   .mcnw-bannerInfo {
@@ -948,9 +948,9 @@ const faqSchema = {
   }
 
   :global([data-theme="dark"]) .mcnw-bannerWarn {
-    background: #332b00;
-    border-color: #664d00;
-    color: #ffc107;
+    background: var(--warning-dark-bg);
+    border-color: var(--warning-dark-border);
+    color: var(--warning-light-text-amber);
   }
 
   .mcnw-retryBtn {
@@ -1153,7 +1153,7 @@ const faqSchema = {
     border-radius: var(--radius-md);
     cursor: pointer;
     background: var(--color-deep-blue);
-    color: #fff;
+    color: var(--neutral-white);
   }
 
   .mcnw-csvConfirmNo {
@@ -1172,17 +1172,17 @@ const faqSchema = {
   .mcnw-csvErrors {
     margin-top: var(--space-3);
     padding: var(--space-3);
-    background: #fff3cd;
-    border: 1px solid #ffc107;
+    background: var(--warning-light-bg);
+    border: 1px solid var(--warning-light-border-strong);
     border-radius: var(--radius-md);
     font-size: 0.85rem;
-    color: #856404;
+    color: var(--warning-light-text-strong);
   }
 
   :global([data-theme="dark"]) .mcnw-csvErrors {
-    background: #332b00;
-    border-color: #664d00;
-    color: #ffc107;
+    background: var(--warning-dark-bg);
+    border-color: var(--warning-dark-border);
+    color: var(--warning-light-text-amber);
   }
 
   .mcnw-csvErrorsTitle {
@@ -1346,16 +1346,16 @@ const faqSchema = {
   }
 
   .mcnw-riskCard--low {
-    border-left: 4px solid #2E7D32;
+    border-left: 4px solid var(--semantic-success-light);
   }
 
   .mcnw-riskCard--moderate {
-    border-left: 4px solid #F9A825;
+    border-left: 4px solid var(--chart-amber);
   }
 
   .mcnw-riskCard--elevated,
   .mcnw-riskCard--net-debt {
-    border-left: 4px solid #C62828;
+    border-left: 4px solid var(--semantic-danger-light);
   }
 
   .mcnw-riskCardHead {
@@ -1373,7 +1373,7 @@ const faqSchema = {
     font-size: 0.62rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #fff;
+    color: var(--neutral-white);
     padding: 3px 8px;
     border-radius: var(--radius-sm);
   }

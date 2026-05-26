@@ -35,32 +35,180 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* Brand tokens from BRAND_IDENTITY.md + main app theme.ts */
+/* ============================================================================
+ * Color constants — single source of truth.
+ *
+ * All literal hex values for brand, neutral, and semantic colors live here.
+ * Nothing else in this stylesheet (or any component) should declare a color
+ * literal; theme-reactive tokens below reference these constants.
+ *
+ * Three constant families:
+ *
+ *   --palette-*  (10 light + 10 dark pairs from docs/color-palette.md)
+ *                Brand identities. Light value pairs with white bg, dark
+ *                value pairs with #1E1E1E bg. Both share a hue identity.
+ *
+ *   --neutral-*  (grayscale + surfaces)
+ *                Whites, off-whites, grays, and dark surfaces. Not in the
+ *                palette doc — these are surface neutrals that don't carry
+ *                hue identity.
+ *
+ *   --semantic-* (success, warning, danger, info)
+ *                Functional UI colors. Material Design palette. Light/dark
+ *                variants chosen to pass WCAG AA on their respective bgs.
+ *
+ *   --notice-*   (caution and danger background tints)
+ *                Soft tints used as alert backgrounds.
+ * ============================================================================ */
 :root {
-  /* Colors */
-  --color-deep-blue: #0D47A1;
-  --color-deep-blue-light: #5472D3;
-  --color-deep-blue-dark: #002171;
-  --color-teal: #00796B;
-  --color-teal-light: #4DB6AC;
-  --color-teal-dark: #005B4F;
+  /* --- Palette (brand identities) ----------------------------------------- */
+  --palette-red:              #991100;
+  --palette-deep-orange:      #8B2E00;
+  --palette-amber:            #6B4800;
+  --palette-olive:            #4A4A00;
+  --palette-green:            #004D1A;
+  --palette-teal:             #005B4F;
+  --palette-cyan:             #005566;
+  --palette-blue:             #0A3D8F;
+  --palette-indigo:           #1A237E;
+  --palette-purple:           #311B92;
+
+  --palette-red-dark:         #FF9E80;
+  --palette-deep-orange-dark: #FFAB91;
+  --palette-amber-dark:       #FFCA28;
+  --palette-olive-dark:       #E6EE5C;
+  --palette-green-dark:       #81C784;
+  --palette-teal-dark:        #80CBC4;
+  --palette-cyan-dark:        #80DEEA;
+  --palette-blue-dark:        #90CAF9;
+  --palette-indigo-dark:      #D1C4E9;
+  --palette-purple-dark:      #E1BEE7;
+
+  /* --- Neutrals (grayscale + surfaces) ------------------------------------ */
+  --neutral-white:            #FFFFFF;
+  --neutral-off-white:        #F8F9FA;  /* light page bg */
+  --neutral-25:               #F5F5F5;  /* subtle hover bg in light mode */
+  --neutral-50:               #F0F0F0;  /* subtle borders, code bg */
+  --neutral-100:              #E8E8E8;  /* light bg-dark surface */
+  --neutral-200:              #E0E0E0;  /* default light border */
+  --neutral-500:              #9A9A9A;  /* dark-mode muted text */
+  --neutral-600:              #5A5A5A;  /* light-mode muted text */
+  --neutral-700:              #616161;  /* light-mode secondary text */
+  --neutral-800:              #B0B0B0;  /* dark-mode secondary text (lighter for contrast) */
+  --neutral-900:              #212121;  /* light-mode primary text */
+  --neutral-near-black:       #0D0D0D;  /* dark mode bg-dark */
+  --neutral-page-bg-dark:     #121212;  /* dark mode page bg + dark-text on light buttons */
+  --neutral-surface-dark:     #1E1E1E;  /* dark mode card / bg-white */
+  --neutral-surface-2-dark:   #2A2A2A;  /* dark mode code bg + light borders */
+  --neutral-border-dark:      #333333;  /* dark mode default border */
+
+  /* Code-block neutrals (used in <pre> blocks; not page surfaces). */
+  --neutral-pre-bg-light:     #1e293b;  /* slate-800 */
+  --neutral-pre-fg-light:     #e2e8f0;  /* slate-200 */
+  --neutral-pre-bg-dark:      #0D1117;  /* github-dark */
+  --neutral-pre-fg-dark:      #C9D1D9;
+
+  /* --- Semantic (Material Design AA pairs) -------------------------------- */
+  --semantic-success-light:   #2E7D32;
+  --semantic-warning-light:   #F57C00;
+  --semantic-danger-light:    #C62828;
+  --semantic-info-light:      #0288D1;
+
+  --semantic-success-dark:    #81C784;  /* same as --palette-green-dark */
+  --semantic-warning-dark:    #FFB74D;
+  --semantic-danger-dark:     #EF9A9A;
+  --semantic-info-dark:       #4FC3F7;
+
+  /* CTA backgrounds: solid teal-family fills that must hold white text. */
+  --semantic-cta-bg-light:        #00796B;
+  --semantic-cta-bg-hover-light:  var(--palette-teal);
+  --semantic-cta-bg-dark:         #00695C;
+  --semantic-cta-bg-hover-dark:   #00897B;
+
+  /* Destructive CTA: solid red-family fill that must hold white text.
+     Maps to palette red (8.6:1 with white) and palette deep-orange for hover. */
+  --semantic-destructive-bg:        var(--palette-red);
+  --semantic-destructive-bg-hover:  var(--palette-deep-orange);
+  --semantic-destructive-text-light: #c2410c; /* warning-orange text on light bg */
+  --semantic-destructive-text-dark:  var(--palette-deep-orange-dark);
+
+  /* Callout: solid deep-blue fill that must hold white text. */
+  --semantic-callout-bg:      #0D47A1;
+
+  /* Chart series colors used in CSS only (border-lefts, etc.). The full
+     11-color chart series + risk + persona maps live in src/styles/palette.ts
+     for JS/TS consumers. Keep these in sync. */
+  --chart-amber:              #F9A825;
+
+  /* Notice background tints (soft pastel fills). */
+  --notice-caution-bg-light:  #FFF8E1;
+  --notice-caution-bg-dark:   #3D3520;
+  --notice-danger-bg-light:   #FFEBEE;
+  --notice-danger-bg-dark:    #3D2020;
+
+  /* Status text variants used over dark callout surfaces. */
+  --status-success-on-dark:   #b2f2ea;  /* light teal on dark */
+  --status-error-on-dark:     #ffb3ad;  /* light red on dark */
+  --status-error-light:       #c0392b;  /* error text on light bg */
+
+  /* Warning notice palette (alerts: bg + border + text triplets). */
+  --warning-light-bg:         #fff3cd;
+  --warning-light-border:     #ffe082;
+  --warning-light-border-strong: #ffc107;
+  --warning-light-text:       #665100;
+  --warning-light-text-strong: #856404;
+  --warning-light-text-amber: #ffc107;
+  --warning-dark-bg:          #332b00;
+  --warning-dark-border:      #664d00;
+}
+
+/* ============================================================================
+ * Theme-reactive tokens (light mode).
+ *
+ * Every value below references one of the constants above. Components
+ * should consume these tokens (var(--color-*)) rather than the underlying
+ * --palette-* / --neutral-* / --semantic-* constants directly, so that
+ * dark-mode swaps work automatically.
+ * ============================================================================ */
+:root {
+  /* Brand "deep blue" scale. -light and -dark are both palette indigo;
+     used as hover-bg states on chip + button surfaces (13.2:1 white-on-bg). */
+  --color-deep-blue:        var(--palette-blue);
+  --color-deep-blue-light:  var(--palette-indigo);
+  --color-deep-blue-dark:   var(--palette-indigo);
+
+  /* Brand teal scale. -dark unified with --color-teal because the palette
+     has no darker teal than #005B4F. Inline links lean on underline
+     emphasis for hover rather than a color shift. */
+  --color-teal:             var(--palette-teal);
+  --color-teal-light:       var(--palette-teal-dark);
+  --color-teal-dark:        var(--palette-teal);
+
+  /* Logo mark colors. Both flip in dark mode so the mark stays AA-crisp.
+     Light: deep-blue bg + white strokes (10.1:1) + teal-light accent dot
+            (5.4:1, AA non-text).
+     Dark:  blue-dark bg + deep-blue strokes (5.8:1) + teal accent dot
+            (4.6:1, AA non-text). */
+  --color-logo-stroke:      var(--neutral-white);
+  --color-logo-accent:      var(--palette-teal-dark);
 
   /* Semantic */
-  --color-success: #2E7D32;
-  --color-warning: #F57C00;
-  --color-danger: #C62828;
-  --color-info: #0288D1;
+  --color-success:          var(--semantic-success-light);
+  --color-warning:          var(--semantic-warning-light);
+  --color-danger:           var(--semantic-danger-light);
+  --color-info:             var(--semantic-info-light);
 
   /* Neutrals */
-  --color-text-primary: #212121;
-  --color-text-secondary: #616161;
-  --color-text-muted: #5A5A5A;
-  --color-bg: #F8F9FA;
-  --color-bg-white: #FFFFFF;
-  --color-bg-dark: #E8E8E8;
-  --color-card-bg: #FFFFFF;
-  --color-border: #E0E0E0;
-  --color-border-light: #F0F0F0;
+  --color-text-primary:     var(--neutral-900);
+  --color-text-secondary:   var(--neutral-700);
+  --color-text-muted:       var(--neutral-600);
+  --color-bg:               var(--neutral-off-white);
+  --color-bg-white:         var(--neutral-white);
+  --color-bg-dark:          var(--neutral-100);
+  --color-bg-subtle:        var(--neutral-25); /* subtle hover surface */
+  --color-card-bg:          var(--neutral-white);
+  --color-border:           var(--neutral-200);
+  --color-border-light:     var(--neutral-50);
 
   /* Typography */
   --font-heading: 'Inter', sans-serif;
@@ -94,88 +242,103 @@
   --max-width-wide: 1080px;
 
   /* Notice backgrounds */
-  --notice-caution-bg: #FFF8E1;
-  --notice-danger-bg: #FFEBEE;
+  --notice-caution-bg:      var(--notice-caution-bg-light);
+  --notice-danger-bg:       var(--notice-danger-bg-light);
 
   /* Code */
-  --code-bg: var(--color-border-light);
-  --pre-bg: #1e293b;
-  --pre-color: #e2e8f0;
+  --code-bg:                var(--color-border-light);
+  --pre-bg:                 var(--neutral-pre-bg-light);
+  --pre-color:              var(--neutral-pre-fg-light);
 
   /* Level identity colors (used for badges, level labels, dots, etc.).
      Light-mode values pair with white text or sit as text on light tints
      and meet WCAG AA on white (>= 4.5:1). */
-  --level-discovery: #005B4F;
-  --level-building: #0A3D8F;
-  --level-psychology: #6B4800;
-  --level-optimizing: #991100;
-  --level-mastery: #311B92;
+  --level-discovery:        var(--palette-teal);
+  --level-building:         var(--palette-blue);
+  --level-psychology:       var(--palette-amber);
+  --level-optimizing:       var(--palette-red);
+  --level-mastery:          var(--palette-purple);
 
   /* Solid CTA background that always pairs with white foreground. */
-  --color-cta-bg: #00796B;
-  --color-cta-bg-hover: #005B4F;
-  --color-cta-fg: #FFFFFF;
+  --color-cta-bg:           var(--semantic-cta-bg-light);
+  --color-cta-bg-hover:     var(--semantic-cta-bg-hover-light);
+  --color-cta-fg:           var(--neutral-white);
 
   /* Solid "deep blue" callout background that always pairs with white
      foreground. Decoupled from --color-deep-blue (which acts as a link
      accent in dark mode and would fail contrast as a button bg). */
-  --color-callout-bg: #0D47A1;
-  --color-callout-bg-strong: #002171;
-  --color-callout-fg: #FFFFFF;
+  --color-callout-bg:       var(--semantic-callout-bg);
+  --color-callout-fg:       var(--neutral-white);
 }
 
-/* Dark mode — colors from main app theme.ts darkSemanticColors */
+/* ============================================================================
+ * Theme-reactive tokens (dark mode).
+ *
+ * Reassigns the same --color-* / --level-* / etc. tokens to dark-mode
+ * variants of the underlying constants. No literal hex values appear here.
+ * ============================================================================ */
 [data-theme="dark"] {
-  --color-deep-blue: #90CAF9;
-  --color-deep-blue-light: #BBDEFB;
-  --color-deep-blue-dark: #42A5F5;
-  --color-teal: #4DB6AC;
-  --color-teal-light: #80CBC4;
-  --color-teal-dark: #4DB6AC;
+  /* Brand blues. -light = palette indigo (low-luminance hover bg with white
+                              text on dark chip surfaces, 13.2:1).
+                  -dark  = palette cyan (brighter hover bg with the dark-text
+                              override on dark-mode primary buttons, 12.1:1). */
+  --color-deep-blue:        var(--palette-blue-dark);
+  --color-deep-blue-light:  var(--palette-indigo);
+  --color-deep-blue-dark:   var(--palette-cyan-dark);
 
-  --color-success: #81C784;
-  --color-warning: #FFB74D;
-  --color-danger: #EF9A9A;
-  --color-info: #4FC3F7;
+  /* Dark teal flipped to palette teal-light so taglines/teal accents on
+     dark surfaces meet AA. #80CBC4 on #1E1E1E = 8.9:1, on #121212 = 10.0:1. */
+  --color-teal:             var(--palette-teal-dark);
+  --color-teal-light:       var(--palette-teal-dark);
+  --color-teal-dark:        var(--palette-teal-dark);
 
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #B0B0B0;
-  --color-text-muted: #9A9A9A;
-  --color-bg: #121212;
-  --color-bg-white: #1E1E1E;
-  --color-bg-dark: #0D0D0D;
-  --color-card-bg: #1E1E1E;
-  --color-border: #333333;
-  --color-border-light: #2A2A2A;
+  /* Logo mark flipped for dark mode (see :root note for rationale). */
+  --color-logo-stroke:      var(--palette-blue);
+  --color-logo-accent:      var(--palette-teal);
+
+  --color-success:          var(--semantic-success-dark);
+  --color-warning:          var(--semantic-warning-dark);
+  --color-danger:           var(--semantic-danger-dark);
+  --color-info:             var(--semantic-info-dark);
+
+  --color-text-primary:     var(--neutral-white);
+  --color-text-secondary:   var(--neutral-800);
+  --color-text-muted:       var(--neutral-500);
+  --color-bg:               var(--neutral-page-bg-dark);
+  --color-bg-white:         var(--neutral-surface-dark);
+  --color-bg-dark:          var(--neutral-near-black);
+  --color-bg-subtle:        var(--neutral-surface-2-dark);
+  --color-card-bg:          var(--neutral-surface-dark);
+  --color-border:           var(--neutral-border-dark);
+  --color-border-light:     var(--neutral-surface-2-dark);
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
 
-  --notice-caution-bg: #3D3520;
-  --notice-danger-bg: #3D2020;
+  --notice-caution-bg:      var(--notice-caution-bg-dark);
+  --notice-danger-bg:       var(--notice-danger-bg-dark);
 
-  --code-bg: #2A2A2A;
-  --pre-bg: #0D1117;
-  --pre-color: #C9D1D9;
+  --code-bg:                var(--neutral-surface-2-dark);
+  --pre-bg:                 var(--neutral-pre-bg-dark);
+  --pre-color:              var(--neutral-pre-fg-dark);
 
   /* Level identity colors flipped to lighter shades so they remain legible
      as foreground text against the dark surfaces. */
-  --level-discovery: #80DEEA;
-  --level-building: #90CAF9;
-  --level-psychology: #FFCA28;
-  --level-optimizing: #FF9E80;
-  --level-mastery: #E1BEE7;
+  --level-discovery:        var(--palette-cyan-dark);
+  --level-building:         var(--palette-blue-dark);
+  --level-psychology:       var(--palette-amber-dark);
+  --level-optimizing:       var(--palette-red-dark);
+  --level-mastery:          var(--palette-purple-dark);
 
   /* CTA bg stays a saturated dark teal so white text keeps WCAG AA. */
-  --color-cta-bg: #00695C;
-  --color-cta-bg-hover: #00897B;
-  --color-cta-fg: #FFFFFF;
+  --color-cta-bg:           var(--semantic-cta-bg-dark);
+  --color-cta-bg-hover:     var(--semantic-cta-bg-hover-dark);
+  --color-cta-fg:           var(--neutral-white);
 
   /* Callout bg stays a deep navy so white text keeps WCAG AA. */
-  --color-callout-bg: #0D47A1;
-  --color-callout-bg-strong: #002171;
-  --color-callout-fg: #FFFFFF;
+  --color-callout-bg:       var(--semantic-callout-bg);
+  --color-callout-fg:       var(--neutral-white);
 }
 
 /* Reset */
@@ -469,8 +632,8 @@ strong {
 .prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
 .prose figure svg .fig-tick { font: 400 12px var(--font-heading); fill: var(--color-text-muted); }
-.prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: #ffffff; }
-.prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: #ffffff; }
+.prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--neutral-white); }
+.prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--neutral-white); }
 .prose figure svg .fig-num-blue { font: 700 28px var(--font-heading); fill: var(--color-deep-blue); }
 .prose figure svg .fig-quote-large { font: 600 20px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-quote-small { font: 400 14px var(--font-heading); fill: var(--color-text-muted); font-style: italic; }
@@ -779,11 +942,7 @@ strong {
 }
 
 .lp-levelHeaderToggle:hover {
-  background: var(--color-bg-subtle, #f5f5f5);
-}
-
-[data-theme="dark"] .lp-levelHeaderToggle:hover {
-  background: var(--color-bg-subtle, #2a2a2a);
+  background: var(--color-bg-subtle);
 }
 
 .lp-levelLabelRow {
@@ -1293,7 +1452,7 @@ strong {
 
 .transactional-icon--warning {
   background: rgba(234, 88, 12, 0.1);
-  color: #c2410c;
+  color: var(--semantic-destructive-text-light);
 }
 
 .transactional-title {
@@ -1348,11 +1507,11 @@ strong {
 }
 
 .transactional-cta--destructive {
-  background: #c2410c;
+  background: var(--semantic-destructive-bg);
 }
 
 .transactional-cta--destructive:hover:not(:disabled) {
-  background: #9a3412;
+  background: var(--semantic-destructive-bg-hover);
 }
 
 .transactional-cta--subtle {
@@ -1383,11 +1542,11 @@ strong {
   color: var(--color-text-muted);
 }
 
-.transactional-status--error { color: #c2410c; }
+.transactional-status--error { color: var(--semantic-destructive-text-light); }
 .transactional-status--success { color: var(--color-teal); }
 
-[data-theme="dark"] .transactional-status--error { color: #FFAB91; }
-[data-theme="dark"] .transactional-status--success { color: #80CBC4; }
+[data-theme="dark"] .transactional-status--error { color: var(--palette-deep-orange-dark); }
+[data-theme="dark"] .transactional-status--success { color: var(--palette-teal-dark); }
 
 .transactional-secondary {
   margin: var(--space-6) 0 0;
@@ -1409,10 +1568,10 @@ strong {
 .transactional-dev-warning {
   margin: var(--space-5) 0 0;
   padding: var(--space-2) var(--space-3);
-  background: #fff3cd;
-  border: 1px solid #ffe082;
+  background: var(--warning-light-bg);
+  border: 1px solid var(--warning-light-border);
   border-radius: var(--radius-sm);
-  color: #665100;
+  color: var(--warning-light-text);
   font-size: 0.8rem;
   line-height: 1.5;
   text-align: left;
@@ -1571,7 +1730,7 @@ strong {
   cursor: pointer;
   border: 1px solid var(--color-deep-blue);
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -1588,13 +1747,13 @@ strong {
 .lc-resetBtn:hover,
 .lc-resetBtn:focus-visible {
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
 }
 
 [data-theme="dark"] .lc-shareBtn,
 [data-theme="dark"] .lc-resetBtn:hover,
 [data-theme="dark"] .lc-resetBtn:focus-visible {
-  color: #121212;
+  color: var(--neutral-page-bg-dark);
 }
 
 .lc-shareBtn:focus-visible,
@@ -1879,11 +2038,11 @@ strong {
 .lc-modeOptionActive {
   background: var(--lc-color);
   border-color: var(--lc-color);
-  color: #fff;
+  color: var(--neutral-white);
 }
 
 [data-theme="dark"] .lc-modeOptionActive {
-  color: #121212;
+  color: var(--neutral-page-bg-dark);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1894,13 +2053,9 @@ strong {
    required input. Hidden from screen readers via aria-hidden in JSX;
    the input itself carries aria-required="true". */
 .lc-required {
-  color: #c62828;
+  color: var(--color-danger);
   font-weight: 700;
   margin-left: 2px;
-}
-
-[data-theme="dark"] .lc-required {
-  color: #ef9a9a;
 }
 
 /* Field group: a visually-grouped section of optional fields inside a
@@ -2828,7 +2983,7 @@ strong {
   border: none;
   border-radius: var(--radius-md);
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
   transition: background 0.15s ease, color 0.15s ease;
 }
 
@@ -2897,16 +3052,16 @@ strong {
 .mcnw-resetBtn:hover,
 .mcnw-resetBtn:focus-visible {
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
 }
 
 [data-theme="dark"] .mcnw-shareBtn {
-  color: #121212;
+  color: var(--neutral-page-bg-dark);
 }
 
 [data-theme="dark"] .mcnw-resetBtn:hover,
 [data-theme="dark"] .mcnw-resetBtn:focus-visible {
-  color: #121212;
+  color: var(--neutral-page-bg-dark);
 }
 
 /* ---- Share modal ---- */
@@ -3048,13 +3203,13 @@ strong {
   font-size: 0.72rem;
   font-weight: 500;
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
   padding: 1px 7px;
   border-radius: 10px;
 }
 
 [data-theme="dark"] .mcnw-modalPreviewBadge {
-  color: #212121;
+  color: var(--neutral-900);
 }
 
 .mcnw-modalPreviewBody {
@@ -3156,7 +3311,7 @@ strong {
   cursor: pointer;
   border: none;
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
   transition: background 0.15s ease;
 }
 
@@ -3189,7 +3344,7 @@ strong {
 }
 
 [data-theme="dark"] .mcnw-modalCopyBtn {
-  color: #121212;
+  color: var(--neutral-page-bg-dark);
 }
 
 @media (max-width: 750px) {
@@ -3215,9 +3370,9 @@ strong {
 }
 
 .mcnw-bannerWarn {
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  color: #856404;
+  background: var(--warning-light-bg);
+  border: 1px solid var(--warning-light-border-strong);
+  color: var(--warning-light-text-strong);
 }
 
 .mcnw-bannerInfo {
@@ -3227,9 +3382,9 @@ strong {
 }
 
 [data-theme="dark"] .mcnw-bannerWarn {
-  background: #332b00;
-  border-color: #664d00;
-  color: #ffc107;
+  background: var(--warning-dark-bg);
+  border-color: var(--warning-dark-border);
+  color: var(--warning-light-text-amber);
 }
 
 .mcnw-retryBtn {
@@ -3449,7 +3604,7 @@ strong {
   border-radius: var(--radius-md);
   cursor: pointer;
   background: var(--color-deep-blue);
-  color: #fff;
+  color: var(--neutral-white);
 }
 
 .mcnw-csvConfirmYes:focus-visible {
@@ -3478,17 +3633,17 @@ strong {
 .mcnw-csvErrors {
   margin-top: var(--space-3);
   padding: var(--space-3);
-  background: #fff3cd;
-  border: 1px solid #ffc107;
+  background: var(--warning-light-bg);
+  border: 1px solid var(--warning-light-border-strong);
   border-radius: var(--radius-md);
   font-size: 0.85rem;
-  color: #856404;
+  color: var(--warning-light-text-strong);
 }
 
 [data-theme="dark"] .mcnw-csvErrors {
-  background: #332b00;
-  border-color: #664d00;
-  color: #ffc107;
+  background: var(--warning-dark-bg);
+  border-color: var(--warning-dark-border);
+  color: var(--warning-light-text-amber);
 }
 
 .mcnw-csvErrorsTitle {
@@ -3668,16 +3823,16 @@ strong {
 }
 
 .mcnw-riskCard--low {
-  border-left: 4px solid #2E7D32;
+  border-left: 4px solid var(--semantic-success-light);
 }
 
 .mcnw-riskCard--moderate {
-  border-left: 4px solid #F9A825;
+  border-left: 4px solid var(--chart-amber);
 }
 
 .mcnw-riskCard--elevated,
 .mcnw-riskCard--net-debt {
-  border-left: 4px solid #C62828;
+  border-left: 4px solid var(--semantic-danger-light);
 }
 
 .mcnw-riskCardHead {
@@ -3695,17 +3850,17 @@ strong {
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #fff;
+  color: var(--neutral-white);
   padding: 3px 8px;
   border-radius: var(--radius-sm);
 }
 
 .mcnw-riskCard--moderate .mcnw-riskBadge {
-  color: #212121;
+  color: var(--neutral-900);
 }
 
 [data-theme="dark"] .mcnw-riskCard--functional .mcnw-riskBadge {
-  color: #212121;
+  color: var(--neutral-900);
 }
 
 .mcnw-riskCurrency {

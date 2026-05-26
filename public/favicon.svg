@@ -1,27 +1,50 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Brand favicon. Colors flip with prefers-color-scheme so the mark stays
+    AA-readable on light and dark browser chrome. All values from the brand
+    palette in docs/color-palette.md:
+      Light: bg #0A3D8F, strokes #FFFFFF (10.1:1),  accent #80CBC4 (5.4:1).
+      Dark:  bg #90CAF9, strokes #0A3D8F (5.8:1),  accent #005B4F (4.6:1).
+  -->
+  <style><![CDATA[
+    /* SVGs loaded as <link rel="icon"> cannot inherit document CSS variables,
+       so the palette values are inlined here. Each value matches a constant
+       in src/styles/global.css and src/styles/palette.ts. Update all three
+       together if the brand palette changes. */
+    .bg     { fill:   #0A3D8F; }  /* --palette-blue */
+    .stroke { stroke: #FFFFFF; }  /* --neutral-white */
+    .dot    { fill:   #80CBC4; }  /* --palette-teal-dark */
+
+    @media (prefers-color-scheme: dark) {
+      .bg     { fill:   #90CAF9; }  /* --palette-blue-dark */
+      .stroke { stroke: #0A3D8F; }  /* --palette-blue */
+      .dot    { fill:   #005B4F; }  /* --palette-teal */
+    }
+  ]]></style>
+
   <!-- Background -->
-  <rect x="0" y="0" width="512" height="512" rx="96" fill="#0A3D8F"/>
+  <rect x="0" y="0" width="512" height="512" rx="96" class="bg"/>
 
   <!-- Horizontal bar -->
-  <path d="M120 200 H360" stroke="white" stroke-width="16" stroke-linecap="round"/>
-
+  <path d="M120 200 H360" class="stroke" stroke-width="16" stroke-linecap="round"/>
 
   <!-- n (with proper vertical legs) -->
   <path d="M150 360 V290 Q150 250 195 250 Q240 250 240 290 V360"
-        fill="none" stroke="white" stroke-width="24"
+        fill="none" class="stroke" stroke-width="24"
         stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- d bowl -->
-  <circle cx="320" cy="310" r="45" fill="none" stroke="white" stroke-width="24"/>
+  <circle cx="320" cy="310" r="45" fill="none" class="stroke" stroke-width="24"/>
 
   <!-- d stem -->
-  <path d="M365 310 V205" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <path d="M365 310 V205" class="stroke" stroke-width="24" stroke-linecap="round"/>
 
-  <!--   Arrow shaft (45°, shorter)-->
-  <path d="M365 200 L425 140" stroke="white" stroke-width="16" stroke-linecap="round"/>
-<!--  Arrow head -->
-  <path d="M385 140 H425 V180" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Arrow shaft (45 degrees, shorter) -->
+  <path d="M365 200 L425 140" class="stroke" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Arrow head -->
+  <path d="M385 140 H425 V180" fill="none" class="stroke" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- teal dot -->
-  <circle cx="410" cy="220" r="14" fill="#005B4F"/>
+  <circle cx="410" cy="220" r="14" class="dot"/>
 </svg>

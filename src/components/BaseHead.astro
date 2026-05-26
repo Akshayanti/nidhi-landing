@@ -1,4 +1,6 @@
 ---
+import { NEUTRAL, SEMANTIC } from '../styles/palette.ts';
+
 interface Props {
   title: string;
   description: string;
@@ -38,9 +40,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <link rel="shortcut icon" href="/brand/favicons/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/site.webmanifest" />
-<meta name="theme-color" content="#F8F9FA" />
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121212" />
-<meta name="msapplication-TileColor" content="#0D47A1" />
+<meta name="theme-color" content={NEUTRAL.offWhite} />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content={NEUTRAL.pageBgDark} />
+<meta name="msapplication-TileColor" content={SEMANTIC.calloutBg} />
 <meta name="msapplication-TileImage" content="/brand/favicons/mstile-150x150.png" />
 <title>{title}</title>
 <meta name="description" content={description} />

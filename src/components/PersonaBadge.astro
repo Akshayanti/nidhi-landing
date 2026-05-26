@@ -1,4 +1,6 @@
 ---
+import { PERSONA_COLORS } from '../styles/palette.ts';
+
 interface Props {
   persona: 'eva' | 'petra' | 'jiri' | 'marcus' | 'tomas';
 }
@@ -6,11 +8,11 @@ interface Props {
 const { persona } = Astro.props;
 
 const personas: Record<string, { label: string; color: string }> = {
-  eva: { label: 'Eva', color: '#7B1FA2' },
-  petra: { label: 'Petra', color: '#00897B' },
-  jiri: { label: 'Jiri', color: '#1565C0' },
-  marcus: { label: 'Marcus', color: '#E65100' },
-  tomas: { label: 'Tomas', color: '#C62828' },
+  eva: { label: 'Eva', color: PERSONA_COLORS.eva },
+  petra: { label: 'Petra', color: PERSONA_COLORS.petra },
+  jiri: { label: 'Jiri', color: PERSONA_COLORS.jiri },
+  marcus: { label: 'Marcus', color: PERSONA_COLORS.marcus },
+  tomas: { label: 'Tomas', color: PERSONA_COLORS.tomas },
 };
 
 const { label, color } = personas[persona];

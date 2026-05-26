@@ -28,14 +28,32 @@ OUTPUT_DIR=$(dirname "$SVG_PATH")
 BRAND_DIR="$OUTPUT_DIR/brand"
 TEMP_DIR="$BRAND_DIR/.tmp"
 
-# Brand palette
-PRIMARY_BLUE="#0D47A1"
-PRIMARY_BLUE_LIGHT="#90CAF9"   # Dark-mode primary (chosen for AA contrast on DARK_BG)
-TEAL="#00897B"
-TEAL_LIGHT="#4DB6AC"           # Dark-mode secondary
-WHITE="#FFFFFF"
-LIGHT_BG="#F8F9FA"
-DARK_BG="#0D1B2A"
+# Color constants. Mirrors src/styles/global.css and src/styles/palette.ts —
+# update all three together if the brand palette changes.
+#
+# Palette identities (from docs/color-palette.md):
+PALETTE_BLUE="#0A3D8F"          # palette blue (light-mode primary)
+PALETTE_BLUE_DARK="#90CAF9"     # palette blue dark (dark-mode primary)
+PALETTE_TEAL="#005B4F"          # palette teal (light-mode dot, dark-mode accent)
+PALETTE_TEAL_DARK="#80CBC4"     # palette teal dark (light-mode accent dot)
+#
+# Neutrals:
+NEUTRAL_WHITE="#FFFFFF"
+NEUTRAL_OFF_WHITE="#F8F9FA"     # site --color-bg in light mode
+NEUTRAL_PAGE_BG_DARK="#121212"  # site --color-bg in dark mode
+#
+# Logo color flip across modes (palette-only, AA-compliant):
+#   Light: bg=PALETTE_BLUE      strokes=NEUTRAL_WHITE  dot=PALETTE_TEAL_DARK
+#   Dark:  bg=PALETTE_BLUE_DARK strokes=PALETTE_BLUE   dot=PALETTE_TEAL
+#
+# Aliases retained so the rest of the script reads naturally.
+PRIMARY_BLUE="$PALETTE_BLUE"
+PRIMARY_BLUE_LIGHT="$PALETTE_BLUE_DARK"
+TEAL="$PALETTE_TEAL"
+TEAL_LIGHT="$PALETTE_TEAL_DARK"
+WHITE="$NEUTRAL_WHITE"
+LIGHT_BG="$NEUTRAL_OFF_WHITE"
+DARK_BG="$NEUTRAL_PAGE_BG_DARK"
 
 BRAND_NAME="nidhi"
 TAGLINE="Money, understood"
@@ -109,23 +127,33 @@ for size in 48 128 256 512 1024; do
     # Light mode: straight from SVG
     convert_svg "$SVG_PATH" "$size" "$BRAND_DIR/logo/icon-only/icon-${size}.png"
 
-    # Dark mode: remap blue -> light blue, teal -> light teal, keep white
+    # Dark mode: flip three palette colors. Order matters — bg flips before
+    # strokes so the new stroke color (PRIMARY_BLUE) isn't caught by the
+    # bg remap. Dot flips first (independent color, no collisions).
+    #   dot  #80CBC4 -> #005B4F   (TEAL_LIGHT  -> TEAL)
+    #   bg   #0A3D8F -> #90CAF9   (PRIMARY_BLUE -> PRIMARY_BLUE_LIGHT)
+    #   line #FFFFFF -> #0A3D8F   (WHITE       -> PRIMARY_BLUE)
     $IM_CONVERT "$BRAND_DIR/logo/icon-only/icon-${size}.png" \
+        -fuzz 10% -fill "$TEAL"               -opaque "$TEAL_LIGHT" \
         -fuzz 15% -fill "$PRIMARY_BLUE_LIGHT" -opaque "$PRIMARY_BLUE" \
-        -fuzz 25% -fill "$TEAL_LIGHT" -opaque "$TEAL" \
+        -fuzz 5%  -fill "$PRIMARY_BLUE"       -opaque "$WHITE" \
         -define png:color-type=6 \
         "$BRAND_DIR/logo/icon-only/icon-${size}-dark.png"
 done
 
 # Also create an "inner-only" icon (no rounded-square background) for use in
-# circular avatars and compositions. We strip the background <rect ... fill="#0D47A1"/>
-# and rasterize the remaining artwork on a transparent canvas.
-sed -E '/<rect[^>]*fill="#0[Dd]47[Aa]1"[^>]*\/>/d' "$SVG_PATH" > "$TEMP_DIR/icon-inner.svg"
+# circular avatars and compositions. We strip the rounded-square <rect class="bg"/>
+# (or its fill="#0A3D8F" inline form) and rasterize the rest on a transparent canvas.
+sed -E '/<rect[^>]*(class="bg"|fill="#0[Aa]3[Dd]8[Ff]")[^>]*\/>/d' "$SVG_PATH" > "$TEMP_DIR/icon-inner.svg"
 convert_svg "$TEMP_DIR/icon-inner.svg" 1024 "$TEMP_DIR/icon-inner-1024.png"
-# Light-mode-on-dark variant (swap blue stroke to light blue, teal stays)
+# Inner-on-dark variant. The dark profile picture sits the inner on a
+# PRIMARY_BLUE_LIGHT (#90CAF9) circle to mirror the dark-mode logo identity,
+# so the strokes flip to PRIMARY_BLUE (#0A3D8F, 5.78:1 on #90CAF9) and the
+# dot flips to TEAL (#005B4F, 4.60:1 on #90CAF9). Both pass AA non-text.
+# Order: dot first (no collision), then strokes (white -> deep-blue) last.
 $IM_CONVERT "$TEMP_DIR/icon-inner-1024.png" \
-    -fuzz 15% -fill "$PRIMARY_BLUE_LIGHT" -opaque "$PRIMARY_BLUE" \
-    -fuzz 25% -fill "$TEAL_LIGHT" -opaque "$TEAL" \
+    -fuzz 10% -fill "$TEAL"         -opaque "$TEAL_LIGHT" \
+    -fuzz 5%  -fill "$PRIMARY_BLUE" -opaque "$WHITE" \
     -define png:color-type=6 \
     "$TEMP_DIR/icon-inner-1024-dark.png"
 
@@ -347,9 +375,11 @@ build_profile_picture() {
     make_shadow "$TEMP_DIR/pp-composed.png" "$out" 8 3 2
 }
 
-build_profile_picture "$PRIMARY_BLUE" "$TEMP_DIR/icon-inner-1024.png" \
+# Light profile: deep-blue circle, white strokes, teal-light dot (matches light logo).
+# Dark profile: light-blue circle, deep-blue strokes, dark-teal dot (matches dark logo).
+build_profile_picture "$PRIMARY_BLUE"       "$TEMP_DIR/icon-inner-1024.png" \
     "$BRAND_DIR/social/profile-picture.png"
-build_profile_picture "$DARK_BG"      "$TEMP_DIR/icon-inner-1024-dark.png" \
+build_profile_picture "$PRIMARY_BLUE_LIGHT" "$TEMP_DIR/icon-inner-1024-dark.png" \
     "$BRAND_DIR/social/profile-picture-dark.png"
 
 # ============================================================================

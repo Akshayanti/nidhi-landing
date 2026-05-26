@@ -546,7 +546,7 @@ const inputId = `subscribe-email-${variant}`;
     min-height: 1.2em;
   }
   .subscribe-status--success { color: var(--color-teal); }
-  .subscribe-status--error { color: #c0392b; }
+  .subscribe-status--error { color: var(--status-error-light); }
   .subscribe-status--idle { color: var(--color-text-muted); }
 
   /* --- Full variant (end of blog post) ----------------------------- */
@@ -572,8 +572,8 @@ const inputId = `subscribe-email-${variant}`;
   .subscribe-privacy a { color: white; text-decoration: underline; }
   .subscribe-privacy a:hover { color: rgba(255, 255, 255, 0.9); }
   .subscribe--full .subscribe-status { color: rgba(255, 255, 255, 0.85); }
-  .subscribe--full .subscribe-status--success { color: #b2f2ea; }
-  .subscribe--full .subscribe-status--error { color: #ffb3ad; }
+  .subscribe--full .subscribe-status--success { color: var(--status-success-on-dark); }
+  .subscribe--full .subscribe-status--error { color: var(--status-error-on-dark); }
 
   /* --- Compact variant (top of blog index) ------------------------- */
   .subscribe--compact {
@@ -641,7 +641,7 @@ const inputId = `subscribe-email-${variant}`;
   }
   .subscribe--full .subscribe-success-icon {
     background: rgba(255, 255, 255, 0.18);
-    color: #b2f2ea;
+    color: var(--status-success-on-dark);
   }
 
   .subscribe-success-title {
@@ -663,7 +663,7 @@ const inputId = `subscribe-email-${variant}`;
     color: var(--color-deep-blue);
     word-break: break-word;
   }
-  .subscribe--full .subscribe-success-body strong { color: #fff; }
+  .subscribe--full .subscribe-success-body strong { color: var(--neutral-white); }
 
   .subscribe-success-hint {
     font-size: 0.82rem;
@@ -686,7 +686,7 @@ const inputId = `subscribe-email-${variant}`;
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
   }
-  .subscribe--full .subscribe-success-retry:hover { color: #fff; }
+  .subscribe--full .subscribe-success-retry:hover { color: var(--neutral-white); }
 
   /* Compact variant: inline success row (no icon overhead). */
   .subscribe-post--compact {
@@ -771,7 +771,7 @@ const inputId = `subscribe-email-${variant}`;
     cursor: pointer;
   }
   .subscribe-dismissed-undo:hover {
-    color: var(--color-teal-dark, #00796b);
+    color: var(--color-teal-dark);
   }
   .subscribe-dismissed-undo:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -786,7 +786,7 @@ const inputId = `subscribe-email-${variant}`;
     color: rgba(255, 255, 255, 0.75);
   }
   .subscribe--full .subscribe-dismissed-undo:hover {
-    color: #fff;
+    color: var(--neutral-white);
   }
 
   /* Compact variant: inline row. */
@@ -806,10 +806,10 @@ const inputId = `subscribe-email-${variant}`;
   .subscribe-dev-warning {
     margin: var(--space-3) 0 0;
     padding: var(--space-2) var(--space-3);
-    background: #fff3cd;
-    border: 1px solid #ffe082;
+    background: var(--warning-light-bg);
+    border: 1px solid var(--warning-light-border);
     border-radius: var(--radius-sm);
-    color: #665100;
+    color: var(--warning-light-text);
     font-size: 0.8rem;
     line-height: 1.4;
     text-align: left;
@@ -822,7 +822,7 @@ const inputId = `subscribe-email-${variant}`;
   }
   /* Override dark-on-dark inside the .subscribe-box of the full variant */
   .subscribe--full .subscribe-dev-warning {
-    background: #fff3cd;
-    color: #665100;
+    background: var(--warning-light-bg);
+    color: var(--warning-light-text);
   }
 </style>

@@ -32,6 +32,7 @@ import {
   computeNoPointsBaseline,
   parseNumber,
 } from '../utils/loan/inputs.ts';
+import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
 
 // -----------------------------------------------------------------------------
 // PostHog telemetry helper.
@@ -78,14 +79,10 @@ function preserveUtmParams(search: string): string {
 
 // VENDOR_COLORS is intentionally kept here, not in loanCompareUrl.ts:
 // it's a UI-only concern (how vendors render in the grid and chart) and
-// has no place in URL state. Indices align with VENDOR_LABELS A-E.
-const VENDOR_COLORS = [
-  'var(--color-deep-blue)',
-  'var(--color-teal)',
-  '#E65100', // orange
-  '#6A1B9A', // purple
-  '#2E7D32', // green
-];
+// has no place in URL state. Indices align with VENDOR_LABELS A-E. The
+// values come from CHART_SERIES (single source of truth in palette.ts);
+// we slice the first 5 because the loan grid maxes out at 5 vendors.
+const VENDOR_COLORS = CHART_SERIES.slice(0, 5);
 
 // ---- Chart -----------------------------------------------------------------
 
@@ -425,7 +422,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
                   // When the segment is too thin, render the label above
                   // the bar in interest's accent colour for contrast on
                   // the page background.
-                  fill: interestLabelInside ? '#ffffff' : 'var(--color-warning)',
+                  fill: interestLabelInside ? NEUTRAL.white : 'var(--color-warning)',
                   fontWeight: 600,
                 }}
               >
@@ -438,7 +435,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
                 className="lc-splitValuePrincipal"
                 textAnchor="middle"
                 style={{
-                  fill: principalLabelInside ? '#ffffff' : 'var(--color-text-primary)',
+                  fill: principalLabelInside ? NEUTRAL.white : 'var(--color-text-primary)',
                   fontWeight: 600,
                 }}
               >

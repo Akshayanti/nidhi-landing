@@ -16,6 +16,7 @@ import {
   type ShareMode,
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
+import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
 
 // ---------------------------------------------------------------------------
 // PostHog telemetry
@@ -44,27 +45,10 @@ function track(event: string, properties?: Record<string, unknown>) {
 
 const FRANKFURTER_BASE = 'https://api.frankfurter.dev/v1/latest';
 
-const CHART_COLORS = [
-  'var(--color-deep-blue)',
-  'var(--color-teal)',
-  '#E65100',
-  '#6A1B9A',
-  '#2E7D32',
-  '#C62828',
-  '#1565C0',
-  '#6D4C41',
-  '#00838F',
-  '#F9A825',
-  '#4A148C',
-];
-
-const RISK_COLORS: Record<string, string> = {
-  functional: 'var(--color-teal)',
-  low: '#2E7D32',
-  moderate: '#F9A825',
-  elevated: '#C62828',
-  'net-debt': '#C62828',
-};
+// Chart series and risk colors come from src/styles/palette.ts (single
+// source of truth shared with global.css).
+const CHART_COLORS = CHART_SERIES;
+const RISK_COLORS: Record<string, string> = PALETTE_RISK_COLORS;
 
 // ---------------------------------------------------------------------------
 // Main component

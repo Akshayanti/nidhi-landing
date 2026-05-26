@@ -1,10 +1,14 @@
 ---
 // Inline logo mark — theme-reactive via CSS custom properties.
-// Colors follow --color-deep-blue and --color-teal from global.css,
-// which automatically swap for [data-theme="dark"].
 //
-// The "white" artwork (strokes) stays white in both modes — this matches
-// the dark-variant PNGs produced by generate-brand-assets.sh.
+// All three colors come from the brand palette (docs/color-palette.md) and
+// flip across [data-theme="dark"] so the mark stays AA-readable in both
+// modes:
+//
+//   Light mode: deep-blue bg #0A3D8F, white strokes (10.1:1), teal-light
+//               accent #80CBC4 (5.4:1 on bg, AA non-text).
+//   Dark mode:  light-blue bg #90CAF9, deep-blue strokes #0A3D8F (5.8:1),
+//               teal accent #005B4F (4.6:1 on bg, AA non-text).
 interface Props {
   size?: number;
   class?: string;
@@ -55,9 +59,9 @@ const { size = 32, class: className = '' } = Astro.props;
     fill: var(--color-deep-blue);
   }
   .lm-stroke {
-    stroke: #ffffff;
+    stroke: var(--color-logo-stroke);
   }
   .lm-accent {
-    fill: var(--color-teal);
+    fill: var(--color-logo-accent);
   }
 </style>

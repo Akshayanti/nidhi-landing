@@ -87,7 +87,10 @@ const year = new Date().getFullYear();
 
   .footer-tagline {
     font-size: 0.9rem;
-    color: var(--color-teal-dark);
+    /* Same teal as the landing tagline so the brand renders identically
+       in the header/landing and the footer. Light: #005B4F (7.6:1 on
+       page bg). Dark: #80CBC4 (10:1 on #121212). */
+    color: var(--color-teal);
     font-weight: 500;
     margin-top: var(--space-1);
   }
