@@ -74,10 +74,12 @@
  *   GET  ?action=remind_pending     Sends exactly one reminder email to each
  *         or POST                    pending subscriber whose row is older
  *                                   than 3 days and hasn't received a reminder
- *                                   yet. Only operates between 9 AM and 12 PM
- *                                   Prague time (CET/CEST). Idempotent — safe
- *                                   to call repeatedly (e.g. every 30 min via
- *                                   cron). Tracks sent reminders in the
+ *                                   yet. Only operates between 06:00 and 12:59
+ *                                   UTC, which keeps delivery inside civilized
+ *                                   local hours for both Europe and India.
+ *                                   Idempotent: safe to call repeatedly (e.g.
+ *                                   hourly via a GAS time-based trigger).
+ *                                   Tracks sent reminders in the
  *                                   `reminder_sent_at` column so each pending
  *                                   subscriber gets at most one reminder.
  *
@@ -383,7 +385,7 @@ function doGet(e) {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'confirm')         return handleConfirm_(e);
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
-    if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
@@ -409,7 +411,7 @@ function doPost(e) {
     if (action === 'subscribe')       return handleSubscribe_(e);
     if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
-    if (action === 'remind_pending')  return handleRemindPending_();
+    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
@@ -644,10 +646,11 @@ function handleSubscribe_(e) {
 // Pending-subscriber reminder
 // ============================================================================
 //
-// Called via cron (e.g. GitHub Actions scheduled workflow hitting
-// ?action=remind_pending every 30 min). Only operates between 9 AM and
-// 12 PM Prague time. Sends exactly one reminder to each pending subscriber
-// whose row is > 3 days old and hasn't received a reminder yet.
+// Called via a GAS time-based trigger (hourly) bound directly to
+// handleRemindPending. Only operates between 06:00 and 12:59 UTC, which
+// keeps delivery inside civilized local hours for both Europe and India.
+// Sends exactly one reminder to each pending subscriber whose row is
+// > 3 days old and hasn't received a reminder yet.
 //
 // Idempotent: the reminder_sent_at column ensures each pending subscriber
 // gets at most one reminder. Repeated calls are harmless no-ops.
@@ -689,11 +692,13 @@ function handleTestRemind_(e) {
   return jsonResponse_({ ok: false, error: 'email not found in sheet' });
 }
 
-function handleRemindPending_() {
-  // Only run between 9:00 and 11:59 Prague time (CET/CEST).
-  var pragueHour = parseInt(Utilities.formatDate(new Date(), 'Europe/Prague', 'H'), 10);
-  if (pragueHour < 9 || pragueHour >= 12) {
-    return jsonResponse_({ ok: true, skipped: 'outside_window', prague_hour: pragueHour });
+function handleRemindPending() {
+  // Only run between 06:00 and 12:59 UTC. This keeps reminder delivery inside
+  // civilized local hours for both Europe (07:00 to 14:00 CE winter, 08:00 to
+  // 15:00 CE summer) and India (11:30 to 18:30 IST), and is DST-proof.
+  var utcHour = parseInt(Utilities.formatDate(new Date(), 'Etc/UTC', 'H'), 10);
+  if (utcHour < 6 || utcHour >= 13) {
+    return jsonResponse_({ ok: true, skipped: 'outside_window', utc_hour: utcHour });
   }
 
   var cfg = config_();
@@ -748,7 +753,7 @@ function handleRemindPending_() {
       });
       sent++;
     } catch (err) {
-      console.warn('handleRemindPending_: failed for ' + email + ': ' + err);
+      console.warn('handleRemindPending: failed for ' + email + ': ' + err);
     }
   }
 
