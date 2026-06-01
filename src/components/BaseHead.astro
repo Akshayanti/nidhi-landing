@@ -5,7 +5,6 @@ interface Props {
   title: string;
   description: string;
   image?: string;
-  keywords?: string[];
   article?: {
     publishedTime: Date;
     modifiedTime?: Date;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const defaultImage = '/brand/social/og-image.png';
-const { title, description, image = defaultImage, keywords, article, prevUrl, nextUrl, jsonLd = [], robots } = Astro.props;
+const { title, description, image = defaultImage, article, prevUrl, nextUrl, jsonLd = [], robots } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -40,6 +39,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <link rel="shortcut icon" href="/brand/favicons/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/site.webmanifest" />
+<!-- Preload primary Inter latin variant: it's the first font requested by
+     global.css for the body face. Latin-ext is excluded on purpose: it's
+     rarely needed on first paint and would slow LCP for the common case. -->
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <meta name="theme-color" content={NEUTRAL.offWhite} />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content={NEUTRAL.pageBgDark} />
 <meta name="msapplication-TileColor" content={SEMANTIC.calloutBg} />
@@ -47,7 +50,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <title>{title}</title>
 <meta name="description" content={description} />
 {robots && <meta name="robots" content={robots} />}
-{keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />

@@ -256,12 +256,52 @@ const gitMeta = gitLastCommitDate(thisFileRel);
 
 const lastUpdated = gitMeta?.date ?? first?.date ?? '';
 const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
+
+// Earliest changelog entry is the publication date; newest is the modified
+// date. Both are ISO yyyy-mm-dd already, which is exactly what schema.org
+// asks for. Falling back to the git-derived dates keeps the schema valid
+// even on a bare checkout where the changelog array is somehow empty.
+const earliest = changelog[changelog.length - 1];
+const datePublished = earliest?.iso ?? lastUpdatedIso;
+const dateModified = first?.iso ?? lastUpdatedIso;
+
+const privacyWebPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Privacy Notice: How nidhi Handles Your Data',
+  description: 'Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it.',
+  url: 'https://nidhi.today/privacy/',
+  inLanguage: 'en',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'nidhi',
+    url: 'https://nidhi.today/',
+  },
+  ...(datePublished ? { datePublished } : {}),
+  ...(dateModified ? { dateModified } : {}),
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
+      { '@type': 'ListItem', position: 2, name: 'Privacy', item: 'https://nidhi.today/privacy/' },
+    ],
+  },
+};
+
+const privacyBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
+    { '@type': 'ListItem', position: 2, name: 'Privacy', item: 'https://nidhi.today/privacy/' },
+  ],
+};
 ---
 
 <BaseLayout
   title="Privacy Notice: How nidhi Handles Your Data | nidhi"
   description="Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it."
-  keywords={['privacy', 'nidhi privacy policy', 'personal finance blog privacy']}
+  jsonLd={[privacyWebPageSchema, privacyBreadcrumbSchema]}
   robots="index,follow"
 >
   <section class="privacy">
