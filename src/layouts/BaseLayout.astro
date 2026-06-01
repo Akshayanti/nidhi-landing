@@ -19,9 +19,16 @@ interface Props {
   nextUrl?: string | null;
   jsonLd?: object[];
   robots?: string;
+  /** Optional class on the <main> element. Used by /index2 to opt into the
+   *  scroll-snap shell without affecting any other page. */
+  mainClass?: string;
+  /** Optional data-* attributes on <body>. Used by /index2 to set
+   *  data-page="landing", which the global stylesheet keys off to flip the
+   *  header to its fixed/transparent treatment. */
+  bodyData?: Record<string, string>;
 }
 
-const { title, description, image, keywords, article, prevUrl, nextUrl, jsonLd, robots } = Astro.props;
+const { title, description, image, keywords, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
 ---
 
 <!doctype html>
@@ -36,10 +43,10 @@ const { title, description, image, keywords, article, prevUrl, nextUrl, jsonLd, 
     */}
     <slot name="head" />
   </head>
-  <body>
+  <body {...(bodyData || {})}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <Header />
-    <main id="main-content">
+    <main id="main-content" class={mainClass}>
       <slot />
     </main>
     <Footer />

@@ -1,0 +1,479 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Free tools landing page. Lists every currently shipped free tool with a
+// short description and a card-style link. Targets two SEO clusters:
+//
+//   1. "free personal finance tools" (primary)
+//   2. "free expat / multi-currency financial calculators" (secondary)
+//
+// The page is intentionally thin: it is a directory, not a long-form post.
+// Depth is provided by the individual tool pages, the blog, and (in the
+// future) the comparison content. JSON-LD: BreadcrumbList + ItemList so
+// search engines can pick the page up as a tools index.
+
+interface Tool {
+  slug: string;
+  url: string;
+  kicker: string;
+  title: string;
+  desc: string;
+  // What gets rendered into the card preview SVG. Keeps the markup short
+  // and lets the page reuse the same visual language as the homepage tool
+  // grid.
+  preview: 'donut' | 'bars' | 'browse';
+  dataAttr: string;
+  // Used for the JSON-LD ItemList. Same string as the on-page title.
+  itemName: string;
+}
+
+const tools: Tool[] = [
+  {
+    slug: 'multi-currency-net-worth',
+    url: '/free/multi-currency-net-worth/',
+    kicker: 'Multi-currency, FX risk',
+    title: 'Multi-Currency Net Worth Calculator',
+    desc: 'Add assets and liabilities in any of 29 currencies. See your net worth in your spending currency with live ECB rates, then check how much sits in currencies you do not actually spend in.',
+    preview: 'donut',
+    dataAttr: 'free-cta-multi-currency-net-worth',
+    itemName: 'Multi-Currency Net Worth Calculator and Currency Risk Analyzer',
+  },
+  {
+    slug: 'loan-comparison',
+    url: '/free/loan-comparison/',
+    kicker: 'Borrowing decisions',
+    title: 'Loan Comparison Calculator',
+    desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-vendor amortisation, without a spreadsheet.',
+    preview: 'bars',
+    dataAttr: 'free-cta-loan-comparison',
+    itemName: 'Loan Comparison Calculator',
+  },
+];
+
+const canonicalUrl = 'https://nidhi.today/free/';
+
+const title = 'Free Personal Finance Tools and Calculators | nidhi';
+const description =
+  'Free personal finance calculators for multi-currency net worth and loan comparison. No signup, no tracking, all calculations run in your browser.';
+
+const keywords = [
+  'free personal finance tools',
+  'free financial calculators',
+  'free expat financial calculators',
+  'multi-currency net worth calculator',
+  'currency risk calculator',
+  'free loan comparison calculator',
+  'personal finance planning tools',
+  'no signup financial calculator',
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
+    { '@type': 'ListItem', position: 2, name: 'Free Tools', item: canonicalUrl },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'nidhi free personal finance tools',
+  description,
+  numberOfItems: tools.length,
+  itemListOrder: 'https://schema.org/ItemListUnordered',
+  itemListElement: tools.map((tool, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://nidhi.today${tool.url}`,
+    name: tool.itemName,
+  })),
+};
+
+const collectionPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Free Personal Finance Tools',
+  description,
+  url: canonicalUrl,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'nidhi',
+    url: 'https://nidhi.today/',
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  jsonLd={[breadcrumbSchema, itemListSchema, collectionPageSchema]}
+>
+  <section class="ft-page">
+    <nav class="ft-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">Free Tools</li>
+      </ol>
+    </nav>
+
+    <header class="ft-pageHeader">
+      <p class="ft-eyebrow">Free tools</p>
+      <h1 class="ft-pageTitle">Free personal finance tools that run in your browser.</h1>
+      <p class="ft-pageLead">
+        No signup, no account, no data sent to a server. Every calculator
+        below runs entirely in your browser, with live ECB exchange rates
+        where currency conversion is needed. Built for expats, cross-border
+        savers, and anyone who has outgrown a spreadsheet.
+      </p>
+    </header>
+
+    <ul class="ft-toolsGrid" role="list">
+      {tools.map((tool) => (
+        <li class="ft-toolItem">
+          <a href={tool.url} class="ft-toolCard" data-attr={tool.dataAttr}>
+            <div class="ft-toolPreview" aria-hidden="true">
+              {tool.preview === 'donut' && (
+                <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  {/* 62/28/10 wedge endpoints derived as
+                        (r * sin alpha, -r * cos alpha)
+                      at alpha = 223.2 deg and 324 deg. Same pattern used
+                      by the donuts on /index2/ to keep the visual
+                      language consistent across pages. */}
+                  <g transform="translate(40,30)">
+                    <path d="M 0 -22 A 22 22 0 1 1 -15.06 16.04 L 0 0 Z" fill="var(--chart-eur)" />
+                    <path d="M -15.06 16.04 A 22 22 0 0 1 -12.93 -17.80 L 0 0 Z" fill="var(--chart-usd)" />
+                    <path d="M -12.93 -17.80 A 22 22 0 0 1 0 -22 L 0 0 Z" fill="var(--chart-inr)" />
+                    <circle r="12" fill="var(--color-bg-white)" />
+                  </g>
+                </svg>
+              )}
+              {tool.preview === 'bars' && (
+                <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  {/* Two stacked bars of different lengths read as a
+                      comparison without text. Earlier revisions had a
+                      "Vendor A vs Vendor B" caption that overflowed the
+                      viewBox; bars alone do the job at this size. */}
+                  <rect x="10" y="18" width="60" height="10" rx="2" fill="var(--chart-eur)" opacity="0.85" />
+                  <rect x="10" y="34" width="46" height="10" rx="2" fill="var(--chart-usd)" opacity="0.85" />
+                </svg>
+              )}
+              {tool.preview === 'browse' && (
+                <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  <g fill="var(--color-text-muted)">
+                    <rect x="14" y="14" width="14" height="14" rx="2" />
+                    <rect x="33" y="14" width="14" height="14" rx="2" />
+                    <rect x="52" y="14" width="14" height="14" rx="2" />
+                    <rect x="14" y="33" width="14" height="14" rx="2" />
+                    <rect x="33" y="33" width="14" height="14" rx="2" opacity="0.6" />
+                    <rect x="52" y="33" width="14" height="14" rx="2" opacity="0.4" />
+                  </g>
+                </svg>
+              )}
+            </div>
+            <span class="ft-kicker">{tool.kicker}</span>
+            <span class="ft-title">{tool.title}</span>
+            <span class="ft-desc">{tool.desc}</span>
+            <span class="ft-cta" aria-hidden="true">Open the tool &rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <section class="ft-howItWorks" aria-labelledby="ft-how-h">
+      <h2 id="ft-how-h" class="ft-sectionTitle">How these tools work</h2>
+      <ul class="ft-howList">
+        <li>
+          <strong>All calculation runs in your browser.</strong> The numbers you type, the values
+          you upload, and any results are kept on your device. They are not sent to nidhi or to any
+          third party.
+        </li>
+        <li>
+          <strong>Live ECB exchange rates where needed.</strong> When a tool needs a currency
+          conversion, your browser fetches reference rates from the
+          <a href="https://www.frankfurter.app" target="_blank" rel="noopener noreferrer">Frankfurter</a>
+          API (a free, open mirror of European Central Bank reference rates). The request includes
+          only your selected functional currency, not your asset data.
+        </li>
+        <li>
+          <strong>No signup, no account, no email needed.</strong> The tools are usable straight from
+          the page. Optional shareable links encode your inputs into the URL itself, which means
+          you control whether to share, and with whom.
+        </li>
+        <li>
+          <strong>Educational, not advice.</strong> Each tool shows you the math behind the answer
+          and the assumptions it makes, so you can apply the same logic to your own situation.
+          For decisions that matter, talk to a qualified professional.
+        </li>
+      </ul>
+    </section>
+
+    <footer class="ft-pageFooter">
+      <p>
+        Want the longer reasoning behind these tools? Read the
+        <a href="/blog/">nidhi blog</a> for the curriculum that informs them, or
+        learn what we
+        <a href="/beliefs/">believe about money and planning</a>.
+      </p>
+    </footer>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ----------------------------------------------------------------
+     Free tools index page (/free/).
+     Scoped to this page; if any of these patterns recur on a future
+     page, hoist them into global.css then.
+     ---------------------------------------------------------------- */
+  .ft-page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+
+  .ft-breadcrumbs {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .ft-breadcrumbs ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ft-breadcrumbs li + li::before {
+    content: "/";
+    margin-right: 6px;
+    color: var(--color-border);
+  }
+
+  .ft-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .ft-breadcrumbs a:hover {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+
+  .ft-pageHeader {
+    margin-bottom: var(--space-10);
+    text-align: center;
+  }
+
+  .ft-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    font-weight: 700;
+    margin: 0 0 var(--space-2);
+  }
+
+  .ft-pageTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 2.4vw + 0.75rem, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .ft-pageLead {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 64ch;
+    margin: 0 auto;
+    text-wrap: pretty;
+  }
+
+  /* Tools grid: a single column on phones, two columns from tablet up.
+     Cards are quite tall to give the description room without truncation,
+     and a CTA row at the bottom that hints "Open the tool" so the entire
+     card-as-link affordance is unmistakable. */
+  .ft-toolsGrid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 720px) {
+    .ft-toolsGrid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+  }
+
+  .ft-toolItem { display: flex; }
+
+  .ft-toolCard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .ft-toolCard:hover,
+  .ft-toolCard:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    outline: none;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ft-toolPreview {
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-2);
+  }
+
+  .ft-toolPreview svg { max-width: 100%; max-height: 100%; }
+
+  .ft-kicker {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-teal);
+    font-weight: 700;
+  }
+
+  .ft-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .ft-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  .ft-cta {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-deep-blue);
+    transition: transform 0.15s ease;
+  }
+
+  .ft-toolCard:hover .ft-cta {
+    transform: translateX(2px);
+  }
+
+  /* "How these tools work" explainer block. Pulled out of the tool cards
+     because every card would otherwise repeat the same privacy stance. One
+     statement, four bullets, links to the privacy policy implicitly via
+     site footer; explicit links are kept to Frankfurter (where the network
+     call goes) and the blog. */
+  .ft-howItWorks {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-6);
+    margin-bottom: var(--space-8);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ft-sectionTitle {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-4);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .ft-howList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .ft-howList li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .ft-howList li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    opacity: 0.55;
+  }
+
+  .ft-howList li strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .ft-howList a {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ft-pageFooter {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .ft-pageFooter a {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .ft-page { padding: var(--space-5) var(--space-3) var(--space-10); }
+    .ft-howItWorks { padding: var(--space-5) var(--space-4); }
+    .ft-toolCard { padding: var(--space-4); }
+  }
+</style>

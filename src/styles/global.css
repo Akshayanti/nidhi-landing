@@ -3928,3 +3928,90 @@ strong {
     align-items: center;
   }
 }
+
+/* ============================================================================
+ * Landing page (index2)
+ *
+ * Scoped to body[data-page="landing"] so these rules only apply to the new
+ * scroll-snap landing page. Everything else on the site is unaffected.
+ *
+ * On rollback (when index2 is folded into index.astro and the parallel
+ * period ends), this block stays put because the scroll-snap shell is the
+ * landing-page chrome itself, not a temporary overlay.
+ *
+ * Three jobs:
+ *   1. Snap the document scroller (not <main>): single scrollbar.
+ *   2. Make the header transparent + backdrop-blurred over the snap shell.
+ *   3. Define chart-series tokens used by the inline SVG mocks.
+ *
+ * Snap behaviour follows the redesign plan: proximity (not mandatory),
+ * disabled below 768px, disabled when the user prefers reduced motion.
+ * ========================================================================= */
+
+/* Chart-series tokens. Used by every composed SVG mock on the landing page
+   so currency wedges, sparklines, comparison paths and forecast cones share
+   one palette in both themes. Defined globally because SVG markup with
+   var(--chart-*) needs the cascade to resolve them; scoping to
+   body[data-page="landing"] would require the SVG itself to live below
+   that selector, which it does, but defining globally keeps them reusable
+   if the same mocks ever land elsewhere (e.g. blog post figures). */
+:root {
+  --chart-eur: var(--palette-blue);
+  --chart-usd: var(--palette-teal);
+  --chart-inr: var(--chart-amber);
+}
+[data-theme="dark"] {
+  --chart-eur: var(--palette-blue-dark);
+  --chart-usd: var(--palette-teal-dark);
+  --chart-inr: var(--semantic-warning-dark);
+}
+
+/* Snap shell: scroll-snap on the document scroller, not on <main>. Avoids
+   a second inner scrollbar when the footer renders below <main>. */
+html:has(body[data-page="landing"]) {
+  scroll-padding-top: 60px;       /* matches sticky header height */
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  html:has(body[data-page="landing"]) {
+    scroll-snap-type: y proximity;
+  }
+}
+
+body[data-page="landing"] .snap-section {
+  /* Each snap section occupies at least one viewport so its content is
+     framed against the page chrome rather than crammed against the next
+     section. 100dvh accommodates mobile address-bar collapse without
+     jitter; falls back to 100vh in browsers that do not support dvh. */
+  min-height: 100dvh;
+}
+@supports not (min-height: 100dvh) {
+  body[data-page="landing"] .snap-section { min-height: 100vh; }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  body[data-page="landing"] .snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Header treatment for the landing page: transparent + backdrop-blur so
+   it floats above the snap sections without a visible chrome edge. The
+   default sticky positioning is preserved (no layout shift between pages
+   that use the landing chrome and pages that do not). */
+body[data-page="landing"] .site-header {
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  border-bottom-color: color-mix(in srgb, var(--color-border-light) 60%, transparent);
+}
+
+/* Footer (Footer.astro) sits after <main>. The default top margin pushes
+   it well past the last snap section, which on a desktop with proximity
+   snap can feel like a dead band. Tighten it specifically on the landing
+   page so the trust strip + waitlist + footer feel like one continuous
+   conversion tail. */
+body[data-page="landing"] .site-footer {
+  margin-top: 0;
+}
