@@ -33,6 +33,12 @@ const currentPath = Astro.url.pathname;
               Loan Comparison
             </a>
           </li>
+          <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
+          <li role="none">
+            <a href="/free/" class:list={[{ active: currentPath === '/free/' }]} role="menuitem" data-attr="nav-tool-all">
+              View all free tools
+            </a>
+          </li>
         </ul>
       </div>
       <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
@@ -133,6 +139,13 @@ const currentPath = Astro.url.pathname;
     text-decoration: none;
     transition: background 0.1s ease, color 0.1s ease;
     white-space: nowrap;
+  }
+
+  /* Hairline divider between specific tools and the "View all" entry. */
+  .nav-dropdownDivider {
+    height: 1px;
+    background: var(--color-border-light);
+    margin: var(--space-1) 0;
   }
 
   .nav-dropdownMenu a:hover,

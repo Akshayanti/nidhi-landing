@@ -6,7 +6,12 @@ export default defineConfig({
   site: 'https://nidhi.today',
   integrations: [react(), sitemap({
     filter: (page) => {
-      const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed'];
+      // index2 is the in-progress landing-page redesign. It carries
+      // robots="noindex,nofollow" while it lives next to the current home,
+      // and is excluded from the sitemap so search engines do not see two
+      // near-duplicate root pages during the parallel period. When the
+      // redesign ships into index.astro this exclusion can be removed.
+      const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed', 'index2'];
       return !transactional.some(p => page.includes(p));
     },
   })],
