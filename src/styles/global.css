@@ -1152,6 +1152,10 @@ strong {
 }
 
 .lp-cardTag {
+  /* `<a>` rendering of what used to be a `<button>`: same visual,
+     plus the anchor-specific resets (no underline, inherited
+     display) so crawlers see a real link without UI regressions. */
+  display: inline-block;
   font-size: 0.65rem;
   padding: 1px 6px;
   border-radius: var(--radius-sm);
@@ -1162,6 +1166,7 @@ strong {
   transition: all 0.15s ease;
   font-family: var(--font-body);
   line-height: 1.4;
+  text-decoration: none;
 }
 
 .lp-cardTag:hover {
@@ -1261,6 +1266,9 @@ strong {
 }
 
 .lp-tagFilterBtn {
+  /* `<a>` rendering: anchor-specific resets so the chip looks
+     identical to the previous `<button>` rendering. */
+  display: inline-block;
   font-size: 0.75rem;
   padding: 3px 10px;
   border-radius: 9999px;
@@ -1271,6 +1279,7 @@ strong {
   transition: all 0.15s ease;
   font-family: var(--font-body);
   line-height: 1.4;
+  text-decoration: none;
 }
 
 .lp-tagFilterBtn:hover {

@@ -29,9 +29,17 @@ interface Props {
     totalTime?: string;
     steps: Array<{ name: string; text: string }>;
   };
+  /**
+   * Up to 3 "Keep reading" cards. Resolved upstream in
+   * `src/pages/blog/[slug].astro` from the post's `relatedSlugs` plus
+   * tag-overlap fallback. Empty array (no block rendered) until either
+   * `relatedSlugs` lists a published target or another published post
+   * shares at least one tag.
+   */
+  relatedPosts?: Array<{ slug: string; title: string; description: string }>;
 }
 
-const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo } = Astro.props;
+const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [] } = Astro.props;
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 // Surface "Updated <date>" only when the updated date is meaningfully later
@@ -234,6 +242,24 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               </a>
             )}
           </nav>
+        )}
+
+        {relatedPosts.length > 0 && (
+          <aside class="post-related" aria-labelledby="post-related-h">
+            <h2 id="post-related-h" class="post-related-title">Keep reading</h2>
+            <div class="post-related-grid">
+              {relatedPosts.map((rp) => (
+                <a
+                  class="post-related-card"
+                  href={`/blog/${rp.slug}/`}
+                  data-attr={`related-${rp.slug}`}
+                >
+                  <span class="post-related-card-title">{rp.title}</span>
+                  <span class="post-related-card-desc">{rp.description}</span>
+                </a>
+              ))}
+            </div>
+          </aside>
         )}
 
         <SubscribeSection variant="full" />
@@ -628,6 +654,76 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     .post-nav { flex-direction: column; gap: var(--space-3); }
     .post-nav-link { max-width: 100%; }
     .post-nav-next { text-align: left; }
+  }
+
+  /* "Keep reading" block. Sits between the prev/next pager and the
+     subscribe CTA. Card visuals mirror the related-reads pattern on the
+     multi-currency tool and the new tag hub page so the affordance reads
+     consistently across the site. */
+  .post-related {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .post-related-title {
+    font-size: 1.1rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .post-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 800px) {
+    .post-related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .post-related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 100%;
+  }
+
+  .post-related-card:hover,
+  .post-related-card:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .post-related-card:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .post-related-card-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .post-related-card-desc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
   }
 
   /* Reading progress bar */
