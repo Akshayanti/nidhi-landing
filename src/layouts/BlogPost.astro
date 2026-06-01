@@ -34,6 +34,15 @@ interface Props {
 const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo } = Astro.props;
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+// Surface "Updated <date>" only when the updated date is meaningfully later
+// than the publish date (more than seven days). This avoids noisy "updated"
+// labels for fixes made within the publication window, while letting genuine
+// freshness signals show through to readers and to SERP CTR.
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+const showUpdated = !!updatedDate && updatedDate.getTime() - pubDate.getTime() > SEVEN_DAYS_MS;
+const updatedStr = showUpdated && updatedDate
+  ? updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  : '';
 const siteUrl = 'https://nidhi.today';
 const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
 
@@ -54,11 +63,16 @@ const blogPostingSchema = {
     name: 'nidhi',
     url: `${siteUrl}/`,
   },
+  // Point at the generic site OG image for now. The previous pointer at
+  // /baba_money.webp with declared 800x1200 dims was wrong on both URL
+  // and dimensions: the asset is a small headshot, not a 1.6 MP image.
+  // PR16 will repoint this at a per-post OG image generator and emit the
+  // real dims dynamically.
   image: {
     '@type': 'ImageObject',
-    url: `${siteUrl}/baba_money.webp`,
-    width: 800,
-    height: 1200,
+    url: `${siteUrl}/brand/social/og-image.png`,
+    width: 1200,
+    height: 630,
   },
   url: `${siteUrl}/blog/${slug}/`,
   mainEntityOfPage: {
@@ -116,9 +130,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 ---
 
 <BaseLayout
-  title={title}
+  title={`${title} | nidhi`}
   description={description}
-  keywords={tags}
   article={{
     publishedTime: pubDate,
     modifiedTime: updatedDate,
@@ -136,6 +149,11 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           <LevelBadge level={level} />
           {readingTime && <span class="post-reading-time">{readingTime} min read</span>}
           <time datetime={pubDate.toISOString()} class="post-date">{dateStr}</time>
+          {showUpdated && updatedDate && (
+            <span class="post-updated">
+              Updated <time datetime={updatedDate.toISOString()}>{updatedStr}</time>
+            </span>
+          )}
         </div>
         <h1 class="post-title">{title}</h1>
         <div class="post-tldr">
@@ -315,6 +333,21 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
   .post-date {
     font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Updated label sits next to the publish date when the post has a
+     meaningfully later updatedDate. Visible recency is a CTR signal on
+     evergreen finance content; we use the same muted treatment as the
+     pubDate so it reads as metadata, not an alert. */
+  .post-updated {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .post-updated::before {
+    content: '\00b7';
+    margin-right: var(--space-2);
     color: var(--color-text-muted);
   }
 

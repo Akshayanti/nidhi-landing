@@ -65,65 +65,15 @@ const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).sli
 // "multi-currency" (and its punctuation variants) is the secondary
 // modifier. We keep both "comparator" and "comparison" present because
 // they're not interchangeable in search intent: "comparator" trends
-// international/UK/IN, "comparison" trends US.
+// international/UK/IN, "comparison" trends US. Search-intent surface
+// area now lives in the page's H1, lead, and on-page headings (and in
+// the WebApplication.featureList JSON-LD below) rather than a meta
+// keywords stuffing list, which modern search engines either ignore or
+// penalize.
 const title =
   'Loan Comparison Calculator: Side-by-Side, Multi-Currency | nidhi';
 const description =
   'Free loan comparison calculator. Compare two to five offers side by side: monthly payment, payoff time, total interest, APR, and total cost. Multi-currency.';
-const keywords = [
-  // Primary intent: loan / comparison / side-by-side phrasings.
-  'loan comparison calculator',
-  'loan comparison',
-  'compare loans side by side',
-  'compare loan offers side by side',
-  'loan calculator side by side',
-  'side by side loan calculator',
-  'side-by-side loan comparison',
-  'compare loans',
-  'compare loan offers',
-  'compare lenders',
-  'loan comparator',
-  'loan comparison tool',
-  // Loan types still in the comparison/side-by-side family.
-  'mortgage comparison calculator',
-  'compare mortgages side by side',
-  'auto loan comparison',
-  'compare car loans',
-  'personal loan comparison',
-  'student loan comparison',
-  // Secondary modifier: multi-currency permutations. Search engines
-  // treat hyphen, space, and concatenation as different surface forms
-  // for matching; we list each so we don't lose long-tail traffic.
-  'multi-currency loan calculator',
-  'multi currency loan calculator',
-  'multicurrency loan calculator',
-  'multi-currency loan comparator',
-  'multi currency loan comparator',
-  'multicurrency loan comparator',
-  'multi-currency loan comparison',
-  'multi currency loan comparison',
-  'multicurrency loan comparison',
-  'international loan calculator',
-  // Math/feature surface (also fed into JSON-LD featureList).
-  'amortization calculator',
-  'amortisation calculator',
-  'monthly payment calculator',
-  'total interest calculator',
-  'APR calculator',
-  'APR comparison',
-  'APR vs interest rate',
-  'effective interest rate calculator',
-  'true cost of loan calculator',
-  'interest vs principal chart',
-  'amortization split chart',
-  'origination fee calculator',
-  'extra principal calculator',
-  // Currency-specific long tail.
-  'INR loan calculator',
-  'rupee loan calculator',
-  'EUR loan calculator',
-  'JPY loan calculator',
-];
 
 // FAQ is split into logical sections so users can scan to the topic
 // they care about (basics, costs, prepayments, etc.) instead of reading
@@ -356,7 +306,6 @@ const faqSchema = {
 <BaseLayout
   title={title}
   description={description}
-  keywords={keywords}
   jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
 >
   <section class="lc-page">

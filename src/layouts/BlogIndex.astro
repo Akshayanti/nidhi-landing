@@ -42,8 +42,6 @@ const blogBreadcrumbSchema = {
   ],
 };
 
-const allKeywords = [...new Set(['personal finance', 'financial literacy', 'personal finance literacy', 'money management', ...posts.flatMap(p => p.data.tags)])];
-
 const blogItemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -62,7 +60,6 @@ const blogItemListSchema = {
 <BaseLayout
   title="Personal Finance Blog | nidhi"
   description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
-  keywords={allKeywords}
   jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
 >
   <section class="blog-index">

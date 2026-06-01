@@ -90,16 +90,22 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 const formatted = formatTag(tag);
 const meta = TAG_META[tag];
-const title = meta?.title ?? `${formatted}: Personal Finance Literacy | nidhi`;
+// TAG_META titles already end with "| nidhi"; the fallback path doesn't, so
+// we append the suffix exactly once at the end. Keeps the brand suffix
+// consistent across both branches without duplicating it.
+const baseTitle = meta?.title ?? `${formatted}: Personal Finance Literacy`;
+const title = baseTitle.endsWith('| nidhi') ? baseTitle : `${baseTitle} | nidhi`;
 const description = meta?.description ?? `Articles about ${formatted.toLowerCase()}: practical personal finance literacy and financial education from nidhi.`;
-const keywords = [tag, 'personal finance', 'financial literacy', 'personal finance literacy', 'money management'];
 
 const tagBreadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog/' },
-    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${tag}/` },
+    // encodeURIComponent guards against tags that contain spaces, slashes, or
+    // unicode. Today every tag in TAG_META is plain ascii lowercase-with-hyphens,
+    // but a future tag like "buy now, pay later" would emit an invalid URL.
+    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${encodeURIComponent(tag)}/` },
   ],
 };
 
@@ -121,7 +127,6 @@ const tagItemListSchema = {
 <BaseLayout
   title={title}
   description={description}
-  keywords={keywords}
   jsonLd={[tagBreadcrumbSchema, tagItemListSchema]}
 >
   <section class="blog-index">
