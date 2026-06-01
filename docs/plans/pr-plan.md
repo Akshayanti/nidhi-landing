@@ -45,7 +45,7 @@ Verified against a fresh `npm run build` run.
 - **Indexable**: home (`/`), `/beliefs/`, `/free/` (June 2026 addition), `/free/multi-currency-net-worth/`, `/free/loan-comparison/`, `/blog/`, 17 blog posts, 8 tag pages, `/privacy/`.
 - **Excluded from sitemap (intentional)**: 5 transactional pages plus the parked redesign at `/index2/`.
 - **`/index2/`**: `robots="noindex,nofollow"`, not linked from anywhere visible. Slated to replace `/` in PR18.
-- **JSON-LD coverage**: every indexable page emits at least one schema *except* `/privacy/` (gap, finding 23, closes in PR1).
+- **JSON-LD coverage**: every indexable page emits at least one schema. `/privacy/` was the last gap (finding 23); closed by PR1, which added `WebPage` + `BreadcrumbList`.
 - **No `<lastmod>` in the sitemap** (finding 11, closes in PR3).
 - **Frontmatter usage**: 0 of 32 posts populate `relatedSlugs:`. 4 of 32 populate `faq:`. 1 of 32 populates `howTo:`. (Findings 4 + 7, close across PR2 + PR5.)
 
@@ -55,9 +55,9 @@ Verified against a fresh `npm run build` run.
 
 | PR | Title | Findings closed | Effort | Depends on |
 |---|---|---|---|---|
-| PR0 | Landing-page foundation (current branch) | (sets up 1, 16, 25) | done | — |
-| PR1 | SEO quick wins (markup-only batch) | 2, 10, 12, 15, 19, 22, 23, 27 | 1.5-2 h | PR0 |
-| PR2 | Internal linking + tag discovery | 4 (render), 5, 20, 26 | 2.5-3 h | PR0 |
+| PR0 | Landing-page foundation | (sets up 1, 16, 25) | done | — |
+| PR1 | SEO quick wins (markup-only batch) | 2, 10, 12, 15, 19, 22, 23, 27 | done | PR0 |
+| PR2 | Internal linking + tag discovery | 4 (render), 5, 20, 26 | in review | PR0 |
 | PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | 2-3 h | PR0 |
 | PR4 | `WebSite.SearchAction` wire-up | 17 | 0.5-1 h | PR0 |
 | PR5 | Schema track: FAQ + relatedSlugs + inline links | 4 (population), 7 | 8-12 h | PR2 |
@@ -68,7 +68,7 @@ Verified against a fresh `npm run build` run.
 | PR17 | AI-bot policy update | 13 | 0.5 h + decision | PR0 |
 | PR18 | Final `/` ← `/index2/` swap | 1, 16, (25 if not in PR14) | 0.5-1 h | PR0; ideally PR1, PR3, PR14 |
 
-**Total open effort**: 35-50 h across 12-19 PRs (PR6-PR13 expand to 4-8 PRs depending on batching). Splittable along the existing Mon/Wed/Fri publishing cadence at ~11-12 weeks if depth rewrites slot one per publishing window.
+**Total open effort**: 31-45 h across 10-17 PRs (PR6-PR13 expand to 4-8 PRs depending on batching). Splittable along the existing Mon/Wed/Fri publishing cadence at ~11-12 weeks if depth rewrites slot one per publishing window.
 
 ---
 
@@ -126,6 +126,8 @@ None. The `/free/` index collects nothing. The parked `/index2/` reuses the same
 
 ## PR1: SEO quick wins (markup-only batch)
 
+> **Status**: merged. Branch `feat/seo-quick-wins`, commit `292d898`, PR #16, merged 2026-06-01 as `b3beb91`. All eight findings closed.
+>
 > One PR, one focused review pass, eight findings closed. All markup, schema, or metadata. Zero data-handling impact.
 
 ### Scope
@@ -164,7 +166,7 @@ In order of importance:
 
 ### Effort
 
-1.5-2 h.
+Done. Estimated 1.5-2 h, actual within band.
 
 ### Dependencies
 
@@ -176,20 +178,26 @@ None. Markup, schema, and metadata changes only; no user-data scope change.
 
 ### Verification
 
-- [ ] `dist/` rebuild contains zero `<meta name="keywords">` tags. Verified via grep.
-- [ ] All blog post titles in `dist/blog/*/index.html` end with `| nidhi`.
-- [ ] All tag-page titles in `dist/blog/tag/*/index.html` end with `| nidhi`.
-- [ ] `<link rel="preload">` for `inter-latin.woff2` appears in every `<head>` in `dist/`.
-- [ ] One representative blog post with `updatedDate` set renders both publish and updated dates.
-- [ ] `BlogPosting.image` JSON-LD now references `og-image.png` with `1200x630`.
-- [ ] `dist/privacy/index.html` contains `<script type="application/ld+json">` blocks for `WebPage` and `BreadcrumbList`.
-- [ ] Built tag-page BreadcrumbList JSON-LD passes `encodeURIComponent` (verify by inspecting one URL).
-- [ ] Lighthouse SEO score on `/`, `/blog/`, `/blog/<post>/`, and `/free/loan-comparison/` is at least equal to pre-PR baseline (record both).
+- [x] `dist/` rebuild contains zero `<meta name="keywords">` tags. Verified via grep.
+- [x] All blog post titles in `dist/blog/*/index.html` end with `| nidhi`.
+- [x] All tag-page titles in `dist/blog/tag/*/index.html` end with `| nidhi`.
+- [x] `<link rel="preload">` for `inter-latin.woff2` appears in every `<head>` in `dist/` (42/42 pages).
+- [x] One representative blog post with `updatedDate` set renders both publish and updated dates (`/blog/what-is-net-worth/`, pubDate 2026-04-19, updatedDate 2026-05-07).
+- [x] `BlogPosting.image` JSON-LD now references `og-image.png` with `1200x630`.
+- [x] `dist/privacy/index.html` contains `<script type="application/ld+json">` blocks for `WebPage` and `BreadcrumbList`.
+- [x] Built tag-page BreadcrumbList JSON-LD passes `encodeURIComponent` (every current tag is plain ASCII, so no surface change today; the call site is now safe for future tags with spaces or unicode).
+- [ ] Lighthouse SEO score on `/`, `/blog/`, `/blog/<post>/`, and `/free/loan-comparison/` is at least equal to pre-PR baseline. Not measured locally; deferred to a post-deploy spot-check.
+
+### Follow-ups surfaced during PR1
+
+- Several blog post frontmatter titles already exceed ~55 chars; with the `| nidhi` suffix appended, they now exceed Google's ~60-char SERP cap and will be truncated. Per-post title shortening is content work and was out of PR1's markup-only scope. Queue as a small content pass before PR5 lands.
 
 ---
 
 ## PR2: Internal linking + tag discovery
 
+> **Status**: open for review. Branch `feat/internal-linking`. Closes findings 4 (render side), 5, 20, 26.
+>
 > Strengthens the crawlable internal-link graph. Pure template work; no content rewrites yet (PR5 carries the population side).
 
 ### Scope
@@ -198,26 +206,31 @@ None. Markup, schema, and metadata changes only; no user-data scope change.
    - Reuse the card pattern from `src/pages/free/multi-currency-net-worth.astro:333-341` for visual consistency.
    - Render as a 3-up "Keep reading" block above `SubscribeSection`.
    - Filter against published slugs the same way that page does (silent fallback for unpublished targets).
-   - Frontmatter population happens in PR5; the block renders empty until then.
+   - Resolution honours the documented schema contract: `relatedSlugs` first, then a tag-overlap fallback against the published corpus when fewer than 3 candidates remain. Backward-only link discipline: a related entry must have `pubDate` on or before the linking post's `pubDate`. The earliest post in the corpus therefore renders no related block, which is correct.
+   - Frontmatter population (PR5) will replace tag-overlap picks with editorially curated ones; the render path is the same either way.
 
 2. **Build `/blog/tag/` index page** (finding 5).
    - New file: `src/pages/blog/tag/index.astro`.
-   - Lists all tags from the `TAG_META` table in `[tag].astro:7-56` with post counts and short descriptions.
-   - Emit `CollectionPage` + `BreadcrumbList` JSON-LD.
-   - Linked from blog index ("Browse by topic") and footer.
+   - Lists every tag the published corpus actually uses (not just the curated `TAG_META` set; tags missing from `TAG_META` get a generated fallback blurb).
+   - Sorted by post count (descending), tie-broken alphabetically.
+   - Emits `CollectionPage` (with `hasPart` listing every tag URL) + `BreadcrumbList` JSON-LD.
+   - Linked from blog index ("Browse by topic") and footer ("Browse topics").
 
 3. **Convert `LearningPath.tsx` chips from `<button>` to `<a>`** (finding 26).
    - `src/components/LearningPath.tsx:145` (per-card tag chips) and `:331` (filter-bar chips).
-   - `<a href="/blog/tag/${tag}/">` carrying the same click handler.
-   - On the blog index, intercept with `e.preventDefault()` to keep the React filter behaviour. On the tag page itself, let the link navigate (no filter context to preserve there).
-   - Net behaviour: identical UX, plus crawlable links.
+   - `<a href="/blog/tag/${encodeURIComponent(tag)}/">` carrying the same click handler.
+   - New `interceptTagClick` prop on `<LearningPath>`: defaults to `true` (blog index → click filters in place via `e.preventDefault()`); explicitly `false` on the per-tag page so a chip click navigates to the new tag's page.
+   - Net behaviour: identical UX, plus crawlable links in the static HTML.
 
 4. **Add "Browse all topics" CTA on `[tag].astro`** (finding 20).
-   - 10 minutes once the tag index from #2 exists. Bottom of post list, before footer.
+   - Bottom of post list, before footer. Dotted-underline treatment for affordance consistency with the related-tools footer link.
+
+5. **Refactor: extract shared tag metadata** (incidental, not a numbered finding).
+   - `TAG_META` and `formatTag` moved to `src/utils/tags.ts` so the new tag hub and the existing `[tag].astro` route share one source. `TAG_META` titles now end with `| nidhi` directly so the tag page no longer has to append the suffix at the call site.
 
 ### Effort
 
-2.5-3 h.
+Estimated 2.5-3 h, actual within band.
 
 ### Dependencies
 
@@ -225,16 +238,17 @@ PR0. Independent of PR1.
 
 ### Privacy changelog
 
-None.
+None. Pure markup, schema, and template work; no new data collection, storage, third-party calls, or user-facing flows that touch personal data. The new `/blog/tag/` route emits no requests beyond the static page render. Tag-chip clicks on the blog index and tag pages stay client-side; the new anchors give crawlers a real link, but the click handler still controls the actual behaviour.
 
 ### Verification
 
-- [ ] `dist/blog/tag/index.html` exists with `CollectionPage` + `BreadcrumbList` JSON-LD.
-- [ ] Tag index page is reachable from blog index nav and from footer.
-- [ ] Built blog post pages render an empty "Keep reading" placeholder block (will populate in PR5).
-- [ ] `dist/blog/index.html` and `dist/blog/tag/<tag>/index.html` both contain `<a href="/blog/tag/...">` instead of `<button>` for the chip elements (verify by grep).
-- [ ] Tag chip click on the blog index still triggers the React filter (no full navigation).
-- [ ] Tag chip click on a tag page navigates to the new tag's page.
+- [x] `dist/blog/tag/index.html` exists with `CollectionPage` + `BreadcrumbList` JSON-LD.
+- [x] Tag index page is reachable from the blog index ("Browse by topic" link) and from the footer ("Browse topics" link under Learn).
+- [x] Built blog post pages render the "Keep reading" 3-up block when at least one published post matches by `relatedSlugs` or tag overlap. The earliest post (`/blog/what-is-net-worth/`) correctly renders no block (no backward-eligible candidates).
+- [x] `dist/blog/index.html` and `dist/blog/tag/<tag>/index.html` both contain `<a href="/blog/tag/...">` instead of `<button>` for the chip elements (55 anchor chips on the blog index; 0 button chips anywhere in `dist/`).
+- [x] Tag chip click on the blog index still triggers the React filter via the default `interceptTagClick=true` (verified by inspecting the serialized island props: blog index omits the prop and falls back to the default; tag page passes `interceptTagClick: false`).
+- [x] Tag chip click on a tag page navigates to the new tag's page (no filter context to preserve).
+- [x] `dist/sitemap-0.xml` includes `https://nidhi.today/blog/tag/`.
 
 ---
 
@@ -967,32 +981,32 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | # | Title | Status | Closes in |
 |---|---|---|---|
 | 1 | Home page H1 is the brand word, not a keyword phrase | Conditional resolve | PR18 |
-| 2 | Blog post `<title>` tags omit the brand suffix; tag pages too | Open | PR1 |
+| 2 | Blog post `<title>` tags omit the brand suffix; tag pages too | **Resolved** (PR1) | — |
 | 3 | Discovery posts too thin to rank | Open | PR6-PR13 |
-| 4 | Internal linking weak; `relatedSlugs` is dead code | Open | PR2 (render) + PR5 (population) |
-| 5 | `/blog/tag/` returns a 404 | Open | PR2 |
+| 4 | Internal linking weak; `relatedSlugs` is dead code | **Resolved** (render side, PR2); population in PR5 | PR5 |
+| 5 | `/blog/tag/` returns a 404 | **Resolved** (PR2) | — |
 | 6 | EEAT signals missing for YMYL content | Open | PR14 |
 | 7 | FAQ schema wired but used by only 4 of 32 posts | Open | PR5 |
 | 8 | PostHog snippet render-blocking and currently inert | Open | PR15 |
 | 9 | Hero image oversized for its rendered slot | Open | PR3 |
-| 10 | Fonts not preloaded | Open | PR1 |
+| 10 | Fonts not preloaded | **Resolved** (PR1) | — |
 | 11 | Sitemap has no `lastmod` | Open | PR3 |
-| 12 | `<meta name="keywords">` dead weight; free-tool pages stuffed | **Open (worse)** | PR1 (highest urgency) |
+| 12 | `<meta name="keywords">` dead weight; free-tool pages stuffed | **Resolved** (PR1) | — |
 | 13 | Reconsider AI-bot blocks in robots.txt | Open | PR17 |
 | 14 | Per-post OG images | Open | PR16 (optional) |
-| 15 | Surface "last updated" dates visibly | Open | PR1 |
+| 15 | Surface "last updated" dates visibly | **Resolved** (PR1) | — |
 | 16 | Add `BreadcrumbList` to home page | Conditional resolve | PR18 |
 | 17 | `WebSite.SearchAction` points at non-functional URL | Open | PR4 |
 | 18 | Repo-root cruft (`index.html`, `baba_money.png`) | **Resolved** (PR0) | — |
-| 19 | `<abbr class="finosopher">` lacks native `title` attribute | Open | PR1 |
-| 20 | Tag pages don't have a "Browse all topics" link back | Open | PR2 |
+| 19 | `<abbr class="finosopher">` lacks native `title` attribute | **Resolved** (PR1) | — |
+| 20 | Tag pages don't have a "Browse all topics" link back | **Resolved** (PR2) | — |
 | 21 | Per-style budget on long inline `<style>` blocks (informational) | Open | not blocking |
-| 22 | `BlogPosting.image` declares dimensions that don't match | New (June) | PR1 (provisional) + PR16 (proper) |
-| 23 | `/privacy/` emits no JSON-LD | New (June) | PR1 |
+| 22 | `BlogPosting.image` declares dimensions that don't match | **Resolved provisionally** (PR1); proper fix in PR16 | PR16 |
+| 23 | `/privacy/` emits no JSON-LD | **Resolved** (PR1) | — |
 | 24 | `og:image` width/height and `twitter:image:alt` hard-coded | New (June) | PR3 |
 | 25 | `Organization.sameAs` only on parked redesign | New (June), Conditional resolve | PR14 (or PR18) |
-| 26 | `LearningPath.tsx` chips are `<button>` not `<a>` | Re-emphasised | PR2 |
-| 27 | `[tag]` URL not encoded in tag-page BreadcrumbList | New (June) | PR1 |
+| 26 | `LearningPath.tsx` chips are `<button>` not `<a>` | **Resolved** (PR2) | — |
+| 27 | `[tag]` URL not encoded in tag-page BreadcrumbList | **Resolved** (PR1) | — |
 
 ## Per-finding evidence (file/line refs)
 

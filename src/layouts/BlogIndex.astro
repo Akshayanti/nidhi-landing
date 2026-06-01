@@ -68,6 +68,9 @@ const blogItemListSchema = {
         <h1>Learn about your money</h1>
         <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
         <p class="blog-index-cadence">New posts every Mon, Wed &amp; Fri</p>
+        <p class="blog-index-topics">
+          <a href="/blog/tag/" data-attr="blog-index-browse-topics">Browse by topic</a>
+        </p>
       </header>
       <SubscribeSection variant="compact" />
       <LearningPath client:load posts={serializedPosts} />
@@ -109,5 +112,26 @@ const blogItemListSchema = {
     color: var(--color-teal);
     background: rgba(0, 121, 107, 0.08);
     border-radius: 9999px;
+  }
+
+  /* Lightweight pointer to the new tag-hub. Closes finding 5 by giving
+     the `/blog/tag/` route an obvious entry from the blog index. */
+  .blog-index-topics {
+    margin-top: var(--space-2);
+    font-size: 0.85rem;
+  }
+
+  .blog-index-topics a {
+    color: var(--color-deep-blue);
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .blog-index-topics a:hover,
+  .blog-index-topics a:focus-visible {
+    color: var(--color-teal);
+    text-decoration-style: solid;
+    outline: none;
   }
 </style>

@@ -3,61 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { LearningPath } from '../../../components/LearningPath';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../../../utils/readingTime';
-
-const TAG_META: Record<string, { title: string; description: string }> = {
-  'net-worth': {
-    title: 'Net Worth: Personal Finance Literacy',
-    description: 'Everything about net worth: what it is, how to calculate it, and why it matters more than your salary. Free personal finance education from nidhi.',
-  },
-  'fundamentals': {
-    title: 'Financial Fundamentals: Personal Finance Literacy',
-    description: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
-  },
-  'getting-started': {
-    title: 'Getting Started with Personal Finance',
-    description: 'New to personal finance? Start here. Beginner-friendly guides to net worth, budgeting, saving, and building financial literacy from the ground up.',
-  },
-  'debt': {
-    title: 'Understanding and Managing Debt: Finance Literacy',
-    description: 'How debt works, why interest rates matter, and proven strategies to get out of debt. Practical personal finance literacy from nidhi.',
-  },
-  'saving': {
-    title: 'Saving Money: Personal Finance Basics',
-    description: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy guides from nidhi.',
-  },
-  'investing': {
-    title: 'Investing Basics: Financial Literacy',
-    description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
-  },
-  'budgeting': {
-    title: 'Budgeting: Personal Finance Planning',
-    description: 'Practical budgeting methods: 50/30/20, zero-based, and pay-yourself-first. Take control of your cash flow with nidhi\'s financial literacy guides.',
-  },
-  'cash-flow': {
-    title: 'Cash Flow: Understanding Your Money Movement',
-    description: 'Track where your money goes each month. Cash flow is the engine behind wealth building. Free personal finance education from nidhi.',
-  },
-  'liquidity': {
-    title: 'Liquidity: Why Access to Your Money Matters',
-    description: 'What liquidity means for your finances and why being asset-rich but cash-poor is dangerous. Personal finance literacy from nidhi.',
-  },
-  'risk': {
-    title: 'Understanding Financial Risk: Investing Literacy',
-    description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
-  },
-  'insurance': {
-    title: 'Insurance Basics: Protecting Your Finances',
-    description: 'How insurance protects your net worth from catastrophic loss. Health, life, property, disability, and liability explained. Personal finance literacy from nidhi.',
-  },
-  'credit': {
-    title: 'Credit and Credit Scores: Finance Literacy',
-    description: 'How credit scores work, why they affect your borrowing costs, and how to build good credit. Personal finance education from nidhi.',
-  },
-};
-
-function formatTag(tag: string): string {
-  return tag.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
+import { TAG_META, formatTag } from '../../../utils/tags';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -90,11 +36,9 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 const formatted = formatTag(tag);
 const meta = TAG_META[tag];
-// TAG_META titles already end with "| nidhi"; the fallback path doesn't, so
-// we append the suffix exactly once at the end. Keeps the brand suffix
-// consistent across both branches without duplicating it.
-const baseTitle = meta?.title ?? `${formatted}: Personal Finance Literacy`;
-const title = baseTitle.endsWith('| nidhi') ? baseTitle : `${baseTitle} | nidhi`;
+// TAG_META titles already end with "| nidhi"; the fallback path appends it
+// once. Either branch ends in the brand suffix, no double-append risk.
+const title = meta?.title ?? `${formatted}: Personal Finance Literacy | nidhi`;
 const description = meta?.description ?? `Articles about ${formatted.toLowerCase()}: practical personal finance literacy and financial education from nidhi.`;
 
 const tagBreadcrumbSchema = {
@@ -138,7 +82,13 @@ const tagItemListSchema = {
         <h1>{formatted}</h1>
         <p class="blog-index-subtitle">{description}</p>
       </header>
-      <LearningPath client:load posts={posts} />
+      <LearningPath client:load posts={posts} interceptTagClick={false} />
+      <nav class="tag-allTopics" aria-label="More tag pages">
+        <a href="/blog/tag/" class="tag-allTopicsLink" data-attr="tag-browse-all">
+          Browse all topics
+          <span aria-hidden="true">&nbsp;&rsaquo;</span>
+        </a>
+      </nav>
     </div>
   </section>
 </BaseLayout>
@@ -185,5 +135,34 @@ const tagItemListSchema = {
     margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.6;
+  }
+
+  /* Sits below the post list. Gives readers (and crawlers) an obvious path
+     back up to the tag hub from any individual tag page. Uses the same
+     dotted-underline treatment as the related-tools footer link on the
+     multi-currency tool so the affordance reads consistently across the
+     site. */
+  .tag-allTopics {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+    text-align: center;
+  }
+
+  .tag-allTopicsLink {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-deep-blue);
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .tag-allTopicsLink:hover,
+  .tag-allTopicsLink:focus-visible {
+    text-decoration-style: solid;
+    color: var(--color-teal);
+    outline: none;
   }
 </style>

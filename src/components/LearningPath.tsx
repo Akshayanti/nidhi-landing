@@ -95,11 +95,20 @@ interface PostNodeProps {
   isStartHere: boolean;
   levelColor: string;
   selectedTag: string | null;
+  /**
+   * When true, tag-chip clicks trigger the in-page React filter and
+   * preventDefault() the navigation. The blog index renders chips this
+   * way so a click filters the visible list rather than navigating
+   * away. The per-tag pages render with `interceptTagClick=false`, so
+   * a click on a chip there navigates to the new tag's page (no
+   * filter context to preserve).
+   */
+  interceptTagClick: boolean;
   onToggleRead: (id: string) => void;
   onTagClick: (tag: string) => void;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggleRead, onTagClick }: PostNodeProps) {
+function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
@@ -142,14 +151,26 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
         {post.tags.length > 0 && (
           <div className="lp-cardTags">
             {post.tags.slice(0, 3).map((tag) => (
-              <button
+              <a
                 key={tag}
+                href={`/blog/tag/${encodeURIComponent(tag)}/`}
                 className={`lp-cardTag ${selectedTag === tag ? 'lp-cardTagActive' : ''}`}
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTagClick(tag); }}
-                aria-pressed={selectedTag === tag}
+                onClick={(e) => {
+                  // On the blog index we want a click to filter the
+                  // visible learning path, not navigate. On a tag page
+                  // we let the link navigate so the user can switch
+                  // tags. Either way the rendered HTML is a real
+                  // anchor with a real href, so crawlers see the link.
+                  if (interceptTagClick) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onTagClick(tag);
+                  }
+                }}
+                aria-pressed={interceptTagClick ? selectedTag === tag : undefined}
               >
                 {tag}
-              </button>
+              </a>
             ))}
           </div>
         )}
@@ -160,9 +181,16 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, onToggle
 
 interface LearningPathProps {
   posts: PostData[];
+  /**
+   * Controls tag-chip click behaviour. Defaults to true (the blog index
+   * use case). Pass false when rendering inside a per-tag page where a
+   * chip click should navigate to the new tag's page rather than apply
+   * an in-page filter.
+   */
+  interceptTagClick?: boolean;
 }
 
-export function LearningPath({ posts }: LearningPathProps) {
+export function LearningPath({ posts, interceptTagClick = true }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -328,14 +356,23 @@ export function LearningPath({ posts }: LearningPathProps) {
           <span className="lp-tagFilterLabel">Filter by topic:</span>
           <div className="lp-tagList">
             {allTags.map((tag) => (
-              <button
+              <a
                 key={tag}
+                href={`/blog/tag/${encodeURIComponent(tag)}/`}
                 className={`lp-tagFilterBtn ${selectedTag === tag ? 'lp-tagFilterBtnActive' : ''}`}
-                onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-                aria-pressed={selectedTag === tag}
+                onClick={(e) => {
+                  // Same dual-mode behaviour as the per-card chips: on the
+                  // blog index, intercept and toggle the React filter; on
+                  // a tag page, let the click navigate to the new tag.
+                  if (interceptTagClick) {
+                    e.preventDefault();
+                    setSelectedTag(selectedTag === tag ? null : tag);
+                  }
+                }}
+                aria-pressed={interceptTagClick ? selectedTag === tag : undefined}
               >
                 {tag}
-              </button>
+              </a>
             ))}
             {selectedTag && (
               <button className="lp-tagFilterClear" onClick={() => setSelectedTag(null)}>
@@ -442,6 +479,7 @@ export function LearningPath({ posts }: LearningPathProps) {
                 isStartHere={post.id === firstUnreadId}
                 levelColor={group.meta.color}
                 selectedTag={selectedTag}
+                interceptTagClick={interceptTagClick}
                 onToggleRead={toggleRead}
                 onTagClick={setSelectedTag}
               />

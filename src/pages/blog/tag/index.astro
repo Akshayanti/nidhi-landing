@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { TAG_META, formatTag } from '../../../utils/tags';
+
+/**
+ * Tag hub page at /blog/tag/. Closes audit finding 5 (the route used to
+ * 404). Lists every tag the published-posts corpus actually uses, with a
+ * post count and a curated description when one exists in TAG_META.
+ *
+ * Tags missing from TAG_META still show up here with a generated label and
+ * a generic blurb, so adding a new tag never silently drops it from the hub
+ * (it would just lack the editorial copy until TAG_META gains an entry).
+ */
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => isDev || post.data.pubDate <= now);
+
+// Count posts per tag from the live corpus, then sort by post count
+// (descending), tie-break by tag name (ascending). The most populous tag
+// surfaces first, which is also the tag a curious reader is most likely to
+// be looking for.
+const tagCounts = new Map<string, number>();
+for (const post of allPosts) {
+  for (const tag of post.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+interface TagRow {
+  slug: string;
+  formatted: string;
+  count: number;
+  description: string;
+}
+
+const tags: TagRow[] = [...tagCounts.entries()]
+  .map(([slug, count]) => {
+    const meta = TAG_META[slug];
+    const formatted = formatTag(slug);
+    // Keep the hub-card description short. The detail page already shows
+    // the full TAG_META description; here we want a one-line summary.
+    // Strip the trailing "Free personal finance education from nidhi." or
+    // similar boilerplate when present so the cards stay scannable.
+    const description = meta?.description
+      ? meta.description.split('.').slice(0, 2).join('.').trim() + '.'
+      : `Articles tagged "${formatted.toLowerCase()}".`;
+    return { slug, formatted, count, description };
+  })
+  .sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count;
+    return a.slug.localeCompare(b.slug);
+  });
+
+const title = 'Browse by topic | nidhi';
+const description =
+  'Every topic on the nidhi blog: net worth, budgeting, debt, investing, risk, and more. Pick a topic to read every post in that area.';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog/' },
+    { '@type': 'ListItem', position: 2, name: 'Topics', item: 'https://nidhi.today/blog/tag/' },
+  ],
+};
+
+const collectionPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Blog topics',
+  description,
+  url: 'https://nidhi.today/blog/tag/',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'nidhi',
+    url: 'https://nidhi.today/',
+  },
+  // Itemize each tag as a child WebPage. Helps crawlers understand the hub
+  // structure and gives the engines an unambiguous list of destinations.
+  hasPart: tags.map((t) => ({
+    '@type': 'WebPage',
+    name: t.formatted,
+    url: `https://nidhi.today/blog/tag/${encodeURIComponent(t.slug)}/`,
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumbSchema, collectionPageSchema]}
+>
+  <section class="tagHub">
+    <div class="container">
+      <header class="tagHub-header">
+        <nav class="tagHub-breadcrumb" aria-label="Breadcrumb">
+          <a href="/blog/">Blog</a> <span class="sep">/</span> <span>Topics</span>
+        </nav>
+        <h1>Browse by topic</h1>
+        <p class="tagHub-subtitle">
+          Every topic on the blog, with a post count for each. Pick one to read every post in that area.
+        </p>
+      </header>
+
+      {tags.length === 0 ? (
+        <p class="tagHub-empty">No topics yet. Posts publish on Mon, Wed, and Fri.</p>
+      ) : (
+        <ul class="tagHub-list">
+          {tags.map((t) => (
+            <li class="tagHub-item">
+              <a class="tagHub-card" href={`/blog/tag/${encodeURIComponent(t.slug)}/`} data-attr={`tag-hub-${t.slug}`}>
+                <div class="tagHub-cardTop">
+                  <span class="tagHub-cardName">{t.formatted}</span>
+                  <span class="tagHub-cardCount">
+                    {t.count} {t.count === 1 ? 'post' : 'posts'}
+                  </span>
+                </div>
+                <p class="tagHub-cardDesc">{t.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tagHub {
+    padding: var(--space-10) 0 var(--space-16);
+  }
+
+  .tagHub-header {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .tagHub-breadcrumb {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .tagHub-breadcrumb a {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .tagHub-breadcrumb a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .tagHub-breadcrumb .sep {
+    margin: 0 var(--space-1);
+  }
+
+  .tagHub-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .tagHub-subtitle {
+    color: var(--color-text-secondary);
+    max-width: 580px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .tagHub-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  /* Auto-fitting grid: cards are at least 260px wide and stretch to fill,
+     wrapping naturally as the viewport narrows. Avoids a fixed column
+     count that would either crowd small screens or under-fill wide ones. */
+  .tagHub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .tagHub-item {
+    margin: 0;
+  }
+
+  /* Card visuals mirror the related-reads card on the multi-currency
+     tool page: subtle border, tiny lift on hover, deep-blue title. Keeps
+     the affordance pattern consistent across the site. */
+  .tagHub-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    height: 100%;
+  }
+
+  .tagHub-card:hover,
+  .tagHub-card:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .tagHub-card:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .tagHub-cardTop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .tagHub-cardName {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .tagHub-cardCount {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .tagHub-cardDesc {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+</style>

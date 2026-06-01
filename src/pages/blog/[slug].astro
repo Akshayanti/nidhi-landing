@@ -10,9 +10,85 @@ export async function getStaticPaths() {
   const posts = allPosts
     .filter(post => isDev || post.data.pubDate <= now)
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+  // Build a fast lookup so we can resolve relatedSlugs entries without a
+  // linear scan per post.
+  const bySlug = new Map(posts.map((p) => [p.data.slug, p]));
+
+  /**
+   * Pick up to 3 "Keep reading" suggestions for a post. Honours the
+   * documented contract on the `relatedSlugs` content schema:
+   *
+   *  - relatedSlugs entries are tried first, in author order.
+   *  - Unpublished or unknown slugs are silently skipped (so a post
+   *    can ship before its referent and auto-promote on the next
+   *    build).
+   *  - Backward-only link discipline: a related entry must have
+   *    pubDate on or before the current post's pubDate. This prevents
+   *    a Discovery post from forward-referencing Building content the
+   *    reader has not been given the prerequisites for.
+   *  - If fewer than 3 candidates remain, fill from tag-overlap
+   *    against the rest of the published corpus. Score = number of
+   *    shared tags, tie-break by closest pubDate (most recent first
+   *    among same-score matches that are still backward-only).
+   *  - Result is always ≤ 3, deduped by slug.
+   */
+  type Pub = (typeof posts)[number];
+  function pickRelated(current: Pub): Pub[] {
+    const picked: Pub[] = [];
+    const seen = new Set<string>([current.data.slug]);
+    const cap = 3;
+
+    const declared = current.data.relatedSlugs ?? [];
+    for (const slug of declared) {
+      if (picked.length >= cap) break;
+      const candidate = bySlug.get(slug);
+      if (!candidate) continue;
+      if (seen.has(candidate.data.slug)) continue;
+      if (candidate.data.pubDate > current.data.pubDate) continue;
+      picked.push(candidate);
+      seen.add(candidate.data.slug);
+    }
+
+    if (picked.length < cap) {
+      const currentTags = new Set(current.data.tags);
+      const scored = posts
+        .filter((p) =>
+          !seen.has(p.data.slug) &&
+          p.data.slug !== current.data.slug &&
+          p.data.pubDate <= current.data.pubDate
+        )
+        .map((p) => {
+          const overlap = p.data.tags.reduce((n, t) => n + (currentTags.has(t) ? 1 : 0), 0);
+          return { post: p, overlap };
+        })
+        .filter((x) => x.overlap > 0)
+        .sort((a, b) => {
+          if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+          // Closer to the current post's pubDate ranks higher.
+          const da = Math.abs(a.post.data.pubDate.getTime() - current.data.pubDate.getTime());
+          const db = Math.abs(b.post.data.pubDate.getTime() - current.data.pubDate.getTime());
+          return da - db;
+        });
+
+      for (const { post: p } of scored) {
+        if (picked.length >= cap) break;
+        picked.push(p);
+        seen.add(p.data.slug);
+      }
+    }
+
+    return picked;
+  }
+
   return posts.map((post, index) => {
     const prevPost = index > 0 ? posts[index - 1] : null;
     const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
+    const relatedPosts = pickRelated(post).map((p) => ({
+      slug: p.data.slug,
+      title: p.data.title,
+      description: p.data.description,
+    }));
     return {
       params: { slug: post.data.slug },
       props: {
@@ -21,12 +97,13 @@ export async function getStaticPaths() {
         prevTitle: prevPost?.data.title ?? null,
         nextSlug: nextPost?.data.slug ?? null,
         nextTitle: nextPost?.data.title ?? null,
+        relatedPosts,
       },
     };
   });
 }
 
-const { post, prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props;
+const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts } = Astro.props;
 const { Content } = await render(post);
 
 const readingTime = getReadingTime(post.body || '');
@@ -49,6 +126,7 @@ const readingTime = getReadingTime(post.body || '');
   nextTitle={nextTitle}
   faq={post.data.faq}
   howTo={post.data.howTo}
+  relatedPosts={relatedPosts}
 >
   <Content />
 </BlogPost>
