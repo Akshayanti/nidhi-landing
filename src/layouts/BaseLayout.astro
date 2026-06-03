@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -56,5 +57,6 @@ const { title, description, image, imageWidth, imageHeight, imageAlt, article, p
     </main>
     <Footer />
     <CookieConsent />
+    <Analytics />
   </body>
 </html>
