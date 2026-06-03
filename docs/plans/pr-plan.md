@@ -578,6 +578,16 @@ If time-pressed, skip PR16. PR1 already pointed `BlogPosting.image` at the gener
 
 ## PR17: AI-bot policy update
 
+**Status: implemented on `feat/ai-bot-policy`. Pending review/merge.**
+
+### Decision taken
+
+Search/citation crawlers explicitly allowed; OpenAI's `GPTBot` allowed (its fetches can surface in ChatGPT answers, treated as a citation pathway alongside `OAI-SearchBot`); `anthropic-ai` allowed; `Applebot` (Siri/Spotlight, drives traffic) allowed.
+
+Blocked (training/scraper, no citation pathway): `CCBot` (Common Crawl corpus aggregator), `cohere-ai`, `FacebookBot`, `Meta-ExternalAgent`, `Bytespider`, `Applebot-Extended` (Apple AI-training variant, distinct from the allowed `Applebot`), `Amazonbot`, `Diffbot`, `Omgilibot`, `ImagesiftBot`, `Timpibot`.
+
+Net change from prior file: added explicit `Allow` for `OAI-SearchBot`, `GPTBot`, `ClaudeBot`, `Claude-SearchBot`, `anthropic-ai`, `Applebot`; moved `GPTBot` and `anthropic-ai` from Disallow to Allow; kept `CCBot`, `cohere-ai`, `FacebookBot` blocked; added new blocks for `Meta-ExternalAgent`, `Bytespider`, `Applebot-Extended`, `Amazonbot`, `Diffbot`, `Omgilibot`, `ImagesiftBot`, `Timpibot`. Search-engine bots (Googlebot, Bingbot, DuckDuckBot, Baiduspider, YandexBot, Google-Extended, PerplexityBot) unchanged.
+
 > Strategy decision required before the PR opens. Implementation is 30 minutes.
 
 ### Context
@@ -608,9 +618,9 @@ PR0. Independent.
 
 ### Verification
 
-- [ ] `dist/robots.txt` explicitly names `OAI-SearchBot`, `ClaudeBot`, `Claude-SearchBot` under `Allow`.
-- [ ] If blocks loosened: the previously-blocked bots are removed from the `Disallow` list. Validate via a robots.txt tester.
-- [ ] No other bot directive accidentally changed (Googlebot, Bingbot, etc.).
+- [x] `dist/robots.txt` explicitly names `OAI-SearchBot`, `ClaudeBot`, `Claude-SearchBot` under `Allow`.
+- [x] Blocks loosened where decided: `GPTBot` and `anthropic-ai` moved to `Allow`; verified via exact-match parse of built `dist/robots.txt`.
+- [x] No other bot directive accidentally changed (Googlebot, Bingbot, DuckDuckBot, Baiduspider, YandexBot, Google-Extended, PerplexityBot all still `Allow`); `Applebot` Allow vs `Applebot-Extended` Disallow confirmed distinct.
 
 ---
 
@@ -1021,7 +1031,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | 10 | Fonts not preloaded | **Resolved** (PR1) | — |
 | 11 | Sitemap has no `lastmod` | **Resolved** (PR3) | — |
 | 12 | `<meta name="keywords">` dead weight; free-tool pages stuffed | **Resolved** (PR1) | — |
-| 13 | Reconsider AI-bot blocks in robots.txt | Open | PR17 |
+| 13 | Reconsider AI-bot blocks in robots.txt | Addressed (PR17 pending merge) | PR17 |
 | 14 | Per-post OG images | Open | PR16 (optional) |
 | 15 | Surface "last updated" dates visibly | **Resolved** (PR1) | — |
 | 16 | Add `BreadcrumbList` to home page | Conditional resolve | PR18 |

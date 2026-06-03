@@ -1,4 +1,4 @@
-# === Search engines (full access - they drive traffic) ===
+# === Search engines (full access: they drive traffic) ===
 User-agent: Googlebot
 Allow: /
 
@@ -14,27 +14,71 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
+# Apple's general crawler powers Siri and Spotlight suggestions, a
+# traffic pathway. (Applebot-Extended, the AI-training variant, is
+# blocked further down.)
+User-agent: Applebot
+Allow: /
+
 # === Citation-based AI crawlers (they link back and drive traffic) ===
+# These surface our pages with attribution in AI answers, feeding
+# branded search and direct traffic. GPTBot is allowed too: OpenAI uses
+# it for content that can appear in ChatGPT answers, not training alone.
 User-agent: Google-Extended
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
-# === Training-only AI crawlers (no attribution, no traffic benefit) ===
-User-agent: GPTBot
-Disallow: /
+User-agent: OAI-SearchBot
+Allow: /
 
-User-agent: CCBot
-Disallow: /
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
 
 User-agent: anthropic-ai
+Allow: /
+
+# === Training-only / scraper crawlers (no attribution, no traffic) ===
+# Common Crawl is a pure training-corpus aggregator; the rest are
+# scrapers or AI-training agents with no citation pathway back to us.
+User-agent: CCBot
 Disallow: /
 
 User-agent: cohere-ai
 Disallow: /
 
 User-agent: FacebookBot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Timpibot
 Disallow: /
 
 # === Everyone else ===
