@@ -3939,14 +3939,10 @@ strong {
 }
 
 /* ============================================================================
- * Landing page (index2)
+ * Landing page (home)
  *
- * Scoped to body[data-page="landing"] so these rules only apply to the new
- * scroll-snap landing page. Everything else on the site is unaffected.
- *
- * On rollback (when index2 is folded into index.astro and the parallel
- * period ends), this block stays put because the scroll-snap shell is the
- * landing-page chrome itself, not a temporary overlay.
+ * Scoped to body[data-page="landing"] so these rules only apply to the
+ * scroll-snap home page. Everything else on the site is unaffected.
  *
  * Three jobs:
  *   1. Snap the document scroller (not <main>): single scrollbar.

@@ -63,10 +63,23 @@ const breadcrumbSchema = {
     <div class="about-container">
       <div class="about-hero">
         <div class="about-avatar">
+          {/* Brand icon mark. Two variants toggled by [data-theme] so the
+              avatar follows the manual theme switch, not just the OS
+              preference. Rendered at 80px; the 256px source covers DPR 2. */}
           <img
-            src="/baba_money-200.webp"
-            width="200"
-            height="300"
+            class="brand-mark brand-mark--light"
+            src="/brand/logo/icon-only/icon-256.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            class="brand-mark brand-mark--dark"
+            src="/brand/logo/icon-only/icon-256-dark.png"
+            width="256"
+            height="256"
             alt="nidhi"
             loading="eager"
             decoding="async"
@@ -163,6 +176,20 @@ const breadcrumbSchema = {
     width: 80px;
     height: auto;
     margin-bottom: var(--space-4);
+  }
+
+  /* Theme-aware brand mark: show the variant matching the active theme.
+     Default (light) shows the light mark; [data-theme="dark"] swaps it. */
+  .about-avatar .brand-mark--dark {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .about-avatar .brand-mark--light {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .about-avatar .brand-mark--dark {
+    display: inline-block;
   }
 
   .about-title {
