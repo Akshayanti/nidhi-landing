@@ -439,7 +439,11 @@ None per PR.
 
 ## PR14: EEAT (named author, byline, editorial policy, sameAs)
 
+> **Status**: implemented on branch `feat/eeat-author` (awaiting review/merge). Closes findings 6 and 25.
+>
 > The audit's biggest structural lever for YMYL content. Anonymous money-advice sites have a hard ranking ceiling; named expertise raises it.
+>
+> **Author identity decision**: "nidhi" is itself a name, so the author is published as a named `Person` called nidhi, distinct from the publishing `Organization` of the same name. This gives search engines a consistent named author entity without inventing founder PII and without contradicting the deliberately anonymous, collective voice on `/beliefs/`. The qualification framing is practitioner plus research-led (builds the tools, sources every post against the references already listed on it); no credentials are claimed, consistent with the educational, not-advice footer disclaimer. `sameAs` is Instagram only for now.
 
 ### Scope
 
@@ -475,13 +479,13 @@ PR0. Best timed after PR5-PR13 so the new bylines apply to the strongest version
 
 ### Verification
 
-- [ ] `/about/` (or expanded `/beliefs/`) ships with name, photo, qualification statement.
-- [ ] `/editorial-policy/` ships with the four content blocks listed above.
-- [ ] One representative blog post renders the byline with name and updated/publish date.
-- [ ] Per-post `BlogPosting.author` schema includes `name`, `url`, `sameAs`, short bio.
-- [ ] Home `Organization` schema (`dist/index.html`) includes `sameAs` array with at least Instagram, LinkedIn, X.
-- [ ] All four pages indexable, in sitemap.
-- [ ] No em dashes, no double dashes.
+- [x] `/about/` ships with the named author (nidhi), qualification statement (practitioner + research-led), and `knowsAbout`. Uses the existing hero asset as the avatar; no founder photo, by the author-identity decision above.
+- [x] `/editorial-policy/` ships with the four content blocks: how posts are reviewed, sourcing standards, education-not-advice boundary, corrections process (plus a "who is behind this" pointer).
+- [x] Blog posts render a visible byline "By nidhi" (`rel="author"`, links to `/about/`) alongside the existing publish/updated date.
+- [x] Per-post `BlogPosting.author` schema is a `Person` with `name`, `url` (`/about/`), `sameAs` (Instagram), and a short `description`.
+- [x] Home `Organization` schema (`dist/index.html`) includes `sameAs` (Instagram). Single profile for now; LinkedIn/X to be added when they exist.
+- [x] `/about/` emits `Person` + `ProfilePage` + `BreadcrumbList`; `/editorial-policy/` emits `WebPage` + `BreadcrumbList`. Both indexable and in the sitemap (their `<lastmod>` populates once committed, since `gitLastmod` reads git author-date).
+- [x] No em dashes, no double dashes; no hex literals (light/dark safe via CSS variables).
 
 ---
 

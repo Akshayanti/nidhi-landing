@@ -64,7 +64,10 @@ const blogPostingSchema = {
   author: {
     '@type': 'Person',
     name: 'nidhi',
-    url: `${siteUrl}/`,
+    url: `${siteUrl}/about/`,
+    description:
+      'Practitioner and research-led personal finance writer. Builds the tools the posts describe and sources every article against cited references.',
+    sameAs: ['https://www.instagram.com/nidhi.today'],
   },
   publisher: {
     '@type': 'Organization',
@@ -155,6 +158,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       <header class="post-header">
         <div class="post-meta">
           <LevelBadge level={level} />
+          <span class="post-byline">By <a href="/about/" rel="author">nidhi</a></span>
           {readingTime && <span class="post-reading-time">{readingTime} min read</span>}
           <time datetime={pubDate.toISOString()} class="post-date">{dateStr}</time>
           {showUpdated && updatedDate && (
@@ -355,6 +359,23 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
+  }
+
+  .post-byline {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+
+  .post-byline a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .post-byline a:hover {
+    color: var(--color-teal);
   }
 
   .post-date {
