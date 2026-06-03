@@ -133,6 +133,8 @@ function gitLastmod(repoPath) {
 const STATIC_PAGE_SOURCE = {
   '': 'src/pages/index.astro',
   'beliefs': 'src/pages/beliefs.astro',
+  'about': 'src/pages/about.astro',
+  'editorial-policy': 'src/pages/editorial-policy.astro',
   'privacy': 'src/pages/privacy.astro',
   'blog': 'src/layouts/BlogIndex.astro',
   'blog/tag': 'src/pages/blog/tag/index.astro',

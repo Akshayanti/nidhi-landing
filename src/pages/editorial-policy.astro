@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const siteUrl = 'https://nidhi.today';
+const published = '2026-06-03';
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Editorial Policy',
+  url: `${siteUrl}/editorial-policy/`,
+  description:
+    'How nidhi reviews posts, the sourcing standards behind each article, the regulatory boundary on advice, and how corrections are handled.',
+  datePublished: published,
+  dateModified: published,
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: `${siteUrl}/`,
+  },
+  breadcrumb: { '@id': `${siteUrl}/editorial-policy/#breadcrumb` },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${siteUrl}/editorial-policy/#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'Editorial Policy', item: `${siteUrl}/editorial-policy/` },
+  ],
+};
+---
+
+<BaseLayout
+  title="Editorial Policy: How nidhi Researches and Reviews Posts | nidhi"
+  description="How nidhi reviews each post, the sourcing standards we hold to, the boundary between education and advice, and how we handle corrections."
+  jsonLd={[webPageSchema, breadcrumbSchema]}
+>
+  <section class="policy-page">
+    <div class="policy-container">
+      <header class="policy-header">
+        <h1 class="policy-title">Editorial Policy</h1>
+        <p class="policy-intro">
+          Money writing should be easy to check and honest about its limits. This page explains how every
+          post on nidhi is researched, reviewed, and corrected, and where the line sits between education
+          and advice.
+        </p>
+      </header>
+
+      <div class="policy-body">
+        <h2>How posts are reviewed</h2>
+        <p>
+          Every article is written and edited under one name, nidhi, and goes through the same checks
+          before it is published. A post starts from a concrete question a real person would ask, gets
+          drafted with worked examples and actual numbers rather than generalities, and is then read back
+          for two things: is each claim supported, and would a beginner understand it without a glossary.
+          Jargon is defined the first time it appears. Anything that cannot be stated plainly is reworked
+          until it can.
+        </p>
+
+        <h2>Sourcing standards</h2>
+        <p>
+          Claims are grounded in primary and reputable secondary sources: established books, recognised
+          reference material, and public data. Where a post draws on specific sources, they are listed on
+          the article itself under "referential reading," so you can follow the trail yourself rather than
+          take our word for it. Worked examples use realistic figures, and where a number is illustrative
+          rather than a forecast, the post says so. Exchange rates shown in the tools come from the
+          European Central Bank reference rates, dated on screen.
+        </p>
+
+        <h2>Education, not advice</h2>
+        <p>
+          nidhi explains how money works so you can make your own decisions. It is not a licensed financial
+          adviser, and nothing on the site is personal financial, investment, or tax advice. Posts do not
+          recommend specific products, funds, or securities, and do not tell you what you personally should
+          buy or sell. Past performance of any investment is not indicative of future results. For
+          decisions that depend on your tax residency, legal situation, or risk tolerance, consult a
+          qualified professional. This boundary is intentional and applies to every page.
+        </p>
+
+        <h2>Corrections</h2>
+        <p>
+          If something is wrong, we want to fix it. Spot an error, an out-of-date figure, or a claim that
+          no longer holds, and email <a href="mailto:hello@nidhi.today">hello@nidhi.today</a>. Substantive
+          corrections to a published post are made in the post and reflected in its "last updated" date, so
+          the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a
+          date change.
+        </p>
+
+        <h2>Who is behind this</h2>
+        <p>
+          For who writes nidhi and the experience behind the writing, see the
+          <a href="/about/">about page</a>. For the worldview that shapes what we choose to build and
+          publish, read <a href="/beliefs/">our beliefs</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .policy-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .policy-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .policy-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .policy-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .policy-body h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .policy-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .policy-body a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .policy-body a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  @media (max-width: 480px) {
+    .policy-title { font-size: 1.6rem; }
+  }
+</style>

@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const siteUrl = 'https://nidhi.today';
+
+// nidhi is both the project and the name we publish under. Treating the
+// author as a named Person (distinct from the publishing Organization of
+// the same name) gives search engines a consistent author entity for the
+// blog without inventing a separate identity. The qualification framing is
+// practitioner plus research-led: built the tools, lived the multi-currency
+// problem, and sources every post against the references listed on it. No
+// credential claims are made, in line with the educational, not-advice
+// disclaimer in the footer.
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'nidhi',
+  url: `${siteUrl}/about/`,
+  description:
+    'nidhi writes the personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Practitioner and research-led: the tools come from lived experience with cross-border finances, and every post cites the books and references it draws on.',
+  knowsAbout: [
+    'Personal Finance',
+    'Financial Literacy',
+    'Net Worth Tracking',
+    'Multi-Currency Finance',
+    'Financial Independence',
+    'Money Management',
+  ],
+  sameAs: ['https://www.instagram.com/nidhi.today'],
+  worksFor: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: `${siteUrl}/`,
+  },
+};
+
+const profilePageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: 'About nidhi',
+  url: `${siteUrl}/about/`,
+  description:
+    'Who writes nidhi, why the writing can be trusted, and how each post is researched and sourced.',
+  mainEntity: { '@id': `${siteUrl}/about/#person` },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'About', item: `${siteUrl}/about/` },
+  ],
+};
+---
+
+<BaseLayout
+  title="About nidhi: Who Writes This and Why You Can Trust It | nidhi"
+  description="Who writes nidhi, the qualifications behind the writing, and how every personal finance post is researched and sourced."
+  jsonLd={[personSchema, profilePageSchema, breadcrumbSchema]}
+>
+  <section class="about-page">
+    <div class="about-container">
+      <div class="about-hero">
+        <div class="about-avatar">
+          <img
+            src="/baba_money-200.webp"
+            width="200"
+            height="300"
+            alt="nidhi"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <h1 class="about-title">About nidhi</h1>
+        <p class="about-intro">
+          nidhi is the name on this writing, and the project it belongs to. One person started it, the
+          name stuck, and it is who you are reading when you read the blog.
+        </p>
+      </div>
+
+      <div class="about-body">
+        <h2>Who is writing</h2>
+        <p>
+          Every post on this site is written and edited under one name: nidhi. The project began because
+          one person could not find a finance tool that handled an ordinary life with money in more than
+          one currency, debts in another, and a future that crossed borders. The writing comes from that
+          same place: the questions a real person actually has to answer, explained the way they wished
+          someone had explained them.
+        </p>
+
+        <h2>Why you can trust it</h2>
+        <p>
+          The authority here is practitioner and research-led, not a wall of letters after a name. nidhi
+          builds the tools that the posts describe, which means the writing is grounded in working through
+          the numbers, not in repeating talking points. Where a post makes a claim, it points to the
+          source: the books, reference pages, and primary material listed on each article under
+          "referential reading."
+        </p>
+        <p>
+          What this is not: licensed financial advice. nidhi explains how money works so you can make your
+          own decisions. It does not tell you which fund to buy, and it never will. For decisions that turn
+          on your specific tax residency, legal situation, or risk tolerance, a qualified professional is
+          the right call. That boundary is deliberate, and it is the same one stated in the footer of every
+          page.
+        </p>
+
+        <h2>How posts are made</h2>
+        <p>
+          Each article starts from a concrete question, gets worked through with real numbers and worked
+          examples, and is checked against cited references before it goes out. The full process, sourcing
+          standards, and how corrections are handled live on the
+          <a href="/editorial-policy/">editorial policy page</a>.
+        </p>
+
+        <h2>What nidhi knows about</h2>
+        <p>
+          The writing concentrates on net worth and how to measure it, managing money across currencies,
+          cash flow and saving, debt, and the path to financial independence. If you want the worldview
+          behind all of it, read <a href="/beliefs/">our beliefs</a>.
+        </p>
+      </div>
+
+      <div class="about-cta">
+        <p class="about-cta-text">Questions, corrections, or just want to say hello?</p>
+        <div class="about-cta-links">
+          <a href="mailto:hello@nidhi.today" class="about-cta-link" data-attr="about-cta-email">
+            Email hello@nidhi.today
+          </a>
+          <a
+            href="https://www.instagram.com/nidhi.today"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-cta-link"
+            data-attr="about-cta-instagram"
+          >
+            Instagram @nidhi.today
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .about-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .about-hero {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .about-avatar img {
+    width: 80px;
+    height: auto;
+    margin-bottom: var(--space-4);
+  }
+
+  .about-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-2);
+  }
+
+  .about-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .about-body h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .about-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .about-body a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-body a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .about-cta {
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    text-align: center;
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .about-cta-text {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .about-cta-links {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .about-cta-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    color: var(--color-deep-blue);
+    border: 1px solid var(--color-deep-blue);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .about-cta-link:hover {
+    background: var(--color-deep-blue);
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    .about-title { font-size: 1.6rem; }
+    .about-cta-links { flex-direction: column; align-items: center; }
+  }
+</style>
