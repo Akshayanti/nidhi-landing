@@ -491,17 +491,25 @@ PR0. Best timed after PR5-PR13 so the new bylines apply to the strongest version
 
 ## PR15: PostHog defer + env wire-up
 
+**Status: implemented on `feat/posthog-defer`. Pending review/merge.**
+
 > Performance fix. Inline `<head>` script blocks parsing; wrapper eval and `posthog.init()` run synchronously. Affects LCP and TTI.
 
 ### Scope
 
 1. **Wire `PUBLIC_POSTHOG_KEY` into the build pipeline.**
-   - Currently `.env` has `PUBLIC_POSTHOG_KEY=` (empty), so production emits `posthog.init("", ...)` which does nothing while still blocking parsing.
-   - Document the production value source: 1Password / Doppler / GH Actions secret. Add to `.env.example`.
+   - Correction to original assumption: the production key is NOT empty. It is injected at build time from the GitHub Actions secret `PUBLIC_POSTHOG_KEY` (`.github/workflows/deploy.yml:78`). Local `.env` is empty by design; the snippet no-ops in dev.
+   - Added `.env.example` documenting all three `PUBLIC_` vars and that production values come from GitHub Actions secrets.
 
 2. **Defer the PostHog script.**
-   - Move the snippet body in `src/components/BaseHead.astro:99-125` into a separate file loaded with `defer`, or `is:inline async`, or place before `</body>` rather than in `<head>`.
-   - Theme-flash prevention (`BaseHead.astro:26-34`) is small enough to stay inline.
+   - Extracted the snippet verbatim from `BaseHead.astro` into `src/components/Analytics.astro` and rendered it at the end of `<body>` in `BaseLayout.astro` (after `CookieConsent`). Removes render-blocking from `<head>` with zero behavioural change.
+   - Theme-flash prevention stays inline in `BaseHead.astro`.
+
+### Implementation notes
+
+- Snippet body is byte-for-byte identical to the prior `<head>` version (only load position changed); verified by diff.
+- `define:vars={{ posthogKey: import.meta.env.PUBLIC_POSTHOG_KEY }}` still injects the key from the new location; built output emits `const posthogKey = "..."`.
+- Runtime-simulated the moved snippet with a real key: `posthog.init` queues correctly, the async `array.js` loader injects from `eu-assets.i.posthog.com`, and the `$ai_referrer` capture still fires. The `getElementsByTagName("script")[0]` insertBefore target is always non-null (theme-flash script precedes it).
 
 ### Effort
 
@@ -517,11 +525,11 @@ PR0. Independent.
 
 ### Verification
 
-- [ ] `dist/index.html` `<head>` no longer contains the inline PostHog body. Either deferred external script or placed before `</body>`.
-- [ ] PostHog still captures pageviews on a real production load (verify in PostHog dashboard with a test pageview).
-- [ ] Lighthouse "Avoid render-blocking resources" passes on `/`.
-- [ ] LCP improvement on `/` over pre-PR baseline.
-- [ ] `.env.example` documents the prod key source.
+- [x] `dist/index.html` `<head>` no longer contains the inline PostHog body; placed before `</body>`. Verified on `/`, `/blog/`, `/about/`.
+- [ ] PostHog still captures pageviews on a real production load (verify in PostHog dashboard with a test pageview after deploy). Runtime-simulated locally with a real key: init queues, array.js loads, capture fires.
+- [ ] Lighthouse "Avoid render-blocking resources" passes on `/` (verify post-deploy).
+- [ ] LCP improvement on `/` over pre-PR baseline (verify post-deploy).
+- [x] `.env.example` documents the prod key source (GitHub Actions secret).
 
 ---
 
@@ -1008,7 +1016,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | 5 | `/blog/tag/` returns a 404 | **Resolved** (PR2) | — |
 | 6 | EEAT signals missing for YMYL content | Open | PR14 |
 | 7 | FAQ schema wired but used by only 4 of 32 posts | Open | PR5 |
-| 8 | PostHog snippet render-blocking and currently inert | Open | PR15 |
+| 8 | PostHog snippet render-blocking (deferred to end of body in PR15; key supplied by GH Actions secret, not inert) | Addressed (PR15 pending merge) | PR15 |
 | 9 | Hero image oversized for its rendered slot | **Resolved** (PR3) | — |
 | 10 | Fonts not preloaded | **Resolved** (PR1) | — |
 | 11 | Sitemap has no `lastmod` | **Resolved** (PR3) | — |

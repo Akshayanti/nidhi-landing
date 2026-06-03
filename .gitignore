@@ -8,6 +8,8 @@ dist
 output/
 .env
 .env.*
+# .env.example carries no secrets and documents required vars; keep it tracked.
+!.env.example
 
 # Local newsletter dry-run previews
 emails/_preview/

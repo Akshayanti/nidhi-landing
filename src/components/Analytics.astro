@@ -1,0 +1,47 @@
+---
+/**
+ * PostHog analytics, rendered at the end of <body> so it never blocks
+ * HTML parsing or first paint. The snippet was previously inline in
+ * <head> (BaseHead.astro), which stalled rendering on every page load:
+ * an inline <script> in <head> runs synchronously before the parser can
+ * continue, hurting LCP and TTI.
+ *
+ * The body is unchanged from the previous <head> version: same vendor
+ * (PostHog Cloud EU), same project key, same events. Only the load
+ * position moved. PUBLIC_POSTHOG_KEY is injected at build time from the
+ * GitHub Actions secret of the same name (see .github/workflows/deploy.yml
+ * and .env.example); production builds always carry the real key.
+ *
+ * Capture policy:
+ *   Anonymous pageviews + UTM: always (no PII, legitimate interest)
+ *   Heatmaps + autocapture: only after consent
+ */
+---
+
+<script is:inline define:vars={{ posthogKey: import.meta.env.PUBLIC_POSTHOG_KEY }}>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+
+  var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
+
+  posthog.init(posthogKey, {
+    api_host: 'https://eu.i.posthog.com',
+    capture_pageview: true,
+    capture_pageleave: true,
+    autocapture: hasFullConsent,
+    enable_heatmaps: hasFullConsent,
+    persistence: 'localStorage',
+    disable_session_recording: true,
+  })
+
+  // Flag AI-sourced traffic for easy dashboard filtering.
+  // PostHog auto-captures $referrer and $referring_domain on every
+  // pageview; this adds a dedicated is_ai_traffic event so you can
+  // create a one-click insight for "AI to site" without manual filters.
+  var aiReferrers = ['chatgpt.com', 'chat.openai.com', 'perplexity.ai', 'claude.ai', 'gemini.google.com', 'copilot.microsoft.com', 'you.com', 'bard.google.com', 'deepseek.com', 'grok.com'];
+  var ref = document.referrer;
+  try { var refHost = new URL(ref).hostname; } catch(_) { var refHost = ''; }
+  var isAI = refHost && aiReferrers.some(function(d) { return refHost === d || refHost.endsWith('.' + d); });
+  if (isAI) {
+    posthog.capture('$ai_referrer', { ai_referrer_domain: refHost, ai_referrer_full: ref });
+  }
+</script>
