@@ -5,7 +5,7 @@ description: "A euro today buys more than a euro in ten years. Purchasing power 
 tldr: "Purchasing power is what your money can actually buy. It declines over time as prices rise, a force called inflation. At 2-3% per year, your money loses roughly half its purchasing power over 25 years. Earning 2% in a savings account when prices rise 3% means you're losing ground. The only way to preserve purchasing power is to earn returns that outpace inflation."
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["appreciation-vs-depreciation", "emergency-fund", "income-vs-wealth", "cash-flow-101", "liabilities"]
+faq:
+  - question: "What is purchasing power?"
+    answer: "Purchasing power is how much your money can actually buy, not the number printed on your account. If a basket of groceries costs 100 euros today and 110 next year, your purchasing power has fallen by roughly 10 percent even though your balance has not changed. The figure in your account is the nominal value; what it can buy is the real value. The two drift apart over time because prices tend to rise. This is why a fixed amount of cash left untouched for years quietly buys less and less, even when the digits on the screen stay exactly the same."
+  - question: "How does inflation reduce the value of money?"
+    answer: "Inflation is the general increase in prices over time, and it is the force that erodes purchasing power. When inflation runs at 3 percent, something costing 100 euros today costs 103 next year, so the same money buys slightly less. Central banks target a low, steady rate, around 2 percent in the eurozone, because mild inflation is considered normal and even healthy. The danger is the long-term effect: at a steady 2.5 percent, 10,000 euros under a mattress buys only about 6,100 euros worth of goods after twenty years. Inflation is easy to ignore because your balance never visibly shrinks, but what it buys does."
+  - question: "What is the real return on savings?"
+    answer: "Real return is your nominal return minus inflation: real return equals nominal return minus inflation. If a savings account pays 1 percent while prices rise 2.5 percent, you did not gain 1 percent, you lost 1.5 percent in real terms. Cash under a mattress earning 0 percent against 2.5 percent inflation has a real return of negative 2.5 percent. A high-yield account at 3 percent against the same inflation gives a modest positive 0.5 percent. A negative real return means you are getting poorer on paper even as the balance grows. Always subtract inflation from any rate or raise to see the number that actually matters."
+  - question: "Does inflation help or hurt people with debt?"
+    answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favor. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
+  - question: "How can I protect my savings from inflation?"
+    answer: "First, think in real terms: subtract inflation from every interest rate, return, and raise so you see the true number. Second, keep your emergency fund accessible but do not let large amounts of extra cash sit idle, because money earning less than the inflation rate is losing value by design. Third, invest surplus money for growth: over the long term, broad stock market investments have historically returned around 5 to 7 percent after inflation across major developed markets, helped by compounding. Fourth, revisit your plan periodically, since prices, your salary, and the right size of your emergency fund all change over time."
 ---
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it. Not even close.
@@ -54,7 +66,7 @@ Imagine you put €10,000 under your mattress and leave it there for twenty year
 | In 10 years | €10,000 | ~€7,800 worth of goods |
 | In 20 years | €10,000 | ~€6,100 worth of goods |
 
-You lost nearly 40% of your purchasing power without spending a cent. The money was sitting still, but prices were moving. (Real eurozone inflation has run uneven over the last twenty years, with long stretches near 1% and a sharp burst in 2022–2023; 2.5% is used here as an illustrative steady-state, not as a forecast.)
+You lost nearly 40% of your purchasing power without spending a cent. The money was sitting still, but prices were moving. (Real eurozone inflation has run uneven over the last twenty years, with long stretches near 1% and a sharp burst in 2022 and 2023; 2.5% is used here as an illustrative steady-state, not as a forecast.)
 
 Even in a savings account, the erosion continues. Consider €10,000 earning 0.5% interest, with inflation at 2.5%:
 

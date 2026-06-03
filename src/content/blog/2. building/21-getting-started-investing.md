@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "planning"]
+faq:
+  - question: "What kind of account do I need to start investing?"
+    answer: "Investment accounts fall into three broad categories in almost every country. A regular brokerage account lets you buy and sell freely with no contribution limits, but gains are usually taxed in the year you realize them. A tax-advantaged retirement account offers favorable tax treatment in exchange for locking the money up until a certain age, often with contribution limits. An employer-sponsored scheme is a retirement account through work, sometimes with matching contributions where the employer adds money when you do. Most people end up with a mix: enough in flexible accounts to stay accessible, and as much as they can into tax-advantaged accounts for the long-term tailwind."
+  - question: "What is dollar-cost averaging and why does it help?"
+    answer: "Dollar-cost averaging means investing a fixed amount on a fixed schedule, for example 300 euros on the first of every month, regardless of what the market is doing. When prices are high you buy fewer shares; when prices are low you buy more, so your average purchase price smooths out. It is not mathematically optimal in every scenario: if markets only rose, a lump sum invested immediately would always win. But it solves a bigger problem by removing timing decisions from your hands, which removes the temptation to wait, hesitate, or panic. Over a long career, actually investing beats trying to time it perfectly every time."
+  - question: "Should I invest a lump sum all at once or spread it out?"
+    answer: "The historical evidence points one way: lump-sum investing beats spreading it out roughly two-thirds of the time, because markets trend upward and every month in cash is on average a month of foregone return. The case for spreading a lump sum is behavioural, not mathematical. If investing 50,000 euros at once would cause you to panic on the first drop and pull out at a loss, then spreading it over six to twelve months is a reasonable compromise. A practical rule: invest a lump sum you can emotionally handle immediately; split one large enough to cause panic into three to six monthly tranches at most."
+  - question: "Why are index funds the usual starting point?"
+    answer: "An index fund holds the components of a market index, for example thousands of companies across the entire world, so one purchase gives you thousands of underlying holdings. Four reasons they dominate as a starting point: diversification by default, low cost (typically 0.1 to 0.3% per year versus 1 to 2% for many active funds), no stock-picking skill required, and consistent long-term performance, since most actively managed funds have historically underperformed their index after fees. The most common starting portfolio is a global stock index fund for growth, optionally with a bond index fund for stability. At the start, complexity is the enemy."
+  - question: "How much does starting early actually matter?"
+    answer: "Enormously, because compounding does the heavy lifting. Someone investing 100 euros a month from age 25 to 65 contributes 48,000 euros total and, at a 7% return, ends with roughly 261,000 euros. Someone investing 250 euros a month from age 40 contributes 75,000 euros, more in total, yet ends with roughly 203,000 euros. The early saver puts in less money and ends with more. The difference is not willpower or income; it is time. Small amounts left alone for decades outgrow larger amounts left alone for years, so if you can contribute 50 euros a month now, contribute 50 euros a month now."
+relatedSlugs: ["investing-101-asset-classes", "diversification", "understanding-risk", "emergency-fund", "budgeting"]
 referentialReading:
   - title: "Dollar-Cost Averaging"
     url: "https://www.investopedia.com/terms/d/dollarcostaveraging.asp"
@@ -58,7 +70,7 @@ An index fund holds the components of a market index. For example, all the large
 
 Why index funds dominate as a starting point:
 
-- **Diversification by default.** One purchase, thousands of underlying holdings
+- **[Diversification](/blog/diversification/) by default.** One purchase, thousands of underlying holdings
 - **Low cost.** Fees are typically 0.1-0.3% per year, compared to 1-2% for many actively managed funds
 - **No stock-picking skill required.** You don't need a view on individual companies
 - **Consistent long-term performance.** Most actively managed funds have historically underperformed the index they're trying to beat, after fees

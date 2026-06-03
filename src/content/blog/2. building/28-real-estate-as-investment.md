@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
 tags: ["building", "real-estate", "investing"]
+relatedSlugs: ["understanding-loan-terms", "investing-101-asset-classes", "diversification", "liquidity", "assets"]
+faq:
+  - question: "How does real estate actually generate returns?"
+    answer: "Real estate produces returns in two forms. Rental income is the cash tenants pay you, or the rent you avoid paying by living in a property you own. Capital appreciation is the rise in property value over time, which often loosely tracks inflation plus or minus a local adjustment for supply, demand, and growth. Historically, well-managed residential real estate has delivered total real returns in roughly the 3 to 6% range after costs: below long-run stock returns and above long-run bond returns. The crucial caveat is that headline appreciation is almost never your actual return, because maintenance, taxes, insurance, vacancy, and transaction costs all come out of it first."
+  - question: "What ongoing costs eat into real estate returns?"
+    answer: "The biggest gap between perceived and actual returns is friction. As an annual percentage of property value, maintenance and repairs typically run 1 to 3%, property taxes 0.5 to 2%, and insurance 0.2 to 0.5%. For rentals, vacancy costs the equivalent of 4 to 10% of rent and professional management 8 to 12% of rent. Transaction costs are one-time but heavy: a round trip of buying and eventually selling commonly consumes 5 to 10% of value, and far more in some markets. Total ongoing costs frequently take 2 to 4% of property value every year, so a property that 'appreciated 30% over 10 years' may have delivered much less once these are netted out."
+  - question: "How does leverage change real estate risk?"
+    answer: "Most buyers put down 10 to 25% and borrow the rest, and that leverage amplifies returns in both directions. On a €300,000 property bought with a €60,000 deposit, a 10% rise in value lifts your equity by €30,000, a 50% gain on your money. But a 10% fall wipes out half your equity, and a 20% fall erases it entirely, leaving you underwater if it falls further. The asset moves a normal amount; the equity moves much more. This is why leverage has made many people wealthy and ruined many others, and why the mortgage interest rate matters enormously to whether the math works."
+  - question: "Is renting really throwing money away?"
+    answer: "No, this is the most damaging real estate myth. Rent pays for shelter, flexibility, and the transfer of property-specific risk to your landlord. Buying does not eliminate those costs, it moves them to your side. Equally, a primary home is not a pure investment: it generates no cash income, costs money every month, and appreciates only at modest real rates after maintenance, taxes, insurance, and transaction costs. The honest comparison is never simply rent versus buy. It is buying versus renting and investing the difference. Where prices are very high relative to rents, renting plus investing often wins; where rents are high relative to prices, owning often wins."
+  - question: "Why does illiquidity matter for real estate?"
+    answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is acceptable only if you keep a larger cash buffer than a pure-paper portfolio would need and know you are making that trade deliberately."
 referentialReading:
   - title: "Real Estate Investing"
     url: "https://www.investopedia.com/terms/r/realestate.asp"
@@ -90,7 +102,7 @@ This is also why the mortgage interest rate matters enormously. The [previous po
 
 ## Illiquidity and concentration
 
-Unlike a stock, you cannot sell a property in a day. A sale typically takes weeks to months. Transaction costs run 5-10% round trip. Prices in a slow market can be completely stuck.
+Unlike a stock, you cannot sell a property in a day. A sale typically takes weeks to months. Transaction costs run 5-10% round trip. Prices in a slow market can be completely stuck. This is [illiquidity](/blog/liquidity/) in its most concrete form.
 
 This has practical consequences:
 

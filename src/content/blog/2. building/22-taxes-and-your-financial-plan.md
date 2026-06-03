@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "taxes", "planning"]
+faq:
+  - question: "Where do taxes affect a financial plan?"
+    answer: "Taxes touch your plan in four distinct places, and most people feel only the first. Income tax on what you earn is the reason take-home pay differs from gross salary, usually progressive. Taxes on investment income hit dividends, interest, and rental income the year you receive them, even if you reinvest. Capital gains tax applies to the profit when you sell an investment for more than you paid, often at a different rate than regular income. Taxes on retirement withdrawals depend on account type: money coming out may be fully taxed, partially taxed, or tax-free. Each cuts into a different number, and seeing them as one picture separates a realistic plan from an optimistic one."
+  - question: "How much do taxes reduce investment returns over time?"
+    answer: "More than most people expect, because the drag compounds. A hypothetical 7% return taxed at 25% as it accrues compounds at only 5.25%. That sounds small but is not over decades. On 10,000 euros, the gap between 7% untaxed and 5.25% with tax drag is about 3,000 euros after 10 years, nearly 11,000 after 20 years, and over 72,000 after 40 years. Pure tax drag can cut the final amount roughly in half over 40 years, with the same starting amount, horizon, and market returns. This is why tax treatment is not a minor detail: it sits inside the compounding engine of the entire plan."
+  - question: "What is the difference between gross and net, and which should I plan in?"
+    answer: "Gross is money before tax; net is money after tax. Plan in net terms, because that is the money you actually control. Your expenses are paid in already-taxed euros, so a 30,000 euro lifestyle is funded with net money. Your savings rate is best calculated on after-tax income, since what you can save is what is left after income tax. Long-term retirement targets must generate enough after-tax income to cover after-tax expenses. The common mental shortcut, gross salary times years compounded somehow, is almost always too optimistic because it ignores the layers of tax between gross income and actual lifestyle funding."
+  - question: "How do tax-advantaged accounts reduce the tax drag?"
+    answer: "Most fall into two patterns. Pattern one: contribute pre-tax, pay tax on withdrawal. Money goes in before income tax, grows untaxed, and is taxed as income when you withdraw in retirement, usually at a lower rate if retirement income is lower than working income. Pattern two: contribute post-tax, withdraw tax-free. Money goes in already taxed, grows untaxed, and nothing more is owed at withdrawal. Both protect investment growth from the year-by-year tax drag that would otherwise cut your compounding rate, which is worth a lot over long horizons. The trade-off is access: these accounts typically lock money up or penalize early withdrawal, making them suited for long-term goals."
+  - question: "Why does capital gains treatment affect how I manage a portfolio?"
+    answer: "Because gains are only realized on sale, not while you hold. Holding an investment that has risen does not trigger tax; selling it does. Some jurisdictions tax long-term holdings more favourably than short-term ones, rewarding buy-and-hold; others apply a flat rate regardless of holding period, so you need to look up your country's rules. Realized losses can often offset realized gains. This matters for rebalancing: selling to rebalance a taxable account can trigger tax, while doing it inside a tax-advantaged account or using new contributions often avoids that. Frequent trading in a taxable account is especially costly, since every gain may be taxed and the compounding on the untaxed amount is lost."
+relatedSlugs: ["getting-started-investing", "investing-101-asset-classes", "saving-vs-investing", "diversification", "emergency-fund"]
 referentialReading:
   - title: "Capital Gains Tax"
     url: "https://www.investopedia.com/terms/c/capital_gains_tax.asp"
@@ -50,7 +62,7 @@ Each of these cuts into a different number in your plan. Seeing them as one pict
 Most personal finance planning works best when done in "net" terms: money after tax, not before.
 
 - **Expenses are in after-tax euros.** When you calculate that your lifestyle costs €30,000 a year, you're spending already-taxed money
-- **Savings rate is best calculated on after-tax income.** Because the money you can actually save is what's left after income tax
+- **Savings rate is best calculated on after-tax income.** Because the money you can actually save, the gap that drives [saving and investing](/blog/saving-vs-investing/), is what's left after income tax
 - **Long-term retirement numbers are in after-tax terms.** A target portfolio (the amount of investments large enough to live off indefinitely) has to generate enough *after-tax* income to cover *after-tax* expenses. We come back to this in a later post in this series
 
 The mental model people slip into (gross salary times years of work, compounded somehow) is almost always too optimistic, because it ignores the layers of tax between gross income and actual lifestyle funding.
@@ -99,7 +111,7 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- For most people, capturing an employer match is one of the highest-leverage early investing moves. Turning down a 50% or 100% immediate uplift on your own contribution is rarely mathematically sensible. It is not always *the* first action, though: clearing very-high-interest debt and having a starter emergency fund typically come first. The [next post](/blog/tax-advantaged-accounts/) covers the full priority order
+- For most people, capturing an employer match is one of the highest-leverage early investing moves. Turning down a 50% or 100% immediate uplift on your own contribution is rarely mathematically sensible. It is not always *the* first action, though: [clearing very-high-interest debt](/blog/how-to-get-out-of-debt/) and having a [starter emergency fund](/blog/emergency-fund/) typically come first. A later post covers the full priority order across account types
 - The default contribution settings are often too low. Many plans let you contribute more than the default; doing so is often one of the highest-leverage tax decisions available, because every extra euro contributed grows inside the tax-advantaged shelter for decades
 
 The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.

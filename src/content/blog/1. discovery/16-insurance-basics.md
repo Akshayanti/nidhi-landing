@@ -5,7 +5,7 @@ description: "You've spent months building an emergency fund. One accident, fire
 tldr: "Insurance transfers catastrophic financial risk from you to an insurer in exchange for a predictable premium. The main types are health, life, property, disability, and liability. Premiums are a cash flow cost, but they protect your net worth from sudden, devastating loss. Insurance and your emergency fund work as a team: more coverage means you can keep a smaller emergency fund, and vice versa. The right amount of insurance isn't zero (one event could derail your finances) and it isn't maximum (over-insuring wastes cash flow on unlikely scenarios). The goal is covering the losses you couldn't absorb on your own."
 order: 16
 pubDate: 2026-05-22
-updatedDate: 2026-05-22
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Vicki Robin"
     url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
     type: "book"
+relatedSlugs: ["emergency-fund", "budgeting", "cash-flow-101", "assets", "liabilities"]
+faq:
+  - question: "What does insurance actually do?"
+    answer: "Insurance is a contract that transfers financial risk from you to an insurer. You pay a regular premium, and in return the insurer covers the financial damage from a specific bad event, up to your policy limits. The trade-off is clear: premiums are certain and predictable, while the losses they protect against are uncertain and potentially catastrophic. You swap a small guaranteed cost for protection against a large uncertain one. This is rational whenever a potential loss is big enough to disrupt your financial life. Paying 30 euros a month to avoid a 50,000 euro hospital bill makes sense; paying 30 euros a month to avoid a 100 euro phone repair does not."
+  - question: "What are the main types of insurance I should consider?"
+    answer: "Five categories cover most people's financial risks. Health insurance covers medical expenses and prevents bills that take years to repay. Life insurance pays your dependents if you die, mattering most when others rely on your income. Property insurance, including homeowner's and renter's contents cover, protects your home and belongings. Disability insurance replaces part of your income if illness or injury stops you working, often the most overlooked. Liability insurance covers costs if you are legally responsible for harm to others. How much of each you need depends on where you live, since public systems already cover some of these in many countries. Focus on the gaps."
+  - question: "How does insurance work with an emergency fund?"
+    answer: "Insurance and your emergency fund both handle unexpected shocks, and the balance between them matters. More comprehensive insurance means fewer scenarios can generate a huge surprise bill, so a smaller emergency fund of around 3 months of expenses may suffice. Less insurance means your emergency fund is the only buffer, so 4 to 6 months or more is wiser. For example, skipping disability cover leaves only your fund to absorb lost income, and a long disability will outlast it. This is why guidance says 3 to 6 months rather than a single number: the right amount depends on how much risk you have already transferred to insurers."
+  - question: "How much insurance do I actually need?"
+    answer: "The goal is covering losses you could not absorb on your own, not insuring everything. The right amount is neither zero, since one event could derail your finances, nor maximum, since over-insuring wastes cash flow on unlikely scenarios. A useful rule of thumb: insure what you cannot afford to lose, and self-insure what you can. Insurance makes sense when a potential loss is large, would derail your goals if paid from savings, and is unlikely but high-impact. It is less valuable for small losses, when the premium is high relative to the expected payout, or when the thing insured would not meaningfully affect your financial plan."
+  - question: "What are the most common insurance mistakes?"
+    answer: "Four mistakes recur. Under-insuring to save money: skipping disability cover saves perhaps 50 euros a month, but a year-long disability can cost over 40,000 euros in lost income. Over-insuring out of anxiety: extended warranties, gadget cover, and travel insurance for a cheap weekend trip are often more profitable for the insurer than for you. Not reviewing coverage: your needs change with marriage, children, a mortgage, or a job change, so review annually. Ignoring deductibles: a lower premium often means a higher deductible, the amount you pay before insurance kicks in, so make sure your emergency fund can cover it comfortably."
 ---
 
 You spent six months building an [emergency fund](/blog/emergency-fund/). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.

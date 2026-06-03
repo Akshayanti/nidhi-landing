@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
 tags: ["building", "debt", "planning"]
+relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "saving-vs-investing", "credit-and-credit-scores", "purchasing-power"]
+faq:
+  - question: "Why should I compare APR instead of the advertised interest rate?"
+    answer: "The advertised interest rate is only the cost of borrowing the money itself. Loans almost always carry extra costs: arrangement or origination fees, mandatory insurance, account administration charges, valuation fees, and early-repayment penalties. APR, the annual percentage rate, folds the nominal rate, most mandatory fees, and the payment timing into a single annualised figure, so it is a more honest comparison. A loan advertised at 2.9% with €5,000 of fees and €13,000 of bundled insurance can have a higher APR than one advertised at 3.2% with no fees. Compare APRs first, then confirm the total cost of borrowing, and only look at headline rates last."
+  - question: "Why are early loan payments mostly interest?"
+    answer: "This is how amortisation works. Each monthly payment is split between interest, charged on the balance you still owe, and principal, which reduces that balance. Early on the balance is large, so most of the payment goes to interest and the principal barely moves. As the balance falls, the interest portion shrinks and the principal portion grows. On a €250,000 mortgage at 3% over 25 years, month one is about €625 interest and €561 principal, while by year 20 it has flipped to about €167 interest and €1,018 principal. This skew is why selling early builds little equity and why prepayments in the first years are so powerful."
+  - question: "Should I choose a fixed or variable rate loan?"
+    answer: "Fixed rates lock your interest for a set period, giving predictable payments and no exposure to rate rises, usually at a higher starting rate. Variable rates track a reference rate plus a margin, so payments rise and fall with the market: often cheaper on average historically, but exposed to future payment shock. Hybrids fix an initial period then float, which reintroduces variable-rate risk while the balance is still large. The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for a payment jump. 'Cheaper on paper right now' is not the same as cheaper over the life of the loan."
+  - question: "How powerful is prepaying a loan?"
+    answer: "If your loan allows it without penalty, prepaying principal is one of the most effective ways to cut total interest. On a €250,000 mortgage at 3% over 25 years with roughly €105,000 of lifetime interest, adding just €100 a month of principal trims about 2.75 years off the term and saves around €13,000. Doubling that to €200 a month cuts roughly 5 years and saves about €23,000. A prepayment is effectively a guaranteed return equal to the loan rate: a 3% mortgage prepayment earns a guaranteed 3%, a 7% consumer loan a guaranteed 7%. Timing matters too, since early prepayments cancel decades of future interest while late ones save almost nothing."
+  - question: "When does refinancing a loan actually save money?"
+    answer: "Refinancing replaces an existing loan with a new one, usually for a lower rate, a different term, or a switch between fixed and variable. It makes sense when rates have dropped meaningfully, your credit has improved, or your loan type no longer fits. The test is break-even analysis: divide the new loan's fees by the monthly payment savings to get the number of months to recoup the cost, then compare that to how long you will actually hold the loan. Two cautions: some loans charge prepayment or early-termination penalties, and refinancing restarts the amortisation clock, so a fresh 25-year loan can lower the payment while increasing total interest paid."
 relatedTool:
   url: "/free/loan-comparison"
   label: "Loan comparison calculator"
@@ -178,7 +190,7 @@ Same logic applies in reverse when lenders offer "no-fee" loans at a slightly hi
 Refinancing means taking out a new loan to pay off an existing one, usually to get a lower rate, a different term, or to switch between fixed and variable. It makes sense when:
 
 - Interest rates have dropped meaningfully since you took the original loan
-- Your credit situation has improved and you can now qualify for a better rate
+- Your [credit situation has improved](/blog/credit-and-credit-scores/) and you can now qualify for a better rate
 - You want to change the loan term (shortening to pay off faster or lengthening to reduce monthly payments)
 - Your original loan type no longer fits your situation
 

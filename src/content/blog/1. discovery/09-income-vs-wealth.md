@@ -5,7 +5,7 @@ description: "Earning more doesn't automatically mean being wealthier. Here's wh
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Morgan Housel"
     url: "https://www.goodreads.com/book/show/41881472-the-psychology-of-money"
     type: "book"
+relatedSlugs: ["what-is-net-worth", "emergency-fund", "how-to-calculate-net-worth", "assets", "liabilities"]
+faq:
+  - question: "What is the difference between income and wealth?"
+    answer: "Income is a flow: the money that moves into your accounts over a period, such as salary, freelance fees, or rent received. Wealth is a stock: what you have accumulated and kept, measured as your net worth, everything you own minus everything you owe. Income answers how much is coming in. Wealth answers how much is staying. A person earning 3,000 euros who saves 1,000 a month will be wealthier after five years than someone earning 6,000 who saves 200. High income does not automatically create wealth; the gap between earning and spending does."
+  - question: "Why does a higher salary not always make you wealthier?"
+    answer: "Because spending often rises to match income, a pattern called lifestyle inflation. When a raise arrives, the bigger apartment, newer car, and more frequent dinners out absorb it. The income went up, but the gap between income and spending stayed the same or shrank, so net worth stayed flat. If your spending always matches your income, you build zero wealth regardless of how much you earn. Wealth comes from the difference between income and spending over time, not from the size of the paycheck alone. A modest salary with discipline beats a large salary with no margin."
+  - question: "What is a savings rate and why does it matter?"
+    answer: "Your savings rate is the share of income you keep rather than spend, calculated as (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, you save 600, a 20 percent savings rate. It matters because it is one of the strongest predictors of long-term wealth, stronger than salary. Someone earning 6,000 euros at a 5 percent savings rate builds wealth slower than someone earning 3,000 at 20 percent. Tracking this single number shows whether your wealth engine is accelerating or stalling, no matter what your income does."
+  - question: "How do I shift from income thinking to wealth thinking?"
+    answer: "Income thinking asks how to earn more. Wealth thinking asks how to keep more of what you earn. Make three practical shifts. First, track the gap between what comes in and what goes out, not just your salary, because that gap is your wealth engine. Second, automate saving by moving a fixed amount to savings the day your salary arrives, rather than saving whatever is left at month end. Third, resist the upgrade: when income grows, hold your spending steady for at least three months and let the extra flow into savings before you adjust your lifestyle."
+  - question: "Why is reducing spending often faster than earning more?"
+    answer: "Every euro you avoid spending is a euro saved with no tax taken from it, while every extra euro earned is usually taxed before it reaches you. Cutting a 50 euro monthly subscription keeps the full 50 euros; earning an extra 50 euros might leave you 35 after tax. Spending cuts are also within your direct control and take effect immediately, whereas raises and side income take time to negotiate or build. The most effective approach grows income and trims spending together, but if you can only start with one, reducing spending usually delivers faster, more reliable results."
 ---
 
 Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €2,400.

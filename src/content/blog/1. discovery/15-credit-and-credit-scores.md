@@ -5,7 +5,7 @@ description: "You've never missed a payment. You have no debt. But the rate you'
 tldr: "A credit score is a number that summarizes how reliably you've handled borrowed money. It's based on your payment history, how much of your available credit you use, how long your accounts have been open, and the types of credit you hold. Every country has its own system; FICO in the US, SCHUFA in Germany, Experian in the UK, CIBIL in India; but the core factors are universal. A higher score means lower interest rates on loans and mortgages, saving you thousands over a lifetime. Even if you avoid debt entirely, your credit history affects rental applications, insurance, and financial flexibility. Building good credit is simple: use a small amount, pay it off in full every month, and give it time."
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-05-20
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,7 @@ referentialReading:
     author: "Dave Ramsey"
     url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
+relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "cash-flow-101", "assets", "what-is-net-worth"]
 faq:
   - question: "Does checking my own credit score lower it?"
     answer: "No. Checking your own score is a soft inquiry and has no effect. Only applications for new credit (like applying for a loan or credit card) trigger hard inquiries that can temporarily affect your score."

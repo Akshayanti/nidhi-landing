@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
 tags: ["building", "fire", "goals"]
+relatedSlugs: ["saving-vs-investing", "cash-flow-101", "income-vs-wealth", "getting-started-investing", "budgeting"]
+faq:
+  - question: "What is a FIRE number and how do I calculate mine?"
+    answer: "Your FIRE number is the portfolio size that lets investment returns cover your living costs indefinitely. The starting formula is annual expenses divided by your safe withdrawal rate. At a 4% withdrawal rate this simplifies to roughly 25 times your annual spending: €30,000 of yearly expenses implies a €750,000 target. The figure is driven entirely by what you spend, not what you earn, so trimming €10,000 of recurring spending lowers your target by €250,000. In higher-inflation or lower-return markets, a more conservative 3 to 3.5% rate is common, which moves the target closer to 28 to 33 times annual expenses."
+  - question: "Why does savings rate matter more than income for reaching financial independence?"
+    answer: "Savings rate is income minus expenses divided by income, and it controls two things at once: how much you contribute and how much you eventually need. High spending raises your FIRE target while leaving less to invest, so a low saver is squeezed from both sides. The classic table shows that two people on very different salaries but the same savings rate reach independence in roughly the same number of years. A 20% saver is about 37 years away; a 50% saver is about 17 years away, regardless of the underlying paycheck. Expenses, not salary, set the pace."
+  - question: "What are the four common types of FIRE?"
+    answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Pick the flavor you can imagine sustaining for decades rather than the one that sounds most impressive."
+  - question: "Is the 4% rule a guarantee that my money will last?"
+    answer: "No. The 4% rule comes from the Trinity Study, which used US historical data over a 30-year horizon for a specific stock and bond mix. It found that portfolio survived 4% inflation-adjusted withdrawals in most tested scenarios, but it is a rule of thumb, not a promise. Longer retirements, lower-return environments, and different markets all weaken it. Readers in higher-inflation regions often start at 3 to 3.5%, lifting the target to roughly 28 to 33 times annual expenses. Treat 4% as a starting point for thinking, and remember that sequence-of-returns risk and drawdown strategy matter as much as the headline rate."
+  - question: "What is the crossover point in financial independence?"
+    answer: "The crossover point is the month your investment income first exceeds your monthly expenses. Before it, you need work income to survive; after it, even if you keep working, you do so by choice. It usually arrives years before the full FIRE number, because you do not need 25 times expenses the moment income first matches outgoings, you just need a portfolio on track to keep covering them. Tracking it as a monthly line chart turns an abstract distant target into a closing gap you can watch month by month, which makes it one of the most motivating numbers to follow early in the journey."
 referentialReading:
   - title: "The Shockingly Simple Math Behind Early Retirement"
     author: "Mr. Money Mustache"
@@ -45,7 +57,7 @@ The uncomfortable-but-freeing insight is that financial independence depends on 
 1. How much you spend each year
 2. How much you've invested
 
-It has almost nothing to do with how much you earn. A high earner who spends everything stays dependent on the next paycheck forever. A moderate earner who spends carefully and invests the rest eventually stops depending on one.
+It has almost nothing to do with how much you earn. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next paycheck forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
 
 ## The simple math
 
@@ -153,7 +165,7 @@ The jaw-dropping part: the table doesn't care what you earn. Two people earning 
 This also means the two most powerful moves aren't about investing at all:
 
 - **Lowering expenses permanently** reduces the target and raises the savings rate in the same move
-- **Sending every raise to savings** before lifestyle inflation absorbs it keeps savings rate rising
+- **Sending every raise to savings** before lifestyle inflation absorbs it keeps savings rate rising, and routing it into a [diversified portfolio](/blog/getting-started-investing/) puts it to work immediately
 
 ## Why FIRE is not only for extreme savers
 

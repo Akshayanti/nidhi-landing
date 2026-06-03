@@ -5,7 +5,7 @@ description: "Your net worth is the single number that tells you whether you're 
 tldr: "Net worth is everything you own minus everything you owe. It's the one number that captures your full financial picture: how much you earn, spend, save, and owe. Track it over time and you'll see whether you're actually building wealth or just earning money."
 order: 1
 pubDate: 2026-04-19
-updatedDate: 2026-05-07
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Vicki Robin"
     url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
     type: "book"
+relatedSlugs: []
+faq:
+  - question: "What is net worth?"
+    answer: "Net worth is everything you own minus everything you owe. You add up your assets (cash, bank balances, investments, property, a car at its current resale value) and subtract your liabilities (mortgage balance, student loans, car loans, credit card debt). The result is your net worth. If you own €80,000 in assets and owe €30,000, your net worth is €50,000. It is the single number that captures your full financial picture in one figure, unlike salary, which only tells you what comes in each month."
+  - question: "Is net worth more important than salary?"
+    answer: "Yes, for measuring wealth. Salary is income, a flow of money in. Net worth is what stays after you spend. Two people earning €4,000 a month can end the year far apart: one saving €1,000 monthly grows net worth by €12,000, while one saving €200 grows it by €2,400. Same income, very different outcomes. Salary tells you your earning power; net worth tells you what you have actually kept and built. Lenders, and your future self, care about the latter."
+  - question: "Can net worth be negative?"
+    answer: "Yes, and it is common, especially early in a career. If you hold a €20,000 student loan and have €2,000 in the bank, your net worth is minus €18,000. That is not failure; it is a starting point. Many people carry negative net worth in their twenties and thirties because of mortgages and student debt. What matters far more than the absolute number is the direction. A negative net worth that improves month after month means you are paying down debt and moving the right way."
+  - question: "What is a good net worth?"
+    answer: "There is no universal good number; it depends on age, location, and goals. Useful reference points are about direction rather than size. Positive and growing means you are building wealth. Positive but shrinking signals you may be overspending or carrying expensive debt. Negative but improving means you are paying down debt, and the trend is your friend. Negative and getting worse is the warning sign: the gap between income and expenses needs attention. Track the trend over months rather than fixating on hitting a specific target figure."
+  - question: "How often should I check my net worth?"
+    answer: "Once a month is enough for most people. Net worth moves slowly, so checking daily adds stress without insight. A monthly snapshot, taken on roughly the same date each time, lets you see the trend clearly: growing, flat, or shrinking. That trend tells you more than any single reading. The first calculation takes the longest because you are gathering balances and values for the first time. After that, updating takes a few minutes, and the habit is what reveals whether your plan is actually working."
 ---
 
 If someone asked you how you're doing financially, what would you say?

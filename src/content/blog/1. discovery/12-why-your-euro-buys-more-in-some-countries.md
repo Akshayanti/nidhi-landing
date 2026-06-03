@@ -5,7 +5,7 @@ description: "Exchange rates show how much one currency is worth in another, not
 tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries, a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -21,6 +21,18 @@ referentialReading:
     author: "Paul Krugman"
     url: "https://www.goodreads.com/book/show/516577.International_Economics"
     type: "book"
+relatedSlugs: ["purchasing-power", "income-vs-wealth", "cash-flow-101"]
+faq:
+  - question: "What is an exchange rate?"
+    answer: "An exchange rate is the price of one currency expressed in terms of another. If the EUR/USD rate is 1.08, one euro buys 1.08 US dollars. Rates change constantly, driven by supply and demand, interest rate differences between countries, trade flows, speculation, and central bank policy. Two things matter most for your money. First, exchange rates convert nominal amounts: they tell you how many dollars you get for your euros, not how much those dollars can buy locally. Second, they fluctuate, so the rate today may differ next month. If you earn in one currency and spend in another, those swings directly change your real income."
+  - question: "What is purchasing power parity (PPP)?"
+    answer: "Purchasing power parity is the idea that, over time, exchange rates should adjust so the same basket of goods costs the same in every country. In practice they rarely do, and that gap is what makes living costs differ across borders. A cappuccino might cost 4.50 euros in Helsinki, 3.20 in Berlin, 1.60 in Lisbon, and 1.20 in Bangkok, not because coffee beans differ, but because wages, rents, taxes, and overall price levels differ. PPP does not mean exchange rates should be 1 to 1; it means rates should reflect what money can actually buy. Real rates can stay far from PPP for years due to trade barriers, productivity gaps, and capital flows."
+  - question: "What is the Big Mac index?"
+    answer: "The Big Mac index is a light-hearted measure created by The Economist to illustrate purchasing power parity. A Big Mac is made to roughly the same recipe everywhere, so its local price is a rough proxy for overall price levels. If a Big Mac costs 5.50 euros in the eurozone and 5.70 dollars in the US, the implied PPP exchange rate is 5.50 divided by 5.70, or about 0.96. Comparing that to the actual market rate suggests whether a currency is over- or undervalued. It is not precise, but it makes the core point clear: exchange rates do not perfectly reflect what money can buy in each country."
+  - question: "Should I worry about exchange rates if I earn and spend in the same currency?"
+    answer: "If all your income and expenses are in one currency, exchange rates affect you mostly when you travel, since your money stretches further in countries with lower price levels. The picture changes if you earn in one currency and spend in another, for example earning euros while paying a mortgage in British pounds or supporting family abroad. Then a 10 percent swing in EUR/GBP can add or subtract hundreds from your monthly budget, an ongoing and unpredictable living-cost risk. There is also transaction risk, where the rate moves between agreeing a price and paying it. Know exactly which currencies you are exposed to before deciding how much it matters."
+  - question: "How do I compare salaries or living costs across countries?"
+    answer: "Compare in real terms, not nominal ones. A salary number means nothing without knowing what it buys locally, so adjust each offer for local price levels using purchasing power parity. Earning 2,000 euros in Lisbon might give you the same lifestyle as 4,000 euros in Copenhagen, because rent, groceries, and everyday costs differ sharply. A salary cut after a move does not automatically mean a lower standard of living. Avoid over-optimizing on exchange rates for everyday conversions, since fees, spreads, and timing risk usually cost more than chasing the best rate saves. Convert when you need to, and reserve careful PPP analysis for major decisions like relocating."
 ---
 
 You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off? Maybe not.
@@ -71,7 +83,7 @@ This is where exchange rates become personal. If you earn in euros but have expe
 
 ### If you're considering moving countries
 
-A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income: salary adjusted for local prices. €2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
+A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income: salary adjusted for local prices, the same gap between [what you earn and what it actually does for you](/blog/income-vs-wealth/) that drives wealth at home. €2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
 
 ## Two types of currency risk
 

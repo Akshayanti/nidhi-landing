@@ -5,7 +5,7 @@ description: "Two proven strategies for paying off debt: snowball prioritizes mo
 tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-05-21
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -36,6 +36,7 @@ howTo:
       text: "Snowball targets the smallest balance first for quick wins and motivation. Avalanche targets the highest interest rate first to minimise total interest paid. Both work. Pick the one you'll stick with."
     - name: "Attack your target debt"
       text: "Put every extra euro toward your chosen target debt while making minimum payments on everything else. When that debt is cleared, roll its payment into the next one."
+relatedSlugs: ["liabilities", "what-is-net-worth", "assets"]
 faq:
   - question: "What is the debt snowball method?"
     answer: "The snowball method pays off debts from smallest balance to largest. You make minimum payments on everything and put every extra euro toward the smallest debt. When it's gone, you roll that payment into the next smallest. Quick wins build momentum."

@@ -5,11 +5,23 @@ description: "Diversification sounds like a platitude. In practice, it's the sin
 tldr: "Diversification means spreading your money across investments that don't all rise and fall together. The goal isn't to pick winners. It's to make sure no single loser can take you down. You diversify across asset types (stocks, bonds, real estate), across geography (multiple countries), across industries, and across time (dollar-cost averaging). Concentration is the hidden risk in most portfolios: one employer, one country, one sector. Diversification is often called the only free lunch in finance because it genuinely reduces risk without proportionally reducing expected return, but only if the things you hold actually behave differently from each other."
 order: 20
 pubDate: 2026-06-01
-updatedDate: 2026-06-01
+updatedDate: 2026-06-03
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "investing", "risk"]
+faq:
+  - question: "What does diversification actually mean in investing?"
+    answer: "Diversification means owning a mix of investments that do not all respond to the same events in the same way. When one asset falls, another may rise or stay flat, so the volatility of the whole portfolio ends up smaller than the volatility of its individual parts. You diversify along several dimensions at once: asset class (stocks, bonds, real estate, cash), geography (multiple countries), industry, company size, currency, and time through regular contributions. The goal is not to pick winners. It is to make sure no single loser can take you down. Owning fifty stocks in the same sector and country is not diversified; it is one bet repeated fifty times."
+  - question: "Why is diversification called the only free lunch in finance?"
+    answer: "In 1952, Harry Markowitz showed that diversification uniquely lets you reduce risk without proportionally reducing expected return, work that won him the Nobel Prize. The intuition: combine two investments with the same expected return but imperfectly correlated movements, and the combined volatility is less than the weighted average of their individual volatilities. You get the same expected return on a smoother path. That is rare in economics, where reducing risk usually means accepting lower returns. The catch is that it only works if the things you hold actually behave differently from each other. Fifty near-identical holdings give you none of this benefit."
+  - question: "How much diversification is enough for most investors?"
+    answer: "Much less effort than most people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it extremely diversified within equities. Add one broad bond index fund and you have crossed asset classes. A reasonable starting portfolio is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs. That captures most of the benefit institutional investors pay advisors to construct. More complexity is not automatically better: every extra fund adds cost and work. Before adding one, ask whether it covers an exposure you do not already have."
+  - question: "What is concentration risk and where does it hide?"
+    answer: "Concentration risk is exposure to a single event that moves many of your assets at once. The biggest concentrations usually sit outside investment accounts. Employer concentration: your income, employer stock, and pension all depend on one company, so several pillars can go together. Geographic concentration: your job market, property, and currency all live in one country, so a local recession touches everything. Sector concentration: working in tech, living near a tech hub, and holding tech stocks is three bets on one story. Holding a large share of net worth in one employer's stock because you believe in it is among the most common and damaging mistakes."
+  - question: "Does diversification protect you in a market crash?"
+    answer: "Only partly. Diversification handles single-stock and single-country risk well, but it does not eliminate systemic risk. In severe global events like 2008 and March 2020, correlations rise and most assets fall together; cash is what holds its nominal value in a panic. You also cannot diversify away the market itself: if the global stock market falls 30%, any diversified stock portfolio falls roughly 30% too. Diversification smooths the ride and reduces the chance that one bad bet derails your plan, but it does not make the destination better on average. It makes it more likely you actually get there."
+relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "satellite-assets-commodities-and-cryptocurrency", "emergency-fund", "saving-vs-investing"]
 referentialReading:
   - title: "Diversification"
     url: "https://www.investopedia.com/terms/d/diversification.asp"
@@ -26,7 +38,7 @@ referentialReading:
 
 Your salary comes from one employer. Your company stock sits in your retirement account because you got it as part of your compensation. Your home is in one city. Your savings are in euros because that's what you earn. On paper, your net worth looks reasonable. On the day that employer cuts jobs, that city's housing market stalls, and the euro has a weak year against the currency of the supplier you import everything from, you discover something uncomfortable: almost every number on your balance sheet moves in the same direction. Down.
 
-This is concentration risk. It's the reason "don't put all your eggs in one basket" survived centuries as advice. And diversification is the boring, unglamorous answer that quietly protects most of the financial progress you make.
+This is concentration risk. It's a close cousin of the [risk concepts](/blog/understanding-risk/) we covered earlier, and the reason "don't put all your eggs in one basket" survived centuries as advice. And diversification is the boring, unglamorous answer that quietly protects most of the financial progress you make.
 
 ## What diversification actually is
 
