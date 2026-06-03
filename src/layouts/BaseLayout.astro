@@ -25,10 +25,10 @@ interface Props {
   nextUrl?: string | null;
   jsonLd?: object[];
   robots?: string;
-  /** Optional class on the <main> element. Used by /index2 to opt into the
-   *  scroll-snap shell without affecting any other page. */
+  /** Optional class on the <main> element. Used by the home page to opt
+   *  into the scroll-snap shell without affecting any other page. */
   mainClass?: string;
-  /** Optional data-* attributes on <body>. Used by /index2 to set
+  /** Optional data-* attributes on <body>. Used by the home page to set
    *  data-page="landing", which the global stylesheet keys off to flip the
    *  header to its fixed/transparent treatment. */
   bodyData?: Record<string, string>;

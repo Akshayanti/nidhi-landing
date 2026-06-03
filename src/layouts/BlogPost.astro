@@ -74,11 +74,8 @@ const blogPostingSchema = {
     name: 'nidhi',
     url: `${siteUrl}/`,
   },
-  // Point at the generic site OG image for now. The previous pointer at
-  // /baba_money.webp with declared 800x1200 dims was wrong on both URL
-  // and dimensions: the asset is a small headshot, not a 1.6 MP image.
-  // PR16 will repoint this at a per-post OG image generator and emit the
-  // real dims dynamically.
+  // Point at the generic site OG image for now. PR16 will repoint this
+  // at a per-post OG image generator and emit the real dims dynamically.
   image: {
     '@type': 'ImageObject',
     url: `${siteUrl}/brand/social/og-image.png`,

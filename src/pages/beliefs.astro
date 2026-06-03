@@ -37,14 +37,24 @@ const breadcrumbSchema = {
     <div class="beliefs-container">
       <div class="hero">
         <div class="hero-icon">
-          {/* Same resized hero asset as the home page; see the comment
-              there for sizing rationale. Rendered at 80x120 CSS here, so
-              the 200-wide source still covers DPR 2 cleanly. */}
+          {/* Brand icon mark, theme-aware via [data-theme]. Rendered at
+              80px; the 256px source covers DPR 2 cleanly. */}
           <img
-            src="/baba_money-200.webp"
-            width="200"
-            height="300"
-            alt="finosopher"
+            class="brand-mark brand-mark--light"
+            src="/brand/logo/icon-only/icon-256.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            class="brand-mark brand-mark--dark"
+            src="/brand/logo/icon-only/icon-256-dark.png"
+            width="256"
+            height="256"
+            alt="nidhi"
             fetchpriority="high"
             loading="eager"
             decoding="async"
@@ -169,6 +179,19 @@ const breadcrumbSchema = {
     width: 80px;
     height: auto;
     animation: float 3s ease-in-out infinite;
+  }
+
+  /* Theme-aware brand mark: show the variant matching the active theme. */
+  .hero-icon .brand-mark--dark {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .hero-icon .brand-mark--light {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .hero-icon .brand-mark--dark {
+    display: inline-block;
   }
 
   @keyframes float {

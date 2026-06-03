@@ -626,6 +626,10 @@ PR0. Independent.
 
 ## PR18: Final `/` ← `/index2/` swap
 
+**Status: implemented on `feat/home-swap-pr18`. Pending review/merge.**
+
+Added to scope by user request: (a) the `/index2/` route must not exist at all after the swap (achieved by `git mv index2.astro index.astro`, not by keeping both); (b) the "baba" placeholder illustration (`public/baba_money-200.webp`) was removed everywhere it appeared. It was the parked-home hero (gone via the swap), the `/about/` avatar (PR14), and the `/beliefs/` hero. All three now use the existing icon-only brand mark (`/brand/logo/icon-only/icon-256{,-dark}.png`), theme-aware via `[data-theme]`. The asset file and a stale comment reference in `BlogPost.astro` were also removed. Zero `baba` references remain.
+
 > The closing move. Mechanical, small, but high-stakes because it touches the most-trafficked URL. Keep the diff focused.
 
 ### Scope
@@ -668,18 +672,20 @@ PR0 obviously. PR14 ideally (so live `Organization.sameAs` is already in place).
 
 ### Verification
 
-- [ ] Pre-merge: built `dist/index.html` matches the parked `dist/index2/index.html` content (one byte-level diff: the new home has no `noindex` meta).
-- [ ] Built `dist/sitemap-0.xml` now lists `https://nidhi.today/` and does **not** list `https://nidhi.today/index2/` (the parked URL is gone, not just unindexed).
-- [ ] No 404s introduced: `rg "/index2/"` returns zero in production code; one-off check that any external bookmarks of `/index2/` would 404 is fine (page never had real traffic).
-- [ ] H1 on `dist/index.html` is `See your full financial picture, in any currency.`.
-- [ ] `dist/index.html` contains `BreadcrumbList` JSON-LD.
-- [ ] `dist/index.html` `Organization` schema includes `sameAs`.
-- [ ] Live FX caption on the new home renders within 1 second on first paint, falls back silently on error.
-- [ ] Hero waitlist form and tail waitlist form both submit successfully (Apps Script endpoint receives test).
-- [ ] Light and dark mode both render correctly across all four snap sections + tail.
-- [ ] Lighthouse on `/` (post-swap) is at least equal to pre-swap baseline on Performance and SEO. Record both.
-- [ ] System "reduce motion" preference disables snap; mobile (<768px) has no snap.
-- [ ] No em dashes, no double dashes anywhere in rendered output.
+- [x] `/index2/` route no longer exists: no `dist/index2/` directory, and `rg "/index2/" dist/` returns zero. The parked URL is gone, not just unindexed.
+- [x] Built `dist/sitemap-0.xml` lists `https://nidhi.today/` and does **not** list `https://nidhi.today/index2/`.
+- [x] `rg "/index2/"` returns zero in production code (the `free/index.astro` comment was reworded to "the home page").
+- [x] H1 on `dist/index.html` is `See your full financial picture, in any currency.`.
+- [x] `dist/index.html` contains `BreadcrumbList` JSON-LD.
+- [x] `dist/index.html` `Organization` schema includes `sameAs` (Instagram).
+- [x] `noindex` is absent from `dist/index.html`.
+- [x] Baba removed everywhere: zero `baba` references in `src/` or `dist/`; asset deleted; `/about/` and `/beliefs/` now use the theme-aware icon-only brand mark (both light + dark variants ship and are referenced).
+- [ ] Live FX caption on the new home renders within 1 second on first paint, falls back silently on error. (Runtime check, verify post-deploy.)
+- [ ] Hero waitlist form and tail waitlist form both submit successfully (Apps Script endpoint receives test). (Runtime check, verify post-deploy.)
+- [ ] Light and dark mode both render correctly across all four snap sections + tail; brand-mark theme swap on /about/ and /beliefs/ looks right in both. (Visual check, verify post-deploy.)
+- [ ] Lighthouse on `/` (post-swap) is at least equal to pre-swap baseline on Performance and SEO. Record both. (Verify post-deploy.)
+- [ ] System "reduce motion" preference disables snap; mobile (<768px) has no snap. (Runtime check, verify post-deploy.)
+- [x] No em dashes, no double dashes in rendered output (`/`, `/about/`, `/beliefs/` all scan clean).
 
 ---
 
@@ -1019,7 +1025,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 
 | # | Title | Status | Closes in |
 |---|---|---|---|
-| 1 | Home page H1 is the brand word, not a keyword phrase | Conditional resolve | PR18 |
+| 1 | Home page H1 is the brand word, not a keyword phrase | Addressed (PR18 pending merge) | PR18 |
 | 2 | Blog post `<title>` tags omit the brand suffix; tag pages too | **Resolved** (PR1) | — |
 | 3 | Discovery posts too thin to rank | Open | PR6-PR13 |
 | 4 | Internal linking weak; `relatedSlugs` is dead code | **Resolved** (render side, PR2); population in PR5 | PR5 |
@@ -1034,7 +1040,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | 13 | Reconsider AI-bot blocks in robots.txt | Addressed (PR17 pending merge) | PR17 |
 | 14 | Per-post OG images | Open | PR16 (optional) |
 | 15 | Surface "last updated" dates visibly | **Resolved** (PR1) | — |
-| 16 | Add `BreadcrumbList` to home page | Conditional resolve | PR18 |
+| 16 | Add `BreadcrumbList` to home page | Addressed (PR18 pending merge) | PR18 |
 | 17 | `WebSite.SearchAction` points at non-functional URL | **Resolved** (PR4) | — |
 | 18 | Repo-root cruft (`index.html`, `baba_money.png`) | **Resolved** (PR0) | — |
 | 19 | `<abbr class="finosopher">` lacks native `title` attribute | **Resolved** (PR1) | — |
@@ -1043,7 +1049,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | 22 | `BlogPosting.image` declares dimensions that don't match | **Resolved provisionally** (PR1); proper fix in PR16 | PR16 |
 | 23 | `/privacy/` emits no JSON-LD | **Resolved** (PR1) | — |
 | 24 | `og:image` width/height and `twitter:image:alt` hard-coded | **Resolved** (PR3) | — |
-| 25 | `Organization.sameAs` only on parked redesign | New (June), Conditional resolve | PR14 (or PR18) |
+| 25 | `Organization.sameAs` only on parked redesign | Resolved (PR14 added it to live home; PR18 ships the redesign with it) | PR14 / PR18 |
 | 26 | `LearningPath.tsx` chips are `<button>` not `<a>` | **Resolved** (PR2) | — |
 | 27 | `[tag]` URL not encoded in tag-page BreadcrumbList | **Resolved** (PR1) | — |
 
