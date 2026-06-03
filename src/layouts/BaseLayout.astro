@@ -9,6 +9,12 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  /** OG image width. See `BaseHead` props. */
+  imageWidth?: number;
+  /** OG image height. See `BaseHead` props. */
+  imageHeight?: number;
+  /** Social card alt text. See `BaseHead` props. */
+  imageAlt?: string;
   article?: {
     publishedTime: Date;
     modifiedTime?: Date;
@@ -27,13 +33,13 @@ interface Props {
   bodyData?: Record<string, string>;
 }
 
-const { title, description, image, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
+const { title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
+    <BaseHead title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
     {/*
       Per-page head additions (preconnects, page-specific link tags). The
       slot is empty by default so existing pages are unaffected; the

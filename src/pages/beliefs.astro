@@ -37,7 +37,18 @@ const breadcrumbSchema = {
     <div class="beliefs-container">
       <div class="hero">
         <div class="hero-icon">
-          <img src="/baba_money.webp" alt="finosopher" />
+          {/* Same resized hero asset as the home page; see the comment
+              there for sizing rationale. Rendered at 80x120 CSS here, so
+              the 200-wide source still covers DPR 2 cleanly. */}
+          <img
+            src="/baba_money-200.webp"
+            width="200"
+            height="300"
+            alt="finosopher"
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+          />
         </div>
         <h1 class="beliefs-title">What We Believe</h1>
         <p class="beliefs-intro">nidhi started because one person couldn't find a decent finance tool, and got annoyed enough to build one</p>
