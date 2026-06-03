@@ -5,7 +5,7 @@ description: "You track your income. You know your expenses. But unless you tell
 tldr: "A budget is a plan for your money, not a restriction on it. It turns the gap between income and expenses, your savings rate, into something intentional. The three most common approaches are: the 50/30/20 rule (simple, percentage-based), zero-based budgeting (every euro assigned a job), and pay-yourself-first (automate savings, spend the rest). The best budget is the one you'll actually follow. Automating your savings and bill payments removes willpower from the equation and makes consistency the default."
 order: 14
 pubDate: 2026-05-18
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,7 @@ referentialReading:
     author: "Dave Ramsey"
     url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
+relatedSlugs: ["cash-flow-101", "saving-vs-investing", "income-vs-wealth", "what-is-net-worth", "emergency-fund"]
 faq:
   - question: "What is the 50/30/20 budgeting rule?"
     answer: "The 50/30/20 rule splits your after-tax income into three buckets: 50% for needs (rent, groceries, insurance), 30% for wants (dining out, entertainment, hobbies), and 20% for savings and debt repayment. It's the simplest budgeting method and a good starting point for beginners."

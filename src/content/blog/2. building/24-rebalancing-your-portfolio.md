@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "investing", "risk", "planning"]
+faq:
+  - question: "What is portfolio rebalancing and why does it matter?"
+    answer: "Rebalancing is the discipline of pulling your portfolio back to its target allocation on a schedule, regardless of what markets have been doing. Over time, market movements drift your portfolio away from target: a 70/30 stocks/bonds split can become 80/20 after a strong equity year. Your account value rises so nothing looks wrong, but your risk profile has quietly become more aggressive than the one you chose. Rebalancing fixes two problems: higher risk than intended, which means a larger drawdown than planned in the next downturn, and the loss of built-in buy-low, sell-high discipline. The primary benefit is risk control, not return enhancement; the return benefit exists but is small and statistically noisy."
+  - question: "What are the three methods of rebalancing?"
+    answer: "Calendar-based: rebalance at fixed intervals, most commonly annually, by trading enough to return each asset class to its target percentage. It is simple and removes emotional timing, and is the standard recommendation for most individual investors. Threshold-based, or bands: rebalance whenever any asset drifts more than a set amount from target, commonly 5% absolute or 20% relative, doing nothing between breaches. It is responsive but requires more checking. Contribution-based: redirect new money to whichever asset is below target rather than selling what is above, which avoids capital gains tax in taxable accounts but only works while contributions are large relative to the drift. The three are not mutually exclusive."
+  - question: "How often should I rebalance my portfolio?"
+    answer: "Academic and industry research consistently finds that more frequent rebalancing does not meaningfully improve returns and often slightly hurts them after transaction costs and taxes. The sweet spot across most studies is annual calendar rebalancing, or 5% absolute threshold bands (or 20% relative), which produce very similar long-term outcomes. Quarterly rebalancing adds trading costs without adding returns, and monthly rebalancing is almost always counterproductive. The reason: markets have short-term momentum, so rebalancing too quickly means selling winners just as they keep winning and buying losers just as they keep losing. Annual or band-based rebalancing gives momentum time to play out while still catching meaningful drift."
+  - question: "How do taxes affect where I should rebalance?"
+    answer: "Selling appreciated investments in a regular brokerage account can trigger capital gains tax, a real cost that should inform where you rebalance. Trades inside tax-advantaged accounts such as a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation typically do not trigger any current tax event, so rebalance these first and most often. In taxable accounts, prefer contribution-based rebalancing using new money. If you must sell, remember that long-held positions with large gains are more expensive to sell, some jurisdictions tax long-term holdings at reduced rates, and tax-loss harvesting can offset gains. If you hold the same allocation across both account types, rebalance in the tax-advantaged wrapper first and touch taxable only when needed."
+  - question: "When should I not rebalance?"
+    answer: "A few cases where the usual rules matter less. Small accounts: if fixed transaction costs are a meaningful percentage of trades, annual rebalancing can destroy more value than it protects, so use contribution-based methods. Near-retirement glide paths: if you are deliberately shifting toward bonds as you approach retirement, the target itself is moving and some apparent drift is intentional. Minor drift: 71/29 instead of 70/30 is not worth a trade. Right after a big drop: rebalancing then is mechanically correct but emotionally hard, and doing it gradually over a few months is acceptable if it keeps you in the plan. Avoid the opposite failure too: ignoring drift for years leaves you over-weight stocks."
+relatedSlugs: ["tax-advantaged-accounts", "diversification", "understanding-risk", "getting-started-investing", "taxes-and-your-financial-plan"]
 referentialReading:
   - title: "Rebalancing a Portfolio"
     url: "https://www.investopedia.com/terms/r/rebalancing.asp"
@@ -122,7 +134,7 @@ Rebalance by redirecting new money to whichever asset class is currently below t
 
 ## A worked example
 
-You hold €100,000 in a 70/30 stocks/bonds portfolio: €70,000 in a global stock index fund, €30,000 in a bond index fund.
+You hold €100,000 in a [diversified](/blog/diversification/) 70/30 stocks/bonds portfolio: €70,000 in a global stock index fund, €30,000 in a bond index fund.
 
 Over a year, stocks gain 20% and bonds gain 3%. Your new balances:
 

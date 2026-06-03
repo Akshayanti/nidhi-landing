@@ -58,8 +58,8 @@ Verified against a fresh `npm run build` run.
 | PR0 | Landing-page foundation | (sets up 1, 16, 25) | done | — |
 | PR1 | SEO quick wins (markup-only batch) | 2, 10, 12, 15, 19, 22, 23, 27 | done | PR0 |
 | PR2 | Internal linking + tag discovery | 4 (render), 5, 20, 26 | done | PR0 |
-| PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | in review | PR0 |
-| PR4 | `WebSite.SearchAction` wire-up | 17 | in review (with PR3) | PR0 |
+| PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | done | PR0 |
+| PR4 | `WebSite.SearchAction` wire-up | 17 | done (with PR3) | PR0 |
 | PR5 | Schema track: FAQ + relatedSlugs + inline links | 4 (population), 7 | 8-12 h | PR2 |
 | PR6-PR13 | Depth rewrites for thin Discovery posts | 3 (collectively) | 12-16 h | PR5 |
 | PR14 | EEAT: named author, byline, editorial policy, sameAs | 6, 25 | 3-5 h | PR0 |
@@ -254,7 +254,7 @@ None. Pure markup, schema, and template work; no new data collection, storage, t
 
 ## PR3: Performance + sitemap + dynamic OG
 
-> **Status**: open for review (shipped together with PR4 in branch `feat/perf-sitemap-search`). Closes findings 9, 11, 24.
+> **Status**: merged. Branch `feat/perf-sitemap-search`, commit `66535cc`, PR #18, merged 2026-06-03 as `0fdaec2`. Closes findings 9, 11, 24.
 >
 > Markup and config that improves Core Web Vitals and OG accuracy. Independent of content changes.
 
@@ -309,7 +309,7 @@ None.
 
 ## PR4: `WebSite.SearchAction` wire-up
 
-> **Status**: open for review (shipped together with PR3 in branch `feat/perf-sitemap-search`). Closes finding 17.
+> **Status**: merged (shipped together with PR3 in branch `feat/perf-sitemap-search`, PR #18, merged 2026-06-03 as `0fdaec2`). Closes finding 17.
 >
 > Honour the existing schema declaration on `/` so the SERP sitelinks search box, if Google grants it, lands on a working query page.
 
@@ -343,6 +343,8 @@ None. URL state is local to the visitor's browser; no new collection or transmis
 
 ## PR5: Schema track for content (FAQ + relatedSlugs + inline links)
 
+> **Status**: implemented on branch `feat/schema-track` (awaiting review/merge). Closes finding 7 and the population side of finding 4. All 32 posts now carry `faq:` and `relatedSlugs:`; backward-only inline links added throughout; `updatedDate` bumped to 2026-06-03 on the 21 already-published posts.
+>
 > Pure frontmatter and prose work. No template change. Highest ROI per hour in the audit. Splittable into PR5a and PR5b if reviewers prefer smaller diffs (split by topic cluster: Discovery vs Building).
 
 ### Scope
@@ -376,11 +378,13 @@ None. Content edits.
 
 ### Verification
 
-- [ ] `rg "^faq:" src/content/blog/ --files-with-matches | wc -l` returns 32 (or 31 if one is intentionally excluded).
-- [ ] `rg "^relatedSlugs:" src/content/blog/ --files-with-matches | wc -l` returns 32.
-- [ ] One representative post per cluster: render and confirm the FAQ block appears, the "Keep reading" 3-up renders three real cards, and 2-5 inline `/blog/...` links appear in the prose.
-- [ ] Backward-only link discipline upheld: spot-check 3-5 inline links and 3-5 `relatedSlugs` entries against `pubDate` ordering.
-- [ ] Google Rich Results Test on one FAQ-bearing post returns no errors.
+- [x] `rg "^faq:" src/content/blog/ --files-with-matches | wc -l` returns 32.
+- [x] `rg "^relatedSlugs:" src/content/blog/ --files-with-matches | wc -l` returns 32.
+- [x] Representative posts render correctly: `income-vs-wealth` emits a valid `FAQPage` (5 questions); `cash-flow-101` renders the "Keep reading" 3-up with three real cards (`what-is-net-worth`, `income-vs-wealth`, `emergency-fund`); inline `/blog/...` links appear in the prose. The earliest post `what-is-net-worth` correctly has `relatedSlugs: []` and renders no block.
+- [x] Backward-only link discipline upheld: full programmatic scan of all 32 posts found zero forward references in `relatedSlugs` or inline body links (two pre-existing forward links in posts 17 and 22 were rewritten to backward targets).
+- [x] `npm run build` clean (45 pages); 21 published posts emit `FAQPage` JSON-LD in `dist/` (11 future-dated posts not yet built, expected).
+- [x] `updatedDate` bumped to 2026-06-03 on the 21 posts with `pubDate <= today`; the 11 future-dated posts left at `updatedDate == pubDate`.
+- [ ] Google Rich Results Test on one FAQ-bearing post returns no errors. Deferred to post-deploy spot-check.
 
 ---
 

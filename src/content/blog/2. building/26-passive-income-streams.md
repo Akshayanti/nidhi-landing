@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
 tags: ["building", "fire", "investing"]
+relatedSlugs: ["introduction-to-financial-independence", "investing-101-asset-classes", "assets", "diversification", "saving-vs-investing"]
+faq:
+  - question: "What counts as genuine passive income?"
+    answer: "Genuine passive income is money you earn without trading time for it in the moment, after effort invested upfront. The honest sources are dividends from stocks and funds, interest from bonds and cash, rental income from property, royalties from creative or intellectual assets, and distributions from businesses where you do not work day to day. Most online 'passive income' such as blogs, newsletters, and YouTube channels is active business income in disguise: it needs ongoing content, customer attention, and operations. A useful test is whether the income keeps arriving if you stop working on it for a month. Dividends keep arriving; a dropshipping store does not."
+  - question: "How much capital do I need for €1,000 a month of passive income?"
+    answer: "It depends on yield, and the numbers are larger than most marketing suggests. To generate €12,000 a year you need roughly €600,000 at a 2% broad equity dividend yield, €400,000 at 3%, €300,000 at a 4% mix, €240,000 at 5% net rental yield, and €150,000 at a riskier 8%. Higher yields usually carry higher risk or higher management load, so '8% passive' is rarely as passive or as safe as '2% passive'. Replacing even a modest salary therefore takes a portfolio measured in hundreds of thousands of euros, built over years rather than months."
+  - question: "What is the difference between yield and total return?"
+    answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. During accumulation, focus on total return. Yield matters more later, in the drawdown phase, when you are actually living off the portfolio."
+  - question: "Is rental property really passive income?"
+    answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
+  - question: "How does the crossover point relate to passive income?"
+    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income does, even if you keep working. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. These concrete thresholds motivate far better than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
 referentialReading:
   - title: "Passive Income"
     url: "https://www.investopedia.com/terms/p/passiveincome.asp"
@@ -26,7 +38,7 @@ referentialReading:
 
 You've seen the promises. "Earn €5,000 a month in passive income." "Make money while you sleep." "Seven streams of passive income that changed my life." Most of what gets sold under that banner is either active work in disguise (running a dropshipping store, writing a newsletter, managing a YouTube channel) or outright fiction.
 
-Real passive income is quieter. It's the dividend paid on shares you've held for years. The interest on a bond. The rent on a property your management company handles. The royalty cheque from something you wrote a decade ago. It is not a get-rich-quick scheme. It is the reward for having built something that now works without you.
+Real passive income is quieter. It's the dividend paid on shares you've held for years. The interest on a bond. The rent on a property your management company handles. The royalty cheque from something you wrote a decade ago. It is not a get-rich-quick scheme. It is the reward for having built [income-producing assets](/blog/assets/) that now work without you.
 
 This post is about the honest version: what passive income actually is, where it comes from, how much capital it takes, and what changes when it finally covers your expenses.
 
@@ -48,7 +60,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 ## The main honest sources
 
-**Dividends.** Many companies pay a portion of profits to shareholders as a dividend. Broad global stock index funds yield modestly (often 1.5-3% of value per year, varying by period and region); dividend-tilted funds yield more but grow less. Dividends are reasonably stable over long horizons and rise with company earnings over time.
+**Dividends.** Many companies pay a portion of profits to shareholders as a dividend. This is the income side of holding [stocks as assets](/blog/investing-101-asset-classes/). Broad global stock index funds yield modestly (often 1.5-3% of value per year, varying by period and region); dividend-tilted funds yield more but grow less. Dividends are reasonably stable over long horizons and rise with company earnings over time.
 
 **Interest.** Bonds pay interest on their face value. Savings and money market accounts pay interest on the balance. Interest rates vary with prevailing market rates and with credit risk. Lower-risk government bonds pay less; higher-risk corporate bonds pay more.
 

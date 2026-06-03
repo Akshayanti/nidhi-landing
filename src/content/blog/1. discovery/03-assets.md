@@ -5,7 +5,7 @@ description: "Your assets are everything you own that has value. But not everyth
 tldr: "An asset is something you own that can be converted into money or generates income. Cash, investments, and property are assets. Your salary, your degree, and your potential are not. The quality of an asset matters as much as its existence: liquidity, appreciation, and stability all affect how much an asset actually does for your net worth."
 order: 3
 pubDate: 2026-04-23
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["what-is-net-worth", "how-to-calculate-net-worth"]
+faq:
+  - question: "What counts as an asset?"
+    answer: "An asset is something you own that has monetary value: it is either cash, something you can sell for cash, or something that generates income. Common assets include cash and bank accounts, investments like stocks, bonds, index funds and ETFs, pension and retirement balances, real estate and land, vehicles, and valuables such as jewelry or art that you could realistically sell. The test is ownership plus convertibility: if you can turn it into money or it pays you income, it belongs on your asset list at its current value."
+  - question: "Is my salary an asset?"
+    answer: "No. Your salary is income, a flow of money in, not a stock of value you own. It becomes an asset only once you save or invest it. The same goes for your degree, your job, and your future earning potential: education raises your earning power but you cannot sell a diploma, you do not own your employer, and future income is not a present asset. Counting these things inflates your asset list and gives a false picture. A high earner with little saved is not in the same position as someone with a large invested portfolio."
+  - question: "Why does asset quality matter more than the total?"
+    answer: "Because two people with €100,000 in assets can be in very different positions depending on what those assets are. Three dimensions decide quality. Liquidity is how fast you can turn the asset into cash without losing value: a savings account is fully liquid, a house is not. Direction is whether the asset tends to grow (appreciate) or shrink (depreciate): index funds historically appreciate, cars depreciate fast. Stability is how predictable the value is: cash is stable, stocks fluctuate, crypto can swing wildly. The same headline total can be far more useful, or far less, depending on this mix."
+  - question: "Are retirement accounts counted as assets?"
+    answer: "Yes. Pension funds, employer-sponsored plans, and private retirement savings count toward your net worth and belong on your asset list. They are investments, but they deserve their own category because their liquidity differs sharply from a regular brokerage account: you usually cannot access the money until a certain age, and withdrawing early often triggers penalties or taxes. So include the current balance in your net worth, but remember it is not money you can reach for an emergency next week. Treat its value as real but largely locked away until later."
+  - question: "Should I hold all my assets in cash to stay safe?"
+    answer: "No. Cash feels safe because its number does not fall, but it quietly loses purchasing power to inflation every year, so an all-cash position erodes in real terms. The opposite extreme, holding everything in stocks, exposes you to volatility you may not be able to handle when you need the money. A balanced mix gives you both stability and growth: enough cash and liquid savings to cover emergencies and short-term needs, plus appreciating assets like index funds for the long term. The right balance depends on your timeline and how much fluctuation you can tolerate."
 ---
 
 Your [net worth](/blog/what-is-net-worth/) is the gap between what you own and what you owe. We [calculated that number](/blog/how-to-calculate-net-worth/) in the previous post. Now let's look at the first side of that equation: assets.

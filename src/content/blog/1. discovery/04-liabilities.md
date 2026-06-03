@@ -5,7 +5,7 @@ description: "Liabilities are everything you owe. Not all debt is equal: the int
 tldr: "A liability is money you owe to someone else, usually with interest. The interest rate is the most important detail: a mortgage at 3.5% and a credit card at 22% are fundamentally different obligations. Ask three questions about any debt: what is the rate, what did it buy, and can you afford the payments? If the interest rate exceeds what you could earn investing, pay the debt first."
 order: 4
 pubDate: 2026-04-25
-updatedDate: 2026-05-21
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -23,6 +23,18 @@ referentialReading:
     author: "Dave Ramsey"
     url: "https://www.goodreads.com/book/show/51278821-debt-free-degree"
     type: "book"
+relatedSlugs: ["what-is-net-worth", "assets", "how-to-calculate-net-worth"]
+faq:
+  - question: "What is a liability?"
+    answer: "A liability is any financial obligation you owe to someone else, usually money borrowed with interest. Common liabilities include a mortgage, student loans, a car loan, credit card balances, and personal loans from banks or individuals. Every liability reduces your net worth by its full outstanding balance. On a net worth statement, you list each debt at the amount still owed (the remaining principal), not the monthly payment. Liabilities are the other side of the equation from assets: what you own minus what you owe equals your net worth, so debt directly offsets the value of what you have built."
+  - question: "Why does the interest rate matter more than the balance?"
+    answer: "Because the rate determines how expensive a debt becomes over time, not just how big it looks today. A €200,000 mortgage at 3.5% costs roughly €100,000 in interest over 25 years, but it buys an asset that may appreciate while you build equity. A €3,000 credit card balance at 22%, paid only at the minimum, can cost more in interest than the original purchases, meaning you pay for them twice. Same act of borrowing, wildly different outcomes. Two debts of identical size can be worlds apart in danger depending purely on the rate attached to them."
+  - question: "How do I tell good debt from bad debt?"
+    answer: "Skip the simplistic good-versus-bad labels and ask three questions about any debt. First, what is the interest rate? Anything above roughly 8 to 10% is expensive and should be tackled quickly. Second, what did the debt buy? Borrowing for something that appreciates, like education or a home, has a different character than borrowing for consumption, like a holiday or a dinner. Third, can you comfortably make the payments? Even low-interest debt becomes a problem if it eats too much of your monthly cash flow. The answers tell you how worried to be far better than any label."
+  - question: "Should I pay off debt or invest first?"
+    answer: "Compare the interest rate on the debt against the return you could realistically expect from investing. If the rate on the debt is higher than that expected return, pay the debt first: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. If the debt is cheap, say a 3% mortgage, it can make sense to keep paying it slowly while investing the difference at a higher expected return. Whatever you decide, always make at least the minimum payment on every debt, because missed payments trigger penalties and damage your credit."
+  - question: "Is mortgage interest tax-deductible?"
+    answer: "In some countries it has been, but the benefit is being phased out or restricted across much of Europe, so do not assume it applies to you. Where it exists, mortgage interest relief lowers the effective cost of the loan, which is one reason a mortgage is often the cheapest debt you can hold. Still, treat any tax break as a secondary factor rather than the reason to borrow. Check your own country's current rules, because they change frequently. A mortgage already tends to carry the lowest rate and buys an appreciating asset, with or without a deduction."
 ---
 
 We've looked at [what you own](/blog/assets/). Now let's look at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth/) equation. And for most people, they're the side that hurts.

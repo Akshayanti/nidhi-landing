@@ -5,7 +5,7 @@ description: "Stocks, bonds, real estate, cash. Four words everyone has heard, b
 tldr: "The four core asset classes are stocks (you own a piece of a company), bonds (you lend money to a government or company), real estate (you own property), and cash equivalents (you park money safely). Stocks have the highest historical returns but the most volatility. Bonds are more stable but barely beat inflation. Real estate offers both income and appreciation but is illiquid. Cash equivalents are the safest but lose purchasing power over time. No single asset class is best. They behave differently under different conditions, which is exactly why portfolios combine them. Commodities and cryptocurrency exist alongside these four as satellite assets and are covered separately in the next post."
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-05-27
+updatedDate: 2026-06-03
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["understanding-risk", "saving-vs-investing", "appreciation-vs-depreciation", "assets", "liquidity"]
+faq:
+  - question: "What are the four main asset classes?"
+    answer: "The four core asset classes are stocks, bonds, real estate, and cash equivalents. Stocks make you part owner of a company, returning money through price appreciation and dividends, with the highest historical returns but the most volatility. Bonds are loans to a government or company that pay interest, more stable but barely beating inflation. Real estate is physical property generating rent and appreciation, offering both income and growth but very low liquidity. Cash equivalents, such as savings accounts and money market funds, are the safest but lose purchasing power over time. Each behaves differently under different economic conditions, which is precisely why diversified portfolios combine all four rather than relying on any single one."
+  - question: "How do stocks generate returns?"
+    answer: "Stocks generate returns in two ways. The first is capital appreciation: the share price rises over time as the underlying company grows and becomes more valuable. The second is dividends, which are regular cash payments distributed from company profits, though not every company pays them. Broad stock markets have historically returned roughly 5% to 7% per year after inflation across developed markets, higher than any other major asset class over long periods. The catch is volatility. In any given year a diversified stock portfolio might gain 25% or lose 30%, and broad indices have had negative years roughly one year in four. Stocks suit money you will not need for at least 5 years, ideally 10 or more."
+  - question: "Why do bonds belong in a portfolio if stocks return more?"
+    answer: "Bonds provide stability and predictable income rather than growth. When you buy a bond you lend money to a government or company that pays you interest, called the coupon, and returns your principal at maturity. Government bonds have historically returned roughly 2% to 3% after inflation, corporate bonds slightly more. The real value shows up when stock markets crash: high-quality government bonds often rise as investors seek safety, acting as a buffer that cushions the portfolio. Bonds protect capital rather than build it, so a portfolio of only bonds will not grow your wealth meaningfully. They are the counterweight to stocks, smoothing the ride so you are less likely to panic and sell at the bottom."
+  - question: "What is an index fund and why is it a good starting point?"
+    answer: "An index fund holds all the components of a market index, so a single purchase gives you a tiny slice of thousands of companies across dozens of countries. You are not betting on one company being the next winner; you own the whole market. Index funds dominate as a starting point for several reasons: they deliver diversification by default, they cost very little (typically 0.1% to 0.3% per year versus 1% to 2% for many actively managed funds), they require no stock-picking skill, and most actively managed funds have historically underperformed the index they try to beat after fees. A global stock index fund plus a bond index fund covers the basics for most people beginning to invest."
+  - question: "Why does no single asset class work best?"
+    answer: "Each asset class wins under different economic conditions, so none is best in all of them. During growth, stocks thrive and real estate appreciates while cash falls behind. In a recession, government bonds often rise as stocks fall. During high inflation, real estate often keeps pace while bonds lose value as their fixed payments buy less. When interest rates are low, stocks and real estate benefit while cash earns almost nothing. Because no single class wins everywhere, holding a mix means some part of your portfolio is likely doing well at any given moment, cushioning the parts that are not. That is the foundation of diversification and the reason portfolios combine asset classes rather than chasing one."
 ---
 
 You've heard of stocks and bonds since you were a teenager. You know real estate exists. You have money in a savings account. But if someone asked you to explain how each of these actually generates returns (and why you might want all of them), could you?

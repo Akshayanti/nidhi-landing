@@ -5,7 +5,7 @@ description: "Risk isn't about losing everything. It's about how much things can
 tldr: "Financial risk isn't danger. It's uncertainty. Volatility (short-term price swings) is different from permanent loss (the money is gone). Your risk tolerance is how much fluctuation you can stomach. Your risk capacity is how much you can afford to absorb based on your timeline and financial situation. Time transforms risk: over short periods, stocks can lose 30-40% of their value; over long periods, they've historically been the strongest wealth builder. The biggest risk most people overlook is doing nothing. Inflation erodes your purchasing power every year. Understanding risk lets you take the right amount: enough to grow, not so much that a downturn derails your plan."
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-05-25
+updatedDate: 2026-06-03
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["saving-vs-investing", "emergency-fund", "purchasing-power", "liquidity", "insurance-basics"]
+faq:
+  - question: "What is the difference between volatility and risk?"
+    answer: "Volatility is how much an investment's price moves up and down in the short term. A stock fund might swing 20% in a single year, while a savings account barely moves. Risk, in the broader financial sense, is uncertainty about your final outcome. Volatility is one source of that uncertainty, but it is temporary: prices that fall can recover. The risk that actually destroys wealth is permanent loss, where the money is gone for good, through a bankruptcy, a scam, or a forced sale at the bottom. Confusing the two leads people to treat normal price swings as danger and avoid investments that would have grown their money over time."
+  - question: "What is the difference between risk tolerance and risk capacity?"
+    answer: "Risk tolerance is psychological: how much fluctuation you can handle emotionally without panicking and selling. If a 10% drop costs you sleep, your tolerance is low regardless of your finances. Risk capacity is financial: how much loss you can actually absorb without it affecting your life, based on your time horizon, income stability, emergency fund, and when you need the money. The two often diverge. Someone with a 20-year horizon and a full emergency fund has high capacity, but may still have low tolerance. Your investment approach should match whichever of the two is lower, because the higher one cannot rescue you from the lower one."
+  - question: "How does time change investment risk?"
+    answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 to 30 years, broadly diversified stock portfolios have historically been positive across almost every rolling window, though this is an average, not a guarantee, and individual markets have had losing 20-year stretches. The practical rule: money you need within 3 years stays in low-volatility savings, while money you will not touch for 5 years or more can absorb short-term swings in exchange for long-term growth."
+  - question: "Is keeping money in a savings account actually risk-free?"
+    answer: "No. Cash carries inflation risk, which is the slow erosion of purchasing power. A savings account earning 1% while inflation runs at 2.5% loses 1.5% of its real value every year. Over 20 years, that compounds to roughly a 26% loss in what your money can actually buy, and the loss is certain rather than merely possible. Keeping everything safe protects you from short-term volatility while guaranteeing a long-term decline in real terms. The risk most people overlook is not market movement but inaction: choosing a guaranteed slow loss over a probable gain with some turbulence along the way."
+  - question: "What are the main types of investment risk?"
+    answer: "Market risk is the whole market moving against you, through a recession or crisis, and every investor faces it. Concentration risk is putting too much into one stock, sector, or country, which diversification reduces. Inflation risk is purchasing power erosion, hitting cash hardest. Liquidity risk is being unable to sell when you need to, or only at a steep discount, with real estate as the classic example. Credit risk is a borrower failing to repay a bond or loan. Currency risk is exchange rate changes affecting investments held in another currency. Understanding which risks you face lets you target the ones worth taking and reduce the ones that pay you nothing."
 ---
 
 You've been told stocks are "risky" and savings accounts are "safe." So you keep your money in savings. Each year, inflation takes 2-3% of its purchasing power. After a decade, your "safe" money has quietly lost 20% of its value.
@@ -136,7 +148,7 @@ Not all risks are equal or come from the same place.
 
 **Credit risk**: The entity you lent money to (through bonds, which are loans you make to governments or companies paying a fixed interest rate back to you, or through other loan contracts) can't pay you back.
 
-**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries/) affect your returns. The full picture, covered in the [managing money across currencies](/blog/managing-money-across-currencies/) post, also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) lets you map both sides at once and see where the concentration actually sits.
+**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries/) affect your returns. The full picture also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) lets you map both sides at once and see where the concentration actually sits.
 
 ## Risk as the price of return
 

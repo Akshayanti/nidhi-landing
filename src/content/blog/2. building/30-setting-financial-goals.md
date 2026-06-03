@@ -10,6 +10,18 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "goals", "planning"]
+faq:
+  - question: "What turns a financial wish into a real goal?"
+    answer: "A number and a date. Buy a house is a wish; have 40,000 euros saved for a deposit by June 2031 is a goal. A usable financial goal has four components: a specific target amount in exact euros, not enough to be comfortable; a specific date, a month and year, not in a few years; a path from here to there, meaning how much must move from income to savings each month at an assumed rate of return; and a place it will live, the right container for the timeline. Miss any one and the goal degrades: a target without a date can never be on track or behind, and a date without a target can never be enough."
+  - question: "How do I convert a goal into a monthly contribution?"
+    answer: "Translate the wish into a target amount and a date, then work out the monthly contribution at a realistic rate of return. For a 45,000 euro house deposit in five years at an assumed 5% annual return, you need roughly 662 euros a month. Stretch it to seven years and the figure drops to about 449 euros; ten years, about 290 euros; compress it to three years and it jumps to roughly 1,160 euros. This is the value of the translation: it replaces comforting vagueness with a price tag. Someone with 300 euros of monthly capacity now knows the five-year version is not feasible at their current pace, which is useful information, not failure."
+  - question: "What are the three time-horizon buckets for goals?"
+    answer: "Short-term, zero to three years: the money must be there on a specific date, so market swings are unacceptable. Keep it in cash or savings-equivalent vehicles; returns are low, which is the price of certainty. Examples include a wedding or next year's holiday. Medium-term, three to seven years: long enough that pure cash loses ground to inflation, short enough that a market drop could hurt, so a blend of cash and conservative investments works, biased toward cash as the date nears. Long-term, seven-plus years: volatility averages out in historical data and inflation is the bigger enemy, so diversified, stock-heavy investments belong here. Examples include retirement and a child's university."
+  - question: "Why is delaying a long-term goal so expensive?"
+    answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
+  - question: "How should I prioritize competing financial goals?"
+    answer: "Priority comes from math and timelines, not from whichever goal feels loudest. A reasonable framework: a starter emergency fund of one month of expenses first, non-negotiable. Then high-interest debt, since anything above 5 to 6% tends to dominate any realistic investment return. Then a full emergency fund of three to six months. Then any employer retirement match, which is free money. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
   - title: "SMART Goals"
     url: "https://www.investopedia.com/terms/s/smart-goals.asp"
@@ -27,7 +39,7 @@ referentialReading:
 
 The difference between a wish and a goal is a number and a date. "Buy a house" is a wish. "Have €40,000 saved for a deposit by June 2031" is a goal. A goal can be measured, tracked, adjusted, and eventually hit. A wish can only be hoped for.
 
-This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), diversification, and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
+This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), [diversification](/blog/diversification/), and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
 
 ## What a financial goal actually needs
 

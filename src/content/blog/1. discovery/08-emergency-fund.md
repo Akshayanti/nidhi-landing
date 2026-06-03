@@ -5,7 +5,7 @@ description: "Before you invest or pay extra on debt, build a buffer. An emergen
 tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of essential expenses, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
 order: 8
 pubDate: 2026-05-04
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -22,6 +22,7 @@ referentialReading:
     author: "J.L. Collins"
     url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
     type: "book"
+relatedSlugs: ["liquidity", "how-to-get-out-of-debt", "liabilities", "what-is-net-worth"]
 faq:
   - question: "What is an emergency fund?"
     answer: "An emergency fund is money set aside specifically for unexpected, necessary expenses like job loss, medical bills, urgent car repairs, or home repairs. It's cash you can access immediately, not investments."

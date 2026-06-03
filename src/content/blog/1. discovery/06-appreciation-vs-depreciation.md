@@ -5,7 +5,7 @@ description: "Some assets grow over time; others lose value. Appreciation, depre
 tldr: "Appreciation means an asset gains value over time. Depreciation means it loses value. Understanding which of your assets do what is essential. Compound interest is the engine behind appreciation when you're investing, and behind depreciation when you're carrying high-interest debt. The three levers are rate, amount, and time. Start early, and it works for you. Start late on debt, and it works against you."
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["assets", "liabilities", "how-to-get-out-of-debt", "what-is-net-worth"]
+faq:
+  - question: "What is the difference between appreciation and depreciation?"
+    answer: "Appreciation is when an asset gains value over time; depreciation is when it loses value. A home bought for €200,000 that is now worth €280,000 has appreciated by €80,000. A new car that drops to about 40% of its purchase price after five years has depreciated. Appreciating assets, like index funds, real estate in growing areas, and retirement accounts, build your net worth as you hold them. Depreciating items, like cars, laptops, furniture, and electronics, are expenses that happen to be physical objects. Knowing which of your possessions does what changes how you judge every purchase."
+  - question: "How does compound interest work?"
+    answer: "Compound interest means you earn a return on your original amount plus all the interest already accumulated, so your interest earns interest. It differs from simple interest, which pays only on the starting amount. The gap is large over time: €1,000 at 7% for 30 years grows to about €3,100 with simple interest but roughly €7,612 with compounding, more than double. The same mechanism works in reverse on debt: a credit card balance compounds against you. Three levers drive it: the rate, the amount invested, and time, with time being the most powerful."
+  - question: "Why does starting to invest early matter so much?"
+    answer: "Because time is the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €263,000 and Person B about €244,000. The earlier starter invested one-third as much and finished ahead. Ten extra years of compounding beat thirty years of triple contributions, which is why starting now beats waiting for the perfect moment."
+  - question: "Is a car an asset or a depreciating expense?"
+    answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years. You count it at current market value, but you should not expect it to build wealth. The practical move is to minimize depreciation: buy a reliable used car rather than new, and avoid financing it at a high rate, which stacks interest on top of falling value."
+  - question: "What kinds of assets typically appreciate?"
+    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, and real estate about 3 to 4% per year in most markets. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. The takeaway is to channel money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
 ---
 
 You've got [assets](/blog/assets/) on one side and [liabilities](/blog/liabilities/) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.

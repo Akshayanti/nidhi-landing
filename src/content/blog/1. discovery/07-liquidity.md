@@ -5,7 +5,7 @@ description: "Having money and being able to use it are not the same thing. Liqu
 tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-05-18
+updatedDate: 2026-06-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -22,6 +22,18 @@ referentialReading:
     author: "Burton Malkiel"
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
+relatedSlugs: ["assets", "appreciation-vs-depreciation", "what-is-net-worth", "how-to-calculate-net-worth"]
+faq:
+  - question: "What is liquidity in personal finance?"
+    answer: "Liquidity is how quickly and easily you can convert an asset to cash at its full value. Cash in a current account is fully liquid; you can spend it in seconds. A savings account is very liquid, taking a day or two to transfer. Stocks and index funds are mostly liquid but sell at whatever the market price is that day. Real estate is illiquid: selling takes weeks or months and costs significant fees. Retirement accounts are only partially liquid because early withdrawal can trigger tax penalties. Liquidity is about access, not just value: it tells you what you can actually use right now."
+  - question: "Why is low liquidity a financial risk?"
+    answer: "Because you can be asset-rich and cash-poor, worth a lot on paper but unable to pay for an emergency. Imagine someone with €50,000 in a house and €2,000 in savings: net worth €52,000. If the car needs a €3,000 repair, they cannot reach the house's value without selling it or borrowing against it, both slow and costly. Compare someone with €20,000 in index funds and €10,000 in savings: lower net worth, but they cover the repair easily. A higher net worth does not always mean a stronger position; without liquid funds, a routine expense becomes a crisis."
+  - question: "How much of my money should I keep liquid?"
+    answer: "A practical framework has three tiers. First, an emergency fund: keep three to six months of essential expenses in a savings account, your liquidity baseline. Second, medium-term savings: money you will need in one to five years (a house deposit, a car, a wedding) belongs in safe, accessible places like high-yield savings, short-term bonds, or term deposits. Third, long-term investments: money you will not touch for five years or more can go into index funds and other appreciating but less liquid assets, where the illiquidity is the trade-off for higher returns. Match liquidity to your timeline."
+  - question: "Why not just keep everything in cash to stay liquid?"
+    answer: "Because cash is liquid but loses purchasing power to inflation every year, so beyond your emergency fund and short-term goals, excess cash slowly erodes in real terms. Illiquid assets exist for good reasons: real estate builds equity and can appreciate significantly, retirement accounts carry tax advantages that justify the lock-up, and long-term investments earn higher returns precisely because you commit to staying invested. The mistake on the other side is keeping too little in cash, which forces you to sell investments at whatever the market price is, possibly down, exactly when you need the money. Balance beats either extreme."
+  - question: "Is an asset I can borrow against the same as a liquid asset?"
+    answer: "No. Accessible is not the same as liquid. A home equity line of credit lets you borrow against your house, but you are taking on debt and paying interest, not converting the asset to cash at its full value. True liquidity means you can turn the asset into spendable money quickly without loss and without creating a new obligation. Confusing the two is a common mistake: people assume a valuable but illiquid asset will cover an emergency, only to find that reaching its value means selling slowly, paying fees, or borrowing at interest. Plan with genuinely liquid funds instead."
 ---
 
 You might have €100,000 in [net worth](/blog/what-is-net-worth/) and still not be able to pay a €2,000 car repair bill. 
