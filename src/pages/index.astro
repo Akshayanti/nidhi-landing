@@ -32,7 +32,30 @@ const webSiteSchema = {
   <section class="landing">
     <div class="landing-container">
       <div class="baba">
-        <img src="/baba_money.webp" alt="Meditating finosopher contemplating your finances" />
+        {/*
+          Hero image. Source is `baba_money-200.webp` (200x300, ~28 KB),
+          a resized + re-encoded variant of the original 800x1200 / 411 KB
+          asset. Rendered at 100x150 CSS, which means the 200-wide source
+          covers up to DPR 2 cleanly without serving a heavyweight image
+          to non-retina viewers.
+
+          width/height match the intrinsic image dims so the layout
+          reserves the correct aspect ratio and avoids CLS even though
+          the CSS scales the rendered size down.
+
+          fetchpriority="high" + loading="eager" because this is the LCP
+          element on the home page; the browser default of fetching at
+          a lower priority would needlessly delay first paint.
+        */}
+        <img
+          src="/baba_money-200.webp"
+          width="200"
+          height="300"
+          alt="Meditating finosopher contemplating your finances"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+        />
       </div>
       <h1 class="brand">nidhi</h1>
       <p class="tagline">Money, understood</p>

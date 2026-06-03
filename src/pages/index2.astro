@@ -27,6 +27,20 @@ const webSiteSchema = {
   name: 'nidhi',
   url: 'https://nidhi.today/',
   description: 'Money, understood. Personal finance planning across currencies, retirement projections, and decision comparison.',
+  // SearchAction wired up in PR4. The blog index honours `?q=` as a
+  // deep link and writes the value back into the URL via
+  // `replaceState` as the search field changes (see
+  // `src/components/LearningPath.tsx`). Carrying the schema on the
+  // parked redesign so the behaviour and the declaration stay in sync
+  // when /index2/ graduates to / in PR18.
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://nidhi.today/blog/?q={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 const breadcrumbSchema = {

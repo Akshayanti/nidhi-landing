@@ -208,7 +208,40 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
     if (tagParam) {
       setSelectedTag(tagParam);
     }
+    // Honour `?q=` deep links. Wires up the WebSite.SearchAction
+    // schema declared on `/`: a SERP that surfaces the sitelinks search
+    // box submits to `/blog/?q={query}`, and now the page actually
+    // applies that query on load instead of ignoring it. Closes
+    // finding 17.
+    const qParam = params.get('q');
+    if (qParam) {
+      setSearchQuery(qParam);
+    }
   }, []);
+
+  // Reflect the current search query into the URL via replaceState.
+  // No history entries are pushed (back-button stays useful), and no
+  // navigation occurs. Empty queries clean the param off the URL so
+  // shared links don't carry a stale `?q=`.
+  //
+  // Privacy note: query state lives entirely in the visitor's browser
+  // history; we do not exfiltrate it. Server-side, GitHub Pages does
+  // not log query strings in any way we control.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const url = new URL(window.location.href);
+      const trimmed = searchQuery.trim();
+      const current = url.searchParams.get('q') ?? '';
+      if (trimmed === current) return;
+      if (trimmed) {
+        url.searchParams.set('q', trimmed);
+      } else {
+        url.searchParams.delete('q');
+      }
+      window.history.replaceState(null, '', url.toString());
+    } catch { /* ignore: URL constructor failure or replaceState block */ }
+  }, [searchQuery]);
 
   // Auto-collapse sections when all posts are read
   useEffect(() => {

@@ -5,6 +5,23 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  /**
+   * Pixel width of the OG image. Defaults to 1200, the dimension of the
+   * generic site OG image at `/brand/social/og-image.png`. Pages that
+   * pass a custom `image` MUST also pass matching `imageWidth` and
+   * `imageHeight`; declaring dims that don't match the asset is a
+   * common cause of social-card render failures.
+   */
+  imageWidth?: number;
+  /** Pixel height of the OG image. Defaults to 630. See `imageWidth`. */
+  imageHeight?: number;
+  /**
+   * Twitter card alt text. Defaults to a generic site-level description.
+   * Per-page overrides are encouraged for richer accessibility on
+   * social previews and so that future per-post OG images (PR16) can
+   * carry post-specific alt text without another props change.
+   */
+  imageAlt?: string;
   article?: {
     publishedTime: Date;
     modifiedTime?: Date;
@@ -17,7 +34,20 @@ interface Props {
 }
 
 const defaultImage = '/brand/social/og-image.png';
-const { title, description, image = defaultImage, article, prevUrl, nextUrl, jsonLd = [], robots } = Astro.props;
+const defaultImageAlt = 'nidhi: Money, understood. Personal finance tools and financial literacy.';
+const {
+  title,
+  description,
+  image = defaultImage,
+  imageWidth = 1200,
+  imageHeight = 630,
+  imageAlt = defaultImageAlt,
+  article,
+  prevUrl,
+  nextUrl,
+  jsonLd = [],
+  robots,
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -65,8 +95,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.site)} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image:width" content={String(imageWidth)} />
+<meta property="og:image:height" content={String(imageHeight)} />
+<meta property="og:image:alt" content={imageAlt} />
 <meta property="og:site_name" content="nidhi" />
 <meta property="og:locale" content="en_US" />
 
@@ -84,7 +115,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={new URL(image, Astro.site)} />
-<meta name="twitter:image:alt" content="nidhi: Money, understood. Personal finance tools and financial literacy." />
+<meta name="twitter:image:alt" content={imageAlt} />
 
 <!-- Prev/Next -->
 {prevUrl && <link rel="prev" href={prevUrl} />}

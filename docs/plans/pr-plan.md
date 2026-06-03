@@ -57,9 +57,9 @@ Verified against a fresh `npm run build` run.
 |---|---|---|---|---|
 | PR0 | Landing-page foundation | (sets up 1, 16, 25) | done | — |
 | PR1 | SEO quick wins (markup-only batch) | 2, 10, 12, 15, 19, 22, 23, 27 | done | PR0 |
-| PR2 | Internal linking + tag discovery | 4 (render), 5, 20, 26 | in review | PR0 |
-| PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | 2-3 h | PR0 |
-| PR4 | `WebSite.SearchAction` wire-up | 17 | 0.5-1 h | PR0 |
+| PR2 | Internal linking + tag discovery | 4 (render), 5, 20, 26 | done | PR0 |
+| PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | in review | PR0 |
+| PR4 | `WebSite.SearchAction` wire-up | 17 | in review (with PR3) | PR0 |
 | PR5 | Schema track: FAQ + relatedSlugs + inline links | 4 (population), 7 | 8-12 h | PR2 |
 | PR6-PR13 | Depth rewrites for thin Discovery posts | 3 (collectively) | 12-16 h | PR5 |
 | PR14 | EEAT: named author, byline, editorial policy, sameAs | 6, 25 | 3-5 h | PR0 |
@@ -68,7 +68,7 @@ Verified against a fresh `npm run build` run.
 | PR17 | AI-bot policy update | 13 | 0.5 h + decision | PR0 |
 | PR18 | Final `/` ← `/index2/` swap | 1, 16, (25 if not in PR14) | 0.5-1 h | PR0; ideally PR1, PR3, PR14 |
 
-**Total open effort**: 31-45 h across 10-17 PRs (PR6-PR13 expand to 4-8 PRs depending on batching). Splittable along the existing Mon/Wed/Fri publishing cadence at ~11-12 weeks if depth rewrites slot one per publishing window.
+**Total open effort**: 28-41 h across 8-15 PRs (PR6-PR13 expand to 4-8 PRs depending on batching). Splittable along the existing Mon/Wed/Fri publishing cadence at ~11-12 weeks if depth rewrites slot one per publishing window.
 
 ---
 
@@ -196,7 +196,7 @@ None. Markup, schema, and metadata changes only; no user-data scope change.
 
 ## PR2: Internal linking + tag discovery
 
-> **Status**: open for review. Branch `feat/internal-linking`. Closes findings 4 (render side), 5, 20, 26.
+> **Status**: merged. Branch `feat/internal-linking`, commit `be4efcf`, PR #17, merged 2026-06-01 as `e659fa3`. Closes findings 4 (render side), 5, 20, 26.
 >
 > Strengthens the crawlable internal-link graph. Pure template work; no content rewrites yet (PR5 carries the population side).
 
@@ -254,29 +254,37 @@ None. Pure markup, schema, and template work; no new data collection, storage, t
 
 ## PR3: Performance + sitemap + dynamic OG
 
+> **Status**: open for review (shipped together with PR4 in branch `feat/perf-sitemap-search`). Closes findings 9, 11, 24.
+>
 > Markup and config that improves Core Web Vitals and OG accuracy. Independent of content changes.
 
 ### Scope
 
 1. **Resize hero image** (finding 9).
-   - `public/baba_money.webp` is 411 KB; rendered at 100x~150 px on home and beliefs.
-   - Generate a 200 px-wide variant at quality 82 (target 8-15 KB).
-   - Use Astro's `<Image>` component or `astro:assets` for proper srcset, or hand-author a `<picture>` element.
-   - Add `width`, `height`, `fetchpriority="high"`, `loading="eager"` on the home + beliefs hero image elements.
+   - Source `public/baba_money.webp` (800x1200, 411 KB) replaced with `public/baba_money-200.webp` (200x300, ~28 KB). 93% smaller, rendered at 100x150 CSS on home and 80x120 on beliefs (so the 200-wide source covers DPR 2 cleanly without overfetching for non-retina viewers).
+   - Encoder note: cwebp prefers a paletted lossless mode for this illustration; quality flags plateau around 28 KB. The "8-15 KB" estimate in the original plan was optimistic for a 200-wide illustration with limited palette. 28 KB is still a 93% reduction.
+   - Hand-authored `<img>` with `width="200" height="300"` (intrinsic dims, browser scales via CSS), `fetchpriority="high"`, `loading="eager"`, `decoding="async"` on both home and beliefs hero. No `<picture>` element: a single source that covers both rendered sizes is enough, and srcset would only matter if the source asset were big enough to benefit from a smaller variant.
+   - Old `public/baba_money.webp` deleted (no remaining references; was orphaned after PR1 repointed `BlogPosting.image` at `/brand/social/og-image.png`).
 
 2. **Sitemap `<lastmod>`** (finding 11).
-   - Wire `serialize` into the sitemap integration in `astro.config.mjs:7`.
-   - Read each blog post's `updatedDate ?? pubDate` and emit `<lastmod>` for `/blog/<slug>/` URLs.
-   - For static pages, use file mtime or a manual map.
+   - `serialize` hook added to `@astrojs/sitemap` in `astro.config.mjs`. Per-URL resolution:
+     - Blog post (`/blog/<slug>/`): `updatedDate ?? pubDate` from frontmatter.
+     - Tag page (`/blog/tag/<tag>/`): newest `updatedDate ?? pubDate` among published posts carrying that tag (filtered by `pubDate <= now` so future-dated drafts don't leak through).
+     - Tag hub (`/blog/tag/`): newest among all tag dates above, falling back to git author-date of the source file.
+     - Other static pages (`/`, `/beliefs/`, `/privacy/`, `/blog/`, `/free/...`): git author-date of the matching source file.
+   - Frontmatter is read directly via `fs` + a minimal line-based parser; `astro:content` is not available at config-load time. Parser handles the subset of YAML the corpus actually uses (scalar lines + inline tag arrays).
+   - All 38 indexable URLs now carry `<lastmod>`.
 
 3. **Accept `imageWidth`, `imageHeight`, `imageAlt` props in `BaseHead.astro`** (finding 24).
-   - `BaseHead.astro:66-67`: switch hard-coded `og:image:width` `1200` and `og:image:height` `630` to read from props.
-   - `BaseHead.astro:85`: switch hard-coded `twitter:image:alt` to read from a new `imageAlt` prop with a generic site-level default.
-   - No page passes overrides today (so dims stay correct), but the moment PR16 ships per-post OG images, the dims would lie unless they were dynamic. This is a pre-emptive fix.
+   - `BaseHead.astro` props (`imageWidth`, `imageHeight`, `imageAlt`) thread through `BaseLayout.astro` to the meta tags. Defaults are `1200`, `630`, and a generic site-level alt text — so existing call sites render identically.
+   - New `og:image:alt` meta added (was previously only on Twitter; now shared with OG so Facebook and LinkedIn previews carry alt text too).
+   - Pre-emptive fix: PR16's per-post OG generator will start passing per-post dims and alt text without further changes here.
+
+4. **Index2 parity**: parked redesign already uses `BaseLayout` defaults for OG; no override needed. No baba_money image on index2; no change. SearchAction added in PR4 (see below) so the post-PR18 home retains the wire-up.
 
 ### Effort
 
-2-3 h.
+Estimated 2-3 h, actual within band (some time bled into picking encoder settings before accepting the 28 KB plateau).
 
 ### Dependencies
 
@@ -288,33 +296,37 @@ None.
 
 ### Verification
 
-- [ ] Built home page references the resized hero asset with explicit `width` and `height` attrs.
-- [ ] Lighthouse LCP on `/` and `/beliefs/` is materially improved over pre-PR baseline (record both).
-- [ ] No CLS regression: image reserves its own slot.
-- [ ] `dist/sitemap-0.xml` contains `<lastmod>` for every URL.
-- [ ] Blog posts with newer `updatedDate` show that date in the sitemap, not `pubDate`.
-- [ ] `BaseHead` accepts the new props with sensible defaults; existing pages render identical output.
+- [x] Built home page references the resized hero asset (`/baba_money-200.webp`) with explicit `width="200" height="300"`, `fetchpriority="high"`, `loading="eager"`, `decoding="async"`.
+- [ ] Lighthouse LCP on `/` and `/beliefs/` is materially improved over pre-PR baseline (record both). Not measured locally; deferred to a post-deploy spot-check.
+- [x] No CLS regression: image reserves its own slot via `width`/`height` attributes; the 200/300 ratio matches the 800/1200 source.
+- [x] `dist/sitemap-0.xml` contains `<lastmod>` for every URL (38/38).
+- [x] Blog posts with newer `updatedDate` show that date in the sitemap, not `pubDate` (verified on `/blog/what-is-net-worth/`: pubDate 2026-04-19, updatedDate 2026-05-07, sitemap shows `2026-05-07T00:00:00.000Z`).
+- [x] `BaseHead` accepts the new props with sensible defaults; existing pages render identical OG dims (1200x630) and alt text.
+- [x] New `og:image:alt` meta tag emits alongside `twitter:image:alt`.
+- [x] Old `public/baba_money.webp` removed; no remaining references in `src/`.
 
 ---
 
 ## PR4: `WebSite.SearchAction` wire-up
 
-> Small, standalone, optional. Either honour the schema declaration or drop it.
+> **Status**: open for review (shipped together with PR3 in branch `feat/perf-sitemap-search`). Closes finding 17.
+>
+> Honour the existing schema declaration on `/` so the SERP sitelinks search box, if Google grants it, lands on a working query page.
 
 ### Scope
 
-Two options, recommend (a):
+Implemented option (a) per the original plan: wire it up.
 
-- **(a) Wire it up.** In `src/components/LearningPath.tsx:171-183`, seed `searchQuery` state from `?q=` on mount and update the URL via `history.replaceState` when the query changes. Validates the schema declaration in `src/pages/index.astro:14-28`. Adds shareable search URLs.
-- **(b) Drop the SearchAction from the WebSite schema.** Faster, no behaviour change. Removes a low-trust signal (schema not matching site behaviour).
+- **`src/components/LearningPath.tsx`**: seed `searchQuery` state from `?q=` on mount (alongside the existing `?tag=` deep link). New effect mirrors `searchQuery` back into the URL via `history.replaceState` whenever it changes; empty queries clean the param off the URL so shared links don't carry stale state. No history entries pushed (back-button stays useful), no navigation.
+- **`src/pages/index2.astro`**: `webSiteSchema` now declares `potentialAction` matching the live home, so when the parked redesign graduates to `/` in PR18 the SearchAction does not silently regress.
 
 ### Effort
 
-30-45 min for (a). 5 min for (b).
+Estimated 30-45 min, actual within band.
 
 ### Dependencies
 
-PR0. Independent.
+PR0. Independent. Bundled into the same PR as PR3 because the changes are small and the verification touches the same surface (rebuilt blog index).
 
 ### Privacy changelog
 
@@ -322,9 +334,10 @@ None. URL state is local to the visitor's browser; no new collection or transmis
 
 ### Verification
 
-- [ ] If (a): visiting `/blog/?q=savings` lands the page with `savings` pre-filled in the search input and the filter applied.
-- [ ] If (a): typing in the search box updates `?q=` in the URL via `replaceState` (no navigation).
-- [ ] If (b): the `SearchAction` block is removed from `index.astro:14-28`; rebuild has no `potentialAction` JSON-LD.
+- [x] Bundled `LearningPath.*.js` reads `params.get("q")` on mount and calls `replaceState` on query change.
+- [x] `dist/index.html` continues to declare the `WebSite.SearchAction` JSON-LD; `dist/index2/index.html` now also declares it.
+- [ ] Manual: visiting `/blog/?q=savings` lands the page with `savings` pre-filled in the search input and the filter applied.
+- [ ] Manual: typing in the search box updates `?q=` in the URL without a full navigation.
 
 ---
 
@@ -988,22 +1001,22 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 | 6 | EEAT signals missing for YMYL content | Open | PR14 |
 | 7 | FAQ schema wired but used by only 4 of 32 posts | Open | PR5 |
 | 8 | PostHog snippet render-blocking and currently inert | Open | PR15 |
-| 9 | Hero image oversized for its rendered slot | Open | PR3 |
+| 9 | Hero image oversized for its rendered slot | **Resolved** (PR3) | — |
 | 10 | Fonts not preloaded | **Resolved** (PR1) | — |
-| 11 | Sitemap has no `lastmod` | Open | PR3 |
+| 11 | Sitemap has no `lastmod` | **Resolved** (PR3) | — |
 | 12 | `<meta name="keywords">` dead weight; free-tool pages stuffed | **Resolved** (PR1) | — |
 | 13 | Reconsider AI-bot blocks in robots.txt | Open | PR17 |
 | 14 | Per-post OG images | Open | PR16 (optional) |
 | 15 | Surface "last updated" dates visibly | **Resolved** (PR1) | — |
 | 16 | Add `BreadcrumbList` to home page | Conditional resolve | PR18 |
-| 17 | `WebSite.SearchAction` points at non-functional URL | Open | PR4 |
+| 17 | `WebSite.SearchAction` points at non-functional URL | **Resolved** (PR4) | — |
 | 18 | Repo-root cruft (`index.html`, `baba_money.png`) | **Resolved** (PR0) | — |
 | 19 | `<abbr class="finosopher">` lacks native `title` attribute | **Resolved** (PR1) | — |
 | 20 | Tag pages don't have a "Browse all topics" link back | **Resolved** (PR2) | — |
 | 21 | Per-style budget on long inline `<style>` blocks (informational) | Open | not blocking |
 | 22 | `BlogPosting.image` declares dimensions that don't match | **Resolved provisionally** (PR1); proper fix in PR16 | PR16 |
 | 23 | `/privacy/` emits no JSON-LD | **Resolved** (PR1) | — |
-| 24 | `og:image` width/height and `twitter:image:alt` hard-coded | New (June) | PR3 |
+| 24 | `og:image` width/height and `twitter:image:alt` hard-coded | **Resolved** (PR3) | — |
 | 25 | `Organization.sameAs` only on parked redesign | New (June), Conditional resolve | PR14 (or PR18) |
 | 26 | `LearningPath.tsx` chips are `<button>` not `<a>` | **Resolved** (PR2) | — |
 | 27 | `[tag]` URL not encoded in tag-page BreadcrumbList | **Resolved** (PR1) | — |
