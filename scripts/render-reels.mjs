@@ -249,7 +249,13 @@ async function renderOne({ post, opts, variantIdx }) {
   //    (b) call the LLM with up to 3 attempts, scrubber-driven self-correction.
   let rawPlan;
   if (opts.fromPlan) {
-    const savedPath = join(dirs.plans, `${renderSlug}.json`);
+    // Always load the BASE plan (no variant suffix). A single saved plan holds
+    // all 3 hookVariants; the variant is selected downstream by setting
+    // useHookVariant = variantIdx. This lets `--from-plan --variant N` and
+    // `--from-plan --variants-all` render distinct hook variants from one plan
+    // without requiring per-variant plan files on disk.
+    const basePlanName = `${filePrefix}${slug}`;
+    const savedPath = join(dirs.plans, `${basePlanName}.json`);
     console.log(`│  [1/6] Loading saved plan from ${savedPath.replace(import.meta.dirname + "/..", ".")}...`);
     if (!existsSync(savedPath)) {
       throw new Error(`--from-plan requested but no saved plan at ${savedPath}. Run without --from-plan first to generate.`);

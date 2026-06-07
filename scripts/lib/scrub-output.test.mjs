@@ -197,6 +197,87 @@ describe("scrubPlan + assertNoViolations integration", () => {
   });
 });
 
+describe("scrubPlan — flow anchor", () => {
+  const planWithFlow = (anchor) => ({
+    slug: "x",
+    postTitle: "x",
+    postLevel: "building",
+    episode: 1,
+    seriesTotal: 16,
+    mode: "faithful",
+    topic: "Getting started investing",
+    mood: "calm-authority",
+    hookVariants: [
+      { id: "h1", layout: "big-number", narration: "One in four expats can't cover an emergency.", onscreenLines: ["One in four"], anchor: { type: "stat", value: "1 in 4", label: "couldn't cover EUR 400" }, emphasis: [] },
+      { id: "h2", layout: "question", narration: "How long without income?", onscreenLines: ["How long?"] },
+      { id: "h3", layout: "contradiction", narration: "Saving feels safe.", onscreenLines: ["Safe?"] },
+    ],
+    useHookVariant: 0,
+    beats: [
+      { id: "b1", kind: "example", narration: "Four steps get your first portfolio running.", onscreenText: "How to start", anchor },
+    ],
+    cta: { approved: "save", narration: "Save this for the day you'll need it.", onscreenText: "Save this", handle: "@nidhi.today" },
+    caption: { instagram: "First line.", tiktok: "Short line." },
+    hashtags: ["nidhi", "nidhibuilding", "expatfinance", "indexinvesting", "wealthbuilding"],
+    availableFigures: [],
+  });
+
+  const goodSteps = [
+    { label: "Open a brokerage", detail: "any low-cost platform" },
+    { label: "Pick a broad index fund" },
+    { label: "Automate the transfer" },
+    { label: "Rebalance once a year", outcome: true },
+  ];
+
+  test("a valid 4-step vertical flow produces zero violations", () => {
+    const r = scrubPlan(planWithFlow({ type: "flow", orientation: "vertical", steps: goodSteps }));
+    assert.equal(r.violations.length, 0);
+    assertNoViolations(r.violations);
+  });
+
+  test("flags fewer than 3 steps", () => {
+    const r = scrubPlan(planWithFlow({ type: "flow", steps: goodSteps.slice(0, 2) }));
+    assert.ok(r.violations.find(v => v.rule === "flow-step-count"));
+  });
+
+  test("flags more than 5 steps", () => {
+    const steps = [...goodSteps, { label: "Five" }, { label: "Six" }];
+    const r = scrubPlan(planWithFlow({ type: "flow", steps }));
+    assert.ok(r.violations.find(v => v.rule === "flow-step-count"));
+  });
+
+  test("flags horizontal orientation with more than 3 nodes", () => {
+    const r = scrubPlan(planWithFlow({ type: "flow", orientation: "horizontal", steps: goodSteps }));
+    assert.ok(r.violations.find(v => v.rule === "flow-horizontal-overflow"));
+  });
+
+  test("flags more than one outcome node", () => {
+    const steps = goodSteps.map((s, i) => i < 2 ? { ...s, outcome: true } : s);
+    const r = scrubPlan(planWithFlow({ type: "flow", steps }));
+    assert.ok(r.violations.find(v => v.rule === "flow-multiple-outcomes"));
+  });
+
+  test("scrubs US-isms inside a step label", () => {
+    const steps = [
+      { label: "Open your 401k" },
+      { label: "Pick a fund" },
+      { label: "Automate it", outcome: true },
+    ];
+    const r = scrubPlan(planWithFlow({ type: "flow", steps }));
+    assert.ok(r.violations.find(v => v.rule === "us-only-term" && v.field === "beats[0].anchor.steps[0].label"));
+  });
+
+  test("auto-fixes an em dash inside a step detail", () => {
+    const steps = [
+      { label: "Open a brokerage", detail: "fast — no paperwork" },
+      { label: "Pick a fund" },
+      { label: "Automate it", outcome: true },
+    ];
+    const r = scrubPlan(planWithFlow({ type: "flow", steps }));
+    assert.equal(r.plan.beats[0].anchor.steps[0].detail, "fast, no paperwork");
+  });
+});
+
 describe("scrubString — EUR prefix auto-conversion", () => {
   test("converts 'EUR 10,000' → '€10,000'", () => {
     const r = scrubString("You have EUR 10,000 in the bank today.", "x");

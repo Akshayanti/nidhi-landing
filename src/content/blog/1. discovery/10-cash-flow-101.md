@@ -5,11 +5,12 @@ description: "Money comes in, money goes out. Cash flow is the map that shows yo
 tldr: "Cash flow is the movement of money in and out of your life over a period of time. Positive cash flow means you earn more than you spend. Negative cash flow means you're slowly falling behind. Tracking cash flow is the first step to controlling it. Most people don't know their number, and that's the problem."
 order: 10
 pubDate: 2026-05-08
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals", "saving"]
+reelPromise: "The step-by-step way to find your own cash-flow number, the savings-rate formula, and why a €3,000 earner can out-build a €6,000 earner"
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
@@ -94,6 +95,34 @@ Once you know your cash flow number, turn it into a percentage:
 > Savings Rate = (Income - Expenses) x 100 / Income
 
 If you earn €3,000 and spend €2,400, your savings rate is 20%. That single number tells you more about your financial trajectory than your salary does. Someone earning €6,000 with a 5% savings rate is building wealth slower than someone earning €3,000 with a 20% savings rate.
+
+<figure>
+  <svg viewBox="0 0 880 430" role="img" aria-labelledby="fig-cf-title fig-cf-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-cf-title">Where your number comes from</title>
+    <desc id="fig-cf-desc">Money flows in at the top as income of three thousand euros. Expenses of two thousand four hundred flow out the side. What is left at the bottom, six hundred euros, is your cash flow, here a twenty percent savings rate.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">Where your number comes from</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Cash flow is what is left after the money has moved</text>
+    <rect x="320" y="100" width="240" height="56" rx="10" class="fig-fill-blue"/>
+    <text x="440" y="130" text-anchor="middle" class="fig-num-md">€3,000 in</text>
+    <text x="440" y="148" text-anchor="middle" class="fig-tick" style="fill: var(--neutral-white);">income this month</text>
+    <path d="M 440,156 L 440,196" class="fig-stroke-muted" stroke-width="2"/>
+    <path d="M 432,188 L 440,198 L 448,188 Z" class="fig-fill-muted"/>
+    <rect x="300" y="198" width="280" height="52" rx="10" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
+    <text x="440" y="226" text-anchor="middle" class="fig-label">expenses out</text>
+    <text x="440" y="242" text-anchor="middle" class="fig-tick">needs and wants: €2,400</text>
+    <path d="M 580,224 L 700,224" class="fig-stroke-warn" stroke-width="2"/>
+    <path d="M 692,216 L 702,224 L 692,232 Z" class="fig-fill-warn"/>
+    <text x="710" y="221" text-anchor="start" class="fig-tick">money that</text>
+    <text x="710" y="237" text-anchor="start" class="fig-tick">left your life</text>
+    <path d="M 440,250 L 440,290" class="fig-stroke-teal" stroke-width="2"/>
+    <path d="M 432,282 L 440,292 L 448,282 Z" class="fig-fill-teal"/>
+    <rect x="320" y="292" width="240" height="62" rx="10" class="fig-fill-teal"/>
+    <text x="440" y="322" text-anchor="middle" class="fig-num-md">€600 left</text>
+    <text x="440" y="340" text-anchor="middle" class="fig-tick" style="fill: var(--neutral-white);">your cash flow · 20% savings rate</text>
+    <text x="440" y="408" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative. Savings rate calculated on net (take-home) income.</text>
+  </svg>
+  <figcaption>Your salary is the top box. Your cash flow is the bottom one. Most people watch the top and never measure the bottom, which is the number that actually builds wealth.</figcaption>
+</figure>
 
 A common benchmark is 20%, matching the savings/debt slice in the guideline above. But the number matters less than the direction. Track it monthly. If it's going up, your wealth engine is accelerating. If it's going down, something changed.
 

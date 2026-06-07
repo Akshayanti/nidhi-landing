@@ -5,11 +5,12 @@ description: "Exchange rates show how much one currency is worth in another, not
 tldr: "An exchange rate is the price of one currency in terms of another. But the same amount of money buys different amounts in different countries, a concept called purchasing power parity. A coffee that costs €3 in Helsinki might cost €1.20 in Lisbon. Understanding exchange rates and PPP helps you make sense of living costs, travel budgets, and why moving countries can change your real income even if your salary stays the same."
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "currency", "fundamentals"]
+reelPromise: "How exchange rates and purchasing power parity differ, the cappuccino price table across cities, and the two currency risks a move exposes you to"
 referentialReading:
   - title: "Purchasing Power Parity"
     url: "https://www.investopedia.com/terms/p/purchasingpowerparity.asp"
@@ -62,6 +63,34 @@ Here's a simple test: how much does a cappuccino cost?
 | Bangkok | €1.20 |
 
 Same drink. Same basic ingredients. Very different prices. The reason isn't that coffee beans cost more in Finland. It's that wages, rents, taxes, and overall price levels differ across countries.
+
+<figure>
+  <svg viewBox="0 0 880 400" role="img" aria-labelledby="fig-ppp-title fig-ppp-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-ppp-title">One €4.50, very different mornings</title>
+    <desc id="fig-ppp-desc">The same four euros fifty in your pocket. In Helsinki it buys one cappuccino, in Berlin about one, in Lisbon nearly three, in Bangkok almost four. The money did not change. What it buys did.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">One €4.50, very different mornings</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">How many cappuccinos the same €4.50 buys</text>
+    <line x1="120" y1="320" x2="780" y2="320" class="fig-stroke-rule" stroke-width="1.5"/>
+    <rect x="160" y="285" width="90" height="35" class="fig-fill-warn"/>
+    <text x="205" y="345" text-anchor="middle" class="fig-label">Helsinki</text>
+    <text x="205" y="363" text-anchor="middle" class="fig-tick">€4.50 each</text>
+    <text x="205" y="275" text-anchor="middle" class="fig-label" style="fill: var(--color-warning);">1</text>
+    <rect x="320" y="271" width="90" height="49" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
+    <text x="365" y="345" text-anchor="middle" class="fig-label">Berlin</text>
+    <text x="365" y="363" text-anchor="middle" class="fig-tick">€3.20 each</text>
+    <text x="365" y="261" text-anchor="middle" class="fig-label">1.4</text>
+    <rect x="480" y="222" width="90" height="98" class="fig-fill-teal-soft fig-stroke-teal" stroke-width="1.5"/>
+    <text x="525" y="345" text-anchor="middle" class="fig-label">Lisbon</text>
+    <text x="525" y="363" text-anchor="middle" class="fig-tick">€1.60 each</text>
+    <text x="525" y="212" text-anchor="middle" class="fig-label" style="fill: var(--color-teal);">2.8</text>
+    <rect x="640" y="189" width="90" height="131" class="fig-fill-teal"/>
+    <text x="685" y="345" text-anchor="middle" class="fig-label">Bangkok</text>
+    <text x="685" y="363" text-anchor="middle" class="fig-tick">€1.20 each</text>
+    <text x="685" y="179" text-anchor="middle" class="fig-label" style="fill: var(--color-teal);">3.7</text>
+    <text x="440" y="390" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative single item. Real purchasing power depends on a full basket: housing, food, transport, services.</text>
+  </svg>
+  <figcaption>The coins in your pocket never changed. Cross a border and the same €4.50 stretches to nearly four cups instead of one. That is why a move can change your real income even when your salary stays the same.</figcaption>
+</figure>
 
 This is purchasing power parity (PPP) in action. PPP is the idea that, over time, exchange rates should adjust so that the same basket of goods costs the same everywhere. In practice, they don't, and the gap is where things get interesting.
 

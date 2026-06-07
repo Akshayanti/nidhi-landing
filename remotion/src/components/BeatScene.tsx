@@ -48,6 +48,8 @@ export function BeatScene({ beat, durationInFrames }: Props) {
         return <CompareBeat beat={beat} frame={frame} fps={fps} />;
       case "list":
         return <ListBeat beat={beat} frame={frame} fps={fps} />;
+      case "flow":
+        return <FlowBeat beat={beat} frame={frame} fps={fps} />;
       case "number-counter":
         return <NumberCounterBeat beat={beat} frame={frame} fps={fps} duration={durationInFrames} />;
       case "figure":
@@ -437,6 +439,173 @@ function ListBeat({ beat, frame, fps }: { beat: Beat; frame: number; fps: number
           );
         })}
       </ul>
+    </div>
+  );
+}
+
+/**
+ * Flowchart beat: 3-5 ordered nodes connected by directional arrows, revealed
+ * one at a time so the eye follows the sequence as the voiceover describes it.
+ *
+ * This is the primary "not text-heavy" primitive for process / how-to beats.
+ * Instead of a bullet list, the viewer sees an actual diagram of steps with
+ * directional flow. The terminal node (steps[i].outcome === true) renders with
+ * a teal accent fill so the payoff reads at a glance even on a paused frame.
+ *
+ * Orientation:
+ *   - vertical (default): nodes stack down the portrait frame with "↓" arrows.
+ *     Choreographed reveal cadence ~7 frames per node keeps a 4-5s beat in sync.
+ *   - horizontal: nodes sit left-to-right with "→" arrows. Reserved for 2-3
+ *     short nodes; the renderer shrinks node text to fit but long chains will
+ *     overflow, so the schema + prompt cap horizontal at 3 nodes.
+ */
+function FlowBeat({ beat, frame, fps }: { beat: Beat; frame: number; fps: number }) {
+  if (beat.anchor?.type !== "flow") return null;
+  const orientation = beat.anchor.orientation ?? "vertical";
+  const steps = beat.anchor.steps.slice(0, 5);
+  const headlineAppear = spring({ frame, fps, config: { damping: 14, stiffness: 110 } });
+  const isHorizontal = orientation === "horizontal";
+
+  // Per-node reveal cadence. Node i appears, then its inbound arrow.
+  const NODE_STEP = 7; // frames between successive node reveals
+  const baseDelay = 8; // frames after headline before node 1 appears
+
+  const fitNodeLabel = (label: string) => {
+    const words = label.trim().split(/\s+/).length;
+    const base = isHorizontal ? 40 : 54;
+    return Math.max(30, base - Math.max(0, words - 3) * 4);
+  };
+
+  return (
+    <div style={center}>
+      {beat.onscreenText && beat.onscreenText.trim() && (
+        <>
+          <KineticHeadline text={beat.onscreenText} emphasis={beat.emphasis} appear={headlineAppear} />
+          <div style={{ height: 44 }} />
+        </>
+      )}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isHorizontal ? "row" : "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 0,
+          width: "100%",
+          maxWidth: isHorizontal ? 940 : 720,
+        }}
+      >
+        {steps.map((step, i) => {
+          const nodeAppear = spring({
+            frame: frame - baseDelay - i * NODE_STEP,
+            fps,
+            config: { damping: 15, stiffness: 130 },
+          });
+          // The arrow leading INTO node i (i>0) appears just before the node.
+          const arrowAppear = i === 0 ? 1 : spring({
+            frame: frame - baseDelay - i * NODE_STEP + 4,
+            fps,
+            config: { damping: 16, stiffness: 180 },
+          });
+          const isOutcome = step.outcome === true;
+          const accent = isOutcome ? BRAND.teal : COLOR.ink;
+
+          return (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                flexDirection: isHorizontal ? "row" : "column",
+                alignItems: "center",
+                width: isHorizontal ? "auto" : "100%",
+                flex: isHorizontal ? 1 : "none",
+                minWidth: 0,
+              }}
+            >
+              {i > 0 && (
+                <FlowArrow horizontal={isHorizontal} appear={arrowAppear} />
+              )}
+              <div
+                style={{
+                  width: isHorizontal ? "100%" : "auto",
+                  minWidth: isHorizontal ? 0 : 360,
+                  maxWidth: "100%",
+                  background: isOutcome ? BRAND.teal : COLOR.cardBg,
+                  border: `2px solid ${accent}`,
+                  borderRadius: 20,
+                  padding: isHorizontal ? "20px 16px" : "22px 30px",
+                  textAlign: "center",
+                  opacity: nodeAppear,
+                  transform: `translateY(${(1 - nodeAppear) * 16}px) scale(${0.92 + nodeAppear * 0.08})`,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: TYPE.ui,
+                    fontSize: fitNodeLabel(step.label),
+                    fontWeight: 700,
+                    color: isOutcome ? BRAND.paperWhite : COLOR.ink,
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.01em",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {step.label}
+                </div>
+                {step.detail && step.detail.trim() && (
+                  <div
+                    style={{
+                      fontFamily: TYPE.ui,
+                      fontSize: isHorizontal ? 24 : 30,
+                      fontWeight: 500,
+                      color: isOutcome ? "rgba(255,255,255,0.85)" : COLOR.inkMuted,
+                      marginTop: 8,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {step.detail}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Directional connector between two flow nodes. Renders an amber arrow (the
+ * brand's directional accent, matching the compare "progression" divider) plus
+ * a short hairline so the chain reads as a continuous path. Orientation flips
+ * the glyph and the surrounding spacing.
+ */
+function FlowArrow({ horizontal, appear }: { horizontal: boolean; appear: number }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: horizontal ? "row" : "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: horizontal ? "0 10px" : "8px 0",
+        opacity: appear,
+        transform: `scale(${0.8 + appear * 0.2})`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: TYPE.ui,
+          fontSize: horizontal ? 44 : 48,
+          fontWeight: 800,
+          color: BRAND.amber,
+          lineHeight: 1,
+        }}
+      >
+        {horizontal ? "→" : "↓"}
+      </div>
     </div>
   );
 }

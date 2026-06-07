@@ -72,9 +72,15 @@ function extractCssBlock(css, startMarker, endMarker) {
 }
 
 function buildBrandCss(globalCss) {
-  // Pull :root brand variables (light mode only — IG export forces light)
-  const rootMatch = globalCss.match(/:root\s*\{[\s\S]*?\}/);
-  const rootVars = rootMatch ? rootMatch[0] : "";
+  // Pull ALL :root brand variable blocks (light mode only — IG export forces
+  // light). global.css splits the design tokens across two :root blocks: the
+  // first defines the raw --palette-* / --semantic-* hex values, the second
+  // maps the semantic --color-* aliases (e.g. --color-deep-blue: var(--palette-blue)).
+  // Capturing only the first block leaves every .fig-fill-blue / -teal / -warn
+  // rule resolving var(--color-*) to nothing, so the SVG renders solid black.
+  // Concatenate every top-level :root block so the full alias chain resolves.
+  const rootMatches = globalCss.match(/:root\s*\{[\s\S]*?\n\}/g) || [];
+  const rootVars = rootMatches.join("\n");
 
   // Pull the figure SVG class library + figure container styling.
   // Section markers in global.css are stable; if they ever drift the

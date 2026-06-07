@@ -5,11 +5,12 @@ description: "You've never missed a payment. You have no debt. But the rate you'
 tldr: "A credit score is a number that summarizes how reliably you've handled borrowed money. It's based on your payment history, how much of your available credit you use, how long your accounts have been open, and the types of credit you hold. Every country has its own system; FICO in the US, SCHUFA in Germany, Experian in the UK, CIBIL in India; but the core factors are universal. A higher score means lower interest rates on loans and mortgages, saving you thousands over a lifetime. Even if you avoid debt entirely, your credit history affects rental applications, insurance, and financial flexibility. Building good credit is simple: use a small amount, pay it off in full every month, and give it time."
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "debt", "fundamentals"]
+reelPromise: "What each scoring factor means, how the systems differ by country (FICO, SCHUFA, Experian, CIBIL), and the interest-rate gap a good score saves you"
 referentialReading:
   - title: "Credit Score"
     url: "https://www.investopedia.com/terms/c/credit_score.asp"
@@ -71,6 +72,29 @@ Having experience with different forms of borrowing (credit card, installment lo
 ### 5. Recent credit activity
 
 Applying for multiple new credit lines in a short period suggests financial pressure. Each application typically triggers a check that can temporarily affect your score. Checking your own score does not affect it.
+
+<figure>
+  <svg viewBox="0 0 880 400" role="img" aria-labelledby="fig-cr-title fig-cr-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-cr-title">What moves your score, most to least</title>
+    <desc id="fig-cr-desc">Five factors ranked by typical importance. Payment history is the largest, then how much of your credit you use, then how long your history is, then your mix of credit types, then recent applications. The exact weights differ by country and bureau, so this shows rank, not percentages.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">What moves your score</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Ranked most to least important, across most systems</text>
+    <rect x="120" y="98" width="600" height="34" rx="6" class="fig-fill-teal"/>
+    <text x="134" y="120" text-anchor="start" class="fig-label" style="fill: var(--neutral-white);">Paying on time</text>
+    <text x="706" y="120" text-anchor="end" class="fig-tick" style="fill: var(--neutral-white);">biggest lever</text>
+    <rect x="120" y="146" width="468" height="34" rx="6" class="fig-fill-blue"/>
+    <text x="134" y="168" text-anchor="start" class="fig-label" style="fill: var(--neutral-white);">How much credit you use</text>
+    <rect x="120" y="194" width="360" height="34" rx="6" class="fig-fill-blue-soft fig-stroke-blue" stroke-width="1.5"/>
+    <text x="134" y="216" text-anchor="start" class="fig-label">Length of history</text>
+    <rect x="120" y="242" width="250" height="34" rx="6" class="fig-fill-muted"/>
+    <text x="134" y="264" text-anchor="start" class="fig-label">Mix of credit types</text>
+    <rect x="120" y="290" width="170" height="34" rx="6" class="fig-fill-muted"/>
+    <text x="134" y="312" text-anchor="start" class="fig-label">Recent applications</text>
+    <text x="500" y="312" text-anchor="start" class="fig-tick">smallest lever</text>
+    <text x="440" y="378" text-anchor="middle" class="fig-tick" style="font-style: italic;">Directional ranking. Exact weights vary by country and bureau (FICO, SCHUFA, Experian, CIBIL, and others).</text>
+  </svg>
+  <figcaption>The order is what travels across borders, not the math. Paying on time, every time, does more than everything below it combined, which is why the simple advice works almost everywhere.</figcaption>
+</figure>
 
 **A note on how systems differ:** Some countries (like the US) require you to actively build a positive credit history, i.e., you need to borrow and repay to get a good score. Others (like Germany's SCHUFA or the Netherlands' BKR) focus more on negative data, a clean record with no defaults is itself a strong indicator. Some countries don't have consumer credit scores at all; lenders pull reports and make their own assessment. The advice in this post, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
 

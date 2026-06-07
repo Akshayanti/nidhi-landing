@@ -10,6 +10,7 @@ level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "saving", "investing"]
+reelPromise: "The side-by-side of 1% savings versus a blended portfolio over time, and the simple test for which money belongs in which bucket"
 referentialReading:
   - title: "Saving vs. Investing"
     url: "https://www.investopedia.com/articles/investing/022516/saving-vs-investing-understanding-key-differences.asp"

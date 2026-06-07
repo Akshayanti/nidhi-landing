@@ -5,11 +5,12 @@ description: "You track your income. You know your expenses. But unless you tell
 tldr: "A budget is a plan for your money, not a restriction on it. It turns the gap between income and expenses, your savings rate, into something intentional. The three most common approaches are: the 50/30/20 rule (simple, percentage-based), zero-based budgeting (every euro assigned a job), and pay-yourself-first (automate savings, spend the rest). The best budget is the one you'll actually follow. Automating your savings and bill payments removes willpower from the equation and makes consistency the default."
 order: 14
 pubDate: 2026-05-18
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "saving", "fundamentals"]
+reelPromise: "All three budgeting methods compared (50/30/20, zero-based, pay-yourself-first) and how to automate the one you pick so it runs without willpower"
 referentialReading:
   - title: "What Is Budgeting?"
     url: "https://www.investopedia.com/terms/b/budget.asp"
@@ -76,6 +77,30 @@ Split your after-tax income into three buckets:
 | Needs | 50% | €1,250 |
 | Wants | 30% | €750 |
 | Savings & debt payoff | 20% | €500 |
+
+<figure>
+  <svg viewBox="0 0 880 320" role="img" aria-labelledby="fig-bud-title fig-bud-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-bud-title">The 50/30/20 split</title>
+    <desc id="fig-bud-desc">One bar of take-home income divided into three parts: fifty percent needs, thirty percent wants, twenty percent savings and debt payoff. On a two thousand five hundred euro net income that is one thousand two hundred fifty, seven hundred fifty, and five hundred euros.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">The 50/30/20 split</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">One month of take-home income, given three jobs</text>
+    <rect x="120" y="120" width="320" height="80" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
+    <rect x="440" y="120" width="192" height="80" class="fig-fill-blue-soft fig-stroke-blue" stroke-width="1.5"/>
+    <rect x="632" y="120" width="128" height="80" class="fig-fill-teal"/>
+    <text x="280" y="155" text-anchor="middle" class="fig-num-blue" style="fill: var(--color-warning);">50%</text>
+    <text x="280" y="180" text-anchor="middle" class="fig-label">Needs</text>
+    <text x="536" y="155" text-anchor="middle" class="fig-num-blue">30%</text>
+    <text x="536" y="180" text-anchor="middle" class="fig-label">Wants</text>
+    <text x="696" y="155" text-anchor="middle" class="fig-num-md">20%</text>
+    <text x="696" y="180" text-anchor="middle" class="fig-label" style="fill: var(--neutral-white);">Save</text>
+    <text x="280" y="232" text-anchor="middle" class="fig-tick">rent, food, bills: €1,250</text>
+    <text x="536" y="232" text-anchor="middle" class="fig-tick">choices: €750</text>
+    <text x="696" y="232" text-anchor="middle" class="fig-tick">future you: €500</text>
+    <text x="440" y="280" text-anchor="middle" class="fig-quote-small">Guideline, not a rule. In high-cost cities, needs may exceed 50%; adjust to your reality.</text>
+    <text x="440" y="306" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative, on €2,500 net (after-tax) income.</text>
+  </svg>
+  <figcaption>Every euro of take-home pay gets a job before the month starts. The exact split bends to your city and your goals; the habit of assigning all three buckets is the part that matters.</figcaption>
+</figure>
 
 **Best for**: People who want simplicity. You don't track every purchase, just keep each bucket roughly within its limit. It's a good starting point if you've never budgeted before.
 

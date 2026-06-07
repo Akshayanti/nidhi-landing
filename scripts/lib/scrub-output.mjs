@@ -463,6 +463,47 @@ export function scrubPlan(plan) {
           const r2 = scrubString(b.anchor[side].value, `beats[${i}].anchor.${side}.value`);
           b.anchor[side].value = r2.cleaned; violations.push(...r2.violations);
         }
+      } else if (b.anchor.type === "flow") {
+        // Flow steps are an ordered chain. Scrub each label + optional detail
+        // for brand-rule violations, and enforce the 3-5 node count + the
+        // horizontal-orientation cap (a horizontal chain wider than 3 nodes
+        // overflows the 9:16 safe area; the renderer clamps to 5 but the
+        // schema intent is 3-5 vertical / 2-3 horizontal).
+        const steps = Array.isArray(b.anchor.steps) ? b.anchor.steps : [];
+        if (steps.length < 3 || steps.length > 5) {
+          violations.push({
+            field: `beats[${i}].anchor.steps`,
+            rule: "flow-step-count",
+            quote: `${steps.length}`,
+            suggestion: "A flow anchor needs 3 to 5 ordered steps. Fewer than 3 should be a 'compare' anchor; more than 5 won't fit the frame, so split or trim.",
+          });
+        }
+        if ((b.anchor.orientation ?? "vertical") === "horizontal" && steps.length > 3) {
+          violations.push({
+            field: `beats[${i}].anchor.orientation`,
+            rule: "flow-horizontal-overflow",
+            quote: `horizontal x${steps.length}`,
+            suggestion: "Horizontal flow caps at 3 short nodes. Use orientation 'vertical' for 4 to 5 steps.",
+          });
+        }
+        const outcomeCount = steps.filter(s => s && s.outcome === true).length;
+        if (outcomeCount > 1) {
+          violations.push({
+            field: `beats[${i}].anchor.steps`,
+            rule: "flow-multiple-outcomes",
+            quote: `${outcomeCount} outcome nodes`,
+            suggestion: "At most one step may set outcome: true (the terminal node). Clear the flag on the others.",
+          });
+        }
+        for (let j = 0; j < steps.length; j++) {
+          const step = steps[j];
+          const rl = scrubString(step.label ?? "", `beats[${i}].anchor.steps[${j}].label`);
+          step.label = rl.cleaned; violations.push(...rl.violations);
+          if (step.detail) {
+            const rd = scrubString(step.detail, `beats[${i}].anchor.steps[${j}].detail`);
+            step.detail = rd.cleaned; violations.push(...rd.violations);
+          }
+        }
       }
     }
   }

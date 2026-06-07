@@ -5,11 +5,12 @@ description: "You've spent months building an emergency fund. One accident, fire
 tldr: "Insurance transfers catastrophic financial risk from you to an insurer in exchange for a predictable premium. The main types are health, life, property, disability, and liability. Premiums are a cash flow cost, but they protect your net worth from sudden, devastating loss. Insurance and your emergency fund work as a team: more coverage means you can keep a smaller emergency fund, and vice versa. The right amount of insurance isn't zero (one event could derail your finances) and it isn't maximum (over-insuring wastes cash flow on unlikely scenarios). The goal is covering the losses you couldn't absorb on your own."
 order: 16
 pubDate: 2026-05-22
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "risk", "fundamentals"]
+reelPromise: "The five types of insurance, how coverage and your emergency fund trade off, and the test for when a policy is worth it versus self-insuring"
 referentialReading:
   - title: "Insurance"
     url: "https://www.investopedia.com/terms/i/insurance.asp"
@@ -158,6 +159,32 @@ This is why the [emergency fund post](/blog/emergency-fund/) said "3-6 months" r
 - You're paying to insure something that wouldn't actually affect your financial plan
 
 A useful rule of thumb: insure what you can't afford to lose. Self-insure what you can.
+
+<figure>
+  <svg viewBox="0 0 880 420" role="img" aria-labelledby="fig-ins-title fig-ins-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-ins-title">Not zero, not maximum</title>
+    <desc id="fig-ins-desc">A U-shaped curve. With too little coverage, expected total cost is high because an uninsured disaster could be devastating. With too much, cost is high because premiums are wasted on unlikely events. The lowest point in the middle is the right amount of coverage.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">Not zero, not maximum</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">The right amount of insurance sits in the middle</text>
+    <line x1="120" y1="340" x2="780" y2="340" class="fig-stroke-rule" stroke-width="1.5"/>
+    <line x1="120" y1="100" x2="120" y2="340" class="fig-stroke-rule" stroke-width="1"/>
+    <text x="120" y="362" text-anchor="middle" class="fig-tick">No cover</text>
+    <text x="450" y="362" text-anchor="middle" class="fig-tick">Right cover</text>
+    <text x="780" y="362" text-anchor="middle" class="fig-tick">Over-insured</text>
+    <text x="108" y="110" text-anchor="end" class="fig-tick">High</text>
+    <text x="108" y="335" text-anchor="end" class="fig-tick">Low</text>
+    <text x="86" y="225" text-anchor="middle" class="fig-sublabel" transform="rotate(-90 86 225)">Expected total cost</text>
+    <path d="M 120,130 Q 300,360 450,300 Q 600,260 780,130" class="fig-stroke-blue" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="450" cy="300" r="7" class="fig-fill-teal"/>
+    <text x="450" y="288" text-anchor="middle" class="fig-label" style="fill: var(--color-teal);">lowest total cost</text>
+    <text x="180" y="150" text-anchor="start" class="fig-tick">one event could</text>
+    <text x="180" y="166" text-anchor="start" class="fig-tick">derail your plan</text>
+    <text x="700" y="150" text-anchor="end" class="fig-tick">premiums wasted on</text>
+    <text x="700" y="166" text-anchor="end" class="fig-tick">unlikely events</text>
+    <text x="440" y="398" text-anchor="middle" class="fig-tick" style="font-style: italic;">Conceptual. Total cost = premiums paid plus the risk you carry yourself. Optimal coverage depends on your assets and risk tolerance.</text>
+  </svg>
+  <figcaption>Insurance is not a thing you maximise. Too little and one bad day undoes years of saving; too much and you bleed cash flow on risks you could absorb. The goal is the bottom of the curve: cover what you couldn't survive, self-insure the rest.</figcaption>
+</figure>
 
 ## Insurance and your net worth
 
