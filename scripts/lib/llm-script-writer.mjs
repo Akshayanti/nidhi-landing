@@ -171,6 +171,7 @@ You pick the mode unless the operator forces one. Default to "faithful" for post
       "anchor": null | { "type": "stat", "value": "€3,000", "label": "Target: 3 months" }
                     | { "type": "compare", "mode": "vs" | "progression", "left": {"label":"Without","value":"Crisis"}, "right": {"label":"With","value":"Inconvenience"} }
                 | { "type": "list", "items": ["Job loss", "Medical bill", "Car repair"] }
+                | { "type": "flow", "orientation": "vertical" | "horizontal", "steps": [ {"label":"Open a brokerage","detail":"any low-cost platform"}, {"label":"Pick a broad index fund"}, {"label":"Automate the monthly transfer"}, {"label":"Rebalance once a year","outcome":true} ] }
                 | { "type": "number-counter", "from": 0, "to": 6000, "prefix": "€", "label": "6 months expenses" }
                 | { "type": "figure", "path": "<from AVAILABLE FIGURES list>", "caption": "<from AVAILABLE FIGURES list>" }
     },
@@ -194,8 +195,11 @@ You pick the mode unless the operator forces one. Default to "faithful" for post
   "hashtags": ["nidhi", "nidhibasics", "topicspecifictag", "audienceaxis", "communitytag"]
 }
 
+# Visual density (HARD — this reel must NOT be text-heavy)
+The viewer should rarely see a slide that is just a headline and a subtext line. Every beat that CAN carry a visual primitive SHOULD. Prefer, in order: a "figure" (post's own diagram), a "flow" (process steps), a "compare" (trade-off / cause-effect), a "stat" or "number-counter" (single number), a "list" (parallel items). Reserve plain-typography beats (definition / transition with no anchor) for genuine pacing breaths only. Target: at LEAST half the body beats carry an anchor. A beat that describes a sequence of actions MUST be a flow anchor, not prose.
+
 # Figure anchors (use the post's own diagrams when available)
-If the user prompt includes an "AVAILABLE FIGURES" section, that means this blog post has one or more pre-rendered diagrams already created for the carousel. PREFER using a figure anchor for at least ONE beat when a figure is available — it's more brand-consistent than abstract typography and reuses authoritative blog visuals. Place the figure beat in the body of the reel (typically beat 3-6, where the viewer is engaged enough to absorb a chart). Use kind: "definition" or "example" with the figure anchor; the BeatScene renders the diagram with the headline above it. Do NOT make every beat a figure beat — one is usually enough.
+If the user prompt includes an "AVAILABLE FIGURES" section, that means this blog post has one or more pre-rendered diagrams already created for the carousel. PREFER using a figure anchor for at least ONE beat when a figure is available — it's more brand-consistent than abstract typography and reuses authoritative blog visuals. Place the figure beat in the body of the reel (typically beat 3-6, where the viewer is engaged enough to absorb a chart). Use kind: "definition" or "example" with the figure anchor; the BeatScene renders the diagram with the headline above it. Do NOT make every beat a figure beat — one is usually enough. When NO figure is available for a process-style post, a "flow" anchor is the diagram-equivalent substitute.
 
 # Beat pacing rules
 - Total spoken duration target: 45–75 seconds. At ~150 words/min that's 110–190 narrated words. Stay in this range.
@@ -203,12 +207,30 @@ If the user prompt includes an "AVAILABLE FIGURES" section, that means this blog
 - Mix kinds. The first 1–2 beats after the hook must deliver concrete value (a number, a definition, an example), not throat-clearing. The last beat before the CTA should land on a single memorable line.
 - HARD CAP on numerical density: maximum 3 beats with anchors of type "stat" or "number-counter" PER REEL (counted together). NEVER place two such beats consecutively — always interleave with definition / example / list / story / transition / warning beats. Viewers cannot absorb a parade of big numbers; if you have more than 3 candidate stats, pick the strongest 3 and render the rest as prose.
 
+# Tension arc (HARD — story-driven, not framework-driven)
+Structure the reel so it WITHHOLDS the payoff instead of front-loading it. The shape:
+1. HOOK: name a problem the viewer is IN, in second person ("You have been meaning to...", "You think you have X. You probably have Y."). A public-domain fable is OPTIONAL here, not required, and is only worth it when the fable maps tightly to the concept; the DEFAULT and preferred opener for this concept is the second-person problem scenario. The TOPIC must be anchored early (topicChip + first sentence name the subject), but the SOLUTION must not be. Do not list the answer ("the three account types", "the four steps") in the hook or the first body beat.
+2. BUILD TENSION (first 1-2 body beats): make the problem cost something. Why it keeps happening, what the waiting / ignorance is quietly taking. Keep the central scenario (or fable character, if one was used) alive here (per the narrative carry-through rule).
+3. FIGURE MID-REEL (~beat 3-4, when a figure is available): the figure anchor lands as the "why this matters" PROOF of the stakes, NOT as a summary of the answer. It shows the cost or the contrast while the resolution is still withheld.
+4. FLOW ANSWER IN THE BACK THIRD (~beat 5+, when the post has a process): the flow diagram is the RESOLUTION, the step-by-step "here is how you actually do it". Holding it until the back third is what keeps a viewer past the third sentence. If the post has no real process, the back-third resolution is the single clearest principle instead.
+5. CLOSER + CTA: land the opener's image one final time, then the CTA.
+The audit signal this prevents: a reel that opens with the answer (the flow diagram, the account list, the four steps in beat 1) has spent its tension before building any. Topic early, solution late.
+
+# Cold-hook rule (HARD)
+The hook and every body beat must work COLD, for a viewer who landed on this single reel from the For You feed and has never seen another post. NEVER assume prior episodes in any spoken narration or onscreenText. BANNED phrases anywhere in hook/beats: "after the basics", "rest of the series", "as we covered", "like last time", "earlier we saw", "if you have been following", "in the last reel", "now that you know". The on-screen SeriesChip carries the series signal silently, and a forward-looking follow ask in the CTA ("Follow for the rest of the Basics series") is still allowed because it is an invitation, not an assumption. The distinction: the CTA may invite the viewer forward; the hook and body may not assume they arrived from behind.
+
 # Layout-specific text requirements (HARD)
 - Beats with kind "warning" MUST have a non-empty subtext (4–12 words). The amber rule alone with a 3–5 word headline reads as decoration without context.
 - Anchors of type "compare" MUST set "mode" to one of:
   • "vs" — symmetric alternatives or trade-offs where neither side is "before" the other. Use for "A or B" framing: "snowball vs avalanche", "fixed vs variable", "renting vs buying", "country A vs country B". Renders a small italic "vs" divider between two equally-weighted cards.
   • "progression" — one side causes, produces, decomposes into, or transforms into the other. Use for input→output, before→after, cause→effect, whole→part. Examples: "€200,000 borrowed → €100,000 paid in interest", "income → expenses → savings", "before crisis → during crisis". Renders an amber arrow between the two cards.
   When in doubt use "vs". An arrow on a symmetric comparison ("snowball → avalanche") implies a wrong directional reading; "vs" on a causal/decomposition pair ("Principal vs Interest paid") loses the cause-effect signal. Pick the one that matches the actual relationship.
+- Anchors of type "flow" render a multi-step DIAGRAM (3-5 ordered nodes connected by arrows, revealed one at a time). Use a flow anchor for any PROCESS the viewer follows in sequence: "open account, pick a fund, automate the transfer, rebalance yearly", "list goals, price them, set a monthly amount, automate it", "check allocation, compare to target, sell the overweight, buy the underweight". Flow is the PREFERRED primitive over a bullet "list" whenever the items are STEPS IN ORDER rather than parallel examples. This is the single most effective way to make a how-to / building-phase beat feel like a diagram instead of text.
+  • "steps": 3 to 5 nodes. Each node has a short "label" (1-5 words) and an OPTIONAL "detail" (2-8 words). Fewer than 3 steps is a "compare" anchor, not a flow. More than 5 won't fit the frame.
+  • Set "outcome": true on AT MOST ONE step (almost always the last) to render it as the teal payoff node. This is the result the process produces ("A funded, automated portfolio", "Goals on autopilot"). Omit "outcome" on every other step.
+  • "orientation": default "vertical" (stacks down the portrait frame, best for 4-5 steps). Use "horizontal" ONLY for 2-3 very short nodes; longer horizontal chains overflow.
+  • Node labels are imperative and concrete ("Automate the transfer"), never full sentences. The voiceover narrates the why; the nodes carry the what.
+  • Use AT MOST ONE flow beat per reel, same discipline as figure beats. A reel of three flowcharts is as monotonous as a reel of three big numbers.
 - Hook variants with layout "contradiction" MUST set "contradictionStyle" to one of:
   • "myth-bust" — line 1 is a COMMON FALSE BELIEF that gets refuted; line 2 is the truth. Renders a "MYTH" kicker label visible from frame 0 plus a strikethrough on line 1. Use ONLY when line 1 is genuinely false. Example: line 1 "Your salary is an asset" / line 2 "It's income, not ownership" — line 1 is a misconception, so myth-bust is correct.
   • "vs" — both lines are TRUE but offer contrasting angles or trade-offs. No strikethrough. Renders both lines equally with a small "vs" divider. Use when neither line is wrong. Example: line 1 "Pay off smallest debt first" / line 2 "Pay off most expensive first" — both strategies are valid, neither is a myth.
@@ -246,8 +268,8 @@ Emit "caption.instagramKeywords" as an array of 13–18 strings:
 - 3–5 multilingual variants in DE / FR / ES / IT / NL / PT / PL / SV / DA / NO — ONLY where the native word is meaningfully different from English (skip cognates: "inflation", "budget", "euro" already cover cross-lingual search). Lead the array with English; let multilingual terms tail. EN must dominate the count vs any single non-EN language (PLAYBOOK §3 cohort-fight cohort-balance rule).
 
 HARD rules for instagramKeywords:
-- NO `#` symbols. These are keywords, not tags.
-- NO duplicates with the hashtag list (case-insensitive token match across spaces, e.g. "expat finance" vs `#expatfinance` is a duplicate). The scrubber will reject.
+- NO \`#\` symbols. These are keywords, not tags.
+- NO duplicates with the hashtag list (case-insensitive token match across spaces, e.g. "expat finance" vs \`#expatfinance\` is a duplicate). The scrubber will reject.
 - NO banned terms (US-only finance terms, India-only terms — same ban list as hashtags).
 - Each keyword must pass the searchability test: would a real person type this phrase into IG search, in this language? No filler.
 - Vary anchors per post within the series. Do not anchor every post to the same audience cluster.
@@ -262,8 +284,8 @@ TikTok 2026 reads caption text + on-screen text + audio transcript with roughly 
 
 HARD rules for tiktokTopics + tiktokExtraTags:
 - All English.
-- No `#` symbols inside `tiktokTopics`. The renderer adds them automatically for `tiktokExtraTags`.
-- Topic phrases must not be byte-for-byte identical to entries in `instagramKeywords` (TikTok phrases get reused enough naturally; explicit duplication signals you copy-pasted).
+- No \`#\` symbols inside \`tiktokTopics\`. The renderer adds them automatically for \`tiktokExtraTags\`.
+- Topic phrases must not be byte-for-byte identical to entries in \`instagramKeywords\` (TikTok phrases get reused enough naturally; explicit duplication signals you copy-pasted).
 - Same ban list applies (US-only, India-only, banned communities).
 
 # Currency & units
@@ -280,6 +302,9 @@ When a reel introduces a working anchor (e.g. "if your essentials are €2,000 a
 - GOOD: beat 5 says "essentials €2,000/mo, 6-month target = €12,000", beat 9 says "€400/mo gets you there in 30 months". 400 × 30 = €12,000. Reconciles.
 
 If you write a "€X per month for Y months → €Z" claim, do the multiplication and verify the headline target.
+
+# One-number-relationship-per-beat (HARD — avoids false math flags AND helps the viewer)
+Do NOT put a monthly INCOME amount, a monthly SAVINGS amount, and a multi-year HORIZON together as bare euro figures in the SAME beat. The automated math checker reads any beat that contains two euro amounts plus a "N years" phrase as a today-versus-future-value claim and will reject it, and viewers cannot hold three numbers at once anyway. Split them across beats. BAD (rejected): "Someone earning €3,000 who saves €1,000 a month reaches €60,000 in 5 years." Put the income in one beat, then the saving habit in the next, then the accumulated total (already multiplied out, in round numbers) in a later beat. If a single beat must show a contribution and a horizon, show the COMPUTED total, not the raw inputs: "€500 a month becomes €30,000 in 5 years" is fine because it is one self-contained multiplication; mixing in a separate income figure is not.
 
 Return JSON only. No markdown. No commentary. No leading/trailing whitespace beyond the JSON itself.
 `;

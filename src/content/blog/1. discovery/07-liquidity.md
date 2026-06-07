@@ -5,11 +5,12 @@ description: "Having money and being able to use it are not the same thing. Liqu
 tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
+reelPromise: "The full liquidity spectrum table, the asset-rich-cash-poor worked example, and how to size the liquid cushion before you invest the rest"
 referentialReading:
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
@@ -65,6 +66,39 @@ Think of it as a scale:
 | Retirement accounts | 2-3 days | Possible tax penalty |
 | Real estate | Weeks to months | Selling costs, market conditions |
 | Car | Days to weeks | Depreciated value |
+
+<figure>
+  <svg viewBox="0 0 880 360" role="img" aria-labelledby="fig-liq-title fig-liq-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-liq-title">The liquidity spectrum</title>
+    <desc id="fig-liq-desc">A horizontal scale from fast access on the left to slow access on the right. Cash sits at instant, a savings account at one to two days, index funds at a few days, and real estate at months. The same euro of net worth reaches your hand at very different speeds depending on where it sits.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">The liquidity spectrum</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">How fast the same euro of net worth becomes spendable cash</text>
+    <defs>
+      <linearGradient id="liqGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--color-teal)" stop-opacity="0.85"/>
+        <stop offset="1" stop-color="var(--color-warning)" stop-opacity="0.85"/>
+      </linearGradient>
+    </defs>
+    <rect x="120" y="150" width="640" height="14" rx="7" fill="url(#liqGrad)"/>
+    <text x="120" y="195" text-anchor="start" class="fig-eyebrow">FAST ACCESS</text>
+    <text x="760" y="195" text-anchor="end" class="fig-eyebrow">SLOW ACCESS</text>
+    <circle cx="150" cy="157" r="7" class="fig-fill-teal"/>
+    <text x="150" y="120" text-anchor="middle" class="fig-label">Cash</text>
+    <text x="150" y="138" text-anchor="middle" class="fig-tick">instant</text>
+    <circle cx="300" cy="157" r="7" class="fig-fill-teal"/>
+    <text x="300" y="235" text-anchor="middle" class="fig-label">Savings</text>
+    <text x="300" y="253" text-anchor="middle" class="fig-tick">1 to 2 days</text>
+    <circle cx="470" cy="157" r="7" class="fig-fill-blue"/>
+    <text x="470" y="120" text-anchor="middle" class="fig-label">Index funds</text>
+    <text x="470" y="138" text-anchor="middle" class="fig-tick">a few days</text>
+    <circle cx="730" cy="157" r="7" class="fig-fill-warn"/>
+    <text x="730" y="235" text-anchor="middle" class="fig-label">Property</text>
+    <text x="730" y="253" text-anchor="middle" class="fig-tick">months</text>
+    <text x="440" y="320" text-anchor="middle" class="fig-quote-small">Worth a lot on paper is not the same as able to pay tomorrow.</text>
+    <text x="440" y="346" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative access times. Actual speed varies by institution, market, and asset type.</text>
+  </svg>
+  <figcaption>The same net worth reaches your hand at very different speeds. Liquidity is not how much you have, it is how fast you can use it.</figcaption>
+</figure>
 
 ## Why low liquidity is dangerous
 

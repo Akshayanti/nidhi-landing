@@ -21,6 +21,7 @@ faq:
     answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
     answer: "Priority comes from math and timelines, not from whichever goal feels loudest. A reasonable framework: a starter emergency fund of one month of expenses first, non-negotiable. Then high-interest debt, since anything above 5 to 6% tends to dominate any realistic investment return. Then a full emergency fund of three to six months. Then any employer retirement match, which is free money. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
   - title: "SMART Goals"
@@ -117,6 +118,30 @@ Classic example: retirement goal of €500,000 at age 65, assuming 7% annual ret
 | 55 | 10 | ~€2,890 |
 
 *Illustrative; assumes constant return and no interim withdrawals.*
+
+<figure>
+<svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-delay-title fig-delay-desc">
+  <title id="fig-delay-title">The monthly cost of the same goal rises steeply the longer you wait</title>
+  <desc id="fig-delay-desc">For a 500,000 euro goal at age 65, the monthly contribution required is about 190 euros if you start at 25, about 410 euros at 35, about 960 euros at 45, and about 2,890 euros at 55. The bars climb sharply, showing that the same finish line gets dramatically more expensive the longer the start is delayed.</desc>
+  <text class="fig-title" x="360" y="44" text-anchor="middle">Same finish line. Wildly different price.</text>
+  <text class="fig-subtitle" x="360" y="72" text-anchor="middle">Monthly amount for a €500k goal at 65, by the age you start</text>
+  <line x1="80" y1="380" x2="660" y2="380" class="fig-stroke-rule" />
+  <rect x="120" y="366" width="80" height="14" class="fig-fill-teal" />
+  <text class="fig-num-blue" x="160" y="354" text-anchor="middle">€190</text>
+  <text class="fig-sublabel" x="160" y="406" text-anchor="middle">Start at 25</text>
+  <rect x="270" y="350" width="80" height="30" class="fig-fill-blue" />
+  <text class="fig-num-blue" x="310" y="338" text-anchor="middle">€410</text>
+  <text class="fig-sublabel" x="310" y="406" text-anchor="middle">Start at 35</text>
+  <rect x="420" y="310" width="80" height="70" class="fig-fill-blue" />
+  <text class="fig-num-blue" x="460" y="298" text-anchor="middle">€960</text>
+  <text class="fig-sublabel" x="460" y="406" text-anchor="middle">Start at 45</text>
+  <rect x="570" y="170" width="80" height="210" class="fig-fill-warn" />
+  <text class="fig-num-blue" x="610" y="158" text-anchor="middle">€2,890</text>
+  <text class="fig-sublabel" x="610" y="406" text-anchor="middle">Start at 55</text>
+  <text class="fig-quote-small" x="360" y="440" text-anchor="middle">Ten years of waiting more than doubles the monthly cost. Thirty years multiplies it fifteenfold.</text>
+</svg>
+<figcaption>The monthly contribution needed to reach a €500,000 retirement goal at 65, by start age, at an illustrative 7% return. Compounding does most of its work late, so every year of delay is expensive. Future returns are not guaranteed.</figcaption>
+</figure>
 
 Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. It isn't that the later person saved less total. The late starter contributes hundreds of thousands more and still ends up with the same number.
 

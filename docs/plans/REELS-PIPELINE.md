@@ -5,8 +5,9 @@ typography, karaoke captions, LLM-driven scripts. Rendered with Remotion.
 
 > **Status (May 2026):** v2 rewrite shipped. Discovery first (Series 1: 16
 > Basics posts), Building reels follow ~4 weeks behind carousels. Targets
-> Instagram Reels + TikTok (1080×1920 9:16). 45–75s primary cut + 12–20s
-> hook-cut byproduct.
+> Instagram Reels + TikTok (1080×1920 9:16). 45–75s primary cut for
+> Discovery; tension-arc Building reels (figure + flow + 6 beats) run longer,
+> ~75–85s. 12–20s hook-cut byproduct (off by default).
 
 ---
 
@@ -36,8 +37,15 @@ node scripts/render-reels.mjs --mode faithful  # tight summary of the post
 node scripts/render-reels.mjs --mode riff      # concept-driven new framing
 node scripts/render-reels.mjs --mode auto      # let Claude pick (default)
 
-# Render all 3 hook variants for one post (for A/B testing)
+# Render all 3 hook variants for one post (A/B test).
+# Emits 3 distinct mp4s (<slug>.mp4, <slug>-v2.mp4, <slug>-v3.mp4) and 3
+# matching captions, each opening with that variant's spoken hook.
 node scripts/render-reels.mjs emergency-fund --variants-all
+
+# Re-render from a saved plan without re-calling the LLM (cheap, deterministic).
+# Loads output/plans/<level>/<slug>.json. Combine with --variant / --variants-all
+# to A/B the saved plan's hooks.
+node scripts/render-reels.mjs emergency-fund --from-plan --variants-all
 
 # Also render the 15-20s hook-cut byproduct (off by default)
 node scripts/render-reels.mjs --hookcut
@@ -129,9 +137,11 @@ output/captions/<slug>.{ig,tiktok}.txt
         │     • SeriesChip top-right (BASICS · 08/16) on every frame
         │     • HandleWatermark @nidhi.today bottom-right on body beats
         │     • SubtitleCaption pill bottom-center: 4-8 word chunks, fade-in per chunk
-        │     • 8 beat-layout primitives:
-        │         stat, compare, list, number-counter,
-        │         definition, story/example, warning, transition
+        │     • Beat-anchor primitives (visual density, one per beat):
+        │         stat, compare, list, number-counter, definition,
+        │         story/example, warning, transition,
+        │         figure (pre-rendered blog SVG → PNG),
+        │         flow (3-5 ordered steps, the "how it works" diagram)
         │     • 5 hook-layout primitives:
         │         big-number, question, contradiction, scenario, quote
 output/videos/<slug>.mp4   (h264, 1080×1920, 30fps, ~45–75s)
@@ -157,7 +167,7 @@ gradient slides → monotone Aria voiceover. v2 replaces this with:
 | Branding | CTA hash-picked from 4 generic lines | Save/Tag/Share/Poll only; SeriesChip BASICS·08/16 + HandleWatermark on every frame |
 | Captions for socials | None | output/captions/*.ig.txt + tiktok.txt with brand-compliant 5-tag set |
 | Music | None (and no architecture for it) | Optional, manifest-driven, defaults to voice-only |
-| Brand rules | None enforced | Hard-gated scrubber: 28 unit tests, throws on violation |
+| Brand rules | None enforced | Hard-gated scrubber: 56 unit tests, throws on violation |
 
 ---
 
@@ -223,11 +233,20 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
   the narration. Discovered May 2026 after a satellite-assets reel rendered
   "5-15% combined" as "515%". Caught at the gate now; covered by 8 unit
   tests.
+- **Flow anchor shape (May 2026)**: the `flow` beat anchor renders a 3-to-5
+  step "how it works" diagram (ordered nodes joined by arrows, last node
+  optionally a teal outcome). It is the visual that carries a process the
+  prose would otherwise list. The scrubber enforces three rules
+  (`flow-step-count`, `flow-horizontal-overflow`, `flow-multiple-outcomes`):
+  3-5 steps (fewer should be a `compare`, more won't fit 9:16), horizontal
+  orientation caps at 3 short nodes (use `vertical` for 4-5), and at most one
+  `outcome` node. Each step's `label` and `detail` pass the same brand
+  blocklists as any other on-screen text. Covered by 7 unit tests.
 
 Run the scrubber tests in CI:
 
 ```sh
-npm test    # includes scripts/lib/scrub-output.test.mjs (28 tests)
+npm test    # includes scripts/lib/scrub-output.test.mjs (56 tests)
 ```
 
 ---
@@ -369,6 +388,58 @@ The viewer never sees beat-kind labels or fable names. They experience the
 spoken script as a single continuous piece. Optimise for that experience.
 Structural rules are downstream effects, not the goal.
 
+### 1d. Visual density and the tension arc
+
+Text-only kinetic typography is the dryness default on the visual side, the
+same way definition beats are the dryness default on the narration side. A
+reel that is six prose beats with a word fading in over cream paper reads as
+a quote graphic with extra steps. The fix is to anchor beats to *shapes*, not
+typography.
+
+**Visual density (HARD).** Prefer anchored beats (`figure`, `flow`,
+`compare`, `stat`) over plain typographic beats. A reel should carry at least
+2-3 anchored beats, not a single hero stat surrounded by text. The
+`compare` two-card and the `flow` step diagram both show a relationship the
+spoken line only asserts; the `figure` reuses the post's own SVG so the reel
+and blog share one design source of truth.
+
+**The tension arc (story-driven, not framework-driven).** Building reels
+land better when they withhold the payoff instead of front-loading it. The
+shape that worked across the June 2026 Building batch (getting-started,
+rebalancing, goals):
+
+1. **Hook (beat 0):** name a problem the viewer is *in*, in second person.
+   "You have been meaning to start investing for months." Not "Here are the
+   three account types."
+2. **Build tension (beats 1-2):** make the problem cost something. Why it
+   keeps happening, what the waiting is quietly taking.
+3. **Figure lands mid-reel (~beat 3):** the `figure` anchor arrives as the
+   "why this matters" proof, not as a summary. It shows the stakes
+   (early-vs-late saver, cost of delay) while the answer is still withheld.
+4. **Flow answer in the back third (~beat 5):** the `flow` diagram is the
+   *resolution* — the step-by-step "here is how you actually do it." Holding
+   it until the back third is what keeps a viewer past the third sentence.
+5. **Closer + CTA:** land the opener's image one final time, then the READ
+   row.
+
+The audit signal: a reel that opens with the answer (the flow diagram or the
+account list in beat 1) has spent its tension before it built any. Re-order
+so the figure proves the stakes mid-reel and the flow resolves them late.
+
+**Cold-hook rule.** Never assume the viewer already follows the account or
+has seen earlier posts. Banned in any spoken or on-screen copy: "after the
+basics", "rest of the series", "as we covered", "like last time", "if you
+have been following". The on-screen `SeriesChip` carries the series signal
+silently (see Series anchoring policy); the spoken hook must work cold for
+someone who landed on this single reel from the For You feed.
+
+**Concrete blog reason.** The CTA READ row and the caption's "Read the full
+post" line must name a *specific* thing the blog adds that the reel could not
+fit (a worked example, a side-by-side table, a rule of thumb), not a generic
+"full walkthrough". This is sourced from the post's `reelPromise` frontmatter
+(see Reel-vs-blog division of labour) and MUST be backed by content actually
+present in the post body.
+
 ### 2. Reel-vs-blog division of labour
 
 The reel is the **hook**, not the tutorial. It exists to get someone
@@ -384,6 +455,15 @@ The reel's job is the spark.
   viewer to the blog for that.
 - DO NOT: cram numerical detail "for completeness". Completeness lives on
   the blog.
+
+**`reelPromise` frontmatter.** A post's `reelPromise` field (optional, in the
+blog frontmatter and declared in `src/content.config.ts`) is the one-line,
+content-backed reason to click through. The orchestrator stamps it onto the
+plan, the CTA scene reads it for the READ row, and `render-platform-caption.mjs`
+renders it as the caption's "Read the full post · {promise}: …" line. It MUST
+describe something actually in the post body (a worked example, a
+side-by-side table, a rule of thumb), never a generic teaser. `relatedTool`
+works the same way for a paired free tool ("Free tool · …" line).
 
 ### 3. Math-literacy guard
 
@@ -543,6 +623,39 @@ To enable, drop royalty-free instrumental tracks into
 
 ---
 
+## Hook A/B variants
+
+Every plan carries 3 `hookVariants` (the LLM authors all three; the operator
+or the LLM picks a default). `useHookVariant` (0, 1, or 2) selects which one a
+render uses. The A/B is genuine end-to-end:
+
+- **Video:** `stitchNarration` feeds `hookVariants[useHookVariant].narration`
+  into TTS, so each variant's spoken hook (and therefore duration) differs.
+- **Caption:** `render-platform-caption.mjs` leads the IG / TikTok caption
+  body with the active variant's hook (`leadHookText` + `replaceFirstLine`),
+  so the on-feed first line matches the video the viewer just heard. The rest
+  of the caption body (value promise, deep-dive, disclosure, hashtags) is
+  shared across variants.
+- **Filenames:** variant 0 uses the bare `NN-slug` stem; variants 1 and 2 get
+  a `-v2` / `-v3` suffix on the mp4, caption, and thumbnail. They never
+  overwrite each other.
+
+```sh
+# One variant at a time (inspect plan, no render):
+node scripts/render-reels.mjs <slug> --variant 1 --plan-only
+
+# All three, rendered, from the saved plan (no LLM call):
+node scripts/render-reels.mjs <slug> --from-plan --variants-all
+```
+
+`--from-plan` always loads the **base** plan (`output/plans/<level>/NN-slug.json`),
+never a variant-suffixed file. One saved plan drives all three variant
+renders; the variant is selected purely by `useHookVariant`. (Earlier the
+`--from-plan --variant N` path looked for a non-existent `NN-slug-v2.json` and
+failed; fixed May/June 2026.)
+
+---
+
 ## Content cadence (May–July 2026)
 
 | Week | Carousels | Reels (new) |
@@ -573,12 +686,15 @@ node scripts/render-reels.mjs <slug> --plan-only
 # 2. Inspect output/plans/<slug>.json
 #    Look for: hook concept, beat order, CTA fit, hashtag relevance
 
-# 3. If unhappy with hook, rerun with a different variant
+# 3. If unhappy with hook, inspect the other variants (the plan holds all 3)
 node scripts/render-reels.mjs <slug> --variant 1 --plan-only
 node scripts/render-reels.mjs <slug> --variant 2 --plan-only
 
-# 4. Once happy, render the chosen variant + hookcut
+# 4a. Render the chosen variant
 node scripts/render-reels.mjs <slug> --variant 0
+
+# 4b. Or render all 3 from the saved plan for a real A/B (no new LLM call)
+node scripts/render-reels.mjs <slug> --from-plan --variants-all
 ```
 
 ### Brand-rule violation hit
@@ -589,10 +705,11 @@ Brand-rule violations detected (1):
      → Use EU framing: 'workplace pension', ...
 ```
 
-The plan was already saved to `output/plans/<slug>.json` for inspection.
-Either:
-- Hand-edit the plan and re-run the orchestrator with `--use-plan` *(not
-  yet implemented; for now: regenerate with stronger prompt directive)*
+The plan was already saved to `output/plans/<level>/<slug>.json` for
+inspection. Either:
+- Hand-edit the saved plan and re-render without paying for a new LLM call:
+  `node scripts/render-reels.mjs <slug> --from-plan`. The scrubber still runs
+  as a hard gate on the loaded plan, so a bad hand-edit is caught.
 - Re-run the LLM call: `node scripts/render-reels.mjs <slug>` (new draft)
 
 ### LLM cost estimate

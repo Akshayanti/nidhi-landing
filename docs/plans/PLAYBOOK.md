@@ -707,6 +707,7 @@ The active table covers what currently governs the playbook. Decisions that were
 
 | 39 | Frame-1-hook.png is opt-in only; default cascade emits exactly 2 PNGs (May 2026) | Decision #38 retired the custom frame-1 PNG by intent ("default cascade does NOT emit a PNG for frame 1") but left the renderer hardcoded to emit `frame-1-hook.png` whenever `story_hook` was set. Result on first Series 2 render (post 17): three PNGs in the stories dir (frame-1-hook, frame-2-poll, frame-4-extra) when the playbook spec was two. Either the renderer matched the spec, or the spec was wrong. The spec was right: frame 1 is a tap-to-post share of the carousel feed post with `story_hook` typed as overlay text in IG composer. The PNG is unused except for milestone teasers / beta launches / pre-carousel ships. **Fix:** added `story_render_hook_png` boolean frontmatter flag (default false). Renderer skips `frame-1-hook.png` unless explicitly opted in. `parse-markdown.js` parses the flag for both Day 1 and Day 2 cascades. PLAYBOOK §7 cascade table, §10 output diagram, §11 frontmatter schema all updated. Default Series 2 post now produces exactly 2 story PNGs (poll + extra) plus 8 carousel slides |
 | 40 | Strict no-dash typography: no em dashes, en dashes, hyphens, or double hyphens anywhere in carousel or story posts (May 2026) | Decision #33 retired em dashes globally for Series 2; #28's blog figure rule kept en dashes for numeric ranges (`25–34`). On Series 2 first render the policy was inconsistent across surfaces (post 17 carousel slide 4 had `−43% → +2%` with the ASCII minus reading visually similar to a hyphen, frontmatter `post_time` carried an em dash, source line had `post-1926` and `non-US` hyphens). The reader doesn't know which dash is which; visually they all blur together and the cream/editorial template's tight type makes hyphenated compound modifiers look like dropped en dashes. **Rule:** four characters out everywhere (slides, captions, story text, frontmatter, per-slide field values): `—` em dash, `–` en dash, `-` hyphen, `--` double hyphen. Use `to` for ranges (`years 25 to 34`, `1980 to 2024`). Drop hyphens from compound modifiers (`long term`, `20 year horizon`, `tax advantaged`) when readable; restructure when not (`with tax advantages`, `over the long term`). Math symbols stay in: minus sign in negative numbers, arrows (`→`, `←`), comparison operators. Series 1 grandfathered. PLAYBOOK §8 rewritten. Audit pass against post 17 surfaced ~12 hyphens to remove |
+| 41 | Reels are a tension-arc Remotion pipeline, not a CapCut text-on-background pilot. Building reels: story-driven, cold hooks, blog `figure` mid-reel, `flow` diagram resolution in the back third, 3-way hook A/B. §13 Format 2 rewritten to point at `REELS-PIPELINE.md` as source of truth (June 2026) | #27 framed Reels as a lightweight humor stream ("10-15s text-on-background, CapCut, ~30-60 min, no voice"). The pipeline that actually shipped is materially different and §13 had drifted into being misleading: an automated build-time system (`scripts/render-reels.mjs`) reads the full blog body, an LLM authors a plan with 3 hook variants and 6-15 beats, a hard brand-rule scrubber gates it (56 unit tests), edge-tts narrates (en-GB-RyanNeural), and Remotion renders a 45-85s 9:16 reel with kinetic typography and karaoke captions. **Two new visual primitives** added this session: a `figure` beat anchor that reuses the post's own blog SVG (rasterised by `npm run render-figures` — same design source of truth as Editorial Rule 9), and a `flow` anchor rendering a 3-to-5 step "how it works" diagram (scrubber rules: 3-5 steps, horizontal caps at 3 nodes, ≤1 outcome node). **Editorial direction for Building reels:** story-driven not framework-driven, using a tension arc — open on a problem the viewer is *in* (second person), build the cost, land the `figure` mid-reel as "why this matters," withhold the `flow` step diagram until the back third as the resolution, close on the opener's image. **Cold-hook rule:** no spoken/on-screen copy may assume the viewer has seen earlier posts ("after the basics", "rest of the series" banned); the on-screen SeriesChip carries the series signal silently. **Concrete blog reason:** a post's `reelPromise` frontmatter names the specific thing the blog adds (worked example, side-by-side table, rule of thumb) and drives both the CTA READ row and the caption's "Read the full post" line; must be backed by content actually in the post. **Hook A/B made genuine end-to-end:** `--variants-all` emits 3 distinct mp4s plus 3 captions that each open with that variant's spoken hook (`leadHookText`/`replaceFirstLine` in `render-platform-caption.mjs`); `--from-plan` loads the base plan and selects the hook by `useHookVariant`, so one saved plan A/Bs all three without re-calling the LLM. (Earlier `--from-plan --variant N` looked for a non-existent `-v2`/`-v3` plan file and failed; fixed.) **Bug fixed in passing:** `render-figures.mjs` captured only the first `:root` CSS block, leaving `--color-*` aliases unresolved so figure bars rendered black; now joins all `:root` blocks. Full technical spec, doctrine, and runbook live in `REELS-PIPELINE.md`; §13 Format 2 reduced to strategy-level facts plus a pointer |
 
 ### 12.1 Archive: superseded decisions
 
@@ -754,23 +755,19 @@ These function as memes in the 2026 IG sense (saved, sent in DMs, screenshot-sha
 
 **Cadence:** 2x/week between educational carousels. Post weeks: Mon educational carousel, Wed quote card, Fri educational carousel, Sun quote card (or similar).
 
-### Format 2: Reels (pilot June 2026 alongside Building 21-26)
+### Format 2: Reels (pipeline live; see `REELS-PIPELINE.md` for the full spec)
 
-10-15 second short-form video. Text-on-background, no face/voice required, optional trending finance-adjacent audio. One concept per Reel.
+Reels are produced by an automated build-time pipeline, NOT hand-edited in CapCut. The technical spec, brand-rule scrubber, editorial doctrine, and operator runbook all live in **`docs/plans/REELS-PIPELINE.md`** — that is the source of truth. This section captures only the strategy-level facts a planner needs.
 
-**Reel concepts ready from Building topics:**
+**What a reel is now.** A 45-85s faceless short (1080×1920 9:16), cream editorial palette, kinetic typography, karaoke captions, AI voiceover (edge-tts, en-GB-RyanNeural). The script is LLM-authored from the full blog body, then passed through a hard brand-rule gate before render. Discovery reels run ~45-75s; tension-arc Building reels (figure + flow diagram + 6 beats) run ~75-85s. This replaces the original "10-15s text-on-background, CapCut, ~30-60 min" pilot framing.
 
-- The 4 FIRE flavors as a quick visual lineup (Lean / Traditional / Fat / Coast) — alongside #25.
-- "Your eggs in one basket vs. diversified" before/after — alongside #20.
-- The rebalancing reflex: "what most investors do (chase winners) vs. what rebalancing does (sell what's up, buy what's down)" — alongside #24.
-- Wish vs. plan: same goal stated as wish ("be financially secure") then as plan ("€45,000 deposit, 5 years, €662/month at 5%") — alongside #30.
-- Currency-juggling for expats: "earn in EUR, spend in CZK, retire in INR" — alongside #29.
+**Story-driven, not framework-driven.** Building reels use a tension arc: open on a problem the viewer is *in* (second person, cold hook that assumes no prior post), build the cost, land the blog `figure` mid-reel as "why this matters," withhold the step-by-step `flow` diagram until the back third as the resolution, then close on the opener's image and a concrete blog reason. Reels that open with the answer have spent their tension before building any.
 
-These are exactly the visuals previously slotted as carousel-meme slides. They function as memes when shipped as Reels (sound-on, fast, shareable) but did not function as memes when slotted into a 7-slide carousel arc. Note that #20, #24, #25, and #30 also exist as **static blog figures** (per `blog-content-plan.md` Editorial Rule 9) — the blog SVG is the design source of truth; the Reel adds motion and audio over the same conceptual scaffold.
+**Shared design source of truth.** Blog figures (per `blog-content-plan.md` Editorial Rule 9) double as the reel's `figure` anchor — the same SVG, rasterised to PNG by `npm run render-figures`. The reel adds motion, voice, and the surrounding tension arc over the same conceptual scaffold.
 
-**Production:** simple text-on-background animation. Tools that work: CapCut, Canva Pro, or hand-edited in any video editor. ~30-60 minutes per Reel including audio selection. No illustrator commission required for the pilot.
+**Hook A/B.** Each plan carries 3 hook variants; `--variants-all` renders all three as distinct mp4s (plus matching captions that each open with that variant's hook) for a real A/B test. See `REELS-PIPELINE.md` "Hook A/B variants."
 
-**Cadence:** 1 Reel per Building post during the pilot (~6 Reels across June 2026), released same day as the corresponding educational carousel. After 6 Reels, evaluate and decide whether to continue, expand, or drop.
+**Cadence:** see the content-cadence table in `REELS-PIPELINE.md`. Released alongside the corresponding educational carousel.
 
 ### What's still off-limits
 
@@ -823,7 +820,7 @@ Quote cards, Reels, and any other image content that includes financial numbers 
 The two streams have separate KPIs and separate evaluation horizons.
 
 - **Quote cards.** Evaluate after 12 cards shipped (~6 weeks at 2x/week). Compare against the educational carousel cohort over the same period. Threshold to keep: **2x lift on saves OR sends per post relative to carousel baseline**, since a quote card is a smaller production investment than a carousel and only needs to outperform on a per-effort basis.
-- **Reels.** Evaluate after the 6-Reel June pilot. Compare reach and follower acquisition against the matched-period educational carousels. Threshold to keep: **3x lift on reach OR 1.5x lift on new followers**, since Reels' algorithmic upside is reach-driven and the entire reason to invest production effort is discovery.
+- **Reels.** Evaluate after the June pilot batch. Compare reach and follower acquisition against the matched-period educational carousels. Threshold to keep: **3x lift on reach OR 1.5x lift on new followers**, since Reels' algorithmic upside is reach-driven and the entire reason to invest production effort is discovery. **Hook-level A/B:** when a post ships with `--variants-all`, compare 3s-retention and saves across the three hook variants of the same reel to learn which opener register wins (problem-in-second-person vs. question-wall vs. hidden-cost). The pipeline emits the variants; the learning feeds back into `opener-assignments.json` and the system prompt.
 
 If either stream falls below threshold, drop it. The educational carousel stream is the authority surface and earns its slot independently.
 
@@ -832,6 +829,9 @@ If either stream falls below threshold, drop it. The educational carousel stream
 Blog-side rules:
 - No memes in post bodies: `blog-content-plan.md` Editorial Rule 8.
 - Blog figure language (clean conceptual SVG): `blog-content-plan.md` Editorial Rule 9.
+
+Reels:
+- Full technical spec, brand-rule scrubber, editorial doctrine (tension arc, cold hooks, visual density), and operator runbook: `docs/plans/REELS-PIPELINE.md`.
 
 ---
 

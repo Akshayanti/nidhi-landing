@@ -75,6 +75,44 @@ function buildDeepDiveBlock({ slug, relatedTool, reelPromise }) {
 }
 
 /**
+ * Resolve the active hook variant's narration for the caption opener. Returns
+ * the trimmed narration of `plan.hookVariants[plan.useHookVariant]`, or null
+ * when the plan lacks variants / index (callers then keep the body as-is).
+ *
+ * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @returns {string | null}
+ */
+function leadHookText(plan) {
+  const variants = plan?.hookVariants;
+  if (!Array.isArray(variants) || variants.length === 0) return null;
+  const idx = Number.isInteger(plan.useHookVariant) ? plan.useHookVariant : 0;
+  const v = variants[idx] ?? variants[0];
+  const text = v?.narration?.trim();
+  return text || null;
+}
+
+/**
+ * Replace the first line of a caption body with `hookText`, preserving the rest
+ * of the body verbatim. The "first line" is everything up to the first newline;
+ * caption bodies are authored as line-per-thought (hook, promise, deep-dive,
+ * series line), so swapping line 1 swaps exactly the on-feed hook. No-ops when
+ * `hookText` is falsy or already equal to the existing first line.
+ *
+ * @param {string} body
+ * @param {string | null} hookText
+ * @returns {string}
+ */
+function replaceFirstLine(body, hookText) {
+  if (!body) return body;
+  if (!hookText) return body;
+  const nl = body.indexOf("\n");
+  const firstLine = nl === -1 ? body : body.slice(0, nl);
+  if (firstLine.trim() === hookText.trim()) return body;
+  const rest = nl === -1 ? "" : body.slice(nl);
+  return hookText + rest;
+}
+
+/**
  * @param {object} args
  * @param {import('../../remotion/src/data').ReelPlan} args.plan
  * @param {string} [args.captionsDir] - override the output directory (the orchestrator
@@ -129,6 +167,15 @@ export async function writePlatformCaptions({
 
   const deepDive = buildDeepDiveBlock({ slug: plan.slug, relatedTool, reelPromise });
 
+  // Hook A/B: the spoken hook is selected per variant via plan.useHookVariant,
+  // but the LLM-authored caption body has a single fixed opening line. For the
+  // on-feed caption hook to match the video the viewer just heard, lead the
+  // caption body with the ACTIVE hook variant's narration. We replace only the
+  // first line of the body (the hook) and keep the rest (the value promise,
+  // "stay till the end", etc.) intact, so each variant's paste-ready caption is
+  // a true A/B of the opening hook.
+  const activeHookText = leadHookText(plan);
+
   // Caption layout (top-to-bottom):
   //   [LLM body]
   //
@@ -141,13 +188,13 @@ export async function writePlatformCaptions({
   //   [IG keyword bracket]   ← IG only; TikTok gets Topics: instead
   // Two newlines between blocks keeps things scannable on both IG (which
   // collapses single-newlines into space) and TikTok (which preserves them).
-  const igBody = plan.caption.instagram?.trim() ?? "";
+  const igBody = replaceFirstLine(plan.caption.instagram?.trim() ?? "", activeHookText);
   const ig = [igBody, deepDive, DISCLOSURE_LINE, igTags, igKeywordsBlock]
     .filter(Boolean).join("\n\n") + "\n";
 
   // TikTok layout: same body + deep-dive + disclosure, then Topics line,
   // then the hashtag wave (IG five + TikTok extras).
-  const ttBody = plan.caption.tiktok?.trim() ?? "";
+  const ttBody = replaceFirstLine(plan.caption.tiktok?.trim() ?? "", activeHookText);
   const tt = [ttBody, deepDive, DISCLOSURE_LINE, ttTopicsLine, ttTags]
     .filter(Boolean).join("\n\n") + "\n";
 

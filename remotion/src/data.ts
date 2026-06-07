@@ -62,6 +62,42 @@ export type BeatAnchor =
       right: { label: string; value: string };
     }
   | { type: "list"; items: string[] }
+  | {
+      /**
+       * Multi-step flowchart: 3-5 sequential nodes revealed one at a time,
+       * connected by directional arrows, with an optional terminal "outcome"
+       * node rendered with accent emphasis. Use for PROCESSES the viewer
+       * follows in order (e.g. "open account → pick an index fund → automate
+       * the transfer → rebalance yearly") where a 2-card compare can't capture
+       * the sequence. This is the primary "don't be text-heavy" primitive for
+       * how-to / building-phase reels: it turns a list of steps into a diagram.
+       *
+       * Distinct from `compare` (2 cards, one relationship) and `list`
+       * (unordered/parallel items). Flow implies strict left-to-right order.
+       */
+      type: "flow";
+      /**
+       * Orientation of the chain.
+       *  - "vertical" (default): nodes stack top-to-bottom with down arrows.
+       *    Best for 3-5 steps; reads naturally in the 9:16 portrait frame.
+       *  - "horizontal": nodes sit left-to-right with right arrows. Use only
+       *    for 2-3 short nodes; longer chains overflow the safe area.
+       */
+      orientation?: "vertical" | "horizontal";
+      /** 3-5 ordered steps. Each is a short label (1-5 words). */
+      steps: Array<{
+        /** Short node label, 1-5 words. */
+        label: string;
+        /** Optional one-line detail under the label, 2-8 words. */
+        detail?: string;
+        /**
+         * When true, render this node as the terminal outcome (teal accent
+         * fill, heavier weight). Typically the last step. At most one step
+         * should set this.
+         */
+        outcome?: boolean;
+      }>;
+    }
   | { type: "number-counter"; from?: number; to: number; prefix?: string; suffix?: string; label?: string }
   | {
       /** Pre-rendered SVG figure from the blog post, rasterised to PNG. */

@@ -5,7 +5,7 @@ description: "You've learned what the asset classes are. This is the step betwee
 tldr: "To start investing you need two things: the right kind of account, and a system that runs without you. Accounts come in three broad flavors: regular brokerage (flexible, taxable), tax-advantaged retirement (locked until later, but tax-efficient), and employer-sponsored schemes (often with matching). Index funds are the default starting point in most financial literature: broad, cheap, diversified. Dollar-cost averaging (investing a fixed amount on a fixed schedule) removes timing from the decision. Automation turns 'I'll start next month' into 'it already happened.' Starting small and early beats starting big and late, because compounding does the heavy lifting."
 order: 21
 pubDate: 2026-06-03
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -21,6 +21,7 @@ faq:
     answer: "An index fund holds the components of a market index, for example thousands of companies across the entire world, so one purchase gives you thousands of underlying holdings. Four reasons they dominate as a starting point: diversification by default, low cost (typically 0.1 to 0.3% per year versus 1 to 2% for many active funds), no stock-picking skill required, and consistent long-term performance, since most actively managed funds have historically underperformed their index after fees. The most common starting portfolio is a global stock index fund for growth, optionally with a bond index fund for stability. At the start, complexity is the enemy."
   - question: "How much does starting early actually matter?"
     answer: "Enormously, because compounding does the heavy lifting. Someone investing 100 euros a month from age 25 to 65 contributes 48,000 euros total and, at a 7% return, ends with roughly 261,000 euros. Someone investing 250 euros a month from age 40 contributes 75,000 euros, more in total, yet ends with roughly 203,000 euros. The early saver puts in less money and ends with more. The difference is not willpower or income; it is time. Small amounts left alone for decades outgrow larger amounts left alone for years, so if you can contribute 50 euros a month now, contribute 50 euros a month now."
+reelPromise: "The three account types side by side, a worked dollar-cost-averaging example, and the Rule of 72 for doubling your money"
 relatedSlugs: ["investing-101-asset-classes", "diversification", "understanding-risk", "emergency-fund", "budgeting"]
 referentialReading:
   - title: "Dollar-Cost Averaging"
@@ -140,6 +141,32 @@ The other thing that stops people is the feeling that €50 or €100 a month "i
 | Early and small | 25 | €100 | 65 | €48,000 | ~€261,000 |
 | Late and big | 40 | €250 | 65 | €75,000 | ~€203,000 |
 | Very late, very big | 50 | €500 | 65 | €90,000 | ~€161,000 |
+
+<figure>
+<svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-early-title fig-early-desc">
+  <title id="fig-early-title">The early saver pays in less and ends with more</title>
+  <desc id="fig-early-desc">Two savers compared. The one who starts at 25 contributes 48,000 euros total and ends with roughly 261,000 euros at 65. The one who starts at 40 contributes 75,000 euros total, more money in, yet ends with only about 203,000 euros. Starting earlier wins despite paying in less.</desc>
+  <text class="fig-title" x="360" y="44" text-anchor="middle">Less money in. More money out.</text>
+  <text class="fig-subtitle" x="360" y="72" text-anchor="middle">Same goal, two start ages, at an illustrative 7% a year</text>
+  <text class="fig-eyebrow" x="200" y="120" text-anchor="middle">Starts at 25</text>
+  <text class="fig-eyebrow" x="520" y="120" text-anchor="middle">Starts at 40</text>
+  <line x1="60" y1="360" x2="660" y2="360" class="fig-stroke-rule" />
+  <rect x="120" y="320" width="70" height="40" class="fig-fill-muted" />
+  <text class="fig-sublabel" x="155" y="386" text-anchor="middle">Paid in</text>
+  <text class="fig-num-blue" x="155" y="308" text-anchor="middle">€48k</text>
+  <rect x="210" y="158" width="70" height="202" class="fig-fill-blue" />
+  <text class="fig-sublabel" x="245" y="386" text-anchor="middle">Ends with</text>
+  <text class="fig-num-blue" x="245" y="146" text-anchor="middle">€261k</text>
+  <rect x="440" y="298" width="70" height="62" class="fig-fill-muted" />
+  <text class="fig-sublabel" x="475" y="386" text-anchor="middle">Paid in</text>
+  <text class="fig-num-blue" x="475" y="286" text-anchor="middle">€75k</text>
+  <rect x="530" y="203" width="70" height="157" class="fig-fill-teal" />
+  <text class="fig-sublabel" x="565" y="386" text-anchor="middle">Ends with</text>
+  <text class="fig-num-blue" x="565" y="191" text-anchor="middle">€203k</text>
+  <text class="fig-quote-small" x="360" y="430" text-anchor="middle">The earlier saver puts in €27k less and finishes €58k ahead. The difference is time, not income.</text>
+</svg>
+<figcaption>Two savers targeting retirement at 65. The one who starts at 25 pays in less in total yet ends ahead, because compounding does most of its work in the final stretch. Illustrative only; future returns are not guaranteed.</figcaption>
+</figure>
 
 The early saver contributes less total money than either of the later ones, and ends up with more than both. The difference isn't willpower or income. It's time.
 

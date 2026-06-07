@@ -10,6 +10,7 @@ level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
+reelPromise: "The real-return formula, the 30-year worked example where the balance grows but its value shrinks, and what to do about it"
 referentialReading:
   - title: "The Economics of Money, Banking and Financial Markets"
     author: "Frederic Mishkin"

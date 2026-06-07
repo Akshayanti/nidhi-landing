@@ -39,6 +39,14 @@ export function extractFigcaption(body) {
   if (!capMatch) return "";
   return capMatch[1]
     .replace(/<[^>]+>/g, "")        // strip any inline tags
+    // Normalise straight double-quotes to single quotes. The caption is only
+    // an LLM hint (the figure image is the rendered PNG; on-screen text comes
+    // from the plan). Some captions contain literal quoted words (e.g. the
+    // opportunity cost of "safe"), and the LLM tends to echo them verbatim
+    // into a JSON string value WITHOUT escaping the inner double-quotes, which
+    // breaks JSON.parse deterministically. Swapping to single quotes in the
+    // hint removes the trigger without altering any rendered copy.
+    .replace(/[\u201C\u201D"]/g, "'")
     .replace(/\s+/g, " ")
     .trim();
 }

@@ -5,11 +5,12 @@ description: "Earning more doesn't automatically mean being wealthier. Here's wh
 tldr: "Income is what you earn. Wealth is what you keep. A high salary with high spending creates zero wealth. A modest salary with disciplined saving builds real wealth over time. The gap between your income and your spending is where wealth comes from. Shift your focus from earning more to keeping more."
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
 tags: ["discovery", "fundamentals", "saving"]
+reelPromise: "The wealth formula, the savings-rate calculation, and the three concrete shifts from earning more to keeping more"
 referentialReading:
   - title: "The Millionaire Next Door"
     author: "Thomas J. Stanley"
@@ -71,6 +72,34 @@ Wealth isn't complicated. It comes down to one relationship:
 > Wealth = Income - Spending (over time)
 
 You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both. But if you had to pick one to focus on first, reducing spending gives you faster results because every euro saved is a euro earned, tax-free.
+
+<figure>
+  <svg viewBox="0 0 880 460" role="img" aria-labelledby="fig-iw-title fig-iw-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-iw-title">Same income, different wealth</title>
+    <desc id="fig-iw-desc">Two people both take home three thousand euros a month. One saves one hundred a month, the other saves six hundred. After ten years the first has saved about twelve to fourteen thousand euros and the second about seventy two to eighty four thousand. The income was identical. The gap is the spending.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">Same income, different wealth</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Two people, both take home €3,000 a month, after 10 years</text>
+    <line x1="120" y1="360" x2="780" y2="360" class="fig-stroke-rule" stroke-width="1.5"/>
+    <text x="270" y="395" text-anchor="middle" class="fig-label">Saves €100/mo</text>
+    <text x="270" y="413" text-anchor="middle" class="fig-tick">spends €2,900</text>
+    <text x="630" y="395" text-anchor="middle" class="fig-label">Saves €600/mo</text>
+    <text x="630" y="413" text-anchor="middle" class="fig-tick">spends €2,400</text>
+    <rect x="200" y="343" width="60" height="17" class="fig-fill-muted"/>
+    <rect x="270" y="333" width="60" height="27" class="fig-fill-blue"/>
+    <text x="230" y="333" text-anchor="middle" class="fig-tick">€12,000</text>
+    <text x="300" y="323" text-anchor="middle" class="fig-tick" style="fill: var(--color-deep-blue);">€13,945</text>
+    <rect x="560" y="216" width="60" height="144" class="fig-fill-muted"/>
+    <rect x="630" y="192" width="60" height="168" class="fig-fill-teal"/>
+    <text x="590" y="206" text-anchor="middle" class="fig-tick">€72,000</text>
+    <text x="660" y="182" text-anchor="middle" class="fig-tick" style="fill: var(--color-teal);">€83,669</text>
+    <rect x="408" y="120" width="13" height="13" class="fig-fill-muted"/>
+    <text x="428" y="131" text-anchor="start" class="fig-tick">just saved (no growth)</text>
+    <rect x="408" y="142" width="13" height="13" class="fig-fill-teal"/>
+    <text x="428" y="153" text-anchor="start" class="fig-tick">with a gentle 3% real return</text>
+    <text x="440" y="438" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative 3% real return, after inflation. Not a forecast. Returns are not guaranteed and can be negative.</text>
+  </svg>
+  <figcaption>Identical paychecks, very different outcomes. The taller bars add a gentle 3% real return; even with zero growth, the saver who keeps more pulls far ahead. The gap was never the salary. It was the spending.</figcaption>
+</figure>
 
 ## How to shift from income thinking to wealth thinking?
 

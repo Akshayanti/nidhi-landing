@@ -5,11 +5,12 @@ description: "Before you invest or pay extra on debt, build a buffer. An emergen
 tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of essential expenses, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
 order: 8
 pubDate: 2026-05-04
-updatedDate: 2026-06-03
+updatedDate: 2026-06-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
 tags: ["discovery", "saving", "fundamentals"]
+reelPromise: "How to size your fund from one month to six, where to keep it so it stays accessible but separate, and the small-steps plan to build it"
 referentialReading:
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"
@@ -56,6 +57,34 @@ Without an emergency fund, every unexpected expense forces a bad choice:
 With an emergency fund, the same expense is just an inconvenience. You pay for it, you replenish the fund, and you move on. No debt. No panic. No long-term damage.
 
 Think of it as your financial shock absorber. It doesn't prevent the bump. It stops the bump from breaking the suspension.
+
+<figure>
+  <svg viewBox="0 0 880 460" role="img" aria-labelledby="fig-ef-title fig-ef-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-ef-title">The same shock, two endings</title>
+    <desc id="fig-ef-desc">A three thousand euro surprise expense. With an emergency fund, you pay it once and the cost is flat at three thousand euros. Without one, you put it on a credit card at nineteen percent and pay it down slowly, so it takes about twenty five months and costs about three thousand six hundred euros in total.</desc>
+    <text x="440" y="44" text-anchor="middle" class="fig-title">The same shock, two endings</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">A €3,000 surprise expense, paid two different ways</text>
+    <line x1="120" y1="380" x2="780" y2="380" class="fig-stroke-rule" stroke-width="1.5"/>
+    <line x1="120" y1="100" x2="120" y2="380" class="fig-stroke-rule" stroke-width="1"/>
+    <text x="120" y="400" text-anchor="middle" class="fig-tick">Month 0</text>
+    <text x="450" y="400" text-anchor="middle" class="fig-tick">Month 12</text>
+    <text x="780" y="400" text-anchor="middle" class="fig-tick">Month 25</text>
+    <polyline class="fig-stroke-teal" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              points="120,300 250,300 450,300 780,300"/>
+    <circle cx="120" cy="300" r="5" class="fig-fill-teal"/>
+    <circle cx="780" cy="300" r="5" class="fig-fill-teal"/>
+    <text x="500" y="332" class="fig-label" style="fill: var(--color-teal);">€3,000 total</text>
+    <text x="500" y="350" class="fig-tick">with a fund: paid once, flat</text>
+    <path d="M 120,300 Q 400,170 780,150 L 780,380 L 120,380 Z" class="fig-fill-warn-soft" stroke="none"/>
+    <path d="M 120,300 Q 400,170 780,150" class="fig-stroke-warn" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="120" cy="300" r="5" class="fig-fill-warn"/>
+    <circle cx="780" cy="150" r="5" class="fig-fill-warn"/>
+    <text x="660" y="140" text-anchor="end" class="fig-label" style="fill: var(--color-warning);">€3,636 total</text>
+    <text x="660" y="158" text-anchor="end" class="fig-tick">no fund: 25 months on a card</text>
+    <text x="440" y="438" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative. €3,000 on revolving credit at 19% APR, €150 a month. APRs vary by country and lender.</text>
+  </svg>
+  <figcaption>The fund does not make the bill smaller. It stops the bill from turning into 25 months of debt. That gap, about €636 here, is what the cushion buys you.</figcaption>
+</figure>
 
 ## How much do you need?
 
