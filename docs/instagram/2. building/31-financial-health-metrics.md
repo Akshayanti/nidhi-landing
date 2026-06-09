@@ -82,22 +82,22 @@ deuda ingreso, wskaźnik zadłużenia, skuldkvot ]
 
 ## Slide 1 (hook)
 
-Net worth is a snapshot. Ratios are the **diagnosis**.
+Net worth going up, but no idea if you're actually **okay**?
 
-sub: Six numbers tell you whether you're on track. Net worth alone doesn't.
+sub: One growing number can hide three problems quietly building underneath it.
 
 ---
 
 ## Slide 2 (list)
 
-title: Six metrics that diagnose financial health
+title: Six numbers that tell you what net worth can't
 
-1. Debt-to-asset ratio: how leveraged you are
-2. Liquid asset percentage: how flexible
-3. Emergency fund coverage: how resilient to shocks
-4. Savings rate: how fast you're building
-5. Debt-to-income ratio: how strained cash flow is
-6. Income replacement ratio: how close to financial independence
+1. :scale: Debt-to-asset ratio: how leveraged you are
+2. :wallet: Liquid asset percentage: how flexible
+3. :shield: Emergency fund coverage: how resilient to shocks
+4. :trendUp: Savings rate: how fast you're building
+5. :gauge: Debt-to-income ratio: how strained cash flow is
+6. :flag: Income replacement ratio: how close to financial independence
 
 ---
 
@@ -119,6 +119,8 @@ label: The single most predictive metric of long-term outcomes
 hero: 20% saved or higher
 caption: Below 10% is minimal. Above 50% accelerates dramatically.
 note: 10 to 20%: common baseline, sufficient over a long career. 20 to 35%: strong, opens earlier options. 35 to 50%: high. 50% plus: financial independence within roughly 15 years. Track as a 3 to 6 month rolling average, not single months.
+
+source: Bands are directional rules of thumb. Real outcomes still depend on returns and time.
 
 ---
 
@@ -163,6 +165,7 @@ title: How people misuse the metrics
 ## Slide 8 (closer)
 
 kicker: Each metric is a clue. The combination is the diagnosis.
+read: The drift signal that shows up while your net worth still looks perfectly fine
 next: Up next: the dashboard, what to track and how often
 save: this for your next financial check-in
 share: with someone who only watches their net worth

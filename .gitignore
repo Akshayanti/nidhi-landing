@@ -27,5 +27,5 @@ scripts/__pycache__/
 # from `outputs/` and per-reel TTS mp3 + VTT from `public/audio/`; both
 # are deleted after a successful render and only ever exist mid-pipeline.
 remotion/outputs/
-remotion/public/audio/
+remotion/public/
 

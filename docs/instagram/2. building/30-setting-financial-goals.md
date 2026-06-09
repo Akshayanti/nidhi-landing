@@ -85,22 +85,22 @@ ekonomiska mål ]
 
 ## Slide 1 (hook)
 
-"Buy a house someday." "Retire comfortably." These are not goals. They are **wishes**.
+Saving hard but for "someday"? That's why it never feels like **progress**.
 
-sub: A goal has a number and a date. A wish has neither.
+sub: The goals in your head are quietly missing the one thing that makes them real.
 
 ---
 
 ## Slide 2 (list)
 
-title: A real financial goal has four parts
+title: A real goal has four parts. A wish has none of them.
 
-1. A specific target amount, in a currency of choice
-2. A specific date, month and year
-3. A path: monthly contribution at a realistic return
-4. A container: cash, mixed, or investments, matching the timeline
+1. :coins: A specific target amount, in a currency of choice
+2. :calendar: A specific date, month and year
+3. :trendUp: A path: monthly contribution at a realistic return
+4. :wallet: A container: cash, mixed, or investments, matching the timeline
 
-Missing any one and the goal degrades into a wish.
+Missing any one and the goal quietly slides back into a wish.
 
 ---
 
@@ -117,9 +117,9 @@ note: "Buy a house someday" becomes "€45,000 by June 2031, which is €662 a m
 
 title: Three time horizons, three containers
 
-1. Short term, 0 to 3 years: cash. Stability over growth.
-2. Medium term, 3 to 7 years: blend. Some cash, some conservative investments.
-3. Long term, 7 plus years: diversified investments. Volatility averages out.
+1. :clock: Short term, 0 to 3 years: cash. Stability over growth.
+2. :scale: Medium term, 3 to 7 years: blend. Some cash, some conservative investments.
+3. :trendUp: Long term, 7 plus years: diversified investments. Volatility averages out.
 
 Mismatching bucket and container is the most common goal-setting error.
 
@@ -131,6 +131,8 @@ label: €500,000 retirement target at 65, 4% real return assumed
 hero: Start at 25 → ~€420/mo. || Start at 45 → ~€1,360/mo.
 caption: Same target. ~3× the monthly cost.
 note: At 25: ~€420 a month for 40 years. At 35: ~€720 a month for 30 years. At 45: ~€1,360 a month for 20 years. At 55: ~€3,400 a month for 10 years. The late starter contributes more than €200,000 extra and ends up with the same number.
+
+source: Assumes 4% real return, the conservative European baseline. Figures rounded.
 
 ---
 
@@ -164,6 +166,7 @@ Written goals survive better than mental ones. One page is plenty.
 ## Slide 8 (closer)
 
 kicker: A goal has a number and a date. A wish has neither. Translate the wishes.
+read: The surplus reality check: what to cut when your goals add up to more than you can save
 next: Up next: financial health metrics, the scorecard for the plan
 save: this before your next "I should save more" thought
 share: with someone making decisions in the dark

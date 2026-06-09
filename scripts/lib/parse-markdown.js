@@ -124,6 +124,7 @@ export function parseInstagramPost(content, relPath) {
     'title', 'left', 'right', 'left_title', 'right_title',
     'next', 'save', 'share', 'follow', 'read', 'kicker',
     'source',
+    'icon', 'left_icon', 'right_icon',
   ]);
 
   while ((m = slideRegex.exec(body)) !== null) {
