@@ -87,21 +87,21 @@ valutarisiko ]
 
 ## Slide 1 (hook)
 
-On paper, one net worth. In reality, multiple currencies pulling in **different** directions.
+Earn in one currency, retiring in another? Your net worth has a hidden **crack**.
 
-sub: This is the normal shape of expat finances. Most planning skips it.
+sub: It stays invisible right up until the year an exchange rate moves the wrong way.
 
 ---
 
 ## Slide 2 (list)
 
-title: Three currencies decide most of the picture
+title: First, find the three currencies that actually run your life
 
-1. Income currency: where your salary lands
-2. Expense currency: where you actually spend
-3. Planning currency: where major future goals will live
+1. :bank: Income currency: where your salary lands
+2. :wallet: Expense currency: where you actually spend
+3. :flag: Planning currency: where major future goals will live
 
-When all three match, currency is not a concern. When any two diverge, it becomes part of the plan.
+When all three match, currency is no concern. When any two diverge, the crack opens.
 
 ---
 
@@ -119,7 +119,7 @@ Over decades, these moves average out. Over the years right before you need the 
 
 ## Slide 4 (prose)
 
-title: Currency concentration is hidden under-diversification
+title: This is under-diversification hiding in plain sight
 
 Earn in euros. Spend in euros. Save in euros. Invest in a euro fund. Retire in euros.
 
@@ -127,11 +127,15 @@ That is full euro concentration. Fine if your future life really is fully in eur
 
 Hidden risk if your future plans, family, or relocation cross any currency border.
 
+source: Currency risk here means exposure spread across your real life, not day-trading FX.
+
 ---
 
 ## Slide 5 (comparison)
 
 title: Concentration that's fine vs concentration that's risk
+left_icon: shield
+right_icon: alert
 
 **All three currencies match**
 
@@ -153,11 +157,11 @@ Concentration is hidden risk. The mismatch quietly builds.
 
 title: The 15-minute multi-currency audit
 
-1. Map income, expenses, and remittances by currency
-2. Map savings, investments, and pensions by currency
-3. Estimate retirement and major future obligations by currency
-4. Compare your asset mix to your obligation mix
-5. Note the largest mismatch. Decide: fine, tolerable, or fix it.
+1. :wallet: Map income, expenses, and remittances by currency
+2. :bank: Map savings, investments, and pensions by currency
+3. :flag: Estimate retirement and major obligations by currency
+4. :scale: Compare your asset mix to your obligation mix
+5. :alert: Note the largest mismatch. Decide: fine, tolerable, or fix it.
 
 ---
 
@@ -175,7 +179,8 @@ Annual review is enough. Currency is daily noise and yearly signal.
 
 ## Slide 8 (closer)
 
-kicker: Multi-currency life isn't a complication. It only becomes a problem when invisible.
+kicker: A multi-currency life isn't the problem. Staying blind to it is.
+read: Where your real exposure hides, and the free tool that maps all your currencies on one screen
 next: Up next: setting financial goals, turning wishes into numbers
 save: this, and run the 15-minute audit with the free multi-currency net worth tool on nidhi.today
 share: with someone whose money quietly lives in 5 currencies

@@ -90,9 +90,9 @@ de mando financiero, financieel dashboard ]
 
 ## Slide 1 (hook)
 
-A dashboard isn't a spreadsheet of **everything**.
+Only check your money at tax season? Or obsessively every day? Both **backfire**.
 
-sub: It's a small set of numbers, on a known cadence, that catches drift before it becomes damage.
+sub: There's a rhythm between the two that catches trouble while it's still cheap to fix.
 
 ---
 
@@ -112,10 +112,10 @@ A dashboard sits between both. Small set. Known cadence. Early signal. Otherwise
 
 title: Four layers, four cadences
 
-1. Monthly: net worth, cash flow, savings rate, debt balances
-2. Quarterly: asset allocation, currency mix, goal progress, emergency fund coverage
-3. Annually: full health metrics, goal calibration, projection vs actual
-4. Event-driven: only on major life or income changes
+1. :calendar: Monthly: net worth, cash flow, savings rate, debt balances
+2. :clock: Quarterly: asset allocation, currency mix, goal progress, emergency fund coverage
+3. :chart: Annually: full health metrics, goal calibration, projection vs actual
+4. :alert: Event-driven: only on major life or income changes
 
 ---
 
@@ -123,12 +123,14 @@ title: Four layers, four cadences
 
 title: Monthly: 4 numbers, 15 minutes
 
-1. Net worth: assets minus liabilities
-2. Monthly cash flow: income minus expenses for the month
-3. Savings rate: as a 3 month rolling average
-4. Debt balances: declining at expected pace
+1. :coins: Net worth: assets minus liabilities
+2. :recurring: Monthly cash flow: income minus expenses for the month
+3. :trendUp: Savings rate: as a 3 month rolling average
+4. :scale: Debt balances: declining at expected pace
 
 If you do only this, monthly, you have 80% of the dashboard's value.
+
+source: Monthly is enough because most net worth moves on the scale of months, not days.
 
 ---
 
@@ -174,6 +176,7 @@ The notes column is the one most people skip and most need: why net worth dipped
 ## Slide 8 (closer)
 
 kicker: A dashboard well used turns intention into outcomes. This closes Building.
+read: Why the math was the easy part, and what the Psychology series is really about
 next: Up next: Psychology, when knowing the math isn't enough
 save: this for your monthly check-in routine
 share: with someone who tracks everything every day

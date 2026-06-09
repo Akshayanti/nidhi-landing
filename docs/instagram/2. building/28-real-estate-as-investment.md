@@ -85,89 +85,98 @@ nieruchomości, fastighetsinvestering ]
 
 ## Slide 1 (hook)
 
-Property appreciated 30%. The owner's real return: often **half** of that.
+Sure your home is your best investment? The math is **messier** than it looks.
 
-sub: The headline appreciation is rarely the actual return.
+sub: The gain everyone celebrates is rarely the gain you actually keep.
 
 ---
 
-## Slide 2 (prose)
+## Slide 2 (comparison)
 
-title: Real estate pays you in two ways
+title: Real estate actually pays you in two ways
+left_icon: coins
+right_icon: trendUp
 
-Rental income from tenants gives recurring cash flow. Capital appreciation as the property value rises adds the rest.
+**Rental income**
 
-Long run developed market real returns have been 3 to 6% after costs. Below stocks. Above bonds. Higher when leverage and timing align.
+Tenants pay you rent. Recurring cash flow, month after month.
 
-Past performance is not predictive. Local conditions swamp general averages.
+===
+
+**Appreciation**
+
+The property value climbs over time. Slower than it looks once costs come out.
 
 ---
 
 ## Slide 3 (list)
 
-title: The costs that quietly eat the return
+title: Then come the costs nobody puts in the brochure
 
-1. Maintenance and repairs: 1 to 3% of value a year
-2. Property taxes: 0.5 to 2%, location dependent
-3. Insurance: 0.2 to 0.5% a year
-4. Vacancy on rentals: equivalent of 4 to 10% of rent
-5. Transaction costs: 5 to 15% round trip, varies by country
+1. :home: Maintenance and repairs, 1 to 3% of value a year
+2. :bank: Property taxes, 0.5 to 2%, depending where you are
+3. :shield: Insurance, 0.2 to 0.5% a year
+4. :calendar: Vacancy on rentals, like losing 4 to 10% of rent
+5. :exchange: Transaction costs, 5 to 15% round trip, varies by country
 
 ---
 
 ## Slide 4 (stat)
 
-label: €300,000 property, 20% down, ignoring interest and fees
-hero: +10% on property → +50% on equity
-caption: -10% on property → -50% on equity. Same magnitude. Opposite direction.
-note: €60,000 down on a €300,000 property. If the property rises 10% to €330,000, equity becomes €90,000 (+50%). If it falls 10% to €270,000, equity becomes €30,000 (-50%). At -20%, equity is wiped. At -25%, the loan is underwater.
+label: Put 20% down, then watch what a 10% move does
+hero: +10% → +50%
+caption: A 10% rise on the property becomes a 50% jump on your equity. The fall works the same way.
+note: €60,000 down on a €300,000 place. Up 10%, your equity hits €90,000. Down 10%, it drops to €30,000. Down 20%, it's gone. That's leverage: it magnifies both directions.
+
+source: Illustrative, before interest and fees. Leverage cuts both ways, up and down.
 
 ---
 
-## Slide 5 (prose)
+## Slide 5 (comparison)
 
-title: Rent is not thrown away. Ownership is not pure investment.
+title: "Renting is throwing money away." Is it though?
+left_icon: key
+right_icon: home
 
-Rent buys shelter, flexibility, and risk transfer to the landlord: maintenance, market risk, interest rate exposure.
+**Renting buys**
 
-Ownership is shelter plus a financial position. Costs every month. Appreciates modestly in real terms.
-
-Both have costs. Both deliver value. Neither is automatically better.
-
----
-
-## Slide 6 (comparison)
-
-title: The honest comparison is not rent vs buy
-
-**Common framing**
-
-Rent is wasted. Buying is investing. So buying always wins.
+Shelter, flexibility, and someone else carrying the maintenance and the market risk.
 
 ===
 
-**Honest framing**
+**Owning buys**
 
-Buying vs renting plus investing the gap. The price-to-rent ratio (property price ÷ annual rent) tells you which market you're in. High ratios favour renting. Low ratios favour buying.
+Shelter plus a leveraged financial position, with costs landing every single month.
+
+---
+
+## Slide 6 (prose)
+
+title: The real question was never rent vs buy
+
+It's buying versus renting and investing the difference.
+
+One number tells you which way a market leans: price divided by annual rent. A high ratio usually favours renting. A low one makes buying interesting.
 
 ---
 
 ## Slide 7 (list)
 
-title: Factors that genuinely tilt buying ahead
+title: When buying genuinely pulls ahead
 
-1. You'll stay 5 plus years (transaction costs need time to amortise)
-2. Local price-to-rent ratio is reasonable
-3. Stable income, can absorb ownership cost variation
-4. Lifestyle value of actually owning the space
-5. Forced savings discipline matters to your behaviour
+1. You'll stay 5 plus years, long enough to absorb the costs
+2. The local price to rent ratio is reasonable
+3. Stable income that can ride out surprise costs
+4. You actually value owning the space you live in
+5. Forced-savings discipline helps your behaviour
 
 ---
 
 ## Slide 8 (closer)
 
-kicker: The headline rate is the marketing. The total cost of ownership is the deal.
+kicker: Appreciation is the headline. The real return is what's left after everything quietly takes its cut.
+read: The country-by-country cost map, where buying eats 2% in one place and 15% in another
 next: Up next: managing money across currencies, the expat reality
-save: this before your next "rent or buy" decision
-share: with someone using "rent is wasted" as their main argument
+save: this before your next "should I buy" decision
+share: with someone who swears renting is wasted money
 follow: @nidhi.today for the rest of Money in Action

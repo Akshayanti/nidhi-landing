@@ -84,91 +84,100 @@ utdelningsstrategi, aksjeutbytte ]
 
 ## Slide 1 (hook)
 
-Most online "passive income" is actually a **business**. The real version is quieter.
+Want money that comes in while you sleep? Most of what's sold as that is a **trap**.
 
-sub: Effort upfront. Income persists. No daily input required.
-
----
-
-## Slide 2 (list)
-
-title: Where real passive income comes from
-
-1. Dividends from broad stock funds
-2. Interest from bonds and savings
-3. Rental income from property, with management
-4. Royalties from creative or intellectual work
-5. Distributions from businesses where you don't operate
+sub: The real version looks nothing like the pitch in your feed.
 
 ---
 
-## Slide 3 (comparison)
+## Slide 2 (comparison)
 
-title: A spectrum, not a category
+title: Most "passive income" online isn't passive
+left_icon: alert
+right_icon: coins
 
-**Truly passive**
+**Sold as passive**
 
-Dividends from broad funds. Interest from bonds. Bought once. Income arrives. No customers, no content, no daily decisions.
+Blogs, shops, course funnels, channels. They only pay while you keep showing up. That's a business.
 
 ===
 
-**Dressed up as passive**
+**Actually passive**
 
-Blogs, channels, online shops, course funnels. Need ongoing content, customer service, platform management. Legitimate businesses, just not passive.
+Dividends, interest, rent, royalties. Set it up once, and it pays you without the daily shift.
+
+---
+
+## Slide 3 (list)
+
+title: So where does the quiet kind actually come from?
+
+1. Dividends from broad stock funds
+2. Interest from bonds and savings
+3. Rent from property, once someone manages it
+4. Royalties from creative or intellectual work
+5. Distributions from a business you don't run
 
 ---
 
 ## Slide 4 (stat)
 
-label: To generate €1,000 a month of passive income
-hero: €300,000 to €600,000
-caption: Capital required, depending on yield assumption.
-note: 2% yield (broad equity dividend): ~€600,000. 3% (balanced income mix): ~€400,000. 4% (higher yield mix): ~€300,000. Replacing a modest salary takes a portfolio in the hundreds of thousands. Not instantaneous.
+label: Want €1,000 a month without lifting a finger?
+hero: €300k to €600k
+caption: That's the capital it takes, depending on yield.
+note: At 2% yield, around €600,000. At 3%, around €400,000. At 4%, around €300,000. Passive income isn't a hack. It's what a real portfolio quietly pays out.
 
-source: Illustrative yields, broadly representative ranges. Past yields are not predictive of future yields.
+source: Illustrative yields across broadly representative ranges. Past yields don't predict future ones.
 
 ---
 
-## Slide 5 (prose)
+## Slide 5 (comparison)
 
-title: Yield is not the same as total return
+title: The number that fools almost everyone: yield
+left_icon: percent
+right_icon: trendUp
 
-A 2% dividend yield on a fund that grows 5% a year delivers a 7% total return. A 6% yield on a fund that stagnates delivers a 6% total return.
+**Chasing yield**
 
-Chasing yield often means chasing distressed credit, return of capital dressed as income, or hidden concentration.
+A 6% payout on a fund going nowhere. You collect 6%, and the value just sits there.
 
-Focus on total return during accumulation. Yield matters more later, in drawdown.
+===
+
+**Total return**
+
+A 2% payout on a fund growing 5%. That's 7%, and it keeps compounding.
 
 ---
 
 ## Slide 6 (list)
 
-title: The traps that mimic income
+title: The traps dressed up to look like income
 
-1. Chasing yield far above the category average
-2. Treating direct landlording as passive
+1. Chasing a yield far above the category average
+2. Calling hands-on landlording "passive"
 3. Counting income from a business that needs you
-4. Ignoring how passive income is taxed
+4. Forgetting how passive income gets taxed
 5. Spending dividends instead of reinvesting them
 
 ---
 
 ## Slide 7 (prose)
 
-title: Reinvested dividends are the engine
+title: One quiet decision does most of the work
 
-Dividends spent are one-off pay days. Dividends reinvested buy more income-producing assets, which produce more income.
+Spent dividends are a one-off payday. Reinvested dividends buy more income-producing assets, which then pay you even more.
 
-The compounding applies to the income stream, not just the principal.
+The compounding lands on the income itself, not just the principal.
 
-Most of the long run difference between an early investor and a late one comes from this single decision.
+Most of the gap between an early investor and a late one traces back to this one habit.
 
 ---
 
 ## Slide 8 (closer)
 
-kicker: Real passive income is what you own paying you. Quieter than online.
+kicker: Real passive income is just what you own, paying you. Quieter than the ads.
+read: The milestone ladder, from your first covered bill to the day work turns optional
 next: Up next: loan terms, the honest math behind borrowing
-save: this before your next "passive income course" purchase
-share: with someone chasing seven streams of passive income
+save: this before your next "passive income course" checkout
+share: with someone chasing seven streams at once
 follow: @nidhi.today for the rest of Money in Action

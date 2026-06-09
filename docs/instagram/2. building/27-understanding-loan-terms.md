@@ -85,92 +85,97 @@ odsetki kredytu ]
 
 ## Slide 1 (hook)
 
-Two loan offerings. Bank A: 3.2%. Bank B: 3.1%. Bank B is still **more** expensive.
+Taking out a loan soon? The rate is the **last** thing you should compare.
 
-sub: The headline rate is the marketing number. APR (annual percentage rate) is the honest one.
+sub: Everyone fixates on the headline number. It's the one built to hide the rest.
 
 ---
 
-## Slide 2 (prose)
+## Slide 2 (comparison)
 
-title: APR is the rate plus the fees
+title: Why the lower rate can be the worse deal
+left_icon: alert
+right_icon: scale
 
-APR rolls together the nominal rate, mandatory fees, and bundled products into a single annualised cost.
+**Headline rate**
 
-Two loans with identical headline rates can have very different APRs. Two loans with different headline rates often flip on which one is actually cheaper, once fees are counted.
+The number on the billboard. It quietly leaves out fees, mandatory insurance, and bundled extras.
 
-What APR includes varies by jurisdiction. Always ask your lender what's in and what's out.
+===
+
+**APR**
+
+Rate plus every required cost, rolled into one. The only number that compares loans honestly.
 
 ---
 
 ## Slide 3 (comparison)
 
-title: Fixed or variable: a structural choice
+title: Then one structural choice: fixed or variable
+left_icon: shield
+right_icon: trendUp
 
 **Fixed rate**
 
-Rate is locked. Payments are predictable. Higher initial rate. No exposure to future rises during the fixed period.
+Locked in. Payments never surprise you. You pay a little more up front for that calm.
 
 ===
 
 **Variable rate**
 
-Rate tracks a reference plus margin. Cheaper today. Exposed to future rate shocks.
-
-The right choice depends on cash flow stability and how long you'll hold the loan.
+Tracks a reference rate. Cheaper today, but it climbs when rates do.
 
 ---
 
 ## Slide 4 (stat)
 
-label: €250,000 mortgage at 3% fixed, 25 year term, payment ~€1,185 a month
-hero: Year 1: €625 interest. || Year 25: €3 interest.
-caption: Same monthly payment. The split changes dramatically.
-note: Year 5: €536 interest, €650 principal. Year 15: €309 interest, €876 principal. Year 25: €3 interest, €1,182 principal. Early years pay mostly interest. Late years pay mostly principal.
+label: €250,000 mortgage, 3% fixed, 25 years. Same €1,185 every month.
+hero: €625 → €3
+caption: That's the interest slice, year 1 versus year 25.
+note: Year 5: €536 of interest. Year 15: €309. Year 25: just €3. The payment never changes. Early on you're paying almost all interest, by the end almost all principal.
+
+source: Illustrative amortisation on a standard repayment schedule. Your exact split depends on rate and term.
 
 ---
 
-## Slide 5 (prose)
+## Slide 5 (stat)
 
-title: Prepayment is a guaranteed return
-
-Prepaying principal is the most direct way to reduce total interest paid, when the loan allows it without penalty.
-
-The "return" on prepayment is exactly the loan's interest rate. A 3% mortgage prepayment delivers a guaranteed 3%. A 7% consumer loan delivers 7%.
-
-The earlier the prepayment, the larger the impact. Timing matters as much as amount.
+label: Prepay a euro of principal, and your "return" is...
+hero: exactly your rate
+caption: A 3% mortgage pays back 3%, guaranteed. A 7% loan pays back 7%.
+note: No market risk, no guessing. And the earlier you do it, the more interest you erase. With loans, timing matters as much as the amount.
 
 ---
 
 ## Slide 6 (prose)
 
-title: Refinancing: do the break-even math
+title: Refinancing comes down to one division
 
-New loan fees divided by monthly payment savings equals months to recoup.
+Divide the new loan's fees by your monthly saving. That's how many months until it pays for itself.
 
-If you'll keep the loan longer than that, refinancing saves money. If you'll sell or refinance again sooner, it costs you.
+Keep the loan past that point and you come out ahead. Sell or refinance again sooner and it cost you.
 
-Watch for restart of amortisation, prepayment penalties on the old loan, and hidden fees on the new one.
+Watch for a restarted schedule, prepayment penalties on the old loan, and fresh fees on the new one.
 
 ---
 
 ## Slide 7 (list)
 
-title: How to actually compare loan offers
+title: How to actually compare two loan offers
 
-1. Normalise the amount and term across all offers
-2. Get the full APR, including all mandatory fees and bundles
-3. Compute total cost: monthly payment times number of payments, plus upfront fees
-4. Check restrictions: prepayment penalty, rate reset, insurance bundles
-5. Stress test variable rates: can you afford a 2% rise?
-6. Or stack up to 5 offers in the free loan comparison calculator on nidhi.today
+1. Match the amount and term across every offer
+2. Get the full APR, fees and bundles included
+3. Total cost: monthly payment times payments, plus upfront fees
+4. Check the fine print: penalties, rate resets, insurance
+5. Stress test variable rates: could you handle a 2% jump?
 
 ---
 
 ## Slide 8 (closer)
 
-kicker: The headline rate is the invitation. The APR, total cost, and fine print are the actual deal.
+kicker: The advertised rate is the invitation. APR, total cost, and the fine print are the actual deal.
+read: The prepayment-timing trick, plus a tool that runs 5 loan offers side by side
 next: Up next: real estate, the asset class most people accidentally own
 save: this before your next loan comparison
-share: with someone shopping for a mortgage on rate alone
+share: with someone shopping a mortgage on rate alone
 follow: @nidhi.today for the rest of Money in Action

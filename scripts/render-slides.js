@@ -103,20 +103,30 @@ function bodyToHtml(text) {
 function bodyToRows(text) {
   if (!text) return [];
   const rows = [];
+  // A leading `:name:` token on a row swaps the numeric/dot marker for a topic
+  // icon (e.g. `1. :home: Maintenance and repairs` → house icon + text). Lets a
+  // list communicate each item visually without extra words.
+  const extractIcon = (s) => {
+    const m = s.match(/^:([a-zA-Z]+):\s*(.*)$/);
+    return m ? { icon: m[1], text: m[2] } : { icon: null, text: s };
+  };
   for (const raw of text.split('\n')) {
     const line = raw.trim();
     if (!line) continue;
     const num = line.match(/^(\d+)\.\s+(.*)$/);
     if (num) {
-      rows.push({ marker: num[1], text: num[2] });
+      const { icon, text } = extractIcon(num[2]);
+      rows.push({ marker: num[1], text, icon });
       continue;
     }
     const bul = line.match(/^[-*]\s+(.*)$/);
     if (bul) {
-      rows.push({ marker: 'dot', text: bul[1] });
+      const { icon, text } = extractIcon(bul[1]);
+      rows.push({ marker: 'dot', text, icon });
       continue;
     }
-    rows.push({ marker: 'dot', text: line });
+    const { icon, text } = extractIcon(line);
+    rows.push({ marker: 'dot', text, icon });
   }
   return rows;
 }
@@ -159,6 +169,73 @@ const SVG_FOLLOW = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 // External-link icon. Signals "leave Instagram, go to the blog."
 const SVG_READ = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>`;
 
+// ---------- Topic icon library ----------
+//
+// Curated line-icon set for the cream editorial system. All icons share the
+// same construction as the closer CTA icons: 24x24 viewBox, no fill, teal
+// stroke (via currentColor), 1.9 stroke-width, rounded caps/joins. They render
+// inside a soft-teal rounded badge so a slide can carry one topic glyph that
+// communicates the subject at a glance (a house for housing, a globe for
+// currencies) without adding text. Use sparingly: one glyph per slide, in the
+// same spirit as the "one teal accent per slide" rule.
+//
+// Authored via an `icon:` field on a slide (slide-level glyph) or a leading
+// `:name:` token on a list row (per-row marker icon). Unknown names render
+// nothing, so a typo degrades gracefully instead of crashing.
+const ICON_PATHS = {
+  // FIRE / goals / independence
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/>',
+  mountain: '<path d="M3 19l6-12 4 7 2-3 6 8z"/>',
+  calendar: '<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  // money / income
+  coins: '<ellipse cx="9" cy="7" rx="6" ry="3"/><path d="M3 7v5c0 1.7 2.7 3 6 3"/><ellipse cx="15" cy="14" rx="6" ry="3"/><path d="M9 14v3c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>',
+  recurring: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
+  percent: '<path d="M19 5L5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
+  bank: '<path d="M3 9l9-5 9 5"/><path d="M4 9h16v2H4z"/><path d="M6 11v7M10 11v7M14 11v7M18 11v7"/><path d="M3 21h18"/>',
+  scale: '<path d="M12 3v18"/><path d="M5 21h14"/><path d="M3 8l4-4 4 4M3 8c0 2 1.8 3 4 3s4-1 4-3M3 8h8"/><path d="M13 8l4-4 4 4M13 8c0 2 1.8 3 4 3s4-1 4-3M13 8h8"/>',
+  wallet: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1.3"/>',
+  // housing
+  home: '<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>',
+  key: '<circle cx="8" cy="8" r="4"/><path d="M11 11l8 8M16 16l2-2M18 18l2-2"/>',
+  // currency / cross-border
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+  exchange: '<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+  // metrics / dashboard
+  gauge: '<path d="M3 16a9 9 0 1 1 18 0"/><path d="M12 16l4-5"/><circle cx="12" cy="16" r="1.4"/>',
+  pulse: '<path d="M3 12h4l2 6 4-14 2 8h6"/>',
+  chart: '<path d="M4 4v16h16"/><path d="M8 16v-4M12 16V8M16 16v-7"/>',
+  checklist: '<path d="M4 6h12M4 12h12M4 18h12"/><path d="M19 5l1.5 1.5L23 4"/><path d="M19 11l1.5 1.5L23 10"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  // signals
+  alert: '<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
+  shield: '<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>',
+  trendUp: '<path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/>',
+  trendDown: '<path d="M3 7l6 6 4-4 8 8"/><path d="M21 17v-5h-5"/>',
+};
+
+// Case-insensitive lookup so `trendUp`, `trendup`, and `TRENDUP` all resolve.
+const ICON_PATHS_NORM = Object.fromEntries(
+  Object.entries(ICON_PATHS).map(([k, v]) => [k.toLowerCase(), v])
+);
+
+function renderIcon(name) {
+  const path = name && ICON_PATHS_NORM[name.trim().toLowerCase()];
+  if (!path) return '';
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+}
+
+/**
+ * A slide-level topic glyph: one line-icon inside a soft-teal rounded badge.
+ * `align` controls horizontal placement of the wrapper ('center' for stat,
+ * 'left' for prose/list). Returns '' when the icon name is unknown/empty.
+ */
+function iconGlyph(name, align = 'left') {
+  const svg = renderIcon(name);
+  if (!svg) return '';
+  return `<div class="topic-glyph topic-glyph-${align}">${svg}</div>`;
+}
+
 /**
  * Strip protocol, UTMs, and trailing slash for display.
  * "https://nidhi.today/blog/budgeting/?utm_source=..." → "nidhi.today/blog/budgeting"
@@ -175,15 +252,25 @@ function cleanBlogUrl(url) {
   }
 }
 
+// Wrap curly double-quote marks in a span so they can be rendered in a serif
+// face. Inter at the heavy hook weight (800) draws near-vertical quote glyphs
+// that read as straight ticks; a serif gives the classic curly 66/99 shape.
+// Only touches double quotes; apostrophes (U+2019) are left in the body font.
+function styleQuoteMarks(html) {
+  return html.replace(/[\u201C\u201D]/g, (m) => `<span class="dquo">${m}</span>`);
+}
+
 function renderHook(slide) {
   // Body becomes the headline; **bold** within it gets the teal accent.
   // Optional `sub:` field renders as a muted subhead beneath.
   // Note: hook layout intentionally does NOT consume `kicker:` (that's closer-only).
-  const headline = applyInline(smartTypography(slide.text));
+  const headline = styleQuoteMarks(applyInline(smartTypography(slide.text)));
   const sub = slide.fields.sub
     ? `<div class="hook-sub">${applyInline(smartTypography(slide.fields.sub))}</div>`
     : '';
+  const glyph = iconGlyph(slide.fields.icon, 'left');
   return `
+    ${glyph}
     <div class="hook-headline">${headline}</div>
     ${sub}
     <div class="swipe-cue">SWIPE</div>
@@ -196,7 +283,8 @@ function renderProse(slide) {
   const title = slide.fields.title || '';
   const titleHtml = title ? `<div class="prose-title">${applyInline(smartTypography(title))}</div>` : '';
   const body = bodyToHtml(smartTypography(slide.text));
-  return `${titleHtml}<div class="prose-body">${body}</div>`;
+  const glyph = iconGlyph(slide.fields.icon, 'left');
+  return `${glyph}${titleHtml}<div class="prose-body">${body}</div>`;
 }
 
 function renderStat(slide) {
@@ -210,7 +298,9 @@ function renderStat(slide) {
   const heroHtml = hero
     ? applyInline(smartTypography(hero)).replace(/\s*\|\|\s*/g, '<br>')
     : '';
+  const glyph = iconGlyph(slide.fields.icon, 'center');
   return `
+    ${glyph}
     ${label ? `<div class="stat-label">${applyInline(smartTypography(label))}</div>` : ''}
     ${heroHtml ? `<div class="stat-hero">${heroHtml}</div>` : ''}
     ${caption ? `<div class="stat-caption">${applyInline(smartTypography(caption))}</div>` : ''}
@@ -222,31 +312,51 @@ function renderList(slide) {
   // `title:` is the slide's heading. `eyebrow:` is the chip override only.
   const title = slide.fields.title || '';
   const rows = bodyToRows(smartTypography(slide.text));
+  const glyph = iconGlyph(slide.fields.icon, 'left');
   const titleHtml = title ? `<div class="list-title">${applyInline(smartTypography(title))}</div>` : '';
   const rowsHtml = rows.map(r => {
-    const markerCls = r.marker === 'dot' ? 'marker dot' : 'marker';
-    const markerInner = r.marker === 'dot' ? '' : r.marker;
+    const iconSvg = r.icon ? renderIcon(r.icon) : '';
+    let markerCls, markerInner;
+    if (iconSvg) {
+      markerCls = 'marker icon-marker';
+      markerInner = iconSvg;
+    } else if (r.marker === 'dot') {
+      markerCls = 'marker dot';
+      markerInner = '';
+    } else {
+      markerCls = 'marker';
+      markerInner = r.marker;
+    }
     return `<div class="row"><div class="${markerCls}">${markerInner}</div><div class="row-text">${applyInline(r.text)}</div></div>`;
   }).join('');
-  return `${titleHtml}<div class="list-rows">${rowsHtml}</div>`;
+  return `${glyph}${titleHtml}<div class="list-rows">${rowsHtml}</div>`;
 }
 
 function renderComparison(slide) {
   // `title:` is the slide's heading. `eyebrow:` is the chip override only.
   const title = slide.fields.title || '';
   const [a, b] = bodyToComparison(smartTypography(slide.text), slide.fields);
+  const glyph = iconGlyph(slide.fields.icon, 'left');
   const titleHtml = title ? `<div class="cmp-title">${applyInline(smartTypography(title))}</div>` : '';
-  const colHtml = (col) => `
+  const colIcons = [slide.fields.left_icon, slide.fields.right_icon];
+  const colHtml = (col, idx) => {
+    const ci = renderIcon(colIcons[idx]);
+    const head = col.title
+      ? `<h3>${ci ? `<span class="cmp-col-icon">${ci}</span>` : ''}${applyInline(col.title)}</h3>`
+      : '';
+    return `
     <div class="cmp-col">
-      ${col.title ? `<h3>${applyInline(col.title)}</h3>` : ''}
+      ${head}
       ${bodyToHtml(col.body)}
     </div>`;
+  };
   return `
+    ${glyph}
     ${titleHtml}
     <div class="cmp-cols">
-      ${colHtml(a)}
+      ${colHtml(a, 0)}
       <div class="cmp-rule"></div>
-      ${colHtml(b)}
+      ${colHtml(b, 1)}
     </div>
   `;
 }
@@ -257,20 +367,36 @@ function renderCloser(slide, post) {
   const save = slide.fields.save || '';
   const share = slide.fields.share || '';
   const follow = slide.fields.follow || '';
-  let read = `Instagram penalises long content. Full literature on link in bio`;
+  // READ row, primary CTA. Default auto-derives from blog_url per PLAYBOOK §9.
+  // A `read:` field overrides it with a curiosity-driven tease that names the
+  // specific thing the blog answers, then points to the URL on its own line.
+  const blog = cleanBlogUrl(post?.blogUrl);
+  let read;
+  if (slide.fields.read) {
+    const tease = applyInline(smartTypography(slide.fields.read));
+    read = blog
+      ? `${tease}<span class="read-url">${blog} (link in bio)</span>`
+      : tease;
+  } else if (blog) {
+    read = `Full breakdown on <strong>${blog}</strong> (link in bio)`;
+  } else {
+    read = '';
+  }
 
-  const row = (icon, verb, text) => text ? `
+  // `text` is plain markdown by default; pass raw=true for pre-rendered HTML
+  // (the READ row, which already contains <strong>/<span> markup).
+  const row = (icon, verb, text, raw = false) => text ? `
     <div class="crow">
       <div class="icon">${icon}</div>
       <div class="verb">${verb}</div>
-      <div class="text">${applyInline(smartTypography(text))}</div>
+      <div class="text">${raw ? text : applyInline(smartTypography(text))}</div>
     </div>` : '';
 
   return `
     ${kicker ? `<div class="closer-kicker">${applyInline(smartTypography(kicker))}</div>` : ''}
     ${next ? `<div class="closer-next">${applyInline(smartTypography(next))}</div>` : ''}
     <div class="closer-rows">
-      ${row(SVG_READ, 'Read', read)}
+      ${row(SVG_READ, 'Read', read, true)}
       ${row(SVG_SAVE, 'Save', save)}
       ${row(SVG_SHARE, 'Share', share)}
       ${row(SVG_FOLLOW, 'Follow', follow)}

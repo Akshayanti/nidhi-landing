@@ -144,6 +144,14 @@ The carousel system has two formats. Series 1 (Discovery, posts 1 through 16b) s
 | `comparison` | Two-option choices, framework comparisons, before/after framings. Two columns, vertical rule between, eyebrow chip per column. | Body split by `===` between columns; first `**bold**` line per column becomes the column heading |
 | `closer` | Last slide. CTA ladder: `READ` row at top (auto-derived from `blog_url` frontmatter, with "(link in bio)" navigation cue), then `SAVE`, `SHARE`, `FOLLOW`. Plus a small "Up next" pill above the ladder. | `kicker:` (anchor line), `next:` (pill text), `save:`, `share:`, `follow:`, optional `read:` (override) fields |
 
+**Narrative flow: problem before solution.** Sequence the deck so tension builds before it resolves. The hook names the problem (§8); the early-middle slides deepen and complicate it so the reader feels the stakes; only then do the later slides deliver the framework, number, or fix. Do not resolve the problem on slide 2. A reader who is still holding the question swipes; a reader handed the answer early stops. Order slides to keep one open loop running into the next slide at all times.
+
+**Icon system: cut text weight, label categories.** Carousels skew text-heavy; line icons let a reader parse a slide at a glance. The renderer ships a fixed line-icon vocabulary (`scripts/render-slides.js` → `ICON_PATHS`: e.g. `home`, `bank`, `wallet`, `coins`, `shield`, `calendar`, `clock`, `flag`, `target`, `scale`, `gauge`, `trendUp`, `trendDown`, `recurring`, `exchange`, `globe`, `alert`, `chart`). Usage:
+- **Per-row list icons:** prefix a list item with a `:name:` token (e.g. `1. :home: Maintenance and repairs...`). Renders a soft-teal badge marker in place of the number/bullet.
+- **Comparison column icons:** `left_icon:` / `right_icon:` fields put one glyph atop each column.
+- **Slide topic glyph:** `icon:` field on hook/prose/list/stat renders a single badge above the content.
+- **Rules:** icons must *label a real category* (housing, banking, time, risk), never decorate. Use them where a row maps to a concrete thing; skip them on sequential/priority lists where the order is the content, and on all-negative lists ("mistakes") where one repeated icon adds nothing. Unknown icon names render nothing (safe no-op). Keep to the existing vocabulary; add new glyphs to `ICON_PATHS` rather than improvising.
+
 **Trust signal slot (any non-closer layout).** Optional `source:` field renders as a small grey citation under the body, prefixed `SOURCE` in teal. When a slide has both a `source:` field and the post has a `blog_url`, a secondary `READ` line auto-renders below the citation: `Full breakdown on nidhi.today/blog/<slug> (link in bio)`. This is the "curiosity peak" placement: readers asking "where's this number from?" get a natural pointer to the long-form.
 
 **Eyebrow chip:** rendered top-left on every slide except the hook. Sourced from frontmatter:
@@ -413,6 +421,13 @@ One per cascade max, on frame 1 (the announce frame). Hashtag sticker, small, tu
 - Short, minimal periods, no dashes of any kind, question marks earn their place.
 - Auto-shrink scales the headline to fit the safe zone; trust the layout, don't pre-shrink the copy.
 
+**Problem first, relatability sells.** The hook's job is to make a reader who is living the problem feel seen, then make them curious enough to read on. Rules:
+- **Name the problem, not the topic.** Open on the reader's lived situation, not the concept's name. "Counting on retiring at 65? That date is mostly a guess." beats "What is financial independence?" The reader who recognises their own situation keeps reading.
+- **Direct address.** Speak to one person in their own words ("Saving hard but for 'someday'?", "Haven't touched your portfolio in years?"). A relatable call-out outperforms an abstract statement.
+- **Open the curiosity gap, never close it.** Pose the problem and hint that something is off, but withhold the solution direction. The hook makes a promise the carousel pays off.
+- **Avoid "not X, but Y" reframes in the hook.** They leak the answer and kill curiosity. Keep the resolution for the body slides.
+- **Vary the rhythm across the series** so consecutive posts don't open with an identical template (e.g. "Counting on... / Want... / Taking out... / Sure... / Earn... / Only check...").
+
 ---
 
 ## 9. Destination Strategy
@@ -444,6 +459,11 @@ URLs are not tappable inside Instagram posts. The carousel must therefore *direc
 The URL is rendered with protocol and UTM parameters stripped (`nidhi.today/blog/budgeting`, not `https://nidhi.today/blog/budgeting/?utm_source=instagram&...`) for legibility. UTMs survive in the actual link-in-bio destination because the bio link is built with full UTM tagging at swap time.
 
 **Do not place the URL on every slide.** It reads as desperation and burns canvas. Two placements (closer + source slide) are enough; everything else stays content-only.
+
+**Tease the solution, don't hand it over.** The carousel must deliver real, standalone value *and* leave a specific reason to click through. Use the closer's optional `read:` field (overrides the auto-derived READ line) to name a concrete payoff the carousel deliberately did not cover, phrased as a curiosity gap rather than a summary:
+- Point at a specific artifact or answer the blog holds: "The country-by-country cost map, where buying eats 2% in one place and 15% in another", "The surplus reality check: what to cut when your goals add up to more than you can save".
+- **Withhold the specifics**, not the topic. Promise the thing, never pre-deliver it on the slide. If the deck already showed it, it can't be the tease.
+- Avoid generic "read more / full breakdown" as the only pull. The closer auto-line already covers the existence of the post; `read:` exists to make the reader *want* it.
 
 ---
 

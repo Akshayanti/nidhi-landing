@@ -141,6 +141,12 @@
     color: var(--accent);
     font-weight: 800;
   }
+  /* Render double-quote marks in a serif so they read as true curly quotes
+     instead of the near-vertical ticks Inter draws at heavy weight. */
+  .slide[data-layout="hook"] .hook-headline .dquo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+  }
   .slide[data-layout="hook"] .hook-headline em {
     color: var(--accent);
     font-weight: 800;
@@ -463,6 +469,63 @@
     flex: 1;
     line-height: 1.36;
   }
+  /* Curiosity-tease READ row: the tease line on top, the URL muted beneath. */
+  .slide[data-layout="closer"] .crow .text .read-url {
+    display: block;
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--ink);
+  }
+
+  /* ========== Topic glyph (optional `icon:` field, any layout) ========== */
+  /* One line-icon in a soft-teal rounded badge. Communicates the slide's
+     subject at a glance (house = housing, globe = currencies) so the copy can
+     carry less. One per slide, in the spirit of "one teal accent per slide." */
+  .topic-glyph {
+    width: 84px;
+    height: 84px;
+    border-radius: 22px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .topic-glyph svg { width: 44px; height: 44px; }
+  .topic-glyph-left { align-self: flex-start; margin-bottom: 28px; }
+  .topic-glyph-center { align-self: center; margin-bottom: 26px; }
+  /* On the hook slide the headline is the anchor; keep the glyph smaller so it
+     reads as a quiet topic marker, not a competing element. */
+  .slide[data-layout="hook"] .topic-glyph {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+  }
+  .slide[data-layout="hook"] .topic-glyph svg { width: 38px; height: 38px; }
+
+  /* Per-row icon marker in the list layout: same 48px badge as the numeric
+     marker, but carrying a line-icon instead of a number. */
+  .slide[data-layout="list"] .row .marker.icon-marker {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .slide[data-layout="list"] .row .marker.icon-marker svg { width: 26px; height: 26px; }
+
+  /* Optional small icon beside a comparison column heading. */
+  .slide[data-layout="comparison"] .cmp-col h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .slide[data-layout="comparison"] .cmp-col-icon {
+    display: inline-flex;
+    color: var(--accent);
+  }
+  .slide[data-layout="comparison"] .cmp-col-icon svg { width: 26px; height: 26px; }
 
   /* ========== Source / trust signal (any layout) ========== */
   .source {

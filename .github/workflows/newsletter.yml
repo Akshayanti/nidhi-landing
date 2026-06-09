@@ -40,7 +40,7 @@ on:
     # under normal operation — but if a deploy fails for the day, this
     # still gives us a daily bounce scan and a chance to pick up any
     # partial-send resumes.
-    - cron: '30 7 * * *'
+    - cron: '03 7 * * *'
 
 permissions:
   contents: write   # commit .last-sent-guid.txt back to main
