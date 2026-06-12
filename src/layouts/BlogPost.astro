@@ -62,11 +62,11 @@ const blogPostingSchema = {
   datePublished: pubDate.toISOString(),
   ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
   author: {
-    '@type': 'Person',
+    '@type': 'Organization',
     name: 'nidhi',
     url: `${siteUrl}/about/`,
     description:
-      'Practitioner and research-led personal finance writer. Builds the tools the posts describe and sources every article against cited references.',
+      'Practitioner and research-led personal finance education. Builds the tools the posts describe and sources every article against cited references.',
     sameAs: ['https://www.instagram.com/nidhi.today'],
   },
   publisher: {
