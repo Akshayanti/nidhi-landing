@@ -3,37 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const siteUrl = 'https://nidhi.today';
 
-// nidhi is both the project and the name we publish under. Treating the
-// author as a named Person (distinct from the publishing Organization of
-// the same name) gives search engines a consistent author entity for the
-// blog without inventing a separate identity. The qualification framing is
-// practitioner plus research-led: built the tools, lived the multi-currency
-// problem, and sources every post against the references listed on it. No
-// credential claims are made, in line with the educational, not-advice
-// disclaimer in the footer.
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'nidhi',
-  url: `${siteUrl}/about/`,
-  description:
-    'nidhi writes the personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Practitioner and research-led: the tools come from lived experience with cross-border finances, and every post cites the books and references it draws on.',
-  knowsAbout: [
-    'Personal Finance',
-    'Financial Literacy',
-    'Net Worth Tracking',
-    'Multi-Currency Finance',
-    'Financial Independence',
-    'Money Management',
-  ],
-  sameAs: ['https://www.instagram.com/nidhi.today'],
-  worksFor: {
-    '@type': 'Organization',
-    name: 'nidhi',
-    url: `${siteUrl}/`,
-  },
-};
-
 const profilePageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
@@ -41,7 +10,26 @@ const profilePageSchema = {
   url: `${siteUrl}/about/`,
   description:
     'Who writes nidhi, why the writing can be trusted, and how each post is researched and sourced.',
-  mainEntity: { '@id': `${siteUrl}/about/#person` },
+  // nidhi is the publishing Organization. Using Organization matches the
+  // author type on blog posts (changed in commit 41ca037). Inlined here
+  // (not a separate JSON-LD document) so Google can resolve the type without
+  // cross-document @id references.
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: `${siteUrl}/about/`,
+    description:
+      'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the posts describe and sources every article against cited references.',
+    knowsAbout: [
+      'Personal Finance',
+      'Financial Literacy',
+      'Net Worth Tracking',
+      'Multi-Currency Finance',
+      'Financial Independence',
+      'Money Management',
+    ],
+    sameAs: ['https://www.instagram.com/nidhi.today'],
+  },
 };
 
 const breadcrumbSchema = {
@@ -57,7 +45,7 @@ const breadcrumbSchema = {
 <BaseLayout
   title="About nidhi: Who Writes This and Why You Can Trust It | nidhi"
   description="Who writes nidhi, the qualifications behind the writing, and how every personal finance post is researched and sourced."
-  jsonLd={[personSchema, profilePageSchema, breadcrumbSchema]}
+  jsonLd={[profilePageSchema, breadcrumbSchema]}
 >
   <section class="about-page">
     <div class="about-container">
