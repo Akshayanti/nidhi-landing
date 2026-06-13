@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
+import { getCollection } from 'astro:content';
 
 // The live home page (scroll-snap landing redesign). See
 // docs/plans/landing-page-redesign.md for the full plan and
@@ -11,7 +12,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Personal finance planning across currencies. Track net worth, project financial independence, and compare decisions before you make them.',
+  description: 'Pre-beta personal finance planning across currencies. Plan net worth, early retirement, and big money decisions before you make them.',
   logo: 'https://nidhi.today/brand/favicons/android-chrome-512x512.png',
   sameAs: [
     'https://www.instagram.com/nidhi.today',
@@ -23,7 +24,7 @@ const webSiteSchema = {
   '@type': 'WebSite',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Money, understood. Personal finance planning across currencies, retirement projections, and decision comparison.',
+  description: 'Money, understood. Pre-beta planning for net worth, early retirement, and big money decisions across currencies.',
   // SearchAction wired up in PR4. The blog index honours `?q=` as a
   // deep link and writes the value back into the URL via
   // `replaceState` as the search field changes (see
@@ -36,6 +37,25 @@ const webSiteSchema = {
     },
     'query-input': 'required name=search_term_string',
   },
+};
+
+const liveBlogSlugs = new Set(
+  (await getCollection('blog'))
+    .filter((post) => post.data.pubDate <= new Date())
+    .map((post) => post.data.slug),
+);
+
+function liveBlogHref(slug: string) {
+  return liveBlogSlugs.has(slug) ? `/blog/${slug}/` : null;
+}
+
+const blogLinks = {
+  netWorth: liveBlogHref('what-is-net-worth'),
+  calculateNetWorth: liveBlogHref('how-to-calculate-net-worth'),
+  crossCurrencies: liveBlogHref('managing-money-across-currencies'),
+  purchasingPower: liveBlogHref('why-your-euro-buys-more-in-some-countries'),
+  financialIndependence: liveBlogHref('introduction-to-financial-independence'),
+  goals: liveBlogHref('setting-financial-goals'),
 };
 
 const breadcrumbSchema = {
@@ -53,12 +73,13 @@ const breadcrumbSchema = {
 
 // Pre-launch CTA. Swaps to "Get beta access" at beta and
 // "Sign up free" at public release. Single-line edit per phase.
-const heroCta = 'Notify me at launch';
+const heroCta = 'Notify me about beta';
 ---
 
 <BaseLayout
-  title="nidhi | Personal Finance Planning Across Currencies"
-  description="Track net worth across currencies, project when you can stop working, and compare decisions before you make them. Free during beta, free tier always after."
+  title="nidhi | Multi-Currency Financial Planning"
+  description="Plan big money decisions across currencies. Track net worth, model early retirement, and test what changes before you make a financial decision. Public beta coming soon."
+  imageAlt="nidhi: multi-currency financial planning for net worth, early retirement, and big money decisions."
   jsonLd={[organizationSchema, webSiteSchema, breadcrumbSchema]}
   mainClass="landing-shell"
   bodyData={{ 'data-page': 'landing' }}
@@ -77,103 +98,140 @@ const heroCta = 'Notify me at launch';
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="lp-eyebrow">Money, understood</p>
-          <h1 id="hero-heading">See your full financial picture, in any currency.</h1>
+          <h1 id="hero-heading">Plan big money decisions across currencies.</h1>
           <p class="lp-subhead">
-            Track net worth across currencies, project when you can stop working, and compare decisions before you make them.
+            Track net worth, model early retirement, and test what changes before you make a financial decision. Public beta is coming soon.
           </p>
 
           <WaitlistSection variant="hero" cta={heroCta} />
 
           <p class="hero-trust-line">
-            Built because no planner handled my actual life: assets in three currencies, debts in two, retirement that crossed borders. Free during beta, free tier always after. <a href="/beliefs/">More on our beliefs.</a>
+            Built because no planner handled my actual life: assets in three currencies, debts in two, retirement that crossed borders. Join the beta list and we will email you when access opens. <a href="/beliefs/">More on our beliefs</a>{blogLinks.crossCurrencies && <> and <a href={blogLinks.crossCurrencies}>planning across currencies</a></>}.
           </p>
         </div>
 
         <div class="hero-visual-wrap" aria-hidden="false">
-          <div class="lp-visual-card">
-            {/*
-              Hero visual: a summary card. Two stacked panels.
+          <div class="lp-visual-card hero-carousel" data-hero-carousel aria-label="Illustrative nidhi planning examples">
+            <div class="hero-carousel-slides">
+              <div class="hero-carousel-slide is-active" data-slide>
+                <svg viewBox="0 0 360 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-summary-title hero-summary-desc">
+                  <title id="hero-summary-title">Net worth summary example</title>
+                  <desc id="hero-summary-desc">A summary card showing a net worth of EUR 124,300 split across three currencies, above a twelve-month historical line and twelve-month projected line.</desc>
+                  <text x="180" y="32" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">NET WORTH</text>
+                  <text x="180" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="700" fill="var(--color-deep-blue)">EUR 124,300</text>
+                  <g transform="translate(40,92)">
+                    <rect x="0" y="0" width="173.6" height="10" fill="var(--chart-eur)" rx="2" ry="2" />
+                    <rect x="173.6" y="0" width="78.4" height="10" fill="var(--chart-usd)" />
+                    <rect x="252" y="0" width="28" height="10" fill="var(--chart-inr)" rx="2" ry="2" />
+                  </g>
+                  <text x="180" y="125" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-secondary)">EUR 62%  &#183;  USD 28%  &#183;  INR 10%</text>
+                  <line x1="40" y1="148" x2="320" y2="148" stroke="var(--color-border-light)" stroke-width="1" />
+                  <text x="180" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">12-MONTH TRACK</text>
+                  <line x1="40" y1="190" x2="320" y2="190" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="245" x2="320" y2="245" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="300" x2="320" y2="300" stroke="var(--color-border-light)" />
+                  <polygon points="40,288 70,282 100,275 130,265 160,250 180,235 180,300 40,300" fill="var(--chart-eur)" opacity="0.08" />
+                  <polyline points="40,288 70,282 100,275 130,265 160,250 180,235" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="180" cy="235" r="4" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
+                  <polyline points="180,235 215,222 250,210 285,198 320,190" stroke="var(--chart-eur)" stroke-width="2" stroke-dasharray="4,3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <text x="40" y="320" text-anchor="start" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">12 mo ago</text>
+                  <text x="180" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="var(--color-text-secondary)">today</text>
+                  <text x="320" y="320" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+ 12 mo</text>
+                </svg>
+                <p class="lp-visual-caption">Net worth path<span class="lp-example-badge">illustrative</span><br /><span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span></p>
+              </div>
 
-              Top panel (y 0..148): big total + horizontal stacked bar
-                showing the EUR/USD/INR mix. The stacked bar is a
-                deliberately different idiom from section 2's labelled
-                donut: same data, different shape, so the hero does not
-                read as a small copy of the multi-currency snap.
+              <div class="hero-carousel-slide" data-slide>
+                <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-mc-title hero-mc-desc">
+                  <title id="hero-mc-title">Multi-currency net worth example</title>
+                  <desc id="hero-mc-desc">A list of multi-currency assets and liabilities with a currency split and total converted to EUR.</desc>
+                  <text x="20" y="28" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-muted)">TOTAL NET WORTH</text>
+                  <text x="20" y="58" font-family="Inter,sans-serif" font-size="24" font-weight="700" fill="var(--color-deep-blue)">EUR 451,200</text>
+                  <line x1="20" y1="80" x2="460" y2="80" stroke="var(--color-border-light)" />
+                  <g font-family="Inter,sans-serif" font-size="13" fill="var(--color-text-primary)">
+                    <text x="20" y="105">Apartment, Prague</text>
+                    <text x="460" y="105" text-anchor="end" fill="var(--color-text-secondary)">EUR 280,000</text>
+                    <text x="20" y="135">Brokerage, US</text>
+                    <text x="460" y="135" text-anchor="end" fill="var(--color-text-secondary)">USD  47,300</text>
+                    <text x="20" y="165">Savings, India</text>
+                    <text x="460" y="165" text-anchor="end" fill="var(--color-text-secondary)">INR 8,40,000</text>
+                    <text x="20" y="195" fill="var(--color-text-muted)">Mortgage, EUR</text>
+                    <text x="460" y="195" text-anchor="end" fill="var(--color-text-muted)">EUR -110,000</text>
+                  </g>
+                  <line x1="20" y1="215" x2="460" y2="215" stroke="var(--color-border-light)" />
+                  <g transform="translate(70,275)">
+                    <path d="M 0 -28 A 28 28 0 1 1 -19.17 20.41 L 0 0 Z" fill="var(--chart-eur)" />
+                    <path d="M -19.17 20.41 A 28 28 0 0 1 -16.46 -22.65 L 0 0 Z" fill="var(--chart-usd)" />
+                    <path d="M -16.46 -22.65 A 28 28 0 0 1 0 -28 L 0 0 Z" fill="var(--chart-inr)" />
+                    <circle cx="0" cy="0" r="16" fill="var(--color-bg-white)" />
+                  </g>
+                  <g font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-secondary)">
+                    <rect x="120" y="262" width="9" height="9" fill="var(--chart-eur)" rx="2" />
+                    <text x="135" y="270">EUR 62%</text>
+                    <rect x="210" y="262" width="9" height="9" fill="var(--chart-usd)" rx="2" />
+                    <text x="225" y="270">USD 28%</text>
+                    <rect x="300" y="262" width="9" height="9" fill="var(--chart-inr)" rx="2" />
+                    <text x="315" y="270">INR 10%</text>
+                    <text x="120" y="293" fill="var(--color-text-muted)">Currency split, all converted to EUR</text>
+                  </g>
+                </svg>
+                <p class="lp-visual-caption">Multi-currency picture<span class="lp-example-badge">illustrative</span></p>
+              </div>
 
-              Bottom panel (y 148..340): a short-horizon sparkline with
-                a "today" marker. Solid line for the last 12 months,
-                dashed continuation for the next 12. No FI target, no
-                crossing year, no assumptions: that's section 3's job,
-                and putting any of it here would make the hero compete
-                with the projection deep-dive.
+              <div class="hero-carousel-slide" data-slide>
+                <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-proj-title hero-proj-desc">
+                  <title id="hero-proj-title">Projection example</title>
+                  <desc id="hero-proj-desc">A net-worth projection crossing a financial-independence target line at year 16.</desc>
+                  <line x1="40" y1="40" x2="460" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="100" x2="460" y2="100" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="160" x2="460" y2="160" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="220" x2="460" y2="220" stroke="var(--color-border-light)" />
+                  <line x1="40" y1="80" x2="460" y2="80" stroke="var(--color-teal)" stroke-width="1.5" />
+                  <text x="46" y="72" text-anchor="start" font-family="Inter,sans-serif" font-size="10" fill="var(--color-teal)" font-weight="600">Financial independence</text>
+                  <polyline points="40,210 60,205 80,195 100,180" stroke="var(--color-text-secondary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <polyline points="100,180 160,170 220,150 280,118 340,72 400,45 460,30" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="330" cy="80" r="5" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
+                  <line x1="330" y1="80" x2="330" y2="220" stroke="var(--color-text-muted)" stroke-dasharray="2,2" />
+                  <text x="330" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-primary)" font-weight="600">Reaches FI at year 16</text>
+                  <text x="40" y="240" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
+                  <text x="460" y="240" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+25 years</text>
+                  <text x="40" y="268" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-muted)">Real returns 5%  &#183;  Inflation 2.5% (EUR)  &#183;  Savings rate 38%</text>
+                </svg>
+                <p class="lp-visual-caption">Early-retirement projection<span class="lp-example-badge">illustrative</span></p>
+              </div>
 
-              No forecast cone, no probability band: those visuals read
-              as Monte Carlo, which is roadmap, not launch.
-            */}
-            <svg
-              viewBox="0 0 360 340"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-labelledby="hero-svg-title hero-svg-desc"
-            >
-              <title id="hero-svg-title">Example output</title>
-              <desc id="hero-svg-desc">A summary card showing a net worth of EUR 124,300 split across three currencies (EUR 62%, USD 28%, INR 10%), above a sparkline that traces the last twelve months of growth and continues with a dashed twelve-month projection.</desc>
+              <div class="hero-carousel-slide" data-slide>
+                <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-wi-title hero-wi-desc">
+                  <title id="hero-wi-title">What-if comparison example</title>
+                  <desc id="hero-wi-desc">Two net-worth paths over twenty years comparing current savings with saving five percentage points more.</desc>
+                  <line x1="40" y1="40" x2="400" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="120" x2="400" y2="120" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
+                  <line x1="40" y1="200" x2="400" y2="200" stroke="var(--color-border-light)" />
+                  <polyline points="40,200 100,180 160,155 220,125 280,95 340,68 400,50" stroke="var(--chart-usd)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                  <text x="406" y="54" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-usd)" font-weight="600">Save +5pp</text>
+                  <polyline points="40,200 100,190 160,178 220,160 280,140 340,118 400,95" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                  <text x="406" y="99" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-eur)" font-weight="600">Current</text>
+                  <text x="40" y="220" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
+                  <text x="400" y="220" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+20 years</text>
+                  <text x="240" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--color-text-primary)">After 20 years: about EUR 220k more by saving 5pp extra.</text>
+                </svg>
+                <p class="lp-visual-caption">What-if comparison<span class="lp-example-badge">illustrative</span></p>
+              </div>
+            </div>
 
-              {/* Top panel: total + currency stacked bar */}
-              <text x="180" y="32" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">NET WORTH</text>
-              <text x="180" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="700" fill="var(--color-deep-blue)">EUR 124,300</text>
-
-              {/* Stacked bar: EUR (62% = 173.6) + USD (28% = 78.4) + INR (10% = 28).
-                  Outer corners rounded only on the leftmost and rightmost
-                  segments so the whole bar reads as a single capsule. */}
-              <g transform="translate(40,92)">
-                <rect x="0" y="0" width="173.6" height="10" fill="var(--chart-eur)" rx="2" ry="2" />
-                <rect x="173.6" y="0" width="78.4" height="10" fill="var(--chart-usd)" />
-                <rect x="252" y="0" width="28" height="10" fill="var(--chart-inr)" rx="2" ry="2" />
-              </g>
-
-              <text x="180" y="125" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-secondary)">EUR 62%  &#183;  USD 28%  &#183;  INR 10%</text>
-
-              {/* Divider between panels */}
-              <line x1="40" y1="148" x2="320" y2="148" stroke="var(--color-border-light)" stroke-width="1" />
-
-              {/* Bottom panel: short-horizon track */}
-              <text x="180" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">12-MONTH TRACK</text>
-
-              {/* Subtle gridlines: top, mid, axis */}
-              <line x1="40" y1="190" x2="320" y2="190" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="245" x2="320" y2="245" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="300" x2="320" y2="300" stroke="var(--color-border-light)" />
-
-              {/* Solid historical sparkline: 12 months ago to today.
-                  Faintly filled below to give the hero some weight. */}
-              <polygon points="40,288 70,282 100,275 130,265 160,250 180,235 180,300 40,300" fill="var(--chart-eur)" opacity="0.08" />
-              <polyline points="40,288 70,282 100,275 130,265 160,250 180,235" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-
-              {/* "Today" marker on the historical-to-forecast handoff */}
-              <circle cx="180" cy="235" r="4" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
-
-              {/* Dashed forecast continuation. Slightly less steep than
-                  the historical to suggest the projection is conservative;
-                  the visual difference between solid and dashed alone is
-                  enough to read as "this part is projected." */}
-              <polyline points="180,235 215,222 250,210 285,198 320,190" stroke="var(--chart-eur)" stroke-width="2" stroke-dasharray="4,3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-
-              {/* Axis labels */}
-              <text x="40" y="320" text-anchor="start" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">12 mo ago</text>
-              <text x="180" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="var(--color-text-secondary)">today</text>
-              <text x="320" y="320" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+ 12 mo</text>
-            </svg>
-            <p class="lp-visual-caption">
-              Example output<span class="lp-example-badge">illustrative</span>
-              <br />
-              <span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span>
-            </p>
+            <div class="hero-carousel-controls" aria-label="Example controls">
+              <div class="hero-carousel-dots" role="tablist" aria-label="Illustrative examples">
+                <button type="button" role="tab" class="hero-carousel-dot is-active" data-slide-dot aria-label="Show net worth path example" aria-selected="true"></button>
+                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show multi-currency example" aria-selected="false"></button>
+                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show early-retirement projection example" aria-selected="false"></button>
+                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show what-if comparison example" aria-selected="false"></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <a class="lp-scroll-affordance" href="#multi-currency" aria-label="Scroll to next section">
+      <a class="lp-scroll-affordance" href="#who" aria-label="Scroll to who nidhi is for">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -182,238 +240,153 @@ const heroCta = 'Notify me at launch';
   </section>
 
   {/* =============================================================
-       Section 2: Multi-currency net worth
+       Section 2: Who it's for
        ============================================================= */}
-  <section class="lp-section lp-section--alt snap-section" id="multi-currency" aria-labelledby="cap-mc-heading">
+  <section class="lp-section lp-section--alt snap-section" id="who" aria-labelledby="who-heading" tabindex="-1">
     <div class="lp-section-inner">
-      <div class="cap-grid">
-        <div class="cap-copy">
-          <h2 id="cap-mc-heading">See your wealth in any currency, all at once.</h2>
+      <div class="audience-grid">
+        <div class="audience-copy">
+          <p class="lp-eyebrow">Who it's for</p>
+          <h2 id="who-heading">For people whose money crosses borders.</h2>
           <p class="cap-body">
-            Track every asset and liability in any currency. See your net worth in your spending currency, with live ECB rates. See where the concentration sits, and where it should not.
+            Multi-currency planning is the core of nidhi. The beta is for people who need their full plan to work across borders, not as an afterthought{blogLinks.purchasingPower && <>: the same money can behave differently depending on where you live, work, and spend it. <a href={blogLinks.purchasingPower}>Read the primer on purchasing power across countries</a>.</>}
           </p>
         </div>
-        <div class="cap-visual">
-          <div class="lp-visual-card">
-            <svg
-              viewBox="0 0 480 320"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-labelledby="cap-mc-svg-title cap-mc-svg-desc"
-            >
-              <title id="cap-mc-svg-title">Multi-currency net worth example</title>
-              <desc id="cap-mc-svg-desc">A list of multi-currency assets with their values, a donut showing the currency split (62% EUR, 28% USD, 10% INR), and a total of EUR 451,200.</desc>
 
-              <text x="20" y="28" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-muted)">TOTAL NET WORTH</text>
-              <text x="20" y="58" font-family="Inter,sans-serif" font-size="24" font-weight="700" fill="var(--color-deep-blue)">EUR 451,200</text>
-              <line x1="20" y1="80" x2="460" y2="80" stroke="var(--color-border-light)" />
-
-              <g font-family="Inter,sans-serif" font-size="13" fill="var(--color-text-primary)">
-                <text x="20" y="105">Apartment, Prague</text>
-                <text x="460" y="105" text-anchor="end" fill="var(--color-text-secondary)">EUR 280,000</text>
-
-                <text x="20" y="135">Brokerage, US</text>
-                <text x="460" y="135" text-anchor="end" fill="var(--color-text-secondary)">USD  47,300</text>
-
-                <text x="20" y="165">Savings, India</text>
-                <text x="460" y="165" text-anchor="end" fill="var(--color-text-secondary)">INR 8,40,000</text>
-
-                <text x="20" y="195" fill="var(--color-text-muted)">Mortgage, EUR</text>
-                <text x="460" y="195" text-anchor="end" fill="var(--color-text-muted)">EUR -110,000</text>
-              </g>
-
-              <line x1="20" y1="215" x2="460" y2="215" stroke="var(--color-border-light)" />
-
-              {/* Same 62/28/10 split as the hero donut, scaled to r=28. */}
-              <g transform="translate(70,275)">
-                <path d="M 0 -28 A 28 28 0 1 1 -19.17 20.41 L 0 0 Z" fill="var(--chart-eur)" />
-                <path d="M -19.17 20.41 A 28 28 0 0 1 -16.46 -22.65 L 0 0 Z" fill="var(--chart-usd)" />
-                <path d="M -16.46 -22.65 A 28 28 0 0 1 0 -28 L 0 0 Z" fill="var(--chart-inr)" />
-                <circle cx="0" cy="0" r="16" fill="var(--color-bg-white)" />
-              </g>
-              <g font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-secondary)">
-                <rect x="120" y="262" width="9" height="9" fill="var(--chart-eur)" rx="2" />
-                <text x="135" y="270">EUR 62%</text>
-                <rect x="210" y="262" width="9" height="9" fill="var(--chart-usd)" rx="2" />
-                <text x="225" y="270">USD 28%</text>
-                <rect x="300" y="262" width="9" height="9" fill="var(--chart-inr)" rx="2" />
-                <text x="315" y="270">INR 10%</text>
-                <text x="120" y="293" fill="var(--color-text-muted)">Currency split, all converted to EUR</text>
-              </g>
-            </svg>
-            <p class="lp-visual-caption">
-              Example output<span class="lp-example-badge">illustrative</span>
-            </p>
-          </div>
-        </div>
+        <ul class="audience-list">
+          <li>You cannot answer "Can I afford this?" without rebuilding your spreadsheet.</li>
+          <li>Your retirement plan changes depending on where you eventually live.</li>
+          <li>You are comparing a property purchase, career change, or other major financial decision.</li>
+          <li>Your financial picture is spread across accounts, assets, debts, and future expenses.</li>
+        </ul>
       </div>
+
+      <a class="lp-scroll-affordance" href="#how-it-works" aria-label="Scroll to how nidhi works">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
     </div>
   </section>
 
   {/* =============================================================
-       Section 3: Projections
+       Section 3: How it works
        ============================================================= */}
-  <section class="lp-section snap-section" id="projections" aria-labelledby="cap-proj-heading">
+  <section class="lp-section snap-section" id="how-it-works" aria-labelledby="how-heading" tabindex="-1">
     <div class="lp-section-inner">
-      <div class="cap-grid cap-grid--reverse">
-        <div class="cap-copy">
-          <h2 id="cap-proj-heading">Know when you can stop working.</h2>
+      <div class="how-grid">
+        <div class="how-copy">
+          <p class="lp-eyebrow">The model</p>
+          <h2 id="how-heading">Start with your real financial life.</h2>
           <p class="cap-body">
-            Inflation-adjusted projections for net worth, retirement, and financial independence. The assumptions are visible alongside the answer. Change them, and watch the year move.
+            nidhi is built around {blogLinks.netWorth ? <a href={blogLinks.netWorth}>what you own and what you owe</a> : 'what you own, what you owe'}, what you earn, and what you expect to spend. From there, it projects your path and lets you compare choices before you make a financial decision.
           </p>
         </div>
-        <div class="cap-visual">
-          <div class="lp-visual-card">
-            <svg
-              viewBox="0 0 480 280"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-labelledby="cap-proj-svg-title cap-proj-svg-desc"
-            >
-              <title id="cap-proj-svg-title">Projections example</title>
-              <desc id="cap-proj-svg-desc">A net-worth projection from today rising to cross a horizontal financial-independence target line at year 16, with the underlying assumptions (real return, inflation, savings rate) listed below.</desc>
 
-              {/* Gridlines */}
-              <line x1="40" y1="40" x2="460" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="100" x2="460" y2="100" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="160" x2="460" y2="160" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="220" x2="460" y2="220" stroke="var(--color-border-light)" />
-
-              {/*
-                Single deterministic projection. No fanned cone, no
-                probability band, no dashed median: a probabilistic visual
-                would read as Monte Carlo, which is roadmap, not launch.
-                The trajectory is concave-up to suggest compound growth
-                without overclaiming a specific simulation method.
-              */}
-
-              {/* FI target line, with its label anchored at the left end
-                  so the rising forecast (which passes through the upper
-                  right of the chart) does not collide with the label. */}
-              <line x1="40" y1="80" x2="460" y2="80" stroke="var(--color-teal)" stroke-width="1.5" />
-              <text x="46" y="72" text-anchor="start" font-family="Inter,sans-serif" font-size="10" fill="var(--color-teal)" font-weight="600">Financial independence</text>
-
-              {/* Historical sparkline (last 12 months before today) */}
-              <polyline points="40,210 60,205 80,195 100,180" stroke="var(--color-text-secondary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-
-              {/* Forecast line: solid, single trajectory, concave-up. */}
-              <polyline points="100,180 160,170 220,150 280,118 340,72 400,45 460,30" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-
-              {/* Crossing point at the FI target. Drop-line down to the
-                  time axis carries the eye to the year label. */}
-              <circle cx="330" cy="80" r="5" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
-              <line x1="330" y1="80" x2="330" y2="220" stroke="var(--color-text-muted)" stroke-dasharray="2,2" />
-              <text x="330" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-primary)" font-weight="600">Reaches FI at year 16</text>
-
-              <text x="40" y="240" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
-              <text x="460" y="240" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+25 years</text>
-
-              {/* Axis assumptions. y=268 leaves room for descenders inside
-                  the 280-tall viewBox; middle-dot separators keep the
-                  rhythm even where SVG collapses whitespace. */}
-              <text x="40" y="268" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-muted)">Real returns 5%  &#183;  Inflation 2.5% (EUR)  &#183;  Savings rate 38%</text>
-            </svg>
-            <p class="lp-visual-caption">
-              Example output<span class="lp-example-badge">illustrative</span>
-            </p>
-          </div>
-        </div>
+        <ol class="how-steps" aria-label="How nidhi works">
+          <li>
+            <span class="how-step-number">1</span>
+            <div>
+              <h3>Add the pieces</h3>
+              <p>Assets, debts, income, recurring expenses, future costs, and the currencies they live in.</p>
+            </div>
+          </li>
+          <li>
+            <span class="how-step-number">2</span>
+            <div>
+              <h3>See the path</h3>
+              <p>{blogLinks.calculateNetWorth ? <a href={blogLinks.calculateNetWorth}>Net worth</a> : 'Net worth'}, cash flow, {blogLinks.financialIndependence ? <a href={blogLinks.financialIndependence}>retirement timing</a> : 'retirement timing'}, and the assumptions behind the projection.</p>
+            </div>
+          </li>
+          <li>
+            <span class="how-step-number">3</span>
+            <div>
+              <h3>Compare the decision</h3>
+              <p>Buying property, saving more, changing jobs, adding future expenses, or retiring earlier.</p>
+            </div>
+          </li>
+        </ol>
       </div>
+
+      <a class="lp-scroll-affordance" href="#beta-scope" aria-label="Scroll to public beta scope">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
     </div>
   </section>
 
   {/* =============================================================
-       Section 4: What-if scenarios
+       Section 4: Public beta scope
        ============================================================= */}
-  <section class="lp-section lp-section--alt snap-section" id="what-if" aria-labelledby="cap-wi-heading">
+  <section class="lp-section lp-section--alt snap-section" id="beta-scope" aria-labelledby="beta-scope-heading" tabindex="-1">
     <div class="lp-section-inner">
-      <div class="cap-grid">
-        <div class="cap-copy">
-          <h2 id="cap-wi-heading">Compare decisions before you make them.</h2>
+      <div class="beta-scope">
+        <div class="beta-scope-copy">
+          <p class="lp-eyebrow">Public beta</p>
+          <h2 id="beta-scope-heading">What we're building for public beta.</h2>
           <p class="cap-body">
-            Run two paths side by side. Higher savings rate, different asset mix, foreign-currency mortgage, retirement in a different country. Each gives a yes-or-no, not a guess.
+            The first beta is focused on the planning questions that get messy when your money crosses borders. These are the core areas we want early users to pressure-test.
           </p>
         </div>
-          <div class="cap-visual">
-            <div class="lp-visual-card">
-            {/* Two-line comparison. viewBox kept at 480x280 to match
-                section 3's aspect ratio. Chart data area: x=40..400.
-                Right gutter (400..470) holds the line labels and the
-                gap annotation. Outcome line sits at y=255, centered.
-                Earlier draft had a dual footer ("Retire 3 years sooner"
-                + "Net worth at 60: +EUR 220k") that mixed timeframes
-                (20-year horizon vs age 60) and implied an FI threshold
-                the chart never drew; both replaced by a single delta
-                that the chart itself visualises. */}
-            <svg
-              viewBox="0 0 480 280"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-labelledby="cap-wi-svg-title cap-wi-svg-desc"
-            >
-              <title id="cap-wi-svg-title">What-if comparison example</title>
-              <desc id="cap-wi-svg-desc">Two net-worth paths over twenty years. The path where the saver puts away five percentage points more ends about EUR 220,000 higher.</desc>
 
-              <line x1="40" y1="40" x2="400" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="120" x2="400" y2="120" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-              <line x1="40" y1="200" x2="400" y2="200" stroke="var(--color-border-light)" />
-
-              <polyline points="40,200 100,180 160,155 220,125 280,95 340,68 400,50" stroke="var(--chart-usd)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-              <text x="406" y="54" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-usd)" font-weight="600">Save +5pp</text>
-
-              <polyline points="40,200 100,190 160,178 220,160 280,140 340,118 400,95" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-              <text x="406" y="99" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-eur)" font-weight="600">Current</text>
-
-              <text x="40" y="220" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
-              <text x="400" y="220" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+20 years</text>
-
-              <text x="240" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--color-text-primary)">After 20 years: about EUR 220k more by saving 5pp extra.</text>
-            </svg>
-            <p class="lp-visual-caption">
-              Example output<span class="lp-example-badge">illustrative</span>
-            </p>
-          </div>
-        </div>
+        <ul class="beta-scope-list">
+          <li>
+            <h3>Multi-currency net worth</h3>
+            <p>Track assets and debts in different currencies, then view the whole picture in the currency you actually spend{blogLinks.crossCurrencies ? <>. <a href={blogLinks.crossCurrencies}>Read how cross-currency planning changes the picture</a>.</> : '.'}</p>
+          </li>
+          <li>
+            <h3>Retirement and early-retirement projections</h3>
+            <p>See possible timing, key assumptions, and how the path changes when your savings or costs change{blogLinks.financialIndependence ? <>. <a href={blogLinks.financialIndependence}>Start with financial independence basics</a>.</> : '.'}</p>
+          </li>
+          <li>
+            <h3>Goal and expense planning</h3>
+            <p>Map expected income, recurring costs, and future expenses into the same long-range plan{blogLinks.goals ? <>. <a href={blogLinks.goals}>Read about setting concrete financial goals</a>.</> : '.'}</p>
+          </li>
+          <li>
+            <h3>What-if comparisons</h3>
+            <p>Model major decisions like buying property, saving more, taking a lower-paying job, or changing key assumptions.</p>
+          </li>
+        </ul>
       </div>
+
+      <a class="lp-scroll-affordance" href="#signup" aria-label="Scroll to beta signup">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
     </div>
   </section>
-
-  {/* =============================================================
-       No standalone "free tools" section on the landing page.
-
-       The header dropdown ("Free Tools") and the footer column already
-       link the two shipped tools and the /free/ index page on every
-       route. Repeating that on the home page interrupted the conversion
-       narrative (hero -> capabilities -> self-check -> trust ->
-       waitlist) and created a small messaging conflict: the hero
-       promises an upcoming product, but a "the multi-currency one
-       already works today" section sat directly under it. Free tools
-       still ship, still rank on their own pages, and are still
-       discoverable from every page's chrome; they just don't compete
-       with the waitlist CTA on this one.
-       ============================================================= */}
 
   {/* =============================================================
        Conversion tail. Deliberately NOT a snap section: it scrolls
-       naturally as the page's conclusion. Order is intentional:
-         self-check (priming) -> trust strip (friction removal) ->
-         waitlist form (conversion).
+       naturally as the page's conclusion: trust strip -> waitlist.
        Footer.astro renders below <main> in the default Astro flow.
        ============================================================= */}
-  <section class="lp-section lp-section--alt lp-section--tail" id="signup" aria-labelledby="self-check-heading">
+  <section class="lp-section lp-section--tail" id="signup" aria-labelledby="signup-heading" tabindex="-1">
     <div class="lp-section-inner">
-
-      <div class="self-check">
-        <h3 id="self-check-heading">nidhi is for you if:</h3>
-        <ul>
-          <li>You hold money or debts in more than one currency.</li>
-          <li>You have moved countries, or plan to, and your savings have not caught up.</li>
-          <li>You want to know, with some confidence, when you can stop working.</li>
-          <li>You want to see what changes if you save five percent more, or take a lower-paying job you actually want.</li>
-          <li>Your retirement depends on where you eventually live.</li>
-          <li>Your spreadsheet has stopped keeping up, or you would rather not maintain one at all.</li>
-        </ul>
-        <p class="self-check-cta">If any of these sound like you, drop your email below.</p>
+      <div class="available-now" aria-labelledby="available-now-heading">
+        <div class="available-now-copy">
+          <p class="lp-eyebrow">Available now</p>
+          <h2 id="available-now-heading">Use the free tools while public beta is being built.</h2>
+          <p>
+            The full planner is still pre-beta. In the meantime, the free tools and blog are live.
+          </p>
+        </div>
+        <div class="available-now-links" aria-label="Available now links">
+          <a href="/free/multi-currency-net-worth/">
+            <span>Multi-currency net worth</span>
+            <small>See assets and debts across currencies.</small>
+          </a>
+          <a href="/free/loan-comparison/">
+            <span>Loan comparison</span>
+            <small>Compare borrowing offers side by side.</small>
+          </a>
+          <a href="/blog/">
+            <span>Read the blog</span>
+            <small>Learn the concepts behind the planner.</small>
+          </a>
+        </div>
       </div>
 
       <div class="trust-strip" aria-label="Privacy and data handling">
@@ -426,7 +399,11 @@ const heroCta = 'Notify me at launch';
         </ul>
       </div>
 
-      <WaitlistSection />
+      <div class="signup-block">
+        <p class="lp-eyebrow">Public beta</p>
+        <h2 id="signup-heading" class="signup-heading">Join the public beta list</h2>
+        <WaitlistSection />
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -453,6 +430,88 @@ const heroCta = 'Notify me at launch';
         el.style.display = 'none';
       });
   })();
+
+  (function () {
+    var carousel = document.querySelector('[data-hero-carousel]');
+    if (!carousel) return;
+    var slides = Array.prototype.slice.call(carousel.querySelectorAll('[data-slide]'));
+    var dots = Array.prototype.slice.call(carousel.querySelectorAll('[data-slide-dot]'));
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var index = 0;
+    var timer = null;
+    var resumeTimer = null;
+    var paused = reduceMotion;
+
+    function show(nextIndex) {
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        slide.classList.toggle('is-active', i === index);
+      });
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('is-active', i === index);
+        dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+    }
+
+    function stop() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    }
+
+    function clearResumeTimer() {
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      resumeTimer = null;
+    }
+
+    function start() {
+      stop();
+      if (paused || reduceMotion || slides.length < 2) return;
+      timer = window.setInterval(function () {
+        show(index + 1);
+      }, 3000);
+    }
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        show(i);
+        stop();
+        clearResumeTimer();
+        if (reduceMotion) return;
+        paused = true;
+        resumeTimer = window.setTimeout(function () {
+          paused = false;
+          start();
+        }, 5000);
+      });
+    });
+
+    carousel.addEventListener('mouseenter', function () {
+      clearResumeTimer();
+      stop();
+    });
+    carousel.addEventListener('mouseleave', start);
+    carousel.addEventListener('focusin', function () {
+      clearResumeTimer();
+      stop();
+    });
+    carousel.addEventListener('focusout', start);
+
+    show(0);
+    start();
+  })();
+
+  (function () {
+    document.querySelectorAll('.lp-scroll-affordance[href^="#"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        var targetId = link.getAttribute('href').slice(1);
+        var target = document.getElementById(targetId);
+        if (!target) return;
+        window.setTimeout(function () {
+          try { target.focus({ preventScroll: true }); } catch (_) { target.focus(); }
+        }, 0);
+      });
+    });
+  })();
 </script>
 
 <style>
@@ -470,14 +529,18 @@ const heroCta = 'Notify me at launch';
     justify-content: center;
   }
 
+  .lp-section:focus {
+    outline: none;
+  }
+
   .lp-section--alt { background: var(--color-bg-white); }
 
-  /* The tail section (section 6) does not snap and does not need to
-     fill a viewport. It carries self-check + trust strip + waitlist,
-     and its natural height is what we want to render. */
+  /* The tail section does not snap and does not need to fill a viewport.
+     It carries trust copy + waitlist, and its natural height is what we
+     want to render. */
   .lp-section--tail {
     min-height: 0 !important;
-    padding: 80px 24px 64px;
+    padding: 88px 24px 80px;
     align-items: flex-start;
   }
 
@@ -485,6 +548,118 @@ const heroCta = 'Notify me at launch';
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* ----------------------------------------------------------------
+     Sections 2-4: audience, model, and public beta scope
+     ---------------------------------------------------------------- */
+  .audience-grid,
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .audience-grid,
+    .how-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 64px;
+      align-items: center;
+    }
+  }
+
+  .audience-copy h2,
+  .how-copy h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.7rem, 2.4vw + 0.5rem, 2.45rem);
+    line-height: 1.15;
+    color: var(--color-deep-blue);
+    margin: 0 0 16px;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .audience-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .audience-list li {
+    position: relative;
+    padding: 16px 18px 16px 42px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    font-size: 0.98rem;
+  }
+
+  .audience-list li::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 24px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-teal);
+  }
+
+  .how-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 22px;
+  }
+
+  .how-steps li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .how-steps li:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .how-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-deep-blue);
+    color: white;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .how-steps h3 {
+    font-family: var(--font-heading);
+    color: var(--color-text-primary);
+    font-size: 1.05rem;
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .how-steps p {
+    color: var(--color-text-secondary);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin: 0;
   }
 
   .lp-eyebrow {
@@ -564,6 +739,71 @@ const heroCta = 'Notify me at launch';
 
   .lp-visual-card svg { width: 100%; height: auto; display: block; }
 
+  .hero-carousel {
+    min-height: 430px;
+  }
+
+  .hero-carousel-slides {
+    position: relative;
+  }
+
+  .hero-carousel-slide {
+    display: none;
+  }
+
+  .hero-carousel-slide.is-active {
+    display: block;
+  }
+
+  .hero-carousel-slide svg {
+    aspect-ratio: 1.26 / 1;
+    object-fit: contain;
+  }
+
+  .hero-carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .hero-carousel-dot {
+    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-white);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  .hero-carousel-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-carousel-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .hero-carousel-dot.is-active {
+    background: var(--color-teal);
+    border-color: var(--color-teal);
+  }
+
+  .hero-carousel-dot:hover,
+  .hero-carousel-dot:focus-visible {
+    color: var(--color-deep-blue);
+    border-color: var(--color-deep-blue);
+    outline: none;
+  }
+
+  .hero-carousel-dot:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  }
+
   .lp-visual-caption {
     font-size: 0.78rem;
     color: var(--color-text-muted);
@@ -614,29 +854,25 @@ const heroCta = 'Notify me at launch';
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
   }
 
-  /* ----------------------------------------------------------------
-     Sections 2-4: capability sections
-     Two-column on desktop with alternating side per the redesign plan.
-     Mobile stacks copy then visual.
-     ---------------------------------------------------------------- */
-  .cap-grid {
+  .beta-scope {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 32px;
-    align-items: center;
+    gap: 34px;
+    align-items: start;
   }
 
-  @media (min-width: 1024px) {
-    .cap-grid { grid-template-columns: 1fr 1fr; gap: 60px; }
-    .cap-grid--reverse .cap-copy { order: 2; }
-    .cap-grid--reverse .cap-visual { order: 1; }
+  @media (min-width: 900px) {
+    .beta-scope {
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 56px;
+      align-items: start;
+    }
   }
 
-  .cap-copy h2 {
+  .beta-scope-copy h2 {
     font-family: var(--font-heading);
-    font-size: clamp(1.4rem, 2vw + 0.6rem, 2rem);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.7rem, 2.4vw + 0.5rem, 2.45rem);
+    line-height: 1.15;
     color: var(--color-deep-blue);
     margin: 0 0 16px;
     font-weight: 700;
@@ -652,81 +888,151 @@ const heroCta = 'Notify me at launch';
     margin: 0;
   }
 
-  /* ----------------------------------------------------------------
-     Conversion tail: self-check + trust strip
-     The WaitlistSection (default variant) is rendered below as the
-     conversion form. Its own scoped styles handle the inner card
-     chrome.
-     ---------------------------------------------------------------- */
-  .self-check {
-    max-width: 680px;
-    margin: 0 auto 24px;
-    padding: 32px;
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border-light);
-    border-radius: 16px;
-    box-shadow: 0 4px 24px color-mix(in srgb, var(--color-deep-blue) 5%, transparent);
-  }
-
-  .self-check h3 {
-    font-family: var(--font-heading);
-    margin: 0 0 18px;
-    font-size: 1.15rem;
-    color: var(--color-deep-blue);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  .self-check ul {
-    margin: 0 0 20px;
-    padding: 0;
+  .beta-scope-list {
     list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 7px;
+    gap: 14px;
   }
 
-  @media (min-width: 640px) {
-    .self-check ul {
+  @media (min-width: 760px) {
+    .beta-scope-list {
       grid-template-columns: 1fr 1fr;
-      gap: 6px 28px;
+      gap: 16px;
     }
   }
 
-  .self-check ul li {
-    font-size: 0.9rem;
+  .beta-scope-list li {
+    min-height: 150px;
+    padding: 20px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
+    background: var(--color-bg-white);
+  }
+
+  .beta-scope-list h3 {
+    font-family: var(--font-heading);
     color: var(--color-text-primary);
-    line-height: 1.45;
-    padding-left: 18px;
-    position: relative;
+    font-size: 1.02rem;
+    margin: 0 0 8px;
+    font-weight: 700;
   }
 
-  .self-check ul li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-teal);
-    opacity: 0.55;
-  }
-
-  .self-check-cta {
+  .beta-scope-list p {
     margin: 0;
-    padding-top: 18px;
-    border-top: 1px solid var(--color-border-light);
-    font-size: 0.95rem;
-    color: var(--color-text-primary);
-    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .signup-heading {
+    font-family: var(--font-heading);
+    color: var(--color-deep-blue);
+    font-size: clamp(1.35rem, 1.5vw + 0.7rem, 1.8rem);
+    line-height: 1.2;
+    margin: 0 0 24px;
     text-align: center;
   }
 
+  .available-now {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-bottom: 52px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  @media (min-width: 900px) {
+    .available-now {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 48px;
+      align-items: center;
+    }
+  }
+
+  .available-now-copy h2 {
+    font-family: var(--font-heading);
+    color: var(--color-deep-blue);
+    font-size: clamp(1.25rem, 1.4vw + 0.65rem, 1.65rem);
+    line-height: 1.2;
+    margin: 0 0 10px;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .available-now-copy p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 48ch;
+  }
+
+  .available-now-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  @media (min-width: 680px) {
+    .available-now-links {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .available-now-links a {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 122px;
+    padding: 18px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .available-now-links a:hover,
+  .available-now-links a:focus-visible {
+    border-color: var(--color-teal);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
+    outline: none;
+  }
+
+  .available-now-links span {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.94rem;
+    color: var(--color-deep-blue);
+  }
+
+  .available-now-links small {
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .signup-block {
+    max-width: 760px;
+    margin: 56px auto 0;
+    text-align: center;
+  }
+
+  .signup-block .lp-eyebrow {
+    margin-bottom: 10px;
+  }
+
   .trust-strip {
-    max-width: 680px;
-    margin: 0 auto 24px;
-    padding: 20px 28px;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 30px;
     border: 1px solid var(--color-border-light);
     border-radius: 12px;
     background: var(--color-bg-white);
@@ -781,8 +1087,15 @@ const heroCta = 'Notify me at launch';
      ---------------------------------------------------------------- */
   @media (max-width: 640px) {
     .lp-section { padding: 88px 16px 48px; }
-    .lp-section--tail { padding: 56px 16px 48px; }
-    .self-check { padding: 24px 20px; }
+    .lp-section--tail { padding: 64px 16px 56px; }
+    .available-now {
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      gap: 22px;
+    }
+    .available-now-links a { min-height: 0; }
     .trust-strip { padding: 16px 20px; }
+    .signup-block { margin-top: 44px; }
+    .beta-scope-list li { min-height: 0; }
   }
 </style>
