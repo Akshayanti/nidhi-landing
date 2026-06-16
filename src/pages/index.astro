@@ -12,7 +12,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Pre-beta personal finance planning across currencies. Plan net worth, early retirement, and big money decisions before you make them.',
+  description: 'Personal finance planning across currencies. See your real net worth, model retirement timing, and stress-test major decisions before they cost you money.',
   logo: 'https://nidhi.today/brand/favicons/android-chrome-512x512.png',
   sameAs: [
     'https://www.instagram.com/nidhi.today',
@@ -24,7 +24,7 @@ const webSiteSchema = {
   '@type': 'WebSite',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Money, understood. Pre-beta planning for net worth, early retirement, and big money decisions across currencies.',
+  description: 'Money, understood. Multi-currency planning for real net worth, retirement timing, and major financial decisions.',
   // SearchAction wired up in PR4. The blog index honours `?q=` as a
   // deep link and writes the value back into the URL via
   // `replaceState` as the search field changes (see
@@ -73,13 +73,13 @@ const breadcrumbSchema = {
 
 // Pre-launch CTA. Swaps to "Get beta access" at beta and
 // "Sign up free" at public release. Single-line edit per phase.
-const heroCta = 'Notify me about beta';
+const heroCta = 'Notify me about access';
 ---
 
 <BaseLayout
   title="nidhi | Multi-Currency Financial Planning"
-  description="Plan big money decisions across currencies. Track net worth, model early retirement, and test what changes before you make a financial decision. Public beta coming soon."
-  imageAlt="nidhi: multi-currency financial planning for net worth, early retirement, and big money decisions."
+  description="Plan major life decisions across currencies. See your real net worth, model retirement timing, and stress-test choices before they cost you money."
+  imageAlt="nidhi: multi-currency financial planning for net worth, retirement timing, and major financial decisions."
   jsonLd={[organizationSchema, webSiteSchema, breadcrumbSchema]}
   mainClass="landing-shell"
   bodyData={{ 'data-page': 'landing' }}
@@ -98,20 +98,20 @@ const heroCta = 'Notify me about beta';
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="lp-eyebrow">Money, understood</p>
-          <h1 id="hero-heading">Plan big money decisions across currencies.</h1>
+          <h1 id="hero-heading">Plan major life decisions across currencies.</h1>
           <p class="lp-subhead">
-            Track net worth, model early retirement, and test what changes before you make a financial decision. Public beta is coming soon.
+            Avoid costly currency surprises. See your real net worth, model retirement timing, and stress-test every decision before it costs you money.
           </p>
 
           <WaitlistSection variant="hero" cta={heroCta} />
 
           <p class="hero-trust-line">
-            Built because no planner handled my actual life: assets in three currencies, debts in two, retirement that crossed borders. Join the beta list and we will email you when access opens. <a href="/beliefs/">More on our beliefs</a>{blogLinks.crossCurrencies && <> and <a href={blogLinks.crossCurrencies}>planning across currencies</a></>}.
+            Built because no planner handled my actual life: assets in three currencies, debts in two, retirement that crossed borders. Join the early-access list and we will email you when the planner opens. <a href="/beliefs/">More on our beliefs</a>{blogLinks.crossCurrencies && <> and <a href={blogLinks.crossCurrencies}>planning across currencies</a></>}.
           </p>
         </div>
 
         <div class="hero-visual-wrap" aria-hidden="false">
-          <div class="lp-visual-card hero-carousel" data-hero-carousel aria-label="Illustrative nidhi planning examples">
+          <div class="lp-visual-card hero-carousel" data-hero-carousel aria-label="nidhi planning examples">
             <div class="hero-carousel-slides">
               <div class="hero-carousel-slide is-active" data-slide>
                 <svg viewBox="0 0 360 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-summary-title hero-summary-desc">
@@ -138,7 +138,7 @@ const heroCta = 'Notify me about beta';
                   <text x="180" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="var(--color-text-secondary)">today</text>
                   <text x="320" y="320" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+ 12 mo</text>
                 </svg>
-                <p class="lp-visual-caption">Net worth path<span class="lp-example-badge">illustrative</span><br /><span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span></p>
+                <p class="lp-visual-caption">Net worth path<br /><span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span></p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
@@ -175,7 +175,7 @@ const heroCta = 'Notify me about beta';
                     <text x="120" y="293" fill="var(--color-text-muted)">Currency split, all converted to EUR</text>
                   </g>
                 </svg>
-                <p class="lp-visual-caption">Multi-currency picture<span class="lp-example-badge">illustrative</span></p>
+                <p class="lp-visual-caption">Multi-currency picture</p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
@@ -197,7 +197,7 @@ const heroCta = 'Notify me about beta';
                   <text x="460" y="240" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+25 years</text>
                   <text x="40" y="268" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-muted)">Real returns 5%  &#183;  Inflation 2.5% (EUR)  &#183;  Savings rate 38%</text>
                 </svg>
-                <p class="lp-visual-caption">Early-retirement projection<span class="lp-example-badge">illustrative</span></p>
+                <p class="lp-visual-caption">Early-retirement projection</p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
@@ -215,12 +215,12 @@ const heroCta = 'Notify me about beta';
                   <text x="400" y="220" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+20 years</text>
                   <text x="240" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--color-text-primary)">After 20 years: about EUR 220k more by saving 5pp extra.</text>
                 </svg>
-                <p class="lp-visual-caption">What-if comparison<span class="lp-example-badge">illustrative</span></p>
+                <p class="lp-visual-caption">What-if comparison</p>
               </div>
             </div>
 
             <div class="hero-carousel-controls" aria-label="Example controls">
-              <div class="hero-carousel-dots" role="tablist" aria-label="Illustrative examples">
+              <div class="hero-carousel-dots" role="tablist" aria-label="Planning examples">
                 <button type="button" role="tab" class="hero-carousel-dot is-active" data-slide-dot aria-label="Show net worth path example" aria-selected="true"></button>
                 <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show multi-currency example" aria-selected="false"></button>
                 <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show early-retirement projection example" aria-selected="false"></button>
@@ -308,7 +308,7 @@ const heroCta = 'Notify me about beta';
         </ol>
       </div>
 
-      <a class="lp-scroll-affordance" href="#beta-scope" aria-label="Scroll to public beta scope">
+      <a class="lp-scroll-affordance" href="#beta-scope" aria-label="Scroll to early-access scope">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -317,16 +317,16 @@ const heroCta = 'Notify me about beta';
   </section>
 
   {/* =============================================================
-       Section 4: Public beta scope
+       Section 4: Early-access scope
        ============================================================= */}
   <section class="lp-section lp-section--alt snap-section" id="beta-scope" aria-labelledby="beta-scope-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="beta-scope">
         <div class="beta-scope-copy">
-          <p class="lp-eyebrow">Public beta</p>
-          <h2 id="beta-scope-heading">What we're building for public beta.</h2>
+          <p class="lp-eyebrow">Early access</p>
+          <h2 id="beta-scope-heading">What early access will include.</h2>
           <p class="cap-body">
-            The first beta is focused on the planning questions that get messy when your money crosses borders. These are the core areas we want early users to pressure-test.
+            Early access is focused on the planning questions that get messy when your money crosses borders. These are the core areas we want users to pressure-test first.
           </p>
         </div>
 
@@ -368,9 +368,9 @@ const heroCta = 'Notify me about beta';
       <div class="available-now" aria-labelledby="available-now-heading">
         <div class="available-now-copy">
           <p class="lp-eyebrow">Available now</p>
-          <h2 id="available-now-heading">Use the free tools while public beta is being built.</h2>
+          <h2 id="available-now-heading">Use the free tools while the full planner opens up.</h2>
           <p>
-            The full planner is still pre-beta. In the meantime, the free tools and blog are live.
+            The full planner is opening in stages. In the meantime, the free tools and blog are live.
           </p>
         </div>
         <div class="available-now-links" aria-label="Available now links">
@@ -400,8 +400,8 @@ const heroCta = 'Notify me about beta';
       </div>
 
       <div class="signup-block">
-        <p class="lp-eyebrow">Public beta</p>
-        <h2 id="signup-heading" class="signup-heading">Join the public beta list</h2>
+        <p class="lp-eyebrow">Early access</p>
+        <h2 id="signup-heading" class="signup-heading">Join the early-access list</h2>
         <WaitlistSection />
       </div>
     </div>
@@ -551,7 +551,7 @@ const heroCta = 'Notify me about beta';
   }
 
   /* ----------------------------------------------------------------
-     Sections 2-4: audience, model, and public beta scope
+     Sections 2-4: audience, model, and early-access scope
      ---------------------------------------------------------------- */
   .audience-grid,
   .how-grid {
@@ -810,20 +810,6 @@ const heroCta = 'Notify me about beta';
     margin: 12px 0 0;
     text-align: center;
     line-height: 1.5;
-  }
-
-  .lp-example-badge {
-    display: inline-block;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    background: var(--color-bg);
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-left: 8px;
-    vertical-align: middle;
-    border: 1px solid var(--color-border-light);
   }
 
   /* Scroll affordance: a static chevron link to the next section. The

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
+import WaitlistSection from '../../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
 
 // Ordered by topical fit to "multi-currency net worth", strongest first.
@@ -232,6 +233,21 @@ const faqSchema = {
 
     <MultiCurrencyNetWorth client:load />
 
+    <aside class="mcnw-accessCta" aria-labelledby="mcnw-access-cta-h">
+      <div class="mcnw-accessCtaCopy">
+        <p class="mcnw-eyebrow">Full planner</p>
+        <h2 id="mcnw-access-cta-h" class="mcnw-sectionTitle">
+          Want this connected to retirement timing and future expenses?
+        </h2>
+        <p>
+          The full nidhi planner turns multi-currency net worth into a long-range plan,
+          so you can see how location, spending currency, and major decisions change
+          the path.
+        </p>
+      </div>
+      <WaitlistSection variant="hero" cta="Join early access" />
+    </aside>
+
     <section class="mcnw-explainer" aria-labelledby="mcnw-explainer-h">
       <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">How the calculation works</h2>
       <p>
@@ -414,6 +430,7 @@ const faqSchema = {
   }
 
   /* Explainer & FAQ */
+  .mcnw-accessCta,
   .mcnw-explainer,
   .mcnw-faq,
   .mcnw-related {
@@ -423,6 +440,40 @@ const faqSchema = {
     border-radius: var(--radius-lg);
     padding: var(--space-5);
     box-shadow: var(--shadow-sm);
+  }
+
+  .mcnw-accessCta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  .mcnw-accessCtaCopy p:last-child {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 62ch;
+    margin: var(--space-2) 0 0;
+    text-wrap: pretty;
+  }
+
+  .mcnw-accessCta :global(.waitlist) {
+    margin: 0;
+  }
+
+  .mcnw-accessCta :global(.waitlist-box) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  @media (max-width: 800px) {
+    .mcnw-accessCta {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
   }
 
   .mcnw-explainer p,
@@ -728,6 +779,7 @@ const faqSchema = {
       font-size: 0.95rem;
     }
     .mcnw-explainer,
+    .mcnw-accessCta,
     .mcnw-faq,
     .mcnw-related {
       padding: var(--space-4) var(--space-3);

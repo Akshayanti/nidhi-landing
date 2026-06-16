@@ -1,5 +1,5 @@
 ---
-// Public beta waitlist signup. Single opt-in, no confirmation email,
+// Early-access waitlist signup. Single opt-in, no confirmation email,
 // no double-opt-in loop. Posts to the same Google Apps Script Web App as
 // the newsletter, with action=waitlist.
 //
@@ -34,14 +34,14 @@ const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
 ---
 
-<section class:list={['waitlist', `waitlist--${variant}`]} aria-label="Public beta waitlist">
+<section class:list={['waitlist', `waitlist--${variant}`]} aria-label="Early-access waitlist">
   <div class="waitlist-box">
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
       {variant === 'default' && (
         <>
-          <h3 class="waitlist-title">Be the first to know when public beta opens</h3>
-          <p class="waitlist-text">Drop your email and we'll let you know when nidhi opens public beta access. No spam, no newsletters, just the beta.</p>
+          <h3 class="waitlist-title">Be the first to know when early access opens</h3>
+          <p class="waitlist-text">Drop your email and we'll let you know when nidhi opens access to the full planner. No spam, no newsletters, just the launch note.</p>
         </>
       )}
 
@@ -65,7 +65,7 @@ const inputId = `${idPrefix}-email`;
         </div>
         <p id={statusId} class="waitlist-status" role="status" aria-live="polite"></p>
         <p class="waitlist-privacy">
-          One email when public beta opens. <a href="/privacy/">Privacy policy</a>.
+          One email when access opens. <a href="/privacy/">Privacy policy</a>.
         </p>
       </form>
 
@@ -86,7 +86,7 @@ const inputId = `${idPrefix}-email`;
       </div>
       <h3 class="waitlist-success-title">You're on the list</h3>
       <p class="waitlist-success-body">
-        We'll send you one email when public beta opens. That's it.
+        We'll send you one email when access opens. That's it.
       </p>
     </div>
   </div>
