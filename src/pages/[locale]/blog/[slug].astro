@@ -1,0 +1,118 @@
+---
+import BlogPost from '../../../layouts/BlogPost.astro';
+import { getCollection, render } from 'astro:content';
+import { getReadingTime } from '../../../utils/readingTime';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../../i18n/config';
+import { visibleBlogPosts } from '../../../i18n/content';
+
+export async function getStaticPaths() {
+  const isDev = import.meta.env.DEV;
+  const now = new Date();
+  const allPosts = await getCollection('blog');
+  const paths = [];
+
+  for (const locale of LOCALES.filter((l) => l !== DEFAULT_LOCALE)) {
+    const posts = visibleBlogPosts(allPosts, locale, isDev, now);
+    const bySlug = new Map(posts.map((p) => [p.data.slug, p]));
+
+    type Pub = (typeof posts)[number];
+    function pickRelated(current: Pub): Pub[] {
+      const picked: Pub[] = [];
+      const seen = new Set<string>([current.data.slug]);
+      const cap = 3;
+
+      const declared = current.data.relatedSlugs ?? [];
+      for (const slug of declared) {
+        if (picked.length >= cap) break;
+        const candidate = bySlug.get(slug);
+        if (!candidate) continue;
+        if (seen.has(candidate.data.slug)) continue;
+        if (candidate.data.pubDate > current.data.pubDate) continue;
+        picked.push(candidate);
+        seen.add(candidate.data.slug);
+      }
+
+      if (picked.length < cap) {
+        const currentTags = new Set(current.data.tags);
+        const scored = posts
+          .filter((p) =>
+            !seen.has(p.data.slug) &&
+            p.data.slug !== current.data.slug &&
+            p.data.pubDate <= current.data.pubDate
+          )
+          .map((p) => {
+            const overlap = p.data.tags.reduce((n, t) => n + (currentTags.has(t) ? 1 : 0), 0);
+            return { post: p, overlap };
+          })
+          .filter((x) => x.overlap > 0)
+          .sort((a, b) => {
+            if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+            const da = Math.abs(a.post.data.pubDate.getTime() - current.data.pubDate.getTime());
+            const db = Math.abs(b.post.data.pubDate.getTime() - current.data.pubDate.getTime());
+            return da - db;
+          });
+
+        for (const { post: p } of scored) {
+          if (picked.length >= cap) break;
+          picked.push(p);
+          seen.add(p.data.slug);
+        }
+      }
+
+      return picked;
+    }
+
+    posts.forEach((post, index) => {
+      const prevPost = index > 0 ? posts[index - 1] : null;
+      const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
+      const relatedPosts = pickRelated(post).map((p) => ({
+        slug: p.data.slug,
+        title: p.data.title,
+        description: p.data.description,
+      }));
+      paths.push({
+        params: { locale, slug: post.data.slug },
+        props: {
+          post,
+          locale,
+          prevSlug: prevPost?.data.slug ?? null,
+          prevTitle: prevPost?.data.title ?? null,
+          nextSlug: nextPost?.data.slug ?? null,
+          nextTitle: nextPost?.data.title ?? null,
+          relatedPosts,
+        },
+      });
+    });
+  }
+
+  return paths;
+}
+
+const { post, locale, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts } = Astro.props;
+const { Content } = await render(post);
+
+const readingTime = getReadingTime(post.body || '');
+---
+
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  tldr={post.data.tldr}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  level={post.data.level}
+  tags={post.data.tags}
+  readingTime={readingTime}
+  regulatoryNote={post.data.regulatoryNote}
+  referentialReading={post.data.referentialReading}
+  prevSlug={prevSlug}
+  prevTitle={prevTitle}
+  nextSlug={nextSlug}
+  nextTitle={nextTitle}
+  faq={post.data.faq}
+  howTo={post.data.howTo}
+  relatedPosts={relatedPosts}
+  locale={locale}
+>
+  <Content />
+</BlogPost>

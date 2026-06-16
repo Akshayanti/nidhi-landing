@@ -1,13 +1,25 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import LogoMark from './LogoMark.astro';
+import { DEFAULT_LOCALE, blogPath, localizedPath, type Locale } from '../i18n/config';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
 const currentPath = Astro.url.pathname;
+const homePath = localizedPath(DEFAULT_LOCALE, '/');
+const freePath = localizedPath(DEFAULT_LOCALE, '/free/');
+const multiCurrencyPath = localizedPath(DEFAULT_LOCALE, '/free/multi-currency-net-worth/');
+const loanComparisonPath = localizedPath(DEFAULT_LOCALE, '/free/loan-comparison/');
+const currentBlogPath = blogPath(locale);
 
 ---
 
 <header class="site-header">
   <nav class="site-nav container container--wide" aria-label="Primary">
-    <a href="/" class="logo" data-attr="nav-logo" aria-label="nidhi home">
+    <a href={homePath} class="logo" data-attr="nav-logo" aria-label="nidhi home">
       <LogoMark size={32} />
       <span class="logo-text">nidhi</span>
     </a>
@@ -24,24 +36,24 @@ const currentPath = Astro.url.pathname;
         </button>
         <ul class="nav-dropdownMenu" role="menu">
           <li role="none">
-            <a href="/free/multi-currency-net-worth/" class:list={[{ active: currentPath === '/free/multi-currency-net-worth/' }]} role="menuitem" data-attr="nav-tool-multi-currency-net-worth">
+            <a href={multiCurrencyPath} class:list={[{ active: currentPath === multiCurrencyPath }]} role="menuitem" data-attr="nav-tool-multi-currency-net-worth">
               Multi-Currency Net Worth
             </a>
           </li>
           <li role="none">
-            <a href="/free/loan-comparison/" class:list={[{ active: currentPath === '/free/loan-comparison/' }]} role="menuitem" data-attr="nav-tool-loan-comparison">
+            <a href={loanComparisonPath} class:list={[{ active: currentPath === loanComparisonPath }]} role="menuitem" data-attr="nav-tool-loan-comparison">
               Loan Comparison
             </a>
           </li>
           <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
           <li role="none">
-            <a href="/free/" class:list={[{ active: currentPath === '/free/' }]} role="menuitem" data-attr="nav-tool-all">
+            <a href={freePath} class:list={[{ active: currentPath === freePath }]} role="menuitem" data-attr="nav-tool-all">
               View all free tools
             </a>
           </li>
         </ul>
       </div>
-      <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
+      <a href={currentBlogPath} class:list={['nav-link', { active: currentPath.startsWith(currentBlogPath) }]} data-attr="nav-blog">Blog</a>
       <ThemeToggle />
     </div>
   </nav>

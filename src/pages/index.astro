@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
+import { DEFAULT_LOCALE } from '../i18n/config';
+import { visibleBlogPosts } from '../i18n/content';
 
 // The live home page (scroll-snap landing redesign). See
 // docs/plans/landing-page-redesign.md for the full plan and
@@ -40,8 +42,7 @@ const webSiteSchema = {
 };
 
 const liveBlogSlugs = new Set(
-  (await getCollection('blog'))
-    .filter((post) => post.data.pubDate <= new Date())
+  visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, false, new Date())
     .map((post) => post.data.slug),
 );
 

@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
 import { getCollection } from 'astro:content';
+import { DEFAULT_LOCALE } from '../../i18n/config';
+import { visibleBlogPosts } from '../../i18n/content';
 
 // -----------------------------------------------------------------------------
 // Related-reading candidates, ranked by relevance to a reader who has just
@@ -54,8 +56,7 @@ const RELATED_CANDIDATES = [
 const isDev = import.meta.env.DEV;
 const now = new Date();
 const publishedSlugs = new Set(
-  (await getCollection('blog'))
-    .filter((post) => isDev || post.data.pubDate <= now)
+  visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, isDev, now)
     .map((post) => post.data.slug),
 );
 const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);

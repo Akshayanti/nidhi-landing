@@ -2,14 +2,13 @@
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 import { getReadingTime } from '../../utils/readingTime';
+import { DEFAULT_LOCALE } from '../../i18n/config';
+import { visibleBlogPosts } from '../../i18n/content';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
   const now = new Date();
-  const allPosts = await getCollection('blog');
-  const posts = allPosts
-    .filter(post => isDev || post.data.pubDate <= now)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  const posts = visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, isDev, now);
 
   // Build a fast lookup so we can resolve relatedSlugs entries without a
   // linear scan per post.
@@ -127,6 +126,7 @@ const readingTime = getReadingTime(post.body || '');
   faq={post.data.faq}
   howTo={post.data.howTo}
   relatedPosts={relatedPosts}
+  locale={DEFAULT_LOCALE}
 >
   <Content />
 </BlogPost>

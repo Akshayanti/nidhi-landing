@@ -1,29 +1,22 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { TAG_META, formatTag } from '../../../utils/tags';
-import { DEFAULT_LOCALE } from '../../../i18n/config';
-import { visibleBlogPosts } from '../../../i18n/content';
+import { TAG_META, formatTag } from '../../../../utils/tags';
+import { DEFAULT_LOCALE, LOCALES, blogPath, blogTagPath, type Locale } from '../../../../i18n/config';
+import { visibleBlogPosts } from '../../../../i18n/content';
 
-/**
- * Tag hub page at /blog/tag/. Closes audit finding 5 (the route used to
- * 404). Lists every tag the published-posts corpus actually uses, with a
- * post count and a curated description when one exists in TAG_META.
- *
- * Tags missing from TAG_META still show up here with a generated label and
- * a generic blurb, so adding a new tag never silently drops it from the hub
- * (it would just lack the editorial copy until TAG_META gains an entry).
- */
+export function getStaticPaths() {
+  return LOCALES
+    .filter((locale) => locale !== DEFAULT_LOCALE)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
 
 const isDev = import.meta.env.DEV;
 const now = new Date();
+const allPosts = visibleBlogPosts(await getCollection('blog'), locale, isDev, now);
 
-const allPosts = visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, isDev, now);
-
-// Count posts per tag from the live corpus, then sort by post count
-// (descending), tie-break by tag name (ascending). The most populous tag
-// surfaces first, which is also the tag a curious reader is most likely to
-// be looking for.
 const tagCounts = new Map<string, number>();
 for (const post of allPosts) {
   for (const tag of post.data.tags) {
@@ -42,10 +35,6 @@ const tags: TagRow[] = [...tagCounts.entries()]
   .map(([slug, count]) => {
     const meta = TAG_META[slug];
     const formatted = formatTag(slug);
-    // Keep the hub-card description short. The detail page already shows
-    // the full TAG_META description; here we want a one-line summary.
-    // Strip the trailing "Free personal finance education from nidhi." or
-    // similar boilerplate when present so the cards stay scannable.
     const description = meta?.description
       ? meta.description.split('.').slice(0, 2).join('.').trim() + '.'
       : `Articles tagged "${formatted.toLowerCase()}".`;
@@ -64,42 +53,23 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog/' },
-    { '@type': 'ListItem', position: 2, name: 'Topics', item: 'https://nidhi.today/blog/tag/' },
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: new URL(blogPath(locale), 'https://nidhi.today').toString() },
+    { '@type': 'ListItem', position: 2, name: 'Topics', item: new URL(`${blogPath(locale).replace(/\/$/, '')}/tag/`, 'https://nidhi.today').toString() },
   ],
-};
-
-const collectionPageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'Blog topics',
-  description,
-  url: 'https://nidhi.today/blog/tag/',
-  isPartOf: {
-    '@type': 'WebSite',
-    name: 'nidhi',
-    url: 'https://nidhi.today/',
-  },
-  // Itemize each tag as a child WebPage. Helps crawlers understand the hub
-  // structure and gives the engines an unambiguous list of destinations.
-  hasPart: tags.map((t) => ({
-    '@type': 'WebPage',
-    name: t.formatted,
-    url: `https://nidhi.today/blog/tag/${encodeURIComponent(t.slug)}/`,
-  })),
 };
 ---
 
 <BaseLayout
   title={title}
   description={description}
-  jsonLd={[breadcrumbSchema, collectionPageSchema]}
+  jsonLd={[breadcrumbSchema]}
+  locale={locale}
 >
   <section class="tagHub">
     <div class="container">
       <header class="tagHub-header">
         <nav class="tagHub-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog/">Blog</a> <span class="sep">/</span> <span>Topics</span>
+          <a href={blogPath(locale)}>Blog</a> <span class="sep">/</span> <span>Topics</span>
         </nav>
         <h1>Browse by topic</h1>
         <p class="tagHub-subtitle">
@@ -108,12 +78,12 @@ const collectionPageSchema = {
       </header>
 
       {tags.length === 0 ? (
-        <p class="tagHub-empty">No topics yet. Posts publish on Mon, Wed, and Fri.</p>
+        <p class="tagHub-empty">No topics yet.</p>
       ) : (
         <ul class="tagHub-list">
           {tags.map((t) => (
             <li class="tagHub-item">
-              <a class="tagHub-card" href={`/blog/tag/${encodeURIComponent(t.slug)}/`} data-attr={`tag-hub-${t.slug}`}>
+              <a class="tagHub-card" href={blogTagPath(locale, t.slug)} data-attr={`tag-hub-${t.slug}`}>
                 <div class="tagHub-cardTop">
                   <span class="tagHub-cardName">{t.formatted}</span>
                   <span class="tagHub-cardCount">
@@ -152,10 +122,6 @@ const collectionPageSchema = {
     text-underline-offset: 2px;
   }
 
-  .tagHub-breadcrumb a:hover {
-    text-decoration-thickness: 2px;
-  }
-
   .tagHub-breadcrumb .sep {
     margin: 0 var(--space-1);
   }
@@ -179,9 +145,6 @@ const collectionPageSchema = {
     color: var(--color-text-muted);
   }
 
-  /* Auto-fitting grid: cards are at least 260px wide and stretch to fill,
-     wrapping naturally as the viewport narrows. Avoids a fixed column
-     count that would either crowd small screens or under-fill wide ones. */
   .tagHub-list {
     list-style: none;
     padding: 0;
@@ -195,9 +158,6 @@ const collectionPageSchema = {
     margin: 0;
   }
 
-  /* Card visuals mirror the related-reads card on the multi-currency
-     tool page: subtle border, tiny lift on hover, deep-blue title. Keeps
-     the affordance pattern consistent across the site. */
   .tagHub-card {
     display: flex;
     flex-direction: column;
@@ -218,43 +178,5 @@ const collectionPageSchema = {
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
     outline: none;
-  }
-
-  .tagHub-card:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-
-  .tagHub-cardTop {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-2);
-  }
-
-  .tagHub-cardName {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--color-deep-blue);
-    line-height: 1.3;
-  }
-
-  .tagHub-cardCount {
-    font-family: var(--font-heading);
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    flex-shrink: 0;
-  }
-
-  .tagHub-cardDesc {
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    text-wrap: pretty;
   }
 </style>

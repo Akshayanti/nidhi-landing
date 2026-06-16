@@ -1,6 +1,23 @@
 ---
 import LogoMark from './LogoMark.astro';
+import { DEFAULT_LOCALE, blogPath, localizedPath, type Locale } from '../i18n/config';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
 const year = new Date().getFullYear();
+const homePath = localizedPath(DEFAULT_LOCALE, '/');
+const blogBase = blogPath(locale);
+const tagPath = localizedPath(locale, '/blog/tag/');
+const freePath = localizedPath(DEFAULT_LOCALE, '/free/');
+const multiCurrencyPath = localizedPath(DEFAULT_LOCALE, '/free/multi-currency-net-worth/');
+const loanComparisonPath = localizedPath(DEFAULT_LOCALE, '/free/loan-comparison/');
+const aboutPath = localizedPath(DEFAULT_LOCALE, '/about/');
+const beliefsPath = localizedPath(DEFAULT_LOCALE, '/beliefs/');
+const editorialPolicyPath = localizedPath(DEFAULT_LOCALE, '/editorial-policy/');
+const privacyPath = localizedPath(DEFAULT_LOCALE, '/privacy/');
 
 ---
 
@@ -17,25 +34,25 @@ const year = new Date().getFullYear();
       <div class="footer-links">
         <div class="footer-col">
           <strong class="footer-col-heading">Learn</strong>
-          <a href="/blog/" data-attr="footer-blog">Blog</a>
-          <a href="/blog/tag/" data-attr="footer-blog-topics">Browse topics</a>
+          <a href={blogBase} data-attr="footer-blog">Blog</a>
+          <a href={tagPath} data-attr="footer-blog-topics">Browse topics</a>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">Free Tools</strong>
-          <a href="/free/multi-currency-net-worth/" data-attr="footer-multi-currency-net-worth">Multi-currency net worth</a>
-          <a href="/free/loan-comparison/" data-attr="footer-loan-comparison">Loan comparison</a>
-          <a href="/free/" data-attr="footer-all-tools">View all</a>
+          <a href={multiCurrencyPath} data-attr="footer-multi-currency-net-worth">Multi-currency net worth</a>
+          <a href={loanComparisonPath} data-attr="footer-loan-comparison">Loan comparison</a>
+          <a href={freePath} data-attr="footer-all-tools">View all</a>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">Product</strong>
-          <a href="/" data-attr="footer-home">Home</a>
+          <a href={homePath} data-attr="footer-home">Home</a>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">About</strong>
-          <a href="/about/" data-attr="footer-about">About nidhi</a>
-          <a href="/beliefs/" data-attr="footer-beliefs">Our Beliefs</a>
-          <a href="/editorial-policy/" data-attr="footer-editorial-policy">Editorial policy</a>
-          <a href="/privacy/" data-attr="footer-privacy">Privacy</a>
+          <a href={aboutPath} data-attr="footer-about">About nidhi</a>
+          <a href={beliefsPath} data-attr="footer-beliefs">Our Beliefs</a>
+          <a href={editorialPolicyPath} data-attr="footer-editorial-policy">Editorial policy</a>
+          <a href={privacyPath} data-attr="footer-privacy">Privacy</a>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">Connect</strong>

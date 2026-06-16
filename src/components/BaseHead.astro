@@ -1,5 +1,6 @@
 ---
 import { NEUTRAL, SEMANTIC } from '../styles/palette.ts';
+import { DEFAULT_LOCALE, LOCALE_META, localePrefix, type Locale } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -31,6 +32,8 @@ interface Props {
   nextUrl?: string | null;
   jsonLd?: object[];
   robots?: string;
+  locale?: Locale;
+  alternates?: Array<{ locale: Locale | 'x-default'; href: string }>;
 }
 
 const defaultImage = '/brand/social/og-image.png';
@@ -47,8 +50,15 @@ const {
   nextUrl,
   jsonLd = [],
   robots,
+  locale = DEFAULT_LOCALE,
+  alternates,
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const localeMeta = LOCALE_META[locale];
+const alternateLinks = alternates ?? [
+  { locale, href: canonicalURL.toString() },
+  { locale: 'x-default' as const, href: new URL(`${localePrefix(DEFAULT_LOCALE)}${Astro.url.pathname}`, Astro.site).toString() },
+];
 ---
 
 <!-- Flash prevention: apply theme before render -->
@@ -83,8 +93,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />
-<link rel="alternate" hreflang="en" href={canonicalURL} />
-<link rel="alternate" hreflang="x-default" href={canonicalURL} />
+{alternateLinks.map((alt) => (
+  <link rel="alternate" hreflang={alt.locale === 'x-default' ? 'x-default' : LOCALE_META[alt.locale].htmlLang} href={alt.href} />
+))}
 
 <!-- RSS Feed -->
 <link rel="alternate" type="application/rss+xml" title="nidhi | Personal Finance Blog" href="/rss.xml" />
@@ -99,7 +110,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:image:height" content={String(imageHeight)} />
 <meta property="og:image:alt" content={imageAlt} />
 <meta property="og:site_name" content="nidhi" />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={localeMeta.ogLocale} />
 
 <!-- Article-specific OG -->
 {article && (

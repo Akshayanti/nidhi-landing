@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import { LearningPath } from '../components/LearningPath';
 import SubscribeSection from '../components/SubscribeSection.astro';
+import { DEFAULT_LOCALE, blogPath, blogPostPath, blogTagPath, type Locale } from '../i18n/config';
 
 interface Props {
   posts: Array<{
@@ -15,9 +16,12 @@ interface Props {
     };
     readingTime: number;
   }>;
+  locale?: Locale;
 }
 
-const { posts } = Astro.props;
+const { posts, locale = DEFAULT_LOCALE } = Astro.props;
+const blogBasePath = blogPath(locale).replace(/\/$/, '');
+const tagHubPath = `${blogBasePath}/tag/`;
 
 const serializedPosts = posts.map(p => ({
   id: p.id,
@@ -37,7 +41,7 @@ const blogBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Blog',
-      item: 'https://nidhi.today/blog/',
+      item: new URL(blogPath(locale), 'https://nidhi.today').toString(),
     },
   ],
 };
@@ -51,8 +55,8 @@ const blogItemListSchema = {
   itemListElement: posts.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}/`,
-    name: p.title,
+    url: new URL(blogPostPath(locale, p.id), 'https://nidhi.today').toString(),
+    name: p.data.title,
   })),
 };
 ---
@@ -61,6 +65,7 @@ const blogItemListSchema = {
   title="Personal Finance Blog | nidhi"
   description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
   jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
+  locale={locale}
 >
   <section class="blog-index">
     <div class="container">
@@ -69,11 +74,11 @@ const blogItemListSchema = {
         <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step.</p>
         <p class="blog-index-cadence">New posts every Mon, Wed &amp; Fri</p>
         <p class="blog-index-topics">
-          <a href="/blog/tag/" data-attr="blog-index-browse-topics">Browse by topic</a>
+          <a href={tagHubPath} data-attr="blog-index-browse-topics">Browse by topic</a>
         </p>
       </header>
       <SubscribeSection variant="compact" />
-      <LearningPath client:load posts={serializedPosts} />
+      <LearningPath client:load posts={serializedPosts} blogBasePath={blogBasePath} />
     </div>
   </section>
 </BaseLayout>

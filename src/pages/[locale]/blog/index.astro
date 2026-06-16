@@ -1,0 +1,26 @@
+---
+import BlogIndex from '../../../layouts/BlogIndex.astro';
+import { getCollection } from 'astro:content';
+import { getReadingTime } from '../../../utils/readingTime';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../../i18n/config';
+import { visibleBlogPosts } from '../../../i18n/content';
+
+export function getStaticPaths() {
+  return LOCALES
+    .filter((locale) => locale !== DEFAULT_LOCALE)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const posts = visibleBlogPosts(await getCollection('blog'), locale, isDev, now)
+  .map(post => ({
+    id: post.data.slug,
+    data: post.data,
+    readingTime: getReadingTime(post.body || ''),
+  }));
+---
+
+<BlogIndex posts={posts} locale={locale} />

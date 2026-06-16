@@ -2,11 +2,12 @@
 import BlogIndex from '../../layouts/BlogIndex.astro';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../../utils/readingTime';
+import { DEFAULT_LOCALE } from '../../i18n/config';
+import { visibleBlogPosts } from '../../i18n/content';
 
 const isDev = import.meta.env.DEV;
 const now = new Date();
-const posts = (await getCollection('blog'))
-  .filter(post => isDev || post.data.pubDate <= now)
+const posts = visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, isDev, now)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map(post => ({
     id: post.data.slug,
@@ -15,4 +16,4 @@ const posts = (await getCollection('blog'))
   }));
 ---
 
-<BlogIndex posts={posts} />
+<BlogIndex posts={posts} locale={DEFAULT_LOCALE} />

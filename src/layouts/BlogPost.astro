@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
+import { DEFAULT_LOCALE, blogPath, blogPostPath, blogTagPath, type Locale } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -37,11 +38,13 @@ interface Props {
    * shares at least one tag.
    */
   relatedPosts?: Array<{ slug: string; title: string; description: string }>;
+  locale?: Locale;
 }
 
-const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [] } = Astro.props;
+const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], locale = DEFAULT_LOCALE } = Astro.props;
 
-const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateLocale = locale === 'es' ? 'es-ES' : 'en-US';
+const dateStr = pubDate.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
 // Surface "Updated <date>" only when the updated date is meaningfully later
 // than the publish date (more than seven days). This avoids noisy "updated"
 // labels for fixes made within the publication window, while letting genuine
@@ -49,7 +52,7 @@ const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'l
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const showUpdated = !!updatedDate && updatedDate.getTime() - pubDate.getTime() > SEVEN_DAYS_MS;
 const updatedStr = showUpdated && updatedDate
-  ? updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  ? updatedDate.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })
   : '';
 const siteUrl = 'https://nidhi.today';
 const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
@@ -82,10 +85,10 @@ const blogPostingSchema = {
     width: 1200,
     height: 630,
   },
-  url: `${siteUrl}/blog/${slug}/`,
+  url: new URL(blogPostPath(locale, slug), siteUrl).toString(),
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': `${siteUrl}/blog/${slug}/`,
+    '@id': new URL(blogPostPath(locale, slug), siteUrl).toString(),
   },
   keywords: tags.join(', '),
 };
@@ -98,13 +101,13 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Blog',
-      item: `${siteUrl}/blog/`,
+      item: new URL(blogPath(locale), siteUrl).toString(),
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: title,
-      item: `${siteUrl}/blog/${slug}/`,
+      item: new URL(blogPostPath(locale, slug), siteUrl).toString(),
     },
   ],
 };
@@ -145,9 +148,10 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     modifiedTime: updatedDate,
     tags: tags,
   }}
-  prevUrl={prevSlug ? `/blog/${prevSlug}/` : null}
-  nextUrl={nextSlug ? `/blog/${nextSlug}/` : null}
+  prevUrl={prevSlug ? blogPostPath(locale, prevSlug) : null}
+  nextUrl={nextSlug ? blogPostPath(locale, nextSlug) : null}
   jsonLd={allSchemas}
+  locale={locale}
 >
   <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
   <article class="blog-post">
@@ -172,7 +176,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {tags.length > 0 && (
           <div class="post-tags">
             {tags.map((tag) => (
-              <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>{tag}</a>
+              <a class="post-tag" href={blogTagPath(locale, tag)}>{tag}</a>
             ))}
           </div>
         )}
@@ -231,13 +235,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {(prevSlug || nextSlug) && (
           <nav class="post-nav" aria-label="Adjacent posts">
             {prevSlug && prevTitle && (
-              <a class="post-nav-link post-nav-prev" href={`/blog/${prevSlug}/`} data-attr="post-nav-prev">
+              <a class="post-nav-link post-nav-prev" href={blogPostPath(locale, prevSlug)} data-attr="post-nav-prev">
                 <span class="post-nav-direction">Previous</span>
                 <span class="post-nav-title">{prevTitle}</span>
               </a>
             )}
             {nextSlug && nextTitle && (
-              <a class="post-nav-link post-nav-next" href={`/blog/${nextSlug}/`} data-attr="post-nav-next">
+              <a class="post-nav-link post-nav-next" href={blogPostPath(locale, nextSlug)} data-attr="post-nav-next">
                 <span class="post-nav-direction">Next</span>
                 <span class="post-nav-title">{nextTitle}</span>
               </a>
@@ -252,7 +256,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               {relatedPosts.map((rp) => (
                 <a
                   class="post-related-card"
-                  href={`/blog/${rp.slug}/`}
+                  href={blogPostPath(locale, rp.slug)}
                   data-attr={`related-${rp.slug}`}
                 >
                   <span class="post-related-card-title">{rp.title}</span>

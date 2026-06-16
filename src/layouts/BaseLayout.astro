@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -32,15 +33,16 @@ interface Props {
    *  data-page="landing", which the global stylesheet keys off to flip the
    *  header to its fixed/transparent treatment. */
   bodyData?: Record<string, string>;
+  locale?: Locale;
 }
 
-const { title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
+const { title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData, locale = DEFAULT_LOCALE } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
-    <BaseHead title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
+    <BaseHead title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} locale={locale} />
     {/*
       Per-page head additions (preconnects, page-specific link tags). The
       slot is empty by default so existing pages are unaffected; the
@@ -51,11 +53,11 @@ const { title, description, image, imageWidth, imageHeight, imageAlt, article, p
   </head>
   <body {...(bodyData || {})}>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <Header />
+    <Header locale={locale} />
     <main id="main-content" class={mainClass}>
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
     <CookieConsent />
     <Analytics />
   </body>

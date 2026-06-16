@@ -4,13 +4,13 @@ import { LearningPath } from '../../../components/LearningPath';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../../../utils/readingTime';
 import { TAG_META, formatTag } from '../../../utils/tags';
+import { DEFAULT_LOCALE, blogPath, blogPostPath, blogTagPath } from '../../../i18n/config';
+import { visibleBlogPosts } from '../../../i18n/content';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
   const now = new Date();
-  const allPosts = (await getCollection('blog'))
-    .filter(post => isDev || post.data.pubDate <= now)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  const allPosts = visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, isDev, now);
 
   const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))];
 
@@ -45,11 +45,11 @@ const tagBreadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nidhi.today/blog/' },
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: new URL(blogPath(DEFAULT_LOCALE), 'https://nidhi.today').toString() },
     // encodeURIComponent guards against tags that contain spaces, slashes, or
     // unicode. Today every tag in TAG_META is plain ascii lowercase-with-hyphens,
     // but a future tag like "buy now, pay later" would emit an invalid URL.
-    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${encodeURIComponent(tag)}/` },
+    { '@type': 'ListItem', position: 2, name: formatted, item: new URL(blogTagPath(DEFAULT_LOCALE, tag), 'https://nidhi.today').toString() },
   ],
 };
 
@@ -62,7 +62,7 @@ const tagItemListSchema = {
   itemListElement: posts.map((p: any, i: number) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}/`,
+    url: new URL(blogPostPath(DEFAULT_LOCALE, p.id), 'https://nidhi.today').toString(),
     name: p.title,
   })),
 };
@@ -78,14 +78,14 @@ const tagItemListSchema = {
     <div class="container">
       <header class="blog-index-header">
         <nav class="tag-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog/">Blog</a> <span class="sep">/</span> <span>{formatted}</span>
+          <a href={blogPath(DEFAULT_LOCALE)}>Blog</a> <span class="sep">/</span> <span>{formatted}</span>
         </nav>
         <h1>{formatted}</h1>
         <p class="blog-index-subtitle">{description}</p>
       </header>
-      <LearningPath client:load posts={posts} interceptTagClick={false} />
+      <LearningPath client:load posts={posts} blogBasePath={blogPath(DEFAULT_LOCALE).replace(/\/$/, '')} interceptTagClick={false} />
       <nav class="tag-allTopics" aria-label="More tag pages">
-        <a href="/blog/tag/" class="tag-allTopicsLink" data-attr="tag-browse-all">
+        <a href={`${blogPath(DEFAULT_LOCALE).replace(/\/$/, '')}/tag/`} class="tag-allTopicsLink" data-attr="tag-browse-all">
           Browse all topics
           <span aria-hidden="true">&nbsp;&rsaquo;</span>
         </a>

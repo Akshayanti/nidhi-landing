@@ -1,12 +1,12 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { DEFAULT_LOCALE } from '../i18n/config';
+import { visibleBlogPosts } from '../i18n/content';
 
 export async function GET(context: APIContext) {
   const now = new Date();
-  const posts = (await getCollection('blog'))
-    .filter(post => post.data.pubDate <= now)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  const posts = visibleBlogPosts(await getCollection('blog'), DEFAULT_LOCALE, false, now);
 
   return rss({
     title: 'nidhi: Personal Finance Blog',

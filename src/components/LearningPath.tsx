@@ -91,6 +91,7 @@ function ReadToggle({ isRead, onToggle }: ReadToggleProps) {
 
 interface PostNodeProps {
   post: PostData;
+  blogBasePath: string;
   isRead: boolean;
   isStartHere: boolean;
   levelColor: string;
@@ -108,7 +109,7 @@ interface PostNodeProps {
   onTagClick: (tag: string) => void;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick }: PostNodeProps) {
+function PostNode({ post, blogBasePath, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
@@ -144,7 +145,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
           </div>
           <ReadToggle isRead={isRead} onToggle={() => onToggleRead(post.id)} />
         </div>
-        <a href={`/blog/${post.id}/`} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
+        <a href={`${blogBasePath}/${post.id}/`} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
           {post.title}
         </a>
         <p className="lp-cardDesc">{post.description}</p>
@@ -153,7 +154,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
             {post.tags.slice(0, 3).map((tag) => (
               <a
                 key={tag}
-                href={`/blog/tag/${encodeURIComponent(tag)}/`}
+                href={`${blogBasePath}/tag/${encodeURIComponent(tag)}/`}
                 className={`lp-cardTag ${selectedTag === tag ? 'lp-cardTagActive' : ''}`}
                 onClick={(e) => {
                   // On the blog index we want a click to filter the
@@ -181,6 +182,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
 
 interface LearningPathProps {
   posts: PostData[];
+  blogBasePath?: string;
   /**
    * Controls tag-chip click behaviour. Defaults to true (the blog index
    * use case). Pass false when rendering inside a per-tag page where a
@@ -190,7 +192,7 @@ interface LearningPathProps {
   interceptTagClick?: boolean;
 }
 
-export function LearningPath({ posts, interceptTagClick = true }: LearningPathProps) {
+export function LearningPath({ posts, blogBasePath = '/blog', interceptTagClick = true }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -391,7 +393,7 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
             {allTags.map((tag) => (
               <a
                 key={tag}
-                href={`/blog/tag/${encodeURIComponent(tag)}/`}
+                href={`${blogBasePath}/tag/${encodeURIComponent(tag)}/`}
                 className={`lp-tagFilterBtn ${selectedTag === tag ? 'lp-tagFilterBtnActive' : ''}`}
                 onClick={(e) => {
                   // Same dual-mode behaviour as the per-card chips: on the
@@ -508,6 +510,7 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
               <PostNode
                 key={post.id}
                 post={post}
+                blogBasePath={blogBasePath}
                 isRead={readPosts.has(post.id)}
                 isStartHere={post.id === firstUnreadId}
                 levelColor={group.meta.color}
