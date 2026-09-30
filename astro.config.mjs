@@ -149,11 +149,19 @@ export default defineConfig({
     filter: (page) => {
       // Transactional and confirmation pages have no place in search.
       const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed'];
-      return !transactional.some(p => page.includes(p));
+      if (transactional.some(p => page.includes(p))) return false;
+      // Per-tag listings (/blog/tag/<tag>/) carry `noindex,follow` in
+      // src/pages/blog/tag/[tag].astro. Listing a noindexed URL in the
+      // sitemap sends crawlers two opposite signals, so keep them out.
+      // The hub at /blog/tag/ is indexable and stays in. If the tag
+      // pages are ever made indexable, drop this line and restore a
+      // per-tag lastmod from `tagLastmod` in serialize() below.
+      if (/\/blog\/tag\/[^/]+\/?$/.test(new URL(page).pathname)) return false;
+      return true;
     },
     serialize(item) {
       // Per-URL lastmod resolution. Blog posts use frontmatter dates;
-      // tag pages use the newest pubDate among posts in that tag; other
+      // the tag hub uses the newest pubDate across all tags; other
       // static pages use the git author-date of their source file. URLs
       // without a resolvable lastmod simply omit the field, which is
       // valid sitemap protocol and lets the integration's defaults
@@ -167,9 +175,6 @@ export default defineConfig({
         // author-date if the tag map is empty.
         const newestAcrossTags = [...tagLastmod.values()].sort().pop();
         lastmod = newestAcrossTags ?? gitLastmod(STATIC_PAGE_SOURCE['blog/tag']) ?? undefined;
-      } else if (path.startsWith('blog/tag/')) {
-        const tag = decodeURIComponent(path.slice('blog/tag/'.length));
-        lastmod = tagLastmod.get(tag);
       } else if (path.startsWith('blog/') && path !== 'blog') {
         lastmod = blogLastmod.get(path.slice('blog/'.length));
       } else {
