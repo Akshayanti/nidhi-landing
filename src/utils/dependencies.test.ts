@@ -54,10 +54,10 @@ const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 // -----------------------------------------------------------------------------
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^0.32.1',
-  '@astrojs/react': '^5.0.0',
+  '@astrojs/react': '^7.0.0',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
-  astro: '^6.1.10',
+  astro: '^7.3.5',
   react: '^19.3.0',
   'react-dom': '^19.3.0',
 };
