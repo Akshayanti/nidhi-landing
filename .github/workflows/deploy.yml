@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Full history so src/pages/privacy.astro can derive its "Last updated"
           # from `git log -1 --format=%aI -- src/pages/privacy.astro` at build
@@ -160,7 +160,7 @@ jobs:
     steps:
       - name: Checkout (for scripts/indexnow.mjs)
         # Shallow checkout: we only need the script file to run.
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
@@ -192,7 +192,7 @@ jobs:
 
       - name: Download current run's URL hash manifest
         # Produced by the build job above; lands at .indexnow/current.json.
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: indexnow-hashes
           path: .indexnow/
@@ -203,7 +203,7 @@ jobs:
         # new). The unique key per run guarantees a fresh save below;
         # the prefix-only restore-keys grabs the most recent prior
         # manifest regardless of which run created it.
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
@@ -233,7 +233,7 @@ jobs:
 
       - name: Save manifest as cache for next run
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
