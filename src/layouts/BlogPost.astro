@@ -205,6 +205,25 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
     <div class="post-bottom-wrapper">
       <div class="post-bottom-content">
+        {/*
+          Visible rendering of the same `faq` entries that feed the FAQPage
+          JSON-LD above. Structured data must describe content a reader can
+          actually see on the page, so the two are driven from one source.
+          Rendered as static text (no disclosure widgets) so every answer
+          is in the initial HTML.
+        */}
+        {faq && faq.length > 0 && (
+          <section class="post-faq" aria-labelledby="post-faq-h">
+            <h2 id="post-faq-h" class="post-faq-title">Frequently asked questions</h2>
+            {faq.map((item) => (
+              <div class="post-faq-item">
+                <h3 class="post-faq-q">{item.question}</h3>
+                <p class="post-faq-a">{item.answer}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
         {referentialReading && referentialReading.length > 0 && (
           <section class="suggested-reading">
             <h2 class="suggested-reading-title">Suggested Reading</h2>
@@ -574,6 +593,38 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       max-width: var(--max-width);
       margin: 0 auto;
     }
+  }
+
+  /* FAQ: same section rhythm as suggested reading below it. */
+  .post-faq {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .post-faq-title {
+    font-size: 1.1rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .post-faq-item + .post-faq-item {
+    margin-top: var(--space-5);
+  }
+
+  .post-faq-q {
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+    margin-bottom: var(--space-2);
+  }
+
+  .post-faq-a {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+    text-wrap: pretty;
   }
 
   /* Suggested reading */

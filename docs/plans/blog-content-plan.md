@@ -44,10 +44,10 @@ This check caught the Building-series bug (April 2026) where Getting Started rel
 Blog tags are filter affordances, not keyword stuffing. They must be drawn from this closed list:
 
 **Level tags (exactly one per post, required):**
-`discovery` · `building` · `psychology` · `optimizing` · `mastery`
+`discovery` · `building` · `psychology` · `optimizing` · `mastery` · `inclusive-finances` (proposed)
 
 **Topic tags (one to three per post):**
-`fundamentals` · `saving` · `debt` · `investing` · `risk` · `taxes` · `fire` · `real-estate` · `currency` · `goals` · `planning` · `psychology`
+`fundamentals` · `saving` · `debt` · `investing` · `risk` · `taxes` · `fire` · `real-estate` · `currency` · `goals` · `planning` · `psychology` · `relationships` (proposed) · `disability` (proposed) · `immigration` (proposed)
 
 **Rules:**
 - **Max 4 blog tags per post.** One level tag + one to three topic tags.
@@ -55,7 +55,7 @@ Blog tags are filter affordances, not keyword stuffing. They must be drawn from 
 - **No `personal finance` / `financial literacy` tags.** Every post on this site is about those; the tags add nothing for filtering.
 - **Instagram hashtags are a separate system** governed by `docs/plans/PLAYBOOK.md` section 3 (max 5, with niche/geo/brand composition).
 
-This keeps the tag universe bounded at ~17 tags forever, regardless of how many posts ship.
+This keeps the tag universe bounded at ~17 tags today, ~20 if the Inclusive Finances level and its three proposed topic tags (`relationships`, `disability`, `immigration`) are approved. Do not add these three tags to actual post frontmatter until the level is confirmed; they are reserved here so the vocabulary decision is made once, deliberately, rather than tag-by-tag.
 
 ### 5. Tone
 
@@ -210,31 +210,40 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 | Milestone | Post | Target date |
 |-----------|------|-------------|
 | Discovery complete | post 16 | Fri May 22, 2026 |
-| Building complete | post 29 | Mon Jun 22, 2026 |
-| **BETA LAUNCH** | -- | **late June 2026** (right after post 29) |
-| Psychology complete | post 39 | Wed Jul 15, 2026 |
-| Optimizing complete | post 51 | Wed Aug 12, 2026 |
-| Mastery complete | post 63 | Wed Sep 9, 2026 |
+| Building complete | post 32 | Mon Jun 29, 2026 |
+| **BETA LAUNCH** | -- | **date TBD** (app not live as of Jul 15, 2026; blog stays tool-agnostic until launch decision) |
+| Psychology complete | post 42 | Wed Jul 22, 2026 |
+| Optimizing complete | post 60 | Wed Sep 2, 2026 |
+| Mastery complete | post 75 | Wed Oct 7, 2026 |
 
 **Timeline note (updated May 4, 2026):** Cadence is Mon/Wed/Fri (3/week). Previous plan assumed every-3-days (~2.3/week), so end dates pulled in by ~2-3 weeks. Gap analysis (April 23, 2026) added 5 posts. Post 13 (Time Value of Money) was removed — its unique content (present value, discount rate, opportunity cost) folded into Saving vs Investing. Budgeting was moved from Building to Discovery. Building is 13 posts (not 14).
 
 **Timeline note (updated May 7, 2026):** Building reordered. See "BUILDING" section intro for the pedagogical rationale. Post-by-post publication dates updated; Building complete date (Mon Jun 22) unchanged because the count is unchanged (still 13 posts).
 
-**Beta launch target: late June 2026** -- immediately after the Building level is complete (post 29 = Financial Dashboard, Mon Jun 22). At this point readers understand net worth, cash flow, budgeting, investing, diversification, taxes, FIRE basics, passive income, loan terms, real estate, multi-currency, goals, health metrics, and the dashboard -- which maps directly to the app's Phase 1 feature set. The dashboard post is now the capstone, creating a natural handoff: "here's a tool that does all this."
+**Timeline note (updated Jul 14, 2026, first pass):** Milestone table refreshed to reflect actual counts and pubDates on disk. Building expanded to 16 posts (17-32) with the May 2026 additions and the #18/#19 split, ending Mon Jun 29 (post 32 = Financial Dashboard). Psychology (10 posts, 33-42) ends Wed Jul 22. Optimizing expanded to 16 posts (43-58) in the July 2026 audit, ending Fri Aug 28. Mastery (12 posts, 59-70) ends Fri Sep 25.
 
-**Post-launch shift:** Optimizing and Mastery posts publish WITH app CTAs from day one. "Financial Projections" becomes "see your own projections in nidhi" instead of a theoretical exercise. This makes later content more compelling, not less.
+**Timeline note (updated Jul 14, 2026, second pass):** Curriculum expanded further after an audit of Optimizing gaps and previously-deferred topics. Four new posts added to Optimizing (cash management, account consolidation, refinancing timing, scam prevention), taking Optimizing from 16 → 20 posts (43-62). Three new posts added to Mastery (charitable giving, children's finances part 1: teaching, children's finances part 2: financial vehicles), taking Mastery from 12 → 15 posts (63-77). Full curriculum grew from 70 → 77 posts. Optimizing complete date shifts Fri Aug 28 → Mon Sep 7; Mastery complete date shifts Fri Sep 25 → Mon Oct 12.
+
+**Timeline note (updated Jul 15, 2026, third pass — Path B compression):** Coverage review after drafting the first Optimizing posts identified two posts as thin on standalone financial-knowledge value without an app-hands-on angle: old #45 What-If Scenarios (mostly tool usage) and old #62 Invest-vs-Debt Decision Tree Advanced (substantial overlap with #50). Old #45 folded into #43 (Financial Projections gains a scenarios section). Old #62 folded into #50 (Invest or Pay Off Debt gains employer-match, tax-deduction, and multi-debt-sequencing sections). Optimizing 20 → 18 posts (43-60). Mastery renumbered 63-77 → 61-75 (count unchanged at 15). Full curriculum 77 → 75 posts. Optimizing complete date Mon Sep 7 → Wed Sep 2. Mastery complete date Mon Oct 12 → Wed Oct 7.
+
+**App-integration policy (added Jul 15, 2026):** The site is a **tool-agnostic financial-knowledge blog** for the foreseeable future. Blog post body content must not reference product features, tool capabilities, or the nidhi app by name. The `App tie-in (add on launch day):` lines in per-post entries below are **future-conditional notes**, retained for the historical record and for potential post-launch use. They are not to be reproduced in current or upcoming blog post bodies. If and when the app launches and a decision is made to add integration content, a separate pass will retrofit CTAs across shipped posts; that decision has not been made as of Jul 15, 2026.
+
+**Beta launch target:** Originally scheduled for late June 2026 immediately after post 32 (Financial Dashboard, Mon Jun 29). As of Jul 15, 2026, the launch has not occurred and no fixed date is set. Blog continues to publish as tool-agnostic educational content on the M/W/F cadence, independent of app timeline.
 
 ## Level System (from `src/content.config.ts` and `src/components/LearningPath.tsx`)
 
 | Level | Label | Prerequisite | Target |
 |-------|-------|-------------|--------|
 | `discovery` | Discovery | For beginners | 16 posts |
-| `building` | Building | Comfortable with basics | 13 posts |
+| `building` | Building | Comfortable with basics | 16 posts |
 | `psychology` | Psychology | Knows the basics, ready to understand how the mind sabotages the math | 10 posts |
-| `optimizing` | Optimizing | Has a budget, investment plan, and bias awareness | 12 posts |
-| `mastery` | Mastery | Experienced planners | 12 posts |
+| `optimizing` | Optimizing | Has a budget, investment plan, and bias awareness | 18 posts |
+| `mastery` | Mastery | Experienced planners | 15 posts |
+| `inclusive-finances` | Inclusive Finances | No prerequisite — relevant at any stage | 15 posts (proposed) |
 
 > **Note:** `psychology` is a new level added May 4, 2026. Requires adding `'psychology'` to the `level` enum in `src/content.config.ts` and to `LearningPath.tsx` before the first post ships.
+>
+> **Note (proposed, Sep 30, 2026):** `inclusive-finances` is a proposed sixth level. Unlike every other level in this table, it is **deliberately not part of the sequential prerequisite chain** — see "Exposure and IA strategy" under the "INCLUSIVE FINANCES" section below. Its posts are numbered 76-90 for internal reference and because a handful cross-reference Mastery-level concepts (estate planning, generational wealth), but that numbering describes writing order and content dependencies, not reading-gate order: the level is exposed to readers from day one of the site, not after they finish the other 75 posts. Same code-activation requirement as Psychology: add `'inclusive-finances'` to the `level` enum in `src/content.config.ts`, but its `LearningPath.tsx` treatment differs from every other level (see below) rather than simply appending to `LEVEL_ORDER`.
 
 ---
 
@@ -263,6 +272,32 @@ A full content audit of the 16 Discovery + (then) 13 Building posts surfaced two
 
 Plus the Psychology level (10 posts, now #33-42) was added on May 4, 2026 between Building and Optimizing, as behavioural prep for the advanced topics in Optimizing and Mastery where behavioural mistakes cost the most.
 
+### New gaps identified and filled in July 2026 (Optimizing expansion)
+
+A pre-drafting audit of the 12-post Optimizing outline against the Discovery+Building+Psychology foundation surfaced four accumulation-phase optimization gaps not covered anywhere else. Optimizing was expanded from 12 → 16 posts. The previously-flagged redundant slot (old Portfolio Rebalancing, duplicative with Building #24) was repurposed rather than removed. Post numbers below use current numbering after the July 14 second expansion:
+
+| New / Repurposed Post | Why needed |
+|-----------------------|-----------|
+| **#48 Growing Your Income** | Income growth is the single highest-leverage lever during accumulation, and Optimizing had no post on it. Discovery #9 (Income vs Wealth) framed the concept but never taught the mechanics. Plan previously flagged this as "Optimizing or Psychology (open)"; Optimizing is the right home because Psychology covers *why* we avoid asking, this post covers the math and the framework. |
+| **#51 Windfall Management** | Bonuses, inheritances, business-sale proceeds, and RSU vesting are a distinct optimization problem (mental accounting + time pressure + concentration risk) that ordinary allocation frameworks miss. Building #21 covered lump-sum vs DCA briefly; Psychology #35 covered mental accounting. Neither is a windfall-specific playbook. |
+| **#53 Tax-Loss Harvesting and Asset Location** | Building #22 (Taxes) covered concepts and #23 (Tax-Advantaged Accounts) covered vehicle selection. Mastery covers withdrawal-phase tax. The accumulation-phase tax optimization gap (harvesting losses, placing tax-inefficient assets in tax-advantaged accounts) was uncovered. Both techniques compound meaningfully over decades. |
+| **#58 Insurance Optimization** | Discovery #16 covered insurance basics for early-stage readers. Optimizing needed the fine-tuning post: right-sizing coverage as net worth grows, term-vs-whole-life analysis, when to drop coverage, umbrella liability math. This is a classic Optimizing topic and its absence left readers with an insurance plan sized for their early-Discovery selves. |
+| **#60 Advanced Rebalancing (repurposed from old Portfolio Rebalancing slot)** | Old slot was redundant with Building #24. Repurposed to advanced rebalancing: age-based glide paths, bond-tent strategies, sequence-aware rebalancing at the accumulation-to-drawdown transition. Fits Optimizing (fine-tuning), bridges cleanly into Mastery's sequence-of-returns treatment. |
+
+### New gaps identified and filled Jul 14, 2026 (Optimizing second expansion + Mastery expansion)
+
+A follow-up audit surfaced additional Optimizing gaps and reopened previously-deferred topics ("scams" and "children's finances" from the earlier "Optimizing or later" row). Seven new posts added across Optimizing and Mastery, taking the curriculum from 70 → 77 posts. Optimizing posts were re-woven into the section flow rather than appended, so 12 existing Optimizing entries shifted numbers.
+
+| New Post | Home | Why needed |
+|----------|------|-----------|
+| **#46 Cash Management** | Optimizing | Building #8 (Emergency Fund) introduced the concept; vehicle selection across the rate environment (HYSA vs money-market fund vs T-bill ladder vs short-duration bond ETF) was uncovered. Previously deferred as "covered inside #8" but the vehicle fine-tuning is a distinct Optimizing decision. |
+| **#47 Account Consolidation and Financial Data Hygiene** | Optimizing | Career-length accumulation creates account sprawl (forgotten retirement accounts, dormant brokerages, rate-of-the-month savings accounts). Not covered anywhere. Data hygiene as an enabler for every downstream Optimizing decision. |
+| **#50 Refinancing Timing** | Optimizing | Building #27 (Loan Terms) taught how to compare loans at origination. The ongoing refinance-vs-hold decision (break-even math, no-cost vs cash-in vs cash-out variants, when timing works against you) was uncovered. Distinct from prepayment mechanics already in #5 and #27. |
+| **#59 Recognizing and Avoiding Financial Scams and Fraud** | Optimizing | Previously deferred as "Optimizing or later." Universal scam taxonomy, structural defenses (2FA, credit freeze, cooling-off rule), and recovery playbook. Behavioural angle ties directly to Psychology #39 (Herd Behavior / FOMO) as the scammer's primary lever. Higher reader-value than several posts already in Optimizing for the Eva-type audience. |
+| **#71 Charitable Giving Optimization** | Mastery | Pairs with Estate Planning (#70). Cash vs appreciated-security donation, donor-advised funds, QCDs, bunching, timing coordination with tax-loss harvesting. Accumulation-and-drawdown-phase tax lever most donors never use. |
+| **#72 Teaching Kids About Money — Financial Parenting Across Ages** | Mastery | Previously deferred as "Optimizing or later." Money scripts (Psychology #41) form in childhood; this is the parental side of that formation. Age-appropriate lessons, allowance mechanics, modeling matters more than telling, the "silver spoon" question. |
+| **#73 Financial Vehicles for Children — Custodial Accounts and Education Savings** | Mastery | Companion to #72. Custodial account categories (taxable brokerage, education-specific tax-advantaged, minor-owned retirement), the control-vs-tax tradeoff, sequencing against parental retirement, cross-continent vehicle map per Rule 7. |
+
 ### Inline additions folded into existing Building posts
 
 Rather than new standalone posts:
@@ -276,27 +311,59 @@ Rather than new standalone posts:
 
 | Concept | Why |
 |---------|-----|
-| **Compound interest deep-dive** | Already covered deeply across #06 (appreciation), #13 (saving vs investing), #20 (cost of delay), #27 (retirement cost-of-delay). A fifth post would be redundant. |
-| **Debt payoff strategies** | Already covered deeply in #05 (snowball/avalanche/hybrid) and #26 (prepayment/refinancing). |
-| **Index funds / ETFs as standalone** | Folded into #18 (intro) and #20 (practical application) rather than given a separate post. |
-| **Short-term savings vehicles (HYSA, CDs, money market)** | Covered inside #08 (emergency fund) and #18 (cash equivalents). Separate post not justified. |
+| **Compound interest deep-dive** | Already covered deeply across #06 (appreciation), #13 (saving vs investing), #21 (cost of delay), #25 (retirement cost-of-delay). A fifth post would be redundant. |
+| **Debt payoff strategies** | Already covered deeply in #05 (snowball/avalanche/hybrid) and #27 (loan terms), plus #51 for the refinancing-timing decision specifically. |
+| **Index funds / ETFs as standalone** | Folded into #18 (intro) and #21 (practical application) rather than given a separate post. |
 
 ### Gaps consciously deferred to later phases
 
 | Concept | Target phase |
 |---------|--------------|
 | Behavioural finance / psychology of money | Psychology (#33-42) |
-| Sequence-of-returns risk | Mastery |
-| Drawdown strategies, longevity risk | Mastery |
-| Estate planning, wills, beneficiaries | Mastery |
-| Healthcare cost planning, long-term care | Mastery |
-| Negotiation / income growth | Optimizing or Psychology (open) |
-| Windfall management, scams, children's finances | Optimizing or later |
+| Sequence-of-returns risk | Mastery (#64) |
+| Drawdown strategies, longevity risk | Mastery (#64, #65) |
+| Estate planning, wills, beneficiaries | Mastery (#70) |
+| Healthcare cost planning, long-term care | Mastery (partial coverage in #65 Longevity Risk; standalone deferred indefinitely — jurisdiction-specific) |
+| Divorce / partnership dissolution finance | **Reopened, Sep 30, 2026** — was deferred indefinitely as "jurisdiction-specific enough that generic treatment would mislead more than it helps." See the note under "Inclusive Finances" below: the level's own editorial guardrail (teach the decision framework, map the legal mechanism per jurisdiction) is the intended way to reopen this without the original risk. Now planned as Inclusive Finances #81. |
+| Employer benefits deep-dive (ESPP, HDHP/HSA choice, group life adequacy, commuter benefits) | Deferred indefinitely — jurisdiction-heavy; RSU vesting is covered generically in #51 (Windfall) as the highest-frequency case |
 
 ### Known technical debt
 
-- Optimizing currently has a post titled "Portfolio Rebalancing" at its old slot #45. With rebalancing now in Building #23, that slot should either be repurposed (advanced topics: glide paths, sequence-aware rebalancing) or removed when the Optimizing phase is drafted.
-- Post numbers for Psychology, Optimizing, and Mastery in the per-post sections of this document still use pre-May-2026 numbering (30+ instead of 33+). To be renumbered when those phases are drafted.
+- The old "Portfolio Rebalancing" slot in Optimizing has been repurposed to "Advanced Rebalancing" (#60) covering glide paths, bond-tent strategies, and sequence-aware rebalancing. Resolved as part of the July 2026 Optimizing expansion.
+- Mastery per-post entries were renumbered from pre-May-2026 numbering (52-63) to 63-77 as part of the Jul 14, 2026 expansion, then to current 61-75 numbering as part of the Jul 15, 2026 Path B compression. All per-post sections now use current numbering.
+
+### New level proposed Sep 30, 2026: Inclusive Finances
+
+A review of the curriculum's trajectory (Discovery through Mastery, 75 posts, all built around a "default household": legally married or single, dual conventional income, stable employer benefits, legally-recognized family structure) surfaced a systematic gap rather than a missing post: none of the five levels address financial planning for a household whose situation doesn't match that default. Examples: unmarried or cohabiting couples, same-sex couples in jurisdictions that don't recognize their marriage, blended and chosen families, solo agers, single-income households, gig and informal-economy workers, people with disabilities (means-tested benefit cliffs), immigrants and cross-border households, culturally- or religiously-distinct financial systems (interest-free finance), and multi-generational household economics.
+
+This is proposed as a sixth level, **Inclusive Finances (15 posts, #76-90)**. The numbering (76-90, written and sequenced after Mastery) reflects writing order and the fact that several posts reference Mastery-level vocabulary (SWR, estate planning, withdrawal sequencing) rather than re-deriving it. **It is not read-gated behind the other five levels.** A reader arriving with none of the curriculum's prior context should be able to land on any post in this level and use it. Full per-post plan below, after the Mastery section.
+
+### Exposure and IA strategy (decided Sep 30, 2026)
+
+The level's value depends on it being genuinely reachable by someone who needs it, not discoverable only by a reader who has already worked through 75 posts. Six concrete decisions, to be implemented together:
+
+1. **Pin it above Discovery on the learning-path page, visually distinct from the numbered ladder.** On `src/components/LearningPath.tsx`, `inclusive-finances` is excluded from `LEVEL_ORDER` (the array driving the sequential, collapse-on-completion ladder) and instead rendered as its own non-collapsible block positioned before the Discovery section. It does not get a numbered waypoint badge (`1`, `2`, `3`...) the way the five sequential levels do — a distinct marker (icon, not a number) signals "parallel option," not "step zero." Prerequisite copy: "No prerequisite — relevant at any stage." Implementation: a new constant (e.g. `FEATURED_LEVELS = ['inclusive-finances']`) rendered ahead of the `LEVEL_ORDER.map(...)` block, reusing `PostNode`/level-section markup but skipping the `isCompleted` collapse behavior entirely (it should never auto-collapse, since there's no "finish this before the next level" framing to reward).
+2. **Give it a standalone hub page**, not just a section nested inside `/blog/`. Own URL, a short framing paragraph explaining why the level exists, then its 15 posts. This is what gets linked from nav and homepage, and what should rank for direct searches ("financial planning unmarried couple," "same sex couple finances different countries") without requiring the reader to discover the learning path first.
+3. **Cross-link from the exact curriculum posts where a default assumption breaks**, at the point of need rather than relying on a reader to find a separate section. Confirmed insertion points from the Optimizing draft review below, plus the corresponding Mastery and Building posts:
+   - Building #23 (Tax-Advantaged Accounts) → Inclusive Finances #77 (Unmarried and Cohabiting Couples)
+   - Optimizing #57 (Income Replacement Ratio) and #58 (Insurance Optimization) → #77, alongside the light inline carve-outs noted below
+   - Optimizing #45 (Life Events) → #80 (Blended and Non-Traditional Families)
+   - Optimizing #56 (Geographic Arbitrage) → #78 (Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage)
+   - Mastery #70 (Estate Planning Basics) → #77, #79 (Chosen Family), #81 (Divorce and Separation)
+   - Mastery #72/#73 (Teaching Kids / Financial Vehicles for Children) → #80
+   Each is a short callout ("This assumes X. If that doesn't describe your situation, see [Inclusive Finances post].") added to the existing post, not a rewrite.
+4. **Feature it on the homepage independent of "start the curriculum."** Its own entry point, not nested under a "Learning Path" CTA, so it isn't implicitly framed as advanced or later-stage content.
+5. **Write every post to stand alone.** Since entry points are search, a cross-link, or direct nav rather than sequential reading, each post needs a self-contained opening and inline one-line recaps (with backlinks) for any curriculum concept it leans on — the same jargon-gloss discipline Discovery uses for terms, applied here to *concepts* a reader may not have encountered yet. "Not gated" has to hold editorially, not just structurally; a post that silently assumes the reader did Building #23 first is gated in practice even if it's technically reachable.
+6. **Add a situation-based filter as a second navigation axis.** The three proposed topic tags (`relationships`, `disability`, `immigration`) power an "Explore by situation" entry point that surfaces matching posts across *all* levels, not only this one, so the level's reach isn't capped at its own 15 posts.
+
+Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the point of need, content that doesn't gatekeep on prior reading); items 2, 4, and 6 are additive. All six are planned together here so the level ships already exposed correctly rather than needing an IA retrofit later.
+
+**Editorial guardrail specific to this level.** Unlike most of the curriculum, this level's subject matter is unusually jurisdiction-sensitive by nature (marriage recognition, disability benefits, and immigration status are all legally defined per-country). This is exactly the property that caused "divorce / partnership dissolution finance" and "employer benefits deep-dive" to be deferred indefinitely in earlier gap-analysis passes (see table above). The level's own Rule 7-equivalent guardrail: teach the **decision framework** (what to check, what to title jointly, what to designate, what to ask a local professional) as universal, and treat the specific legal mechanism per jurisdiction the way Building #23 (Tax-Advantaged Accounts) maps functional categories to named regional vehicles, never asserting "the law in your country says X." Every post in this level needs an explicit scope note on what it does not cover (specific-country legal advice) before it ships.
+
+**Cross-references into already-drafted Optimizing posts (untracked, unpublished as of Sep 30, 2026, so still freely editable).** A full read-through of all 18 Optimizing drafts (#43-60) for default-household assumptions found the posts already largely jurisdiction-generic (per Rule 7) and did not surface anything requiring restructuring. Two light, cheap inline additions are worth making now rather than waiting for the new level, since these are one-clause caveats, not new sections:
+- **#57 Income Replacement Ratio:** the dependant-independence test currently reads "spouse can maintain lifestyle from portfolio and their own income." Add a clause noting this applies equally to an unmarried or unrecognized partner, since the test is financial independence, not marital status.
+- **#58 Insurance Optimization:** the life-insurance-drop test has the same "spouse can maintain lifestyle" phrasing, plus a load-bearing assumption worth flagging explicitly: a legal spouse is often a default beneficiary in many jurisdictions, while an unmarried or legally-unrecognized partner typically is not and needs the beneficiary designation set deliberately. Worth one sentence, not a section; the full treatment belongs in Inclusive Finances #77.
+- **#45 Life Events** and **#56 Geographic Arbitrage** also carry default-household framing (the "children" cash-flow model assumes a two-parent household that reduces one income; the visa-mechanics section lists six visa categories with no mention of partner/spousal reunification visas) but reframing either properly needs more room than an inline caveat allows. Left as-is; Inclusive Finances #78 and #80 cross-reference both posts instead of patching them.
 
 ---
 
@@ -465,255 +532,454 @@ Rather than new standalone posts:
 
 > You know the fundamentals and have built first systems. Now meet the opponent: your own brain. Behavioural finance explains why smart people consistently make predictable money mistakes — and how to build systems that beat your biases. This series is the bridge into Optimizing: you can't fine-tune what your biases keep undoing.
 
-> **Renumbering note:** the per-post entries below still carry their pre-May-2026 numbers (30-39). These will be bumped by +3 (to 33-42) when the Psychology posts are actually drafted. Cross-references in this document that point *to* Psychology posts still use the old numbers internally; cross-references that point from Psychology *back to* Building have been updated to the new Building numbering.
-
-### Post 30: Why Smart People Make Dumb Money Decisions
+### Post 33: Why Smart People Make Dumb Money Decisions
 **Builds on:** All Discovery and Building content (capstone intro to the series)
 **Key concept:** Traditional economics assumes rational actors. Behavioral economics studies how real humans actually decide. Kahneman's System 1 (fast, emotional, pattern-matching) vs System 2 (slow, deliberate, effortful). Why knowing the math doesn't prevent bad decisions. The core insight: your brain evolved to avoid predators, not to compound capital over 40 years. Meet the major biases you'll encounter in the rest of the series.
 **App tie-in:** nidhi's dashboard replaces gut feeling with numbers — a System-2 tool for a System-1 species.
 
 ---
 
-### Post 31: Loss Aversion and the Disposition Effect
-**Builds on:** Why Smart People (#30), Understanding Risk (#17), Investing 101 (#18)
+### Post 34: Loss Aversion and the Disposition Effect
+**Builds on:** Why Smart People (#33), Understanding Risk (#17), Investing 101 (#18)
 **Key concept:** Losses hurt ~2× more than equivalent gains feel good (Kahneman & Tversky, prospect theory). Consequences: panic-selling in downturns, refusing to sell losing positions ("I'll sell when it gets back to even"), holding winners too briefly. The disposition effect: investors sell winners at 1.5× the rate they sell losers, even when tax-inefficient. Why checking your portfolio daily makes you worse off. Myopic loss aversion.
 **App tie-in:** nidhi shows long-term projections, not daily price swings — reframing the time horizon fights short-term loss aversion.
 
 ---
 
-### Post 32: Mental Accounting
-**Builds on:** Why Smart People (#30), Budgeting (#14), Liabilities (#4)
+### Post 35: Mental Accounting
+**Builds on:** Why Smart People (#33), Budgeting (#14), Liabilities (#4)
 **Key concept:** Treating money differently based on arbitrary labels, despite it all being fungible. The tax refund spent freely vs salary saved carefully. Paying off a small "scary" debt before a larger expensive one. Keeping emergency fund at 0.5% while carrying 18% credit card debt. The "house money effect" — gambling more with gains than principal. Why mental accounting is sometimes useful (budgeting buckets) and sometimes destructive (irrational prioritization). Sets up the invest-vs-debt decision in Optimizing.
 **App tie-in:** nidhi's unified net worth view collapses artificial mental buckets into one truthful number.
 
 ---
 
-### Post 33: Present Bias and the Battle With Your Future Self
-**Builds on:** Why Smart People (#30), Cash Flow 101 (#10), Introduction to FI (#24)
+### Post 36: Present Bias and the Battle With Your Future Self
+**Builds on:** Why Smart People (#33), Cash Flow 101 (#10), Introduction to FI (#25)
 **Key concept:** Hyperbolic discounting — we heavily overvalue immediate rewards vs future ones, and the discount curve is steepest in the short term. Why €100 today feels much more valuable than €110 next week, but €100 in 52 weeks feels roughly equal to €110 in 53 weeks. The "future self as a stranger" problem. Commitment devices: automating savings, pre-committing to raises going to retirement, making the default save-first. Why willpower loses and systems win.
 **App tie-in:** nidhi's recurring contribution tracking and FIRE projections make the future self concrete and visible.
 
 ---
 
-### Post 34: Overconfidence and the Planning Fallacy
-**Builds on:** Why Smart People (#30), Investing 101 (#18), Financial Goals (#29)
+### Post 37: Overconfidence and the Planning Fallacy
+**Builds on:** Why Smart People (#33), Investing 101 (#18), Financial Goals (#30)
 **Key concept:** Most people rate themselves above-average investors — a mathematical impossibility. Overconfidence leads to excessive trading, under-diversification, and taking on concentrated bets. The planning fallacy: systematically underestimating time, cost, and difficulty of future projects (including savings plans). Why "I'll start saving more next year when I make more" almost never works out. Outside view vs inside view (Kahneman). Using base rates to counteract overconfidence. Prepares readers to set realistic assumptions in the Optimizing projections.
 **App tie-in:** nidhi's projections use conservative deterministic math — but the user sets the assumptions, which is where overconfidence sneaks in.
 
 ---
 
-### Post 35: Framing, Anchoring, and Price Psychology
-**Builds on:** Why Smart People (#30), Liabilities (#4), Purchasing Power (#11)
+### Post 38: Framing, Anchoring, and Price Psychology
+**Builds on:** Why Smart People (#33), Liabilities (#4), Purchasing Power (#11)
 **Key concept:** The same decision becomes different decisions based on how it's presented. "Save €200/month" vs "€2,400/year" vs "€72,000 over 30 years with compounding." A 1% fund fee sounds trivial but costs ~25% of lifetime returns (sets up Fee Optimization in Optimizing). Anchoring: the first number you see (sticker price, purchase price, last year's high) becomes the reference point, regardless of fundamentals. The sunk cost fallacy. Why re-framing is one of the cheapest financial skills to acquire.
 **App tie-in:** nidhi surfaces the long-horizon framing — not "1% fee" but "€X lost to fees over 40 years."
 
 ---
 
-### Post 36: Herd Behavior, FOMO, and Social Influence
-**Builds on:** Why Smart People (#30), Investing 101 (#18), Diversification (#19)
+### Post 39: Herd Behavior, FOMO, and Social Influence
+**Builds on:** Why Smart People (#33), Investing 101 (#18), Diversification (#20)
 **Key concept:** Humans are wired to follow the crowd — evolutionarily adaptive, financially dangerous. Buying because "everyone else is buying" is the mechanism of bubbles; selling because "everyone else is selling" is the mechanism of crashes. FOMO (fear of missing out) as a decision-driver. Social proof in investing: why a rising stock attracts more buyers regardless of fundamentals. Why the best long-term investors are often boring and unfashionable. The cost of needing to tell friends about your portfolio.
 **App tie-in:** nidhi is a private, personal tool — it doesn't show you what "everyone else" is doing.
 
 ---
 
-### Post 37: Narrative Economics and Bubbles
-**Builds on:** Herd Behavior (#36), Investing 101 (#18), Understanding Risk (#17)
+### Post 40: Narrative Economics and Bubbles
+**Builds on:** Herd Behavior (#39), Investing 101 (#18), Understanding Risk (#17)
 **Key concept:** Shiller's narrative economics: stories drive markets more than fundamentals. Historical bubbles (Tulip mania 1637, South Sea 1720, dotcom 2000, housing 2008, various crypto cycles) share the same anatomy: plausible story + rising prices + new-era thinking + "this time is different." Why bubbles feel obvious in hindsight but are hard to identify in real time. Recency bias and availability bias amplifying the narrative. How to stay grounded when the story is seductive. Sets up Monte Carlo interpretation in Optimizing — probability as a grounding tool against narratives.
 **App tie-in:** nidhi projects with user-set growth rates — if you believe "this time is different," you can model it and see the long-term math.
 
 ---
 
-### Post 38: Money Scripts -- Your Financial Autobiography
-**Builds on:** Why Smart People (#30), Cash Flow 101 (#10), Financial Goals (#29)
+### Post 41: Money Scripts -- Your Financial Autobiography
+**Builds on:** Why Smart People (#33), Cash Flow 101 (#10), Financial Goals (#30)
 **Key concept:** Klontz's research on money scripts — unconscious beliefs about money formed in childhood, often from observing parents. Four patterns: money avoidance (money is bad, wealthy people are greedy), money worship (more money solves everything), money status (net worth = self-worth), money vigilance (secrecy, anxiety, hoarding). Why couples fight about money (often clashing scripts, not clashing numbers). Identifying your own script. Why self-awareness of money beliefs often matters more than financial literacy.
 **App tie-in:** nidhi shows numbers without judgment — a neutral mirror against which users can examine their own scripts.
 
 ---
 
-### Post 39: Building an Anti-Bias Financial Life
+### Post 42: Building an Anti-Bias Financial Life
 **Builds on:** Entire Psychology series; bridges to Optimizing
 **Key concept:** Capstone. You can't rewire your brain, but you can design a financial life that works *despite* your biases. Automation (remove willpower from the equation). Defaults (set save-first, opt-out of bad choices). Checklists (slow down System 1 when stakes are high). Pre-commitment (Ulysses contracts, locked-in raises). Reduce decision frequency (annual reviews beat daily checking). Boring is beautiful (index funds, dollar-cost averaging). Using a dashboard to replace gut feeling with numbers. Sets up Optimizing and Mastery: fine-tuning and advanced strategy only work if your behavior doesn't sabotage them.
 **App tie-in:** nidhi is itself a bias-fighting system — automation of tracking, long-term framing, neutral math, System-2 dashboards for a System-1 brain.
 
 ---
 
-# OPTIMIZING (Posts 43-54)
+# OPTIMIZING (Posts 43-60)
 
-> Fine-tuning what works. Projections, scenario modelling, and applied planning. With Psychology as prep, you're less likely to let biases undo the optimisation.
+> Fine-tuning what works. Projections, applied planning, and accumulation-phase optimization. With Psychology as prep, you're less likely to let biases undo the optimisation. **Expanded July 2026 (first pass)** from 12 → 16 posts with four accumulation-phase gaps (Growing Your Income, Windfall Management, Tax-Loss Harvesting & Asset Location, Insurance Optimization). Old redundant Portfolio Rebalancing slot repurposed to Advanced Rebalancing. **Expanded again Jul 14, 2026 (second pass)** from 16 → 20 posts with four further gaps (Cash Management, Account Consolidation, Refinancing Timing, Scam Prevention). **Compressed Jul 15, 2026 (Path B pass)** from 20 → 18 posts after drafting review: old #45 (What-If Scenarios) folded into #43 as a scenarios section because standalone treatment was too tool-forward for a tool-agnostic blog; old #62 (Invest-vs-Debt Decision Tree Advanced) folded into #50 as later sections because content overlapped substantially with #50's core. Twelve remaining posts renumbered accordingly. Cross-references from Optimizing back to earlier levels use current numbering (Discovery 1-16, Building 17-32, Psychology 33-42). **Per the Jul 15 policy note**, `App tie-in` lines below are future-conditional and are not to be included in current blog post bodies.
 
-> **Renumbering note:** per-post entries below still use pre-May-2026 numbers (40-51). Will be bumped by +2 (to 42-53) when Optimizing is drafted. The pre-existing "Portfolio Rebalancing" slot is now redundant with Building #23 and will be repurposed or removed.
-
-### Post 40: Financial Projections -- Where Will You Be in 10, 20, 30 Years?
-**Builds on:** Appreciation/Depreciation (#6), Investing 101 (#18), Financial Goals (#29), Overconfidence (#34)
-**Key concept:** Projecting net worth forward using growth rates, inflation, recurring contributions, and liability payoffs. Small differences compound dramatically. Projections aren't predictions (assumptions matter) — and overconfident assumptions (covered in #34) are the most common failure mode.
-**App tie-in (add on launch day):** nidhi runs 50-year deterministic projections per-asset, incorporating growth rates, inflation, and surplus allocation.
+### Post 43: Financial Projections and What-If Scenarios -- Where Will You Be in 10, 20, 30 Years?
+**Builds on:** Appreciation/Depreciation (Discovery #6), Investing 101 (Building #18), Financial Goals (Building #30), Overconfidence (Psychology #37)
+**Key concept:** Projecting net worth forward using growth rates, inflation, recurring contributions, and liability payoffs. Small differences compound dramatically. Projections aren't predictions (assumptions matter); overconfident assumptions are the most common failure mode. **[FOLDED FROM OLD #45 — Jul 15, 2026]** Second half of the post covers what-if scenarios: how to change one input at a time (savings rate, growth rate, retirement age, location, a lump-sum event) and see the delta from the baseline trajectory. The intuition traps (recurring changes are much larger than they look, one-off changes are much smaller than they feel, time is asymmetric). Downside case before upside case.
+**App tie-in (add on launch day; future-conditional, not for current body):** nidhi runs 50-year deterministic projections per-asset, with what-if overrides on any assumption.
 
 ---
 
-### Post 41: Cash Flow Forecasting -- Will You Have Enough When You Need It?
-**Builds on:** Cash Flow 101 (#10), Financial Projections (#40), Financial Health Metrics (#30)
-**Key concept:** **[GAP FILL — critical for Phase 1.5 cash flow modeling]** Net worth projections tell you where your wealth is headed. Cash flow forecasting tells you whether you'll have enough cash in the right place at the right time. Month-by-month income vs. expense projections. Detecting future shortfalls before they happen. Liquidity planning: ensuring large upcoming expenses (tuition, down payment, car) don't force you to sell investments at the wrong time. Emergency fund adequacy as a dynamic metric (months of expenses covered by liquid assets, not a static number). The cash runway question: if income stopped today, how long could you sustain your current expenses? Why cash flow problems can exist even when net worth is growing (illiquid wealth, timing mismatches).
-**App tie-in (add on launch day):** nidhi's Phase 1.5 cash flow model projects month-by-month income vs. expenses, detects shortfall months, and calculates emergency fund coverage dynamically (customer Q73-Q76).
+### Post 44: Cash Flow Forecasting -- Will You Have Enough When You Need It?
+**Builds on:** Cash Flow 101 (Discovery #10), Financial Projections (#43), Financial Health Metrics (Building #31)
+**Key concept:** Net worth projections tell you where your wealth is headed. Cash flow forecasting tells you whether you'll have cash in the right account at the right time. Month-by-month income vs expense projections. Detecting future shortfalls before they happen. Liquidity planning: ensuring large upcoming expenses (tuition, down payment, car) don't force you to sell investments at the wrong time. Emergency fund adequacy as a dynamic metric. The cash-runway question: if income stopped today, how long could you sustain your current expenses? Why cash-flow problems can exist even when net worth is growing (illiquid wealth, timing mismatches).
+**App tie-in (add on launch day; future-conditional, not for current body):** cash flow model projects month-by-month income vs expenses, detects shortfall months, calculates emergency-fund coverage dynamically.
 
 ---
 
-### Post 42: What-If Scenarios -- Modeling Different Life Paths
-**Builds on:** Financial Projections (#40), Cash Flow 101 (#10)
-**Key concept:** What if you took a lower-paying job? Bought a house? Moved countries? Changing one variable ripples through your entire financial future. Decision-making under uncertainty.
-**App tie-in (add on launch day):** nidhi's what-if engine lets you override any assumption and instantly see how it changes your trajectory.
+### Post 45: Life Events and Your Finances -- Children, Career Breaks, Relocations
+**Builds on:** Financial Projections (#43), Cash Flow 101 (Discovery #10), Cash Flow Forecasting (#44)
+**Key concept:** Major life events change your financial picture dramatically but predictably. Children (expense increase, income decrease), career breaks (income gap), buying a home (asset + liability), relocating (income and expense shift). Planning for the foreseeable, buffering for the unforeseeable. Uses scenario-thinking from #43 as its underlying tool.
+**App tie-in (add on launch day; future-conditional, not for current body):** projection engine handles future-dated assets, hypothetical expenses, and overrides.
 
 ---
 
-### Post 43: Life Events and Your Finances -- Children, Career Breaks, Relocations
-**Builds on:** What-If Scenarios (#42), Cash Flow 101 (#10), Financial Projections (#40)
-**Key concept:** Major life events change your financial picture dramatically but predictably. Children (expense increase, income decrease), career breaks (income gap), buying a home (asset + liability), relocating (income and expense shift). Planning for the foreseeable, buffering for the unforeseeable.
-**App tie-in (add on launch day):** nidhi's projection engine handles future-dated assets, hypothetical expenses, and what-if overrides -- purpose-built for modeling life events.
+### Post 46: Cash Management -- Where to Hold Your Cash Across Rate Environments (NEW, Jul 14 2026)
+**Builds on:** Emergency Fund (Discovery #8), Cash Flow Forecasting (#44), Liquidity (Discovery #7)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit]** Discovery #8 introduced the emergency fund at the concept level. This post is vehicle-selection fine-tuning: where you actually park cash across the rate environment. **The tier stack**: everyday checking (0% typical), high-yield savings (HYSA), money-market funds, T-bill ladders, short-duration bond ETFs, brokered CDs / term deposits. **Yield-vs-liquidity tradeoffs**: instant access at HYSA vs 4-13-26-52-week T-bill maturities vs bond ETF NAV volatility. **Rate-environment sensitivity**: when rates rise, money-market funds and T-bills track quickly; HYSA lags. When rates fall, longer-duration bond ETFs benefit from capital appreciation. **The three-bucket structure**: (1) transactional cash (0-1 month), (2) safety buffer (1-6 months), (3) opportunity/near-term goal cash (6+ months). Different buckets, different vehicles. **Common mistakes**: keeping the safety buffer in a 0% checking account, chasing yield with long-duration bond ETFs for cash needs, ignoring deposit-insurance limits across accounts, taxable interest drag on cash held in taxable brokerage. **Kept generic** per BL#4: named vehicle categories, not products.
+**Gloss requirements:** "HYSA" (high-yield savings account); "money-market fund" (short-term ultra-safe fund); "T-bill" (short-term government debt); "duration" (interest-rate sensitivity of a bond position); "deposit insurance" (government guarantee on bank deposits, jurisdiction-specific).
+**App tie-in (add on launch day; future-conditional, not for current body):** track cash across accounts with per-account effective rates, project opportunity cost of low-yield cash.
 
 ---
 
-### Post 44: Invest or Pay Off Debt? -- The Math Behind the Decision
-**Builds on:** Liabilities (#4), Appreciation/Depreciation (#6), Investing 101 (#18), Mental Accounting (#32)
-**Key concept:** Compare the guaranteed return of paying off debt (the interest rate) vs the expected return of investing. When the math is clear (credit card at 22% vs market at 7%) and when it's ambiguous (mortgage at 3.5% vs market at 7%). Show both outcomes side by side. Mental accounting (covered in #32) often makes people pay off the "scary" debt instead of the expensive one — the math here corrects that.
-**App tie-in (add on launch day):** nidhi models both scenarios in its what-if engine -- pay debt faster vs invest more -- so you can see the long-term impact.
+### Post 47: Account Consolidation and Financial Data Hygiene (NEW, Jul 14 2026)
+**Builds on:** Assets (Discovery #3), Financial Dashboard (Building #32), Getting Started (Building #21)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit]** Career-length accumulation creates account sprawl: forgotten employer retirement plans from three jobs ago, brokerages opened for a single ETF, cards used once for a signup bonus, savings accounts at rate-of-the-month banks. **Cost of sprawl**: fee leakage, overlooked balances, operational drag, planning noise, expanded fraud surface. **Consolidation framework**: inventory → categorise (essential / optimising / dormant) → migrate (rollovers, brokerage consolidation, card closures with credit-score consideration) → systematise (2-3 institutions max for 90% of activity, defensive spread within deposit-insurance limits). **The credit-score wrinkle**: closing old cards affects credit-history length. **The rollover trap**: 60-day indirect vs direct trustee-to-trustee (jurisdictional mechanics named as functional categories per Rule 7). **When NOT to consolidate**: employer plans with unique institutional funds, unique tax-lot considerations, active pending transactions. Data hygiene as enabler for every downstream Optimizing post.
+**Gloss requirements:** "rollover"; "dormant account fee"; "deposit-insurance limit"; "credit history length"; "trustee-to-trustee transfer."
+**App tie-in (add on launch day; future-conditional, not for current body):** asset inventory makes sprawl visible; dashboard flags dormant balances and zero-yield cash.
 
 ---
 
-### Post 45: Portfolio Rebalancing -- Keeping Your Plan on Track
-**Builds on:** Diversification (#19), Getting Started (#20), Financial Goals (#29), Loss Aversion (#31)
-**Key concept:** Over time, different assets grow at different rates, drifting your allocation from your target. Rebalancing restores it. When to rebalance (calendar vs threshold). Tax-efficient rebalancing (new contributions first). Why discipline matters more than timing — rebalancing means selling winners and buying losers, which loss aversion (#31) makes emotionally hard.
-**App tie-in (add on launch day):** nidhi tracks your asset allocation and shows drift from your target, so you know when rebalancing makes sense.
+### Post 48: Growing Your Income -- Negotiation, Raises, and Career Capital (NEW, July 2026)
+**Builds on:** Cash Flow 101 (Discovery #10), Income vs Wealth (Discovery #9), Life Events (#45), Present Bias (Psychology #36), Overconfidence (Psychology #37)
+**Key concept:** **[GAP FILL — July 2026 Optimizing expansion]** Income growth is the single highest-leverage financial lever during accumulation. A 10% raise, negotiated once, compounds across every future raise, every retirement contribution, and every savings-rate calculation for the rest of a career. **Salary negotiation:** market-data anchoring, BATNA thinking, timing (offer stage vs annual review), counter-offer arithmetic. **Career capital as an asset class** (conceptually): specialised skills, network, credentials, reputation as illiquid but appreciating personal assets. **Side income** as diversification of earning power. **Job-hopping vs staying:** empirical wage premium for switching, weighed against tenure-based compounding (equity vesting, pension accrual, promotion pipelines). Present bias (Psychology #36) makes us undervalue income growth vs immediate expense-cutting; overconfidence (Psychology #37) leads us to under-prepare for negotiations. Generic; no jurisdictional employment law.
+**Gloss requirements:** "BATNA" (best alternative to a negotiated agreement); "career capital" (Cal Newport's framing); "compensation package" vs "base salary."
+**App tie-in (add on launch day; future-conditional, not for current body):** model a salary increase and see it compound into pension and taxable projections.
 
 ---
 
-### Post 46: Fee Optimization -- The Silent Drag on Your Returns
-**Builds on:** Investing 101 (#18), Financial Projections (#40), Framing (#35)
-**Key concept:** Expense ratios, trading costs, advisor fees, platform fees. A 1% fee difference compounds into tens of thousands over decades. How to compare funds by total cost. Why low-cost index funds dominate long-term. The only guaranteed way to improve returns: reduce costs. This is where reframing matters most (covered in #35) — "1%" sounds tiny until you see "€X over 40 years."
-**App tie-in (add on launch day):** nidhi's projection engine shows the impact of different growth rate assumptions -- and fees directly reduce your effective growth rate.
+### Post 49: Invest or Pay Off Debt? -- The Math Behind the Decision
+**Builds on:** Liabilities (Discovery #4), Appreciation/Depreciation (Discovery #6), Investing 101 (Building #18), Mental Accounting (Psychology #35), Windfall Management (#51 for lump-sum context)
+**Key concept:** Compare the return of paying off debt (the interest rate) vs the expected return of investing. When the math is clear (credit card at 22% vs market at 7%) and when it's ambiguous (mortgage at 3.5% vs market at 7%). Show both outcomes side by side. Mental accounting (Psychology #35) often makes people pay off the "scary" debt instead of the expensive one; the math corrects that. **[FOLDED FROM OLD #62 — Jul 15, 2026]** Advanced scenarios as later sections: when employer matching makes investing win at higher debt rates (match is instant 100% return that dominates most rate spreads); how tax deductions on debt (mortgage interest, jurisdictionally variable) change the math; student loans (income-driven repayment vs aggressive payoff); multi-debt sequencing (how to allocate when you have mortgage + student loan + employer match + Roth-equivalent headroom simultaneously).
+**Gloss requirements:** "employer match"; "marginal deduction"; "income-driven repayment"; "opportunity cost" (already glossed in Discovery, briefly re-referenced).
+**App tie-in (add on launch day; future-conditional, not for current body):** model pay-debt vs invest-more scenarios side by side; sequence multiple debts.
 
 ---
 
-### Post 47: Real Returns and Benchmarking -- Is Your Portfolio Actually Performing?
-**Builds on:** Purchasing Power (#11), Investing 101 (#18), Financial Projections (#40)
-**Key concept:** Nominal return vs real (inflation-adjusted) return. How to benchmark your portfolio against relevant indices. Why comparing to "the market" requires knowing which market. When underperformance signals a problem vs normal volatility. The danger of chasing past performance. How much of your net worth growth came from contributions vs. market returns (customer Q80) -- and why that distinction matters.
-**App tie-in (add on launch day):** nidhi projects with user-set growth rates and inflation, so you can compare actual performance against your assumptions over time.
+### Post 50: Refinancing Timing -- When to Refinance and When to Wait (NEW, Jul 14 2026)
+**Builds on:** Understanding Loan Terms (Building #27), Invest or Pay Off Debt (#49)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit]** Building #27 taught how to compare loans at origination. This post covers the ongoing decision: rates dropped, should you refinance? **Break-even calculation**: closing costs ÷ monthly savings = break-even months. **Rate-differential rule of thumb**: 0.5 to 1.0% drop is the traditional trigger, but the correct trigger depends on closing costs, remaining term, and hold period. **No-cost / cash-in / cash-out variants**. **When timing works against you**: near-end-of-term refi (interest already mostly paid), planning to move within 2-3 years, closing costs exceed 5% of principal. **Beyond mortgages**: student loan refi (protection tradeoffs), auto loan refi, personal loan refi. **Rate-lock timing** and the "should I wait for further drops" behavioural trap. Generic; no lender names.
+**Gloss requirements:** "closing costs"; "break-even months"; "cash-in vs cash-out refi"; "rate lock"; "LTV" (loan-to-value ratio).
+**App tie-in (add on launch day; future-conditional, not for current body):** compare old vs new loan schedule vs invest-the-savings over projected holding period.
 
 ---
 
-### Post 48: Monte Carlo & Probability -- Why One Projection Isn't Enough
-**Builds on:** Financial Projections (#40), Narrative Economics (#37)
-**Key concept:** A single projection assumes fixed returns every year. Reality is volatile. Monte Carlo runs thousands of simulations using historical return distributions to show a range of outcomes. "In 85% of historical simulations, this plan succeeded." Understanding percentiles (10th = bad luck, 50th = median, 90th = good luck). Why this matters for retirement planning especially. Probabilistic thinking is the antidote to narrative thinking (#37).
-**App tie-in (add on launch day):** nidhi's Phase 2 Monte Carlo engine runs probabilistic projections and shows confidence ranges.
+### Post 51: Windfall Management -- Bonuses, Inheritances, and Sale Proceeds (NEW, July 2026)
+**Builds on:** Invest or Pay Off Debt (#49), Mental Accounting (Psychology #35), Present Bias (Psychology #36), Getting Started (Building #21), Emergency Fund (Discovery #8)
+**Key concept:** **[GAP FILL — July 2026 Optimizing expansion]** One-off large sums (year-end bonus, inheritance, business sale, RSU vesting, insurance payout, home sale proceeds) are a distinct optimization problem: they trigger mental accounting (Psychology #35), time pressure, and concentration risk that ordinary allocation frameworks don't handle. **Four-step framework:** park it (high-yield account for 30-90 days) → plan it (priority order from Building #23) → deploy it (lump-sum vs DCA revisited under real conditions) → monitor it (avoid lifestyle-inflation ratchet). **Tax-aware allocation** (harvest losses to offset windfall gains; timing across tax years). **Three failure modes:** lifestyle-inflation ratchet, concentrated allocation to what you know, all-at-once into a single asset. **Special cases:** inheritance (grief + money produce bad decisions; pause is optimal), business sale (concentration → diversification), RSU vesting (single-stock reduction plan).
+**Gloss requirements:** "windfall"; "concentration risk"; "RSU" (Restricted Stock Unit); "tax-loss harvesting" (brief; full treatment in #53).
+**App tie-in (add on launch day; future-conditional, not for current body):** model different windfall deployments (debt vs invest vs split, phased over months).
 
 ---
 
-### Post 49: Geographic Arbitrage -- How Location Shapes Your Financial Plan
-**Builds on:** Euro Buys More (#12), What-If Scenarios (#42), Cash Flow 101 (#10)
-**Key concept:** Living where costs are low while earning where salaries are high. Remote work as a financial lever. How relocating affects cash flow, savings rate, and FIRE timeline. The math of geo-arbitrage: same income, different expense base = dramatically different wealth trajectory. Practical considerations: visa, healthcare, social network, taxes (generic).
-**App tie-in (add on launch day):** nidhi's multi-currency support and what-if engine let you model the financial impact of living in different countries.
+### Post 52: Fee Optimization -- The Silent Drag on Your Returns
+**Builds on:** Investing 101 (Building #18), Financial Projections (#43), Framing (Psychology #38)
+**Key concept:** Expense ratios, trading costs, advisor fees, platform fees. A 1% fee difference compounds into tens of thousands over decades. How to compare funds by total cost. Why low-cost index funds dominate long-term. Reframing matters most here (Psychology #38): "1%" sounds tiny until you see "€X over 40 years."
+**App tie-in (add on launch day; future-conditional, not for current body):** growth-rate projections show the fee-drag effect.
 
 ---
 
-### Post 50: Income Replacement Ratio -- How Much Income Do You Need in Retirement?
-**Builds on:** Cash Flow 101 (#10), Financial Goals (#29), Financial Projections (#40)
-**Key concept:** The percentage of pre-retirement income needed to maintain your lifestyle. Why 70-80% is a common benchmark (no commuting costs, no saving for retirement, potentially lower taxes). How to calculate your own number based on actual projected expenses. How pension income, investment income, and savings drawdown combine to replace your salary.
-**App tie-in (add on launch day):** nidhi projects income replacement from all sources -- active income, passive income, and portfolio drawdown.
+### Post 53: Tax-Loss Harvesting and Asset Location (NEW, July 2026)
+**Builds on:** Fee Optimization (#52), Taxes and Your Financial Plan (Building #22), Tax-Advantaged Accounts (Building #23), Investing 101 (Building #18), Rebalancing (Building #24)
+**Key concept:** **[GAP FILL — July 2026 Optimizing expansion]** Two accumulation-phase tax techniques most readers never apply. **Tax-loss harvesting**: realising unrealised losses to offset gains or ordinary income (up to jurisdictional caps), then reinvesting in a similar but not-substantially-identical position. Wash-sale concept explained generically. Not a return generator; a tax-deferral technique that compounds over decades. **Asset location** (distinct from asset allocation): same overall stock/bond mix, different account placement. Tax-inefficient assets (bonds, REITs, high-yield equity) in tax-advantaged accounts; tax-efficient assets (broad equity index funds, buy-and-hold individual stocks) in taxable. Long-run drag reduction roughly 0.3 to 0.5% per year without changing risk profile. Kept generic per BL#4: functional categories only, users apply their own tax rates.
+**Gloss requirements:** "tax-loss harvesting"; "wash sale"; "asset location" (distinct from asset allocation); "tax drag" (already glossed in Building #22, briefly re-glossed).
+**App tie-in (add on launch day; future-conditional, not for current body):** is_tax_advantaged flag + per-asset growth rates model asset-location strategies.
 
 ---
 
-### Post 51: The Invest-vs-Debt Decision Tree -- Advanced Scenarios
-**Builds on:** Invest or Pay Off Debt (#44), What-If Scenarios (#42)
-**Key concept:** Beyond the simple rate comparison. When employer matching makes investing win even at higher debt rates. The psychological value of being debt-free. How tax deductions on debt (mortgage interest) change the math. Student loans: income-driven repayment vs aggressive payoff. Multiple debts + investment opportunities simultaneously.
-**App tie-in (add on launch day):** nidhi's what-if engine handles multiple scenarios simultaneously so you can compare complex paths.
+### Post 54: Real Returns and Benchmarking -- Is Your Portfolio Actually Performing?
+**Builds on:** Purchasing Power (Discovery #11), Investing 101 (Building #18), Financial Projections (#43)
+**Key concept:** Nominal return vs real (inflation-adjusted) return. How to benchmark against relevant indices. Why "the market" requires knowing which market. When underperformance signals a problem vs normal volatility. The danger of chasing past performance. How much of your net-worth growth came from contributions vs market returns, and why that distinction matters for judging your own performance.
+**App tie-in (add on launch day; future-conditional, not for current body):** compare actual performance against user-set growth-rate and inflation assumptions over time.
 
 ---
 
-# MASTERY (Posts 55-66)
-
-> The long game. Financial independence, retirement, and advanced strategies.
-
-> **Renumbering note:** per-post entries below still use pre-May-2026 numbers (52-63). Will be bumped by +2 (to 54-65) when Mastery is drafted.
-
-### Post 52: FIRE -- Advanced Strategies for Financial Independence
-**Builds on:** Introduction to Financial Independence (#24), Investing 101 (#18), Financial Projections (#40), Building an Anti-Bias Financial Life (#39)
-**Key concept:** Building on the FI introduction (#24), this goes deeper. Barista FIRE (part-time income covers gap). The savings rate / years-to-FI table in detail. Why sequence of returns risk matters most in the first 5 years of FIRE. The "one more year" trap (a behavioral problem — see #33 present bias). Common FIRE mistakes: underestimating expenses, ignoring healthcare costs, neglecting inflation. When FIRE is realistic and when the math doesn't work. The role of flexibility (variable spending, side income) in making FIRE achievable at lower multiples.
-**App tie-in (add on launch day):** nidhi calculates all FIRE numbers, tracks milestone progress (25/50/75/100%), and shows when you'll cross each threshold in your projections.
+### Post 55: Monte Carlo and Probability -- Why One Projection Isn't Enough
+**Builds on:** Financial Projections (#43), Narrative Economics (Psychology #40), Understanding Risk (Building #17)
+**Key concept:** A single projection assumes the same return every year. Reality is volatile: three good years, one bad, two average, and so on. Monte Carlo runs thousands of alternate sequences using historical distribution data to show a range of outcomes rather than a single line. **Percentile interpretation**: 10th (bad luck), 50th (median), 90th (good luck). Why sequence matters for retirement specifically (canonical treatment in Mastery). Probabilistic thinking as antidote to narrative thinking (Psychology #40). BL#6 applies: results framed as "in X% of simulations" not "you have an X% chance."
+**Gloss requirements:** "Monte Carlo simulation"; "sequence risk" (brief teaser for Mastery); "percentile"; "distribution."
+**App tie-in (add on launch day; future-conditional, not for current body):** probabilistic projection engine with confidence ranges.
 
 ---
 
-### Post 53: The Safe Withdrawal Rate -- How Much Can You Take Out Each Year?
-**Builds on:** FIRE (#52), Purchasing Power (#11), Investing 101 (#18)
+### Post 56: Geographic Arbitrage -- How Location Shapes Your Financial Plan
+**Builds on:** Euro Buys More (Discovery #12), Financial Projections (#43), Cash Flow 101 (Discovery #10), Multi-Currency (Building #29)
+**Key concept:** Living where costs are low while earning where salaries are high. Remote work as a financial lever. How relocating affects cash flow, savings rate, and FIRE timeline. The math of geo-arbitrage: same income, different expense base = dramatically different wealth trajectory. Practical considerations: visa, healthcare, social network, tax residency (generic). Rule 7 applied: examples spanning US → SE Asia, Northern Europe → Southern Europe, UK → Portugal (NHR wind-down noted generically), India-remote for US firms, etc.
+**App tie-in (add on launch day; future-conditional, not for current body):** multi-currency support + scenario modelling for cross-country comparisons.
+
+---
+
+### Post 57: Income Replacement Ratio -- How Much Income Do You Need in Retirement?
+**Builds on:** Cash Flow 101 (Discovery #10), Financial Goals (Building #30), Financial Projections (#43), Introduction to FI (Building #25)
+**Key concept:** The percentage of pre-retirement income needed to maintain your lifestyle. Why 70-80% is a common benchmark (no commuting costs, no saving for retirement, potentially lower taxes) and when it's the wrong benchmark for you (mortgage paid off, healthcare rising, dependents still supported, planned retirement lifestyle upgrade). How to calculate your own number based on actual projected expenses. How pension + investment income + drawdown combine to replace your salary.
+**App tie-in (add on launch day; future-conditional, not for current body):** project income replacement from active income, passive income, and portfolio drawdown.
+
+---
+
+### Post 58: Insurance Optimization -- Right-Sizing Coverage as You Build Wealth (NEW, July 2026)
+**Builds on:** Insurance Basics (Discovery #16), Emergency Fund (Discovery #8), Financial Projections (#43), Life Events (#45), Cash Flow 101 (Discovery #10)
+**Key concept:** **[GAP FILL — July 2026 Optimizing expansion]** Discovery #16 introduced the five insurance types for early-stage readers. This post is fine-tuning: coverage sized for €20k net worth is often wrong at €500k. **Framework**: what am I insuring against, what's the maximum plausible loss, what portion can I self-insure with an already-adequate emergency fund and portfolio. **Term vs whole life analysis**: near-universally term-and-invest-the-difference; exceptions narrow. **Umbrella liability math**: €1M umbrella at roughly €200-400/year for households with meaningful assets. **Disability insurance right-sizing** as income grows. **When to drop coverage**: life insurance once dependants grown and portfolio self-funds; collision on old vehicles; low-cost dental. **Health insurance stays out of this framework**: extreme downside makes self-insuring health uneconomic in most jurisdictions. Generic; no jurisdictional policy names.
+**Gloss requirements:** "term life" vs "whole life"; "umbrella liability"; "self-insure"; "elimination period."
+**App tie-in (add on launch day; future-conditional, not for current body):** insurance premiums as recurring expenses; model self-insurance thresholds vs portfolio growth.
+
+---
+
+### Post 59: Recognizing and Avoiding Financial Scams and Fraud (NEW, Jul 14 2026)
+**Builds on:** Assets (Discovery #3), Investing 101 (Building #18), Herd Behavior and FOMO (Psychology #39)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit; previously flagged as "Optimizing or later" and never placed]** The most sophisticated financial plan can be undone by a single successful fraud. **Universal red flags**: guaranteed returns above risk-free rate, time pressure, unregistered offerings, unsolicited contact, unusual payment methods (crypto, wire, gift cards), tiered/downline structures, requests for personal credentials. **Scam taxonomy**: investment fraud (Ponzi, pump-and-dump, affinity fraud), identity theft (SIM swap, credential phishing, mail theft), romance scams, impersonation (tax authority, tech support, bank fraud), elder-targeted variants. **Structural defenses**: 2FA on every financial account, dedicated email for financial accounts, credit freeze as default, transaction alerts, verified caller-ID skepticism, 24-hour cooling-off rule for any pressure. **Insider-fraud angle**: advisor fraud, public regulatory records as due-diligence tool, custodian separation. **Recovery playbook**: freeze first, document second, report third, monitor credit 12+ months. **Behavioural angle**: FOMO and herd behaviour (Psychology #39) are scammer's primary levers.
+**Gloss requirements:** "affinity fraud"; "SIM swap"; "credit freeze"; "custodian"; "cooling-off rule."
+**App tie-in (add on launch day; future-conditional, not for current body):** unified view surfaces unusual balance changes early.
+
+---
+
+### Post 60: Advanced Rebalancing -- Glide Paths and Sequence-Aware Rebalancing (REPURPOSED from old Portfolio Rebalancing slot)
+**Builds on:** Rebalancing (Building #24), FIRE Introduction (Building #25), Financial Projections (#43), Loss Aversion (Psychology #34)
+**Key concept:** **[SLOT REPURPOSED]** Building #24 introduced calendar/threshold/contribution-based rebalancing at a static target. This post covers what changes as you approach retirement. **Glide paths**: age-based de-risking, from "100 minus age in stocks" to target-date-fund shapes and their trade-offs. **Bond-tent strategies**: temporarily raising bond allocation in the 5 years pre- and 5 years post-retirement to buffer against sequence risk (canonical treatment in Mastery). **Rebalancing frequency and threshold tightening** near retirement. **Tax-aware rebalancing across account types**; ties to #53's asset location. **Common mistakes**: over-aggressive de-risking that leaves you exposed to inflation over 30+ years; ignoring the tax cost of rebalancing in taxable accounts near retirement. Loss aversion (Psychology #34) is the invisible driver of most rebalancing failures at this stage.
+**Gloss requirements:** "glide path"; "bond tent"; "sequence risk" (brief teaser; full treatment in Mastery); "target-date fund."
+**App tie-in (add on launch day; future-conditional, not for current body):** target allocation with per-year adjustments to model glide paths and bond tents.
+
+---
+
+# MASTERY (Posts 61-75)
+
+> The long game. Financial independence, retirement, advanced strategies, wealth transfer, and the next generation. **Expanded Jul 14, 2026** from 12 → 15 posts with three additions grouped near the end (Charitable Giving, Teaching Kids About Money, Financial Vehicles for Children). **Renumbered Jul 15, 2026** from 63-77 to 61-75 after the Path B Optimizing compression. All internal cross-references now use current numbering.
+
+### Post 61: FIRE -- Advanced Strategies for Financial Independence
+**Builds on:** Introduction to Financial Independence (Building #25), Investing 101 (Building #18), Financial Projections (Optimizing #43), Building an Anti-Bias Financial Life (Psychology #42)
+**Key concept:** Building on the FI introduction (Building #25), this goes deeper. Barista FIRE (part-time income covers gap). The savings rate / years-to-FI table in detail. Why sequence of returns risk matters most in the first 5 years of FIRE. The "one more year" trap (a behavioural problem; see Psychology #36 present bias). Common FIRE mistakes: underestimating expenses, ignoring healthcare costs, neglecting inflation. When FIRE is realistic and when the math doesn't work. The role of flexibility (variable spending, side income) in making FIRE achievable at lower multiples.
+**App tie-in (add on launch day; future-conditional, not for current body):** calculate FIRE numbers, track milestone progress, show threshold crossings in projections.
+
+---
+
+### Post 62: The Safe Withdrawal Rate -- How Much Can You Take Out Each Year?
+**Builds on:** FIRE (#61), Purchasing Power (Discovery #11), Investing 101 (Building #18)
 **Key concept:** The 4% rule (Trinity Study). What can go wrong (sequence of returns risk, inflation spikes, longevity). Why SWR isn't a guarantee but a guideline. FIRE number = annual expenses / SWR.
-**App tie-in (add on launch day):** nidhi uses your SWR (default 4%, configurable) to calculate your FIRE targets and project drawdown sustainability.
+**App tie-in (add on launch day; future-conditional, not for current body):** configurable SWR to calculate FIRE targets and project drawdown sustainability.
 
 ---
 
-### Post 54: Retirement Planning -- What Traditional Retirement Looks Like
-**Builds on:** FIRE (#52), SWR (#53), Financial Projections (#40)
+### Post 63: Retirement Planning -- What Traditional Retirement Looks Like
+**Builds on:** FIRE (#61), SWR (#62), Financial Projections (Optimizing #43)
 **Key concept:** State pensions, employer pensions, private retirement accounts. How retirement accounts differ from regular investments (tax advantages, liquidity restrictions). Starting early matters. Retirement age vs FIRE age. Planning for 30+ years.
-**App tie-in (add on launch day):** nidhi separates retirement investments from regular investments and models both in projections.
+**App tie-in (add on launch day; future-conditional, not for current body):** separate retirement investments from regular investments in projections.
 
 ---
 
-### Post 55: Sequence of Returns Risk -- Why When Matters as Much as How Much
-**Builds on:** SWR (#53), Financial Projections (#40), Monte Carlo (#48)
-**Key concept:** Poor market returns early in retirement are far more damaging than poor returns later. The math behind sequence risk. Why a 7% average doesn't mean 7% every year. How to buffer against it (cash reserves, flexible spending, bond tent strategy). Loss aversion (#31) makes this especially dangerous — panic-selling in an early-retirement downturn locks in the damage.
-**App tie-in (add on launch day):** nidhi's projection engine models different return sequences so you can see the impact on retirement sustainability.
+### Post 64: Sequence of Returns Risk -- Why When Matters as Much as How Much
+**Builds on:** SWR (#62), Financial Projections (Optimizing #43), Monte Carlo (Optimizing #55)
+**Key concept:** Poor market returns early in retirement are far more damaging than poor returns later. The math behind sequence risk. Why a 7% average doesn't mean 7% every year. How to buffer against it (cash reserves, flexible spending, bond tent strategy). Loss aversion (Psychology #34) makes this especially dangerous: panic-selling in an early-retirement downturn locks in the damage.
+**App tie-in (add on launch day; future-conditional, not for current body):** model different return sequences to see impact on retirement sustainability.
 
 ---
 
-### Post 56: Longevity Risk -- Planning When You Don't Know the End Date
-**Builds on:** Retirement Planning (#54), SWR (#53)
-**Key concept:** The risk of outliving your money. Average life expectancy vs planning age. Why planning to 90 or 95 matters. Strategies: annuities, delayed pension claiming, maintaining growth assets in retirement. The trade-off between running out and leaving too much behind.
-**App tie-in (add on launch day):** nidhi's projections extend to 50 years and let you adjust life expectancy to see the impact.
+### Post 65: Longevity Risk -- Planning When You Don't Know the End Date
+**Builds on:** Retirement Planning (#63), SWR (#62)
+**Key concept:** The risk of outliving your money. Average life expectancy vs planning age. Why planning to 90 or 95 matters. Strategies: annuities, delayed pension claiming, maintaining growth assets in retirement. The trade-off between running out and leaving too much behind. Healthcare cost trajectory in later retirement noted generically (jurisdiction-specific detail out of scope).
+**App tie-in (add on launch day; future-conditional, not for current body):** projections extend to 50 years with adjustable life expectancy.
 
 ---
 
-### Post 57: Pension Income and Payout Options -- Lump Sum, Annuity, or Both?
-**Builds on:** Retirement Planning (#54), Financial Projections (#40), Longevity Risk (#56)
+### Post 66: Pension Income and Payout Options -- Lump Sum, Annuity, or Both?
+**Builds on:** Retirement Planning (#63), Financial Projections (Optimizing #43), Longevity Risk (#65)
 **Key concept:** Multiple retirement income streams: state pension, employer pension, personal savings. How to estimate pension income. When to claim (early vs late trade-off). Lump sum vs annuity: liquidity and growth potential vs guaranteed lifetime income. How pension income changes the FIRE calculation.
-**App tie-in (add on launch day):** nidhi models passive income streams alongside portfolio drawdown in retirement projections.
+**App tie-in (add on launch day; future-conditional, not for current body):** model passive income streams alongside portfolio drawdown.
 
 ---
 
-### Post 58: Tax-Aware Investing -- Keeping More of What You Earn
-**Builds on:** Investing 101 (#18), Retirement Planning (#54), Taxes and Your Financial Plan (#21)
-**Key concept:** Tax-advantaged accounts: contributing pre-tax or growing tax-free. Asset location: why some investments belong in tax-advantaged accounts. Tax-efficient withdrawal sequencing: which accounts to draw from first. All explained generically -- no jurisdiction-specific rates or products.
-**App tie-in (add on launch day):** nidhi's `is_tax_advantaged` flag and configurable tax rates let you model tax impact without jurisdiction-specific calculations.
+### Post 67: Tax-Aware Investing -- Keeping More of What You Earn
+**Builds on:** Investing 101 (Building #18), Retirement Planning (#63), Taxes and Your Financial Plan (Building #22), Tax-Loss Harvesting and Asset Location (Optimizing #53)
+**Key concept:** Extends Optimizing #53's accumulation-phase treatment into withdrawal-phase tax awareness. Tax-advantaged accounts in the drawdown context: which balances to draw from and when. Asset location revisited from a drawdown perspective (what stays tax-advantaged longest, what gets sold first). Tax-efficient withdrawal sequencing as a preview of #68. All explained generically; no jurisdiction-specific rates or products.
+**App tie-in (add on launch day; future-conditional, not for current body):** is_tax_advantaged flag + configurable tax rates model tax impact.
 
 ---
 
-### Post 59: Withdrawal Sequencing -- Which Accounts to Tap First
-**Builds on:** Tax-Aware Investing (#58), SWR (#53), Retirement Planning (#54)
+### Post 68: Withdrawal Sequencing -- Which Accounts to Tap First
+**Builds on:** Tax-Aware Investing (#67), SWR (#62), Retirement Planning (#63)
 **Key concept:** In retirement, the order you draw from different account types matters enormously for total tax paid and portfolio longevity. Taxable first, tax-deferred second, tax-free last (common strategy). Why Roth conversions / tax-free account strategies matter. How to think about it without jurisdiction-specific rules.
-**App tie-in (add on launch day):** nidhi's projection engine models drawdown from multiple asset types with different tax treatment.
+**App tie-in (add on launch day; future-conditional, not for current body):** model drawdown from multiple asset types with different tax treatment.
 
 ---
 
-### Post 60: International Retirement -- How Location Changes the Math
-**Builds on:** Euro Buys More (#12), Life Events (#43), Retirement Planning (#54)
+### Post 69: International Retirement -- How Location Changes the Math
+**Builds on:** Euro Buys More (Discovery #12), Life Events (Optimizing #45), Retirement Planning (#63)
 **Key concept:** Retiring in a lower-cost country can dramatically reduce your FIRE number. PPP in practice: same retirement, different price tag. Tax residency implications (generic). Healthcare considerations. The emotional vs financial trade-off of moving.
-**App tie-in (add on launch day):** nidhi's multi-currency support and what-if engine let you compare retirement scenarios across countries.
+**App tie-in (add on launch day; future-conditional, not for current body):** multi-currency support + scenario modelling for cross-country retirement comparisons.
 
 ---
 
-### Post 61: Estate Planning Basics -- What Happens to Your Wealth After You
-**Builds on:** Assets (#3), Retirement Planning (#54), Longevity Risk (#56)
+### Post 70: Estate Planning Basics -- What Happens to Your Wealth After You
+**Builds on:** Assets (Discovery #3), Retirement Planning (#63), Longevity Risk (#65)
 **Key concept:** Estate planning isn't just for the wealthy. What happens without a plan (intestacy). The basics: wills, beneficiary designations, power of attorney. Why estate planning intersects with financial planning (gifting, inheritance tax concepts, generational wealth transfer). Kept generic.
-**App tie-in (add on launch day):** nidhi's what-if engine can model inheritance scenarios (Q24) and gifting impacts on net worth projections.
+**App tie-in (add on launch day; future-conditional, not for current body):** model inheritance scenarios and gifting impacts on net worth projections.
 
 ---
 
-### Post 62: Generational Wealth -- Building Beyond Your Lifetime
-**Builds on:** Estate Planning (#61), Investing 101 (#18), FIRE (#52)
-**Key concept:** Wealth that outlasts one generation. The difference between inheritance (one-time transfer) and generational wealth (self-sustaining). Teaching financial literacy to the next generation. Trust structures (concept only, not legal advice). Why compound interest across generations is the most powerful wealth engine. The responsibility that comes with building lasting wealth.
-**App tie-in (add on launch day):** nidhi's 50-year projections can model multi-generational wealth trajectories.
+### Post 71: Charitable Giving Optimization -- Making Your Giving Tax-Efficient (NEW, Jul 14 2026)
+**Builds on:** Estate Planning (#70), Taxes and Your Financial Plan (Building #22), Tax-Advantaged Accounts (Building #23), Tax-Loss Harvesting and Asset Location (Optimizing #53)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit]** Giving during accumulation and drawdown is a tax lever most donors never use. **Cash vs appreciated-security donation**: donating €10,000 of long-held appreciated stock instead of cash typically avoids the capital gains you would have realised on sale (a double benefit if you can itemise). **Donor-advised funds (DAF)**: give assets to the DAF now, take the deduction now, grant to charities on any schedule. Enables "bunching" (concentrating multiple years of giving into one tax year to clear the standard deduction threshold). **Qualified charitable distributions (QCD)**: after retirement age, direct-to-charity distribution from tax-deferred retirement accounts satisfies required minimum distributions without adding to taxable income. **Charitable remainder / lead trusts** as concept, not directive; for larger estates blending income needs with philanthropic intent. **Timing**: donate in high-income years (marginal rate matters), coordinate with tax-loss harvesting (donate winners, harvest losers), never donate depreciated assets. **What NOT to optimize**: giving that reflects your values shouldn't be tax-driven at the margin; the vehicle choice absolutely should be. Kept generic per BL#4: functional categories only, users apply their own tax rates.
+**Gloss requirements:** "donor-advised fund (DAF)"; "qualified charitable distribution (QCD)"; "bunching"; "charitable remainder trust"; "appreciated security"; "required minimum distribution (RMD)."
+**App tie-in (add on launch day; future-conditional, not for current body):** charitable contributions as recurring or one-off expenses; model appreciated-security donation vs cash.
 
 ---
 
-### Post 63: The Complete Picture -- How Everything Connects
+### Post 72: Teaching Kids About Money -- Financial Parenting Across Ages (NEW, Jul 14 2026)
+**Builds on:** Money Scripts (Psychology #41), Cash Flow 101 (Discovery #10), Budgeting (Discovery #14)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit; previously deferred]** Money scripts (Psychology #41) form in childhood; this post covers the parental side of that formation. **Age-appropriate lessons**: preschool (money is finite, wants vs needs), primary (saving/spending/giving buckets, delayed gratification, allowance mechanics), secondary (earning, compound interest, first bank account, opportunity cost, advertising and brand psychology), young adult (credit, taxes, first-job negotiation, roommate finances, first car). **The allowance debate**: chore-linked vs unconditional, and why the answer depends on which lesson you're prioritising. **Making money conversations normal**: discussing the family budget at appropriate granularity, avoiding money as taboo, avoiding money as reward/punishment. **Modeling matters more than telling**. **The "silver spoon" question**: how much financial help is help vs handicap. **Money and privilege**: teaching children in wealthy households without instilling entitlement or guilt. **Behavioural inheritance**: parents' money scripts (Psychology #41) get transmitted; awareness is the first defense. Universal principles; cultural context varies.
+**Gloss requirements:** "unconditional allowance"; "money script" (already glossed in Psychology #41).
+**App tie-in (add on launch day; future-conditional, not for current body):** no direct feature; family dashboard as shared, judgment-free reference point.
+
+---
+
+### Post 73: Financial Vehicles for Children -- Custodial Accounts and Education Savings (NEW, Jul 14 2026)
+**Builds on:** Teaching Kids About Money (#72), Tax-Advantaged Accounts (Building #23), Financial Goals (Building #30)
+**Key concept:** **[GAP FILL — Jul 14, 2026 audit; previously deferred]** Where to actually put money for or from a minor, and how each vehicle changes the tax and control picture. **Custodial account categories**: (1) taxable brokerage in the child's name (UTMA/UGMA equivalents, French Livret Jeune, similar); assets legally the child's at age of majority, less parental control but flexible use, kiddie-tax mechanics. (2) Education-specific tax-advantaged (529 US, JISA UK, RESP Canada, ELSS-linked education plans in India, PEL/CEL France); tax-free growth for qualified education expenses, less flexibility for non-qualified use. (3) Minor-owned retirement (Roth IRA for children with earned income, similar in some jurisdictions); the compounding math over 60+ year horizons is extreme. **The control-vs-tax tradeoff**: custodial accounts get the tax break but transfer legal control at age of majority; parent-owned accounts keep control but keep the tax picture. **Sequencing**: fund your own retirement before the kids' education vehicle. You can borrow for education, you cannot borrow for retirement. **Cross-continent map** per Rule 7 with each vehicle mapped to functional category. **Over-funding risk**: 529-analog excess with no qualifying use often faces punitive tax treatment. **Gifting mechanics**: annual and lifetime thresholds referenced generically per BL#4.
+**Gloss requirements:** "custodial account"; "age of majority"; "kiddie tax"; each named regional vehicle glossed on first use per D-3.
+**App tie-in (add on launch day; future-conditional, not for current body):** children's accounts as separate asset types with distinct tax treatment; education-cost trajectory projections.
+
+---
+
+### Post 74: Generational Wealth -- Building Beyond Your Lifetime
+**Builds on:** Estate Planning (#70), Financial Vehicles for Children (#73), Investing 101 (Building #18), FIRE (#61)
+**Key concept:** Wealth that outlasts one generation. The difference between inheritance (one-time transfer) and generational wealth (self-sustaining). Teaching financial literacy to the next generation (extends #72). Trust structures (concept only, not legal advice). Why compound interest across generations is the most powerful wealth engine. The responsibility that comes with building lasting wealth.
+**App tie-in (add on launch day; future-conditional, not for current body):** 50-year projections model multi-generational wealth trajectories.
+
+---
+
+### Post 75: The Complete Picture -- How Everything Connects
 **Builds on:** All previous posts
-**Key concept:** A capstone post mapping the entire journey from discovery to mastery. How net worth, cash flow, investing, projections, FIRE, and retirement planning form an interconnected system. Where you are, where you're going, what could change the path. Why revisiting your plan annually matters more than getting it perfect once.
-**App tie-in (add on launch day):** nidhi is the tool that holds all these pieces together -- the dashboard that turns everything you've learned into a living financial plan.
+**Key concept:** A capstone post mapping the entire journey from discovery to mastery. How net worth, cash flow, investing, projections, FIRE, retirement planning, and wealth transfer form an interconnected system. Where you are, where you're going, what could change the path. Why revisiting your plan annually matters more than getting it perfect once.
+**App tie-in (add on launch day; future-conditional, not for current body):** dashboard as the tool that holds all these pieces together.
+
+---
+
+---
+
+# INCLUSIVE FINANCES (Posts 76-90, proposed Sep 30, 2026)
+
+> Financial planning tools and defaults (spousal benefits, joint filing, intestacy, employer benefits, credit history) are built around a "default" household. This level teaches how to plan when your situation doesn't match that default. **No prerequisite, not read-gated behind the rest of the curriculum** — see "Exposure and IA strategy" in the Gap Analysis section above. A handful of posts reference Mastery-level vocabulary (SWR, estate planning) where genuinely relevant, but each does so with an inline one-line recap and backlink rather than assuming the reader arrived from Mastery. **Proposed, not yet drafted.** See "New level proposed Sep 30, 2026" in the Gap Analysis section above for rationale and the editorial guardrail every post in this level must follow (teach the decision framework as universal, map the specific legal mechanism per jurisdiction, never assert what "the law" says without a scope note).
+
+### Post 76: When the Default Plan Doesn't Fit You
+**Builds on:** Nothing — this is the level's own entry point, self-contained by design (see Exposure and IA strategy, item 5)
+**Key concept:** Every financial-planning default (spousal survivor benefits, joint tax filing, intestacy rules, employer-benefit continuity, credit history) was designed around a specific household shape. This post introduces the audit framework the rest of the level uses: for any financial decision, ask what default assumption it's quietly making, whether that assumption holds for your situation, and what to do deliberately if it doesn't. Sets up vocabulary used throughout: "default assumption," "deliberate designation" (vs. automatic default), "recognition gap" (where the law doesn't recognize a relationship or status the household considers primary).
+**Gloss requirements:** "intestacy" (dying without a will; assets pass by default rules, not your wishes); "beneficiary designation" (an explicit, deliberate override of the default).
+**Scope note:** Introduces the framework; does not give jurisdiction-specific legal advice.
+
+---
+
+> **Reading note for posts #77-90:** "Builds on" below lists concepts a post *references*, not posts a reader must have already read. Per item 5 of the Exposure and IA strategy, every post gives a one-line inline recap (with a backlink) the first time it leans on a curriculum concept, so a reader arriving cold from search or a cross-link is never stuck. Treat "Builds on" as a writer's checklist for which recaps to include, not a reader-facing prerequisite.
+
+### Post 77: Financial Planning for Unmarried and Cohabiting Couples
+**Builds on:** Estate Planning Basics (Mastery #70), Tax-Advantaged Accounts (Building #23), When the Default Plan Doesn't Fit You (#76)
+**Key concept:** Marriage triggers a bundle of financial defaults most couples never think about until they're missing: automatic spousal inheritance rights, spousal healthcare decision-making authority, often favorable tax filing status, automatic beneficiary status on many accounts. Unmarried and cohabiting couples (by choice or because marriage isn't accessible to them) get none of these by default and must build each one deliberately: joint ownership structures (joint tenancy vs. tenancy in common, and what each means on death), a cohabitation or partnership agreement for shared assets and debts, financial power of attorney, healthcare power of attorney / medical proxy, explicit beneficiary designations on every account and policy. Cross-references the light caveat added to Optimizing #57 and #58.
+**Gloss requirements:** "joint tenancy with right of survivorship" vs. "tenancy in common"; "financial power of attorney"; "healthcare proxy / medical power of attorney."
+**Scope note:** Named legal instruments vary by jurisdiction; the post teaches the functional category, not a specific country's form.
+
+---
+
+### Post 78: Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage
+**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (#77), Geographic Arbitrage (Optimizing #56), Managing Money Across Currencies (Building #29)
+**Key concept:** A marriage legally performed in one country may not be recognized in another, which means every default that flows from marital status (survivor pension rights, spousal healthcare authority, inheritance, joint tax filing, immigration/reunification visas) can silently disappear on relocation, even without divorce. Covers: auditing which of your marriage's legal effects are jurisdiction-dependent before an international move (direct cross-reference to Optimizing #56's visa-mechanics section, which does not currently address partner/spousal reunification visas); building the same deliberate-designation stack as #77 as a parallel structure that holds even where the marriage itself isn't recognized; specific attention to healthcare and financial power of attorney as the most portable substitutes for spousal default rights. Not a legal-advocacy post; a financial-planning post about a legal fact pattern.
+**Gloss requirements:** "marriage recognition" vs. "civil union / domestic partnership recognition" (these are legally distinct and recognized differently across borders); "reunification visa."
+**Scope note:** Explicitly does not track which countries currently recognize same-sex marriage (this changes over time and is a legal-research question, not a financial-planning one); teaches readers how to check for their specific destination and what to do once they know the answer.
+
+---
+
+### Post 79: Chosen Family and Financial Planning Without Legal Next-of-Kin
+**Builds on:** Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage (#78), Estate Planning Basics (Mastery #70)
+**Key concept:** Default next-of-kin rules (who makes medical decisions if you can't, who inherits if you have no will, who gets called in an emergency) assume your closest relationships are legally recognized family. For people whose primary support network is chosen family rather than legal family (common among LGBTQ+ people estranged from biological family, but not exclusive to that group), every one of these defaults needs a deliberate override: healthcare proxy naming a specific chosen-family member, a will (intestacy defaults to legal relatives, full stop), emergency contact and hospital-visitation designations, financial power of attorney. Covers the specific hospital-visitation problem (some jurisdictions restrict visitation and information-sharing to legally recognized family absent a specific designation) as a concrete, high-stakes example of why "just tell people verbally" doesn't work.
+**Gloss requirements:** "next-of-kin"; "hospital visitation designation / patient advocate designation."
+**Scope note:** Visitation and information-sharing rules are jurisdiction- and even institution-specific; teaches what to ask for, not a universal form.
+
+---
+
+### Post 80: Blended and Non-Traditional Families
+**Builds on:** Financial Vehicles for Children (Mastery #73), Teaching Kids About Money (Mastery #72), Life Events (Optimizing #45)
+**Key concept:** Stepchildren, children from multiple relationships, non-biological co-parents, and multi-partner households complicate defaults that assume one set of legal parents and one inheritance line. Covers: custodial account control when a child has a non-biological co-parent with no automatic legal standing; estate planning that has to name stepchildren explicitly (intestacy defaults typically do not include stepchildren at all); coordinating child-related financial decisions across households after separation or where multiple adults share caregiving; the "who claims the dependent" coordination question. Cross-references Optimizing #45's children cash-flow model, which assumes a two-parent household reducing one income, as the pattern this post reframes for more than two adults or non-biological co-parents sharing the load.
+**Gloss requirements:** "legal parent" vs. "de facto / psychological parent" (a functional distinction, not a legal term everywhere); "dependent claim coordination."
+**Scope note:** Custody, adoption, and step-parent legal-standing rules are heavily jurisdiction-specific; teaches what financial gaps to check for, not custody law.
+
+---
+
+### Post 81: Divorce and Separation: Untangling a Shared Financial Life
+**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (#77), Tax-Advantaged Accounts (Building #23), Real Estate as an Investment (Building #28)
+**Key concept:** **[Reopened from "deferred indefinitely," Sep 30, 2026 — see Gap Analysis note above]** Previously deferred as too jurisdiction-specific for generic treatment; reopened here under this level's decision-framework guardrail rather than reversing that judgment. Covers the financial mechanics common to separation regardless of jurisdiction: inventorying joint and separate assets and debts before any negotiation starts, splitting tax-advantaged retirement accounts without triggering an unintended taxable withdrawal (the mechanism has a name in most jurisdictions with tax-advantaged retirement accounts; check the local one), untangling joint real estate (buy-out, sale-and-split, or continued co-ownership, each with different cash-flow and tax consequences), updating every beneficiary designation immediately (the single most common expensive mistake: forgetting to remove an ex-spouse as a beneficiary), and rebuilding a single-income financial plan from a formerly joint one. Explicitly not a post about custody, alimony formulas, or legal process.
+**Gloss requirements:** "qualified domestic relations order (QDRO)" or local equivalent (a specific legal mechanism to split retirement accounts without triggering tax); "equitable distribution" vs. "community property" (two different default frameworks for splitting marital assets, named as categories, not tied to one country).
+**Scope note:** The single most explicit "ask a local professional" scope note in the level; splitting retirement accounts incorrectly can trigger real, avoidable tax consequences.
+
+---
+
+### Post 82: Widowhood and Sudden Single-Income Transition
+**Builds on:** Divorce and Separation (#81), Cash Flow Forecasting (Optimizing #44), Estate Planning Basics (Mastery #70)
+**Key concept:** Losing a partner is simultaneously a grief event and a financial-restructuring event, and the two compound (see Optimizing #51's inheritance-and-grief framing for the same compounding pattern with money decisions). Covers: the immediate financial to-do list in the first weeks (which has real deadlines) versus the decisions that should wait (which don't), what survivor benefits you may be entitled to and how they differ sharply depending on whether the relationship was legally recognized (direct callback to #78 and #79 for readers whose partnership wasn't), rebuilding a cash-flow forecast and a retirement plan around one income where two were assumed, and the specific vulnerability window widowed people face for financial scams (cross-reference to Optimizing #59).
+**Gloss requirements:** "survivor benefit" (pension or social-insurance income paid to a surviving spouse or, in some systems, a surviving unmarried partner); "probate."
+**Scope note:** Survivor-benefit eligibility for unmarried partners varies enormously by jurisdiction and by which specific benefit; teaches readers what to check, not what they're entitled to.
+
+---
+
+### Post 83: Solo Agers and Single-Income Households
+**Builds on:** Introduction to Financial Independence (Building #25), Safe Withdrawal Rate (Mastery #62), Income Replacement Ratio (Optimizing #57)
+**Key concept:** Most FIRE and retirement-planning content implicitly assumes either a dual-income household or a household with a second adult as a fallback (co-signer, caregiver, backup decision-maker). Solo agers (living and aging without a partner or without nearby family, by choice or circumstance) and single-income households by design need the same math with different inputs: no second income to smooth a job loss, no default backup for incapacity decisions (direct callback to #79's chosen-family framework), long-term-care planning without an assumed family caregiver, and a savings-rate and emergency-fund calculation that should run more conservative than the dual-income defaults used elsewhere in the curriculum. Not a "you need more money" post; a "here's which of the curriculum's dual-income assumptions to adjust and by how much" post.
+**Gloss requirements:** "long-term care"; "power of attorney for incapacity" (distinct from the healthcare and financial POAs covered in #77, this one covers the specific case of no obvious next-of-kin to act).
+**Scope note:** Long-term-care systems (public coverage, insurance markets, family-obligation law) vary enormously by country; teaches what to plan for, not a specific system's rules.
+
+---
+
+### Post 84: Gig and Informal-Economy Work
+**Builds on:** Growing Your Income (Optimizing #48), Cash Flow Forecasting (Optimizing #44), Tax-Advantaged Accounts (Building #23)
+**Key concept:** Freelancers, platform-gig workers, and informal-economy workers (cash-based, undocumented-status, or outside formal payroll systems entirely) get none of the automatic infrastructure the rest of the curriculum assumes: no employer-matched retirement contribution, no employer-sponsored health insurance, no automatic tax withholding, no paid leave. Covers: building a self-funded version of every benefit an employer would otherwise provide (retirement, health coverage, disability income replacement, paid-leave equivalent as a specific savings bucket), income smoothing across irregular pay periods (a variance problem, not a budgeting-discipline problem), and self-managed tax withholding to avoid a year-end shortfall. Distinct from Optimizing #48 (which assumes W-2-equivalent employment and focuses on negotiation) by starting from "there is no employer to negotiate with."
+**Gloss requirements:** "1099 / self-employment income" (named as a functional category: income paid without employer withholding); "quarterly estimated tax" or local equivalent; "income smoothing."
+**Scope note:** Self-employment tax mechanics and worker-classification rules are heavily jurisdiction-specific; teaches the cash-flow and benefits-replacement framework, not tax filing instructions.
+
+---
+
+### Post 85: Caregiving and the Career-Interruption Wealth Gap
+**Builds on:** Life Events (Optimizing #45), Growing Your Income (Optimizing #48), Money Scripts (Psychology #41)
+**Key concept:** Unpaid caregiving (for children, aging parents, or a disabled family member) is disproportionately taken on by women and disabled caregivers, and it compounds into a much larger retirement-wealth gap than the paused salary alone suggests: missed employer retirement matches, a permanently lower base for future percentage raises (direct callback to Optimizing #48's compounding math, run in reverse), and reduced state-pension or social-security accrual in systems that credit based on paid work history. Covers: quantifying the real multi-decade cost of a caregiving break (not just the paused salary), catch-up strategies once caregiving ends (accelerated retirement contributions, explicit re-entry income negotiation), and what to check for in jurisdictions that offer caregiver credits toward state pension or social insurance.
+**Gloss requirements:** "caregiver credit" (a mechanism some state pension systems use to fill a work-history gap caused by caregiving); "gender pay gap" and "gender wealth gap" as distinct measures (income at a point in time vs. accumulated wealth over decades).
+**Scope note:** Caregiver-credit systems, where they exist, are jurisdiction-specific; teaches readers to check whether theirs has one.
+
+---
+
+### Post 86: Financial Planning with a Disability
+**Builds on:** Insurance Basics (Discovery #16), Tax-Advantaged Accounts (Building #23), Solo Agers and Single-Income Households (#83)
+**Key concept:** Standard financial-planning advice ("maximize your income," "build an emergency fund," "save more") can directly collide with means-tested disability-benefit rules, where earning or saving above a threshold can cost more in lost benefits than it gains in income (the "benefit cliff"). Covers: understanding your own jurisdiction's benefit-cliff thresholds before optimizing income or savings (a check-first, not a rule, since these thresholds vary enormously), purpose-built savings vehicles that let disabled individuals save without losing means-tested eligibility (named as a functional category; the US ABLE account is one implementation, not the only one), guardianship and conservatorship alternatives that preserve more financial autonomy (supported decision-making frameworks), and insurance and estate-planning considerations specific to a special-needs dependent (a special-needs trust as a functional category, distinct from a standard inheritance, so a disabled beneficiary doesn't lose means-tested eligibility on inheriting).
+**Gloss requirements:** "benefit cliff" (means-tested benefit loss that can exceed the income gained); "means-tested" (already used informally elsewhere; glossed formally here); "special-needs trust" or local equivalent; "supported decision-making" vs. "guardianship / conservatorship."
+**Scope note:** Disability-benefit systems and their specific thresholds are entirely jurisdiction-specific and change over time; this post teaches the check-first framework and the vehicle categories, not current threshold numbers.
+
+---
+
+### Post 87: Immigrants, Expats, and Cross-Border Households
+**Builds on:** Geographic Arbitrage (Optimizing #56), Credit and Credit Scores (Discovery #15), Managing Money Across Currencies (Building #29)
+**Key concept:** Crossing a border resets financial infrastructure that took years to build: credit history typically does not transfer between countries (starting a new credit file from zero, regardless of decades of history elsewhere), banking access can be genuinely difficult without an established local history or documentation status, remittance costs quietly erode money sent across borders to support family, and tax residency can create double-taxation exposure without careful planning (direct callback to Optimizing #56's tax-residency section, extended here to non-remote-work immigration: family reunification, refugee and asylum status, and undocumented-status households, none of which Optimizing #56 covers since it assumes a voluntary, resourced relocation). Covers building a financial identity from zero in a new country, minimizing remittance costs, and cash-based financial management for households without full banking access.
+**Gloss requirements:** "credit history portability" (or the lack of it); "remittance corridor" (the specific sending-country-to-receiving-country pathway, which affects cost); "ITIN" (US-specific, glossed as an example of a tax-identification workaround for those without full legal work status; named as one instance of a broader category).
+**Scope note:** Immigration status, work authorization, and banking-access rules are both jurisdiction-specific and high-stakes; this post is financial planning, not immigration advice, and says so explicitly.
+
+---
+
+### Post 88: Interest-Free and Sharia-Compliant Finance
+**Builds on:** Investing 101 (Building #18), Understanding Loan Terms (Building #27), Tax-Advantaged Accounts (Building #23)
+**Key concept:** For readers whose religious or ethical framework prohibits interest (riba) entirely, most of the curriculum's debt and investing math (compare the interest rate, capture the employer match, optimize the mortgage) needs a structurally different toolkit, not a modified version of the interest-based one. Covers: how profit-and-loss-sharing and cost-plus structures (murabaha, ijara, musharakah, named as functional categories) replace interest-bearing loans and mortgages while achieving similar economic goals; Sharia-compliant investing screens (excluding specific sectors and excessive-debt companies) and how they change diversification (Building #20) in practice; the retirement-savings equivalent problem (most tax-advantaged retirement accounts assume interest-bearing options exist inside them) and how to build a compliant version. Written as a coherent alternative system, not a set of restrictions layered onto the conventional one.
+**Gloss requirements:** "riba" (interest, prohibited); "murabaha" (cost-plus sale, a common home-financing structure); "takaful" (mutual/cooperative insurance, an alternative to conventional insurance for readers who also avoid conventional insurance structures).
+**Scope note:** Specific product availability (Islamic banks, Sharia-compliant mortgage providers, compliant fund screens) varies enormously by country; teaches the structural alternatives, not a directory of providers.
+
+---
+
+### Post 89: Multi-Generational Household Economics
+**Builds on:** Setting Financial Goals (Building #30), Cash Flow 101 (Discovery #10), Charitable Giving Optimization (Mastery #71)
+**Key concept:** In many cultures (widely documented in South and East Asian, African, and Latin American household patterns, among others), multiple adult generations sharing income, housing, and eldercare obligations is the norm, not an exception, and the curriculum's household-level cash-flow and savings-rate framing (Discovery #10) implicitly assumes a single-generation nuclear unit. Covers: modeling a shared income pool and elder-support obligations as a recurring line item (not a one-time gift, which is how Mastery #71's charitable-giving framing would otherwise categorize it), the sequencing question when supporting aging parents competes with the reader's own retirement saving (a real trade-off, not a "just do both" answer), and inheritance as an ongoing multi-generational support structure rather than a one-time transfer at death (contrast with Mastery #74's generational-wealth framing, which assumes a single transfer event).
+**Gloss requirements:** "elder support obligation" (financial or filial-duty-based, distinguishing cultural and legal versions where they differ); "joint family household" (named descriptively, not tied to one culture's term for it).
+**Scope note:** Filial-support legal obligations (some countries legally require adult children to support parents; most don't) vary by jurisdiction; teaches the planning framework, not a legal-obligation checklist.
+
+---
+
+### Post 90: Building Your Own Default (capstone)
+**Builds on:** All previous posts in this level
+**Key concept:** A capstone synthesizing the level's throughline: every post here took a mainstream financial-planning default and showed what breaks when it doesn't apply, then rebuilt the equivalent deliberately. This post gives readers the general-purpose version of that audit, so they can apply it to a default this level didn't specifically cover: list the defaults your financial plan currently relies on (marital status, family structure, income stability, legal residency, documented disability status, benefit-system assumptions), check which ones actually hold for your situation, and for each one that doesn't, name the deliberate structure that replaces it. Closes the level, and the full 90-post curriculum, on the idea that a financial plan built on checked assumptions is more robust than one built on inherited defaults, for every reader, not only those this level was written for.
+**Gloss requirements:** None new; synthesizes terms from #76-89.
+**Scope note:** None; capstone, not a new topical claim.
 
 ---
 
@@ -721,16 +987,16 @@ Rather than new standalone posts:
 
 ### BETA LAUNCH POST (unnumbered, major event)
 **Level:** n/a -- announcement, not educational
-**Builds on:** Everything from posts 1-29
-**Key concept:** "You've been learning the building blocks of financial planning. Now there's a tool that puts it all together." Maps each concept readers have learned (net worth, assets, liabilities, cash flow, budgeting, investing, diversification, FIRE basics, loan comparison, goals) to the specific nidhi feature that implements it.
-**Timing:** Immediately after post 29 (end of Building level), before the Psychology series begins. Target: **late June 2026** (post 29 lands Mon Jun 22). At this point readers have the full foundation + practical skills that map 1:1 to the app's Phase 1 feature set, including FIRE concepts and loan comparison understanding.
-**Follow-up action:** Same day, add brief CTAs to all posts 1-29. All subsequent posts (30+) ship with CTAs built in from the start — the Psychology series uses the app as its recurring example of a System-2 anti-bias tool.
+**Builds on:** Everything from posts 1-32
+**Key concept:** "You've been learning the building blocks of financial planning. Now there's a tool that puts it all together." Maps each concept readers have learned (net worth, assets, liabilities, cash flow, budgeting, investing, diversification, FIRE basics, loan comparison, goals, dashboard) to the specific nidhi feature that implements it.
+**Timing:** Immediately after post 32 (end of Building level), before the Psychology series begins. Target: **late June 2026** (post 32 lands Mon Jun 29). At this point readers have the full foundation + practical skills that map 1:1 to the app's Phase 1 feature set, including FIRE concepts, loan comparison understanding, and the dashboard framing.
+**Follow-up action:** Same day, add brief CTAs to all posts 1-32. All subsequent posts (33+) ship with CTAs built in from the start — the Psychology series uses the app as its recurring example of a System-2 anti-bias tool.
 
 ---
 
 ## Summary: Reading Order by Level
 
-Full sequence across all five phases. Discovery ships M/W/F through late May 2026; Building through late June; Psychology through mid-July; Optimizing through mid-August; Mastery closes mid-September.
+Full sequence across all five phases. Discovery shipped M/W/F through late May 2026; Building through late June; Psychology through mid-July; Optimizing through early September; Mastery closes early October.
 
 ### Discovery (1-16) — fundamentals
 
@@ -778,24 +1044,60 @@ Risk → asset classes (four core) → satellite assets (commodities + crypto st
 
 Added May 2026. Bridges Building → Optimizing. Bias-awareness before fine-tuning. Why Smart People → loss aversion → mental accounting → present bias → overconfidence → framing/anchoring → herd behaviour → narrative economics → money scripts → anti-bias systems.
 
-### Optimizing (43-54) — fine-tuning
+### Optimizing (43-60) — fine-tuning
 
-Projections → cash flow forecasting → what-if → life events → invest-vs-debt → portfolio review → fees → benchmarking → Monte Carlo → geographic arbitrage → income replacement → invest-vs-debt advanced.
+Projections + what-if scenarios → cash flow forecasting → life events → **cash management** → **account consolidation** → **growing your income** → invest-vs-debt (with advanced sequencing) → **refinancing timing** → **windfall management** → fees → **tax-loss harvesting & asset location** → benchmarking → Monte Carlo → geographic arbitrage → income replacement → **insurance optimization** → **scam prevention** → **advanced rebalancing (glide paths)**.
 
-> Note: "Portfolio Rebalancing" previously in this phase at the old #45 is now redundant with Building #24. Slot to be repurposed (advanced rebalancing: glide paths, sequence-aware) or removed when Optimizing is drafted.
+43. Financial Projections + What-If Scenarios *(includes old #45 content, Jul 15 2026 fold)*
+44. Cash Flow Forecasting
+45. Life Events
+46. **Cash Management** (NEW, Jul 14 2026)
+47. **Account Consolidation and Financial Data Hygiene** (NEW, Jul 14 2026)
+48. **Growing Your Income** (NEW, July 2026)
+49. Invest or Pay Off Debt *(includes old #62 advanced-scenarios content, Jul 15 2026 fold)*
+50. **Refinancing Timing** (NEW, Jul 14 2026)
+51. **Windfall Management** (NEW, July 2026)
+52. Fee Optimization
+53. **Tax-Loss Harvesting and Asset Location** (NEW, July 2026)
+54. Real Returns and Benchmarking
+55. Monte Carlo and Probability
+56. Geographic Arbitrage
+57. Income Replacement Ratio
+58. **Insurance Optimization** (NEW, July 2026)
+59. **Recognizing and Avoiding Financial Scams and Fraud** (NEW, Jul 14 2026)
+60. **Advanced Rebalancing** (repurposed from old Portfolio Rebalancing slot)
 
-### Mastery (55-66) — late-stage
+### Mastery (61-75) — late-stage
 
-Advanced FIRE → SWR → retirement planning → sequence risk → longevity → pensions → tax-aware investing → withdrawal sequencing → international retirement → estate planning → generational wealth → capstone.
+Advanced FIRE → SWR → retirement planning → sequence risk → longevity → pensions → tax-aware investing → withdrawal sequencing → international retirement → estate planning → **charitable giving** → **teaching kids about money** → **financial vehicles for children** → generational wealth → capstone.
+
+61. FIRE: Advanced Strategies
+62. The Safe Withdrawal Rate
+63. Retirement Planning
+64. Sequence of Returns Risk
+65. Longevity Risk
+66. Pension Income and Payout Options
+67. Tax-Aware Investing
+68. Withdrawal Sequencing
+69. International Retirement
+70. Estate Planning Basics
+71. **Charitable Giving Optimization** (NEW, Jul 14 2026)
+72. **Teaching Kids About Money: Financial Parenting Across Ages** (NEW, Jul 14 2026)
+73. **Financial Vehicles for Children: Custodial Accounts and Education Savings** (NEW, Jul 14 2026)
+74. Generational Wealth
+75. The Complete Picture (capstone)
 
 ---
 
 ## App Feature Alignment
 
-Post numbers below use the current Discovery+Building numbering (1-31). Rows 30-63 in the Psychology/Optimizing/Mastery sections still use pre-May-2026 numbers; they will be renumbered (+2) when those phases are drafted.
+Post numbers use current numbering across all five levels: Discovery (1-16), Building (17-32), Psychology (33-42), Optimizing (43-60), Mastery (61-75). Refreshed Jul 15, 2026 after the Path B Optimizing compression (dropped 2 posts, renumbered 12) and Mastery renumbering.
+
+**Reminder:** these app-feature descriptions are **future-conditional**. Per the Jul 15 policy note, current blog post bodies stay tool-agnostic. This table is a mapping reference for post-launch retrofit work, not content for today's posts.
 
 | Post | Primary App Feature |
 |------|-------------------|
+| **Discovery** | |
 | 1-2 | Net worth calculation, multi-currency dashboard |
 | 3 | 11 asset types |
 | 4-5 | Liability tracking, amortization, debt-to-asset ratio |
@@ -808,55 +1110,69 @@ Post numbers below use the current Discovery+Building numbering (1-31). Rows 30-
 | 14 | Recurring expense tracking, fixed vs discretionary |
 | 15 | Liability tracking (credit impacts borrowing costs) |
 | 16 | Recurring expense tracking (insurance premiums), emergency fund sizing |
+| **Building** | |
 | 17 | Per-asset growth rate assumptions |
-| 18 | Investment asset tracking, growth rates (stocks, bonds, real estate, cash, commodities; crypto as opt-in) |
-| 19 | Asset allocation breakdown, liquid/illiquid split |
-| 20 | recurring_contribution asset type, DCA modelling, Rule of 72 in projection UI tooltips |
-| 21 | is_tax_advantaged flag, configurable tax rates, after-tax return projections |
-| 22 | is_tax_advantaged flag maps to functional categories; users tag accounts per regional vehicle |
-| 23 | Target vs current allocation view, drift threshold alerts, contribution-based rebalancing suggestions |
-| 24 | Lean/Traditional/Fat/Coast FIRE calculations, free FIRE calculator, free Coast FIRE calculator |
-| 25 | income_passive asset type, crossover point (Q16) |
-| 26 | Loan vendor comparison tool, IRR methodology, break-even analysis |
-| 27 | real_estate asset type, mortgage amortisation |
-| 28 | 150+ currencies, currency concentration (Q3), conversion what-if (Q23) |
-| 29 | Projection engine, target modelling |
-| 30 | Debt-to-asset ratio (Q4), liquid % (Q5), savings rate (Q10), health checklist (Q71) |
-| 31 | Full dashboard: net worth, cash flow, FIRE, projections |
-| 30 | Dashboard as System-2 tool (no direct feature — introduces bias framework) |
-| 31 | Long-horizon projections reframe loss aversion (no direct feature) |
-| 32 | Unified net worth view collapses mental accounting buckets |
-| 33 | Recurring contributions, FIRE projections make future self concrete |
-| 34 | User-set assumptions in projections (where overconfidence sneaks in) |
-| 35 | Long-horizon fee/cost framing in projections |
-| 36 | Private personal tool (no social feed; bias resistance by design) |
-| 37 | User-set growth rates allow modeling "this time is different" narratives |
-| 38 | Neutral numbers, no judgment (money script reflection) |
-| 39 | App itself as anti-bias system (automation, defaults, long-term framing) |
-| 40 | 50-year deterministic projection engine |
-| 41 | Phase 1.5 cash flow model, shortfall detection, emergency fund coverage, cash runway (Q73-Q76) |
-| 42 | What-if override engine |
-| 43 | Future-dated assets, hypothetical assets/liabilities |
-| 44 | What-if comparisons (Q63) |
-| 45 | Asset allocation tracking, drift detection (Q91, Q93) |
-| 46 | Growth rate assumptions (fees reduce effective rate) |
-| 47 | Inflation-adjusted returns (Q70), contributions vs market returns (Q80) |
-| 48 | Phase 2 Monte Carlo engine, confidence ranges (Q57-59) |
-| 49 | Multi-currency what-if, geographic scenarios (Q59, Q105) |
-| 50 | Income replacement calculation (Q40, Q42, Q15) |
-| 51 | Multi-scenario what-if comparisons |
-| 52 | FIRE milestone tracking, progress notifications (25/50/75/100%) |
-| 53 | Configurable SWR, FIRE number formula (Q60) |
-| 54 | investment_retirement asset type, projection engine |
-| 55 | Return sequence modeling (Q108) |
-| 56 | Adjustable life expectancy (Q111) |
-| 57 | Passive income modeling, income_passive (Q52, Q100, Q101) |
-| 58 | is_tax_advantaged flag, user-entered tax rates (Q94, Q97-99) |
-| 59 | Multi-type drawdown modeling (Q89-90) |
-| 60 | Multi-currency projections, PPP-aware what-if (Q105) |
-| 61 | Inheritance what-if (Q24), gifting (Q103) |
-| 62 | 50-year projections, generational modeling |
-| 63 | Full dashboard, all features |
+| 18 | Investment asset tracking, growth rates across core classes (stocks, bonds, real estate, cash) |
+| 19 | Commodity and crypto asset types with satellite-percentage cap |
+| 20 | Asset allocation breakdown (liquid/illiquid, by type, by currency) |
+| 21 | recurring_contribution asset type, DCA modelling, Rule of 72 in projection UI tooltips |
+| 22 | is_tax_advantaged flag, configurable tax rates, after-tax return projections |
+| 23 | is_tax_advantaged flag maps to functional categories; users tag accounts per regional vehicle |
+| 24 | Target vs current allocation view, drift threshold alerts, contribution-based rebalancing suggestions (Q91, Q93) |
+| 25 | Lean/Traditional/Fat/Coast FIRE calculations, free FIRE calculator, free Coast FIRE calculator |
+| 26 | income_passive asset type, crossover point (Q16) |
+| 27 | Loan vendor comparison tool, IRR methodology, break-even analysis |
+| 28 | real_estate asset type, mortgage amortisation |
+| 29 | 150+ currencies, currency concentration (Q3), conversion what-if (Q23) |
+| 30 | Projection engine, target modelling |
+| 31 | Debt-to-asset ratio (Q4), liquid % (Q5), savings rate (Q10), health checklist (Q71) |
+| 32 | Full dashboard: net worth, cash flow, FIRE, projections |
+| **Psychology** | |
+| 33 | Dashboard as System-2 tool (introduces bias framework; no direct feature) |
+| 34 | Long-horizon projections reframe loss aversion (no direct feature) |
+| 35 | Unified net worth view collapses mental accounting buckets |
+| 36 | Recurring contributions, FIRE projections make future self concrete |
+| 37 | User-set assumptions in projections (where overconfidence sneaks in) |
+| 38 | Long-horizon fee/cost framing in projections |
+| 39 | Private personal tool (no social feed; bias resistance by design) |
+| 40 | User-set growth rates allow modeling "this time is different" narratives |
+| 41 | Neutral numbers, no judgment (money script reflection) |
+| 42 | App itself as anti-bias system (automation, defaults, long-term framing) |
+| **Optimizing** | |
+| 43 | 50-year deterministic projection engine + what-if override engine (unified: projections and scenarios in one post) |
+| 44 | Cash flow model, shortfall detection, emergency fund coverage, cash runway (Q73-Q76) |
+| 45 | Future-dated assets, hypothetical assets/liabilities/expenses |
+| 46 | Per-account effective rates on cash; cash-bucket allocation modelling (transactional/safety/opportunity); opportunity cost of low-yield cash *(NEW Jul 14 2026)* |
+| 47 | Asset inventory reveals sprawl; dashboard flags dormant balances and zero-yield cash as consolidation candidates *(NEW Jul 14 2026)* |
+| 48 | What-if engine models salary increases with compounding into pension and taxable projections *(NEW Jul 2026)* |
+| 49 | What-if comparisons: pay debt vs invest scenarios + multi-scenario sequencing (employer match, tax deductions, multi-debt) *(includes old #62 fold, Jul 15 2026)* |
+| 50 | What-if engine compares old vs new loan schedule vs invest-the-savings over projected holding period *(NEW Jul 14 2026)* |
+| 51 | What-if engine models windfall deployments (debt vs invest vs split, phased over months) *(NEW Jul 2026)* |
+| 52 | Growth rate assumptions (fees reduce effective rate) |
+| 53 | is_tax_advantaged flag + per-asset growth rates model asset-location strategies (after-tax net worth) *(NEW Jul 2026)* |
+| 54 | Inflation-adjusted returns (Q70), contributions vs market returns (Q80) |
+| 55 | Monte Carlo engine, confidence ranges (Q57-59) |
+| 56 | Multi-currency what-if, geographic scenarios (Q59, Q105) |
+| 57 | Income replacement calculation (Q40, Q42, Q15) |
+| 58 | Recurring expense tracking (insurance premiums); projection engine models self-insurance thresholds vs portfolio growth *(NEW Jul 2026)* |
+| 59 | Unified balance view across accounts surfaces unusual drainage early; no dedicated fraud-detection feature *(NEW Jul 14 2026)* |
+| 60 | Target allocation with per-year adjustments for glide paths and bond tents; projection ranges near retirement *(repurposed from old Portfolio Rebalancing slot)* |
+| **Mastery** | |
+| 61 | FIRE milestone tracking, progress notifications (25/50/75/100%) |
+| 62 | Configurable SWR, FIRE number formula (Q60) |
+| 63 | investment_retirement asset type, projection engine |
+| 64 | Return sequence modeling (Q108) |
+| 65 | Adjustable life expectancy (Q111) |
+| 66 | Passive income modeling, income_passive (Q52, Q100, Q101) |
+| 67 | is_tax_advantaged flag, user-entered tax rates (Q94, Q97-99) |
+| 68 | Multi-type drawdown modeling (Q89-90) |
+| 69 | Multi-currency projections, PPP-aware what-if (Q105) |
+| 70 | Inheritance what-if (Q24), gifting (Q103) |
+| 71 | Charitable contributions as recurring/one-off expenses; models appreciated-security donation vs cash across scenarios *(NEW Jul 14 2026)* |
+| 72 | Family dashboard as shared judgment-free reference point for money conversations across generations (no direct feature) *(NEW Jul 14 2026)* |
+| 73 | Children's accounts as separate asset types with distinct tax treatment; education-cost trajectory projections *(NEW Jul 14 2026)* |
+| 74 | 50-year projections, generational modeling |
+| 75 | Full dashboard, all features |
 
 ---
 
@@ -890,31 +1206,44 @@ The single highest-leverage compliance fix is **D-4 (site-wide compliance footer
 
 ### Per-Post Guardrails
 
+Table refreshed Jul 14, 2026 to use current numbering (previously used pre-May-2026 numbers across Psychology, Optimizing, and Mastery rows).
+
 | Post | Risk | Guardrail |
 |------|------|-----------|
-| **18. Investing 101** | "recommendation" language | "Commonly cited in personal finance literature." Present options, not advice |
-| **19. Diversification** | Could prescribe allocation | Concept level only. Don't prescribe a specific mix |
-| **20. Getting Started** | Could recommend accounts/products | Generic account types only. Never name jurisdiction-specific products |
-| **21. Taxes** | Tax rules jurisdiction-specific | Generic concepts only. Never name specific tax codes, rates, or products. BL#4 |
-| **22. FI Introduction** | Could imply target savings rate | Present as math: "at X% savings rate, it works out to Y years." Never prescribe a target rate. BL#7 |
-| **23. Passive Income** | Could recommend yield-chasing | Present dividend/rental/interest as tax-differentiated; never recommend a specific yield product |
-| **24. Loan Terms** | Could recommend specific loan products | Present comparison framework and metrics. Never recommend a specific offer or lender. BL#7 |
-| **26. Multi-Currency** | Could recommend currencies | Educate on exposure as risk. Never recommend holding a specific currency |
-| **29. Dashboard** | Could rank actions | Present monitoring cadences as "common approaches" not prescriptions |
-| **30. Why Smart People** | Could sound condescending/prescriptive about behavior | Frame as universal human wiring, not user failing. Cite research (Kahneman, Tversky). No "you should be rational" |
-| **37. Narrative Economics** | Could call a current bubble | Historical examples only. Never claim a specific current asset is in a bubble. BL#6 |
-| **38. Money Scripts** | Not therapy or diagnosis | Educational reflection only. No diagnostic claims, no prescriptions to seek therapy. Refer to primary source (Klontz) |
-| **44. Invest vs Debt** | Could become "you should" | Show both outcomes side by side. User decides |
-| **45. Rebalancing** | Could prescribe frequency | Present calendar vs threshold approaches equally |
-| **48. Monte Carlo** | Probability as prediction | "In X% of historical simulations..." Never "you have an X% chance." BL#6 |
-| **52. FIRE** | Could imply target savings rate | Present as math: "at X%, it works out to Y years" |
-| **53. SWR** | "The 4% rule" as advice | "Trinity Study found in historical simulations..." |
-| **54. Retirement** | Tax advantages are jurisdiction-specific | "Many countries offer..." Never name specific products. BL#4 |
-| **57. Pension** | Pension rules jurisdiction-specific; lump sum vs annuity | Present both options side by side. Never recommend one |
-| **58. Tax-Aware** | Tax rules jurisdiction-specific | Generic concepts only. User enters rates. BL#4 |
-| **59. Withdrawal Seq.** | Could prescribe order | Present common strategies side by side. Never rank. BL#7 |
-| **60. Intl Retirement** | Tax residency jurisdiction-specific | Cost-of-living comparison only |
-| **61. Estate Planning** | Inheritance law jurisdiction-specific | Generic concepts. Never state specific thresholds or rules |
+| **18. Investing 101 (Building)** | "recommendation" language | "Commonly cited in personal finance literature." Present options, not advice |
+| **20. Diversification (Building)** | Could prescribe allocation | Concept level only. Don't prescribe a specific mix |
+| **21. Getting Started (Building)** | Could recommend accounts/products | Generic account types only. Never name jurisdiction-specific products |
+| **22. Taxes (Building)** | Tax rules jurisdiction-specific | Generic concepts only. Never name specific tax codes, rates, or products. BL#4 |
+| **23. Tax-Advantaged Accounts (Building)** | Named vehicles per Rule 7 must be functional-category references, not directives | Comparison tables only. "In the US, the equivalent is..." not "you should open a Roth IRA." BL#4 |
+| **24. Rebalancing (Building)** | Could prescribe frequency | Present calendar vs threshold vs contribution-based approaches equally |
+| **25. FI Introduction (Building)** | Could imply target savings rate | Present as math: "at X% savings rate, it works out to Y years." Never prescribe a target rate. BL#7 |
+| **26. Passive Income (Building)** | Could recommend yield-chasing | Present dividend/rental/interest as tax-differentiated; never recommend a specific yield product |
+| **27. Loan Terms (Building)** | Could recommend specific loan products | Present comparison framework and metrics. Never recommend a specific offer or lender. BL#7 |
+| **29. Multi-Currency (Building)** | Could recommend currencies | Educate on exposure as risk. Never recommend holding a specific currency |
+| **32. Dashboard (Building)** | Could rank actions | Present monitoring cadences as "common approaches" not prescriptions |
+| **33. Why Smart People (Psychology)** | Could sound condescending/prescriptive about behaviour | Frame as universal human wiring, not user failing. Cite research (Kahneman, Tversky). No "you should be rational" |
+| **40. Narrative Economics (Psychology)** | Could call a current bubble | Historical examples only. Never claim a specific current asset is in a bubble. BL#6 |
+| **41. Money Scripts (Psychology)** | Not therapy or diagnosis | Educational reflection only. No diagnostic claims, no prescriptions to seek therapy. Refer to primary source (Klontz) |
+| **46. Cash Management (Optimizing)** | Could recommend specific products; deposit-insurance limits jurisdiction-specific | Vehicle categories only (HYSA, MMF, T-bill, short-duration bond ETF), never product names. Deposit-insurance thresholds cited generically. BL#4 |
+| **47. Account Consolidation (Optimizing)** | Could recommend institutions | Frame as consolidation *process*; never name specific brokerages or banks. Credit-score guidance stays behavioural, not prescriptive |
+| **49. Invest vs Debt (Optimizing)** | Could become "you should"; multi-debt sequencing could look prescriptive | Show both outcomes side by side. User decides. Sequencing section presents priorities as widely-cited defaults, not personal recommendations. BL#7 |
+| **50. Refinancing Timing (Optimizing)** | Could recommend specific lenders or refi products | Break-even framework and comparison metrics only. Never name a lender or product. BL#7 |
+| **51. Windfall Management (Optimizing)** | Grief/pressure contexts + concentration reduction advice could look like personal recommendation | Four-step framework is behavioural, not advisory. RSU-reduction plan presented as concept, not schedule. BL#7 |
+| **53. Tax-Loss Harvesting & Asset Location (Optimizing)** | Wash-sale rules and harvesting limits jurisdiction-specific | Concepts and functional categories only. User enters own tax rates. BL#4 |
+| **55. Monte Carlo (Optimizing)** | Probability as prediction | "In X% of historical simulations..." Never "you have an X% chance." BL#6 |
+| **58. Insurance Optimization (Optimizing)** | Insurance products and umbrella liability caps jurisdiction-specific | Framework and category-level guidance only. Never name a specific policy, carrier, or coverage limit as recommended |
+| **59. Scam Prevention (Optimizing)** | Naming a specific current scheme could defame; naming a "safe" institution could imply endorsement | Taxonomies and structural defenses only. Historical examples where the fraud has been adjudicated. No naming of current schemes or living operators |
+| **61. FIRE Advanced (Mastery)** | Could imply target savings rate | Present as math: "at X%, it works out to Y years" |
+| **62. SWR (Mastery)** | "The 4% rule" as advice | "Trinity Study found in historical simulations..." |
+| **63. Retirement Planning (Mastery)** | Tax advantages jurisdiction-specific | "Many countries offer..." Never name specific products. BL#4 |
+| **66. Pension (Mastery)** | Pension rules jurisdiction-specific; lump sum vs annuity | Present both options side by side. Never recommend one |
+| **67. Tax-Aware Investing (Mastery)** | Tax rules jurisdiction-specific | Generic concepts only. User enters rates. BL#4 |
+| **68. Withdrawal Sequencing (Mastery)** | Could prescribe order | Present common strategies side by side. Never rank. BL#7 |
+| **69. International Retirement (Mastery)** | Tax residency jurisdiction-specific | Cost-of-living comparison only |
+| **70. Estate Planning (Mastery)** | Inheritance law jurisdiction-specific | Generic concepts. Never state specific thresholds or rules |
+| **71. Charitable Giving (Mastery)** | Deduction rules, DAF/QCD mechanics jurisdiction-specific | Concepts and functional categories only. Named vehicles (DAF, QCD) glossed as US-derived; equivalents named per Rule 7. Never a directive to give a specific amount or via a specific vehicle. BL#4 |
+| **72. Teaching Kids About Money (Mastery)** | Not parenting-advice or diagnosis | Educational reflection only. Present age-appropriate patterns; never prescribe household rules. Money-script material stays consistent with #41's non-diagnostic framing |
+| **73. Financial Vehicles for Children (Mastery)** | Custodial vehicles jurisdiction-specific; over-funding creates real tax risk | Functional categories with regional equivalents per Rule 7. Explicit warning on over-funding without directive dollar amounts. Never name a specific 529 plan, ISA provider, or similar |
 
 ### General Rules for All Posts
 
@@ -1031,10 +1360,12 @@ The `covered` descriptions in `src/components/LearningPath.tsx` should be update
 discovery:  "Net worth, assets, liabilities, debt payoff, compound interest, liquidity, emergency funds, income vs wealth, cash flow, purchasing power, currency, saving vs investing, budgeting, credit, insurance"
 building:   "Risk, asset classes (incl. commodities & crypto stance), diversification, accounts & automation (incl. DCA, lump-sum vs DCA, Rule of 72), tax concepts, tax-advantaged vehicles, rebalancing, FIRE intro, passive income, loan terms, real estate, multi-currency, goals, health metrics, dashboard"
 psychology: "Loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, herd behaviour, narrative economics, money scripts, anti-bias systems"
-optimizing: "Projections, cash flow forecasting, what-if scenarios, life events, invest-vs-debt, fees, benchmarking, Monte Carlo, geo-arbitrage, income replacement"
-mastery:    "FIRE advanced strategies, safe withdrawal rate, retirement, sequence risk, longevity, pensions, tax-aware investing, withdrawal sequencing, international retirement, estate planning, generational wealth"
+optimizing: "Projections and what-if scenarios, cash flow forecasting, life events, cash management, account consolidation, income growth and negotiation, invest-vs-debt (with advanced sequencing), refinancing timing, windfall management, fees, tax-loss harvesting and asset location, benchmarking, Monte Carlo, geo-arbitrage, income replacement, insurance optimization, scam prevention, advanced rebalancing"
+mastery:    "FIRE advanced strategies, safe withdrawal rate, retirement, sequence risk, longevity, pensions, tax-aware investing, withdrawal sequencing, international retirement, estate planning, charitable giving, teaching kids about money, financial vehicles for children, generational wealth"
 ```
 
-**Schema change required:** Add `'psychology'` to the `level` enum in `src/content.config.ts` (line 15). Add `psychology` entry to the levels array and `covered` map in `src/components/LearningPath.tsx` before the first Psychology post ships (Wed Jun 31 or the next M/W/F slot after Building ends on Fri Jun 26, 2026).
+**Schema state:** `'psychology'` was added to the `level` enum in `src/content.config.ts` and `LearningPath.tsx` before Psychology shipped (Jul 1, 2026). No further schema changes required — Optimizing and Mastery already exist as levels.
 
 **Note on Building `covered` string:** mentions Rule of 72, commodities/crypto, and lump-sum vs DCA because those are post-level topics now covered in the body of Building, not because they're standalone posts. This helps the learning path description be accurate.
+
+**Note on Optimizing and Mastery `covered` strings (Jul 15, 2026 revision):** Updated to reflect Path B compression. Optimizing string now lists 18 topics for 18 posts. What-if scenarios grouped with projections (single post now, per fold). Invest-vs-debt covers advanced sequencing (per fold from old #62). Mastery string lists 14 topics for 15 posts (Complete Picture capstone not enumerated).
