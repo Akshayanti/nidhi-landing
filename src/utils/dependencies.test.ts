@@ -65,7 +65,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
-  puppeteer: '^24.41.0',
+  puppeteer: '^25.12.0',
 };
 
 const EXPECTED_NODE_ENGINE = '>=22.12.0';
