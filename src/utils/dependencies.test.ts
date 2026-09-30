@@ -56,15 +56,15 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^0.32.1',
   '@astrojs/react': '^5.0.0',
   '@astrojs/rss': '^4.0.18',
-  '@astrojs/sitemap': '^3.7.2',
+  '@astrojs/sitemap': '^3.7.4',
   astro: '^6.1.10',
-  react: '^19.2.5',
-  'react-dom': '^19.2.5',
+  react: '^19.3.0',
+  'react-dom': '^19.3.0',
 };
 
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
-  '@types/react': '^19.2.14',
-  '@types/react-dom': '^19.2.3',
+  '@types/react': '^19.3.0',
+  '@types/react-dom': '^19.3.0',
   puppeteer: '^24.41.0',
 };
 
