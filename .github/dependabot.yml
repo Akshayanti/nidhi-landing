@@ -1,0 +1,47 @@
+version: 2
+
+updates:
+  # Root npm project (the Astro site itself). Grouping minor/patch bumps
+  # into one PR per run keeps routine updates from piling up the way 17
+  # separate "Bump X from Y to Z" PRs did before this file existed; major
+  # bumps (framework/runtime-level changes that need real compatibility
+  # testing, e.g. an astro 6->7 jump) are excluded from the group so each
+  # still gets its own PR and review.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # The remotion/ subdirectory has its own package.json and lockfile
+  # (video/reel rendering pipeline), separate from the root project.
+  - package-ecosystem: "npm"
+    directory: "/remotion"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions versions pinned in .github/workflows/*.yml.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
