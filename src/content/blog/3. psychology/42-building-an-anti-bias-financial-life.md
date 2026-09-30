@@ -1,7 +1,7 @@
 ---
 slug: "building-an-anti-bias-financial-life"
 title: "Building an Anti-Bias Financial Life"
-description: "You cannot reliably out-think a fast instinct in the moment, and knowing about your biases barely dents them. So stop trying to be smarter under pressure. Design a financial life that does the right thing by default, so your biases never get the wheel."
+description: "Knowing about your biases barely dents them. Instead of trying to be smarter under pressure, design a financial life that does the right thing by default."
 tldr: "This is the capstone of the Psychology series. You cannot reliably retrain a fast, evolved instinct in the heat of a real decision, and awareness of a bias barely reduces it, so the most reliable strategy is to design a financial life that works despite your biases rather than relying on willpower to overcome them. Six design principles do most of the work. Automate, so saving and investing happen without a decision. Set good defaults, so the easy path is the right one. Use checklists, to slow down the fast brain when stakes are high. Pre-commit, locking future choices in while calm. Reduce decision frequency, since annual reviews beat daily checking. And keep it boring, because diversified, steady, low-cost investing quietly beats clever tinkering. A dashboard ties it together by replacing gut feeling with numbers. The goal is a system that makes the wrong move the one you would have to go out of your way to make."
 order: 42
 pubDate: 2026-07-22

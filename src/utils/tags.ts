@@ -17,17 +17,28 @@ export interface TagMetaEntry {
 }
 
 export const TAG_META: Record<string, TagMetaEntry> = {
-  'net-worth': {
-    title: 'Net Worth: Personal Finance Literacy | nidhi',
-    description: 'Everything about net worth: what it is, how to calculate it, and why it matters more than your salary. Free personal finance education from nidhi.',
+  // Level tags. Every post carries exactly one; they mirror the `level`
+  // frontmatter field and the sections of the learning path.
+  'discovery': {
+    title: 'Discovery Series: Personal Finance Fundamentals | nidhi',
+    description: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner guides meant to be read in order.',
   },
+  'building': {
+    title: 'Building Series: Investing, Taxes, and Planning | nidhi',
+    description: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Guides for putting the basics to work.',
+  },
+  'psychology': {
+    title: 'Psychology of Money: Behavioural Finance Basics | nidhi',
+    description: 'Why knowing the right money move is not the same as making it: loss aversion, mental accounting, present bias, herd behaviour. Behavioural finance, explained.',
+  },
+  'optimizing': {
+    title: 'Optimizing Series: Projections, Fees, and Taxes | nidhi',
+    description: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Guides for tuning a plan that already works.',
+  },
+  // Topic tags.
   'fundamentals': {
     title: 'Financial Fundamentals: Personal Finance Literacy | nidhi',
     description: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
-  },
-  'getting-started': {
-    title: 'Getting Started with Personal Finance | nidhi',
-    description: 'New to personal finance? Start here. Beginner-friendly guides to net worth, budgeting, saving, and building financial literacy from the ground up.',
   },
   'debt': {
     title: 'Understanding and Managing Debt: Finance Literacy | nidhi',
@@ -41,29 +52,33 @@ export const TAG_META: Record<string, TagMetaEntry> = {
     title: 'Investing Basics: Financial Literacy | nidhi',
     description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
   },
-  'budgeting': {
-    title: 'Budgeting: Personal Finance Planning | nidhi',
-    description: 'Practical budgeting methods: 50/30/20, zero-based, and pay-yourself-first. Take control of your cash flow with nidhi\'s financial literacy guides.',
-  },
-  'cash-flow': {
-    title: 'Cash Flow: Understanding Your Money Movement | nidhi',
-    description: 'Track where your money goes each month. Cash flow is the engine behind wealth building. Free personal finance education from nidhi.',
-  },
-  'liquidity': {
-    title: 'Liquidity: Why Access to Your Money Matters | nidhi',
-    description: 'What liquidity means for your finances and why being asset-rich but cash-poor is dangerous. Personal finance literacy from nidhi.',
-  },
   'risk': {
     title: 'Understanding Financial Risk: Investing Literacy | nidhi',
     description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
   },
-  'insurance': {
-    title: 'Insurance Basics: Protecting Your Finances | nidhi',
-    description: 'How insurance protects your net worth from catastrophic loss. Health, life, property, disability, and liability explained. Personal finance literacy from nidhi.',
+  'planning': {
+    title: 'Financial Planning: Accounts, Taxes, and Tracking | nidhi',
+    description: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning guides from nidhi.',
   },
-  'credit': {
-    title: 'Credit and Credit Scores: Finance Literacy | nidhi',
-    description: 'How credit scores work, why they affect your borrowing costs, and how to build good credit. Personal finance education from nidhi.',
+  'goals': {
+    title: 'Financial Goals and Tracking Your Progress | nidhi',
+    description: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning guides from nidhi.',
+  },
+  'fire': {
+    title: 'Financial Independence (FIRE): The Basics | nidhi',
+    description: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest guides from nidhi.',
+  },
+  'taxes': {
+    title: 'Taxes and Investing: Personal Finance Literacy | nidhi',
+    description: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational guides with a country-by-country reference table.',
+  },
+  'currency': {
+    title: 'Multi-Currency Money: Exchange Rates and Risk | nidhi',
+    description: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Guides for a cross-border life.',
+  },
+  'real-estate': {
+    title: 'Real Estate as an Investment: The Basics | nidhi',
+    description: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy math. Personal finance literacy from nidhi.',
   },
 };
 
