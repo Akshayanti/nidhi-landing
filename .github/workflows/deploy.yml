@@ -43,7 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -93,7 +93,7 @@ jobs:
           echo "Wrote $(wc -l < .indexnow/current.json) lines, $(wc -c < .indexnow/current.json) bytes"
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -101,7 +101,7 @@ jobs:
         # Separate from the Pages artifact: the manifest is internal
         # build metadata, not site content. Short retention because the
         # only consumer (`indexnow-ping`) runs in the same workflow run.
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: indexnow-hashes
           path: .indexnow/current.json
@@ -116,7 +116,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # Notify IndexNow-participating search engines (Bing, DuckDuckGo,
   # Yandex, Seznam, Naver, Yep) that our content has changed. Google does
@@ -165,7 +165,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
