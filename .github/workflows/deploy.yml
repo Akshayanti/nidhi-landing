@@ -192,7 +192,7 @@ jobs:
 
       - name: Download current run's URL hash manifest
         # Produced by the build job above; lands at .indexnow/current.json.
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: indexnow-hashes
           path: .indexnow/
