@@ -203,7 +203,7 @@ jobs:
         # new). The unique key per run guarantees a fresh save below;
         # the prefix-only restore-keys grabs the most recent prior
         # manifest regardless of which run created it.
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
@@ -233,7 +233,7 @@ jobs:
 
       - name: Save manifest as cache for next run
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
