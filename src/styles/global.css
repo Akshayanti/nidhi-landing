@@ -258,6 +258,7 @@
   --level-psychology:       var(--palette-amber);
   --level-optimizing:       var(--palette-red);
   --level-mastery:          var(--palette-purple);
+  --level-inclusive-finances: var(--palette-green);
 
   /* Solid CTA background that always pairs with white foreground. */
   --color-cta-bg:           var(--semantic-cta-bg-light);
@@ -330,6 +331,7 @@
   --level-psychology:       var(--palette-amber-dark);
   --level-optimizing:       var(--palette-red-dark);
   --level-mastery:          var(--palette-purple-dark);
+  --level-inclusive-finances: var(--palette-green-dark);
 
   /* CTA bg stays a saturated dark teal so white text keeps WCAG AA. */
   --color-cta-bg:           var(--semantic-cta-bg-dark);
@@ -825,6 +827,43 @@ strong {
 .lp-levelSection {
   position: relative;
   margin-bottom: var(--space-8);
+  /* Clears the sticky site header when "Skip to next" / "Go to previous"
+     or a level-nav anchor scrolls a section into view. */
+  scroll-margin-top: 80px;
+}
+
+.lp-levelSection:focus {
+  outline: none;
+}
+
+.lp-levelActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: calc(-1 * var(--space-2)) 0 var(--space-4);
+}
+
+.lp-levelAction {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-white);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.lp-levelAction:hover {
+  border-color: var(--level-color, var(--color-border));
+  color: var(--level-color, var(--color-text-primary));
+}
+
+.lp-levelAction:focus-visible {
+  outline: 2px solid var(--level-color, var(--color-deep-blue));
+  outline-offset: 2px;
 }
 
 .lp-levelSection:last-child {
@@ -862,6 +901,55 @@ strong {
 
 .lp-levelHeader {
   margin-bottom: var(--space-4);
+}
+
+/* Inclusive Finances companions sit inside the ladder, right after the post
+   they follow up on. A diamond marker and a "Follows up on" line set them
+   apart without making them a step of their own. */
+.lp-hubLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: calc(-1 * var(--space-3)) 0 var(--space-6);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.lp-hubLink svg {
+  color: var(--level-color);
+  flex-shrink: 0;
+}
+
+.lp-hubLink strong {
+  color: var(--level-color);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lp-hubLink:hover strong {
+  text-decoration-thickness: 2px;
+}
+
+.lp-nodeDot.lp-nodeDotCompanion {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.9);
+}
+
+.lp-cardCompanion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.lp-cardCompanion svg {
+  flex-shrink: 0;
 }
 
 .lp-levelLabel {

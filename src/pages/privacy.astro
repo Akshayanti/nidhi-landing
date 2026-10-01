@@ -113,6 +113,17 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'Oct 1, 2026',
+    iso: '2026-10-01',
+    material: false,
+    summary: 'Added the Inclusive Finances collection (a hub page at /blog/inclusive-finances/, optional follow-up posts on the learning path, and a homepage link) and per-level buttons on the learning path.',
+    details: [
+      'No new data collection, forms, localStorage keys, or third-party calls. The hub and the new posts are static pages like the rest of the blog.',
+      'Read status for the new posts, and the new "Mark the level as read" and "Mark the level as unread" buttons, use the existing nidhi-reading-progress key, which stays in your browser only. "Skip to next" and "Go to previous" only scroll the page.',
+      'The new homepage card, the hub link on the blog page, and the level buttons carry data-attr labels (for example home-inclusive-finances and lp-mark-level-read-discovery) so consented interaction analytics can tell them apart from other links. Without consent, nothing is captured, as before.',
+    ],
+  },
+  {
     date: 'May 26, 2026',
     iso: '2026-05-26',
     material: false,

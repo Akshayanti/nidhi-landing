@@ -5,9 +5,13 @@ interface PostData {
   title: string;
   description: string;
   pubDate: string;
-  level: 'discovery' | 'building' | 'psychology' | 'optimizing' | 'mastery';
+  level: 'discovery' | 'building' | 'psychology' | 'optimizing' | 'mastery' | 'inclusive-finances';
   readingTime: number;
   tags: string[];
+  /** Ladder level whose section shows this post (see utils/companions.ts). */
+  pathLevel?: string;
+  /** Host post title, for Inclusive Finances companions. */
+  companionTitle?: string;
 }
 
 interface LevelMeta {
@@ -57,9 +61,36 @@ const LEVELS: Record<string, LevelMeta> = {
     prerequisite: 'For experienced planners',
     color: 'var(--level-mastery)',
   },
+  'inclusive-finances': {
+    label: 'Inclusive Finances',
+    description: 'For households the standard advice was not written for. Each guide takes one default assumption, shows what breaks when it does not hold, and rebuilds it deliberately.',
+    covered: 'Unmarried and cohabiting couples, shared households, gig work, interest-free finance, cross-border households, solo agers, divorce, caregiving, disability, chosen family, blended families, widowhood',
+    prerequisite: 'No prerequisite, relevant at any stage',
+    color: 'var(--level-inclusive-finances)',
+  },
 };
 
 const LEVEL_ORDER = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'] as const;
+// Inclusive Finances is not a step of the ladder: its posts appear inside
+// the ladder levels, each right after the post it follows up on.
+const INCLUSIVE = LEVELS['inclusive-finances'];
+// Inclusive posts are optional follow-ups: shown on the path, never counted
+// toward level or overall progress.
+const isOptional = (p: PostData) => p.level === 'inclusive-finances';
+
+function companionLine(post: PostData, onPath: boolean): string {
+  if (!post.companionTitle) return onPath ? `Optional · ${INCLUSIVE.label}` : INCLUSIVE.label;
+  return onPath ? `Optional follow-up to ${post.companionTitle}` : `Follows up on ${post.companionTitle}`;
+}
+
+function CompassIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+  );
+}
 const STORAGE_KEY = 'nidhi-reading-progress';
 
 function CheckIcon() {
@@ -106,23 +137,27 @@ interface PostNodeProps {
   interceptTagClick: boolean;
   onToggleRead: (id: string) => void;
   onTagClick: (tag: string) => void;
+  /** On the learning path an inclusive card is marked optional; on its own hub it is not. */
+  onPath?: boolean;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick }: PostNodeProps) {
+function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick, onPath = true }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
+  const isInclusive = post.level === 'inclusive-finances';
   const cardClasses = [
     'lp-nodeCard',
     isRead ? 'lp-nodeCardRead' : '',
     isStartHere ? 'lp-nodeCardStartHere' : '',
+    isInclusive ? 'lp-nodeCardCompanion' : '',
   ].filter(Boolean).join(' ');
 
   return (
     <div className="lp-postNode">
       <div className="lp-nodeDotWrapper">
         <div
-          className="lp-nodeDot"
+          className={`lp-nodeDot ${isInclusive ? 'lp-nodeDotCompanion' : ''}`}
           style={{
             borderColor: levelColor,
             background: isRead ? levelColor : undefined,
@@ -144,6 +179,12 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
           </div>
           <ReadToggle isRead={isRead} onToggle={() => onToggleRead(post.id)} />
         </div>
+        {isInclusive && (
+          <p className="lp-cardCompanion" style={{ color: levelColor }}>
+            <CompassIcon size={13} />
+            <span>{companionLine(post, onPath)}</span>
+          </p>
+        )}
         <a href={`/blog/${post.id}/`} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
           {post.title}
         </a>
@@ -291,6 +332,34 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
     });
   }, [saveProgress]);
 
+  // Marks every post of the level itself as read or unread, whatever filter
+  // is active. Optional follow-ups placed in the section are left alone.
+  const setLevelRead = useCallback((level: string, read: boolean) => {
+    setReadPosts((prev) => {
+      const next = new Set(prev);
+      posts.filter((p) => p.level === level).forEach((p) => (read ? next.add(p.id) : next.delete(p.id)));
+      saveProgress(next);
+      return next;
+    });
+    // Reading a level collapses it (see the auto-collapse effect); undoing
+    // that should bring the posts back into view.
+    if (!read) {
+      setCollapsedSections((prev) => {
+        const next = new Set(prev);
+        next.delete(level);
+        return next;
+      });
+    }
+  }, [posts, saveProgress]);
+
+  const scrollToLevel = useCallback((level: string) => {
+    const el = document.getElementById(`level-${level}`);
+    if (!el) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    el.focus({ preventScroll: true });
+  }, []);
+
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
     posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
@@ -317,21 +386,29 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
     return LEVEL_ORDER.map((level) => ({
       level,
       meta: LEVELS[level],
-      posts: filteredPosts.filter((p) => p.level === level),
+      posts: filteredPosts.filter((p) => (p.pathLevel ?? p.level) === level),
+      // The level's own posts: what progress, completion, and "Start here"
+      // count. Optional follow-ups are shown in the section but never count.
+      core: filteredPosts.filter((p) => p.level === level),
     }));
   }, [filteredPosts]);
 
+  const hasInclusive = posts.some(isOptional);
+
   const firstUnreadId = useMemo(() => {
     for (const group of levelGroups) {
-      for (const post of group.posts) {
+      for (const post of group.core) {
         if (!readPosts.has(post.id)) return post.id;
       }
     }
     return null;
   }, [levelGroups, readPosts]);
 
-  const totalPosts = filteredPosts.length;
-  const totalRead = filteredPosts.filter((p) => readPosts.has(p.id)).length;
+  const shownLevels = levelGroups.filter((g) => g.posts.length > 0).map((g) => g.level);
+
+  const corePosts = filteredPosts.filter((p) => !isOptional(p));
+  const totalPosts = corePosts.length;
+  const totalRead = corePosts.filter((p) => readPosts.has(p.id)).length;
   const overallPercent = totalPosts > 0 ? (totalRead / totalPosts) * 100 : 0;
 
   return (
@@ -342,9 +419,9 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
         {LEVEL_ORDER.map((level) => {
           const meta = LEVELS[level];
           const group = levelGroups.find((g) => g.level === level);
-          const count = group ? group.posts.length : 0;
+          const count = group ? group.core.length : 0;
           if (count === 0) return null;
-          const readCount = group ? group.posts.filter((p) => readPosts.has(p.id)).length : 0;
+          const readCount = group ? group.core.filter((p) => readPosts.has(p.id)).length : 0;
           return (
             <a
               key={level}
@@ -362,6 +439,18 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
           );
         })}
       </nav>
+
+      {hasInclusive && (
+        <a
+          className="lp-hubLink"
+          href="/blog/inclusive-finances/"
+          data-attr="blog-index-inclusive-hub"
+          style={{ '--level-color': INCLUSIVE.color } as React.CSSProperties}
+        >
+          <CompassIcon size={16} />
+          <span>Not the household the standard advice assumes? <strong>Browse every Inclusive Finances guide</strong></span>
+        </a>
+      )}
 
       {allTags.length > 0 && (
         <div className="lp-filterBar">
@@ -439,13 +528,19 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
 
       {levelGroups.map((group, index) => {
         if (group.posts.length === 0) return null;
-        const levelRead = group.posts.filter((p) => readPosts.has(p.id)).length;
-        const levelPercent = (levelRead / group.posts.length) * 100;
-        const isCompleted = levelRead === group.posts.length;
+        const levelRead = group.core.filter((p) => readPosts.has(p.id)).length;
+        const levelPercent = group.core.length > 0 ? (levelRead / group.core.length) * 100 : 0;
+        const isCompleted = group.core.length > 0 && levelRead === group.core.length;
         const isCollapsed = collapsedSections.has(group.level);
+        const shownIndex = shownLevels.indexOf(group.level);
+        const prevLevel = shownLevels[shownIndex - 1];
+        const nextLevel = shownLevels[shownIndex + 1];
+        const allLevelPostsRead = posts
+          .filter((p) => p.level === group.level)
+          .every((p) => readPosts.has(p.id));
 
         return (
-          <div key={group.level} id={`level-${group.level}`} className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}>
+          <div key={group.level} id={`level-${group.level}`} tabIndex={-1} className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}>
             <div
               className="lp-levelWaypoint"
               style={{ background: group.meta.color }}
@@ -495,14 +590,42 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
                   </div>
                 </>
               )}
-              <span className="lp-levelProgress">{levelRead}/{group.posts.length} read</span>
-              <div className="lp-levelProgressBar">
-                <div
-                  className="lp-levelProgressFill"
-                  style={{ width: `${levelPercent}%`, background: group.meta.color }}
-                />
-              </div>
+              {group.core.length > 0 && (
+                <>
+                  <span className="lp-levelProgress">{levelRead}/{group.core.length} read</span>
+                  <div className="lp-levelProgressBar">
+                    <div
+                      className="lp-levelProgressFill"
+                      style={{ width: `${levelPercent}%`, background: group.meta.color }}
+                    />
+                  </div>
+                </>
+              )}
             </div>
+
+            {(group.core.length > 0 || nextLevel || prevLevel) && (
+              <div className="lp-levelActions" style={{ '--level-color': group.meta.color } as React.CSSProperties}>
+                {group.core.length === 0 ? null : allLevelPostsRead ? (
+                  <button type="button" className="lp-levelAction" onClick={() => setLevelRead(group.level, false)} data-attr={`lp-mark-level-unread-${group.level}`}>
+                    Mark the level as unread
+                  </button>
+                ) : (
+                  <button type="button" className="lp-levelAction" onClick={() => setLevelRead(group.level, true)} data-attr={`lp-mark-level-read-${group.level}`}>
+                    Mark the level as read
+                  </button>
+                )}
+                {nextLevel && (
+                  <button type="button" className="lp-levelAction" onClick={() => scrollToLevel(nextLevel)} data-attr={`lp-skip-next-${group.level}`}>
+                    Skip to next <span aria-hidden="true">↓</span>
+                  </button>
+                )}
+                {prevLevel && (
+                  <button type="button" className="lp-levelAction" onClick={() => scrollToLevel(prevLevel)} data-attr={`lp-go-previous-${group.level}`}>
+                    Go to previous <span aria-hidden="true">↑</span>
+                  </button>
+                )}
+              </div>
+            )}
 
             {!isCollapsed && group.posts.map((post) => (
               <PostNode
@@ -510,7 +633,7 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
                 post={post}
                 isRead={readPosts.has(post.id)}
                 isStartHere={post.id === firstUnreadId}
-                levelColor={group.meta.color}
+                levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : group.meta.color}
                 selectedTag={selectedTag}
                 interceptTagClick={interceptTagClick}
                 onToggleRead={toggleRead}
@@ -520,6 +643,52 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
           </div>
         );
       })}
+    </div>
+  );
+}
+/**
+ * Flat list of post cards with the same read toggles as the learning path,
+ * for pages that list a collection outside the ladder (the Inclusive
+ * Finances hub). Reads and writes the same reading-progress key, so a post
+ * marked read here shows as read on the learning path and the other way
+ * round.
+ */
+export function CollectionList({ posts }: { posts: PostData[] }) {
+  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) setReadPosts(new Set(JSON.parse(stored)));
+    } catch { /* ignore */ }
+  }, []);
+
+  const toggleRead = useCallback((id: string) => {
+    setReadPosts((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+      return next;
+    });
+  }, []);
+
+  return (
+    <div className="lp-pathContainer">
+      <div className="lp-pathLine" />
+      {posts.map((post) => (
+        <PostNode
+          key={post.id}
+          post={post}
+          isRead={readPosts.has(post.id)}
+          isStartHere={false}
+          levelColor={LEVELS[post.level].color}
+          selectedTag={null}
+          interceptTagClick={false}
+          onToggleRead={toggleRead}
+          onTagClick={() => {}}
+          onPath={false}
+        />
+      ))}
     </div>
   );
 }

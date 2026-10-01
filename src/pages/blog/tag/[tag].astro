@@ -4,6 +4,7 @@ import { LearningPath } from '../../../components/LearningPath';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../../../utils/readingTime';
 import { TAG_META, formatTag } from '../../../utils/tags';
+import { placeOnPath } from '../../../utils/companions';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -13,13 +14,16 @@ export async function getStaticPaths() {
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
   const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))];
+  // Placement uses every visible post, so a companion lands under its host's
+  // level even when the host does not carry this tag.
+  const placements = placeOnPath(allPosts);
 
   return allTags.map(tag => ({
     params: { tag },
     props: {
       tag,
       posts: allPosts
-        .filter(p => p.data.tags.includes(tag))
+        .filter(p => p.data.tags.includes(tag) && placements.has(p.data.slug))
         .map(p => ({
           id: p.data.slug,
           title: p.data.title,
@@ -28,6 +32,7 @@ export async function getStaticPaths() {
           level: p.data.level,
           readingTime: getReadingTime(p.body || ''),
           tags: p.data.tags,
+          ...placements.get(p.data.slug)!,
         })),
     },
   }));

@@ -157,6 +157,10 @@ export default defineConfig({
       // pages are ever made indexable, drop this line and restore a
       // per-tag lastmod from `tagLastmod` in serialize() below.
       if (/\/blog\/tag\/[^/]+\/?$/.test(new URL(page).pathname)) return false;
+      // The Inclusive Finances hub is noindex while it has no live posts
+      // (src/pages/blog/inclusive-finances.astro). Remove this line when
+      // the first Inclusive Finances post publishes.
+      if (new URL(page).pathname === '/blog/inclusive-finances/') return false;
       return true;
     },
     serialize(item) {
