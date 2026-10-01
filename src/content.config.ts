@@ -12,7 +12,7 @@ const blog = defineCollection({
     order: z.number().default(99),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    level: z.enum(['discovery', 'building', 'psychology', 'optimizing', 'mastery']),
+    level: z.enum(['discovery', 'building', 'psychology', 'optimizing', 'mastery', 'inclusive-finances']),
     primaryPersona: z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas']),
     personas: z.array(z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas'])),
     tags: z.array(z.string()),
@@ -62,6 +62,14 @@ const blog = defineCollection({
      * the remaining slots are filled by tag-based matching against all posts.
      */
     relatedSlugs: z.array(z.string()).optional(),
+    /**
+     * Inclusive Finances only: slug of the curriculum post this one follows
+     * up on (the post whose default assumption it breaks). The learning path
+     * places the companion right after its host and shows it only once the
+     * host is visible. Omit for a post that only shares a slot (it is then
+     * placed by `order` alone).
+     */
+    companionOf: z.string().optional(),
   }),
 });
 

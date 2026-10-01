@@ -35,6 +35,24 @@ export const TAG_META: Record<string, TagMetaEntry> = {
     title: 'Optimizing Series: Projections, Fees, and Taxes | nidhi',
     description: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Guides for tuning a plan that already works.',
   },
+  'inclusive-finances': {
+    title: 'Inclusive Finances: When the Default Plan Does Not Fit | nidhi',
+    description: 'Financial planning for households the standard advice skips: unmarried couples, solo agers, gig workers, disability, cross-border families. No prerequisite.',
+  },
+  // Situation tags. Power the "Explore by situation" entry point and
+  // surface matching posts across every level, not only Inclusive Finances.
+  'relationships': {
+    title: 'Money and Relationships: Couples, Families, Households | nidhi',
+    description: 'How couples, blended families, chosen family, and shared households can plan money when the law and the defaults do not match how they live.',
+  },
+  'disability': {
+    title: 'Financial Planning with a Disability | nidhi',
+    description: 'Saving and planning around means-tested benefits, care costs, and income that may not follow a standard career. Frameworks, not country-specific legal advice.',
+  },
+  'immigration': {
+    title: 'Money Across Borders: Immigrants and Expats | nidhi',
+    description: 'Credit history, banking, pensions, and recognition gaps when your household crosses borders. Planning frameworks for immigrants and cross-border families.',
+  },
   // Topic tags.
   'fundamentals': {
     title: 'Financial Fundamentals: Personal Finance Literacy | nidhi',

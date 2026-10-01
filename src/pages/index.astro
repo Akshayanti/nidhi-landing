@@ -45,6 +45,13 @@ const liveBlogSlugs = new Set(
     .map((post) => post.data.slug),
 );
 
+// The Inclusive Finances entry point is its own card, not nested under the
+// blog CTA, so the level is not framed as later-stage content. Hidden until
+// a post in the level is live (always shown in dev for previewing).
+const showInclusiveHub = (await getCollection('blog')).some(
+  (post) => post.data.level === 'inclusive-finances' && (import.meta.env.DEV || post.data.pubDate <= new Date()),
+);
+
 function liveBlogHref(slug: string) {
   return liveBlogSlugs.has(slug) ? `/blog/${slug}/` : null;
 }
@@ -373,7 +380,7 @@ const heroCta = 'Notify me about access';
             The full planner is opening in stages. In the meantime, the free tools and blog are live.
           </p>
         </div>
-        <div class="available-now-links" aria-label="Available now links">
+        <div class:list={['available-now-links', { 'available-now-links--four': showInclusiveHub }]} aria-label="Available now links">
           <a href="/free/multi-currency-net-worth/">
             <span>Multi-currency net worth</span>
             <small>See assets and debts across currencies.</small>
@@ -382,10 +389,23 @@ const heroCta = 'Notify me about access';
             <span>Loan comparison</span>
             <small>Compare borrowing offers side by side.</small>
           </a>
-          <a href="/blog/">
-            <span>Read the blog</span>
-            <small>Learn the concepts behind the planner.</small>
-          </a>
+          {showInclusiveHub ? (
+            <a href="/blog/">
+              <span>Start the learning path</span>
+              <small>Step-by-step guides, from net worth basics to long-term planning.</small>
+            </a>
+          ) : (
+            <a href="/blog/">
+              <span>Read the blog</span>
+              <small>Learn the concepts behind the planner.</small>
+            </a>
+          )}
+          {showInclusiveHub && (
+            <a href="/blog/inclusive-finances/" data-attr="home-inclusive-finances">
+              <span>Money for every kind of household</span>
+              <small>Unmarried couples, blended and chosen families, solo agers, gig work, disability, lives across borders. Start anywhere.</small>
+            </a>
+          )}
         </div>
       </div>
 
@@ -967,6 +987,15 @@ const heroCta = 'Notify me about access';
   @media (min-width: 680px) {
     .available-now-links {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* With the Inclusive Finances card there are four links: a 2x2 grid puts
+     the two tools on top and the two reading entry points side by side, so
+     neither is framed as a sub-link of the other. */
+  @media (min-width: 680px) {
+    .available-now-links--four {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 

@@ -230,6 +230,104 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 
 **Beta launch target:** Originally scheduled for late June 2026 immediately after post 32 (Financial Dashboard, Mon Jun 29). As of Jul 15, 2026, the launch has not occurred and no fixed date is set. Blog continues to publish as tool-agnostic educational content on the M/W/F cadence, independent of app timeline.
 
+### Publishing order from post 43 onward (decided Sep 30, 2026)
+
+**Status:** publishing has been paused since post 42 (Wed Jul 22, 2026). The Optimizing and Mastery dates in the milestone table above are stale. **Placeholder dates (Oct 1, 2026):** the 18 Optimizing drafts and the 18 Inclusive Finances pieces carry consecutive placeholder `pubDate`s from 2099-01-01 to 2099-02-05, one day each in publishing order (43, 44, 45, inc-1, 46, ... 60, then inc-9 to inc-16), so they stay hidden in production while the order is preserved. Re-date them to the real schedule (release plan phase 0) before anything ships.
+
+**Start date is gated on Instagram.** The restart date is not set. It is decided once the reworked Instagram content kit (see `PLAYBOOK.md`) is judged good enough on a pilot post. Blog posts do not restart ahead of that.
+
+**Inclusive Finances is interleaved, not appended.** The 16 Inclusive Finances slot posts (inc-1 to inc-16) do not run as a block after Mastery and do not run as a sixth step in the queue. Each one ships directly after the curriculum post whose default-household assumption it breaks, as that post's companion. Inclusive posts are in bold:
+
+| Level | Publishing order |
+|---|---|
+| Optimizing | 43, 44, 45, **inc-1**, 46, 47, **inc-2**, 48, **inc-3**, 49, 50, **inc-4**, 51, 52, 53, 54, 55, 56, **inc-5**, 57, **inc-6**, 58, **inc-7**, 59, **inc-8**, 60 |
+| Mastery | 61, 62, 63, **inc-9**, 64, 65, 66, **inc-10**, 67, 68, 69, **inc-11**, 70, **inc-12**, 71, **inc-13**, 72, 73, **inc-14**, 74, **inc-15**, 75, **inc-16** |
+
+| Inclusive post | Ships after | The default it breaks |
+|---|---|---|
+| inc-1 When the Default Plan Doesn't Fit You | 45 Life Events | Life-event models assume a two-parent, dual-income household |
+| inc-2 Shared Households: Money for Three or More Adults (added Sep 30, 2026) | 47 Account Consolidation | A household's money has one owner, or two who are legally a pair |
+| inc-3 Gig and Informal-Economy Work | 48 Growing Your Income | There is an employer to negotiate with |
+| inc-4 Interest-Free and Sharia-Compliant Finance | 50 Refinancing Timing | Interest-bearing debt and investments are available to you |
+| inc-5 Immigrants, Expats, and Cross-Border Households | 56 Geographic Arbitrage | Moving is a choice made with full legal and credit standing |
+| inc-6 Solo Agers and Single-Income Households | 57 Income Replacement Ratio | A second income or a spouse backs the plan |
+| inc-7 Unmarried and Cohabiting Couples | 58 Insurance Optimization | A legal spouse is the default beneficiary |
+| inc-8 Divorce and Separation | 59 Scam Prevention (slot only, to avoid back-to-back inclusive posts) | The shared financial life stays shared |
+| inc-9 Caregiving and the Career-Interruption Wealth Gap | 63 Retirement Planning | An unbroken contribution history |
+| inc-10 Financial Planning with a Disability | 66 Pension Income and Payout Options | Benefits are not means-tested against your savings |
+| inc-11 Same-Sex Couples and Unrecognized Marriages | 69 International Retirement | Your marriage is recognized wherever you live |
+| inc-12 Chosen Family | 70 Estate Planning Basics | Legal next-of-kin are the people you would choose |
+| inc-13 Multi-Generational Household Economics | 71 Charitable Giving | Money flows inside one nuclear household |
+| inc-14 Blended and Non-Traditional Families | 73 Financial Vehicles for Children | Children have two legal parents in one household |
+| inc-15 Widowhood and Sudden Single-Income Transition | 74 Generational Wealth | Wealth transfer happens on a planned timeline |
+| inc-16 Building Your Own Default (capstone) | 75 The Complete Picture | Closes both arcs together |
+
+Total 49 posts in slots, 16 weeks and one extra slot at three per week before holiday skips, plus two sub-articles that take no slot.
+
+**Ids (renamed Oct 1, 2026).** Inclusive Finances posts are identified as `inc-N`, numbered in publishing order, with sub-articles taking their parent's number plus a letter. The earlier 76 to 93 numbers reflected writing order and are retired; the map below keeps old references (commit messages, notes, the Sep 30 session) resolvable. The ids are planning labels only: they never appear in file names, `order` values, or anything a reader sees.
+
+| Id | Old | Post |
+|---|---|---|
+| inc-1 | 76 | When the Default Plan Doesn't Fit You |
+| inc-2 | 91 | Shared Households: Money for Three or More Adults |
+| inc-3 | 84 | Gig and Informal-Economy Work |
+| inc-4 | 88 | Interest-Free and Sharia-Compliant Finance |
+| inc-5 | 87 | Immigrants, Expats, and Cross-Border Households |
+| inc-6 | 83 | Solo Agers and Single-Income Households |
+| inc-7 | 77 | Unmarried and Cohabiting Couples |
+| inc-7a | 92 | Owning a Home With More Than Two People (sub-article) |
+| inc-7b | 93 | More Than Two Partners: Protecting Everyone (sub-article) |
+| inc-8 | 81 | Divorce and Separation |
+| inc-9 | 85 | Caregiving and the Career-Interruption Wealth Gap |
+| inc-10 | 86 | Financial Planning with a Disability |
+| inc-11 | 78 | Same-Sex Couples and Unrecognized Marriages |
+| inc-12 | 79 | Chosen Family |
+| inc-13 | 89 | Multi-Generational Household Economics |
+| inc-14 | 80 | Blended and Non-Traditional Families |
+| inc-15 | 82 | Widowhood and Sudden Single-Income Transition |
+| inc-16 | 90 | Building Your Own Default (capstone) |
+
+If the release order changes later (see the Mastery checkpoint below), the ids stay as they are.
+
+### Release plan (decided Oct 1, 2026)
+
+Optimizing, Mastery, Inclusive Finances and the Beliefs series are released in this order. Reels are created in the same order, since every slot post gets two (PLAYBOOK §2.1).
+
+| Phase | When | What ships |
+|---|---|---|
+| 0. Build buffer | Two weeks before restart, nothing published | Instagram kits for the first six slot posts (43 done, then 44, 45, inc-1, 46, 47); the reel visuals they need (month bars, two columns, checklist card, split bar); Beliefs reworked to the kit format; Optimizing `pubDate`s re-dated; Mastery drafting starts |
+| Comeback | The Sunday before restart | Beliefs 1, "Built from frustration" |
+| 1. Optimizing | Weeks 1 to 9 | 43 to 60 with inc-1 to inc-8 interleaved (26 slot posts); inc-7a and inc-7b on the non-slot days after inc-7 |
+| 2. Mastery | Weeks 10 to 17 | 61 to 75 with inc-9 to inc-16 interleaved (23 slot posts), ending on the capstone after The Complete Picture |
+| Beliefs | Every other Sunday from the comeback | Beliefs 2 to 6, so the series runs through about week 10 |
+
+- **Companions stay next to their hosts (Oct 1, 2026).** Each inc post ships in the slot right after its host, even where that bunches them (two in week 3, four of the last eight slots in weeks 7 to 9). Connection to the host matters more than an even spread, so there is no per-week cap.
+- **Buffer.** Keep at least one week of finished kits (reels, carousels, stories) ahead of the posting date throughout.
+- **Mastery checkpoint, week 5.** Mastery is not drafted, and all 15 posts must be drafted before week 10. If fewer than about six are drafted by week 5, run inc-9 to inc-16 as a short stretch (about three weeks) between phases 1 and 2. They are written to stand alone with inline recaps, so this is the one case where a short run of inclusive posts is worth it.
+- **Holidays.** Skipping the Christmas to New Year week (PLAYBOOK §2) puts the run at about 17 to 18 weeks from restart.
+- **inc-1 runs two days.** The Sep 30 audit failed it for holding one idea; the draft now has a second one ("Why the cheap fixes are usually enough"), so it runs the normal two days.
+
+**Sub-articles (introduced Sep 30, 2026).** A sub-article extends an Inclusive Finances post to a narrower situation. It is attached to a parent post, publishes in the days after the parent on a non-slot day (Tuesday or Thursday), is linked from the parent once live, and does not get its own two-day Instagram run. It carries an `order` just after its parent. Two exist, both under inc-7 Unmarried and Cohabiting Couples:
+
+| Sub-article | Parent | Order | What it extends |
+|---|---|---|---|
+| inc-7a Owning a Home With More Than Two People | inc-7 | 58.6 | Joint tenancy versus stated shares, for a group; the mortgage; the co-ownership agreement; co-operatives and land trusts |
+| inc-7b More Than Two Partners: Protecting Everyone | inc-7 | 58.7 | The marriage bundle when the law allows one spouse; documents for more than two; tax, immigration, and children |
+
+inc-2, inc-7a and inc-7b were split from a single draft, "Communal Living and Multi-Partner Households", which ran to about 3,700 words and had no host post. The original is kept in `docs/drafts/inclusive-finances/_superseded/`.
+
+**Draft status (Sep 30, 2026).** All eighteen Inclusive Finances pieces are drafted and self-reviewed (fifteen original posts, plus inc-2 and the two sub-articles inc-7a and inc-7b): the ones that ship inside Optimizing (inc-1, inc-3 to inc-8) and the eight that ship inside Mastery (inc-9 to inc-16). They are staged in `docs/drafts/inclusive-finances/`, not in `src/content/blog/`, because the content schema does not yet accept `level: inclusive-finances` and a file with that level inside the collection fails the build. Each carries final frontmatter, a placeholder 2099 `pubDate` (consecutive with the Optimizing drafts in publishing order, see "Placeholder dates" above), and an `order` value that places it after its host (45.5, 47.5, 48.5, 50.5, 56.5, 57.5, 58.5, 59.5, then 63.5, 66.5, 69.5, 70.5, 71.5, 73.5, 74.5, 75.5). They move into the collection when the level's code support lands. **Update (Sep 30, 2026):** the code support has landed and the drafts now live in `src/content/blog/inclusive-finances/` (no number prefix on the folder, since the level is not a step in the ladder). The level is in the schema enum, `LevelBadge`, and a `--level-inclusive-finances` color token; `LearningPath.tsx` places each post after its host as an optional follow-up (Exposure item 1, revised Oct 1, 2026); the hub is at `/blog/inclusive-finances/` with "Explore by situation" links and the same cards and read toggles as the learning path; and the homepage has its own entry card. **Mastery host slugs, fixed in advance (Oct 1, 2026):** the eight Mastery companions (inc-9 to inc-16) name hosts whose posts are not written yet, so the hosts' slugs were fixed now from the planned titles and each Mastery entry below carries a "Slug (fixed)" line: `retirement-planning`, `pension-income-and-payout-options`, `international-retirement`, `estate-planning-basics`, `charitable-giving-optimization`, `financial-vehicles-for-children`, `generational-wealth`, `the-complete-picture`. Publish each Mastery post under that slug, or update the companion's `companionOf` to match. The production build fails if a live companion names a host slug that is not in the collection (`assertCompanionHosts` in `src/utils/companions.ts`). Until the hosts exist, those eight appear on the hub but not on the learning path. With the 2099 placeholder `pubDate` the posts show only in `npm run dev`. Production is unchanged, except that the hub page exists with a noindex tag and an empty state, and is left out of the sitemap until the first post goes live. Host callouts (Exposure item 3) are still to do, and are added as each companion publishes. **Figures (Sep 30, 2026):** six of the eighteen carry one inline SVG each, chosen with Codex against Rule 9: the benefit cliff (disability), seen vs later cost of a career break (caregiving), jagged income in and flat salary out (gig work), equal vs income-based split as a share of income (shared households), the accidental disinheritance flow (blended families), and the three-question audit (the level opener). The six use one colour grammar: blue for the default arrangement, teal for a deliberate fix, warn for loss or exclusion, muted for context, and no success green. Divorce ("equal values, unequal assets") and widowhood ("the arithmetic of one") were considered and cut: the first would present fixed discounts the post itself qualifies, and the second repeats its table in a post about recent loss. The other ten are document, rights, or coordination problems whose tables already do the work. The eight Mastery companions refer to their host posts in plain prose with an inline recap, because the Mastery posts are not drafted and have no slugs to link to; add those links once the hosts exist. The legal, tax, benefit, and religious specifics were written from general knowledge and have not been checked by a specialist.
+
+**Instagram structure (decided Sep 30, 2026).** Each blog post gets two days and two angles; each day carries one angle as a reel and a carousel. `docs/plans/instagram-two-angle-audit.md` lists both angles for all 25 posts in this run and the visual each needs.
+
+**Consequences for the posts themselves:**
+
+- **Numbering.** The `inc-N` ids are internal planning labels only (see "Ids" above). They must not appear as file-name prefixes, `order` values that imply sequence, or any reader-facing counter.
+- **Level and hub unchanged.** Inclusive posts keep `level: inclusive-finances` and the ungated hub described under "Exposure and IA strategy". On the learning path they sit beside their hosts as optional follow-ups (Exposure item 1, revised Oct 1, 2026), matching the publishing order.
+- **Two-way companion link.** Each inclusive post links back to its host post, and the host post carries the short "This assumes X. If that is not your situation, see ..." callout. Because the inclusive post ships one slot after its host, the host's callout is added when the companion publishes (Editorial Rule 2: no forward hyperlinks).
+- **Inline recaps.** inc-7, inc-8, and inc-6 now ship before Mastery posts they lean on (estate planning #70, safe withdrawal rate #62). Each needs a self-contained one-paragraph recap of those concepts, with the link to the Mastery post added once it ships. The stand-alone rule (Exposure item 5) already requires this.
+- **Instagram framing (updated Oct 1, 2026).** Inclusive Finances is its own theme on Instagram: its own chip, `Money, For You and Me` (named Oct 1, 2026), and its own profile Highlight, so followers can recognise the theme and find it again. The chip carries no "N of 16" counter. Each post is still framed as the companion to the previous post ("the last post assumed X; what if that is not you?") and still ships interleaved, never as a block. Situation and topic hashtags only, never identity tags (PLAYBOOK §3 account-level cohort hygiene). This replaces the Sep 30 decision to run them under the host level's chip.
+
 ## Level System (from `src/content.config.ts` and `src/components/LearningPath.tsx`)
 
 | Level | Label | Prerequisite | Target |
@@ -243,7 +341,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 
 > **Note:** `psychology` is a new level added May 4, 2026. Requires adding `'psychology'` to the `level` enum in `src/content.config.ts` and to `LearningPath.tsx` before the first post ships.
 >
-> **Note (proposed, Sep 30, 2026):** `inclusive-finances` is a proposed sixth level. Unlike every other level in this table, it is **deliberately not part of the sequential prerequisite chain** — see "Exposure and IA strategy" under the "INCLUSIVE FINANCES" section below. Its posts are numbered 76-90 for internal reference and because a handful cross-reference Mastery-level concepts (estate planning, generational wealth), but that numbering describes writing order and content dependencies, not reading-gate order: the level is exposed to readers from day one of the site, not after they finish the other 75 posts. Same code-activation requirement as Psychology: add `'inclusive-finances'` to the `level` enum in `src/content.config.ts`, but its `LearningPath.tsx` treatment differs from every other level (see below) rather than simply appending to `LEVEL_ORDER`.
+> **Note (proposed, Sep 30, 2026):** `inclusive-finances` is a proposed sixth level. Unlike every other level in this table, it is **deliberately not part of the sequential prerequisite chain** — see "Exposure and IA strategy" under the "INCLUSIVE FINANCES" section below. Its posts carry `inc-N` planning ids (see "Ids" under the publishing order), and a handful cross-reference Mastery-level concepts (estate planning, generational wealth), but neither describes a reading gate: the level is exposed to readers from day one of the site, not after they finish the other 75 posts. Same code-activation requirement as Psychology: add `'inclusive-finances'` to the `level` enum in `src/content.config.ts`, but its `LearningPath.tsx` treatment differs from every other level (see below) rather than simply appending to `LEVEL_ORDER`.
 
 ---
 
@@ -324,7 +422,7 @@ Rather than new standalone posts:
 | Drawdown strategies, longevity risk | Mastery (#64, #65) |
 | Estate planning, wills, beneficiaries | Mastery (#70) |
 | Healthcare cost planning, long-term care | Mastery (partial coverage in #65 Longevity Risk; standalone deferred indefinitely — jurisdiction-specific) |
-| Divorce / partnership dissolution finance | **Reopened, Sep 30, 2026** — was deferred indefinitely as "jurisdiction-specific enough that generic treatment would mislead more than it helps." See the note under "Inclusive Finances" below: the level's own editorial guardrail (teach the decision framework, map the legal mechanism per jurisdiction) is the intended way to reopen this without the original risk. Now planned as Inclusive Finances #81. |
+| Divorce / partnership dissolution finance | **Reopened, Sep 30, 2026** — was deferred indefinitely as "jurisdiction-specific enough that generic treatment would mislead more than it helps." See the note under "Inclusive Finances" below: the level's own editorial guardrail (teach the decision framework, map the legal mechanism per jurisdiction) is the intended way to reopen this without the original risk. Now planned as Inclusive Finances inc-8. |
 | Employer benefits deep-dive (ESPP, HDHP/HSA choice, group life adequacy, commuter benefits) | Deferred indefinitely — jurisdiction-heavy; RSU vesting is covered generically in #51 (Windfall) as the highest-frequency case |
 
 ### Known technical debt
@@ -336,21 +434,21 @@ Rather than new standalone posts:
 
 A review of the curriculum's trajectory (Discovery through Mastery, 75 posts, all built around a "default household": legally married or single, dual conventional income, stable employer benefits, legally-recognized family structure) surfaced a systematic gap rather than a missing post: none of the five levels address financial planning for a household whose situation doesn't match that default. Examples: unmarried or cohabiting couples, same-sex couples in jurisdictions that don't recognize their marriage, blended and chosen families, solo agers, single-income households, gig and informal-economy workers, people with disabilities (means-tested benefit cliffs), immigrants and cross-border households, culturally- or religiously-distinct financial systems (interest-free finance), and multi-generational household economics.
 
-This is proposed as a sixth level, **Inclusive Finances (15 posts, #76-90)**. The numbering (76-90, written and sequenced after Mastery) reflects writing order and the fact that several posts reference Mastery-level vocabulary (SWR, estate planning, withdrawal sequencing) rather than re-deriving it. **It is not read-gated behind the other five levels.** A reader arriving with none of the curriculum's prior context should be able to land on any post in this level and use it. Full per-post plan below, after the Mastery section.
+This is proposed as a sixth level, **Inclusive Finances (15 posts as proposed; 16 slot posts and two sub-articles once drafted, ids inc-1 to inc-16)**. It was first numbered 76 to 90 after Mastery, reflecting writing order and the fact that several posts reference Mastery-level vocabulary (SWR, estate planning, withdrawal sequencing) rather than re-deriving it. **It is not read-gated behind the other five levels.** A reader arriving with none of the curriculum's prior context should be able to land on any post in this level and use it. Full per-post plan below, after the Mastery section.
 
 ### Exposure and IA strategy (decided Sep 30, 2026)
 
 The level's value depends on it being genuinely reachable by someone who needs it, not discoverable only by a reader who has already worked through 75 posts. Six concrete decisions, to be implemented together:
 
-1. **Pin it above Discovery on the learning-path page, visually distinct from the numbered ladder.** On `src/components/LearningPath.tsx`, `inclusive-finances` is excluded from `LEVEL_ORDER` (the array driving the sequential, collapse-on-completion ladder) and instead rendered as its own non-collapsible block positioned before the Discovery section. It does not get a numbered waypoint badge (`1`, `2`, `3`...) the way the five sequential levels do — a distinct marker (icon, not a number) signals "parallel option," not "step zero." Prerequisite copy: "No prerequisite — relevant at any stage." Implementation: a new constant (e.g. `FEATURED_LEVELS = ['inclusive-finances']`) rendered ahead of the `LEVEL_ORDER.map(...)` block, reusing `PostNode`/level-section markup but skipping the `isCompleted` collapse behavior entirely (it should never auto-collapse, since there's no "finish this before the next level" framing to reward).
+1. **Place each post on the learning path as an optional follow-up to its host.** (Revised Oct 1, 2026. The original decision pinned the level above Discovery as its own block; on review it read as "step zero", sat ahead of the beginner material, and duplicated the hub.) Inclusive posts are not a step of the ladder and `inclusive-finances` stays out of `LEVEL_ORDER`. Each post names its host in frontmatter (`companionOf: "<host slug>"`) and appears inside the host's level section, directly after the host, the same order it publishes in. `src/utils/companions.ts` (`placeOnPath`) computes the placement from all visible posts, so tag pages place them the same way; a companion is left off the path until its host is visible. Posts that only share a slot (inc-8, Divorce and Separation) omit `companionOf` and are placed by `order`. On the path an inclusive card carries a diamond marker instead of the round dot and the line "Optional follow-up to <host title>", in the level's green. **They never count toward progress:** level counts, overall progress, "Completed", auto-collapse, "Start here", and "Mark the level as read/unread" all use the level's own posts only. The blog index links to the hub once, under the level nav ("Not the household the standard advice assumes? Browse every Inclusive Finances guide"). The "no prerequisite" promise is carried by that link, the hub, the homepage card, and search, not by position on the path.
 2. **Give it a standalone hub page**, not just a section nested inside `/blog/`. Own URL, a short framing paragraph explaining why the level exists, then its 15 posts. This is what gets linked from nav and homepage, and what should rank for direct searches ("financial planning unmarried couple," "same sex couple finances different countries") without requiring the reader to discover the learning path first.
 3. **Cross-link from the exact curriculum posts where a default assumption breaks**, at the point of need rather than relying on a reader to find a separate section. Confirmed insertion points from the Optimizing draft review below, plus the corresponding Mastery and Building posts:
-   - Building #23 (Tax-Advantaged Accounts) → Inclusive Finances #77 (Unmarried and Cohabiting Couples)
-   - Optimizing #57 (Income Replacement Ratio) and #58 (Insurance Optimization) → #77, alongside the light inline carve-outs noted below
-   - Optimizing #45 (Life Events) → #80 (Blended and Non-Traditional Families)
-   - Optimizing #56 (Geographic Arbitrage) → #78 (Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage)
-   - Mastery #70 (Estate Planning Basics) → #77, #79 (Chosen Family), #81 (Divorce and Separation)
-   - Mastery #72/#73 (Teaching Kids / Financial Vehicles for Children) → #80
+   - Building #23 (Tax-Advantaged Accounts) → Inclusive Finances inc-7 (Unmarried and Cohabiting Couples)
+   - Optimizing #57 (Income Replacement Ratio) and #58 (Insurance Optimization) → inc-7, alongside the light inline carve-outs noted below
+   - Optimizing #45 (Life Events) → inc-14 (Blended and Non-Traditional Families)
+   - Optimizing #56 (Geographic Arbitrage) → inc-11 (Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage)
+   - Mastery #70 (Estate Planning Basics) → inc-7, inc-12 (Chosen Family), inc-8 (Divorce and Separation)
+   - Mastery #72/#73 (Teaching Kids / Financial Vehicles for Children) → inc-14
    Each is a short callout ("This assumes X. If that doesn't describe your situation, see [Inclusive Finances post].") added to the existing post, not a rewrite.
 4. **Feature it on the homepage independent of "start the curriculum."** Its own entry point, not nested under a "Learning Path" CTA, so it isn't implicitly framed as advanced or later-stage content.
 5. **Write every post to stand alone.** Since entry points are search, a cross-link, or direct nav rather than sequential reading, each post needs a self-contained opening and inline one-line recaps (with backlinks) for any curriculum concept it leans on — the same jargon-gloss discipline Discovery uses for terms, applied here to *concepts* a reader may not have encountered yet. "Not gated" has to hold editorially, not just structurally; a post that silently assumes the reader did Building #23 first is gated in practice even if it's technically reachable.
@@ -361,9 +459,9 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 **Editorial guardrail specific to this level.** Unlike most of the curriculum, this level's subject matter is unusually jurisdiction-sensitive by nature (marriage recognition, disability benefits, and immigration status are all legally defined per-country). This is exactly the property that caused "divorce / partnership dissolution finance" and "employer benefits deep-dive" to be deferred indefinitely in earlier gap-analysis passes (see table above). The level's own Rule 7-equivalent guardrail: teach the **decision framework** (what to check, what to title jointly, what to designate, what to ask a local professional) as universal, and treat the specific legal mechanism per jurisdiction the way Building #23 (Tax-Advantaged Accounts) maps functional categories to named regional vehicles, never asserting "the law in your country says X." Every post in this level needs an explicit scope note on what it does not cover (specific-country legal advice) before it ships.
 
 **Cross-references into already-drafted Optimizing posts (untracked, unpublished as of Sep 30, 2026, so still freely editable).** A full read-through of all 18 Optimizing drafts (#43-60) for default-household assumptions found the posts already largely jurisdiction-generic (per Rule 7) and did not surface anything requiring restructuring. Two light, cheap inline additions are worth making now rather than waiting for the new level, since these are one-clause caveats, not new sections:
-- **#57 Income Replacement Ratio:** the dependant-independence test currently reads "spouse can maintain lifestyle from portfolio and their own income." Add a clause noting this applies equally to an unmarried or unrecognized partner, since the test is financial independence, not marital status.
-- **#58 Insurance Optimization:** the life-insurance-drop test has the same "spouse can maintain lifestyle" phrasing, plus a load-bearing assumption worth flagging explicitly: a legal spouse is often a default beneficiary in many jurisdictions, while an unmarried or legally-unrecognized partner typically is not and needs the beneficiary designation set deliberately. Worth one sentence, not a section; the full treatment belongs in Inclusive Finances #77.
-- **#45 Life Events** and **#56 Geographic Arbitrage** also carry default-household framing (the "children" cash-flow model assumes a two-parent household that reduces one income; the visa-mechanics section lists six visa categories with no mention of partner/spousal reunification visas) but reframing either properly needs more room than an inline caveat allows. Left as-is; Inclusive Finances #78 and #80 cross-reference both posts instead of patching them.
+- **#57 Income Replacement Ratio:** no change needed. On re-reading (Sep 30, 2026) the draft speaks of dependants throughout and does not use the spouse wording; that phrasing lives only in #58.
+- **#58 Insurance Optimization:** the life-insurance-drop test has the same "spouse can maintain lifestyle" phrasing, plus a load-bearing assumption worth flagging explicitly: a legal spouse is often a default beneficiary in many jurisdictions, while an unmarried or legally-unrecognized partner typically is not and needs the beneficiary designation set deliberately. Worth one sentence, not a section; the full treatment belongs in Inclusive Finances inc-7. **Applied Sep 30, 2026** in the "When to drop life insurance" paragraph; inc-7 opens by picking up that sentence.
+- **#45 Life Events** and **#56 Geographic Arbitrage** also carry default-household framing (the "children" cash-flow model assumes a two-parent household that reduces one income; the visa-mechanics section lists six visa categories with no mention of partner/spousal reunification visas) but reframing either properly needs more room than an inline caveat allows. Left as-is; Inclusive Finances inc-11 and inc-14 cross-reference both posts instead of patching them.
 
 ---
 
@@ -762,6 +860,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 63: Retirement Planning -- What Traditional Retirement Looks Like
+**Slug (fixed, Oct 1, 2026):** `retirement-planning`. Inclusive Finances inc-9 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-9's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** FIRE (#61), SWR (#62), Financial Projections (Optimizing #43)
 **Key concept:** State pensions, employer pensions, private retirement accounts. How retirement accounts differ from regular investments (tax advantages, liquidity restrictions). Starting early matters. Retirement age vs FIRE age. Planning for 30+ years.
 **App tie-in (add on launch day; future-conditional, not for current body):** separate retirement investments from regular investments in projections.
@@ -783,6 +882,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 66: Pension Income and Payout Options -- Lump Sum, Annuity, or Both?
+**Slug (fixed, Oct 1, 2026):** `pension-income-and-payout-options`. Inclusive Finances inc-10 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-10's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Retirement Planning (#63), Financial Projections (Optimizing #43), Longevity Risk (#65)
 **Key concept:** Multiple retirement income streams: state pension, employer pension, personal savings. How to estimate pension income. When to claim (early vs late trade-off). Lump sum vs annuity: liquidity and growth potential vs guaranteed lifetime income. How pension income changes the FIRE calculation.
 **App tie-in (add on launch day; future-conditional, not for current body):** model passive income streams alongside portfolio drawdown.
@@ -804,6 +904,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 69: International Retirement -- How Location Changes the Math
+**Slug (fixed, Oct 1, 2026):** `international-retirement`. Inclusive Finances inc-11 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-11's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Euro Buys More (Discovery #12), Life Events (Optimizing #45), Retirement Planning (#63)
 **Key concept:** Retiring in a lower-cost country can dramatically reduce your FIRE number. PPP in practice: same retirement, different price tag. Tax residency implications (generic). Healthcare considerations. The emotional vs financial trade-off of moving.
 **App tie-in (add on launch day; future-conditional, not for current body):** multi-currency support + scenario modelling for cross-country retirement comparisons.
@@ -811,6 +912,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 70: Estate Planning Basics -- What Happens to Your Wealth After You
+**Slug (fixed, Oct 1, 2026):** `estate-planning-basics`. Inclusive Finances inc-12 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-12's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Assets (Discovery #3), Retirement Planning (#63), Longevity Risk (#65)
 **Key concept:** Estate planning isn't just for the wealthy. What happens without a plan (intestacy). The basics: wills, beneficiary designations, power of attorney. Why estate planning intersects with financial planning (gifting, inheritance tax concepts, generational wealth transfer). Kept generic.
 **App tie-in (add on launch day; future-conditional, not for current body):** model inheritance scenarios and gifting impacts on net worth projections.
@@ -818,6 +920,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 71: Charitable Giving Optimization -- Making Your Giving Tax-Efficient (NEW, Jul 14 2026)
+**Slug (fixed, Oct 1, 2026):** `charitable-giving-optimization`. Inclusive Finances inc-13 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-13's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Estate Planning (#70), Taxes and Your Financial Plan (Building #22), Tax-Advantaged Accounts (Building #23), Tax-Loss Harvesting and Asset Location (Optimizing #53)
 **Key concept:** **[GAP FILL — Jul 14, 2026 audit]** Giving during accumulation and drawdown is a tax lever most donors never use. **Cash vs appreciated-security donation**: donating €10,000 of long-held appreciated stock instead of cash typically avoids the capital gains you would have realised on sale (a double benefit if you can itemise). **Donor-advised funds (DAF)**: give assets to the DAF now, take the deduction now, grant to charities on any schedule. Enables "bunching" (concentrating multiple years of giving into one tax year to clear the standard deduction threshold). **Qualified charitable distributions (QCD)**: after retirement age, direct-to-charity distribution from tax-deferred retirement accounts satisfies required minimum distributions without adding to taxable income. **Charitable remainder / lead trusts** as concept, not directive; for larger estates blending income needs with philanthropic intent. **Timing**: donate in high-income years (marginal rate matters), coordinate with tax-loss harvesting (donate winners, harvest losers), never donate depreciated assets. **What NOT to optimize**: giving that reflects your values shouldn't be tax-driven at the margin; the vehicle choice absolutely should be. Kept generic per BL#4: functional categories only, users apply their own tax rates.
 **Gloss requirements:** "donor-advised fund (DAF)"; "qualified charitable distribution (QCD)"; "bunching"; "charitable remainder trust"; "appreciated security"; "required minimum distribution (RMD)."
@@ -834,6 +937,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 73: Financial Vehicles for Children -- Custodial Accounts and Education Savings (NEW, Jul 14 2026)
+**Slug (fixed, Oct 1, 2026):** `financial-vehicles-for-children`. Inclusive Finances inc-14 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-14's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Teaching Kids About Money (#72), Tax-Advantaged Accounts (Building #23), Financial Goals (Building #30)
 **Key concept:** **[GAP FILL — Jul 14, 2026 audit; previously deferred]** Where to actually put money for or from a minor, and how each vehicle changes the tax and control picture. **Custodial account categories**: (1) taxable brokerage in the child's name (UTMA/UGMA equivalents, French Livret Jeune, similar); assets legally the child's at age of majority, less parental control but flexible use, kiddie-tax mechanics. (2) Education-specific tax-advantaged (529 US, JISA UK, RESP Canada, ELSS-linked education plans in India, PEL/CEL France); tax-free growth for qualified education expenses, less flexibility for non-qualified use. (3) Minor-owned retirement (Roth IRA for children with earned income, similar in some jurisdictions); the compounding math over 60+ year horizons is extreme. **The control-vs-tax tradeoff**: custodial accounts get the tax break but transfer legal control at age of majority; parent-owned accounts keep control but keep the tax picture. **Sequencing**: fund your own retirement before the kids' education vehicle. You can borrow for education, you cannot borrow for retirement. **Cross-continent map** per Rule 7 with each vehicle mapped to functional category. **Over-funding risk**: 529-analog excess with no qualifying use often faces punitive tax treatment. **Gifting mechanics**: annual and lifetime thresholds referenced generically per BL#4.
 **Gloss requirements:** "custodial account"; "age of majority"; "kiddie tax"; each named regional vehicle glossed on first use per D-3.
@@ -842,6 +946,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 74: Generational Wealth -- Building Beyond Your Lifetime
+**Slug (fixed, Oct 1, 2026):** `generational-wealth`. Inclusive Finances inc-15 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-15's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** Estate Planning (#70), Financial Vehicles for Children (#73), Investing 101 (Building #18), FIRE (#61)
 **Key concept:** Wealth that outlasts one generation. The difference between inheritance (one-time transfer) and generational wealth (self-sustaining). Teaching financial literacy to the next generation (extends #72). Trust structures (concept only, not legal advice). Why compound interest across generations is the most powerful wealth engine. The responsibility that comes with building lasting wealth.
 **App tie-in (add on launch day; future-conditional, not for current body):** 50-year projections model multi-generational wealth trajectories.
@@ -849,6 +954,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 ---
 
 ### Post 75: The Complete Picture -- How Everything Connects
+**Slug (fixed, Oct 1, 2026):** `the-complete-picture`. Inclusive Finances inc-16 names this post as its host (`companionOf`), so publish under exactly this slug or update inc-16's frontmatter to match. A live companion whose host slug does not exist fails the build.
 **Builds on:** All previous posts
 **Key concept:** A capstone post mapping the entire journey from discovery to mastery. How net worth, cash flow, investing, projections, FIRE, retirement planning, and wealth transfer form an interconnected system. Where you are, where you're going, what could change the path. Why revisiting your plan annually matters more than getting it perfect once.
 **App tie-in (add on launch day; future-conditional, not for current body):** dashboard as the tool that holds all these pieces together.
@@ -857,11 +963,13 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-# INCLUSIVE FINANCES (Posts 76-90, proposed Sep 30, 2026)
+# INCLUSIVE FINANCES (inc-1 to inc-16, proposed Sep 30, 2026)
+
+> Entries below are in the original writing order, not publishing order; see "Ids" and "Publishing order from post 43 onward" for both.
 
 > Financial planning tools and defaults (spousal benefits, joint filing, intestacy, employer benefits, credit history) are built around a "default" household. This level teaches how to plan when your situation doesn't match that default. **No prerequisite, not read-gated behind the rest of the curriculum** — see "Exposure and IA strategy" in the Gap Analysis section above. A handful of posts reference Mastery-level vocabulary (SWR, estate planning) where genuinely relevant, but each does so with an inline one-line recap and backlink rather than assuming the reader arrived from Mastery. **Proposed, not yet drafted.** See "New level proposed Sep 30, 2026" in the Gap Analysis section above for rationale and the editorial guardrail every post in this level must follow (teach the decision framework as universal, map the specific legal mechanism per jurisdiction, never assert what "the law" says without a scope note).
 
-### Post 76: When the Default Plan Doesn't Fit You
+### inc-1: When the Default Plan Doesn't Fit You
 **Builds on:** Nothing — this is the level's own entry point, self-contained by design (see Exposure and IA strategy, item 5)
 **Key concept:** Every financial-planning default (spousal survivor benefits, joint tax filing, intestacy rules, employer-benefit continuity, credit history) was designed around a specific household shape. This post introduces the audit framework the rest of the level uses: for any financial decision, ask what default assumption it's quietly making, whether that assumption holds for your situation, and what to do deliberately if it doesn't. Sets up vocabulary used throughout: "default assumption," "deliberate designation" (vs. automatic default), "recognition gap" (where the law doesn't recognize a relationship or status the household considers primary).
 **Gloss requirements:** "intestacy" (dying without a will; assets pass by default rules, not your wishes); "beneficiary designation" (an explicit, deliberate override of the default).
@@ -869,33 +977,33 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-> **Reading note for posts #77-90:** "Builds on" below lists concepts a post *references*, not posts a reader must have already read. Per item 5 of the Exposure and IA strategy, every post gives a one-line inline recap (with a backlink) the first time it leans on a curriculum concept, so a reader arriving cold from search or a cross-link is never stuck. Treat "Builds on" as a writer's checklist for which recaps to include, not a reader-facing prerequisite.
+> **Reading note for the posts below:** "Builds on" below lists concepts a post *references*, not posts a reader must have already read. Per item 5 of the Exposure and IA strategy, every post gives a one-line inline recap (with a backlink) the first time it leans on a curriculum concept, so a reader arriving cold from search or a cross-link is never stuck. Treat "Builds on" as a writer's checklist for which recaps to include, not a reader-facing prerequisite.
 
-### Post 77: Financial Planning for Unmarried and Cohabiting Couples
-**Builds on:** Estate Planning Basics (Mastery #70), Tax-Advantaged Accounts (Building #23), When the Default Plan Doesn't Fit You (#76)
+### inc-7: Financial Planning for Unmarried and Cohabiting Couples
+**Builds on:** Estate Planning Basics (Mastery #70), Tax-Advantaged Accounts (Building #23), When the Default Plan Doesn't Fit You (inc-1)
 **Key concept:** Marriage triggers a bundle of financial defaults most couples never think about until they're missing: automatic spousal inheritance rights, spousal healthcare decision-making authority, often favorable tax filing status, automatic beneficiary status on many accounts. Unmarried and cohabiting couples (by choice or because marriage isn't accessible to them) get none of these by default and must build each one deliberately: joint ownership structures (joint tenancy vs. tenancy in common, and what each means on death), a cohabitation or partnership agreement for shared assets and debts, financial power of attorney, healthcare power of attorney / medical proxy, explicit beneficiary designations on every account and policy. Cross-references the light caveat added to Optimizing #57 and #58.
 **Gloss requirements:** "joint tenancy with right of survivorship" vs. "tenancy in common"; "financial power of attorney"; "healthcare proxy / medical power of attorney."
 **Scope note:** Named legal instruments vary by jurisdiction; the post teaches the functional category, not a specific country's form.
 
 ---
 
-### Post 78: Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage
-**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (#77), Geographic Arbitrage (Optimizing #56), Managing Money Across Currencies (Building #29)
-**Key concept:** A marriage legally performed in one country may not be recognized in another, which means every default that flows from marital status (survivor pension rights, spousal healthcare authority, inheritance, joint tax filing, immigration/reunification visas) can silently disappear on relocation, even without divorce. Covers: auditing which of your marriage's legal effects are jurisdiction-dependent before an international move (direct cross-reference to Optimizing #56's visa-mechanics section, which does not currently address partner/spousal reunification visas); building the same deliberate-designation stack as #77 as a parallel structure that holds even where the marriage itself isn't recognized; specific attention to healthcare and financial power of attorney as the most portable substitutes for spousal default rights. Not a legal-advocacy post; a financial-planning post about a legal fact pattern.
+### inc-11: Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage
+**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (inc-7), Geographic Arbitrage (Optimizing #56), Managing Money Across Currencies (Building #29)
+**Key concept:** A marriage legally performed in one country may not be recognized in another, which means every default that flows from marital status (survivor pension rights, spousal healthcare authority, inheritance, joint tax filing, immigration/reunification visas) can silently disappear on relocation, even without divorce. Covers: auditing which of your marriage's legal effects are jurisdiction-dependent before an international move (direct cross-reference to Optimizing #56's visa-mechanics section, which does not currently address partner/spousal reunification visas); building the same deliberate-designation stack as inc-7 as a parallel structure that holds even where the marriage itself isn't recognized; specific attention to healthcare and financial power of attorney as the most portable substitutes for spousal default rights. Not a legal-advocacy post; a financial-planning post about a legal fact pattern.
 **Gloss requirements:** "marriage recognition" vs. "civil union / domestic partnership recognition" (these are legally distinct and recognized differently across borders); "reunification visa."
 **Scope note:** Explicitly does not track which countries currently recognize same-sex marriage (this changes over time and is a legal-research question, not a financial-planning one); teaches readers how to check for their specific destination and what to do once they know the answer.
 
 ---
 
-### Post 79: Chosen Family and Financial Planning Without Legal Next-of-Kin
-**Builds on:** Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage (#78), Estate Planning Basics (Mastery #70)
+### inc-12: Chosen Family and Financial Planning Without Legal Next-of-Kin
+**Builds on:** Same-Sex Couples and Jurisdictions That Don't Recognize Your Marriage (inc-11), Estate Planning Basics (Mastery #70)
 **Key concept:** Default next-of-kin rules (who makes medical decisions if you can't, who inherits if you have no will, who gets called in an emergency) assume your closest relationships are legally recognized family. For people whose primary support network is chosen family rather than legal family (common among LGBTQ+ people estranged from biological family, but not exclusive to that group), every one of these defaults needs a deliberate override: healthcare proxy naming a specific chosen-family member, a will (intestacy defaults to legal relatives, full stop), emergency contact and hospital-visitation designations, financial power of attorney. Covers the specific hospital-visitation problem (some jurisdictions restrict visitation and information-sharing to legally recognized family absent a specific designation) as a concrete, high-stakes example of why "just tell people verbally" doesn't work.
 **Gloss requirements:** "next-of-kin"; "hospital visitation designation / patient advocate designation."
 **Scope note:** Visitation and information-sharing rules are jurisdiction- and even institution-specific; teaches what to ask for, not a universal form.
 
 ---
 
-### Post 80: Blended and Non-Traditional Families
+### inc-14: Blended and Non-Traditional Families
 **Builds on:** Financial Vehicles for Children (Mastery #73), Teaching Kids About Money (Mastery #72), Life Events (Optimizing #45)
 **Key concept:** Stepchildren, children from multiple relationships, non-biological co-parents, and multi-partner households complicate defaults that assume one set of legal parents and one inheritance line. Covers: custodial account control when a child has a non-biological co-parent with no automatic legal standing; estate planning that has to name stepchildren explicitly (intestacy defaults typically do not include stepchildren at all); coordinating child-related financial decisions across households after separation or where multiple adults share caregiving; the "who claims the dependent" coordination question. Cross-references Optimizing #45's children cash-flow model, which assumes a two-parent household reducing one income, as the pattern this post reframes for more than two adults or non-biological co-parents sharing the load.
 **Gloss requirements:** "legal parent" vs. "de facto / psychological parent" (a functional distinction, not a legal term everywhere); "dependent claim coordination."
@@ -903,31 +1011,31 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 81: Divorce and Separation: Untangling a Shared Financial Life
-**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (#77), Tax-Advantaged Accounts (Building #23), Real Estate as an Investment (Building #28)
+### inc-8: Divorce and Separation: Untangling a Shared Financial Life
+**Builds on:** Financial Planning for Unmarried and Cohabiting Couples (inc-7), Tax-Advantaged Accounts (Building #23), Real Estate as an Investment (Building #28)
 **Key concept:** **[Reopened from "deferred indefinitely," Sep 30, 2026 — see Gap Analysis note above]** Previously deferred as too jurisdiction-specific for generic treatment; reopened here under this level's decision-framework guardrail rather than reversing that judgment. Covers the financial mechanics common to separation regardless of jurisdiction: inventorying joint and separate assets and debts before any negotiation starts, splitting tax-advantaged retirement accounts without triggering an unintended taxable withdrawal (the mechanism has a name in most jurisdictions with tax-advantaged retirement accounts; check the local one), untangling joint real estate (buy-out, sale-and-split, or continued co-ownership, each with different cash-flow and tax consequences), updating every beneficiary designation immediately (the single most common expensive mistake: forgetting to remove an ex-spouse as a beneficiary), and rebuilding a single-income financial plan from a formerly joint one. Explicitly not a post about custody, alimony formulas, or legal process.
 **Gloss requirements:** "qualified domestic relations order (QDRO)" or local equivalent (a specific legal mechanism to split retirement accounts without triggering tax); "equitable distribution" vs. "community property" (two different default frameworks for splitting marital assets, named as categories, not tied to one country).
 **Scope note:** The single most explicit "ask a local professional" scope note in the level; splitting retirement accounts incorrectly can trigger real, avoidable tax consequences.
 
 ---
 
-### Post 82: Widowhood and Sudden Single-Income Transition
-**Builds on:** Divorce and Separation (#81), Cash Flow Forecasting (Optimizing #44), Estate Planning Basics (Mastery #70)
-**Key concept:** Losing a partner is simultaneously a grief event and a financial-restructuring event, and the two compound (see Optimizing #51's inheritance-and-grief framing for the same compounding pattern with money decisions). Covers: the immediate financial to-do list in the first weeks (which has real deadlines) versus the decisions that should wait (which don't), what survivor benefits you may be entitled to and how they differ sharply depending on whether the relationship was legally recognized (direct callback to #78 and #79 for readers whose partnership wasn't), rebuilding a cash-flow forecast and a retirement plan around one income where two were assumed, and the specific vulnerability window widowed people face for financial scams (cross-reference to Optimizing #59).
+### inc-15: Widowhood and Sudden Single-Income Transition
+**Builds on:** Divorce and Separation (inc-8), Cash Flow Forecasting (Optimizing #44), Estate Planning Basics (Mastery #70)
+**Key concept:** Losing a partner is simultaneously a grief event and a financial-restructuring event, and the two compound (see Optimizing #51's inheritance-and-grief framing for the same compounding pattern with money decisions). Covers: the immediate financial to-do list in the first weeks (which has real deadlines) versus the decisions that should wait (which don't), what survivor benefits you may be entitled to and how they differ sharply depending on whether the relationship was legally recognized (direct callback to inc-11 and inc-12 for readers whose partnership wasn't), rebuilding a cash-flow forecast and a retirement plan around one income where two were assumed, and the specific vulnerability window widowed people face for financial scams (cross-reference to Optimizing #59).
 **Gloss requirements:** "survivor benefit" (pension or social-insurance income paid to a surviving spouse or, in some systems, a surviving unmarried partner); "probate."
 **Scope note:** Survivor-benefit eligibility for unmarried partners varies enormously by jurisdiction and by which specific benefit; teaches readers what to check, not what they're entitled to.
 
 ---
 
-### Post 83: Solo Agers and Single-Income Households
+### inc-6: Solo Agers and Single-Income Households
 **Builds on:** Introduction to Financial Independence (Building #25), Safe Withdrawal Rate (Mastery #62), Income Replacement Ratio (Optimizing #57)
-**Key concept:** Most FIRE and retirement-planning content implicitly assumes either a dual-income household or a household with a second adult as a fallback (co-signer, caregiver, backup decision-maker). Solo agers (living and aging without a partner or without nearby family, by choice or circumstance) and single-income households by design need the same math with different inputs: no second income to smooth a job loss, no default backup for incapacity decisions (direct callback to #79's chosen-family framework), long-term-care planning without an assumed family caregiver, and a savings-rate and emergency-fund calculation that should run more conservative than the dual-income defaults used elsewhere in the curriculum. Not a "you need more money" post; a "here's which of the curriculum's dual-income assumptions to adjust and by how much" post.
-**Gloss requirements:** "long-term care"; "power of attorney for incapacity" (distinct from the healthcare and financial POAs covered in #77, this one covers the specific case of no obvious next-of-kin to act).
+**Key concept:** Most FIRE and retirement-planning content implicitly assumes either a dual-income household or a household with a second adult as a fallback (co-signer, caregiver, backup decision-maker). Solo agers (living and aging without a partner or without nearby family, by choice or circumstance) and single-income households by design need the same math with different inputs: no second income to smooth a job loss, no default backup for incapacity decisions (direct callback to inc-12's chosen-family framework), long-term-care planning without an assumed family caregiver, and a savings-rate and emergency-fund calculation that should run more conservative than the dual-income defaults used elsewhere in the curriculum. Not a "you need more money" post; a "here's which of the curriculum's dual-income assumptions to adjust and by how much" post.
+**Gloss requirements:** "long-term care"; "power of attorney for incapacity" (distinct from the healthcare and financial POAs covered in inc-7, this one covers the specific case of no obvious next-of-kin to act).
 **Scope note:** Long-term-care systems (public coverage, insurance markets, family-obligation law) vary enormously by country; teaches what to plan for, not a specific system's rules.
 
 ---
 
-### Post 84: Gig and Informal-Economy Work
+### inc-3: Gig and Informal-Economy Work
 **Builds on:** Growing Your Income (Optimizing #48), Cash Flow Forecasting (Optimizing #44), Tax-Advantaged Accounts (Building #23)
 **Key concept:** Freelancers, platform-gig workers, and informal-economy workers (cash-based, undocumented-status, or outside formal payroll systems entirely) get none of the automatic infrastructure the rest of the curriculum assumes: no employer-matched retirement contribution, no employer-sponsored health insurance, no automatic tax withholding, no paid leave. Covers: building a self-funded version of every benefit an employer would otherwise provide (retirement, health coverage, disability income replacement, paid-leave equivalent as a specific savings bucket), income smoothing across irregular pay periods (a variance problem, not a budgeting-discipline problem), and self-managed tax withholding to avoid a year-end shortfall. Distinct from Optimizing #48 (which assumes W-2-equivalent employment and focuses on negotiation) by starting from "there is no employer to negotiate with."
 **Gloss requirements:** "1099 / self-employment income" (named as a functional category: income paid without employer withholding); "quarterly estimated tax" or local equivalent; "income smoothing."
@@ -935,7 +1043,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 85: Caregiving and the Career-Interruption Wealth Gap
+### inc-9: Caregiving and the Career-Interruption Wealth Gap
 **Builds on:** Life Events (Optimizing #45), Growing Your Income (Optimizing #48), Money Scripts (Psychology #41)
 **Key concept:** Unpaid caregiving (for children, aging parents, or a disabled family member) is disproportionately taken on by women and disabled caregivers, and it compounds into a much larger retirement-wealth gap than the paused salary alone suggests: missed employer retirement matches, a permanently lower base for future percentage raises (direct callback to Optimizing #48's compounding math, run in reverse), and reduced state-pension or social-security accrual in systems that credit based on paid work history. Covers: quantifying the real multi-decade cost of a caregiving break (not just the paused salary), catch-up strategies once caregiving ends (accelerated retirement contributions, explicit re-entry income negotiation), and what to check for in jurisdictions that offer caregiver credits toward state pension or social insurance.
 **Gloss requirements:** "caregiver credit" (a mechanism some state pension systems use to fill a work-history gap caused by caregiving); "gender pay gap" and "gender wealth gap" as distinct measures (income at a point in time vs. accumulated wealth over decades).
@@ -943,15 +1051,15 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 86: Financial Planning with a Disability
-**Builds on:** Insurance Basics (Discovery #16), Tax-Advantaged Accounts (Building #23), Solo Agers and Single-Income Households (#83)
+### inc-10: Financial Planning with a Disability
+**Builds on:** Insurance Basics (Discovery #16), Tax-Advantaged Accounts (Building #23), Solo Agers and Single-Income Households (inc-6)
 **Key concept:** Standard financial-planning advice ("maximize your income," "build an emergency fund," "save more") can directly collide with means-tested disability-benefit rules, where earning or saving above a threshold can cost more in lost benefits than it gains in income (the "benefit cliff"). Covers: understanding your own jurisdiction's benefit-cliff thresholds before optimizing income or savings (a check-first, not a rule, since these thresholds vary enormously), purpose-built savings vehicles that let disabled individuals save without losing means-tested eligibility (named as a functional category; the US ABLE account is one implementation, not the only one), guardianship and conservatorship alternatives that preserve more financial autonomy (supported decision-making frameworks), and insurance and estate-planning considerations specific to a special-needs dependent (a special-needs trust as a functional category, distinct from a standard inheritance, so a disabled beneficiary doesn't lose means-tested eligibility on inheriting).
 **Gloss requirements:** "benefit cliff" (means-tested benefit loss that can exceed the income gained); "means-tested" (already used informally elsewhere; glossed formally here); "special-needs trust" or local equivalent; "supported decision-making" vs. "guardianship / conservatorship."
 **Scope note:** Disability-benefit systems and their specific thresholds are entirely jurisdiction-specific and change over time; this post teaches the check-first framework and the vehicle categories, not current threshold numbers.
 
 ---
 
-### Post 87: Immigrants, Expats, and Cross-Border Households
+### inc-5: Immigrants, Expats, and Cross-Border Households
 **Builds on:** Geographic Arbitrage (Optimizing #56), Credit and Credit Scores (Discovery #15), Managing Money Across Currencies (Building #29)
 **Key concept:** Crossing a border resets financial infrastructure that took years to build: credit history typically does not transfer between countries (starting a new credit file from zero, regardless of decades of history elsewhere), banking access can be genuinely difficult without an established local history or documentation status, remittance costs quietly erode money sent across borders to support family, and tax residency can create double-taxation exposure without careful planning (direct callback to Optimizing #56's tax-residency section, extended here to non-remote-work immigration: family reunification, refugee and asylum status, and undocumented-status households, none of which Optimizing #56 covers since it assumes a voluntary, resourced relocation). Covers building a financial identity from zero in a new country, minimizing remittance costs, and cash-based financial management for households without full banking access.
 **Gloss requirements:** "credit history portability" (or the lack of it); "remittance corridor" (the specific sending-country-to-receiving-country pathway, which affects cost); "ITIN" (US-specific, glossed as an example of a tax-identification workaround for those without full legal work status; named as one instance of a broader category).
@@ -959,7 +1067,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 88: Interest-Free and Sharia-Compliant Finance
+### inc-4: Interest-Free and Sharia-Compliant Finance
 **Builds on:** Investing 101 (Building #18), Understanding Loan Terms (Building #27), Tax-Advantaged Accounts (Building #23)
 **Key concept:** For readers whose religious or ethical framework prohibits interest (riba) entirely, most of the curriculum's debt and investing math (compare the interest rate, capture the employer match, optimize the mortgage) needs a structurally different toolkit, not a modified version of the interest-based one. Covers: how profit-and-loss-sharing and cost-plus structures (murabaha, ijara, musharakah, named as functional categories) replace interest-bearing loans and mortgages while achieving similar economic goals; Sharia-compliant investing screens (excluding specific sectors and excessive-debt companies) and how they change diversification (Building #20) in practice; the retirement-savings equivalent problem (most tax-advantaged retirement accounts assume interest-bearing options exist inside them) and how to build a compliant version. Written as a coherent alternative system, not a set of restrictions layered onto the conventional one.
 **Gloss requirements:** "riba" (interest, prohibited); "murabaha" (cost-plus sale, a common home-financing structure); "takaful" (mutual/cooperative insurance, an alternative to conventional insurance for readers who also avoid conventional insurance structures).
@@ -967,7 +1075,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 89: Multi-Generational Household Economics
+### inc-13: Multi-Generational Household Economics
 **Builds on:** Setting Financial Goals (Building #30), Cash Flow 101 (Discovery #10), Charitable Giving Optimization (Mastery #71)
 **Key concept:** In many cultures (widely documented in South and East Asian, African, and Latin American household patterns, among others), multiple adult generations sharing income, housing, and eldercare obligations is the norm, not an exception, and the curriculum's household-level cash-flow and savings-rate framing (Discovery #10) implicitly assumes a single-generation nuclear unit. Covers: modeling a shared income pool and elder-support obligations as a recurring line item (not a one-time gift, which is how Mastery #71's charitable-giving framing would otherwise categorize it), the sequencing question when supporting aging parents competes with the reader's own retirement saving (a real trade-off, not a "just do both" answer), and inheritance as an ongoing multi-generational support structure rather than a one-time transfer at death (contrast with Mastery #74's generational-wealth framing, which assumes a single transfer event).
 **Gloss requirements:** "elder support obligation" (financial or filial-duty-based, distinguishing cultural and legal versions where they differ); "joint family household" (named descriptively, not tied to one culture's term for it).
@@ -975,11 +1083,20 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-### Post 90: Building Your Own Default (capstone)
+### inc-16: Building Your Own Default (capstone)
 **Builds on:** All previous posts in this level
 **Key concept:** A capstone synthesizing the level's throughline: every post here took a mainstream financial-planning default and showed what breaks when it doesn't apply, then rebuilt the equivalent deliberately. This post gives readers the general-purpose version of that audit, so they can apply it to a default this level didn't specifically cover: list the defaults your financial plan currently relies on (marital status, family structure, income stability, legal residency, documented disability status, benefit-system assumptions), check which ones actually hold for your situation, and for each one that doesn't, name the deliberate structure that replaces it. Closes the level, and the full 90-post curriculum, on the idea that a financial plan built on checked assumptions is more robust than one built on inherited defaults, for every reader, not only those this level was written for.
-**Gloss requirements:** None new; synthesizes terms from #76-89.
+**Gloss requirements:** None new; synthesizes terms from the rest of the level.
 **Scope note:** None; capstone, not a new topical claim.
+
+---
+
+### inc-2, inc-7a, inc-7b: Communal Living and Multi-Partner Households (split Sep 30, 2026)
+**Builds on:** Unmarried and Cohabiting Couples (inc-7), Chosen Family (inc-12), Account Consolidation (Optimizing #47), Money Scripts (Psychology #41), Emergency Fund (Discovery #8)
+**Added:** Sep 30, 2026, as a 16th Inclusive Finances post, then split the same day into inc-2 (Shared Households, companion to Optimizing #47) and the sub-articles inc-7a and inc-7b under inc-7. The entry below describes the original combined draft, kept in `docs/drafts/inclusive-finances/_superseded/`.
+**Key concept:** The default household is one adult or one legal pair. Households with three or more adults whose money is tied together (housemates, housing co-operatives, cohousing, intentional communities, multi-partner households) meet a shared set of gaps: costs split by habit not method, joint and several lease liability, group title where joint tenancy leaves the last survivor with everything, and a legal system that recognises at most one spouse. Covers: a worked four-adult cost split (equal vs income-based, showing an 80%-of-income burden for the lowest earner under an equal split), the **exit test** (what the household costs the remaining members if any one person leaves), the lease, group ownership and buy-out formulas, co-operative / land trust / cohousing structures as functional categories, and a table of spouse-only defaults with the document that extends each one to other partners. Includes how to count a shared asset in one's own net worth (own share only).
+**Gloss requirements:** "joint and several liability"; "joint tenancy" vs. "tenancy in common"; "buy-out formula"; "trust"; "healthcare proxy"; "forced heirship."
+**Scope note:** Tenancy, property, co-operative, and family law are jurisdiction-specific, and multi-partner recognition barely exists anywhere. Teaches the categories and what to check, not any country's rules. The two recognition examples in the FAQ (Massachusetts cities' multi-person domestic partnerships) are unverified and need a specialist check before publication. Children in multi-partner households are deferred to inc-14 in plain prose (no link: inc-14 ships later).
 
 ---
 
