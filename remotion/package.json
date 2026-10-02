@@ -7,15 +7,15 @@
     "render": "npx tsx src/render-single.ts"
   },
   "dependencies": {
-    "@remotion/google-fonts": "^4.0.529",
-    "@remotion/transitions": "^4.0.529",
+    "@remotion/google-fonts": "^4.0.530",
+    "@remotion/transitions": "^4.0.530",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "remotion": "^4.0.529"
+    "remotion": "^4.0.530"
   },
   "devDependencies": {
-    "@remotion/bundler": "^4.0.529",
-    "@remotion/cli": "^4.0.529",
+    "@remotion/bundler": "^4.0.530",
+    "@remotion/cli": "^4.0.530",
     "@remotion/renderer": "^4.0.462",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
