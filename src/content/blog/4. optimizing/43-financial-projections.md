@@ -27,6 +27,10 @@ faq:
     answer: "Because a simulation describes what the model produced from its assumptions, not what the future will do. The future can differ from the past in inflation, growth and how markets move together. 'In 90% of simulations the money lasted' is accurate; 'you have a 90% chance of success' drops the assumptions and reads the model's estimate as a promise about your future."
 reelPromise: "How to choose the growth rate you model, and why one line hides a range of outcomes"
 relatedSlugs: ["appreciation-vs-depreciation", "investing-101-asset-classes", "setting-financial-goals", "overconfidence-and-the-planning-fallacy", "purchasing-power", "understanding-risk"]
+relatedTool:
+  url: "/free/monte-carlo-simulator"
+  label: "Monte Carlo simulator"
+  cta: "See the spread of outcomes for your own plan"
 referentialReading:
   - title: "Compound Interest Formula"
     url: "https://www.investopedia.com/terms/c/compoundinterest.asp"

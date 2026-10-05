@@ -39,7 +39,9 @@ function slugs(dir) {
 
 const pages = [
   '/', '/about/', '/beliefs/', '/privacy/', '/editorial-policy/', '/free/',
-  '/free/loan-comparison/', '/free/multi-currency-net-worth/', '/blog/',
+  '/free/loan-comparison/', '/free/multi-currency-net-worth/',
+  // Built only in dev until it launches with post 43 (src/utils/monte-carlo/release.ts).
+  '/free/monte-carlo-simulator/', '/blog/',
   '/blog/inclusive-finances/', '/blog/tag/optimizing/', '/404',
   ...slugs(join(ROOT, 'src/content/blog')).map((s) => `/blog/${s}/`),
 ];

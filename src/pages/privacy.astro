@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { relative } from 'node:path';
+import { isMonteCarloReleased, monteCarloReleaseDate } from '../utils/monte-carlo/release.ts';
 
 /**
  * Privacy-notice changelog. Newest first. Every edit to this page gets an
@@ -19,6 +20,12 @@ import { relative } from 'node:path';
  * Local dev and shallow CI checkouts gracefully fall back to the top
  * changelog entry's date.
  */
+// The Monte Carlo simulator's events, and its changelog entry, appear once
+// the tool itself is live (src/utils/monte-carlo/release.ts). The entry is
+// dated with the launch, not with the day the code was written.
+const showMonteCarlo = await isMonteCarloReleased();
+const monteCarloLaunch = await monteCarloReleaseDate();
+
 interface ChangelogEntry {
   date: string;          // "Month D, YYYY" for display
   iso: string;           // YYYY-MM-DD for machines + <time datetime>
@@ -112,6 +119,23 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 }
 
 const changelog: ChangelogEntry[] = [
+  ...(showMonteCarlo && monteCarloLaunch
+    ? [
+        {
+          date: monteCarloLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
+          iso: monteCarloLaunch.toISOString().slice(0, 10),
+          material: true,
+          summary: 'New free tool: a Monte Carlo simulator.',
+          details: [
+            'The simulator plays a savings and withdrawal plan forward 10,000 times with random yearly returns. The whole simulation runs in your browser; the amounts, years and stock/bond mix you enter are not sent to us or anyone else.',
+            'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
+            'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
+            'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
+            'The tool makes no network requests of its own and adds no third parties.',
+          ],
+        },
+      ]
+    : []),
   {
     date: 'Oct 5, 2026',
     iso: '2026-10-05',
@@ -319,8 +343,11 @@ const thisFileAbs = fileURLToPath(import.meta.url);
 const thisFileRel = relative(process.cwd(), thisFileAbs);
 const gitMeta = gitLastCommitDate(thisFileRel);
 
-const lastUpdated = gitMeta?.date ?? first?.date ?? '';
-const lastUpdatedIso = gitMeta?.iso ?? first?.iso ?? '';
+// An entry can appear on a launch date without a commit to this file (the
+// Monte Carlo simulator's does), so the newest entry wins when it is later.
+const entryIsNewer = !!first && (!gitMeta || first.iso > gitMeta.iso);
+const lastUpdated = (entryIsNewer ? first?.date : gitMeta?.date) ?? '';
+const lastUpdatedIso = (entryIsNewer ? first?.iso : gitMeta?.iso) ?? '';
 
 // Earliest changelog entry is the publication date; newest is the modified
 // date. Both are ISO yyyy-mm-dd already, which is exactly what schema.org
@@ -405,6 +432,14 @@ const privacyBreadcrumbSchema = {
           interest rate, not the fees, not the vendor name. The whole point of the calculator
           is that the math runs in your browser.
         </li>
+        {showMonteCarlo && (
+          <li>
+            Anonymous interaction events on the Monte Carlo simulator: which currency you pick,
+            whether you switch withdrawals on or off, whether you open the results table,
+            whether you copy the shareable link, and whether you reset the form.
+            <strong>The amounts, years and mix you enter are never sent.</strong>
+          </li>
+        )}
         <li>
           Campaign parameters (<code>utm_source</code>, <code>utm_medium</code>, etc.) if you
           arrived from a link we or someone else tagged.

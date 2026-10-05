@@ -1,6 +1,8 @@
 ---
 import LogoMark from './LogoMark.astro';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
 const year = new Date().getFullYear();
+const showMonteCarlo = await isMonteCarloReleased();
 
 ---
 
@@ -24,6 +26,7 @@ const year = new Date().getFullYear();
           <strong class="footer-col-heading">Free Tools</strong>
           <a href="/free/multi-currency-net-worth/" data-attr="footer-multi-currency-net-worth">Multi-currency net worth</a>
           <a href="/free/loan-comparison/" data-attr="footer-loan-comparison">Loan comparison</a>
+          {showMonteCarlo && <a href={MONTE_CARLO_URL} data-attr="footer-monte-carlo-simulator">Monte Carlo simulator</a>}
           <a href="/free/" data-attr="footer-all-tools">View all</a>
         </div>
         <div class="footer-col">

@@ -1,7 +1,9 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import LogoMark from './LogoMark.astro';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
 const currentPath = Astro.url.pathname;
+const showMonteCarlo = await isMonteCarloReleased();
 
 ---
 
@@ -33,6 +35,13 @@ const currentPath = Astro.url.pathname;
               Loan Comparison
             </a>
           </li>
+          {showMonteCarlo && (
+            <li role="none">
+              <a href={MONTE_CARLO_URL} class:list={[{ active: currentPath === MONTE_CARLO_URL }]} role="menuitem" data-attr="nav-tool-monte-carlo-simulator">
+                Monte Carlo Simulator
+              </a>
+            </li>
+          )}
           <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
           <li role="none">
             <a href="/free/" class:list={[{ active: currentPath === '/free/' }]} role="menuitem" data-attr="nav-tool-all">

@@ -19,6 +19,10 @@ faq:
     answer: "So you can tell which change is doing the work. If you change your city, your salary and your savings rate together, you see one combined result and no idea which part drove it. Run each change on its own, then all of them together, and compare the differences. Often one change dominates and the others barely matter."
 reelPromise: "Why the purchase you feel guilty about is usually the small one, and a two-line test for what any cost becomes over 30 years"
 relatedSlugs: ["financial-projections", "mental-accounting", "setting-financial-goals", "overconfidence-and-the-planning-fallacy"]
+relatedTool:
+  url: "/free/monte-carlo-simulator"
+  label: "Monte Carlo simulator"
+  cta: "Change one input at a time and watch the spread move"
 referentialReading:
   - title: "Thinking, Fast and Slow"
     author: "Daniel Kahneman"
