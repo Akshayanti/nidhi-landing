@@ -27,6 +27,8 @@ import {
   type GlobalState,
   type VendorInput,
 } from '../utils/loan/url.ts';
+import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import {
   computeFromInput,
   computeNoPointsBaseline,
@@ -93,150 +95,234 @@ interface ChartProps {
   currency: string;
 }
 
+// Dash patterns tell vendors apart when their lines run close together,
+// independent of colour. Indices align with VENDOR_LABELS A-E.
+const VENDOR_DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
+
+const BW = 760;
+const BH = 400;
+const BPAD = { top: 24, right: 28, bottom: 56, left: 104 };
+const BPLOT_W = BW - BPAD.left - BPAD.right;
+const BPLOT_H = BH - BPAD.top - BPAD.bottom;
+
+/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
+function niceScale(v: number): { top: number; step: number; count: number } {
+  if (v <= 0) return { top: 6, step: 1, count: 6 };
+  const raw = v / 6;
+  const exp = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map((m) => m * exp).find((s) => s >= raw) ?? 10 * exp;
+  const count = Math.max(1, Math.ceil(v / step - 1e-9));
+  return { top: step * count, step, count };
+}
+
 function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
-  const width = 720;
-  const height = 280;
-  const padL = 64;
-  const padR = 16;
-  const padT = 16;
-  const padB = 36;
+  const titleId = useId();
+  const descId = useId();
+  const svgRef = useRef<SVGSVGElement>(null);
+  const figureRef = useRef<HTMLElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<number | null>(null);
+  const close = useCallback(() => setHover(null), []);
+  useEscapeToClose(hover !== null, close);
 
   const valid = results
     .map((r, i) => ({ r, i, name: vendorNames[i] }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
 
+  const factor = getCurrency(currency).factor;
+  const maxMonths = valid.length ? Math.max(...valid.map(({ r }) => r.schedule.length)) : 1;
+  const x = (m: number) => BPAD.left + (m / Math.max(maxMonths, 1)) * BPLOT_W;
+  const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
+
   if (valid.length === 0) {
     return <p className="lc-chartEmpty">Enter valid inputs above to see a payoff chart.</p>;
   }
 
-  const maxMonths = Math.max(...valid.map(({ r }) => r.schedule.length));
-  const initialBalances = valid.map(({ r }) => {
-    const row = r.schedule[0];
-    return row.balance + row.principal;
+  // Balance (in major units) and interest paid so far, for month m (0 = start).
+  const series = valid.map(({ r, i, name }) => {
+    const start = (r.schedule[0].balance + r.schedule[0].principal) / factor;
+    const balance = [start];
+    const interest = [0];
+    let paid = 0;
+    for (const row of r.schedule) {
+      balance.push(row.balance / factor);
+      paid += row.interest;
+      interest.push(paid / factor);
+    }
+    return { i, name, balance, interest, payoff: r.schedule.length, color: colors[i], dash: VENDOR_DASHES[i] ?? '' };
   });
-  const yMax = Math.max(...initialBalances);
+  const at = (s: (typeof series)[number], m: number) => ({
+    balance: m < s.balance.length ? s.balance[m] : 0,
+    interest: s.interest[Math.min(m, s.interest.length - 1)],
+  });
 
-  const xScale = (m: number) => padL + (m / Math.max(maxMonths, 1)) * (width - padL - padR);
-  const yScale = (v: number) => padT + (1 - v / Math.max(yMax, 1)) * (height - padT - padB);
+  const { top, step: yStep, count: yCount } = niceScale(Math.max(...series.map((s) => s.balance[0])));
+  const y = (v: number) => BPAD.top + (1 - v / top) * BPLOT_H;
+  const path = (vals: number[]) => vals.map((v, m) => `${m === 0 ? 'M' : 'L'}${x(m).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
 
-  const xTicks = niceTicks(0, maxMonths, 6);
-  const yTicks = niceTicks(0, yMax, 5);
+  const years = maxMonths / 12;
+  const yearStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
+  const xTicks: number[] = [];
+  for (let yr = 0; yr * 12 <= maxMonths; yr += yearStep) xTicks.push(yr);
+  const xMinor: number[] = [];
+  if (yearStep > 1) for (let yr = 1; yr * 12 < maxMonths; yr++) if (yr % yearStep !== 0) xMinor.push(yr);
+  const yTicks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
+  const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
 
   const ariaSummary =
     'Loan balance over time. ' +
-    valid
-      .map(
-        ({ r, name }) =>
-          `${name}: starts at ${formatMoney(
-            r.schedule[0].balance + r.schedule[0].principal,
-            currency,
-          )}, paid off in ${formatMonths(r.months)}.`,
-      )
-      .join(' ');
+    series.map((s) => `${s.name}: starts at ${formatAmount(s.balance[0], currency)}, paid off in ${formatMonths(s.payoff)}.`).join(' ');
+
+  function monthAt(clientX: number): number | null {
+    const svg = svgRef.current;
+    if (!svg) return null;
+    const rect = svg.getBoundingClientRect();
+    const vx = ((clientX - rect.left) / rect.width) * BW;
+    if (vx < BPAD.left - 12 || vx > BW - BPAD.right + 12) return null;
+    return Math.max(0, Math.min(maxMonths, Math.round(((vx - BPAD.left) / BPLOT_W) * maxMonths)));
+  }
+  // Arrow keys move a year at a time (a month with Shift); Home and End jump.
+  function onKey(e: React.KeyboardEvent) {
+    const stepM = e.shiftKey ? 1 : 12;
+    let next: number | null = null;
+    if (e.key === 'ArrowRight') next = hover === null ? 0 : Math.min(maxMonths, hover + stepM);
+    else if (e.key === 'ArrowLeft') next = hover === null ? maxMonths : Math.max(0, hover - stepM);
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = maxMonths;
+    else if (e.key === 'Escape') {
+      setHover(null);
+      return;
+    }
+    if (next !== null) {
+      e.preventDefault();
+      setHover(next);
+    }
+  }
+
+  const when = (m: number) => {
+    const yr = Math.floor(m / 12);
+    const mo = m % 12;
+    if (m === 0) return 'Start';
+    if (mo === 0) return `Year ${yr}`;
+    return yr === 0 ? `Month ${mo}` : `Year ${yr}, month ${mo}`;
+  };
+  const rows =
+    hover === null
+      ? []
+      : series.map((s) => {
+          const v = at(s, hover);
+          return {
+            label: s.name,
+            value: v.balance <= 0 ? `Paid off, ${formatAmount(v.interest, currency)} interest` : `${formatAmount(v.balance, currency)} left, ${formatAmount(v.interest, currency)} interest`,
+            swatch: 'dot' as const,
+            color: s.color,
+          };
+        });
+  const announce =
+    hover === null ? '' : `${when(hover)}. ` + rows.map((r) => `${r.label}: ${r.value}.`).join(' ');
 
   return (
-    <>
-    <svg
-      className="lc-chart"
-      viewBox={`0 0 ${width} ${height}`}
-      role="img"
-      aria-label={ariaSummary}
-      preserveAspectRatio="xMidYMid meet"
-      focusable="false"
-    >
-      <title>Loan balance over time</title>
-      <desc>{ariaSummary}</desc>
-      {yTicks.map((t) => (
-        <g key={`yt-${t}`}>
-          <line
-            x1={padL}
-            x2={width - padR}
-            y1={yScale(t)}
-            y2={yScale(t)}
-            className="lc-chartGrid"
-          />
-          <text
-            x={padL - 6}
-            y={yScale(t)}
-            className="lc-chartTickY"
-            textAnchor="end"
-            dominantBaseline="middle"
+    <figure className="lc-balanceFigure" ref={figureRef} onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(null); }}>
+      <figcaption className="lc-balanceLegend">
+        {series.map((s) => (
+          <span key={s.i} className="lc-legendItem">
+            <svg className="lc-legendLine" viewBox="0 0 28 10" aria-hidden="true">
+              <line x1="1" y1="5" x2="27" y2="5" stroke={s.color} strokeWidth="3" strokeDasharray={s.dash} strokeLinecap="round" />
+            </svg>
+            {s.name}
+            <span className="lc-legendNote">paid off in {formatMonths(s.payoff)}</span>
+          </span>
+        ))}
+      </figcaption>
+      <p className="chart-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>
+      <div className="lc-chartScroll">
+        <div
+          className="lc-chartBox"
+          tabIndex={0}
+          role="group"
+          aria-label="Balance chart. Use the left and right arrow keys to read each year, with Shift for single months."
+          onKeyDown={onKey}
+          onBlur={() => setHover(null)}
+        >
+          <svg
+            ref={svgRef}
+            className="lc-chart"
+            viewBox={`0 0 ${BW} ${BH}`}
+            role="img"
+            aria-labelledby={`${titleId} ${descId}`}
+            onPointerMove={(e) => setHover(monthAt(e.clientX))}
+            onPointerDown={(e) => setHover(monthAt(e.clientX))}
           >
-            {compactMoney(t, currency)}
-          </text>
-        </g>
-      ))}
-      {xTicks.map((t) => (
-        <g key={`xt-${t}`}>
-          <line
-            x1={xScale(t)}
-            x2={xScale(t)}
-            y1={height - padB}
-            y2={height - padB + 4}
-            className="lc-chartAxis"
-          />
-          <text
-            x={xScale(t)}
-            y={height - padB + 18}
-            className="lc-chartTickX"
-            textAnchor="middle"
-          >
-            {t}
-          </text>
-        </g>
-      ))}
-      <text
-        x={(padL + width - padR) / 2}
-        y={height - 4}
-        className="lc-chartAxisLabel"
-        textAnchor="middle"
-      >
-        Month
-      </text>
-      {results.map((r, i) => {
-        if (r.error || r.schedule.length === 0) return null;
-        const initial = r.schedule[0].balance + r.schedule[0].principal;
-        let d = `M ${xScale(0)} ${yScale(initial)}`;
-        r.schedule.forEach((row) => {
-          d += ` L ${xScale(row.month)} ${yScale(row.balance)}`;
-        });
-        return (
-          <path
-            key={`line-${i}`}
-            d={d}
-            fill="none"
-            stroke={colors[i]}
-            strokeWidth={2.25}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <title>{`${vendorNames[i]} balance over time`}</title>
-          </path>
-        );
-      })}
-    </svg>
-    <table className="lc-srOnly">
-      <caption>Loan balance over time, sampled by month</caption>
-      <thead>
-        <tr>
-          <th scope="col">Month</th>
-          {valid.map(({ name, i }) => (
-            <th key={i} scope="col">{name}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {sampleSchedule(valid.map(({ r }) => r.schedule), 12).map((row) => (
-          <tr key={row.month}>
-            <th scope="row">{row.month}</th>
-            {row.values.map((v, idx) => (
-              <td key={idx}>{v == null ? 'n/a' : formatMoney(v, currency)}</td>
+            <title id={titleId}>Loan balance over time</title>
+            <desc id={descId}>{ariaSummary}</desc>
+            <rect className="lc-plotBg" x={BPAD.left} y={BPAD.top} width={BPLOT_W} height={BPLOT_H} rx="6" />
+            {yMinor.map((t) => (
+              <line key={`ym${t}`} className="lc-gridMinor" x1={BPAD.left} x2={BW - BPAD.right} y1={y(t)} y2={y(t)} />
+            ))}
+            {xMinor.map((yr) => (
+              <line key={`xm${yr}`} className="lc-gridMinor" x1={x(yr * 12)} x2={x(yr * 12)} y1={BPAD.top} y2={BH - BPAD.bottom} />
+            ))}
+            {yTicks.map((t) => (
+              <g key={`y${t}`}>
+                <line className={t === 0 ? 'lc-axisLine' : 'lc-chartGrid'} x1={BPAD.left} x2={BW - BPAD.right} y1={y(t)} y2={y(t)} />
+                <text className="lc-chartTick" x={BPAD.left - 12} y={y(t) + 5} textAnchor="end">{formatAmount(t, currency, true)}</text>
+              </g>
+            ))}
+            {xTicks.map((yr) => (
+              <g key={`x${yr}`}>
+                {yr > 0 && <line className="lc-chartGrid" x1={x(yr * 12)} x2={x(yr * 12)} y1={BPAD.top} y2={BH - BPAD.bottom} />}
+                <text className="lc-chartTick" x={x(yr * 12)} y={BH - BPAD.bottom + 24} textAnchor="middle">{yr}</text>
+              </g>
+            ))}
+            <text className="lc-chartTick lc-chartAxisTitle" x={BPAD.left + BPLOT_W / 2} y={BH - 8} textAnchor="middle">Years</text>
+            {series.map((s) => (
+              <path
+                key={`line-${s.i}`}
+                d={path(s.balance)}
+                className="lc-balanceLine"
+                stroke={s.color}
+                strokeDasharray={s.dash}
+              />
+            ))}
+            {series.map((s) => (
+              <circle key={`end-${s.i}`} className="lc-payoffDot" cx={x(s.payoff)} cy={y(0)} r="5" style={{ fill: s.color }} />
+            ))}
+            {hover !== null && (
+              <g pointerEvents="none">
+                <line className="chart-crosshair" x1={x(hover)} x2={x(hover)} y1={BPAD.top} y2={BH - BPAD.bottom} />
+                {series.map((s) => (
+                  <circle key={`h-${s.i}`} className="chart-pointDot" cx={x(hover)} cy={y(at(s, hover).balance)} r="5.5" style={{ fill: s.color }} />
+                ))}
+              </g>
+            )}
+          </svg>
+          <span className="chart-srOnly" aria-live="polite">{announce}</span>
+        </div>
+      </div>
+      {hover !== null && <ChartReadout title={when(hover)} rows={rows} cardRef={cardRef} position={cardLeft} />}
+      <p className="lc-chartHint">Point at the chart, tap it, or use the arrow keys to read the balances in any year.</p>
+      <table className="lc-srOnly">
+        <caption>Loan balance over time, sampled by month</caption>
+        <thead>
+          <tr>
+            <th scope="col">Month</th>
+            {valid.map(({ name, i }) => (
+              <th key={i} scope="col">{name}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-    </>
+        </thead>
+        <tbody>
+          {sampleSchedule(valid.map(({ r }) => r.schedule), 12).map((row) => (
+            <tr key={row.month}>
+              <th scope="row">{row.month}</th>
+              {row.values.map((v, idx) => (
+                <td key={idx}>{v == null ? 'n/a' : formatMoney(v, currency)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </figure>
   );
 }
 
@@ -254,49 +340,6 @@ function sampleSchedule(
     month: m,
     values: schedules.map((s) => (m <= s.length ? s[m - 1].balance : null)),
   }));
-}
-
-function niceTicks(min: number, max: number, target: number): number[] {
-  if (max <= min) return [min];
-  const range = max - min;
-  const step = niceStep(range / target);
-  const ticks: number[] = [];
-  const start = Math.ceil(min / step) * step;
-  for (let v = start; v <= max + step / 2; v += step) {
-    ticks.push(Math.round(v));
-  }
-  return ticks;
-}
-
-function niceStep(raw: number): number {
-  if (raw <= 0) return 1;
-  const exp = Math.floor(Math.log10(raw));
-  const base = Math.pow(10, exp);
-  const f = raw / base;
-  let nf: number;
-  if (f < 1.5) nf = 1;
-  else if (f < 3) nf = 2;
-  else if (f < 7) nf = 5;
-  else nf = 10;
-  return nf * base;
-}
-
-/** Currency-aware compact label for chart axis. Uses Intl with notation: 'compact'. */
-function compactMoney(minor: number, currency: string): string {
-  // Pull factor + locale via the same code path as formatMoney for consistency.
-  // We build a one-off formatter inline so tick labels stay short ($250k, ₹2.5L).
-  const c = CURRENCIES.find((x) => x.code === currency) ?? CURRENCIES[0];
-  const value = minor / c.factor;
-  try {
-    return new Intl.NumberFormat(c.locale, {
-      style: 'currency',
-      currency: c.code,
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(value);
-  } catch {
-    return formatMoney(minor, currency);
-  }
 }
 
 // ---- Amortisation split (stacked bar) chart --------------------------------
@@ -329,6 +372,13 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
     );
   }
 
+  const factor = getCurrency(currency).factor;
+  // Whole units in the currency's own conventions, like the rest of the page;
+  // the short English form only when a full amount would not fit the bar.
+  const barLabel = (minor: number) => {
+    const full = formatAmount(minor / factor, currency);
+    return full.length <= 9 ? full : formatAmount(minor / factor, currency, true);
+  };
   const samples = pickSplitSamples(schedule.length, 6);
   const rows = samples.map((m) => schedule[m - 1]);
 
@@ -426,7 +476,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
                   fontWeight: 600,
                 }}
               >
-                {compactMoney(row.interest, currency)}
+                {barLabel(row.interest)}
               </text>
               {/* Principal value */}
               <text
@@ -439,7 +489,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
                   fontWeight: 600,
                 }}
               >
-                {compactMoney(row.principal, currency)}
+                {barLabel(row.principal)}
               </text>
               {/* X-axis label: "Year N" or "Month N" for very short loans */}
               <text
@@ -1816,17 +1866,9 @@ function ChartsPanel({
         <header className="lc-chartHeader">
           <h3 id="lc-balance-h" className="lc-sectionTitle">Balance over time</h3>
           <p className="lc-chartLead">
-            Each line is one vendor's outstanding balance, month by month.
+            Each line is one vendor's outstanding balance, month by month. The dot on the axis marks when it is paid off.
           </p>
         </header>
-        <div className="lc-legend">
-          {vendors.map((v, i) => (
-            <span key={i} className="lc-legendItem">
-              <span className="lc-legendSwatch" style={{ background: VENDOR_COLORS[i] }} />
-              {v.name || `Vendor ${VENDOR_LABELS[i]}`}
-            </span>
-          ))}
-        </div>
         <BalanceChart
           results={results}
           colors={VENDOR_COLORS}
