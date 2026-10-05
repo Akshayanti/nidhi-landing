@@ -28,7 +28,223 @@ export type HookLayout =
   | "question"     // bold question, two-line setup
   | "contradiction" // "X is wrong. Here's why." pattern
   | "scenario"     // "POV: ..." or short narrative setup
-  | "quote";       // short editorial quote, weighty serif
+  | "quote"        // short editorial quote, weighty serif
+  | "chart-gap"    // persistent financial projection story
+  | "bar-gap"      // persistent comparison bar story
+  | "month-gap"    // persistent calendar or runway story
+  | "columns-gap"  // persistent two-column sorting story
+  | "routes-gap"   // one asset routed through two household defaults
+  | "bands-gap";   // weighted bands, where visual weight carries priority
+
+export type ChartStage =
+  | "hook"
+  | "setup"
+  | "single"
+  | "input"
+  | "mid"
+  | "low"
+  | "gap"
+  | "range";
+
+export type MultiplierStage = "blank" | "example" | "steps";
+
+export type BarStage =
+  | "hook"
+  | "blank"
+  | "first"
+  | "repeat"
+  | "second"
+  | "third"
+  | "callout"
+  | "ratio"
+  | "principle"
+  | "close";
+
+export type BarTone = "muted" | "ink" | "amber" | "teal";
+
+export type ColumnStage =
+  | "hook"
+  | "left"
+  | "left-rule"
+  | "right"
+  | "right-rule"
+  | "buffers"
+  | "swap";
+
+export type RouteStage =
+  | "hook"
+  | "asset"
+  | "rule"
+  | "left"
+  | "risk"
+  | "spouse"
+  | "fallback"
+  | "fix"
+  | "workaround";
+
+export type BandStage =
+  | "hook"
+  | "all"
+  | "free"
+  | "modest"
+  | "hard"
+  | "emphasis"
+  | "zero"
+  | "close";
+
+export interface ToolCardRow {
+  label: string;
+  value: string;
+  valueSize?: "small";
+  tone?: BarTone;
+  total?: boolean;
+}
+
+export interface ToolCardData {
+  title: string;
+  rows: ToolCardRow[];
+  footnote?: string;
+}
+
+export interface ColumnGroup {
+  id: string;
+  title: string;
+  rule: string;
+  items: string[];
+  tone: BarTone;
+}
+
+export interface ColumnStory {
+  left: ColumnGroup;
+  right: ColumnGroup;
+  buffers?: string[];
+  swap?: {
+    item: string;
+    belongs: "left" | "right";
+    wrongLabel?: string;
+    correctLabel?: string;
+  };
+  disclosure: string;
+}
+
+export interface RouteDatum {
+  id: string;
+  label: string;
+  rule: string;
+  state: "default" | "empty";
+  fix?: string;
+  tone: BarTone;
+}
+
+export interface RouteStory {
+  mode?: "household" | "transfer";
+  asset: { label: string; value: number; display: string };
+  routes: RouteDatum[];
+  fallback: { label: string; note: string };
+  workaround?: { label: string; note: string };
+  disclosure: string;
+}
+
+export interface BandDatum {
+  id: string;
+  label: string;
+  cost: string;
+  items: string[];
+  tone: BarTone;
+}
+
+export interface BandStory {
+  bands: BandDatum[];
+  /** Defaults to the original hero band treatment. */
+  layout?: "weighted" | "equal";
+  emphasis: string;
+  disclosure: string;
+}
+
+export type MonthStage =
+  | "hook"
+  | "baseline"
+  | "lumps"
+  | "short"
+  | "average"
+  | "smoothed"
+  | "series"
+  | "highlight"
+  | "cash"
+  | "excluded"
+  | "cost"
+  | "drain"
+  | "budget"
+  | "alt"
+  | "rule";
+
+export interface MonthDatum {
+  month: string;
+  value: number;
+  tone?: BarTone;
+  lump?: { label: string; amount: number };
+}
+
+export interface MonthCardRow {
+  label: string;
+  value: string;
+  tone?: BarTone;
+}
+
+export interface MonthFormulaCard {
+  title: string;
+  rows: MonthCardRow[];
+  footnote?: string;
+}
+
+export type MonthStory =
+  | {
+      mode?: "calendar";
+      unit: string;
+      reference?: { value: number; label: string };
+      baseline?: number;
+      bars: MonthDatum[];
+      smoothed?: number;
+      card?: MonthFormulaCard;
+      disclosure: string;
+    }
+  | {
+      mode: "runway";
+      unit: string;
+      start: number;
+      cashLabel?: string;
+      monthlyCost: number;
+      budgetCost?: number;
+      altCost?: number;
+      slots?: number;
+      excluded?: { label: string; value: number };
+      card?: MonthFormulaCard;
+      disclosure: string;
+    };
+
+export interface BarDatum {
+  id: string;
+  label: string;
+  sublabel?: string;
+  value: number;
+  display: string;
+  tone: BarTone;
+  /** Optional additive parts for a bar that is built in stages. */
+  segments?: Array<{
+    label: string;
+    value: number;
+    display: string;
+    tone?: BarTone;
+  }>;
+  /** Optional event cadence used for a repetition build before the bar resolves. */
+  repeat?: { count: number; label: string };
+}
+
+export interface MultiplierRow {
+  label: string;
+  factor: number;
+  tone: "amber" | "ink" | "teal";
+}
 
 /** Beat layout primitives. Drives BeatScene rendering. */
 export type BeatKind =
@@ -106,6 +322,23 @@ export type BeatAnchor =
       path: string;
       /** Figcaption text, used as a small caption under the figure. */
       caption?: string;
+    }
+  | { type: "chart"; stage: ChartStage; chips?: string[] }
+  | { type: "bars"; stage: BarStage; segment?: number }
+  | { type: "months"; stage: MonthStage; months?: string[] }
+  | { type: "columns"; stage: ColumnStage }
+  | { type: "routes"; stage: RouteStage }
+  | { type: "bands"; stage: BandStage }
+  | ({ type: "card"; stage: "tool" } & ToolCardData)
+  | {
+      type: "multiplier";
+      stage: MultiplierStage;
+      rows?: MultiplierRow[];
+      monthly?: number;
+      amountLabel?: string;
+      results?: string[];
+      footnote?: string;
+      steps?: string[];
     };
 
 export interface HookVariant {
@@ -201,7 +434,7 @@ export interface PlatformCaption {
 export interface ReelPlan {
   slug: string;
   postTitle: string;
-  postLevel: "discovery" | "building";
+  postLevel: "discovery" | "building" | "optimizing" | "inclusive-finances";
   /** 1-indexed episode within the series (= blog post `order`). Stamped by orchestrator. */
   episode: number;
   /** Total posts in the series the chip should render against. Defaults: 16/16. */
@@ -237,6 +470,38 @@ export interface ReelPlan {
     currency?: string;
     notes?: string;
   };
+  /** Optional persistent projection visual. Plans without it use legacy scenes. */
+  chartStory?: {
+    start: number;
+    monthly: number;
+    years: number;
+    ratesPct: number[];
+    ceiling: number;
+    disclosure: string;
+  };
+  /** Optional persistent comparison visual. Supports two to four bars. */
+  barStory?: {
+    mode?: "standard" | "segmented" | "direct" | "sum";
+    /** Preserve the numerical ratio instead of enforcing the standard minimum bar width. */
+    proportional?: boolean;
+    setup?: { label: string; display: string; note?: string; tone?: BarTone };
+    unit: string;
+    basis: string;
+    bars: BarDatum[];
+    /** Preferred generic comparison label, for ratios, money gaps, or time gaps. */
+    callout?: { display: string; from: string; to: string; label?: string };
+    /** Backward compatible alias used by the first comparison plan. */
+    ratio?: { display: string; from: string; to: string; label?: string };
+    disclosure: string;
+  };
+  /** Optional persistent month visual for calendar bars or runway depletion. */
+  monthStory?: MonthStory;
+  /** Optional persistent two-column sorting visual. */
+  columnStory?: ColumnStory;
+  /** Optional persistent route visual for defaults and deliberate choices. */
+  routeStory?: RouteStory;
+  /** Optional persistent weighted-band visual for tiers or cost bands. */
+  bandStory?: BandStory;
   mood: Mood;
   /** 3 hook candidates. Index 0 is the LLM's preferred pick. */
   hookVariants: HookVariant[];
@@ -323,7 +588,7 @@ export const BRAND = {
   // Ink
   ink: "#002171",          // deep navy ink (titles, body)
   inkSoft: "#1E3A8A",      // softer navy for secondary text
-  inkMuted: "#6B7B9C",     // very soft navy/grey
+  inkMuted: "#5F6B82",     // accessible soft navy/grey on cream
   // Accents
   teal: "#00897B",         // editorial teal accent
   tealDeep: "#00695C",     // hover/active teal

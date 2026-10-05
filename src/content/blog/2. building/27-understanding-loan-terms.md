@@ -231,7 +231,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 
 *Illustrative.*
 
-If you'd rather not work the table by hand, the [loan comparison calculator](/free/loan-comparison/) runs the math for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
+If you'd rather not work the table by hand, the <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> runs the math for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
 
 The best offer is not always the one with the lowest rate. It's the one whose total cost, APR, and contractual terms align best with your actual plan.
 

@@ -1,0 +1,308 @@
+{
+  "slug": "life-events",
+  "postTitle": "Life Events and Your Finances: How to Plan Ahead",
+  "postLevel": "optimizing",
+  "episode": 3,
+  "seriesTotal": 0,
+  "blogPath": "blog/life-events",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The biggest cost of a child is the pay a parent gives up, not the receipts",
+  "topicChip": "LIFE EVENTS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Direct costs: about €763 a month (Destatis, Germany, 2018 survey; Save the Children Spain 2024: €758), so €763 × 12 × 18 = €164,808, shown as €165,000. Petra earns €60,000 gross; after the birth she earns €20,000 for 5 years: €40,000 × 5 = €200,000 gross given up. At 40% tax and social contributions on that top slice: €120,000 take home. On return her pay is 10% lower than it would have been: €6,000 a year for 20 years = €120,000 gross, €72,000 take home. Income shift: €120,000 + €72,000 = €192,000 take home. Pension contributions at 10% of gross pay given up: 10% × €320,000 = €32,000. Income shift with pensions: €224,000. Illustrative; varies by country and person."
+  },
+  "barStory": {
+    "mode": "segmented",
+    "unit": "EUR",
+    "basis": "Take home, in today's money",
+    "bars": [
+      {
+        "id": "receipts",
+        "label": "Direct costs to 18",
+        "sublabel": "about €760 a month",
+        "value": 165000,
+        "display": "€165,000",
+        "tone": "muted"
+      },
+      {
+        "id": "pay",
+        "label": "Pay Petra gives up",
+        "sublabel": "after tax",
+        "value": 192000,
+        "display": "€192,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Five years reduced pay",
+            "value": 120000,
+            "display": "€120,000",
+            "tone": "amber"
+          },
+          {
+            "label": "Lower pay on return",
+            "value": 72000,
+            "display": "€72,000",
+            "tone": "amber"
+          }
+        ]
+      },
+      {
+        "id": "pension",
+        "label": "With lost pension",
+        "sublabel": "contributions added",
+        "value": 224000,
+        "display": "€224,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Five years reduced pay",
+            "value": 120000,
+            "display": "€120,000",
+            "tone": "amber"
+          },
+          {
+            "label": "Lower pay on return",
+            "value": 72000,
+            "display": "€72,000",
+            "tone": "amber"
+          },
+          {
+            "label": "Lost pension",
+            "value": 32000,
+            "display": "€32,000",
+            "tone": "ink"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. 40% tax and social contributions on the pay given up. Varies by country."
+  },
+  "hookVariants": [
+    {
+      "id": "not-biggest",
+      "layout": "bar-gap",
+      "narration": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.",
+      "onscreenLines": [
+        "€165,000 of receipts",
+        "Not the biggest number",
+        "Same child"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "not"
+      ]
+    },
+    {
+      "id": "price-the-pay",
+      "layout": "bar-gap",
+      "narration": "Everyone prices the pram. Almost nobody prices the pay.",
+      "onscreenLines": [
+        "Everyone prices the pram",
+        "Nobody prices the pay",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "pay"
+      ]
+    },
+    {
+      "id": "invisible-line",
+      "layout": "bar-gap",
+      "narration": "The biggest cost of a child never shows up on a receipt.",
+      "onscreenLines": [
+        "The biggest cost",
+        "is not on a receipt",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "receipt"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "stat",
+      "narration": "Start with the receipts. Studies in Germany and Spain put a child at about seven hundred and sixty euros a month.",
+      "onscreenText": "The receipts",
+      "subtext": "€165,000 to age 18",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Now the pay. Petra earns sixty thousand a year. After the birth, she takes a role paying twenty thousand, for five years.",
+      "onscreenText": "Petra, €60,000 a year",
+      "subtext": "€20,000 for five years",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 0
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "That pay comes off the top of her income, where tax is highest. After forty percent, she loses a hundred and twenty thousand.",
+      "onscreenText": "€120,000 take home",
+      "subtext": "After 40% tax and contributions",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "Back at full time, she earns ten percent less than she would have. Over twenty years, another seventy two thousand.",
+      "onscreenText": "10% less, for 20 years",
+      "subtext": "Another €72,000",
+      "emphasis": [
+        "ten"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "A hundred and ninety two thousand. Already more than every receipt.",
+      "onscreenText": "€192,000",
+      "subtext": "More than the receipts",
+      "emphasis": [
+        "more"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "callout"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "stat",
+      "narration": "Add the pension contributions that came with that pay, and it is two hundred and twenty four thousand.",
+      "onscreenText": "€224,000",
+      "subtext": "With lost pension contributions",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "third",
+        "segment": 3
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "So before a big change, run the pay line too. Pay given up, times the years, times what you keep. Then add the pension.",
+      "onscreenText": "The pay line",
+      "subtext": "Pay given up × years × what you keep, plus pension",
+      "emphasis": [
+        "pay"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The pay line",
+        "rows": [
+          {
+            "label": "Pay given up × years",
+            "value": "€200,000",
+            "tone": "ink"
+          },
+          {
+            "label": "× 0.6 kept after 40% tax",
+            "value": "€120,000",
+            "tone": "ink"
+          },
+          {
+            "label": "+ lower pay on return, after tax",
+            "value": "€72,000",
+            "tone": "ink"
+          },
+          {
+            "label": "+ lost pension contributions",
+            "value": "€32,000",
+            "tone": "amber"
+          },
+          {
+            "label": "= the pay line",
+            "value": "€224,000",
+            "tone": "amber",
+            "total": true
+          }
+        ],
+        "footnote": "Illustrative. 40% tax and social contributions. Varies by country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before you plan the time off.",
+    "onscreenText": "Save the pay line",
+    "subtext": "Pay given up × years × what you keep",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.\n\nStudies in Germany and Spain put direct costs at about €760 a month, around €165,000 to age 18. Petra earns €60,000. After the birth she takes a €20,000 role for five years, then returns at 10% below where she would have been. After 40% tax on that pay, she gives up about €192,000 take home, and about €224,000 counting lost pension contributions.\n\nRun the pay line, not just the expense line: pay given up × years × what you keep after tax, plus the pension.\n\n→ Save this before you plan the time off\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and in today's money. Tax, parental benefits and pay penalties vary widely by country and person.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.\n\nThe pay a parent gives up is usually bigger. Illustrative figures, varies by country.",
+    "instagramKeywords": [
+      "cost of having a baby",
+      "parental leave",
+      "career break",
+      "going back to work",
+      "part time work",
+      "motherhood penalty",
+      "family budget",
+      "pension gap",
+      "household income",
+      "personal finance",
+      "money abroad",
+      "global expats",
+      "Elternzeit",
+      "Kinderkosten",
+      "coût d'un enfant",
+      "coste de un hijo"
+    ],
+    "tiktokTopics": [
+      "how much does a child really cost",
+      "the hidden cost of going part time after a baby",
+      "how parental leave affects your pension"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "momtok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "familyfinance",
+    "newparents",
+    "workingparents"
+  ]
+}

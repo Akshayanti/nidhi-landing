@@ -5,7 +5,7 @@ description: "Risk isn't about losing everything. It's about how much things can
 tldr: "Financial risk isn't danger. It's uncertainty. Volatility (short-term price swings) is different from permanent loss (the money is gone). Your risk tolerance is how much fluctuation you can stomach. Your risk capacity is how much you can afford to absorb based on your timeline and financial situation. Time transforms risk: over short periods, stocks can lose 30-40% of their value; over long periods, they've historically been the strongest wealth builder. The biggest risk most people overlook is doing nothing. Inflation erodes your purchasing power every year. Understanding risk lets you take the right amount: enough to grow, not so much that a downturn derails your plan."
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-06-03
+updatedDate: 2026-10-03
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -159,7 +159,7 @@ Here's the fundamental relationship: risk and return are linked. Higher potentia
 | Cash / savings | 0-2% | Near zero |
 | Government bonds | 2-4% | Low (5-10%) |
 | Corporate bonds | 3-5% | Moderate (5-15%) |
-| Diversified stocks | 5-7% (real*, developed markets) | High (15-25%) |
+| Diversified stocks | 4-6% (real*, developed markets) | High (15-25%) |
 | Individual stocks | Varies widely | Very high (30%+) |
 
 *Returns shown are historical averages, inflation-adjusted where marked "real" (purchasing-power change, not paper change). Past performance is not indicative of future results.*

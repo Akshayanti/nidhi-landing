@@ -5,7 +5,7 @@ description: "Saving and investing are both ways to grow your wealth, but they s
 tldr: "Saving means setting money aside in low-risk, accessible accounts; think emergency funds and short-term goals. Investing means putting money into assets that can grow over time but carry risk and are less liquid (stocks, bonds, and index funds) for goals five or more years away. The right sequence is: emergency fund first, high-interest debt second, then invest. Doing them in the wrong order creates unnecessary risk."
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-06-03
+updatedDate: 2026-10-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -79,7 +79,7 @@ Typical investment vehicles:
 The defining features of investing:
 
 - **Higher risk**: values fluctuate, sometimes sharply
-- **Higher return**: historically around 5-7% per year after inflation (broad stocks, across major developed markets)
+- **Higher return**: historically around 4-6% per year after inflation (broad stocks, across major developed markets)
 - **Lower liquidity**: selling takes days; some accounts lock money for years
 - **Long time horizon**: best for money you won't need for 5+ years
 
@@ -91,7 +91,7 @@ Investing is about making money grow over time, accepting that the path won't be
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |
-| **Return** | 0-3% | 5-7% historically after inflation (broad stocks) |
+| **Return** | 0-3% | 4-6% historically after inflation (broad stocks) |
 | **Liquidity** | Immediate | Days to months |
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |

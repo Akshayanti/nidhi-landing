@@ -129,5 +129,7 @@ When planning Series 3 / Mastery posts, add a new section here with one entry pe
 
 The actual hashtag line and keyword array go straight into the post file's `## Caption` section once the post is drafted; no need to stage them here.
 
-- **Series 3:** name TBD (was tentatively "Money in Action" before that name was given to the Building series).
-- **Series 4 — Mastery:** add entries here when blog posts land.
+- **Series 3, Money in Mind (Psychology, posts 33 to 42):** shipped; captions live in the post files.
+- **Series 4, Money, Compounding (Optimizing, posts 43 to 60):** name decided Sep 30, 2026. Chip text is `Money, Compounding` with no "N of 18" counter, because Inclusive Finances companion posts are interleaved through the level (see `blog-content-plan.md`, "Publishing order from post 43 onward"). Add entries here when posts land.
+- **Series 5, Mastery:** name TBD. Add entries here when blog posts land.
+- **Inclusive Finances (inc-1 to inc-16, interleaved through Optimizing and Mastery):** its own chip, `Money, For You and Me`, and its own profile Highlight, decided Oct 1, 2026; no "N of 16" counter. Situation and topic hashtags only, never identity tags (PLAYBOOK §3). Each post's audience angle must differ from its host post's, since they ship back to back.

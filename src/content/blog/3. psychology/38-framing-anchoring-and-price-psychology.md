@@ -5,7 +5,7 @@ description: "Saving 200 euros a month sounds modest; 72,000 euros over thirty y
 tldr: "Framing and anchoring are two ways your judgement gets hijacked from outside. Framing is how the same fact, worded differently, produces different decisions: a 1% annual fund fee sounds trivial, but framed as roughly a quarter of your lifetime returns it sounds alarming, and both are true. Anchoring is how the first number you see, a sticker price, a purchase price, last year's high, becomes the reference point you judge everything else against, regardless of whether it is relevant. The two combine in the sunk cost fallacy, where the price you already paid wrongly drives what you do next. The defence is cheap and powerful: deliberately reframe every decision into the unit that matters, usually the long-horizon total, and question every anchor by asking whether the number is actually relevant or just the first one you happened to see."
 order: 38
 pubDate: 2026-07-13
-updatedDate: 2026-07-13
+updatedDate: 2026-10-03
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -82,8 +82,8 @@ The purchase-price anchor is closely tied to the loss aversion from earlier in t
   <text class="fig-sublabel" x="220" y="146" text-anchor="start">"€200 a month" feels small</text>
   <rect x="90" y="185" width="240" height="40" rx="6" class="fig-fill-blue" />
   <text class="fig-sublabel" x="340" y="211" text-anchor="start">"€2,400 a year" feels real</text>
-  <rect x="90" y="250" width="430" height="40" rx="6" class="fig-fill-warn" />
-  <text class="fig-sublabel" x="530" y="276" text-anchor="start">"€72,000 over 30 years" feels huge</text>
+  <rect x="90" y="250" width="360" height="40" rx="6" class="fig-fill-warn" />
+  <text class="fig-sublabel" x="460" y="276" text-anchor="start">"€72,000 over 30 years" feels huge</text>
   <text class="fig-quote-small" x="360" y="326" text-anchor="middle">Illustrative, before any investment growth. Identical money, three feelings.</text>
 </svg>
 <figcaption>Nothing about the plan changes across the three bars. Only the unit does. Reframing into the unit that matters to you is one of the cheapest financial skills there is.</figcaption>

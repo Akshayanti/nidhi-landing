@@ -23,14 +23,30 @@
 
   var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
 
+  // Every capture feature is set explicitly here. A feature left unset falls
+  // back to the PostHog project settings, which apply to every visitor and
+  // ignore consent: in Oct 2026 that let web vitals and dead clicks fire for
+  // visitors who never accepted. Click data (autocapture, heatmaps, dead
+  // clicks) follows consent; web vitals and error capture stay off because
+  // the privacy policy does not cover them.
   posthog.init(posthogKey, {
     api_host: 'https://eu.i.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: hasFullConsent,
     enable_heatmaps: hasFullConsent,
+    capture_dead_clicks: hasFullConsent,
+    capture_performance: false,
+    capture_exceptions: false,
     persistence: 'localStorage',
     disable_session_recording: true,
+    // Consent given before the SDK finished loading could not be applied by
+    // the cookie prompt (the pre-load stub has no set_config), so apply it here.
+    loaded: function(ph) {
+      if (!hasFullConsent && localStorage.getItem('nidhi-cookie-consent') === 'accepted') {
+        ph.set_config({ autocapture: true, enable_heatmaps: true, capture_dead_clicks: true });
+      }
+    },
   })
 
   // Flag AI-sourced traffic for easy dashboard filtering.

@@ -53,10 +53,14 @@
 
     function closeConsent(choice) {
       localStorage.setItem('nidhi-cookie-consent', choice);
-      if (choice === 'accepted' && window.posthog) {
-        posthog.set_config({ autocapture: true, enable_heatmaps: true });
-      }
+      // Close first, so the prompt can never get stuck open.
       overlay.style.display = 'none';
+      // Before the SDK finishes loading (or when a blocker stops it), posthog
+      // is a stub without set_config; Analytics.astro's `loaded` callback then
+      // applies the stored consent once the SDK is ready.
+      if (choice === 'accepted' && window.posthog && typeof window.posthog.set_config === 'function') {
+        window.posthog.set_config({ autocapture: true, enable_heatmaps: true, capture_dead_clicks: true });
+      }
       document.removeEventListener('keydown', trapFocus);
       // Return focus to the element that was focused before the overlay opened
       if (previousFocus) { try { previousFocus.focus(); } catch (_) {} }

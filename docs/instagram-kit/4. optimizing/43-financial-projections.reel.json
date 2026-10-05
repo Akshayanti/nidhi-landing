@@ -1,0 +1,313 @@
+{
+  "mode": "riff",
+  "topic": "One growth assumption moves a 30 year projection by over a million euros",
+  "topicChip": "PROJECTIONS",
+  "assumptions": {
+    "currency": "EUR",
+    "horizonYears": 30,
+    "notes": "Eva: €50,000 invested plus €1,000 added monthly for 30 years. Ending balances at 4%, 6% and 8% real annual growth are €847k, €1.26M and €1.91M (monthly contributions, annual effective rate). The gap between 4% and 8% is €1.06M. Monthly multipliers of 700, 1,000 and 1,400 are the rounded 30 year future value of €1 a month at the same three rates and cover monthly contributions only. All figures illustrative."
+  },
+  "chartStory": {
+    "start": 50000,
+    "monthly": 1000,
+    "years": 30,
+    "ratesPct": [
+      4,
+      6,
+      8
+    ],
+    "ceiling": 2000000,
+    "disclosure": "Illustrative. Real growth means after inflation. Future returns are not guaranteed."
+  },
+  "mood": "curious",
+  "hookVariants": [
+    {
+      "id": "million-gap",
+      "layout": "chart-gap",
+      "narration": "One input moved Eva's answer by more than a million euros.",
+      "onscreenLines": [
+        "€1,060,000",
+        "from one changed input",
+        "Same savings. Same 30 years."
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "one"
+      ]
+    },
+    {
+      "id": "one-input-question",
+      "layout": "chart-gap",
+      "narration": "Same savings. Same thirty years. Over a million euros apart. What changed?",
+      "onscreenLines": [
+        "€1,060,000 apart",
+        "What changed?",
+        "Same savings. Same 30 years."
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "changed"
+      ]
+    },
+    {
+      "id": "calculator-number",
+      "layout": "chart-gap",
+      "narration": "Your calculator gave you one number. Here is how much it depends on one guess.",
+      "onscreenLines": [
+        "€1,060,000",
+        "rides on one guess",
+        "Same savings. Same 30 years."
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "one",
+        "guess"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Eva is thirty two. Fifty thousand euros invested, one thousand added every month, for thirty years.",
+      "onscreenText": "Eva's plan stays the same",
+      "emphasis": [
+        "same"
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "setup",
+        "chips": [
+          "€50,000 now",
+          "€1,000 monthly",
+          "30 years"
+        ]
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "At eight percent real growth, the calculator says one point nine one million.",
+      "onscreenText": "The calculator gave her one line",
+      "emphasis": [],
+      "anchor": {
+        "type": "chart",
+        "stage": "single"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "But eight percent is not an answer. It is an assumption she entered.",
+      "onscreenText": "This is an input, not an answer",
+      "emphasis": [
+        "input"
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "input"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "At six percent, the same plan ends around one point two six million.",
+      "onscreenText": "Same plan. One changed assumption.",
+      "emphasis": [],
+      "anchor": {
+        "type": "chart",
+        "stage": "mid"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "At four percent, it ends around eight hundred and forty seven thousand.",
+      "onscreenText": "And at 4%",
+      "emphasis": [],
+      "anchor": {
+        "type": "chart",
+        "stage": "low"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "stat",
+      "narration": "That is a gap of over a million euros. Eva did not change. One assumption did.",
+      "onscreenText": "€1.06M apart",
+      "subtext": "Nothing about Eva changed",
+      "emphasis": [
+        "million"
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "gap"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "A projection is better used as a range than as a promise. Future returns are not guaranteed.",
+      "onscreenText": "A projection is a range",
+      "subtext": "Test the low case. The high case is not owed.",
+      "emphasis": [
+        "range"
+      ],
+      "anchor": {
+        "type": "chart",
+        "stage": "range"
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "list",
+      "narration": "For a quick range, multiply what you invest each month by seven hundred, one thousand, and fourteen hundred.",
+      "onscreenText": "Your 30 year range",
+      "subtext": "Monthly investing",
+      "emphasis": [
+        "multiply"
+      ],
+      "anchor": {
+        "type": "multiplier",
+        "stage": "blank",
+        "rows": [
+          {
+            "label": "Low",
+            "factor": 700,
+            "tone": "amber"
+          },
+          {
+            "label": "Middle",
+            "factor": 1000,
+            "tone": "ink"
+          },
+          {
+            "label": "High",
+            "factor": 1400,
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Rounded estimate for monthly contributions. 30 years at 4%, 6% and 8% real growth."
+      }
+    },
+    {
+      "id": "b9",
+      "kind": "example",
+      "narration": "Three hundred a month gives roughly two hundred ten, three hundred, or four hundred twenty thousand.",
+      "onscreenText": "Your 30 year range",
+      "subtext": "Monthly investing",
+      "emphasis": [
+        "roughly"
+      ],
+      "anchor": {
+        "type": "multiplier",
+        "stage": "example",
+        "monthly": 300,
+        "results": [
+          "€210k",
+          "€300k",
+          "€420k"
+        ],
+        "rows": [
+          {
+            "label": "Low",
+            "factor": 700,
+            "tone": "amber"
+          },
+          {
+            "label": "Middle",
+            "factor": 1000,
+            "tone": "ink"
+          },
+          {
+            "label": "High",
+            "factor": 1400,
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Monthly contributions only. Money already invested grows separately: roughly 3, 6 or 10 times over 30 years."
+      }
+    },
+    {
+      "id": "b10",
+      "kind": "list",
+      "narration": "Use three rates. Stress test the low one. Update it every year.",
+      "onscreenText": "How to use it",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "multiplier",
+        "stage": "steps",
+        "steps": [
+          "Run a low, middle and high rate",
+          "Stress test the low result",
+          "Update with real numbers yearly"
+        ]
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for your next money review.",
+    "onscreenText": "Save the multiplier",
+    "subtext": "× 700 · × 1,000 · × 1,400",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "One input moved Eva's answer by more than a million euros.\n\nA projection looks precise, but one input does most of the work: the growth rate. Same €50,000, same €1,000 a month, same 30 years, and three growth assumptions end €1.06M apart.\n\nFor your own quick range, multiply what you invest each month by 700, 1,000 and 1,400. That covers monthly contributions only. Money already invested grows separately.\n\n→ Save this for your next money review\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative, rounded and in real terms. Future returns are not guaranteed.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "One input moved Eva's answer by more than a million euros.\n\nMultiply what you invest each month by 700, 1,000 and 1,400 for a quick 30 year range. Illustrative, not a forecast.",
+    "instagramKeywords": [
+      "financial projection",
+      "net worth projection",
+      "investment growth calculator",
+      "real returns",
+      "what if scenario",
+      "savings rate",
+      "30 year plan",
+      "long term investing",
+      "retirement planning",
+      "personal finance",
+      "expat finance",
+      "global expats",
+      "Vermögensaufbau",
+      "Zinseszins",
+      "intérêts composés",
+      "interés compuesto"
+    ],
+    "tiktokTopics": [
+      "how much will my savings be worth in 30 years",
+      "how to project your net worth",
+      "what growth rate to use for investing"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok",
+      "europemoney"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "financialplanning",
+    "compoundinterest",
+    "fireeurope"
+  ],
+  "slug": "financial-projections",
+  "postTitle": "Financial Projections: Your Next 10, 20, 30 Years",
+  "postLevel": "optimizing",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/financial-projections",
+  "availableFigures": []
+}

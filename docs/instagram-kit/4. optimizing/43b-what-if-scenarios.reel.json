@@ -1,0 +1,278 @@
+{
+  "mode": "riff",
+  "topic": "What moves a 30 year plan is what repeats, not what feels expensive",
+  "topicChip": "WHAT REPEATS",
+  "assumptions": {
+    "currency": "EUR",
+    "horizonYears": 30,
+    "investmentRatePct": 6,
+    "notes": "All figures are what the money would have become if invested instead at 6% real annual growth for 30 years. A one time €4,000 becomes €22,974 (4,000 x 1.06^30), shown as €23,000. €150 a month becomes €146,177 (monthly contributions, annual effective rate), shown as €146,000. The ratio is 6.4, shown as 6x. The quick test uses the same middle rate multipliers as the day 1 reel: a one time amount times 6 (exact 5.74) and a monthly amount times 1,000 (exact 974.5). €80 a month is €77,961, shown as about €80,000. All figures illustrative."
+  },
+  "barStory": {
+    "unit": "EUR",
+    "basis": "If invested instead at 6% real growth for 30 years",
+    "bars": [
+      {
+        "id": "holiday",
+        "label": "One €4,000 holiday",
+        "sublabel": "once",
+        "value": 23000,
+        "display": "€23,000",
+        "tone": "muted",
+        "repeat": {
+          "count": 1,
+          "label": "one event"
+        }
+      },
+      {
+        "id": "rent",
+        "label": "€150 more rent",
+        "sublabel": "every month",
+        "value": 146000,
+        "display": "€146,000",
+        "tone": "amber",
+        "repeat": {
+          "count": 360,
+          "label": "360 monthly payments"
+        }
+      }
+    ],
+    "ratio": {
+      "display": "6x",
+      "from": "holiday",
+      "to": "rent"
+    },
+    "disclosure": "Illustrative. 6% real growth over 30 years. Future returns are not guaranteed."
+  },
+  "mood": "curious",
+  "hookVariants": [
+    {
+      "id": "wrong-guilt",
+      "layout": "bar-gap",
+      "narration": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.",
+      "onscreenLines": [
+        "You feel guilty about this one",
+        "This one adds up to 6x more",
+        "Same 30 years"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    },
+    {
+      "id": "which-costs-more",
+      "layout": "bar-gap",
+      "narration": "A four thousand euro holiday, or a hundred and fifty euros more rent. Which one costs you more?",
+      "onscreenLines": [
+        "€4,000 once",
+        "or €150 a month",
+        "Which costs more?"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    },
+    {
+      "id": "loud-and-quiet",
+      "layout": "bar-gap",
+      "narration": "The purchase you feel worst about is rarely the one that costs you most.",
+      "onscreenLines": [
+        "The loud purchase",
+        "The quiet one",
+        "6x apart"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Eva took a four thousand euro holiday. Invested instead for thirty years, that would be about twenty three thousand.",
+      "onscreenText": "One holiday, once",
+      "subtext": "€4,000 becomes €23,000",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "The same year she moved to a nicer flat. A hundred and fifty euros more rent, every month.",
+      "onscreenText": "A nicer flat, every month",
+      "subtext": "€150 more rent",
+      "emphasis": [
+        "every"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "repeat"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "Invested instead, that is about a hundred and forty six thousand. Six times the holiday.",
+      "onscreenText": "Six times the holiday",
+      "subtext": "€146,000",
+      "emphasis": [
+        "six"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "Guilt follows how loud a purchase is. The arithmetic follows how often it repeats.",
+      "onscreenText": "What repeats moves the line",
+      "emphasis": [
+        "repeats"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "principle"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "A quick test. For a one time cost, multiply by six. For a monthly cost, multiply by a thousand.",
+      "onscreenText": "The repeat test",
+      "subtext": "What it becomes over 30 years",
+      "emphasis": [
+        "six",
+        "thousand"
+      ],
+      "anchor": {
+        "type": "multiplier",
+        "stage": "blank",
+        "rows": [
+          {
+            "label": "One time",
+            "factor": 6,
+            "tone": "ink"
+          },
+          {
+            "label": "Monthly",
+            "factor": 1000,
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Rounded. If invested instead at 6% real growth for 30 years."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "example",
+      "narration": "Eighty euros a month of subscriptions comes to about eighty thousand. Future returns are not guaranteed.",
+      "onscreenText": "The repeat test",
+      "subtext": "€80 a month of subscriptions",
+      "emphasis": [],
+      "anchor": {
+        "type": "multiplier",
+        "stage": "example",
+        "amountLabel": "€80 a month",
+        "results": [
+          "",
+          "€80k"
+        ],
+        "rows": [
+          {
+            "label": "One time",
+            "factor": 6,
+            "tone": "ink"
+          },
+          {
+            "label": "Monthly",
+            "factor": 1000,
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Rounded. If invested instead at 6% real growth for 30 years. Illustrative."
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "story",
+      "narration": "None of this says skip the holiday. It says look hardest at what repeats.",
+      "onscreenText": "Keep the holiday",
+      "subtext": "Look hardest at what repeats",
+      "emphasis": [
+        "repeats"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for the next time something repeats.",
+    "onscreenText": "Save the repeat test",
+    "subtext": "Once × 6 · Monthly × 1,000",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.\n\nA one time €4,000, invested instead for 30 years, would be about €23,000. €150 a month more rent would be about €146,000. Six times as much, and nobody feels guilty about rent.\n\nGuilt follows how loud a purchase is. The arithmetic follows how often it repeats.\n\nA quick test: multiply a one time cost by 6 and a monthly cost by 1,000.\n\n→ Save this for the next time something repeats\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative, rounded and assume 6% real growth over 30 years. Future returns are not guaranteed. This is not a reason to skip the holiday.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.\n\nOne time cost: times 6. Monthly cost: times 1,000. That is roughly what each becomes over 30 years. Illustrative, not a forecast.",
+    "instagramKeywords": [
+      "lifestyle creep",
+      "recurring expenses",
+      "subscription audit",
+      "opportunity cost",
+      "monthly budget",
+      "cost of rent",
+      "spending guilt",
+      "everyday spending",
+      "savings rate",
+      "30 year plan",
+      "personal finance",
+      "money abroad",
+      "global expats",
+      "Lebenshaltungskosten",
+      "Fixkosten",
+      "dépenses récurrentes",
+      "gastos fijos"
+    ],
+    "tiktokTopics": [
+      "why small monthly costs matter more than big purchases",
+      "how much does rent cost over 30 years",
+      "what is lifestyle inflation"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok",
+      "europemoney"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "lifestyleinflation",
+    "moneyhabits",
+    "expatfinance"
+  ],
+  "slug": "what-if-scenarios",
+  "postTitle": "What-If Scenarios: Test a Decision Before You Make It",
+  "postLevel": "optimizing",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/what-if-scenarios",
+  "availableFigures": [],
+  "reelPromise": "The five variables that move a projection most, and how to test a plan one change at a time"
+}

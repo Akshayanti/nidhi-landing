@@ -659,10 +659,41 @@ strong {
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
 .prose figure svg .fig-stroke-card { stroke: var(--color-border); fill: none; }
 
-/* Mobile: tighten figure padding so wide figures fit */
+/* Mobile: charts keep their desktop layout at a readable size and scroll
+   sideways. Each figure is the scroller; its chart gets a minimum width that
+   keeps the smallest label (11 to 12 units) at about 10px on screen, so
+   min-width is about 0.92 of the viewBox width plus padding. The swipe hint
+   and the caption stay pinned to the left edge while the chart scrolls. */
 @media (max-width: 640px) {
-  .prose figure svg { padding: var(--space-3) var(--space-1); }
+  .prose figure:has(> svg) {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .prose figure svg { padding: var(--space-3) var(--space-1); max-width: none; width: 100%; }
+  .prose figure svg[viewBox^="0 0 600 "] { min-width: 564px; }
+  .prose figure svg[viewBox^="0 0 720 "] { min-width: 676px; }
+  .prose figure svg[viewBox^="0 0 800 "] { min-width: 748px; }
+  .prose figure svg[viewBox^="0 0 880 "] { min-width: 822px; }
+  .prose figure:has(> svg)::before {
+    content: "Swipe to see the whole chart \2192";
+    position: sticky;
+    left: 0;
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: left;
+  }
   .prose figcaption { font-size: 0.8rem; }
+  .prose figure:has(> svg) figcaption {
+    position: sticky;
+    left: 0;
+    max-width: none;
+    margin-left: 0;
+    text-align: left;
+  }
 }
 
 /* Regulatory notice boxes */
@@ -4107,4 +4138,46 @@ body[data-page="landing"] .site-header {
    conversion tail. */
 body[data-page="landing"] .site-footer {
   margin-top: 0;
+}
+
+/* ── Phone legibility and tap-target floor (Oct 3, 2026) ──
+   Checked by scripts/audit-mobile.mjs at 375px. On phones:
+   - no visible text under 12px (small labels, badges, kickers);
+   - reading text (post summary, FAQ answers, About copy) at 16px, and
+     learning-path card descriptions at 15px;
+   - every link and button at least 24px tall (WCAG 2.2 target size,
+     minimum), by adding vertical padding so nothing moves visually.
+   Several of these classes are styled inside scoped component styles, which
+   outrank a plain global selector; !important keeps this block the single
+   place that sets the phone floor. */
+@media (max-width: 640px) {
+  .nav-dropdownCaret, .trust-strip-title, .changelog-tag, .ft-kicker,
+  .lc-fieldHint, .lc-resultHint, .lc-relatedKicker, .mcnw-shareBtn,
+  .mcnw-relatedKicker, .lp-levelNavLinkNum, .lp-levelNavLinkLabel,
+  .lp-levelNavLinkPrereq, .lp-levelNavLinkCount, .lp-tagFilterLabel,
+  .lp-tagFilterBtn, .lp-levelPrereq, .lp-levelCovered, .lp-levelCovered strong,
+  .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag, .lp-newLabel,
+  .level-badge, .ref-type, .post-nav-direction, .post-tool-eyebrow {
+    font-size: 0.75rem !important;
+  }
+  .prose code { font-size: 0.8125rem !important; }
+  .post-tldr, .post-tldr p, .post-faq-a, .post-faq-a p,
+  .about-intro, .about-body, .about-body p {
+    font-size: 1rem !important;
+  }
+  .lp-cardDesc { font-size: 0.9375rem !important; }
+
+  .nav-link, .footer-col a, .footer-social, .subscribe-rss,
+  .subscribe-dismiss-link, .lp-tagFilterBtn, .lp-cardTag, .lp-cardTitle,
+  .suggested-reading-list a, .lc-relatedAll, .lc-relatedAllSecondary,
+  .mcnw-relatedAll, .mcnw-relatedAllSecondary {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .post-tool-link, .if-breadcrumb a, .post-byline a, .tag-breadcrumb a,
+  .tag-allTopicsLink {
+    display: inline-block;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
 }
