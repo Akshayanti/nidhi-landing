@@ -5,7 +5,7 @@ description: "A euro today buys more than a euro in ten years. Purchasing power 
 tldr: "Purchasing power is what your money can actually buy. It declines over time as prices rise, a force called inflation. At 2-3% per year, your money loses roughly half its purchasing power over 25 years. Earning 2% in a savings account when prices rise 3% means you're losing ground. The only way to preserve purchasing power is to earn returns that outpace inflation."
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-06-03
+updatedDate: 2026-10-03
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -103,9 +103,9 @@ The number went up. The value went down. You gained over €1,600 in interest bu
     <circle cx="720" cy="338.5" r="5" class="fig-fill-warn"/>
     <text x="110" y="155" text-anchor="end" class="fig-sublabel">€10,000</text>
     <text x="730" y="92" class="fig-label" style="fill: var(--color-deep-blue);">€11,614</text>
-    <text x="730" y="106" class="fig-tick">nominal balance</text>
+    <text x="730" y="110" class="fig-tick">nominal balance</text>
     <text x="730" y="335" class="fig-label" style="fill: var(--color-warning);">€5,537</text>
-    <text x="730" y="349" class="fig-tick">what it buys</text>
+    <text x="730" y="353" class="fig-tick">what it buys</text>
     <text x="600" y="225" text-anchor="middle" class="fig-eyebrow">PURCHASING POWER LOST</text>
     <text x="440" y="465" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · 0.5% nominal interest, 2.5% inflation, compounded annually</text>
   </svg>
@@ -141,7 +141,7 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
 2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 5-7% after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That's how you preserve and grow your purchasing power
+3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That's how you preserve and grow your purchasing power
 4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

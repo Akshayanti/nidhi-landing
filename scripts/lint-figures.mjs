@@ -67,6 +67,32 @@ for (const file of walk(BLOG_DIR)) {
   }
 }
 
+// --- Check 1b: figure width must have a phone minimum width in global.css ---
+// On phones, charts scroll sideways at a readable size. src/styles/global.css
+// sets a min-width per viewBox width; a chart with any other width would
+// shrink to an unreadable size on phones. The allowed widths are read from
+// those CSS rules so the lint and the stylesheet cannot drift apart.
+const GLOBAL_CSS = join(ROOT, "src/styles/global.css");
+const PHONE_WIDTHS = new Set(
+  Array.from(
+    readFileSync(GLOBAL_CSS, "utf8").matchAll(/\.prose figure svg\[viewBox\^="0 0 (\d+) "\]\s*\{\s*min-width:/g),
+    (m) => m[1],
+  ),
+);
+const phoneWidthList = Array.from(PHONE_WIDTHS).join(", ");
+for (const file of walk(BLOG_DIR)) {
+  const text = readFileSync(file, "utf8");
+  for (const m of text.matchAll(/<figure\b[^>]*>\s*<svg\b[^>]*\bviewBox="0 0 (\d+(?:\.\d+)?) /g)) {
+    if (!PHONE_WIDTHS.has(m[1])) {
+      const line = text.slice(0, m.index).split("\n").length;
+      errors.push(
+        `${relative(ROOT, file)}:${line}: figure viewBox width ${m[1]} has no phone min-width. ` +
+          `Use one of ${phoneWidthList}, or add a matching rule to the phone block in src/styles/global.css.`,
+      );
+    }
+  }
+}
+
 // --- Check 2: figure CSS classes inside scoped style block of BlogPost.astro ---
 try {
   const layout = readFileSync(BLOGPOST_LAYOUT, "utf8");
