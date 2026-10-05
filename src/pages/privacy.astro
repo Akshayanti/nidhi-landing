@@ -113,6 +113,60 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 
 const changelog: ChangelogEntry[] = [
   {
+    date: 'Oct 5, 2026',
+    iso: '2026-10-05',
+    material: true,
+    summary: 'Fixed two kinds of analytics that could run without your consent, and a bug that could leave the cookie banner stuck open.',
+    details: [
+      'What went wrong: two PostHog features, page-speed measurements ("web vitals") and clicks on things that did not respond ("dead clicks"), were switched on in our PostHog project settings. Our site code did not switch them off for visitors who had not accepted the cookie banner, so they ran for those visitors too. In the 30 days before the fix that was 59 page-speed events and 8 dead-click events across 23 visits. They carried no name, email or user ID, but they went beyond the anonymous pageviews this policy promises without consent.',
+      'What changed: the site now sets every PostHog capture feature itself instead of leaving any to the project settings. Dead clicks are recorded only after you accept, together with heatmaps and autocaptured clicks. Page-speed measurements and browser error capture are off for everyone.',
+      'Cookie banner: if you clicked "Sure, that\'s fine" before the analytics script finished loading, or with an ad blocker that stops it, the banner could stay open. It now always closes, and your choice is applied as soon as the script loads, or never if it is blocked.',
+      'The "Only if you click Sure, that\'s fine" list above now names dead clicks explicitly and says page-speed measurements and browser errors are not recorded.',
+    ],
+  },
+  {
+    date: 'Oct 5, 2026',
+    iso: '2026-10-05',
+    material: false,
+    summary: 'Some blog posts now mention their paired free tool once inside the article, at the point where it helps, as well as in the "Free tool" card after the article.',
+    details: [
+      'The mention is a plain link to the tool page (for example /free/loan-comparison). No new data collection, forms, localStorage keys, or third-party calls.',
+      'The link carries a data-attr label (post-inline-tool-loan-comparison or post-inline-tool-multi-currency-net-worth), separate from the card\'s post-tool label, so consented interaction analytics can tell the two placements apart. Without consent, nothing is captured, as before.',
+    ],
+  },
+  {
+    date: 'Oct 3, 2026',
+    iso: '2026-10-03',
+    material: false,
+    summary: 'Tightened upcoming blog posts: removed passages that repeated earlier posts and merged the Monte Carlo post into the projections post.',
+    details: [
+      'Editorial changes only: repeated explanations replaced with a link to the earlier post, and one post folded into another. No new data collection, forms, localStorage keys, analytics events, or third-party calls.',
+      'A second pass removed passages that repeated within a post or between the Optimizing and Inclusive Finances posts, corrected one worked example, and redrew the starting point of one chart. Also editorial only, with no change to how personal data is handled.',
+      'Corrected the long-run stock return stated in published posts (Purchasing Power, Saving vs Investing, Understanding Risk, Investing 101) from 5 to 7% to about 4 to 6% a year after inflation, so the whole site uses one range backed by the cited historical data. Rebuilt one upcoming chart from a public historical dataset with a script anyone can rerun. Editorial only.',
+      'The "min read" shown on posts now counts only readable text, not the code behind charts, so posts with figures show a slightly shorter, more accurate time. One upcoming post was split in two to keep every post under 15 minutes. No change to how personal data is handled.',
+      'Made the site easier to use on phones: charts now keep a readable size and scroll sideways, summaries and FAQ answers use larger text, no text is smaller than 12px, and links and buttons are easier to tap. Layout only, with no change to how personal data is handled.',
+    ],
+  },
+  {
+    date: 'Oct 2, 2026',
+    iso: '2026-10-02',
+    material: false,
+    summary: 'Fact-checked and corrected figures, sources, and charts in upcoming blog posts before they are published.',
+    details: [
+      'Editorial changes only: corrected numbers, updated limits and regulator names, removed named commercial products, and redrew charts to scale. No new data collection, forms, localStorage keys, analytics events, or third-party calls.',
+    ],
+  },
+  {
+    date: 'Oct 1, 2026',
+    iso: '2026-10-01',
+    material: false,
+    summary: 'Blog posts that pair with one of our free tools now show a "Free tool" card after the article.',
+    details: [
+      'The card is a plain link to the tool page (for example /free/loan-comparison). No new data collection, forms, localStorage keys, or third-party calls. The tools themselves work as before.',
+      'The link carries a data-attr label (for example post-tool-loan-comparison) so consented interaction analytics can tell it apart from other links. Without consent, nothing is captured, as before.',
+    ],
+  },
+  {
     date: 'Oct 1, 2026',
     iso: '2026-10-01',
     material: false,
@@ -363,7 +417,9 @@ const privacyBreadcrumbSchema = {
       <ul>
         <li>
           Click heatmaps and autocaptured events: basically, which elements on a page
-          get clicked. We use this to spot broken links and layouts that confuse people.
+          get clicked, including clicks on things that don&rsquo;t respond (&ldquo;dead
+          clicks&rdquo;). We use this to spot broken links and layouts that confuse people.
+          We don&rsquo;t record page-speed measurements or browser errors at all.
         </li>
       </ul>
 
