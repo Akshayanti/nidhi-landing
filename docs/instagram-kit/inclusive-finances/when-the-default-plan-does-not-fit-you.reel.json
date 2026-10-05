@@ -1,0 +1,258 @@
+{
+  "slug": "when-the-default-plan-does-not-fit-you",
+  "postTitle": "When the Default Plan Doesn't Fit You",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/when-the-default-plan-does-not-fit-you",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Same pension, two partners: in many schemes a spouse is the default and an unmarried partner has to be named",
+  "topicChip": "DEFAULTS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "One illustrative workplace pension of €80,000. Two employees with the same pension, each with a partner of fifteen years; one couple married, one not. Many schemes pay a survivor benefit or lump sum to a legal spouse by default; failing a spouse, many pay the estate, which follows inheritance rules. Rules vary by scheme and country. No other figures."
+  },
+  "routeStory": {
+    "asset": {
+      "label": "Workplace pension",
+      "value": 80000,
+      "display": "€80,000"
+    },
+    "routes": [
+      {
+        "id": "spouse",
+        "label": "Married partner",
+        "rule": "Spouse by default",
+        "state": "default",
+        "tone": "teal"
+      },
+      {
+        "id": "partner",
+        "label": "Unmarried partner",
+        "rule": "Partner by name",
+        "state": "empty",
+        "fix": "Named on the beneficiary form",
+        "tone": "amber"
+      }
+    ],
+    "fallback": {
+      "label": "The estate",
+      "note": "follows inheritance rules"
+    },
+    "disclosure": "Illustrative. Rules vary by scheme and country."
+  },
+  "hookVariants": [
+    {
+      "id": "default-vs-named",
+      "layout": "routes-gap",
+      "narration": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.",
+      "onscreenLines": [
+        "Same €80,000 pension",
+        "In many schemes:",
+        "Spouse by default",
+        "Unmarried partner by name"
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "named"
+      ]
+    },
+    {
+      "id": "one-form",
+      "layout": "routes-gap",
+      "narration": "Fifteen years together can count for nothing on one pension form.",
+      "onscreenLines": [
+        "15 years together",
+        "One empty form",
+        ""
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "form"
+      ]
+    },
+    {
+      "id": "who-it-pays",
+      "layout": "routes-gap",
+      "narration": "Do you know who your pension pays if you die? Most people have never read that rule.",
+      "onscreenLines": [
+        "Who does your pension pay?",
+        "Read the rule",
+        ""
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "rule"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Two people. Same job, same eighty thousand euro pension, both with a partner of fifteen years. One couple is married. One is not.",
+      "onscreenText": "Same job, same pension",
+      "subtext": "One couple married, one not",
+      "emphasis": [],
+      "anchor": {
+        "type": "routes",
+        "stage": "asset"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "Read the scheme rules, not the brochure. Many say: if a member dies, pay the spouse.",
+      "onscreenText": "Read the rules",
+      "subtext": "Many say: pay the spouse",
+      "emphasis": [
+        "rules"
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "For the married employee, that default does roughly the right thing.",
+      "onscreenText": "The default fits",
+      "subtext": "Spouse by default",
+      "emphasis": [],
+      "anchor": {
+        "type": "routes",
+        "stage": "spouse"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "For the unmarried one, it fails. Many schemes then pay the estate, and inheritance rules may leave the partner out entirely.",
+      "onscreenText": "The default fails",
+      "subtext": "Often the estate instead",
+      "emphasis": [
+        "fails"
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "fallback"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "The fix is often one free form. A beneficiary designation, naming the partner.",
+      "onscreenText": "One free form",
+      "subtext": "Name the partner",
+      "emphasis": [
+        "free"
+      ],
+      "anchor": {
+        "type": "routes",
+        "stage": "fix"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "example",
+      "narration": "Where a scheme will not accept it, the workaround is a will, plus life cover the partner owns.",
+      "onscreenText": "If the scheme refuses",
+      "subtext": "A will, plus life cover they own",
+      "emphasis": [],
+      "anchor": {
+        "type": "routes",
+        "stage": "workaround"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "So for every account that pays out, ask three questions. Who does it pay by default? Who is named today? And will the scheme accept my choice?",
+      "onscreenText": "Three questions",
+      "subtext": "For every account that pays out",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Three questions",
+        "rows": [
+          {
+            "label": "Who does it pay by default?",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "Who is named today?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Will it accept my choice?",
+            "value": "3",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules vary by scheme and country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this, and check one form this week.",
+    "onscreenText": "Save the three questions",
+    "subtext": "For every account that pays out",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nTwo employees, same job, same pension, both with a partner of fifteen years. One couple is married, one is not. Many schemes pay a spouse by default and, failing that, the estate, which follows inheritance rules that may leave an unmarried partner out. The fix is often one free form naming the partner. Where a scheme will not accept it, the workaround is a will plus life cover the partner owns.\n\nFor every account that pays out, ask: who does it pay by default, who is named today, and will the scheme accept my choice?\n\n→ Save this, and check one form this week\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules vary by scheme and country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nCheck who your pension pays. Rules vary by scheme and country.",
+    "instagramKeywords": [
+      "pension beneficiary",
+      "beneficiary form",
+      "unmarried couples",
+      "cohabiting couples",
+      "survivor pension",
+      "expression of wish",
+      "what happens to my pension when i die",
+      "inheritance rules",
+      "estate planning basics",
+      "personal finance",
+      "global expats",
+      "Begünstigte",
+      "Hinterbliebenenrente",
+      "pension de réversion",
+      "pensión de viudedad"
+    ],
+    "tiktokTopics": [
+      "who gets my pension if i die",
+      "unmarried partner pension rights",
+      "how to name a pension beneficiary"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "pensionplanning",
+    "estateplanning",
+    "couplesandmoney"
+  ]
+}

@@ -485,6 +485,7 @@ export default function MultiCurrencyNetWorth() {
             accept=".csv"
             className="mcnw-srOnly"
             aria-label="Upload CSV file"
+            tabIndex={-1}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) handleCsvFile(file);

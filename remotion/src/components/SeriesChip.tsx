@@ -1,7 +1,7 @@
-import { BRAND, TYPE } from "../data";
+import { BRAND, TYPE, type ReelPlan } from "../data";
 
 interface Props {
-  level: "discovery" | "building";
+  level: ReelPlan["postLevel"];
   /** 1-indexed episode number within the series. */
   episode: number;
   /** Total episodes in the series. */
@@ -17,6 +17,8 @@ interface Props {
 const DEFAULT_LABEL: Record<Props["level"], string> = {
   discovery: "BASICS SERIES",
   building: "BUILDING SERIES",
+  optimizing: "MONEY, COMPOUNDING",
+  "inclusive-finances": "MONEY, FOR YOU AND ME",
 };
 
 /**
@@ -49,6 +51,7 @@ export function SeriesChip({
 
   return (
     <div
+      data-reel-chrome="series chip"
       style={{
         position: "absolute",
         top: 80,
@@ -81,7 +84,7 @@ export function SeriesChip({
         >
           {seriesText}
         </span>
-        <span
+        {total > 0 && <span
           style={{
             fontFamily: TYPE.ui,
             fontSize: 22,
@@ -92,7 +95,7 @@ export function SeriesChip({
           }}
         >
           · {String(episode).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
+        </span>}
       </div>
 
       {/* Bottom line: TOPIC ANCHOR */}

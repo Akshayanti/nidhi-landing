@@ -27,7 +27,7 @@
  */
 
 import { join } from "node:path";
-import { mkdir, writeFile, readFile, unlink } from "node:fs/promises";
+import { mkdir, writeFile, readFile, unlink, rename } from "node:fs/promises";
 import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { loadPosts } from "./lib/parse-blog-meta.mjs";
@@ -129,6 +129,8 @@ function parseArgs(argv) {
     hookcut: false, // clean cut only by default; opt-in via --hookcut
     fromPlan: false, // if true, load the saved plan from disk and skip LLM
     thumbnail: true, // render cover PNG by default; opt-out via --no-thumbnail
+    keepIntermediates: false, // keep Remotion input JSON + TTS audio for design iteration
+    angle: null, // second reel for the same post, e.g. "day2" loads and writes <NN-slug>-day2.*
   };
   const rest = [];
   for (let i = 0; i < argv.length; i++) {
@@ -145,13 +147,19 @@ function parseArgs(argv) {
     else if (a === "--no-hookcut") { opts.hookcut = false; } // legacy alias, default already off
     else if (a === "--no-thumbnail") { opts.thumbnail = false; }
     else if (a === "--from-plan") { opts.fromPlan = true; }
+    else if (a === "--keep-intermediates") { opts.keepIntermediates = true; }
+    else if (a === "--angle") { opts.angle = argv[++i]; }
     else if (a === "--help" || a === "-h") { printHelp(); process.exit(0); }
     else if (a.startsWith("--")) { console.error(`Unknown flag: ${a}`); process.exit(2); }
     else { rest.push(a); }
   }
   if (rest.length > 0) opts.slug = rest[0];
-  if (!["discovery", "building", "all"].includes(opts.level)) {
-    console.error(`--level must be one of: discovery, building, all (got "${opts.level}")`);
+  if (!["discovery", "building", "optimizing", "inclusive-finances", "all"].includes(opts.level)) {
+    console.error(`--level must be one of: discovery, building, optimizing, inclusive-finances, all (got "${opts.level}")`);
+    process.exit(2);
+  }
+  if (opts.angle !== null && (!opts.fromPlan || !opts.angle || !/^[a-z0-9]+$/.test(opts.angle))) {
+    console.error(`--angle needs --from-plan and a short lowercase name (got "${opts.angle}")`);
     process.exit(2);
   }
   if (!["faithful", "riff", "auto"].includes(opts.mode)) {
@@ -179,6 +187,8 @@ Flags:
   --plan-only                      Stop after generating + scrubbing the plan
   --hookcut                        Also render a 15-20s hook-cut byproduct (default: off)
   --no-thumbnail                   Skip the 1080×1920 cover PNG (default: render)
+  --angle <name>                   Render a second reel for the same post from <NN-slug>-<name>.json (needs --from-plan)
+  --keep-intermediates             Keep the Remotion input JSON and TTS audio after rendering (for design iteration)
   --from-plan                      Load the saved plan JSON from output/plans/<level>/<slug>.json and skip the LLM call. Useful for re-rendering after a layout/component change without paying for fresh generation.
   -h, --help                       Show this help
 `);
@@ -219,15 +229,18 @@ function pickHookcutBeats(plan, beatSpans) {
 
 async function renderOne({ post, opts, variantIdx }) {
   const slug = post.meta.slug;
-  const level = post.meta.level === "discovery" ? "discovery" : "building";
+  const level = ["discovery", "optimizing", "inclusive-finances"].includes(post.meta.level) ? post.meta.level : "building";
   const variantSuffix = variantIdx === 0 ? "" : `-v${variantIdx + 1}`;
   // Filename convention mirrors the blog source: NN-slug, where NN is the
   // zero-padded `order` from frontmatter (matches src/content/blog/.../NN-slug.md).
   // This keeps videos / plans / captions sorting in the same order as the
   // posts when listed in a directory.
   const order = Number.isFinite(post.meta.order) ? Number(post.meta.order) : null;
-  const filePrefix = order !== null ? `${String(order).padStart(2, "0")}-` : "";
-  const fileBase = `${filePrefix}${slug}${variantSuffix}`;
+  // Inclusive Finances posts sit between curriculum posts (order 45.5 etc.),
+  // and their planning ids never appear in file names, so they use the bare slug.
+  const filePrefix = order !== null && level !== "inclusive-finances" ? `${String(order).padStart(2, "0")}-` : "";
+  const angleSuffix = opts.angle ? `-${opts.angle}` : "";
+  const fileBase = `${filePrefix}${slug}${angleSuffix}${variantSuffix}`;
   const renderSlug = fileBase; // used by Remotion intermediates and TTS audio cache
   const dirs = dirsForLevel(level);
 
@@ -254,7 +267,7 @@ async function renderOne({ post, opts, variantIdx }) {
     // useHookVariant = variantIdx. This lets `--from-plan --variant N` and
     // `--from-plan --variants-all` render distinct hook variants from one plan
     // without requiring per-variant plan files on disk.
-    const basePlanName = `${filePrefix}${slug}`;
+    const basePlanName = `${filePrefix}${slug}${angleSuffix}`;
     const savedPath = join(dirs.plans, `${basePlanName}.json`);
     console.log(`│  [1/6] Loading saved plan from ${savedPath.replace(import.meta.dirname + "/..", ".")}...`);
     if (!existsSync(savedPath)) {
@@ -312,7 +325,8 @@ async function renderOne({ post, opts, variantIdx }) {
   // gives a concrete reason to click through (free tool or one-line teaser)
   // instead of a generic blog URL.
   if (post.meta.relatedTool) plan.relatedTool = post.meta.relatedTool;
-  if (post.meta.reelPromise) plan.reelPromise = post.meta.reelPromise;
+  // A second-angle plan can carry its own blog teaser; keep it over the post-wide one.
+  if (post.meta.reelPromise && !plan.reelPromise) plan.reelPromise = post.meta.reelPromise;
 
   if (opts.planOnly) {
     console.log(`│  --plan-only: stopping after plan write.`);
@@ -349,7 +363,7 @@ async function renderOne({ post, opts, variantIdx }) {
     captionsDir: dirs.captions,
     fileBase,
     relatedTool: post.meta.relatedTool,
-    reelPromise: post.meta.reelPromise,
+    reelPromise: plan.reelPromise,
   });
   console.log(`│        captions: ${igPath.replace(import.meta.dirname + "/..", ".")}`);
 
@@ -376,6 +390,7 @@ async function renderOne({ post, opts, variantIdx }) {
     `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${fullInputPath}" "${fullOutPath}"`,
     { stdio: "inherit" },
   );
+  await normalizeLoudness(fullOutPath);
 
   // Render the cover thumbnail (1080×1920 PNG) from the same plan. This is
   // a fast still render (~5-8s) using Remotion's `renderStill` against the
@@ -396,7 +411,13 @@ async function renderOne({ post, opts, variantIdx }) {
 
   let hookcutOutPath = null;
   let hookcutInputPath = null;
-  if (opts.hookcut) {
+  // Persistent-story plans (chartStory, barStory, ...) only render on the full
+  // cut; the hookcut path would fall back to per-beat scenes without the chart.
+  const isStoryPlan = ["chartStory", "barStory", "monthStory", "columnStory", "routeStory", "bandStory"].some((k) => plan[k]);
+  if (opts.hookcut && isStoryPlan) {
+    console.warn("│  ! --hookcut is not supported for persistent-story plans: skipping the hook cut");
+  }
+  if (opts.hookcut && !isStoryPlan) {
     const hookcutBeatIds = pickHookcutBeats(plan, beatSpans);
     const hookcutInput = { ...fullInput, cut: "hookcut", hookcutBeatIds };
     hookcutInputPath = join(REMOTION_OUTPUTS, `${renderSlug}-hookcut-input.json`);
@@ -407,20 +428,62 @@ async function renderOne({ post, opts, variantIdx }) {
       `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${hookcutInputPath}" "${hookcutOutPath}"`,
       { stdio: "inherit" },
     );
+    await normalizeLoudness(hookcutOutPath);
   }
 
   // Clean up intermediates: the per-render input JSONs and the TTS mp3+vtt.
   // Plans + captions stay (audit trail). Final mp4s stay.
-  await safeUnlink(fullInputPath);
-  if (hookcutInputPath) await safeUnlink(hookcutInputPath);
-  await safeUnlink(join(REMOTION_PUBLIC_AUDIO, `${renderSlug}.mp3`));
-  await safeUnlink(join(REMOTION_PUBLIC_AUDIO, `${renderSlug}.vtt`));
+  if (!opts.keepIntermediates) {
+    await safeUnlink(fullInputPath);
+    if (hookcutInputPath) await safeUnlink(hookcutInputPath);
+    await safeUnlink(join(REMOTION_PUBLIC_AUDIO, `${renderSlug}.mp3`));
+    await safeUnlink(join(REMOTION_PUBLIC_AUDIO, `${renderSlug}.vtt`));
+  }
 
   console.log(`└─ ✓ ${fullOutPath.replace(import.meta.dirname + "/..", ".")}${thumbnailOutPath ? `\n   ✓ ${thumbnailOutPath.replace(import.meta.dirname + "/..", ".")}` : ""}${hookcutOutPath ? `\n   ✓ ${hookcutOutPath.replace(import.meta.dirname + "/..", ".")}` : ""}\n`);
   return {
     plan,
     paths: { full: fullOutPath, thumbnail: thumbnailOutPath, hookcut: hookcutOutPath, plan: planPath },
   };
+}
+
+/**
+ * Two-pass EBU R128 loudness normalisation of a rendered reel's audio to
+ * -14 LUFS integrated, -1.5 dBTP, the usual level for short-form video. The
+ * raw TTS mix lands around -21 LUFS, noticeably quieter than the feed around
+ * it. The video stream is copied untouched. Skipped with a warning when
+ * ffmpeg is not on PATH.
+ */
+async function normalizeLoudness(videoPath) {
+  try {
+    execSync("ffmpeg -version", { stdio: "ignore" });
+  } catch {
+    console.warn("│  ! ffmpeg not found: skipping loudness normalisation");
+    return;
+  }
+  const target = "I=-14:TP=-1.5:LRA=11";
+  const tmpPath = videoPath.replace(/\.mp4$/, ".loudnorm.mp4");
+  // A failed normalisation must not fail a reel that already rendered: keep
+  // the un-normalised mp4, warn, and drop any half-written temp file.
+  try {
+    const pass1 = execSync(
+      `ffmpeg -hide_banner -nostats -i "${videoPath}" -af loudnorm=${target}:print_format=json -vn -f null - 2>&1`,
+    ).toString();
+    const m = JSON.parse(pass1.slice(pass1.lastIndexOf("{"), pass1.lastIndexOf("}") + 1));
+    if (![m.input_i, m.input_tp, m.input_lra, m.input_thresh, m.target_offset].every((v) => Number.isFinite(Number(v)))) {
+      throw new Error(`unusable loudness measurement (input_i=${m.input_i})`);
+    }
+    execSync(
+      `ffmpeg -hide_banner -loglevel error -y -i "${videoPath}" -c:v copy ` +
+        `-af loudnorm=${target}:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true ` +
+        `-ar 48000 -c:a aac -b:a 192k -movflags +faststart "${tmpPath}"`,
+    );
+    await rename(tmpPath, videoPath);
+    console.log(`│  audio normalised to -14 LUFS (was ${m.input_i} LUFS)`);
+  } catch (err) {
+    await safeUnlink(tmpPath);
+    console.warn(`│  ! loudness normalisation failed, keeping the original audio: ${err.message.split("\n")[0]}`);
+  }
 }
 
 /** Best-effort unlink that swallows ENOENT. */
@@ -437,7 +500,7 @@ async function main() {
 
   const opts = parseArgs(process.argv.slice(2));
 
-  if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
+  if (!opts.fromPlan && !process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     console.error(
       "✗ Anthropic credentials missing. Set one of:\n" +
       "    ANTHROPIC_API_KEY=sk-ant-...                              (public api.anthropic.com)\n" +

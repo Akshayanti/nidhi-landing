@@ -1,6 +1,12 @@
 import type { CSSProperties } from "react";
 import { BrandBackground } from "./components/BrandBackground";
 import { SeriesChip } from "./components/SeriesChip";
+import { FinancialProjectionCover } from "./components/FinancialProjectionStory";
+import { BarComparisonCover } from "./components/BarComparisonStory";
+import { MonthStoryCover } from "./components/MonthStory";
+import { ColumnStoryCover } from "./components/ColumnStory";
+import { RouteStoryCover } from "./components/RouteStory";
+import { BandStoryCover } from "./components/BandStory";
 import { BRAND, TYPE, type ReelPlan } from "./data";
 
 interface Props {
@@ -37,6 +43,54 @@ export function Thumbnail({ plan, hookVariantIdx }: Props) {
     ? hookVariantIdx
     : plan.useHookVariant ?? 0;
   const hook = plan.hookVariants[idx] ?? plan.hookVariants[0];
+
+  if (plan.chartStory && hook?.anchor?.type === "chart") {
+    return (
+      <BrandBackground variant="paper">
+        <FinancialProjectionCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.barStory && hook?.anchor?.type === "bars") {
+    return (
+      <BrandBackground variant="paper">
+        <BarComparisonCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.monthStory && hook?.anchor?.type === "months") {
+    return (
+      <BrandBackground variant="paper">
+        <MonthStoryCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.columnStory && hook?.anchor?.type === "columns") {
+    return (
+      <BrandBackground variant="paper">
+        <ColumnStoryCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.routeStory && hook?.anchor?.type === "routes") {
+    return (
+      <BrandBackground variant="paper">
+        <RouteStoryCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.bandStory && hook?.anchor?.type === "bands") {
+    return (
+      <BrandBackground variant="paper">
+        <BandStoryCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
 
   // Stat kicker only when the hook has a stat anchor. Other anchor types
   // (compare / list / figure) don't translate to a small kicker; for those

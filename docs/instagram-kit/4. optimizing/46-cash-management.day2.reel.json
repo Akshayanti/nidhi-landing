@@ -1,0 +1,239 @@
+{
+  "slug": "cash-management",
+  "postTitle": "Cash Management: Where to Hold Your Cash",
+  "postLevel": "optimizing",
+  "episode": 4,
+  "seriesTotal": 0,
+  "blogPath": "blog/cash-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Chasing a little extra yield on your emergency fund can cost far more than it earns",
+  "topicChip": "CHASING YIELD",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Eva's safety buffer €12,500 (five months of €2,500 costs, from the day 1 example). Illustrative yields: money market fund 3.8%, short bond fund 4.0% (same pair as the blog post). Extra yield 0.2% × €12,500 = €25 a year. A fund holding bonds of about two years has a duration of about 2, so a 1 point rate rise moves its price by about 2%: 2% × €12,500 = €250. €250 ÷ €25 = 10 years of the extra yield, ignoring compounding. The price usually recovers over time as the fund rolls into higher yielding bonds; the risk is needing the money during the dip. Illustrative, not a forecast."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "Safety buffer",
+      "display": "€12,500",
+      "note": "Five months of costs",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "On a €12,500 emergency fund, illustrative",
+    "bars": [
+      {
+        "id": "extra",
+        "label": "Extra yield",
+        "sublabel": "0.2%, each year",
+        "value": 25,
+        "display": "€25",
+        "tone": "teal"
+      },
+      {
+        "id": "drop",
+        "label": "Price drop",
+        "sublabel": "after a 1 point rate rise",
+        "value": 250,
+        "display": "€250",
+        "tone": "amber"
+      }
+    ],
+    "ratio": {
+      "display": "10 years",
+      "from": "extra",
+      "to": "drop"
+    },
+    "disclosure": "Illustrative yields and rate move. Bond fund prices can rise or fall."
+  },
+  "hookVariants": [
+    {
+      "id": "costs-two",
+      "layout": "bar-gap",
+      "narration": "Chasing point two percent more on your emergency fund can cost you two percent.",
+      "onscreenLines": [
+        "Chasing 0.2% more",
+        "can cost you 2%",
+        "Same emergency fund"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "two"
+      ]
+    },
+    {
+      "id": "sounds-free",
+      "layout": "bar-gap",
+      "narration": "A little more yield on your emergency fund sounds free. It is not.",
+      "onscreenLines": [
+        "A little more yield",
+        "sounds free",
+        "It is not"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "not"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Eva has a twelve and a half thousand euro safety buffer in a money market fund, paying three point eight percent.",
+      "onscreenText": "Eva, €12,500 buffer",
+      "subtext": "Money market fund, 3.8%",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "A short bond fund pays four. The extra is twenty five euros a year.",
+      "onscreenText": "Short bond fund, 4.0%",
+      "subtext": "€25 more a year",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "But if rates rise by one point, a fund holding bonds of about two years can fall about two percent. Two hundred and fifty euros.",
+      "onscreenText": "Rates up 1 point",
+      "subtext": "Price down about 2%, €250",
+      "emphasis": [
+        "two"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "That can be ten years of the extra yield, lost in one bad month.",
+      "onscreenText": "10 years of extra",
+      "subtext": "Lost in one bad month",
+      "emphasis": [
+        "ten"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "It can recover, if you can wait. An emergency does not wait.",
+      "onscreenText": "It can recover",
+      "subtext": "An emergency does not wait",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "principle"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "So use the one year rule. Money you might need within a year stays where the price does not swing. Money for two to five years can take small swings.",
+      "onscreenText": "The one year rule",
+      "subtext": "Within a year: no price swings",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The one year rule",
+        "rows": [
+          {
+            "label": "Need it within a year",
+            "value": "No swings",
+            "tone": "amber"
+          },
+          {
+            "label": "Need it in 2 to 5 years",
+            "value": "Small swings",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Not a recommendation of any product."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "For money you might need this year, steady beats clever.",
+      "onscreenText": "Steady beats clever",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before you move your emergency fund.",
+    "onscreenText": "Save the one year rule",
+    "subtext": "Within a year: no price swings",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nEva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%, so the extra is €25 a year. If rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield. The price can recover if you can wait. An emergency does not wait.\n\nThe one year rule: money you might need within a year stays where the price does not swing. Money for 2 to 5 years can take small swings.\n\n→ Save this before you move your emergency fund\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative yields and rate move. Bond fund prices can rise or fall. Not a recommendation of any product.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nTen years of extra yield, gone in one bad month. Illustrative figures.",
+    "instagramKeywords": [
+      "emergency fund",
+      "interest rates",
+      "rate rise",
+      "fixed income",
+      "short term bonds",
+      "bond prices",
+      "yield",
+      "money market fund",
+      "safe savings",
+      "low risk savings",
+      "personal finance",
+      "global expats",
+      "Zinsen",
+      "Anleihen",
+      "taux d'intérêt",
+      "tipos de interés"
+    ],
+    "tiktokTopics": [
+      "should I keep my emergency fund in a bond fund",
+      "why bond funds fall when interest rates rise",
+      "safest place for an emergency fund"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "bondfunds",
+    "ratehikes",
+    "riskandreturn"
+  ]
+}

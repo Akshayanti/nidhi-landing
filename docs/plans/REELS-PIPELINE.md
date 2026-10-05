@@ -604,6 +604,18 @@ Aria (the v1 default) is intentionally NOT used. It reads as a presentation
 narrator and was the single biggest cause of the "presentation with
 voiceover" feel.
 
+**Loudness (added Oct 1, 2026).** Every rendered mp4 (full and hookcut) gets a
+two-pass ffmpeg `loudnorm` to -14 LUFS integrated and -1.5 dBTP, the usual
+level for short-form video. The raw TTS mix measured about -21 LUFS, roughly
+7 dB quieter than the feed around it. Only the audio is re-encoded; the video
+stream is copied. Needs `ffmpeg` on PATH and is skipped with a warning without it.
+
+**Instagram captions (changed Oct 1, 2026).** The IG caption never prints a URL
+(PLAYBOOK §6): the read-more and free-tool lines end in "Link in bio." TikTok
+captions keep the full address. A second-angle reel can set its own blog
+teaser with a top-level `reelPromise` in its plan JSON; otherwise the post's
+frontmatter `reelPromise` is used.
+
 ---
 
 ## Music (optional, default off)

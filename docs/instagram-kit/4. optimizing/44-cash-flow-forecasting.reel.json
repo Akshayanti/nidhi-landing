@@ -1,0 +1,299 @@
+{
+  "slug": "cash-flow-forecasting",
+  "postTitle": "Cash Flow Forecasting: Will You Have Enough?",
+  "postLevel": "optimizing",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/cash-flow-forecasting",
+  "availableFigures": [],
+  "mode": "riff",
+  "topicChip": "CASH FLOW",
+  "mood": "curious",
+  "topic": "A monthly average hides the months that come up short",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Net pay €5,000 a month. Regular costs €4,000 a month. Once a year costs: car insurance €1,800 (Jan), tax top up €1,300 (Mar), summer holiday €1,200 (Jun), back to school €1,100 (Sep), holidays €1,500 (Dec). Lumps total €6,900. Year total €54,900, average €4,575 a month. Real saving €5,100 a year, €425 a month. Months above pay: Jan (€800 short), Mar (€300), Jun (€200), Sep (€100), Dec (€500). Twelfth rule: €6,900 ÷ 12 = €575 a month, so every month costs €4,575, under €5,000. Illustrative."
+  },
+  "monthStory": {
+    "unit": "EUR",
+    "reference": {
+      "value": 5000,
+      "label": "Pay €5,000"
+    },
+    "baseline": 4000,
+    "bars": [
+      {
+        "month": "Jan",
+        "value": 5800,
+        "lump": {
+          "label": "Car insurance",
+          "amount": 1800
+        }
+      },
+      {
+        "month": "Feb",
+        "value": 4000
+      },
+      {
+        "month": "Mar",
+        "value": 5300,
+        "lump": {
+          "label": "Tax top up",
+          "amount": 1300
+        }
+      },
+      {
+        "month": "Apr",
+        "value": 4000
+      },
+      {
+        "month": "May",
+        "value": 4000
+      },
+      {
+        "month": "Jun",
+        "value": 5200,
+        "lump": {
+          "label": "Summer holiday",
+          "amount": 1200
+        }
+      },
+      {
+        "month": "Jul",
+        "value": 4000
+      },
+      {
+        "month": "Aug",
+        "value": 4000
+      },
+      {
+        "month": "Sep",
+        "value": 5100,
+        "lump": {
+          "label": "Back to school",
+          "amount": 1100
+        }
+      },
+      {
+        "month": "Oct",
+        "value": 4000
+      },
+      {
+        "month": "Nov",
+        "value": 4000
+      },
+      {
+        "month": "Dec",
+        "value": 5500,
+        "lump": {
+          "label": "Holidays",
+          "amount": 1500
+        }
+      }
+    ],
+    "smoothed": 4575,
+    "disclosure": "Illustrative. Net pay, rounded."
+  },
+  "hookVariants": [
+    {
+      "id": "thousand-on-paper",
+      "layout": "month-gap",
+      "narration": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.",
+      "onscreenLines": [
+        "Saving €1,000 a month?",
+        "Five of these months say no",
+        "Same pay every month"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "five"
+      ]
+    },
+    {
+      "id": "which-month",
+      "layout": "month-gap",
+      "narration": "Your budget works on average. The trouble is, you do not live on average. You live in January.",
+      "onscreenLines": [
+        "Your budget works on average",
+        "You live in January",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "january"
+      ]
+    },
+    {
+      "id": "calendar-failure",
+      "layout": "month-gap",
+      "narration": "Most cash problems are not budgeting problems. They are calendar problems.",
+      "onscreenLines": [
+        "Not a budgeting problem",
+        "A calendar problem",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "calendar"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Jiri gets five thousand a month after tax. His regular costs are four thousand.",
+      "onscreenText": "€5,000 in, €4,000 out",
+      "subtext": "Every month, on paper",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "baseline"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "But some costs come once a year. Car insurance in January. A tax top up in March.",
+      "onscreenText": "The once a year costs",
+      "subtext": "January and March",
+      "emphasis": [
+        "once"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "lumps",
+        "months": [
+          "Jan",
+          "Mar"
+        ]
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "A summer holiday in June. Back to school in September. The holidays in December.",
+      "onscreenText": "The once a year costs",
+      "subtext": "June, September, December",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "lumps",
+        "months": [
+          "Jun",
+          "Sep",
+          "Dec"
+        ]
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "In five months, his costs are higher than his pay. January alone is eight hundred euros short.",
+      "onscreenText": "Five short months",
+      "subtext": "January: €800 short",
+      "emphasis": [
+        "five"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "short"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "stat",
+      "narration": "Over the whole year, he saves about four hundred and twenty five a month. Not a thousand.",
+      "onscreenText": "€425, not €1,000",
+      "subtext": "His real monthly saving",
+      "emphasis": [
+        "not"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "average"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "definition",
+      "narration": "The fix is the twelfth rule. Add up the once a year costs, divide by twelve, and set that aside every month.",
+      "onscreenText": "The twelfth rule",
+      "subtext": "Once a year costs ÷ 12, every month",
+      "emphasis": [
+        "twelfth"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "rule"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "example",
+      "narration": "For Jiri, that is five hundred and seventy five a month. Now every month costs the same, and none of them is short.",
+      "onscreenText": "€575 a month",
+      "subtext": "No short months",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "smoothed"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before your next once a year bill.",
+    "onscreenText": "Save the twelfth rule",
+    "subtext": "Once a year costs ÷ 12",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nHis pay is €5,000 and his regular costs are €4,000. But car insurance, a tax top up, a summer holiday, back to school and the holidays all land in single months. In five of them, he spends more than he earns. Over the year he really saves about €425 a month, not €1,000.\n\nThe fix is the twelfth rule: add up your once a year costs, divide by 12, and move that amount to a separate pot every month. For Jiri, €575.\n\n→ Save this before your next once a year bill\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nAdd up your once a year costs, divide by 12, set that aside every month. Illustrative figures.",
+    "instagramKeywords": [
+      "cash flow forecast",
+      "monthly budget",
+      "annual expenses",
+      "saving for annual bills",
+      "irregular expenses",
+      "budget planner",
+      "savings rate",
+      "car insurance",
+      "tax bill",
+      "personal finance",
+      "money abroad",
+      "global expats",
+      "Fixkosten",
+      "Jahresausgaben",
+      "gastos anuales",
+      "dépenses annuelles"
+    ],
+    "tiktokTopics": [
+      "why your budget runs short some months",
+      "how to plan for once a year expenses",
+      "what is a sinking fund"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "budgettok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "cashflow",
+    "sinkingfund",
+    "expatfinance"
+  ]
+}

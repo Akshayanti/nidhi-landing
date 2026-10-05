@@ -6,20 +6,66 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import type { ComponentType } from "react";
 import { BrandBackground } from "./components/BrandBackground";
 import { KineticHook } from "./components/KineticHook";
 import { BeatScene } from "./components/BeatScene";
 import { CTAScene } from "./components/CTAScene";
 import { SubtitleCaption } from "./components/SubtitleCaption";
 import { SeriesChip } from "./components/SeriesChip";
+import { ReelLayoutGuard } from "./components/ReelLayoutGuard";
+import {
+  FinancialProjectionCTA,
+  FinancialProjectionStory,
+} from "./components/FinancialProjectionStory";
+import {
+  BarComparisonCTA,
+  BarComparisonStory,
+} from "./components/BarComparisonStory";
+import {
+  MonthStory,
+  MonthStoryCTA,
+} from "./components/MonthStory";
+import {
+  ColumnStory,
+  ColumnStoryCTA,
+} from "./components/ColumnStory";
+import {
+  RouteStoryCTA,
+  RouteStoryView,
+} from "./components/RouteStory";
+import {
+  BandStoryCTA,
+  BandStoryView,
+} from "./components/BandStory";
 import { Thumbnail, makeDefaultThumbnailPlan } from "./Thumbnail";
 import {
   FPS, WIDTH, HEIGHT, MUSIC_DUCK_GAIN, MUSIC_FULL_GAIN,
-  type ReelInput, type Beat,
+  type ReelInput, type ReelPlan, type Beat,
 } from "./data";
 
 interface Props {
   input: ReelInput;
+}
+
+type StoryView = ComponentType<{ input: ReelInput }>;
+
+/**
+ * Persistent-story plans, in priority order. A plan carrying one of these keys
+ * renders as one continuous visual on the composition timeline (story panel,
+ * then a dark CTA panel) instead of the legacy per-beat scenes.
+ */
+const PERSISTENT_STORIES: Array<{ key: keyof ReelPlan; Story: StoryView; CTA: StoryView }> = [
+  { key: "chartStory", Story: FinancialProjectionStory, CTA: FinancialProjectionCTA },
+  { key: "barStory", Story: BarComparisonStory, CTA: BarComparisonCTA },
+  { key: "monthStory", Story: MonthStory, CTA: MonthStoryCTA },
+  { key: "columnStory", Story: ColumnStory, CTA: ColumnStoryCTA },
+  { key: "routeStory", Story: RouteStoryView, CTA: RouteStoryCTA },
+  { key: "bandStory", Story: BandStoryView, CTA: BandStoryCTA },
+];
+
+function findPersistentStory(plan: ReelPlan) {
+  return PERSISTENT_STORIES.find(({ key }) => Boolean(plan[key]));
 }
 
 /**
@@ -27,6 +73,11 @@ interface Props {
  */
 function msToFrames(ms: number, fps: number) {
   return Math.round((ms / 1000) * fps);
+}
+
+/** First video frame whose timestamp is at or after the given audio time. */
+function msToFrameAtOrAfter(ms: number, fps: number) {
+  return Math.ceil((ms / 1000) * fps);
 }
 
 /**
@@ -160,6 +211,7 @@ function RootCaptionLayer({ input }: { input: ReelInput }) {
   if (input.cut !== "full") return null;
 
   const currentTimeMs = (frame / fps) * 1000;
+  const isPersistentStory = Boolean(findPersistentStory(input.plan));
 
   // Subtitle variant follows the canvas of the currently-playing panel:
   // dark on the hook (and CTA, but CTA suppresses the pill anyway), paper
@@ -170,7 +222,7 @@ function RootCaptionLayer({ input }: { input: ReelInput }) {
   let emphasis: string[] = [];
 
   if (currentTimeMs < input.hookSpan.endMs) {
-    variant = "dark";
+    variant = isPersistentStory ? "paper" : "dark";
     emphasis = input.plan.hookVariants[input.plan.useHookVariant].emphasis ?? [];
   } else if (currentTimeMs >= input.ctaSpan.startMs) {
     // Hide caption on the CTA frame: the CTA scene already shows everything
@@ -200,7 +252,10 @@ function RootCaptionLayer({ input }: { input: ReelInput }) {
       currentTimeMs={currentTimeMs}
       variant={variant}
       emphasis={emphasis}
-      bottom={220}
+      bottom={isPersistentStory ? 168 : 220}
+      maxWords={isPersistentStory ? 5 : 8}
+      maxDurationMs={isPersistentStory ? 2600 : 3500}
+      compact={isPersistentStory}
     />
   );
 }
@@ -211,6 +266,54 @@ export function ReelComposition({ input }: Props) {
 
   const hook = input.plan.hookVariants[input.plan.useHookVariant];
   const cta = input.plan.cta;
+
+  // Persistent-story plans are one continuous visual argument, so the story
+  // lives on the composition timeline rather than remounting for every beat.
+  // Plans without a story continue through the legacy per-beat renderer.
+  const story = input.cut === "full" ? findPersistentStory(input.plan) : undefined;
+  if (story) {
+    const { Story, CTA } = story;
+    const ctaFrom = Math.max(0, msToFrames(input.ctaSpan.startMs, fps) - Math.round(fps * 0.1));
+    const chipFrom = msToFrameAtOrAfter(input.hookSpan.endMs, fps);
+    return (
+      <>
+        <Sequence from={0} durationInFrames={ctaFrom}>
+          <BrandBackground variant="paper">
+            <Story input={input} />
+            <Sequence from={chipFrom} durationInFrames={Math.max(1, ctaFrom - chipFrom)}>
+              <SeriesChip
+                level={input.plan.postLevel}
+                episode={input.plan.episode}
+                total={input.plan.seriesTotal}
+                topicChip={input.plan.topicChip}
+              />
+            </Sequence>
+          </BrandBackground>
+        </Sequence>
+
+        {/* No explicit duration: hold the CTA through any renderer-added tail. */}
+        <Sequence from={ctaFrom}>
+          <BrandBackground variant="dark">
+            <CTA input={input} />
+            <SeriesChip
+              level={input.plan.postLevel}
+              episode={input.plan.episode}
+              total={input.plan.seriesTotal}
+              topicChip={input.plan.topicChip}
+              dark
+            />
+          </BrandBackground>
+        </Sequence>
+
+        {input.audioFile && <Audio src={staticFile(input.audioFile)} />}
+        {input.musicFile && (
+          <Audio src={staticFile(input.musicFile)} volume={MUSIC_DUCK_GAIN} loop />
+        )}
+        <RootCaptionLayer input={input} />
+        <ReelLayoutGuard />
+      </>
+    );
+  }
 
   // Tonal rhythm per panel: hook + CTA on the dark navy canvas, body beats
   // on the cream paper canvas. This was the original editorial cadence
@@ -327,6 +430,7 @@ export function ReelComposition({ input }: Props) {
         next chunk arrives. No per-word animation.
       */}
       <RootCaptionLayer input={input} />
+      <ReelLayoutGuard />
     </>
   );
 }

@@ -23,6 +23,69 @@ This is the working reference. Update as decisions change.
 
 ## 2. Posting Schedule
 
+### 2.1 Two-angle structure (Optimizing onwards, Series 4 "Money, Compounding")
+
+This is the current structure. It governs every blog post from post 43 onward, including the Inclusive Finances companion posts interleaved through Optimizing and Mastery. The slot tables further down this section describe Series 1 to 3 and stay as the record of how those shipped. Decision #42.
+
+**Each blog post gets two days, and each day carries one angle.** An angle is a single idea from the post with its own hook and its own number or picture. Each day tells its angle twice:
+
+| | Job | Format |
+|---|---|---|
+| Reel | Reach: non-followers | 9:16, one persistent data-driven visual, voiced (see `REELS-PIPELINE.md`) |
+| Carousel | Saves: the reference version | 4:5, up to 8 slides, rendered from the post's kit (§10) |
+
+Day 2 is a second, distinct angle, not a continuation of day 1. A follower who saw day 1 should meet a new topic on day 2. Post 43 is the reference: day 1 is "one growth assumption moves a 30 year projection by €1.06M", day 2 is "what moves the line is what repeats" (a €4,000 holiday against €150 a month more rent).
+
+**Weekly rhythm.** Three blog posts a week, two days each, Monday to Saturday. Sundays carry only the fortnightly Beliefs post (below).
+
+| | Mon | Tue | Wed | Thu | Fri | Sat |
+|---|---|---|---|---|---|---|
+| Blog post | A | | B | | C | |
+| Feed | A day 1 | A day 2 | B day 1 | B day 2 | C day 1 | C day 2 |
+
+That is two feed posts a day and twelve a week. The blog post publishes on its day 1.
+
+**Daily slots.** Reel first, carousel second, using the two existing slots: the reel at `08:00 CET` and the carousel at `14:30 CET`. The reel goes first because it reaches people who haven't seen the topic; the carousel then gives anyone who arrived through the reel something to save. Two feed posts on one day may split early engagement on a small account; check this after the first two weeks (§14).
+
+**What every angle must carry:**
+- **A tool you keep.** One named rule of thumb, checklist or test the reader can use on their own numbers, always on its own `tool` slide and as the reel's screenshot moment. Post 43: the 30 year multiplier (day 1), the repeat test (day 2).
+- **A recurring cast.** Followers should meet the same few people across posts. Where the blog post's worked example already names someone (Petra, Jiri and Marcus appear in the blog), use them; otherwise use Eva, the "Eva-type" primary reader from `blog-content-plan.md`, as post 43 does. Do not invent a new character per post, and check names don't collide with another post's character.
+- **Shown working.** Every chart is computed from stated inputs and labelled illustrative, with its assumptions on the frame. Ranges over single numbers. No "you should".
+- **A maker's mark, not a plug.** nidhi is described as being built, never as available, and the line points to the free tools, which are live (decided Oct 1, 2026). Captions end on "Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio." The carousel closer carries "Made by the person building nidhi, a planner that shows its assumptions. Free tools at nidhi.today." The reel end card carries "nidhi, a planner in the making · free tools live today". No ask is attached to any of them.
+- **One ask.** The carousel closer carries a single `save:` ask and no share, send or follow rows. Day 1 closer: one `read:` line naming something the blog holds (§9). Day 2 closer, the last Instagram piece for the post: an "Also in the full post" list of 2 or 3 one-line `more:` items naming ideas from the post that neither day showed, so followers see the blog has real depth without the reels carrying it. Never repeat day 1's line or anything either day taught. Lint enforces the split (decided Oct 2, 2026).
+
+**The two-angle test.** Before a post enters the run, both angles must be:
+1. **Distinct:** day 2 is not the solution to day 1's problem or a continuation of it.
+2. **Carryable:** each angle has its own hook and either a number or a picture a reel can be built around.
+3. **Not a repeat:** the angle has not been used by a nearby post in the run. Known clusters where only one post may use the obvious angle: "a range, not a single number" (43, which now includes the merged 55), "real versus nominal" (43, 54), "sequence of returns" (55, 60), "the five documents" (inc-6, inc-7, inc-1).
+
+The audit of the whole Optimizing run against this test lives in `docs/plans/instagram-two-angle-audit.md`.
+
+**Exceptions:**
+- **A post with one idea** cannot fill two days. Either the draft grows a second angle, or it runs as a one-day post (reel and carousel on the same day, and the next post starts a day early). inc-1, "When the Default Plan Doesn't Fit You", was the one known case until its draft grew a second angle on Oct 1, 2026; no post in the current run needs this exception. (Inclusive Finances posts use `inc-N` ids; map in `blog-content-plan.md`.)
+- **Sub-articles** (posts that extend a parent post, such as inc-7a and inc-7b under the unmarried couples post) publish on the blog in the days after their parent and get no two-day run of their own.
+
+**Stories: three frames a day, four on day 2.** Stories follow the reel and the carousel instead of the four-frame cascade in §7.
+
+| Frame | Day 1 | Day 2 |
+|---|---|---|
+| 1, at the reel slot | Share the reel (tap to post) with a hook overlay | Share the day 2 reel with a hook overlay |
+| 2, about 90 minutes later | Self-assessment poll on a rendered backdrop | Yesterday's poll result, the winning answer typed in by hand |
+| 3, with the carousel | The tool you keep, as a standalone frame | The day 2 tool, as a standalone frame |
+| 4, late evening | | Blog extra (something the carousel didn't cover) with the link sticker |
+
+The poll result on day 2 is the reason to come back the next day; it takes about a minute to type in.
+
+**First hour (added Oct 2, 2026).** Instagram tests a post on a small first audience and reads rates among real viewers (watch time, sends, saves). Every posting sheet ends each day with a checklist: story share the moment the reel is live, send it to 3 to 5 real people it would help, reply to every comment within the hour, repeat for the carousel. No engagement from your own other accounts (it is discounted at best and treated as inauthentic at worst); if any happens, it is logged in the sheet so it can be subtracted from the metrics. Trial reels are not available on the account yet (checked Oct 2, 2026).
+
+**Chip and series signal.** Optimizing runs under the chip `Money, Compounding` with no "N of 18" counter, because the Inclusive Finances companions are interleaved. Inclusive Finances is its own theme on Instagram (decided Oct 1, 2026): it has its own chip, `Money, For You and Me`, and its own profile Highlight, with no "N of 16" counter. Each inclusive post still ships interleaved, directly after its host, and opens from the assumption the host post makes. Every series keeps a Highlight so the profile works as a library.
+
+**Beliefs on Sundays.** The six Beliefs posts (Instagram only, `docs/instagram/beliefs/`) run every other Sunday, starting with "Built from frustration" on the Sunday before the restart as the comeback post. They are the only Sunday feed posts. Before they run, they are reworked to the kit format (4:5, no banned hashtags, one ask).
+
+### 2.2 Series 1 to 3 slots (record)
+
+How Discovery, Building and Psychology were scheduled: one feed post per blog post, Tuesday to Thursday. The holiday and Sunday rules below still apply to the two-angle run.
+
 ### Primary slot — `14:30 CET · Tue / Wed / Thu`
 - EU afternoon scroll (end of lunch, early afternoon)
 - India peak evening (19:00 IST)
@@ -126,6 +189,8 @@ If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, 
 ## 5. Carousel Structure
 
 The carousel system has two formats. Series 1 (Discovery, posts 1 through 16b) ships in the original dark-gradient format. **Series 2 onwards (Building, post 17+) ships exclusively on the new cream editorial template.** Do not mix formats within a series; grid coherence beats marginal per-post performance.
+
+**Optimizing onwards (Series 4):** carousels are 4:5 (1080×1350), one per angle, and are authored in the post's kit file and rendered by `scripts/render-kit.mjs`, not `render-ig`. Same cream palette and 8-slide cap. The kit uses its own data layouts (`hook`, `inputs`, `growth`, `bars`, `repeat`, `tool`, `worked`, `scenarios`, `closer`), and its lint requires a `tool` slide and a single-ask closer. See §2.1 and §10.
 
 ### 5.1 Series 2 carousel system (current spec)
 
@@ -298,6 +363,8 @@ The keyword block was new and lenient when IG launched it in 2025. By Q1 2026 th
 ## 7. Story Structure
 
 **Stories pull ~4× the views of carousels.** Treat them as the primary channel; carousels are the library.
+
+**Optimizing onwards (Series 4):** stories follow the two-angle day (three frames on day 1, four on day 2) described in §2.1. The 4-frame cascade below governs Series 2 and 3. The visual system, self-assessment poll rule, caption field and hashtag rules in this section still apply.
 
 ### Visual system (Series 2 onwards)
 
@@ -476,6 +543,27 @@ npm run render-ig "1. discovery/07-liquidity.md"        # single post
 ```
 
 One command. Generates both carousel slides (1080×1080) and story frames (1080×1920) in a single pass with a shared browser instance.
+
+### Optimizing onwards: the post kit
+
+Standalone feed posts that are not tied to a blog post (the Beliefs series) use the same renderer with `type: standalone` in the kit frontmatter: one `## Day 1 (carousel)` deck (a single slide is a single image), no reel, no brief, plus `## Stories`. Beliefs 1 is the reference, at `docs/instagram-kit/beliefs/01-built-from-frustration.md`, using the data-driven `sheet` (spreadsheet) layout.
+
+From post 43, each blog post has one kit source file, `docs/instagram-kit/<level>/<NN-slug>.md`. It holds a `## Brief` (person, situation, what the blog withholds), then per day a `## Day N (angle)`, `## Day N (reel)` and `## Day N (carousel)`, then `## Stories`. Next to it sit one reel plan per day: `<NN-slug>.reel.json` for day 1 and `<NN-slug>.day2.reel.json` for day 2. Post 43 is the reference kit.
+
+```bash
+# Carousels, story frames, captions and the posting sheet for both days (lints first)
+node scripts/render-kit.mjs "4. optimizing/43-financial-projections.md"
+
+# Reels: copy each plan into output/plans/<level>/ first, then render
+cp "docs/instagram-kit/4. optimizing/43-financial-projections.reel.json" output/plans/optimizing/43-financial-projections.json
+cp "docs/instagram-kit/4. optimizing/43-financial-projections.day2.reel.json" output/plans/optimizing/43-financial-projections-day2.json
+node scripts/render-reels.mjs financial-projections --level optimizing --from-plan                # day 1
+node scripts/render-reels.mjs financial-projections --level optimizing --from-plan --angle day2   # day 2
+```
+
+Run with `/usr/local/bin` first on `PATH` so the reel renderer finds `edge-tts`. The kit lint fails on: anything other than two days, a missing reel plan, more than 5 hashtags or no `#nidhi`, banned hashtags, a hashtag repeated across the two days, fewer than 18 or more than 24 keywords, any dash or hyphen, more than 8 slides, no `tool` slide, and a closer with more than one ask or no `read:` line.
+
+Output lands in `output/instagram-kit/<level>/<NN-slug>/` (`day1/carousel/`, `day2/carousel/`, `stories/`, `posting-sheet.txt`) and, for reels, in `output/videos/<level>/`, `output/thumbnails/<level>/` and `output/captions/<level>/`. The posting sheet lists every file, caption, hashtag line and story frame for both days in posting order.
 
 ### Files
 | Path | Purpose |
@@ -728,6 +816,7 @@ The active table covers what currently governs the playbook. Decisions that were
 | 39 | Frame-1-hook.png is opt-in only; default cascade emits exactly 2 PNGs (May 2026) | Decision #38 retired the custom frame-1 PNG by intent ("default cascade does NOT emit a PNG for frame 1") but left the renderer hardcoded to emit `frame-1-hook.png` whenever `story_hook` was set. Result on first Series 2 render (post 17): three PNGs in the stories dir (frame-1-hook, frame-2-poll, frame-4-extra) when the playbook spec was two. Either the renderer matched the spec, or the spec was wrong. The spec was right: frame 1 is a tap-to-post share of the carousel feed post with `story_hook` typed as overlay text in IG composer. The PNG is unused except for milestone teasers / beta launches / pre-carousel ships. **Fix:** added `story_render_hook_png` boolean frontmatter flag (default false). Renderer skips `frame-1-hook.png` unless explicitly opted in. `parse-markdown.js` parses the flag for both Day 1 and Day 2 cascades. PLAYBOOK §7 cascade table, §10 output diagram, §11 frontmatter schema all updated. Default Series 2 post now produces exactly 2 story PNGs (poll + extra) plus 8 carousel slides |
 | 40 | Strict no-dash typography: no em dashes, en dashes, hyphens, or double hyphens anywhere in carousel or story posts (May 2026) | Decision #33 retired em dashes globally for Series 2; #28's blog figure rule kept en dashes for numeric ranges (`25–34`). On Series 2 first render the policy was inconsistent across surfaces (post 17 carousel slide 4 had `−43% → +2%` with the ASCII minus reading visually similar to a hyphen, frontmatter `post_time` carried an em dash, source line had `post-1926` and `non-US` hyphens). The reader doesn't know which dash is which; visually they all blur together and the cream/editorial template's tight type makes hyphenated compound modifiers look like dropped en dashes. **Rule:** four characters out everywhere (slides, captions, story text, frontmatter, per-slide field values): `—` em dash, `–` en dash, `-` hyphen, `--` double hyphen. Use `to` for ranges (`years 25 to 34`, `1980 to 2024`). Drop hyphens from compound modifiers (`long term`, `20 year horizon`, `tax advantaged`) when readable; restructure when not (`with tax advantages`, `over the long term`). Math symbols stay in: minus sign in negative numbers, arrows (`→`, `←`), comparison operators. Series 1 grandfathered. PLAYBOOK §8 rewritten. Audit pass against post 17 surfaced ~12 hyphens to remove |
 | 41 | Reels are a tension-arc Remotion pipeline, not a CapCut text-on-background pilot. Building reels: story-driven, cold hooks, blog `figure` mid-reel, `flow` diagram resolution in the back third, 3-way hook A/B. §13 Format 2 rewritten to point at `REELS-PIPELINE.md` as source of truth (June 2026) | #27 framed Reels as a lightweight humor stream ("10-15s text-on-background, CapCut, ~30-60 min, no voice"). The pipeline that actually shipped is materially different and §13 had drifted into being misleading: an automated build-time system (`scripts/render-reels.mjs`) reads the full blog body, an LLM authors a plan with 3 hook variants and 6-15 beats, a hard brand-rule scrubber gates it (56 unit tests), edge-tts narrates (en-GB-RyanNeural), and Remotion renders a 45-85s 9:16 reel with kinetic typography and karaoke captions. **Two new visual primitives** added this session: a `figure` beat anchor that reuses the post's own blog SVG (rasterised by `npm run render-figures` — same design source of truth as Editorial Rule 9), and a `flow` anchor rendering a 3-to-5 step "how it works" diagram (scrubber rules: 3-5 steps, horizontal caps at 3 nodes, ≤1 outcome node). **Editorial direction for Building reels:** story-driven not framework-driven, using a tension arc — open on a problem the viewer is *in* (second person), build the cost, land the `figure` mid-reel as "why this matters," withhold the `flow` step diagram until the back third as the resolution, close on the opener's image. **Cold-hook rule:** no spoken/on-screen copy may assume the viewer has seen earlier posts ("after the basics", "rest of the series" banned); the on-screen SeriesChip carries the series signal silently. **Concrete blog reason:** a post's `reelPromise` frontmatter names the specific thing the blog adds (worked example, side-by-side table, rule of thumb) and drives both the CTA READ row and the caption's "Read the full post" line; must be backed by content actually in the post. **Hook A/B made genuine end-to-end:** `--variants-all` emits 3 distinct mp4s plus 3 captions that each open with that variant's spoken hook (`leadHookText`/`replaceFirstLine` in `render-platform-caption.mjs`); `--from-plan` loads the base plan and selects the hook by `useHookVariant`, so one saved plan A/Bs all three without re-calling the LLM. (Earlier `--from-plan --variant N` looked for a non-existent `-v2`/`-v3` plan file and failed; fixed.) **Bug fixed in passing:** `render-figures.mjs` captured only the first `:root` CSS block, leaving `--color-*` aliases unresolved so figure bars rendered black; now joins all `:root` blocks. Full technical spec, doctrine, and runbook live in `REELS-PIPELINE.md`; §13 Format 2 reduced to strategy-level facts plus a pointer |
+| 42 | Two-angle structure from Optimizing onwards: each blog post gets two days, each day one angle told as a reel (08:00 CET) and a carousel (14:30 CET); three blog posts a week, Monday to Saturday; stories follow the day (three frames on day 1, four on day 2); one kit source file per post rendered by `render-kit.mjs` (Sep 30, 2026) | The old rhythm (a carousel or video over a post's day and the next, then the next post) wrote the carousel, comic and reel for each post separately, with no shared spine, and the docs disagreed on cadence (blog plan Mon/Wed/Fri, playbook Tue/Wed/Thu, actual practice two days per post). The post 43 pilot showed most posts hold two genuinely distinct ideas, so the second day can be a new topic for a follower instead of a repeat. Giving each day a reel and a carousel on the same angle splits the jobs cleanly: the reel reaches non-followers, the carousel earns saves from whoever arrived through the reel. Three posts a week was kept over two (which would stretch the 48-post run from 16 weeks to 24). **Rules added:** every angle carries a tool the reader keeps, shown working on every chart, a fixed maker's line instead of a product plug, and one ask on the closer. **Two-angle test** (distinct, carryable, not a repeat of a neighbour) applied to the whole Optimizing run in `instagram-two-angle-audit.md`: 25 of 26 posts passed; inc-1 (then numbered 76) held one idea, and passed once its draft grew a second one on Oct 1, 2026. **Sub-articles** get no two-day run. **Known risk:** two feed posts a day may split early engagement on a small account; reviewed after two weeks (§14). See §2.1 |
 
 ### 12.1 Archive: superseded decisions
 
@@ -787,7 +876,7 @@ Reels are produced by an automated build-time pipeline, NOT hand-edited in CapCu
 
 **Hook A/B.** Each plan carries 3 hook variants; `--variants-all` renders all three as distinct mp4s (plus matching captions that each open with that variant's hook) for a real A/B test. See `REELS-PIPELINE.md` "Hook A/B variants."
 
-**Cadence:** see the content-cadence table in `REELS-PIPELINE.md`. Released alongside the corresponding educational carousel.
+**Cadence:** see the content-cadence table in `REELS-PIPELINE.md`. Released alongside the corresponding educational carousel. From Optimizing onwards, every blog post gets two reels, one per angle, each posted the same day as its carousel (§2.1). Each reel is built around one persistent data-driven visual; built so far are the growth chart (`FinancialProjectionStory.tsx`), the comparison bars (`BarComparisonStory.tsx`) and the month bars (`MonthStory.tsx`, with a calendar mode for monthly series against a reference line and a runway mode for a balance draining month by month), all driven by plan data and reusable across posts. Carousels have matching `months` and `runway` layouts in `render-kit.mjs`.
 
 ### What's still off-limits
 
@@ -861,5 +950,6 @@ Reels:
 - **After 6 posts** → if growth is slow, revisit engagement philosophy (consider ManyChat auto-DM for "comment X" flows)
 - **After 10 posts (Discovery series complete — 08 through 16b)** → hold before Money in Action; iterate playbook based on what worked
 - **Quarterly** → review hashtag landscape; niche tags shift faster than broad ones
+- **After the first two weeks of the two-angle run (§2.1)** → check whether two feed posts a day split early engagement: compare reach and saves of each day's second post against its first, and against single-post days from earlier series. If the second post is consistently starved, space the slots further apart or drop to two blog posts a week
 
 ---

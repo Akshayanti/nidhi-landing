@@ -1,0 +1,271 @@
+{
+  "slug": "what-if-scenarios",
+  "postTitle": "What-If Scenarios: Test a Decision Before You Make It",
+  "postLevel": "optimizing",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/what-if-scenarios",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Change one thing at a time: a move that adds €200 a month hides a €600 gain and a €400 loss",
+  "topicChip": "ONE AT A TIME",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Eva saves €1,000 a month: €4,000 pay after tax minus €3,000 costs. Job offer in a cheaper city: pay 10% lower (€3,600), costs 20% lower (€2,400). Pay cut alone: €3,600 minus €3,000 = €600 (€400 less). Cheaper city alone: €4,000 minus €2,400 = €1,600 (€600 more). Both: €3,600 minus €2,400 = €1,200 (€200 more). The 10% and 20% are illustrative inputs, not claims about any real city."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "Eva saves today",
+      "display": "€1,000",
+      "note": "€4,000 pay, €3,000 costs, a month",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "Monthly saving, illustrative",
+    "bars": [
+      {
+        "id": "paycut",
+        "label": "Pay cut only",
+        "sublabel": "10% less pay",
+        "value": 600,
+        "display": "€600",
+        "tone": "amber"
+      },
+      {
+        "id": "city",
+        "label": "Cheaper city only",
+        "sublabel": "20% lower costs",
+        "value": 1600,
+        "display": "€1,600",
+        "tone": "teal"
+      },
+      {
+        "id": "both",
+        "label": "Both together",
+        "sublabel": "the whole move",
+        "value": 1200,
+        "display": "€1,200",
+        "tone": "ink"
+      }
+    ],
+    "callout": {
+      "display": "+€200",
+      "from": "paycut",
+      "to": "both",
+      "label": "The whole move"
+    },
+    "disclosure": "Illustrative inputs: 10% lower pay, 20% lower costs. Monthly saving after costs."
+  },
+  "hookVariants": [
+    {
+      "id": "hides-two",
+      "layout": "bar-gap",
+      "narration": "A move that adds two hundred euros a month can hide a six hundred euro gain and a four hundred euro loss.",
+      "onscreenLines": [
+        "The move adds €200",
+        "It hides a €600 gain",
+        "and a €400 loss"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "hide"
+      ]
+    },
+    {
+      "id": "worth-it",
+      "layout": "bar-gap",
+      "narration": "Is a job in a cheaper city worth a pay cut? The total will not tell you why.",
+      "onscreenLines": [
+        "Cheaper city, lower pay",
+        "Worth it?",
+        "The total will not tell you why"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "why"
+      ]
+    },
+    {
+      "id": "split-it",
+      "layout": "bar-gap",
+      "narration": "Before you decide on a big change, split it into its parts.",
+      "onscreenLines": [
+        "One decision",
+        "Two changes inside",
+        "Split it first"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "split"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Eva saves a thousand euros a month. Four thousand in, three thousand out.",
+      "onscreenText": "Eva saves €1,000 a month",
+      "subtext": "€4,000 pay, €3,000 costs",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "She is offered a job in a cheaper city. It pays ten percent less. On its own, that pay cut leaves her six hundred a month.",
+      "onscreenText": "The pay cut alone",
+      "subtext": "€600 a month, €400 less",
+      "emphasis": [
+        "less"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "On its own, the cheaper city cuts her costs by a fifth. That leaves sixteen hundred a month.",
+      "onscreenText": "The cheaper city alone",
+      "subtext": "€1,600 a month, €600 more",
+      "emphasis": [
+        "more"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "Together, twelve hundred. Only two hundred more than today.",
+      "onscreenText": "Both together",
+      "subtext": "€1,200 a month",
+      "emphasis": [
+        "only"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "third"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "The total hides what is doing the work. The city is a big gain. The pay cut takes most of it back.",
+      "onscreenText": "€200 hides two bigger numbers",
+      "subtext": "A €600 gain and a €400 loss",
+      "emphasis": [
+        "hides"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "principle"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "So test one change at a time. Run each change alone, then all of them together. Then compare which one does the work.",
+      "onscreenText": "The one at a time test",
+      "subtext": "Run, then compare",
+      "emphasis": [
+        "one"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The one at a time test",
+        "rows": [
+          {
+            "label": "Each change alone, then together",
+            "value": "Run",
+            "tone": "ink"
+          },
+          {
+            "label": "Which one does the work?",
+            "value": "Compare",
+            "tone": "amber"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "Now Eva can see it. The city adds six hundred. The pay cut takes four hundred of it back.",
+      "onscreenText": "City adds €600, pay cut takes €400",
+      "subtext": "€200 more, together",
+      "emphasis": [
+        "four"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before your next big decision.",
+    "onscreenText": "Save the one at a time test",
+    "subtext": "Run each alone, then compare",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "A move that adds €200 a month can hide a €600 gain and a €400 loss.\n\nEva saves €1,000 a month. A job in a cheaper city pays 10% less, and her costs there would be 20% lower. Together, she saves €1,200. One change at a time, the cheaper city adds €600 and the pay cut takes €400 back. Now she can see that the pay cut takes back €400 of the city's €600 gain.\n\nThe one at a time test: each change alone, then all together, then compare.\n\n→ Save this before your next big decision\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative inputs: 10% lower pay and 20% lower costs.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "A move that adds €200 a month can hide a €600 gain and a €400 loss.\n\nTest one change at a time. Illustrative figures.",
+    "instagramKeywords": [
+      "what if scenario",
+      "job offer",
+      "moving cities",
+      "pay cut",
+      "cost of living",
+      "salary negotiation",
+      "monthly savings",
+      "decision making",
+      "financial planning",
+      "personal finance",
+      "global expats",
+      "Umzug",
+      "Gehalt",
+      "coût de la vie",
+      "coste de vida"
+    ],
+    "tiktokTopics": [
+      "should I take a pay cut to move to a cheaper city",
+      "how to decide on a job offer in another city",
+      "how to compare cost of living and salary"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "europemoney"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "relocation",
+    "moneydecisions",
+    "movingcountries"
+  ]
+}

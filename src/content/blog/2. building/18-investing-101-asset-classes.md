@@ -5,12 +5,15 @@ description: "Stocks, bonds, real estate, cash. Four words everyone has heard, b
 tldr: "The four core asset classes are stocks (you own a piece of a company), bonds (you lend money to a government or company), real estate (you own property), and cash equivalents (you park money safely). Stocks have the highest historical returns but the most volatility. Bonds are more stable but barely beat inflation. Real estate offers both income and appreciation but is illiquid. Cash equivalents are the safest but lose purchasing power over time. No single asset class is best. They behave differently under different conditions, which is exactly why portfolios combine them. Commodities and cryptocurrency exist alongside these four as satellite assets and are covered separately in the next post."
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-06-03
+updatedDate: 2026-10-03
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "fundamentals"]
 referentialReading:
+  - title: "Stocks have far outperformed over the past 125 years (Global Investment Returns Yearbook 2025)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "paper"
   - title: "Asset Class"
     url: "https://www.investopedia.com/terms/a/assetclass.asp"
     type: "blog"
@@ -60,7 +63,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 - **Capital appreciation**: The stock price rises over time as the company grows
 - **Dividends**: Regular cash payments from company profits (not all companies pay dividends)
 
-**Historical returns**: Broad stock markets have historically returned approximately 5-7% per year after inflation across major developed markets over long periods (US data sits at the higher end, closer to 7-8%; emerging markets are more volatile with similar real returns on average). This is higher than any other major asset class.
+**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets are more volatile with similar real returns on average). This is higher than any other major asset class.
 
 **Volatility**: High. In any given year, a diversified stock portfolio might gain 25% or lose 30%. Individual stocks can swing far more. Broad stock indices (the S&P 500 in the US, the FTSE All-Share in the UK, the STOXX Europe 600 across Europe, the Nifty 50 in India, the MSCI World for a global developed-market view) have historically had negative years roughly one out of every four.
 
@@ -69,7 +72,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 | Feature | Detail |
 |---------|--------|
 | Return type | Capital gains + dividends |
-| Historical real return | ~5-7% per year (developed markets) |
+| Historical real return | ~4-6% per year (developed markets) |
 | Volatility | High (15-25% annual swings typical) |
 | Liquidity | High (traded daily on exchanges) |
 | Time horizon | 5+ years minimum, ideally 10+ |
@@ -163,7 +166,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 | Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
-| **Historical real return** | 5-7% (developed markets) | 2-4% | 3-5% + rental yield | 0-2% |
+| **Historical real return** | 4-6% (developed markets) | 2-4% | 3-5% + rental yield | 0-2% |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |

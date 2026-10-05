@@ -1,0 +1,265 @@
+{
+  "slug": "life-events",
+  "postTitle": "Life Events and Your Finances: How to Plan Ahead",
+  "postLevel": "optimizing",
+  "episode": 3,
+  "seriesTotal": 0,
+  "blogPath": "blog/life-events",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Plan what you can see coming, buffer what you cannot",
+  "topicChip": "PLAN OR BUFFER",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Emergency fund: a common guideline of three to six months of expenses (from the emergency fund post). No other figures. Illustrative."
+  },
+  "columnStory": {
+    "left": {
+      "id": "foreseeable",
+      "title": "You can see it coming",
+      "rule": "Plan it",
+      "items": [
+        "A child",
+        "A home",
+        "A career break",
+        "A move abroad"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "unforeseeable",
+      "title": "You cannot",
+      "rule": "Buffer it",
+      "items": [
+        "An illness",
+        "A redundancy",
+        "A family emergency",
+        "A market shock"
+      ],
+      "tone": "amber"
+    },
+    "buffers": [
+      "An emergency fund, often 3 to 6 months of costs",
+      "The right insurance",
+      "A plan with slack in it"
+    ],
+    "swap": {
+      "item": "A child",
+      "belongs": "left",
+      "wrongLabel": "wrong column",
+      "correctLabel": "planned event"
+    },
+    "disclosure": "Illustrative. 3 to 6 months is a common guideline, not a rule."
+  },
+  "hookVariants": [
+    {
+      "id": "knew-it",
+      "layout": "columns-gap",
+      "narration": "Most money shocks are not shocks. You knew they were coming.",
+      "onscreenLines": [
+        "Most money shocks",
+        "are not shocks",
+        "Plan it or buffer it"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "not"
+      ]
+    },
+    {
+      "id": "two-kinds",
+      "layout": "columns-gap",
+      "narration": "There are two kinds of life event, and they need opposite plans.",
+      "onscreenLines": [
+        "Two kinds of life event",
+        "Opposite plans",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "opposite"
+      ]
+    },
+    {
+      "id": "name-the-month",
+      "layout": "columns-gap",
+      "narration": "One question sorts every big money event: can you name roughly when it happens?",
+      "onscreenLines": [
+        "Can you name",
+        "roughly when it happens?",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "when"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "list",
+      "narration": "Petra can see some of hers years ahead. A child. A bigger home. A career break. A move abroad.",
+      "onscreenText": "You can see these coming",
+      "subtext": "A child, a home, a break, a move",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "Those get a plan. Put each one in your projection, with a rough date and a number, and test the bad case.",
+      "onscreenText": "Plan it",
+      "subtext": "A date, a number, the bad case",
+      "emphasis": [
+        "plan"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Others nobody can see coming. An illness. A redundancy. A family emergency. A market shock.",
+      "onscreenText": "You cannot see these",
+      "subtext": "Illness, redundancy, emergency, shock",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Those cannot be planned one by one. They get a buffer instead.",
+      "onscreenText": "Buffer it",
+      "subtext": "Not a plan for each one",
+      "emphasis": [
+        "buffer"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "Three buffers do most of the work. An emergency fund, often three to six months of costs. The right insurance. And a plan with some slack in it.",
+      "onscreenText": "Three buffers",
+      "subtext": "Emergency fund, insurance, slack",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "warning",
+      "narration": "The expensive mistake is mixing them up. Treating a planned baby as a surprise, or trying to predict every disaster.",
+      "onscreenText": "Do not mix them up",
+      "subtext": "A planned baby is not a surprise",
+      "emphasis": [
+        "mixing"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "swap"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "So sort every event with one question. Can you name roughly when it happens? Then plan it. If not, buffer it.",
+      "onscreenText": "The sorting question",
+      "subtext": "Can you name roughly when?",
+      "emphasis": [
+        "when"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The sorting question",
+        "rows": [
+          {
+            "label": "Can you name roughly when?",
+            "value": "Plan it",
+            "tone": "teal"
+          },
+          {
+            "label": "You cannot",
+            "value": "Buffer it",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this, and sort your next five years tonight.",
+    "onscreenText": "Save the sorting question",
+    "subtext": "Can you name roughly when?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Most money shocks are not shocks. You knew they were coming.\n\nSome life events you can see years ahead: a child, a home, a career break, a move abroad. Those get a plan: a rough date, a number, and the bad case tested. Others nobody sees coming: an illness, a redundancy, a family emergency, a market shock. Those get a buffer: an emergency fund (a common guideline is three to six months of costs), the right insurance, and a plan with some slack.\n\nThe sorting question: can you name roughly when it happens? Then plan it. If not, buffer it.\n\n→ Save this, and sort your next five years tonight\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Not a recommendation for any product or amount.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Most money shocks are not shocks. You knew they were coming.\n\nCan you name roughly when it happens? Plan it. If not, buffer it.",
+    "instagramKeywords": [
+      "planning for big life changes",
+      "financial planning",
+      "emergency savings",
+      "rainy day fund",
+      "job loss",
+      "buying a home",
+      "career break",
+      "moving abroad",
+      "insurance basics",
+      "money plan",
+      "personal finance",
+      "global expats",
+      "Notgroschen",
+      "Lebensereignisse",
+      "imprevistos",
+      "imprévus"
+    ],
+    "tiktokTopics": [
+      "how to plan for big life events",
+      "what an emergency fund is for",
+      "how to prepare for a redundancy"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "lifeevents",
+    "financialresilience",
+    "expatlife"
+  ],
+  "reelPromise": "How to model a child, a career break, a home and a move as scenarios, and what to do when they overlap"
+}

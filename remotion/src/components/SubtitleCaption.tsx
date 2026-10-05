@@ -27,6 +27,8 @@ interface Props {
    * (`.` `?` `!`) always splits regardless. Default 4.
    */
   minWordsForSoftBreak?: number;
+  /** Denser treatment for reels whose primary visual must remain unobscured. */
+  compact?: boolean;
 }
 
 interface Chunk {
@@ -72,6 +74,20 @@ function buildChunks(
   }
   flush();
 
+  // Avoid a lone final word when a phrase slightly exceeds the word cap.
+  // Pull one word from the preceding chunk, but never cross a sentence end.
+  for (let i = 1; i < chunks.length; i++) {
+    const current = chunks[i];
+    const previous = chunks[i - 1];
+    const previousLast = previous.words.at(-1);
+    if (current.words.length !== 1 || previous.words.length < 3 || !previousLast || HARD_BREAK_RE.test(previousLast.word)) continue;
+    const moved = previous.words.pop();
+    if (!moved) continue;
+    current.words.unshift(moved);
+    previous.endMs = previous.words.at(-1)?.endMs ?? previous.endMs;
+    current.startMs = current.words[0].startMs;
+  }
+
   return chunks;
 }
 
@@ -88,6 +104,7 @@ export function SubtitleCaption({
   maxWords = 8,
   maxDurationMs = 3500,
   minWordsForSoftBreak = 4,
+  compact = false,
 }: Props) {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -142,6 +159,7 @@ export function SubtitleCaption({
 
   return (
     <div
+      data-reel-chrome="subtitle caption"
       style={{
         position: "absolute",
         bottom,
@@ -152,11 +170,11 @@ export function SubtitleCaption({
         alignItems: "center",
         justifyContent: "center",
         flexWrap: "wrap",
-        gap: 14,
-        rowGap: 6,
-        maxWidth: WIDTH - 160,
-        padding: "18px 32px",
-        borderRadius: 18,
+        gap: compact ? 10 : 14,
+        rowGap: compact ? 3 : 6,
+        maxWidth: compact ? WIDTH - 230 : WIDTH - 160,
+        padding: compact ? "13px 24px" : "18px 32px",
+        borderRadius: compact ? 14 : 18,
         backgroundColor: pillBg,
         boxShadow: isPaper
           ? "0 12px 28px rgba(0, 33, 113, 0.28)"
@@ -170,7 +188,7 @@ export function SubtitleCaption({
           <span
             key={i}
             style={{
-              fontSize: TYPE.caption + (isEmphasis ? 2 : 0),
+              fontSize: (compact ? 42 : TYPE.caption) + (isEmphasis ? 2 : 0),
               fontWeight: isEmphasis ? 800 : 600,
               fontFamily: TYPE.ui,
               letterSpacing: "-0.005em",
