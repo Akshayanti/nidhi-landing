@@ -121,9 +121,6 @@ const inputId = `subscribe-email-${variant}`;
             />
             <button type="submit" class="subscribe-button">Subscribe</button>
           </form>
-          <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml" aria-label="RSS feed">
-            or RSS
-          </a>
         </div>
         <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
         {isDev && !endpoint && (
@@ -133,6 +130,8 @@ const inputId = `subscribe-email-${variant}`;
           </p>
         )}
         <div class="subscribe-dismiss subscribe-dismiss--compact">
+          <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml">Follow by RSS</a>
+          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
           <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">I already subscribed</button>
           <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
           <button type="button" class="subscribe-dismiss-link" data-action="not-now">Not now</button>
@@ -580,8 +579,28 @@ const inputId = `subscribe-email-${variant}`;
     margin: 0 auto var(--space-8);
     max-width: var(--max-width);
     padding: var(--space-4) var(--space-5);
-    background: var(--color-border-light);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Email field and button on one row, like the homepage signup. */
+  .subscribe-form--compact {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+  }
+  .subscribe-form--compact .subscribe-input {
+    flex: 1 1 200px;
+  }
+  .subscribe-form--compact .subscribe-button {
+    flex: 0 0 auto;
+  }
+  /* No gap until there is something to say. It stays rendered (not display:
+     none) so screen readers still announce messages in the live region. */
+  .subscribe--compact .subscribe-status:empty {
+    min-height: 0;
+    margin: 0;
   }
   .subscribe-compact-row {
     display: flex;
@@ -597,17 +616,15 @@ const inputId = `subscribe-email-${variant}`;
   }
   .subscribe-form--compact .subscribe-input-group { margin-bottom: 0; }
   .subscribe-rss {
-    font-size: 0.85rem;
+    font-size: inherit;
     color: var(--color-text-muted);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--color-text-muted);
-    flex-shrink: 0;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
   }
-  .subscribe-rss:hover { color: var(--color-deep-blue); border-bottom-color: var(--color-deep-blue); }
+  .subscribe-rss:hover { color: var(--color-deep-blue); }
   @media (max-width: 640px) {
     .subscribe-compact-row { flex-direction: column; align-items: stretch; }
     .subscribe-compact-label { text-align: center; }
-    .subscribe-rss { text-align: center; }
   }
 
   /* --- Post-submit success card ----------------------------------- */
@@ -745,6 +762,14 @@ const inputId = `subscribe-email-${variant}`;
     color: rgba(255, 255, 255, 0.85);
   }
 
+  /* Compact variant: one row of small links that wraps only between links,
+     each at least 24px tall (WCAG 2.2 target size). */
+  .subscribe-dismiss--compact .subscribe-dismiss-link,
+  .subscribe-dismiss--compact .subscribe-rss {
+    display: inline-block;
+    padding-block: 4px;
+    white-space: nowrap;
+  }
   /* Compact variant: left-align to match the row above. */
   .subscribe-dismiss--compact {
     text-align: left;

@@ -5086,3 +5086,56 @@ body[data-page="landing"] .hero-mcAmount {
   .hero-chart .hc-hover,
   body[data-page="landing"] .hero-splitBar span { transition: none; }
 }
+
+/* Blog index: two columns of posts on wide screens. The level markers stay on
+   the timeline; per-post dots are hidden because a second column has no rail
+   to sit on. Reading order runs left to right, then down. */
+@media (min-width: 1024px) {
+  .blog-index .lp-pathContainer {
+    max-width: 1040px;
+  }
+  .blog-index .lp-levelPosts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  .blog-index .lp-levelPosts .lp-postNode {
+    margin-bottom: 0;
+    align-items: stretch;
+  }
+  .blog-index .lp-levelPosts .lp-nodeDotWrapper,
+  .blog-index .lp-levelPosts .lp-nodeConnector {
+    display: none;
+  }
+}
+/* Step number on each learning-path card: the reading order within a level. */
+.lp-cardStep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  border: 1.5px solid;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--color-bg-white);
+}
+/* Only needed where posts sit in two columns. */
+.lp-orderHint {
+  display: none;
+  margin: 0 0 var(--space-3);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+@media (min-width: 1024px) {
+  .blog-index-container {
+    max-width: var(--max-width-wide);
+  }
+  .blog-index .lp-orderHint {
+    display: block;
+  }
+}

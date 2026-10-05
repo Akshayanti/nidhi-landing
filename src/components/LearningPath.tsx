@@ -137,11 +137,19 @@ interface PostNodeProps {
   interceptTagClick: boolean;
   onToggleRead: (id: string) => void;
   onTagClick: (tag: string) => void;
+  /**
+   * Position of the post in its level's reading order (1-based) and the
+   * level's count, shown as a step number so the order is unambiguous when
+   * posts sit in two columns. Undefined for optional companion posts and
+   * off-path lists.
+   */
+  step?: number;
+  stepCount?: number;
   /** On the learning path an inclusive card is marked optional; on its own hub it is not. */
   onPath?: boolean;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick, onPath = true }: PostNodeProps) {
+function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick, onPath = true, step, stepCount }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
@@ -174,6 +182,11 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
         )}
         <div className="lp-cardTop">
           <div className="lp-cardMeta">
+            {step !== undefined && (
+              <span className="lp-cardStep" style={{ color: levelColor, borderColor: levelColor }} aria-label={`Step ${step} of ${stepCount}`}>
+                {step}
+              </span>
+            )}
             <span className="lp-cardReadingTime">{post.readingTime} min read</span>
             <span className="lp-cardDate">{dateStr}</span>
           </div>
@@ -223,6 +236,12 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
 interface LearningPathProps {
   posts: PostData[];
   /**
+   * Show step numbers and the reading-order hint. Only for the blog index,
+   * which receives every post; a per-tag page gets a subset, where the
+   * numbers would not match the real learning-path positions.
+   */
+  showSteps?: boolean;
+  /**
    * Controls tag-chip click behaviour. Defaults to true (the blog index
    * use case). Pass false when rendering inside a per-tag page where a
    * chip click should navigate to the new tag's page rather than apply
@@ -231,7 +250,7 @@ interface LearningPathProps {
   interceptTagClick?: boolean;
 }
 
-export function LearningPath({ posts, interceptTagClick = true }: LearningPathProps) {
+export function LearningPath({ posts, interceptTagClick = true, showSteps = false }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -392,6 +411,17 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
       core: filteredPosts.filter((p) => p.level === level),
     }));
   }, [filteredPosts]);
+
+  // Step numbers come from the full, unfiltered order, so a search or tag
+  // filter never renumbers the posts.
+  const steps = useMemo(() => {
+    const map = new Map<string, { step: number; count: number }>();
+    for (const level of LEVEL_ORDER) {
+      const own = posts.filter((p) => p.level === level);
+      own.forEach((p, i) => map.set(p.id, { step: i + 1, count: own.length }));
+    }
+    return map;
+  }, [posts]);
 
   const hasInclusive = posts.some(isOptional);
 
@@ -627,19 +657,33 @@ export function LearningPath({ posts, interceptTagClick = true }: LearningPathPr
               </div>
             )}
 
-            {!isCollapsed && group.posts.map((post) => (
-              <PostNode
-                key={post.id}
-                post={post}
-                isRead={readPosts.has(post.id)}
-                isStartHere={post.id === firstUnreadId}
-                levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : group.meta.color}
-                selectedTag={selectedTag}
-                interceptTagClick={interceptTagClick}
-                onToggleRead={toggleRead}
-                onTagClick={setSelectedTag}
-              />
-            ))}
+            {/* A grid on wide screens (see .blog-index .lp-levelPosts), one
+                column everywhere else. Step numbers and the hint make the
+                reading order explicit: across, then down. */}
+            {!isCollapsed && showSteps && (
+              <p className="lp-orderHint" style={{ color: group.meta.color }}>
+                Read left to right, then down.
+              </p>
+            )}
+            {!isCollapsed && (
+              <div className="lp-levelPosts">
+                {group.posts.map((post) => (
+                  <PostNode
+                    key={post.id}
+                    step={!showSteps || post.level === 'inclusive-finances' ? undefined : steps.get(post.id)?.step}
+                    stepCount={steps.get(post.id)?.count}
+                    post={post}
+                    isRead={readPosts.has(post.id)}
+                    isStartHere={post.id === firstUnreadId}
+                    levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : group.meta.color}
+                    selectedTag={selectedTag}
+                    interceptTagClick={interceptTagClick}
+                    onToggleRead={toggleRead}
+                    onTagClick={setSelectedTag}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         );
       })}
