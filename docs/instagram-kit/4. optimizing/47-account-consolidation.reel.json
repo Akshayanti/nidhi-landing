@@ -1,0 +1,248 @@
+{
+  "slug": "account-consolidation-and-financial-data-hygiene",
+  "postTitle": "Account Consolidation: Cleaning Up Financial Sprawl",
+  "postLevel": "optimizing",
+  "episode": 5,
+  "seriesTotal": 0,
+  "blogPath": "blog/account-consolidation-and-financial-data-hygiene",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Forgotten accounts are not free; they leak money every year",
+  "topicChip": "ACCOUNT SPRAWL",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Jiri, 38 (same character as post 44: €45,000 in investments and a pension). 13 accounts at 7 institutions. Dormant fees: 3 accounts × €5 a month × 12 = €180 a year. Old pension €30,000 at 0.75% fund fees against 0.05% in his current plan: 0.70% × €30,000 = €210 a year. Idle cash €6,000 in two old savings accounts at about 0%, against an illustrative 3% elsewhere: €180 a year. Total €570 a year; ten years €5,700 before any growth. Same method as the blog post (€5 dormant fees, 0.75% against 0.05%, idle cash against a better rate); amounts scaled to Jiri. Illustrative."
+  },
+  "barStory": {
+    "mode": "sum",
+    "unit": "EUR",
+    "basis": "What Jiri's forgotten accounts cost each year, illustrative",
+    "bars": [
+      {
+        "id": "fees",
+        "label": "Dormant account fees",
+        "sublabel": "3 accounts × €5 a month",
+        "value": 180,
+        "display": "€180",
+        "tone": "amber"
+      },
+      {
+        "id": "pension",
+        "label": "Old pension's higher fees",
+        "sublabel": "0.75% against 0.05% on €30,000",
+        "value": 210,
+        "display": "€210",
+        "tone": "amber"
+      },
+      {
+        "id": "cash",
+        "label": "Idle cash, missed interest",
+        "sublabel": "€6,000 at 0% against 3%",
+        "value": 180,
+        "display": "€180",
+        "tone": "amber"
+      }
+    ],
+    "callout": {
+      "display": "€570",
+      "label": "€180 + €210 + €180",
+      "from": "fees",
+      "to": "cash"
+    },
+    "disclosure": "Illustrative. Fees and rates vary by provider and country."
+  },
+  "hookVariants": [
+    {
+      "id": "not-free",
+      "layout": "bar-gap",
+      "narration": "Your forgotten accounts are still doing something. Mostly, costing you.",
+      "onscreenLines": [
+        "Forgotten accounts",
+        "are not free",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "costing"
+      ]
+    },
+    {
+      "id": "count-them",
+      "layout": "bar-gap",
+      "narration": "Count your financial accounts. Most people get the number wrong, and pay for it.",
+      "onscreenLines": [
+        "Count your accounts",
+        "Most people get it wrong",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "wrong"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Jiri has thirteen accounts at seven institutions. Three he never uses charge five euros a month each. That is a hundred and eighty a year.",
+      "onscreenText": "Dormant fees",
+      "subtext": "€180 a year",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "A pension from a job he left charges point seven five percent. His current plan charges point zero five. On thirty thousand euros, the gap is two hundred and ten a year.",
+      "onscreenText": "Old pension fees",
+      "subtext": "0.75% against 0.05%, €210",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "And six thousand euros sits in old savings accounts earning almost nothing. At an illustrative three percent elsewhere, that is another hundred and eighty.",
+      "onscreenText": "Idle cash",
+      "subtext": "€180 of missed interest",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "third"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "About five hundred and seventy euros a year. For nothing.",
+      "onscreenText": "About €570 a year",
+      "subtext": "For nothing",
+      "emphasis": [
+        "nothing"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "callout"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "It never arrives as one bill. That is why it lasts for years.",
+      "onscreenText": "Never one bill",
+      "subtext": "About €5,700 over ten years",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "principle"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "The fix is a weekend. List every account. Give each one a label. Move or close the ones with no clear job. Then keep things to a few institutions.",
+      "onscreenText": "The four step clean up",
+      "subtext": "One weekend",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The four step clean up",
+        "rows": [
+          {
+            "label": "Inventory",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "Categorise",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Migrate",
+            "value": "3",
+            "tone": "ink"
+          },
+          {
+            "label": "Systematise",
+            "value": "4",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and fees vary by provider and country."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "Fewer accounts. A clearer picture.",
+      "onscreenText": "Fewer accounts",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for a quiet weekend.",
+    "onscreenText": "Save the four step clean up",
+    "subtext": "Inventory, categorise, migrate, systematise",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your forgotten accounts are still doing something. Mostly, costing you.\n\nJiri, 38, has 13 accounts at 7 institutions. Three dormant ones charge €5 a month each: €180 a year. An old pension charges 0.75% where his current plan charges 0.05%: €210 a year on €30,000. And €6,000 sits in old savings accounts at almost nothing, missing about €180 a year at an illustrative 3%. About €570 a year, for nothing.\n\nThe four step clean up: list every account, label each one essential, optimising or dormant, move or close the ones with no clear job, then keep things to a few institutions.\n\n→ Save this for a quiet weekend\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Fees and rates vary by provider and country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Your forgotten accounts are still doing something. Mostly, costing you.\n\nAbout €570 a year in this example. Illustrative, varies by provider and country.",
+    "instagramKeywords": [
+      "too many bank accounts",
+      "old bank accounts",
+      "dormant account fees",
+      "old pension",
+      "pension consolidation",
+      "account consolidation",
+      "bank fees",
+      "money admin",
+      "financial organisation",
+      "personal finance",
+      "global expats",
+      "Kontoführungsgebühren",
+      "Konten zusammenlegen",
+      "frais bancaires",
+      "comisiones bancarias"
+    ],
+    "tiktokTopics": [
+      "how many bank accounts should I have",
+      "what old bank accounts are costing you",
+      "how to consolidate old pensions"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "europemoney"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "hiddenfees",
+    "moneyhabits",
+    "savingtips"
+  ]
+}

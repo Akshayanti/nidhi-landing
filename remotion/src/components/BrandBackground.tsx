@@ -180,7 +180,7 @@ export function BrandBackground({ variant = "paper", children }: Props) {
   };
 
   return (
-    <div style={style}>
+    <div style={style} data-reel-surface>
       <style>{fontFace}</style>
       {variant !== "dark" && <GrainLayer />}
       <EditorialFrame inkColor={inkColor} />

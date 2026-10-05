@@ -1,0 +1,280 @@
+{
+  "slug": "when-the-default-plan-does-not-fit-you",
+  "postTitle": "When the Default Plan Doesn't Fit You",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/when-the-default-plan-does-not-fit-you",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Most of the protection a household needs is free; the common failure is not knowing the default exists",
+  "topicChip": "FREE FIXES",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No figures. Three cost bands from the post: free (an evening), modest (a professional, e.g. a will or powers of attorney), hard (recognition gaps no document closes, handled with workarounds). The one hour audit has five lists."
+  },
+  "bandStory": {
+    "bands": [
+      {
+        "id": "free",
+        "label": "Free",
+        "cost": "An evening",
+        "items": [
+          "Name beneficiaries",
+          "Write down who owns what",
+          "List every account"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "modest",
+        "label": "Modest",
+        "cost": "A professional",
+        "items": [
+          "A will",
+          "Powers of attorney",
+          "A written agreement"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "hard",
+        "label": "Hard",
+        "cost": "Workarounds",
+        "items": [
+          "Insurance",
+          "A bigger buffer",
+          "The right name from the start"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "free",
+    "disclosure": "Illustrative. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "free-protection",
+      "layout": "bands-gap",
+      "narration": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.",
+      "onscreenLines": [
+        "Most protection is free",
+        "Most people skip it",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "nothing"
+      ]
+    },
+    {
+      "id": "one-evening",
+      "layout": "bands-gap",
+      "narration": "One evening of paperwork does most of what a lawyer would.",
+      "onscreenLines": [
+        "One evening",
+        "does most of it",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "evening"
+      ]
+    },
+    {
+      "id": "not-cost",
+      "layout": "bands-gap",
+      "narration": "The usual reason a household is unprotected is not cost. It is not knowing.",
+      "onscreenLines": [
+        "Not cost",
+        "Not knowing",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "knowing"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "Fixes for a default that does not fit you come in three price bands.",
+      "onscreenText": "Three price bands",
+      "subtext": "Free, modest, hard",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "Free, in an evening. Name beneficiaries on every pension and policy. Write down who owns what. List every account.",
+      "onscreenText": "Free: an evening",
+      "subtext": "Beneficiaries, ownership, a list",
+      "emphasis": [
+        "free"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "free"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Modest, and worth doing properly. A will. Powers of attorney. A written agreement about what you own together.",
+      "onscreenText": "Modest: a professional",
+      "subtext": "A will, powers of attorney",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "modest"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "And hard: gaps no document closes, like a marriage your country does not recognise. There, the tools are workarounds, like insurance and a bigger buffer.",
+      "onscreenText": "Hard: workarounds",
+      "subtext": "When no document closes the gap",
+      "emphasis": [
+        "hard"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hard"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "stat",
+      "narration": "Most of the protection sits in the first band. The usual failure is not cost. It is not knowing.",
+      "onscreenText": "Most of it is free",
+      "subtext": "The failure is not knowing",
+      "emphasis": [
+        "free"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "emphasis"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "So spend one hour on five lists. Accounts that pay out. What you own jointly. Who inherits with no will. Who could act for you. What you would lose with your job.",
+      "onscreenText": "The one hour audit",
+      "subtext": "Five lists",
+      "emphasis": [
+        "hour"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The one hour audit",
+        "rows": [
+          {
+            "label": "Every account that pays out",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "What you own jointly",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Who inherits with no will",
+            "value": "3",
+            "tone": "ink"
+          },
+          {
+            "label": "Who could act for you",
+            "value": "4",
+            "tone": "ink"
+          },
+          {
+            "label": "What you would lose with your job",
+            "value": "5",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Not legal advice."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "You will end with a short list. Most of it will be free to fix.",
+      "onscreenText": "A short list",
+      "subtext": "Mostly free to fix",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this, and book your hour this week.",
+    "onscreenText": "Save the one hour audit",
+    "subtext": "Five lists, one evening",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.\n\nFixes come in three bands. Free, in an evening: name beneficiaries on every pension and policy, write down who owns what, list every account where someone you trust can find it. Modest, worth doing properly: a will, powers of attorney, a written agreement about what you own together. Hard: gaps no document closes, handled with workarounds like insurance and a bigger buffer.\n\nThe one hour audit: every account that pays out, what you own jointly, who inherits with no will, who could act for you, and what you would lose with your job.\n\n→ Save this, and book your hour this week\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Not legal advice; rules vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.\n\nOne hour, five lists. Not legal advice.",
+    "instagramKeywords": [
+      "life admin",
+      "financial checklist",
+      "beneficiary designation",
+      "power of attorney",
+      "make a will",
+      "emergency binder",
+      "estate planning checklist",
+      "financial organisation",
+      "personal finance",
+      "global expats",
+      "Vorsorgevollmacht",
+      "Testament",
+      "mandat de protection future",
+      "testamento",
+      "poder notarial"
+    ],
+    "tiktokTopics": [
+      "what paperwork should every adult have",
+      "how to organise your finances in one evening",
+      "do i need a will"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "lifeadmin"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "moneychecklist",
+    "financialorganization",
+    "movingabroad"
+  ],
+  "reelPromise": "How inheritance rules, couple recognition and the tax unit differ by country, and the five defaults built for one kind of household"
+}

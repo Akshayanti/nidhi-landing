@@ -212,6 +212,10 @@ const ICON_PATHS = {
   shield: '<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>',
   trendUp: '<path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/>',
   trendDown: '<path d="M3 7l6 6 4-4 8 8"/><path d="M21 17v-5h-5"/>',
+  book: '<path d="M4 5.5A3.5 3.5 0 0 1 7.5 4H20v15H7.5A3.5 3.5 0 0 0 4 20.5z"/><path d="M4 5.5v15"/><path d="M9 8h7M9 12h6"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.7 10.7l6.6-4.4M8.7 13.3l6.6 4.4"/>',
+  follow: '<circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 14 0"/><path d="M19 8v6M22 11h-6"/>',
+  heart: '<path d="M20.8 5.8a5 5 0 0 0-7.1 0L12 7.5l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21l8.8-8.1a5 5 0 0 0 0-7.1z"/>',
 };
 
 // Case-insensitive lookup so `trendUp`, `trendup`, and `TRENDUP` all resolve.
@@ -260,7 +264,15 @@ function styleQuoteMarks(html) {
   return html.replace(/[\u201C\u201D]/g, (m) => `<span class="dquo">${m}</span>`);
 }
 
-function renderHook(slide) {
+function escapeHtml(text = '') {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderHook(slide, post) {
   // Body becomes the headline; **bold** within it gets the teal accent.
   // Optional `sub:` field renders as a muted subhead beneath.
   // Note: hook layout intentionally does NOT consume `kicker:` (that's closer-only).
@@ -273,7 +285,7 @@ function renderHook(slide) {
     ${glyph}
     <div class="hook-headline">${headline}</div>
     ${sub}
-    <div class="swipe-cue">SWIPE</div>
+    ${post?.totalSlides > 1 ? '<div class="swipe-cue">SWIPE</div>' : ''}
   `;
 }
 
@@ -361,6 +373,112 @@ function renderComparison(slide) {
   `;
 }
 
+function sceneSvg(sceneName, fields = {}) {
+  const scene = (sceneName || 'decision').toLowerCase();
+  const tag = escapeHtml(smartTypography(fields.tag || ''));
+  const bubble = escapeHtml(smartTypography(fields.bubble || ''));
+  const left = escapeHtml(smartTypography(fields.left_label || ''));
+  const right = escapeHtml(smartTypography(fields.right_label || ''));
+  const bubbleClass = bubble.length > 16 ? 'bubble-text compact' : 'bubble-text';
+
+  const svgs = {
+    'frustration-build': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <path class="bubble" d="M238 26h284a26 26 0 0 1 26 26v54a26 26 0 0 1-26 26H404l-24 32-12-32H238a26 26 0 0 1-26-26V52a26 26 0 0 1 26-26z"/>
+        <text class="${bubbleClass}" x="380" y="82" text-anchor="middle">${bubble || 'Why does this not exist?'}</text>
+        <rect class="scene-card" x="82" y="156" width="218" height="172" rx="26"/>
+        <path class="line accent" d="M124 208h112M124 248h138"/>
+        <circle class="status-badge bad" cx="191" cy="354" r="26"/>
+        <path class="status-mark warn" d="M178 341l26 26M204 341l-26 26"/>
+        <text class="scene-label" x="191" y="410" text-anchor="middle">${left || 'MISSING'}</text>
+        <path class="line accent" d="M330 244h100"/><path class="line accent" d="M408 218l28 26-28 26"/>
+        <rect class="scene-card" x="462" y="156" width="218" height="172" rx="26"/>
+        <path class="line accent" d="M504 204h118M504 244h84M504 284h128"/>
+        <circle class="status-badge good" cx="571" cy="354" r="26"/>
+        <path class="status-mark ok" d="M557 354l10 12 22-28"/>
+        <text class="scene-label" x="571" y="410" text-anchor="middle">${right || 'BUILD NIDHI'}</text>
+      </svg>`,
+    'broken-tool': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <rect class="scene-card" x="252" y="38" width="256" height="316" rx="32"/>
+        <path class="line accent" d="M308 94h144M308 142h112M308 258h144"/>
+        <path class="line warn" d="M333 176l94 94M427 176l-94 94"/>
+        <text class="scene-label" x="380" y="318" text-anchor="middle">${tag || 'TOO SIMPLE'}</text>
+        <circle class="head" cx="122" cy="226" r="32"/><path class="stick" d="M122 258v64M92 286h60M122 322l-38 50M122 322l42 50"/>
+        <circle class="head" cx="638" cy="226" r="32"/><path class="stick" d="M638 258v64M608 286h60M638 322l-38 50M638 322l42 50"/>
+        <path class="bubble" d="M74 46h220a26 26 0 0 1 26 26v52a26 26 0 0 1-26 26H186l-34 34 8-34H74a26 26 0 0 1-26-26V72a26 26 0 0 1 26-26z"/>
+        <text class="${bubbleClass}" x="184" y="100" text-anchor="middle">${bubble || 'Real life is messier'}</text>
+      </svg>`,
+    'decision-table': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <rect class="scene-card" x="160" y="62" width="440" height="270" rx="28"/>
+        <path class="line accent" d="M214 122h156M214 170h280M214 218h236"/>
+        <rect class="mini-card" x="190" y="266" width="150" height="66" rx="16"/><text class="mini-text" x="265" y="307" text-anchor="middle">${left || 'RENT'}</text>
+        <rect class="mini-card" x="420" y="266" width="150" height="66" rx="16"/><text class="mini-text" x="495" y="307" text-anchor="middle">${right || 'PLAN'}</text>
+        <path class="line accent" d="M356 300h48"/><path class="line accent" d="M390 282l18 18-18 18"/>
+        <circle class="head" cx="84" cy="226" r="28"/><path class="stick" d="M84 254v58M58 280h52M84 312l-34 48M84 312l38 48"/>
+        <circle class="head" cx="676" cy="226" r="28"/><path class="stick" d="M676 254v58M650 280h52M676 312l-34 48M676 312l38 48"/>
+      </svg>`,
+    'doorway': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <rect class="scene-card" x="266" y="58" width="228" height="292" rx="28"/>
+        <path class="line heavy" d="M326 350V118h108v232"/>
+        <path class="line accent" d="M436 302h172"/>
+        <path class="line accent" d="M306 350h302"/>
+        <path class="line accent" d="M532 302l76 48"/>
+        <text class="scene-label" x="380" y="402" text-anchor="middle">${tag || 'ACCESSIBLE BY DEFAULT'}</text>
+        <circle class="head" cx="158" cy="248" r="30"/><path class="stick" d="M158 278v58M132 306h52M158 336l-34 46M158 336l38 46"/>
+        <path class="bubble" d="M82 48h190a26 26 0 0 1 26 26v50a26 26 0 0 1-26 26h-92l-32 34 7-34H82a26 26 0 0 1-26-26V74a26 26 0 0 1 26-26z"/>
+        <text class="${bubbleClass}" x="177" y="101" text-anchor="middle">${bubble || 'Can I use this?'}</text>
+      </svg>`,
+    'open-blog': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <path class="book-page" d="M112 94h250c42 0 62 24 62 62v192H188c-48 0-76-26-76-70z"/>
+        <path class="book-page" d="M398 94h250v184c0 44-28 70-76 70H398z"/>
+        <path class="line heavy" d="M398 114v214"/>
+        <path class="line accent" d="M168 152h150M168 198h190M168 244h132M450 152h146M450 198h122M450 244h162"/>
+        <path class="line accent" d="M328 64h66v58h-76V84a46 46 0 0 1 82-28"/>
+        <text class="scene-label" x="380" y="392" text-anchor="middle">${tag || 'FREE FOREVER'}</text>
+      </svg>`,
+    'privacy-shield': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <path class="shield-fill" d="M380 46l154 66v92c0 84-56 140-154 182-98-42-154-98-154-182v-92z"/>
+        <path class="line heavy" d="M380 46l154 66v92c0 84-56 140-154 182-98-42-154-98-154-182v-92z"/>
+        <path class="line accent" d="M316 210l46 46 90-112"/>
+        <rect class="ad-box" x="78" y="104" width="128" height="58" rx="14"/><text class="ad-text" x="142" y="143" text-anchor="middle">AD</text><path class="ad-line" d="M88 114l108 38"/>
+        <rect class="ad-box" x="554" y="104" width="128" height="58" rx="14"/><text class="ad-text" x="618" y="143" text-anchor="middle">AD</text><path class="ad-line" d="M564 114l108 38"/>
+        <rect class="ad-box" x="78" y="244" width="128" height="58" rx="14"/><text class="ad-text" x="142" y="283" text-anchor="middle">DATA</text><path class="ad-line" d="M88 254l108 38"/>
+        <rect class="ad-box" x="554" y="244" width="128" height="58" rx="14"/><text class="ad-text" x="618" y="283" text-anchor="middle">SALE</text><path class="ad-line" d="M564 254l108 38"/>
+        <text class="scene-label" x="380" y="340" text-anchor="middle">${tag || 'NO DATA SALES'}</text>
+      </svg>`,
+    'word-chain': `
+      <svg viewBox="0 0 760 430" aria-hidden="true">
+        <circle class="head" cx="126" cy="240" r="30"/><path class="stick" d="M126 270v58M100 298h52M126 328l-34 46M126 328l38 46"/>
+        <circle class="head" cx="380" cy="240" r="30"/><path class="stick" d="M380 270v58M354 298h52M380 328l-34 46M380 328l38 46"/>
+        <circle class="head" cx="634" cy="240" r="30"/><path class="stick" d="M634 270v58M608 298h52M634 328l-34 46M634 328l38 46"/>
+        <path class="bubble" d="M84 58h190a26 26 0 0 1 26 26v50a26 26 0 0 1-26 26h-80l-30 34 6-34H84a26 26 0 0 1-26-26V84a26 26 0 0 1 26-26z"/>
+        <path class="bubble" d="M460 58h190a26 26 0 0 1 26 26v50a26 26 0 0 1-26 26h-80l-30 34 6-34h-86a26 26 0 0 1-26-26V84a26 26 0 0 1 26-26z"/>
+        <text class="bubble-text" x="179" y="112" text-anchor="middle">${left || 'This helped'}</text>
+        <text class="bubble-text" x="555" y="112" text-anchor="middle">${right || 'Sending it'}</text>
+        <path class="line accent" d="M186 242h124M450 242h124"/><path class="line accent" d="M292 222l22 20-22 20M556 222l22 20-22 20"/>
+      </svg>`,
+  };
+
+  return svgs[scene] || svgs['decision-table'];
+}
+
+function renderCartoon(slide) {
+  const title = slide.fields.title || '';
+  const body = slide.text || slide.fields.caption || '';
+  const titleHtml = title ? `<div class="cartoon-title">${applyInline(smartTypography(title))}</div>` : '';
+  const bodyHtml = body ? `<div class="cartoon-copy">${bodyToHtml(smartTypography(body))}</div>` : '';
+  return `
+    <div class="cartoon-stage">${sceneSvg(slide.fields.scene, slide.fields)}</div>
+    ${titleHtml}
+    ${bodyHtml}
+  `;
+}
+
 function renderCloser(slide, post) {
   const kicker = slide.fields.kicker || slide.text || '';
   const next = slide.fields.next || '';
@@ -410,6 +528,7 @@ const LAYOUTS = {
   stat: renderStat,
   list: renderList,
   comparison: renderComparison,
+  cartoon: renderCartoon,
   closer: renderCloser,
 };
 

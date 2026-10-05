@@ -1,0 +1,249 @@
+{
+  "slug": "cash-management",
+  "postTitle": "Cash Management: Where to Hold Your Cash",
+  "postLevel": "optimizing",
+  "episode": 4,
+  "seriesTotal": 0,
+  "blogPath": "blog/cash-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Cash has three jobs, and each job belongs in a different kind of account",
+  "topicChip": "THREE BUCKETS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Eva holds €30,000 of cash, all in a current account at 0%. Costs €2,500 a month. Split: spending 1 month = €2,500; safety buffer 5 months = €12,500 (inside the common 3 to 6 month guideline); flat deposit due in about 3 years = €15,000. Total €30,000. At 2% inflation, €30,000 at 0% loses 2% × €30,000 = €600 of purchasing power a year (same example as the blog post). If only the €2,500 spending bucket sits at 0%: 2% × €2,500 = €50 a year, assuming the other two buckets roughly keep pace with inflation. Illustrative."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "spending",
+        "label": "Spending",
+        "cost": "1 month",
+        "items": [
+          "Bills and daily spending",
+          "Current account",
+          "Earns nothing, and that is fine"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "buffer",
+        "label": "Safety buffer",
+        "cost": "3 to 6 months",
+        "items": [
+          "Real emergencies only",
+          "Savings or money market fund",
+          "A day or two to reach"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "goals",
+        "label": "Near term goals",
+        "cost": "2 to 5 years",
+        "items": [
+          "A deposit, a car, tuition",
+          "Treasury bills or term deposits",
+          "Tied to a date"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "buffer",
+    "disclosure": "Illustrative. 3 to 6 months is a common guideline, not a rule. Account types vary by country."
+  },
+  "hookVariants": [
+    {
+      "id": "three-jobs",
+      "layout": "bands-gap",
+      "narration": "If all your cash sits in one account, it is doing three jobs badly.",
+      "onscreenLines": [
+        "One account",
+        "Three jobs, done badly",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "three"
+      ]
+    },
+    {
+      "id": "invisible-loss",
+      "layout": "bands-gap",
+      "narration": "Your emergency fund is losing money, and no statement will ever show it.",
+      "onscreenLines": [
+        "Your emergency fund",
+        "is quietly losing money",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "losing"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Eva keeps all thirty thousand euros of her cash in her current account, earning nothing.",
+      "onscreenText": "Eva, €30,000",
+      "subtext": "All in her current account, at 0%",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "Job one is spending. About one month of costs, for bills and daily life. A current account is right for that.",
+      "onscreenText": "Spending",
+      "subtext": "€2,500, one month of costs",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "spending"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Job two is the safety buffer. A common guideline is three to six months of costs, in savings or a money market fund.",
+      "onscreenText": "Safety buffer",
+      "subtext": "€12,500, five months of costs",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "buffer"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Job three is money with a date. Her flat deposit, in about three years. That can sit in Treasury bills or term deposits.",
+      "onscreenText": "Near term goals",
+      "subtext": "€15,000, due in about 3 years",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "goals"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "stat",
+      "narration": "At two percent inflation, all of it at zero costs her about six hundred euros a year. Split by job, only the spending bucket sits at zero. About fifty.",
+      "onscreenText": "€600 a year, down to €50",
+      "subtext": "At 2% inflation, illustrative",
+      "emphasis": [
+        "fifty"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "zero"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "definition",
+      "narration": "So for every euro of cash, ask one question. When might I need it?",
+      "onscreenText": "The three bucket test",
+      "subtext": "When might I need it?",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The three bucket test",
+        "rows": [
+          {
+            "label": "This month",
+            "value": "Current account",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "In an emergency",
+            "value": "Savings or money market",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "In 2 to 5 years",
+            "value": "Treasury bills or deposits",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Account types vary by country."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "Give every euro a job. Then put it where that job is done best.",
+      "onscreenText": "Give every euro a job",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before you next move your savings.",
+    "onscreenText": "Save the three bucket test",
+    "subtext": "When might I need it?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "If all your cash sits in one account, it is doing three jobs badly.\n\nEva keeps all €30,000 of her cash in her current account, at 0%. Split by job: one month of costs for spending, €2,500; a safety buffer of five months, €12,500; and €15,000 for a flat deposit in about three years. At 2% inflation, all of it at 0% costs her about €600 of purchasing power a year. Split by job, only the spending bucket sits at 0%: about €50.\n\nFor every euro of cash, ask when you might need it. This month: a current account. In an emergency: savings or a money market fund. In 2 to 5 years: Treasury bills or term deposits.\n\n→ Save this before you next move your savings\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. 3 to 6 months is a common guideline, not a rule. Account types and protections vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "If all your cash sits in one account, it is doing three jobs badly.\n\nSpending, a safety buffer, and money with a date each belong somewhere different. Illustrative, varies by country.",
+    "instagramKeywords": [
+      "where to keep emergency fund",
+      "emergency savings",
+      "savings account",
+      "instant access savings",
+      "money market fund",
+      "treasury bills",
+      "term deposit",
+      "house deposit savings",
+      "inflation",
+      "purchasing power",
+      "personal finance",
+      "global expats",
+      "Tagesgeld",
+      "Festgeld",
+      "livret d'épargne",
+      "cuenta de ahorro"
+    ],
+    "tiktokTopics": [
+      "where should I keep my emergency fund",
+      "how to split cash savings by goal",
+      "is my savings account losing money to inflation"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "europemoney"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "cashmanagement",
+    "savingsgoals",
+    "budgetingtips"
+  ]
+}

@@ -1,0 +1,879 @@
+DESIGN DIALOGUE: POST 43 REEL AND CAROUSEL
+Participants: Claude (script, math, lint, carousel renderer) and Codex (visual design lead, reel visuals).
+Each message is recorded in full, in order.
+
+================================================================
+MESSAGE 1. CLAUDE TO CODEX (2026-09-30)
+Attached: two reel contact sheets, three carousel contact sheets.
+================================================================
+
+You are collaborating with Claude (another AI agent) as the visual design lead on Instagram content for nidhi, a personal financial planning product (nidhi.today). Claude wrote the script and the renderers; the founder asked us to design this together because you are strong at visual content. This is a design review and storyboard session. Do NOT edit any files; you are in a read only sandbox. Reply with your design direction only.
+
+CONTEXT
+- Post 43, "Financial Projections". Day 1 is a Reel (9:16, 1080x1920, faceless, text to speech voice, rendered with Remotion). Day 2 is a carousel (4:5, 1080x1350, rendered from HTML with puppeteer).
+- Audience: expats and cross border workers, mostly Europe, anxious about money, not finance people. The founder's test viewer called earlier reels "boring and professional". That is the failure mode to beat.
+- The goal of each piece: (1) give the viewer something they keep and come back for, (2) show, without plugging, that the maker is trustworthy: assumptions visible, ranges not single numbers, no advice, (3) reel for cold reach, carousel for saves.
+- Story: Eva, 32, has 50,000 euros invested and adds 1,000 a month for 30 years. A calculator gives her one number (1.91M at 8% real growth). Same plan at 6% is 1.26M, at 4% is 847k. The gap is over a million. The tool the viewer keeps: multiply what you invest monthly by 700, 1,000 and 1,400 to get your own 30 year range at 4%, 6% and 8%.
+- Brand: cream paper #FAF7F2, navy ink #002171, teal #00897B, warm amber for caution. Fonts Inter (UI) and Fraunces (display, reel only). No em dashes, en dashes or hyphens in any on screen text. No memes. Every number must be labelled illustrative; no promises of returns.
+
+WHAT EXISTS (read these in the repo)
+- Reel plan (script, beats, anchors): docs/instagram-kit/4. optimizing/43-financial-projections.reel.json
+- Reel components: remotion/src/ReelComposition.tsx, remotion/src/components/BeatScene.tsx, KineticHook.tsx, CTAScene.tsx, SubtitleCaption.tsx, SeriesChip.tsx, and the plan schema in remotion/src/data.ts
+- Carousel source and renderer: docs/instagram-kit/4. optimizing/43-financial-projections.md and scripts/render-kit.mjs (the growthSvg function computes the chart from the inputs)
+
+ATTACHED IMAGES
+1 and 2: contact sheets of the current reel, one frame every 6 seconds, left to right (88 seconds total).
+3 and 4: the first six carousel slides from the earlier pilot (the character was called Maya then; she is Eva now).
+5: the other pilot deck (holiday versus rent bars, the five inputs list, test order list).
+
+CLAUDE'S OWN CRITIQUE OF THE REEL
+- The fan chart is the entire insight and it is tiny: the blog figure is pasted as a small image with unreadable labels.
+- Nearly every beat is centred text on cream. Nothing moves except captions. The three lines never draw, never diverge on screen.
+- 88 seconds is long. The numbers 1.91M, 1.26M and 847k arrive as three separate static cards instead of one evolving picture.
+- The multiplier tool (times 700, 1,000, 1,400) is a plain list; it should feel like the thing you screenshot.
+
+WHAT I NEED FROM YOU
+A. Reel: a shot by shot storyboard (time range, what is on screen, what moves and how, what text appears, what the voice says or whether to cut the line). Treat the growth chart as the persistent hero: tell me exactly how it should be staged across the reel (when the single line draws, when the other two appear, how the gap is shown, where labels sit so they survive Instagram's UI safe zones). Target length and what to cut. Be specific about sizes, positions, colours and easing so I can build it as a Remotion component (I can add a new animated SVG chart anchor type that computes the lines from start, monthly, years and rates).
+B. Reel: the first 2 seconds. What exactly is on screen at frame 0 to stop a scroll, given it must work with sound off.
+C. Carousel: for each of the 8 slides in the current .md source, what to change visually (layout, hierarchy, scale, colour, chart treatment). Call out anything that reads as generic template. The "tool" slide (slide 5, a 3 row table: growth rate, monthly multiplier, saved multiplier) has no design yet; design it as the most screenshot worthy slide.
+D. Anything in my script or structure you think is wrong. Disagree with me where you do.
+
+Keep it concrete and buildable. No generic advice.
+
+
+================================================================
+MESSAGE 2. CODEX TO CLAUDE
+================================================================
+
+The strongest direction is to rebuild the reel as one continuous chart story, not nine formatted cards. Aim for 42 to 48 seconds. The chart should remain in the same coordinate system from roughly second 2 through second 27, so the viewer watches one projection turn into three futures.
+
+## A. Reel storyboard
+
+### Global stage
+
+Use cream throughout the explanatory section. Save navy for the final CTA only. Switching backgrounds beat by beat currently makes the piece feel like a slideshow.
+
+For the chart:
+
+- Plot area: `x 86 to 840`, `y 430 to 1240`.
+- Reserve `x 840 to 940` for endpoint labels.
+- Keep everything right of `x 940` empty because of Instagram controls.
+- Keep essential content above `y 1450`.
+- Subtitle pill stays around `y 1570`, but reduce it to one or two lines and 5 to 7 words per chunk.
+- Headline region: `x 72 to 920`, `y 190 to 370`.
+- Use a fixed €2M scale throughout. Never rescale between rates.
+- Line widths: 10 to 12 px.
+- Endpoint dots: 18 to 22 px.
+- Grid: only €1M and €2M, 2 px dotted warm grey.
+- Axis labels: 26 to 30 px Inter.
+- Endpoint values: 48 to 56 px Inter Extra Bold.
+- Rate labels: 26 to 30 px.
+- Chart disclosures: 22 to 24 px, just above the subtitle zone.
+
+Motion should be controlled rather than springy. Use `easeInOutCubic` for line drawing and label movement. Use a lightly damped spring only for the initial number and final screenshot card. Financial curves should not bounce.
+
+### 0:00 to 0:02 — The stop
+
+On screen immediately:
+
+> €1,060,000  
+> from one changed input
+
+The amount is 170 to 190 px Inter Extra Bold, navy on cream, aligned left at `x 72`, with its baseline around `y 650`. “from one changed input” is 58 to 64 px below it. Make “one” teal.
+
+Behind it, show three short curve endings on the right, already visibly separated, with `€1.91M`, `€1.26M`, and `€847k` labels. Do not begin on an empty screen and animate content in. Frame 0 must already communicate the puzzle.
+
+From frame 0 to frame 45, draw a thin amber vertical bracket between €847k and €1.91M. At about frame 12, the bracket grows from its midpoint. At frame 20, the €1,060,000 text moves up slightly to make room for:
+
+> Same savings. Same 30 years.
+
+Voice:
+
+> “One input moved Eva’s answer by more than a million euros.”
+
+This is a much stronger hook than introducing Eva typing into a calculator.
+
+### 0:02 to 0:06 — Establish the plan
+
+The three curve fragments collapse into one origin point around `x 100, y 1200`. Three compact input chips enter above the chart:
+
+- €50,000 now
+- €1,000 monthly
+- 30 years
+
+Use 34 to 38 px Inter, white cards with a 2 px navy outline. The cards arrive left to right with 4 frame offsets. They should not bounce.
+
+Headline:
+
+> Eva’s plan stays the same
+
+Voice:
+
+> “Eva is 32. She has fifty thousand euros invested and adds one thousand every month for thirty years.”
+
+Cut “typed her savings into a calculator.” It delays the actual tension.
+
+Keep “Illustrative example” visible at 24 px near the lower left from this point onward.
+
+### 0:06 to 0:11 — The calculator’s single answer
+
+The chips shrink into a single compact assumptions strip at `y 315`. Draw the navy 8% line from the origin to the endpoint over about 42 frames.
+
+The curve should reveal with an SVG stroke dash offset. A small dot travels along the path during the draw. Do not animate the endpoint value separately until the dot arrives.
+
+When the endpoint lands:
+
+- `€1.91M` at `x 858`, aligned with the endpoint.
+- `8% real` directly below.
+- A small amber assumption tag, `GROWTH 8%`, appears above the chart.
+
+Headline:
+
+> The calculator gave her one line
+
+Voice:
+
+> “At eight percent real growth, the calculator says one point nine one million.”
+
+Under the chart:
+
+> Illustrative. Real growth means after inflation.
+
+Do not say “It felt like an answer.” The visual already communicates false precision, and the phrase is vague.
+
+### 0:11 to 0:15 — Expose the input
+
+Keep the chart fixed. Enlarge the `GROWTH 8%` tag to about 280 by 96 px and move it toward the center. Give it an amber outline.
+
+Change the headline to:
+
+> This is an input, not an answer
+
+Animate a text caret after `8%`, then replace 8 with 6 as though the field has been edited. Use 6 to 8 frames for the digit transition.
+
+Voice:
+
+> “But eight percent is not an answer. It is an assumption she entered.”
+
+Cut “because she read it somewhere.” It makes Eva seem careless and slightly foolish. The viewer likely made the same choice; do not shame them.
+
+### 0:15 to 0:19 — Add the middle line
+
+The 8% line remains visible but becomes teal rather than navy. Draw the 6% navy line from the same origin.
+
+As the new endpoint lands, show:
+
+- `€1.26M`
+- `6% real`
+
+The 8% label shifts vertically into its permanent final position. Labels should sit to the right of their endpoints, but all text must finish by `x 930`.
+
+Headline:
+
+> Same plan. One changed assumption.
+
+Voice:
+
+> “At six percent, the same plan ends around one point two six million.”
+
+No cut to a comparison card.
+
+### 0:19 to 0:23 — Add the low line
+
+Draw the 4% amber line. The range fill begins appearing between the 4% and 8% lines, with teal at 7 to 9% opacity.
+
+Show:
+
+- `€847k`
+- `4% real`
+
+Voice:
+
+> “At four percent, it ends around eight hundred and forty seven thousand.”
+
+Headline can disappear here. Let the chart own the screen.
+
+### 0:23 to 0:27 — Show the gap
+
+All three lines remain. Dim the axes slightly. Draw a vertical bracket at year 30 from the 4% endpoint to the 8% endpoint.
+
+Large text inside the open left area:
+
+> €1.06M apart
+
+Below:
+
+> Nothing about Eva changed
+
+Voice:
+
+> “The gap is one point zero six million euros. Nothing about Eva changed. Only the growth assumption did.”
+
+Do not say “Long run history supports all three.” That claim needs asset allocation, fees, taxes, currency, and geography context. It is too broad for the visual and weakens trust.
+
+The disclosure should now read:
+
+> Illustrative. Rounded. Future returns are not guaranteed.
+
+### 0:27 to 0:31 — Interpret without adding a new scene
+
+Do not cut away from the chart. Fade the middle line to full opacity and the outer lines to roughly 65%. Replace the gap bracket with a soft range brace or translucent fan.
+
+Headline:
+
+> A projection is a range
+
+Subline:
+
+> Test the low case. Do not treat the high case as owed.
+
+Voice:
+
+> “A projection is better used as a range than as a promise.”
+
+I would not say “Plan on the low line” as an absolute. It sounds like financial advice and implies that 4% is reliably conservative. “Test the low case” is more honest.
+
+### 0:31 to 0:39 — The screenshot tool
+
+Transform the chart into a clean calculation card. The three endpoint labels slide horizontally into three full width rows while the curves fade to 12% opacity behind them.
+
+Headline:
+
+> Your 30 year range
+
+Directly beneath, one editable looking token:
+
+> Monthly investing: €____
+
+Then three large rows:
+
+| Tone | Left | Operator | Result |
+|---|---:|---:|---|
+| Amber | Low | × 700 | €____ |
+| Navy | Middle | × 1,000 | €____ |
+| Teal | High | × 1,400 | €____ |
+
+Make each multiplier 74 to 82 px. Make the rest 32 to 40 px. Put the three rows in one outlined cream card occupying `x 72 to 920`, `y 470 to 1280`.
+
+At the bottom of the card:
+
+> Rounded monthly contribution estimate  
+> 30 years, 4%, 6%, 8% real growth
+
+Voice:
+
+> “For a quick range, multiply what you invest each month by seven hundred, one thousand, and fourteen hundred.”
+
+Then demonstrate one number rather than leaving blanks. Animate `€300` into the monthly field and resolve the results:
+
+- €210k
+- €300k
+- €420k
+
+Voice:
+
+> “Three hundred a month becomes roughly two hundred ten, three hundred, or four hundred twenty thousand.”
+
+This is the screenshot moment. Hold the completed card for at least 1.5 seconds with no large subtitle covering it.
+
+Important: this shortcut excludes an existing lump sum unless a second calculation is added. The current reel narration suggests it gives the viewer’s complete range, which is not true for someone who already has investments.
+
+### 0:39 to 0:44 — How to use it
+
+Keep the tool card visible but scale it to 72% and move it upward. Beneath it, reveal three short actions:
+
+1. Run a low, middle and high rate  
+2. Stress test the low result  
+3. Update with real numbers yearly
+
+Use a progressive underline, not flowchart boxes.
+
+Voice:
+
+> “Use three rates. Stress test the low result. Update the projection when your real numbers change.”
+
+This replaces the current separate “not a prediction,” flow, and final Eva scenes.
+
+### 0:44 to 0:48 — CTA
+
+Cut to navy. Place a small thumbnail of the completed multiplier card in the upper half, slightly rotated by about 1 degree with a cream shadow.
+
+Large:
+
+> Save the multiplier
+
+Below:
+
+> ×700 · ×1,000 · ×1,400
+
+Then, smaller:
+
+> Full assumptions at nidhi.today/blog/financial-projections
+
+Voice:
+
+> “Save the multipliers for your next money review.”
+
+Do not include the long “read the full post” paragraph, follow badge, series line, URL, and handle as equal-weight elements. That CTA currently looks like a closing credits page. One primary action, one quiet destination, one handle.
+
+## B. Exact first two seconds
+
+Frame 0 should not show a logo, series chip, scene label, or introductory animation.
+
+It should show:
+
+- Cream background.
+- `€1,060,000` already present at `x 72, y approximately 500`.
+- `from one changed input` beneath it.
+- Three separated curve endings on the right half.
+- Endpoint dots and the three final values already readable.
+- Small `ILLUSTRATIVE` label at the upper left.
+- No subtitle pill until approximately frame 12.
+
+Animation:
+
+- Frames 0 to 10: almost static, only a subtle 1.015 to 1 scale settle on the main number.
+- Frames 10 to 28: gap bracket draws between the high and low endpoints.
+- Frames 20 to 45: “Same savings. Same 30 years.” fades upward beneath the premise.
+- By frame 55, begin collapsing the endpoints back to the common origin for the Eva setup.
+
+Sound-off reading at frame 0:
+
+> €1,060,000  
+> from one changed input
+
+That is the reel.
+
+## C. Carousel direction
+
+The current renderer reads as a coherent design system, but also as a generic branded template because every slide repeats the same eyebrow, centered content column, dots, and lower-right handle. Keep the system, but allow each slide to have its own dominant visual form.
+
+### Slide 1 — Hook
+
+Current issue: the dotted fan is decorative and the question is broad.
+
+Make the fan occupy the upper 55% of the slide. Put the three endpoint values on it, not question marks. Add the €1.06M vertical bracket.
+
+Use this copy:
+
+> One input moved this answer by €1.06M
+
+Small line:
+
+> Same savings. Same 30 years.
+
+This is sharper and more specific than “What is it not telling you?” Keep the swipe cue small. Remove the series eyebrow from this slide.
+
+### Slide 2 — Meet Eva
+
+The avatar card looks like a generic onboarding component. Remove the circular “E” avatar, white card, chat bubble, and drop shadow.
+
+Instead, make it an editorial receipt or calculator input sheet:
+
+> EVA, 32  
+> Lisbon
+
+Then three oversized input rows:
+
+- €50,000 invested now
+- €1,000 added monthly
+- 30 years
+
+Use a thin vertical teal rule to connect the rows. Put the question at the bottom in 48 to 54 px:
+
+> What could this become by 62?
+
+This should feel like we are exposing calculator inputs, not introducing a fictional app user.
+
+### Slide 3 — One line
+
+Make the chart substantially larger. It should occupy at least 70% of the usable content area.
+
+Reduce the title to:
+
+> One assumption. One line.
+
+Put the assumptions in a compact strip above the chart:
+
+> €50k now · €1k monthly · 30 years · 8% real
+
+The endpoint label should be the visual hero. Add a small outlined amber box around `8% real` to show that it is an entered assumption.
+
+Change body copy to:
+
+> €1.91M looks precise. The 8% beneath it is still a guess.
+
+Keep the disclosure directly under the chart, not stranded near the footer.
+
+### Slide 4 — Three lines
+
+This is the best existing slide and should be treated as the carousel’s central proof.
+
+Increase chart height by roughly 15%. Add a translucent band between 4% and 8%. Add a vertical endpoint bracket labelled:
+
+> €1.06M range
+
+Keep endpoint values outside the curves with collision-safe alignment. Use:
+
+- 4% amber
+- 6% navy
+- 8% teal
+
+Title:
+
+> Same Eva. Three growth assumptions.
+
+Body:
+
+> Same inputs. Only the growth rate changed.
+
+Avoid “reasonable” in the title unless the asset allocation and context are stated.
+
+### Slide 5 — Screenshot tool
+
+This should look more like a reference card than a table.
+
+Use a navy header band across the top 24%:
+
+> THE 30 YEAR MULTIPLIER
+
+Below it:
+
+> Start with what you invest each month
+
+Then three stacked rows filling most of the page:
+
+**LOW**  
+`monthly amount × 700`
+
+**MIDDLE**  
+`monthly amount × 1,000`
+
+**HIGH**  
+`monthly amount × 1,400`
+
+Make `×700`, `×1,000`, and `×1,400` 88 to 104 px. Use amber, navy, and teal left-edge blocks so the rows visually correspond to the chart.
+
+Under the rows, create a worked example in a cream inset:
+
+> If you invest €300 monthly  
+> €210k · €300k · €420k
+
+Then add a distinct second section for existing savings:
+
+> Already invested?  
+> Add roughly 3×, 6× or 10× today’s balance.
+
+Example:
+
+> €10k now adds roughly €30k · €60k · €100k
+
+Footer disclosure:
+
+> Illustrative rule of thumb. 30 years. 4%, 6%, 8% real growth. Rounded. Not a forecast.
+
+Do not compress both monthly and saved multipliers into one six-column table. People will mix the columns. Two clearly named operations are safer and more memorable.
+
+### Slide 6 — What repeats
+
+The existing holiday versus rent slide is visually clear but structurally feels imported from another carousel. It changes the subject from assumption risk to spending guilt.
+
+If it must stay, explicitly bridge it back to the projection:
+
+Title:
+
+> Repeating inputs move the line most
+
+Use a timeline rather than plain bars:
+
+- Holiday: one amber block at year zero
+- Extra rent: 360 small navy or amber marks extending across 30 years
+
+Then resolve both into the bars:
+
+- One €4,000 cost → €23k by year 30
+- €150 monthly → €146k by year 30
+
+This makes repetition visible rather than merely asserted.
+
+Use “if invested at 6% real” prominently. “Costs you” is too moralizing and implies an investment return was available and appropriate.
+
+### Slide 7 — Test order
+
+The numbered list is generic template territory. Convert it into a four-step projection control panel.
+
+Use a vertical central line with four nodes:
+
+1. Baseline  
+2. Downside  
+3. Upside  
+4. Change one input
+
+However, “one change at a time” is a method, not a fourth scenario. Visually separate it as a footer instruction:
+
+> Rule: change one input at a time
+
+That leaves three scenario cards above it. For downside, show small parameter chips:
+
+> low growth · lower income · surprise cost
+
+For upside:
+
+> test last
+
+This makes the hierarchy logically correct.
+
+### Slide 8 — Closer
+
+The current slide is too text-heavy and repeats two actions plus a URL.
+
+Make the main statement occupy the upper half:
+
+> A projection is a range, not a promise.
+
+Then a smaller practical line:
+
+> Stress test the low case. Update it yearly.
+
+In the bottom half, show a miniature of slide 5 with a bookmark tab labelled:
+
+> SAVE SLIDE 5
+
+Below that, one quiet link:
+
+> How to choose a growth assumption  
+> nidhi.today/blog/financial-projections
+
+Drop “send this to someone who trusts the first number.” It introduces a second CTA and sounds slightly smug.
+
+## D. Script and structural problems
+
+1. **The strongest fact arrives too late.**  
+   The million euro gap should be the hook, not the fifth beat.
+
+2. **Eva is over-explained.**  
+   Her name humanizes the example, but she does not need a complete narrative arc. She is the input set, not the protagonist of an 88 second story.
+
+3. **“Because she read it somewhere” is condescending.**  
+   Replace it with “the calculator asked for a growth rate, so she entered 8%.” That makes the product pattern the problem, not the person.
+
+4. **“Long run history supports all three” is too broad.**  
+   A defensible rate depends on portfolio, fees, tax, currency, inflation methodology, and time period. Say they are “illustrative assumptions” unless the post substantiates more.
+
+5. **“Plan on the low line” conflicts with the no-advice posture.**  
+   Prefer “stress test the low line” or “check whether the plan still works in the low case.”
+
+6. **The multiplier is currently presented as a complete projection.**  
+   `monthly × 700/1,000/1,400` covers monthly contributions. Existing savings need their own `current balance × 3/6/10` estimate. The carousel contains both, but the reel narration does not make the distinction.
+
+7. **The carousel’s slide 5 example should show its arithmetic.**  
+   `€300 monthly plus €10,000 saved equals €240k, €360k or €520k` is correct, but opaque unless viewers understand that two different multiplier sets were combined.
+
+8. **Slide 6 is a thematic detour.**  
+   It is useful content, but it weakens this post’s clean story: one calculator, one assumption, three outcomes, one tool. If saves are the priority, I would replace slide 6 with a full worked multiplier example and move the holiday versus rent comparison to a separate post.
+
+9. **Eighty-eight seconds is not justified.**  
+   This concept has one reveal and one tool. About 46 seconds is enough to create tension, prove the claim, deliver the saved utility, and close. Longer runtime currently comes from restating the same conclusion in different card layouts.
+
+The key design principle is continuity: the viewer should always know they are looking at the same plan while one assumption changes. The current reel repeatedly resets the visual context, which is why it feels professional but inert.
+
+================================================================
+MESSAGE 3. CLAUDE TO CODEX
+Codex now has write access to remotion/src and owns the reel visual build.
+================================================================
+
+Claude here. Your direction is right and I am adopting almost all of it. The founder wants us working as peers, so from this message you have write access and you own the reel's visual build. I own the script, the math, the brand scrubber, the carousel renderer and the rendering/verification loop. We review each other.
+
+WHERE I AGREE (already applied to the script)
+- Hook is now the €1,060,000 gap, chart endings visible at frame 0.
+- One continuous chart story on a fixed €2M scale, cream throughout, navy only for the CTA.
+- Cut "because she read it somewhere". Cut "long run history supports all three". "Plan on the low line" became "Test the low case".
+- The multiplier is stated as monthly contributions only; existing savings are a separate line (roughly 3, 6 or 10 times over 30 years).
+- CTA reduced to one action, one quiet destination, one handle.
+- Carousel slide 6 (holiday versus rent) leaves this deck and becomes its own later post; I will replace it with a worked multiplier example.
+
+WHERE I PUSH BACK
+1. Length. Your storyboard gives about 4 seconds to lines of 18 to 20 words. The voice is text to speech at roughly 165 words a minute, and beat durations come from the actual audio (see below), not from a storyboard clock. The rewritten script is 164 words and the real audio came out at 65 seconds (hook 0.1 to 4.0s, b1 to 11.5, b2 to 16.6, b3 to 21.2, b4 to 26.0, b5 to 30.4, b6 to 37.3, b7 to 43.6, b8 to 50.3, b9 to 56.3, b10 to 62.5, CTA to 65.2), not 46. I would rather keep every line short and let the chart do the talking than rush the voice. If you think a specific line should go, name it and I will cut it.
+2. Series chip. The pipeline's rule is a series chip on every frame. I agree with you that frame 0 should carry no chrome, so: no chip during the hook segment, chip from the first beat onward. It reads "MONEY, COMPOUNDING" with the topic "PROJECTIONS" underneath; the episode counter is hidden when seriesTotal is 0.
+3. Maker's mark. The founder wants a quiet, non promotional product reference so viewers learn the account belongs to a product they can trust. It lives in the caption, and I would like one small line on the CTA scene under the handle: "nidhi: a planner that shows its assumptions". Small, last thing to appear, never an ask. Tell me if you think it hurts the CTA.
+4. Eva stays named. The founder wants a recurring cast across posts. I agree she should be the input set, not an 88 second protagonist, which is what the new script does.
+
+THE CONTRACT: THE PLAN JSON
+File: docs/instagram-kit/4. optimizing/43-financial-projections.reel.json (rewritten to your storyboard; it passes the brand and math scrubber). New things in it that the Remotion code does not understand yet:
+- plan.chartStory = { start, monthly, years, ratesPct: [4,6,8], ceiling, disclosure }. Compute the curves from these: monthly contributions, annual effective rate converted to monthly, i.e. mr = (1+r)^(1/12) - 1, balance = balance*(1+mr) + monthly, 12 times a year. End values must come out at 847,440 / 1,261,688 / 1,911,683. scripts/render-kit.mjs growthSeries() is the reference implementation.
+- Hook layout "chart-gap" with anchor { type: "chart", stage: "hook" } and three onscreenLines (the amount, the premise, the "Same savings. Same 30 years." line).
+- Beat anchors { type: "chart", stage: "setup" | "single" | "input" | "mid" | "low" | "gap" | "range" }. The stage says what the persistent chart should have reached by the end of that beat. onscreenText and subtext are the headline and subline for that beat.
+- Beat anchors { type: "multiplier", stage: "blank" | "example" | "steps", rows, monthly, results, footnote, steps } for the screenshot card and the how to use it list.
+You own this schema for the visual anchors. If a different shape makes the build cleaner, change the JSON and remotion/src/data.ts together and tell me what you changed. Do not change narration strings, numbers, captions or hashtags without telling me why; those go through the scrubber and the math check.
+
+HOW TIMING WORKS
+scripts/render-reels.mjs stitches hook + beats + CTA narration into one text, generates one audio file with edge-tts, aligns each segment to the word timings, and passes Remotion a ReelInput: plan, hookSpan, beatSpans[] (beatId, startMs, endMs), ctaSpan, wordTimings[], audioFile. ReelComposition.tsx currently renders each beat as its own Sequence with BeatScene, which is why the visual context resets every beat. The persistent chart needs to live above the per beat Sequences and read the spans to know which stage it is in and how far through it.
+I am generating the real audio and input JSON for the new script now and keeping them on disk:
+- remotion/outputs/43-financial-projections-input.json (the full ReelInput with real spans and word timings)
+- remotion/public/audio/43-financial-projections.mp3 and .vtt
+Build against those.
+
+WHAT I AM ASKING YOU TO BUILD (you decide how)
+1. A persistent chart story layer for the hook and beats b1 to b7, to your own storyboard: fixed coordinate system, line drawing by stroke dash offset with a travelling dot, endpoint labels inside the safe area, the 8% tag turning into an edited input, the gap bracket, the range treatment. No bounce on financial curves.
+2. The multiplier card for b8 to b10: blank state, the €300 example resolving to €210k / €300k / €420k, then shrinking to make room for the three steps. This is the screenshot moment; hold it clean.
+3. The CTA scene per your design, on navy.
+4. Subtitles: you asked for 5 to 7 words per chunk, one or two lines, and no large pill over the multiplier card. Adjust SubtitleCaption as you see fit.
+Keep the existing reels working: other plans on disk still use the old anchors (stat, compare, list, flow, figure) and the old hook layouts. New behaviour should switch on the new anchor types / plan.chartStory, not replace the old paths.
+
+CONSTRAINTS
+- Touch only files under remotion/src/ and, if you change the schema, docs/instagram-kit/4. optimizing/43-financial-projections.reel.json. Do not touch anything under scripts/, src/, docs/plans/, or any other file: the repo has uncommitted work by the founder in scripts/ that must not be disturbed. Do not run git commands that change state (no commit, stash, checkout, reset, clean).
+- No em dashes, en dashes or hyphens in any on screen string. Brand colours and fonts are in remotion/src/data.ts (BRAND, TYPE).
+- Your sandbox probably cannot launch Chrome or reach the network, so you likely cannot render. Do type check what you write (cd remotion && npx tsc --noEmit if it works for you). I will render the video, pull frames and send them back to you for review. Expect at least one more round.
+
+WHEN YOU ARE DONE, REPLY WITH
+- What you built and where (files, component names).
+- Any schema or JSON changes.
+- Anything you could not verify and want me to look at in the render.
+- Any remaining disagreement with my four pushback points.
+
+
+================================================================
+MESSAGE 4. CODEX TO CLAUDE
+================================================================
+
+Built and type checked.
+
+- [FinancialProjectionStory.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/components/FinancialProjectionStory.tsx)
+  - Persistent fixed scale SVG chart
+  - Animated 8%, 6%, and 4% curves with travelling dots
+  - Editable growth input treatment
+  - Endpoint labels, range fill, and €1.06M bracket
+  - Persistent multiplier card across blank, example, and steps stages
+  - Custom navy CTA with card thumbnail and delayed maker’s mark
+
+- [ReelComposition.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/ReelComposition.tsx)
+  - Added an isolated `chartStory` rendering branch
+  - Series chip begins after the hook and continues through the CTA
+  - All reels without `chartStory` remain on the existing renderer
+
+- [data.ts](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/data.ts)
+  - Added `chart-gap`, chart stages, multiplier stages, row types, and `plan.chartStory`
+  - No JSON changes were needed
+
+- [SubtitleCaption.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/components/SubtitleCaption.tsx)
+  - Added compact captions
+  - Six word maximum, shorter duration, smaller type and pill
+  - Positioned below the multiplier card
+
+Verification:
+
+- `npx tsc --noEmit` passes.
+- Recomputed endings match `847,440`, `1,261,688`, and `1,911,683`.
+- I did not render video or frames.
+
+Please inspect these in the render:
+
+- Endpoint label clearance from Instagram’s right controls
+- Series chip versus headline clearance at b1
+- The chart to multiplier crossfade at approximately 43.6 seconds
+- Whether the compact subtitle remains clear of the multiplier footnote
+- The b10 card scale and three-step spacing
+- Whether the CTA thumbnail remains readable without competing with the headline
+
+I no longer disagree with any of the four pushback points. At the measured TTS pace, 65 seconds is justified. Eva remains named, the chip behavior is implemented as proposed, and the maker’s mark is sufficiently subordinate.
+
+================================================================
+MESSAGE 5. CLAUDE TO CODEX
+Attached: six contact sheets of the rendered reel (28 frames) and the cover thumbnail.
+================================================================
+
+Claude here. I rendered your build: 68.2 seconds, no errors. This is a very large step up from the first reel. The single persistent chart works, the hook reads with sound off at frame 0, the fan with the bracket is the moment I wanted, and the multiplier card filling in €210k / €300k / €420k is a real screenshot frame. Thank you.
+
+Attached are six contact sheets (28 frames, left to right, timestamps at 0.0, 0.6, 1.6, 3.4, 6, 9.5, 12.5, 15.5, 18, 20.5, 23.5, 25.5, 28, 30, 33, 36.5, 40, 43, 44.5, 47, 49.8, 53, 55.8, 59, 62, 63.5, 65, 67.5 seconds) and the cover thumbnail (image 7). Beat spans for reference: hook 0.1 to 4.0, b1 to 11.5, b2 to 16.6, b3 to 21.2, b4 to 26.0, b5 to 30.4, b6 to 37.3, b7 to 43.6, b8 to 50.3, b9 to 56.3, b10 to 62.5, CTA to 65.2.
+
+WHAT I SEE THAT NEEDS FIXING (your code, your call on how)
+
+1. Beat headlines are almost invisible. In nearly every mid beat frame the headline is a pale grey ghost: "Eva's plan stays the same" (6s), "The calculator gave her one line" (9.5s, 12.5s), "This is an input, not an answer" (15.5s, 18s), "A projection is a range" (36.5s), "Your 30 year range" (43s to 53s), "How to use it" (59s). Only "Same plan. One changed assumption." at 20.5s is close to readable and even that is grey. With sound off these headlines carry the story, so they need to sit at full navy for most of each beat. It looks like an opacity or fade timing issue rather than a colour choice.
+
+2. "€1.06M apart / Nothing about Eva changed" (30s to 33s) sits on top of the curves in the lower left, and the second line collides with all three lines. The open area is the upper left of the plot, between the €1M and €2M grid lines, left of where the curves rise. Please move the block there.
+
+3. The last three seconds are black. Audio and the CTA span end at 65.2s but the composition runs to 68.2s and frame 67.5s is pure black. The first reel had the same tail, so this predates you, but it is in remotion/src so please fix it for the chartStory branch at least: hold the CTA scene to the final frame.
+
+4. The cover thumbnail does not know the chart-gap layout and falls back to three lines of serif text on navy (image 7). For chartStory plans the cover should be the hook frame: the amount, "from one changed input", and the three curve endings with values. Note Instagram crops the profile grid cover to the centre 3:4, so keep the essentials inside the middle 1080 by 1440.
+
+5. Dead space. In the chart beats everything ends around y 1430 and the subtitle sits near y 1650, leaving a wide empty band, while the chart itself only uses about 40% of the frame height. Could the plot be taller (say to y 1320) with the disclosure directly under it? Same for the multiplier card: there is a large gap between the HIGH row and the footnote inside the card; taller rows and bigger multipliers would use it better. And on the CTA, the lower 40% of the navy is empty while the content is packed into the top; centre the block vertically or scale it up.
+
+6. The growth input tag. I see "GROWTH INPUT 8%" through b2 and b3, then it is gone in b4 and b5. Your storyboard had the 8 being edited to 6 as the hand off into the second line, and I think that beat matters: it is what tells a sound off viewer that the only thing changing is that one box. If the edit animation exists and my frames just missed it, tell me the time and I will check. If it does not, I would keep the tag on screen and have it read 6% during b4 and 4% during b5.
+
+7. Subtitles. The compact pill is good. Two small things: chunks sometimes break mid phrase and leave an orphan ("But eight percent is not / an" at 15.5s), and the word "one" was bolded inside "one point nine". The second was my emphasis data and I have already fixed it in the plan JSON (b2 and b4 emphasis are now empty); no action for you. If you can avoid single word orphans on the second line cheaply, do.
+
+WHAT I THINK IS ALREADY RIGHT AND SHOULD NOT CHANGE
+- Frame 0. The hook composition, the ILLUSTRATIVE label, the bracket drawing in.
+- The colour mapping (amber low, navy middle, teal high) carried from chart to card to CTA thumbnail.
+- The card shrinking above the three steps in b10.
+- The CTA hierarchy: card, "Save the multiplier", the three multipliers, one quiet destination, handle, then the maker's mark arriving last.
+
+ON MY SIDE, FOR YOUR REVIEW
+I rebuilt the carousel and the story frames to your slide by slide notes. They are rendered at output/instagram-kit/4. optimizing/43-financial-projections/carousel/slide-01.png to slide-08.png and .../stories/*.png. You can open those PNGs directly from the repo. Changes: hook is now the fan with values and the €1.06M range bracket; slide 2 is the input sheet (no avatar, no chat bubble); slides 3 and 4 have the assumption strip with the amber "8% real" box and a larger chart; slide 5 is the navy banded multiplier card; slide 6 replaced holiday versus rent with a worked example that shows its arithmetic and the exact computed values; slide 7 is three scenario nodes plus a separate rule bar; slide 8 is the statement, a miniature of slide 5 with a "SAVE SLIDE 5" tab, one quiet blog line and the maker's mark. Please look at them and tell me what is still off. I would especially like your eye on slide 1 (does the chart need to be bigger?), slide 5 versus your reel card (should they match more closely?), and slide 8.
+
+Same constraints as before: only remotion/src, no git state changes, no on screen dashes or hyphens, keep legacy reels working, type check. Reply with what you changed, what you want me to check in the next render, and your carousel review.
+
+
+================================================================
+MESSAGE 6. CODEX TO CLAUDE
+================================================================
+
+Implemented the second reel pass. `npx tsc --noEmit` passes, and no plan JSON was changed.
+
+### Reel changes
+
+- Fixed headline opacity in [FinancialProjectionStory.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/components/FinancialProjectionStory.tsx). The fade calculation was indeed using incompatible units. Headlines now reach full navy for most of each beat.
+- Enlarged the body chart without changing frame 0. The hook retains its original plot geometry; later beats use a taller plot ending at `y 1360`.
+- Moved the €1.06M annotation into the open upper-left region between the grid lines.
+- Kept the growth field visible through b5:
+  - 8% during b2 and b3
+  - 6% during b4
+  - 4% during b5
+  - Each edit gets a short scale, fade, and caret cue.
+- Enlarged multiplier rows, factors, and results while reducing the internal dead space.
+- Preserved the successful b10 shrink arrangement.
+- Scaled and lowered the CTA content while keeping it above the bottom interface area.
+- Made the CTA sequence persist without an explicit duration, so it now holds through the renderer’s entire added tail instead of becoming black.
+- Added a dedicated cream chart cover in [Thumbnail.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/Thumbnail.tsx). It contains the hook amount, premise, three curve endings, endpoint values, and bracket. Essentials sit inside the central 3:4 crop.
+- Improved compact subtitle chunking in [SubtitleCaption.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/components/SubtitleCaption.tsx):
+  - Five-word cap for this reel
+  - Single trailing words are rebalanced with the previous chunk when possible
+
+### Next-render checks
+
+Please sample:
+
+- 6s, 12.5s, 18s, 36.5s, 47s, and 59s: headlines should be solid navy.
+- 23.5s: growth field should say 6%.
+- 28s: growth field should say 4%.
+- 30s to 36.5s: gap annotation should stay clear of every curve.
+- 43s to 56s: larger multiplier rows should still leave enough room for both footnotes.
+- 59s to 62s: shrunken card must not touch the steps.
+- 65s and 67.5s: CTA should remain visible.
+- 15.5s: no single-word second caption line.
+- Cover: confirm the amount and all three endpoint values survive Instagram’s 3:4 crop.
+
+### Carousel review
+
+Overall, this is publishable after one closer-slide cleanup.
+
+- Slide 1: do not enlarge the chart. Its current size gives the chart and hook equal authority. Any larger and the headline becomes secondary. The vertical bracket label is small, but the headline already delivers the amount, so that is acceptable.
+- Slide 2: strong. The input sheet is much more distinctive than the old avatar card. Check that the space in “30 years” remains visible at phone size.
+- Slides 3 and 4: excellent. The assumption strip and amber field make the causal mechanism obvious.
+- Slide 5: screenshot-worthy. It does not need to match the reel card more closely. The shared colour mapping, ordering, and multiplier hierarchy already establish continuity. I would clarify the existing-balance mapping as `Low ×3 · Middle ×6 · High ×10`; the current “3×, 6× or 10×” line makes the correspondence implicit.
+- Slide 6: excellent replacement for the holiday comparison. It earns its place by showing both operations and why the shortcut differs slightly from the full calculation. I would change “Computed exactly” to “The full calculation gives” to avoid implying unreasonable precision.
+- Slide 7: clear and logically repaired. Separating the one-input rule was the right move.
+- Slide 8: simplify. Replace the long hyphenated blog URL with `nidhi.today`; the present URL violates the no-hyphen rule and is too long for this surface. The maker sentence also competes with the pagination and handle. Shorten it to `Built by nidhi, a planner that shows its assumptions.` and give it its own clear baseline above the footer. The miniature and `SAVE SLIDE 5` tab work well.
+
+The story assets also look good. The empty poll canvas makes sense given the native sticker instructions. The multiplier story is especially strong and visually consistent with slide 5.
+
+================================================================
+MESSAGE 7. CLAUDE TO CODEX
+Attached: four contact sheets of the second render, plus carousel slides 5, 6, 8 and the new cover.
+================================================================
+
+Claude here. Second render done, 68.2 seconds, and every item on your check list passes. Four contact sheets attached (frames at 0.0, 1.6, 6, 12.5, 15.5 / 18, 23.5, 28, 31, 34 / 36.5, 41, 45, 47, 53 / 56, 59, 61.5, 64, 65, 67.5 seconds), plus image 5: carousel slides 5, 6 and 8 after your notes, and the new cover.
+
+CONFIRMED IN THE RENDER
+- Headlines are solid navy at 6s, 12.5s, 18s, 36.5s, 47s and 59s.
+- The growth field reads 8%, then 6% at 23.5s, then 4% at 28s. This is the beat that makes the mechanism legible without sound. Good call keeping it through b5.
+- The €1.06M annotation is in the upper left and clear of all three curves from 31s to 36.5s.
+- The taller chart and the larger multiplier rows use the frame properly now. Both footnotes fit.
+- The shrunken card at 59s to 62s does not touch the steps.
+- The CTA holds through 67.5s. No black tail.
+- No single word second caption line at 15.5s.
+- The cover is the hook on cream with the amount and all three endpoint values inside the centre crop.
+
+THREE SMALL THINGS I STILL SEE (fix only if you agree they are worth touching)
+1. At 31s to 36.5s the last line of the annotation ("Nothing about Eva changed") ends about a line height above the "€1M" axis tick, so "changed" and "€1M" read as one cramped block. Either nudge the annotation up by 30 to 40 px or hide the €1M tick label during b6 and b7.
+2. At 12.5s to 18s the GROWTH INPUT field sits directly above the €1.91M endpoint label with very little air between them. It reads fine, it is just tight. A 20 px lift of the field would do it.
+3. On the cover, the three curve fragments begin abruptly at mid frame with a hard vertical cut on their left edge. In motion at frame 0 that reads as intentional; as a still cover it looks slightly clipped. A short fade on the left end of the strokes would fix it.
+
+CAROUSEL: WHAT I DID WITH YOUR NOTES
+- Slide 5: the existing balance line now maps explicitly: "Already invested? Add today's balance × 3 (low), × 6 (middle) or × 10 (high)."
+- Slide 6: "The full calculation gives €238k, €350k and €523k."
+- Slide 8: the long URL is gone, replaced by "nidhi.today · link in bio". The maker line has its own baseline above the footer with a hairline rule.
+- One place I did not take your wording: "Built by nidhi, a planner that shows its assumptions" says the planner built the carousel. I used "From the maker of nidhi, a planner that shows its assumptions." Same length, and it keeps a person behind the account, which is what the founder wants people to feel. The reel CTA line ("nidhi: a planner that shows its assumptions") stays as you built it.
+
+QUESTION FOR YOU
+Is there anything left that you would not ship? If it is only the three nits above, make whichever you agree with and tell me; I will do the final render and hand both pieces to the founder. If you think something larger is still wrong in either piece, say so now.
+
+
+================================================================
+MESSAGE 8. CODEX TO CLAUDE
+================================================================
+
+I would ship both pieces. Nothing larger remains wrong.
+
+Applied all three final nits in [FinancialProjectionStory.tsx](/Users/akshay.aggarwal/PycharmProjects/nidhi-landing/remotion/src/components/FinancialProjectionStory.tsx):
+
+- Gap annotation moved up 35 px.
+- Growth input field moved up 20 px.
+- Cover curve entrances now use a short opacity mask instead of a hard clipped edge.
+
+`npx tsc --noEmit` passes.
+
+The revised carousel slides 5, 6, and 8 are ready. “From the maker of nidhi…” is the better wording for the founder’s intent, and slide 8 now has a clean hierarchy. No further design changes from me after the final render confirms those three adjustments.
+
+================================================================
+MESSAGE 9. CLAUDE, CLOSING NOTE (not sent; both agents had signed off)
+================================================================
+
+Final render done after the three adjustments in message 8: 68.2 seconds, no errors. Checked frames at 0, 14, 33, 47 and 65 seconds plus the cover. The growth field has clear air above the endpoint label, the gap annotation sits clear of the axis tick, the cover curves fade in without a hard edge, and the closing scene holds to the last frame. Carousel (8 slides), story frames (4) and posting sheet rendered from the same source. Repo lint, the 421 tests and the Remotion type check all pass. Not verified by either agent: how the voice sounds, since neither of us can listen to audio, and whether older reels still render identically (their code path was left in place but none was re-rendered).
+
+
+
+################################################################
+DAY 2 OF POST 43: THE REPEAT ANGLE (reel and carousel)
+################################################################
+
+================================================================
+MESSAGE 10. CLAUDE TO CODEX
+================================================================
+
+Claude here, back with the next piece. The founder watched the post 43 reel and liked it. Since then the plan changed shape, and day 2 of post 43 is ours to build.
+
+WHAT CHANGED
+- Every blog post now gets two days and two angles. Each day carries one angle as a reel and a carousel. So post 43 has: day 1, the growth assumption (the reel you built, plus the multiplier carousel), and day 2, a second angle with its own reel and carousel.
+- Day 2's angle is the one you told me to take out of the day 1 carousel: what moves a 30 year plan is what repeats. A €4,000 holiday against €150 a month more rent. You were right that it deserved its own post. This is it.
+- I audited all 26 posts in this run for their two angles and the visual each needs. 52 angles, eight visual families. The growth chart you built covers 4. Comparison bars cover 16, more than any other family. So what you build now is not a one off: it is the component most of the run will reuse. Please build it to be driven by plan data, with nothing about holidays or rent in the component itself.
+
+THE NUMBERS (all "if invested instead at 6% real growth for 30 years", illustrative)
+- One time €4,000 becomes €22,974, shown as €23,000.
+- €150 a month becomes €146,177, shown as €146,000.
+- Ratio 6.4, shown as 6x.
+- The tool to keep, the repeat test: a one time cost times 6, a monthly cost times 1,000. These are the same middle rate multipliers as day 1 (exact 5.74 and 974.5), which ties the two days together.
+- Example: €80 a month of subscriptions is about €80,000 (exact €77,961).
+
+THE SCRIPT AND THE CONTRACT
+Plan file: docs/instagram-kit/4. optimizing/43-financial-projections.day2.reel.json. It passes the brand and math scrubber. 160 words, real audio 63.3 seconds. Spans: hook 0.1 to 6.9s, b1 to 14.6, b2 to 21.1, b3 to 27.5, b4 to 33.3, b5 to 39.1, b6 to 48.1, b7 to 55.1, b8 to 60.3, CTA to 63.3.
+
+Kept on disk for you to build against:
+- remotion/outputs/43-financial-projections-day2-input.json (full ReelInput with real spans and word timings)
+- remotion/public/audio/43-financial-projections-day2.mp3 and .vtt
+
+What is new in the plan that the code does not understand yet:
+- plan.barStory = { unit, basis, bars: [{ id, label, sublabel, value, display, tone }], ratio: { display, from, to }, disclosure }
+- Hook layout "bar-gap" with anchor { type: "bars", stage: "hook" }
+- Beat anchors { type: "bars", stage: "first" | "repeat" | "second" | "ratio" | "principle" | "close" }
+- The multiplier anchor reused for the repeat test with two rows instead of three, an amountLabel ("€80 a month") and results where only one row resolves (["", "€80k"]).
+As before, you own the schema for the visual anchors. If a cleaner shape serves the sixteen future uses better, change the JSON and data.ts together and tell me. Think about what the other comparison bar angles will need: two to four bars, sometimes a ratio, sometimes a difference in euros, sometimes bars that grow over time. A few of the future ones, so you can design for them: a freelance day rate of €250 against a salaried €154; a 20 month runway against a 6 month one; remittance fees of €2,340 against €720 over ten years; three "equal" €200,000 assets worth €200k, €176k and €160k.
+
+WHAT I WOULD LIKE YOU TO DO
+1. Storyboard and build in one pass this time. You know the system now.
+2. The idea I care most about getting on screen, and I do not know how to draw it: repetition. A bar for €23,000 next to a bar for €146,000 is just two bars. The insight is that one of them is a single block and the other is 360 small payments. In your day 1 carousel notes you suggested "one block at year zero" against "360 small marks across 30 years" resolving into the bars. I think that is the heart of this reel, in beat b2 ("every month") into b3. If you can make the viewer watch the small thing repeat and pile up, the ratio lands without being stated.
+3. Frame 0 must work with sound off, as the €1,060,000 frame did. My hook lines are a first attempt: "You feel guilty about this one" on the small bar, "This one costs 6x more" on the large one. You previously objected to "costs you" as moralising. Tell me whether this crosses that line and what you would put there instead.
+4. The repeat test card for b6 and b7, as the screenshot moment, consistent with the day 1 multiplier card so the two days visibly belong together.
+5. CTA on navy as before, and a cover for barStory plans built from the hook frame, essentials inside the centre 3:4.
+6. Keep the chartStory path and the legacy path working exactly as they are.
+
+WHERE I EXPECT YOU TO PUSH BACK
+- The script. 63 seconds for one comparison may be too long. If beats should merge or go, say which. If you change or cut narration, tell me exactly what, and I will re-run the scrubber and the audio; do not edit narration strings, numbers, captions or hashtags yourself.
+- b4 and b5 say nearly the same thing twice ("loud gets the guilt" and "guilt follows how loud"). I suspect one should go. Your call on which carries better on screen.
+- b8 ("none of this says skip the holiday") is there so the piece does not moralise. I think it matters. Tell me if it reads as a disclaimer.
+
+CONSTRAINTS, UNCHANGED
+Only files under remotion/src/, plus the day 2 plan JSON if you change the schema. No git state changes. No em dashes, en dashes or hyphens in on screen strings. Type check with npx tsc --noEmit. I render, pull frames and send them back.
+
+REPLY WITH
+What you built and where, schema changes, script changes you want, what to check in the render, and how the bars component should be fed for the other fifteen angles so I can write those plans correctly.

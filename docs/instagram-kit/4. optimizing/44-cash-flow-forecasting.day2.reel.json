@@ -1,0 +1,223 @@
+{
+  "slug": "cash-flow-forecasting",
+  "postTitle": "Cash Flow Forecasting: Will You Have Enough?",
+  "postLevel": "optimizing",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/cash-flow-forecasting",
+  "availableFigures": [],
+  "mode": "riff",
+  "topicChip": "RUNWAY",
+  "mood": "curious",
+  "topic": "Cash runway: how long your money lasts if your pay stops",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Easy access savings €18,300 (money that can be moved within 48 hours without penalty). Investments and pension €45,000, which do not count toward runway. Real monthly costs €4,575 (the year average including once a year costs, from day 1). Runway = €18,300 ÷ €4,575 = 4.0 months. With the budget figure of €4,000: €18,300 ÷ €4,000 = 4.6 months. If monthly costs rise to €6,100: €18,300 ÷ €6,100 = 3.0 months. Illustrative."
+  },
+  "monthStory": {
+    "unit": "EUR",
+    "mode": "runway",
+    "start": 18300,
+    "monthlyCost": 4575,
+    "budgetCost": 4000,
+    "altCost": 6100,
+    "excluded": {
+      "label": "Investments and pension",
+      "value": 45000
+    },
+    "disclosure": "Illustrative. Rounded."
+  },
+  "hookVariants": [
+    {
+      "id": "pay-stopped",
+      "layout": "month-gap",
+      "narration": "If your pay stopped today, how many months would your money last? Most people guess. It is one division.",
+      "onscreenLines": [
+        "If your pay stopped today",
+        "How many months?",
+        "One division"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "months"
+      ]
+    },
+    {
+      "id": "runway-guess",
+      "layout": "month-gap",
+      "narration": "Eighteen thousand in savings sounds like a year of safety. For most people it is about four months.",
+      "onscreenLines": [
+        "€18,300 in savings",
+        "Feels like a year",
+        "Lasts four months"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "four"
+      ]
+    },
+    {
+      "id": "wrong-number",
+      "layout": "month-gap",
+      "narration": "Your runway is probably shorter than you think, and the reason is a number you already know.",
+      "onscreenLines": [
+        "Your runway is shorter",
+        "than you think",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "shorter"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Jiri has eighteen thousand three hundred euros in easy access savings.",
+      "onscreenText": "€18,300 he can reach",
+      "subtext": "Easy access savings",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "cash"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "He also has forty five thousand in investments and his pension. For runway, none of that counts.",
+      "onscreenText": "Only reachable money counts",
+      "subtext": "Movable within 48 hours, no penalty",
+      "emphasis": [
+        "none"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "excluded"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "His real costs, once a year bills included, are four thousand five hundred and seventy five a month.",
+      "onscreenText": "€4,575 a month",
+      "subtext": "Real costs, once a year bills included",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "cost"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "Eighteen thousand three hundred, divided by that, is four months.",
+      "onscreenText": "Four months of runway",
+      "subtext": "€18,300 ÷ €4,575",
+      "emphasis": [
+        "four"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "drain"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "With his budget figure of four thousand, he would think it was four point six. The once a year costs take that away.",
+      "onscreenText": "Not 4.6",
+      "subtext": "Use real costs, not the budget",
+      "emphasis": [
+        "real"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "budget"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "warning",
+      "narration": "And runway moves. If his costs rise to six thousand one hundred a month, the same savings last three months.",
+      "onscreenText": "Costs up, runway down",
+      "subtext": "€6,100 a month: 3 months",
+      "emphasis": [
+        "moves"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "alt"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "So the check is one line. Easy access cash, divided by real monthly costs. Redo it whenever your costs change.",
+      "onscreenText": "The runway check",
+      "subtext": "Easy access cash ÷ real monthly costs",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "rule"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this, and run your own number tonight.",
+    "onscreenText": "Save the runway check",
+    "subtext": "Easy access cash ÷ real monthly costs",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "If your pay stopped today, how many months would your money last? Most people guess. It is one division.\n\nJiri has €18,300 in easy access savings. His €45,000 in investments and his pension do not count: runway is only money you can reach within a couple of days without a penalty. His real costs, once a year bills included, are €4,575 a month. So his runway is four months.\n\nUsing his budget figure of €4,000 he would think 4.6. And if his costs rise to €6,100, the same savings last three months.\n\nThe runway check: easy access cash ÷ real monthly costs. Redo it whenever your costs change.\n\n→ Save this, and run your own number tonight\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "If your pay stopped today, how many months would your money last? Most people guess. It is one division.\n\nEasy access cash ÷ real monthly costs. Illustrative figures.",
+    "instagramKeywords": [
+      "cash runway",
+      "emergency savings",
+      "how many months of savings",
+      "liquid savings",
+      "easy access savings",
+      "job loss",
+      "financial safety net",
+      "monthly expenses",
+      "personal finance",
+      "money abroad",
+      "global expats",
+      "Notgroschen",
+      "Rücklagen",
+      "fondo de emergencia",
+      "épargne de précaution"
+    ],
+    "tiktokTopics": [
+      "how long would my savings last",
+      "how big should my emergency fund be",
+      "what is cash runway"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "emergencyfund",
+    "financialsecurity",
+    "movingabroad"
+  ],
+  "reelPromise": "The three tiers of liquid money, and why investments and pensions do not count as runway"
+}

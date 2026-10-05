@@ -5,6 +5,8 @@ const BLOG_ROOT = join(import.meta.dirname, "../../src/content/blog");
 const LEVEL_DIRS = {
   discovery: "1. discovery",
   building: "2. building",
+  optimizing: "4. optimizing",
+  "inclusive-finances": "inclusive-finances",
 };
 
 /**

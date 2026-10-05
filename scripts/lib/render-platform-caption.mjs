@@ -39,7 +39,8 @@ const SITE_BASE = "nidhi.today";
  * Standard AI disclosure footer. Editorial, not apologetic. Stays the same
  * across every reel so it reads as a brand artefact rather than a hedge.
  */
-const DISCLOSURE_LINE = "Voice: AI-narrated. Script: AI-drafted, human-edited. Research and editorial direction: human.";
+// No hyphens: PLAYBOOK §8 bans them in captions.
+const DISCLOSURE_LINE = "Voice: AI narrated. Script: AI drafted, human edited. Research and editorial direction: human.";
 
 /**
  * Compose the "go deeper" block that sits between the LLM caption and the
@@ -58,15 +59,20 @@ const DISCLOSURE_LINE = "Voice: AI-narrated. Script: AI-drafted, human-edited. R
  * @param {string} [args.reelPromise]
  * @returns {string} block to insert (possibly empty if no signals)
  */
-function buildDeepDiveBlock({ slug, relatedTool, reelPromise }) {
+function buildDeepDiveBlock({ slug, relatedTool, reelPromise, platform = "tiktok" }) {
   const lines = [];
+  // Instagram suppresses posts with links in the caption body (PLAYBOOK §6),
+  // so the IG caption points to the bio instead of printing the address.
+  const ig = platform === "instagram";
   if (relatedTool?.url && relatedTool.cta) {
     const path = relatedTool.url.startsWith("/") ? relatedTool.url : `/${relatedTool.url}`;
-    lines.push(`Free tool · ${relatedTool.cta}: ${SITE_BASE}${path}`);
+    lines.push(ig ? `Free tool · ${relatedTool.cta}. Link in bio.` : `Free tool · ${relatedTool.cta}: ${SITE_BASE}${path}`);
   }
   // Always link the blog post — it's the canonical home for the reel content
   // and the only way to give a viewer a clear "what's deeper" pathway.
-  if (reelPromise) {
+  if (ig) {
+    lines.push(reelPromise ? `Read the full post · ${reelPromise}. Link in bio.` : "Read the full post. Link in bio.");
+  } else if (reelPromise) {
     lines.push(`Read the full post · ${reelPromise}: ${SITE_BASE}/blog/${slug}/`);
   } else {
     lines.push(`Read the full post: ${SITE_BASE}/blog/${slug}/`);
@@ -165,7 +171,8 @@ export async function writePlatformCaptions({
     ? `Topics: ${plan.caption.tiktokTopics.join(", ")}`
     : "";
 
-  const deepDive = buildDeepDiveBlock({ slug: plan.slug, relatedTool, reelPromise });
+  const igDeepDive = buildDeepDiveBlock({ slug: plan.slug, relatedTool, reelPromise, platform: "instagram" });
+  const ttDeepDive = buildDeepDiveBlock({ slug: plan.slug, relatedTool, reelPromise, platform: "tiktok" });
 
   // Hook A/B: the spoken hook is selected per variant via plan.useHookVariant,
   // but the LLM-authored caption body has a single fixed opening line. For the
@@ -189,13 +196,13 @@ export async function writePlatformCaptions({
   // Two newlines between blocks keeps things scannable on both IG (which
   // collapses single-newlines into space) and TikTok (which preserves them).
   const igBody = replaceFirstLine(plan.caption.instagram?.trim() ?? "", activeHookText);
-  const ig = [igBody, deepDive, DISCLOSURE_LINE, igTags, igKeywordsBlock]
+  const ig = [igBody, igDeepDive, DISCLOSURE_LINE, igTags, igKeywordsBlock]
     .filter(Boolean).join("\n\n") + "\n";
 
   // TikTok layout: same body + deep-dive + disclosure, then Topics line,
   // then the hashtag wave (IG five + TikTok extras).
   const ttBody = replaceFirstLine(plan.caption.tiktok?.trim() ?? "", activeHookText);
-  const tt = [ttBody, deepDive, DISCLOSURE_LINE, ttTopicsLine, ttTags]
+  const tt = [ttBody, ttDeepDive, DISCLOSURE_LINE, ttTopicsLine, ttTags]
     .filter(Boolean).join("\n\n") + "\n";
 
   const igPath = join(CAPTIONS_DIR, `${stem}.ig.txt`);

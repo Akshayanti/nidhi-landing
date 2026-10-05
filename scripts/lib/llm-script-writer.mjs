@@ -432,13 +432,23 @@ function validateShape(plan, meta) {
   // Stamp slug + postTitle + postLevel + episode/seriesTotal from meta.
   plan.slug = meta.slug;
   plan.postTitle = meta.title;
-  plan.postLevel = meta.level === "discovery" ? "discovery" : "building";
+  plan.postLevel = ["discovery", "optimizing", "inclusive-finances"].includes(meta.level) ? meta.level : "building";
 
   // Episode index within the series. Discovery posts are numbered 1-16
   // (`order` field). Building posts are 17-32, so subtract 16 for the chip.
+  // Optimizing (order 43+) and Inclusive Finances (fractional order) have no
+  // fixed series length, so seriesTotal 0 hides the "NN / NN" counter.
   const order = typeof meta.order === "number" ? meta.order : 1;
-  plan.episode = plan.postLevel === "building" ? Math.max(1, order - 16) : order;
-  plan.seriesTotal = 16; // both series have 16 posts.
+  if (plan.postLevel === "optimizing") {
+    plan.episode = Math.max(1, order - 42);
+    plan.seriesTotal = 0;
+  } else if (plan.postLevel === "inclusive-finances") {
+    plan.episode = 1;
+    plan.seriesTotal = 0;
+  } else {
+    plan.episode = plan.postLevel === "building" ? Math.max(1, order - 16) : order;
+    plan.seriesTotal = 16; // both series have 16 posts.
+  }
 
   // topicChip: prefer the LLM's value, fall back to a derivation from the
   // post title (strip subtitle after a colon, take first 1-3 words, upcase).

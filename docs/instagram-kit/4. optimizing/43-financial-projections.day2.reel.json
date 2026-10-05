@@ -1,0 +1,229 @@
+{
+  "slug": "financial-projections",
+  "postTitle": "Financial Projections: Your Next 10, 20, 30 Years",
+  "postLevel": "optimizing",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/financial-projections",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "\"In 90% of runs\" is not \"a 90% promise\": how to read a simulation honestly",
+  "topicChip": "READING 90%",
+  "assumptions": {
+    "currency": "EUR",
+    "horizonYears": 30,
+    "notes": "Eva: €50,000 invested plus €1,000 a month for 30 years, simulated 10,000 times by scripts/simulate-projection-paths.mjs (seed 43): yearly real equity returns resampled independently from an equal-weighted portfolio of up to 16 developed markets, 1900 to 2020 (Jordà-Schularick-Taylor Macrohistory Database R6), shifted to a 6% arithmetic mean. 10th percentile €511,818 (shown as €510k), median €1,076,959, 90th €2,212,833. So 90% of runs ended above about €510,000. Illustrative."
+  },
+  "columnStory": {
+    "left": {
+      "id": "says",
+      "title": "What it says",
+      "rule": "Say it this way",
+      "items": [
+        "90% of runs passed €510k",
+        "Using past yearly swings",
+        "Under these assumptions"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "not",
+      "title": "What it does not say",
+      "rule": "Not this way",
+      "items": [
+        "A promise about you",
+        "The future repeats the past",
+        "Your job and health hold"
+      ],
+      "tone": "amber"
+    },
+    "swap": {
+      "item": "A promise about you",
+      "belongs": "right",
+      "wrongLabel": "sounds the same",
+      "correctLabel": "claims too much"
+    },
+    "disclosure": "Illustrative. 10,000 runs on past yearly returns, set to a 6% average."
+  },
+  "hookVariants": [
+    {
+      "id": "not-what-you-think",
+      "layout": "columns-gap",
+      "narration": "A simulation says ninety percent. It is not saying what you think.",
+      "onscreenLines": [
+        "90% of runs",
+        "is not a 90% promise",
+        "Same number, different meaning"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "not"
+      ]
+    },
+    {
+      "id": "calculator-percent",
+      "layout": "columns-gap",
+      "narration": "Your retirement calculator says ninety percent. Here is what that number actually means.",
+      "onscreenLines": [
+        "The calculator says 90%",
+        "What does it mean?",
+        "Not what it sounds like"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "means"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "stat",
+      "narration": "Eva ran her plan ten thousand times, each year drawn from real market history. In ninety percent of runs, her pot passed about five hundred and ten thousand.",
+      "onscreenText": "What it says",
+      "subtext": "90% of runs passed €510k",
+      "emphasis": [
+        "runs"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "That is the honest sentence. In ninety percent of runs, under these assumptions.",
+      "onscreenText": "Say it this way",
+      "subtext": "In 90% of runs",
+      "emphasis": [
+        "runs"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "It is not a promise about Eva. It holds only under the model's assumptions, and her job and health are not in the model.",
+      "onscreenText": "What it does not say",
+      "subtext": "A promise about you",
+      "emphasis": [
+        "not"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "So keep the assumptions attached to the number.",
+      "onscreenText": "Not this way",
+      "subtext": "Never as a promise",
+      "emphasis": [
+        "never"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "Read as a promise about you, the same number claims more than the model can.",
+      "onscreenText": "It sounds the same",
+      "subtext": "It claims too much",
+      "emphasis": [
+        "promise"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "swap"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "So read any simulation this way. Say in ninety percent of runs. Then ask whether you could live on the bad luck run. Future returns are not guaranteed.",
+      "onscreenText": "The honest reading",
+      "subtext": "Say it right, then ask",
+      "emphasis": [
+        "live"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The honest reading",
+        "rows": [
+          {
+            "label": "In 90% of runs",
+            "value": "Say",
+            "tone": "teal"
+          },
+          {
+            "label": "Could I live on the bad luck run?",
+            "value": "Ask",
+            "tone": "amber"
+          }
+        ]
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for the next time a calculator gives you a percentage.",
+    "onscreenText": "Save the honest reading",
+    "subtext": "Say · Ask",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "A simulation says 90%. It is not saying what you think.\n\nEva ran her plan 10,000 times, each year's return drawn from developed market history. In 90% of runs, her pot passed about €510,000 after 30 years. That is the model's estimate under its assumptions, not a promise that Eva will have it. The future can differ from the past, and her job and health are not in the model.\n\nThe honest reading: say \"in 90% of runs\" with the assumptions attached, look at the bad luck end, and ask whether you could live on it.\n\n→ Save this for the next time a calculator gives you a percentage\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, in real terms, from a reproducible simulation of developed market returns, 1900 to 2020, adjusted to a 6% average. Future returns are not guaranteed.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "A simulation says 90%. It is not saying what you think.\n\nSay \"in 90% of runs\", with the assumptions attached. Illustrative.",
+    "instagramKeywords": [
+      "retirement simulation",
+      "retirement calculator",
+      "probability of success",
+      "percentile",
+      "investment risk",
+      "historical returns",
+      "long term investing",
+      "retirement plan",
+      "personal finance",
+      "global expats",
+      "europe",
+      "Rentenrechner",
+      "Wahrscheinlichkeit",
+      "simulation de Monte Carlo",
+      "simulación de Montecarlo"
+    ],
+    "tiktokTopics": [
+      "what does a 90 percent success rate mean in a retirement calculator",
+      "how to read a monte carlo simulation",
+      "is a monte carlo result a probability"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "montecarlosimulation",
+    "retirementplanning",
+    "investingbasics"
+  ]
+}
