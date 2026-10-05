@@ -1,5 +1,5 @@
 /**
- * Money formatting for the Monte Carlo simulator.
+ * Money formatting shared by the free tools' charts and readouts.
  */
 import { getCurrency } from '../loan/math.ts';
 

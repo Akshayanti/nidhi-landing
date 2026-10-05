@@ -1,6 +1,7 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
-import { formatAmount } from '../utils/monte-carlo/format.ts';
+import { formatAmount } from '../utils/shared/formatAmount.ts';
 import {
   MAX_FEE_PCT,
   RETURN_SETTINGS,
@@ -583,6 +584,9 @@ const W = 760;
 const H = 420;
 const PAD = { top: 40, right: 132, bottom: 56, left: 104 };
 const PLOT_W = W - PAD.left - PAD.right;
+// Readout swatch colours, matching the chart's dots and inner band.
+const OUTER_DOT = 'color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white))';
+const INNER_BAND = 'color-mix(in srgb, var(--color-deep-blue) 34%, transparent)';
 const PLOT_H = H - PAD.top - PAD.bottom;
 
 /** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
@@ -619,7 +623,6 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   const figureRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
-  const [cardLeft, setCardLeft] = useState<number | null>(null);
   const { bands, straightLine, years } = result;
 
   // Scale to the middle half of every year, plus the full 8-in-10 band while
@@ -704,7 +707,6 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   }
 
   const h = hover !== null ? bands[hover] : null;
-  useEffect(() => { if (hover === null) setCardLeft(null); }, [hover]);
   const phase =
     hover === null || !withdrawing
       ? null
@@ -717,31 +719,10 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
     ? `Year ${hover}${phase ? `, ${phase.toLowerCase()}` : ''}. High ${formatAmount(h.p90, code)}, middle half ${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}, median ${formatAmount(h.p50, code)}, low ${formatAmount(h.p10, code)}, single line ${formatAmount(straightLine[hover!], code)}.`
     : '';
 
-  // Escape closes the readout wherever focus is (WCAG 1.4.13).
-  useEffect(() => {
-    if (hover === null) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setHover(null); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [hover]);
-
-  // Place the readout beside the crosshair, flipping and clamping against the
-  // plotted area so it never covers the end labels or spills out of the chart
-  // (phones stack it below).
-  useLayoutEffect(() => {
-    const fig = figureRef.current;
-    const card = cardRef.current;
-    const svg = svgRef.current;
-    if (hover === null || !fig || !card || !svg) return;
-    const figRect = fig.getBoundingClientRect();
-    const svgRect = svg.getBoundingClientRect();
-    const anchor = svgRect.left - figRect.left + (x(hover) / W) * svgRect.width;
-    const cw = card.offsetWidth;
-    const plotRight = svgRect.left - figRect.left + ((W - PAD.right) / W) * svgRect.width;
-    let left = anchor + 14;
-    if (left + cw > plotRight) left = anchor - 14 - cw;
-    setCardLeft(Math.max(0, Math.min(left, fig.clientWidth - cw)));
-  }, [hover, years]);
+  useEscapeToClose(hover !== null, useCallback(() => setHover(null), []));
+  // Beside the crosshair, kept inside the plotted area so it never covers the
+  // end labels (phones stack it below the chart).
+  const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / W, (W - PAD.right) / W);
 
   return (
     <figure
@@ -865,26 +846,21 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
           at full width (see global.css), on wider screens it floats beside
           the crosshair. */}
       {h && hover !== null && (
-        <div
-          className="mcs-hoverCard"
-          ref={cardRef}
-          style={{ left: cardLeft ?? 0, visibility: cardLeft === null ? 'hidden' : undefined }}
-          aria-hidden="true"
-        >
-          <div className="mcs-hoverTitle">
-            Year {hover}
-            {phase && <span className="mcs-hoverPhase">{phase}</span>}
-          </div>
-          <dl>
-            {/* Swatches match the dots on the chart: band-edge dots for high and
-                low, the median dot, the single-line dot, and the inner band. */}
-            <div><dt><i className="mcs-dot mcs-dot--outer" />High (90th)</dt><dd>{formatAmount(h.p90, code)}</dd></div>
-            <div><dt><i className="mcs-key mcs-key--inner" />Middle half</dt><dd>{formatAmount(h.p25, code)} to {formatAmount(h.p75, code)}</dd></div>
-            <div className="mcs-hoverStrong"><dt><i className="mcs-dot mcs-dot--median" />Median</dt><dd>{formatAmount(h.p50, code)}</dd></div>
-            <div><dt><i className="mcs-dot mcs-dot--outer" />Low (10th)</dt><dd>{formatAmount(h.p10, code)}</dd></div>
-            <div><dt><i className="mcs-dot mcs-dot--straight" />Single line</dt><dd>{formatAmount(straightLine[hover], code)}</dd></div>
-          </dl>
-        </div>
+        <ChartReadout
+          title={`Year ${hover}`}
+          tag={phase}
+          cardRef={cardRef}
+          position={cardLeft}
+          rows={[
+            // Swatches match the dots on the chart: band-edge dots for high
+            // and low, the median dot, the single-line dot, and the inner band.
+            { label: 'High (90th)', value: formatAmount(h.p90, code), swatch: 'dot', color: OUTER_DOT },
+            { label: 'Middle half', value: `${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}`, swatch: 'band', color: INNER_BAND },
+            { label: 'Median', value: formatAmount(h.p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
+            { label: 'Low (10th)', value: formatAmount(h.p10, code), swatch: 'dot', color: OUTER_DOT },
+            { label: 'Single line', value: formatAmount(straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },
+          ]}
+        />
       )}
       <figcaption className="mcs-legend">
         <span><i className="mcs-key mcs-key--outer" aria-hidden="true" />8 in 10 paths</span>

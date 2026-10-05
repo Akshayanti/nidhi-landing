@@ -93,6 +93,8 @@ for (const path of pages) {
       if (!vb || !vb.width || !box.width) return;
       const scale = box.width / vb.width;
       const texts = [...svg.querySelectorAll('text')].filter((t) => t.textContent.trim());
+      // Icons and legend swatches have no labels to measure.
+      if (!texts.length) return;
       let minPx = Infinity;
       let minText = '';
       const rects = [];

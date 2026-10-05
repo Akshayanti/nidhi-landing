@@ -1,5 +1,5 @@
 /**
- * Unit tests for src/utils/monte-carlo/format.ts.
+ * Unit tests for src/utils/shared/formatAmount.ts.
  *
  * Run with:  npm test
  */
@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { CURRENCIES } from '../loan/math.ts';
-import { formatAmount } from './format.ts';
+import { formatAmount } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
