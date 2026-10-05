@@ -1,7 +1,15 @@
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { CURRENCIES, getCurrency } from '../utils/loan/math.ts';
-import { simulate, type SimulationResult } from '../utils/monte-carlo/math.ts';
+import {
+  MAX_FEE_PCT,
+  RETURN_SETTINGS,
+  RUN_OPTIONS,
+  simulate,
+  type ReturnSetting,
+  type SimulationResult,
+} from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, encodeState, type ToolState } from '../utils/monte-carlo/url.ts';
+import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 
 // ---------------------------------------------------------------------------
 // PostHog telemetry: interaction metadata only, never the values typed.
@@ -40,6 +48,30 @@ function inTen(share: number): string {
 }
 
 // ---------------------------------------------------------------------------
+// Return settings, as shown on the switch. The figures match math.ts: the
+// historical row quotes the published world figures, the other two the ends
+// of the long-run range used across nidhi's articles.
+// ---------------------------------------------------------------------------
+
+const RETURN_LABELS: Record<ReturnSetting, string> = {
+  cautious: 'Cautious',
+  historical: 'Historical',
+  optimistic: 'Optimistic',
+};
+
+const RETURN_TIPS: Record<ReturnSetting, string> = {
+  cautious:
+    'Stocks grow about 4% a year after inflation and bonds about 1%: the low end of the long-run range. The ups and downs are as large as in history.',
+  historical:
+    'World markets from 1900 to 2025: stocks grew about 5.3% a year after inflation and bonds about 1.7%, with the ups and downs they actually had.',
+  optimistic:
+    'Stocks grow about 6% a year after inflation and bonds about 3%: the high end of the long-run range. The ups and downs are as large as in history.',
+};
+
+// Above this many paths the simulation runs in a worker, off the main thread.
+const WORKER_THRESHOLD = 10_000;
+
+// ---------------------------------------------------------------------------
 // Form state: inputs are kept as strings so a field can be empty while typing.
 // ---------------------------------------------------------------------------
 
@@ -52,6 +84,9 @@ interface FormState {
   withdrawOn: boolean;
   withdrawal: string;
   withdrawYears: string;
+  feePct: string;
+  returns: ReturnSetting;
+  paths: number;
 }
 
 const DEFAULT_WITHDRAWAL = 30_000;
@@ -66,6 +101,9 @@ function toForm(s: ToolState): FormState {
     withdrawOn: s.withdrawal > 0,
     withdrawal: String(s.withdrawal > 0 ? s.withdrawal : DEFAULT_WITHDRAWAL),
     withdrawYears: String(s.withdrawYears),
+    feePct: String(s.feePct),
+    returns: s.returns,
+    paths: s.paths,
   };
 }
 
@@ -79,6 +117,9 @@ function toState(f: FormState): ToolState {
     stockPct: n(f.stockPct),
     withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
     withdrawYears: n(f.withdrawYears),
+    feePct: n(f.feePct),
+    returns: f.returns,
+    paths: f.paths,
   };
 }
 
@@ -89,6 +130,71 @@ function isValid(v: string, min: number, max: number): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// Simulation runner: small runs on the main thread, large ones in a worker,
+// falling back to the main thread if a worker cannot start.
+// ---------------------------------------------------------------------------
+
+/** The result and the plan that produced it, so the panel never pairs new inputs with old numbers. */
+interface Shown {
+  result: SimulationResult;
+  state: ToolState;
+}
+
+function useSimulation(state: ToolState): Shown & { busy: boolean } {
+  const [shown, setShown] = useState<Shown>(() => ({ result: simulate(state), state }));
+  const [busy, setBusy] = useState(false);
+  const worker = useRef<Worker | null>(null);
+  const latest = useRef(0);
+
+  useEffect(() => () => worker.current?.terminate(), []);
+
+  // The first result is computed while rendering (also on the server), so
+  // the effect has nothing to do until the plan changes.
+  const initial = useRef(state);
+
+  useEffect(() => {
+    if (state === initial.current) return;
+    const id = ++latest.current;
+    if (state.paths <= WORKER_THRESHOLD) {
+      setShown({ result: simulate(state), state });
+      setBusy(false);
+      return;
+    }
+    setBusy(true);
+    const fallback = () => {
+      // Let the busy state paint before blocking the thread.
+      window.setTimeout(() => {
+        if (id !== latest.current) return;
+        setShown({ result: simulate(state), state });
+        setBusy(false);
+      }, 30);
+    };
+    try {
+      if (!worker.current) {
+        worker.current = new Worker(new URL('../utils/monte-carlo/worker.ts', import.meta.url), { type: 'module' });
+      }
+      const w = worker.current;
+      w.onmessage = (e: MessageEvent<WorkerReply>) => {
+        if (e.data.id !== latest.current) return;
+        setShown({ result: e.data.result, state });
+        setBusy(false);
+      };
+      w.onerror = () => {
+        worker.current?.terminate();
+        worker.current = null;
+        fallback();
+      };
+      const request: WorkerRequest = { id, inputs: state };
+      w.postMessage(request);
+    } catch {
+      fallback();
+    }
+  }, [state]);
+
+  return { ...shown, busy };
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
@@ -96,6 +202,7 @@ export default function MonteCarloSimulator() {
   const [form, setForm] = useState<FormState>(() => toForm(DEFAULTS));
   const [settled, setSettled] = useState<ToolState>(DEFAULTS);
   const [copied, setCopied] = useState(false);
+  const [tipsDismissed, setTipsDismissed] = useState(false);
   const ids = {
     currency: useId(),
     start: useId(),
@@ -104,7 +211,18 @@ export default function MonteCarloSimulator() {
     stockPct: useId(),
     withdrawal: useId(),
     withdrawYears: useId(),
+    feePct: useId(),
+    returns: useId(),
+    paths: useId(),
   };
+
+  // Escape hides the return tooltips wherever focus is (WCAG 1.4.13); they
+  // come back once the pointer or focus leaves the switch.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setTipsDismissed(true); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // Shared links carry the plan after the #, which browsers never send to a
   // server. A script in the page head moves it out of the address bar before
@@ -127,6 +245,7 @@ export default function MonteCarloSimulator() {
     stockPct: !isValid(form.stockPct, 0, 100),
     withdrawal: form.withdrawOn && !isValid(form.withdrawal, 1, 1e11),
     withdrawYears: form.withdrawOn && !isValid(form.withdrawYears, 1, 60),
+    feePct: !isValid(form.feePct, 0, MAX_FEE_PCT),
   };
   const hasErrors = Object.values(errors).some(Boolean);
 
@@ -138,8 +257,10 @@ export default function MonteCarloSimulator() {
     return () => window.clearTimeout(t);
   }, [form, hasErrors]);
 
-  const result = useMemo(() => simulate(settled), [settled]);
-  const code = settled.currency;
+  const { result, state: shownState, busy: running } = useSimulation(settled);
+  // Pending from the moment a new plan settles until its result is on screen,
+  // so Copy can never share a plan the results do not show yet.
+  const pending = running || settled !== shownState;
 
   const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = e.target.value;
@@ -191,6 +312,11 @@ export default function MonteCarloSimulator() {
           <NumberField id={ids.monthly} label="Added every month" value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} />
           <NumberField id={ids.saveYears} label="Years of saving" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint="0 to 60" />
         </div>
+        <p className="mcs-hint mcs-crossLink">
+          Money in several currencies? Add it up first with the{' '}
+          <a href="/free/multi-currency-net-worth/" data-attr="free-monte-carlo-net-worth-link">multi-currency net worth calculator</a>,
+          then enter the total here.
+        </p>
 
         <div className="mcs-field mcs-mix">
           <label className="mcs-label" htmlFor={ids.stockPct}>
@@ -207,6 +333,69 @@ export default function MonteCarloSimulator() {
             onChange={update('stockPct')}
           />
           <span className="mcs-hint">Rebalanced back to this mix once a year.</span>
+        </div>
+
+        <div className="mcs-grid mcs-grid--assumptions">
+          <fieldset
+            className={`mcs-switch${tipsDismissed ? ' mcs-switch--tipsOff' : ''}`}
+            onMouseLeave={() => setTipsDismissed(false)}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setTipsDismissed(false);
+            }}
+          >
+            <legend className="mcs-label">Returns</legend>
+            <div className="mcs-switchRow">
+              {RETURN_SETTINGS.map((s) => (
+                <label key={s} className={`mcs-switchOpt${form.returns === s ? ' mcs-switchOpt--on' : ''}`}>
+                  <input
+                    type="radio"
+                    name={ids.returns}
+                    value={s}
+                    checked={form.returns === s}
+                    aria-describedby={`${ids.returns}-${s}`}
+                    onChange={() => {
+                      setForm((f) => ({ ...f, returns: s }));
+                      track('free_monte_carlo_returns_changed', { setting: s });
+                    }}
+                  />
+                  <span>{RETURN_LABELS[s]}</span>
+                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{RETURN_TIPS[s]}</span>
+                </label>
+              ))}
+            </div>
+            {/* The chosen setting's description, visible for touch screens
+                where there is no hover. Screen readers get it from the
+                tooltip through aria-describedby, so it is hidden from them. */}
+            <span className="mcs-hint" aria-hidden="true">{RETURN_TIPS[form.returns]}</span>
+          </fieldset>
+          <NumberField
+            id={ids.feePct}
+            label="Yearly fees, %"
+            value={form.feePct}
+            onChange={update('feePct')}
+            invalid={errors.feePct}
+            max={MAX_FEE_PCT}
+            hint="Fund and platform fees, taken off every year's return. 0 to 5."
+          />
+          <div className="mcs-field">
+            <label className="mcs-label" htmlFor={ids.paths}>Simulated paths</label>
+            <select
+              id={ids.paths}
+              className="mcs-input"
+              value={form.paths}
+              aria-describedby={`${ids.paths}-hint`}
+              onChange={(e) => {
+                const paths = Number(e.target.value);
+                setForm((f) => ({ ...f, paths }));
+                track('free_monte_carlo_runs_changed', { runs: paths });
+              }}
+            >
+              {RUN_OPTIONS.map((n) => (
+                <option key={n} value={n}>{n.toLocaleString('en-US')}</option>
+              ))}
+            </select>
+            <span className="mcs-hint" id={`${ids.paths}-hint`}>More paths give steadier figures; past 10,000 they move by a few percent at most.</span>
+          </div>
         </div>
 
         <fieldset className="mcs-withdraw">
@@ -236,19 +425,23 @@ export default function MonteCarloSimulator() {
         </fieldset>
 
         <div className="mcs-actions">
-          <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-monte-carlo-share">
+          <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
             {copied ? 'Link copied' : 'Copy a link to this plan'}
           </button>
           <button type="button" className="mcs-btn mcs-btn--ghost" onClick={reset} data-attr="free-monte-carlo-reset">
             Reset
           </button>
           <span className="mcs-hint" role="status" aria-live="polite">
-            {hasErrors ? 'Fix the highlighted fields to update the results.' : ''}
+            {hasErrors
+              ? 'Fix the highlighted fields to update the results.'
+              : running
+                ? `Running ${settled.paths.toLocaleString('en-US')} paths…`
+                : ''}
           </span>
         </div>
       </form>
 
-      <Results result={result} state={settled} code={code} />
+      <Results result={result} state={shownState} code={shownState.currency} busy={running} />
     </div>
   );
 }
@@ -288,14 +481,14 @@ function NumberField(props: {
 // Results
 // ---------------------------------------------------------------------------
 
-function Results({ result, state, code }: { result: SimulationResult; state: ToolState; code: string }) {
+function Results({ result, state, code, busy }: { result: SimulationResult; state: ToolState; code: string; busy: boolean }) {
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
   const withdrawing = state.withdrawal > 0;
   const tableId = useId();
 
   return (
-    <section className="mcs-results" aria-labelledby="mcs-results-h">
+    <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
       <h2 id="mcs-results-h" className="mcs-resultsTitle">
         {saving ? `After ${state.saveYears} year${state.saveYears === 1 ? '' : 's'} of saving` : 'Starting from today'}
       </h2>
@@ -345,6 +538,8 @@ function Results({ result, state, code }: { result: SimulationResult; state: Too
       <p className="mcs-caveat">
         These are shares of {result.paths.toLocaleString('en-US')} simulated paths, not the chance of anything happening
         to you. The model is a simplification; see what it leaves out below.
+        {result.paths < 10_000 &&
+          ` With only ${result.paths.toLocaleString('en-US')} paths, the figures can be several percent away from what thousands of paths give.`}
       </p>
 
       {result.years > 0 && <Chart result={result} state={state} code={code} />}

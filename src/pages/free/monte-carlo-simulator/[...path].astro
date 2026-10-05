@@ -2,8 +2,9 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../../../components/MonteCarloSimulator.tsx';
 import { getCollection } from 'astro:content';
-import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS } from '../../../utils/monte-carlo/math.ts';
+import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../../utils/monte-carlo/math.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../../utils/monte-carlo/release.ts';
+import { SHARED_STATE_GLOBAL, STATE_KEYS } from '../../../utils/monte-carlo/url.ts';
 
 // A rest route so the page can be left out of the production build until
 // the tool launches with post 43 (see src/utils/monte-carlo/release.ts).
@@ -13,6 +14,8 @@ export async function getStaticPaths() {
 }
 
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const MAX_PATHS = RUN_OPTIONS[RUN_OPTIONS.length - 1];
+const fmt = (n: number) => n.toLocaleString('en-US');
 
 // Related reading, in order of relevance; unpublished posts are skipped and
 // the next candidate fills in, as on the other tool pages.
@@ -63,16 +66,24 @@ const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).sli
 
 const title = 'Monte Carlo Retirement Simulator: Free, In Your Browser | nidhi';
 const description =
-  'Free Monte Carlo simulator. See the spread of outcomes for your savings and retirement withdrawals, in today\'s money, from 10,000 simulated paths. No signup.';
+  'Free Monte Carlo simulator. See the spread of outcomes for your savings and retirement withdrawals, in today\'s money, from up to 100,000 simulated paths. No signup.';
 
 const faqs = [
   {
     q: 'What is a Monte Carlo simulation?',
-    a: `Instead of assuming one fixed return every year, it plays your plan forward ${DEFAULT_PATHS.toLocaleString('en-US')} times, each time with a different random sequence of good and bad years. The result is a spread: what a low, a median and a high outcome might look like. It shows how much the outcome can vary, which a single line hides.`,
+    a: `Instead of assuming one fixed return every year, it plays your plan forward thousands of times (${fmt(DEFAULT_PATHS)} by default), each time with a different random sequence of good and bad years. The result is a spread: what a low, a median and a high outcome might look like. It shows how much the outcome can vary, which a single line hides.`,
   },
   {
     q: 'Where do the return assumptions come from?',
-    a: `From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged ${pct(STOCKS.mean)} a year with a standard deviation of ${pct(STOCKS.sd)}, and world bonds ${pct(BONDS.mean)} with ${pct(BONDS.sd)}. The tool draws yearly returns from a distribution with those averages and swings. No historical series is copied into the tool.`,
+    a: `From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged ${pct(STOCKS.mean)} a year with a standard deviation of ${pct(STOCKS.sd)}, and world bonds ${pct(BONDS.mean)} with ${pct(BONDS.sd)}. The "Historical" setting draws yearly returns from a distribution with those averages and swings. "Cautious" and "Optimistic" keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi's articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.`,
+  },
+  {
+    q: 'How many paths should I run?',
+    a: `${fmt(DEFAULT_PATHS)} is plenty: going up to ${fmt(MAX_PATHS)} usually moves the low, median and high figures by a few percent at most, and takes noticeably longer, especially on a phone. Fewer paths show how far a small sample can drift: with ${fmt(RUN_OPTIONS[0])}, the figures can be several percent away from what thousands of paths give.`,
+  },
+  {
+    q: 'How are fees handled?',
+    a: `As a yearly percentage of the balance, taken off every year's return, from 0 to ${MAX_FEE_PCT}%. Use the total of your fund's ongoing charge and any platform fee. Fixed fees and one-off charges are not modelled.`,
   },
   {
     q: 'Why is everything in today\'s money?',
@@ -80,7 +91,7 @@ const faqs = [
   },
   {
     q: 'What does "the money lasted in 8 in 10 paths" mean?',
-    a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out fees, taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
+    a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
   },
   {
     q: 'Why does the single line sit above most paths?',
@@ -110,8 +121,9 @@ const webAppSchema = {
   browserRequirements: 'Requires JavaScript. Modern browser.',
   isAccessibleForFree: true,
   featureList: [
-    `${DEFAULT_PATHS.toLocaleString('en-US')} simulated paths of yearly returns`,
-    'Return assumptions from world stock and bond markets, 1900 to 2025',
+    `${fmt(RUN_OPTIONS[0])} to ${fmt(MAX_PATHS)} simulated paths of yearly returns`,
+    'Return assumptions from world stock and bond markets, 1900 to 2025, with cautious and optimistic settings',
+    'Yearly fees',
     'Saving phase and optional withdrawal phase',
     'Stock and bond mix, rebalanced yearly',
     'Results in today\'s money, in 29 currencies',
@@ -145,13 +157,12 @@ const faqSchema = {
     <body>, and moves the plan out of the address bar so the pageview never
     records it. The component reads it from the window property.
   */}
-  <script is:inline slot="head">
-    (function () {
-      var h = window.location.hash;
-      if (!/^#(?:[^&]*&)*[csmykwr]=/.test(h)) return;
-      window.__nidhiMonteCarloShared = h.slice(1);
+  <script is:inline slot="head" define:vars={{ stateKeys: STATE_KEYS.join(''), sharedGlobal: SHARED_STATE_GLOBAL }}>
+    var h = window.location.hash;
+    if (new RegExp('^#(?:[^&]*&)*[' + stateKeys + ']=').test(h)) {
+      window[sharedGlobal] = h.slice(1);
       history.replaceState(null, '', window.location.pathname + window.location.search);
-    })();
+    }
   </script>
   <section class="mcsp-page">
     <nav class="mcsp-breadcrumbs" aria-label="Breadcrumb">
@@ -166,7 +177,7 @@ const faqSchema = {
       <p class="mcsp-eyebrow">Free tools</p>
       <h1 class="mcsp-title">Monte Carlo simulator: the spread, not the single line</h1>
       <p class="mcsp-lead">
-        Play your savings forward {DEFAULT_PATHS.toLocaleString('en-US')} times with returns drawn from the
+        Play your savings forward thousands of times with returns drawn from the
         long-run record of world markets. See a low, median and high outcome, and how often the money
         lasts once you live off it. Everything runs in your browser; nothing is sent to a server.
       </p>
@@ -179,7 +190,7 @@ const faqSchema = {
       <ul>
         <li><strong>One pot, one currency.</strong> If your savings sit in more than one currency, or you will retire somewhere that spends a different one, exchange rates add a risk this model does not include.</li>
         <li><strong>Steady saving and spending.</strong> Real lives have a career break, a house, tuition, an inheritance. Each changes the result, sometimes more than markets do.</li>
-        <li><strong>No fees or taxes.</strong> Both come off every path. A 1% yearly fee alone lowers the middle path noticeably over 30 years.</li>
+        <li><strong>No taxes, and simple fees.</strong> Taxes come off every real path and depend on where you live and which accounts you use. Fees are one yearly percentage; fixed and one-off charges are left out.</li>
         <li><strong>Calmer extremes than history.</strong> Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks -42.9% after inflation) are rarer here than they were in reality.</li>
       </ul>
       <p class="mcsp-planner">
@@ -192,10 +203,10 @@ const faqSchema = {
     <section class="mcsp-panel" aria-labelledby="mcsp-how-h">
       <h2 id="mcsp-how-h" class="mcsp-sectionTitle">How it works</h2>
       <ol class="mcsp-steps">
-        <li>Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {pct(STOCKS.mean)} a year on average with a standard deviation of {pct(STOCKS.sd)}, bonds {pct(BONDS.mean)} with {pct(BONDS.sd)}. The two are mildly linked (a correlation of about {STOCK_BOND_CORRELATION}). That link has swung widely over history, positive and negative, so this is a simplification.</li>
-        <li>Your portfolio earns the blend of the two at your chosen mix, rebalanced once a year. The year's return is spread evenly over its twelve months.</li>
+        <li>Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {pct(STOCKS.mean)} a year on average with a standard deviation of {pct(STOCKS.sd)}, bonds {pct(BONDS.mean)} with {pct(BONDS.sd)}. The two are mildly linked (a correlation of about {STOCK_BOND_CORRELATION}). That link has swung widely over history, positive and negative, so this is a simplification. "Cautious" and "Optimistic" keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.</li>
+        <li>Your portfolio earns the blend of the two at your chosen mix, rebalanced once a year, less your yearly fees. The year's return is spread evenly over its twelve months.</li>
         <li>Your monthly saving goes in at the start of each month. If you switch on withdrawals, a twelfth of the yearly amount comes out each month after the saving years end. A path that hits zero stays at zero.</li>
-        <li>This repeats {DEFAULT_PATHS.toLocaleString('en-US')} times. The chart shows where the paths fall each year: the shaded bands hold the middle 8 in 10 and the middle half of them.</li>
+        <li>This repeats as many times as you choose, {fmt(DEFAULT_PATHS)} by default. The chart shows where the paths fall each year: the shaded bands hold the middle 8 in 10 and the middle half of them.</li>
         <li>The same inputs always give the same result, so a shared link shows exactly what you saw.</li>
       </ol>
       <p class="mcsp-source">

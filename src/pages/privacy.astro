@@ -127,8 +127,8 @@ const changelog: ChangelogEntry[] = [
           material: true,
           summary: 'New free tool: a Monte Carlo simulator.',
           details: [
-            'The simulator plays a savings and withdrawal plan forward 10,000 times with random yearly returns. The whole simulation runs in your browser; the amounts, years and stock/bond mix you enter are not sent to us or anyone else.',
-            'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
+            'The simulator plays a savings and withdrawal plan forward thousands of times with random yearly returns. The whole simulation runs in your browser (large runs in a background thread of the same page); the amounts, years, fees and stock/bond mix you enter are not sent to us or anyone else.',
+            'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, which return setting you pick (cautious, historical or optimistic), which number of simulated paths you pick, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
             'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
             'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
             'The tool makes no network requests of its own and adds no third parties.',
@@ -435,9 +435,10 @@ const privacyBreadcrumbSchema = {
         {showMonteCarlo && (
           <li>
             Anonymous interaction events on the Monte Carlo simulator: which currency you pick,
-            whether you switch withdrawals on or off, whether you open the results table,
-            whether you copy the shareable link, and whether you reset the form.
-            <strong>The amounts, years and mix you enter are never sent.</strong>
+            which return setting and number of simulated paths you choose, whether you switch
+            withdrawals on or off, whether you open the results table, whether you copy the
+            shareable link, and whether you reset the form.
+            <strong>The amounts, years, fees and mix you enter are never sent.</strong>
           </li>
         )}
         <li>

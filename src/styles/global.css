@@ -4513,3 +4513,150 @@ body[data-page="landing"] .site-footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Monte Carlo simulator: assumptions row, return switch and tooltips */
+.mcs-crossLink {
+  margin: calc(-1 * var(--space-2)) 0 0;
+}
+.mcs-crossLink a {
+  color: var(--color-deep-blue);
+}
+.mcs-grid--assumptions {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+}
+.mcs-switch {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mcs-switch legend {
+  padding: 0;
+  margin-bottom: 4px;
+}
+.mcs-switchRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 3px;
+  gap: 3px;
+}
+.mcs-switchOpt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-align: center;
+}
+.mcs-switchOpt input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.mcs-switchOpt--on {
+  background: var(--color-deep-blue);
+  /* The page surface colour reads on deep blue in light mode and on the
+     lighter blue dark mode uses. */
+  color: var(--color-bg-white);
+}
+.mcs-switchOpt:has(input:focus-visible) {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcs-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(280px, 80vw);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-text-primary);
+  color: var(--color-bg-white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-align: left;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+/* Keeps the pointer inside the label while it moves up onto the tooltip. */
+.mcs-tip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+}
+.mcs-switchOpt:first-child .mcs-tip {
+  left: 0;
+  transform: none;
+}
+.mcs-switchOpt:last-child .mcs-tip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.mcs-switchOpt:hover .mcs-tip,
+.mcs-switchOpt:focus-within .mcs-tip {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Escape hides the tooltips (WCAG 1.4.13) until the pointer or focus leaves. */
+.mcs-switch--tipsOff .mcs-tip {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.mcs-results--busy .mcs-cards,
+.mcs-results--busy .mcs-figure,
+.mcs-results--busy .mcs-lasted {
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+.mcs-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+@media (max-width: 800px) {
+  .mcs-grid--assumptions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mcs-grid--assumptions .mcs-switch {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 420px) {
+  .mcs-grid--assumptions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mcs-tip,
+  .mcs-results--busy .mcs-cards,
+  .mcs-results--busy .mcs-figure,
+  .mcs-results--busy .mcs-lasted {
+    transition: none;
+  }
+}

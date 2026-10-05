@@ -111,6 +111,8 @@ All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No even
 | `free_monte_carlo_shared_view_opened` | `utm_source: string \| null` | Page opened from a link carrying tool state |
 | `free_monte_carlo_currency_changed` | `currency: string`: new currency code | User changes the currency |
 | `free_monte_carlo_withdrawal_toggled` | `on: boolean` | User switches the withdrawal phase on or off |
+| `free_monte_carlo_returns_changed` | `setting: 'cautious' \| 'historical' \| 'optimistic'` | User picks a return setting |
+| `free_monte_carlo_runs_changed` | `runs: number`: 100, 1000, 10000 or 100000 | User picks a number of simulated paths |
 | `free_monte_carlo_table_opened` | none | User expands "Show the numbers as a table" |
 | `free_monte_carlo_share_copied` | none | User presses "Copy a link to this plan" |
 | `free_monte_carlo_reset` | none | User clicks "Reset" |
@@ -300,6 +302,7 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `free-monte-carlo-share` | "Copy a link to this plan" button |
 | `free-monte-carlo-reset` | Reset button |
 | `free-monte-carlo-planner-link` | "Join the early-access list" link in "What this can't see" |
+| `free-monte-carlo-net-worth-link` | Link to the multi-currency net worth calculator under the inputs |
 | `related-financial-projections`, `related-what-if-scenarios`, `related-income-replacement-ratio`, `related-understanding-risk`, `related-diversification` | Related reading cards |
 | `free-cta-monte-carlo-simulator` | Card on `/free/` |
 | `footer-monte-carlo-simulator` | Footer link |
