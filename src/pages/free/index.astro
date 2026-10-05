@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 
 // Free tools landing page. Lists every currently shipped free tool with a
 // short description and a card-style link. Targets two SEO clusters:
@@ -21,7 +22,7 @@ interface Tool {
   // What gets rendered into the card preview SVG. Keeps the markup short
   // and lets the page reuse the same visual language as the homepage tool
   // grid.
-  preview: 'donut' | 'bars' | 'browse';
+  preview: 'donut' | 'bars' | 'browse' | 'fan';
   dataAttr: string;
   // Used for the JSON-LD ItemList. Same string as the on-page title.
   itemName: string;
@@ -48,13 +49,29 @@ const tools: Tool[] = [
     dataAttr: 'free-cta-loan-comparison',
     itemName: 'Loan Comparison Calculator',
   },
+  // Listed only once released with post 43 (src/utils/monte-carlo/release.ts).
+  ...((await isMonteCarloReleased())
+    ? [
+        {
+          slug: 'monte-carlo-simulator',
+          url: MONTE_CARLO_URL,
+          kicker: 'Projections and retirement',
+          title: 'Monte Carlo Simulator',
+          desc: 'Play your savings forward thousands of times with returns from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it.',
+          preview: 'fan' as const,
+          dataAttr: 'free-cta-monte-carlo-simulator',
+          itemName: 'Monte Carlo Retirement Simulator',
+        },
+      ]
+    : []),
 ];
 
 const canonicalUrl = 'https://nidhi.today/free/';
 
 const title = 'Free Personal Finance Tools and Calculators | nidhi';
-const description =
-  'Free personal finance calculators for multi-currency net worth and loan comparison. No signup, no tracking, all calculations run in your browser.';
+const description = tools.some((t) => t.slug === 'monte-carlo-simulator')
+  ? 'Free personal finance calculators: multi-currency net worth, loan comparison and a Monte Carlo retirement simulator. No signup, no tracking, all calculations run in your browser.'
+  : 'Free personal finance calculators for multi-currency net worth and loan comparison. No signup, no tracking, all calculations run in your browser.';
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -146,6 +163,15 @@ const collectionPageSchema = {
                       viewBox; bars alone do the job at this size. */}
                   <rect x="10" y="18" width="60" height="10" rx="2" fill="var(--chart-eur)" opacity="0.85" />
                   <rect x="10" y="34" width="46" height="10" rx="2" fill="var(--chart-usd)" opacity="0.85" />
+                </svg>
+              )}
+              {tool.preview === 'fan' && (
+                <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  {/* A widening band around a middle line: the shape of a
+                      Monte Carlo fan chart, without text. */}
+                  <path d="M 10 46 L 70 10 L 70 40 Z" fill="var(--chart-eur)" opacity="0.25" />
+                  <path d="M 10 46 L 70 18 L 70 32 Z" fill="var(--chart-eur)" opacity="0.45" />
+                  <path d="M 10 46 L 70 25" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" />
                 </svg>
               )}
               {tool.preview === 'browse' && (

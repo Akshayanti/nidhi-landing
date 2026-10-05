@@ -4181,3 +4181,702 @@ body[data-page="landing"] .site-footer {
     padding-bottom: 4px;
   }
 }
+
+/* ── Monte Carlo simulator (/free/monte-carlo-simulator/) ── */
+.mcs-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  color: var(--color-text-primary);
+}
+.mcs-form,
+.mcs-results {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.mcs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.mcs-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.mcs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.mcs-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+.mcs-label strong {
+  color: var(--color-text-primary);
+}
+.mcs-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+.mcs-input {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 10px 12px;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+.mcs-input:focus-visible,
+.mcs-range:focus-visible,
+.mcs-check input:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcs-input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+.mcs-range {
+  width: 100%;
+  min-height: 44px;
+  accent-color: var(--color-deep-blue);
+}
+.mcs-withdraw {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.mcs-withdraw legend {
+  padding: 0 var(--space-1);
+}
+.mcs-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+.mcs-check input {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--color-deep-blue);
+}
+.mcs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.mcs-btn {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid var(--color-cta-bg);
+  background: var(--color-cta-bg);
+  color: var(--color-cta-fg);
+}
+.mcs-btn:hover,
+.mcs-btn:focus-visible {
+  background: var(--color-cta-bg-hover);
+}
+.mcs-btn--ghost {
+  background: transparent;
+  color: var(--color-deep-blue);
+  border-color: var(--color-deep-blue);
+}
+.mcs-btn--ghost:hover,
+.mcs-btn--ghost:focus-visible {
+  background: var(--color-bg-subtle);
+}
+.mcs-resultsTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-deep-blue);
+  margin: 0;
+}
+.mcs-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.mcs-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  min-width: 0;
+}
+.mcs-card--mid {
+  border-color: var(--color-deep-blue);
+}
+.mcs-cardLabel {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+.mcs-cardValue {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+.mcs-note,
+.mcs-lastedHead,
+.mcs-caveat {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+.mcs-lastedHead {
+  font-size: 1.05rem;
+  color: var(--color-text-primary);
+}
+.mcs-lasted {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--color-teal);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+.mcs-caveat {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+.mcs-figure {
+  margin: 0;
+}
+.mcs-swipe {
+  display: none;
+  margin: 0 0 var(--space-1);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+.mcs-chartScroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.mcs-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mcs-chart .mcs-axis {
+  fill: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+.mcs-band--outer,
+.mcs-key--outer {
+  fill: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
+  background: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
+}
+.mcs-band--inner,
+.mcs-key--inner {
+  fill: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
+  background: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
+}
+.mcs-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+.mcs-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mcs-key {
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+}
+.mcs-key--median {
+  height: 3px;
+  background: var(--color-deep-blue);
+}
+.mcs-key--straight {
+  height: 0;
+  border-top: 3px dashed var(--color-teal);
+}
+.mcs-tableSummary {
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-deep-blue);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.mcs-tableScroll {
+  overflow-x: auto;
+}
+.mcs-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.mcs-table caption {
+  text-align: left;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  padding-bottom: var(--space-2);
+}
+.mcs-table th,
+.mcs-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--color-border-light);
+  text-align: right;
+  white-space: nowrap;
+}
+.mcs-table th[scope="row"],
+.mcs-table thead th:first-child {
+  text-align: left;
+}
+@media (max-width: 800px) {
+  .mcs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mcs-cards {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .mcs-form,
+  .mcs-results {
+    padding: var(--space-4) var(--space-3);
+  }
+  /* Same rule as blog charts: keep labels readable and scroll sideways. */
+  .mcs-chart {
+    min-width: 600px;
+  }
+  .mcs-swipe {
+    display: block;
+  }
+}
+@media (max-width: 420px) {
+  .mcs-grid,
+  .mcs-grid--two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Monte Carlo simulator: assumptions row, return switch and tooltips */
+.mcs-crossLink {
+  margin: calc(-1 * var(--space-2)) 0 0;
+}
+.mcs-crossLink a {
+  color: var(--color-deep-blue);
+}
+.mcs-grid--assumptions {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+}
+.mcs-switch {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mcs-switch legend {
+  padding: 0;
+  margin-bottom: 4px;
+}
+.mcs-switchRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 3px;
+  gap: 3px;
+}
+.mcs-switchOpt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-align: center;
+}
+.mcs-switchOpt input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.mcs-switchOpt--on {
+  background: var(--color-deep-blue);
+  /* The page surface colour reads on deep blue in light mode and on the
+     lighter blue dark mode uses. */
+  color: var(--color-bg-white);
+}
+.mcs-switchOpt:has(input:focus-visible) {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcs-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(280px, 80vw);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-text-primary);
+  color: var(--color-bg-white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-align: left;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+/* Keeps the pointer inside the label while it moves up onto the tooltip. */
+.mcs-tip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+}
+.mcs-switchOpt:first-child .mcs-tip {
+  left: 0;
+  transform: none;
+}
+.mcs-switchOpt:last-child .mcs-tip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.mcs-switchOpt:hover .mcs-tip,
+.mcs-switchOpt:focus-within .mcs-tip {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Escape hides the tooltips (WCAG 1.4.13) until the pointer or focus leaves. */
+.mcs-switch--tipsOff .mcs-tip {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.mcs-results--busy .mcs-cards,
+.mcs-results--busy .mcs-figure,
+.mcs-results--busy .mcs-lasted {
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+.mcs-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+@media (max-width: 800px) {
+  .mcs-grid--assumptions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mcs-grid--assumptions .mcs-switch {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 420px) {
+  .mcs-grid--assumptions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mcs-tip,
+  .mcs-results--busy .mcs-cards,
+  .mcs-results--busy .mcs-figure,
+  .mcs-results--busy .mcs-lasted {
+    transition: none;
+  }
+}
+
+/* Monte Carlo simulator: interactive chart */
+.mcs-chartBox {
+  position: relative;
+  border-radius: var(--radius-md);
+  touch-action: pan-x pan-y;
+}
+.mcs-chartBox:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
+}
+.mcs-chart {
+  cursor: crosshair;
+}
+.mcs-chart text {
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+.mcs-plotBg {
+  fill: color-mix(in srgb, var(--color-deep-blue) 3%, transparent);
+}
+.mcs-phase {
+  fill: color-mix(in srgb, var(--color-teal) 8%, transparent);
+}
+.mcs-chart .mcs-phaseLabel {
+  fill: var(--color-teal);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+.mcs-chart .mcs-grid {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+.mcs-chart .mcs-gridMinor {
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.7;
+}
+.mcs-chart .mcs-axisLine {
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+}
+.mcs-chart .mcs-axisTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+.mcs-stop--outerTop { stop-color: var(--color-deep-blue); stop-opacity: 0.24; }
+.mcs-stop--outerBottom { stop-color: var(--color-deep-blue); stop-opacity: 0.08; }
+.mcs-stop--innerTop { stop-color: var(--color-deep-blue); stop-opacity: 0.5; }
+.mcs-stop--innerBottom { stop-color: var(--color-deep-blue); stop-opacity: 0.26; }
+/* The dark theme's lighter blue needs more opacity to stand off the dark surface. */
+[data-theme="dark"] .mcs-stop--outerTop { stop-opacity: 0.34; }
+[data-theme="dark"] .mcs-stop--outerBottom { stop-opacity: 0.16; }
+[data-theme="dark"] .mcs-stop--innerTop { stop-opacity: 0.6; }
+[data-theme="dark"] .mcs-stop--innerBottom { stop-opacity: 0.38; }
+.mcs-medianGlow {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-width: 9;
+  opacity: 0.22;
+}
+.mcs-median {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.mcs-straight {
+  fill: none;
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+  stroke-dasharray: 9 6;
+  stroke-linecap: round;
+}
+.mcs-endLabel circle {
+  fill: var(--color-deep-blue);
+  stroke: var(--color-bg-white);
+  stroke-width: 2;
+}
+.mcs-endLabel--outer circle {
+  fill: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-chart .mcs-endName {
+  fill: var(--color-text-muted);
+}
+.mcs-chart .mcs-endValue {
+  fill: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+}
+.mcs-chart .mcs-endLabel--median .mcs-endValue {
+  fill: var(--color-deep-blue);
+}
+.mcs-hoverLine {
+  stroke: var(--color-text-secondary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+.mcs-hoverDot {
+  stroke: var(--color-bg-white);
+  stroke-width: 2.5;
+}
+.mcs-hoverDot--outer {
+  fill: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-hoverDot--median {
+  fill: var(--color-deep-blue);
+}
+.mcs-hoverDot--straight {
+  fill: var(--color-teal);
+}
+.mcs-hoverCard {
+  position: absolute;
+  top: 8px;
+  min-width: 230px;
+  padding: var(--space-3);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  z-index: 5;
+}
+.mcs-hoverTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+.mcs-hoverPhase {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--color-teal);
+}
+.mcs-hoverCard dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mcs-hoverCard dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.mcs-hoverCard dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mcs-hoverCard dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.mcs-hoverStrong dt,
+.mcs-hoverStrong dd {
+  font-weight: 700;
+  color: var(--color-deep-blue);
+}
+.mcs-legendHint {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+.mcs-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mcs-figure {
+  position: relative;
+}
+.mcs-hoverCard dt {
+  white-space: nowrap;
+}
+/* Phones: the chart scrolls sideways, so the readout sits under it at full
+   width instead of floating beside the crosshair, where it could be cut off. */
+@media (max-width: 640px) {
+  .mcs-hoverCard {
+    position: static;
+    left: auto !important;
+    min-width: 0;
+    margin-top: var(--space-3);
+    box-shadow: none;
+  }
+}
+.mcs-edge {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-linejoin: round;
+}
+.mcs-edge--outer {
+  stroke-width: 1;
+  opacity: 0.55;
+}
+.mcs-edge--inner {
+  stroke-width: 1.25;
+  opacity: 0.75;
+}
+.mcs-leader {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+/* Readout swatches that match the hover dots on the chart. */
+.mcs-dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--color-bg-white);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+.mcs-dot--outer {
+  background: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-dot--median {
+  background: var(--color-deep-blue);
+}
+.mcs-dot--straight {
+  background: var(--color-teal);
+}

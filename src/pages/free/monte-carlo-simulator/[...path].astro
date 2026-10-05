@@ -1,0 +1,446 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import MonteCarloSimulator from '../../../components/MonteCarloSimulator.tsx';
+import { getCollection } from 'astro:content';
+import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../../utils/monte-carlo/math.ts';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../../utils/monte-carlo/release.ts';
+import { SHARED_STATE_GLOBAL, STATE_KEYS } from '../../../utils/monte-carlo/url.ts';
+
+// A rest route so the page can be left out of the production build until
+// the tool launches with post 43 (see src/utils/monte-carlo/release.ts).
+// When released it builds exactly one page, at /free/monte-carlo-simulator/.
+export async function getStaticPaths() {
+  return (await isMonteCarloReleased()) ? [{ params: { path: undefined } }] : [];
+}
+
+const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const MAX_PATHS = RUN_OPTIONS[RUN_OPTIONS.length - 1];
+const fmt = (n: number) => n.toLocaleString('en-US');
+
+// Related reading, in order of relevance; unpublished posts are skipped and
+// the next candidate fills in, as on the other tool pages.
+const RELATED_CANDIDATES = [
+  {
+    slug: 'financial-projections',
+    kicker: 'The idea behind this tool',
+    title: 'Financial projections',
+    desc: 'Why one straight line misleads, and how to read a spread of outcomes instead.',
+    dataAttr: 'related-financial-projections',
+  },
+  {
+    slug: 'what-if-scenarios',
+    kicker: 'Next step',
+    title: 'What-if scenarios',
+    desc: 'Test one decision at a time against your baseline before you make it.',
+    dataAttr: 'related-what-if-scenarios',
+  },
+  {
+    slug: 'income-replacement-ratio',
+    kicker: 'How much to take out',
+    title: 'Income replacement ratio',
+    desc: 'What share of your working income you are likely to need once you stop.',
+    dataAttr: 'related-income-replacement-ratio',
+  },
+  {
+    slug: 'understanding-risk',
+    kicker: 'Fundamentals',
+    title: 'Understanding risk',
+    desc: 'What volatility means for your money, and why the order of returns matters.',
+    dataAttr: 'related-understanding-risk',
+  },
+  {
+    slug: 'diversification',
+    kicker: 'Fundamentals',
+    title: 'Diversification',
+    desc: 'Why a world portfolio swings less than any single country.',
+    dataAttr: 'related-diversification',
+  },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog')).filter((p) => isDev || p.data.pubDate <= now).map((p) => p.data.slug),
+);
+const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
+
+const title = 'Monte Carlo Retirement Simulator: Free, In Your Browser | nidhi';
+const description =
+  'Free Monte Carlo retirement simulator: see the range of outcomes, in today\'s money. No signup.';
+
+const faqs = [
+  {
+    q: 'What is a Monte Carlo simulation?',
+    a: `Instead of assuming one fixed return every year, it plays your plan forward thousands of times (${fmt(DEFAULT_PATHS)} by default), each time with a different random sequence of good and bad years. The result is a spread: what a low, a median and a high outcome might look like. It shows how much the outcome can vary, which a single line hides.`,
+  },
+  {
+    q: 'Where do the return assumptions come from?',
+    a: `From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged ${pct(STOCKS.mean)} a year with a standard deviation of ${pct(STOCKS.sd)}, and world bonds ${pct(BONDS.mean)} with ${pct(BONDS.sd)}. The "Historical" setting draws yearly returns from a distribution with those averages and swings. "Cautious" and "Optimistic" keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi's articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.`,
+  },
+  {
+    q: 'How many paths should I run?',
+    a: `${fmt(DEFAULT_PATHS)} is plenty: going up to ${fmt(MAX_PATHS)} usually moves the low, median and high figures by a few percent at most, and takes noticeably longer, especially on a phone. Fewer paths show how far a small sample can drift: with ${fmt(RUN_OPTIONS[0])}, the figures can be several percent away from what thousands of paths give.`,
+  },
+  {
+    q: 'How are fees handled?',
+    a: `As a yearly percentage of the balance, taken off every year's return, from 0 to ${MAX_FEE_PCT}%. Use the total of your fund's ongoing charge and any platform fee. Fixed fees and one-off charges are not modelled.`,
+  },
+  {
+    q: 'Why is everything in today\'s money?',
+    a: 'All returns are real returns, after inflation. A result of 500,000 means 500,000 of today\'s purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.',
+  },
+  {
+    q: 'What does "the money lasted in 8 in 10 paths" mean?',
+    a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
+  },
+  {
+    q: 'Why does the single line sit above most paths?',
+    a: 'Volatility costs compounding: a 20% loss needs a 25% gain to get back to where you were. So a plan that averages a given return with ups and downs usually ends below the same plan with that return every year. The single line uses the compound rate, which is already lower than the simple average, and still close to half the paths end below it.',
+  },
+  {
+    q: 'Is my data sent anywhere?',
+    a: 'No. The simulation runs in your browser and the numbers you type are not sent to us or anyone else. Nothing goes into the page address while you use the tool. When you press "Copy a link to this plan", your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
+  },
+  {
+    q: 'Is this financial advice?',
+    a: 'No. It is an educational model of one portfolio. It cannot tell you what to invest in, how much to withdraw, or when you can retire.',
+  },
+];
+
+const canonicalUrl = `https://nidhi.today${MONTE_CARLO_URL}`;
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'nidhi Monte Carlo Simulator',
+  alternateName: ['nidhi Monte Carlo Retirement Calculator', 'nidhi Retirement Simulator'],
+  url: canonicalUrl,
+  description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (web browser)',
+  browserRequirements: 'Requires JavaScript. Modern browser.',
+  isAccessibleForFree: true,
+  featureList: [
+    `${fmt(RUN_OPTIONS[0])} to ${fmt(MAX_PATHS)} simulated paths of yearly returns`,
+    'Return assumptions from world stock and bond markets, 1900 to 2025, with cautious and optimistic settings',
+    'Yearly fees',
+    'Saving phase and optional withdrawal phase',
+    'Stock and bond mix, rebalanced yearly',
+    'Results in today\'s money, in 29 currencies',
+    'Shareable link to any plan',
+  ],
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'nidhi', url: 'https://nidhi.today/' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
+    { '@type': 'ListItem', position: 2, name: 'Free tools', item: 'https://nidhi.today/free/' },
+    { '@type': 'ListItem', position: 3, name: 'Monte Carlo simulator', item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}>
+  {/*
+    A shared plan arrives after the # (browsers never send that part to a
+    server). This runs in <head>, before analytics load at the end of
+    <body>, and moves the plan out of the address bar so the pageview never
+    records it. The component reads it from the window property.
+  */}
+  <script is:inline slot="head" define:vars={{ stateKeys: STATE_KEYS.join(''), sharedGlobal: SHARED_STATE_GLOBAL }}>
+    var h = window.location.hash;
+    if (new RegExp('^#(?:[^&]*&)*[' + stateKeys + ']=').test(h)) {
+      window[sharedGlobal] = h.slice(1);
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  </script>
+  <section class="mcsp-page">
+    <nav class="mcsp-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/free/">Free tools</a></li>
+        <li aria-current="page">Monte Carlo simulator</li>
+      </ol>
+    </nav>
+
+    <header class="mcsp-header">
+      <p class="mcsp-eyebrow">Free tools</p>
+      <h1 class="mcsp-title">Monte Carlo simulator: the spread, not the single line</h1>
+      <p class="mcsp-lead">
+        Play your savings forward thousands of times with returns drawn from the
+        long-run record of world markets. See a low, median and high outcome, and how often the money
+        lasts once you live off it. Everything runs in your browser; nothing is sent to a server.
+      </p>
+    </header>
+
+    <MonteCarloSimulator client:load />
+
+    <aside class="mcsp-panel mcsp-limits" aria-labelledby="mcsp-limits-h">
+      <h2 id="mcsp-limits-h" class="mcsp-sectionTitle">What this can't see</h2>
+      <ul>
+        <li><strong>One pot, one currency.</strong> If your savings sit in more than one currency, or you will retire somewhere that spends a different one, exchange rates add a risk this model does not include.</li>
+        <li><strong>Steady saving and spending.</strong> Real lives have a career break, a house, tuition, an inheritance. Each changes the result, sometimes more than markets do.</li>
+        <li><strong>No taxes, and simple fees.</strong> Taxes come off every real path and depend on where you live and which accounts you use. Fees are one yearly percentage; fixed and one-off charges are left out.</li>
+        <li><strong>Calmer extremes than history.</strong> Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks -42.9% after inflation) are rarer here than they were in reality.</li>
+      </ul>
+      <p class="mcsp-planner">
+        The nidhi planner runs this kind of simulation on your whole picture: every account in its own
+        currency, your income and spending over time, and the events you are planning for.{' '}
+        <a href="/#signup" data-attr="free-monte-carlo-planner-link">Join the early-access list</a>
+      </p>
+    </aside>
+
+    <section class="mcsp-panel" aria-labelledby="mcsp-how-h">
+      <h2 id="mcsp-how-h" class="mcsp-sectionTitle">How it works</h2>
+      <ol class="mcsp-steps">
+        <li>Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {pct(STOCKS.mean)} a year on average with a standard deviation of {pct(STOCKS.sd)}, bonds {pct(BONDS.mean)} with {pct(BONDS.sd)}. The two are mildly linked (a correlation of about {STOCK_BOND_CORRELATION}). That link has swung widely over history, positive and negative, so this is a simplification. "Cautious" and "Optimistic" keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.</li>
+        <li>Your portfolio earns the blend of the two at your chosen mix, rebalanced once a year, less your yearly fees. The year's return is spread evenly over its twelve months.</li>
+        <li>Your monthly saving goes in at the start of each month. If you switch on withdrawals, a twelfth of the yearly amount comes out each month after the saving years end. A path that hits zero stays at zero.</li>
+        <li>This repeats as many times as you choose, {fmt(DEFAULT_PATHS)} by default. The chart shows where the paths fall each year: the shaded bands hold the middle 8 in 10 and the middle half of them.</li>
+        <li>The same inputs always give the same result, so a shared link shows exactly what you saw.</li>
+      </ol>
+      <p class="mcsp-source">
+        Sources: Elroy Dimson, Paul Marsh and Mike Staunton, &ldquo;Global Markets over the Last 126 Years&rdquo;
+        (Exhibits 11.3 and 11.5, from the DMS Database), and Edward F. McQuarrie, &ldquo;US Stocks and Bonds
+        before 1926&rdquo; (Exhibit 10.4), in{' '}
+        <a href="https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf" target="_blank" rel="noopener noreferrer">Exponential Wealth: Centuries of Stock and Bond Returns</a>,
+        CFA Institute Research Foundation, 2026.
+      </p>
+    </section>
+
+    <details class="mcsp-panel mcsp-faq">
+      <summary class="mcsp-sectionTitle">Frequently asked questions</summary>
+      {faqs.map((f) => (
+        <details class="mcsp-faqItem">
+          <summary class="mcsp-faqQ">{f.q}</summary>
+          <p class="mcsp-faqA">{f.a}</p>
+        </details>
+      ))}
+    </details>
+
+    {RELATED.length > 0 && (
+      <aside class="mcsp-panel" aria-labelledby="mcsp-related-h">
+        <h2 id="mcsp-related-h" class="mcsp-sectionTitle">Read more</h2>
+        <div class="mcsp-relatedGrid">
+          {RELATED.map((post) => (
+            <a href={`/blog/${post.slug}/`} class="mcsp-relatedCard" data-attr={post.dataAttr}>
+              <span class="mcsp-relatedKicker">{post.kicker}</span>
+              <span class="mcsp-relatedTitle">{post.title}</span>
+              <span class="mcsp-relatedDesc">{post.desc}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .mcsp-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+  .mcsp-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .mcsp-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .mcsp-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+  }
+  .mcsp-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .mcsp-breadcrumbs a:hover,
+  .mcsp-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .mcsp-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+  .mcsp-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+  .mcsp-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+  .mcsp-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+  .mcsp-lead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+  .mcsp-panel {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+  .mcsp-sectionTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+  }
+  .mcsp-panel ul,
+  .mcsp-steps {
+    margin: 0;
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-panel li {
+    margin-bottom: var(--space-2);
+  }
+  .mcsp-panel li strong {
+    color: var(--color-text-primary);
+  }
+  .mcsp-limits {
+    border-left: 4px solid var(--color-teal);
+  }
+  .mcsp-planner {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-planner a {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+    white-space: nowrap;
+  }
+  .mcsp-source {
+    margin: var(--space-4) 0 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+  .mcsp-source a {
+    color: var(--color-text-secondary);
+  }
+  .mcsp-faq > summary {
+    cursor: pointer;
+    margin: 0;
+  }
+  .mcsp-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    margin-top: var(--space-2);
+  }
+  .mcsp-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .mcsp-faqA {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .mcsp-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+  }
+  .mcsp-relatedCard:hover,
+  .mcsp-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+  }
+  .mcsp-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-teal);
+  }
+  .mcsp-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-deep-blue);
+  }
+  .mcsp-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  @media (max-width: 800px) {
+    .mcsp-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .mcsp-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .mcsp-header {
+      text-align: left;
+      margin-bottom: var(--space-6);
+    }
+    .mcsp-panel {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+</style>

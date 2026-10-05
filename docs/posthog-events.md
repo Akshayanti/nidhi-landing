@@ -102,6 +102,21 @@ All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wr
 | `free_multi_currency_net_worth_rates_retry` | — | User clicks "Retry" on failed rate fetch |
 | `free_multi_currency_net_worth_csv_downloaded` | `count: number` — rows in the download | User downloads CSV |
 
+### Monte Carlo simulator: `src/components/MonteCarloSimulator.tsx`
+
+All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No event carries the amounts, years or mix the user typed. The tool is built only once post 43 (financial-projections) is published (`src/utils/monte-carlo/release.ts`).
+
+| Event | Properties | Trigger |
+|---|---|---|
+| `free_monte_carlo_shared_view_opened` | `utm_source: string \| null` | Page opened from a link carrying tool state |
+| `free_monte_carlo_currency_changed` | `currency: string`: new currency code | User changes the currency |
+| `free_monte_carlo_withdrawal_toggled` | `on: boolean` | User switches the withdrawal phase on or off |
+| `free_monte_carlo_returns_changed` | `setting: 'cautious' \| 'historical' \| 'optimistic'` | User picks a return setting |
+| `free_monte_carlo_runs_changed` | `runs: number`: 100, 1000, 10000 or 100000 | User picks a number of simulated paths |
+| `free_monte_carlo_table_opened` | none | User expands "Show the numbers as a table" |
+| `free_monte_carlo_share_copied` | none | User presses "Copy a link to this plan" |
+| `free_monte_carlo_reset` | none | User clicks "Reset" |
+
 ---
 
 ## Server-side explicit events — `scripts/newsletter.gs`
@@ -185,6 +200,7 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `nav-free-tools` | Free tools dropdown trigger |
 | `nav-tool-multi-currency-net-worth` | Dropdown link to net worth tool |
 | `nav-tool-loan-comparison` | Dropdown link to loan comparison tool |
+| `nav-tool-monte-carlo-simulator` | Dropdown link to Monte Carlo simulator (once released) |
 | `nav-blog` | Blog link |
 
 ### Theme toggle (`src/components/ThemeToggle.astro`)
@@ -278,3 +294,15 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `mcnw-share-copy` | Share modal copy button |
 | `mcnw-csv-overwrite-confirm` | CSV overwrite confirm button |
 | `mcnw-csv-overwrite-cancel` | CSV overwrite cancel button |
+
+### Monte Carlo simulator page and tool (`src/pages/free/monte-carlo-simulator/[...path].astro`, `src/components/MonteCarloSimulator.tsx`)
+
+| `data-attr` value | Element |
+|---|---|
+| `free-monte-carlo-share` | "Copy a link to this plan" button |
+| `free-monte-carlo-reset` | Reset button |
+| `free-monte-carlo-planner-link` | "Join the early-access list" link in "What this can't see" |
+| `free-monte-carlo-net-worth-link` | Link to the multi-currency net worth calculator under the inputs |
+| `related-financial-projections`, `related-what-if-scenarios`, `related-income-replacement-ratio`, `related-understanding-risk`, `related-diversification` | Related reading cards |
+| `free-cta-monte-carlo-simulator` | Card on `/free/` |
+| `footer-monte-carlo-simulator` | Footer link |

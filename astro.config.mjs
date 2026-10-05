@@ -141,6 +141,8 @@ const STATIC_PAGE_SOURCE = {
   'free': 'src/pages/free/index.astro',
   'free/multi-currency-net-worth': 'src/pages/free/multi-currency-net-worth.astro',
   'free/loan-comparison': 'src/pages/free/loan-comparison.astro',
+  // :(literal) stops git reading the brackets in the filename as a pattern.
+  'free/monte-carlo-simulator': ':(literal)src/pages/free/monte-carlo-simulator/[...path].astro',
 };
 
 export default defineConfig({
