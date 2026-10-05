@@ -4390,18 +4390,10 @@ body[data-page="landing"] .site-footer {
   width: 100%;
   height: auto;
 }
-.mcs-chart .mcs-grid {
-  stroke: var(--color-border);
-  stroke-width: 1;
-}
 .mcs-chart .mcs-axis {
   fill: var(--color-text-muted);
   font-family: var(--font-body);
   font-size: 16px;
-}
-.mcs-chart .mcs-marker {
-  stroke: var(--color-text-muted);
-  stroke-dasharray: 4 4;
 }
 .mcs-band--outer,
 .mcs-key--outer {
@@ -4412,17 +4404,6 @@ body[data-page="landing"] .site-footer {
 .mcs-key--inner {
   fill: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
   background: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
-}
-.mcs-median {
-  fill: none;
-  stroke: var(--color-deep-blue);
-  stroke-width: 3;
-}
-.mcs-straight {
-  fill: none;
-  stroke: var(--color-teal);
-  stroke-width: 2.5;
-  stroke-dasharray: 8 6;
 }
 .mcs-legend {
   display: flex;
@@ -4501,7 +4482,7 @@ body[data-page="landing"] .site-footer {
   }
   /* Same rule as blog charts: keep labels readable and scroll sideways. */
   .mcs-chart {
-    min-width: 560px;
+    min-width: 600px;
   }
   .mcs-swipe {
     display: block;
@@ -4659,4 +4640,243 @@ body[data-page="landing"] .site-footer {
   .mcs-results--busy .mcs-lasted {
     transition: none;
   }
+}
+
+/* Monte Carlo simulator: interactive chart */
+.mcs-chartBox {
+  position: relative;
+  border-radius: var(--radius-md);
+  touch-action: pan-x pan-y;
+}
+.mcs-chartBox:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
+}
+.mcs-chart {
+  cursor: crosshair;
+}
+.mcs-chart text {
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+.mcs-plotBg {
+  fill: color-mix(in srgb, var(--color-deep-blue) 3%, transparent);
+}
+.mcs-phase {
+  fill: color-mix(in srgb, var(--color-teal) 8%, transparent);
+}
+.mcs-chart .mcs-phaseLabel {
+  fill: var(--color-teal);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+.mcs-chart .mcs-grid {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+.mcs-chart .mcs-gridMinor {
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.7;
+}
+.mcs-chart .mcs-axisLine {
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+}
+.mcs-chart .mcs-axisTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+.mcs-stop--outerTop { stop-color: var(--color-deep-blue); stop-opacity: 0.24; }
+.mcs-stop--outerBottom { stop-color: var(--color-deep-blue); stop-opacity: 0.08; }
+.mcs-stop--innerTop { stop-color: var(--color-deep-blue); stop-opacity: 0.5; }
+.mcs-stop--innerBottom { stop-color: var(--color-deep-blue); stop-opacity: 0.26; }
+/* The dark theme's lighter blue needs more opacity to stand off the dark surface. */
+[data-theme="dark"] .mcs-stop--outerTop { stop-opacity: 0.34; }
+[data-theme="dark"] .mcs-stop--outerBottom { stop-opacity: 0.16; }
+[data-theme="dark"] .mcs-stop--innerTop { stop-opacity: 0.6; }
+[data-theme="dark"] .mcs-stop--innerBottom { stop-opacity: 0.38; }
+.mcs-medianGlow {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-width: 9;
+  opacity: 0.22;
+}
+.mcs-median {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.mcs-straight {
+  fill: none;
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+  stroke-dasharray: 9 6;
+  stroke-linecap: round;
+}
+.mcs-endLabel circle {
+  fill: var(--color-deep-blue);
+  stroke: var(--color-bg-white);
+  stroke-width: 2;
+}
+.mcs-endLabel--outer circle {
+  fill: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-chart .mcs-endName {
+  fill: var(--color-text-muted);
+}
+.mcs-chart .mcs-endValue {
+  fill: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+}
+.mcs-chart .mcs-endLabel--median .mcs-endValue {
+  fill: var(--color-deep-blue);
+}
+.mcs-hoverLine {
+  stroke: var(--color-text-secondary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+.mcs-hoverDot {
+  stroke: var(--color-bg-white);
+  stroke-width: 2.5;
+}
+.mcs-hoverDot--outer {
+  fill: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-hoverDot--median {
+  fill: var(--color-deep-blue);
+}
+.mcs-hoverDot--straight {
+  fill: var(--color-teal);
+}
+.mcs-hoverCard {
+  position: absolute;
+  top: 8px;
+  min-width: 230px;
+  padding: var(--space-3);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  z-index: 5;
+}
+.mcs-hoverTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+.mcs-hoverPhase {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--color-teal);
+}
+.mcs-hoverCard dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mcs-hoverCard dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.mcs-hoverCard dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mcs-hoverCard dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.mcs-hoverStrong dt,
+.mcs-hoverStrong dd {
+  font-weight: 700;
+  color: var(--color-deep-blue);
+}
+.mcs-legendHint {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+.mcs-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mcs-figure {
+  position: relative;
+}
+.mcs-hoverCard dt {
+  white-space: nowrap;
+}
+/* Phones: the chart scrolls sideways, so the readout sits under it at full
+   width instead of floating beside the crosshair, where it could be cut off. */
+@media (max-width: 640px) {
+  .mcs-hoverCard {
+    position: static;
+    left: auto !important;
+    min-width: 0;
+    margin-top: var(--space-3);
+    box-shadow: none;
+  }
+}
+.mcs-edge {
+  fill: none;
+  stroke: var(--color-deep-blue);
+  stroke-linejoin: round;
+}
+.mcs-edge--outer {
+  stroke-width: 1;
+  opacity: 0.55;
+}
+.mcs-edge--inner {
+  stroke-width: 1.25;
+  opacity: 0.75;
+}
+.mcs-leader {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+/* Readout swatches that match the hover dots on the chart. */
+.mcs-dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--color-bg-white);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+.mcs-dot--outer {
+  background: color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white));
+}
+.mcs-dot--median {
+  background: var(--color-deep-blue);
+}
+.mcs-dot--straight {
+  background: var(--color-teal);
 }

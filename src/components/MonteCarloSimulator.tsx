@@ -1,5 +1,6 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import { CURRENCIES, getCurrency } from '../utils/loan/math.ts';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { CURRENCIES } from '../utils/loan/math.ts';
+import { formatAmount } from '../utils/monte-carlo/format.ts';
 import {
   MAX_FEE_PCT,
   RETURN_SETTINGS,
@@ -27,16 +28,6 @@ function track(event: string, properties?: Record<string, unknown>) {
 // ---------------------------------------------------------------------------
 // Formatting
 // ---------------------------------------------------------------------------
-
-function formatAmount(value: number, code: string, compact = false): string {
-  const { locale } = getCurrency(code);
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: code,
-    maximumFractionDigits: 0,
-    ...(compact ? { notation: 'compact', maximumSignificantDigits: 3 } : {}),
-  }).format(Math.round(value));
-}
 
 function formatShare(share: number): string {
   return `${Math.round(share * 100)}%`;
@@ -588,24 +579,49 @@ function tableYears(years: number): number[] {
 // Chart
 // ---------------------------------------------------------------------------
 
-const W = 720;
-const H = 380;
-const PAD = { top: 28, right: 24, bottom: 52, left: 112 };
+const W = 760;
+const H = 420;
+const PAD = { top: 40, right: 132, bottom: 56, left: 104 };
+const PLOT_W = W - PAD.left - PAD.right;
+const PLOT_H = H - PAD.top - PAD.bottom;
 
-/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most four, covering v. */
+/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
 function niceScale(v: number): { top: number; step: number; count: number } {
-  if (v <= 0) return { top: 4, step: 1, count: 4 };
-  const raw = v / 4;
+  if (v <= 0) return { top: 6, step: 1, count: 6 };
+  const raw = v / 6;
   const exp = Math.pow(10, Math.floor(Math.log10(raw)));
   const step = [1, 2, 2.5, 5, 10].map((m) => m * exp).find((s) => s >= raw) ?? 10 * exp;
   const count = Math.max(1, Math.ceil(v / step - 1e-9));
   return { top: step * count, step, count };
 }
 
+/** Spreads end labels apart so none overlap, keeping their order. */
+function spreadLabels(ys: number[], gap: number, min: number, max: number): number[] {
+  const order = ys.map((y, i) => [y, i] as const).sort((a, b) => a[0] - b[0]);
+  const out = new Array<number>(ys.length);
+  let prev = -Infinity;
+  for (const [y, i] of order) {
+    const placed = Math.max(y, prev + gap, min);
+    out[i] = placed;
+    prev = placed;
+  }
+  // If the stack ran past the bottom, push it back up.
+  const overflow = Math.max(0, Math.max(...out) - max);
+  return out.map((y) => y - overflow);
+}
+
 function Chart({ result, state, code }: { result: SimulationResult; state: ToolState; code: string }) {
   const titleId = useId();
   const descId = useId();
+  const gradId = useId();
+  const clipId = useId();
+  const svgRef = useRef<SVGSVGElement>(null);
+  const figureRef = useRef<HTMLElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<number | null>(null);
+  const [cardLeft, setCardLeft] = useState<number | null>(null);
   const { bands, straightLine, years } = result;
+
   // Scale to the middle half of every year, plus the full 8-in-10 band while
   // saving. During withdrawals the luckiest paths keep compounding and would
   // otherwise squash the saving years into the bottom of the chart; the part
@@ -615,9 +631,9 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
     Math.max(...bands.map((b) => b.p75), ...bands.slice(0, saveEnd + 1).map((b) => b.p90), ...straightLine),
   );
   const clipped = bands.some((b) => b.p90 > top);
-  const clipId = useId();
-  const x = (y: number) => PAD.left + (years === 0 ? 0 : (y / years) * (W - PAD.left - PAD.right));
-  const yPx = (v: number) => PAD.top + (1 - v / top) * (H - PAD.top - PAD.bottom);
+
+  const x = (y: number) => PAD.left + (years === 0 ? 0 : (y / years) * PLOT_W);
+  const yPx = (v: number) => PAD.top + (1 - Math.min(v, top) / top) * PLOT_H;
   const line = (vals: number[]) => vals.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${yPx(v).toFixed(1)}`).join(' ');
   const area = (lo: number[], hi: number[]) =>
     `${line(hi)} ${lo
@@ -631,67 +647,254 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   const p50 = bands.map((b) => b.p50);
   const p75 = bands.map((b) => b.p75);
   const p90 = bands.map((b) => b.p90);
-  const ticks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
-  const markerX = x(state.saveYears);
-  const markerRight = markerX < W - PAD.right - 170;
-  const step = years <= 10 ? 1 : years <= 30 ? 5 : 10;
-  const xTicks: number[] = [];
-  for (let y = 0; y <= years; y += step) xTicks.push(y);
 
+  const yTicks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
+  const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
+  const xStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
+  const xTicks: number[] = [];
+  for (let y = 0; y <= years; y += xStep) xTicks.push(y);
+  const xMinorStep = xStep === 1 ? 0 : xStep / 5 >= 1 ? xStep / 5 : 0;
+  const xMinor: number[] = [];
+  if (xMinorStep) for (let y = xMinorStep; y < years; y += xMinorStep) if (y % xStep !== 0) xMinor.push(y);
+
+  const withdrawing = state.withdrawal > 0 && state.withdrawYears > 0;
   const end = bands[years];
+
+  // End-of-line labels, read off directly instead of from the axis.
+  // Rounded to a tenth of a unit so server and browser floating point agree
+  // when the page hydrates.
+  const r1 = (n: number) => Math.round(n * 10) / 10;
+  const endRaw = [end.p90, end.p50, end.p10].map((v) => r1(yPx(v)));
+  const endY = spreadLabels(endRaw, 22, PAD.top + 8, H - PAD.bottom).map(r1);
+  const endLabels = [
+    { key: 'p90', label: 'High', value: end.p90, cls: 'mcs-endLabel--outer' },
+    { key: 'p50', label: 'Median', value: end.p50, cls: 'mcs-endLabel--median' },
+    { key: 'p10', label: 'Low', value: end.p10, cls: 'mcs-endLabel--outer' },
+  ];
+
   const desc =
     `Fan chart of ${result.paths.toLocaleString('en-US')} simulated paths over ${years} years. ` +
     `At the end, the 10th percentile is ${formatAmount(end.p10, code)}, the median ${formatAmount(end.p50, code)}, ` +
     `and the 90th percentile ${formatAmount(end.p90, code)}. A single fixed-return line ends at ${formatAmount(straightLine[years], code)}.`;
 
+  // Pointer and keyboard reading of a year's values.
+  function yearAt(clientX: number): number | null {
+    const svg = svgRef.current;
+    if (!svg || years === 0) return null;
+    const rect = svg.getBoundingClientRect();
+    const vx = ((clientX - rect.left) / rect.width) * W;
+    if (vx < PAD.left - 12 || vx > W - PAD.right + 12) return null;
+    return Math.max(0, Math.min(years, Math.round(((vx - PAD.left) / PLOT_W) * years)));
+  }
+  function onKey(e: React.KeyboardEvent) {
+    const cur = hover ?? (e.key === 'ArrowLeft' || e.key === 'End' ? years : 0);
+    let next: number | null = null;
+    if (e.key === 'ArrowRight') next = hover === null ? 0 : Math.min(years, cur + 1);
+    else if (e.key === 'ArrowLeft') next = hover === null ? years : Math.max(0, cur - 1);
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = years;
+    else if (e.key === 'Escape') {
+      setHover(null);
+      return;
+    }
+    if (next !== null) {
+      e.preventDefault();
+      setHover(next);
+    }
+  }
+
+  const h = hover !== null ? bands[hover] : null;
+  useEffect(() => { if (hover === null) setCardLeft(null); }, [hover]);
+  const phase =
+    hover === null || !withdrawing
+      ? null
+      : hover === 0
+        ? 'Start'
+        : hover <= state.saveYears
+          ? 'Saving'
+          : `Withdrawing, year ${hover - state.saveYears}`;
+  const announce = h
+    ? `Year ${hover}${phase ? `, ${phase.toLowerCase()}` : ''}. High ${formatAmount(h.p90, code)}, middle half ${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}, median ${formatAmount(h.p50, code)}, low ${formatAmount(h.p10, code)}, single line ${formatAmount(straightLine[hover!], code)}.`
+    : '';
+
+  // Escape closes the readout wherever focus is (WCAG 1.4.13).
+  useEffect(() => {
+    if (hover === null) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setHover(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [hover]);
+
+  // Place the readout beside the crosshair, flipping and clamping against the
+  // plotted area so it never covers the end labels or spills out of the chart
+  // (phones stack it below).
+  useLayoutEffect(() => {
+    const fig = figureRef.current;
+    const card = cardRef.current;
+    const svg = svgRef.current;
+    if (hover === null || !fig || !card || !svg) return;
+    const figRect = fig.getBoundingClientRect();
+    const svgRect = svg.getBoundingClientRect();
+    const anchor = svgRect.left - figRect.left + (x(hover) / W) * svgRect.width;
+    const cw = card.offsetWidth;
+    const plotRight = svgRect.left - figRect.left + ((W - PAD.right) / W) * svgRect.width;
+    let left = anchor + 14;
+    if (left + cw > plotRight) left = anchor - 14 - cw;
+    setCardLeft(Math.max(0, Math.min(left, fig.clientWidth - cw)));
+  }, [hover, years]);
+
   return (
-    <figure className="mcs-figure">
+    <figure
+      className="mcs-figure"
+      ref={figureRef}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(null); }}
+    >
       <p className="mcs-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>
       <div className="mcs-chartScroll">
-        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${titleId} ${descId}`} className="mcs-chart">
-          <title id={titleId}>Spread of simulated outcomes</title>
-          <desc id={descId}>{desc}</desc>
-          <defs>
-            <clipPath id={clipId}>
-              <rect x={PAD.left} y={PAD.top} width={W - PAD.left - PAD.right} height={H - PAD.top - PAD.bottom} />
-            </clipPath>
-          </defs>
-          {ticks.map((t) => (
-            <g key={t}>
-              <line className="mcs-grid" x1={PAD.left} x2={W - PAD.right} y1={yPx(t)} y2={yPx(t)} />
-              <text className="mcs-axis" x={PAD.left - 10} y={yPx(t) + 5} textAnchor="end">{formatAmount(t, code, true)}</text>
+        <div
+          className="mcs-chartBox"
+          tabIndex={0}
+          role="group"
+          aria-label="Chart. Use the left and right arrow keys to read the values for each year."
+          onKeyDown={onKey}
+          onBlur={() => setHover(null)}
+        >
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${W} ${H}`}
+            role="img"
+            aria-labelledby={`${titleId} ${descId}`}
+            className="mcs-chart"
+            onPointerMove={(e) => setHover(yearAt(e.clientX))}
+            onPointerDown={(e) => setHover(yearAt(e.clientX))}
+          >
+            <title id={titleId}>Spread of simulated outcomes</title>
+            <desc id={descId}>{desc}</desc>
+            <defs>
+              <linearGradient id={`${gradId}-outer`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" className="mcs-stop mcs-stop--outerTop" />
+                <stop offset="100%" className="mcs-stop mcs-stop--outerBottom" />
+              </linearGradient>
+              <linearGradient id={`${gradId}-inner`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" className="mcs-stop mcs-stop--innerTop" />
+                <stop offset="100%" className="mcs-stop mcs-stop--innerBottom" />
+              </linearGradient>
+              <filter id={`${gradId}-glow`} x="-5%" y="-20%" width="110%" height="140%">
+                <feGaussianBlur stdDeviation="3" />
+              </filter>
+              <clipPath id={clipId}>
+                <rect x={PAD.left} y={PAD.top} width={PLOT_W} height={PLOT_H} />
+              </clipPath>
+            </defs>
+
+            <rect className="mcs-plotBg" x={PAD.left} y={PAD.top} width={PLOT_W} height={PLOT_H} rx="6" />
+            {withdrawing && state.saveYears < years && (
+              <g>
+                <rect className="mcs-phase" x={x(state.saveYears)} y={PAD.top} width={x(years) - x(state.saveYears)} height={PLOT_H} />
+                {/* Only when there is room; the readout names the phase too. */}
+                {x(years) - x(state.saveYears) >= 130 && (
+                  <text className="mcs-phaseLabel" x={x(state.saveYears) + 10} y={PAD.top + 22}>Living off it</text>
+                )}
+              </g>
+            )}
+
+            {yMinor.map((t) => (
+              <line key={`ym${t}`} className="mcs-gridMinor" x1={PAD.left} x2={W - PAD.right} y1={yPx(t)} y2={yPx(t)} />
+            ))}
+            {xMinor.map((t) => (
+              <line key={`xm${t}`} className="mcs-gridMinor" x1={x(t)} x2={x(t)} y1={PAD.top} y2={H - PAD.bottom} />
+            ))}
+            {yTicks.map((t) => (
+              <g key={`y${t}`}>
+                <line className={t === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(t)} y2={yPx(t)} />
+                <text className="mcs-axis" x={PAD.left - 12} y={yPx(t) + 5} textAnchor="end">{formatAmount(t, code, true)}</text>
+              </g>
+            ))}
+            {xTicks.map((t) => (
+              <g key={`x${t}`}>
+                {t > 0 && <line className="mcs-grid" x1={x(t)} x2={x(t)} y1={PAD.top} y2={H - PAD.bottom} />}
+                <text className="mcs-axis" x={x(t)} y={H - PAD.bottom + 24} textAnchor="middle">{t}</text>
+              </g>
+            ))}
+            <text className="mcs-axis mcs-axisTitle" x={PAD.left + PLOT_W / 2} y={H - 8} textAnchor="middle">Years from today</text>
+
+            <g clipPath={`url(#${clipId})`}>
+              <path d={area(p10, p90)} fill={`url(#${gradId}-outer)`} />
+              <path d={area(p25, p75)} fill={`url(#${gradId}-inner)`} />
+              {/* Band edges, so each band stays distinguishable where the fills are faint. */}
+              <path className="mcs-edge mcs-edge--outer" d={line(p90)} />
+              <path className="mcs-edge mcs-edge--outer" d={line(p10)} />
+              <path className="mcs-edge mcs-edge--inner" d={line(p75)} />
+              <path className="mcs-edge mcs-edge--inner" d={line(p25)} />
+              <path className="mcs-straight" d={line(straightLine)} />
+              <path className="mcs-medianGlow" d={line(p50)} filter={`url(#${gradId}-glow)`} />
+              <path className="mcs-median" d={line(p50)} />
             </g>
-          ))}
-          {xTicks.map((t) => (
-            <text key={t} className="mcs-axis" x={x(t)} y={H - PAD.bottom + 24} textAnchor="middle">{t}</text>
-          ))}
-          <text className="mcs-axis" x={(PAD.left + W - PAD.right) / 2} y={H - 8} textAnchor="middle">Years from today</text>
-          {state.withdrawal > 0 && state.saveYears > 0 && (
-            <g>
-              <line className="mcs-marker" x1={markerX} x2={markerX} y1={PAD.top} y2={H - PAD.bottom} />
-              <text className="mcs-axis" x={markerRight ? markerX + 8 : markerX - 8} y={PAD.top + 16} textAnchor={markerRight ? 'start' : 'end'}>
-                Withdrawals start
-              </text>
-            </g>
-          )}
-          <g clipPath={`url(#${clipId})`}>
-            <path className="mcs-band mcs-band--outer" d={area(p10, p90)} />
-            <path className="mcs-band mcs-band--inner" d={area(p25, p75)} />
-            <path className="mcs-straight" d={line(straightLine)} />
-            <path className="mcs-median" d={line(p50)} />
-          </g>
-          {clipped && (
-            <text className="mcs-axis" x={W - PAD.right} y={PAD.top - 8} textAnchor="end">
-              High paths continue above &uarr;
-            </text>
-          )}
-        </svg>
+
+            {endLabels.map((l, i) => (
+              <g key={l.key} className={`mcs-endLabel ${l.cls}`}>
+                {/* A leader line when the label had to move away from its point. */}
+                {Math.abs(endY[i] - endRaw[i]) > 4 && (
+                  <line className="mcs-leader" x1={x(years) + 5} y1={endRaw[i]} x2={W - PAD.right + 8} y2={endY[i] - 7} />
+                )}
+                <circle cx={x(years)} cy={endRaw[i]} r="4" />
+                <text x={W - PAD.right + 12} y={endY[i] - 2}>
+                  <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
+                  <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.value, code, true)}</tspan>
+                </text>
+              </g>
+            ))}
+
+            {h && hover !== null && (
+              <g className="mcs-hover" pointerEvents="none">
+                <line className="mcs-hoverLine" x1={x(hover)} x2={x(hover)} y1={PAD.top} y2={H - PAD.bottom} />
+                {/* A value above the top of the chart gets no dot: drawn at the
+                    edge it would mark the wrong value. The readout still lists it. */}
+                {h.p90 <= top && <circle className="mcs-hoverDot mcs-hoverDot--outer" cx={x(hover)} cy={yPx(h.p90)} r="5" />}
+                <circle className="mcs-hoverDot mcs-hoverDot--outer" cx={x(hover)} cy={yPx(h.p10)} r="5" />
+                {straightLine[hover] <= top && <circle className="mcs-hoverDot mcs-hoverDot--straight" cx={x(hover)} cy={yPx(straightLine[hover])} r="5" />}
+                {h.p50 <= top && <circle className="mcs-hoverDot mcs-hoverDot--median" cx={x(hover)} cy={yPx(h.p50)} r="6" />}
+              </g>
+            )}
+          </svg>
+
+          <span className="mcs-srOnly" aria-live="polite">{announce}</span>
+        </div>
       </div>
+      {/* Outside the sideways-scrolling box: on phones it sits under the chart
+          at full width (see global.css), on wider screens it floats beside
+          the crosshair. */}
+      {h && hover !== null && (
+        <div
+          className="mcs-hoverCard"
+          ref={cardRef}
+          style={{ left: cardLeft ?? 0, visibility: cardLeft === null ? 'hidden' : undefined }}
+          aria-hidden="true"
+        >
+          <div className="mcs-hoverTitle">
+            Year {hover}
+            {phase && <span className="mcs-hoverPhase">{phase}</span>}
+          </div>
+          <dl>
+            {/* Swatches match the dots on the chart: band-edge dots for high and
+                low, the median dot, the single-line dot, and the inner band. */}
+            <div><dt><i className="mcs-dot mcs-dot--outer" />High (90th)</dt><dd>{formatAmount(h.p90, code)}</dd></div>
+            <div><dt><i className="mcs-key mcs-key--inner" />Middle half</dt><dd>{formatAmount(h.p25, code)} to {formatAmount(h.p75, code)}</dd></div>
+            <div className="mcs-hoverStrong"><dt><i className="mcs-dot mcs-dot--median" />Median</dt><dd>{formatAmount(h.p50, code)}</dd></div>
+            <div><dt><i className="mcs-dot mcs-dot--outer" />Low (10th)</dt><dd>{formatAmount(h.p10, code)}</dd></div>
+            <div><dt><i className="mcs-dot mcs-dot--straight" />Single line</dt><dd>{formatAmount(straightLine[hover], code)}</dd></div>
+          </dl>
+        </div>
+      )}
       <figcaption className="mcs-legend">
         <span><i className="mcs-key mcs-key--outer" aria-hidden="true" />8 in 10 paths</span>
         <span><i className="mcs-key mcs-key--inner" aria-hidden="true" />Middle half</span>
         <span><i className="mcs-key mcs-key--median" aria-hidden="true" />Median balance</span>
         <span><i className="mcs-key mcs-key--straight" aria-hidden="true" />Single fixed-return line</span>
+        <span className="mcs-legendHint">
+          Point at the chart, tap it, or use the arrow keys to read any year.
+          {clipped && ' The lightest band runs above the top of the chart; the High label on the right shows where it ends.'}
+        </span>
       </figcaption>
     </figure>
   );
