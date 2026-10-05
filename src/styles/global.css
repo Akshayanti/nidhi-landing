@@ -4061,15 +4061,14 @@ strong {
  * Landing page (home)
  *
  * Scoped to body[data-page="landing"] so these rules only apply to the
- * scroll-snap home page. Everything else on the site is unaffected.
+ * home page. Everything else on the site is unaffected.
  *
- * Three jobs:
- *   1. Snap the document scroller (not <main>): single scrollbar.
- *   2. Make the header transparent + backdrop-blurred over the snap shell.
- *   3. Define chart-series tokens used by the inline SVG mocks.
+ * Two jobs:
+ *   1. Make the header transparent + backdrop-blurred over the page.
+ *   2. Define chart-series tokens used by the inline SVG mocks.
  *
- * Snap behaviour follows the redesign plan: proximity (not mandatory),
- * disabled below 768px, disabled when the user prefers reduced motion.
+ * (Full-screen scroll-snap sections were removed in Oct 2026: the page now
+ * flows with even spacing.)
  * ========================================================================= */
 
 /* Chart-series tokens. Used by every composed SVG mock on the landing page
@@ -4090,38 +4089,13 @@ strong {
   --chart-inr: var(--semantic-warning-dark);
 }
 
-/* Snap shell: scroll-snap on the document scroller, not on <main>. Avoids
-   a second inner scrollbar when the footer renders below <main>. */
+/* In-page links land below the sticky header. */
 html:has(body[data-page="landing"]) {
   scroll-padding-top: 60px;       /* matches sticky header height */
 }
 
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  html:has(body[data-page="landing"]) {
-    scroll-snap-type: y proximity;
-  }
-}
-
-body[data-page="landing"] .snap-section {
-  /* Each snap section occupies at least one viewport so its content is
-     framed against the page chrome rather than crammed against the next
-     section. 100dvh accommodates mobile address-bar collapse without
-     jitter; falls back to 100vh in browsers that do not support dvh. */
-  min-height: 100dvh;
-}
-@supports not (min-height: 100dvh) {
-  body[data-page="landing"] .snap-section { min-height: 100vh; }
-}
-
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  body[data-page="landing"] .snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-  }
-}
-
 /* Header treatment for the landing page: transparent + backdrop-blur so
-   it floats above the snap sections without a visible chrome edge. The
+   it floats above the page without a visible chrome edge. The
    default sticky positioning is preserved (no layout shift between pages
    that use the landing chrome and pages that do not). */
 body[data-page="landing"] .site-header {
@@ -4131,11 +4105,9 @@ body[data-page="landing"] .site-header {
   border-bottom-color: color-mix(in srgb, var(--color-border-light) 60%, transparent);
 }
 
-/* Footer (Footer.astro) sits after <main>. The default top margin pushes
-   it well past the last snap section, which on a desktop with proximity
-   snap can feel like a dead band. Tighten it specifically on the landing
-   page so the trust strip + waitlist + footer feel like one continuous
-   conversion tail. */
+/* Footer (Footer.astro) sits after <main>. Drop its default top margin on
+   the landing page so the trust strip, waitlist and footer read as one
+   continuous ending. */
 body[data-page="landing"] .site-footer {
   margin-top: 0;
 }
@@ -4979,4 +4951,138 @@ body[data-page="landing"] .site-footer {
   .lc-chart {
     min-width: 600px;
   }
+}
+
+/* Homepage hero examples (HeroChart.astro and the multi-currency slide in
+   src/pages/index.astro). The hero visual only shows from 1024px up. */
+body[data-page="landing"] .hero-chart {
+  position: relative;
+  outline: none;
+  border-radius: var(--radius-md);
+}
+body[data-page="landing"] .hero-chart:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
+}
+body[data-page="landing"] .hero-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: crosshair;
+}
+.hero-chart text {
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.hero-chart .hc-plot { fill: color-mix(in srgb, var(--color-deep-blue) 3%, transparent); }
+.hero-chart .hc-grid { stroke: var(--color-border); stroke-width: 1; }
+.hero-chart .hc-axis { stroke: var(--color-text-muted); stroke-width: 1.25; }
+.hero-chart .hc-tick { fill: var(--color-text-muted); }
+.hero-chart .hc-tickStrong { fill: var(--color-text-secondary); font-weight: 600; }
+.hero-chart .hc-line { fill: none; stroke-width: 2.75; stroke-linecap: round; stroke-linejoin: round; }
+.hero-chart .hc-line--dashed { stroke-dasharray: 6 5; }
+.hero-chart .hc-target { stroke: var(--color-teal); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.hero-chart .hc-targetLabel { fill: var(--color-teal); font-weight: 600; }
+.hero-chart .hc-marker { stroke: var(--color-text-muted); stroke-dasharray: 2 3; }
+.hero-chart .hc-markerDot { fill: var(--chart-eur); stroke: var(--color-bg-white); stroke-width: 2; }
+.hero-chart .hc-markerLabel { fill: var(--color-text-primary); font-weight: 600; }
+.hero-chart .hc-endDot { stroke: var(--color-bg-white); stroke-width: 2; }
+.hero-chart .hc-endName { font-weight: 600; }
+.hero-chart .hc-endValue { fill: var(--color-text-primary); font-family: var(--font-heading); font-weight: 700; font-size: 13px; }
+.hero-chart .hc-hover { opacity: 0; transition: opacity 0.12s ease; pointer-events: none; }
+.hero-chart .hc-hover.is-on { opacity: 1; }
+.hero-chart .hc-crosshair { stroke: var(--color-text-secondary); stroke-width: 1.25; stroke-dasharray: 4 3; }
+.hero-chart .hc-hoverDot { stroke: var(--color-bg-white); stroke-width: 2.5; }
+.hero-chart .hc-readout {
+  position: absolute;
+  top: 8px;
+  transform: translateX(12px);
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  min-width: 170px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  z-index: 3;
+}
+.hero-chart .hc-readout.is-on { display: flex; }
+.hero-chart .hc-readout.is-left { transform: translateX(calc(-100% - 12px)); }
+.hero-chart .hc-readout strong { color: var(--color-text-primary); font-size: 0.85rem; }
+.hero-chart .hc-readout span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hero-chart .hc-readout i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.hero-chart .hc-foot {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+body[data-page="landing"] .hero-summary,
+body[data-page="landing"] .hero-mc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+body[data-page="landing"] .hero-summaryLabel {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+body[data-page="landing"] .hero-summaryValue {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-deep-blue);
+  font-variant-numeric: tabular-nums;
+}
+body[data-page="landing"] .hero-splitBar {
+  display: flex;
+  height: 10px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--color-border-light);
+}
+body[data-page="landing"] .hero-splitBar span {
+  display: block;
+  height: 100%;
+  transition: width 0.4s ease;
+}
+body[data-page="landing"] .hero-splitText {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+body[data-page="landing"] .hero-mcList {
+  list-style: none;
+  margin: 6px 0;
+  padding: 8px 0;
+  border-block: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+}
+body[data-page="landing"] .hero-mcList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+body[data-page="landing"] .hero-mcAmount {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-chart .hc-hover,
+  body[data-page="landing"] .hero-splitBar span { transition: none; }
 }

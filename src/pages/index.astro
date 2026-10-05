@@ -1,11 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
+import HeroChart from '../components/HeroChart.astro';
+import { EXAMPLE_RETURN, HOUSEHOLD, NET_WORTH_PATH, fiProjection, netWorthPath, whatIf } from '../utils/home/heroExamples.ts';
+import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
 
-// The live home page (scroll-snap landing redesign). See
+// The live home page. Originally a scroll-snap redesign (see
 // docs/plans/landing-page-redesign.md for the full plan and
-// docs/plans/landing-wireframe.html for the wireframe.
+// docs/plans/landing-wireframe.html for the wireframe); since Oct 2026 the
+// sections flow with even spacing instead of filling the screen.
+
+// "Available now" cards. The Monte Carlo card appears once that tool launches.
+const showMonteCarlo = await isMonteCarloReleased();
+
+// Hero examples, computed (see src/utils/home/heroExamples.ts).
+const eur = (v: number) => formatAmount(v, 'EUR');
+const eurShort = (v: number) => formatAmount(v, 'EUR', true);
+const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
+const nw = netWorthPath();
+const nwLabels = nw.values.map((_, i) => {
+  const m = i - nw.todayIndex;
+  return m === 0 ? 'Today' : m < 0 ? `${-m} month${m === -1 ? '' : 's'} ago` : `In ${m} month${m === 1 ? '' : 's'}`;
+});
+const fi = fiProjection();
+const wi = whatIf();
+const yearLabels = (n: number) => Array.from({ length: n }, (_, i) => (i === 0 ? 'Today' : `Year ${i}`));
+// The multi-currency example converts at today's ECB rates in the browser.
+const mcItems = [
+  { name: 'Apartment, Prague', amount: 280_000, currency: 'EUR' },
+  { name: 'Brokerage, US', amount: 47_300, currency: 'USD' },
+  { name: 'Savings, India', amount: 840_000, currency: 'INR' },
+  { name: 'Mortgage', amount: -110_000, currency: 'EUR' },
+];
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -100,7 +128,7 @@ const heroCta = 'Notify me about access';
   {/* =============================================================
        Section 1: Hero
        ============================================================= */}
-  <section class="lp-section snap-section" id="hero" aria-labelledby="hero-heading">
+  <section class="lp-section" id="hero" aria-labelledby="hero-heading">
     <div class="lp-section-inner">
       <div class="hero-grid">
         <div class="hero-copy">
@@ -121,107 +149,76 @@ const heroCta = 'Notify me about access';
           <div class="lp-visual-card hero-carousel" data-hero-carousel aria-label="nidhi planning examples">
             <div class="hero-carousel-slides">
               <div class="hero-carousel-slide is-active" data-slide>
-                <svg viewBox="0 0 360 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-summary-title hero-summary-desc">
-                  <title id="hero-summary-title">Net worth summary example</title>
-                  <desc id="hero-summary-desc">A summary card showing a net worth of EUR 124,300 split across three currencies, above a twelve-month historical line and twelve-month projected line.</desc>
-                  <text x="180" y="32" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">NET WORTH</text>
-                  <text x="180" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="700" fill="var(--color-deep-blue)">EUR 124,300</text>
-                  <g transform="translate(40,92)">
-                    <rect x="0" y="0" width="173.6" height="10" fill="var(--chart-eur)" rx="2" ry="2" />
-                    <rect x="173.6" y="0" width="78.4" height="10" fill="var(--chart-usd)" />
-                    <rect x="252" y="0" width="28" height="10" fill="var(--chart-inr)" rx="2" ry="2" />
-                  </g>
-                  <text x="180" y="125" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-secondary)">EUR 62%  &#183;  USD 28%  &#183;  INR 10%</text>
-                  <line x1="40" y1="148" x2="320" y2="148" stroke="var(--color-border-light)" stroke-width="1" />
-                  <text x="180" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" letter-spacing="0.12em" fill="var(--color-text-muted)">12-MONTH TRACK</text>
-                  <line x1="40" y1="190" x2="320" y2="190" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="245" x2="320" y2="245" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="300" x2="320" y2="300" stroke="var(--color-border-light)" />
-                  <polygon points="40,288 70,282 100,275 130,265 160,250 180,235 180,300 40,300" fill="var(--chart-eur)" opacity="0.08" />
-                  <polyline points="40,288 70,282 100,275 130,265 160,250 180,235" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                  <circle cx="180" cy="235" r="4" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
-                  <polyline points="180,235 215,222 250,210 285,198 320,190" stroke="var(--chart-eur)" stroke-width="2" stroke-dasharray="4,3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                  <text x="40" y="320" text-anchor="start" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">12 mo ago</text>
-                  <text x="180" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="var(--color-text-secondary)">today</text>
-                  <text x="320" y="320" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+ 12 mo</text>
-                </svg>
+                <div class="hero-summary">
+                  <p class="hero-summaryLabel">Net worth today</p>
+                  <p class="hero-summaryValue">{eur(nw.today)}</p>
+                </div>
+                <HeroChart
+                  id="hero-nw"
+                  title="Net worth path example"
+                  desc={`An example net worth: ${eur(NET_WORTH_PATH.startAYearAgo)} a year ago, ${eur(nw.today)} today and ${eur(nw.values[24])} in twelve months, saving ${eur(NET_WORTH_PATH.monthly)} a month at ${pctReturn} a year after inflation.`}
+                  pointLabels={nwLabels}
+                  series={[{ name: 'Net worth', values: nw.values, color: 'var(--chart-eur)', dashFrom: nw.todayIndex, area: true }]}
+                  axisStart="12 mo ago"
+                  axisMid={{ index: nw.todayIndex, label: 'today' }}
+                  axisEnd="in 12 mo"
+                  footnote={`Example: ${eur(NET_WORTH_PATH.startAYearAgo)} a year ago, ${eur(NET_WORTH_PATH.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Dashed: projected.`}
+                />
                 <p class="lp-visual-caption">Net worth path<br /><span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span></p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
-                <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-mc-title hero-mc-desc">
-                  <title id="hero-mc-title">Multi-currency net worth example</title>
-                  <desc id="hero-mc-desc">A list of multi-currency assets and liabilities with a currency split and total converted to EUR.</desc>
-                  <text x="20" y="28" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-muted)">TOTAL NET WORTH</text>
-                  <text x="20" y="58" font-family="Inter,sans-serif" font-size="24" font-weight="700" fill="var(--color-deep-blue)">EUR 451,200</text>
-                  <line x1="20" y1="80" x2="460" y2="80" stroke="var(--color-border-light)" />
-                  <g font-family="Inter,sans-serif" font-size="13" fill="var(--color-text-primary)">
-                    <text x="20" y="105">Apartment, Prague</text>
-                    <text x="460" y="105" text-anchor="end" fill="var(--color-text-secondary)">EUR 280,000</text>
-                    <text x="20" y="135">Brokerage, US</text>
-                    <text x="460" y="135" text-anchor="end" fill="var(--color-text-secondary)">USD  47,300</text>
-                    <text x="20" y="165">Savings, India</text>
-                    <text x="460" y="165" text-anchor="end" fill="var(--color-text-secondary)">INR 8,40,000</text>
-                    <text x="20" y="195" fill="var(--color-text-muted)">Mortgage, EUR</text>
-                    <text x="460" y="195" text-anchor="end" fill="var(--color-text-muted)">EUR -110,000</text>
-                  </g>
-                  <line x1="20" y1="215" x2="460" y2="215" stroke="var(--color-border-light)" />
-                  <g transform="translate(70,275)">
-                    <path d="M 0 -28 A 28 28 0 1 1 -19.17 20.41 L 0 0 Z" fill="var(--chart-eur)" />
-                    <path d="M -19.17 20.41 A 28 28 0 0 1 -16.46 -22.65 L 0 0 Z" fill="var(--chart-usd)" />
-                    <path d="M -16.46 -22.65 A 28 28 0 0 1 0 -28 L 0 0 Z" fill="var(--chart-inr)" />
-                    <circle cx="0" cy="0" r="16" fill="var(--color-bg-white)" />
-                  </g>
-                  <g font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-secondary)">
-                    <rect x="120" y="262" width="9" height="9" fill="var(--chart-eur)" rx="2" />
-                    <text x="135" y="270">EUR 62%</text>
-                    <rect x="210" y="262" width="9" height="9" fill="var(--chart-usd)" rx="2" />
-                    <text x="225" y="270">USD 28%</text>
-                    <rect x="300" y="262" width="9" height="9" fill="var(--chart-inr)" rx="2" />
-                    <text x="315" y="270">INR 10%</text>
-                    <text x="120" y="293" fill="var(--color-text-muted)">Currency split, all converted to EUR</text>
-                  </g>
-                </svg>
+                <div class="hero-mc" data-hero-mc={JSON.stringify(mcItems)}>
+                  <p class="hero-summaryLabel">Total net worth, in EUR</p>
+                  <p class="hero-summaryValue" data-mc-total>Converting&hellip;</p>
+                  <ul class="hero-mcList">
+                    {mcItems.map((it) => (
+                      <li>
+                        <span>{it.name}</span>
+                        <span class="hero-mcAmount">{formatAmount(it.amount, it.currency)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="hero-splitBar" aria-hidden="true" data-mc-bar>
+                    <span data-mc-share="EUR" style="width:0;background:var(--chart-eur)"></span>
+                    <span data-mc-share="USD" style="width:0;background:var(--chart-usd)"></span>
+                    <span data-mc-share="INR" style="width:0;background:var(--chart-inr)"></span>
+                  </div>
+                  <p class="hero-splitText" data-mc-split>Each item stays in its own currency; the total uses today&rsquo;s ECB rates.</p>
+                </div>
                 <p class="lp-visual-caption">Multi-currency picture</p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
-                <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-proj-title hero-proj-desc">
-                  <title id="hero-proj-title">Projection example</title>
-                  <desc id="hero-proj-desc">A net-worth projection crossing a financial-independence target line at year 16.</desc>
-                  <line x1="40" y1="40" x2="460" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="100" x2="460" y2="100" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="160" x2="460" y2="160" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="220" x2="460" y2="220" stroke="var(--color-border-light)" />
-                  <line x1="40" y1="80" x2="460" y2="80" stroke="var(--color-teal)" stroke-width="1.5" />
-                  <text x="46" y="72" text-anchor="start" font-family="Inter,sans-serif" font-size="10" fill="var(--color-teal)" font-weight="600">Financial independence</text>
-                  <polyline points="40,210 60,205 80,195 100,180" stroke="var(--color-text-secondary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                  <polyline points="100,180 160,170 220,150 280,118 340,72 400,45 460,30" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                  <circle cx="330" cy="80" r="5" fill="var(--chart-eur)" stroke="var(--color-bg-white)" stroke-width="2" />
-                  <line x1="330" y1="80" x2="330" y2="220" stroke="var(--color-text-muted)" stroke-dasharray="2,2" />
-                  <text x="330" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="var(--color-text-primary)" font-weight="600">Reaches FI at year 16</text>
-                  <text x="40" y="240" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
-                  <text x="460" y="240" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+25 years</text>
-                  <text x="40" y="268" font-family="Inter,sans-serif" font-size="10" fill="var(--color-text-muted)">Real returns 5%  &#183;  Inflation 2.5% (EUR)  &#183;  Savings rate 38%</text>
-                </svg>
+                <HeroChart
+                  id="hero-fi"
+                  title="Early-retirement projection example"
+                  desc={`An example household with ${eur(HOUSEHOLD.start)} invested, saving ${Math.round(HOUSEHOLD.savingsRate * 100)}% of a ${eur(HOUSEHOLD.income)} monthly income at ${pctReturn} a year after inflation. Financial independence, ${HOUSEHOLD.fiMultiple} times yearly spending or ${eur(fi.target)}, is reached in year ${fi.fiYear}.`}
+                  pointLabels={yearLabels(fi.values.length)}
+                  series={[{ name: 'Net worth', values: fi.values, color: 'var(--chart-eur)', area: true }]}
+                  target={{ value: fi.target, label: `Financial independence, ${eurShort(fi.target)}` }}
+                  marker={{ index: fi.fiYear ?? 0, label: `Reaches it in year ${fi.fiYear}` }}
+                  axisStart="today"
+                  axisEnd={`+${fi.values.length - 1} years`}
+                  footnote={`Example: ${eur(HOUSEHOLD.start)} invested, ${Math.round(HOUSEHOLD.savingsRate * 100)}% of ${eur(HOUSEHOLD.income)} added at the start of each month, ${pctReturn} a year after inflation, target ${HOUSEHOLD.fiMultiple} times yearly spending.`}
+                />
                 <p class="lp-visual-caption">Early-retirement projection</p>
               </div>
 
               <div class="hero-carousel-slide" data-slide>
-                <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-wi-title hero-wi-desc">
-                  <title id="hero-wi-title">What-if comparison example</title>
-                  <desc id="hero-wi-desc">Two net-worth paths over twenty years comparing current savings with saving five percentage points more.</desc>
-                  <line x1="40" y1="40" x2="400" y2="40" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="120" x2="400" y2="120" stroke="var(--color-border-light)" stroke-dasharray="2,4" />
-                  <line x1="40" y1="200" x2="400" y2="200" stroke="var(--color-border-light)" />
-                  <polyline points="40,200 100,180 160,155 220,125 280,95 340,68 400,50" stroke="var(--chart-usd)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-                  <text x="406" y="54" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-usd)" font-weight="600">Save +5pp</text>
-                  <polyline points="40,200 100,190 160,178 220,160 280,140 340,118 400,95" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-                  <text x="406" y="99" font-family="Inter,sans-serif" font-size="10" fill="var(--chart-eur)" font-weight="600">Current</text>
-                  <text x="40" y="220" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">today</text>
-                  <text x="400" y="220" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--color-text-muted)">+20 years</text>
-                  <text x="240" y="255" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--color-text-primary)">After 20 years: about EUR 220k more by saving 5pp extra.</text>
-                </svg>
+                <HeroChart
+                  id="hero-wi"
+                  title="What-if comparison example"
+                  desc={`The same household over twenty years: saving ${Math.round(HOUSEHOLD.savingsRate * 100)}% of income reaches ${eur(wi.base[20])}; saving five percentage points more (${eur(wi.extraPerMonth)} a month) reaches ${eur(wi.higher[20])}, about ${eurShort(wi.difference)} more.`}
+                  pointLabels={yearLabels(wi.base.length)}
+                  series={[
+                    { name: 'Save +5 pts', values: wi.higher, color: 'var(--chart-usd)' },
+                    { name: 'Current', values: wi.base, color: 'var(--chart-eur)' },
+                  ]}
+                  axisStart="today"
+                  axisEnd="+20 years"
+                  footnote={`Same household: after 20 years, about ${eurShort(wi.difference)} more by adding ${eur(wi.extraPerMonth)} more at the start of each month.`}
+                />
                 <p class="lp-visual-caption">What-if comparison</p>
               </div>
             </div>
@@ -237,19 +234,13 @@ const heroCta = 'Notify me about access';
           </div>
         </div>
       </div>
-
-      <a class="lp-scroll-affordance" href="#who" aria-label="Scroll to who nidhi is for">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
     </div>
   </section>
 
   {/* =============================================================
        Section 2: Who it's for
        ============================================================= */}
-  <section class="lp-section lp-section--alt snap-section" id="who" aria-labelledby="who-heading" tabindex="-1">
+  <section class="lp-section lp-section--alt" id="who" aria-labelledby="who-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="audience-grid">
         <div class="audience-copy">
@@ -267,19 +258,13 @@ const heroCta = 'Notify me about access';
           <li>Your financial picture is spread across accounts, assets, debts, and future expenses.</li>
         </ul>
       </div>
-
-      <a class="lp-scroll-affordance" href="#how-it-works" aria-label="Scroll to how nidhi works">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
     </div>
   </section>
 
   {/* =============================================================
        Section 3: How it works
        ============================================================= */}
-  <section class="lp-section snap-section" id="how-it-works" aria-labelledby="how-heading" tabindex="-1">
+  <section class="lp-section" id="how-it-works" aria-labelledby="how-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="how-grid">
         <div class="how-copy">
@@ -314,19 +299,13 @@ const heroCta = 'Notify me about access';
           </li>
         </ol>
       </div>
-
-      <a class="lp-scroll-affordance" href="#beta-scope" aria-label="Scroll to early-access scope">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
     </div>
   </section>
 
   {/* =============================================================
        Section 4: Early-access scope
        ============================================================= */}
-  <section class="lp-section lp-section--alt snap-section" id="beta-scope" aria-labelledby="beta-scope-heading" tabindex="-1">
+  <section class="lp-section lp-section--alt" id="beta-scope" aria-labelledby="beta-scope-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="beta-scope">
         <div class="beta-scope-copy">
@@ -356,18 +335,12 @@ const heroCta = 'Notify me about access';
           </li>
         </ul>
       </div>
-
-      <a class="lp-scroll-affordance" href="#signup" aria-label="Scroll to beta signup">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
     </div>
   </section>
 
   {/* =============================================================
-       Conversion tail. Deliberately NOT a snap section: it scrolls
-       naturally as the page's conclusion: trust strip -> waitlist.
+       Conversion tail, the page's conclusion: trust strip, then
+       waitlist.
        Footer.astro renders below <main> in the default Astro flow.
        ============================================================= */}
   <section class="lp-section lp-section--tail" id="signup" aria-labelledby="signup-heading" tabindex="-1">
@@ -380,33 +353,43 @@ const heroCta = 'Notify me about access';
             The full planner is opening in stages. In the meantime, the free tools and blog are live.
           </p>
         </div>
-        <div class:list={['available-now-links', { 'available-now-links--four': showInclusiveHub }]} aria-label="Available now links">
-          <a href="/free/multi-currency-net-worth/">
-            <span>Multi-currency net worth</span>
-            <small>See assets and debts across currencies.</small>
-          </a>
-          <a href="/free/loan-comparison/">
-            <span>Loan comparison</span>
-            <small>Compare borrowing offers side by side.</small>
-          </a>
-          {showInclusiveHub ? (
-            <a href="/blog/">
-              <span>Start the learning path</span>
-              <small>Step-by-step guides, from net worth basics to long-term planning.</small>
-            </a>
-          ) : (
-            <a href="/blog/">
-              <span>Read the blog</span>
-              <small>Learn the concepts behind the planner.</small>
-            </a>
-          )}
-          {showInclusiveHub && (
-            <a href="/blog/inclusive-finances/" data-attr="home-inclusive-finances">
-              <span>Money for every kind of household</span>
-              <small>Unmarried couples, blended and chosen families, solo agers, gig work, disability, lives across borders. Start anywhere.</small>
-            </a>
-          )}
-        </div>
+        <ul class="available-now-links" role="list" aria-label="Available now">
+          {[
+            { href: '/free/multi-currency-net-worth/', attr: 'home-cta-multi-currency-net-worth', kicker: 'Free tool', title: 'Multi-currency net worth', desc: 'See assets and debts across currencies, converted at live ECB rates.', preview: 'donut' },
+            { href: '/free/loan-comparison/', attr: 'home-cta-loan-comparison', kicker: 'Free tool', title: 'Loan comparison', desc: 'Compare borrowing offers side by side: APR, total cost and payoff.', preview: 'bars' },
+            ...(showMonteCarlo ? [{ href: MONTE_CARLO_URL, attr: 'home-cta-monte-carlo-simulator', kicker: 'Free tool', title: 'Monte Carlo simulator', desc: 'See the spread of outcomes for your savings and retirement.', preview: 'fan' }] : []),
+            showInclusiveHub
+              ? { href: '/blog/', attr: 'home-cta-blog', kicker: 'Learn', title: 'Start the learning path', desc: 'Step-by-step guides, from net worth basics to long-term planning.', preview: 'path' }
+              : { href: '/blog/', attr: 'home-cta-blog', kicker: 'Learn', title: 'Read the blog', desc: 'Learn the concepts behind the planner.', preview: 'path' },
+            ...(showInclusiveHub ? [{ href: '/blog/inclusive-finances/', attr: 'home-inclusive-finances', kicker: 'Learn', title: 'Money for every kind of household', desc: 'Unmarried couples, blended and chosen families, solo agers, gig work, disability, lives across borders.', preview: 'compass' }] : []),
+          ].map((c) => (
+            <li>
+              <a href={c.href} data-attr={c.attr} class="an-card">
+                <span class="an-preview" aria-hidden="true">
+                  {c.preview === 'donut' && (
+                    <svg viewBox="0 0 80 48"><g transform="translate(24,24)"><path d="M 0 -18 A 18 18 0 1 1 -12.3 13.1 L 0 0 Z" fill="var(--chart-eur)" /><path d="M -12.3 13.1 A 18 18 0 0 1 -10.6 -14.6 L 0 0 Z" fill="var(--chart-usd)" /><path d="M -10.6 -14.6 A 18 18 0 0 1 0 -18 L 0 0 Z" fill="var(--chart-inr)" /><circle r="9" fill="var(--color-bg-white)" /></g><rect x="50" y="14" width="22" height="5" rx="2" fill="var(--chart-eur)" /><rect x="50" y="23" width="16" height="5" rx="2" fill="var(--chart-usd)" /><rect x="50" y="32" width="9" height="5" rx="2" fill="var(--chart-inr)" /></svg>
+                  )}
+                  {c.preview === 'bars' && (
+                    <svg viewBox="0 0 80 48"><path d="M 6 8 C 30 12, 50 26, 74 42" stroke="var(--chart-eur)" stroke-width="3" fill="none" stroke-linecap="round" /><path d="M 6 8 C 26 16, 44 30, 64 42" stroke="var(--chart-usd)" stroke-width="3" fill="none" stroke-dasharray="5 4" stroke-linecap="round" /></svg>
+                  )}
+                  {c.preview === 'fan' && (
+                    <svg viewBox="0 0 80 48"><path d="M 6 40 L 74 6 L 74 36 Z" fill="var(--chart-eur)" opacity="0.22" /><path d="M 6 40 L 74 14 L 74 28 Z" fill="var(--chart-eur)" opacity="0.4" /><path d="M 6 40 L 74 21" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" /></svg>
+                  )}
+                  {c.preview === 'path' && (
+                    <svg viewBox="0 0 80 48"><line x1="10" y1="8" x2="10" y2="42" stroke="var(--color-border)" stroke-width="2" /><circle cx="10" cy="10" r="5" fill="var(--chart-usd)" /><circle cx="10" cy="24" r="5" fill="var(--chart-eur)" /><circle cx="10" cy="38" r="5" fill="var(--color-bg-white)" stroke="var(--chart-eur)" stroke-width="2" /><rect x="22" y="7" width="44" height="6" rx="3" fill="var(--color-border)" /><rect x="22" y="21" width="36" height="6" rx="3" fill="var(--color-border)" /><rect x="22" y="35" width="48" height="6" rx="3" fill="var(--color-border)" /></svg>
+                  )}
+                  {c.preview === 'compass' && (
+                    <svg viewBox="0 0 80 48"><circle cx="24" cy="24" r="17" fill="none" stroke="var(--color-teal)" stroke-width="2.5" /><path d="M 30 18 L 26 26 L 18 30 L 22 22 Z" fill="var(--color-teal)" /><rect x="48" y="14" width="24" height="5" rx="2" fill="var(--color-border)" /><rect x="48" y="23" width="18" height="5" rx="2" fill="var(--color-border)" /><rect x="48" y="32" width="22" height="5" rx="2" fill="var(--color-border)" /></svg>
+                  )}
+                </span>
+                <span class="an-kicker">{c.kicker}</span>
+                <span class="an-title">{c.title}</span>
+                <span class="an-desc">{c.desc}</span>
+                <span class="an-cta" aria-hidden="true">Open &rarr;</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div class="trust-strip" aria-label="Privacy and data handling">
@@ -433,22 +416,125 @@ const heroCta = 'Notify me about access';
   // Same Frankfurter API the multi-currency tool uses (already disclosed
   // in the privacy policy as a third-party call). Fails silently if the
   // request errors or the network is offline.
+  // Live ECB rates (via Frankfurter, already disclosed in the privacy policy):
+  // the caption under the first example, and the conversion in the
+  // multi-currency example, whose total and split are never hard-coded.
   (function () {
-    var el = document.getElementById('hero-fx-caption');
-    if (!el) return;
-    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD')
+    var caption = document.getElementById('hero-fx-caption');
+    var mc = document.querySelector('[data-hero-mc]');
+    var totalEl = mc && mc.querySelector('[data-mc-total]');
+    var splitEl = mc && mc.querySelector('[data-mc-split]');
+    function unavailable() {
+      if (caption) caption.style.display = 'none';
+      if (totalEl) totalEl.textContent = 'Rates unavailable right now';
+    }
+    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,INR')
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (data) {
-        var rate = data && data.rates && data.rates.USD;
-        if (rate) {
-          el.textContent = 'Live ECB rate: 1 EUR = ' + rate.toFixed(4) + ' USD';
-        } else {
-          el.style.display = 'none';
-        }
+        var rates = data && data.rates;
+        if (!rates || !rates.USD || !rates.INR) return unavailable();
+        if (caption) caption.textContent = 'Live ECB rate: 1 EUR = ' + rates.USD.toFixed(4) + ' USD';
+        if (!mc) return;
+        var items = JSON.parse(mc.getAttribute('data-hero-mc'));
+        var byCurrency = {};
+        var total = 0;
+        items.forEach(function (it) {
+          var eur = it.currency === 'EUR' ? it.amount : it.amount / rates[it.currency];
+          byCurrency[it.currency] = (byCurrency[it.currency] || 0) + eur;
+          total += eur;
+        });
+        var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+        var pct = new Intl.NumberFormat('de-DE', { style: 'percent', maximumFractionDigits: 0 });
+        totalEl.textContent = money.format(Math.round(total));
+        var gross = Object.keys(byCurrency).reduce(function (s, k) { return s + Math.abs(byCurrency[k]); }, 0);
+        var parts = [];
+        Object.keys(byCurrency).forEach(function (code) {
+          var share = Math.abs(byCurrency[code]) / gross;
+          var bar = mc.querySelector('[data-mc-share="' + code + '"]');
+          if (bar) bar.style.width = (share * 100).toFixed(1) + '%';
+          parts.push(code + ' ' + pct.format(share));
+        });
+        splitEl.textContent = parts.join(' \u00b7 ') + ', converted at ECB rates of ' + data.date + '.';
       })
-      .catch(function () {
-        el.style.display = 'none';
+      .catch(unavailable);
+  })();
+
+  // Hover, tap or arrow keys on a hero example chart show its values at
+  // that point. The values are pre-formatted at build time (HeroChart.astro).
+  (function () {
+    document.querySelectorAll('[data-hero-chart]').forEach(function (box) {
+      var data = JSON.parse(box.getAttribute('data-hero-chart'));
+      var svg = box.querySelector('svg');
+      var hover = box.querySelector('.hc-hover');
+      var cross = hover.querySelector('.hc-crosshair');
+      var dots = hover.querySelectorAll('.hc-hoverDot');
+      var readout = box.querySelector('.hc-readout');
+      var live = box.querySelector('.hc-live');
+      var vb = svg.viewBox.baseVal;
+      var current = null;
+      box.tabIndex = 0;
+      box.setAttribute('aria-label', 'Example chart. Use the left and right arrow keys to read its values.');
+      function show(i) {
+        current = i;
+        var xv = data.xs[i] * vb.width;
+        cross.setAttribute('x1', xv);
+        cross.setAttribute('x2', xv);
+        data.series.forEach(function (s, k) {
+          dots[k].setAttribute('cx', xv);
+          dots[k].setAttribute('cy', s.ys[i] * vb.height);
+        });
+        hover.classList.add('is-on');
+        readout.innerHTML = '';
+        var title = document.createElement('strong');
+        title.textContent = data.labels[i];
+        readout.appendChild(title);
+        data.series.forEach(function (s) {
+          var row = document.createElement('span');
+          var sw = document.createElement('i');
+          sw.style.background = s.color;
+          row.appendChild(sw);
+          row.appendChild(document.createTextNode(s.name + ': ' + s.values[i]));
+          readout.appendChild(row);
+        });
+        readout.classList.add('is-on');
+        if (live) live.textContent = data.labels[i] + '. ' + data.series.map(function (s) { return s.name + ': ' + s.values[i]; }).join(', ') + '.';
+        readout.classList.toggle('is-left', data.xs[i] > 0.5);
+        readout.style.left = (data.xs[i] * 100) + '%';
+      }
+      function hide() {
+        current = null;
+        hover.classList.remove('is-on');
+        readout.classList.remove('is-on');
+      }
+      function nearest(clientX) {
+        var r = svg.getBoundingClientRect();
+        var fx = (clientX - r.left) / r.width;
+        var best = 0;
+        data.xs.forEach(function (x, i) { if (Math.abs(x - fx) < Math.abs(data.xs[best] - fx)) best = i; });
+        return best;
+      }
+      svg.addEventListener('pointermove', function (e) { show(nearest(e.clientX)); });
+      svg.addEventListener('pointerdown', function (e) {
+        // Focusing the chart pauses the carousel (its focusin handler), so a
+        // tap is not lost to the next slide.
+        try { box.focus({ preventScroll: true }); } catch (_) { box.focus(); }
+        show(nearest(e.clientX));
       });
+      box.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hide(); });
+      box.addEventListener('blur', hide);
+      box.addEventListener('keydown', function (e) {
+        var last = data.xs.length - 1;
+        if (e.key === 'ArrowRight') show(current === null ? 0 : Math.min(last, current + 1));
+        else if (e.key === 'ArrowLeft') show(current === null ? last : Math.max(0, current - 1));
+        else if (e.key === 'Escape') hide();
+        else return;
+        e.preventDefault();
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('.hc-hover.is-on, .hc-readout.is-on').forEach(function (el) { el.classList.remove('is-on'); });
+    });
   })();
 
   (function () {
@@ -520,30 +606,16 @@ const heroCta = 'Notify me about access';
     start();
   })();
 
-  (function () {
-    document.querySelectorAll('.lp-scroll-affordance[href^="#"]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        var targetId = link.getAttribute('href').slice(1);
-        var target = document.getElementById(targetId);
-        if (!target) return;
-        window.setTimeout(function () {
-          try { target.focus({ preventScroll: true }); } catch (_) { target.focus(); }
-        }, 0);
-      });
-    });
-  })();
 </script>
 
 <style>
   /* ----------------------------------------------------------------
      Section frame.
-     Each .lp-section is at least 100dvh tall on the landing page
-     (rule lives in global.css under body[data-page="landing"]). The
-     padding-top accounts for the fixed/sticky header (60px) plus
-     breathing room.
+     Sections take their content's height with even spacing, so the page
+     reads as one flow (it used to be full-screen snap sections).
      ---------------------------------------------------------------- */
   .lp-section {
-    padding: 96px 24px 56px;
+    padding: 80px 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -555,13 +627,16 @@ const heroCta = 'Notify me about access';
 
   .lp-section--alt { background: var(--color-bg-white); }
 
-  /* The tail section does not snap and does not need to fill a viewport.
-     It carries trust copy + waitlist, and its natural height is what we
-     want to render. */
+  /* The tail carries trust copy and the waitlist and sits at the top of
+     its box rather than centred. */
   .lp-section--tail {
     min-height: 0 !important;
     padding: 88px 24px 80px;
     align-items: flex-start;
+  }
+
+  #hero {
+    padding-top: 56px;
   }
 
   .lp-section-inner {
@@ -787,41 +862,49 @@ const heroCta = 'Notify me about access';
     margin-top: 16px;
   }
 
-  .hero-carousel-dot {
-    border: 1px solid var(--color-border-light);
-    background: var(--color-bg-white);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-  }
-
+  /* Each dot is a 24px target (WCAG 2.2 target size) drawn as a 9px dot. */
   .hero-carousel-dots {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
   }
 
   .hero-carousel-dot {
-    width: 9px;
-    height: 9px;
+    width: 24px;
+    height: 24px;
     padding: 0;
+    border: 0;
     border-radius: 50%;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 
-  .hero-carousel-dot.is-active {
+  .hero-carousel-dot::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-white);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .hero-carousel-dot.is-active::before {
     background: var(--color-teal);
     border-color: var(--color-teal);
   }
 
-  .hero-carousel-dot:hover,
-  .hero-carousel-dot:focus-visible {
-    color: var(--color-deep-blue);
+  .hero-carousel-dot:hover::before,
+  .hero-carousel-dot:focus-visible::before {
     border-color: var(--color-deep-blue);
-    outline: none;
   }
 
   .hero-carousel-dot:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+    outline: 2px solid var(--color-teal);
+    outline-offset: 0;
   }
 
   .lp-visual-caption {
@@ -836,25 +919,6 @@ const heroCta = 'Notify me about access';
      plan calls for it to be a static, decorative chevron; we make it a
      real anchor (with aria-label) so keyboard users get the same
      "jump to next section" affordance as scrolling. */
-  .lp-scroll-affordance {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin: 32px auto 0;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color 0.15s ease, background 0.15s ease;
-  }
-
-  .lp-scroll-affordance:hover,
-  .lp-scroll-affordance:focus-visible {
-    color: var(--color-deep-blue);
-    background: var(--color-bg-white);
-    outline: none;
-  }
 
   .lp-scroll-affordance:focus-visible {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
@@ -952,12 +1016,9 @@ const heroCta = 'Notify me about access';
     border-bottom: 1px solid var(--color-border-light);
   }
 
-  @media (min-width: 900px) {
-    .available-now {
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 48px;
-      align-items: center;
-    }
+  /* Heading above, cards in one full-width row (four or five) on desktop. */
+  .available-now-copy {
+    max-width: 640px;
   }
 
   .available-now-copy h2 {
@@ -979,59 +1040,89 @@ const heroCta = 'Notify me about access';
   }
 
   .available-now-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 14px;
   }
 
-  @media (min-width: 680px) {
-    .available-now-links {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  /* With the Inclusive Finances card there are four links: a 2x2 grid puts
-     the two tools on top and the two reading entry points side by side, so
-     neither is framed as a sub-link of the other. */
-  @media (min-width: 680px) {
-    .available-now-links--four {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  .available-now-links a {
+  .an-card {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-height: 122px;
-    padding: 18px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 10px;
+    gap: 6px;
+    height: 100%;
+    padding: 16px 18px 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
     background: var(--color-bg-white);
     color: var(--color-text-primary);
     text-decoration: none;
+    box-shadow: var(--shadow-sm);
     transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .available-now-links a:hover,
-  .available-now-links a:focus-visible {
+  .an-card:hover,
+  .an-card:focus-visible {
     border-color: var(--color-teal);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--color-deep-blue) 10%, transparent);
     outline: none;
   }
 
-  .available-now-links span {
+  .an-card:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .an-preview {
+    display: block;
+    width: 80px;
+    height: 48px;
+    margin-bottom: 4px;
+  }
+
+  .an-preview svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .an-kicker {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-teal);
+  }
+
+  .an-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.94rem;
+    font-size: 1rem;
     color: var(--color-deep-blue);
   }
 
-  .available-now-links small {
+  .an-desc {
     color: var(--color-text-secondary);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     line-height: 1.45;
+    flex: 1;
+  }
+
+  .an-cta {
+    margin-top: 4px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-deep-blue);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .an-card { transition: none; }
+    .an-card:hover, .an-card:focus-visible { transform: none; }
   }
 
   .signup-block {
@@ -1101,14 +1192,14 @@ const heroCta = 'Notify me about access';
      Mobile tightening
      ---------------------------------------------------------------- */
   @media (max-width: 640px) {
-    .lp-section { padding: 88px 16px 48px; }
-    .lp-section--tail { padding: 64px 16px 56px; }
+    .lp-section { padding: 56px 16px; }
+    #hero { padding-top: 32px; }
+    .lp-section--tail { padding: 56px 16px; }
     .available-now {
       margin-bottom: 40px;
       padding-bottom: 40px;
       gap: 22px;
     }
-    .available-now-links a { min-height: 0; }
     .trust-strip { padding: 16px 20px; }
     .signup-block { margin-top: 44px; }
     .beta-scope-list li { min-height: 0; }
