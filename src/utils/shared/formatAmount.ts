@@ -29,3 +29,13 @@ export function formatAmount(value: number, code: string, compact = false): stri
   });
   return parts.map((p, i) => p.value + (i === lastNumeric ? suffix : '')).join('');
 }
+
+/**
+ * A percentage in the chosen currency's number conventions, so it matches the
+ * amounts beside it ("44,1 %" next to "50.000,00 €", "44.1%" next to "$50,000.00").
+ */
+export function formatPercent(pct: number, code: string, digits = 1): string {
+  const { locale } = getCurrency(code);
+  const v = Number.isFinite(pct) ? pct / 100 : 0;
+  return new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
+}

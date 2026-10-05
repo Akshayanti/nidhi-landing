@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { CURRENCIES } from '../loan/math.ts';
-import { formatAmount } from './formatAmount.ts';
+import { formatAmount, formatPercent } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
@@ -48,5 +48,19 @@ describe('formatAmount', () => {
   it('keeps lakh and crore for rupees', () => {
     assert.equal(formatAmount(2_163_515, 'INR', true), '₹21.6L');
     assert.equal(formatAmount(11_400_000, 'INR', true), '₹1.14Cr');
+  });
+});
+
+describe('formatPercent', () => {
+  it('uses the currency\'s decimal separator and spacing', () => {
+    assert.equal(formatPercent(44.13, 'EUR').replace(/\s/g, ' '), '44,1 %');
+    assert.equal(formatPercent(44.13, 'USD'), '44.1%');
+    assert.equal(formatPercent(44.13, 'CHF'), '44.1%');
+  });
+
+  it('handles zero, negatives and non-finite values', () => {
+    assert.equal(formatPercent(0, 'USD'), '0.0%');
+    assert.equal(formatPercent(-12.5, 'USD'), '-12.5%');
+    assert.equal(formatPercent(NaN, 'USD'), '0.0%');
   });
 });
