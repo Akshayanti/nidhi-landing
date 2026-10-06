@@ -26,7 +26,7 @@ faq:
     answer: "No. This post is about money: accounts, credit, transfers, and records. Immigration status, the right to work, and what each status allows are legal questions that vary by country and change often, and the consequences of getting them wrong are serious. For those, use a qualified immigration adviser or a recognised support organisation."
 relatedTool:
   url: "/free/multi-currency-net-worth"
-  label: "Multi-currency net-worth calculator"
+  label: "Net worth calculator (one currency or several)"
   cta: "Add up what you own across countries in one currency"
 reelPromise: "The order to rebuild a financial identity in a new country, and a worked example of what remittance fees cost over ten years"
 relatedSlugs: ["geographic-arbitrage", "credit-and-credit-scores", "managing-money-across-currencies", "why-your-euro-buys-more-in-some-countries"]

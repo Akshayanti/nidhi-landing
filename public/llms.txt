@@ -1,13 +1,13 @@
 # nidhi.today
-> Personal finance literacy and tools. Clear, honest explanations of money concepts - net worth, investing, debt, taxes, financial independence - with free calculators. Built in Prague. No ads, no data selling.
+> nidhi helps ordinary people understand their money: free, structured personal finance lessons that start from the basics (what net worth is, emergency funds, budgeting) and go on to investing, taxes, financial independence and the psychology of money; private in-browser tools to apply those ideas to your own numbers; and a planner, opening in stages, for planning your financial future. It starts simple and keeps working as finances get more complex, including when money spans currencies and countries. Built in Prague. No ads, no data selling.
 
 ## Key Pages
-- [Home](https://nidhi.today/): Overview of the platform, navigation to blog and free tools.
+- [Home](https://nidhi.today/): What nidhi is, where to start for your situation, which lesson goes with which free tool, and the planner (opening in stages).
 - [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
-- [Blog Index](https://nidhi.today/blog/): All articles in reading order, two series: Discovery (fundamentals) and Building (applying concepts).
+- [Blog Index](https://nidhi.today/blog/): The learning path: all lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
 
 ## Free Tools
-- [Multi-Currency Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Track assets and liabilities across currencies with real-time FX rates. Privacy-first - data stays in your browser.
+- [Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Add up what you own and owe to see your net worth, in one currency or several, with real-time FX rates. Privacy-first - data stays in your browser.
 - [Loan Comparison Calculator](https://nidhi.today/free/loan-comparison/): Compare two loan offers side-by-side including fees, APR, amortisation, and total cost of borrowing.
 
 ## Blog - Discovery Series (Fundamentals)
@@ -45,3 +45,15 @@
 - [Setting Financial Goals: From Vague Wishes to Concrete Targets](https://nidhi.today/blog/setting-financial-goals/): Translating goals into specific amounts, dates, and monthly contribution paths.
 - [Financial Health Metrics: How to Know If You're on Track](https://nidhi.today/blog/financial-health-metrics/): Six ratios that diagnose financial health beyond net worth alone.
 - [Your Financial Dashboard: What to Track and How Often](https://nidhi.today/blog/financial-dashboard/): A four-layer tracking system - monthly, quarterly, annual, and event-driven checkpoints.
+
+## Blog - Psychology Series (How Your Mind Shapes Money Decisions)
+- [Why Smart People Make Dumb Money Decisions](https://nidhi.today/blog/why-smart-people-make-dumb-money-decisions/): You can know the math perfectly and still panic-sell at the bottom. Your brain runs two systems, and the fast one takes charge when money is on the line.
+- [Loss Aversion: Why Losing Hurts Twice as Much](https://nidhi.today/blog/loss-aversion-and-the-disposition-effect/): Loss aversion: a 1,000 euro loss hurts about twice as much as a 1,000 euro gain feels good. It explains panic-selling and clinging to losing investments.
+- [Mental Accounting: Why Every Euro Should Be Equal but Isn't](https://nidhi.today/blog/mental-accounting/): Mental accounting: why a tax refund gets spent freely while salary gets guarded. Your brain files money into folders, and sometimes that costs you.
+- [Present Bias: Why Your Future Self Keeps Getting Robbed](https://nidhi.today/blog/present-bias-and-your-future-self/): Present bias makes your future self feel like a stranger you owe nothing. That is why saving loses to spending now, and why willpower is the wrong fix.
+- [Overconfidence: Why Almost Everyone Thinks They're Above Average](https://nidhi.today/blog/overconfidence-and-the-planning-fallacy/): Overconfidence: most people rate themselves above average, which is mathematically impossible. It makes us trade too much and underestimate every plan.
+- [Framing and Anchoring: How the Wording Changes Your Decision](https://nidhi.today/blog/framing-anchoring-and-price-psychology/): Saving 200 euros a month sounds modest; 72,000 euros over thirty years sounds huge. Same decision, new frame. How framing and anchoring steer your choices.
+- [Herd Behaviour and FOMO: Why the Crowd Pulls You Off Your Plan](https://nidhi.today/blog/herd-behavior-and-fomo/): The urge to follow the crowd kept our ancestors alive. In markets, herd behaviour and FOMO build bubbles on the way up and crashes on the way down.
+- [Narrative Economics: How a Good Story Inflates a Bubble](https://nidhi.today/blog/narrative-economics-and-bubbles/): Narrative economics: every bubble runs on a plausible story, rising prices that seem to prove it, and four dangerous words. This time is different.
+- [Money Scripts: The Beliefs About Money You Inherited Without Knowing](https://nidhi.today/blog/money-scripts/): Money scripts are the beliefs about money you absorbed as a child from the adults around you. They still shape your decisions more than any spreadsheet.
+- [Building an Anti-Bias Financial Life](https://nidhi.today/blog/building-an-anti-bias-financial-life/): Knowing about your biases barely dents them. Instead of trying to be smarter under pressure, design a financial life that does the right thing by default.

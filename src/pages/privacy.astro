@@ -137,6 +137,53 @@ const changelog: ChangelogEntry[] = [
       ]
     : []),
   {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: false,
+    summary: 'Homepage and header readability on phones.',
+    details: [
+      'On phones the homepage example chart is drawn narrower, so its labels stay readable instead of shrinking below 10 pixels, and small labels are now at least 12 pixels.',
+      'The "Free Tools" menu button in the header is now at least 24 pixels tall, the minimum size for a tap target.',
+      'The line under "Start wherever you are" gives the number of lessons without listing the levels, which the cards below already name.',
+      'No change to what data is collected.',
+    ],
+  },
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: true,
+    summary: 'Named Frankfurter, the exchange-rate service, in "Where it lives", and corrected how we described its requests.',
+    details: [
+      'Until now Frankfurter was mentioned only in changelog entries, not in the main notice. "Where it lives" now has a paragraph on it: when your browser contacts it, what the request contains, and what it reveals.',
+      'Earlier entries said the request carries "no personal data". That was imprecise: it carries only currency codes, never your amounts, but like any request your browser makes it shows Frankfurter your IP address and browser type, and an IP address can count as personal data. The earlier entries stay as written, as a record; this entry corrects them.',
+      'Nothing changed in what the site sends. This corrects the description, not the behaviour.',
+    ],
+  },
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: false,
+    summary: 'Renamed "Blog" to "Learn" in the navigation, and the multi-currency net worth tool to "Net worth calculator".',
+    details: [
+      'The navigation link and breadcrumbs now say "Learn" and the footer link says "Learning path". They still lead to /blog/, and the links keep their nav-blog and footer-blog labels.',
+      'The net worth tool is now called the net worth calculator, since it works with one currency as well as several. Its address (/free/multi-currency-net-worth/) and its link labels are unchanged.',
+      'No change to what data is collected.',
+    ],
+  },
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: true,
+    summary: 'Homepage redesign: learning first, a "continue learning" link, and no exchange-rate request until you ask for one.',
+    details: [
+      'The homepage now leads with the free lessons and tools: where to start for your situation, which lesson goes with which tool, and how nidhi keeps up as finances get more complex. The planner and its early-access list come after them. The early-access form in the hero is gone; the one further down is the same form, sending and storing exactly what it did before.',
+      'If you have read lessons on the learning path, the homepage now suggests the next one. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored. Without any reading progress the page simply suggests the first lesson.',
+      'The multi-currency example no longer contacts Frankfurter (the European Central Bank exchange-rate service) when the page loads, and the page no longer opens a connection to it in advance. The request is made only if you press "Add it up in euros at today\'s rates", and it carries none of the amounts on the page or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type.',
+      'New data-attr labels on the homepage links and buttons (home-hero-start-learning, home-hero-tools, home-hero-first-lesson, home-hero-continue, home-start-*, home-pair-lesson-*, home-tools-all, home-grows-*, home-mc-convert, home-mc-tool, home-editorial-policy, home-privacy and home-faq-*), so consented interaction analytics can tell them apart. Without consent, these clicks are not captured, as before; only the anonymous pageviews described above are recorded.',
+      'A short FAQ on the homepage, also published as structured data for search engines. No change to what data is collected.',
+    ],
+  },
+  {
     date: 'Oct 5, 2026',
     iso: '2026-10-05',
     material: false,
@@ -536,7 +583,7 @@ const privacyBreadcrumbSchema = {
       <ul>
         <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
         <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
-        <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time.</li>
+        <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time and suggest your next lesson on the homepage.</li>
         <li>Whether you&rsquo;ve confirmed your newsletter subscription (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve completed the double-opt-in loop. Set only when you click the confirmation link in your email; never contains your email address.</li>
         <li>Whether you&rsquo;ve dismissed the newsletter subscribe prompt (<code>nidhi-newsletter-dismissed</code>), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.</li>
         <li>Whether you&rsquo;ve signed up for the product-launch waitlist (<code>nidhi-waitlist-signedup</code>), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.</li>
@@ -595,7 +642,20 @@ const privacyBreadcrumbSchema = {
       </ul>
 
       <p>
-        That&rsquo;s the whole list. There&rsquo;s no fourth processor in a footnote somewhere.
+        That&rsquo;s the whole list of services that handle data for us. There&rsquo;s no fourth
+        processor in a footnote somewhere.
+      </p>
+
+      <p>
+        <strong>One service your browser contacts directly: Frankfurter</strong>
+        (<code>api.frankfurter.dev</code>), a free, open service that publishes European Central
+        Bank exchange rates. Your browser asks it for the day&rsquo;s rates when you open the net
+        worth calculator (and again if you change your spending currency there), and on the
+        homepage only if you press &ldquo;Add it up in euros at
+        today&rsquo;s rates&rdquo;. The request names only currency codes, never your amounts or
+        anything you typed. Like any request your browser makes, it shows Frankfurter your IP
+        address and browser type. It goes straight from your browser to Frankfurter, so we never
+        see it, and Frankfurter is independent of us: what it keeps is up to them.
       </p>
 
       <h2>What we don&rsquo;t do</h2>

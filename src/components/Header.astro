@@ -27,7 +27,7 @@ const showMonteCarlo = await isMonteCarloReleased();
         <ul class="nav-dropdownMenu" role="menu">
           <li role="none">
             <a href="/free/multi-currency-net-worth/" class:list={[{ active: currentPath === '/free/multi-currency-net-worth/' }]} role="menuitem" data-attr="nav-tool-multi-currency-net-worth">
-              Multi-Currency Net Worth
+              Net Worth Calculator
             </a>
           </li>
           <li role="none">
@@ -50,7 +50,7 @@ const showMonteCarlo = await isMonteCarloReleased();
           </li>
         </ul>
       </div>
-      <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Blog</a>
+      <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Learn</a>
       <ThemeToggle />
     </div>
   </nav>
@@ -105,6 +105,8 @@ const showMonteCarlo = await isMonteCarloReleased();
     display: flex;
     align-items: center;
     gap: 4px;
+    /* 24px tall at least: WCAG 2.2 minimum target size. */
+    min-height: 24px;
   }
 
   .nav-dropdownCaret {

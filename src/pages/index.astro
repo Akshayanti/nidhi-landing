@@ -2,46 +2,113 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
 import HeroChart from '../components/HeroChart.astro';
-import { EXAMPLE_RETURN, HOUSEHOLD, NET_WORTH_PATH, fiProjection, netWorthPath, whatIf } from '../utils/home/heroExamples.ts';
+import { EXAMPLE_RETURN, STARTER, starterExample } from '../utils/home/heroExamples.ts';
+import {
+  assertHomepageSlugs,
+  lessonToolPairs,
+  levelCounts,
+  readingOrder,
+  resolveGrowthTopics,
+  resolveStartingPoints,
+} from '../utils/home/startingPoints.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { getReadingTime } from '../utils/readingTime.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
 
-// The live home page. Originally a scroll-snap redesign (see
-// docs/plans/landing-page-redesign.md for the full plan and
-// docs/plans/landing-wireframe.html for the wireframe); since Oct 2026 the
-// sections flow with even spacing instead of filling the screen.
+// The live home page. It tells one story, in order: understand your money,
+// starting wherever you are; learn it, then try it on your own numbers; and
+// keep going as life gets more involved, including across currencies. The
+// planner, which is not open yet, comes after everything that is.
+//
+// Every lesson and tool link is chosen in src/utils/home/startingPoints.ts
+// and only appears once its post is published (or, for the Monte Carlo
+// simulator, once the tool launches). Dev shows scheduled posts too.
 
-// "Available now" cards. The Monte Carlo card appears once that tool launches.
+const isDev = import.meta.env.DEV;
+const now = isDev ? new Date('2999-01-01') : new Date();
+const allPosts = await getCollection('blog');
+assertHomepageSlugs(allPosts);
+
 const showMonteCarlo = await isMonteCarloReleased();
+const startingPoints = resolveStartingPoints(allPosts, now);
+const growthTopics = resolveGrowthTopics(allPosts, now);
+const pairs = lessonToolPairs(allPosts, now, (href) => href !== MONTE_CARLO_URL || showMonteCarlo);
+const counts = levelCounts(allPosts, now);
+const order = readingOrder(allPosts, now);
+const firstLesson = order[0];
+const firstPost = allPosts.find((p) => p.data.slug === firstLesson?.slug);
+const firstMinutes = firstPost ? getReadingTime(firstPost.body || '') : null;
 
-// Hero examples, computed (see src/utils/home/heroExamples.ts).
+// The Inclusive Finances hub is linked once a post in it is live.
+const showInclusiveHub = allPosts.some((p) => p.data.level === 'inclusive-finances' && p.data.pubDate <= now);
+
+// Hero example, computed (see src/utils/home/heroExamples.ts).
 const eur = (v: number) => formatAmount(v, 'EUR');
-const eurShort = (v: number) => formatAmount(v, 'EUR', true);
+const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
-const nw = netWorthPath();
-const nwLabels = nw.values.map((_, i) => {
-  const m = i - nw.todayIndex;
-  return m === 0 ? 'Today' : m < 0 ? `${-m} month${m === -1 ? '' : 's'} ago` : `In ${m} month${m === 1 ? '' : 's'}`;
-});
-const fi = fiProjection();
-const wi = whatIf();
-const yearLabels = (n: number) => Array.from({ length: n }, (_, i) => (i === 0 ? 'Today' : `Year ${i}`));
-// The multi-currency example converts at today's ECB rates in the browser.
+const roundedEnd = Math.round(ex.end / 100) * 100;
+// Drawn twice: a narrower drawing for phones keeps its labels readable
+// (CSS shows one of the two).
+const starterChart = {
+  title: 'Example: net worth over ten years',
+  desc: `An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`,
+  pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
+  series: [{ name: 'Net worth', values: ex.values, color: 'var(--chart-eur)', area: true }],
+  axisStart: 'today',
+  axisEnd: `+${STARTER.years} years`,
+  footnote: `Example: ${eur(STARTER.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.added)} is money added.`,
+};
+
+// The multi-currency example. Nothing is fetched until the visitor asks.
 const mcItems = [
   { name: 'Apartment, Prague', amount: 280_000, currency: 'EUR' },
-  { name: 'Brokerage, US', amount: 47_300, currency: 'USD' },
+  { name: 'Brokerage account, US', amount: 47_300, currency: 'USD' },
   { name: 'Savings, India', amount: 840_000, currency: 'INR' },
   { name: 'Mortgage', amount: -110_000, currency: 'EUR' },
 ];
+
+
+// Shown on the page and, word for word, in the FAQPage data below.
+const faqs = [
+  {
+    q: 'Is nidhi for beginners?',
+    a: `Yes. The learning path starts with what net worth is and assumes no prior knowledge. Each lesson explains its terms as it goes, and the ${counts.total} lessons so far are in reading order, so you can start at the top and keep going.`,
+  },
+  {
+    q: 'Do I need money in more than one currency to use nidhi?',
+    a: 'No. Everything works with a single currency. Multi-currency support is there for when your life needs it: savings in one country, a pension or property in another, or plans to move.',
+  },
+  {
+    q: 'What does nidhi cost?',
+    a: 'The lessons and the free tools cost nothing and need no account. The lessons will stay free, with no paywall.',
+  },
+  {
+    q: 'Is this financial advice?',
+    a: 'No. nidhi is educational: it explains how money works and lets you model your own situation. It is not a licensed financial adviser. For decisions that matter, talk to a qualified professional.',
+  },
+  {
+    q: 'What happens to the numbers I type into the tools?',
+    a: 'They stay on your device. The free tools calculate in your browser, and the numbers you enter are not sent to nidhi or anyone else.',
+  },
+  {
+    q: 'What is the planner, and when can I use it?',
+    a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
+  },
+];
+
+const description = 'Free personal finance lessons and private tools to understand your money and plan your future. Start with the basics; nidhi keeps up as life gets more complex, across currencies too.';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Personal finance planning across currencies. See your real net worth, model retirement timing, and stress-test major decisions before they cost you money.',
+  slogan: 'Money, understood',
+  description: 'nidhi helps ordinary people understand their money: free, structured personal finance lessons, private in-browser tools, and a planner for their financial future. It starts with the basics and keeps working as finances get more complex, including when money spans currencies and countries.',
   logo: 'https://nidhi.today/brand/favicons/android-chrome-512x512.png',
+  foundingLocation: { '@type': 'Place', name: 'Prague' },
+  knowsAbout: ['Personal finance', 'Financial literacy', 'Net worth', 'Emergency funds', 'Investing', 'Financial independence', 'Retirement planning', 'Behavioural finance', 'Multi-currency finance'],
   sameAs: [
     'https://www.instagram.com/nidhi.today',
   ],
@@ -52,10 +119,9 @@ const webSiteSchema = {
   '@type': 'WebSite',
   name: 'nidhi',
   url: 'https://nidhi.today/',
-  description: 'Money, understood. Multi-currency planning for real net worth, retirement timing, and major financial decisions.',
-  // SearchAction wired up in PR4. The blog index honours `?q=` as a
-  // deep link and writes the value back into the URL via
-  // `replaceState` as the search field changes (see
+  description: 'Money, understood. Learn personal finance, understand your own money, and plan your future, from the basics to finances that span currencies and countries.',
+  // The blog index honours `?q=` as a deep link and writes the value back
+  // into the URL via `replaceState` as the search field changes (see
   // `src/components/LearningPath.tsx`).
   potentialAction: {
     '@type': 'SearchAction',
@@ -67,400 +133,398 @@ const webSiteSchema = {
   },
 };
 
-const liveBlogSlugs = new Set(
-  (await getCollection('blog'))
-    .filter((post) => post.data.pubDate <= new Date())
-    .map((post) => post.data.slug),
-);
-
-// The Inclusive Finances entry point is its own card, not nested under the
-// blog CTA, so the level is not framed as later-stage content. Hidden until
-// a post in the level is live (always shown in dev for previewing).
-const showInclusiveHub = (await getCollection('blog')).some(
-  (post) => post.data.level === 'inclusive-finances' && (import.meta.env.DEV || post.data.pubDate <= new Date()),
-);
-
-function liveBlogHref(slug: string) {
-  return liveBlogSlugs.has(slug) ? `/blog/${slug}/` : null;
-}
-
-const blogLinks = {
-  netWorth: liveBlogHref('what-is-net-worth'),
-  calculateNetWorth: liveBlogHref('how-to-calculate-net-worth'),
-  crossCurrencies: liveBlogHref('managing-money-across-currencies'),
-  purchasingPower: liveBlogHref('why-your-euro-buys-more-in-some-countries'),
-  financialIndependence: liveBlogHref('introduction-to-financial-independence'),
-  goals: liveBlogHref('setting-financial-goals'),
-};
-
-const breadcrumbSchema = {
+const faqSchema = {
   '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: 'https://nidhi.today/',
-    },
-  ],
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 };
-
-// Pre-launch CTA. Swaps to "Get beta access" at beta and
-// "Sign up free" at public release. Single-line edit per phase.
-const heroCta = 'Notify me about access';
 ---
 
 <BaseLayout
-  title="nidhi | Multi-Currency Financial Planning"
-  description="Plan major life decisions across currencies. See your real net worth, model retirement timing, and stress-test choices before they cost you money."
-  imageAlt="nidhi: multi-currency financial planning for net worth, retirement timing, and major financial decisions."
-  jsonLd={[organizationSchema, webSiteSchema, breadcrumbSchema]}
+  title="nidhi | Understand your money and plan what comes next"
+  description={description}
+  imageAlt="nidhi: money, understood. Free personal finance lessons and private tools to understand your money and plan your future."
+  jsonLd={[organizationSchema, webSiteSchema, faqSchema]}
   mainClass="landing-shell"
   bodyData={{ 'data-page': 'landing' }}
 >
-  <slot name="head" slot="head">
-    {/* Frankfurter is used by the hero's live FX caption. Preconnecting
-        here lands the rates request faster on first paint. */}
-    <link rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
-  </slot>
-
   {/* =============================================================
-       Section 1: Hero
+       1. Hero: the promise, two ways in, and one idea walked through
        ============================================================= */}
   <section class="lp-section" id="hero" aria-labelledby="hero-heading">
     <div class="lp-section-inner">
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="lp-eyebrow">Money, understood</p>
-          <h1 id="hero-heading">Plan major life decisions across currencies.</h1>
+          <h1 id="hero-heading">Understand your money. Plan what comes next.</h1>
           <p class="lp-subhead">
-            Avoid costly currency surprises. See your real net worth, model retirement timing, and stress-test every decision before it costs you money.
+            Learn how personal finance works, see what it means for your own money, and plan your future with it. Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
           </p>
 
-          <WaitlistSection variant="hero" cta={heroCta} />
-
-          <p class="hero-trust-line">
-            Built because no planner handled my actual life: assets in three currencies, debts in two, retirement that crossed borders. Join the early-access list and we will email you when the planner opens. <a href="/beliefs/">More on our beliefs</a>{blogLinks.crossCurrencies && <> and <a href={blogLinks.crossCurrencies}>planning across currencies</a></>}.
-          </p>
-        </div>
-
-        <div class="hero-visual-wrap" aria-hidden="false">
-          <div class="lp-visual-card hero-carousel" data-hero-carousel aria-label="nidhi planning examples">
-            <div class="hero-carousel-slides">
-              <div class="hero-carousel-slide is-active" data-slide>
-                <div class="hero-summary">
-                  <p class="hero-summaryLabel">Net worth today</p>
-                  <p class="hero-summaryValue">{eur(nw.today)}</p>
-                </div>
-                <HeroChart
-                  id="hero-nw"
-                  title="Net worth path example"
-                  desc={`An example net worth: ${eur(NET_WORTH_PATH.startAYearAgo)} a year ago, ${eur(nw.today)} today and ${eur(nw.values[24])} in twelve months, saving ${eur(NET_WORTH_PATH.monthly)} a month at ${pctReturn} a year after inflation.`}
-                  pointLabels={nwLabels}
-                  series={[{ name: 'Net worth', values: nw.values, color: 'var(--chart-eur)', dashFrom: nw.todayIndex, area: true }]}
-                  axisStart="12 mo ago"
-                  axisMid={{ index: nw.todayIndex, label: 'today' }}
-                  axisEnd="in 12 mo"
-                  footnote={`Example: ${eur(NET_WORTH_PATH.startAYearAgo)} a year ago, ${eur(NET_WORTH_PATH.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Dashed: projected.`}
-                />
-                <p class="lp-visual-caption">Net worth path<br /><span id="hero-fx-caption" aria-live="polite">Live ECB rate: loading&hellip;</span></p>
-              </div>
-
-              <div class="hero-carousel-slide" data-slide>
-                <div class="hero-mc" data-hero-mc={JSON.stringify(mcItems)}>
-                  <p class="hero-summaryLabel">Total net worth, in EUR</p>
-                  <p class="hero-summaryValue" data-mc-total>Converting&hellip;</p>
-                  <ul class="hero-mcList">
-                    {mcItems.map((it) => (
-                      <li>
-                        <span>{it.name}</span>
-                        <span class="hero-mcAmount">{formatAmount(it.amount, it.currency)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div class="hero-splitBar" aria-hidden="true" data-mc-bar>
-                    <span data-mc-share="EUR" style="width:0;background:var(--chart-eur)"></span>
-                    <span data-mc-share="USD" style="width:0;background:var(--chart-usd)"></span>
-                    <span data-mc-share="INR" style="width:0;background:var(--chart-inr)"></span>
-                  </div>
-                  <p class="hero-splitText" data-mc-split>Each item stays in its own currency; the total uses today&rsquo;s ECB rates.</p>
-                </div>
-                <p class="lp-visual-caption">Multi-currency picture</p>
-              </div>
-
-              <div class="hero-carousel-slide" data-slide>
-                <HeroChart
-                  id="hero-fi"
-                  title="Early-retirement projection example"
-                  desc={`An example household with ${eur(HOUSEHOLD.start)} invested, saving ${Math.round(HOUSEHOLD.savingsRate * 100)}% of a ${eur(HOUSEHOLD.income)} monthly income at ${pctReturn} a year after inflation. Financial independence, ${HOUSEHOLD.fiMultiple} times yearly spending or ${eur(fi.target)}, is reached in year ${fi.fiYear}.`}
-                  pointLabels={yearLabels(fi.values.length)}
-                  series={[{ name: 'Net worth', values: fi.values, color: 'var(--chart-eur)', area: true }]}
-                  target={{ value: fi.target, label: `Financial independence, ${eurShort(fi.target)}` }}
-                  marker={{ index: fi.fiYear ?? 0, label: `Reaches it in year ${fi.fiYear}` }}
-                  axisStart="today"
-                  axisEnd={`+${fi.values.length - 1} years`}
-                  footnote={`Example: ${eur(HOUSEHOLD.start)} invested, ${Math.round(HOUSEHOLD.savingsRate * 100)}% of ${eur(HOUSEHOLD.income)} added at the start of each month, ${pctReturn} a year after inflation, target ${HOUSEHOLD.fiMultiple} times yearly spending.`}
-                />
-                <p class="lp-visual-caption">Early-retirement projection</p>
-              </div>
-
-              <div class="hero-carousel-slide" data-slide>
-                <HeroChart
-                  id="hero-wi"
-                  title="What-if comparison example"
-                  desc={`The same household over twenty years: saving ${Math.round(HOUSEHOLD.savingsRate * 100)}% of income reaches ${eur(wi.base[20])}; saving five percentage points more (${eur(wi.extraPerMonth)} a month) reaches ${eur(wi.higher[20])}, about ${eurShort(wi.difference)} more.`}
-                  pointLabels={yearLabels(wi.base.length)}
-                  series={[
-                    { name: 'Save +5 pts', values: wi.higher, color: 'var(--chart-usd)' },
-                    { name: 'Current', values: wi.base, color: 'var(--chart-eur)' },
-                  ]}
-                  axisStart="today"
-                  axisEnd="+20 years"
-                  footnote={`Same household: after 20 years, about ${eurShort(wi.difference)} more by adding ${eur(wi.extraPerMonth)} more at the start of each month.`}
-                />
-                <p class="lp-visual-caption">What-if comparison</p>
-              </div>
-            </div>
-
-            <div class="hero-carousel-controls" aria-label="Example controls">
-              <div class="hero-carousel-dots" role="tablist" aria-label="Planning examples">
-                <button type="button" role="tab" class="hero-carousel-dot is-active" data-slide-dot aria-label="Show net worth path example" aria-selected="true"></button>
-                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show multi-currency example" aria-selected="false"></button>
-                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show early-retirement projection example" aria-selected="false"></button>
-                <button type="button" role="tab" class="hero-carousel-dot" data-slide-dot aria-label="Show what-if comparison example" aria-selected="false"></button>
-              </div>
-            </div>
+          <div class="hero-actions">
+            <a href="/blog/" class="lp-btn lp-btn--primary" data-attr="home-hero-start-learning">Start learning</a>
+            <a href="/free/" class="lp-btn lp-btn--secondary" data-attr="home-hero-tools">Try a free tool</a>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  {/* =============================================================
-       Section 2: Who it's for
-       ============================================================= */}
-  <section class="lp-section lp-section--alt" id="who" aria-labelledby="who-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="audience-grid">
-        <div class="audience-copy">
-          <p class="lp-eyebrow">Who it's for</p>
-          <h2 id="who-heading">For people whose money crosses borders.</h2>
-          <p class="cap-body">
-            Multi-currency planning is the core of nidhi. The beta is for people who need their full plan to work across borders, not as an afterthought{blogLinks.purchasingPower && <>: the same money can behave differently depending on where you live, work, and spend it. <a href={blogLinks.purchasingPower}>Read the primer on purchasing power across countries</a>.</>}
-          </p>
-        </div>
-
-        <ul class="audience-list">
-          <li>You cannot answer "Can I afford this?" without rebuilding your spreadsheet.</li>
-          <li>Your retirement plan changes depending on where you eventually live.</li>
-          <li>You are comparing a property purchase, career change, or other major financial decision.</li>
-          <li>Your financial picture is spread across accounts, assets, debts, and future expenses.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  {/* =============================================================
-       Section 3: How it works
-       ============================================================= */}
-  <section class="lp-section" id="how-it-works" aria-labelledby="how-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="how-grid">
-        <div class="how-copy">
-          <p class="lp-eyebrow">The model</p>
-          <h2 id="how-heading">Start with your real financial life.</h2>
-          <p class="cap-body">
-            nidhi is built around {blogLinks.netWorth ? <a href={blogLinks.netWorth}>what you own and what you owe</a> : 'what you own, what you owe'}, what you earn, and what you expect to spend. From there, it projects your path and lets you compare choices before you make a financial decision.
-          </p>
-        </div>
-
-        <ol class="how-steps" aria-label="How nidhi works">
-          <li>
-            <span class="how-step-number">1</span>
-            <div>
-              <h3>Add the pieces</h3>
-              <p>Assets, debts, income, recurring expenses, future costs, and the currencies they live in.</p>
+          {firstLesson && (
+            <div class="hero-next" data-continue={JSON.stringify(order)}>
+              <p data-next-default>
+                Not sure where to begin? Start with <a href={firstLesson.href} data-attr="home-hero-first-lesson">{firstLesson.title}</a>{firstMinutes && <>, a {firstMinutes}-minute read</>}.
+              </p>
+              <p data-next-continue hidden>
+                Welcome back. Pick up where you left off: <a href="#" data-attr="home-hero-continue"></a>
+              </p>
             </div>
-          </li>
-          <li>
-            <span class="how-step-number">2</span>
-            <div>
-              <h3>See the path</h3>
-              <p>{blogLinks.calculateNetWorth ? <a href={blogLinks.calculateNetWorth}>Net worth</a> : 'Net worth'}, cash flow, {blogLinks.financialIndependence ? <a href={blogLinks.financialIndependence}>retirement timing</a> : 'retirement timing'}, and the assumptions behind the projection.</p>
-            </div>
-          </li>
-          <li>
-            <span class="how-step-number">3</span>
-            <div>
-              <h3>Compare the decision</h3>
-              <p>Buying property, saving more, changing jobs, adding future expenses, or retiring earlier.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  {/* =============================================================
-       Section 4: Early-access scope
-       ============================================================= */}
-  <section class="lp-section lp-section--alt" id="beta-scope" aria-labelledby="beta-scope-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="beta-scope">
-        <div class="beta-scope-copy">
-          <p class="lp-eyebrow">Early access</p>
-          <h2 id="beta-scope-heading">What early access will include.</h2>
-          <p class="cap-body">
-            Early access is focused on the planning questions that get messy when your money crosses borders. These are the core areas we want users to pressure-test first.
-          </p>
+          )}
         </div>
 
-        <ul class="beta-scope-list">
-          <li>
-            <h3>Multi-currency net worth</h3>
-            <p>Track assets and debts in different currencies, then view the whole picture in the currency you actually spend{blogLinks.crossCurrencies ? <>. <a href={blogLinks.crossCurrencies}>Read how cross-currency planning changes the picture</a>.</> : '.'}</p>
-          </li>
-          <li>
-            <h3>Retirement and early-retirement projections</h3>
-            <p>See possible timing, key assumptions, and how the path changes when your savings or costs change{blogLinks.financialIndependence ? <>. <a href={blogLinks.financialIndependence}>Start with financial independence basics</a>.</> : '.'}</p>
-          </li>
-          <li>
-            <h3>Goal and expense planning</h3>
-            <p>Map expected income, recurring costs, and future expenses into the same long-range plan{blogLinks.goals ? <>. <a href={blogLinks.goals}>Read about setting concrete financial goals</a>.</> : '.'}</p>
-          </li>
-          <li>
-            <h3>What-if comparisons</h3>
-            <p>Model major decisions like buying property, saving more, taking a lower-paying job, or changing key assumptions.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  {/* =============================================================
-       Conversion tail, the page's conclusion: trust strip, then
-       waitlist.
-       Footer.astro renders below <main> in the default Astro flow.
-       ============================================================= */}
-  <section class="lp-section lp-section--tail" id="signup" aria-labelledby="signup-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="available-now" aria-labelledby="available-now-heading">
-        <div class="available-now-copy">
-          <p class="lp-eyebrow">Available now</p>
-          <h2 id="available-now-heading">Use the free tools while the full planner opens up.</h2>
-          <p>
-            The full planner is opening in stages. In the meantime, the free tools and blog are live.
-          </p>
-        </div>
-        <ul class="available-now-links" role="list" aria-label="Available now">
-          {[
-            { href: '/free/multi-currency-net-worth/', attr: 'home-cta-multi-currency-net-worth', kicker: 'Free tool', title: 'Multi-currency net worth', desc: 'See assets and debts across currencies, converted at live ECB rates.', preview: 'donut' },
-            { href: '/free/loan-comparison/', attr: 'home-cta-loan-comparison', kicker: 'Free tool', title: 'Loan comparison', desc: 'Compare borrowing offers side by side: APR, total cost and payoff.', preview: 'bars' },
-            ...(showMonteCarlo ? [{ href: MONTE_CARLO_URL, attr: 'home-cta-monte-carlo-simulator', kicker: 'Free tool', title: 'Monte Carlo simulator', desc: 'See the spread of outcomes for your savings and retirement.', preview: 'fan' }] : []),
-            showInclusiveHub
-              ? { href: '/blog/', attr: 'home-cta-blog', kicker: 'Learn', title: 'Start the learning path', desc: 'Step-by-step guides, from net worth basics to long-term planning.', preview: 'path' }
-              : { href: '/blog/', attr: 'home-cta-blog', kicker: 'Learn', title: 'Read the blog', desc: 'Learn the concepts behind the planner.', preview: 'path' },
-            ...(showInclusiveHub ? [{ href: '/blog/inclusive-finances/', attr: 'home-inclusive-finances', kicker: 'Learn', title: 'Money for every kind of household', desc: 'Unmarried couples, blended and chosen families, solo agers, gig work, disability, lives across borders.', preview: 'compass' }] : []),
-          ].map((c) => (
+        <figure class="starter" aria-labelledby="starter-title">
+          <p class="starter-kicker" id="starter-title">One idea, from learning to planning</p>
+          <ol class="starter-steps">
             <li>
-              <a href={c.href} data-attr={c.attr} class="an-card">
-                <span class="an-preview" aria-hidden="true">
-                  {c.preview === 'donut' && (
-                    <svg viewBox="0 0 80 48"><g transform="translate(24,24)"><path d="M 0 -18 A 18 18 0 1 1 -12.3 13.1 L 0 0 Z" fill="var(--chart-eur)" /><path d="M -12.3 13.1 A 18 18 0 0 1 -10.6 -14.6 L 0 0 Z" fill="var(--chart-usd)" /><path d="M -10.6 -14.6 A 18 18 0 0 1 0 -18 L 0 0 Z" fill="var(--chart-inr)" /><circle r="9" fill="var(--color-bg-white)" /></g><rect x="50" y="14" width="22" height="5" rx="2" fill="var(--chart-eur)" /><rect x="50" y="23" width="16" height="5" rx="2" fill="var(--chart-usd)" /><rect x="50" y="32" width="9" height="5" rx="2" fill="var(--chart-inr)" /></svg>
-                  )}
-                  {c.preview === 'bars' && (
-                    <svg viewBox="0 0 80 48"><path d="M 6 8 C 30 12, 50 26, 74 42" stroke="var(--chart-eur)" stroke-width="3" fill="none" stroke-linecap="round" /><path d="M 6 8 C 26 16, 44 30, 64 42" stroke="var(--chart-usd)" stroke-width="3" fill="none" stroke-dasharray="5 4" stroke-linecap="round" /></svg>
-                  )}
-                  {c.preview === 'fan' && (
-                    <svg viewBox="0 0 80 48"><path d="M 6 40 L 74 6 L 74 36 Z" fill="var(--chart-eur)" opacity="0.22" /><path d="M 6 40 L 74 14 L 74 28 Z" fill="var(--chart-eur)" opacity="0.4" /><path d="M 6 40 L 74 21" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" /></svg>
-                  )}
-                  {c.preview === 'path' && (
-                    <svg viewBox="0 0 80 48"><line x1="10" y1="8" x2="10" y2="42" stroke="var(--color-border)" stroke-width="2" /><circle cx="10" cy="10" r="5" fill="var(--chart-usd)" /><circle cx="10" cy="24" r="5" fill="var(--chart-eur)" /><circle cx="10" cy="38" r="5" fill="var(--color-bg-white)" stroke="var(--chart-eur)" stroke-width="2" /><rect x="22" y="7" width="44" height="6" rx="3" fill="var(--color-border)" /><rect x="22" y="21" width="36" height="6" rx="3" fill="var(--color-border)" /><rect x="22" y="35" width="48" height="6" rx="3" fill="var(--color-border)" /></svg>
-                  )}
-                  {c.preview === 'compass' && (
-                    <svg viewBox="0 0 80 48"><circle cx="24" cy="24" r="17" fill="none" stroke="var(--color-teal)" stroke-width="2.5" /><path d="M 30 18 L 26 26 L 18 30 L 22 22 Z" fill="var(--color-teal)" /><rect x="48" y="14" width="24" height="5" rx="2" fill="var(--color-border)" /><rect x="48" y="23" width="18" height="5" rx="2" fill="var(--color-border)" /><rect x="48" y="32" width="22" height="5" rx="2" fill="var(--color-border)" /></svg>
-                  )}
-                </span>
-                <span class="an-kicker">{c.kicker}</span>
-                <span class="an-title">{c.title}</span>
-                <span class="an-desc">{c.desc}</span>
-                <span class="an-cta" aria-hidden="true">Open &rarr;</span>
-              </a>
+              <span class="starter-step">Learn</span>
+              <p class="starter-text">Net worth is what you own minus what you owe. It shows whether you are moving forward, whatever you earn.</p>
+            </li>
+            <li>
+              <span class="starter-step">See yours</span>
+              <table class="starter-table" aria-label="An example net worth">
+                <tbody>
+                  {STARTER.owns.map((i) => (
+                    <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
+                  ))}
+                  {STARTER.owes.map((i) => (
+                    <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
+                </tfoot>
+              </table>
+            </li>
+            <li>
+              <span class="starter-step">Look ahead</span>
+              <p class="starter-text">Add {eur(STARTER.monthly)} a month and it could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
+              <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
+              <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={220} {...starterChart} />
+            </li>
+          </ol>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {/* =============================================================
+       2. Start wherever you are: situations, each tied to the path
+       ============================================================= */}
+  <section class="lp-section lp-section--alt" id="start" aria-labelledby="start-heading">
+    <div class="lp-section-inner">
+      <div class="section-head">
+        <h2 id="start-heading">Start wherever you are.</h2>
+        <p class="cap-body">
+          You don&rsquo;t need the jargon, or much money, to begin. Pick the line that sounds most like you. {counts.total > 0 && <>There are {counts.total} free lessons so far, in reading order, each citing its sources.</>}
+        </p>
+      </div>
+
+      <ul class="start-grid" role="list">
+        {startingPoints.map((s) => (
+          <li class="start-card">
+            <h3>{s.situation}</h3>
+            <p class="start-detail">{s.detail}</p>
+            <p class="start-meta">
+              {s.levelLabel ? <>{s.levelLabel} level &middot; {s.levelCount} lessons</> : <>Lessons from several levels, plus free tools</>}
+            </p>
+            <ol class="start-lessons">
+              {s.lessons.map((l, i) => (
+                <li>
+                  {i === 0 && <span class="start-here">Start here</span>}
+                  <a href={l.href} data-attr={`home-start-${s.id}-${i + 1}`}>{l.title}</a>
+                </li>
+              ))}
+            </ol>
+            {s.id === 'complex' && (
+              <a class="start-more" href="#grows" data-attr="home-start-complex-more">How nidhi keeps up with a complicated life</a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <p class="section-foot">
+        <a href="/blog/" data-attr="home-cta-blog">See the whole learning path</a>
+        {showInclusiveHub && <> &middot; <a href="/blog/inclusive-finances/" data-attr="home-inclusive-finances">Money for every kind of household</a></>}
+      </p>
+    </div>
+  </section>
+
+  {/* =============================================================
+       3. Learn it, then try it on your own numbers
+       ============================================================= */}
+  {pairs.length > 0 && (
+    <section class="lp-section" id="apply" aria-labelledby="apply-heading">
+      <div class="lp-section-inner">
+        <div class="section-head">
+          <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
+          <p class="cap-body">
+            Each free tool sits next to a lesson that explains the idea behind it. The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
+          </p>
+        </div>
+
+        <ul class="pair-list" role="list">
+          {pairs.map((p) => {
+            const key = p.tool.href.split('/').filter(Boolean).pop();
+            return (
+              <li class="pair">
+                <div class="pair-lesson">
+                  <span class="pair-kicker">Read</span>
+                  <a href={p.lesson.href} data-attr={`home-pair-lesson-${key}`}>{p.lesson.title}</a>
+                </div>
+                <span class="pair-arrow" aria-hidden="true">&rarr;</span>
+                <a href={p.tool.href} class="an-card" data-attr={`home-cta-${key}`}>
+                  <span class="an-preview" aria-hidden="true">
+                    {p.tool.preview === 'donut' && (
+                      <svg viewBox="0 0 80 48"><g transform="translate(24,24)"><path d="M 0 -18 A 18 18 0 1 1 -12.3 13.1 L 0 0 Z" fill="var(--chart-eur)" /><path d="M -12.3 13.1 A 18 18 0 0 1 -10.6 -14.6 L 0 0 Z" fill="var(--chart-usd)" /><path d="M -10.6 -14.6 A 18 18 0 0 1 0 -18 L 0 0 Z" fill="var(--chart-inr)" /><circle r="9" fill="var(--color-bg-white)" /></g><rect x="50" y="14" width="22" height="5" rx="2" fill="var(--chart-eur)" /><rect x="50" y="23" width="16" height="5" rx="2" fill="var(--chart-usd)" /><rect x="50" y="32" width="9" height="5" rx="2" fill="var(--chart-inr)" /></svg>
+                    )}
+                    {p.tool.preview === 'bars' && (
+                      <svg viewBox="0 0 80 48"><path d="M 6 8 C 30 12, 50 26, 74 42" stroke="var(--chart-eur)" stroke-width="3" fill="none" stroke-linecap="round" /><path d="M 6 8 C 26 16, 44 30, 64 42" stroke="var(--chart-usd)" stroke-width="3" fill="none" stroke-dasharray="5 4" stroke-linecap="round" /></svg>
+                    )}
+                    {p.tool.preview === 'fan' && (
+                      <svg viewBox="0 0 80 48"><path d="M 6 40 L 74 6 L 74 36 Z" fill="var(--chart-eur)" opacity="0.22" /><path d="M 6 40 L 74 14 L 74 28 Z" fill="var(--chart-eur)" opacity="0.4" /><path d="M 6 40 L 74 21" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" /></svg>
+                    )}
+                  </span>
+                  <span class="an-kicker">Then try it</span>
+                  <span class="an-title">{p.tool.name}</span>
+                  <span class="an-desc">{p.tool.desc}</span>
+                  <span class="an-cta" aria-hidden="true">Open the tool &rarr;</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        <p class="section-foot"><a href="/free/" data-attr="home-tools-all">All free tools</a></p>
+      </div>
+    </section>
+  )}
+
+  {/* =============================================================
+       4. Grows with you, with multi-currency as one concrete case
+       ============================================================= */}
+  <section class="lp-section lp-section--alt" id="grows" aria-labelledby="grows-heading" tabindex="-1">
+    <div class="lp-section-inner">
+      <div class="section-head">
+        <h2 id="grows-heading">nidhi grows with your financial life.</h2>
+        <p class="cap-body">
+          The ideas you start with keep mattering as life gets more involved. They just gain more moving parts. nidhi is built to keep up, so you never have to outgrow it.
+        </p>
+      </div>
+
+      <div class="grows-grid">
+        <ol class="grows-list">
+          {growthTopics.map((t) => (
+            <li>
+              <h3>{t.label}</h3>
+              <p>{t.detail}</p>
+              <ul class="grows-links" role="list">
+                {t.lessons.map((l, i) => (
+                  <li><a href={l.href} data-attr={`home-grows-${t.id}-${i + 1}`}>{l.title}</a></li>
+                ))}
+              </ul>
             </li>
           ))}
-        </ul>
+        </ol>
+
+        <div class="mc-panel" data-mc={JSON.stringify(mcItems)}>
+          <h3>When your money lives in more than one country</h3>
+          <p>
+            Most money tools assume one country and one currency. nidhi doesn&rsquo;t, so a home in one place, savings in another and a pension in a third still add up to one picture, in the currency you actually live in.
+          </p>
+          <ul class="mc-list">
+            {mcItems.map((it) => (
+              <li>
+                <span>{it.name}</span>
+                <span class="mc-amount">{formatAmount(it.amount, it.currency)}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="mc-result">
+            <button type="button" class="lp-btn lp-btn--secondary mc-button" data-mc-convert data-attr="home-mc-convert">Add it up in euros at today&rsquo;s rates</button>
+            <div data-mc-out aria-live="polite">
+              <p class="mc-total" data-mc-total hidden></p>
+              <div class="mc-bar" data-mc-bar hidden aria-hidden="true">
+                <span data-mc-share="EUR" style="background:var(--chart-eur)"></span>
+                <span data-mc-share="USD" style="background:var(--chart-usd)"></span>
+                <span data-mc-share="INR" style="background:var(--chart-inr)"></span>
+              </div>
+              <p class="mc-split" data-mc-split hidden></p>
+            </div>
+          </div>
+          <p class="mc-note">
+            The button fetches the European Central Bank&rsquo;s rates through Frankfurter, the same open service the net worth calculator uses. None of these amounts, or anything else you type, is sent; like any web request, it shows Frankfurter your IP address. <a href="/free/multi-currency-net-worth/" data-attr="home-mc-tool">Try it with your own numbers</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =============================================================
+       5. The planner, honestly labelled, with the waitlist
+       ============================================================= */}
+  <section class="lp-section" id="signup" aria-labelledby="planner-heading" tabindex="-1">
+    <div class="lp-section-inner">
+      <div class="planner-grid">
+        <div class="planner-copy">
+          <p class="lp-eyebrow">Opening in stages</p>
+          <h2 id="planner-heading">The planner: your whole picture, looking forward.</h2>
+          <p class="cap-body">
+            Lessons explain the ideas. Tools answer one question at a time. The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
+          </p>
+          <ul class="planner-list">
+            <li>What you own, owe, earn and expect to spend, in one place, in one currency or several.</li>
+            <li>Where that could lead, including retirement timing, with every assumption in plain view.</li>
+            <li>Goals and future costs in the same long-range plan.</li>
+            <li>What-if comparisons: saving more, buying a home, changing jobs, retiring earlier.</li>
+          </ul>
+        </div>
+        <div class="planner-signup">
+          <WaitlistSection />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =============================================================
+       6. The belief, and what you can count on
+       ============================================================= */}
+  <section class="lp-section lp-section--alt" id="trust" aria-labelledby="trust-heading" tabindex="-1">
+    <div class="lp-section-inner">
+      <div class="section-head section-head--center">
+        <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
+        <p class="cap-body">
+          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert. That is what we mean by <em>money, understood</em>.
+        </p>
       </div>
 
-      <div class="trust-strip" aria-label="Privacy and data handling">
-        <p class="trust-strip-title">What this means for your data</p>
-        <ul>
-          <li>Free-tool calculations run entirely in your browser. Your numbers never leave the page.</li>
-          <li>No ads. No data selling. Analytics on EU servers only (PostHog Cloud EU).</li>
-          <li>We never share or sell your email. One click to unsubscribe from anything.</li>
-          <li>GDPR-aware. <a href="/privacy/">Read the full privacy policy.</a></li>
-        </ul>
-      </div>
+      <ul class="trust-grid" role="list">
+        <li><strong>Free to learn, for good.</strong> No paywall, and no &ldquo;subscribe for the good stuff&rdquo;.</li>
+        <li><strong>No ads, no data selling.</strong> Analytics run on EU servers, and we never share or sell your email.</li>
+        <li><strong>Your numbers stay with you.</strong> The free tools calculate in your browser.</li>
+        <li><strong>Sources you can check.</strong> Lessons cite what they rely on. <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>.</li>
+        <li><strong>Made for everyone.</strong> Built to work with screen readers, for colour blindness, and for people wired differently.</li>
+        <li><strong>Clear about what this is.</strong> Education, not financial advice. <a href="/privacy/" data-attr="home-privacy">Read the privacy policy</a>.</li>
+      </ul>
 
-      <div class="signup-block">
-        <p class="lp-eyebrow">Early access</p>
-        <h2 id="signup-heading" class="signup-heading">Join the early-access list</h2>
-        <WaitlistSection />
+      <p class="trust-founder">
+        nidhi is made in Prague by one person who couldn&rsquo;t find a tool that fit a real financial life, and decided to build one. <a href="/beliefs/" data-attr="home-cta-beliefs">What we believe</a>.
+      </p>
+    </div>
+  </section>
+
+  {/* =============================================================
+       7. FAQ (also in FAQPage data above)
+       ============================================================= */}
+  <section class="lp-section" id="faq" aria-labelledby="faq-heading" tabindex="-1">
+    <div class="lp-section-inner lp-section-inner--narrow">
+      <h2 id="faq-heading" class="faq-heading">Questions people ask first</h2>
+      <div class="faq-list">
+        {faqs.map((f, i) => (
+          <details class="faq-item" data-attr={`home-faq-${i + 1}`}>
+            <summary><h3>{f.q}</h3></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
       </div>
     </div>
   </section>
 </BaseLayout>
 
-<script is:inline>
-  // Live ECB rate caption in the hero. One fetch on page load, no polling.
-  // Same Frankfurter API the multi-currency tool uses (already disclosed
-  // in the privacy policy as a third-party call). Fails silently if the
-  // request errors or the network is offline.
-  // Live ECB rates (via Frankfurter, already disclosed in the privacy policy):
-  // the caption under the first example, and the conversion in the
-  // multi-currency example, whose total and split are never hard-coded.
-  (function () {
-    var caption = document.getElementById('hero-fx-caption');
-    var mc = document.querySelector('[data-hero-mc]');
-    var totalEl = mc && mc.querySelector('[data-mc-total]');
-    var splitEl = mc && mc.querySelector('[data-mc-split]');
-    function unavailable() {
-      if (caption) caption.style.display = 'none';
-      if (totalEl) totalEl.textContent = 'Rates unavailable right now';
+<script>
+  // "Continue learning": if this browser has read lessons on the path (the
+  // existing nidhi-reading-progress key, which never leaves the browser),
+  // point to the next unread one instead of the first lesson.
+  import { nextLesson, type LessonLink } from '../utils/home/startingPoints.ts';
+
+  const box = document.querySelector<HTMLElement>('[data-continue]');
+  if (box) {
+    try {
+      const read = JSON.parse(localStorage.getItem('nidhi-reading-progress') || '[]');
+      const order = JSON.parse(box.dataset.continue || '[]') as LessonLink[];
+      const next = Array.isArray(read) ? nextLesson(order, read.map(String)) : null;
+      if (next) {
+        const line = box.querySelector<HTMLElement>('[data-next-continue]')!;
+        const link = line.querySelector('a')!;
+        link.href = next.href;
+        link.textContent = next.title;
+        line.hidden = false;
+        box.querySelector<HTMLElement>('[data-next-default]')!.hidden = true;
+      }
+    } catch {
+      /* storage unavailable: keep the default line */
     }
-    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,INR')
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-      .then(function (data) {
-        var rates = data && data.rates;
-        if (!rates || !rates.USD || !rates.INR) return unavailable();
-        if (caption) caption.textContent = 'Live ECB rate: 1 EUR = ' + rates.USD.toFixed(4) + ' USD';
-        if (!mc) return;
-        var items = JSON.parse(mc.getAttribute('data-hero-mc'));
-        var byCurrency = {};
-        var total = 0;
-        items.forEach(function (it) {
-          var eur = it.currency === 'EUR' ? it.amount : it.amount / rates[it.currency];
-          byCurrency[it.currency] = (byCurrency[it.currency] || 0) + eur;
-          total += eur;
+  }
+</script>
+
+<script is:inline>
+  // The multi-currency example converts only when the visitor presses the
+  // button: one request to Frankfurter (ECB rates), carrying no personal data.
+  (function () {
+    var panel = document.querySelector('[data-mc]');
+    if (!panel) return;
+    var button = panel.querySelector('[data-mc-convert]');
+    var totalEl = panel.querySelector('[data-mc-total]');
+    var bar = panel.querySelector('[data-mc-bar]');
+    var splitEl = panel.querySelector('[data-mc-split]');
+    button.addEventListener('click', function () {
+      button.disabled = true;
+      totalEl.hidden = false;
+      totalEl.textContent = 'Fetching today’s rates…';
+      // Give up after ten seconds rather than leave the panel waiting.
+      var ctrl = window.AbortController ? new AbortController() : null;
+      if (ctrl) window.setTimeout(function () { ctrl.abort(); }, 10000);
+      var signal = ctrl ? ctrl.signal : undefined;
+      fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,INR', { signal: signal })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (data) {
+          var rates = data && data.rates;
+          if (!rates || !rates.USD || !rates.INR) throw new Error('rates');
+          var items = JSON.parse(panel.getAttribute('data-mc'));
+          var byCurrency = {};
+          var total = 0;
+          items.forEach(function (it) {
+            var eur = it.currency === 'EUR' ? it.amount : it.amount / rates[it.currency];
+            byCurrency[it.currency] = (byCurrency[it.currency] || 0) + eur;
+            total += eur;
+          });
+          var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+          var pct = new Intl.NumberFormat('de-DE', { style: 'percent', maximumFractionDigits: 0 });
+          totalEl.textContent = 'Net worth: ' + money.format(Math.round(total));
+          var gross = Object.keys(byCurrency).reduce(function (s, k) { return s + Math.abs(byCurrency[k]); }, 0);
+          var parts = [];
+          Object.keys(byCurrency).forEach(function (code) {
+            var share = Math.abs(byCurrency[code]) / gross;
+            var seg = bar.querySelector('[data-mc-share="' + code + '"]');
+            if (seg) seg.style.width = (share * 100).toFixed(1) + '%';
+            parts.push(code + ' ' + pct.format(share));
+          });
+          bar.hidden = false;
+          splitEl.hidden = false;
+          splitEl.textContent = 'By currency: ' + parts.join(', ') + '. ECB rates of ' + data.date + '.';
+          // Keep keyboard focus on the answer, not on a button that disappears.
+          totalEl.tabIndex = -1;
+          totalEl.focus({ preventScroll: true });
+          button.hidden = true;
+        })
+        .catch(function () {
+          totalEl.textContent = 'Rates are unavailable right now. Try again later.';
+          button.disabled = false;
         });
-        var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-        var pct = new Intl.NumberFormat('de-DE', { style: 'percent', maximumFractionDigits: 0 });
-        totalEl.textContent = money.format(Math.round(total));
-        var gross = Object.keys(byCurrency).reduce(function (s, k) { return s + Math.abs(byCurrency[k]); }, 0);
-        var parts = [];
-        Object.keys(byCurrency).forEach(function (code) {
-          var share = Math.abs(byCurrency[code]) / gross;
-          var bar = mc.querySelector('[data-mc-share="' + code + '"]');
-          if (bar) bar.style.width = (share * 100).toFixed(1) + '%';
-          parts.push(code + ' ' + pct.format(share));
-        });
-        splitEl.textContent = parts.join(' \u00b7 ') + ', converted at ECB rates of ' + data.date + '.';
-      })
-      .catch(unavailable);
+    });
   })();
 
-  // Hover, tap or arrow keys on a hero example chart show its values at
-  // that point. The values are pre-formatted at build time (HeroChart.astro).
+  // Hover, tap or arrow keys on the example chart show its values at that
+  // point. The values are pre-formatted at build time (HeroChart.astro).
   (function () {
     document.querySelectorAll('[data-hero-chart]').forEach(function (box) {
       var data = JSON.parse(box.getAttribute('data-hero-chart'));
@@ -471,9 +535,11 @@ const heroCta = 'Notify me about access';
       var readout = box.querySelector('.hc-readout');
       var live = box.querySelector('.hc-live');
       var vb = svg.viewBox.baseVal;
+      var title = svg.querySelector('title');
       var current = null;
       box.tabIndex = 0;
-      box.setAttribute('aria-label', 'Example chart. Use the left and right arrow keys to read its values.');
+      box.setAttribute('role', 'group');
+      box.setAttribute('aria-label', (title ? title.textContent + '. ' : '') + 'Use the left and right arrow keys to read its values.');
       function show(i) {
         current = i;
         var xv = data.xs[i] * vb.width;
@@ -485,9 +551,9 @@ const heroCta = 'Notify me about access';
         });
         hover.classList.add('is-on');
         readout.innerHTML = '';
-        var title = document.createElement('strong');
-        title.textContent = data.labels[i];
-        readout.appendChild(title);
+        var heading = document.createElement('strong');
+        heading.textContent = data.labels[i];
+        readout.appendChild(heading);
         data.series.forEach(function (s) {
           var row = document.createElement('span');
           var sw = document.createElement('i');
@@ -514,12 +580,7 @@ const heroCta = 'Notify me about access';
         return best;
       }
       svg.addEventListener('pointermove', function (e) { show(nearest(e.clientX)); });
-      svg.addEventListener('pointerdown', function (e) {
-        // Focusing the chart pauses the carousel (its focusin handler), so a
-        // tap is not lost to the next slide.
-        try { box.focus({ preventScroll: true }); } catch (_) { box.focus(); }
-        show(nearest(e.clientX));
-      });
+      svg.addEventListener('pointerdown', function (e) { show(nearest(e.clientX)); });
       box.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hide(); });
       box.addEventListener('blur', hide);
       box.addEventListener('keydown', function (e) {
@@ -531,113 +592,22 @@ const heroCta = 'Notify me about access';
         e.preventDefault();
       });
     });
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      document.querySelectorAll('.hc-hover.is-on, .hc-readout.is-on').forEach(function (el) { el.classList.remove('is-on'); });
-    });
   })();
-
-  (function () {
-    var carousel = document.querySelector('[data-hero-carousel]');
-    if (!carousel) return;
-    var slides = Array.prototype.slice.call(carousel.querySelectorAll('[data-slide]'));
-    var dots = Array.prototype.slice.call(carousel.querySelectorAll('[data-slide-dot]'));
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var index = 0;
-    var timer = null;
-    var resumeTimer = null;
-    var paused = reduceMotion;
-
-    function show(nextIndex) {
-      index = (nextIndex + slides.length) % slides.length;
-      slides.forEach(function (slide, i) {
-        slide.classList.toggle('is-active', i === index);
-      });
-      dots.forEach(function (dot, i) {
-        dot.classList.toggle('is-active', i === index);
-        dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
-      });
-    }
-
-    function stop() {
-      if (timer) window.clearInterval(timer);
-      timer = null;
-    }
-
-    function clearResumeTimer() {
-      if (resumeTimer) window.clearTimeout(resumeTimer);
-      resumeTimer = null;
-    }
-
-    function start() {
-      stop();
-      if (paused || reduceMotion || slides.length < 2) return;
-      timer = window.setInterval(function () {
-        show(index + 1);
-      }, 3000);
-    }
-
-    dots.forEach(function (dot, i) {
-      dot.addEventListener('click', function () {
-        show(i);
-        stop();
-        clearResumeTimer();
-        if (reduceMotion) return;
-        paused = true;
-        resumeTimer = window.setTimeout(function () {
-          paused = false;
-          start();
-        }, 5000);
-      });
-    });
-
-    carousel.addEventListener('mouseenter', function () {
-      clearResumeTimer();
-      stop();
-    });
-    carousel.addEventListener('mouseleave', start);
-    carousel.addEventListener('focusin', function () {
-      clearResumeTimer();
-      stop();
-    });
-    carousel.addEventListener('focusout', start);
-
-    show(0);
-    start();
-  })();
-
 </script>
 
 <style>
   /* ----------------------------------------------------------------
-     Section frame.
-     Sections take their content's height with even spacing, so the page
-     reads as one flow (it used to be full-screen snap sections).
+     Section frame: content-height sections with even spacing.
      ---------------------------------------------------------------- */
   .lp-section {
     padding: 80px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .lp-section:focus {
-    outline: none;
-  }
+  .lp-section:focus { outline: none; }
 
   .lp-section--alt { background: var(--color-bg-white); }
 
-  /* The tail carries trust copy and the waitlist and sits at the top of
-     its box rather than centred. */
-  .lp-section--tail {
-    min-height: 0 !important;
-    padding: 88px 24px 80px;
-    align-items: flex-start;
-  }
-
-  #hero {
-    padding-top: 56px;
-  }
+  #hero { padding-top: 56px; }
 
   .lp-section-inner {
     width: 100%;
@@ -645,117 +615,7 @@ const heroCta = 'Notify me about access';
     margin: 0 auto;
   }
 
-  /* ----------------------------------------------------------------
-     Sections 2-4: audience, model, and early-access scope
-     ---------------------------------------------------------------- */
-  .audience-grid,
-  .how-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 36px;
-    align-items: start;
-  }
-
-  @media (min-width: 900px) {
-    .audience-grid,
-    .how-grid {
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 64px;
-      align-items: center;
-    }
-  }
-
-  .audience-copy h2,
-  .how-copy h2 {
-    font-family: var(--font-heading);
-    font-size: clamp(1.7rem, 2.4vw + 0.5rem, 2.45rem);
-    line-height: 1.15;
-    color: var(--color-deep-blue);
-    margin: 0 0 16px;
-    font-weight: 700;
-    text-wrap: balance;
-  }
-
-  .audience-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 14px;
-  }
-
-  .audience-list li {
-    position: relative;
-    padding: 16px 18px 16px 42px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-    background: var(--color-bg);
-    color: var(--color-text-primary);
-    line-height: 1.5;
-    font-size: 0.98rem;
-  }
-
-  .audience-list li::before {
-    content: "";
-    position: absolute;
-    left: 18px;
-    top: 24px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-teal);
-  }
-
-  .how-steps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 22px;
-  }
-
-  .how-steps li {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 16px;
-    align-items: start;
-    padding-bottom: 22px;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  .how-steps li:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-
-  .how-step-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--color-deep-blue);
-    color: white;
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 0.95rem;
-  }
-
-  .how-steps h3 {
-    font-family: var(--font-heading);
-    color: var(--color-text-primary);
-    font-size: 1.05rem;
-    margin: 0 0 6px;
-    font-weight: 700;
-  }
-
-  .how-steps p {
-    color: var(--color-text-secondary);
-    font-size: 0.98rem;
-    line-height: 1.55;
-    margin: 0;
-  }
+  .lp-section-inner--narrow { max-width: 760px; }
 
   .lp-eyebrow {
     font-family: var(--font-heading);
@@ -767,308 +627,406 @@ const heroCta = 'Notify me about access';
     margin: 0 0 12px;
   }
 
-  /* ----------------------------------------------------------------
-     Section 1: Hero
-     ---------------------------------------------------------------- */
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    align-items: center;
-  }
-
-  @media (min-width: 1024px) {
-    .hero-grid { grid-template-columns: 1.1fr 1fr; gap: 60px; }
-  }
-
-  .hero-copy h1 {
+  h2 {
     font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 3.2vw + 0.5rem, 2.8rem);
+    font-size: clamp(1.6rem, 2.2vw + 0.6rem, 2.3rem);
     line-height: 1.15;
-    letter-spacing: -0.02em;
     color: var(--color-deep-blue);
-    margin: 0 0 16px;
+    margin: 0 0 14px;
     font-weight: 700;
     text-wrap: balance;
   }
 
-  .lp-subhead {
-    font-size: 1.05rem;
+  .section-head {
+    max-width: 680px;
+    margin-bottom: 36px;
+  }
+
+  .section-head--center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .section-head--center .cap-body { margin: 0 auto; }
+
+  .cap-body {
+    font-size: 1.02rem;
     color: var(--color-text-secondary);
-    line-height: 1.55;
-    max-width: 56ch;
-    margin: 0 0 24px;
+    line-height: 1.6;
+    max-width: 60ch;
     text-wrap: pretty;
+    margin: 0;
   }
 
-  .hero-trust-line {
-    font-size: 0.85rem;
+  .section-foot {
+    margin: 28px 0 0;
+    font-size: 0.95rem;
     color: var(--color-text-secondary);
-    line-height: 1.5;
-    max-width: 56ch;
-    margin: 16px 0 0;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-border-light);
   }
 
-  .hero-trust-line a {
+  .section-foot a,
+  .hero-next a,
+  .trust-grid a,
+  .trust-founder a,
+  .mc-note a {
     color: var(--color-deep-blue);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  /* Hero visual: hidden below 1024px so the form gets undivided
-     attention on tablet and mobile. The capability sections (2-4)
-     and the tool-card previews (5) carry the proof job on small
-     screens. */
-  .hero-visual-wrap { display: none; }
-  @media (min-width: 1024px) { .hero-visual-wrap { display: block; } }
-
-  .lp-visual-card {
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border-light);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 8px 32px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
-  }
-
-  .lp-visual-card svg { width: 100%; height: auto; display: block; }
-
-  .hero-carousel {
-    min-height: 430px;
-  }
-
-  .hero-carousel-slides {
-    position: relative;
-  }
-
-  .hero-carousel-slide {
-    display: none;
-  }
-
-  .hero-carousel-slide.is-active {
-    display: block;
-  }
-
-  .hero-carousel-slide svg {
-    aspect-ratio: 1.26 / 1;
-    object-fit: contain;
-  }
-
-  .hero-carousel-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 16px;
-  }
-
-  /* Each dot is a 24px target (WCAG 2.2 target size) drawn as a 9px dot. */
-  .hero-carousel-dots {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  .hero-carousel-dot {
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
+  /* Buttons */
+  .lp-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
     cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
 
-  .hero-carousel-dot::before {
-    content: '';
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    border: 1px solid var(--color-border-light);
+  .lp-btn--primary {
+    background: var(--color-cta-bg);
+    color: var(--color-cta-fg);
+    border: 1px solid var(--color-cta-bg);
+  }
+
+  .lp-btn--primary:hover { background: var(--color-cta-bg-hover); }
+
+  .lp-btn--secondary {
     background: var(--color-bg-white);
-    transition: border-color 0.15s ease, background 0.15s ease;
+    color: var(--color-deep-blue);
+    border: 1px solid var(--color-border);
   }
 
-  .hero-carousel-dot.is-active::before {
-    background: var(--color-teal);
-    border-color: var(--color-teal);
-  }
+  .lp-btn--secondary:hover { border-color: var(--color-teal); }
 
-  .hero-carousel-dot:hover::before,
-  .hero-carousel-dot:focus-visible::before {
-    border-color: var(--color-deep-blue);
-  }
-
-  .hero-carousel-dot:focus-visible {
+  .lp-btn:focus-visible {
     outline: 2px solid var(--color-teal);
-    outline-offset: 0;
+    outline-offset: 2px;
   }
 
-  .lp-visual-caption {
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-    margin: 12px 0 0;
-    text-align: center;
+  .lp-btn:disabled { opacity: 0.6; cursor: wait; }
+
+  /* ----------------------------------------------------------------
+     1. Hero
+     ---------------------------------------------------------------- */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 60px; }
+  }
+
+  .hero-copy h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 3.4vw + 0.6rem, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-deep-blue);
+    margin: 0 0 18px;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .lp-subhead {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    max-width: 54ch;
+    margin: 0 0 28px;
+    text-wrap: pretty;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hero-next {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border-light);
+    max-width: 54ch;
+  }
+
+  .hero-next p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
     line-height: 1.5;
   }
 
-  /* Scroll affordance: a static chevron link to the next section. The
-     plan calls for it to be a static, decorative chevron; we make it a
-     real anchor (with aria-label) so keyboard users get the same
-     "jump to next section" affordance as scrolling. */
-
-  .lp-scroll-affordance:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  /* The worked example. Shown at every width; on small screens it follows
+     the buttons. */
+  .starter {
+    margin: 0;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 8px 32px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
   }
 
-  .beta-scope {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 34px;
-    align-items: start;
-  }
-
-  @media (min-width: 900px) {
-    .beta-scope {
-      grid-template-columns: 0.75fr 1.25fr;
-      gap: 56px;
-      align-items: start;
-    }
-  }
-
-  .beta-scope-copy h2 {
+  .starter-kicker {
     font-family: var(--font-heading);
-    font-size: clamp(1.7rem, 2.4vw + 0.5rem, 2.45rem);
-    line-height: 1.15;
-    color: var(--color-deep-blue);
-    margin: 0 0 16px;
+    font-size: 0.75rem;
     font-weight: 700;
-    text-wrap: balance;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
   }
 
-  .cap-body {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    max-width: 50ch;
-    text-wrap: pretty;
-    margin: 0;
-  }
-
-  .beta-scope-list {
+  .starter-steps {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 16px;
+  }
+
+  .starter-steps > li {
+    position: relative;
+    padding-left: 18px;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .starter-step {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 4px;
+  }
+
+  .starter-text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+
+  .starter-table {
+    width: 100%;
+    max-width: 340px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .starter-table th {
+    text-align: left;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    padding: 2px 0;
+  }
+
+  .starter-table td {
+    text-align: right;
+    color: var(--color-text-primary);
+    padding: 2px 0;
+  }
+
+  .starter-table tfoot th,
+  .starter-table tfoot td {
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    border-top: 1px solid var(--color-border);
+    padding-top: 6px;
+  }
+
+  .starter :global(svg) { width: 100%; height: auto; display: block; }
+
+  /* Phones get the narrower drawing, with labels sized to stay readable
+     once it is scaled down to the card. */
+  .starter :global(.starter-chart--narrow) { display: none; }
+  .starter :global(.starter-chart--narrow text) { font-size: 14px; }
+  .starter :global(.starter-chart--narrow .hc-endValue) { font-size: 15px; transform: translateY(5px); }
+
+  @media (max-width: 640px) {
+    .starter :global(.starter-chart--wide) { display: none; }
+    .starter :global(.starter-chart--narrow) { display: block; }
+  }
+
+  /* ----------------------------------------------------------------
+     2. Start wherever you are
+     ---------------------------------------------------------------- */
+  .start-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 
   @media (min-width: 760px) {
-    .beta-scope-list {
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    .start-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
-  .beta-scope-list li {
-    min-height: 150px;
-    padding: 20px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-    background: var(--color-bg-white);
+  .start-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 22px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background: var(--color-bg);
   }
 
-  .beta-scope-list h3 {
+  .start-card h3 {
     font-family: var(--font-heading);
-    color: var(--color-text-primary);
-    font-size: 1.02rem;
+    font-size: 1.12rem;
+    line-height: 1.3;
+    color: var(--color-deep-blue);
     margin: 0 0 8px;
-    font-weight: 700;
   }
 
-  .beta-scope-list p {
-    margin: 0;
-    color: var(--color-text-secondary);
-    font-size: 0.92rem;
-    line-height: 1.55;
-  }
-
-  .signup-heading {
-    font-family: var(--font-heading);
-    color: var(--color-deep-blue);
-    font-size: clamp(1.35rem, 1.5vw + 0.7rem, 1.8rem);
-    line-height: 1.2;
-    margin: 0 0 24px;
-    text-align: center;
-  }
-
-  .available-now {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-    align-items: start;
-    margin-bottom: 52px;
-    padding-bottom: 52px;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  /* Heading above, cards in one full-width row (four or five) on desktop. */
-  .available-now-copy {
-    max-width: 640px;
-  }
-
-  .available-now-copy h2 {
-    font-family: var(--font-heading);
-    color: var(--color-deep-blue);
-    font-size: clamp(1.25rem, 1.4vw + 0.65rem, 1.65rem);
-    line-height: 1.2;
-    margin: 0 0 10px;
-    font-weight: 700;
-    text-wrap: balance;
-  }
-
-  .available-now-copy p {
-    margin: 0;
+  .start-detail {
+    margin: 0 0 12px;
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.55;
-    max-width: 48ch;
   }
 
-  .available-now-links {
+  .start-meta {
+    margin: 0 0 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .start-lessons {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 14px;
+    gap: 2px;
   }
 
-  .an-card {
+  .start-lessons li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .start-lessons a,
+  .start-more,
+  .grows-links a,
+  .pair-lesson a {
+    display: inline-block;
+    padding: 6px 0;
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-deep-blue) 35%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  .start-lessons a:hover,
+  .start-more:hover,
+  .grows-links a:hover,
+  .pair-lesson a:hover { text-decoration-color: currentColor; }
+
+  .start-here {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-cta-fg);
+    background: var(--color-cta-bg);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+
+  .start-more {
+    margin-top: auto;
+    padding-top: 12px;
+    font-size: 0.9rem;
+  }
+
+  /* ----------------------------------------------------------------
+     3. Lesson and tool pairs
+     ---------------------------------------------------------------- */
+  .pair-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  @media (min-width: 760px) {
+    .pair { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1.3fr); gap: 16px; }
+  }
+
+  .pair-lesson {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    height: 100%;
-    padding: 16px 18px 18px;
+  }
+
+  .pair-kicker {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-teal);
+  }
+
+  .pair-lesson a { font-size: 1.05rem; }
+
+  .pair-arrow {
+    display: none;
+    color: var(--color-text-muted);
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  @media (min-width: 760px) { .pair-arrow { display: block; } }
+
+  .an-card {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr);
+    column-gap: 16px;
+    row-gap: 2px;
+    padding: 16px 18px;
     border: 1px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-bg-white);
     color: var(--color-text-primary);
     text-decoration: none;
     box-shadow: var(--shadow-sm);
-    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .an-card:hover,
-  .an-card:focus-visible {
+  .an-card > :not(.an-preview) { grid-column: 2; }
+
+  .an-card:hover {
     border-color: var(--color-teal);
-    transform: translateY(-2px);
     box-shadow: 0 8px 22px color-mix(in srgb, var(--color-deep-blue) 10%, transparent);
-    outline: none;
   }
 
   .an-card:focus-visible {
@@ -1077,17 +1035,13 @@ const heroCta = 'Notify me about access';
   }
 
   .an-preview {
-    display: block;
+    grid-row: 1 / span 4;
     width: 80px;
     height: 48px;
-    margin-bottom: 4px;
+    align-self: center;
   }
 
-  .an-preview svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
+  .an-preview svg { width: 100%; height: 100%; display: block; }
 
   .an-kicker {
     font-family: var(--font-heading);
@@ -1107,9 +1061,8 @@ const heroCta = 'Notify me about access';
 
   .an-desc {
     color: var(--color-text-secondary);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     line-height: 1.45;
-    flex: 1;
   }
 
   .an-cta {
@@ -1120,88 +1073,305 @@ const heroCta = 'Notify me about access';
     color: var(--color-deep-blue);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .an-card { transition: none; }
-    .an-card:hover, .an-card:focus-visible { transform: none; }
-  }
-
-  .signup-block {
-    max-width: 760px;
-    margin: 56px auto 0;
-    text-align: center;
-  }
-
-  .signup-block .lp-eyebrow {
-    margin-bottom: 10px;
-  }
-
-  .trust-strip {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 24px 30px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-    background: var(--color-bg-white);
-  }
-
-  .trust-strip-title {
-    font-family: var(--font-heading);
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    font-weight: 700;
-    margin: 0 0 10px;
-  }
-
-  .trust-strip ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  /* ----------------------------------------------------------------
+     4. Grows with you
+     ---------------------------------------------------------------- */
+  .grows-grid {
     display: grid;
-    gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
   }
 
-  .trust-strip li {
-    font-size: 0.82rem;
+  @media (min-width: 960px) {
+    .grows-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; }
+  }
+
+  .grows-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: grows;
+  }
+
+  .grows-list > li {
+    position: relative;
+    padding: 0 0 18px 30px;
+    counter-increment: grows;
+  }
+
+  /* A line joining the stages, drawn from dot to dot. */
+  .grows-list > li::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 7px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--color-teal);
+    background: var(--color-bg-white);
+    box-sizing: border-box;
+  }
+
+  .grows-list > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 21px;
+    bottom: -5px;
+    width: 2px;
+    background: var(--color-border);
+  }
+
+  .grows-list > li:last-child::before { background: var(--color-teal); }
+
+  .grows-list h3 {
+    font-family: var(--font-heading);
+    font-size: 1.02rem;
+    color: var(--color-text-primary);
+    margin: 0 0 2px;
+  }
+
+  .grows-list p {
+    margin: 0;
+    font-size: 0.93rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
-    padding-left: 18px;
-    position: relative;
   }
 
-  .trust-strip li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 7px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-teal);
-    opacity: 0.5;
+  .grows-links { list-style: none; margin: 4px 0 0; padding: 0; }
+  .grows-links a { font-size: 0.88rem; padding: 3px 0; }
+
+  .mc-panel {
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-bg);
   }
 
-  .trust-strip a {
+  .mc-panel h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
     color: var(--color-deep-blue);
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    margin: 0 0 8px;
+  }
+
+  .mc-panel > p {
+    margin: 0 0 16px;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  .mc-list {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mc-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mc-amount { color: var(--color-text-primary); font-weight: 600; white-space: nowrap; }
+
+  .mc-result { min-height: 44px; }
+
+  .mc-total {
+    margin: 0 0 8px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+  }
+
+  .mc-bar {
+    display: flex;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: var(--color-border-light);
+    margin-bottom: 8px;
+  }
+
+  .mc-bar[hidden] { display: none; }
+
+  .mc-split {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .mc-note {
+    margin: 16px 0 0;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
   }
 
   /* ----------------------------------------------------------------
-     Mobile tightening
+     5. Planner
+     ---------------------------------------------------------------- */
+  .planner-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .planner-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 56px; }
+  }
+
+  .planner-list {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  .planner-list li {
+    position: relative;
+    padding-left: 22px;
+    color: var(--color-text-primary);
+    font-size: 0.97rem;
+    line-height: 1.5;
+  }
+
+  .planner-list li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-teal);
+  }
+
+  /* ----------------------------------------------------------------
+     6. Trust
+     ---------------------------------------------------------------- */
+  .trust-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  @media (min-width: 760px) {
+    .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .trust-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .trust-grid li {
+    padding: 18px 20px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
+    background: var(--color-bg);
+    font-size: 0.93rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .trust-grid strong {
+    display: block;
+    font-family: var(--font-heading);
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .trust-founder {
+    margin: 28px auto 0;
+    max-width: 62ch;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ----------------------------------------------------------------
+     7. FAQ
+     ---------------------------------------------------------------- */
+  .faq-heading { text-align: center; margin-bottom: 24px; }
+
+  .faq-list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 4px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+
+  .faq-item summary::after {
+    content: '+';
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-teal);
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after { content: '\2212'; }
+
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .faq-item h3 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .faq-item p {
+    margin: 0 4px 18px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    font-size: 0.97rem;
+    max-width: 64ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-btn, .an-card { transition: none; }
+  }
+
+  /* ----------------------------------------------------------------
+     Small screens
      ---------------------------------------------------------------- */
   @media (max-width: 640px) {
     .lp-section { padding: 56px 16px; }
     #hero { padding-top: 32px; }
-    .lp-section--tail { padding: 56px 16px; }
-    .available-now {
-      margin-bottom: 40px;
-      padding-bottom: 40px;
-      gap: 22px;
-    }
-    .trust-strip { padding: 16px 20px; }
-    .signup-block { margin-top: 44px; }
-    .beta-scope-list li { min-height: 0; }
+    .section-head { margin-bottom: 28px; }
+    .starter { padding: 18px; }
+    .hero-actions .lp-btn { flex: 1 1 auto; }
+    .mc-panel { padding: 18px; }
   }
 </style>

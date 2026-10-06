@@ -306,7 +306,7 @@ export default function MonteCarloSimulator() {
         </div>
         <p className="mcs-hint mcs-crossLink">
           Money in several currencies? Add it up first with the{' '}
-          <a href="/free/multi-currency-net-worth/" data-attr="free-monte-carlo-net-worth-link">multi-currency net worth calculator</a>,
+          <a href="/free/multi-currency-net-worth/" data-attr="free-monte-carlo-net-worth-link">net worth calculator</a>,
           then enter the total here.
         </p>
 

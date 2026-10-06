@@ -23,7 +23,7 @@ faq:
     answer: "There is no fixed answer, but a defensible working target for most single-earner or dual-earner households is roughly: one to two current accounts (payroll and joint spending), one to two savings vehicles (safety buffer plus opportunity cash), one taxable brokerage, one primary retirement account per person, and up to two credit cards active for rewards and credit-building. That is 6 to 10 accounts total. Add specialty accounts (education savings, health savings, business) as genuine needs arise. Anything much beyond this range is usually residual sprawl rather than intentional structure. The exception: households above deposit-insurance limits in any one institution have a legitimate reason to spread cash across two or three institutions defensively."
 relatedTool:
   url: "/free/multi-currency-net-worth"
-  label: "Multi-currency net-worth calculator"
+  label: "Net worth calculator (one currency or several)"
   cta: "List every account in one place, in any currency"
 reelPromise: "The four-step consolidation process, why an old pension must move provider to provider and never through your own account, and how many accounts a typical household actually needs"
 relatedSlugs: ["assets", "financial-dashboard", "getting-started-investing", "cash-management", "credit-and-credit-scores"]

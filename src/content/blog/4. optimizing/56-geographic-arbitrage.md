@@ -23,7 +23,7 @@ faq:
     answer: "Several. First, currency risk: earning in one currency and spending in another means your effective savings rate fluctuates with the exchange rate. A 20% appreciation of your income currency against your expense currency is a real bonus; a 20% depreciation is a real hit. Households near retirement or with fixed local expenses should think carefully about which currency they will need. Second, reversibility: some countries make it easy to change your mind (short-term visa, easy return); others are more expensive to exit (tax residency exit charges, sold-property capital gains, disrupted employment). Third, the middle-of-the-arbitrage trap: the appeal of lower costs sometimes leads to accepting lower-quality settings that would not have been acceptable in the original country. The purpose of the arbitrage is a better financial outcome without an unacceptable lifestyle cost; if the lifestyle cost is high, the arbitrage is not working. Fourth, the exit strategy: what happens if you need to return to your home country for family reasons, health, or other unforeseen events? Have a plan for the return before you leave."
 relatedTool:
   url: "/free/multi-currency-net-worth"
-  label: "Multi-currency net-worth calculator"
+  label: "Net worth calculator (one currency or several)"
   cta: "See your net worth in the currency you would live in"
 reelPromise: "The math of income-versus-expense mismatch, the tax and visa mechanics that make or break the arbitrage, and the non-financial costs that dwarf the spreadsheet gains"
 relatedSlugs: ["why-your-euro-buys-more-in-some-countries", "financial-projections", "cash-flow-101", "managing-money-across-currencies", "introduction-to-financial-independence"]

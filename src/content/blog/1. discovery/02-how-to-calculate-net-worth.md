@@ -12,7 +12,7 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
 relatedTool:
   url: "/free/multi-currency-net-worth"
-  label: "Multi-currency net-worth calculator"
+  label: "Net worth calculator (one currency or several)"
   cta: "Calculate yours in any currency"
 reelPromise: "Free multi-currency calculator + worked example for assets spread across countries"
 referentialReading:

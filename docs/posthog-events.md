@@ -201,7 +201,7 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `nav-tool-multi-currency-net-worth` | Dropdown link to net worth tool |
 | `nav-tool-loan-comparison` | Dropdown link to loan comparison tool |
 | `nav-tool-monte-carlo-simulator` | Dropdown link to Monte Carlo simulator (once released) |
-| `nav-blog` | Blog link |
+| `nav-blog` | "Learn" link (learning path, /blog/) |
 
 ### Theme toggle (`src/components/ThemeToggle.astro`)
 
@@ -215,7 +215,7 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 
 | `data-attr` value | Element |
 |---|---|
-| `footer-blog` | Blog link |
+| `footer-blog` | "Learning path" link (/blog/) |
 | `footer-multi-currency-net-worth` | Net worth tool link |
 | `footer-loan-comparison` | Loan comparison tool link |
 | `footer-home` | Home link |
@@ -236,10 +236,26 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 
 | `data-attr` value | Element |
 |---|---|
+| `home-hero-start-learning` | Hero "Start learning" button (learning path) |
+| `home-hero-tools` | Hero "Try a free tool" button |
+| `home-hero-first-lesson` | Hero "Not sure where to begin?" first-lesson link |
+| `home-hero-continue` | Hero "Pick up where you left off" link (shown only with reading progress) |
+| `home-start-<situation>-<n>` | Lesson links in "Start wherever you are" (`basics`, `no-plan`, `habits`, `complex`; `n` is 1-based) |
+| `home-start-complex-more` | "How nidhi keeps up" link to the grows section |
+| `home-pair-lesson-<tool>` | Lesson link in a lesson and tool pair |
 | `home-cta-multi-currency-net-worth` | Net worth tool card |
 | `home-cta-loan-comparison` | Loan comparison tool card |
-| `home-cta-blog` | Blog link |
+| `home-cta-monte-carlo-simulator` | Monte Carlo tool card (once released) |
+| `home-tools-all` | "All free tools" link |
+| `home-grows-<topic>-<n>` | Lesson links in "nidhi grows with your financial life" |
+| `home-mc-convert` | "Add it up in euros at today's rates" button |
+| `home-mc-tool` | "Try it with your own numbers" link |
+| `home-cta-blog` | "See the whole learning path" link |
+| `home-inclusive-finances` | Inclusive Finances hub link (once live) |
+| `home-editorial-policy` | Editorial policy link in the trust section |
+| `home-privacy` | Privacy policy link in the trust section |
 | `home-cta-beliefs` | Beliefs page link |
+| `home-faq-<n>` | FAQ item (1-based) |
 
 ### Beliefs page (`src/pages/beliefs.astro`)
 

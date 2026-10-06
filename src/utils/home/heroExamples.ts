@@ -28,39 +28,29 @@ export function yearlyPath(start: number, monthly: number, years: number): numbe
   return months.filter((_, i) => i % 12 === 0);
 }
 
-/** Slide 1: the last twelve months and the next twelve, at the same saving rate. */
-export const NET_WORTH_PATH = {
-  startAYearAgo: 100_000,
-  monthly: 1_500,
-};
-export function netWorthPath() {
-  const values = monthlyPath(NET_WORTH_PATH.startAYearAgo, NET_WORTH_PATH.monthly, 24);
-  return { values, todayIndex: 12, today: values[12] };
-}
-
-/** Slides 3 and 4: one household. 38% of a 4,000 monthly income saved. */
-export const HOUSEHOLD = {
-  start: 60_000,
-  income: 4_000,
-  savingsRate: 0.38,
-  /** Financial independence target: 25 times yearly spending (a 4% withdrawal rate). */
-  fiMultiple: 25,
+/**
+ * The hero's worked example, at the scale of someone starting out: a little
+ * saved, an old car, a small pension, a student loan. It walks one idea
+ * through the arc the homepage describes: learn what net worth is, see one
+ * person's, then look ahead at what steady saving could do.
+ */
+export const STARTER = {
+  owns: [
+    { name: 'Savings account', amount: 4_200 },
+    { name: 'Car, if sold today', amount: 3_400 },
+    { name: 'Workplace pension', amount: 1_000 },
+  ],
+  owes: [{ name: 'Student loan', amount: 5_200 }],
+  monthly: 150,
+  years: 10,
 };
 
-export function fiProjection(years = 25) {
-  const monthly = HOUSEHOLD.income * HOUSEHOLD.savingsRate;
-  const spending = HOUSEHOLD.income - monthly;
-  const target = spending * 12 * HOUSEHOLD.fiMultiple;
-  const values = yearlyPath(HOUSEHOLD.start, monthly, years);
-  const fiYear = values.findIndex((v) => v >= target);
-  return { values, target, monthly, spending, fiYear: fiYear < 0 ? null : fiYear };
-}
-
-/** Slide 4: the same household saving five percentage points more of its income. */
-export function whatIf(years = 20, extraPoints = 5) {
-  const current = HOUSEHOLD.income * HOUSEHOLD.savingsRate;
-  const more = current + (HOUSEHOLD.income * extraPoints) / 100;
-  const base = yearlyPath(HOUSEHOLD.start, current, years);
-  const higher = yearlyPath(HOUSEHOLD.start, more, years);
-  return { base, higher, extraPerMonth: more - current, difference: higher[years] - base[years] };
+export function starterExample() {
+  const owned = STARTER.owns.reduce((s, i) => s + i.amount, 0);
+  const owed = STARTER.owes.reduce((s, i) => s + i.amount, 0);
+  const netWorth = owned - owed;
+  const values = yearlyPath(netWorth, STARTER.monthly, STARTER.years);
+  const end = values[STARTER.years];
+  const added = STARTER.monthly * 12 * STARTER.years;
+  return { owned, owed, netWorth, values, end, added, growth: end - netWorth - added };
 }

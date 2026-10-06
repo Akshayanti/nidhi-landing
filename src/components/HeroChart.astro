@@ -30,12 +30,17 @@ interface Props {
   target?: { value: number; label: string };
   marker?: { index: number; label: string };
   footnote: string;
+  /** Drawing size in SVG units. A narrower one keeps labels readable when the chart is shown small, on phones. */
+  width?: number;
+  height?: number;
+  /** Extra class on the outer box, e.g. to show it only at some widths. */
+  class?: string;
 }
 
-const { id, title, desc, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote } = Astro.props;
+const { id, title, desc, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote, width = 480, height = 270, class: extraClass } = Astro.props;
 
-const W = 480;
-const H = 270;
+const W = width;
+const H = height;
 const PAD = { top: 20, right: 92, bottom: 48, left: 64 };
 const PW = W - PAD.left - PAD.right;
 const PH = H - PAD.top - PAD.bottom;
@@ -76,7 +81,7 @@ const hoverData = JSON.stringify({
 });
 ---
 
-<div class="hero-chart" data-hero-chart={hoverData}>
+<div class:list={["hero-chart", extraClass]} data-hero-chart={hoverData}>
   <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
     <title id={`${id}-title`}>{title}</title>
     <desc id={`${id}-desc`}>{desc}</desc>
