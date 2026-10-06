@@ -3,7 +3,9 @@ import { CURRENCIES, DEFAULT_CURRENCY, formatMoney } from '../utils/loan/math.ts
 import {
   aggregate,
   getCurrencyLabel,
+  isSingleCurrency,
   isSupportedCurrency,
+  ownedAndOwed,
   parseCSV,
   type AssetRow,
   type ParseError,
@@ -67,6 +69,8 @@ export default function MultiCurrencyNetWorth() {
   const [hydrated, setHydrated] = useState(false);
   const [isReadOnlyView, setIsReadOnlyView] = useState(false);
   const [sharedPositions, setSharedPositions] = useState<SharedPositionData[] | null>(null);
+  // Which kind of shared link this view came from: a redacted one carries no amounts.
+  const [sharedRedacted, setSharedRedacted] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareMode, setShareMode] = useState<ShareMode>('full');
   const [copied, setCopied] = useState(false);
@@ -85,6 +89,7 @@ export default function MultiCurrencyNetWorth() {
     setFunctionalCurrency(decoded.functionalCurrency);
     if (decoded.isReadOnly && decoded.sharedPositions) {
       setSharedPositions(decoded.sharedPositions);
+      setSharedRedacted(decoded.shareMode === 'redacted');
       setIsReadOnlyView(true);
       // Capture utm_source so funnels can split direct shares (utm_source=share)
       // from other inbound campaigns. Mirrors the behavior on LoanCompare.tsx
@@ -157,6 +162,10 @@ export default function MultiCurrencyNetWorth() {
     }
     return aggregate(rows, functionalCurrency, rates);
   }, [rows, functionalCurrency, rates, isReadOnlyView, sharedPositions]);
+
+  // Everything in the spending currency needs no exchange rates, so the rate
+  // banners (loading, unavailable) do not apply.
+  const singleCurrency = isSingleCurrency(result, functionalCurrency);
 
   // ---- Row operations ----
 
@@ -296,6 +305,7 @@ export default function MultiCurrencyNetWorth() {
     setFunctionalCurrency(DEFAULT_CURRENCY);
     setIsReadOnlyView(false);
     setSharedPositions(null);
+    setSharedRedacted(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
     track('free_multi_currency_net_worth_reset');
@@ -304,10 +314,10 @@ export default function MultiCurrencyNetWorth() {
   return (
     <div className="mcnw-root">
       {/* ---- Toolbar ---- */}
-      <div className="mcnw-toolbar" role="toolbar" aria-label="Currency risk analyzer actions">
+      <div className="mcnw-toolbar" role="toolbar" aria-label="Net worth calculator actions">
         <div className="mcnw-funcCurrencyField">
           <label className="mcnw-fieldLabel" htmlFor={functionalCurrencySelectId}>
-            Functional currency (the one you spend in)
+            Your currency (the one you spend in)
           </label>
           <select
             id={functionalCurrencySelectId}
@@ -326,7 +336,7 @@ export default function MultiCurrencyNetWorth() {
             ))}
           </select>
           <p className="mcnw-fieldHelp">
-            Your results are converted into this currency. It won't be flagged as a risk.
+            Your net worth is shown in this currency. Anything in another currency is converted at today&rsquo;s ECB rates.
           </p>
         </div>
 
@@ -336,7 +346,7 @@ export default function MultiCurrencyNetWorth() {
             className="mcnw-shareBtn"
             onClick={openShareModal}
             disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
-            title="Share your currency risk analysis"
+            title="Share your net worth"
             data-attr="mcnw-share-open"
           >
             Share
@@ -366,7 +376,7 @@ export default function MultiCurrencyNetWorth() {
       </div>
 
       {/* ---- Rate status ---- */}
-      {ratesError && (
+      {ratesError && !singleCurrency && (
         <div className="mcnw-banner mcnw-bannerWarn" role="alert">
           <span>
             Exchange rates unavailable, showing raw amounts without conversion.{' '}
@@ -381,7 +391,7 @@ export default function MultiCurrencyNetWorth() {
           </span>
         </div>
       )}
-      {ratesLoading && !ratesError && (
+      {ratesLoading && !ratesError && !singleCurrency && (
         <div className="mcnw-banner mcnw-bannerInfo" role="status">
           Loading exchange rates&hellip;
         </div>
@@ -407,7 +417,7 @@ export default function MultiCurrencyNetWorth() {
       {/* ---- Read-only view banner ---- */}
       {isReadOnlyView && (
         <div className="mcnw-banner mcnw-bannerInfo">
-          You're viewing a shared risk profile. The data shown is what the sender chose to include. You can start fresh with the form below.
+          You're viewing a shared net worth. The data shown is what the sender chose to include. You can start fresh with the form below.
         </div>
       )}
 
@@ -528,6 +538,8 @@ export default function MultiCurrencyNetWorth() {
         functionalCurrency={functionalCurrency}
         ratesLoading={ratesLoading}
         ratesError={ratesError}
+        rows={isReadOnlyView ? undefined : rows}
+        hideAmounts={isReadOnlyView && sharedRedacted}
       />
 
       {/* ---- Disclaimer ---- */}
@@ -676,15 +688,53 @@ interface ResultsPanelProps {
   ratesError: boolean;
   hidePct?: boolean;
   hideAmounts?: boolean;
+  /** The entered rows, for the owned/owed split. Absent in shared views, which only carry per-currency totals. */
+  rows?: AssetRow[];
 }
 
-function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hidePct = false, hideAmounts = false }: ResultsPanelProps) {
+function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hidePct = false, hideAmounts = false, rows }: ResultsPanelProps) {
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
         <div className="mcnw-emptyState">
-          <p>Add at least one asset to see your currency concentration.</p>
+          <p>Add at least one asset to see your net worth.</p>
         </div>
+      </section>
+    );
+  }
+
+  // Everything in the spending currency: no exchange rates are involved, so
+  // show what is owned and owed instead of a donut that is 100% one colour
+  // and a risk card that has nothing to assess. Needs no rates at all.
+  if (isSingleCurrency(result, functionalCurrency)) {
+    const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency);
+    const split = rows ? ownedAndOwed(rows, functionalCurrency) : null;
+    // A redacted shared link carries no amounts; its view passes hideAmounts,
+    // so the total reads "Hidden" rather than a zero it never had.
+    return (
+      <section className="mcnw-results">
+        {hideAmounts ? (
+          <div className="mcnw-total mcnw-total--hidden">
+            <span className="mcnw-totalLabel">Total net worth</span>
+            <span className="mcnw-totalValue mcnw-totalValue--hidden">Hidden</span>
+          </div>
+        ) : (
+          <div className="mcnw-total">
+            <span className="mcnw-totalLabel">Total net worth</span>
+            <span className="mcnw-totalValue">{money(result.positions[0].netAmountOriginal)}</span>
+          </div>
+        )}
+        {split && !hideAmounts && (
+          <dl className="mcnw-split">
+            <div><dt>What you own</dt><dd>{money(split.owned)}</dd></div>
+            <div><dt>What you owe</dt><dd>{money(split.owed > 0 ? -split.owed : 0)}</dd></div>
+          </dl>
+        )}
+        <p className="mcnw-singleNote">
+          Everything here is in {getCurrencyLabel(functionalCurrency)}, so exchange rates don&rsquo;t affect it.
+          If you add something held in another currency, this will also show how much of your
+          net worth depends on exchange rates.
+        </p>
       </section>
     );
   }

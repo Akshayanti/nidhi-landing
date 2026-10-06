@@ -11,6 +11,7 @@ import {
   resolveGrowthTopics,
   resolveStartingPoints,
 } from '../utils/home/startingPoints.ts';
+import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../utils/inclusiveGuides.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { getReadingTime } from '../utils/readingTime.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
@@ -40,8 +41,9 @@ const firstLesson = order[0];
 const firstPost = allPosts.find((p) => p.data.slug === firstLesson?.slug);
 const firstMinutes = firstPost ? getReadingTime(firstPost.body || '') : null;
 
-// The Inclusive Finances hub is linked once a post in it is live.
-const showInclusiveHub = allPosts.some((p) => p.data.level === 'inclusive-finances' && p.data.pubDate <= now);
+// Inclusive Finances joins the starting points once a guide in it is live.
+assertInclusiveGroups(allPosts);
+const inclusive = liveInclusive(allPosts, now);
 
 // Hero example, computed (see src/utils/home/heroExamples.ts).
 const eur = (v: number) => formatAmount(v, 'EUR');
@@ -250,11 +252,30 @@ const faqSchema = {
             )}
           </li>
         ))}
+        {inclusive.count > 0 && (
+          <li class="start-card start-card--inclusive">
+            <p class="start-route">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
+              Inclusive Finances &middot; relevant at any stage
+            </p>
+            <h3>The standard plan doesn&rsquo;t fit my life.</h3>
+            <p class="start-detail">
+              Most financial advice assumes marriage, steady employment, family the law recognises, and one country. These guides start from the life you actually have.
+            </p>
+            {inclusive.groups.length > 0 && (
+              <ul class="start-situations" role="list" aria-label="Situations the guides cover">
+                {inclusive.groups.map((g) => <li>{g.label}</li>)}
+              </ul>
+            )}
+            <a class="start-more" href={INCLUSIVE_HUB} data-attr="home-inclusive-finances">
+              Explore {inclusive.count === 1 ? 'the guide' : `all ${inclusive.count} guides`}
+            </a>
+          </li>
+        )}
       </ul>
 
       <p class="section-foot">
         <a href="/blog/" data-attr="home-cta-blog">See the whole learning path</a>
-        {showInclusiveHub && <> &middot; <a href="/blog/inclusive-finances/" data-attr="home-inclusive-finances">Money for every kind of household</a></>}
       </p>
     </div>
   </section>
@@ -412,7 +433,7 @@ const faqSchema = {
         <li><strong>No ads, no data selling.</strong> Analytics run on EU servers, and we never share or sell your email.</li>
         <li><strong>Your numbers stay with you.</strong> The free tools calculate in your browser.</li>
         <li><strong>Sources you can check.</strong> Lessons cite what they rely on. <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>.</li>
-        <li><strong>Made for everyone.</strong> Built to work with screen readers, for colour blindness, and for people wired differently.</li>
+        <li><strong>Built for real financial lives.</strong> Different households, countries, abilities and ways of working, and a site that works with screen readers, for colour blindness, and for people wired differently.</li>
         <li><strong>Clear about what this is.</strong> Education, not financial advice. <a href="/privacy/" data-attr="home-privacy">Read the privacy policy</a>.</li>
       </ul>
 
@@ -960,6 +981,47 @@ const faqSchema = {
     font-size: 0.9rem;
   }
 
+  /* Inclusive Finances: a route of its own, across the full width. */
+  .start-card--inclusive {
+    grid-column: 1 / -1;
+    border-color: color-mix(in srgb, var(--level-inclusive-finances) 40%, var(--color-border));
+    border-left: 5px solid var(--level-inclusive-finances);
+  }
+
+  .start-route {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .start-route svg { color: var(--level-inclusive-finances); flex-shrink: 0; }
+
+  .start-situations {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .start-situations li {
+    /* Plain labels, not links: tinted text with no border so they do not
+       read as buttons. */
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--level-inclusive-finances) 10%, transparent);
+    font-size: 0.85rem;
+    color: var(--color-text-primary);
+  }
+
   /* ----------------------------------------------------------------
      3. Lesson and tool pairs
      ---------------------------------------------------------------- */
@@ -1373,5 +1435,7 @@ const faqSchema = {
     .starter { padding: 18px; }
     .hero-actions .lp-btn { flex: 1 1 auto; }
     .mc-panel { padding: 18px; }
+    .start-situations { gap: 6px; }
+    .start-situations li { font-size: 0.8rem; padding: 2px 8px; }
   }
 </style>
