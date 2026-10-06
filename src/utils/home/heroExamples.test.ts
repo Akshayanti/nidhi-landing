@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { fiProjection, monthlyPath, netWorthPath, whatIf, yearlyPath } from './heroExamples.ts';
+import { STARTER, monthlyPath, starterExample, yearlyPath } from './heroExamples.ts';
 
 describe('growth helpers', () => {
   it('a year of 5% growth on a lump sum with no saving is exactly 5%', () => {
@@ -20,26 +20,24 @@ describe('growth helpers', () => {
   });
 });
 
-describe('hero examples', () => {
-  it('net worth path has 25 monthly points with today in the middle', () => {
-    const p = netWorthPath();
-    assert.equal(p.values.length, 25);
-    assert.equal(p.today, p.values[12]);
-    assert.ok(p.values[24] > p.today && p.today > p.values[0]);
+describe('hero example', () => {
+  it('net worth is what is owned minus what is owed', () => {
+    const e = starterExample();
+    assert.equal(e.owned, 8_600);
+    assert.equal(e.owed, 5_200);
+    assert.equal(e.netWorth, 3_400);
   });
 
-  it('the FI year is the first year at or above the target', () => {
-    const p = fiProjection();
-    assert.ok(p.fiYear !== null);
-    assert.ok(p.values[p.fiYear!] >= p.target);
-    assert.ok(p.values[p.fiYear! - 1] < p.target);
-    assert.equal(Math.round(p.target), Math.round((4_000 - 1_520) * 12 * 25));
+  it('the path starts at today\'s net worth and has one point a year', () => {
+    const e = starterExample();
+    assert.equal(e.values.length, STARTER.years + 1);
+    assert.equal(e.values[0], e.netWorth);
   });
 
-  it('saving five points more ends higher by the compounded extra saving', () => {
-    const w = whatIf();
-    assert.equal(Math.round(w.extraPerMonth), 200);
-    const extraOnly = yearlyPath(0, 200, 20)[20];
-    assert.ok(Math.abs(w.difference - extraOnly) < 1e-6);
+  it('the end splits into start, money added and growth', () => {
+    const e = starterExample();
+    assert.equal(e.added, 18_000);
+    assert.ok(e.growth > 0);
+    assert.ok(Math.abs(e.netWorth + e.added + e.growth - e.end) < 1e-6);
   });
 });

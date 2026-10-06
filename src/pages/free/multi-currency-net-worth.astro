@@ -80,16 +80,16 @@ const publishedSlugs = new Set(
 const RELATED = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).slice(0, 3);
 
 const title =
-  'Multi-Currency Net Worth Calculator & Currency Risk Analyzer | nidhi';
+  'Net Worth Calculator, in One Currency or Several | nidhi';
 // Trimmed to ~155 chars so Google does not chop the privacy hook
 // ("everything runs in your browser") off the end of the SERP snippet.
 // 60 < title <= 70, 150 < description <= 160 are the practical sweet spots.
 const description =
-  'Free multi-currency net worth calculator. See your net worth in any of 29 currencies with live ECB rates. Runs in your browser; nothing is sent.';
+  'Free net worth calculator for one currency or several: 29 currencies at live ECB rates, plus a currency risk check. Runs in your browser; nothing is sent.';
 
 const faqs = [
   {
-    q: 'How does the multi-currency net worth calculator work?',
+    q: 'How does the net worth calculator work?',
     a: 'You add your assets and liabilities with their currency and current value. The tool fetches live ECB reference exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any non-functional currency where you have elevated exposure.',
   },
   {
@@ -135,9 +135,10 @@ const canonicalUrl = 'https://nidhi.today/free/multi-currency-net-worth/';
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'nidhi Multi-Currency Net Worth & Currency Risk Analyzer',
+  name: 'nidhi Net Worth Calculator',
   alternateName: [
     'nidhi Multi-Currency Net Worth Calculator',
+    'nidhi Multi-Currency Net Worth & Currency Risk Analyzer',
     'nidhi Net Worth Calculator for Expats',
     'nidhi Currency Risk Analyzer',
     'nidhi Currency Exposure Calculator',
@@ -178,7 +179,7 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nidhi.today/' },
-    { '@type': 'ListItem', position: 2, name: 'Multi-currency net worth & currency risk analyzer', item: canonicalUrl },
+    { '@type': 'ListItem', position: 2, name: 'Net worth calculator', item: canonicalUrl },
   ],
 };
 
@@ -213,19 +214,20 @@ const faqSchema = {
     <nav class="mcnw-breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="/">Home</a></li>
-        <li aria-current="page">Multi-currency net worth &amp; currency risk</li>
+        <li aria-current="page">Net worth calculator</li>
       </ol>
     </nav>
 
     <header class="mcnw-pageHeader">
       <p class="mcnw-eyebrow">Free tools</p>
       <h1 class="mcnw-pageTitle">
-        Multi-currency net worth calculator and currency risk analyzer
+        Net worth calculator, in one currency or several
       </h1>
       <p class="mcnw-pageLead">
-        Add your assets and liabilities in any currency. See your real net
-        worth in your chosen currency with live ECB rates, then check how
-        much of it sits in currencies you don&rsquo;t actually spend in.
+        Add what you own and what you owe, in one currency or several. See your net
+        worth in your chosen currency with live ECB rates. If you hold more
+        than one currency, check how much of it sits in currencies you
+        don&rsquo;t actually spend in.
         Everything runs in your browser. Nothing is sent to a server.
         Supports USD, EUR, GBP, INR, JPY, and 24 more.
       </p>
