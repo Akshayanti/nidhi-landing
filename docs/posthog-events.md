@@ -251,11 +251,17 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `home-mc-convert` | "Add it up in euros at today's rates" button |
 | `home-mc-tool` | "Try it with your own numbers" link |
 | `home-cta-blog` | "See the whole learning path" link |
-| `home-inclusive-finances` | Inclusive Finances hub link (once live) |
+| `home-inclusive-finances` | "Explore all guides" link in the Inclusive Finances card of "Start wherever you are" (once a guide is live) |
 | `home-editorial-policy` | Editorial policy link in the trust section |
 | `home-privacy` | Privacy policy link in the trust section |
 | `home-cta-beliefs` | Beliefs page link |
 | `home-faq-<n>` | FAQ item (1-based) |
+
+### Learning path (`src/components/LearningPath.tsx`)
+
+| `data-attr` value | Element |
+|---|---|
+| `blog-index-inclusive-hub` | Inclusive Finances card beside the numbered levels (links to the hub) |
 
 ### Beliefs page (`src/pages/beliefs.astro`)
 

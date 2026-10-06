@@ -8,7 +8,9 @@ import assert from 'node:assert/strict';
 
 import {
   aggregate,
+  isSingleCurrency,
   isSupportedCurrency,
+  ownedAndOwed,
   parseCSV,
   formatPct,
   getCurrencyLabel,
@@ -468,5 +470,53 @@ describe('getCurrencyLabel', () => {
 
   it('returns code for unsupported currency', () => {
     assert.equal(getCurrencyLabel('XYZ'), 'XYZ');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Single-currency view
+// ---------------------------------------------------------------------------
+
+describe('isSingleCurrency', () => {
+  const rates = { USD: 1.1, INR: 90 };
+  const row = (value: string, currency: string, type: AssetRow['type'] = 'asset'): AssetRow => ({ name: '', value, currency, type });
+
+  it('is true when everything is in the spending currency', () => {
+    const r = aggregate([row('1000', 'EUR'), row('300', 'eur', 'liability')], 'EUR', rates);
+    assert.equal(isSingleCurrency(r, 'EUR'), true);
+  });
+
+  it('is false once anything is in another currency', () => {
+    const r = aggregate([row('1000', 'EUR'), row('50', 'USD')], 'EUR', rates);
+    assert.equal(isSingleCurrency(r, 'EUR'), false);
+  });
+
+  it('is false for one currency that is not the spending currency (that is exposure)', () => {
+    const r = aggregate([row('1000', 'USD')], 'EUR', rates);
+    assert.equal(isSingleCurrency(r, 'EUR'), false);
+  });
+
+  it('is false with nothing entered', () => {
+    assert.equal(isSingleCurrency(aggregate([], 'EUR', rates), 'EUR'), false);
+  });
+
+  it('does not need rates', () => {
+    const r = aggregate([row('1000', 'EUR')], 'EUR', null);
+    assert.equal(isSingleCurrency(r, 'EUR'), true);
+    assert.equal(r.positions[0].netAmountOriginal, 1000);
+  });
+});
+
+describe('ownedAndOwed', () => {
+  it('splits assets and liabilities in the currency, with the same parsing as aggregate', () => {
+    const rows: AssetRow[] = [
+      { name: 'Savings', value: '4,200', currency: 'EUR', type: 'asset' },
+      { name: 'Car', value: '3 400', currency: 'EUR', type: 'asset' },
+      { name: 'Loan', value: '5200', currency: 'EUR', type: 'liability' },
+      { name: 'Other', value: '999', currency: 'USD', type: 'asset' },
+      { name: 'Blank', value: '', currency: 'EUR', type: 'asset' },
+      { name: 'Bad', value: 'abc', currency: 'EUR', type: 'liability' },
+    ];
+    assert.deepEqual(ownedAndOwed(rows, 'EUR'), { owned: 7600, owed: 5200 });
   });
 });

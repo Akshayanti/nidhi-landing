@@ -250,6 +250,36 @@ function assessRisk(
 }
 
 // ---------------------------------------------------------------------------
+// Single-currency view
+// ---------------------------------------------------------------------------
+
+/**
+ * True when every position is in the spending currency, so there is no
+ * exchange-rate exposure to show. The results panel then shows what is owned
+ * and owed instead of the currency donut and risk cards, which would only
+ * report "100% in your own currency".
+ */
+export function isSingleCurrency(result: AggregationResult, functionalCurrency: string): boolean {
+  const code = functionalCurrency.toUpperCase();
+  return result.positions.length > 0 && result.positions.every((p) => p.code === code);
+}
+
+/** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */
+export function ownedAndOwed(rows: AssetRow[], currency: string): { owned: number; owed: number } {
+  const code = currency.toUpperCase();
+  let owned = 0;
+  let owed = 0;
+  for (const row of rows) {
+    if (row.currency.toUpperCase() !== code) continue;
+    const amount = parseAmount(row.value);
+    if (!Number.isFinite(amount) || amount === 0) continue;
+    if (row.type === 'liability') owed += amount;
+    else owned += amount;
+  }
+  return { owned, owed };
+}
+
+// ---------------------------------------------------------------------------
 // CSV parser
 // ---------------------------------------------------------------------------
 

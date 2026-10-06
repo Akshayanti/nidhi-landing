@@ -248,9 +248,15 @@ interface LearningPathProps {
    * an in-page filter.
    */
   interceptTagClick?: boolean;
+  /**
+   * Size of the whole Inclusive Finances collection, for its card in the
+   * level navigation. `posts` holds only the guides placed on this path,
+   * which leaves out any whose host lesson is not visible yet.
+   */
+  inclusiveTotal?: number;
 }
 
-export function LearningPath({ posts, interceptTagClick = true, showSteps = false }: LearningPathProps) {
+export function LearningPath({ posts, interceptTagClick = true, showSteps = false, inclusiveTotal }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -423,7 +429,8 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     return map;
   }, [posts]);
 
-  const hasInclusive = posts.some(isOptional);
+  const inclusiveCount = inclusiveTotal ?? posts.filter(isOptional).length;
+  const hasInclusive = inclusiveCount > 0;
 
   const firstUnreadId = useMemo(() => {
     for (const group of levelGroups) {
@@ -445,7 +452,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     <div className="lp-pathContainer">
       <div className="lp-pathLine" />
 
-      <nav className="lp-levelNav" aria-label="Learning path levels">
+      <nav className="lp-levelNav" aria-label="Learning path levels and routes">
         {LEVEL_ORDER.map((level) => {
           const meta = LEVELS[level];
           const group = levelGroups.find((g) => g.level === level);
@@ -468,19 +475,28 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
             </a>
           );
         })}
+        {/* Inclusive Finances is a route beside the ladder, not a step on it:
+            unnumbered, full width, and leading to the hub that groups every
+            guide by situation. On the path itself the guides stay next to the
+            lessons they follow up on. */}
+        {hasInclusive && (
+          <a
+            href="/blog/inclusive-finances/"
+            className="lp-levelNavLink lp-levelNavRoute"
+            data-attr="blog-index-inclusive-hub"
+            style={{ '--level-color': INCLUSIVE.color } as React.CSSProperties}
+          >
+            <span className="lp-levelNavLinkNum"><CompassIcon size={14} /></span>
+            <div className="lp-levelNavLinkText">
+              <span className="lp-levelNavLinkLabel">{INCLUSIVE.label}</span>
+              <span className="lp-levelNavLinkPrereq">
+                Relevant at any stage. Relationships, work, countries, abilities and life changes the standard path does not account for.
+              </span>
+            </div>
+            <span className="lp-levelNavLinkCount">{inclusiveTotal !== undefined ? `${inclusiveCount} guides` : 'All guides'}</span>
+          </a>
+        )}
       </nav>
-
-      {hasInclusive && (
-        <a
-          className="lp-hubLink"
-          href="/blog/inclusive-finances/"
-          data-attr="blog-index-inclusive-hub"
-          style={{ '--level-color': INCLUSIVE.color } as React.CSSProperties}
-        >
-          <CompassIcon size={16} />
-          <span>Not the household the standard advice assumes? <strong>Browse every Inclusive Finances guide</strong></span>
-        </a>
-      )}
 
       {allTags.length > 0 && (
         <div className="lp-filterBar">

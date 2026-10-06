@@ -79,7 +79,7 @@ const blogItemListSchema = {
         </p>
       </header>
       <SubscribeSection variant="compact" />
-      <LearningPath client:load posts={serializedPosts} showSteps />
+      <LearningPath client:load posts={serializedPosts} showSteps inclusiveTotal={posts.filter(p => p.data.level === 'inclusive-finances').length} />
     </div>
   </section>
 </BaseLayout>

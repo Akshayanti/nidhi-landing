@@ -4,7 +4,8 @@ import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import WaitlistSection from '../../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
 
-// Ordered by topical fit to "multi-currency net worth", strongest first.
+// Ordered for the calculator, strongest first: the net worth basics, then
+// money across currencies, then where net worth leads.
 // Unpublished posts (future pubDate) are filtered out at build time but kept
 // here so they auto-promote into the visible top three the moment they go
 // live (publishedSlugs is rebuilt every build). Slugs MUST match real entries
@@ -13,18 +14,11 @@ import { getCollection } from 'astro:content';
 // liabilities" were never real slugs).
 const RELATED_CANDIDATES = [
   {
-    slug: 'managing-money-across-currencies',
-    kicker: 'Currency management',
-    title: 'Managing money across currencies',
-    desc: 'Practical strategies for earning, saving, and spending in multiple currencies without losing money to FX fees.',
-    dataAttr: 'related-multi-currency',
-  },
-  {
-    slug: 'why-your-euro-buys-more-in-some-countries',
-    kicker: 'Purchasing power',
-    title: 'Why your euro buys more in some countries than others',
-    desc: 'Exchange rates are only half the story. Local price levels matter as much as FX when you compare wealth across countries.',
-    dataAttr: 'related-purchasing-power-cross-country',
+    slug: 'what-is-net-worth',
+    kicker: 'Fundamentals',
+    title: 'What is net worth and why it matters',
+    desc: 'Assets minus liabilities is the simplest measure of financial health. This tool extends it to multi-currency holdings.',
+    dataAttr: 'related-net-worth',
   },
   {
     slug: 'how-to-calculate-net-worth',
@@ -34,18 +28,11 @@ const RELATED_CANDIDATES = [
     dataAttr: 'related-how-to-calculate-net-worth',
   },
   {
-    slug: 'purchasing-power',
-    kicker: 'Inflation',
-    title: "Purchasing power: why €1,000 today isn't €1,000 tomorrow",
-    desc: 'Currency is one lens on real wealth; inflation is the other. Neither is captured by a nominal balance.',
-    dataAttr: 'related-purchasing-power',
-  },
-  {
-    slug: 'what-is-net-worth',
-    kicker: 'Fundamentals',
-    title: 'What is net worth and why it matters',
-    desc: 'Assets minus liabilities is the simplest measure of financial health. This tool extends it to multi-currency holdings.',
-    dataAttr: 'related-net-worth',
+    slug: 'managing-money-across-currencies',
+    kicker: 'Currency management',
+    title: 'Managing money across currencies',
+    desc: 'Practical strategies for earning, saving, and spending in multiple currencies without losing money to FX fees.',
+    dataAttr: 'related-multi-currency',
   },
   {
     slug: 'liabilities',
@@ -53,6 +40,20 @@ const RELATED_CANDIDATES = [
     title: 'Liabilities: what you owe and why the interest rate matters',
     desc: 'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator nets both.',
     dataAttr: 'related-liabilities',
+  },
+  {
+    slug: 'why-your-euro-buys-more-in-some-countries',
+    kicker: 'Purchasing power',
+    title: 'Why your euro buys more in some countries than others',
+    desc: 'Exchange rates are only half the story. Local price levels matter as much as FX when you compare wealth across countries.',
+    dataAttr: 'related-purchasing-power-cross-country',
+  },
+  {
+    slug: 'purchasing-power',
+    kicker: 'Inflation',
+    title: "Purchasing power: why €1,000 today isn't €1,000 tomorrow",
+    desc: 'Currency is one lens on real wealth; inflation is the other. Neither is captured by a nominal balance.',
+    dataAttr: 'related-purchasing-power',
   },
   {
     slug: 'introduction-to-financial-independence',
@@ -321,9 +322,9 @@ const faqSchema = {
 
     <aside class="mcnw-related" aria-labelledby="mcnw-related-h">
       <header class="mcnw-relatedHeader">
-        <h2 id="mcnw-related-h" class="mcnw-sectionTitle">Understand your money across borders</h2>
+        <h2 id="mcnw-related-h" class="mcnw-sectionTitle">Understand your net worth</h2>
         <p class="mcnw-relatedLead">
-          Reads for the multi-currency household.
+          From what net worth is to managing money across currencies.
         </p>
       </header>
 
