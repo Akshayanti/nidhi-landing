@@ -7,7 +7,6 @@ import {
   assertHomepageSlugs,
   lessonToolPairs,
   levelCounts,
-  LEVEL_LABELS,
   readingOrder,
   resolveGrowthTopics,
   resolveStartingPoints,
@@ -40,8 +39,6 @@ const order = readingOrder(allPosts, now);
 const firstLesson = order[0];
 const firstPost = allPosts.find((p) => p.data.slug === firstLesson?.slug);
 const firstMinutes = firstPost ? getReadingTime(firstPost.body || '') : null;
-const levelList = counts.levels.map((l) => LEVEL_LABELS[l]);
-const levelPhrase = levelList.length > 1 ? `${levelList.slice(0, -1).join(', ')} and ${levelList[levelList.length - 1]}` : levelList[0];
 
 // The Inclusive Finances hub is linked once a post in it is live.
 const showInclusiveHub = allPosts.some((p) => p.data.level === 'inclusive-finances' && p.data.pubDate <= now);
@@ -51,6 +48,17 @@ const eur = (v: number) => formatAmount(v, 'EUR');
 const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
 const roundedEnd = Math.round(ex.end / 100) * 100;
+// Drawn twice: a narrower drawing for phones keeps its labels readable
+// (CSS shows one of the two).
+const starterChart = {
+  title: 'Example: net worth over ten years',
+  desc: `An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`,
+  pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
+  series: [{ name: 'Net worth', values: ex.values, color: 'var(--chart-eur)', area: true }],
+  axisStart: 'today',
+  axisEnd: `+${STARTER.years} years`,
+  footnote: `Example: ${eur(STARTER.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.added)} is money added.`,
+};
 
 // The multi-currency example. Nothing is fetched until the visitor asks.
 const mcItems = [
@@ -200,16 +208,8 @@ const faqSchema = {
             <li>
               <span class="starter-step">Look ahead</span>
               <p class="starter-text">Add {eur(STARTER.monthly)} a month and it could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
-              <HeroChart
-                id="hero-starter"
-                title="Example: net worth over ten years"
-                desc={`An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`}
-                pointLabels={ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`))}
-                series={[{ name: 'Net worth', values: ex.values, color: 'var(--chart-eur)', area: true }]}
-                axisStart="today"
-                axisEnd={`+${STARTER.years} years`}
-                footnote={`Example: ${eur(STARTER.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.added)} is money added.`}
-              />
+              <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
+              <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={220} {...starterChart} />
             </li>
           </ol>
         </figure>
@@ -225,7 +225,7 @@ const faqSchema = {
       <div class="section-head">
         <h2 id="start-heading">Start wherever you are.</h2>
         <p class="cap-body">
-          You don&rsquo;t need the jargon, or much money, to begin. Pick the line that sounds most like you. {counts.total > 0 && <>There are {counts.total} free lessons so far across {levelPhrase}, in reading order, each citing its sources.</>}
+          You don&rsquo;t need the jargon, or much money, to begin. Pick the line that sounds most like you. {counts.total > 0 && <>There are {counts.total} free lessons so far, in reading order, each citing its sources.</>}
         </p>
       </div>
 
@@ -781,7 +781,7 @@ const faqSchema = {
 
   .starter-kicker {
     font-family: var(--font-heading);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -849,6 +849,17 @@ const faqSchema = {
   }
 
   .starter :global(svg) { width: 100%; height: auto; display: block; }
+
+  /* Phones get the narrower drawing, with labels sized to stay readable
+     once it is scaled down to the card. */
+  .starter :global(.starter-chart--narrow) { display: none; }
+  .starter :global(.starter-chart--narrow text) { font-size: 14px; }
+  .starter :global(.starter-chart--narrow .hc-endValue) { font-size: 15px; transform: translateY(5px); }
+
+  @media (max-width: 640px) {
+    .starter :global(.starter-chart--wide) { display: none; }
+    .starter :global(.starter-chart--narrow) { display: block; }
+  }
 
   /* ----------------------------------------------------------------
      2. Start wherever you are
@@ -933,7 +944,7 @@ const faqSchema = {
 
   .start-here {
     font-family: var(--font-heading);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1034,7 +1045,7 @@ const faqSchema = {
 
   .an-kicker {
     font-family: var(--font-heading);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
