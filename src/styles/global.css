@@ -5139,3 +5139,87 @@ body[data-page="landing"] .hero-mcAmount {
     display: block;
   }
 }
+
+/* Multi-currency net worth: interactive donut */
+.mcnw-chart {
+  overflow: visible;
+}
+.mcnw-chartWrap .mcnw-legend {
+  flex: 0 1 340px;
+  min-width: 0;
+}
+.mcnw-slice {
+  stroke: var(--color-bg-white);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.mcnw-slice--dim {
+  opacity: 0.35;
+}
+.mcnw-chartCenterCode {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  fill: var(--color-text-secondary);
+}
+.mcnw-chart .mcnw-chartCenterSub {
+  font-size: 0.85rem;
+}
+.mcnw-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+  min-width: 0;
+}
+button.mcnw-legendItem {
+  /* Swatch, code, share and amount in fixed columns so rows line up. */
+  display: grid;
+  grid-template-columns: 14px 3.2em 4.5em 1fr;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+button.mcnw-legendItem:hover,
+.mcnw-legendItem--on {
+  background: color-mix(in srgb, var(--color-deep-blue) 9%, transparent);
+  border-color: color-mix(in srgb, var(--color-deep-blue) 35%, transparent);
+}
+button.mcnw-legendItem:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcnw-legendAmount {
+  justify-self: end;
+  padding-left: var(--space-3);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mcnw-slice {
+    transition: none;
+  }
+}
+@media (max-width: 640px) {
+  /* Stacked under the donut: size by content, not the desktop flex-basis. */
+  .mcnw-chartWrap .mcnw-legend {
+    flex: none;
+    width: 100%;
+    max-width: 340px;
+  }
+}
+.mcnw-chartNote {
+  margin: var(--space-3) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}

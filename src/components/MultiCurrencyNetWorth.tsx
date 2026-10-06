@@ -2,7 +2,6 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { CURRENCIES, DEFAULT_CURRENCY, formatMoney } from '../utils/loan/math.ts';
 import {
   aggregate,
-  formatPct,
   getCurrencyLabel,
   isSupportedCurrency,
   parseCSV,
@@ -17,6 +16,7 @@ import {
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
 import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
+import { formatAmount, formatPercent } from '../utils/shared/formatAmount.ts';
 
 // ---------------------------------------------------------------------------
 // PostHog telemetry
@@ -749,7 +749,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, hi
                 ) : hidePct ? (
                   <> - <span className="mcnw-riskHidden">Hidden</span></>
                 ) : (
-                  pos.pctOfTotal !== 0 && <> - {formatPct(pos.pctOfTotal)}</>
+                  pos.pctOfTotal !== 0 && <> - {formatPercent(pos.pctOfTotal, functionalCurrency)}</>
                 )}
                 {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> - {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
               </span>
@@ -1092,34 +1092,59 @@ interface ConcentrationChartProps {
   functionalCurrency: string;
 }
 
-function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChartProps) {
-  // Use functional-currency amounts for proportional sizing when rates are
-  // available; fall back to original amounts, then to pctOfTotal (anonymous mode).
+function ConcentrationChart({ positions: allPositions, functionalCurrency }: ConcentrationChartProps) {
+  const [active, setActive] = useState<string | null>(null);
+  const legendId = useId();
+
+  // Escape clears the highlighted currency wherever focus is.
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActive(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [active]);
+
+  // A currency with no exchange rate cannot be compared with the others, so it
+  // stays out of the donut and is named underneath instead.
+  const unavailable = allPositions.filter((p) => p.rateUnavailable);
+  const positions = allPositions.filter((p) => !p.rateUnavailable);
+
+  // Use functional-currency amounts for proportional sizing; fall back to
+  // pctOfTotal for shared links that carry shares but no amounts.
   const getAmount = (p: typeof positions[0]) => {
     if (p.netAmountFunctional !== 0) return Math.abs(p.netAmountFunctional);
-    if (p.netAmountOriginal !== 0) return Math.abs(p.netAmountOriginal);
     return Math.abs(p.pctOfTotal);
   };
 
   const total = positions.reduce((sum, p) => sum + getAmount(p), 0);
+  // A shared link in redacted mode carries shares but no amounts.
+  const showAmounts = positions.some((p) => p.netAmountFunctional !== 0);
 
   if (total === 0) {
     return (
       <div className="mcnw-chartSection">
         <h3 className="mcnw-chartTitle">Currency concentration</h3>
-        <p className="mcnw-chartEmpty">Enter values above to see a concentration chart.</p>
+        <p className="mcnw-chartEmpty">
+          {unavailable.length > 0 && positions.length === 0
+            ? 'Exchange rates are unavailable right now, so the currencies cannot be compared in a chart.'
+            : 'Enter values above to see a concentration chart.'}
+        </p>
       </div>
     );
   }
 
-  const size = 220;
+  const size = 240;
   const cx = size / 2;
   const cy = size / 2;
-  const outerR = 90;
-  const innerR = 52;
-  const strokeWidth = outerR - innerR;
+  const outerR = 104;
+  const innerR = 64;
+  const pop = 7; // how far the highlighted slice moves out
 
-  // Build arcs.
+  const pct = (amount: number) => formatPercent((amount / total) * 100, functionalCurrency);
+  const amountOf = (p: typeof positions[0]) => formatAmount(p.netAmountFunctional, functionalCurrency);
+
+  // Build arcs. Coordinates are rounded so server and browser render the same.
+  const r2 = (n: number) => n.toFixed(2);
   let cumulative = 0;
   const arcs = positions.map((pos, i) => {
     const amount = getAmount(pos);
@@ -1128,92 +1153,110 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
     cumulative += amount;
     const endAngle = (cumulative / total) * 2 * Math.PI - Math.PI / 2;
     const largeArc = fraction > 0.5 ? 1 : 0;
-
-    // Outer arc path.
-    const x1 = cx + outerR * Math.cos(startAngle);
-    const y1 = cy + outerR * Math.sin(startAngle);
-    const x2 = cx + outerR * Math.cos(endAngle);
-    const y2 = cy + outerR * Math.sin(endAngle);
-
-    // Inner arc path (reverse direction).
-    const ix1 = cx + innerR * Math.cos(startAngle);
-    const iy1 = cy + innerR * Math.sin(startAngle);
-    const ix2 = cx + innerR * Math.cos(endAngle);
-    const iy2 = cy + innerR * Math.sin(endAngle);
-
-    const d = [
-      `M ${x1.toFixed(2)} ${y1.toFixed(2)}`,
-      `A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`,
-      `L ${ix2.toFixed(2)} ${iy2.toFixed(2)}`,
-      `A ${innerR} ${innerR} 0 ${largeArc} 0 ${ix1.toFixed(2)} ${iy1.toFixed(2)}`,
-      'Z',
-    ].join(' ');
-
-    return { pos, d, color: CHART_COLORS[i % CHART_COLORS.length], fraction };
+    const mid = (startAngle + endAngle) / 2;
+    const at = (r: number, a: number) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    // A single currency is a full ring: two half arcs, since one arc cannot
+    // start and end at the same point.
+    const d =
+      fraction >= 0.9999
+        ? `M ${cx - outerR} ${cy} A ${outerR} ${outerR} 0 1 1 ${cx + outerR} ${cy} A ${outerR} ${outerR} 0 1 1 ${cx - outerR} ${cy} ` +
+          `M ${cx - innerR} ${cy} A ${innerR} ${innerR} 0 1 0 ${cx + innerR} ${cy} A ${innerR} ${innerR} 0 1 0 ${cx - innerR} ${cy} Z`
+        : (() => {
+            const [x1, y1] = at(outerR, startAngle);
+            const [x2, y2] = at(outerR, endAngle);
+            const [ix1, iy1] = at(innerR, startAngle);
+            const [ix2, iy2] = at(innerR, endAngle);
+            return [
+              `M ${r2(x1)} ${r2(y1)}`,
+              `A ${outerR} ${outerR} 0 ${largeArc} 1 ${r2(x2)} ${r2(y2)}`,
+              `L ${r2(ix2)} ${r2(iy2)}`,
+              `A ${innerR} ${innerR} 0 ${largeArc} 0 ${r2(ix1)} ${r2(iy1)}`,
+              'Z',
+            ].join(' ');
+          })();
+    const dx = r2(pop * Math.cos(mid));
+    const dy = r2(pop * Math.sin(mid));
+    return { pos, d, color: CHART_COLORS[i % CHART_COLORS.length], amount, dx, dy };
   });
 
-  // Build table for screen readers.
-  const srRows = positions.map((pos) => {
-    const amount = getAmount(pos);
-    return {
-      code: pos.code,
-      label: getCurrencyLabel(pos.code),
-      pct: amount !== 0 ? ((amount / total) * 100).toFixed(1) : '0',
-      risk: pos.riskLabel,
-    };
-  });
+  const activeArc = arcs.find((a) => a.pos.code === active) ?? null;
+  const announce = activeArc
+    ? `${getCurrencyLabel(activeArc.pos.code)}: ${pct(activeArc.amount)} of your net worth${showAmounts ? `, ${amountOf(activeArc.pos)}` : ''}.`
+    : '';
 
   return (
     <div className="mcnw-chartSection">
       <h3 className="mcnw-chartTitle">Currency concentration</h3>
-      <div className="mcnw-chartWrap">
+      <div className="mcnw-chartWrap" onPointerLeave={(e) => { if (e.pointerType === 'mouse') setActive(null); }}>
         <svg
           className="mcnw-chart"
-          viewBox={`0 0 ${size} ${size}`}
+          viewBox={`-10 -10 ${size + 20} ${size + 20}`}
           role="img"
-          aria-label={`Currency concentration donut chart. ${srRows.map((r) => `${r.label}: ${r.pct}%`).join('. ')}`}
+          aria-label={`Currency concentration donut chart. ${arcs.map((a) => `${getCurrencyLabel(a.pos.code)}: ${pct(a.amount)}`).join('. ')}`}
+          aria-describedby={legendId}
           focusable="false"
         >
           <title>Currency concentration</title>
-          {arcs.map((arc) => (
-            <path
-              key={arc.pos.code}
-              d={arc.d}
-              fill={arc.color}
-              stroke="var(--color-bg-white)"
-              strokeWidth="1.5"
-            >
-              <title>
-                {getCurrencyLabel(arc.pos.code)}: {(arc.fraction * 100).toFixed(1)}%
-                {arc.pos.isFunctional ? ' (your spending currency)' : ''}
-              </title>
-            </path>
-          ))}
-          {/* Center label */}
-          <text x={cx} y={cy - 6} textAnchor="middle" className="mcnw-chartCenterLabel">
-            {positions.length}
-          </text>
-          <text x={cx} y={cy + 12} textAnchor="middle" className="mcnw-chartCenterSub">
-            currenc{positions.length === 1 ? 'y' : 'ies'}
-          </text>
+          {arcs.map((arc) => {
+            const on = arc.pos.code === active;
+            return (
+              <path
+                key={arc.pos.code}
+                d={arc.d}
+                fill={arc.color}
+                className={`mcnw-slice${active && !on ? ' mcnw-slice--dim' : ''}`}
+                transform={on ? `translate(${arc.dx} ${arc.dy})` : undefined}
+                onPointerEnter={(e) => { if (e.pointerType === 'mouse') setActive(arc.pos.code); }}
+                onClick={() => setActive((cur) => (cur === arc.pos.code ? null : arc.pos.code))}
+              />
+            );
+          })}
+          {activeArc ? (
+            <>
+              <text x={cx} y={cy - 16} textAnchor="middle" className="mcnw-chartCenterCode">{activeArc.pos.code}</text>
+              <text x={cx} y={cy + 10} textAnchor="middle" className="mcnw-chartCenterLabel">{pct(activeArc.amount)}</text>
+              {showAmounts && (
+                <text x={cx} y={cy + 32} textAnchor="middle" className="mcnw-chartCenterSub">{amountOf(activeArc.pos)}</text>
+              )}
+            </>
+          ) : (
+            <>
+              <text x={cx} y={cy + 2} textAnchor="middle" className="mcnw-chartCenterLabel">{positions.length}</text>
+              <text x={cx} y={cy + 24} textAnchor="middle" className="mcnw-chartCenterSub">
+                currenc{positions.length === 1 ? 'y' : 'ies'}
+              </text>
+            </>
+          )}
         </svg>
 
-        {/* Legend */}
-        <div className="mcnw-legend">
-          {positions.map((pos, i) => (
-            <span key={pos.code} className="mcnw-legendItem">
-              <span
-                className="mcnw-legendSwatch"
-                style={{ background: CHART_COLORS[i % CHART_COLORS.length] }}
-              />
-              <span className="mcnw-legendCode">{pos.code}</span>
-              <span className="mcnw-legendPct">
-                {((getAmount(pos) / total) * 100).toFixed(1)}%
-              </span>
-            </span>
+        {/* Legend: each entry highlights its slice on hover, focus or tap. */}
+        <ul className="mcnw-legend" id={legendId} aria-label="Currencies">
+          {arcs.map((arc) => (
+            <li key={arc.pos.code}>
+              <button
+                type="button"
+                className={`mcnw-legendItem${arc.pos.code === active ? ' mcnw-legendItem--on' : ''}`}
+                aria-pressed={arc.pos.code === active}
+                onMouseEnter={() => setActive(arc.pos.code)}
+                onFocus={() => setActive(arc.pos.code)}
+                onBlur={() => setActive(null)}
+                onClick={() => setActive(arc.pos.code)}
+              >
+                <span className="mcnw-legendSwatch" style={{ background: arc.color }} />
+                <span className="mcnw-legendCode">{arc.pos.code}</span>
+                <span className="mcnw-legendPct">{pct(arc.amount)}</span>
+                {showAmounts && <span className="mcnw-legendAmount">{amountOf(arc.pos)}</span>}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
+        <span className="chart-srOnly" aria-live="polite">{announce}</span>
       </div>
+      {unavailable.length > 0 && (
+        <p className="mcnw-chartNote">
+          Not in the chart: {unavailable.map((p) => p.code).join(', ')}, because there is no exchange rate to {functionalCurrency} right now.
+        </p>
+      )}
 
       {/* Screen-reader table */}
       <table className="mcnw-srOnly">
@@ -1226,11 +1269,11 @@ function ConcentrationChart({ positions, functionalCurrency }: ConcentrationChar
           </tr>
         </thead>
         <tbody>
-          {srRows.map((r) => (
-            <tr key={r.code}>
-              <td>{r.label}</td>
-              <td>{r.pct}%</td>
-              <td>{r.risk}</td>
+          {arcs.map((a) => (
+            <tr key={a.pos.code}>
+              <td>{getCurrencyLabel(a.pos.code)}</td>
+              <td>{pct(a.amount)}</td>
+              <td>{a.pos.riskLabel}</td>
             </tr>
           ))}
         </tbody>
