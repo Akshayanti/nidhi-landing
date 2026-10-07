@@ -16,9 +16,9 @@ withheld: How to model a career break, the six inputs for a home purchase, the f
 
 ## Day 1 (angle)
 
-angle: The biggest cost of a child is the pay a parent gives up, not the receipts
+angle: When a parent cuts back, the pay given up can outweigh the receipts
 number: About €192,000 of take home pay given up against about €165,000 of direct costs to age 18, and €224,000 with lost pension contributions
-takeaway: Model the income line, not just the expense line.
+takeaway: A projection that models only the expense line misses the income line, which can be as big or bigger when a parent cuts back.
 tool: The pay line. Pay given up × years × what you keep after tax, plus the pension.
 
 ## Day 1 (reel)
@@ -34,7 +34,7 @@ hashtags: #nidhi #nidhicompounding #familyfinance #newparents #workingparents
 
 ### Caption
 
-Everyone prices the pram. Almost nobody prices the pay.
+Many people price the pram. Fewer price the pay.
 
 Studies in Germany and Spain put the direct cost of a child at about €760 a month, around €165,000 to age 18. Petra earns €60,000. If she takes a €20,000 role for five years and returns at 10% below where she would have been, she gives up about €192,000 of take home pay, and about €224,000 counting lost pension contributions.
 
@@ -44,20 +44,20 @@ Slide 5 is the one to keep: the pay line, in three steps.
 
 The blog covers the four costs of a career break to model first → link in bio
 
-Figures are illustrative and in today's money. Tax, parental benefits and pay penalties vary widely by country and person.
+Figures are illustrative. Direct costs come from a 2018 German survey (higher in today's prices) and a 2024 Spanish figure. If neither parent cuts back, the picture is very different. Tax, parental benefits and pay penalties vary widely by country and person.
 
 Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.
 
 ### Slide 1 (hook)
 
-alt: Two bars: direct costs of a child to age 18, about €165,000, next to the take home pay a parent gives up, about €192,000. Headline: The biggest cost of a child is not on a receipt. Illustrative.
+alt: Two bars: direct costs of a child to age 18, about €165,000, next to the take home pay a parent gives up, about €192,000. Headline: When a parent cuts back, the biggest cost of a child may not be on a receipt. Direct costs from 2018 and 2024 surveys. Illustrative.
 
-strip: Illustrative · take home, in today's money
+strip: Illustrative · direct costs from 2018 and 2024 surveys
 bar: Direct costs to 18 | 165000 | €165,000 | muted
 bar: Pay a parent gives up | 192000 | €192,000 | warn
-premise: Same child. Two lines.
+premise: When a parent cuts back.
 
-The biggest cost of a child is **not on a receipt**
+The biggest cost of a child may **not be on a receipt**
 
 ### Slide 2 (inputs)
 
@@ -75,7 +75,7 @@ question: What does the pay line add up to?
 alt: Two lines for the same child: the receipts, about €760 a month for 18 years, €165k; five years of reduced pay, €40,000 a year after 40% tax, €120k; lower pay on return, €6,000 a year for 20 years after tax, €72k.
 
 title: Two lines, same child
-strip: Illustrative · take home, today's money
+strip: Illustrative · pay after tax · costs from 2018 and 2024 surveys
 calc: The receipts | about €760 a month | for 18 years | €165k | muted
 calc: Reduced pay | €40,000 a year × 5 | after 40% tax | €120k | warn
 calc: Lower pay on return | €6,000 a year × 20 | after 40% tax | €72k | warn
@@ -86,7 +86,7 @@ note: Direct costs from Destatis (Germany, 2018 survey) and Save the Children (S
 alt: Bars: direct costs to 18 €165,000, pay given up after tax €192,000, and with lost pension contributions €224,000. The pay line is bigger even before the pension. Illustrative.
 
 title: What each line adds up to
-strip: Take home, in today's money
+strip: Pay after tax · costs from 2018 and 2024 surveys
 bar: Direct costs to 18 | 165000 | €165,000 | muted
 bar: Pay given up | 192000 | €192,000 | warn
 bar: With lost pension | 224000 | €224,000 | warn
@@ -101,10 +101,10 @@ alt: Tool card, the pay line: pay given up times the years, times what you keep 
 band: The pay line
 lead: What a big change costs in pay
 row: Pay given up | × years | ink | each year you earn less
-row: What you keep | × 0.6 | ink | at a 40% top tax rate
+row: What you keep | × 0.6 | ink | at 40% tax and contributions
 row: Then add | + pension | warn | contributions that came with the pay
 also: Compare it with the receipts, not instead of them.
-note: Illustrative. Use your own top rate. Varies by country.
+note: Illustrative. Tax and contributions on the top slice of pay vary by country.
 
 ### Slide 6 (scenarios)
 
@@ -128,10 +128,10 @@ rule: Run your own numbers
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Price the pay, not just the pram. The receipts are usually the smaller line. Save slide 5. On the blog: the four costs of a career break to model first.
+alt: Closing slide: Price the pay, not just the pram. When a parent cuts back, the receipts can be the smaller line. Save slide 5. On the blog: the four costs of a career break to model first.
 
 kicker: Price the pay, not just the pram.
-line: The receipts are usually the smaller line.
+line: When a parent cuts back, the receipts can be the smaller line.
 save: Save slide 5
 read: The four costs of a career break to model first
 
@@ -139,8 +139,8 @@ read: The four costs of a career break to model first
 
 angle: Plan what you can see coming, buffer what you cannot
 number: Four events you can see years ahead, four nobody can, and three buffers for the second kind
-takeaway: Sort every life event first. Foreseeable ones get a plan, the rest get a buffer.
-tool: The sorting question. Can you name roughly when it happens? Plan it. If not, buffer it.
+takeaway: Sorting comes first: foreseeable events can get a plan, and the rest usually get a buffer.
+tool: The sorting question. Can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.
 
 ## Day 2 (reel)
 
@@ -157,11 +157,11 @@ hashtags: #nidhi #nidhicompounding #lifeevents #financialresilience #expatlife
 
 Most money shocks are not shocks. You knew they were coming.
 
-A child, a bigger home, a career break, a move abroad: you can usually see these years ahead, so they get a plan with a rough date, a number and the bad case tested. An illness, a redundancy, a family emergency, a market shock: nobody can, so they get a buffer instead.
+A child, a bigger home, a career break, a move abroad: you can usually see these years ahead, so they can get a plan with a rough date, a number and the bad case tested. An illness, a redundancy, a family emergency, a market shock: nobody can, so they usually get a buffer instead.
 
 Slide 5 is the one to keep: one question that sorts every life event.
 
-→ Save this, and sort your next five years tonight
+→ Save this for your next five years
 
 The blog covers how to model a home purchase, a move abroad, and events that overlap → link in bio
 
@@ -171,14 +171,14 @@ Made by the person building nidhi, a planner that shows its assumptions. No ads,
 
 ### Slide 1 (hook)
 
-alt: Two columns: You can see it coming, plan it: a child, a home, a career break, a move abroad. You cannot, buffer it: an illness, a redundancy, a family emergency, a market shock. Headline: Most money shocks are not shocks.
+alt: Two columns: You can see it coming, a plan: a child, a home, a career break, a move abroad. You cannot, a buffer: an illness, a redundancy, a family emergency, a market shock. Headline: Most money shocks are not shocks.
 
-left: You can see it coming | Plan it
+left: You can see it coming | A plan
 left_item: A child
 left_item: A home
 left_item: A career break
 left_item: A move abroad
-right: You cannot | Buffer it
+right: You cannot | A buffer
 right_item: An illness
 right_item: A redundancy
 right_item: A family emergency
@@ -199,9 +199,9 @@ question: Which of these can she plan?
 
 ### Slide 3 (scenarios)
 
-alt: Plan it in three steps: date it, roughly when, even a range; price it, both income and costs; test it, the bad case first. Rule: in the projection, not in your head.
+alt: Planning it in three steps: date it, roughly when, even a range; price it, both income and costs; test it, the bad case first. Rule: in the projection, not in your head.
 
-title: Plan it: three steps
+title: Planning it: three steps
 case: Date it | roughly when, even a range
 case: Price it | the income line and the cost line
 case: Test it | the bad case first
@@ -209,23 +209,23 @@ rule: In the projection, not in your head
 
 ### Slide 4 (scenarios)
 
-alt: Buffer it with three things: an emergency fund, often 3 to 6 months of costs; insurance, for what you could not absorb; slack, a savings rate you can cut for a while. Rule: buffers are generic on purpose.
+alt: The buffer, three things: an emergency fund, often 3 to 6 months of costs; insurance, for what you could not absorb; slack, a savings rate you can cut for a while. Rule: generic on purpose, sized to the household.
 
-title: Buffer it: three things
+title: The buffer: three things
 case: Emergency fund | often 3 to 6 months of costs
 case: Insurance | for what you could not absorb
 case: Slack | a savings rate you can cut for a while
-rule: Buffers are generic on purpose
+rule: Generic on purpose, sized to the household
 
 ### Slide 5 (tool)
 
-alt: Tool card, the sorting question: can you name roughly when it happens? Then plan it, in the projection. If you cannot, buffer it, with an emergency fund, insurance and slack.
+alt: Tool card, the sorting question: can you name roughly when it happens? Then it can go in the projection. If you cannot, it usually gets a buffer: an emergency fund, insurance and slack.
 
 band: The sorting question
 lead: For any big life event
-row: Can you name roughly when? | Plan | teal | put it in the projection
+row: Can you name roughly when? | Plan | teal | it can go in the projection
 row: You cannot | Buffer | warn | emergency fund, insurance, slack
-also: Sort first, then act.
+also: Sorting comes first.
 note: Illustrative.
 
 ### Slide 6 (scenarios)
@@ -235,24 +235,24 @@ alt: Two ways to mix them up: treating a planned baby as a surprise, so the pay 
 title: Two ways to mix them up
 case: A planned baby, treated as a surprise | the pay line never gets modelled
 case: Every disaster, planned one by one | and still not covered
-rule: Sort first
+rule: Sorting comes first
 
 ### Slide 7 (scenarios)
 
-alt: When events stack: a promotion, a home and a first child within eighteen months stress a plan more than each one alone. Some timing is yours to choose, so pick the order that leaves the most cash.
+alt: When events stack: two or three at once stress a plan more than each one alone. Some timing is yours, since a break or a purchase can often wait, and comparing orders shows which leaves more cash.
 
 title: When events stack
 case: Two or three at once | stress a plan more than each alone
 case: Some timing is yours | a break or a purchase can often wait
-case: Pick the order | that leaves the household the most cash
+case: Try different orders | see which leaves more cash
 rule: Timing is often a choice
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Plan what you can see. Buffer the rest. Sort every event with one question. Save slide 5. Also in the full post: the six inputs for a home purchase, the five dimensions of a move abroad, and how childcare costs differ by country.
+alt: Closing slide: What you can see can be planned. The rest usually gets a buffer. One question sorts every event. Save slide 5. Also in the full post: the six inputs for a home purchase, the five dimensions of a move abroad, and how childcare costs differ by country.
 
-kicker: Plan what you can see. Buffer the rest.
-line: Sort every event with one question.
+kicker: What you can see can be planned. The rest usually gets a buffer.
+line: One question sorts every event.
 save: Save slide 5
 more: The six inputs for a home purchase
 more: The five dimensions of a move abroad
@@ -262,7 +262,7 @@ more: How childcare costs differ by country
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: The biggest cost is not on a receipt
+d1_f1_overlay: The biggest cost may not be on a receipt
 d1_f1_caption: The hidden cost of having a child
 
 d1_f2_kind: poll
@@ -279,7 +279,7 @@ d1_f3_caption: How to price the pay you give up
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Plan it or buffer it?
+d2_f1_overlay: A plan or a buffer?
 d2_f1_caption: How to plan for big life events
 
 d2_f2_kind: result
@@ -291,15 +291,15 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: What you price first before a big change
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the sorting question card: can you name roughly when it happens? Plan it. If not, buffer it.
+d2_f3_alt: Story version of the sorting question card: can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: One question for every life event
 
 d2_f4_kind: extra
-d2_f4_alt: Beyond this post: A career break can end more than pay. Employer health, life and disability cover often stops too, and replacing it privately usually costs more.
+d2_f4_alt: Beyond this post: A career break can end more than pay. Where employers provide health, life and disability cover, it often stops too, and replacing it privately often costs more.
 d2_f4_time: late evening
 d2_f4_label: Beyond this post
 d2_f4_title: A break can end more than pay.
-d2_f4_body: Employer health, life and disability cover often stops when a career break starts. Replacing it yourself usually costs more, so price it into the break.
+d2_f4_body: Where employers provide health, life and disability cover, it often stops when a career break starts. Replacing it yourself often costs more, which many people price into the break.
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: What a career break does to your insurance
