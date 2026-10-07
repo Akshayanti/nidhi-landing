@@ -52,7 +52,8 @@ const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
 const roundedEnd = Math.round(ex.end / 100) * 100;
 // Drawn twice: a narrower drawing for phones keeps its labels readable
-// (CSS shows one of the two).
+// (CSS shows one of the two). The footnote is printed once, under both, so
+// the page text (and anything reading it) carries it only once.
 const starterChart = {
   title: 'Example: net worth over ten years',
   desc: `An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`,
@@ -60,8 +61,8 @@ const starterChart = {
   series: [{ name: 'Net worth', values: ex.values, color: 'var(--chart-eur)', area: true }],
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
-  footnote: `Example: ${eur(STARTER.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.added)} is money added.`,
 };
+const starterFootnote = `Example: ${eur(STARTER.monthly)} added at the start of each month, ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.added)} is money added.`;
 
 // The multi-currency example. Nothing is fetched until the visitor asks.
 const mcItems = [
@@ -216,6 +217,7 @@ const faqSchema = {
               <p class="starter-text">Add {eur(STARTER.monthly)} a month and it could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
               <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
               <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={220} {...starterChart} />
+              <p class="hc-foot">{starterFootnote}</p>
             </li>
           </ol>
         </figure>

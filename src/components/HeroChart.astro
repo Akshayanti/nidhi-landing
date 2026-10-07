@@ -29,7 +29,8 @@ interface Props {
   axisMid?: { index: number; label: string };
   target?: { value: number; label: string };
   marker?: { index: number; label: string };
-  footnote: string;
+  /** Shown under the chart. Leave it out when the page draws the same chart twice (one per screen size) and prints the note once itself. */
+  footnote?: string;
   /** Drawing size in SVG units. A narrower one keeps labels readable when the chart is shown small, on phones. */
   width?: number;
   height?: number;
@@ -141,5 +142,5 @@ const hoverData = JSON.stringify({
   </svg>
   <div class="hc-readout" aria-hidden="true"></div>
   <span class="hc-live chart-srOnly" aria-live="polite"></span>
-  <p class="hc-foot">{footnote}</p>
+  {footnote && <p class="hc-foot">{footnote}</p>}
 </div>

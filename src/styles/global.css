@@ -5047,7 +5047,7 @@ body[data-page="landing"] .hero-chart svg {
 .hero-chart .hc-readout strong { color: var(--color-text-primary); font-size: 0.85rem; }
 .hero-chart .hc-readout span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .hero-chart .hc-readout i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-.hero-chart .hc-foot {
+.hc-foot {
   margin: 6px 0 0;
   font-size: 0.75rem;
   line-height: 1.4;
