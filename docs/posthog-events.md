@@ -6,6 +6,8 @@ All events use `https://eu.i.posthog.com` as the API host. Client-side events go
 
 **Project and start date.** Analytics moved to a new PostHog Cloud EU project on 2026-10-08; the previous project and all its data were deleted. Nothing is sent before 00:00 UTC on 2026-10-08: `Analytics.astro` skips `posthog.init` before then (the page gets no-op `capture`/`identify`), and both Apps Scripts return early from `trackPosthog_` (`POSTHOG_START_MS_`). The key lives in the `PUBLIC_POSTHOG_KEY` GitHub secret and in each script's `POSTHOG_API_KEY` property, never in the repo.
 
+**Internal visitors.** Opening any page with `?internal=1` marks that browser (`localStorage` `nidhi-internal`), and a marked browser never starts PostHog, so the team's own visits send nothing. `?internal=0` clears it. Server-side events from the Apps Scripts (newsletter, waitlist) are not affected: a team member who subscribes or joins the waitlist still produces those.
+
 ---
 
 ## SDK Auto-events (every page)
