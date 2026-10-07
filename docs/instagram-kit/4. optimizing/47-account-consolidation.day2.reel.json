@@ -8,7 +8,7 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "An old pension must move provider to provider, never through your own account",
+  "topic": "An old pension usually moves provider to provider, not through your own account",
   "topicChip": "TRANSFER TRAP",
   "assumptions": {
     "currency": "EUR",
@@ -34,7 +34,7 @@
         "label": "Through your account",
         "rule": "Can become a withdrawal",
         "state": "empty",
-        "fix": "Ask for a direct transfer",
+        "fix": "A direct transfer avoids this",
         "tone": "amber"
       }
     ],
@@ -44,7 +44,7 @@
     },
     "workaround": {
       "label": "A form offers a payout?",
-      "note": "Stop. Ask for the direct route."
+      "note": "Pause. Check for a direct route."
     },
     "disclosure": "Illustrative. Rules vary by country. Not tax advice."
   },
@@ -69,10 +69,10 @@
     {
       "id": "through-you",
       "layout": "routes-gap",
-      "narration": "Never let an old pension pass through your own bank account.",
+      "narration": "An old pension that passes through your own bank account can become a taxed withdrawal.",
       "onscreenLines": [
         "Moving an old pension?",
-        "Not through your account",
+        "Through your account?",
         ""
       ],
       "anchor": {
@@ -80,7 +80,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "never"
+        "account"
       ]
     }
   ],
@@ -139,9 +139,9 @@
     {
       "id": "b5",
       "kind": "definition",
-      "narration": "The fix costs nothing. Ask the new provider to request a direct transfer.",
-      "onscreenText": "Ask for a direct transfer",
-      "subtext": "Your new provider starts it",
+      "narration": "The usual fix is a direct transfer, which the new provider can often request.",
+      "onscreenText": "A direct transfer",
+      "subtext": "Often started by the new provider",
       "emphasis": [],
       "anchor": {
         "type": "routes",
@@ -151,11 +151,11 @@
     {
       "id": "b6",
       "kind": "warning",
-      "narration": "And if any form offers to pay the money to you, stop, and ask for the direct route instead.",
+      "narration": "And if a form offers to pay the money to you, many people pause and check for the direct route first.",
       "onscreenText": "A payout on the form?",
-      "subtext": "Stop. Ask for the direct route",
+      "subtext": "Pause. Check for a direct route",
       "emphasis": [
-        "stop"
+        "pause"
       ],
       "anchor": {
         "type": "routes",
@@ -176,7 +176,7 @@
         "rows": [
           {
             "label": "Who starts it",
-            "value": "New provider",
+            "value": "Often the new one",
             "tone": "teal"
           },
           {
@@ -186,7 +186,7 @@
           },
           {
             "label": "A payout offered",
-            "value": "Stop",
+            "value": "Pause",
             "tone": "amber"
           }
         ],
@@ -198,12 +198,12 @@
     "approved": "save",
     "narration": "Save this before you move a pension.",
     "onscreenText": "Save the transfer check",
-    "subtext": "Provider to provider, never to you",
+    "subtext": "Usually provider to provider",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "There are two ways to move an old pension. One of them can cost you thousands.\n\nJiri wants to move a €30,000 pension from a job he left. A direct transfer, provider to provider, keeps it pension money. Paid out to him first, many systems count it as income: at an illustrative 30%, that is €9,000 in tax, and some countries add a penalty on top.\n\nThe transfer check: your new provider starts it, the money goes provider to provider, and if any form offers a payout, stop.\n\n→ Save this before you move a pension\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pension and tax rules vary widely by country. Not tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "There are two ways to move an old pension. One of them can cost you thousands.\n\nAlways provider to provider. Illustrative, rules vary by country.",
+    "instagram": "There are two ways to move an old pension. One of them can cost you thousands.\n\nJiri wants to move a €30,000 pension from a job he left. A direct transfer, provider to provider, keeps it pension money. Paid out to him first, many systems count it as income: at an illustrative 30%, that is €9,000 in tax, and some countries add a penalty on top.\n\nThe transfer check: in many systems the new provider starts it, the money goes provider to provider, and a form offering a payout is a signal to pause and check.\n\n→ Save this before you move a pension\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pension and tax rules vary widely by country. Not tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "There are two ways to move an old pension. One of them can cost you thousands.\n\nUsually provider to provider. Illustrative, rules vary by country.",
     "instagramKeywords": [
       "pension transfer",
       "transfer old pension",
@@ -237,5 +237,6 @@
     "pensiontips",
     "oldpension",
     "scamawareness"
-  ]
+  ],
+  "reelPromise": "Which old accounts to keep and why, how investments move without selling, and the four step clean up for every other account"
 }

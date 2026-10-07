@@ -56,7 +56,7 @@
     {
       "id": "not-free",
       "layout": "bar-gap",
-      "narration": "Your forgotten accounts are still doing something. Mostly, costing you.",
+      "narration": "Your forgotten accounts are still doing something. Some of them are costing you.",
       "onscreenLines": [
         "Forgotten accounts",
         "are not free",
@@ -73,10 +73,10 @@
     {
       "id": "count-them",
       "layout": "bar-gap",
-      "narration": "Count your financial accounts. Most people get the number wrong, and pay for it.",
+      "narration": "Count your financial accounts. It is easy to get the number wrong, and pay for it.",
       "onscreenLines": [
         "Count your accounts",
-        "Most people get it wrong",
+        "Easy to get wrong",
         ""
       ],
       "anchor": {
@@ -155,7 +155,7 @@
     {
       "id": "b6",
       "kind": "list",
-      "narration": "The fix is a weekend. List every account. Give each one a label. Move or close the ones with no clear job. Then keep things to a few institutions.",
+      "narration": "A common fix takes a weekend. List every account. Give each one a label. Move, close or keep each one, with a reason. Many then settle on a few institutions.",
       "onscreenText": "The four step clean up",
       "subtext": "One weekend",
       "emphasis": [],
@@ -209,8 +209,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your forgotten accounts are still doing something. Mostly, costing you.\n\nJiri, 38, has 13 accounts at 7 institutions. Three dormant ones charge €5 a month each: €180 a year. An old pension charges 0.75% where his current plan charges 0.05%: €210 a year on €30,000. And €6,000 sits in old savings accounts at almost nothing, missing about €180 a year at an illustrative 3%. About €570 a year, for nothing.\n\nThe four step clean up: list every account, label each one essential, optimising or dormant, move or close the ones with no clear job, then keep things to a few institutions.\n\n→ Save this for a quiet weekend\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Fees and rates vary by provider and country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Your forgotten accounts are still doing something. Mostly, costing you.\n\nAbout €570 a year in this example. Illustrative, varies by provider and country.",
+    "instagram": "Your forgotten accounts are still doing something. Some of them are costing you.\n\nJiri, 38, has 13 accounts at 7 institutions. Three dormant ones charge €5 a month each: €180 a year. An old pension charges 0.75% where his current plan charges 0.05%: €210 a year on €30,000. And €6,000 sits in old savings accounts at almost nothing, missing about €180 a year at an illustrative 3%. About €570 a year, for nothing.\n\nA common four step clean up: list every account, label each one essential, optimising or dormant; move, close or keep each one with a reason; many people then settle on a few institutions.\n\n→ Save this for a quiet weekend\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Fees and rates vary by provider and country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Your forgotten accounts are still doing something. Some of them are costing you.\n\nAbout €570 a year in this example. Illustrative, varies by provider and country.",
     "instagramKeywords": [
       "too many bank accounts",
       "old bank accounts",
