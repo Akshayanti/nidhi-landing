@@ -85,6 +85,7 @@ const writtenChangelog: ChangelogEntry[] = [
     material: true,
     summary: 'Fixed free tools that put what you typed into page addresses analytics recorded. Also: a homepage that leads with learning, starting routes you can follow, lessons that show where you are and end with what you now understand, a simpler one-currency net worth view, Frankfurter named in the notice, and OpenAI\'s training crawler blocked.',
     details: [
+      'Cookie settings: a "Cookie settings" link at the bottom of every page reopens the cookie banner, so you can change your answer as easily as you gave it. Before, a choice could only be undone by clearing your browser\'s site data. Choosing "No thanks" there after an earlier yes switches click recording off immediately, not just from your next visit. The choice is still stored only in your browser (nidhi-cookie-consent), and the link\'s own click is recorded only if you had accepted (data-attr footer-cookie-settings).',
       'Analytics paused, then a fresh start: from today until 00:00 UTC on October 8, 2026, the site records no analytics at all, and the newsletter sends no events either. From then on, analytics go to a new, empty PostHog Cloud EU project, under the same rules described above. The previous PostHog project, holding everything recorded before today, is being deleted.',
       'Free tools, what went wrong: the loan comparison (since it launched on May 10, 2026) and the net worth calculator (since May 17, 2026) wrote what you typed into the page address as you typed, so the page could be reloaded or bookmarked. Every page sends an anonymous pageview and page-leave event, and those carry the page address. So the amounts, rates, names and currencies you entered on those two tools reached our analytics (PostHog Cloud EU) inside that address, and so did the contents of any shared link opened to one of them. A link to any of the three tools with values after a ? would have been recorded the same way. The events carried no name, email or user ID, but this broke our promise that the values you type are never sent.',
       'Beliefs and the learning path: the principle behind every lesson is now said where people meet the site. The beliefs page has a new belief, "Not just the rules of thumb": a rule of thumb is a starting point, and each lesson explains why it exists, where it breaks and what depends on you. The learning path introduction says the same in one sentence. Wording only.',
@@ -591,7 +592,8 @@ const privacyBreadcrumbSchema = {
           For analytics, the events are anonymous; we don&rsquo;t have a way to look up
           &ldquo;your&rdquo; events because we don&rsquo;t know who you are. If this bothers
           you, just decline the cookie banner, or use a content blocker. Nothing on the site
-          breaks.
+          breaks. You can change your answer any time with <strong>Cookie settings</strong> at the
+          bottom of every page; saying no there stops click recording straight away.
         </li>
         <li>
           For anything else, email <a href="mailto:hello@nidhi.today?subject=privacy">hello@nidhi.today</a>{' '}

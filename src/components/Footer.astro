@@ -39,6 +39,7 @@ const showMonteCarlo = await isMonteCarloReleased();
           <a href="/beliefs/" data-attr="footer-beliefs">Our Beliefs</a>
           <a href="/editorial-policy/" data-attr="footer-editorial-policy">Editorial policy</a>
           <a href="/privacy/" data-attr="footer-privacy">Privacy</a>
+          <button type="button" class="footer-cookieSettings" data-cookie-settings data-attr="footer-cookie-settings">Cookie settings</button>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">Connect</strong>
@@ -130,6 +131,23 @@ const showMonteCarlo = await isMonteCarloReleased();
   }
 
   .footer-col a:hover {
+    color: var(--color-teal);
+  }
+
+  /* An action, not a page: a button styled like the links beside it. */
+  .footer-cookieSettings {
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .footer-cookieSettings:hover,
+  .footer-cookieSettings:focus-visible {
     color: var(--color-teal);
   }
 
