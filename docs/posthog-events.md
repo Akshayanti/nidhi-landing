@@ -152,7 +152,7 @@ These use `cfg.fromEmail` as the `distinct_id` (operational events, not tied to 
 
 | Event | distinct_id | Properties | Trigger |
 |---|---|---|---|
-| `blog_newsletter_sent` | `cfg.fromEmail` | `guid: string` — post GUID<br>`sent: number` — successful sends<br>`failed: number` — failed sends | Newsletter batch send completes |
+| `blog_newsletter_sent` | `cfg.fromEmail` | `guid: string` — post GUID<br>`sent: number` — successful sends<br>`failed: number` — failed sends<br>`skipped_already_sent: number` — recipients skipped because an earlier, interrupted run of the same send already reached them<br>`url: string` — the lesson the newsletter links to | Newsletter batch send completes |
 | `blog_newsletter_send_failed` | `cfg.fromEmail` | `guid: string` — post GUID<br>`email_domain: string` — recipient domain<br>`error: string` — first 300 chars | Individual send fails (also for missing `unsub_token`) |
 | `blog_newsletter_quota_warning` | `cfg.fromEmail` | `subscriber_count: number`<br>`cap: number` — daily Workspace recipient cap | Confirmed subscriber count crosses 80% of daily cap |
 
