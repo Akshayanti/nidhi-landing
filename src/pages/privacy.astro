@@ -80,6 +80,16 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 9, 2026',
+    iso: '2026-10-09',
+    material: true,
+    summary: 'All analytics recorded before October 9, 2026 were deleted, and analytics start again in a new, empty PostHog project.',
+    details: [
+      'Deleted: every analytics event recorded before October 9, 2026, including the pageview and page-leave events that carried what people typed into the loan comparison and the net worth calculator (see October 7). We deleted the whole PostHog project rather than searching for the affected events one by one, so the anonymous visitor profiles, click data and heatmaps from that period are gone too. None of it can be restored.',
+      'Analytics now go to a new PostHog Cloud EU project. What is collected, when, and under what consent is unchanged, as described above. The newsletter\'s server-side events go to the same new project.',
+    ],
+  },
+  {
     date: 'Oct 7, 2026',
     iso: '2026-10-07',
     material: true,
