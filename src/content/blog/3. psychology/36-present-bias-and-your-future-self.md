@@ -9,7 +9,7 @@ takeaways:
   - "How automation and pre-commitment beat daily willpower"
 order: 36
 pubDate: 2026-07-08
-updatedDate: 2026-07-08
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "jiri"
 personas: ["eva", "petra", "jiri", "marcus"]

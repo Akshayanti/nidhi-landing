@@ -10,7 +10,7 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-06-15
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]

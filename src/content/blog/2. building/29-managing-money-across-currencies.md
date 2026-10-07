@@ -10,7 +10,7 @@ takeaways:
   - "Why matching assets to obligations beats trading currencies"
 order: 29
 pubDate: 2026-06-22
-updatedDate: 2026-06-22
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

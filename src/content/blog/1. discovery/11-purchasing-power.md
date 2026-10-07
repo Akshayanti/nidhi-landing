@@ -9,7 +9,7 @@ takeaways:
   - "Why cash in a low-interest account loses value over time"
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-10-03
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

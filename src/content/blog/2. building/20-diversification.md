@@ -10,7 +10,7 @@ takeaways:
   - "Why diversification cannot protect against a market-wide fall"
 order: 20
 pubDate: 2026-06-01
-updatedDate: 2026-06-03
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

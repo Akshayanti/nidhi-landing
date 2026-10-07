@@ -9,7 +9,7 @@ takeaways:
   - "Why automating savings makes consistency the default"
 order: 14
 pubDate: 2026-05-18
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

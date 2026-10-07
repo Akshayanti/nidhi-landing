@@ -10,7 +10,7 @@ takeaways:
   - "Why keeping everything in cash carries its own risk"
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-10-03
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

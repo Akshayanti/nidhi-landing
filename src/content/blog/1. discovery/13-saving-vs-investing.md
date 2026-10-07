@@ -9,7 +9,7 @@ takeaways:
   - "A sensible default order, and when to change it"
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-10-03
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

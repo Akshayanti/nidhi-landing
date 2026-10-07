@@ -9,7 +9,7 @@ takeaways:
   - "Why no single asset class wins in every economic condition"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-10-03
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

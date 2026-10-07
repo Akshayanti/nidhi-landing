@@ -10,7 +10,7 @@ takeaways:
   - "Which numbers are not worth tracking at all"
 order: 32
 pubDate: 2026-06-29
-updatedDate: 2026-06-29
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

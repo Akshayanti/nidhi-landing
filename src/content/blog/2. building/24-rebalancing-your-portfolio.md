@@ -10,7 +10,7 @@ takeaways:
   - "Why tax-advantaged accounts are the first place to rebalance"
 order: 24
 pubDate: 2026-06-10
-updatedDate: 2026-06-10
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

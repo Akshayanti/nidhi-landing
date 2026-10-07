@@ -9,7 +9,7 @@ takeaways:
   - "Why your savings rate is a better progress signal than salary alone"
 order: 10
 pubDate: 2026-05-08
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

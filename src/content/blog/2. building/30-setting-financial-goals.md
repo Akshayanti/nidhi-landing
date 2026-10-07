@@ -10,7 +10,7 @@ takeaways:
   - "How to prioritise goals by math and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
-updatedDate: 2026-06-24
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

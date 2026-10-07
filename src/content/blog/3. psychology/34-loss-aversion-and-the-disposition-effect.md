@@ -9,7 +9,7 @@ takeaways:
   - "How checking less and automating stop panic-selling"
 order: 34
 pubDate: 2026-07-03
-updatedDate: 2026-07-03
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

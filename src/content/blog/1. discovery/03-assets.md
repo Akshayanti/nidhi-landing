@@ -9,7 +9,7 @@ takeaways:
   - "Why a mix of cash and investments balances safety and growth"
 order: 3
 pubDate: 2026-04-23
-updatedDate: 2026-06-03
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
