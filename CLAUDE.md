@@ -11,6 +11,19 @@ Every material change to the site must be accompanied by a corresponding update 
 4. Non-material changes (typos, phrasing) still get a changelog entry with `material: false`.
 5. **One entry per date.** The changelog has at most one entry for any given date. If an entry for that date already exists, add your bullet points to its `details`, broaden its `summary` to cover everything that changed that day, and set `material: true` if any part of the day's changes is material. Never add a second entry with the same `iso` date. The build fails if two hand-written entries share a date.
 
+## Free Tools Keep Inputs Out of URLs
+
+Every page sends an anonymous pageview and page-leave event, and every PostHog event carries the page address. Anything a free tool puts in the address reaches analytics. The privacy policy promises that the values people type are never sent, so every tool under `/free/` (today: the loan comparison, the net worth calculator, the Monte Carlo simulator) must meet all of these:
+
+1. **Never write inputs into the address while someone types.** No `history.replaceState`/`pushState` with form state, no query-string sync for reload or bookmarking.
+2. **Share links carry state after the `#`**, never in the query string: `/free/<tool>/?utm_source=share&...#<state>`. Browsers never send the fragment to a server.
+3. **The page uses `ToolStateGuard`** (`src/components/ToolStateGuard.astro`) in its head slot, with the tool's `SHARED_STATE_GLOBAL` and `STATE_KEY_PATTERN` exported from its `url.ts`. It moves shared state (and older `?`-style state) out of the address into a window property before analytics load, keeping `utm_*` parameters and plain `#anchors`. The tool reads its state from that window property on mount, never from `window.location`.
+4. **Keep the analytics backstop.** `before_send` in `src/components/Analytics.astro` strips everything but `utm_*` and the `#` part from any URL property that points at a `/free/` page. Do not remove or narrow it.
+5. **Tracked events carry choices, never values**: which currency, which tab, how many rows, never an amount, rate, name or the encoded state.
+6. **Verify in a browser before merging**, on a phone-sized and a laptop-sized viewport: type distinctive amounts, leave the page, open a `#` share link and an old `?` link, and confirm no PostHog payload contains the amounts (decode the gzip bodies; headless Chrome needs a normal user agent and `--disable-blink-features=AutomationControlled`, or PostHog drops its events as bot traffic).
+
+A new tool that cannot meet these is a privacy-policy conflict: pause and ask (rule 3 above).
+
 ## Style Rules
 
 - Never use em dashes (`&mdash;` or `—`) or double dashes (`--`) anywhere in the site. Use colons, commas, or reword instead.

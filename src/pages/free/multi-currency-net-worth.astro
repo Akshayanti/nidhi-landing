@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
+import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
 import WaitlistSection from '../../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
 
@@ -99,7 +101,7 @@ const faqs = [
   },
   {
     q: 'Does this send my financial data anywhere?',
-    a: 'No. Everything runs in your browser. Your asset names, values, and currencies are never sent to any server. The only external request is to the Frankfurter API to fetch exchange rates, and that request only includes your functional currency code, not your asset data. Shareable links encode your data into the URL, and you control whether to share.',
+    a: 'No. Everything runs in your browser. Your asset names, values, and currencies are never sent to any server. The only external request is to the Frankfurter API to fetch exchange rates, and that request only includes your functional currency code, not your asset data. Nothing goes into the page address while you use the tool. When you copy a share link, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. You control whether to share.',
   },
   {
     q: 'Which currencies are supported?',
@@ -211,6 +213,7 @@ const faqSchema = {
     first paint with conversion data.
   */}
   <link slot="head" rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="mcnw-page">
     <nav class="mcnw-breadcrumbs" aria-label="Breadcrumb">
       <ol>

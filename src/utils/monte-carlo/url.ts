@@ -50,6 +50,9 @@ export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n'] as 
 /** Window property the page head script stores a shared fragment in. */
 export const SHARED_STATE_GLOBAL = '__nidhiMonteCarloShared';
 
+/** Matches one state parameter name, for ToolStateGuard. */
+export const STATE_KEY_PATTERN = `[${STATE_KEYS.join('')}]`;
+
 export function encodeState(state: ToolState): string {
   const p = new URLSearchParams();
   setNonDefault(p, 'c', state.currency, DEFAULTS.currency);

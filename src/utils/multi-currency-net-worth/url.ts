@@ -49,6 +49,18 @@ import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../sha
 
 export type ShareMode = 'full' | 'redacted';
 
+/**
+ * Where a shared link's state lives. Links carry it after the #, which
+ * browsers never send to a server; ToolStateGuard in the page head moves it
+ * (or an older ?-style link's state) out of the address bar into this window
+ * property before analytics start, and the component reads it from there.
+ * The tool never writes inputs into the address while you type.
+ */
+export const SHARED_STATE_GLOBAL = '__nidhiNetWorthShared';
+
+/** Matches one state parameter name, for ToolStateGuard. */
+export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------

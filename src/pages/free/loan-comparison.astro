@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
+import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
 
 // -----------------------------------------------------------------------------
@@ -107,7 +109,7 @@ const faqSections: { id: string; title: string; items: { q: string; a: string }[
       },
       {
         q: 'Is my data sent anywhere?',
-        a: 'No. Everything runs in your browser; no inputs are sent to any server. The shareable link encodes your values into the URL only when you copy it, so you can choose what to share.',
+        a: 'No. Everything runs in your browser; no inputs are sent to any server. Nothing goes into the page address while you use the tool. When you copy a share link, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
       },
     ],
   },
@@ -308,6 +310,7 @@ const faqSchema = {
   description={description}
   jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
 >
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="lc-page">
     <nav class="lc-breadcrumbs" aria-label="Breadcrumb">
       <ol>

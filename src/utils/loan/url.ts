@@ -46,6 +46,18 @@
 import { DEFAULT_CURRENCY } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 
+/**
+ * Where a shared link's state lives. Links carry it after the #, which
+ * browsers never send to a server; ToolStateGuard in the page head moves it
+ * (or an older ?-style link's state) out of the address bar into this window
+ * property before analytics start, and the component reads it from there.
+ * The tool never writes inputs into the address while you type.
+ */
+export const SHARED_STATE_GLOBAL = '__nidhiLoanCompareShared';
+
+/** Matches one state parameter name, for ToolStateGuard. */
+export const STATE_KEY_PATTERN = 'c|n|t|h|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?';
+
 export type ModeKind = 'term' | 'payment';
 export type RateKind = 'fixed' | 'hybrid';
 

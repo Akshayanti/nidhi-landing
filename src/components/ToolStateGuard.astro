@@ -1,0 +1,53 @@
+---
+/**
+ * Keeps a free tool's inputs out of every URL that analytics or a server can
+ * see. Required on every free tool page (CLAUDE.md, "Free tools keep inputs
+ * out of URLs").
+ *
+ * A shared link carries the tool's state after the #, which browsers never
+ * send to a server. This script runs in <head>, before analytics load at the
+ * end of <body>: it copies the state into a window property for the tool to
+ * read, then removes it from the address bar, so the pageview and every later
+ * event record a URL with no inputs in it.
+ *
+ * It also catches older links that carried the state in the query string
+ * (?...), moving those parameters the same way. Campaign parameters (utm_*)
+ * and anything else that is not a state key stay in the address, and a plain
+ * in-page anchor such as #faq is left alone.
+ *
+ * Use it in the page's head slot:
+ *   <ToolStateGuard slot="head" globalName={...} keyPattern={...} />
+ */
+interface Props {
+  /** Window property the tool reads the state from on mount. */
+  globalName: string;
+  /** Regular expression source matching one state parameter name, e.g. 'c|n|v\\d+'. */
+  keyPattern: string;
+}
+
+const { globalName, keyPattern } = Astro.props;
+---
+
+<script is:inline define:vars={{ globalName, keyPattern }}>
+  (function () {
+    var isKey = new RegExp('^(?:' + keyPattern + ')$');
+    function split(raw) {
+      var all = new URLSearchParams(raw);
+      var state = new URLSearchParams();
+      var rest = new URLSearchParams();
+      var found = false;
+      all.forEach(function (value, key) {
+        if (isKey.test(key)) { state.append(key, value); found = true; }
+        else rest.append(key, value);
+      });
+      return { found: found, state: state.toString(), rest: rest.toString() };
+    }
+    var fromHash = split(window.location.hash.slice(1));
+    var fromQuery = split(window.location.search.slice(1));
+    if (!fromHash.found && !fromQuery.found) return;
+    window[globalName] = fromHash.found ? fromHash.state : fromQuery.state;
+    var query = fromQuery.found ? fromQuery.rest : window.location.search.slice(1);
+    var hash = fromHash.found ? '' : window.location.hash;
+    history.replaceState(null, '', window.location.pathname + (query ? '?' + query : '') + hash);
+  })();
+</script>

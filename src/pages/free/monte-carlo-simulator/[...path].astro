@@ -4,7 +4,8 @@ import MonteCarloSimulator from '../../../components/MonteCarloSimulator.tsx';
 import { getCollection } from 'astro:content';
 import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../../utils/monte-carlo/math.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../../utils/monte-carlo/release.ts';
-import { SHARED_STATE_GLOBAL, STATE_KEYS } from '../../../utils/monte-carlo/url.ts';
+import ToolStateGuard from '../../../components/ToolStateGuard.astro';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../../utils/monte-carlo/url.ts';
 
 // A rest route so the page can be left out of the production build until
 // the tool launches with post 43 (see src/utils/monte-carlo/release.ts).
@@ -151,19 +152,7 @@ const faqSchema = {
 ---
 
 <BaseLayout title={title} description={description} jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}>
-  {/*
-    A shared plan arrives after the # (browsers never send that part to a
-    server). This runs in <head>, before analytics load at the end of
-    <body>, and moves the plan out of the address bar so the pageview never
-    records it. The component reads it from the window property.
-  */}
-  <script is:inline slot="head" define:vars={{ stateKeys: STATE_KEYS.join(''), sharedGlobal: SHARED_STATE_GLOBAL }}>
-    var h = window.location.hash;
-    if (new RegExp('^#(?:[^&]*&)*[' + stateKeys + ']=').test(h)) {
-      window[sharedGlobal] = h.slice(1);
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-  </script>
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="mcsp-page">
     <nav class="mcsp-breadcrumbs" aria-label="Breadcrumb">
       <ol>
