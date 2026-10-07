@@ -10,7 +10,7 @@ takeaways:
   - "Why starting small and early beats starting big and late"
 order: 21
 pubDate: 2026-06-03
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

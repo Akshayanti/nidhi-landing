@@ -10,7 +10,7 @@ takeaways:
   - "How to build good credit in your country's system"
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

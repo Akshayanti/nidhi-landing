@@ -9,7 +9,7 @@ takeaways:
   - "Why time is often the most powerful lever in compounding"
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-06-03
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

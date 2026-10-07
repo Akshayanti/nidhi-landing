@@ -9,7 +9,7 @@ takeaways:
   - "How sane position sizes and diversification keep you grounded"
 order: 40
 pubDate: 2026-07-17
-updatedDate: 2026-07-17
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]

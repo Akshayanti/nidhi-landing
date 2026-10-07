@@ -9,7 +9,7 @@ takeaways:
   - "Why couples' money fights are often about beliefs, not numbers"
 order: 41
 pubDate: 2026-07-20
-updatedDate: 2026-07-20
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "petra"
 personas: ["eva", "petra", "jiri", "marcus"]

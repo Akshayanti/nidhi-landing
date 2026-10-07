@@ -10,7 +10,7 @@ takeaways:
   - "Why planning in after-tax terms gives a more realistic picture"
 order: 22
 pubDate: 2026-06-05
-updatedDate: 2026-06-05
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

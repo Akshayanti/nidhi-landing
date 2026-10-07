@@ -10,7 +10,7 @@ takeaways:
   - "Why savings rate is the main lever on your time to FI"
 order: 25
 pubDate: 2026-06-12
-updatedDate: 2026-06-12
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]

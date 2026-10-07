@@ -9,7 +9,7 @@ takeaways:
   - "When budgeting buckets help and when to collapse the folders"
 order: 35
 pubDate: 2026-07-06
-updatedDate: 2026-07-06
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "petra"
 personas: ["eva", "petra", "jiri", "marcus"]

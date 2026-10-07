@@ -9,7 +9,7 @@ takeaways:
   - "Why designing around your brain beats trying to be smarter"
 order: 33
 pubDate: 2026-07-01
-updatedDate: 2026-07-01
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

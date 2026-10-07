@@ -9,7 +9,7 @@ takeaways:
   - "Why the gap between income and spending builds wealth"
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]

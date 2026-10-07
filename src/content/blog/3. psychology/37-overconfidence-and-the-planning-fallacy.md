@@ -9,7 +9,7 @@ takeaways:
   - "How the outside view and conservative assumptions fix plans"
 order: 37
 pubDate: 2026-07-10
-updatedDate: 2026-07-10
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]

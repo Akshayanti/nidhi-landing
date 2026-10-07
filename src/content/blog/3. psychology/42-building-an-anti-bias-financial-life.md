@@ -9,7 +9,7 @@ takeaways:
   - "How a dashboard replaces gut feeling with scheduled numbers"
 order: 42
 pubDate: 2026-07-22
-updatedDate: 2026-07-22
+updatedDate: 2026-10-07
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

@@ -9,7 +9,7 @@ takeaways:
   - "How to match your money's liquidity to your timeline"
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

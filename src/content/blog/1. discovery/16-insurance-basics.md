@@ -9,7 +9,7 @@ takeaways:
   - "When insurance is worth it, and when to self-insure"
 order: 16
 pubDate: 2026-05-22
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]

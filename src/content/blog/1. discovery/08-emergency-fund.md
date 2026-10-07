@@ -10,7 +10,7 @@ takeaways:
   - "How to tell if an expense is a genuine emergency"
 order: 8
 pubDate: 2026-05-04
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
