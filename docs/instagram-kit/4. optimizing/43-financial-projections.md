@@ -3,7 +3,7 @@ title: "Financial Projections: Your Next 10, 20, 30 Years"
 blog_url: "https://nidhi.today/blog/financial-projections/"
 chip: "Money, Compounding"
 hashtags_day1: "#savingsrate #longterminvesting #personalfinanceeurope #expatlife #nidhi"
-keywords_day1: "financial projection, net worth projection, compound interest, real returns, inflation adjusted returns, what if scenario, savings rate, 30 year plan, investment growth calculator, long term investing, retirement planning, personal finance, expat finance, global expats, europe, Vermögensaufbau, Zinseszins, Finanzplanung, intérêts composés, planification financière, interés compuesto, finanza personale"
+keywords_day1: "financial projection, net worth projection, compound interest, real returns, inflation adjusted returns, what if scenario, growth assumption, 30 year plan, investment growth calculator, inflation, retirement planning, personal finance, expat finance, global expats, europe, Vermögensaufbau, Zinseszins, Finanzplanung, intérêts composés, planification financière, interés compuesto, finanza personale"
 hashtags_day2: "#riskmanagement #wealthplanning #investingeurope #expatmoney #nidhi"
 keywords_day2: "monte carlo simulation, probability, retirement simulation, percentile, 10th percentile, sequence of returns, investment risk, historical returns, market volatility, long term investing, financial projection, retirement plan, personal finance, expat finance, global expats, europe, Rentenrechner, Wahrscheinlichkeit, Altersvorsorge, simulation de Monte Carlo, probabilité, simulación de Montecarlo, probabilità"
 ---
@@ -18,7 +18,7 @@ withheld: How to choose a growth assumption, the three ways people set it too hi
 
 angle: One growth assumption moves a 30 year projection by over a million euros
 number: €1,060,000, the gap between the same plan at 4% and at 8%
-takeaway: A projection is a range, not a promise. Test the low case.
+takeaway: A projection is a range, not a promise. Many planners test their plan against the low case; how cautious to be depends on their flexibility.
 tool: The 30 year multiplier. Monthly amount times 700, 1,000 and 1,400. Existing savings times 3, 6 and 10.
 
 ## Day 1 (reel)
@@ -126,20 +126,21 @@ note: Illustrative. 30 years at 4%, 6% and 8% real growth. The full calculation 
 
 ### Slide 7 (scenarios)
 
-alt: Where the three lines sit against history: developed stock markets returned about 4 to 6% a year after inflation since 1900, so 4% is the low end of that range, 6% the high end, and 8% is above it. Rule: the low line is the stress test.
+alt: Where the three lines sit against history: developed stock markets returned about 4 to 6% a year after inflation since 1900, so 4% is the low end of that range, 6% the high end, and 8% is above it. Rule: many planners test against the low line. Source: Global Investment Returns Yearbook, 1900 to 2024; varies by country and era, and past returns do not set future ones.
 
 title: Where the lines sit against history
 case: 4% | the low end of the range since 1900
 case: 6% | the high end of that range
 case: 8% | above that range
-rule: The low line is the stress test
+rule: Many planners test against the low line
+note: Source: Global Investment Returns Yearbook, 1900 to 2024. Varies by country and era. Past returns do not set future ones.
 
 ### Slide 8 (closer)
 
-alt: Closing slide: A projection is a range, not a promise. Stress test the low case. Update it yearly. Save slide 5. On the blog: how to choose a growth assumption.
+alt: Closing slide: A projection is a range, not a promise. Many planners test the low case and update yearly. Save slide 5. On the blog: how to choose a growth assumption.
 
 kicker: A projection is a range, not a promise.
-line: Stress test the low case. Update it yearly.
+line: Many planners test the low case and update yearly.
 save: Save slide 5
 read: How to choose a growth assumption
 
@@ -173,7 +174,7 @@ Slide 5 is the one to keep: how to read any simulation honestly.
 
 The blog covers how the simulation was built and what it leaves out → link in bio
 
-Figures are illustrative and in real terms, from a reproducible simulation of developed market returns, 1900 to 2020, adjusted to a 6% average. Future returns are not guaranteed.
+Figures are illustrative and in real terms, from a reproducible simulation of developed market returns from the Macrohistory Database, 1900 to 2020, adjusted to a 6% average. Future returns are not guaranteed.
 
 Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.
 
@@ -227,13 +228,13 @@ rule: Keep the assumptions attached
 
 ### Slide 5 (tool)
 
-alt: Tool card, the honest reading: say in 90% of runs, with the assumptions attached; look at the 10th percentile, the bad luck run; ask whether you could live on it, and if not, change the plan.
+alt: Tool card, the honest reading: say in 90% of runs, with the assumptions attached; look at the 10th percentile, the bad luck run; ask whether you could live on it; if not, that is a signal, and whether savings, timing or the target changes depends on you.
 
 band: The honest reading
 lead: For any simulation result
 row: In 90% of runs | Say | teal | with its assumptions attached
 row: The 10th percentile | Look | ink | the bad luck run
-row: Could I live on it? | Ask | warn | if not, change the plan
+row: Could I live on it? | Ask | warn | if not, savings, timing or target may change
 also: Decide how much weight the model deserves.
 note: Illustrative.
 
@@ -299,7 +300,7 @@ d2_f2_time: 90 minutes later
 d2_f2_label: Yesterday's poll
 d2_f2_title: How far ahead have you ever projected your money?
 d2_f2_operator: Type the winning answer and its share as overlay text in the empty box.
-d2_f2_caption: Most people never project their net worth past five years
+d2_f2_caption: How far ahead people said they project their money
 
 d2_f3_kind: tool
 d2_f3_alt: Story version of the honest reading card: say in 90% of runs, look at the 10th percentile, ask whether you could live on it.

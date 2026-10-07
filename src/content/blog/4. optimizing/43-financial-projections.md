@@ -65,7 +65,7 @@ Most people never do this. They save what they can, invest in something reasonab
 
 ## Why projections beat gut feeling
 
-Gut feeling about long-horizon financial outcomes is systematically wrong, in one direction. Humans linearize things they should exponentialise. Ask someone what €500 a month invested at 5% real returns is worth in 30 years, and the typical answer will be far lower than the actual €415,000-ish (in today's purchasing power). We evolved to plan for tomorrow's meal, not for the geometric growth of capital compounding over decades.
+Gut feeling about long-horizon financial outcomes is systematically wrong, in one direction. Humans linearize things they should exponentialise. Ask someone what €500 a month invested at 5% real returns is worth in 30 years, and the typical answer will be far lower than the actual figure of about €408,000 (in today's purchasing power). We evolved to plan for tomorrow's meal, not for the geometric growth of capital compounding over decades.
 
 Three specific things a projection makes visible that gut feeling misses:
 
