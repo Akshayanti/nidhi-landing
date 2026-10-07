@@ -29,86 +29,32 @@ const monteCarloLaunch = await monteCarloReleaseDate();
 
 type ChangelogGroup =
   | { kind: 'single'; entry: ChangelogEntry; open: boolean }
-  | { kind: 'month' | 'year'; label: string; entries: ChangelogEntry[] };
+  | { kind: 'month'; label: string; entries: ChangelogEntry[] };
 
-function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | null; groups: ChangelogGroup[] } {
-  if (entries.length === 0) return { first: null, groups: [] };
+// How many entries after the latest stay open, so the most recent changes
+// (including any recent incident and its fix) are read in full.
+const OPEN_RECENT = 2;
 
-  const now = new Date();
-  const sevenDaysAgo  = new Date(now.getTime() -  7 * 24 * 60 * 60 * 1000);
-  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-  const thisYear  = now.getFullYear();
-  const thisMonth = now.getMonth(); // 0-indexed
-
+/**
+ * The latest entry is shown in full, the next OPEN_RECENT open below it.
+ * Everything older is kept word for word under one collapsed "Earlier
+ * changes" section, grouped by month, newest first. Nothing is dropped:
+ * the log is a record of what this notice said and when.
+ */
+function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | null; recent: ChangelogGroup[]; earlier: ChangelogGroup[]; earlierCount: number } {
+  if (entries.length === 0) return { first: null, recent: [], earlier: [], earlierCount: 0 };
   const [first, ...rest] = entries;
-  const groups: ChangelogGroup[] = [];
-
-  const expanded: ChangelogEntry[]   = [];  // ≤7 days, open
-  const collapsed: ChangelogEntry[] = [];  // 8–30 days, closed
-  const older: ChangelogEntry[]     = [];  // >30 days, grouped
-
-  for (const e of rest) {
-    const d = new Date(e.iso);
-    if (d >= sevenDaysAgo) {
-      expanded.push(e);
-    } else if (d >= thirtyDaysAgo) {
-      collapsed.push(e);
-    } else {
-      older.push(e);
-    }
+  const recent: ChangelogGroup[] = rest.slice(0, OPEN_RECENT).map((entry) => ({ kind: 'single', entry, open: true }));
+  const older = rest.slice(OPEN_RECENT);
+  const months = new Map<string, ChangelogEntry[]>();
+  for (const e of older) {
+    const key = new Date(e.iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
+    const bucket = months.get(key) ?? [];
+    bucket.push(e);
+    months.set(key, bucket);
   }
-
-  // Tier 1: ≤7 days, each gets its own open details.
-  for (const e of expanded) {
-    groups.push({ kind: 'single', entry: e, open: true });
-  }
-
-  // Tier 2: 8-30 days, each gets its own collapsed details.
-  for (const e of collapsed) {
-    groups.push({ kind: 'single', entry: e, open: false });
-  }
-
-  // Tier 3: >30 days, grouped by completed month or year.
-  if (older.length > 0) {
-    const monthGroups = new Map<string, ChangelogEntry[]>();
-    const yearGroups  = new Map<string, ChangelogEntry[]>();
-
-    for (const e of older) {
-      const d = new Date(e.iso);
-      const entryYear  = d.getFullYear();
-      const entryMonth = d.getMonth();
-
-      // Only group by month when the month is truly finished (we're past it).
-      // A July entry on July 31 is still in the current month, it goes into
-      // a year bucket instead so we don't show a premature "July 2026" group.
-      const monthComplete = entryYear < thisYear ||
-        (entryYear === thisYear && entryMonth < thisMonth);
-
-      if (monthComplete) {
-        const key = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-        const bucket = monthGroups.get(key) ?? [];
-        bucket.push(e);
-        monthGroups.set(key, bucket);
-      } else {
-        // Current-month entries >30d old (edge case, e.g. day-1 entry in a
-        // 31-day month) or prior-year entries: group by year.
-        const key = String(entryYear);
-        const bucket = yearGroups.get(key) ?? [];
-        bucket.push(e);
-        yearGroups.set(key, bucket);
-      }
-    }
-
-    // Year groups first (oldest), then month groups.
-    for (const [label, items] of yearGroups) {
-      groups.push({ kind: 'year', label, entries: items });
-    }
-    for (const [label, items] of monthGroups) {
-      groups.push({ kind: 'month', label, entries: items });
-    }
-  }
-
-  return { first, groups };
+  const earlier: ChangelogGroup[] = [...months].map(([label, items]) => ({ kind: 'month', label, entries: items }));
+  return { first, recent, earlier, earlierCount: older.length };
 }
 
 // Entries that appear with a launch rather than on the day they were written.
@@ -167,6 +113,7 @@ const writtenChangelog: ChangelogEntry[] = [
       'Social posts made from the upcoming Optimizing and Inclusive Finances lessons now follow the same "teach, don\'t prescribe" wording as the lessons: they describe what many people do and what depends on your situation instead of telling you what to do, carry their sources and assumptions, and drop claims stronger than the lessons make. The one-line teasers these posts use to point back to each lesson were updated to match, and one lesson figure was corrected (€500 a month at 5% a year after inflation for 30 years is about €408,000, using the same method as the lesson\'s other figures). The upcoming cash management lesson\'s FAQ no longer says rate-sensitive funds are fine for money needed within a year: their price drop when rates rise is immediate, as the lesson itself explains. Editorial only.',
       'Editorial pass over the 42 published lessons: claims stated more firmly than the evidence supports now say where the rule of thumb breaks, figures that disagreed between lessons now agree (long-run stock returns of about 4 to 6% a year after inflation, one threshold for high-interest debt, one order for emergency fund, debt and employer match), two figures were corrected against their sources (long-run bond returns, and how much more often investors sell winners than losers), and one attribution was fixed (what Robert Shiller\'s Nobel Prize recognised). The 36 lessons this changed now show today as their update date. Editorial only.',
       'Second editorial pass, "teach, don\'t prescribe": across all lessons, published and upcoming, wording that told readers what to do with their money (what to buy, which debt to pay first, which account to open) now explains what people commonly do, why, the evidence, where it breaks and what depends on your situation. Upcoming Optimizing and Inclusive Finances lessons were brought in line with the published figures, and a few errors were fixed along the way (a retirement formula, an example\'s arithmetic, and a statement that money-market funds are deposit-insured). Published lessons this changed show today as their update date. Editorial only.',
+      'This changelog is easier to read: the latest entry and the two before it are shown in full, and everything older sits under one collapsed "Earlier changes" section, grouped by month. Every entry is kept word for word; nothing was removed.',
       'This changelog now keeps one entry per day. Days that had several entries (May 25, October 1, October 5 and today) were combined into one each. Only repeated lines were dropped; no change was left out.',
     ],
   },
@@ -318,7 +265,7 @@ assertOneEntryPerDate(writtenChangelog);
 const changelog = mergeByDate([...launchEntries, ...writtenChangelog]);
 
 const groupedLog = groupChangelog(changelog);
-const { first, groups } = groupedLog;
+const { first, recent, earlier, earlierCount } = groupedLog;
 
 /**
  * Ask git when this file was last committed. Runs only at build time.
@@ -663,7 +610,8 @@ const privacyBreadcrumbSchema = {
         <h2 id="changelog">Changes to this notice</h2>
         <p class="changelog-intro">
           We update this page in place. Every change gets an entry in the log
-          below, newest first, no matter how small. Changes that affect
+          below, newest first, no matter how small. The latest few are shown in
+          full; older ones are kept word for word under &ldquo;Earlier changes&rdquo;. Changes that affect
           how we handle personal data (a new processor, a new category of data,
           a retention change) are flagged <strong>material</strong>.
         </p>
@@ -698,9 +646,8 @@ const privacyBreadcrumbSchema = {
             </li>
           )}
 
-          {/* Tiered entries: expanded (≤7d), collapsed (8–30d), grouped (>30d) */}
-          {groups.map((group) => (
-            group.kind === 'single' ? (
+          {/* The next most recent entries, open */}
+          {recent.map((group) => group.kind === 'single' && (
               <li class="changelog-entry">
                 <details open={group.open} class="changelog-collapse">
                   <summary class="changelog-collapseSummary">
@@ -722,36 +669,43 @@ const privacyBreadcrumbSchema = {
                   </div>
                 </details>
               </li>
-            ) : (
-              <li class="changelog-entry changelog-entry--group">
-                <details class="changelog-collapse">
-                  <summary class="changelog-collapseSummary">
-                    <div class="changelog-marker" aria-hidden="true"></div>
-                    <span class="changelog-groupLabel">{group.label}</span>
-                    <span class="changelog-groupCount">{group.entries.length} change{group.entries.length !== 1 ? 's' : ''}</span>
-                  </summary>
-                  <ol class="changelog-groupEntries">
-                    {group.entries.map((entry) => (
-                      <li class="changelog-groupEntry">
-                        <div class="changelog-head">
-                          <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
-                          {entry.material && (
-                            <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
-                          )}
-                        </div>
-                        <p class="changelog-summary">{entry.summary}</p>
-                        {entry.details && entry.details.length > 0 && (
-                          <ul class="changelog-details">
-                            {entry.details.map((d) => <li>{d}</li>)}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ol>
-                </details>
-              </li>
-            )
           ))}
+
+          {/* Everything older, word for word, under one collapsed section */}
+          {earlierCount > 0 && (
+            <li class="changelog-entry changelog-entry--group">
+              <details class="changelog-collapse">
+                <summary class="changelog-collapseSummary">
+                  <div class="changelog-marker" aria-hidden="true"></div>
+                  <span class="changelog-groupLabel">Earlier changes</span>
+                  <span class="changelog-groupCount">{earlierCount} change{earlierCount !== 1 ? 's' : ''}</span>
+                </summary>
+                {earlier.map((group) => group.kind === 'month' && (
+                  <section class="changelog-month" aria-label={group.label}>
+                    <h3 class="changelog-monthLabel">{group.label}</h3>
+                    <ol class="changelog-groupEntries">
+                      {group.entries.map((entry) => (
+                        <li class="changelog-groupEntry">
+                          <div class="changelog-head">
+                            <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
+                            {entry.material && (
+                              <span class="changelog-tag changelog-tag--material" aria-label="Material change">material</span>
+                            )}
+                          </div>
+                          <p class="changelog-summary">{entry.summary}</p>
+                          {entry.details && entry.details.length > 0 && (
+                            <ul class="changelog-details">
+                              {entry.details.map((d) => <li>{d}</li>)}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+              </details>
+            </li>
+          )}
         </ol>
       </section>
 
@@ -1090,6 +1044,26 @@ const privacyBreadcrumbSchema = {
     font-size: 0.75rem;
     color: var(--color-text-muted);
     font-family: var(--font-heading);
+  }
+
+  .changelog-month {
+    margin-top: var(--space-4);
+  }
+
+  /* Event names and paths (free_multi_currency_net_worth_shared_view_opened)
+     have no break points; let them wrap so a phone never scrolls sideways. */
+  .changelog-section {
+    overflow-wrap: anywhere;
+  }
+
+  .changelog-monthLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    margin: 0;
   }
 
   .changelog-groupEntries {
