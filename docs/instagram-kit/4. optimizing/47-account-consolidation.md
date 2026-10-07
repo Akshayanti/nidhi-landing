@@ -3,9 +3,9 @@ title: "Account Consolidation: Cleaning Up Financial Sprawl"
 blog_url: "https://nidhi.today/blog/account-consolidation-and-financial-data-hygiene/"
 chip: "Money, Compounding"
 hashtags_day1: "#financialorganization #moneyadmin #bankfees #expatfinances #nidhi"
-keywords_day1: "account consolidation, too many bank accounts, old bank accounts, dormant account fees, old pension, pension consolidation, savings accounts, credit cards, close a credit card, money admin, financial organisation, net worth tracking, personal finance, money abroad, global expats, Kontoführungsgebühren, Konten zusammenlegen, Altersvorsorge, frais bancaires, regrouper ses comptes, comisiones bancarias, cuentas bancarias"
+keywords_day1: "account consolidation, too many bank accounts, old bank accounts, dormant account fees, old pension, pension consolidation, savings accounts, credit cards, close a credit card, forgotten accounts, account fees, net worth tracking, personal finance, money abroad, global expats, Kontoführungsgebühren, Konten zusammenlegen, Altersvorsorge, frais bancaires, regrouper ses comptes, comisiones bancarias, cuentas bancarias"
 hashtags_day2: "#pensiontransfer #retirementsavings #workplacepension #expatpension #nidhi"
-keywords_day2: "pension transfer, transfer old pension, old workplace pension, pension pot, move my pension, pension withdrawal tax, early withdrawal penalty, direct transfer, tax wrapper, retirement account, pension scam, pension unlocking scam, personal finance, global expats, Rentenübertragung, Betriebsrente, transfert de retraite, épargne retraite, traspaso de plan de pensiones, plan de pensiones"
+keywords_day2: "moving a pension, transfer old pension, old workplace pension, pension pot, move my pension, pension withdrawal tax, early withdrawal penalty, direct transfer, tax wrapper, retirement account, pension scam, pension unlocking scam, personal finance, global expats, Rentenübertragung, Betriebsrente, transfert de retraite, épargne retraite, traspaso de plan de pensiones, plan de pensiones"
 ---
 
 ## Brief
@@ -18,7 +18,7 @@ withheld: How closing a card affects a credit score, every account type to list 
 
 angle: Forgotten accounts are not free; they leak money every year
 number: About €570 a year for Jiri: €180 in dormant fees, €210 in excess pension fees, €180 of interest his idle cash is not earning
-takeaway: List everything, give each account a job, close or move the rest.
+takeaway: Many people list everything, give each account a job, then move, close or keep the rest after comparing fees, protections and tax effects.
 tool: The four step clean up. Inventory, categorise, migrate, systematise.
 
 ## Day 1 (reel)
@@ -34,7 +34,7 @@ hashtags: #nidhi #nidhicompounding #hiddenfees #moneyhabits #savingtips
 
 ### Caption
 
-Every account you forgot about is still doing something. Usually costing you.
+Every account you forgot about is still doing something. Some of them are costing you.
 
 Jiri, 38, has 13 accounts at 7 institutions after ten years of jobs and offers. Three dormant ones charge €5 a month each: €180 a year. An old pension charges 0.75% where his current plan charges 0.05%: €210 a year on €30,000. And €6,000 sits in two old savings accounts at almost nothing, missing about €180 a year at an illustrative 3%. About €570 a year, for nothing.
 
@@ -96,13 +96,13 @@ The cost never arrives as !!one bill!!.
 
 ### Slide 5 (tool)
 
-alt: Tool card, the four step clean up: 1, inventory, list every account with its balance and fee; 2, categorise, essential, optimising or dormant; 3, migrate, move or close each dormant account; 4, systematise, two or three institutions and one yearly review.
+alt: Tool card, the four step clean up: 1, inventory, list every account with its balance and fee; 2, categorise, essential, optimising or dormant; 3, migrate, move, close or keep each dormant account, with a reason; 4, systematise, two or three institutions and one yearly review.
 
 band: The four step clean up
 lead: One weekend, then a few weeks of follow up
 row: Inventory | 1 | ink | every account, its balance and its fee
 row: Categorise | 2 | ink | essential, optimising or dormant
-row: Migrate | 3 | ink | move or close each dormant one
+row: Migrate | 3 | ink | move, close or keep, with a reason
 row: Systematise | 4 | teal | two or three institutions, one yearly review
 note: Illustrative. Rules and fees vary by provider and country.
 
@@ -118,10 +118,10 @@ rule: No clear job? Mark it for review
 
 ### Slide 7 (scenarios)
 
-alt: When to wait before closing or moving: a loan application coming, so hold off closing cards; an old plan with unusually low fees, so compare before moving; pending transactions, so let them settle first.
+alt: When to wait before closing or moving: a loan application coming, where credit scores apply, so card closures can wait; an old plan with unusually low fees, so compare before moving; pending transactions, so let them settle first.
 
 title: When to wait
-case: A loan application coming | hold off closing cards
+case: A loan application coming | where scores apply, closures can wait
 case: Very low fees in an old plan | compare before you move it
 case: Money still settling | let it clear first
 rule: Note why, and check yearly
@@ -137,10 +137,10 @@ read: How closing a credit card really affects a credit score
 
 ## Day 2 (angle)
 
-angle: An old pension must move provider to provider, never through your own account
+angle: An old pension usually moves provider to provider, not through your own account
 number: Paid out to Jiri, his €30,000 old pension could be counted as income: at an illustrative 30%, €9,000 in tax, with a penalty on top in some countries. A direct transfer moves all €30,000 as pension money.
-takeaway: Ask the new provider to request a direct transfer; stop if any form offers to pay the money to you.
-tool: The transfer check. Who starts it: your new provider. Where it goes: provider to provider. A form offers a payout: stop.
+takeaway: In many systems the new provider requests a direct transfer; a form offering to pay the money out is a signal to check the local process first.
+tool: The transfer check. Who starts it: often the new provider. Where it goes: provider to provider. A form offers a payout: pause and check.
 
 ## Day 2 (reel)
 
@@ -176,7 +176,7 @@ alt: One €30,000 old pension with two ways out: provider to provider, it stays
 asset: Old pension | €30,000
 route: Provider to provider | Stays pension money | teal | Can stay sheltered
 route: Through your account | Can become a withdrawal | warn | Shelter can be lost
-premise: Rules vary by country. The direct route is safe almost everywhere.
+premise: Rules vary by country. The direct route is the safer one in most systems.
 
 Two ways to move a pension. One can !!cost you!!.
 
@@ -212,46 +212,46 @@ bar: Direct transfer, still pension money | 30000 | €30,000 | teal
 bar: Paid out and taxed, outside the pension | 21000 | €21,000 | warn
 note: Illustrative. Before any penalty, which some countries add.
 
-The direct route keeps **every euro** working.
+The direct route leaves the full €30,000 as **pension money**.
 
 ### Slide 5 (tool)
 
-alt: Tool card, the transfer check: who starts it, your new provider; where it goes, straight from provider to provider; if any form offers to pay the money to you, stop and ask for a direct transfer.
+alt: Tool card, the transfer check: who starts it, often the new provider; where it goes, straight from provider to provider; if a form offers to pay the money to you, pause and check for a direct route first.
 
 band: The transfer check
 lead: Before you move any pension
-row: Who starts it? | Provider | teal | the new one requests it
-row: Where does it go? | Direct | teal | provider to provider, never to you
-row: A form offers a payout? | Stop | warn | ask for a direct transfer instead
+row: Who starts it? | Provider | teal | often the new one requests it
+row: Where does it go? | Direct | teal | provider to provider, not to you
+row: A form offers a payout? | Pause | warn | check for a direct route first
 also: Many pension systems offer a direct transfer, under different names.
 note: Illustrative. Not tax advice; rules vary by country.
 
 ### Slide 6 (scenarios)
 
-alt: If a payout already happened: contact both providers at once; ask whether a correction window exists; do not move the money again until they confirm the steps. Rule: rules and deadlines vary by country.
+alt: If a payout already happened: contact both providers at once; ask whether a correction window exists; ask what has to be repaid, which in some systems is the full original amount, not just what arrived. Rule: rules and deadlines vary by country.
 
 title: If a payout already happened
 case: Contact both providers | at once
 case: Ask about a correction window | some systems have one
-case: Do not move it again | until they confirm the steps
+case: Ask what has to go back | in some systems, the full amount
 rule: Rules and deadlines vary by country
 
 ### Slide 7 (scenarios)
 
-alt: The scam version: an unsolicited call or message about unlocking or moving your pension; pressure, a deadline or a special offer; and a request to move money somewhere you did not choose. Rule: start every transfer yourself.
+alt: The scam version: an unsolicited call or message about unlocking or moving your pension; pressure, a deadline or a special offer; and a request to move money somewhere you did not choose. Rule: only transfers you asked for, to a provider you chose.
 
 title: The scam version
 case: Out of the blue | a call about unlocking your pension
 case: Pressure | a deadline or a special offer
 case: Their choice of provider | not one you picked
-rule: Start every transfer yourself
+rule: Only transfers you asked for, to a provider you chose
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Pension money moves provider to provider. Never through your own account. Save slide 5. Also in the full post: which old accounts to keep, and why; how investments move without selling; and the four step clean up for every other account.
+alt: Closing slide: Pension money usually moves provider to provider. Paid to you first, it can become a withdrawal. Save slide 5. Also in the full post: which old accounts to keep, and why; how investments move without selling; and the four step clean up for every other account.
 
-kicker: Pension money moves provider to provider.
-line: Never through your own account.
+kicker: Pension money usually moves provider to provider.
+line: Paid to you first, it can become a withdrawal.
 save: Save slide 5
 more: Which old accounts to keep, and why
 more: How investments move without selling
@@ -279,7 +279,7 @@ d1_f3_caption: The four step clean up
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
 d2_f1_overlay: Moving an old pension?
-d2_f1_caption: The safe way to move an old pension
+d2_f1_caption: The safer way to move an old pension
 
 d2_f2_kind: result
 d2_f2_alt: Yesterday's poll question, how many financial accounts do you have, with an empty box for the result.
@@ -290,7 +290,7 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: How many accounts you have
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the transfer check: your new provider starts it, the money goes provider to provider, and you stop if any form offers a payout.
+d2_f3_alt: Story version of the transfer check: often the new provider starts it, the money goes provider to provider, and a form offering a payout is a reason to pause and check.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: The transfer check
 
