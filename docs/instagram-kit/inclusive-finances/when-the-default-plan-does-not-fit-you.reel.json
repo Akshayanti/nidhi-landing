@@ -82,7 +82,7 @@
     {
       "id": "who-it-pays",
       "layout": "routes-gap",
-      "narration": "Do you know who your pension pays if you die? Most people have never read that rule.",
+      "narration": "Do you know who your pension pays if you die? Many people have never read that rule.",
       "onscreenLines": [
         "Who does your pension pay?",
         "Read the rule",
@@ -154,9 +154,9 @@
     {
       "id": "b5",
       "kind": "definition",
-      "narration": "The fix is often one free form. A beneficiary designation, naming the partner.",
+      "narration": "The fix is often one free form. A beneficiary designation, naming the partner, where the scheme allows it.",
       "onscreenText": "One free form",
-      "subtext": "Name the partner",
+      "subtext": "Naming the partner",
       "emphasis": [
         "free"
       ],
@@ -168,7 +168,7 @@
     {
       "id": "b6",
       "kind": "example",
-      "narration": "Where a scheme will not accept it, the workaround is a will, plus life cover the partner owns.",
+      "narration": "Where a scheme will not accept it, a common workaround is a will, plus life cover the partner owns, depending on local law.",
       "onscreenText": "If the scheme refuses",
       "subtext": "A will, plus life cover they own",
       "emphasis": [],
@@ -180,7 +180,7 @@
     {
       "id": "b7",
       "kind": "list",
-      "narration": "So for every account that pays out, ask three questions. Who does it pay by default? Who is named today? And will the scheme accept my choice?",
+      "narration": "So for every account that pays out, there are three questions. Who does it pay by default? Who is named today? And will the scheme accept my choice?",
       "onscreenText": "Three questions",
       "subtext": "For every account that pays out",
       "emphasis": [
@@ -213,14 +213,14 @@
   ],
   "cta": {
     "approved": "save",
-    "narration": "Save this, and check one form this week.",
+    "narration": "Save this for every account that pays out.",
     "onscreenText": "Save the three questions",
     "subtext": "For every account that pays out",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nTwo employees, same job, same pension, both with a partner of fifteen years. One couple is married, one is not. Many schemes pay a spouse by default and, failing that, the estate, which follows inheritance rules that may leave an unmarried partner out. The fix is often one free form naming the partner. Where a scheme will not accept it, the workaround is a will plus life cover the partner owns.\n\nFor every account that pays out, ask: who does it pay by default, who is named today, and will the scheme accept my choice?\n\n→ Save this, and check one form this week\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules vary by scheme and country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nCheck who your pension pays. Rules vary by scheme and country.",
+    "instagram": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nTwo employees, same job, same pension, both with a partner of fifteen years. One couple is married, one is not. Many schemes pay a spouse by default and, failing that, the estate, which follows inheritance rules that may leave an unmarried partner out. The fix is often one free form naming the partner, where the scheme allows it. Where a scheme will not accept it, a common workaround is a will plus life cover the partner owns, depending on local law.\n\nThree questions for every account that pays out: who does it pay by default, who is named today, and will the scheme accept the choice?\n\n→ Save this for every account that pays out\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules vary by scheme and country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Same eighty thousand euro pension. In many schemes, a spouse is paid by default. An unmarried partner has to be named.\n\nThree questions show who a pension pays. Rules vary by scheme and country.",
     "instagramKeywords": [
       "pension beneficiary",
       "beneficiary form",
