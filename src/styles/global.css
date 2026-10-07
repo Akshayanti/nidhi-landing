@@ -4191,7 +4191,7 @@ body[data-page="landing"] .site-footer {
   }
   .lp-cardDesc { font-size: 0.9375rem !important; }
 
-  .nav-link, .footer-col a, .footer-social, .subscribe-rss,
+  .nav-link, .footer-col a, .footer-cookieSettings, .footer-social, .subscribe-rss,
   .subscribe-dismiss-link, .lp-tagFilterBtn, .lp-cardTag, .lp-cardTitle,
   .suggested-reading-list a, .lc-relatedAll, .lc-relatedAllSecondary,
   .mcnw-relatedAll, .mcnw-relatedAllSecondary {

@@ -20,24 +20,11 @@
 
 <script is:inline>
   (function() {
-    var consent = localStorage.getItem('nidhi-cookie-consent');
     var overlay = document.getElementById('cookie-overlay');
-
-    if (consent === 'accepted') {
-      overlay.style.display = 'none';
-      return;
-    }
-    if (consent === 'declined') {
-      overlay.style.display = 'none';
-      return;
-    }
-
-    overlay.style.display = 'flex';
-    requestAnimationFrame(function() { overlay.classList.add('cookie-overlay--visible'); });
-
     var acceptBtn = document.getElementById('cookie-accept');
     var declineBtn = document.getElementById('cookie-decline');
     var focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    var previousFocus = null;
 
     function trapFocus(e) {
       if (e.key !== 'Tab') return;
@@ -51,27 +38,53 @@
       }
     }
 
+    function openConsent() {
+      previousFocus = document.activeElement;
+      overlay.style.display = 'flex';
+      requestAnimationFrame(function() { overlay.classList.add('cookie-overlay--visible'); });
+      document.addEventListener('keydown', trapFocus);
+      // Focus the less-destructive button first
+      declineBtn.focus();
+    }
+
     function closeConsent(choice) {
-      localStorage.setItem('nidhi-cookie-consent', choice);
+      try { localStorage.setItem('nidhi-cookie-consent', choice); } catch (_) {}
       // Close first, so the prompt can never get stuck open.
       overlay.style.display = 'none';
-      // Before the SDK finishes loading (or when a blocker stops it), posthog
-      // is a stub without set_config; Analytics.astro's `loaded` callback then
-      // applies the stored consent once the SDK is ready.
-      if (choice === 'accepted' && window.posthog && typeof window.posthog.set_config === 'function') {
-        window.posthog.set_config({ autocapture: true, enable_heatmaps: true, capture_dead_clicks: true });
+      overlay.classList.remove('cookie-overlay--visible');
+      // Apply the choice to the running SDK straight away, both ways: a
+      // "No thanks" after an earlier "Sure" switches click recording off for
+      // the rest of this visit too. Before the SDK finishes loading (or when a
+      // blocker stops it), posthog is a stub without set_config;
+      // Analytics.astro reads the stored choice when it starts.
+      if (window.posthog && typeof window.posthog.set_config === 'function') {
+        var on = choice === 'accepted';
+        window.posthog.set_config({ autocapture: on, enable_heatmaps: on, capture_dead_clicks: on });
       }
       document.removeEventListener('keydown', trapFocus);
       // Return focus to the element that was focused before the overlay opened
       if (previousFocus) { try { previousFocus.focus(); } catch (_) {} }
     }
 
-    var previousFocus = document.activeElement;
     acceptBtn.addEventListener('click', function() { closeConsent('accepted'); });
     declineBtn.addEventListener('click', function() { closeConsent('declined'); });
-    document.addEventListener('keydown', trapFocus);
-    // Focus the less-destructive button first
-    declineBtn.focus();
+
+    // "Cookie settings" in the footer reopens this prompt, so a choice can be
+    // changed as easily as it was made.
+    document.addEventListener('click', function(e) {
+      var trigger = e.target && e.target.closest && e.target.closest('[data-cookie-settings]');
+      if (!trigger) return;
+      e.preventDefault();
+      openConsent();
+    });
+
+    var consent = null;
+    try { consent = localStorage.getItem('nidhi-cookie-consent'); } catch (_) {}
+    if (consent === 'accepted' || consent === 'declined') {
+      overlay.style.display = 'none';
+      return;
+    }
+    openConsent();
   })();
 </script>
 
