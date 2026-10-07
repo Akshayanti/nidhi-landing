@@ -62,7 +62,7 @@ The refund folder is labelled "fun, no guilt." The salary folder is labelled "se
 
 Most of the time these folders are harmless. The damage shows up in a few specific, expensive patterns.
 
-**Savings beside expensive debt.** This is the classic. Someone keeps 5,000 euros in an [emergency fund](/blog/emergency-fund/) earning maybe 2% a year, while carrying 5,000 euros of [credit card debt](/blog/how-to-get-out-of-debt/) costing 18% a year. The two never get compared, because one lives in the "savings" folder and the other in the "debt" folder. Put them on one line and the cost is stark: roughly 800 euros a year, paid for the comfort of watching a savings balance sit still.
+**Savings beside expensive debt.** This is the classic. Someone keeps 5,000 euros in an [emergency fund](/blog/emergency-fund/) earning maybe 2% a year, while carrying 5,000 euros of [credit card debt](/blog/how-to-get-out-of-debt/) costing 18% a year. The two never get compared, because one lives in the "savings" folder and the other in the "debt" folder. Put them on one line and the cost is stark: roughly 800 euros a year, paid for the comfort of a cash buffer. Some buffer is worth keeping, since card limits can be cut in a crisis, but probably not all of it.
 
 **Paying off the scary debt instead of the expensive one.** People often rush to clear a small debt that feels frightening, while a larger debt at a higher rate keeps quietly draining them. The small one closes a folder and feels like progress. The math would have preferred the expensive one die first.
 

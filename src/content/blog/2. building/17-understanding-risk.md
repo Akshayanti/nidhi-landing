@@ -2,7 +2,7 @@
 slug: "understanding-risk"
 title: "Understanding Risk: What It Actually Means for Your Money"
 description: "Risk isn't about losing everything. It's about how much things can move, and whether you have time to wait for them to move back."
-tldr: "Financial risk isn't danger. It's uncertainty. Volatility (short-term price swings) is different from permanent loss (the money is gone). Your risk tolerance is how much fluctuation you can stomach. Your risk capacity is how much you can afford to absorb based on your timeline and financial situation. Time transforms risk: over short periods, stocks can lose 30-40% of their value; over long periods, they've historically been the strongest wealth builder. The biggest risk most people overlook is doing nothing. Inflation erodes your purchasing power every year. Understanding risk lets you take the right amount: enough to grow, not so much that a downturn derails your plan."
+tldr: "Financial risk isn't danger. It's uncertainty. Volatility (short-term price swings) is different from permanent loss (the money is gone). Your risk tolerance is how much fluctuation you can stomach. Your risk capacity is how much you can afford to absorb based on your timeline and financial situation. Time transforms risk: over short periods, stocks can lose 30-40% of their value; over long periods, they've historically been the strongest wealth builder. A risk many people overlook is doing nothing. Inflation erodes the purchasing power of cash that earns less than it. Understanding risk lets you take the right amount: enough to grow, not so much that a downturn derails your plan."
 takeaways:
   - "Why volatility and permanent loss are not the same thing"
   - "How risk tolerance differs from risk capacity"
@@ -36,7 +36,7 @@ faq:
   - question: "How does time change investment risk?"
     answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 to 30 years, broadly diversified stock portfolios have historically been positive across almost every rolling window, though this is an average, not a guarantee, and individual markets have had losing 20-year stretches. The practical rule: money you need within 3 years stays in low-volatility savings, while money you will not touch for 5 years or more can absorb short-term swings in exchange for long-term growth."
   - question: "Is keeping money in a savings account actually risk-free?"
-    answer: "No. Cash carries inflation risk, which is the slow erosion of purchasing power. A savings account earning 1% while inflation runs at 2.5% loses 1.5% of its real value every year. Over 20 years, that compounds to roughly a 26% loss in what your money can actually buy, and the loss is certain rather than merely possible. Keeping everything safe protects you from short-term volatility while guaranteeing a long-term decline in real terms. The risk most people overlook is not market movement but inaction: choosing a guaranteed slow loss over a probable gain with some turbulence along the way."
+    answer: "No. Cash carries inflation risk, which is the slow erosion of purchasing power. A savings account earning 1% while inflation runs at 2.5% loses 1.5% of its real value every year. Over 20 years, that compounds to roughly a 26% loss in what your money can actually buy, and when rates stay below inflation that loss is close to certain. Keeping everything safe protects you from short-term volatility while making a long-term decline in real terms likely. A risk many people overlook is not market movement but inaction: accepting a likely slow loss to avoid a probable gain with some turbulence along the way."
   - question: "What are the main types of investment risk?"
     answer: "Market risk is the whole market moving against you, through a recession or crisis, and every investor faces it. Concentration risk is putting too much into one stock, sector, or country, which diversification reduces. Inflation risk is purchasing power erosion, hitting cash hardest. Liquidity risk is being unable to sell when you need to, or only at a steep discount, with real estate as the classic example. Credit risk is a borrower failing to repay a bond or loan. Currency risk is exchange rate changes affecting investments held in another currency. Understanding which risks you face lets you target the ones worth taking and reduce the ones that pay you nothing."
 ---
@@ -78,11 +78,11 @@ Your investment approach should match whichever is lower.
 
 ## How time transforms risk
 
-This is the single most important concept in understanding risk: time changes everything.
+This is one of the most important ideas in understanding risk: time changes the picture.
 
 Over any single year, the stock market can lose 30-40% of its value. That's happened multiple times in history. If you need your money in one year, investing is genuinely risky.
 
-Over 10 years, the range of outcomes narrows. Bad years are offset by good ones. Historical data shows that broadly diversified stock portfolios have been positive over almost every rolling 10-year period.
+Over 10 years, the range of outcomes narrows. Bad years are offset by good ones. In US data, broad stock portfolios have been positive over most rolling 10-year periods, though not all, and some other markets have had much longer losing stretches.
 
 Over 20-30 years, the probability of a positive outcome has been extremely high in historical data.
 
@@ -116,7 +116,7 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
   <rect class="fig-fill-blue" x="400" y="222" width="95" height="22" rx="2" />
   <text class="fig-sublabel" x="100" y="282" text-anchor="end">20 years</text>
   <rect class="fig-fill-blue" x="410" y="270" width="75" height="22" rx="2" />
-  <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks, then disappears.</text>
+  <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks; in US data it was gone by 20 years.</text>
 </svg>
 <figcaption>Illustrative; based on broad historical equity index returns. Bar widths represent the historical range, not a forecast.</figcaption>
 </figure>
@@ -127,17 +127,17 @@ This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction f
 
 ## The risk you don't see: doing nothing
 
-Most people intuitively understand the risk of investing: your portfolio might go down. Fewer people recognize the risk of not investing: your money definitely goes down in real terms.
+Most people intuitively understand the risk of investing: your portfolio might go down. Fewer people recognize the risk of not investing: your money goes down in real terms whenever it earns less than inflation, which cash often does.
 
 As we covered in the [purchasing power post](/blog/purchasing-power/), inflation erodes the value of cash every year. A savings account earning 1% with inflation at 2.5% loses 1.5% of its real value annually. Over 20 years, that adds up to roughly 26% lost.
 
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
-| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€38,700 at 7% |
+| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms at 4-6%, not guaranteed |
 | Keep in savings | Purchasing power erosion | Certain | €10,000 becomes ~€7,400 in real terms |
 | Keep as cash | Inflation + no interest | Certain | €10,000 becomes ~€6,100 in real terms |
 
-Avoiding risk isn't the safe choice. It's choosing a guaranteed slow loss over a probable gain with some turbulence along the way.
+Avoiding risk isn't automatically the safe choice. Over long periods it often means accepting a likely slow loss to avoid the turbulence that comes with a probable gain.
 
 ## Types of risk
 
@@ -184,7 +184,7 @@ The right amount of risk isn't maximum and it isn't zero. It's the amount that:
 
 1. **Separate your money by time horizon.** Money you need within 3 years stays in savings (low volatility, instant access). Money you won't need for 5+ years can be invested (accepting short-term swings for long-term growth)
 2. **Build your [emergency fund](/blog/emergency-fund/) before taking investment risk.** This is the buffer that prevents you from selling investments during a downturn
-3. **Recognize the risk of inaction.** Keeping everything "safe" isn't safe. Inflation is certain. Market volatility is temporary
+3. **Recognize the risk of inaction.** Keeping everything "safe" isn't safe. Inflation is persistent. Market drops have usually been temporary for patient, diversified investors, though not always quickly
 4. **Match risk to the lower of your tolerance and capacity.** High risk tolerance + low risk capacity = still low risk. Low risk tolerance + high risk capacity = still low risk. Both need to align
 5. **Don't try to eliminate risk.** You can't. You can only choose the type. The goal is the right amount for your situation and timeline
 

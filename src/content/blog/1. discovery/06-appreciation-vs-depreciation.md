@@ -6,7 +6,7 @@ tldr: "Appreciation means an asset gains value over time. Depreciation means it 
 takeaways:
   - "What separates appreciating assets from depreciating ones"
   - "How compound interest grows savings and debt alike"
-  - "Why time is the most powerful lever in compounding"
+  - "Why time is often the most powerful lever in compounding"
 order: 6
 pubDate: 2026-04-29
 updatedDate: 2026-06-03
@@ -33,11 +33,11 @@ faq:
   - question: "How does compound interest work?"
     answer: "Compound interest means you earn a return on your original amount plus all the interest already accumulated, so your interest earns interest. It differs from simple interest, which pays only on the starting amount. The gap is large over time: €1,000 at 7% for 30 years grows to about €3,100 with simple interest but roughly €7,612 with compounding, more than double. The same mechanism works in reverse on debt: a credit card balance compounds against you. Three levers drive it: the rate, the amount invested, and time, with time being the most powerful."
   - question: "Why does starting to invest early matter so much?"
-    answer: "Because time is the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €263,000 and Person B about €244,000. The earlier starter invested one-third as much and finished ahead. Ten extra years of compounding beat thirty years of triple contributions, which is why starting now beats waiting for the perfect moment."
+    answer: "Because time is often the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €263,000 and Person B about €244,000. The earlier starter invested one-third as much and finished ahead. At a steady 7%, ten extra years of compounding beat thirty years of triple contributions; with lower or bumpier returns the gap narrows, but the lesson holds, which is why starting now beats waiting for the perfect moment."
   - question: "Is a car an asset or a depreciating expense?"
     answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years. You count it at current market value, but you should not expect it to build wealth. The practical move is to minimize depreciation: buy a reliable used car rather than new, and avoid financing it at a high rate, which stacks interest on top of falling value."
   - question: "What kinds of assets typically appreciate?"
-    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, and real estate about 3 to 4% per year in most markets. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. The takeaway is to channel money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
+    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. The takeaway is to channel money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
 ---
 
 You've got [assets](/blog/assets/) on one side and [liabilities](/blog/liabilities/) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.
@@ -50,7 +50,7 @@ Appreciation is when something increases in value over time.
 - An index fund purchased for €5,000 that grows to €12,000 has appreciated
 - Even a savings account appreciates (slowly) when it earns interest
 
-Historically, broad stock market investments have returned around 4-6% per year after inflation across major developed markets, with US historical data sitting at the higher end of this range and most non-US developed markets sitting closer to 4-5% (Dimson, Marsh and Staunton's long-run dataset). Real estate has appreciated at roughly 3-4% per year in most markets. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
+Historically, broad stock market investments have returned around 4-6% per year after inflation across major developed markets, with US historical data sitting at the higher end of this range and most non-US developed markets sitting closer to 4-5% (Dimson, Marsh and Staunton's long-run dataset). Residential property prices have tended to rise a little faster than inflation over long periods in many markets, with very large differences by country and city. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
 
 The key insight: appreciation rewards patience. The longer you hold an appreciating asset, the more it compounds.
 
@@ -85,7 +85,7 @@ Compound interest has three variables:
 
 1. **The rate.** Higher returns mean faster growth. A 7% return compounds much faster than a 2% return
 2. **The amount.** More money compounding means more growth. This is why saving matters
-3. **Time.** The most important lever. The longer your money compounds, the more dramatic the effect
+3. **Time.** Often the most powerful lever over long horizons. The longer your money compounds, the more dramatic the effect
 
 When these levers work **for** you, when you're saving and investing, the result is wealth building. When they work **against** you, when you're carrying high-interest debt, the result is a debt spiral.
 
@@ -106,7 +106,7 @@ Two savers. Both invest €200 per month at a 7% average return.
 
 At age 65, Person A has roughly €263,000. Person B has roughly €244,000.
 
-Person A invested one-third as much money and ended up with more. Ten extra years of compounding beat thirty years of triple contributions. Time is the lever you can't get back.
+Person A invested one-third as much money and ended up with more. At a steady 7%, ten extra years of compounding beat thirty years of triple contributions; with lower or bumpier returns the gap narrows, but time is still the lever you can't get back.
 
 ## Appreciating vs. depreciating assets: a practical guide
 

@@ -6,7 +6,7 @@ tldr: "Cash flow is the movement of money in and out of your life over a period 
 takeaways:
   - "What cash flow is and how to work out yours"
   - "Why variable expenses are where you have the most control"
-  - "Why your savings rate says more than your salary"
+  - "Why your savings rate is a better progress signal than salary alone"
 order: 10
 pubDate: 2026-05-08
 updatedDate: 2026-06-07
@@ -38,7 +38,7 @@ faq:
   - question: "What does a healthy cash flow look like?"
     answer: "There is no single right number, but a common guideline splits income three ways: spend no more than 50 percent on needs such as housing, food, transport, and insurance; keep at least 20 percent for savings, debt repayment, or investing; and use the remaining 30 percent for wants. These are rough targets, not strict rules, and a high-cost city may push needs higher. The warning sign is when needs consume around 80 percent of income, because that leaves almost nothing to build with. The exact split matters less than having a deliberate surplus rather than spending whatever happens to be left."
   - question: "How is savings rate related to cash flow?"
-    answer: "Your savings rate is your cash flow expressed as a percentage of income: (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, your 600 surplus is a 20 percent savings rate. This single number reveals your financial trajectory better than your salary does. Someone earning 6,000 euros at a 5 percent rate builds wealth slower than someone earning 3,000 at 20 percent. A common benchmark is 20 percent, but direction matters more than the exact figure. Track it monthly: rising means your wealth engine is accelerating, falling means something changed and deserves attention."
+    answer: "Your savings rate is your cash flow expressed as a percentage of income: (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, your 600 surplus is a 20 percent savings rate. For tracking whether you are building wealth, this number often says more than your salary alone. Someone earning 6,000 euros at a 5 percent rate builds wealth slower than someone earning 3,000 at 20 percent. A common benchmark is 20 percent, but direction matters more than the exact figure. Track it monthly: rising means your wealth engine is accelerating, falling means something changed and deserves attention."
 ---
 
 If [net worth](/blog/what-is-net-worth/) is a snapshot of your finances, cash flow is the video. It shows you the movement. Where money comes from, where it goes, and whether you're moving forward or standing still.
@@ -98,7 +98,7 @@ Once you know your cash flow number, turn it into a percentage:
 
 > Savings Rate = (Income - Expenses) x 100 / Income
 
-If you earn €3,000 and spend €2,400, your savings rate is 20%. That single number tells you more about your financial trajectory than your salary does. Someone earning €6,000 with a 5% savings rate is building wealth slower than someone earning €3,000 with a 20% savings rate.
+If you earn €3,000 and spend €2,400, your savings rate is 20%. For tracking whether you are building wealth, that number often tells you more than your salary alone. Someone earning €6,000 with a 5% savings rate is building wealth slower than someone earning €3,000 with a 20% savings rate.
 
 <figure>
   <svg viewBox="0 0 880 430" role="img" aria-labelledby="fig-cf-title fig-cf-desc" xmlns="http://www.w3.org/2000/svg">
@@ -136,4 +136,4 @@ Cash flow and net worth are linked. As we discussed in the [income vs. wealth po
 
 Positive cash flow each month means your [assets](/blog/assets/) grow (or your [liabilities](/blog/liabilities/) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
 
-That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, that's where it should go first: your financial safety net before anything else. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. The order matters: stabilize, then optimize.
+That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, a starter cushion is usually the first place it goes: your financial safety net. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. The order matters: stabilize, then optimize.

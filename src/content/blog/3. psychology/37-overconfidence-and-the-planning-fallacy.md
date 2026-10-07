@@ -1,8 +1,8 @@
 ---
 slug: "overconfidence-and-the-planning-fallacy"
 title: "Overconfidence: Why Almost Everyone Thinks They're Above Average"
-description: "Overconfidence: most people rate themselves above average, which is mathematically impossible. It makes us trade too much and underestimate every plan."
-tldr: "Overconfidence is the tendency to overrate our own abilities, knowledge, and luck. Most people rank themselves above average at things where half of everyone must by definition be below average. In money, it shows up as excessive trading, concentrated bets, and the belief that we can pick winners. Its close cousin is the planning fallacy: we systematically underestimate how long things take and how much they cost, including our own savings plans, which is why 'I'll save more once I earn more' rarely happens. The antidote is the outside view: instead of asking how your plan will go, ask how plans like it usually go, and use those base rates. In practice that means setting conservative assumptions, diversifying instead of concentrating, trading less, and building a margin of safety into every projection."
+description: "Overconfidence: most people rate themselves above average, which cannot be true of most people at once. It makes us trade too much and underestimate every plan."
+tldr: "Overconfidence is the tendency to overrate our own abilities, knowledge, and luck. Most people rank themselves above average at things where half of everyone must by definition be below the middle. In money, it shows up as excessive trading, concentrated bets, and the belief that we can pick winners. Its close cousin is the planning fallacy: we systematically underestimate how long things take and how much they cost, including our own savings plans, which is why 'I'll save more once I earn more' rarely happens. The antidote is the outside view: instead of asking how your plan will go, ask how plans like it usually go, and use those base rates. In practice that means setting conservative assumptions, diversifying instead of concentrating, trading less, and building a margin of safety into every projection."
 takeaways:
   - "Why most people overrate their own investing skill"
   - "How overconfidence leads to overtrading and concentrated bets"
@@ -40,9 +40,9 @@ referentialReading:
     type: "book"
 ---
 
-Ask a room full of people whether they are above-average drivers, and roughly nine in ten hands go up.
+Ask people whether they are above-average drivers, and most say yes: in one classic study of US students, around nine in ten did.
 
-This cannot be true. "Average" is the line with half of everyone below it. By definition, a large chunk of that confident room is wrong about themselves. They are not lying. They genuinely believe it. And the exact same thing happens when you ask people whether they are above-average investors.
+This cannot be true. The middle driver has half of everyone below them. By definition, a large chunk of those confident people are wrong about themselves. They are not lying. They genuinely believe it. And the exact same thing happens when you ask people whether they are above-average investors.
 
 Marcus, a friend who works in tech and reads the financial press every morning, was certain he could spot good companies before the market did. For two years he traded actively, buying what looked promising, selling what looked tired. He felt sharp and engaged the whole time. When he finally compared his results to what a boring, do-nothing index fund would have returned over the same period, he had underperformed it, before even counting the time he had spent.
 

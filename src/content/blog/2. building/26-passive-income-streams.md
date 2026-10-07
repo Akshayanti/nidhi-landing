@@ -20,7 +20,7 @@ faq:
   - question: "What counts as genuine passive income?"
     answer: "Genuine passive income is money you earn without trading time for it in the moment, after effort invested upfront. The honest sources are dividends from stocks and funds, interest from bonds and cash, rental income from property, royalties from creative or intellectual assets, and distributions from businesses where you do not work day to day. Most online 'passive income' such as blogs, newsletters, and YouTube channels is active business income in disguise: it needs ongoing content, customer attention, and operations. A useful test is whether the income keeps arriving if you stop working on it for a month. Dividends keep arriving; a dropshipping store does not."
   - question: "How much capital do I need for €1,000 a month of passive income?"
-    answer: "It depends on yield, and the numbers are larger than most marketing suggests. To generate €12,000 a year you need roughly €600,000 at a 2% broad equity dividend yield, €400,000 at 3%, €300,000 at a 4% mix, €240,000 at 5% net rental yield, and €150,000 at a riskier 8%. Higher yields usually carry higher risk or higher management load, so '8% passive' is rarely as passive or as safe as '2% passive'. Replacing even a modest salary therefore takes a portfolio measured in hundreds of thousands of euros, built over years rather than months."
+    answer: "It depends on yield, and the numbers are larger than most marketing suggests. To generate €12,000 a year you need roughly €600,000 at a 2% broad equity dividend yield, €400,000 at 3%, €300,000 at a 4% mix, €240,000 at 5%, above typical net rental yields of 2 to 4%, and €150,000 at a riskier 8%. Higher yields usually carry higher risk or higher management load, so '8% passive' is rarely as passive or as safe as '2% passive'. Replacing even a modest salary therefore takes a portfolio measured in hundreds of thousands of euros, built over years rather than months."
   - question: "What is the difference between yield and total return?"
     answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. During accumulation, focus on total return. Yield matters more later, in the drawdown phase, when you are actually living off the portfolio."
   - question: "Is rental property really passive income?"
@@ -100,8 +100,8 @@ To generate €1,000 per month (€12,000 per year) of passive income at differe
 |---|---|
 | 2% (broad equity dividend) | €600,000 |
 | 3% (balanced portfolio income) | €400,000 |
-| 4% (higher-yield mix; aligns with the 4% safe-withdrawal-rate assumption) | €300,000 |
-| 5% (rental yields net; some REITs) | €240,000 |
+| 4% (higher-yield mix; yield only, unlike the 4% withdrawal rule, which also spends principal) | €300,000 |
+| 5% (above typical net rental yields of 2-4%; some REITs) | €240,000 |
 | 8% (riskier credit / specific sectors) | €150,000 |
 
 A few observations:

@@ -1,7 +1,7 @@
 ---
 slug: "diversification"
 title: "Diversification: Why You Don't Put All Your Eggs in One Basket"
-description: "Diversification sounds like a platitude. In practice, it's the single most effective way to reduce risk without reducing return."
+description: "Diversification sounds like a platitude. In practice, it's one of the few ways to reduce risk without giving up much expected return."
 tldr: "Diversification means spreading your money across investments that don't all rise and fall together. The goal isn't to pick winners. It's to make sure no single loser can take you down. You diversify across asset types (stocks, bonds, real estate), across geography (multiple countries), across industries, and across time (dollar-cost averaging). Concentration is the hidden risk in most portfolios: one employer, one country, one sector. Diversification is often called the only free lunch in finance because it genuinely reduces risk without proportionally reducing expected return, but only if the things you hold actually behave differently from each other."
 takeaways:
   - "Why diversification depends on how holdings move together"

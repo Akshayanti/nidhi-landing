@@ -122,7 +122,7 @@ The "right answer" is usually less dramatic than the question suggests. Over 30 
 
 ## Automation: the system that beats willpower
 
-The single biggest predictor of whether you invest consistently is whether you have to make the decision every month.
+One of the strongest influences on whether you invest consistently is whether you have to make the decision every month.
 
 If investing requires willpower (logging in, transferring money, choosing what to buy), you will eventually skip a month. Then two. Then you stop.
 
@@ -184,11 +184,11 @@ If you want a fast way to reason about compounding without opening a spreadsheet
 | Annual return | Years to double |
 |---|---|
 | 3% (high-yield savings) | ~24 years |
-| 5% (balanced portfolio real return) | ~14 years |
-| 7% (equity-heavy real return) | ~10 years |
+| 5% (illustrative balanced portfolio, nominal) | ~14 years |
+| 7% (illustrative equity-heavy, nominal) | ~10 years |
 | 10% (optimistic nominal) | ~7 years |
 
-So €10,000 invested at a 7% real return doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years. That's four doublings over a working career; each one adds more in absolute euros than the last. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
+So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. After inflation, at the 4-6% real returns stocks have historically delivered, each doubling takes closer to 12 to 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
 
 It's a shortcut, not a formula, but it's close enough for most mental-math decisions about when money will double, how inflation will erode purchasing power, or whether a given rate is worth chasing.
 
@@ -198,7 +198,7 @@ If you can contribute €50 a month, contribute €50 a month. You can increase 
 
 Think of this as the minimum viable setup, not a final portfolio:
 
-1. **Confirm your foundation first.** [Emergency fund](/blog/emergency-fund/) in place (3-6 months of expenses). [High-interest debt](/blog/how-to-get-out-of-debt/) handled. If either of those is missing, fix it before you invest
+1. **Confirm your foundation first.** [Emergency fund](/blog/emergency-fund/) in place (3-6 months of expenses). [High-interest debt](/blog/how-to-get-out-of-debt/) handled. If either is missing, that usually comes first, with one common exception: an employer match, which is worth capturing early if you can afford it
 2. **Pick one account type to start.** If your employer offers matching, the employer-sponsored scheme is almost always the first move, at least up to the match. Otherwise, open a regular brokerage account or a tax-advantaged retirement account, whichever suits your time horizon
 3. **Pick one or two funds.** A broad global stock index fund covers most of the job. Optionally add a bond fund if you want stability
 4. **Set the automation.** Standing order from current account to investment account on payday. Recurring buy of your chosen fund

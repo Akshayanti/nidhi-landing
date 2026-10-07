@@ -34,7 +34,7 @@ faq:
   - question: "Why does a higher salary not always make you wealthier?"
     answer: "Because spending often rises to match income, a pattern called lifestyle inflation. When a raise arrives, the bigger apartment, newer car, and more frequent dinners out absorb it. The income went up, but the gap between income and spending stayed the same or shrank, so net worth stayed flat. If your spending always matches your income, you build zero wealth regardless of how much you earn. Wealth comes from the difference between income and spending over time, not from the size of the paycheck alone. A modest salary with discipline beats a large salary with no margin."
   - question: "What is a savings rate and why does it matter?"
-    answer: "Your savings rate is the share of income you keep rather than spend, calculated as (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, you save 600, a 20 percent savings rate. It matters because it is one of the strongest predictors of long-term wealth, stronger than salary. Someone earning 6,000 euros at a 5 percent savings rate builds wealth slower than someone earning 3,000 at 20 percent. Tracking this single number shows whether your wealth engine is accelerating or stalling, no matter what your income does."
+    answer: "Your savings rate is the share of income you keep rather than spend, calculated as (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, you save 600, a 20 percent savings rate. It matters because, for any given salary, it is one of the biggest levers you control over how fast wealth builds. Someone earning 6,000 euros at a 5 percent savings rate builds wealth slower than someone earning 3,000 at 20 percent. Tracking this single number shows whether your wealth engine is accelerating or stalling, no matter what your income does."
   - question: "How do I shift from income thinking to wealth thinking?"
     answer: "Income thinking asks how to earn more. Wealth thinking asks how to keep more of what you earn. Make three practical shifts. First, track the gap between what comes in and what goes out, not just your salary, because that gap is your wealth engine. Second, automate saving by moving a fixed amount to savings the day your salary arrives, rather than saving whatever is left at month end. Third, resist the upgrade: when income grows, hold your spending steady for at least three months and let the extra flow into savings before you adjust your lifestyle."
   - question: "Why is reducing spending often faster than earning more?"
@@ -75,7 +75,7 @@ Wealth isn't complicated. It comes down to one relationship:
 
 > Wealth = Income - Spending (over time)
 
-You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both. But if you had to pick one to focus on first, reducing spending gives you faster results because every euro saved is a euro earned, tax-free.
+You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both. If you had to pick one to start with, reducing spending often gives faster results, because every euro saved is a euro earned, tax-free. If your budget is already lean, growing your income may be the bigger lever.
 
 <figure>
   <svg viewBox="0 0 880 460" role="img" aria-labelledby="fig-iw-title fig-iw-desc" xmlns="http://www.w3.org/2000/svg">
@@ -112,7 +112,7 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
 
 Three practical shifts:
 
-1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income, and it's one of the strongest predictors of long-term wealth
+1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income, and it's one of the biggest levers on long-term wealth that you control
 2. **Automate the save.** Move a fixed amount to savings the day your salary arrives, not at the end of the month with whatever is left
 3. **Resist the upgrade.** When your income grows, keep your spending steady for at least three months. Let the extra flow into savings first
 

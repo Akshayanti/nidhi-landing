@@ -4,6 +4,7 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { relative } from 'node:path';
 import { isMonteCarloReleased, monteCarloReleaseDate } from '../utils/monte-carlo/release.ts';
+import { assertOneEntryPerDate, mergeByDate, type ChangelogEntry } from '../utils/privacyChangelog.ts';
 
 /**
  * Privacy-notice changelog. Newest first. Every edit to this page gets an
@@ -25,14 +26,6 @@ import { isMonteCarloReleased, monteCarloReleaseDate } from '../utils/monte-carl
 // dated with the launch, not with the day the code was written.
 const showMonteCarlo = await isMonteCarloReleased();
 const monteCarloLaunch = await monteCarloReleaseDate();
-
-interface ChangelogEntry {
-  date: string;          // "Month D, YYYY" for display
-  iso: string;           // YYYY-MM-DD for machines + <time datetime>
-  material: boolean;
-  summary: string;
-  details?: string[];
-}
 
 type ChangelogGroup =
   | { kind: 'single'; entry: ChangelogEntry; open: boolean }
@@ -118,8 +111,8 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
   return { first, groups };
 }
 
-const changelog: ChangelogEntry[] = [
-  ...(showMonteCarlo && monteCarloLaunch
+// Entries that appear with a launch rather than on the day they were written.
+const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
     ? [
         {
           date: monteCarloLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
@@ -136,179 +129,50 @@ const changelog: ChangelogEntry[] = [
           ],
         },
       ]
-    : []),
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: false,
-    summary: 'Lessons end with "What you now understand", and two homepage sections get more room.',
-    details: [
-      'Every lesson and Inclusive Finances guide now ends with a short "What you now understand" list restating its main ideas, before the free tool and the previous and next links. It sits in a tinted box that mirrors the TL;DR at the top. Lessons with a free tool that did not yet name the idea it puts into practice now do.',
-      'On the homepage, numbered lessons in "Start wherever you are" keep their titles beside their numbers, and "nidhi grows with your financial life" has more space between stages.',
-      'The short social videos made from lessons no longer mention a free tool before that tool is available.',
-      'No change to what data is collected.',
-    ],
-  },
+    : [];
+
+// One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
+const writtenChangelog: ChangelogEntry[] = [
   {
     date: 'Oct 7, 2026',
     iso: '2026-10-07',
     material: true,
-    summary: 'Starting routes on the homepage become doors, lessons show where they sit in their level, and lessons with a free tool end in a Learn, Understand, Apply path.',
+    summary: 'A homepage that leads with learning, starting routes you can follow, lessons that show where you are and end with what you now understand, a simpler one-currency net worth view, Frankfurter named in the notice, and OpenAI\'s training crawler blocked.',
     details: [
-      '"Start wherever you are": each situation now shows its lessons as a numbered route, names the free tools that go with it, and ends in one button into the route. If you have read lessons on that route, the button moves to the first one you have not read, and once you have read them all it points to the learning path. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored.',
-      'Each lesson in Discovery, Building, Psychology, Optimizing and Mastery now says where it sits in its level (for example "Lesson 8 of 16") at the top and above the previous and next links, with a link to that level on the learning path. The numbers come from the published lessons when the site is built; nothing about your reading is used.',
-      'Lessons with a paired free tool end in a short path: the lesson you read, the idea in one line where the lesson gives one, and a link to the tool. Two more lessons now link to the net worth calculator: What Is Net Worth and Managing Money Across Currencies.',
-      'New data-attr labels, so consented interaction analytics can tell the new links apart: home-start-basics-door, home-start-no-plan-door, home-start-habits-door and home-start-complex-door for the route buttons, home-start-<route>-tool-1 and -tool-2 for the tool links on the routes, and post-series-top and post-series-bottom for the level links on lessons. Without consent, these clicks are not captured.',
-      'The learning path page is now titled "Learn Personal Finance", and the subscription pages, the topic list, the free tools page, the about page and the beliefs page call them lessons or the learning path instead of "the blog". The newsletter itself, and what it collects, are unchanged.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: false,
-    summary: 'OpenAI\'s training crawler is now blocked, and the summary we offer AI tools describes the learning path by its name.',
-    details: [
-      'robots.txt, the file that tells crawlers which pages they may read, now blocks GPTBot, the crawler OpenAI uses to gather training data. OAI-SearchBot, which powers ChatGPT search and links back to our pages, stays allowed.',
-      'llms.txt, the plain-text summary of the site for AI tools, now calls the lessons the learning path instead of the blog, and opens with who nidhi is for: people starting out as well as people whose finances have grown more complex, with or without more than one currency.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: false,
-    summary: 'The Inclusive Finances hub joins the sitemap on its own once its first guide is published.',
-    details: [
-      'The sitemap is the list of pages we offer to search engines. The Inclusive Finances hub stays out of it while it has no published guides, as before, and is now added automatically in the same update that publishes the first one, dated by its most recently published or updated guide.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: true,
-    summary: 'The net worth calculator gets a simpler view for one currency, and Inclusive Finances gets a place of its own on the homepage and the learning path.',
-    details: [
+      'Lessons: every lesson and Inclusive Finances guide now ends with a short "What you now understand" list restating its main ideas, in a tinted box that mirrors the TL;DR at the top, before the free tool and the previous and next links.',
+      'Lessons: each lesson in Discovery, Building, Psychology, Optimizing and Mastery says where it sits in its level (for example "Lesson 8 of 16") at the top and above the previous and next links, with a link to that level on the learning path. The numbers come from the published lessons when the site is built; nothing about your reading is used.',
+      'Lessons: those with a paired free tool end in a short path: the lesson you read, the idea in one line, and a link to the tool. Two more lessons now link to the net worth calculator: What Is Net Worth and Managing Money Across Currencies.',
+      'Homepage, "Start wherever you are": each situation shows its lessons as a numbered route, names the free tools that go with it, and ends in one button into the route. If you have read lessons on that route, the button moves to the first one you have not read, and once you have read them all it points to the learning path. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored.',
+      'Homepage: numbered lessons keep their titles beside their numbers, "nidhi grows with your financial life" has more space between stages, and on phones the example chart is drawn narrower so its labels stay readable. Small labels are at least 12 pixels, and the "Free Tools" menu button in the header is at least 24 pixels tall, the minimum size for a tap target.',
+      'Homepage redesign: the page now leads with the free lessons and tools: where to start for your situation, which lesson goes with which tool, and how nidhi keeps up as finances get more complex. The planner and its early-access list come after them. The early-access form in the hero is gone; the one further down is the same form, sending and storing exactly what it did before. A short FAQ on the homepage is also published as structured data for search engines.',
+      'Homepage: if you have read lessons on the learning path, it suggests the next one, using the same nidhi-reading-progress key. Without any reading progress it suggests the first lesson.',
+      'Homepage: the multi-currency example no longer contacts Frankfurter (the European Central Bank exchange-rate service) when the page loads, and the page no longer opens a connection to it in advance. The request is made only if you press "Add it up in euros at today\'s rates", and it carries none of the amounts on the page or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type.',
+      'Frankfurter in the notice: until now it was mentioned only in changelog entries. "Where it lives" now has a paragraph on it: when your browser contacts it, what the request contains, and what it reveals. Earlier entries said the request carries "no personal data". That was imprecise: it carries only currency codes, never your amounts, but like any request your browser makes it shows Frankfurter your IP address and browser type, and an IP address can count as personal data. The earlier entries stay as written, as a record; this corrects them. Nothing changed in what the site sends.',
+      'New data-attr labels, so consented interaction analytics can tell links apart: on the homepage home-hero-start-learning, home-hero-tools, home-hero-first-lesson, home-hero-continue, home-start-* (including the route buttons home-start-basics-door, home-start-no-plan-door, home-start-habits-door and home-start-complex-door, and the route tool links home-start-<route>-tool-1 and -tool-2), home-pair-lesson-*, home-tools-all, home-grows-*, home-mc-convert, home-mc-tool, home-editorial-policy, home-privacy and home-faq-*; on lessons post-series-top and post-series-bottom. Without consent, these clicks are not captured, as before; only the anonymous pageviews described above are recorded.',
       'Net worth calculator: when everything you enter is in your own currency, the results show what you own, what you owe and your net worth, instead of a currency chart and per-currency risk cards. This view needs no exchange rates. Add something in another currency and the currency chart and risk cards appear as before. Wording now says "your currency" instead of "functional currency". Everything still runs in your browser, and nothing new is sent or stored.',
-      'Inclusive Finances, once its first guide is published: a full-width card in "Start wherever you are" on the homepage, listing the situations the guides cover and linking to all of them, and a card beside the numbered levels on the learning path. They use the existing data-attr labels home-inclusive-finances and blog-index-inclusive-hub, so consented interaction analytics can tell them apart. Without consent, these clicks are not captured.',
-      'The trust section on the homepage now says nidhi is built for different households, countries, abilities and ways of working.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: false,
-    summary: 'Homepage and header readability on phones.',
-    details: [
-      'On phones the homepage example chart is drawn narrower, so its labels stay readable instead of shrinking below 10 pixels, and small labels are now at least 12 pixels.',
-      'The "Free Tools" menu button in the header is now at least 24 pixels tall, the minimum size for a tap target.',
-      'The line under "Start wherever you are" gives the number of lessons without listing the levels, which the cards below already name.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: true,
-    summary: 'Named Frankfurter, the exchange-rate service, in "Where it lives", and corrected how we described its requests.',
-    details: [
-      'Until now Frankfurter was mentioned only in changelog entries, not in the main notice. "Where it lives" now has a paragraph on it: when your browser contacts it, what the request contains, and what it reveals.',
-      'Earlier entries said the request carries "no personal data". That was imprecise: it carries only currency codes, never your amounts, but like any request your browser makes it shows Frankfurter your IP address and browser type, and an IP address can count as personal data. The earlier entries stay as written, as a record; this entry corrects them.',
-      'Nothing changed in what the site sends. This corrects the description, not the behaviour.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: false,
-    summary: 'Renamed "Blog" to "Learn" in the navigation, and the multi-currency net worth tool to "Net worth calculator".',
-    details: [
-      'The navigation link and breadcrumbs now say "Learn" and the footer link says "Learning path". They still lead to /blog/, and the links keep their nav-blog and footer-blog labels.',
-      'The net worth tool is now called the net worth calculator, since it works with one currency as well as several. Its address (/free/multi-currency-net-worth/) and its link labels are unchanged.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 7, 2026',
-    iso: '2026-10-07',
-    material: true,
-    summary: 'Homepage redesign: learning first, a "continue learning" link, and no exchange-rate request until you ask for one.',
-    details: [
-      'The homepage now leads with the free lessons and tools: where to start for your situation, which lesson goes with which tool, and how nidhi keeps up as finances get more complex. The planner and its early-access list come after them. The early-access form in the hero is gone; the one further down is the same form, sending and storing exactly what it did before.',
-      'If you have read lessons on the learning path, the homepage now suggests the next one. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored. Without any reading progress the page simply suggests the first lesson.',
-      'The multi-currency example no longer contacts Frankfurter (the European Central Bank exchange-rate service) when the page loads, and the page no longer opens a connection to it in advance. The request is made only if you press "Add it up in euros at today\'s rates", and it carries none of the amounts on the page or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type.',
-      'New data-attr labels on the homepage links and buttons (home-hero-start-learning, home-hero-tools, home-hero-first-lesson, home-hero-continue, home-start-*, home-pair-lesson-*, home-tools-all, home-grows-*, home-mc-convert, home-mc-tool, home-editorial-policy, home-privacy and home-faq-*), so consented interaction analytics can tell them apart. Without consent, these clicks are not captured, as before; only the anonymous pageviews described above are recorded.',
-      'A short FAQ on the homepage, also published as structured data for search engines. No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 5, 2026',
-    iso: '2026-10-05',
-    material: false,
-    summary: 'Multi-currency net worth: an interactive currency chart.',
-    details: [
-      'Pointing at, tapping or selecting a currency in the chart or its legend highlights it and shows its share and amount. The legend now lists amounts as well as shares. Shared links that hide amounts still hide them.',
-      'Percentages follow your spending currency\'s number format, to match the amounts beside them.',
-      'A currency with no exchange rate is left out of the chart and named underneath, instead of being drawn at a size that mixed two currencies.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 5, 2026',
-    iso: '2026-10-05',
-    material: false,
-    summary: 'Blog index layout: numbered posts in two columns on wide screens, and a tidier subscribe box.',
-    details: [
-      'On wide screens each level\'s posts sit in two columns, numbered in reading order, with a note to read left to right, then down. Phones keep one column.',
-      'The subscribe box puts the email field and button on one row, with the RSS link and the dismiss links beneath. Nothing changes in what the form sends or stores.',
-      'Removed the line promising new posts every Monday, Wednesday and Friday, which no longer matched the publishing schedule.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 5, 2026',
-    iso: '2026-10-05',
-    material: false,
-    summary: 'Homepage: one continuous page, worked examples you can hover, and richer tool cards.',
-    details: [
-      'The homepage no longer snaps between full-screen sections; it scrolls as one page with even spacing.',
-      'The examples in the hero are now calculated from the assumptions printed under each chart, and you can point at or tap a chart to read its values. The multi-currency example converts its amounts at the day\'s European Central Bank rates in your browser, through the same Frankfurter service the page already used; the request now asks for the US dollar and Indian rupee rates instead of only the dollar, and still carries no personal data.',
-      'The free tools and reading links appear as cards with small previews.',
-      'No change to what data is collected.',
-    ],
-  },
-  {
-    date: 'Oct 5, 2026',
-    iso: '2026-10-05',
-    material: false,
-    summary: 'Loan comparison: a readable, interactive balance chart.',
-    details: [
-      'The balance-over-time chart has a years axis, more gridlines, and lines told apart by dash pattern as well as colour. Pointing at it, tapping it or using the arrow keys shows each loan\'s remaining balance and the interest paid so far. All of this runs in your browser.',
-      'The payment-split chart now shows whole amounts in your currency\'s usual format.',
-      'No change to what data is collected.',
+      'Inclusive Finances, once its first guide is published: a full-width card in "Start wherever you are" on the homepage, listing the situations the guides cover and linking to all of them, and a card beside the numbered levels on the learning path, using the existing data-attr labels home-inclusive-finances and blog-index-inclusive-hub. The hub joins the sitemap, the list of pages we offer to search engines, in the same update, dated by its most recently published or updated guide.',
+      'Names: the navigation link and breadcrumbs say "Learn" and the footer link says "Learning path". They still lead to /blog/ and keep their nav-blog and footer-blog labels. The learning path page is titled "Learn Personal Finance", and the subscription pages, the topic list, the free tools page, the about page and the beliefs page call them lessons or the learning path instead of "the blog". The newsletter itself, and what it collects, are unchanged. The net worth tool is now called the net worth calculator; its address (/free/multi-currency-net-worth/) and link labels are unchanged.',
+      'The trust section on the homepage says nidhi is built for different households, countries, abilities and ways of working.',
+      'Crawlers and AI tools: robots.txt, the file that tells crawlers which pages they may read, now blocks GPTBot, the crawler OpenAI uses to gather training data. OAI-SearchBot, which powers ChatGPT search and links back to our pages, stays allowed. llms.txt, the plain-text summary of the site for AI tools, calls the lessons the learning path and opens with who nidhi is for.',
+      'The short social videos made from lessons no longer mention a free tool before that tool is available.',
+      'Editorial pass over the 42 published lessons: claims stated more firmly than the evidence supports now say where the rule of thumb breaks, figures that disagreed between lessons now agree (long-run stock returns of about 4 to 6% a year after inflation, one threshold for high-interest debt, one order for emergency fund, debt and employer match), two figures were corrected against their sources (long-run bond returns, and how much more often investors sell winners than losers), and one attribution was fixed (what Robert Shiller\'s Nobel Prize recognised). Editorial only.',
+      'This changelog now keeps one entry per day. Days that had several entries (May 25, October 1, October 5 and today) were combined into one each. Only repeated lines were dropped; no change was left out.',
     ],
   },
   {
     date: 'Oct 5, 2026',
     iso: '2026-10-05',
     material: true,
-    summary: 'Fixed two kinds of analytics that could run without your consent, and a bug that could leave the cookie banner stuck open.',
+    summary: 'Fixed two kinds of analytics that could run without your consent and a cookie banner that could stick open, plus interactive charts in both tools, a continuous homepage, a two-column learning path, and tool links inside articles.',
     details: [
-      'What went wrong: two PostHog features, page-speed measurements ("web vitals") and clicks on things that did not respond ("dead clicks"), were switched on in our PostHog project settings. Our site code did not switch them off for visitors who had not accepted the cookie banner, so they ran for those visitors too. In the 30 days before the fix that was 59 page-speed events and 8 dead-click events across 23 visits. They carried no name, email or user ID, but they went beyond the anonymous pageviews this policy promises without consent.',
-      'What changed: the site now sets every PostHog capture feature itself instead of leaving any to the project settings. Dead clicks are recorded only after you accept, together with heatmaps and autocaptured clicks. Page-speed measurements and browser error capture are off for everyone.',
+      'Analytics, what went wrong: two PostHog features, page-speed measurements ("web vitals") and clicks on things that did not respond ("dead clicks"), were switched on in our PostHog project settings. Our site code did not switch them off for visitors who had not accepted the cookie banner, so they ran for those visitors too. In the 30 days before the fix that was 59 page-speed events and 8 dead-click events across 23 visits. They carried no name, email or user ID, but they went beyond the anonymous pageviews this policy promises without consent.',
+      'Analytics, what changed: the site now sets every PostHog capture feature itself instead of leaving any to the project settings. Dead clicks are recorded only after you accept, together with heatmaps and autocaptured clicks. Page-speed measurements and browser error capture are off for everyone. The "Only if you click Sure, that\'s fine" list above now names dead clicks explicitly and says page-speed measurements and browser errors are not recorded.',
       'Cookie banner: if you clicked "Sure, that\'s fine" before the analytics script finished loading, or with an ad blocker that stops it, the banner could stay open. It now always closes, and your choice is applied as soon as the script loads, or never if it is blocked.',
-      'The "Only if you click Sure, that\'s fine" list above now names dead clicks explicitly and says page-speed measurements and browser errors are not recorded.',
-    ],
-  },
-  {
-    date: 'Oct 5, 2026',
-    iso: '2026-10-05',
-    material: false,
-    summary: 'Some blog posts now mention their paired free tool once inside the article, at the point where it helps, as well as in the "Free tool" card after the article.',
-    details: [
-      'The mention is a plain link to the tool page (for example /free/loan-comparison). No new data collection, forms, localStorage keys, or third-party calls.',
-      'The link carries a data-attr label (post-inline-tool-loan-comparison or post-inline-tool-multi-currency-net-worth), separate from the card\'s post-tool label, so consented interaction analytics can tell the two placements apart. Without consent, nothing is captured, as before.',
+      'Multi-currency net worth: pointing at, tapping or selecting a currency in the chart or its legend highlights it and shows its share and amount. The legend lists amounts as well as shares. Shared links that hide amounts still hide them. Percentages follow your spending currency\'s number format, and a currency with no exchange rate is left out of the chart and named underneath, instead of being drawn at a size that mixed two currencies.',
+      'Loan comparison: the balance-over-time chart has a years axis, more gridlines, and lines told apart by dash pattern as well as colour. Pointing at it, tapping it or using the arrow keys shows each loan\'s remaining balance and the interest paid so far, all in your browser. The payment-split chart shows whole amounts in your currency\'s usual format.',
+      'Homepage: it no longer snaps between full-screen sections and scrolls as one page. The examples in the hero are calculated from the assumptions printed under each chart, and you can point at or tap a chart to read its values. The multi-currency example converts its amounts at the day\'s European Central Bank rates in your browser, through the same Frankfurter service the page already used; the request now asks for the US dollar and Indian rupee rates instead of only the dollar. The free tools and reading links appear as cards with small previews.',
+      'Learning path: on wide screens each level\'s posts sit in two columns, numbered in reading order, with a note to read left to right, then down. Phones keep one column. The subscribe box puts the email field and button on one row, with the RSS link and the dismiss links beneath; nothing changes in what the form sends or stores. Removed the line promising new posts every Monday, Wednesday and Friday, which no longer matched the publishing schedule.',
+      'Some posts mention their paired free tool once inside the article, at the point where it helps, as well as in the "Free tool" card after it. The mention is a plain link to the tool page with its own data-attr label (post-inline-tool-loan-comparison or post-inline-tool-multi-currency-net-worth), so consented interaction analytics can tell the two placements apart. Without consent, nothing is captured, as before.',
     ],
   },
   {
@@ -337,21 +201,13 @@ const changelog: ChangelogEntry[] = [
     date: 'Oct 1, 2026',
     iso: '2026-10-01',
     material: false,
-    summary: 'Blog posts that pair with one of our free tools now show a "Free tool" card after the article.',
+    summary: 'Added the Inclusive Finances collection and per-level buttons on the learning path, and posts that pair with a free tool now show a "Free tool" card after the article.',
     details: [
-      'The card is a plain link to the tool page (for example /free/loan-comparison). No new data collection, forms, localStorage keys, or third-party calls. The tools themselves work as before.',
-      'The link carries a data-attr label (for example post-tool-loan-comparison) so consented interaction analytics can tell it apart from other links. Without consent, nothing is captured, as before.',
-    ],
-  },
-  {
-    date: 'Oct 1, 2026',
-    iso: '2026-10-01',
-    material: false,
-    summary: 'Added the Inclusive Finances collection (a hub page at /blog/inclusive-finances/, optional follow-up posts on the learning path, and a homepage link) and per-level buttons on the learning path.',
-    details: [
-      'No new data collection, forms, localStorage keys, or third-party calls. The hub and the new posts are static pages like the rest of the blog.',
+      'Inclusive Finances: a hub page at /blog/inclusive-finances/, optional follow-up posts on the learning path, and a homepage link. The hub and the new posts are static pages like the rest of the blog.',
       'Read status for the new posts, and the new "Mark the level as read" and "Mark the level as unread" buttons, use the existing nidhi-reading-progress key, which stays in your browser only. "Skip to next" and "Go to previous" only scroll the page.',
-      'The new homepage card, the hub link on the blog page, and the level buttons carry data-attr labels (for example home-inclusive-finances and lp-mark-level-read-discovery) so consented interaction analytics can tell them apart from other links. Without consent, nothing is captured, as before.',
+      'The "Free tool" card is a plain link to the tool page (for example /free/loan-comparison). The tools themselves work as before.',
+      'The new links carry data-attr labels (for example home-inclusive-finances, lp-mark-level-read-discovery and post-tool-loan-comparison) so consented interaction analytics can tell them apart from other links. Without consent, nothing is captured, as before.',
+      'No new data collection, forms, localStorage keys, or third-party calls.',
     ],
   },
   {
@@ -368,21 +224,12 @@ const changelog: ChangelogEntry[] = [
     date: 'May 25, 2026',
     iso: '2026-05-25',
     material: true,
-    summary: 'Added product-launch waitlist signup on the landing page.',
+    summary: 'Added a product-launch waitlist signup on the landing page, and a single reminder for newsletter subscribers who have not confirmed.',
     details: [
       'New waitlist form on the homepage for people who want one email when nidhi launches. Single opt-in (no confirmation email). Separate from the blog newsletter: different Apps Script backend, different sheet tab, different purpose.',
       'New localStorage key nidhi-waitlist-signedup. Stored only in your browser. Set when you submit the waitlist form, so we hide the form on future visits. Contains only a status flag and timestamp, never your email address. Cleared when you clear your browser site data.',
       'Waitlist subscribers stored in a dedicated "beta waitlist" tab in the same Google Sheet as the newsletter. Collects: email, source page, signup timestamp. No confirmation tokens, no unsubscribe tokens (single opt-in).',
-    ],
-  },
-  {
-    date: 'May 25, 2026',
-    iso: '2026-05-25',
-    material: true,
-    summary: 'Added a single pending-subscriber reminder for the blog newsletter.',
-    details: [
-      'If you submit the newsletter form but do not click the confirmation link within 3 days, we send exactly one reminder email asking you to finish subscribing. Sent between 9 AM and 12 PM Prague time (CET/CEST). After that, no further reminders.',
-      'No new data collected. No change to processors, storage, or retention. The pending status was already tracked; this only adds a time-bound, single-use email triggered by that status.',
+      'Newsletter reminder: if you submit the newsletter form but do not click the confirmation link within 3 days, we send exactly one reminder email asking you to finish subscribing. Sent between 9 AM and 12 PM Prague time (CET/CEST). After that, no further reminders. No new data collected and no change to processors, storage, or retention; the pending status was already tracked.',
     ],
   },
   {
@@ -455,6 +302,9 @@ const changelog: ChangelogEntry[] = [
     ],
   },
 ];
+
+assertOneEntryPerDate(writtenChangelog);
+const changelog = mergeByDate([...launchEntries, ...writtenChangelog]);
 
 const groupedLog = groupChangelog(changelog);
 const { first, groups } = groupedLog;

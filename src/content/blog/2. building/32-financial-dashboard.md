@@ -25,7 +25,7 @@ faq:
   - question: "What should I deliberately not track?"
     answer: "Some numbers invite checking without rewarding you for it. Daily portfolio value is noise unless you are a day trader, which you are not. Individual stock prices are irrelevant if you hold index funds, since the fund is the position and the stocks inside it are implementation detail. Most market news is entertainment, and very little of it requires action from a long-term investor. Your friends' finances are a drag on clarity, and social-proof-driven decisions are among the worst category of financial decisions. Removing these from your attention is not neglect; it is focus. The dashboard's job is to tell you when something is genuinely off and otherwise to get out of the way."
   - question: "What is the minimum viable financial dashboard?"
-    answer: "Start with four numbers monthly: net worth, income, expenses, and savings rate. If you can do just these, you already have about 80% of the dashboard value. The format matters less than the discipline, so a notebook or a simple spreadsheet with columns for date, total assets, total liabilities, net worth, monthly income, monthly expenses, monthly savings, savings rate, and notes is plenty. The notes column is underrated: writing why net worth dropped this month, a vacation or a car repair, prevents misinterpretation later. Add quarterly depth such as asset allocation and goal progress gradually, and schedule the annual review as a half-day appointment. A dashboard maintained imperfectly beats one you abandon."
+    answer: "Start with four numbers monthly: net worth, income, expenses, and savings rate. If you can do just these, you already have most of the dashboard's value. The format matters less than the discipline, so a notebook or a simple spreadsheet with columns for date, total assets, total liabilities, net worth, monthly income, monthly expenses, monthly savings, savings rate, and notes is plenty. The notes column is underrated: writing why net worth dropped this month, a vacation or a car repair, prevents misinterpretation later. Add quarterly depth such as asset allocation and goal progress gradually, and schedule the annual review as a half-day appointment. A dashboard maintained imperfectly beats one you abandon."
 relatedSlugs: ["financial-health-metrics", "setting-financial-goals", "introduction-to-financial-independence", "cash-flow-101", "passive-income-streams"]
 referentialReading:
   - title: "Personal Finance Dashboards"
@@ -49,7 +49,7 @@ Neither works. The goal is a dashboard: a small, known set of metrics, reviewed 
 
 Most of your net worth, most of the time, doesn't move because of anything you did this week. It moves because of markets, inflation, and the slow compounding of contributions. Those forces operate on timescales of months and years, not days.
 
-A dashboard should match those timescales. Net worth is a monthly story; asset allocation is a quarterly story; full financial health is an annual story. Checking any of those at daily resolution gives you noise, not signal. Noise invites action. Action, in personal finance, is almost always unhelpful: rebalancing on an impulse, selling in a panic, chasing a fund that had a good week.
+A dashboard should match those timescales. Net worth is a monthly story; asset allocation is a quarterly story; full financial health is an annual story. Checking any of those at daily resolution gives you noise, not signal. Noise invites action. Action taken on noise is almost always unhelpful: rebalancing on an impulse, selling in a panic, chasing a fund that had a good week.
 
 The dashboard's job is to tell you when something is genuinely off, and otherwise to get out of the way.
 
@@ -61,7 +61,7 @@ The monthly check-in is the heartbeat. It should take 15-30 minutes. Four number
 
 **Cash flow for the month.** Income minus expenses for the calendar month, as covered in the [cash flow post](/blog/cash-flow-101/). Tells you whether you're actually living below your means this month, not just on average.
 
-**Savings rate.** (Income - expenses) ÷ income. This is the single most predictive metric of long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence/) showed. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
+**Savings rate.** (Income - expenses) ÷ income. It is one of the biggest levers you control, as the [FIRE post](/blog/introduction-to-financial-independence/) showed, though returns, taxes, pensions and time shape the outcome too. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
 
 **Debt balances.** Especially for high-interest debt in payoff mode. Are balances falling each month as expected? If not, why?
 
@@ -168,7 +168,7 @@ For goal-tracking, a separate sheet with the template from the [goals post](/blo
 ## What you can do
 
 1. **Pick a monthly date and calendar it.** Same day each month (first weekend, last Sunday) helps the habit stick. Missed months cost less than missed quarters
-2. **Start small.** Net worth, income, expenses, savings rate. If you can do just these four monthly, you have 80% of the dashboard value
+2. **Start small.** Net worth, income, expenses, savings rate. If you can do just these four monthly, you have most of the dashboard's value
 3. **Add quarterly depth gradually.** Asset allocation, goal progress, currency mix. These can start rough and refine over quarters
 4. **Schedule the annual review.** Put it on the calendar as a half-day appointment with yourself. This single block produces most of the real strategic decisions
 5. **Write context notes during check-ins.** They cost you nothing and protect you from misreading past drops

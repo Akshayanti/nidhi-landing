@@ -33,14 +33,14 @@ faq:
   - question: "What is an emergency fund?"
     answer: "An emergency fund is money set aside specifically for unexpected, necessary expenses like job loss, medical bills, urgent car repairs, or home repairs. It's cash you can access immediately, not investments."
   - question: "How much should I have in my emergency fund?"
-    answer: "Start with one month of essential expenses as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months if your income is stable, six months if it's variable."
+    answer: "Start with one month of essential expenses as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months is a common starting point for stable income, six or more for variable income; strong unemployment benefits or good insurance can lower the number, while self-employment or being a single earner can raise it."
   - question: "Where should I keep my emergency fund?"
     answer: "In a separate savings account, high-yield savings account, or money market account. It must be accessible within 24 hours and not exposed to market risk. Keep it separate from your everyday spending account so it doesn't get spent accidentally."
   - question: "What counts as an emergency?"
     answer: "An emergency is unexpected, urgent, and necessary. Car broke down and you need it for work? Emergency. Flight deal to Barcelona? Not an emergency. Dental emergency? Emergency. Phone upgrade? Not an emergency."
 ---
 
-If there's one thing that separates people who recover from financial shocks from people who get knocked down by them, it's this: a cash reserve for emergencies.
+One of the biggest things that separates people who recover from financial shocks from people who get knocked down by them is a cash reserve for emergencies.
 
 Not investments. Not credit. Actual cash you can access today.
 
@@ -95,11 +95,11 @@ Think of it as your financial shock absorber. It doesn't prevent the bump. It st
 
 There are two targets:
 
-**Mini emergency fund: one month of essential expenses.** This covers most small surprises: a car repair, a medical copay, a small home fix. Build this first, before anything else. Use essential expenses (rent, food, insurance, minimum debt payments, utilities) rather than gross salary so the target is the same regardless of how much you earn or save.
+**Mini emergency fund: one month of essential expenses.** This covers most small surprises: a car repair, a medical copay, a small home fix. For most people this comes first, before extra debt payments or investing. Use essential expenses (rent, food, insurance, minimum debt payments, utilities) rather than gross salary so the target is the same regardless of how much you earn or save.
 
 **Full emergency fund: three to six months of essential expenses.** This covers the big ones: primarily job loss but can also mean unexpected emergencies. "Essential expenses" means rent, food, insurance, minimum debt payments, and utilities. Not dining out, not entertainment, not subscriptions.
 
-Three months if you have a stable job, good health, and a strong support network. Six months if your income is variable, your field has high turnover, or you have health concerns.
+Three months is a common starting point if you have a stable job, good health, and a strong support network. Six months or more makes sense if your income is variable, your field has high turnover, you are the only earner, or you have health concerns. Where unemployment benefits are strong or your insurance is comprehensive, you may need less.
 
 ## Where to keep it?
 
@@ -132,6 +132,6 @@ If you're using the fund for non-emergencies, it won't be there when you actuall
 
 ## The connection to everything else
 
-The emergency fund is the foundation of your financial plan. Without it, every other step, from [paying off debt](/blog/how-to-get-out-of-debt/) to investing to building wealth, rests on unstable ground. One unexpected expense and the whole plan collapses into debt. With it, you have the stability to make long-term decisions instead of reactive ones.
+The emergency fund is the foundation of your financial plan. Without it, every other step, from [paying off debt](/blog/how-to-get-out-of-debt/) to investing to building wealth, rests on unstable ground. One unexpected expense can push the whole plan into debt. With it, you have the stability to make long-term decisions instead of reactive ones.
 
 Now that you have a safety net in place, it's time to look at what drives your finances month to month. In the next post, we'll explore the relationship between income and wealth, and why earning more doesn't automatically mean being wealthier.

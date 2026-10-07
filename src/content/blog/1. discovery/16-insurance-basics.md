@@ -38,7 +38,7 @@ faq:
   - question: "How much insurance do I actually need?"
     answer: "The goal is covering losses you could not absorb on your own, not insuring everything. The right amount is neither zero, since one event could derail your finances, nor maximum, since over-insuring wastes cash flow on unlikely scenarios. A useful rule of thumb: insure what you cannot afford to lose, and self-insure what you can. Insurance makes sense when a potential loss is large, would derail your goals if paid from savings, and is unlikely but high-impact. It is less valuable for small losses, when the premium is high relative to the expected payout, or when the thing insured would not meaningfully affect your financial plan."
   - question: "What are the most common insurance mistakes?"
-    answer: "Four mistakes recur. Under-insuring to save money: skipping disability cover saves perhaps 50 euros a month, but a year-long disability can cost over 40,000 euros in lost income. Over-insuring out of anxiety: extended warranties, gadget cover, and travel insurance for a cheap weekend trip are often more profitable for the insurer than for you. Not reviewing coverage: your needs change with marriage, children, a mortgage, or a job change, so review annually. Ignoring deductibles: a lower premium often means a higher deductible, the amount you pay before insurance kicks in, so make sure your emergency fund can cover it comfortably."
+    answer: "Four mistakes recur. Under-insuring to save money: skipping disability cover saves perhaps 50 euros a month, but a year-long disability can cost over 40,000 euros in lost income; the chance is small, but if public benefits would leave a big gap, that is the kind of loss insurance exists for. Over-insuring out of anxiety: extended warranties, gadget cover, and travel insurance for a cheap weekend trip are often more profitable for the insurer than for you. Not reviewing coverage: your needs change with marriage, children, a mortgage, or a job change, so review annually. Ignoring deductibles: a lower premium often means a higher deductible, the amount you pay before insurance kicks in, so make sure your emergency fund can cover it comfortably."
 ---
 
 You spent six months building an [emergency fund](/blog/emergency-fund/). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.
@@ -203,11 +203,11 @@ Think of insurance as the defensive layer around your net worth. It doesn't grow
 
 ## Common mistakes
 
-**Under-insuring to save money.** Skipping disability insurance saves €50 per month. A disability that lasts a year costs €40,000+ in lost income. The math doesn't favor the savings.
+**Under-insuring to save money.** Skipping disability insurance saves €50 per month. A disability that lasts a year can cost €40,000+ in lost income. The chance is small, but if public benefits would leave a big gap, it is exactly the kind of loss insurance exists for.
 
 **Over-insuring out of anxiety.** Insuring every small risk adds up. Extended warranties, gadget insurance, travel insurance for a €200 weekend trip, these are often more profitable for the insurer than for you.
 
-**Not reviewing coverage.** Your insurance needs change as your life changes. A single person with no dependents doesn't need life insurance. A parent with a mortgage and two children does. Review annually.
+**Not reviewing coverage.** Your insurance needs change as your life changes. A single person with no dependents often doesn't need life insurance. A parent with a mortgage and two children usually does, unless savings or a partner's income would cover the gap. Review annually.
 
 **Ignoring deductibles.** A lower premium often means a higher deductible (the amount you pay out of pocket before insurance kicks in). Make sure you can afford the deductible from your emergency fund.
 

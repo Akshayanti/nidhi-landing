@@ -34,9 +34,9 @@ faq:
   - question: "What are the four main asset classes?"
     answer: "The four core asset classes are stocks, bonds, real estate, and cash equivalents. Stocks make you part owner of a company, returning money through price appreciation and dividends, with the highest historical returns but the most volatility. Bonds are loans to a government or company that pay interest, more stable but barely beating inflation. Real estate is physical property generating rent and appreciation, offering both income and growth but very low liquidity. Cash equivalents, such as savings accounts and money market funds, are the safest but lose purchasing power over time. Each behaves differently under different economic conditions, which is precisely why diversified portfolios combine all four rather than relying on any single one."
   - question: "How do stocks generate returns?"
-    answer: "Stocks generate returns in two ways. The first is capital appreciation: the share price rises over time as the underlying company grows and becomes more valuable. The second is dividends, which are regular cash payments distributed from company profits, though not every company pays them. Broad stock markets have historically returned roughly 5% to 7% per year after inflation across developed markets, higher than any other major asset class over long periods. The catch is volatility. In any given year a diversified stock portfolio might gain 25% or lose 30%, and broad indices have had negative years roughly one year in four. Stocks suit money you will not need for at least 5 years, ideally 10 or more."
+    answer: "Stocks generate returns in two ways. The first is capital appreciation: the share price rises over time as the underlying company grows and becomes more valuable. The second is dividends, which are regular cash payments distributed from company profits, though not every company pays them. Broad stock markets have historically returned roughly 4% to 6% per year after inflation across developed markets, more than bonds or cash over most long periods, though not every decade. The catch is volatility. In any given year a diversified stock portfolio might gain 25% or lose 30%, and broad indices have had negative years roughly one year in four. Stocks suit money you will not need for at least 5 years, ideally 10 or more."
   - question: "Why do bonds belong in a portfolio if stocks return more?"
-    answer: "Bonds provide stability and predictable income rather than growth. When you buy a bond you lend money to a government or company that pays you interest, called the coupon, and returns your principal at maturity. Government bonds have historically returned roughly 2% to 3% after inflation, corporate bonds slightly more. The real value shows up when stock markets crash: high-quality government bonds often rise as investors seek safety, acting as a buffer that cushions the portfolio. Bonds protect capital rather than build it, so a portfolio of only bonds will not grow your wealth meaningfully. They are the counterweight to stocks, smoothing the ride so you are less likely to panic and sell at the bottom."
+    answer: "Bonds provide stability and predictable income rather than growth. When you buy a bond you lend money to a government or company that pays you interest, called the coupon, and returns your principal at maturity. Globally, bonds have returned a little under 2% a year after inflation since 1900, with some countries far lower, and corporate bonds slightly more. The real value shows up when stock markets crash: high-quality government bonds often rise as investors seek safety, acting as a buffer that cushions the portfolio. Bonds protect capital rather than build it, so a portfolio of only bonds will not grow your wealth meaningfully. They are the counterweight to stocks, smoothing the ride so you are less likely to panic and sell at the bottom."
   - question: "What is an index fund and why is it a good starting point?"
     answer: "An index fund holds all the components of a market index, so a single purchase gives you a tiny slice of thousands of companies across dozens of countries. You are not betting on one company being the next winner; you own the whole market. Index funds dominate as a starting point for several reasons: they deliver diversification by default, they cost very little (typically 0.1% to 0.3% per year versus 1% to 2% for many actively managed funds), they require no stock-picking skill, and most actively managed funds have historically underperformed the index they try to beat after fees. A global stock index fund plus a bond index fund covers the basics for most people beginning to invest."
   - question: "Why does no single asset class work best?"
@@ -81,7 +81,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 | Liquidity | High (traded daily on exchanges) |
 | Time horizon | 5+ years minimum, ideally 10+ |
 
-**Why they matter**: Stocks have been the primary driver of long-term wealth creation. No other asset class has consistently matched their returns over periods of 20+ years.
+**Why they matter**: Stocks have been the primary driver of long-term wealth creation. Over most 20+ year periods they have beaten bonds and cash, though there have been long stretches, in Japan and elsewhere, when they did not.
 
 **The catch**: Short-term volatility is real and can be severe. If you need the money within a few years, stocks are not the right place for it.
 
@@ -94,7 +94,7 @@ When you buy a bond, you're lending money to a government or company. They promi
 - **Interest payments (coupons)**: Regular, predictable cash payments
 - **Capital appreciation**: If interest rates fall after you buy, your bond becomes more valuable (because your higher-rate bond is now more attractive). The reverse is also true: rising rates reduce bond prices
 
-**Historical returns**: Government bonds have historically returned approximately 2-3% per year after inflation. Corporate bonds slightly higher (3-4%) because they carry more risk.
+**Historical returns**: Globally, bonds have returned a little under 2% per year after inflation since 1900 (Dimson, Marsh and Staunton's long-run dataset), with several countries far lower. Corporate bonds have returned slightly more because they carry more risk.
 
 **Volatility**: Low to moderate. Much less than stocks, but not zero. Bond prices move inversely with interest rates.
 
@@ -103,7 +103,7 @@ When you buy a bond, you're lending money to a government or company. They promi
 | Feature | Detail |
 |---------|--------|
 | Return type | Interest (coupons) + potential capital gains |
-| Historical real return | ~2-4% per year |
+| Historical real return | ~1-2% per year (global, long run) |
 | Volatility | Low to moderate |
 | Liquidity | Moderate to high (tradeable, but less liquid than stocks) |
 | Time horizon | 1-10+ years depending on bond maturity |
@@ -170,7 +170,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 | Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
-| **Historical real return** | 4-6% (developed markets) | 2-4% | 3-5% + rental yield | 0-2% |
+| **Historical real return** | 4-6% (developed markets) | ~1-2% | Low single digits + rental yield | 0-2% |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |

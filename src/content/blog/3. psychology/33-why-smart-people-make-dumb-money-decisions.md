@@ -20,7 +20,7 @@ faq:
   - question: "What are System 1 and System 2 thinking?"
     answer: "They are two modes of thinking described by psychologist Daniel Kahneman. System 1 is automatic and fast: recognising a face, reacting to a loud noise, sensing that a deal feels urgent. It runs constantly, costs almost no effort, and is usually right about everyday things. System 2 is deliberate and slow: multiplying 17 by 24, comparing two mortgages, deciding whether an investment fits your plan. It is accurate but lazy, and it tires quickly, so the brain defaults to System 1 whenever it can. Money decisions are dangerous precisely because they feel like System 1 territory, urgent and emotional, while the correct answer almost always lives in System 2."
   - question: "Can you train yourself out of cognitive biases?"
-    answer: "Mostly no, and that is the central insight of this series. Decades of research show that simply knowing about a bias does very little to stop it. The people who study these biases for a living still fall for them. What works is not willpower or awareness but design: building a financial life that does the right thing by default, so the slow, correct decision is the one that happens automatically and the fast, emotional one has to be actively chosen. Automating savings, reducing how often you check your portfolio, and writing decisions down before money is on the line all work by removing System 1 from moments it would otherwise hijack. The brain does have some capacity to change over years, but you cannot rely on retraining a fast instinct in the heat of a single decision. What you can reliably do is rearrange the situation it operates in."
+    answer: "Mostly no, and that is the central insight of this series. Research suggests that simply knowing about a bias does much less to stop it than people expect, though some targeted training helps modestly. The people who study these biases for a living still fall for them. What works is not willpower or awareness but design: building a financial life that does the right thing by default, so the slow, correct decision is the one that happens automatically and the fast, emotional one has to be actively chosen. Automating savings, reducing how often you check your portfolio, and writing decisions down before money is on the line all work by removing System 1 from moments it would otherwise hijack. The brain does have some capacity to change over years, but you cannot rely on retraining a fast instinct in the heat of a single decision. What you can reliably do is rearrange the situation it operates in."
   - question: "Why did our brains evolve to be bad with money?"
     answer: "Because the brain was tuned by hundreds of thousands of years of survival pressure, and money is a few thousand years old. The instincts that kept ancestors alive, react instantly to threat, follow the group, value what is in front of you over what is far away, were excellent for avoiding predators and famine. They are actively harmful for compounding capital over forty years. Reacting instantly to a falling market locks in losses. Following the crowd inflates bubbles. Valuing the present over the future starves your retirement. None of this is a personal failing. It is a mismatch between an old brain and a new problem, and recognising it is the first step toward working around it."
 reelPromise: "The System 1 versus System 2 framework that explains every money mistake in the series, plus the full map of the nine biases ahead"
@@ -110,7 +110,7 @@ None of these are character flaws. They are the standard equipment, working exac
 
 The natural response is: fine, now that I know, I will just be more careful.
 
-It mostly does not work. This is the most replicated and most humbling finding in the field. Knowing about a bias barely reduces it. The researchers who discovered these effects fall for them too, and say so openly. Awareness is necessary, but it is nowhere near sufficient, because the biases operate below the level where "trying harder" reaches.
+It mostly does not work on its own. One of the most humbling themes in the field is that knowing about a bias reduces it far less than you would hope. The researchers who discovered these effects fall for them too, and say so openly. Awareness is necessary, but it is nowhere near sufficient, because the biases operate below the level where "trying harder" reaches.
 
 You cannot out-discipline a system that acts before discipline wakes up.
 
@@ -127,7 +127,7 @@ The rest of this series introduces the specific patterns, one at a time. Each is
 - **Loss aversion**, the reason a loss hurts roughly twice as much as the same gain feels good, and why that makes people sell at exactly the wrong time.
 - **Mental accounting**, the trick of treating money differently depending on the label on it, even though every euro is identical.
 - **Present bias**, the constant pull of now over later that quietly starves your future self.
-- **Overconfidence**, the near-universal belief that you are an above-average investor, which is mathematically impossible.
+- **Overconfidence**, the widespread belief that you are an above-average investor, which cannot be true for most people at once.
 - **Framing and anchoring**, where the same decision becomes a different decision depending on how it is described.
 - **Herd behaviour and FOMO**, the ancient pull to do what everyone else is doing, which builds bubbles and crashes alike.
 - **Narrative economics**, the way a good story can move markets more than any fundamental.
@@ -141,7 +141,7 @@ You do not need to act on all of this yet. The biases come one post at a time. B
 
 1. **Stop blaming intelligence.** When you or someone you know makes a money mistake, the question is not "how could they be so dumb." It is "which fast instinct beat the slow plan." That reframing is more accurate and far more useful.
 2. **Notice the heated moments.** A market drop, a hot tip, a ticking-clock offer, a purchase that suddenly feels urgent: these are System 1 events. The feeling of urgency is itself the warning sign.
-3. **Trust systems over willpower.** Anything important that depends on you being calm and disciplined in a stressful moment will eventually fail. Anything important that happens automatically will not.
+3. **Trust systems over willpower.** Anything important that depends on you being calm and disciplined in a stressful moment is likely to fail eventually. Anything important that happens automatically is far more likely to hold.
 
 My friend who sold in March 2020 changed one thing afterward. She set her investments to buy automatically every month and deleted the app from her phone. She has not made the same mistake since, not because she became smarter, but because she stopped relying on being smart in the worst possible moment.
 
