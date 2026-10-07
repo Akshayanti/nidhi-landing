@@ -65,14 +65,17 @@ function walkBlogDir(dir) {
  * Two lookup maps built once per build:
  *  - blogLastmod: slug → ISO date (updatedDate ?? pubDate)
  *  - tagLastmod : tag  → ISO date (newest among posts carrying the tag)
+ * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
+ * none is live), which decides whether the hub is in the sitemap at all.
  *
  * Tag lastmod intentionally tracks newest content under the tag, not the
  * git mtime of [tag].astro: a reader visiting /blog/tag/saving/ cares
  * "did anything new appear under saving?", not "did the template change?".
  */
-const { blogLastmod, tagLastmod } = (() => {
+const { blogLastmod, tagLastmod, inclusiveLastmod } = (() => {
   const blog = new Map();
   const tag = new Map();
+  let inclusive = null;
   // Filter by pubDate <= now so future-dated posts (drafts scheduled for
   // a later publish window) don't poison tag-page lastmod values. The
   // sitemap should reflect what's actually visible to a crawler today,
@@ -91,6 +94,7 @@ const { blogLastmod, tagLastmod } = (() => {
       if (Number.isNaN(d.getTime())) continue;
       const iso = d.toISOString();
       blog.set(fm.slug, iso);
+      if (fm.level === 'inclusive-finances' && (!inclusive || iso > inclusive)) inclusive = iso;
       if (Array.isArray(fm.tags)) {
         for (const t of fm.tags) {
           const prev = tag.get(t);
@@ -102,7 +106,7 @@ const { blogLastmod, tagLastmod } = (() => {
     // Bare checkout, missing dir, or any IO error: leave maps empty.
     // Sitemap will simply omit <lastmod> for blog/tag URLs.
   }
-  return { blogLastmod: blog, tagLastmod: tag };
+  return { blogLastmod: blog, tagLastmod: tag, inclusiveLastmod: inclusive };
 })();
 
 /**
@@ -160,9 +164,11 @@ export default defineConfig({
       // per-tag lastmod from `tagLastmod` in serialize() below.
       if (/\/blog\/tag\/[^/]+\/?$/.test(new URL(page).pathname)) return false;
       // The Inclusive Finances hub is noindex while it has no live posts
-      // (src/pages/blog/inclusive-finances.astro). Remove this line when
-      // the first Inclusive Finances post publishes.
-      if (new URL(page).pathname === '/blog/inclusive-finances/') return false;
+      // (src/pages/blog/inclusive-finances.astro), so it stays out of the
+      // sitemap until then. It joins on its own once the first guide's
+      // pubDate passes, the same build that drops its noindex and shows
+      // the homepage and learning-path cards that link to it.
+      if (new URL(page).pathname === '/blog/inclusive-finances/' && !inclusiveLastmod) return false;
       return true;
     },
     serialize(item) {
@@ -181,6 +187,10 @@ export default defineConfig({
         // author-date if the tag map is empty.
         const newestAcrossTags = [...tagLastmod.values()].sort().pop();
         lastmod = newestAcrossTags ?? gitLastmod(STATIC_PAGE_SOURCE['blog/tag']) ?? undefined;
+      } else if (path === 'blog/inclusive-finances') {
+        // The hub changes when a guide is added or revised: date it by the
+        // most recently published or updated guide.
+        lastmod = inclusiveLastmod ?? undefined;
       } else if (path.startsWith('blog/') && path !== 'blog') {
         lastmod = blogLastmod.get(path.slice('blog/'.length));
       } else {
