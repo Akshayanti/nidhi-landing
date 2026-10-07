@@ -2,7 +2,9 @@
 
 A prompt to paste into PostHog AI in the nidhi.today project, so it builds the starting dashboards. It is kept here as the reference for what each dashboard shows. Every event and property name was checked against the code on 2026-10-07; the full event list is in `docs/posthog-events.md`.
 
-**When to use:** after data starts arriving (the new project receives events from 00:00 UTC on 2026-10-08). Update the lesson lists below when new lessons publish.
+**When to use:** after data starts arriving (the new project receives events from 00:00 UTC on 2026-10-08). Paste Part 1 first; once its dashboards exist, paste Part 2 (more insights plus PostHog's other free products). Update the lesson lists when new lessons publish.
+
+**Off limits without a privacy notice change first:** session recordings, page-speed measurements (web vitals), error tracking, surveys and anything that collects new data. The privacy notice says these aren't collected.
 
 **Things to keep in mind when reading the dashboards**
 
@@ -12,7 +14,7 @@ A prompt to paste into PostHog AI in the nidhi.today project, so it builds the s
 
 ---
 
-## Prompt (copy everything below this line)
+## Part 1: dashboards (copy the block below)
 
 ```text
 Set up dashboards for nidhi.today, a free personal finance learning site with free calculators. Data starts 2026-10-08 00:00 UTC; use that as the earliest date everywhere. All visitors are anonymous; there is no login.
@@ -63,4 +65,64 @@ DASHBOARD 4: "Newsletter and waitlist"
 - Dismissals: blog_subscribe_dismissed by "action".
 
 Keep every insight anonymous: no person-level lists, no email domains as a primary breakdown. Name dashboards and insights plainly.
+```
+
+---
+
+## Part 2: more insights and other PostHog products (copy the block below)
+
+```text
+This continues the nidhi.today setup. Use the same context as before: data starts 2026-10-08 00:00 UTC, all visitors are anonymous, clicks ($autocapture) come only from visitors who accepted cookies, and lesson levels come from the slug lists you already used.
+
+Do NOT turn on session recordings, web vitals / page-speed capture, error tracking, surveys, or any setting that collects data the site does not already send. The site's privacy notice rules them out.
+
+DASHBOARD 5: "Readers and growth"
+- Retention: weekly retention where the start and return events are both a $pageview of any /blog/<slug>/ lesson. Show 8 weeks. Breakdown by the level of the first lesson read.
+- Stickiness: days per week a visitor has a $pageview, last 30 days.
+- Read depth per lesson: the average and median of $prev_pageview_max_scroll_percentage on $pageleave events, grouped by $prev_pageview_pathname (or $current_url) for /blog/<slug>/ lessons. Show it as a table sorted lowest first: those are the lessons people abandon. If that property is not present, tell me which scroll-depth property exists in this project and use it.
+- Paths: user paths starting at a lesson (/blog/<slug>/), three steps, to show what readers do next (another lesson, a tool, the learning path, leaving). A second paths insight starting at the homepage "/".
+- Instagram to signup: funnel $pageview where the session's entry utm_source = instagram → blog_subscribe_submit → blog_subscribe_confirmed, 7-day window, breakdown by session entry utm_campaign and utm_content. A trend of sessions by entry utm_source and utm_campaign next to it.
+- Tool fix lists: free_multi_currency_net_worth_csv_parse_errors by firstReason and free_loan_comparison_validation_error by firstReason, each as a ranked table over the last 30 days.
+- Lesson to tool and back: of sessions that open a /free/ page after a lesson, how many return to another lesson in the same session.
+
+WEB ANALYTICS
+- Make sure the Web Analytics product is on for this project, so the built-in overview (visitors, sources, entry and exit pages, devices, countries) is available. No setup beyond that.
+
+ALERTS (email me)
+- blog_newsletter_send_failed: any occurrence in a day.
+- blog_welcome_failed: any occurrence in a day.
+- blog_newsletter_quota_warning: any occurrence.
+- free_multi_currency_net_worth_rates_error: more than 10 in an hour (the exchange-rate service is failing).
+- Daily $pageview count below 30% of its 7-day average (the site or the analytics broke).
+- Subscribe confirmation rate (blog_subscribe_confirmed / blog_subscribe_pending, weekly) below 40%.
+
+ACTIONS (named, reusable definitions)
+- "Read a lesson": $pageview where pathname matches ^/blog/[a-z0-9-]+/$ and is not /blog/tag/ or /blog/inclusive-finances/.
+- "Used a tool": any event whose name starts with free_ .
+- "Visited a tool": $pageview where pathname starts with /free/ .
+- "Joined the newsletter": blog_subscribe_confirmed.
+- "Joined the waitlist": waitlist_signup.
+Use these actions in the insights above where they make them simpler.
+
+COHORTS (anonymous, no personal data)
+- "Engaged readers": performed "Read a lesson" at least 3 times in the last 30 days.
+- "Tool users": performed "Used a tool" at least once in the last 30 days.
+- "Instagram arrivals": first-seen session with utm_source = instagram.
+Use them as breakdowns or filters, not to list people. The site does not set person_profiles, so anonymous visitors may have no person profile: if retention, stickiness or these cohorts need profiles this project doesn't create, tell me instead of changing any setting.
+
+DATA MANAGEMENT
+- Add descriptions to every custom event and mark them verified: the free_* tool events, blog_subscribe_*, blog_unsubscribe*, blog_pending_*, blog_newsletter_*, blog_welcome_failed, blog_subscriber_bounced, waitlist_submit, waitlist_sent, waitlist_signup, $ai_referrer. Describe each as: what the visitor did, and that it never carries amounts or email addresses (email_domain is the only email-derived property; distinct_id on server events is a SHA-256 hash).
+- Hide autocapture properties we never use from the property pickers if that option exists; don't delete data.
+
+ANNOTATIONS
+- 2026-10-08 00:00 UTC: "Analytics start (new project)".
+- I will add Instagram post dates and lesson launches myself; leave a note on how to add one.
+
+SUBSCRIPTIONS
+- Email me the "Site overview" dashboard every Monday at 08:00 (Europe/Prague), and the "Newsletter and waitlist" dashboard on the first of each month.
+
+HEATMAPS AND TOOLBAR
+- Heatmaps and clickmaps are allowed (consented visitors only). Tell me how to open the toolbar on nidhi.today to see them for the homepage and one lesson. Don't change any capture setting for this.
+
+Finally, list what you created, anything you could not do and why, and any property name you had to guess.
 ```
