@@ -18,7 +18,7 @@
     "left": {
       "id": "foreseeable",
       "title": "You can see it coming",
-      "rule": "Plan it",
+      "rule": "A plan",
       "items": [
         "A child",
         "A home",
@@ -30,7 +30,7 @@
     "right": {
       "id": "unforeseeable",
       "title": "You cannot",
-      "rule": "Buffer it",
+      "rule": "A buffer",
       "items": [
         "An illness",
         "A redundancy",
@@ -41,7 +41,7 @@
     },
     "buffers": [
       "An emergency fund, often 3 to 6 months of costs",
-      "The right insurance",
+      "Insurance that fits the household",
       "A plan with slack in it"
     ],
     "swap": {
@@ -60,7 +60,7 @@
       "onscreenLines": [
         "Most money shocks",
         "are not shocks",
-        "Plan it or buffer it"
+        "A plan or a buffer"
       ],
       "anchor": {
         "type": "columns",
@@ -73,7 +73,7 @@
     {
       "id": "two-kinds",
       "layout": "columns-gap",
-      "narration": "There are two kinds of life event, and they need opposite plans.",
+      "narration": "There are two kinds of life event, and they call for different plans.",
       "onscreenLines": [
         "Two kinds of life event",
         "Opposite plans",
@@ -122,8 +122,8 @@
     {
       "id": "b2",
       "kind": "definition",
-      "narration": "Those get a plan. Put each one in your projection, with a rough date and a number, and test the bad case.",
-      "onscreenText": "Plan it",
+      "narration": "Those can get a plan. Each one can go in a projection, with a rough date, a number and the bad case tested.",
+      "onscreenText": "A plan",
       "subtext": "A date, a number, the bad case",
       "emphasis": [
         "plan"
@@ -148,8 +148,8 @@
     {
       "id": "b4",
       "kind": "definition",
-      "narration": "Those cannot be planned one by one. They get a buffer instead.",
-      "onscreenText": "Buffer it",
+      "narration": "Those cannot be planned one by one. They usually get a buffer instead.",
+      "onscreenText": "A buffer",
       "subtext": "Not a plan for each one",
       "emphasis": [
         "buffer"
@@ -162,7 +162,7 @@
     {
       "id": "b5",
       "kind": "list",
-      "narration": "Three buffers do most of the work. An emergency fund, often three to six months of costs. The right insurance. And a plan with some slack in it.",
+      "narration": "Three buffers do most of the work. An emergency fund, often three to six months of costs. Insurance that fits the household. And a plan with some slack in it.",
       "onscreenText": "Three buffers",
       "subtext": "Emergency fund, insurance, slack",
       "emphasis": [
@@ -176,8 +176,8 @@
     {
       "id": "b6",
       "kind": "warning",
-      "narration": "The expensive mistake is mixing them up. Treating a planned baby as a surprise, or trying to predict every disaster.",
-      "onscreenText": "Do not mix them up",
+      "narration": "A common mistake is mixing them up. Treating a planned baby as a surprise, or trying to predict every disaster.",
+      "onscreenText": "A common mix up",
       "subtext": "A planned baby is not a surprise",
       "emphasis": [
         "mixing"
@@ -190,7 +190,7 @@
     {
       "id": "b7",
       "kind": "definition",
-      "narration": "So sort every event with one question. Can you name roughly when it happens? Then plan it. If not, buffer it.",
+      "narration": "So one question sorts every event. Can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.",
       "onscreenText": "The sorting question",
       "subtext": "Can you name roughly when?",
       "emphasis": [
@@ -203,12 +203,12 @@
         "rows": [
           {
             "label": "Can you name roughly when?",
-            "value": "Plan it",
+            "value": "A plan",
             "tone": "teal"
           },
           {
             "label": "You cannot",
-            "value": "Buffer it",
+            "value": "A buffer",
             "tone": "amber"
           }
         ],
@@ -218,14 +218,14 @@
   ],
   "cta": {
     "approved": "save",
-    "narration": "Save this, and sort your next five years tonight.",
+    "narration": "Save this for your next five years.",
     "onscreenText": "Save the sorting question",
     "subtext": "Can you name roughly when?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Most money shocks are not shocks. You knew they were coming.\n\nSome life events you can see years ahead: a child, a home, a career break, a move abroad. Those get a plan: a rough date, a number, and the bad case tested. Others nobody sees coming: an illness, a redundancy, a family emergency, a market shock. Those get a buffer: an emergency fund (a common guideline is three to six months of costs), the right insurance, and a plan with some slack.\n\nThe sorting question: can you name roughly when it happens? Then plan it. If not, buffer it.\n\n→ Save this, and sort your next five years tonight\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Not a recommendation for any product or amount.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Most money shocks are not shocks. You knew they were coming.\n\nCan you name roughly when it happens? Plan it. If not, buffer it.",
+    "instagram": "Most money shocks are not shocks. You knew they were coming.\n\nSome life events you can see years ahead: a child, a home, a career break, a move abroad. Those can get a plan: a rough date, a number, and the bad case tested. Others nobody sees coming: an illness, a redundancy, a family emergency, a market shock. Those usually get a buffer: an emergency fund (a common guideline is three to six months of costs), insurance that fits the household, and a plan with some slack.\n\nThe sorting question: can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.\n\n→ Save this for your next five years\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Not a recommendation for any product or amount.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Most money shocks are not shocks. You knew they were coming.\n\nCan you name roughly when it happens? It can go in the plan. If not, it usually gets a buffer.",
     "instagramKeywords": [
       "planning for big life changes",
       "financial planning",

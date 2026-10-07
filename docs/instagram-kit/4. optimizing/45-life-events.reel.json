@@ -8,7 +8,7 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "The biggest cost of a child is the pay a parent gives up, not the receipts",
+  "topic": "When a parent cuts back, the pay given up can outweigh the receipts",
   "topicChip": "LIFE EVENTS",
   "assumptions": {
     "currency": "EUR",
@@ -17,7 +17,7 @@
   "barStory": {
     "mode": "segmented",
     "unit": "EUR",
-    "basis": "Take home, in today's money",
+    "basis": "Pay after tax",
     "bars": [
       {
         "id": "receipts",
@@ -78,17 +78,17 @@
         ]
       }
     ],
-    "disclosure": "Illustrative. 40% tax and social contributions on the pay given up. Varies by country."
+    "disclosure": "Illustrative. Costs: 2018 and 2024 surveys. 40% tax on pay given up. Varies by country."
   },
   "hookVariants": [
     {
       "id": "not-biggest",
       "layout": "bar-gap",
-      "narration": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.",
+      "narration": "A child costs about a hundred and sixty five thousand euros to eighteen. When a parent cuts back, that may not be the biggest number.",
       "onscreenLines": [
         "€165,000 of receipts",
-        "Not the biggest number",
-        "Same child"
+        "Maybe not the biggest number",
+        "If a parent cuts back"
       ],
       "anchor": {
         "type": "bars",
@@ -101,10 +101,10 @@
     {
       "id": "price-the-pay",
       "layout": "bar-gap",
-      "narration": "Everyone prices the pram. Almost nobody prices the pay.",
+      "narration": "Many people price the pram. Fewer price the pay.",
       "onscreenLines": [
-        "Everyone prices the pram",
-        "Nobody prices the pay",
+        "Many price the pram",
+        "Fewer price the pay",
         ""
       ],
       "anchor": {
@@ -118,10 +118,10 @@
     {
       "id": "invisible-line",
       "layout": "bar-gap",
-      "narration": "The biggest cost of a child never shows up on a receipt.",
+      "narration": "When a parent cuts back, the biggest cost of a child may not show up on a receipt.",
       "onscreenLines": [
         "The biggest cost",
-        "is not on a receipt",
+        "may not be on a receipt",
         ""
       ],
       "anchor": {
@@ -218,7 +218,7 @@
     {
       "id": "b7",
       "kind": "definition",
-      "narration": "So before a big change, run the pay line too. Pay given up, times the years, times what you keep. Then add the pension.",
+      "narration": "That is why many planners run the pay line too. Pay given up, times the years, times what you keep. Then add the pension.",
       "onscreenText": "The pay line",
       "subtext": "Pay given up × years × what you keep, plus pension",
       "emphasis": [
@@ -268,8 +268,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.\n\nStudies in Germany and Spain put direct costs at about €760 a month, around €165,000 to age 18. Petra earns €60,000. After the birth she takes a €20,000 role for five years, then returns at 10% below where she would have been. After 40% tax on that pay, she gives up about €192,000 take home, and about €224,000 counting lost pension contributions.\n\nRun the pay line, not just the expense line: pay given up × years × what you keep after tax, plus the pension.\n\n→ Save this before you plan the time off\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and in today's money. Tax, parental benefits and pay penalties vary widely by country and person.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "A child costs about a hundred and sixty five thousand euros to eighteen. That is not the biggest number.\n\nThe pay a parent gives up is usually bigger. Illustrative figures, varies by country.",
+    "instagram": "A child costs about a hundred and sixty five thousand euros to eighteen. When a parent cuts back, that may not be the biggest number.\n\nStudies in Germany and Spain put direct costs at about €760 a month, around €165,000 to age 18. Petra earns €60,000. After the birth she takes a €20,000 role for five years, then returns at 10% below where she would have been. After 40% tax on that pay, she gives up about €192,000 take home, and about €224,000 counting lost pension contributions.\n\nA projection that models only the expense line misses this. The pay line: pay given up × years × what you keep after tax, plus the pension.\n\n→ Save this before you plan the time off\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative. Direct costs come from a 2018 German survey and a 2024 Spanish figure. If neither parent cuts back, the picture is very different. Tax, parental benefits and pay penalties vary widely by country and person.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "A child costs about a hundred and sixty five thousand euros to eighteen. When a parent cuts back, that may not be the biggest number.\n\nThe pay given up can be bigger. Illustrative figures, varies by country.",
     "instagramKeywords": [
       "cost of having a baby",
       "parental leave",
@@ -295,7 +295,7 @@
     ],
     "tiktokExtraTags": [
       "moneytok",
-      "momtok"
+      "parentingtok"
     ]
   },
   "hashtags": [
