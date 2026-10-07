@@ -129,9 +129,9 @@ note: Illustrative. Rounded.
 
 ### Slide 6 (months)
 
-alt: Twelve equal monthly bars at €4,575, all under the €5,000 pay line. Every month now costs the same and none is short.
+alt: Twelve equal monthly bars at €4,575, all under the €5,000 pay line. Once the pot has built up, or is seeded, every month costs the same and none is short.
 
-title: Same costs, no short months
+title: Once the pot fills, no short months
 month: J | 4575 | teal
 month: F | 4575 | teal
 month: M | 4575 | teal
@@ -146,18 +146,18 @@ month: N | 4575 | teal
 month: D | 4575 | teal
 line: 5000 | Pay
 max: 6200
-note: €4,000 regular costs plus €575 set aside, every month. Illustrative.
+note: €4,000 regular costs plus €575 set aside, every month. In year one, the pot needs time to build up or a starting amount. Illustrative.
 
 Every month now costs **€4,575**, all under his pay.
 
 ### Slide 7 (scenarios)
 
-alt: Three other fixes: move it, pay insurance quarterly; buffer it, keep enough in the current account for the worst month; time it, let a bonus or tax refund land in the short month.
+alt: Three other approaches: some move it, paying insurance quarterly, sometimes at a surcharge; some buffer it, with enough in the current account for the worst month; some time it, with a bonus or tax refund landing in the short month.
 
-title: Three other fixes
-case: Move it | pay insurance quarterly, not once a year
-case: Buffer it | keep enough in the current account for the worst month
-case: Time it | let a bonus or tax refund land in the short month
+title: Three other approaches
+case: Some move it | quarterly payments, sometimes at a surcharge
+case: Some buffer it | enough in the current account for the worst month
+case: Some time it | a bonus or refund in the short month
 rule: Find the short months first
 
 ### Slide 8 (closer)
@@ -189,13 +189,13 @@ hashtags: #nidhi #nidhicompounding #emergencyfund #financialsecurity #movingabro
 
 ### Caption
 
-If your pay stopped today, how many months would your money last? Most people guess. It is one division.
+If your pay stopped today, how many months would your money last? It is easy to guess. It is one division.
 
 Jiri has €18,300 in easy access savings and €45,000 in investments and a pension. Only the first counts: runway is money you can reach within a couple of days without a penalty. His real costs, once a year bills included, are €4,575 a month. So his runway is four months.
 
 Slide 5 is the one to keep: the runway check, in one line.
 
-→ Save this, and run your own number tonight
+→ Save this for your own number
 
 The blog covers the three tiers of liquid money, and why investments and pensions are not runway → link in bio
 
@@ -211,7 +211,7 @@ start: 18300
 cost: 4575
 slots: 12
 result: Runs out in month 4
-premise: Most people guess. It is one division.
+premise: It is easy to guess. It is one division.
 
 If your pay stopped today, how many **months** would you last?
 
@@ -240,9 +240,9 @@ Only the first one pays next month's rent.
 
 ### Slide 4 (runway)
 
-alt: Runway chart: €18,300 divided by €4,575 a month lasts 4 months, then the slots are empty.
+alt: Runway chart: €18,300 divided by €4,575 a month lasts 4 months at today's costs, then the slots are empty.
 
-title: Four months, then nothing
+title: Four months at today's costs
 strip: €18,300 ÷ €4,575 a month
 start: 18300
 cost: 4575
@@ -280,7 +280,7 @@ title: Runway moves when costs move
 strip: Same €18,300 in savings
 bar: Costs of €4,575 a month | 4 | 4 months | teal
 bar: Costs of €6,100 a month | 3 | 3 months | warn
-note: Illustrative. Rounded.
+note: Illustrative. Rounded. How much runway feels enough depends on your job, household and benefits.
 
 A rise of about **€1,500 a month** takes a whole month off.
 
@@ -337,6 +337,6 @@ d2_f4_alt: Beyond this post: Forecast what lands, not what you earn. A €5,000 
 d2_f4_time: late evening
 d2_f4_label: Beyond this post
 d2_f4_title: Forecast what lands, not what you earn.
-d2_f4_body: A €5,000 gross salary that lands as €3,800 overstates your year by €14,400. Always plan with the amount that reaches your account.
+d2_f4_body: A €5,000 gross salary that lands as €3,800 overstates your year by €14,400. A forecast built on what reaches your account stays honest.
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: Why to plan with net pay, not gross

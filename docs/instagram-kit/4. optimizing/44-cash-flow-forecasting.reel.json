@@ -132,7 +132,7 @@
     {
       "id": "calendar-failure",
       "layout": "month-gap",
-      "narration": "Most cash problems are not budgeting problems. They are calendar problems.",
+      "narration": "Many cash problems are not budgeting problems. They are calendar problems.",
       "onscreenLines": [
         "Not a budgeting problem",
         "A calendar problem",
@@ -227,7 +227,7 @@
     {
       "id": "b6",
       "kind": "definition",
-      "narration": "The fix is the twelfth rule. Add up the once a year costs, divide by twelve, and set that aside every month.",
+      "narration": "One common fix is the twelfth rule. Add up the once a year costs, divide by twelve, and set that aside every month.",
       "onscreenText": "The twelfth rule",
       "subtext": "Once a year costs ÷ 12, every month",
       "emphasis": [
@@ -241,9 +241,9 @@
     {
       "id": "b7",
       "kind": "example",
-      "narration": "For Jiri, that is five hundred and seventy five a month. Now every month costs the same, and none of them is short.",
+      "narration": "For Jiri, that is five hundred and seventy five a month. Once the pot has built up, every month costs the same, and none of them is short.",
       "onscreenText": "€575 a month",
-      "subtext": "No short months",
+      "subtext": "Once the pot fills, no short months",
       "emphasis": [],
       "anchor": {
         "type": "months",
@@ -259,8 +259,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nHis pay is €5,000 and his regular costs are €4,000. But car insurance, a tax top up, a summer holiday, back to school and the holidays all land in single months. In five of them, he spends more than he earns. Over the year he really saves about €425 a month, not €1,000.\n\nThe fix is the twelfth rule: add up your once a year costs, divide by 12, and move that amount to a separate pot every month. For Jiri, €575.\n\n→ Save this before your next once a year bill\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nAdd up your once a year costs, divide by 12, set that aside every month. Illustrative figures.",
+    "instagram": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nHis pay is €5,000 and his regular costs are €4,000. But car insurance, a tax top up, a summer holiday, back to school and the holidays all land in single months. In five of them, he spends more than he earns. Over the year he really saves about €425 a month, not €1,000.\n\nOne common fix is the twelfth rule: add up the once a year costs, divide by 12, and set that amount aside in a separate pot every month. For Jiri, €575. Once the pot has built up, no month runs short.\n\n→ Save this before your next once a year bill\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative and rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Jiri saves a thousand euros a month. On paper. Five months of his year say otherwise.\n\nOne common fix: once a year costs ÷ 12, set aside every month. Illustrative figures.",
     "instagramKeywords": [
       "cash flow forecast",
       "monthly budget",
