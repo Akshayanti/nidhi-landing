@@ -10,6 +10,11 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "currency", "planning"]
+relatedTool:
+  url: "/free/multi-currency-net-worth"
+  label: "Net worth calculator (one currency or several)"
+  cta: "See how your net worth splits across currencies"
+  idea: "Exchange rates move your net worth even when nothing you own changes in value."
 relatedSlugs: ["why-your-euro-buys-more-in-some-countries", "diversification", "purchasing-power", "real-estate-as-investment", "liquidity"]
 faq:
   - question: "Why does currency matter for my finances?"

@@ -1,16 +1,19 @@
 # nidhi.today
 > nidhi helps ordinary people understand their money: free, structured personal finance lessons that start from the basics (what net worth is, emergency funds, budgeting) and go on to investing, taxes, financial independence and the psychology of money; private in-browser tools to apply those ideas to your own numbers; and a planner, opening in stages, for planning your financial future. It starts simple and keeps working as finances get more complex, including when money spans currencies and countries. Built in Prague. No ads, no data selling.
 
+## What nidhi is for
+nidhi is designed for people starting their financial journey as well as people whose finances have become more complex. You do not need multiple currencies to use nidhi. Multi-currency planning is one capability, not the prerequisite for using it.
+
 ## Key Pages
 - [Home](https://nidhi.today/): What nidhi is, where to start for your situation, which lesson goes with which free tool, and the planner (opening in stages).
 - [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
-- [Blog Index](https://nidhi.today/blog/): The learning path: all lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
+- [Learning Path](https://nidhi.today/blog/): All lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
 
 ## Free Tools
 - [Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Add up what you own and owe to see your net worth, in one currency or several, with real-time FX rates. Privacy-first - data stays in your browser.
 - [Loan Comparison Calculator](https://nidhi.today/free/loan-comparison/): Compare two loan offers side-by-side including fees, APR, amortisation, and total cost of borrowing.
 
-## Blog - Discovery Series (Fundamentals)
+## Learn: Discovery Series (Fundamentals)
 - [What Is Net Worth and Why Does It Matter?](https://nidhi.today/blog/what-is-net-worth/): Net worth as the single number that captures your full financial picture - more important than salary alone.
 - [How to Calculate Your Net Worth in 10 Minutes](https://nidhi.today/blog/how-to-calculate-net-worth/): Step-by-step guide with a free multi-currency calculator for cross-border assets.
 - [Assets: What You Own and What Actually Counts](https://nidhi.today/blog/assets/): What qualifies as an asset, and how liquidity, appreciation, and stability affect real value.
@@ -28,7 +31,7 @@
 - [Credit and Credit Scores: What They Are and Why They Matter](https://nidhi.today/blog/credit-and-credit-scores/): How credit scores work across countries (FICO, SCHUFA, Experian, CIBIL) and why they affect more than loans.
 - [Insurance Basics: Protecting What You've Built](https://nidhi.today/blog/insurance-basics/): How insurance transfers catastrophic risk and works alongside your emergency fund.
 
-## Blog - Building Series (Applying Concepts)
+## Learn: Building Series (Applying Concepts)
 - [Understanding Risk: What It Actually Means for Your Money](https://nidhi.today/blog/understanding-risk/): Volatility vs. permanent loss, risk tolerance vs. risk capacity, and why time transforms risk.
 - [Investing 101: Asset Classes and How They Work](https://nidhi.today/blog/investing-101-asset-classes/): Stocks, bonds, real estate, cash equivalents - what they are and why they belong in a portfolio.
 - [Beyond the Core: Commodities and Cryptocurrency as Satellite Assets](https://nidhi.today/blog/satellite-assets-commodities-and-cryptocurrency/): Commodities and crypto as small satellites around a core portfolio, not the foundation.
@@ -46,7 +49,7 @@
 - [Financial Health Metrics: How to Know If You're on Track](https://nidhi.today/blog/financial-health-metrics/): Six ratios that diagnose financial health beyond net worth alone.
 - [Your Financial Dashboard: What to Track and How Often](https://nidhi.today/blog/financial-dashboard/): A four-layer tracking system - monthly, quarterly, annual, and event-driven checkpoints.
 
-## Blog - Psychology Series (How Your Mind Shapes Money Decisions)
+## Learn: Psychology Series (How Your Mind Shapes Money Decisions)
 - [Why Smart People Make Dumb Money Decisions](https://nidhi.today/blog/why-smart-people-make-dumb-money-decisions/): You can know the math perfectly and still panic-sell at the bottom. Your brain runs two systems, and the fast one takes charge when money is on the line.
 - [Loss Aversion: Why Losing Hurts Twice as Much](https://nidhi.today/blog/loss-aversion-and-the-disposition-effect/): Loss aversion: a 1,000 euro loss hurts about twice as much as a 1,000 euro gain feels good. It explains panic-selling and clinging to losing investments.
 - [Mental Accounting: Why Every Euro Should Be Equal but Isn't](https://nidhi.today/blog/mental-accounting/): Mental accounting: why a tax refund gets spent freely while salary gets guarded. Your brain files money into folders, and sometimes that costs you.

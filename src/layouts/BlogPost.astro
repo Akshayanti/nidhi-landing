@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
+import { LEVEL_LABELS } from '../utils/home/startingPoints';
 
 interface Props {
   title: string;
@@ -38,10 +39,13 @@ interface Props {
    */
   relatedPosts?: Array<{ slug: string; title: string; description: string }>;
   /** Paired free tool from the post's `relatedTool` frontmatter. */
-  relatedTool?: { url: string; label: string; cta: string };
+  relatedTool?: { url: string; label: string; cta: string; idea?: string };
+  /** Place within the level among published lessons; null outside the ladder. */
+  seriesPosition?: { index: number; total: number } | null;
 }
 
-const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool } = Astro.props;
+const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition } = Astro.props;
+const levelLabel = LEVEL_LABELS[level];
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -158,6 +162,11 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       <header class="post-header">
         <div class="post-meta">
           <LevelBadge level={level} />
+          {seriesPosition && (
+            <a class="post-series" href={`/blog/#level-${level}`} data-attr="post-series-top">
+              Lesson {seriesPosition.index} of {seriesPosition.total}
+            </a>
+          )}
           <span class="post-byline">By <a href="/about/" rel="author">nidhi</a></span>
           {readingTime && <span class="post-reading-time">{readingTime} min read</span>}
           <time datetime={pubDate.toISOString()} class="post-date">{dateStr}</time>
@@ -209,16 +218,34 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     <div class="post-bottom-wrapper">
       <div class="post-bottom-content">
         {/*
-          Paired free tool, placed straight after the article so a reader
-          who just learned the idea can try it on their own numbers.
+          Learn, Understand, Apply: placed straight after the article so a
+          reader who just learned the idea can try it on their own numbers.
+          The middle step appears when the lesson names its `idea`.
         */}
         {relatedTool && (
           <aside class="post-tool" aria-labelledby="post-tool-h">
-            <span class="post-tool-eyebrow">Free tool</span>
-            <h2 id="post-tool-h" class="post-tool-title">{relatedTool.label}</h2>
-            <a class="post-tool-link" href={relatedTool.url} data-attr={`post-tool-${relatedToolId}`}>
-              {relatedTool.cta} <span aria-hidden="true">→</span>
-            </a>
+            <h2 id="post-tool-h" class="post-tool-title">Now apply it to your money</h2>
+            <ol class="post-tool-steps">
+              <li class="post-tool-step post-tool-step--done">
+                <span class="post-tool-stepLabel">Learn</span>
+                <span class="post-tool-stepBody">{title} <span class="post-tool-check">(read)</span></span>
+              </li>
+              {relatedTool.idea && (
+                <li class="post-tool-step">
+                  <span class="post-tool-stepLabel">Understand</span>
+                  <span class="post-tool-stepBody">{relatedTool.idea}</span>
+                </li>
+              )}
+              <li class="post-tool-step">
+                <span class="post-tool-stepLabel">Apply</span>
+                <span class="post-tool-stepBody">
+                  <a class="post-tool-link" href={relatedTool.url} data-attr={`post-tool-${relatedToolId}`}>
+                    {relatedTool.cta} <span aria-hidden="true">→</span>
+                  </a>
+                  <span class="post-tool-note">{relatedTool.label}. Free, and what you enter stays in your browser.</span>
+                </span>
+              </li>
+            </ol>
           </aside>
         )}
 
@@ -263,6 +290,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         <div class="disclaimer">
           <strong>A quick note:</strong> This article is educational content, not investment advice or a personal recommendation under MiFID II. Examples, historical figures, and any projections are illustrative and don't predict future results. Tax treatment depends on your country and personal situation. For decisions that meaningfully affect your finances, a qualified or regulated adviser can help apply these ideas to your circumstances.
         </div>
+
+        {seriesPosition && levelLabel && (
+          <p class="post-series-foot">
+            You are on lesson {seriesPosition.index} of {seriesPosition.total} in {levelLabel}.{' '}
+            <a href={`/blog/#level-${level}`} data-attr="post-series-bottom">See all {levelLabel} lessons</a>
+          </p>
+        )}
 
         {(prevSlug || nextSlug) && (
           <nav class="post-nav" aria-label="Adjacent posts">
@@ -386,6 +420,27 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     margin-bottom: var(--space-4);
     flex-wrap: wrap;
   }
+
+  .post-series {
+    font-size: 0.8rem;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 3px;
+  }
+
+  .post-series:hover { color: var(--color-teal); }
+
+  .post-series-foot {
+    margin-top: var(--space-10);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+
+  .post-series-foot + .post-nav { margin-top: var(--space-4); }
 
   .post-reading-time {
     font-size: 0.8rem;
@@ -622,20 +677,80 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-radius: var(--radius-md);
   }
 
-  .post-tool-eyebrow {
-    display: block;
-    font-family: var(--font-heading);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-1);
-  }
-
   .post-tool-title {
     font-size: 1.1rem;
     color: var(--color-deep-blue);
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-3);
+  }
+
+  /* Three steps joined by a line, so the block reads as one path. */
+  .post-tool-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-tool-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-2) 0 var(--space-2) var(--space-5);
+  }
+
+  .post-tool-step::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: calc(var(--space-2) + 0.35em);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 2px solid var(--color-teal);
+    background: var(--color-bg);
+  }
+
+  .post-tool-step--done::before { background: var(--color-teal); }
+
+  .post-tool-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: calc(var(--space-2) + 0.35em + 13px);
+    bottom: calc(-1 * var(--space-2) + 0.35em);
+    width: 2px;
+    background: color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+
+  .post-tool-stepLabel {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    padding-top: 0.2em;
+  }
+
+  .post-tool-stepBody {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+
+  .post-tool-check,
+  .post-tool-note {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .post-tool-note {
+    display: block;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .post-tool-step { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   }
 
   .post-tool-link {

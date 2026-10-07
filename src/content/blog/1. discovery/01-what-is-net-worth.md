@@ -22,6 +22,11 @@ referentialReading:
     author: "Vicki Robin"
     url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
     type: "book"
+relatedTool:
+  url: "/free/multi-currency-net-worth"
+  label: "Net worth calculator (one currency or several)"
+  cta: "Work out your own net worth"
+  idea: "Net worth is everything you own minus everything you owe."
 relatedSlugs: []
 faq:
   - question: "What is net worth?"

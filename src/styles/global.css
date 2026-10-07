@@ -4160,7 +4160,7 @@ body[data-page="landing"] .site-footer {
   .lp-levelNavLinkPrereq, .lp-levelNavLinkCount, .lp-tagFilterLabel,
   .lp-tagFilterBtn, .lp-levelPrereq, .lp-levelCovered, .lp-levelCovered strong,
   .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag, .lp-newLabel,
-  .level-badge, .ref-type, .post-nav-direction, .post-tool-eyebrow {
+  .level-badge, .ref-type, .post-nav-direction, .post-tool-stepLabel {
     font-size: 0.75rem !important;
   }
   .prose code { font-size: 0.8125rem !important; }

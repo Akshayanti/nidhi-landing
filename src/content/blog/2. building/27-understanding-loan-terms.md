@@ -26,6 +26,7 @@ relatedTool:
   url: "/free/loan-comparison"
   label: "Loan comparison calculator"
   cta: "Compare any two offers including fees"
+  idea: "Compare loans by APR and total cost of borrowing, not by the advertised rate."
 reelPromise: "How APR hides fees, why amortisation matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
 referentialReading:
   - title: "Annual Percentage Rate (APR)"

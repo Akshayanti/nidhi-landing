@@ -41,11 +41,16 @@ const blog = defineCollection({
      * blog template renders a callout block; the reel caption writer auto-
      * appends the URL line; the LLM script writer is told the tool exists
      * (so it CAN — not must — reference it in onscreenText if natural).
+     *
+     * `idea` is the one-line takeaway the tool puts into practice. When set,
+     * the callout shows it as the "Understand" step between the lesson and
+     * the tool (Learn, Understand, Apply).
      */
     relatedTool: z.object({
       url: z.string(),
       label: z.string(),
       cta: z.string(),
+      idea: z.string().optional(),
     }).optional(),
     /**
      * One-line concrete promise of what the blog adds beyond the 60-second

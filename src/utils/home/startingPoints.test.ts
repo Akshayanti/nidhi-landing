@@ -15,6 +15,7 @@ import {
   readingOrder,
   resolveGrowthTopics,
   resolveStartingPoints,
+  routeNext,
   type HomePost,
 } from './startingPoints.ts';
 
@@ -60,6 +61,26 @@ describe('starting points', () => {
     assert.equal(points[0].levelLabel, 'Discovery');
     assert.equal(points[0].levelCount, 2);
     assert.equal(points[0].lessons[0].href, '/blog/what-is-net-worth/');
+  });
+
+  it('names each route\'s tools, leaving out gated ones', () => {
+    const posts = [post('saving-vs-investing', 'building', 1), post('understanding-loan-terms', 'building', 2)];
+    const all = resolveStartingPoints(posts, NOW);
+    assert.deepEqual(all.find((p) => p.id === 'no-plan')!.tools.map((t) => t.href), ['/free/monte-carlo-simulator/']);
+    const gated = resolveStartingPoints(posts, NOW, (href) => href !== '/free/monte-carlo-simulator/');
+    assert.deepEqual(gated.find((p) => p.id === 'no-plan')!.tools, []);
+    assert.deepEqual(
+      gated.find((p) => p.id === 'complex')!.tools.map((t) => t.name),
+      ['Loan comparison', 'Net worth calculator'],
+    );
+  });
+
+  it('a route\'s button moves to the first unread lesson', () => {
+    const route = ['a', 'b', 'c'].map((slug) => ({ slug, title: slug, href: `/blog/${slug}/` }));
+    assert.deepEqual(routeNext(route, []), { next: route[0], started: false });
+    assert.deepEqual(routeNext(route, ['a', 'x']), { next: route[1], started: true });
+    assert.deepEqual(routeNext(route, ['b']), { next: route[0], started: true });
+    assert.deepEqual(routeNext(route, ['a', 'b', 'c']), { next: null, started: true });
   });
 
   it('growth topics follow the same rule', () => {
