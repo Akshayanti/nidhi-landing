@@ -159,7 +159,7 @@
       "kind": "definition",
       "narration": "A projection is better used as a range than as a promise. Future returns are not guaranteed.",
       "onscreenText": "A projection is a range",
-      "subtext": "Test the low case. The high case is not owed.",
+      "subtext": "Many planners test the low case first",
       "emphasis": [
         "range"
       ],
@@ -241,8 +241,8 @@
     {
       "id": "b10",
       "kind": "list",
-      "narration": "Use three rates. Stress test the low one. Update it every year.",
-      "onscreenText": "How to use it",
+      "narration": "Many planners run three rates, check the low one, and update every year.",
+      "onscreenText": "A common routine",
       "emphasis": [
         "three"
       ],
@@ -250,9 +250,9 @@
         "type": "multiplier",
         "stage": "steps",
         "steps": [
-          "Run a low, middle and high rate",
-          "Stress test the low result",
-          "Update with real numbers yearly"
+          "Low, middle and high rates",
+          "The low one, checked first",
+          "Real numbers, updated yearly"
         ]
       }
     }

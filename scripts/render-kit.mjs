@@ -660,7 +660,8 @@ const LAYOUTS = {
         return `<div class="case"><div class="node">${idx + 1}</div><div><div class="case-head">${rich(head)}</div><div class="case-chips">${chips}</div></div></div>`;
       }).join('')}
     </div>
-    ${s.fields.rule ? `<div class="rule"><span>RULE</span>${rich(s.fields.rule)}</div>` : ''}`,
+    ${s.fields.rule ? `<div class="rule"><span>RULE</span>${rich(s.fields.rule)}</div>` : ''}
+    ${note(s.fields)}`,
 
   closer: (s, deck) => {
     const tool = deck.slides.find(x => x.layout === 'tool');
