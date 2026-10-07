@@ -292,27 +292,30 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
       </div>
       {hover !== null && <ChartReadout title={when(hover)} rows={rows} cardRef={cardRef} position={cardLeft} />}
       <p className="lc-chartHint">Point at the chart, tap it, or use the arrow keys to read the balances in any year.</p>
-      <table className="lc-srOnly">
-        <caption>Loan balance over time, sampled by month</caption>
-        <thead>
-          <tr>
-            <th scope="col">Month</th>
-            {valid.map(({ name, i }) => (
-              <th key={i} scope="col">{name}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sampleSchedule(valid.map(({ r }) => r.schedule), 12).map((row) => (
-            <tr key={row.month}>
-              <th scope="row">{row.month}</th>
-              {row.values.map((v, idx) => (
-                <td key={idx}>{v == null ? 'n/a' : formatMoney(v, currency)}</td>
+      {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
+      <div className="lc-srOnly">
+        <table>
+          <caption>Loan balance over time, sampled by month</caption>
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              {valid.map(({ name, i }) => (
+                <th key={i} scope="col">{name}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sampleSchedule(valid.map(({ r }) => r.schedule), 12).map((row) => (
+              <tr key={row.month}>
+                <th scope="row">{row.month}</th>
+                {row.values.map((v, idx) => (
+                  <td key={idx}>{v == null ? 'n/a' : formatMoney(v, currency)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   );
 }
@@ -506,27 +509,30 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
       </svg>
 
       {/* SR-only table mirrors the same data for assistive tech users. */}
-      <table className="lc-srOnly">
-        <caption>Interest and principal split for {vendorName}, sampled across the loan</caption>
-        <thead>
-          <tr>
-            <th scope="col">Month</th>
-            <th scope="col">Payment</th>
-            <th scope="col">Interest</th>
-            <th scope="col">Principal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.month}>
-              <th scope="row">{formatYearLabel(r.month)}</th>
-              <td>{formatMoney(r.payment, currency)}</td>
-              <td>{formatMoney(r.interest, currency)}</td>
-              <td>{formatMoney(r.principal, currency)}</td>
+      {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
+      <div className="lc-srOnly">
+        <table>
+          <caption>Interest and principal split for {vendorName}, sampled across the loan</caption>
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <th scope="col">Payment</th>
+              <th scope="col">Interest</th>
+              <th scope="col">Principal</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.month}>
+                <th scope="row">{formatYearLabel(r.month)}</th>
+                <td>{formatMoney(r.payment, currency)}</td>
+                <td>{formatMoney(r.interest, currency)}</td>
+                <td>{formatMoney(r.principal, currency)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

@@ -535,12 +535,29 @@ strong {
   color: inherit;
 }
 
-/* Prose tables */
+/* Prose tables. Each sits in a .table-scroll box (rehypeTableScroll), so a
+   table wider than a phone scrolls inside the box, not the whole page. */
+.prose .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: var(--space-5) 0;
+}
+
+.prose .table-scroll:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
 .prose table {
   width: 100%;
   border-collapse: collapse;
   margin: var(--space-5) 0;
   font-size: 0.9rem;
+}
+
+.prose .table-scroll > table {
+  margin: 0;
 }
 
 .prose th {
@@ -4186,6 +4203,14 @@ body[data-page="landing"] .site-footer {
     display: inline-block;
     padding-top: 4px;
     padding-bottom: 4px;
+  }
+  /* Breadcrumbs on the free tools, the tools index and the topics page were
+     15px tall: below the 24px minimum. */
+  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a,
+  .ft-breadcrumbs a, .tagHub-breadcrumb a {
+    display: inline-block !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
   }
 }
 

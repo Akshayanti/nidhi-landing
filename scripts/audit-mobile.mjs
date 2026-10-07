@@ -123,6 +123,13 @@ for (const path of pages) {
     document.querySelectorAll('table').forEach((t, i) => {
       const b = t.getBoundingClientRect();
       if (b.right <= vw + 1) return;
+      // Screen-reader-only data tables sit in a 1px clipped box: not visible,
+      // and the box (not the table) decides the page width.
+      for (let p = t; p; p = p.parentElement) {
+        const cs = getComputedStyle(p);
+        const pb = p.getBoundingClientRect();
+        if ((cs.clip && cs.clip !== 'auto') || (cs.overflow === 'hidden' && pb.width <= 1 && pb.height <= 1)) return;
+      }
       let scroller = false;
       for (let p = t.parentElement; p; p = p.parentElement) {
         if (/(auto|scroll)/.test(getComputedStyle(p).overflowX)) { scroller = true; break; }

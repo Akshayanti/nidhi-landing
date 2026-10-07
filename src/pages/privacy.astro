@@ -140,6 +140,7 @@ const writtenChangelog: ChangelogEntry[] = [
     summary: 'Fixed free tools that put what you typed into page addresses analytics recorded. Also: a homepage that leads with learning, starting routes you can follow, lessons that show where you are and end with what you now understand, a simpler one-currency net worth view, Frankfurter named in the notice, and OpenAI\'s training crawler blocked.',
     details: [
       'Free tools, what went wrong: the loan comparison (since it launched on May 10, 2026) and the net worth calculator (since May 17, 2026) wrote what you typed into the page address as you typed, so the page could be reloaded or bookmarked. Every page sends an anonymous pageview and page-leave event, and those carry the page address. So the amounts, rates, names and currencies you entered on those two tools reached our analytics (PostHog Cloud EU) inside that address, and so did the contents of any shared link opened to one of them. A link to any of the three tools with values after a ? would have been recorded the same way. The events carried no name, email or user ID, but this broke our promise that the values you type are never sent.',
+      'Phones: no page scrolls sideways any more. Wide lesson tables scroll inside their own box (a small script wraps each table in a labelled, keyboard-focusable region as the page loads; it reads and stores nothing), the loan comparison\'s screen-reader data tables no longer widen the page, lesson text has the same side margin as its title, breadcrumbs on the tools and topics pages are at least 24 pixels tall, and topic card lesson counts are at least 12 pixels. Spaces that went missing next to links on the about, editorial policy, free tools, privacy and subscription-confirmed pages are back. Layout and wording only.',
       'Net worth calculator on phones: in the Share window, the Cancel and Copy link buttons sat half under the recipient preview, so a tap on their lower half missed. They now sit above it. Layout only.',
       'Free tools, what changed: no tool writes your inputs into the page address any more. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start, so the pageview never sees them. Older links that carried the values after a ? still open, and are cleaned the same way. As a backstop, the analytics script now removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent. The section on what we collect now says this. One consequence: reloading a tool page no longer keeps what you typed; a share link keeps a copy. The events already recorded with these addresses are being deleted from PostHog.',
       'Lessons: every lesson and Inclusive Finances guide now ends with a short "What you now understand" list restating its main ideas, in a tinted box that mirrors the TL;DR at the top, before the free tool and the previous and next links.',
@@ -416,7 +417,7 @@ const privacyBreadcrumbSchema = {
           get rid of what we have whenever you want.
         </p>
         <p class="privacy-updated">
-          Last updated: <time datetime={lastUpdatedIso}>{lastUpdated}</time> &middot;
+          Last updated: <time datetime={lastUpdatedIso}>{lastUpdated}</time> &middot;{' '}
           <a href="#changelog">see what changed</a>
         </p>
       </header>
@@ -456,7 +457,7 @@ const privacyBreadcrumbSchema = {
             Anonymous interaction events on the Monte Carlo simulator: which currency you pick,
             which return setting and number of simulated paths you choose, whether you switch
             withdrawals on or off, whether you open the results table, whether you copy the
-            shareable link, and whether you reset the form.
+            shareable link, and whether you reset the form.{' '}
             <strong>The amounts, years, fees and mix you enter are never sent.</strong>
           </li>
         )}
@@ -550,8 +551,8 @@ const privacyBreadcrumbSchema = {
           analysis.
         </li>
         <li>
-          <strong>Google Workspace</strong> (Google Cloud EU regions): our email addresses
-          (<code>hello@nidhi.today</code> for general contact and support,
+          <strong>Google Workspace</strong> (Google Cloud EU regions): our email addresses{' '}
+          (<code>hello@nidhi.today</code> for general contact and support,{' '}
           <code>updates@nidhi.today</code> for automated product emails like beta
           invites and newsletter sends) and the Google Sheet that stores newsletter
           subscribers and waitlist signups (in separate tabs). Only we can read it.
@@ -572,7 +573,7 @@ const privacyBreadcrumbSchema = {
       </p>
 
       <p>
-        <strong>One service your browser contacts directly: Frankfurter</strong>
+        <strong>One service your browser contacts directly: Frankfurter</strong>{' '}
         (<code>api.frankfurter.dev</code>), a free, open service that publishes European Central
         Bank exchange rates. Your browser asks it for the day&rsquo;s rates when you open the net
         worth calculator (and again if you change your spending currency there), and on the
@@ -642,7 +643,7 @@ const privacyBreadcrumbSchema = {
           breaks.
         </li>
         <li>
-          For anything else, email <a href="mailto:hello@nidhi.today?subject=privacy">hello@nidhi.today</a>
+          For anything else, email <a href="mailto:hello@nidhi.today?subject=privacy">hello@nidhi.today</a>{' '}
           with the word <strong>privacy</strong> in the subject. We reply within a few days.
         </li>
       </ul>
