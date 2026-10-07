@@ -688,18 +688,24 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-radius: var(--radius-md);
   }
 
+  /* Bookends the TL;DR at the top of the post: the same tinted surface,
+     with a teal accent so it reads as the lesson's close, not an extra. */
   .post-recap {
     margin-top: var(--space-10);
-    padding: var(--space-5) var(--space-6);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    padding: var(--space-5) var(--space-6) var(--space-6);
+    background: color-mix(in srgb, var(--color-teal) 7%, var(--color-bg-white));
+    border: 1px solid color-mix(in srgb, var(--color-teal) 22%, transparent);
     border-radius: var(--radius-md);
   }
 
   .post-recap-title {
-    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--color-deep-blue);
-    margin: 0 0 var(--space-3);
+    margin: 0 0 var(--space-4);
   }
 
   .post-recap-list {
@@ -707,26 +713,38 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     margin: 0;
     padding: 0;
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 
   .post-recap-list li {
     position: relative;
-    padding-left: 1.75rem;
-    font-size: 0.95rem;
+    padding-left: 2rem;
+    font-size: 0.98rem;
     line-height: 1.5;
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
   }
 
-  /* A drawn check, not a glyph, so it renders the same everywhere. */
+  /* A filled teal disc with a drawn check, so it renders the same in
+     every font and theme. */
   .post-recap-list li::before {
     content: '';
     position: absolute;
-    left: 0.25rem;
-    top: 0.3em;
-    width: 0.4rem;
-    height: 0.75rem;
-    border: solid var(--color-teal);
+    left: 0;
+    top: 0.1em;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--color-teal);
+  }
+
+  .post-recap-list li::after {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.32em;
+    width: 0.3rem;
+    height: 0.6rem;
+    border: solid var(--color-bg-white);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
