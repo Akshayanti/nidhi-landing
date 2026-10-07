@@ -181,6 +181,9 @@ const faqSchema = {
               <p data-next-continue hidden>
                 Welcome back. Pick up where you left off: <a href="#" data-attr="home-hero-continue"></a>
               </p>
+              <p class="hero-skip">
+                Already know the basics? Skip to <a href="/blog/#level-building" data-attr="home-hero-skip-building">investing, tax and independence</a>, <a href="/blog/#level-psychology" data-attr="home-hero-skip-psychology">the psychology of money</a>, or <a href="/free/" data-attr="home-hero-skip-tools">a tool for your own numbers</a>.
+              </p>
             </div>
           )}
         </div>
@@ -235,6 +238,7 @@ const faqSchema = {
       <ul class="start-grid" role="list">
         {startingPoints.map((s) => (
           <li class="start-card">
+            <p class="start-route">{s.audience}</p>
             <h3>{s.situation}</h3>
             <p class="start-detail">{s.detail}</p>
             <p class="start-meta">
@@ -293,6 +297,20 @@ const faqSchema = {
           </li>
         )}
       </ul>
+
+      {/* Depth, said plainly: what a reader who already knows the rules gets. */}
+      <div class="depth">
+        <h3 id="depth-heading">Not just the rules of thumb.</h3>
+        <p class="depth-body">
+          Where there is a rule of thumb, the lesson also explains why it exists, where it breaks, and how to think about your own situation. Lessons cite their sources and compare countries where the rules differ, so they stay useful once you know the basics.
+        </p>
+        <ol class="depth-steps">
+          <li>The rule of thumb</li>
+          <li>Why it exists</li>
+          <li>Where it breaks</li>
+          <li>Your situation</li>
+        </ol>
+      </div>
 
       <p class="section-foot">
         <a href="/blog/" data-attr="home-cta-blog">See the whole learning path</a>
@@ -843,6 +861,8 @@ const faqSchema = {
     line-height: 1.5;
   }
 
+  .hero-next .hero-skip { margin-top: 8px; }
+
   /* The worked example. Shown at every width; on small screens it follows
      the buttons. */
   .starter {
@@ -1071,6 +1091,77 @@ const faqSchema = {
   .start-more {
     padding-top: 12px;
     font-size: 0.9rem;
+  }
+
+  /* How lessons teach, for readers who already know the rules. */
+  .depth {
+    margin-top: 28px;
+    padding: 22px 24px;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--color-teal) 22%, transparent);
+    background: color-mix(in srgb, var(--color-teal) 6%, var(--color-bg-white));
+  }
+
+  .depth h3 {
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 8px;
+  }
+
+  .depth-body {
+    margin: 0 0 16px;
+    max-width: 70ch;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .depth-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 6px;
+    counter-reset: depth;
+  }
+
+  .depth-steps li {
+    counter-increment: depth;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .depth-steps li::before {
+    content: counter(depth);
+    display: inline-grid;
+    place-items: center;
+    width: 1.6em;
+    height: 1.6em;
+    border-radius: 50%;
+    background: var(--color-teal);
+    color: var(--color-bg-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* An arrow between steps on one row; hidden when the row wraps on phones. */
+  .depth-steps li:not(:last-child)::after {
+    content: '→' / '';
+    margin: 0 4px 0 6px;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 559px) {
+    .depth-steps { flex-direction: column; }
+    .depth-steps li:not(:last-child)::after { content: none; }
   }
 
   /* The door: one clear way in, pinned to the bottom so the buttons line

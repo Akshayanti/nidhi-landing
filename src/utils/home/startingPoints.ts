@@ -42,6 +42,8 @@ export const LEVEL_LABELS: Record<string, string> = {
 
 interface StartingPointDef {
   id: string;
+  /** Who the route suits, shown above the situation so experienced readers see their way in. */
+  audience: string;
   situation: string;
   detail: string;
   /** The level this situation starts in; null when it draws on several. */
@@ -55,6 +57,7 @@ interface StartingPointDef {
 export const STARTING_POINTS: StartingPointDef[] = [
   {
     id: 'basics',
+    audience: 'New to this',
     situation: 'I’m starting from the beginning.',
     detail: 'You know you should understand your money better, but not where to begin. Start with the ideas everything else is built on.',
     level: 'discovery',
@@ -63,6 +66,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
   },
   {
     id: 'no-plan',
+    audience: 'Some experience',
     situation: 'I have some savings, but no plan.',
     detail: 'Money is building up and you are not sure what it should be doing. Learn what saving, investing and goals each are for.',
     level: 'building',
@@ -71,6 +75,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
   },
   {
     id: 'habits',
+    audience: 'You know the theory',
     situation: 'I know what to do, but I don’t always do it.',
     detail: 'Most money mistakes are not about knowledge. See how attention, habit and emotion shape the decisions you make.',
     level: 'psychology',
@@ -78,6 +83,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
   },
   {
     id: 'complex',
+    audience: 'Experienced',
     situation: 'My finances have got complicated.',
     detail: 'A loan or a home, investments, a household to plan for, or money in more than one country. The same ideas still apply, with more moving parts.',
     level: null,
@@ -193,6 +199,7 @@ export function levelCounts(posts: HomePost[], now: Date): { byLevel: Record<str
 
 export interface StartingPoint {
   id: string;
+  audience: string;
   situation: string;
   detail: string;
   level: string | null;
@@ -211,6 +218,7 @@ export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: 
   const { byLevel } = levelCounts(posts, now);
   return STARTING_POINTS.map((s) => ({
     id: s.id,
+    audience: s.audience,
     situation: s.situation,
     detail: s.detail,
     level: s.level,
