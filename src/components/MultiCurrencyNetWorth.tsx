@@ -13,7 +13,7 @@ import {
 import {
   decodeFromQueryString,
   encodeShared,
-  encodeFullData,
+  SHARED_STATE_GLOBAL,
   type ShareMode,
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
@@ -81,10 +81,13 @@ export default function MultiCurrencyNetWorth() {
   const functionalCurrencySelectId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Hydrate from URL on mount.
+  // Hydrate from a shared link on mount. ToolStateGuard in the page head has
+  // already moved its state out of the address bar into a window property,
+  // before analytics started (see SHARED_STATE_GLOBAL in the url module).
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const decoded = decodeFromQueryString(window.location.search.slice(1));
+    const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
+    const decoded = decodeFromQueryString(typeof raw === 'string' ? raw : '');
     setRows(decoded.rows);
     setFunctionalCurrency(decoded.functionalCurrency);
     if (decoded.isReadOnly && decoded.sharedPositions) {
@@ -145,15 +148,9 @@ export default function MultiCurrencyNetWorth() {
     return () => { cancelled = true; };
   }, [functionalCurrency, hydrated, ratesRetryKey]);
 
-  // Sync URL (full-data mode only; skip when viewing a shared URL).
-  useEffect(() => {
-    if (!hydrated || typeof window === 'undefined') return;
-    if (isReadOnlyView) return;
-    const qs = encodeFullData(rows, functionalCurrency);
-    const utm = preserveUtmParams(window.location.search);
-    const next = qs ? `${window.location.pathname}?${qs}${utm}` : `${window.location.pathname}${utm}`;
-    window.history.replaceState(null, '', next);
-  }, [rows, functionalCurrency, hydrated, isReadOnlyView]);
+  // The inputs are never written into the address while you type: a URL can
+  // reach analytics and server logs. They only leave the form in a share
+  // link, after the # (CLAUDE.md, "Free tools keep inputs out of URLs").
 
   // Compute positions. In read-only mode, reconstruct from URL-stored data.
   const result = useMemo(() => {
@@ -283,7 +280,7 @@ export default function MultiCurrencyNetWorth() {
   const copyShareLinkFromModal = useCallback(async () => {
     if (typeof window === 'undefined') return;
     const qs = encodeShared(rows, result.positions, functionalCurrency, shareMode);
-    const url = `${window.location.origin}${window.location.pathname}?${qs}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth`;
+    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth#${qs}`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
@@ -1492,17 +1489,6 @@ function buildPreviewResult(
     // the user copy a link if the underlying result is 'none' anyway.
     hasRates: isFull ? realResult.hasRates : 'none',
   };
-}
-
-function preserveUtmParams(search: string): string {
-  const params = new URLSearchParams(search);
-  const utm = new URLSearchParams();
-  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
-    const val = params.get(key);
-    if (val) utm.set(key, val);
-  }
-  const s = utm.toString();
-  return s ? '&' + s : '';
 }
 
 function getFactor(currency: string): number {

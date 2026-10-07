@@ -8,13 +8,15 @@ All events use `https://eu.i.posthog.com` as the API host. Client-side events go
 
 ## SDK Auto-events (every page)
 
-Configured in `BaseHead.astro:102-108`.
+Configured in `src/components/Analytics.astro`.
 
 | Event | Config flag | Notes |
 |---|---|---|
 | `$pageview` | `capture_pageview: true` | Fires on every page load, regardless of consent |
 | `$pageleave` | `capture_pageleave: true` | Fires on page leave, regardless of consent |
 | `$autocapture` | `autocapture: <consent>` | Click/input capture on `data-attr` elements; **gated on cookie consent** |
+
+**URL scrubbing on free tools.** `before_send` in `Analytics.astro` runs on every event. Any URL property (`$current_url`, `$referrer`, session entry URLs, `$set`/`$set_once` values) that points at a `/free/` page on this site keeps only its `utm_*` parameters and loses its `#` part. It is a backstop: the tools never put inputs in the address, and `ToolStateGuard` moves shared-link state out of it before analytics load. See CLAUDE.md, "Free tools keep inputs out of URLs".
 
 ---
 
@@ -65,7 +67,7 @@ All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (`line 59`
 
 | Event | Properties | Trigger |
 |---|---|---|
-| `free_loan_comparison_shared_view_opened` | `vendors: number` — vendor count from URL<br>`utm_source: string \| null` | URL contains encoded state (shared link opened) |
+| `free_loan_comparison_shared_view_opened` | `vendors: number` — vendor count from URL<br>`utm_source: string \| null` | Page opened from a share link carrying tool state (after the #, or an older ?-style link), read via ToolStateGuard |
 | `free_loan_comparison_vendor_added` | `count: number` — new total after add | User adds a vendor row |
 | `free_loan_comparison_vendor_removed` | `vendor: string` — slot label A-E that was removed | User removes a vendor row |
 | `free_loan_comparison_validation_error` | `count: number` — errored field count<br>`firstReason: string` — category of first error<br>`firstVendor: string` — slot label of first error | Validation fails (debounced 600ms) |
@@ -87,7 +89,7 @@ All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wr
 
 | Event | Properties | Trigger |
 |---|---|---|
-| `free_multi_currency_net_worth_shared_view_opened` | `mode: string` — share mode from URL<br>`positions: number` — shared position count<br>`utm_source: string \| null` | URL contains encoded state (shared link opened) |
+| `free_multi_currency_net_worth_shared_view_opened` | `mode: string` — share mode from URL<br>`positions: number` — shared position count<br>`utm_source: string \| null` | Page opened from a share link carrying tool state (after the #, or an older ?-style link), read via ToolStateGuard |
 | `free_multi_currency_net_worth_rates_error` | `functionalCurrency: string`<br>`reason: string` — first 80 chars of error | Exchange rate API fetch fails |
 | `free_multi_currency_net_worth_asset_added` | `count: number` — new total after add | User clicks "Add asset" |
 | `free_multi_currency_net_worth_asset_removed` | `count: number` — new total after remove | User removes an asset row |

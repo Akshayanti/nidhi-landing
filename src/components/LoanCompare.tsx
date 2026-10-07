@@ -23,6 +23,7 @@ import {
   decodeFromQueryString,
   encodeToQueryString,
   makeDefaultVendor,
+  SHARED_STATE_GLOBAL,
   type AnalysisTab,
   type GlobalState,
   type VendorInput,
@@ -68,16 +69,6 @@ function track(event: string, properties?: Record<string, unknown>) {
   }
 }
 
-function preserveUtmParams(search: string): string {
-  const params = new URLSearchParams(search);
-  const utm = new URLSearchParams();
-  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
-    const val = params.get(key);
-    if (val) utm.set(key, val);
-  }
-  const s = utm.toString();
-  return s ? '&' + s : '';
-}
 
 // VENDOR_COLORS is intentionally kept here, not in loanCompareUrl.ts:
 // it's a UI-only concern (how vendors render in the grid and chart) and
@@ -576,11 +567,14 @@ export default function LoanCompare() {
     [],
   );
 
+  // Hydrate from a shared link on mount. ToolStateGuard in the page head has
+  // already moved its state out of the address bar into a window property,
+  // before analytics started (see SHARED_STATE_GLOBAL in the url module).
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(
-      window.location.search.slice(1),
-    );
+    const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
+    const shared = typeof raw === 'string' ? raw : '';
+    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(shared);
     setVendors(decoded);
     // Validate the currency we got back; an unknown code falls back to
     // the default rather than putting the dropdown into a broken state.
@@ -591,28 +585,21 @@ export default function LoanCompare() {
     setHydrated(true);
 
     // Mirrors `free_multi_currency_net_worth_shared_view_opened` on the analyzer.
-    // We fire only when the URL actually carries encoded state (any
-    // non-utm param), so a plain `?utm_source=...` campaign click does
-    // not get mislabelled as a shared comparison view. The utm-source
-    // value is reported as a property so funnels can split direct
-    // shares (utm_source=share) from organic landings.
-    const params = new URLSearchParams(window.location.search.slice(1));
-    const hasEncodedState = [...params.keys()].some((k) => !k.startsWith('utm_'));
-    if (hasEncodedState) {
+    // We fire only when the link actually carried encoded state, so a plain
+    // `?utm_source=...` campaign click does not get mislabelled as a shared
+    // comparison view. The utm-source value is reported as a property so
+    // funnels can split direct shares (utm_source=share) from organic landings.
+    if (shared) {
       track('free_loan_comparison_shared_view_opened', {
         vendors: decoded.length,
-        utm_source: params.get('utm_source') ?? null,
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') ?? null,
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (!hydrated || typeof window === 'undefined') return;
-    const qs = encodeToQueryString(vendors, globalState);
-    const utm = preserveUtmParams(window.location.search);
-    const next = qs ? `${window.location.pathname}?${qs}${utm}` : `${window.location.pathname}${utm}`;
-    window.history.replaceState(null, '', next);
-  }, [vendors, globalState, hydrated]);
+  // The inputs are never written into the address while you type: a URL can
+  // reach analytics and server logs. They only leave the form in a share
+  // link, after the # (CLAUDE.md, "Free tools keep inputs out of URLs").
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -714,7 +701,7 @@ export default function LoanCompare() {
   const copyShareLink = useCallback(async () => {
     if (typeof window === 'undefined') return;
     track('free_loan_comparison_share_modal_opened');
-    const url = `${window.location.origin}${window.location.pathname}?${encodeToQueryString(vendors, globalState)}&utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison`;
+    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
