@@ -164,6 +164,11 @@ export function lintKit(kit) {
 
     const keywords = deckKeywords(kit, day);
     if (keywords.length < 18 || keywords.length > 24) err(`${D} carousel`, `${keywords.length} keywords, expected 18 to 24`);
+    // Keywords serve search, hashtags serve the feed: one that repeats a hashtag wastes a slot (PLAYBOOK §6).
+    const deckTagSet = new Set(tagList(deckTags(kit, day)).map(t => t.slice(1).toLowerCase()));
+    for (const keyword of keywords) {
+      if (deckTagSet.has(keyword.toLowerCase().replace(/[\s\-_]/g, ''))) err(`${D} carousel`, `keyword "${keyword}" repeats a hashtag`);
+    }
 
     const deck = day.deck;
     if (!deck) {

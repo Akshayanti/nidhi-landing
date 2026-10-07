@@ -142,6 +142,12 @@ export async function writePlatformCaptions({
   relatedTool,
   reelPromise,
 }) {
+  // The teaser comes from lesson frontmatter, not the scrubbed plan, so the
+  // no-dash rule for anything a reader sees is checked here. A warning, not
+  // a failure: many older lessons still carry hyphenated teasers.
+  if (reelPromise && /[—–]|--|[A-Za-z0-9]-[A-Za-z]/.test(reelPromise)) {
+    console.warn(`│        WARNING: reelPromise has a dash or hyphen, which captions do not allow: "${reelPromise}"`);
+  }
   const CAPTIONS_DIR = captionsDir ?? DEFAULT_CAPTIONS_DIR;
   await mkdir(CAPTIONS_DIR, { recursive: true });
 
