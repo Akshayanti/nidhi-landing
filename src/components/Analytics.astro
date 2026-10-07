@@ -56,13 +56,34 @@
   // initialised: the SDK does not load and calls to the stub above stay
   // queued in the page, so nothing is sent. Safe to remove after that date.
   var ANALYTICS_START = Date.parse('2026-10-08T00:00:00Z');
-  // The snippet's stub only gains its methods inside init(), so before the
-  // start the page gets silent no-ops for every call the site makes.
-  if (Date.now() < ANALYTICS_START) {
+
+  // Internal visitors (the team) are never counted. Opening any page with
+  // ?internal=1 marks this browser (localStorage nidhi-internal); ?internal=0
+  // clears it. The parameter is removed from the address before anything else
+  // could read it. A marked browser never starts PostHog: nothing is sent.
+  var isInternal = false;
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var flag = params.get('internal');
+    if (flag === '1') localStorage.setItem('nidhi-internal', '1');
+    if (flag === '0') localStorage.removeItem('nidhi-internal');
+    if (flag !== null) {
+      params.delete('internal');
+      var rest = params.toString();
+      history.replaceState(null, '', window.location.pathname + (rest ? '?' + rest : '') + window.location.hash);
+    }
+    isInternal = localStorage.getItem('nidhi-internal') === '1';
+  } catch (e) {}
+
+  // The snippet's stub only gains its methods inside init(), so whenever
+  // PostHog doesn't start the page gets silent no-ops for every call the site
+  // makes.
+  var analyticsOn = Date.now() >= ANALYTICS_START && !isInternal;
+  if (!analyticsOn) {
     var noop = function () {};
     window.posthog = { capture: noop, identify: noop };
   }
-  if (Date.now() >= ANALYTICS_START) posthog.init(posthogKey, {
+  if (analyticsOn) posthog.init(posthogKey, {
     api_host: 'https://eu.i.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
