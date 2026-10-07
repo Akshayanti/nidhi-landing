@@ -4,7 +4,7 @@
  * from the worked examples in src/utils/home/heroExamples.ts. Hovering or
  * tapping it shows the values at that point (script in src/pages/index.astro,
  * which reads the data-* attributes written here); the same numbers are in
- * the <desc> for screen readers.
+ * the <desc> for screen readers, or in the element named by descId.
  */
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 
@@ -20,7 +20,10 @@ interface Series {
 interface Props {
   id: string;
   title: string;
-  desc: string;
+  /** The numbers in words, for screen readers. Leave it out when passing descId. */
+  desc?: string;
+  /** id of an element elsewhere on the page that describes the chart. Use it when the page draws the same chart twice (one per screen size), so the description is printed once instead of once per drawing. */
+  descId?: string;
   /** One label per point, used by the hover readout. */
   pointLabels: string[];
   series: Series[];
@@ -38,7 +41,7 @@ interface Props {
   class?: string;
 }
 
-const { id, title, desc, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote, width = 480, height = 270, class: extraClass } = Astro.props;
+const { id, title, desc, descId, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote, width = 480, height = 270, class: extraClass } = Astro.props;
 
 const W = width;
 const H = height;
@@ -83,9 +86,9 @@ const hoverData = JSON.stringify({
 ---
 
 <div class:list={["hero-chart", extraClass]} data-hero-chart={hoverData}>
-  <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
+  <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby={descId ? `${id}-title` : `${id}-title ${id}-desc`} aria-describedby={descId}>
     <title id={`${id}-title`}>{title}</title>
-    <desc id={`${id}-desc`}>{desc}</desc>
+    {!descId && <desc id={`${id}-desc`}>{desc}</desc>}
     <defs>
       <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="var(--chart-eur)" stop-opacity="0.22" />
