@@ -33,6 +33,11 @@ export function yearlyPath(start: number, monthly: number, years: number): numbe
  * saved, an old car, a small pension, a student loan. It walks one idea
  * through the arc the homepage describes: learn what net worth is, see one
  * person's, then look ahead at what steady saving could do.
+ *
+ * The look-ahead grows an invested balance, not the whole net worth: a net
+ * worth made of a car, cash, a pension and a loan does not earn one return
+ * (the car loses value, the loan is paid down). The invested balance starts
+ * at the same €3,400 so the step reads on from the table.
  */
 export const STARTER = {
   owns: [
@@ -49,8 +54,10 @@ export function starterExample() {
   const owned = STARTER.owns.reduce((s, i) => s + i.amount, 0);
   const owed = STARTER.owes.reduce((s, i) => s + i.amount, 0);
   const netWorth = owned - owed;
-  const values = yearlyPath(netWorth, STARTER.monthly, STARTER.years);
+  const invested = netWorth;
+  const values = yearlyPath(invested, STARTER.monthly, STARTER.years);
   const end = values[STARTER.years];
   const added = STARTER.monthly * 12 * STARTER.years;
-  return { owned, owed, netWorth, values, end, added, growth: end - netWorth - added };
+  const putIn = invested + added;
+  return { owned, owed, netWorth, invested, values, end, added, putIn, growth: end - putIn };
 }

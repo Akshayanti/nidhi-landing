@@ -28,16 +28,17 @@ describe('hero example', () => {
     assert.equal(e.netWorth, 3_400);
   });
 
-  it('the path starts at today\'s net worth and has one point a year', () => {
+  it('the path starts at the invested balance and has one point a year', () => {
     const e = starterExample();
     assert.equal(e.values.length, STARTER.years + 1);
-    assert.equal(e.values[0], e.netWorth);
+    assert.equal(e.values[0], e.invested);
   });
 
-  it('the end splits into start, money added and growth', () => {
+  it('the end splits into money put in (start plus monthly) and growth', () => {
     const e = starterExample();
     assert.equal(e.added, 18_000);
+    assert.equal(e.putIn, e.invested + e.added);
     assert.ok(e.growth > 0);
-    assert.ok(Math.abs(e.netWorth + e.added + e.growth - e.end) < 1e-6);
+    assert.ok(Math.abs(e.putIn + e.growth - e.end) < 1e-6);
   });
 });
