@@ -3,6 +3,10 @@ slug: "immigrants-expats-and-cross-border-households"
 title: "Moving Countries: Rebuilding Your Financial Identity"
 description: "A border resets your credit history, bank access and paper trail. How to rebuild a financial identity from zero and cut the cost of sending money home."
 tldr: "Crossing a border resets financial infrastructure that took years to build. Your credit history almost never travels with you, so a lender in the new country sees a blank file however careful you were before. Opening a bank account can require an address, and renting an address can require a bank account. Pension contributions sit stranded in a country you left. Tax rules may treat you as resident in two places at once. This post covers the two problems that cost newcomers the most. The first is rebuilding a financial identity from zero, which has a reliable order: identification and tax number, a basic bank account, proof of address, then small reported credit. The second is the cost of sending money home. The global average cost of a remittance is around 6%, several times what the cheapest providers charge on the same route, and for a household sending €300 a month the difference is well over a thousand euros across a decade. It closes with what changes for people who did not choose to move: refugees, family migrants, and households without full legal status."
+takeaways:
+  - "Why a border resets your credit history and banking"
+  - "What order rebuilds a financial identity from zero"
+  - "How to compare remittances by the amount actually received"
 order: 56.5
 companionOf: "geographic-arbitrage"
 pubDate: 2099-01-20
@@ -28,6 +32,7 @@ relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
   cta: "Add up what you own across countries in one currency"
+  idea: "Money held in two countries and two currencies can still be added up as one net worth."
 reelPromise: "The order to rebuild a financial identity in a new country, and a worked example of what remittance fees cost over ten years"
 relatedSlugs: ["geographic-arbitrage", "credit-and-credit-scores", "managing-money-across-currencies", "why-your-euro-buys-more-in-some-countries"]
 referentialReading:

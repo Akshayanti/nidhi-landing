@@ -3,6 +3,11 @@ slug: "financial-dashboard"
 title: "Your Financial Dashboard: What to Track and How Often"
 description: "A financial dashboard isn't a spreadsheet of everything. It's a small set of numbers you check on a known schedule so you notice drift before it becomes damage."
 tldr: "A good financial dashboard has four layers, each checked at a different frequency. Monthly: net worth, cash flow, savings rate. Quarterly: asset allocation, progress against goals, emergency fund coverage. Annually: full financial health review, goal calibration, projection vs. actual. Irregularly: large life events. Checking too often is a tax on your mental energy and invites emotional reactions to noise. Checking too rarely lets drift accumulate into problems you notice only in a crisis. The point of the dashboard is early signal, not constant measurement."
+takeaways:
+  - "Why checking too often turns signal into noise"
+  - "What to review monthly, quarterly and annually"
+  - "Which life events should trigger a review outside the schedule"
+  - "Which numbers are not worth tracking at all"
 order: 32
 pubDate: 2026-06-29
 updatedDate: 2026-06-29

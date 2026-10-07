@@ -3,6 +3,11 @@ slug: "what-if-scenarios"
 title: "What-If Scenarios: Test a Decision Before You Make It"
 description: "A what-if scenario changes one input in your projection and shows how far the result moves. Which changes matter, why the guilty ones usually do not, and why to test the bad case first."
 tldr: "A what-if scenario is your projection with one input changed, so you can see what a decision does before you make it. The useful number is not the new ending balance, which is uncertain anyway, but the difference from your baseline. Five inputs do most of the moving: the monthly savings amount, the growth assumption, a large one-off event, the retirement date, and where you live. Some intuitions are right and some are wrong. Changes that repeat every month are far bigger than they look: €150 a month more in rent becomes about €146,000 over 30 years at 6% real. Changes that happen once are smaller than they feel: a €4,000 holiday is about €23,000. Change one thing at a time so you know what is doing the work, and run the bad case before the good one."
+takeaways:
+  - "Why the gap from your baseline matters more than the end balance"
+  - "Which five inputs move a projection the most"
+  - "Why costs that repeat monthly outweigh one-off purchases"
+  - "Why to change one input at a time and test the bad case first"
 order: 43.3
 pubDate: 2099-01-02
 updatedDate: 2026-10-03
@@ -23,6 +28,7 @@ relatedTool:
   url: "/free/monte-carlo-simulator"
   label: "Monte Carlo simulator"
   cta: "Change one input at a time and watch the spread move"
+  idea: "Change one input at a time and compare against your baseline, running the bad case before the good one."
 referentialReading:
   - title: "Thinking, Fast and Slow"
     author: "Daniel Kahneman"

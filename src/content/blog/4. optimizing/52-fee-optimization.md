@@ -3,6 +3,11 @@ slug: "fee-optimization"
 title: "Fee Optimization: The Silent Drag on Your Returns"
 description: "A 1% annual fee sounds like nothing. Over 40 years it takes roughly a quarter of your total returns. Which investment fees matter and how to spot them."
 tldr: "Fees are the most predictable drag on long-term returns and the most controllable one. Investment costs come in layers: expense ratios on funds, platform or brokerage fees, transaction costs, financial-advisor fees, tax drag on high-turnover funds, currency-conversion spreads. A 0.5 to 1 percentage point difference sounds negligible per year but compounds into 15 to 30% of terminal wealth over a career. The framing that reveals the cost: not '1% fee' but 'roughly €X of your projected retirement pot lost to fees over 40 years.' Low-cost index funds dominate not because active management never adds value but because the fee spread is large enough that even a manager who consistently beats the market before fees usually loses to a low-cost index fund after fees. The comparison workflow: identify total cost (fund expense ratio plus platform fee plus transaction costs plus any advisory layer), compare with alternatives at the same risk profile, switch to the lower-cost equivalent, and never pay for what does not compound in your favour."
+takeaways:
+  - "Why a small yearly fee compounds into a large share of your wealth"
+  - "What the layers of investment cost are and how they stack"
+  - "Why low-cost index funds usually beat active funds after fees"
+  - "When an advisor's fee is worth paying and when it is not"
 order: 52
 pubDate: 2099-01-15
 updatedDate: 2026-08-14

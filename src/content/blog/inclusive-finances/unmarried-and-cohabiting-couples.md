@@ -3,6 +3,11 @@ slug: "unmarried-and-cohabiting-couples"
 title: "Unmarried Couples: Building the Protections Marriage Gives"
 description: "Marriage switches on inheritance, tax and decision rights automatically. Unmarried couples get none by default. The five documents that rebuild them."
 tldr: "Marriage is, among other things, a bundle of financial defaults that switch on the day you sign: your spouse inherits if there is no will, receives survivor benefits from pensions, can usually make medical decisions for you, is often taxed jointly with you, and can receive gifts and inheritances from you with little or no tax. Couples who live together without marrying get none of that automatically in most places, however long they have been together. 'Common-law marriage' is widely believed in and rarely exists. The consequence is that an unmarried partner can be a legal stranger at exactly the moment it matters: a death, a serious illness, or a separation. The good news is that almost every piece of the bundle can be rebuilt on purpose, and most of it cheaply. Five documents do the work: a will, beneficiary designations on every pension and policy, a clear record of how you own your home, a cohabitation agreement, and powers of attorney for money and for health. What usually cannot be rebuilt is the tax treatment, which is a cost to plan around with insurance and with how assets are held."
+takeaways:
+  - "What marriage switches on automatically, and what you miss"
+  - "Why living together rarely creates the rights of marriage"
+  - "Which five documents rebuild most of those protections"
+  - "Why tax treatment is a gap to plan around, not fix"
 order: 58.5
 companionOf: "insurance-optimization"
 pubDate: 2099-01-24

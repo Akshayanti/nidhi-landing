@@ -3,6 +3,10 @@ slug: "life-events"
 title: "Life Events and Your Finances: How to Plan Ahead"
 description: "Children, career breaks, relocations: the big financial life events are largely predictable. How to plan for the foreseeable and buffer for the rest."
 tldr: "Four categories cover most of the disruptive events in a typical financial life: having children, taking a career break, buying or selling a home, and relocating. Each one is highly foreseeable (you usually know months or years in advance), each one has a well-understood cash-flow shape, and each one is dramatically easier to absorb when modelled ahead of time. The rest of what happens (illness, redundancy, family emergencies, macro shocks) is genuinely unforeseeable, and the response is not planning but buffering: emergency fund, insurance, flexible plan. The mistake most households make is treating foreseeable events like surprises. Model them into your projection; place them into your cash flow forecast; run the downside case; make the decision from a picture rather than a hope."
+takeaways:
+  - "Why most big life events are foreseeable and belong in your plan"
+  - "Why the income shift after a child can match or exceed its costs"
+  - "How an emergency fund, insurance and slack absorb the unforeseeable"
 order: 45
 pubDate: 2099-01-04
 updatedDate: 2026-07-29

@@ -3,6 +3,10 @@ slug: "money-scripts"
 title: "Money Scripts: The Beliefs About Money You Inherited Without Knowing"
 description: "Money scripts are the beliefs about money you absorbed as a child from the adults around you. They still shape your decisions more than any spreadsheet."
 tldr: "Money scripts are unconscious beliefs about money, usually formed in childhood by watching the adults around us, that quietly drive financial behaviour for the rest of our lives. The psychologist Brad Klontz identified four broad patterns: money avoidance, the belief that money is bad or that wanting it is wrong; money worship, the belief that more money will solve everything; money status, the belief that your net worth equals your worth as a person; and money vigilance, a careful, secretive, sometimes anxious relationship with money. Each has upsides and downsides, and most people carry a blend. Scripts explain why couples fight about money far more often over clashing beliefs than over clashing numbers. Crucially, self-awareness of your own script often matters more for outcomes than financial knowledge does, because the script is what decides whether the knowledge ever gets used. The work is to notice your script, name it, and stop letting it run unexamined."
+takeaways:
+  - "What money scripts are and where they come from"
+  - "The four scripts and the upside and cost of each"
+  - "Why couples' money fights are usually about beliefs, not numbers"
 order: 41
 pubDate: 2026-07-20
 updatedDate: 2026-07-20

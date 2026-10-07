@@ -3,6 +3,11 @@ slug: "invest-or-pay-off-debt"
 title: "Invest or Pay Off Debt? The Math and the Sequence"
 description: "Invest or pay off debt? The clean cases have a simple answer. Employer matches, tax deductions, and multiple debts at different rates need a framework."
 tldr: "Compare the return of paying off a debt (equal to the debt's interest rate) with the expected return of investing (roughly 6 to 8% a year before inflation for a diversified equity portfolio, which is 4 to 6% after inflation if inflation runs around 2%). When the debt rate clearly exceeds the expected investment return (credit card at 20%+), pay off. When the debt rate is clearly below (mortgage at 3%), investing wins on expected value. In the middle, the math is genuinely ambiguous and behavioural factors take over. Three modifiers change the calculation materially: employer match on retirement contributions is often an instant 50 to 100% return that dominates any debt rate, so once minimum payments are covered and a one-month cash buffer is in place, capture it next. Tax deductions on debt (mortgage interest in some jurisdictions) lower the effective debt rate. Multiple debts require sequencing: after minimum payments and a one-month cash buffer, allocate first to employer match, then to any debt above the expected investment return, then to a full three-to-six-month emergency fund, then to tax-advantaged investing, then to remaining debt, then to taxable investing. The mental accounting trap (paying off the small scary debt first, ignoring the big expensive one) usually reflects an emotional preference rather than an arithmetic one, and it can cost significant money."
+takeaways:
+  - "Why paying off debt is a guaranteed return equal to its rate"
+  - "Why the choice is clear at the extremes and close in the middle"
+  - "Why an employer match usually comes before extra debt payments"
+  - "How to sequence several debts alongside saving and investing"
 order: 49
 pubDate: 2099-01-11
 updatedDate: 2026-08-07
@@ -25,6 +30,7 @@ relatedTool:
   url: "/free/loan-comparison"
   label: "Loan comparison calculator"
   cta: "See any loan’s APR and total cost, fees included"
+  idea: "Paying off a debt earns exactly its interest rate, so compare that rate with what investing could return."
 reelPromise: "Why employer match dominates every debt rate, the seven-step multi-debt sequence, and the mental-accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:

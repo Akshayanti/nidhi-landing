@@ -3,6 +3,10 @@ slug: "narrative-economics-and-bubbles"
 title: "Narrative Economics: How a Good Story Inflates a Bubble"
 description: "Narrative economics: every bubble runs on a plausible story, rising prices that seem to prove it, and four dangerous words. This time is different."
 tldr: "Stories move markets more than fundamentals do, an idea the economist Robert Shiller called narrative economics. Across four centuries, from tulip mania in 1637 to the South Sea bubble, the dotcom crash, the 2008 housing crisis, and various crypto cycles, financial bubbles share the same anatomy: a genuinely plausible story, rising prices that appear to confirm it, new-era thinking that says the old rules no longer apply, and the four most expensive words in finance, this time is different. Two biases pour fuel on the fire: recency bias makes us assume the recent trend will continue, and availability bias makes vivid, oft-repeated stories feel more likely than they are. Bubbles look obvious afterwards but are genuinely hard to spot while inside one. The defence is not to predict the top but to stay grounded: keep position sizes sane, diversify, and treat any story that justifies abandoning the basics as a warning sign rather than an invitation."
+takeaways:
+  - "How stories can move markets more than fundamentals do"
+  - "The four-part script nearly every bubble follows"
+  - "How sane position sizes and diversification keep you grounded"
 order: 40
 pubDate: 2026-07-17
 updatedDate: 2026-07-17

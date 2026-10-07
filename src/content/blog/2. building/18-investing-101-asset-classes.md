@@ -3,6 +3,10 @@ slug: "investing-101-asset-classes"
 title: "Investing 101: Asset Classes and How They Work"
 description: "Stocks, bonds, real estate, cash. Four words everyone has heard, but few can explain what they actually do or why they belong in a portfolio."
 tldr: "The four core asset classes are stocks (you own a piece of a company), bonds (you lend money to a government or company), real estate (you own property), and cash equivalents (you park money safely). Stocks have the highest historical returns but the most volatility. Bonds are more stable but barely beat inflation. Real estate offers both income and appreciation but is illiquid. Cash equivalents are the safest but lose purchasing power over time. No single asset class is best. They behave differently under different conditions, which is exactly why portfolios combine them. Commodities and cryptocurrency exist alongside these four as satellite assets and are covered separately in the next post."
+takeaways:
+  - "How stocks, bonds, real estate and cash each generate returns"
+  - "How each asset class trades return against volatility and liquidity"
+  - "Why no single asset class wins in every economic condition"
 order: 18
 pubDate: 2026-05-27
 updatedDate: 2026-10-03

@@ -3,6 +3,10 @@ slug: "caregiving-and-the-career-break-wealth-gap"
 title: "Caregiving: The Real Cost of a Career Break"
 description: "A caregiving break leaves a pension gap several times the contributions it skipped. Where it comes from, how pension credits help, and how to catch up afterwards."
 tldr: "Unpaid care for children, ageing parents, or a disabled relative is work that most retirement plans never price. The visible cost of stepping back is the salary you stop earning. The invisible cost is roughly as large again, and it arrives decades later: pension contributions that were never made and never compounded, an employer match that was never paid, a lower salary on return that every later raise is calculated from, and fewer qualifying years in the state pension. In the worked example in this post, a five-year break at 35 skips €30,000 of pension contributions and leaves about €94,000 less in the pension at 65, on top of the pay the life events post counted; with the pay, the break costs close to €400,000 by 65. That is why the gap in pension income between women and men in Europe is about twice the gap in hourly pay: the pay gap measures one moment, the wealth gap measures a lifetime. None of this argues against caregiving. It argues for pricing it, sharing it, and protecting the carer. The practical tools are pension credits for care years where your country offers them, contributions to the carer's pension paid from the household budget during the break, a deliberate re-entry negotiation, and catch-up contributions afterwards."
+takeaways:
+  - "Why a career break's pension cost keeps growing until retirement"
+  - "Why the wealth gap is wider than the pay gap"
+  - "How credits, contributions and a re-entry plan protect the carer"
 order: 63.5
 companionOf: "retirement-planning"
 pubDate: 2099-01-30

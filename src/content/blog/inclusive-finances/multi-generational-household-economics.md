@@ -3,6 +3,11 @@ slug: "multi-generational-household-economics"
 title: "Supporting Parents While Saving for Yourself"
 description: "When three generations share money, a one-household budget misleads. How to plan support for parents as a fixed cost and weigh it against your own future."
 tldr: "Most budgeting advice pictures one couple and their children. For a large part of the world, a household is three generations sharing income, housing, childcare, and the care of elders, and money flows in every direction. Two things go wrong when that household uses advice written for a nuclear one. First, support for parents gets treated as a gift made from whatever is left, when it is really a fixed obligation that should sit near the top of the budget next to rent. Planned that way, it stops crowding out savings by accident. The shared household also has real economic advantages, in housing and childcare, that the standard picture ignores. Second, support for parents today competes directly with saving for your own old age, and the honest answer is that it is a trade-off, not something to be optimised away. €500 a month for twenty years is €120,000 given and roughly €227,000 of retirement savings not built. If that gap is never filled, your children inherit the same obligation. The post offers a way to decide on purpose: define the support, share it among siblings, protect the largest risk with insurance, and keep a floor under your own retirement saving."
+takeaways:
+  - "Why support for parents belongs at the top of the budget"
+  - "What a shared household gives back in housing, care and risk"
+  - "Why supporting parents now trades off against your own retirement"
+  - "How a floor, a ceiling and a sibling agreement keep it sustainable"
 order: 71.5
 companionOf: "charitable-giving-optimization"
 pubDate: 2099-02-03

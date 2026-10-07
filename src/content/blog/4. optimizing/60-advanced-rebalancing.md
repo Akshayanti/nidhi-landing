@@ -3,6 +3,11 @@ slug: "advanced-rebalancing"
 title: "Advanced Rebalancing: Glide Paths and Bond Tents"
 description: "Basic rebalancing holds a static target. Advanced rebalancing moves the target over time: glide paths and bond tents for when bad returns hurt most."
 tldr: "The rebalancing post in Building covered calendar-based, threshold-based, and contribution-based rebalancing to a static target. This post covers what changes as you approach and enter retirement. Glide paths gradually shift allocation from higher-risk to lower-risk over time; the classic 100-minus-age formula is one version, target-date-fund shapes are another, and each has trade-offs. Bond-tent strategies temporarily raise bond allocation in the 5 years before and 5 years after retirement to buffer against sequence-of-returns risk (the specific danger of bad early-retirement returns). Rebalancing frequency and threshold tightening often makes sense near retirement because the cost of drift is asymmetric (bad drift hurts more than good drift helps at drawdown). Tax-aware rebalancing across taxable and tax-advantaged accounts uses new contributions and withdrawals to shift allocation without triggering unnecessary tax events. Common mistakes: over-aggressive de-risking that leaves you exposed to inflation over 30+ years of retirement, and letting loss aversion drive rebalancing decisions (rebalancing that feels safer often sacrifices real return without meaningful risk reduction). The Mastery-level posts on sequence risk and withdrawal sequencing go deeper; this post positions the accumulation-to-drawdown transition."
+takeaways:
+  - "What the 100 minus age rule captures and where it falls short"
+  - "How a bond tent cushions the years right around retirement"
+  - "Why too many bonds can leave a long retirement exposed to inflation"
+  - "Why guaranteed income like a pension can justify more equity"
 order: 60
 pubDate: 2099-01-29
 updatedDate: 2026-09-02

@@ -3,6 +3,10 @@ slug: "mental-accounting"
 title: "Mental Accounting: Why Every Euro Should Be Equal but Isn't"
 description: "Mental accounting: why a tax refund gets spent freely while salary gets guarded. Your brain files money into folders, and sometimes that costs you."
 tldr: "Mental accounting is the habit of treating money differently depending on where it came from or what label it carries, even though every euro is identical and interchangeable. A tax refund feels like found money and gets spent freely; the same sum earned as salary gets saved carefully. People keep an emergency fund earning almost nothing while carrying credit card debt at 18%, because the two live in separate mental folders. The house-money effect makes us gamble more recklessly with winnings than with the original stake. Mental accounting is not always bad: budgeting buckets use it deliberately to keep spending in line. The skill is knowing when the labels are serving you and when they are quietly costing you, then collapsing the folders into one truthful number whenever the labels lead to worse decisions."
+takeaways:
+  - "Why your brain treats identical euros differently by label"
+  - "How savings held beside expensive debt quietly costs you"
+  - "When budgeting buckets help and when to collapse the folders"
 order: 35
 pubDate: 2026-07-06
 updatedDate: 2026-07-06

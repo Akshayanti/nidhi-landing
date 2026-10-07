@@ -3,6 +3,11 @@ slug: "account-consolidation-and-financial-data-hygiene"
 title: "Account Consolidation: Cleaning Up Financial Sprawl"
 description: "Old retirement plans, forgotten brokerages, unused cards: account sprawl leaks fees and hides balances. How to consolidate accounts and clean up."
 tldr: "A typical mid-career household holds 10 to 25 financial accounts across old employer plans, cards, brokerages, and rate-chasing savings accounts. Most of the sprawl was rational at the time and irrational now. The cost is real: dormant-account fees, forgotten balances, credit-monitoring blind spots, and planning noise that makes every downstream decision harder. Consolidation is a four-step process: inventory (list every account), categorise (essential, optimising, dormant), migrate (roll over, transfer, close), systematise (target two or three institutions for 90% of activity, defensively spread within deposit-insurance limits). The wrinkles: closing old credit cards affects credit-history length, moving an old pension through your own bank account can turn it into a taxable withdrawal, and some employer plans hold unique institutional funds worth keeping. Data hygiene is the enabler for every downstream Optimizing post: you cannot rebalance a portfolio you cannot see."
+takeaways:
+  - "Why account sprawl builds up and what it quietly costs"
+  - "How to inventory, categorise, migrate and systematise accounts"
+  - "Why an old pension should move provider to provider, never via you"
+  - "How closing old credit cards really affects your credit score"
 order: 47
 pubDate: 2099-01-07
 updatedDate: 2026-08-03
@@ -25,6 +30,7 @@ relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
   cta: "List every account in one place, in any currency"
+  idea: "You cannot optimise a financial picture you cannot see, so list every account in one place first."
 reelPromise: "The four-step consolidation process, why an old pension must move provider to provider and never through your own account, and how many accounts a typical household actually needs"
 relatedSlugs: ["assets", "financial-dashboard", "getting-started-investing", "cash-management", "credit-and-credit-scores"]
 referentialReading:

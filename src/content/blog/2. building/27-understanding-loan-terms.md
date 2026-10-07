@@ -3,6 +3,11 @@ slug: "understanding-loan-terms"
 title: "Understanding Loan Terms: How to Compare Borrowing Options"
 description: "When you borrow, interest rate is only part of the story. APR, amortisation, fixed vs. variable, and prepayment rules decide what the loan really costs."
 tldr: "The advertised rate on a loan is almost never the whole cost. APR (annual percentage rate) includes fees and is the number you should actually compare. Amortisation explains why early payments go mostly to interest and late payments mostly to principal, which matters hugely for refinancing and prepayment decisions. Fixed rates trade predictability for potentially higher cost; variable rates can be cheaper but carry the risk of future payment shock. To compare two loans honestly, normalise for term and amount and compare the total cost of borrowing (or equivalently, the IRR of the cash flows). Prepayment is one of the most powerful ways to reduce total interest paid, as long as your loan allows it without penalty. Kept generic: specific rules and products vary heavily by country and provider."
+takeaways:
+  - "Why APR is a fairer comparison than the advertised rate"
+  - "How amortisation makes early payments mostly interest"
+  - "How fixed and variable rates trade predictability against cost"
+  - "How prepayment and break-even maths change the total cost"
 order: 27
 pubDate: 2026-06-17
 updatedDate: 2026-06-17

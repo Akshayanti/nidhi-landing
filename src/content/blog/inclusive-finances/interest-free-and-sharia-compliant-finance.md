@@ -3,6 +3,11 @@ slug: "interest-free-and-sharia-compliant-finance"
 title: "Interest-Free Finance: A Different Toolkit"
 description: "If your faith or ethics rule out interest, borrowing and investing need a different toolkit. How interest-free home finance and screened investing work."
 tldr: "Most personal finance advice runs on interest: compare the rate, refinance when it falls, hold bonds for stability, keep cash in a savings account. For readers whose faith or ethics prohibit interest, that advice is not something to adjust. It needs a parallel toolkit built on different foundations: trade, leasing, shared ownership, and shared risk. Three structures cover most home and asset finance: a cost-plus sale (the financier buys the asset and sells it to you at a disclosed higher price, paid over time), a lease that ends in ownership, and a shrinking partnership (you and the financier co-own the home and you buy their share gradually while paying rent on the part you do not yet own). On the investing side, shares are generally permitted because they are ownership, but companies are screened by what they do and by how much debt and interest income they carry. The planning tools from the rest of this blog still apply once translated: compare total amount payable and not the headline rate, ask what happens on early settlement and late payment, understand that a screened portfolio tilts away from banks and toward other sectors, and replace bonds with asset-backed alternatives. Product availability varies enormously by country, and scholars differ on details."
+takeaways:
+  - "Why trade, ownership and shared risk take the place of interest"
+  - "How cost-plus, lease and partnership home finance each work"
+  - "Why total amount payable is the number to compare"
+  - "How screening changes what a diversified portfolio holds"
 order: 50.5
 companionOf: "refinancing-timing"
 pubDate: 2099-01-13

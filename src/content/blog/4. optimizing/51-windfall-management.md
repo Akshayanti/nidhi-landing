@@ -3,6 +3,11 @@ slug: "windfall-management"
 title: "Windfalls: Bonuses, Inheritances, and Sale Proceeds"
 description: "A bonus, an inheritance, or sale proceeds: windfalls have their own logic. How to handle mental accounting, time pressure, and concentration risk."
 tldr: "Windfalls are not just larger versions of a normal monthly surplus; they trigger different decisions and different failure modes. The reliable four-step framework: park it (put the entire sum in a high-yield savings account for 30 to 90 days before deploying), plan it (apply the priority order from the invest-or-pay-off-debt post at scale), deploy it (choose between lump-sum and dollar-cost averaging with the real evidence not the anxiety), monitor it (watch for lifestyle-inflation ratchet effects in the following year). Three failure modes dominate: lifestyle-inflation ratchet (the new baseline of spending permanently rises), concentrated allocation to what you already know (all into the employer's stock, or into a single sector, or into a single home upgrade), and all-at-once deployment into a single asset at a single moment. Special cases matter: inheritance combines grief and money, and the pause is often optimal; business sale converts one large concentrated position into a diversification project; RSU vesting is a repeating windfall that benefits from a written reduction plan. Tax awareness (harvesting losses to offset windfall gains, timing across tax years) can materially reduce the total tax burden."
+takeaways:
+  - "Why a windfall needs its own plan, not your monthly default"
+  - "Why parking a windfall first protects the quality of your decisions"
+  - "Why lump-sum usually wins and when spreading it out still helps"
+  - "How a windfall can quietly raise your spending for good"
 order: 51
 pubDate: 2099-01-14
 updatedDate: 2026-08-12
