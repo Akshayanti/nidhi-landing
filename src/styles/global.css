@@ -3469,8 +3469,12 @@ strong {
     grid-template-columns: 1fr;
     overflow-y: auto;
   }
+  /* Stacked in one column, the options row must grow to its content:
+     with min-height: 0 the row shrank and the Cancel and Copy link buttons
+     slid under the recipient preview, half hidden and half tappable. */
   .mcnw-modalOptions {
     overflow-y: visible;
+    min-height: auto;
   }
   .mcnw-modalDialog {
     max-width: 95vw;
