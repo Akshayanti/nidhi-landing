@@ -37,7 +37,7 @@ faq:
   - question: "Are retirement accounts counted as assets?"
     answer: "Yes. Pension funds, employer-sponsored plans, and private retirement savings count toward your net worth and belong on your asset list. They are investments, but they deserve their own category because their liquidity differs sharply from a regular brokerage account: you usually cannot access the money until a certain age, and withdrawing early often triggers penalties or taxes. So include the current balance in your net worth, but remember it is not money you can reach for an emergency next week. Treat its value as real but largely locked away until later."
   - question: "Should I hold all my assets in cash to stay safe?"
-    answer: "No. Cash feels safe because its number does not fall, but it quietly loses purchasing power to inflation every year, so an all-cash position erodes in real terms. The opposite extreme, holding everything in stocks, exposes you to volatility you may not be able to handle when you need the money. A balanced mix gives you both stability and growth: enough cash and liquid savings to cover emergencies and short-term needs, plus appreciating assets like index funds for the long term. The right balance depends on your timeline and how much fluctuation you can tolerate."
+    answer: "Cash feels safe because its number does not fall, but when it earns less than inflation, an all-cash position erodes in real terms. The opposite extreme, holding everything in stocks, exposes you to volatility that can hurt when you need the money. That is why many people hold a mix: cash and liquid savings for emergencies and short-term needs, and growth assets like index funds for money they will not need for years. The right balance depends on your timeline and how much fluctuation you can tolerate."
 ---
 
 Your [net worth](/blog/what-is-net-worth/) is the gap between what you own and what you owe. We [calculated that number](/blog/how-to-calculate-net-worth/) in the previous post. Now let's look at the first side of that equation: assets.
@@ -96,7 +96,7 @@ Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real 
 When you look at your assets, ask yourself:
 
 1. **Are these real assets?** Make sure you're not counting things that can't be sold or converted
-2. **Are they working for me?** An asset sitting in a low-yield account is better than nothing, but it's not doing much
-3. **Are they balanced?** All cash means slow erosion from inflation. All stocks means volatility you might not be able to handle. Some of each gives you stability and growth
+2. **What is each one doing?** Cash in a low-yield account is stable and accessible but grows slowly; investments can grow more but move around. Knowing which job each asset does is the point
+3. **How is the mix balanced?** All cash tends to erode slowly with inflation. All stocks means volatility that can be hard to live with. Many people hold some of each; the right blend depends on your timeline, income stability and how much fluctuation you can tolerate
 
 Understanding what you own and how well it's actually performing is half the net worth equation. The other half is what you owe, which we'll cover next.

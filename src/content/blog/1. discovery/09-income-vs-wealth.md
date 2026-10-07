@@ -36,9 +36,9 @@ faq:
   - question: "What is a savings rate and why does it matter?"
     answer: "Your savings rate is the share of income you keep rather than spend, calculated as (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, you save 600, a 20 percent savings rate. It matters because, for any given salary, it is one of the biggest levers you control over how fast wealth builds. Someone earning 6,000 euros at a 5 percent savings rate builds wealth slower than someone earning 3,000 at 20 percent. Tracking this single number shows whether your wealth engine is accelerating or stalling, no matter what your income does."
   - question: "How do I shift from income thinking to wealth thinking?"
-    answer: "Income thinking asks how to earn more. Wealth thinking asks how to keep more of what you earn. Make three practical shifts. First, track the gap between what comes in and what goes out, not just your salary, because that gap is your wealth engine. Second, automate saving by moving a fixed amount to savings the day your salary arrives, rather than saving whatever is left at month end. Third, resist the upgrade: when income grows, hold your spending steady for at least three months and let the extra flow into savings before you adjust your lifestyle."
+    answer: "Income thinking asks how to earn more. Wealth thinking asks how to keep more of what you earn. Three shifts come up again and again. First, tracking the gap between what comes in and what goes out, not just salary, because that gap is the wealth engine. Second, automating saving, with a fixed amount moving to savings the day salary arrives, rather than saving whatever is left at month end. Third, delaying the upgrade: when income grows, some people hold spending steady for a few months and let the extra flow into savings before adjusting their lifestyle. How much room there is for this depends on how tight your budget already is."
   - question: "Why is reducing spending often faster than earning more?"
-    answer: "Every euro you avoid spending is a euro saved with no tax taken from it, while every extra euro earned is usually taxed before it reaches you. Cutting a 50 euro monthly subscription keeps the full 50 euros; earning an extra 50 euros might leave you 35 after tax. Spending cuts are also within your direct control and take effect immediately, whereas raises and side income take time to negotiate or build. The most effective approach grows income and trims spending together, but if you can only start with one, reducing spending usually delivers faster, more reliable results."
+    answer: "Every euro you avoid spending is a euro saved with no tax taken from it, while every extra euro earned is usually taxed before it reaches you. Cutting a 50 euro monthly subscription keeps the full 50 euros; earning an extra 50 euros might leave you 35 after tax. Spending cuts are also within your direct control and take effect immediately, whereas raises and side income take time to negotiate or build. The most effective approach grows income and trims spending together, but when someone can only focus on one, reducing spending often delivers faster results, unless the budget is already lean, in which case income is usually the bigger lever."
 ---
 
 Two people both earn €4,000 a month. After a year, one has €12,000 saved. The other has €2,400.
@@ -110,11 +110,11 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
 **Income thinking** asks: "How can I earn more?"
 **Wealth thinking** asks: "How can I keep more of what I earn?"
 
-Three practical shifts:
+Three shifts people commonly make:
 
 1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income, and it's one of the biggest levers on long-term wealth that you control
-2. **Automate the save.** Move a fixed amount to savings the day your salary arrives, not at the end of the month with whatever is left
-3. **Resist the upgrade.** When your income grows, keep your spending steady for at least three months. Let the extra flow into savings first
+2. **Automating the save.** A fixed amount moves to savings the day salary arrives, rather than whatever happens to be left at month end. It works because the decision is made once, not every month
+3. **Delaying the upgrade.** When income grows, some people hold spending steady for a few months and let the extra flow into savings first. How much room there is depends on how tight the budget already is
 
 ## Why this matters?
 

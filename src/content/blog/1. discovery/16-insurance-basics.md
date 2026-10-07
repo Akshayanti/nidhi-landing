@@ -209,15 +209,15 @@ Think of insurance as the defensive layer around your net worth. It doesn't grow
 
 **Not reviewing coverage.** Your insurance needs change as your life changes. A single person with no dependents often doesn't need life insurance. A parent with a mortgage and two children usually does, unless savings or a partner's income would cover the gap. Review annually.
 
-**Ignoring deductibles.** A lower premium often means a higher deductible (the amount you pay out of pocket before insurance kicks in). Make sure you can afford the deductible from your emergency fund.
+**Ignoring deductibles.** A lower premium often means a higher deductible (the amount you pay out of pocket before insurance kicks in). A deductible that your emergency fund can't cover defeats part of the purpose.
 
-## What you can do
+## What this means in practice
 
-1. **Inventory your current coverage.** List every insurance policy you have, what it covers, what it costs, and what the deductible is. Most people don't have a complete picture
-2. **Identify your gaps.** Do you have disability insurance? Contents/renter's insurance? Personal liability? These are commonly overlooked and relatively affordable
-3. **Size your emergency fund to your coverage.** If you have comprehensive insurance, 3 months of expenses may be enough. If you have gaps, budget for more
-4. **Don't insure small losses.** Save insurance for events that would genuinely disrupt your finances. Self-insure the small stuff
-5. **Review annually.** Life events (marriage, children, home purchase, job change) change your insurance needs. Make it part of your annual financial review
+1. **Inventory your current coverage.** List every insurance policy you have, what it covers, what it costs, and what the deductible is. Many people don't have a complete picture
+2. **Look for gaps against your public cover.** Disability, contents/renter's and personal liability cover are commonly overlooked and relatively affordable; whether you need them privately depends on what your country already provides
+3. **Coverage and emergency fund size move together.** With comprehensive insurance, around 3 months of expenses may be enough. With gaps, people usually hold more
+4. **Small losses are usually cheaper to self-insure.** Insurance tends to earn its cost on events that would genuinely disrupt your finances, less so on small, affordable ones
+5. **Needs change with life events.** Marriage, children, a home purchase or a job change all shift what cover makes sense, which is why many people review it once a year
 
 Insurance isn't exciting. It doesn't grow your wealth or move your net worth chart upward. But it prevents a single bad day from undoing years of progress. The best insurance is the kind you never need to use, and having it lets you take the right financial risks knowing your downside is contained.
 

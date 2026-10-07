@@ -25,7 +25,7 @@ faq:
   - question: "How do I split a pension without triggering tax?"
     answer: "Through the formal mechanism your jurisdiction provides and not by taking money out yourself. Most countries with tax-advantaged retirement accounts have a legal order or procedure that moves part of one person's pension into the other's name while keeping its tax-advantaged status. In the United States the order is known as a qualified domestic relations order. England and Wales use a pension sharing order. Germany equalises pension rights as part of the divorce itself. Withdrawing the money and handing it over instead usually counts as a taxable withdrawal, sometimes with a penalty on top."
   - question: "Am I still responsible for joint debts after the divorce?"
-    answer: "To the lender, usually yes. A settlement or court order can say that one of you will pay a joint loan, but the lender was not party to that agreement. If the payments stop, the lender can still pursue either of you, and a missed payment can damage both credit records. The clean solution is to pay off joint debts or refinance them into one name as part of the separation, and to close joint accounts."
+    answer: "To the lender, usually yes. A settlement or court order can say that one of you will pay a joint loan, but the lender was not party to that agreement. If the payments stop, the lender can still pursue either of you, and a missed payment can damage both credit records. The cleanest route, where it is affordable, is usually paying off joint debts or refinancing them into one name as part of the separation, and closing joint accounts. Whether a single income qualifies for the refinance is often the constraint."
   - question: "Does this apply if we were never married?"
     answer: "The practical steps do: the inventory, comparing assets after tax and costs, updating every beneficiary, and separating joint debts. What is missing is the legal framework for dividing property. In most places unmarried partners fall back on ordinary property law, where ownership follows whose name is on the asset and any written agreement between you. That is why a cohabitation agreement made while things are good matters so much."
 reelPromise: "A worked comparison of three 'equal' €200,000 assets that are not equal at all, and the full separation checklist in order"
@@ -66,12 +66,12 @@ An inventory does two jobs. It stops assets being overlooked. And it turns a con
 
 ### Secure, do not hide
 
-While the inventory is being built, a few protective steps are reasonable:
+While the inventory is being built, people commonly take a few protective steps, subject to local law and any court orders:
 
-- Take copies of statements for every account, going back at least a year.
-- Get your own credit report, to see every debt in your name, including joint ones you may have forgotten.
-- Open an account in your sole name and have your income paid into it.
-- Agree, or ask a lawyer about, limits on joint credit lines so new debt is not run up in both names.
+- Copies of statements for every account, going back at least a year.
+- Their own credit report, where one exists, to see every debt in their name, including joint ones they may have forgotten.
+- An account in their sole name for their own income.
+- Agreed limits on joint credit lines, or a lawyer's view on them, so new debt is not run up in both names.
 
 There is a line here. Documenting and protecting is sensible. Moving, hiding, or spending down shared assets is not. Courts in most countries look back at transactions made around a separation and can reverse them or penalise the person who made them.
 
@@ -149,26 +149,26 @@ Most countries with these accounts provide a formal mechanism to avoid this. A l
 - In England and Wales it is a **pension sharing order**.
 - In Germany, pension rights built during the marriage are equalised as part of the divorce itself.
 
-The names differ. The rule is the same: divide a pension through the mechanism designed for it, never by taking the money out. Find out what it is called where you live before anything is signed. This is the step in this post where a professional most clearly pays for themselves.
+The names differ. The principle is the same: pensions are divided through the mechanism designed for it, not by taking the money out. Find out what it is called where you live before anything is signed. This is the step in this post where a professional most clearly pays for themselves.
 
 ### Mistake three: leaving the old paperwork in place
 
 A settlement divides assets. It does not update forms. Three kinds of paperwork stay exactly as they were unless someone changes them.
 
-**Beneficiary designations.** The form on a pension or a life insurance policy often overrides a will, and in many systems a divorce does not cancel it. People die with a former spouse still named, and the money goes to them. Change every beneficiary form as soon as you are legally free to.
+**Beneficiary designations.** The form on a pension or a life insurance policy often overrides a will, and in many systems a divorce does not cancel it. People die with a former spouse still named, and the money goes to them. Most people update every beneficiary form as soon as they are legally free to; some courts restrict changes while proceedings are open, so the timing is worth checking with a lawyer.
 
-**Wills and powers of attorney.** A former partner may still be your executor, your heir, and the person authorised to make medical decisions for you. Rules on whether divorce revokes these differ by country. Replace them and remove the doubt.
+**Wills and powers of attorney.** A former partner may still be your executor, your heir, and the person authorised to make medical decisions for you. Rules on whether divorce revokes these differ by country, which is why many people replace them rather than rely on the rule.
 
-**Joint debts.** A settlement can say that one of you will pay a joint loan. The lender did not sign the settlement. If payments stop, the lender can pursue either of you for the full amount, and the missed payments appear on both credit records. Pay joint debts off or refinance them into one name, and close joint accounts and cards.
+**Joint debts.** A settlement can say that one of you will pay a joint loan. The lender did not sign the settlement. If payments stop, the lender can pursue either of you for the full amount, and the missed payments appear on both credit records. Paying joint debts off or refinancing them into one name, where affordable, and closing joint accounts and cards is the usual way to end that exposure.
 
 ## Rebuilding on one income
 
 Once the division is done, the plan that ran on two incomes has to be rebuilt for one.
 
 - **A new budget from zero.** Two homes cost more than one. Start from your actual single income and actual costs, not from half the old budget.
-- **An emergency fund in your own name.** On one income, with no partner's salary as a fallback, the fund has to be larger than before. The post on [one-income households](/blog/solo-agers-and-single-income-households/) explains why and by how much.
+- **An emergency fund in your own name.** On one income, with no partner's salary as a fallback, many people aim for a larger fund than before. The post on [one-income households](/blog/solo-agers-and-single-income-households/) explains why and by how much.
 - **Insurance.** Health cover that came through a spouse's employer may end. Life and income protection needs change, especially if you now support children alone.
-- **Credit in your own name.** If loans and cards were mostly in your partner's name, your own file may be thin. A card in your sole name, paid in full each month, begins to fix that.
+- **Credit in your own name.** If loans and cards were mostly in your partner's name, your own file may be thin. In countries with US or UK style credit scoring, a card in your sole name, paid in full each month, is a common way to start rebuilding it; elsewhere, the local system decides what counts.
 - **A new projection.** Retirement plans built on two incomes and one home no longer hold. Rerun the [projection](/blog/financial-projections/) with your new balance, your new savings rate, and your own retirement costs.
 
 Rebuilding takes longer than dividing. Expect the first year to be about stability and the plan to come after.

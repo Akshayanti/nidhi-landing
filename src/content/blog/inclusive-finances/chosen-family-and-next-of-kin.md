@@ -56,7 +56,7 @@ This post is about closing the distance between the family the law assumes and t
 
 ### Next of kin
 
-**Next of kin** means the closest relative the law recognises. When a decision has to be made for you and you have appointed nobody, institutions work down an order that looks broadly like this almost everywhere:
+**Next of kin** means the closest relative the law recognises. When a decision has to be made for you and you have appointed nobody, institutions work down an order that, in many countries, looks broadly like this (the exact order and who counts differ by jurisdiction):
 
 1. Spouse, or registered partner where that status exists
 2. Adult children
@@ -115,7 +115,7 @@ A spouse is typically handed every role at once. With chosen family you can do b
 | Emergency contact and visitors | Being called first, being allowed in | Whoever is closest, in both senses |
 | Funeral | Carrying out your wishes about your body and the ceremony | Someone who will stand firm if relatives object |
 
-Three rules make this hold:
+Three habits help this hold:
 
 - **Name a substitute for every role.** Friends move, fall ill, and die.
 - **Include someone younger than you** among the people named.
@@ -129,7 +129,7 @@ Three rules make this hold:
 
 **A financial power of attorney** names who can manage your money.
 
-**A will** names who inherits and who carries it out. Without one, the law's order applies in full, and an estranged parent or sibling takes everything.
+**A will** names who inherits and who carries it out. Without one, the law's order applies in full, and in many jurisdictions an estranged parent or sibling can take everything.
 
 **Beneficiary designations** on pensions and insurance name who is paid. These usually pass outside the will, which matters in the next section.
 
@@ -152,7 +152,7 @@ What helps:
 
 Where a relative might contest your choices, a few habits strengthen the plan.
 
-- **Use a professional and the correct formalities.** Homemade documents are the ones that fail.
+- **Use the correct local formalities.** Homemade documents are the ones that most often fail, which is why many people in this position use a lawyer.
 - **Say in the will that the omission is deliberate.** A sentence stating that you have intentionally made no provision for named relatives removes the argument that you forgot them.
 - **Update regularly.** A will reviewed every few years is harder to challenge than one signed once, long ago.
 - **Know your limits.** Where **forced heirship** reserves a share of an estate for children or other relatives, a will cannot give everything to friends. Pensions and life insurance with a named beneficiary usually fall outside the estate, as do assets held jointly with a right of survivorship. In those countries, they are the main route for providing for chosen family.
@@ -162,8 +162,8 @@ Where a relative might contest your choices, a few habits strengthen the plan.
 
 Naming a friend as executor or attorney asks for their time and sometimes their money.
 
-- Leave the executor a specific sum for their trouble, and say so.
-- Keep enough cash reachable by your financial attorney to cover a few months of your bills.
+- Some people leave the executor a specific sum for their trouble, and say so in the will.
+- Some keep enough cash reachable by their financial attorney to cover a few months of bills.
 - Keep a list of accounts, policies, and contacts where they can find it. The post on [one-income households](/blog/solo-agers-and-single-income-households/) describes this document. For a friend with no legal right to search your papers, it is the difference between a manageable task and an impossible one.
 
 ### Do it together
@@ -192,7 +192,7 @@ One caution on mixing money. Pooled savings and informal loans between friends a
 - **Draw your own roles table.** Two names in every row.
 - **Ask each person.**
 - **Do the free things now:** the emergency card, the hospital form, the beneficiary forms.
-- **Book the paid things:** will, powers of attorney, funeral appointment.
+- **Find out what the paid things involve where you live:** will, powers of attorney, funeral appointment. Forms and formalities are local.
 - **Propose doing it as a group.**
 
 The law's list is a guess about who loves you, made centuries ago. It can be replaced, one role at a time, with the names of the people who actually do.

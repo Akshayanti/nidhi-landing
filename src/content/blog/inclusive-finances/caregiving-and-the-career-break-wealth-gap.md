@@ -23,9 +23,9 @@ faq:
   - question: "What is a caregiver credit?"
     answer: "It is a mechanism some state pension systems use to fill the gap that caregiving leaves in a contribution record. For a period spent caring for a young child or a dependent adult, the system treats you as if you had contributed. Rules differ widely: which kinds of care count, how many years are credited, whether you have to apply, and whether there is a deadline. Several systems credit years only if someone claims them, so it is worth checking even for years long past."
   - question: "Should we pay into the carer's pension while they are not earning?"
-    answer: "It is one of the most effective protections available to a couple. When one partner steps back so the household can function, the household receives the benefit and the carer alone bears the pension cost. Paying a contribution into the carer's own retirement account from the shared budget puts part of that cost back where it belongs. Many countries allow contributions to a non-earning person's pension, sometimes with tax relief. The account should be in the carer's own name."
+    answer: "Many couples see it as one of the most direct protections available. When one partner steps back so the household can function, the household receives the benefit and the carer alone bears the pension cost. Paying a contribution into the carer's own retirement account from the shared budget puts part of that cost back with the household. Many countries allow contributions to a non-earning person's pension, sometimes with tax relief; limits and rules differ, so local rules decide what is possible. For it to protect the carer, the account needs to be in the carer's own name. Whether a household can afford it during a break depends on its budget."
   - question: "How do I catch up after a caregiving break?"
-    answer: "Four levers. Negotiate the re-entry salary as carefully as a first offer, because it sets the base for everything after. Raise your pension contribution rate for a period, using any catch-up allowance your system provides. Check whether you can buy back missing years in the state pension, which is often cheap relative to the income it adds. And claim any caregiver credits you are owed. Which lever matters most depends on your country's pension design."
+    answer: "There are four common levers. The re-entry salary, which sets the base for everything after and can be negotiated like a first offer. A higher pension contribution rate for a period, using any catch-up allowance the system provides. Buying back missing years in the state pension where allowed, which can be good value relative to the income it adds, depending on the system and how long you expect to draw it. And claiming any caregiver credits owed. Which lever matters most depends on your country's pension design and on what the household budget allows."
   - question: "Does this apply to caring for a parent, not only a child?"
     answer: "Yes, and that kind of care is harder to plan for. Care for a child has a rough end date and often comes with parental leave and pension credits. Care for a parent or a disabled relative can start without warning, last an unknown number of years, and arrive in your fifties, which are usually the highest-earning and highest-saving years of a career. Fewer systems credit it, and it more often means reduced hours than a clean break. The arithmetic in this post applies to reduced hours in the same way."
 reelPromise: "What a five-year break takes from a pension, line by line, and the four catch-up levers ranked by what they recover"
@@ -64,7 +64,7 @@ The pay side works exactly as the life events post showed: €200,000 of salary 
 
 For five years, €4,000 a year did not go into her pension. That is €20,000 of contributions, half of which would have been her employer's money.
 
-Those contributions would also have grown. Money invested between 35 and 40 has twenty-five to thirty years to compound before retirement. At 5% real growth (growth after inflation), €4,000 a year for five years becomes about **€75,000** by age 65.
+Those contributions would also have grown. Money invested between 35 and 40 has twenty-five to thirty years to compound before retirement. At 5% real growth (growth after inflation, the middle of the long-run range for developed-market equities; a pension holding bonds would usually grow more slowly), €4,000 a year for five years becomes about **€75,000** by age 65.
 
 ### Line two: the pension on the lower base
 
@@ -142,7 +142,7 @@ This costs nothing and is frequently missed.
 
 ### 2. Keep the carer's pension alive
 
-The most direct fix is for the household to keep paying into the carer's own pension during the break.
+One of the most direct fixes is for the household to keep paying into the carer's own pension during the break, where the budget allows.
 
 Many countries allow contributions to the retirement account of a person who is not earning, sometimes with tax relief attached. The post on [tax-advantaged accounts](/blog/tax-advantaged-accounts/) covers the account types. The amount does not need to match what an employer would have paid. Even half of line one, contributed during the break, closes a large part of the gap, because those are the contributions with the longest time to grow.
 
@@ -158,10 +158,10 @@ Staying loosely attached during the break helps: occasional freelance work, a pr
 
 ### 4. Catch up deliberately
 
-After returning, three moves recover lost ground:
+After returning, three moves are commonly used to recover lost ground:
 
 - **A higher contribution rate for a period.** Several systems have catch-up allowances or let you use unused allowances from earlier years.
-- **Buying back state pension years.** Where voluntary contributions for missing years are allowed, they are often cheap relative to the lifetime income they add.
+- **Buying back state pension years.** Where voluntary contributions for missing years are allowed, they can be good value relative to the lifetime income they add, depending on the system's rules and how long the pension is likely to be drawn.
 - **Directing raises to the pension.** For the first few raises after returning, sending the increase to the pension closes the gap without cutting current spending.
 
 ### If there is no partner
@@ -197,8 +197,8 @@ The conversation worth having early is among siblings. When one sibling provides
 ## Getting started
 
 - **Before a break:** run the pay and pension lines for your own salary. Decide as a household how the cost will be shared.
-- **During a break:** claim every credit, in the right name. Keep a contribution going into the carer's own pension.
-- **On returning:** negotiate from today's market rate. Raise the contribution rate for a few years.
+- **During a break:** check which credits apply where you live, and which name they are claimed in. Consider whether the budget allows a contribution into the carer's own pension.
+- **On returning:** research today's market rate before the salary conversation. Look at whether a higher contribution rate for a few years is affordable.
 - **Afterwards:** check your state pension record for gaps and whether they can still be filled.
 
 Care is work. It produces something every family and every economy depends on. The pension system mostly fails to count it, so the household has to.

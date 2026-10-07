@@ -24,7 +24,7 @@ faq:
   - question: "What is a reunification visa?"
     answer: "It is a visa that lets a family member join someone who already has the right to live in a country, most commonly a spouse or a child. Eligibility depends on the destination's definition of family. Where your marriage is not recognised, your spouse may not qualify as family for immigration purposes and may need a visa in their own right, through work, study, investment, or another route. Some countries have a separate route for unmarried or durable partners."
   - question: "Will our wills and powers of attorney from home still work abroad?"
-    answer: "Not reliably. A will made in one country is often accepted in another, but local rules on who must inherit can override it, and the process is slower with a foreign document. Powers of attorney are frequently not accepted across borders at all, because banks and hospitals want the local form. The safest approach is to make fresh documents under local law after you move, keep the originals from home for assets that remain there, and make sure the two sets do not cancel each other."
+    answer: "Not reliably. A will made in one country is often accepted in another, but local rules on who must inherit can override it, and the process is slower with a foreign document. Powers of attorney are frequently not accepted across borders at all, because banks and hospitals want the local form. A common approach is to make fresh documents under local law after you move, keep the originals from home for assets that remain there, and make sure the two sets do not cancel each other."
   - question: "Which of our protections are safe whatever the country does?"
     answer: "The ones based on contract and ownership, not on status. A beneficiary named on a private pension or an insurance policy is paid because the form names them, not because of who they are to you. Property held in both names belongs to both of you. A will, within local limits, leaves assets to whoever it names. A power of attorney appoints whoever you choose. None of these asks whether you are married."
   - question: "Does this post say which countries recognise same-sex marriage?"
@@ -118,13 +118,13 @@ Where the marriage is not recognised, the trailing spouse needs their own route.
 - **They may not be allowed to work,** which turns a two-income household into a one-income household for the length of the posting.
 - **Time in the country may not count toward long-term residency** in the way a spouse's would.
 
-A one-income household with a dependent partner who has no independent right to stay is a fragile arrangement. The post on [one-income households](/blog/solo-agers-and-single-income-households/) covers how to size the emergency fund. Here it should also cover the cost of both of you leaving at short notice.
+A one-income household with a dependent partner who has no independent right to stay is a fragile arrangement. The post on [one-income households](/blog/solo-agers-and-single-income-households/) covers how to size the emergency fund. Couples in this position often also size it to cover the cost of both of them leaving at short notice.
 
 ## Part two: protections that do not need recognition
 
 Rights that come from status vanish when the status does. Rights that come from **ownership** and **contract** do not. A form naming a beneficiary pays that person because the form says so. A deed in two names belongs to two people. Neither asks who you are to each other.
 
-The plan is to move as much as possible from the first kind to the second.
+The usual approach is to move as much as possible from the first kind to the second.
 
 ### The stack
 
@@ -150,8 +150,8 @@ Two countries may each claim a say over what happens to your estate: the one you
 
 ### Keep the contract-based assets strong
 
-- **Private pensions and life insurance.** Name your spouse on every form, by name and not as "my spouse". Check whether the scheme pays survivor benefits to a partner it does not recognise as married. If not, life insurance fills the gap.
-- **Where the assets sit.** Assets kept in a country that recognises your marriage stay under rules that treat you as married. There can be good reasons to leave savings and pensions at home when you move.
+- **Private pensions and life insurance.** Many couples name each other on every form, by name and not as "my spouse", and check whether the scheme pays survivor benefits to a partner it does not recognise as married. Where it does not, life insurance is a common way to fill the gap.
+- **Where the assets sit.** Assets kept in a country that recognises your marriage stay under rules that treat you as married. There can be good reasons to leave savings and pensions at home when you move, weighed against tax, currency and access trade-offs.
 - **Joint ownership.** Property and accounts held in both names are evidence of a shared life and, in many systems, pass to the survivor directly.
 - **Tax.** Where you are taxed as strangers, the tools are the same as for unmarried couples: life insurance sized to the likely bill, lifetime gifts within allowances, and care over whose name assets are in.
 
@@ -183,6 +183,6 @@ This post deliberately names no list of countries. Some patterns are stable enou
 - **Before you travel:** certified, translated, legalised copies of the marriage certificate, and of any adoption or parentage orders.
 - **In the first month:** local powers of attorney for health and money. A card in each wallet.
 - **In the first year:** a local will that works alongside the one at home. A review of every beneficiary form.
-- **Ongoing:** keep a share of assets where your marriage is recognised.
+- **Ongoing:** weigh whether to keep a share of assets where your marriage is recognised, alongside the tax and currency trade-offs.
 
 A marriage certificate is a promise two people made and a status one country granted. The promise goes everywhere you do. The status has to be rebuilt, document by document, wherever it is not honoured.

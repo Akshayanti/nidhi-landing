@@ -26,7 +26,7 @@ faq:
   - question: "What is a recognition gap?"
     answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognises. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap, but you can almost always plan around it once you know it is there."
   - question: "Does this mean I need a lawyer for everything?"
-    answer: "No. Many deliberate designations cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home, keeping a list of accounts where someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those a local professional is worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
+    answer: "No. Many deliberate designations cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home, keeping a list of accounts where someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
   - question: "Is this post legal advice?"
     answer: "No. The rules on inheritance, relationship recognition, tax, and decision-making authority differ from country to country and sometimes from region to region. This post teaches a way of asking the right questions. The answers for your own situation come from the rules where you live, and for anything with real money or real consequences attached, from a qualified local professional."
 reelPromise: "The three-question audit and the one-hour checklist for finding which financial defaults are quietly deciding things for you"
@@ -87,7 +87,7 @@ Here are five defaults that carry that picture inside them.
 | Benefits through work | You have an employer who withholds tax and funds a pension | Freelancers, gig workers, informal workers |
 | Credit and banking history | Your financial record was built here and is continuous | Anyone who moved countries or works in cash |
 
-None of these groups is unusual. The International Labour Organization estimates that about 58% of the world's workers, more than two billion people, were in informal employment in 2023. Cohabiting without marrying is the norm for younger couples in much of Europe. Hundreds of millions of people live outside the country they were born in. The "default household" is one shape among many. It just happens to be the one the paperwork was drafted for.
+None of these groups is unusual. The International Labour Organization estimates that about 58% of the world's workers, more than two billion people, were in informal employment in 2023. Cohabiting without marrying is common among younger couples in much of Europe. Hundreds of millions of people live outside the country they were born in. The "default household" is one shape among many. It just happens to be the one the paperwork was drafted for.
 
 ## Three terms this series uses
 
@@ -170,7 +170,7 @@ Deliberate designations fall into three cost bands.
 
 **Free and fast.** Naming beneficiaries on pensions, insurance, and investment accounts. Writing down who owns what share of a shared home or car. Keeping a list of every account and where the documents are, somewhere a trusted person can find it. Most households can do all of this in an evening.
 
-**Modest, and worth doing properly.** A will. Powers of attorney for money and for health decisions. A written agreement between partners about shared property. These need the form your jurisdiction requires, and a local professional is usually money well spent.
+**Modest, and worth doing properly.** A will. Powers of attorney for money and for health decisions. A written agreement between partners about shared property. These need the form your jurisdiction requires, and many people find a local professional worth the cost.
 
 **Genuinely hard.** Recognition gaps that no document closes: a marriage that is not recognised, a status that blocks access to banking, a tax system that treats a partner as a stranger. Here the tools are workarounds. Insurance can replace a benefit you are excluded from. A bigger emergency fund can replace a safety net you do not have. Holding assets in the right name from the start can avoid a transfer that would be taxed.
 
@@ -208,7 +208,7 @@ Do not try to fix everything at once. Three steps, in order:
 
 - **Run the one-hour audit above.** The output is a list, not a plan.
 - **Fix the free things this week.** Beneficiary forms, a list of accounts, a note of who owns what.
-- **Pick the one expensive thing that matters most.** For most households that is a will or a power of attorney. Book it.
+- **Pick the one paid item that matters most.** For many households it is a will or a power of attorney, in whatever form local law requires.
 
 The later posts in this series take the audit into specific situations: working without an employer, borrowing and investing without interest, moving countries, relying on one income, and sharing a life without a marriage certificate. Each one starts from the same three questions.
 

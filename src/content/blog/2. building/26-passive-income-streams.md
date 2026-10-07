@@ -22,7 +22,7 @@ faq:
   - question: "How much capital do I need for €1,000 a month of passive income?"
     answer: "It depends on yield, and the numbers are larger than most marketing suggests. To generate €12,000 a year you need roughly €600,000 at a 2% broad equity dividend yield, €400,000 at 3%, €300,000 at a 4% mix, €240,000 at 5%, above typical net rental yields of 2 to 4%, and €150,000 at a riskier 8%. Higher yields usually carry higher risk or higher management load, so '8% passive' is rarely as passive or as safe as '2% passive'. Replacing even a modest salary therefore takes a portfolio measured in hundreds of thousands of euros, built over years rather than months."
   - question: "What is the difference between yield and total return?"
-    answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. During accumulation, focus on total return. Yield matters more later, in the drawdown phase, when you are actually living off the portfolio."
+    answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. During accumulation, total return is usually the more useful measure. Yield matters more later, in the drawdown phase, when you are actually living off the portfolio."
   - question: "Is rental property really passive income?"
     answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
   - question: "How does the crossover point relate to passive income?"
@@ -108,7 +108,7 @@ A few observations:
 
 - Replacing a modest salary requires a portfolio measured in hundreds of thousands of euros. This is not instantaneous
 - Higher yields usually come with higher risk or higher management load. "8% passive" is rarely as passive or as safe as "2% passive"
-- Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Focus on total return, not yield
+- Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Total return is the fuller measure, not yield alone
 
 This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; readers in higher-inflation or lower-return markets typically use 3 to 3.5%, which moves the target to roughly 28-33× annual expenses.
 
@@ -163,23 +163,23 @@ None of that is bad. Building a business is a legitimate path to wealth. It's ju
 
 ## Building passive income in practice
 
-A realistic sequence for most people:
+The path many people follow looks like this, though the order and mix vary with capital, skills and country:
 
-1. **Build broad investment portfolio first.** Dividends and interest from index funds are the backbone. Aim for a globally diversified mix before branching out
-2. **Let reinvestment do the heavy lifting for years.** During the accumulation phase, reinvesting dividends and interest is what turns a starter portfolio into a meaningful income source
-3. **Consider rental property only with open eyes.** If you want direct real estate exposure, understand the true costs and operational load. We cover the math in a later post in this series
-4. **Add other streams cautiously.** Royalties, business distributions, and lending platforms can supplement, but should not be your foundation
-5. **Track the crossover.** Monthly expenses vs. monthly passive income. Watch the gap close
+1. **A broad investment portfolio as the base.** Dividends and interest from diversified index funds are the backbone for many, because they need little upkeep
+2. **Reinvestment during accumulation.** Reinvesting dividends and interest for years is what turns a starter portfolio into a meaningful income source
+3. **Rental property for some, with open eyes.** Direct real estate brings real costs and operational load. We cover the math in a later post in this series
+4. **Other streams as supplements.** Royalties, business distributions, and lending platforms can add income, but carry more risk to be a foundation
+5. **Tracking the crossover.** Monthly expenses vs. monthly passive income, watching the gap close
 
-## What you can do
+## What this means in practice
 
-1. **Separate real passive income from active business income.** A blog is a business. An index fund is passive. Knowing which is which keeps your plan honest
-2. **Focus on total return, not just yield.** Two investments with the same total return and different yields are similar for accumulation purposes; yield matters more in drawdown
-3. **Track passive income monthly.** A simple chart of expenses vs. passive income becomes the clearest motivator for the FI journey
-4. **Reinvest during accumulation.** Dividends spent are one-off pay days; dividends reinvested become the income engine for your older self
-5. **Don't chase yield.** Abnormally high yields carry abnormally high risks. Treat any yield that stands out far above its category with suspicion
-6. **Respect the capital requirement.** Meaningful passive income takes meaningful capital. Plan for years, not months
-7. **Mind the taxes.** After-tax passive income is what funds your life. Understand roughly how dividends, interest, rental income, and capital gains are taxed in your jurisdiction before building a plan around them
+1. **Real passive income and active business income are different.** A blog is a business. An index fund is passive. Knowing which is which keeps a plan honest
+2. **Total return matters more than yield while accumulating.** Two investments with the same total return and different yields are similar for accumulation purposes; yield matters more in drawdown
+3. **Tracking it is motivating.** A simple monthly chart of expenses vs. passive income is one of the clearest progress markers on the FI journey
+4. **Reinvested income compounds.** Dividends spent are one-off pay days; dividends reinvested become the income engine for an older self
+5. **Unusually high yields are a warning sign.** A yield far above its category usually signals higher risk, not a bargain
+6. **The capital requirement is large.** Meaningful passive income takes meaningful capital, built over years rather than months
+7. **Taxes shape the real number.** After-tax passive income is what funds a life, and dividends, interest, rental income, and capital gains are taxed differently from country to country
 
 Passive income isn't magic. It's the steady drip from assets you already built. The interesting thing is not any single source. It's the compound effect of reinvested income, the way small streams turn into real coverage over a decade or two, and the psychological shift that happens when your life starts being funded by things you own rather than hours you sell.
 

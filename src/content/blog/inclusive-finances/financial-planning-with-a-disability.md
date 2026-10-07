@@ -7,7 +7,7 @@ takeaways:
   - "How a benefit cliff can leave you worse off after a raise or gift"
   - "What to check before any change: income, savings and the limit"
   - "How protected accounts and trusts let you save and keep support"
-  - "Why family should leave money to a structure, not to the person"
+  - "Why families often leave money to a structure, not the person"
 order: 66.5
 companionOf: "pension-income-and-payout-options"
 pubDate: 2099-01-31
@@ -156,7 +156,7 @@ Staying below every limit for life is not a plan. These are the structures that 
 
 Some countries offer a savings account designed for disabled people. Money in it, up to a limit, is ignored when benefits are means-tested, and growth is often tax-free. The ABLE account in the United States is one example. Canada's Registered Disability Savings Plan is another, and adds government contributions.
 
-Where such an account exists, it is usually the first place for savings, an emergency fund, and gifts from family.
+Where such an account exists, many people use it first for savings, an emergency fund, and gifts from family, within its limits.
 
 Where it does not, the answer to question two above shows which kinds of asset are exempt, and that list becomes the savings plan.
 
@@ -178,11 +178,11 @@ A parent who leaves €50,000 directly to a disabled adult child on means-tested
 
 The same €50,000 left to a suitable trust can pay for extras for many years while support continues.
 
-Three steps for families:
+Three steps families commonly take, after checking local rules with a specialist:
 
-- **Leave money to the structure, not to the person.** Name the trust or the protected account in the will and on beneficiary forms.
-- **Tell the rest of the family.** A generous grandparent who leaves a direct bequest can undo the plan. So can a well-meaning aunt.
-- **Write a letter of intent.** A plain document describing the person's routines, preferences, medical needs, and the people in their life. It has no legal force and it is what a future trustee or carer will rely on most.
+- **Leaving money to the structure, not to the person.** The trust or the protected account is named in the will and on beneficiary forms.
+- **Telling the rest of the family.** A generous grandparent who leaves a direct bequest can undo the plan. So can a well-meaning aunt.
+- **Writing a letter of intent.** A plain document describing the person's routines, preferences, medical needs, and the people in their life. It has no legal force and it is what a future trustee or carer will rely on most.
 
 Families often fund the trust with life insurance on the parents, so the money arrives when their own care stops.
 
@@ -196,22 +196,22 @@ Some disabled people need support to manage money or make decisions. There is a 
 
 **Guardianship or conservatorship.** A court transfers decision-making power to someone else. It is sometimes necessary. It also removes rights that can be hard to get back.
 
-The less restrictive options are worth trying first. Practical tools help too: a benefit paid to an appointed person, a bank account with a second authorised user, automatic payments for bills.
+Many disability advocates, and the UN Convention on the Rights of Persons with Disabilities, favour trying the less restrictive options first. Practical tools help too: a benefit paid to an appointed person, a bank account with a second authorised user, automatic payments for bills.
 
 ### The other half of the budget: extra costs
 
-Disability changes spending as well as income. Equipment, adapted transport, higher heating and energy use, specialist food, personal assistance, and insurance all cost more. Research by disability organisations in several countries has found these extra costs run to hundreds of euros a month for a typical disabled household.
+Disability changes spending as well as income. Equipment, adapted transport, higher heating and energy use, specialist food, personal assistance, and insurance all cost more. Research by disability organisations in several countries, such as Scope's work in the UK, has found these extra costs can run to hundreds of euros or pounds a month, varying widely by condition.
 
 Two consequences for planning:
 
 - **Benchmarks need adjusting.** A rule such as "housing should be about a third of income" assumes the other two thirds are free for ordinary living. When a fixed slice goes on disability costs first, the real budget is smaller.
 - **Extra-cost benefits are usually separate and often not means-tested.** They are meant to cover these costs and are frequently under-claimed.
 
-The post on [insurance basics](/blog/insurance-basics/) covers the cover everyone needs. For a disabled person, buying new health, life, or income protection insurance can be difficult or expensive. Group schemes through an employer, which often accept members without medical questions, are valuable for that reason. So is keeping any existing policy going.
+The post on [insurance basics](/blog/insurance-basics/) covers the cover everyone needs. For a disabled person, buying new health, life, or income protection insurance can be difficult or expensive. Group schemes through an employer, which often accept members without medical questions, are valuable for that reason, and it is why many people keep existing policies going.
 
 ## If you are disabled and on one income
 
-The post on [one-income households](/blog/solo-agers-and-single-income-households/) argued for a larger emergency fund and for naming a backup person in writing. Both still apply, with one change: the fund has to sit somewhere the means test ignores. A protected account or an exempt asset does the job an ordinary savings account cannot.
+The post on [one-income households](/blog/solo-agers-and-single-income-households/) argued for a larger emergency fund and for naming a backup person in writing. Both still apply, with one change: to avoid affecting benefits, the fund needs to sit somewhere the means test ignores. A protected account or an exempt asset does the job an ordinary savings account cannot.
 
 ## Cross-continent notes
 
@@ -231,7 +231,7 @@ Everywhere, local disability organisations and welfare rights advisers know the 
 
 - **Sort your benefits into the three kinds.** Only the means-tested ones react to money.
 - **Ask the three questions.** Before any change to work, savings, or gifts.
-- **Find out whether a protected account exists where you live.** If it does, use it first.
+- **Find out whether a protected account exists where you live,** and what its limits are.
 - **If family might leave you money,** ask them to talk to a specialist before they write a will.
 - **If you support a disabled relative,** write the letter of intent this year.
 

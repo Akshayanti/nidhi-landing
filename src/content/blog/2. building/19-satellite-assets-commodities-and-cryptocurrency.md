@@ -1,16 +1,16 @@
 ---
 slug: "satellite-assets-commodities-and-cryptocurrency"
 title: "Beyond the Core: Commodities and Cryptocurrency as Satellite Assets"
-description: "Commodities and cryptocurrency come up in every investing conversation but don't behave like the core four. Use them as small satellites, not core holdings."
-tldr: "Commodities (gold, oil, agricultural products, industrial metals) and cryptocurrency sit outside the four core asset classes. Commodities have no cash flow; their returns come purely from price changes. They're a legitimate hedge against inflation and currency crises, but a poor long-term wealth engine. Most have produced near-zero real returns over very long periods, with gold around 1% real. A 5-10% allocation is a common ceiling; many investors hold none. Cryptocurrency is closer to a speculative asset than a traditional investment. It produces no cash flow, has a short track record, and has gone through multiple 70-85% drawdowns. The honest stance: don't borrow to buy it, don't concentrate in it, and treat any holding as money you could lose entirely. Both belong, if at all, as small satellites around a core of stocks, bonds, real estate, and cash. Never as the foundation of a plan."
+description: "Commodities and cryptocurrency come up in every investing conversation but don't behave like the core four. Why they are usually treated as small satellites, not core holdings."
+tldr: "Commodities (gold, oil, agricultural products, industrial metals) and cryptocurrency sit outside the four core asset classes. Commodities have no cash flow; their returns come purely from price changes. They're a legitimate hedge against inflation and currency crises, but a poor long-term wealth engine. Most have produced near-zero real returns over very long periods, with gold around 1% real. A 5-10% allocation is a common ceiling; many investors hold none. Cryptocurrency is closer to a speculative asset than a traditional investment. It produces no cash flow, has a short track record, and has gone through multiple 70-85% drawdowns. Mainstream guidance is consistent on a few points: borrowing to buy it and concentrating in it have wiped people out, and any holding is best thought of as money that could be lost entirely. Where people hold either, it is usually as a small satellite around a core of stocks, bonds, real estate, and cash, not as the foundation of a plan."
 takeaways:
   - "Why commodities and crypto have no underlying cash flow"
   - "Why gold works as a hedge rather than a wealth engine"
   - "Why crypto is closer to speculation than investment"
-  - "Why satellites stay small and come after the core is in place"
+  - "Why satellites are usually kept small and added after the core"
 order: 19
 pubDate: 2026-05-29
-updatedDate: 2026-06-03
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -33,11 +33,11 @@ faq:
   - question: "Are commodities a good long-term investment?"
     answer: "Commodities are better understood as a hedge than a wealth engine. Gold, oil, agricultural products, and industrial metals have no cash flow: gold pays no dividend, a barrel of oil pays no interest, so the only way to profit is to sell for more than you paid. Over very long periods most commodities have produced near-zero real returns, with gold around 1% real. Their value lies elsewhere. Commodity prices tend to rise during inflationary periods, partially offsetting lost purchasing power, and gold has historically held value during crises and currency dislocations. A 5% to 10% allocation is a common ceiling in diversified portfolios, and many investors hold none and are perfectly fine."
   - question: "How much cryptocurrency should I hold?"
-    answer: "Treat cryptocurrency as speculation, not investment, and size it accordingly. A reasonable ceiling is 1% to 5% of net worth, held only with money you could lose entirely without it changing your financial plan. Cryptocurrency produces no cash flow, has a short track record (Bitcoin dates only to 2009), and has gone through multiple drawdowns of 70% to 85%. The prudent rules are clear: do not borrow to buy it, do not concentrate in it, and do not let recent price moves set your allocation. Set your position size in advance and hold it. Keep holdings on a reputable exchange or a properly secured self-custodied wallet, since exchange failures and hacks have wiped out holdings before."
+    answer: "There is no right amount, and many investors hold none. Cryptocurrency is closer to speculation than investment: it produces no cash flow, has a short track record (Bitcoin dates only to 2009), and has gone through multiple drawdowns of 70% to 85%. People who do hold it commonly cap it at a small share, often cited as 1% to 5% of net worth, using money they could lose entirely without it changing their plan. The patterns behind the biggest losses are well known: borrowing to buy, concentrating, and letting recent price moves set the size. Custody matters too, since exchange failures and hacks have wiped out holdings before, and self-custody brings its own key-management risk."
   - question: "Why are commodities and crypto treated separately from stocks and bonds?"
-    answer: "Because they are structurally different. Each core asset class generates returns from an underlying economic activity that grows over time, which is why their long-run real returns are positive on average by structure. Commodities and cryptocurrency lack that engine: their returns come only from price change, so their long-run real return is near zero or unproven. This is not a moral judgement but a structural one. A portfolio missing stocks, bonds, real estate, and cash is incomplete, while a portfolio with no commodities or cryptocurrency is fine. The honest framing is that satellites can play a limited hedging or speculative role, but should never be the load-bearing foundation of a plan."
-  - question: "What order should I add satellite assets in?"
-    answer: "Add satellites only after the core is in place. The foundation comes first: a funded emergency fund, high-interest debt cleared, and broad index fund exposure across stocks and bonds. Adding speculative or hedge positions before that foundation exists is the wrong order of operations. Once the core is built, decide on a satellite cap before adding anything, commonly 0% to 15% of the total portfolio across all satellites combined, and stick to the number you choose. Hold commodities through low-cost diversified ETFs rather than single-commodity bets or futures contracts, and treat any cryptocurrency as money you could lose entirely. Then rebalance satellites like the rest of the portfolio: trim what balloons, top up what shrinks only if you still believe the original case."
+    answer: "Because they are structurally different. Each core asset class generates returns from an underlying economic activity that grows over time, which is why their long-run real returns are positive on average by structure. Commodities and cryptocurrency lack that engine: their returns come only from price change, so their long-run real return is near zero or unproven. This is not a moral judgement but a structural one. A portfolio missing stocks, bonds, real estate, and cash is incomplete, while a portfolio with no commodities or cryptocurrency is fine. The honest framing is that satellites can play a limited hedging or speculative role, but are not built to be the load-bearing foundation of a plan."
+  - question: "Where do satellite assets fit in the order of things?"
+    answer: "In most frameworks, satellites come after the core. The usual foundation is an emergency fund, high-interest debt handled, and broad exposure across stocks and bonds; adding speculative or hedge positions before that leaves the plan fragile. People who add satellites typically set a cap in advance, commonly 0% to 15% of the total portfolio across all satellites combined, so that price swings don't decide the size. Commodity exposure is usually held through low-cost diversified ETFs, since futures and single-commodity bets add complexity and cost. Satellites are then rebalanced like the rest of the portfolio. Whether any satellite belongs in your plan at all depends on your goals and how much uncertainty you can carry."
 ---
 
 The [previous post](/blog/investing-101-asset-classes/) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
@@ -66,7 +66,7 @@ Commodities are physical goods traded in bulk: gold, silver, oil, natural gas, a
 - **Crisis hedge**: Gold specifically has historically held value during major market dislocations and currency crises
 - **Diversification**: Commodities are weakly correlated with stocks and bonds, so adding a small allocation can reduce overall portfolio volatility
 
-**How to hold them**: Most investors use commodity ETFs (funds that track commodity prices or commodity producers) rather than physical storage. Gold is the exception; some investors hold physical gold or allocated gold accounts for crisis scenarios. Futures contracts exist but are complex and inappropriate for most retail investors.
+**How to hold them**: Most investors use commodity ETFs (funds that track commodity prices or commodity producers) rather than physical storage. Gold is the exception; some investors hold physical gold or allocated gold accounts for crisis scenarios. Futures contracts exist but are complex, with roll costs that catch out many retail investors.
 
 **The honest limits**: Over long periods, commodities have underperformed stocks and real estate in real terms. They're a hedge, not an engine. A 5-10% allocation is a common ceiling in diversified portfolios; some investors hold none and are fine.
 
@@ -78,16 +78,16 @@ Cryptocurrency (Bitcoin, Ethereum, and thousands of smaller tokens) doesn't fit 
 
 **What the honest case looks like**: Some argue that Bitcoin specifically has properties of "digital gold": a fixed supply, independence from any single government, and a growing network of holders. That case is coherent but unproven; Bitcoin has existed since 2009, which is a short track record by investment standards. Other cryptocurrencies have weaker cases and substantially higher failure rates.
 
-**What the volatility looks like**: Bitcoin has had multiple drawdowns of 70-85% in its history, each time recovering to new highs over several years. That pattern may continue; it may not. Position sizing should assume that any cryptocurrency holding can go to zero and you would still be fine.
+**What the volatility looks like**: Bitcoin has had multiple drawdowns of 70-85% in its history, each time recovering to new highs over several years. That pattern may continue; it may not. That is why sizing usually assumes any cryptocurrency holding could go to zero.
 
-**A reasonable stance**:
+**How cautious investors tend to approach it**:
 
-- If you don't understand what it is or why it's supposed to work, don't buy it
-- If you do buy, treat it as speculation, not investment: no more than 1-5% of net worth, with money you could lose entirely without it changing your financial plan
-- Do not borrow to buy it, do not concentrate in it, and do not let recent price moves determine your allocation
-- Keep it in a reputable exchange or self-custodied wallet with proper security practices; exchange failures and hacks have wiped out holdings before
+- Many hold none, especially if they can't explain what it is or why it's supposed to work
+- Those who do hold it usually treat it as speculation, not investment, commonly capping it at 1-5% of net worth, with money they could lose entirely without it changing their plan
+- The biggest losses have come from borrowing to buy, concentrating, and letting recent price moves set the size
+- Custody is its own risk: exchange failures and hacks have wiped out holdings before, and self-custody brings key-management risk
 
-Cryptocurrency may or may not be a meaningful part of diversified portfolios a decade from now. Today, the prudent default for most investors is a small allocation or none at all.
+Cryptocurrency may or may not be a meaningful part of diversified portfolios a decade from now. Today, mainstream guidance treats a small allocation or none at all as the cautious range.
 
 ## How satellites differ from the core
 
@@ -109,18 +109,18 @@ This isn't a moral judgement. It's a structural one. A portfolio without stocks,
 - **Treating gold as an investment rather than a hedge.** Gold's job is to hold value during inflation and crises, not to compound wealth. Comparing gold's return to stocks misses the point of holding it
 - **Confusing high volatility with high expected return.** Cryptocurrency moves a lot. That doesn't make it a high-return asset by any traditional measure; it makes it a high-uncertainty one
 - **Borrowing to buy speculative assets.** Leverage on a volatile, non-cash-flow asset is one of the fastest ways to permanent loss
-- **Letting recent price action drive allocation.** "Bitcoin is up 200% this year, I should buy more" is the classic late-cycle mistake. Allocation should be set in advance, then held
+- **Letting recent price action drive allocation.** "Bitcoin is up 200% this year, I should buy more" is the classic late-cycle mistake. Setting the allocation in advance is the usual defence
 - **Holding commodities through individual futures contracts.** Futures involve roll costs, contango, and complexity that wipes out most retail investors. ETFs that handle this internally are usually fine; futures trading directly is rarely worth it
 - **Ignoring custody risk for crypto.** Coins held on a failed exchange are often unrecoverable. Self-custody adds key-management risk. Both are real and need a deliberate answer before scaling up
 
-## What you can do
+## What this means in practice
 
-1. **Decide on a satellite cap before adding any.** A common range is 0-15% of total portfolio across all satellites combined. Pick a number you can live with and stick to it
-2. **Hold commodities, if at all, through low-cost diversified ETFs.** Avoid single-commodity bets unless you genuinely understand the supply-demand picture
-3. **Treat cryptocurrency as speculation in your accounting.** Money you could lose entirely without it affecting your plan. Keep it small, keep it custody-safe, keep it boring
-4. **Don't add satellites until the core is in place.** [Emergency fund](/blog/emergency-fund/), [high-interest debt](/blog/how-to-get-out-of-debt/), broad index fund exposure across stocks and bonds. Satellites without that foundation is the wrong order of operations
-5. **Rebalance them like the rest of the portfolio.** If a satellite balloons from 5% to 15%, trim it back. If it shrinks, top it up, but only if you still believe the original case
-6. **Don't confuse satellite with side-hustle.** Some people buy crypto to learn, to participate, to be part of a community. That's fine. It is not the same as a financial plan
+1. **Caps are usually set in advance.** A commonly cited range is 0-15% of the total portfolio across all satellites combined. Deciding the number before buying keeps price swings from deciding it for you
+2. **Commodity exposure is usually held through diversified ETFs.** Single-commodity bets depend on understanding one supply-demand picture well, which few people do
+3. **Crypto is usually accounted for as speculation.** That means money that could be lost entirely without affecting the plan, sized small, with custody thought through
+4. **Satellites typically come after the core.** An [emergency fund](/blog/emergency-fund/), [high-interest debt](/blog/how-to-get-out-of-debt/) handled, and broad exposure across stocks and bonds usually come first; satellites without that foundation leave a plan fragile
+5. **Satellites drift like anything else.** If one balloons from 5% to 15%, rebalancing brings it back; topping up a shrinking one only makes sense if the original case still holds
+6. **Satellite and side interest are different things.** Some people buy crypto to learn, to participate, to be part of a community. That's a legitimate choice, but it is not the same as a financial plan
 
 The four core asset classes plus a small, deliberate satellite allocation is the shape most diversified portfolios actually take. Commodities and cryptocurrency are real categories with legitimate (and limited) roles. The mistake is letting marketing or social-feed energy promote them from satellite to core.
 

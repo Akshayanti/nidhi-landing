@@ -102,16 +102,16 @@ This is the difference between the inside view and the outside view.
 
 The outside view feels deflating, which is exactly why it works. It drags your forecast back from the flattering story toward the unflattering record. In practice it means a handful of concrete habits:
 
-1. **Set conservative assumptions.** When you build a [projection](/blog/setting-financial-goals/), lean toward the cautious end of return and timeline estimates. If reality beats them, lovely. If it does not, your plan still holds. A plan that only works in the smooth-path scenario is a wish in disguise.
-2. **Diversify instead of concentrating.** Treat diversification as a deliberate admission that you cannot reliably pick the winner. That admission is not weakness; it is calibration.
-3. **Trade less.** Once you have a sound, diversified allocation, activity tends to subtract value rather than add it. The boring choice of leaving it alone usually beats the confident choice of tinkering.
+1. **Conservative assumptions.** In a [projection](/blog/setting-financial-goals/), the cautious end of return and timeline estimates leaves room for reality. If reality beats them, lovely. If it does not, the plan still holds. A plan that only works in the smooth-path scenario is a wish in disguise.
+2. **Diversification as calibration.** Diversifying is, in part, a deliberate admission that nobody can reliably pick the winner. That admission is not weakness; it is the outside view applied to a portfolio.
+3. **Less trading.** The research on individual investors suggests that once a sound, diversified allocation is in place, extra activity tends to subtract value rather than add it.
 4. **Build in a margin of safety.** Assume projects run long and cost more, because the base rates say they do. A buffer is not pessimism. It is what the track record recommends.
 
 ## What you can do
 
 - **Run the driver test on yourself.** Before any confident financial move, ask honestly whether you are relying on being above average. If half of all people doing this cannot be, what makes you the half that is?
 - **Switch to the outside view.** For any plan or bet, find the base rate. How do projects, trades, or timelines like this usually turn out? Anchor on that record, not on your own story.
-- **Make your assumptions conservative on purpose.** When you project savings or returns, choose numbers you would still be comfortable with if the next few years disappoint. Pleasant surprises are easy to absorb; unpleasant ones break optimistic plans.
-- **Do less.** If you find yourself trading or tinkering to feel in control, recognise the urge for what it is. A diversified plan left alone usually outperforms a clever plan fussed over.
+- **Stress-test your assumptions.** When you project savings or returns, check whether the plan still works if the next few years disappoint. Pleasant surprises are easy to absorb; unpleasant ones break optimistic plans.
+- **Notice the urge to tinker.** If you find yourself trading or tinkering to feel in control, recognise the urge for what it is. In the research, diversified plans left alone have usually outperformed clever plans fussed over.
 
 Overconfidence is about misjudging your own skill and luck. The next bias is about how easily your judgement gets swayed by something outside you entirely: the way a choice is worded and the first number you happen to see. That is framing and anchoring, and it is where we go next.

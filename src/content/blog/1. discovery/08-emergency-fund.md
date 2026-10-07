@@ -2,7 +2,7 @@
 slug: "emergency-fund"
 title: "The Emergency Fund: Your First Financial Safety Net"
 description: "Before you invest or pay extra on debt, build a buffer. An emergency fund is the foundation that keeps the rest of your plan from collapsing."
-tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. Start with one month of essential expenses, then build toward three to six months of essential expenses. Keep it accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
+tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. A common approach is one month of essential expenses first, then three to six months, adjusted for income stability and your safety net. It usually sits somewhere accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
 takeaways:
   - "Why an emergency fund stops a crisis becoming debt"
   - "How to size it from one month to three to six months of essentials"
@@ -33,9 +33,9 @@ faq:
   - question: "What is an emergency fund?"
     answer: "An emergency fund is money set aside specifically for unexpected, necessary expenses like job loss, medical bills, urgent car repairs, or home repairs. It's cash you can access immediately, not investments."
   - question: "How much should I have in my emergency fund?"
-    answer: "Start with one month of essential expenses as a mini emergency fund. Then build toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months is a common starting point for stable income, six or more for variable income; strong unemployment benefits or good insurance can lower the number, while self-employment or being a single earner can raise it."
+    answer: "A common approach is a mini emergency fund of one month of essential expenses first, then building toward three to six months of essential expenses (rent, food, insurance, utilities, minimum debt payments). Three months is a common starting point for stable income, six or more for variable income; strong unemployment benefits or good insurance can lower the number, while self-employment or being a single earner can raise it."
   - question: "Where should I keep my emergency fund?"
-    answer: "In a separate savings account, high-yield savings account, or money market account. It must be accessible within 24 hours and not exposed to market risk. Keep it separate from your everyday spending account so it doesn't get spent accidentally."
+    answer: "Most people use a separate savings account, high-yield savings account, or money market account. The two usual requirements are access within a day or so and no exposure to market risk. Keeping it apart from the everyday spending account makes it less likely to get spent by accident."
   - question: "What counts as an emergency?"
     answer: "An emergency is unexpected, urgent, and necessary. Car broke down and you need it for work? Emergency. Flight deal to Barcelona? Not an emergency. Dental emergency? Emergency. Phone upgrade? Not an emergency."
 ---
@@ -105,19 +105,19 @@ Three months is a common starting point if you have a stable job, good health, a
 
 As we covered in the [liquidity post](/blog/liquidity/), the emergency fund has two requirements: accessible and stable. That rules out stocks (can drop 30% the week you need the money), real estate (takes months to sell), and cash under the mattress (inflation eats it). The [liquidity spectrum](/blog/liquidity/) shows exactly how quickly each asset type converts to cash.
 
-Good options:
+Common places people keep it (names and protections vary by country):
 
-- A separate savings account at your bank
+- A separate savings account at their bank
 - A high-yield savings account (an online savings account that pays a higher interest rate than a traditional bank)
 - A money market account (a savings account that typically offers slightly higher rates in exchange for a higher minimum balance)
 
-The key is keeping it separate. If it's in your everyday account, it gets spent. Move it somewhere you can see it but can't casually tap.
+Separation is what makes it work for many people. Money in the everyday account tends to get spent; money somewhere visible but not casually tappable tends to stay put.
 
-## How to build it
+## How people usually build it
 
-1. **Start with one month of essential expenses.** Cut spending, sell something you don't use, redirect a windfall. However you get there, get there quickly
-2. **Automate.** Set up a recurring transfer the day after your salary arrives. Even €100 a month gets you there within a year
-3. **Build toward the full target.** After the mini fund, work toward three months of expenses while also tackling high-interest debt. It's not either-or
+1. **A one-month starter amount.** People get there by trimming spending, selling something unused or redirecting a windfall. The sooner the starter cushion exists, the sooner a surprise stops meaning new debt
+2. **Automation.** A recurring transfer the day after salary arrives removes the monthly decision. Even €100 a month adds up to a meaningful cushion within a year for many budgets
+3. **Building toward the full target.** After the starter fund, many people grow it toward three months of expenses while also paying down high-interest debt. It's not either-or, and the balance depends on how expensive the debt is
 
 ## What counts as an emergency?
 

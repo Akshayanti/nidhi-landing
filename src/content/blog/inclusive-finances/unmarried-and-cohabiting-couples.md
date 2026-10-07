@@ -52,7 +52,7 @@ In many countries, this is what happens next. The flat passes to Lena's parents.
 
 Nobody intended any of this. It is simply what the defaults produce when a couple is not married.
 
-This post sets out what marriage switches on automatically and how to build each piece on purpose. It covers couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and different force in every country, so what follows teaches the categories. For the documents themselves, use a professional where you live.
+This post sets out what marriage switches on automatically and how to build each piece on purpose. It covers couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and different force in every country, so what follows teaches the categories. For the documents themselves, a local professional is the usual route.
 
 ## Part one: the bundle marriage switches on
 
@@ -148,7 +148,7 @@ Two documents cover the decision-making row.
 
 **A healthcare power of attorney**, also called a healthcare proxy, names who makes medical decisions for you.
 
-Without them, an unmarried partner can be shut out of both the hospital room and the bank account. Each of you needs your own set, naming the other.
+Without them, an unmarried partner can be shut out of both the hospital room and the bank account. Each partner usually needs their own set, naming the other.
 
 ## What documents cannot rebuild: tax
 
@@ -183,7 +183,7 @@ Two everyday points are easy to miss.
 
 **United States.** Rules are set state by state. Beneficiary designations carry particular weight because so much wealth sits in retirement accounts.
 
-**Same-sex couples.** Where marriage is available, the choice is the same as for any couple. Where it is not, or where a marriage made elsewhere is not recognised, every item in this post becomes essential. A later post in this series is devoted to that situation.
+**Same-sex couples.** Where marriage is available, the choice is the same as for any couple. Where it is not, or where a marriage made elsewhere is not recognised, every item in this post matters much more. A later post in this series is devoted to that situation.
 
 Two companion pieces extend this post to households of more than two: one on owning a home as a group of three or more, and one on households with more than two partners.
 

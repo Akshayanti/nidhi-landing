@@ -28,7 +28,7 @@ faq:
   - question: "What if a default fails me and there is no fix?"
     answer: "Then the line in the register says so, and names the workaround. Some gaps cannot be closed with a document: a marriage that is not recognised, a tax system that treats a partner as a stranger, a benefit you are excluded from. The tools in those cases are insurance to replace what you cannot receive, a larger cash reserve to replace a safety net you do not have, and care over whose name assets are held in. Knowing that a gap exists and is covered another way is a complete answer."
   - question: "Where should I start if I have read the whole series?"
-    answer: "With the free things, because they do the most for the least. Check the beneficiary on every pension and policy. Write the list of accounts and tell someone where it is. Put an emergency contact on your phone. Then book the one paid item that matters most in your situation, which for most people is a will or a power of attorney. The register tells you which."
+    answer: "With the free things, because they do the most for the least. Check the beneficiary on every pension and policy. Write the list of accounts and tell someone where it is. Put an emergency contact on your phone. After that, many people arrange the one paid item that matters most in their situation, often a will or a power of attorney. The register shows which, and local rules decide what form it takes."
 reelPromise: "The six families of assumption every plan rests on, and a one-page assumption register with worked lines you can copy"
 relatedSlugs: ["when-the-default-plan-does-not-fit-you", "financial-dashboard", "setting-financial-goals", "building-an-anti-bias-financial-life"]
 referentialReading:
@@ -67,7 +67,7 @@ Looked at together, the defaults in this series fall into six families. Almost e
 
 Two things stand out.
 
-**Most people sit outside at least one row.** Work without an employer is the majority experience worldwide. One-person households are the most common kind in many cities. Cohabiting without marrying is normal. The "default household" is the one the paperwork was written for. It is not the typical one.
+**Most people sit outside at least one row.** The International Labour Organization estimates that most of the world's workers are in informal employment, without the employer-run payroll a standard plan assumes. One-person households are the most common kind in many cities. Cohabiting without marrying is normal. The "default household" is the one the paperwork was written for. It is not the typical one.
 
 **The rows interact.** A gap in one makes a gap in another worse. An unmarried partner who is also a migrant on a dependent visa. A carer with a broken pension record who then separates. A disabled adult whose parents leave an inheritance the ordinary way. The hardest situations in this series were never one failed default. They were two at once.
 
@@ -166,7 +166,7 @@ This series kept returning to one caution, and it bears repeating at the end.
 - **Write the register.** One page, six families, an hour.
 - **Mark the unknowns.** Pick the one that worries you most and find the answer this week.
 - **Do the free fixes.** Beneficiary forms. The list of accounts. An emergency contact on your phone.
-- **Book one paid fix.** For most people, a will or a power of attorney.
+- **Consider one paid fix.** For many people it is a will or a power of attorney, in whatever form local law requires.
 - **Put a date in the calendar** to read the page again in a year.
 
 A default is someone else's guess about your life, made before you were born and written into law. For a long time it may be close enough. The work of this series, and of any good financial plan, is to find out where it is not, and to put your own decision there.

@@ -113,7 +113,7 @@ Notice what does not appear anywhere in this post: the advice to "stay calm" or 
 
 What works is removing the moments where the fear can do damage:
 
-1. **Check less often.** A long-term portfolio has a long-term timescale. Quarterly is plenty for most people; annually is fine for a simple, diversified holding. Fewer looks means fewer panic windows. If you only review the [dashboard](/blog/financial-dashboard/) on a schedule, the dips between reviews never get a vote.
+1. **Check less often.** A long-term portfolio has a long-term timescale. Many long-term investors find quarterly enough, and some check a simple, diversified holding only once a year. Fewer looks means fewer panic windows. If you only review the [dashboard](/blog/financial-dashboard/) on a schedule, the dips between reviews never get a vote.
 2. **Automate the contributions.** If your investing happens automatically each month, fear never gets the chance to pause it. The money goes in during the scary months too, which historically are the most rewarding months to keep buying.
 3. **Judge against the plan, not the week.** A 20% drop is alarming if your reference point is last month's high. It is unremarkable if your reference point is the multi-year plan you wrote when calm, which already assumed that drops like this happen. The drop did not break the plan. The plan expected it.
 4. **Pre-decide the rules.** Write down, in advance, what would actually make you change your investments: a change in your goals, your timeline, or your circumstances, never a change in this week's price. Then a scary week has nothing to act on, because the decision was already made by your calmer self.

@@ -71,7 +71,7 @@ Ratios handle this automatically by setting one number against another. The resu
 
 A young person with a mortgage naturally starts high (a 90% loan-to-value mortgage means a debt-to-asset ratio close to 0.9 early on). That's not automatically bad. It's the expected shape, and it falls over time as the mortgage is paid down and other assets accumulate. The direction matters more than the absolute level for young homeowners.
 
-**What to do if it's drifting up:** Slow down borrowing, focus on paying down high-interest debts (see [snowball vs. avalanche](/blog/how-to-get-out-of-debt/)), avoid taking on consumer loans that don't acquire real assets.
+**Common responses if it's drifting up:** Slowing new borrowing, paying down high-interest debts first (see [snowball vs. avalanche](/blog/how-to-get-out-of-debt/)), and being wary of consumer loans that don't acquire lasting assets.
 
 ## Metric 2: Liquid asset percentage
 
@@ -92,7 +92,7 @@ Liquid assets are cash, savings, money market funds, and easily sold investments
 
 A high-net-worth homeowner with 90% of net worth in property and 10% liquid is still structurally fragile. Losing the ability to access any of the 90% quickly (because a property takes months to sell) means the 10% has to cover every shock.
 
-**What to do if it's drifting down:** Rebuild cash reserves, avoid loading more into illiquid assets until the liquid buffer recovers, be cautious with large down payments or paid-off primary residences that spike illiquidity.
+**Common responses if it's drifting down:** Rebuilding cash reserves, pausing additions to illiquid assets until the liquid buffer recovers, and weighing how large down payments or paying off a primary residence would spike illiquidity.
 
 ## Metric 3: Emergency fund coverage
 
@@ -106,13 +106,13 @@ A high-net-worth homeowner with 90% of net worth in property and 10% liquid is s
 |---|---|
 | Under 1 month | Highly fragile; a single paycheck gap creates real risk |
 | 1-3 months | Building; adequate for most short shocks |
-| 3-6 months | The most commonly recommended range |
-| 6-12 months | Conservative; appropriate for single-earner households, variable income, or industries with longer unemployment durations |
-| 12+ months | Very conservative; beyond this, further cash is usually better invested |
+| 3-6 months | The most commonly cited range |
+| 6-12 months | Conservative; common for single-earner households, variable income, or industries with longer unemployment durations |
+| 12+ months | Very conservative; beyond this, extra cash often has a real opportunity cost |
 
 The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail. Worth noting: coverage is a moving metric. Expenses drift upward as life expands, and an emergency fund that covered six months a year ago may cover four today. The ratio, not the absolute amount, is what to track.
 
-**What to do if it's drifting down:** Rebuild before resuming aggressive investing. Review what's driving expense growth.
+**Common responses if it's drifting down:** Many people rebuild the fund before resuming aggressive investing, and look at what's driving expense growth.
 
 ## Metric 4: Savings rate
 
@@ -132,7 +132,7 @@ The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail
 
 This metric is also the most volatile month to month, so track it as a rolling 3- or 6-month average rather than reacting to single months.
 
-**What to do if it's drifting down:** Look at the [cash flow categories](/blog/cash-flow-101/). Has lifestyle inflation crept into discretionary spending? Are recurring subscriptions growing? Did a large one-off expense hit? Revisit the [budgeting](/blog/budgeting/) structure.
+**Where to look if it's drifting down:** The [cash flow categories](/blog/cash-flow-101/). Has lifestyle inflation crept into discretionary spending? Are recurring subscriptions growing? Did a large one-off expense hit? The [budgeting](/blog/budgeting/) structure may need a refresh.
 
 ## Metric 5: Debt-to-income ratio
 
@@ -151,7 +151,7 @@ This metric is also the most volatile month to month, so track it as a rolling 3
 
 This metric becomes especially important before considering large new borrowing, like a new [mortgage](/blog/real-estate-as-investment/) or other major loan. Lenders and self-check alike should weigh the *total* picture after the new obligation, not the current one.
 
-**What to do if it's drifting up:** Slow new borrowing. Prepay high-interest debt where possible (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortisation and prepayment power).
+**Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortisation and prepayment power).
 
 ## Metric 6: Income replacement ratio
 
@@ -182,7 +182,7 @@ Put them all together and you have a one-page health check:
 | Debt-to-asset ratio | <40% (lower is usually better, context matters) | | |
 | Liquid asset % | 25-50% | | |
 | Emergency fund coverage | 3-6 months | | |
-| Savings rate | 20%+ (higher is better) | | |
+| Savings rate | 20%+ (a common benchmark; depends on pensions and goals) | | |
 | Debt-to-income ratio | <35% | | |
 | Income replacement ratio | Growing over time | | |
 
@@ -194,7 +194,7 @@ Any single metric can be misleading in isolation. The honest read comes from rea
 
 - **Healthy savings rate but low liquid %** → Probably locked into illiquid assets. Flexibility could bite you in a crisis
 - **Low debt-to-income but also low savings rate** → You're paying for your lifestyle from income, not debt, but you're not building wealth
-- **High emergency fund coverage but high debt-to-asset** → The cash is effectively canceling out the leverage; consider whether some emergency fund should be used against high-interest debt
+- **High emergency fund coverage but high debt-to-asset** → The cash is effectively canceling out the leverage; some people weigh using part of the fund against high-interest debt, keeping enough for genuine emergencies
 - **Strong metrics across the board but low income replacement** → You're set up well but early in the accumulation journey. Time will do the work
 - **High income replacement but weakening savings rate** → You may be close to crossover and naturally scaling back; or you may be experiencing lifestyle creep. Which story matches?
 
@@ -214,7 +214,7 @@ The metrics tell you where to look. They don't tell you what to do. The combinat
 1. **Calculate each metric today.** A single afternoon gives you a baseline. Most metrics need only your [net worth statement](/blog/how-to-calculate-net-worth/), your monthly [cash flow](/blog/cash-flow-101/), and your liabilities
 2. **Write the numbers down.** On paper, spreadsheet, anywhere, as long as you can compare to next year
 3. **Identify one or two that are drifting.** Almost nobody is in the healthy zone on all six. The useful question is: which one matters most to fix in the next 12 months?
-4. **Set one adjustment to move the weakest metric.** A specific monthly change, not a vague ambition. "Add €150 to emergency fund each month for six months" beats "save more"
+4. **Set one adjustment to move the weakest metric.** A specific monthly change, not a vague ambition. "Add €150 to the emergency fund each month for six months" is easier to act on than "save more"
 5. **Rerun at your next annual review.** Minimum. Quarterly if you want faster feedback
 6. **Don't panic over single-quarter movement.** Ratios move with life events, market swings, and one-off spending. Trends over a year are the signal
 7. **Use the combination, not the individual readings.** Each metric is informative; the pattern across all six is what tells the real story

@@ -1,16 +1,16 @@
 ---
 slug: "how-to-get-out-of-debt"
 title: "How to Get Out of Debt: Snowball vs. Avalanche"
-description: "Two proven strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes math. How each works and how to pick the right one."
-tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The best one is the one you'll stick with. The key is to start, make minimum payments on everything, and put every extra euro toward your target debt."
+description: "Two well-known strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes math. How each works and what each one suits."
+tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The interest difference between them is often modest, so the method someone actually sticks with tends to matter more. Both rely on keeping up minimum payments on everything and directing extra money at one target debt."
 takeaways:
-  - "Why minimum payments on every debt come first"
+  - "Why both methods rely on minimum payments on every debt"
   - "How the snowball method builds momentum with quick wins"
   - "How the avalanche method keeps total interest lowest"
-  - "Why the best method is the one you will stick with"
+  - "Why sticking with a method can matter more than which one"
 order: 5
 pubDate: 2026-04-27
-updatedDate: 2026-06-03
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -33,14 +33,14 @@ howTo:
   steps:
     - name: "List every debt"
       text: "Write down every debt you have: the balance, interest rate, and minimum payment. Include credit cards, student loans, personal loans, and any other outstanding balances."
-    - name: "Commit to minimum payments on everything"
-      text: "Never skip a minimum payment. Late fees and credit damage will undo any progress you make."
-    - name: "Find your extra money"
-      text: "After minimum payments and essential expenses, determine how much money is left each month. Even 50 euros makes a difference."
-    - name: "Choose your strategy: snowball or avalanche"
-      text: "Snowball targets the smallest balance first for quick wins and motivation. Avalanche targets the highest interest rate first to minimise total interest paid. Both work. Pick the one you'll stick with."
-    - name: "Attack your target debt"
-      text: "Put every extra euro toward your chosen target debt while making minimum payments on everything else. When that debt is cleared, roll its payment into the next one."
+    - name: "Keep minimum payments on everything"
+      text: "Both methods assume every minimum payment is made. Missed payments add late fees and credit damage that can undo progress."
+    - name: "Work out your extra money"
+      text: "After minimum payments and essential expenses, see how much is left each month. Even 50 euros a month shortens the timeline."
+    - name: "Compare snowball and avalanche"
+      text: "Snowball targets the smallest balance first for quick wins and motivation. Avalanche targets the highest interest rate first to minimise total interest paid. Both work; the better fit is usually the one a person can stick with."
+    - name: "Direct extra money at one target debt"
+      text: "Both methods put every extra euro toward one target debt while minimums are paid on everything else. When that debt is cleared, its payment rolls into the next one."
 relatedSlugs: ["liabilities", "what-is-net-worth", "assets"]
 faq:
   - question: "What is the debt snowball method?"
@@ -48,20 +48,20 @@ faq:
   - question: "What is the debt avalanche method?"
     answer: "The avalanche method pays off debts from highest interest rate to lowest. You target the most expensive debt first to minimise total interest paid. It's mathematically optimal but requires patience since the first debt may take longer to clear."
   - question: "Should I use snowball or avalanche to pay off debt?"
-    answer: "Choose snowball if you're motivated by visible progress and quick wins. Choose avalanche if you're disciplined and want to minimise total cost. A hybrid approach also works: start with snowball to build momentum, then switch to avalanche."
+    answer: "Snowball tends to suit people who are motivated by visible progress and quick wins. Avalanche tends to suit people who are comfortable waiting for the first win in exchange for the lowest total cost. Some people use a hybrid: snowball for one or two small debts to build momentum, then avalanche. How big the difference is depends on how far apart your interest rates are."
 ---
 
 You know [what you owe](/blog/liabilities/). You know which debts are the most expensive. Now it's time to get rid of them.
 
-There are two proven strategies for paying off debt. Both work. The difference is in how they sequence your payments; and what that does to your motivation and your wallet.
+There are two well-known strategies for paying off debt. Both work. The difference is in how they sequence your payments, and what that does to your motivation and your wallet.
 
 ## The setup (both methods)
 
-Before choosing a strategy, do this:
+Both methods start from the same setup:
 
 1. **List every debt.** Balance, interest rate, minimum payment. All of it
-2. **Commit to minimum payments on everything.** Never skip a minimum payment. Late fees and credit damage will undo any progress you make
-3. **Find your extra.** After minimum payments and essential expenses, how much money is left? Even €50 a month makes a difference. More is better
+2. **Keep minimum payments on everything.** Both methods assume this. Missed payments add late fees and credit damage that can undo progress
+3. **Work out your extra.** After minimum payments and essential expenses, how much money is left? Even €50 a month shortens the timeline. More shortens it further
 
 That extra amount is your weapon. Both methods use the same weapon. They just aim it differently.
 
@@ -146,20 +146,20 @@ Once the credit card is gone, you roll the full €460 into the store card at 12
   <figcaption>Snowball gives you a small early win (the store card vanishes at month 4) but lets the 22% credit card keep compounding for 30 months (the dashed bar). Avalanche makes you wait 17 months for the first kill, but kills the most expensive debt first. Both methods reach zero within a month of each other; the difference is total interest paid (lower with avalanche) versus motivational momentum (stronger with snowball).</figcaption>
 </figure>
 
-## Which one should you use?
+## Which one suits whom?
 
-It depends on what drives you:
+It depends on what drives a person, and on how far apart their interest rates are:
 
-- **Choose snowball** if you're motivated by visible progress. Seeing debts disappear one by one keeps you going. The extra interest you pay is the cost of staying motivated
-- **Choose avalanche** if you're disciplined and want to minimize total cost. The math is clear: you'll pay less. But you need to be okay with slower visible progress
-- **Hybrid approach:** Start with snowball to build momentum (knock out one or two small debts), then switch to avalanche once you're rolling. There's no rule that says you have to stick with one method forever
+- **Snowball** tends to suit people motivated by visible progress. Seeing debts disappear one by one keeps them going. The extra interest is the cost of that motivation, and it is small when rates are similar
+- **Avalanche** tends to suit people who want to minimize total cost and can live with slower visible progress. The math is clear: it pays the least interest, and the gap grows when one debt is far more expensive than the others
+- **Hybrid approach:** Some people start with snowball to build momentum (one or two small debts), then switch to avalanche. There's no rule that says you have to stick with one method forever
 
 ## Common mistakes
 
-- **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage. Never do this
+- **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage, which usually costs more than the extra payment saves
 - **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, you'll end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison/) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
 - **Stopping when the first debt is gone.** The whole point is to roll the freed-up payment into the next one. If you just spend the extra money, you lose the compounding effect
-- **Waiting for the "right time."** The best time to start is now. Even small extra payments make a difference
+- **Waiting for the "right time."** Interest keeps accruing while you wait, so even small extra payments started early reduce the total cost
 
 ## What comes after
 

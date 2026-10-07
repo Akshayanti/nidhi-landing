@@ -18,11 +18,11 @@ faq:
   - question: "How is cash flow forecasting different from a financial projection?"
     answer: "A financial projection asks: how big will my net worth be in the future? A cash flow forecast asks: will I have money in the right account at the right time? The projection sums assets and liabilities and grows them forward year by year. The forecast walks month by month through income and expenses, flagging months where the balance dips. You can have a healthy long-run projection and still fail a forecast, because lumpy annual costs (insurance premiums, tax bills, tuition, holidays) can create a shortfall in a specific month even when the average is fine. Both tools are needed; they answer different questions."
   - question: "What is a shortfall month and why should I care?"
-    answer: "A shortfall month is one where expenses exceed income by more than your buffer can absorb, so you would need to either sell investments, tap a credit line, or take on debt to cover the gap. The single most preventable shortfall is the one caused by a known-in-advance lumpy expense (annual premium, tax filing, planned home repair) that lands when the buffer is thin. A forecast surfaces these months before they happen, so you can either move the expense (pay quarterly instead of annually), build the buffer, or route a lump-sum inflow (bonus, tax refund) to that specific month. Shortfalls forced sales at bad times are one of the more expensive avoidable losses in personal finance."
+    answer: "A shortfall month is one where expenses exceed income by more than your buffer can absorb, so you would need to either sell investments, tap a credit line, or take on debt to cover the gap. The most preventable kind of shortfall is the one caused by a known-in-advance lumpy expense (annual premium, tax filing, planned home repair) that lands when the buffer is thin. A forecast surfaces these months before they happen, so you can either move the expense (pay quarterly instead of annually), build the buffer, or route a lump-sum inflow (bonus, tax refund) to that specific month. Investments sold in a hurry to cover a shortfall, at whatever the market happens to be doing that month, are one of the more expensive avoidable losses in personal finance."
   - question: "What is cash runway?"
     answer: "Cash runway is the number of months you could sustain your current expenses if income stopped completely today, using only your liquid assets. It is the emergency fund concept made dynamic and measured against your actual expenses rather than a rule of thumb. A €30,000 cash cushion sounds like a lot until you notice your monthly expenses are €4,500, at which point it is 6.7 months of runway. If your expenses rise to €6,000 because you moved cities, the same €30,000 is now 5 months. Runway matters more than a fixed number of months because it reflects your actual cost of living, which changes over life stages."
   - question: "How far into the future should I forecast?"
-    answer: "For cash flow, 12 to 24 months is the useful window. Beyond that, uncertainty about specific monthly amounts (variable expenses, side-income timing, unplanned costs) makes month-level forecasts unreliable. Long-horizon planning belongs in the net worth projection (post 43), which uses annualised numbers and does not require you to guess which month a €400 utility bill lands. The right combination is a 50-year projection for wealth trajectory and a 12 to 24 month forecast for liquidity, updated at least quarterly."
+    answer: "For cash flow, 12 to 24 months is the useful window. Beyond that, uncertainty about specific monthly amounts (variable expenses, side-income timing, unplanned costs) makes month-level forecasts unreliable. Long-horizon planning belongs in the net worth projection (post 43), which uses annualised numbers and does not require you to guess which month a €400 utility bill lands. A common combination is a long-horizon projection for wealth trajectory and a 12 to 24 month forecast for liquidity, updated every few months. How often depends on how variable your income and costs are."
   - question: "Can I have a growing net worth and still have cash flow problems?"
     answer: "Yes, and this is one of the reasons cash flow forecasting exists as a separate discipline. Wealth locked in real estate, retirement accounts, or private business equity is illiquid: it contributes to net worth but you cannot pay a plumber with it. A household that is asset-rich and cash-poor can hit a genuine liquidity crisis while looking wealthy on paper. Common patterns: heavy retirement contributions leaving little transactional cash, an expensive home eating too much of monthly cash flow into the mortgage, all liquid savings deployed to investments with insufficient buffer for lumpy expenses. The forecast is what surfaces this before it becomes a problem."
 reelPromise: "Why some months look fine on average and still leave you short of cash, and how a 12-month forecast catches problems that annual budgets miss"
@@ -59,7 +59,7 @@ The [Financial Projections post](/blog/financial-projections/) covers the other 
 
 **Forecast.** "In February, will I have enough in the current account to cover the annual insurance premium after the mortgage direct debit clears?" Runs monthly. Walks through income and expenses week by week. Cares about lumpy items. Cares about timing.
 
-You need both. A great projection with no forecast means you are heading somewhere good on average but can still hit a bad month that forces you to sell investments at the wrong time. A great forecast with no projection means you are not going to overdraw the account next Tuesday but you have no idea whether you are on track for retirement in 25 years.
+The two work as a pair. A great projection with no forecast means you are heading somewhere good on average but can still hit a bad month that forces you to sell investments at the wrong time. A great forecast with no projection means you are not going to overdraw the account next Tuesday but you have no idea whether you are on track for retirement in 25 years.
 
 ## What a monthly average hides
 
@@ -135,7 +135,7 @@ For forecasting purposes, three practical tiers:
 
 **Transactional (0-1 month).** Current account, checking, whatever your salary lands in. Enough to cover the month's actual expenses plus a small operational buffer. Not designed to earn returns.
 
-**Safety buffer (1-6 months).** Easy-access savings, money market, whatever you can move to transactional in under 48 hours without penalty. Sized to your monthly expenses (not to an arbitrary rule) and to your job stability (single-income high-volatility fields need more; dual-income steady fields need less).
+**Safety buffer (1-6 months).** Easy-access savings, money market, whatever you can move to transactional in under 48 hours without penalty. Sized to your monthly expenses (not to an arbitrary rule) and to your job stability (single-income households in volatile fields often hold more; dual-income households in steady fields often hold less).
 
 **Opportunity or near-term goal (6+ months).** Money earmarked for a specific expense within the forecast window (down payment fund, tuition fund) plus any additional buffer beyond safety. A later post in this series covers the vehicle-selection question for this tier in detail.
 
@@ -156,18 +156,18 @@ Three specific failure modes that cost money.
 The five lumpy expense buckets that appear in almost every household forecast:
 
 - **Insurance renewals.** Auto, home, life, disability, health if privately purchased. Common in most jurisdictions; timing varies (renewal month is essentially arbitrary).
-- **Tax payments.** Salaried workers in most countries have withholding, so the annual lump is small or zero. Self-employed and higher earners often owe a top-up. In some countries (India, US), quarterly estimated tax filings are the mechanism. In others (UK, EU with PAYE), an annual reconciliation is common.
+- **Tax payments.** Salaried workers in most countries have withholding, so the annual lump is small or zero. Self-employed and higher earners often owe a top-up. In some countries (India, US), advance or estimated tax paid in instalments through the year is the mechanism. In others (the UK under PAYE, many EU countries), an annual reconciliation is common. Local rules decide which applies to you.
 - **Property costs.** Property tax (US, UK council tax, French taxe foncière, German Grundsteuer, Indian property tax at municipal level), typically annual or biannual. Maintenance funds ideally set aside monthly.
 - **School or tuition.** Where relevant. Termly in most countries, once or twice a year in others. Annual in university systems.
 - **Seasonal or cultural spending.** Holiday travel, gift seasons, religious events (Diwali, Christmas, Eid, Chinese New Year). Cultural context varies; the impact on the forecast is the same.
 
-Rule 7 in practice: the concept is universal (lumpy expenses hide inside monthly averages), the specific items are jurisdiction and culture specific. Your forecast has to reflect your own version of this list.
+The concept is universal (lumpy expenses hide inside monthly averages), the specific items are jurisdiction and culture specific. Your forecast has to reflect your own version of this list.
 
 ## Cash flow problems in wealthy households
 
 The counter-intuitive case worth knowing: net worth and cash flow can move in opposite directions. Some patterns to watch for.
 
-**Asset-rich, cash-poor from over-investing.** Aggressively maximising retirement contributions, then leaving too little in liquid savings. The projection looks great. The forecast is fragile because any disruption forces early withdrawal (with taxes and penalties in most jurisdictions) or high-interest borrowing.
+**Asset-rich, cash-poor from over-investing.** Aggressively maximising retirement contributions, then leaving too little in liquid savings. The projection looks great. The forecast is fragile because any disruption forces early withdrawal (with taxes and penalties in many jurisdictions) or high-interest borrowing.
 
 **House-poor.** An expensive home with a large mortgage eats too much monthly cash flow. Net worth may be respectable (thanks to equity), but the current-account cushion is chronically thin. Refinancing (covered later in Optimizing) is sometimes the fix. Sometimes the fix is a smaller house.
 

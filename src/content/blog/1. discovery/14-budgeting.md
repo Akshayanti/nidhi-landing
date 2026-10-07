@@ -199,9 +199,9 @@ The tool matters less than using one. A budgeting method paired with a tracker y
 
 ## What you can do
 
-1. **Pick one method and start.** If you've never budgeted, 50/30/20 is the simplest entry point. If you want more control, try zero-based. If you want minimum friction, automate with pay-yourself-first
-2. **Use a tracker.** Check if your bank app already has spending insights. If not, try a dedicated budgeting app. The best tool is the one you'll actually open
-3. **Automate your savings.** Set up a standing order on payday. The amount matters less than the consistency. Even €50 per month is infinitely better than €0
+1. **Match a method to how you work.** People new to budgeting often find 50/30/20 the simplest entry point. Those who want more control tend to prefer zero-based. Those who want minimum friction lean on pay-yourself-first
+2. **Look at what your bank already shows you.** Many bank apps have spending insights; dedicated budgeting apps go further. The tool matters less than whether you open it
+3. **Automation helps the habit stick.** A standing order on payday removes the monthly decision. Consistency tends to matter more than the amount, and the amount depends on what your budget can carry
 4. **Review weekly for the first two months.** Check your spending against your plan. Adjust categories that don't reflect reality. A budget should fit your life, not the other way around
 5. **Handle irregular expenses.** List all annual and semi-annual costs, divide by 12, and include them in your monthly budget
 6. **Revisit quarterly.** Life changes. Income changes. Expenses change. A quarterly check keeps your budget aligned with reality

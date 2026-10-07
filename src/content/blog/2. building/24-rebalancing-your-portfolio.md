@@ -2,12 +2,12 @@
 slug: "rebalancing-your-portfolio"
 title: "Rebalancing: How to Keep Your Portfolio on Target"
 description: "Markets move; your target allocation doesn't. Rebalancing pulls your portfolio back to its original risk profile by selling what's up and buying what's down."
-tldr: "Over time, market movements drift your portfolio away from its target allocation. A 70/30 stocks/bonds split can become 80/20 after a strong equity year, quietly raising your risk. Rebalancing pulls it back. Three methods work: calendar-based (annually), threshold-based (when any asset drifts more than 5% from target), and contribution-based (redirect new money to the under-weight asset). More frequent rebalancing does not improve returns; annual or 5%-band is where most evidence lands. Rebalance in tax-advantaged accounts first (no tax drag on trades); use new contributions to rebalance taxable accounts where possible. The common mistake is rebalancing emotionally in response to news; the other common mistake is ignoring drift for years."
+tldr: "Over time, market movements drift your portfolio away from its target allocation. A 70/30 stocks/bonds split can become 80/20 after a strong equity year, quietly raising your risk. Rebalancing pulls it back. Three methods work: calendar-based (annually), threshold-based (when any asset drifts more than 5% from target), and contribution-based (redirect new money to the under-weight asset). More frequent rebalancing does not improve returns; annual or 5%-band is where most evidence lands. Many investors rebalance in tax-advantaged accounts first (no tax on trades) and use new contributions to rebalance taxable accounts, since selling there can trigger tax. The common mistake is rebalancing emotionally in response to news; the other common mistake is ignoring drift for years."
 takeaways:
   - "Why portfolios drift away from their target allocation"
   - "That rebalancing is mainly about risk control, not extra return"
   - "How calendar, threshold and contribution methods compare"
-  - "Why tax-advantaged accounts are the first place to rebalance"
+  - "Why many people rebalance in tax-advantaged accounts first"
 order: 24
 pubDate: 2026-06-10
 updatedDate: 2026-10-07
@@ -23,7 +23,7 @@ faq:
   - question: "How often should I rebalance my portfolio?"
     answer: "Academic and industry research consistently finds that more frequent rebalancing does not meaningfully improve returns and often slightly hurts them after transaction costs and taxes. The sweet spot across most studies is annual calendar rebalancing, or 5% absolute threshold bands (or 20% relative), which produce very similar long-term outcomes. Quarterly rebalancing adds trading costs without clearly adding returns, and monthly rebalancing usually adds cost without clear benefit. The reason: markets have short-term momentum, so rebalancing too quickly means selling winners just as they keep winning and buying losers just as they keep losing. Annual or band-based rebalancing gives momentum time to play out while still catching meaningful drift."
   - question: "How do taxes affect where I should rebalance?"
-    answer: "Selling appreciated investments in a regular brokerage account can trigger capital gains tax, a real cost that should inform where you rebalance. Trades inside tax-advantaged accounts such as a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation typically do not trigger any current tax event, so rebalance these first and most often. In taxable accounts, prefer contribution-based rebalancing using new money. If you must sell, remember that long-held positions with large gains are more expensive to sell, some jurisdictions tax long-term holdings at reduced rates, and tax-loss harvesting can offset gains. If you hold the same allocation across both account types, rebalance in the tax-advantaged wrapper first and touch taxable only when needed."
+    answer: "Selling appreciated investments in a regular brokerage account can trigger capital gains tax, a real cost that shapes where people rebalance. Trades inside tax-advantaged accounts such as a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation typically do not trigger any current tax event, which is why many investors rebalance there first and most often. In taxable accounts, contribution-based rebalancing with new money is the common approach. When selling is unavoidable, long-held positions with large gains are more expensive to sell, some jurisdictions tax long-term holdings at reduced rates, and tax-loss harvesting can offset gains. How much any of this matters depends on your country's capital gains rules."
   - question: "When should I not rebalance?"
     answer: "A few cases where the usual rules matter less. Small accounts: if fixed transaction costs are a meaningful percentage of trades, annual rebalancing can destroy more value than it protects, so use contribution-based methods. Near-retirement glide paths: if you are deliberately shifting toward bonds as you approach retirement, the target itself is moving and some apparent drift is intentional. Minor drift: 71/29 instead of 70/30 is not worth a trade. Right after a big drop: rebalancing then is mechanically correct but emotionally hard, and doing it gradually over a few months is acceptable if it keeps you in the plan. Avoid the opposite failure too: ignoring drift for years leaves you over-weight stocks."
 reelPromise: "All three rebalancing methods compared, a worked €100k example showing the exact trades, and where to rebalance first to avoid tax"
@@ -161,17 +161,17 @@ What did that accomplish? You didn't "miss out" on any gains; you still have the
 
 ## Tax awareness: where to rebalance matters
 
-Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost that should inform *where* you rebalance.
+Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost, and it shapes *where* people usually rebalance.
 
-**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): rebalance freely.** Trades inside a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation account typically don't trigger any current tax event. Rebalance these first and most often.
+**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation account typically don't trigger any current tax event, which is why many investors rebalance there first and most often.
 
-**In taxable accounts: prefer contribution-based rebalancing.** Use new money to rebalance wherever possible. If you must sell to rebalance, consider:
+**In taxable accounts: contribution-based rebalancing is the common approach.** New money avoids selling. When selling is unavoidable, a few factors shape the tax cost:
 
 - Long-held positions with large gains are more expensive to sell than short-held positions at small gains
 - Some jurisdictions have reduced capital gains rates for long-term holdings; timing a sale to qualify can materially reduce the tax cost
 - Tax-loss harvesting (selling losing positions to offset gains elsewhere) can reduce the tax impact of rebalancing if you have losses available
 
-**The asymmetry matters.** If you hold the same asset allocation across tax-advantaged and taxable accounts, you have flexibility. Rebalance in the tax-advantaged wrapper first. Touch the taxable account only when the tax-advantaged side alone can't close the gap.
+**The asymmetry matters.** Holding the same asset allocation across tax-advantaged and taxable accounts creates flexibility. The usual pattern is to rebalance in the tax-advantaged wrapper first and touch the taxable account only when that alone can't close the gap. How much this saves depends on your country's capital gains rules.
 
 ## Frequency: what the evidence says
 
@@ -192,26 +192,26 @@ A few scenarios where the usual rules are less relevant:
 
 **Near-retirement glide paths.** Many investors deliberately shift their allocation toward bonds as they approach retirement (say, from 70/30 at age 45 to 40/60 at age 65). In that case, the "target" is itself moving, so some apparent drift is intentional.
 
-**Minor drift.** A portfolio that's 71/29 instead of 70/30 doesn't need rebalancing. The cost of the trade is not worth 1% of precision. Use sensible thresholds; don't chase perfection.
+**Minor drift.** A portfolio that's 71/29 instead of 70/30 doesn't need rebalancing. The cost of the trade is rarely worth 1% of precision, which is why thresholds exist.
 
 **Right after a big drop.** This one is psychological, not mathematical. If markets just crashed 30% and you're terrified, forcing yourself to rebalance (which means buying more of what just dropped) can be emotionally impossible. Mechanically, it's correct. Pragmatically, doing it over a few months rather than all at once is acceptable if it keeps you in the plan.
 
 ## Common mistakes
 
-- **Rebalancing too often.** Monthly or quarterly rebalancing usually hurts after costs. Pick annual or 5% bands and stop.
+- **Rebalancing too often.** Monthly or quarterly rebalancing usually adds cost without clear benefit; annual or 5% bands are where most evidence lands.
 - **Emotional rebalancing.** "The market's crashing; I should move everything to bonds." That's not rebalancing; that's market timing. Rebalancing *buys* bonds only because stocks have relatively risen, not because stocks look scary.
 - **Ignoring drift for years.** The opposite failure mode. A portfolio that hasn't been rebalanced in five years of a strong equity run is materially over-weight stocks and under-prepared for the next drawdown.
-- **Rebalancing taxable accounts without considering tax.** Selling appreciated positions in taxable to hit an exact target allocation can cost more in tax than the rebalancing benefit is worth. Use contribution-based methods first.
+- **Rebalancing taxable accounts without considering tax.** Selling appreciated positions in taxable to hit an exact target allocation can cost more in tax than the rebalancing benefit is worth, which is why contribution-based methods are usually tried first.
 - **Treating rebalancing as market timing in disguise.** Rebalancing is a rule-based discipline. If you find yourself overriding the rule ("let me wait a few months, I think stocks will keep going up"), you've stopped rebalancing and started speculating.
-- **Rebalancing an allocation you no longer actually want.** Occasionally (every few years, or when life circumstances change), you should ask whether the target itself is still right. If you had 80/20 at age 25 and you're now 45 with two children, 80/20 may no longer fit. Update the target deliberately, then rebalance to the new target.
+- **Rebalancing an allocation you no longer actually want.** Every few years, or when life circumstances change, it is worth asking whether the target itself is still right. Someone who chose 80/20 at age 25 may find it no longer fits at 45 with two children. Changing the target deliberately, then rebalancing to it, is different from drifting.
 
-## What you can do
+## What this means in practice
 
-1. **Write down your target allocation.** Stocks, bonds, cash, any other asset classes, with specific percentages. Without a target, you can't rebalance.
-2. **Pick one method.** Annual calendar, 5% threshold bands, or contribution-based. Combining two is fine; changing methods every quarter is not.
-3. **Put it on autopilot where possible.** Many brokerages and robo-advisors offer automatic rebalancing inside tax-advantaged accounts. Use it if available.
-4. **Rebalance tax-advantaged accounts first.** Trades there are tax-free; save the harder decisions for taxable accounts.
-5. **Redirect new contributions to under-weight assets.** This alone handles most of the rebalancing need while you're actively saving.
-6. **Review the target itself every few years.** Not every month. But when life changes meaningfully (marriage, children, major income change, approaching retirement), the target allocation may need to change too.
+1. **Write down your target allocation.** Stocks, bonds, cash, any other asset classes, with specific percentages. Without a target, there is nothing to rebalance to.
+2. **One method, held consistently.** Annual calendar, 5% threshold bands, or contribution-based. Combining two is common; switching methods every quarter undoes the discipline.
+3. **Automation is often available.** Many brokerages and robo-advisors offer automatic rebalancing inside tax-advantaged accounts, which removes the decision entirely.
+4. **Tax-advantaged accounts are usually the first place to rebalance.** Trades there typically don't trigger tax, which leaves the harder decisions for taxable accounts.
+5. **New contributions do much of the work.** Directing them to under-weight assets handles most of the rebalancing need while someone is actively saving.
+6. **The target itself changes slowly.** Not every month, but life changes (marriage, children, major income change, approaching retirement) can shift what allocation fits.
 
 The next posts in this series move beyond the mechanics of accumulation and into the goals accumulation is for: financial independence, passive income, loan decisions, and real estate.
