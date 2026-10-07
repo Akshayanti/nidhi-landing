@@ -1,8 +1,10 @@
 # PostHog Events
 
-> Auto-generated 2026-05-24 from the codebase. Update when events are added, renamed, or removed.
+> Checked against the codebase on 2026-10-07. Update when events are added, renamed, or removed. Ready-made dashboard setup: `docs/posthog-dashboards-prompt.md`.
 
-All events use `https://eu.i.posthog.com` as the API host. Client-side events go through the PostHog JS SDK (`window.posthog.capture`). Server-side events go through the PostHog HTTP API (`POST /capture/`) from the Google Apps Script (`newsletter.gs`).
+All events use `https://eu.i.posthog.com` as the API host. Client-side events go through the PostHog JS SDK (`window.posthog.capture`). Server-side events go through the PostHog HTTP API (`POST /capture/`) from two Google Apps Scripts: `scripts/newsletter.gs` and `scripts/waitlist.gs`.
+
+**Project and start date.** Analytics moved to a new PostHog Cloud EU project on 2026-10-08; the previous project and all its data were deleted. Nothing is sent before 00:00 UTC on 2026-10-08: `Analytics.astro` skips `posthog.init` before then (the page gets no-op `capture`/`identify`), and both Apps Scripts return early from `trackPosthog_` (`POSTHOG_START_MS_`). The key lives in the `PUBLIC_POSTHOG_KEY` GitHub secret and in each script's `POSTHOG_API_KEY` property, never in the repo.
 
 ---
 
@@ -47,7 +49,7 @@ Also calls `window.posthog.identify(sha256(email))` on submit to alias the anony
 | `waitlist_submit` | `email_domain: string` — domain part of email<br>`source: string` — `window.location.pathname` | User submits the waitlist form |
 | `waitlist_sent` | — | Server responds OK (signup recorded) |
 
-No `posthog.identify()` call — the waitlist is a single-step funnel with no follow-up events to stitch, so the `distinct_id` remains anonymous.
+No `posthog.identify()` call, so these client events stay anonymous. The server sends `waitlist_signup` under a hashed-email `distinct_id` (see Server-side events), so it does not stitch to these two.
 
 ### Subscription confirmation — `src/pages/confirm.astro`
 
@@ -63,7 +65,7 @@ No `posthog.identify()` call — the waitlist is a single-step funnel with no fo
 
 ### Loan Comparison tool — `src/components/LoanCompare.tsx`
 
-All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (`line 59`) that silently no-ops if `window.posthog` is absent.
+All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (top of the file) that silently no-ops if `window.posthog` is absent.
 
 | Event | Properties | Trigger |
 |---|---|---|
@@ -85,7 +87,7 @@ All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (`line 59`
 
 ### Multi-Currency Net Worth tool — `src/components/MultiCurrencyNetWorth.tsx`
 
-All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wrapper pattern (`line 32`).
+All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wrapper pattern.
 
 | Event | Properties | Trigger |
 |---|---|---|
@@ -121,9 +123,9 @@ All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No even
 
 ---
 
-## Server-side explicit events — `scripts/newsletter.gs`
+## Server-side explicit events — `scripts/newsletter.gs` and `scripts/waitlist.gs`
 
-Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_`, line 1454). The `distinct_id` is `SHA-256(lowercase(trim(email)))`, hex-encoded — identical to the browser's `posthog.identify(hash)` call, so PostHog stitches client + server events into a single user timeline.
+Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_` in each script). The `distinct_id` is `SHA-256(lowercase(trim(email)))`, hex-encoded — identical to the browser's `posthog.identify(hash)` call, so PostHog stitches client + server events into a single user timeline.
 
 ### Subscription lifecycle
 
@@ -137,6 +139,12 @@ Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_`, lin
 | `blog_pending_reminded` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 3 days gets a reminder email |
 | `blog_pending_expired` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 7 days is removed from the sheet |
 | `blog_subscriber_bounced` | hashed email | `email_domain: string`<br>`via: "mailer_daemon_scan"` | Mailer-daemon bounce scanner marks a subscriber as bounced |
+
+### Waitlist: `scripts/waitlist.gs`
+
+| Event | distinct_id | Properties | Trigger |
+|---|---|---|---|
+| `waitlist_signup` | hashed email | `source: string` — page path of the form<br>`email_domain: string` | Signup recorded in the waitlist sheet |
 
 ### Newsletter send operations
 
@@ -182,17 +190,21 @@ waitlist_submit   (client — WaitlistSection.astro)
     │
     ▼
 waitlist_sent     (client — WaitlistSection.astro)
+
+waitlist_signup   (server — waitlist.gs, hashed-email distinct_id)
 ```
 
-Single-step funnel. No `posthog.identify()` — the waitlist has no follow-up events, so the `distinct_id` remains anonymous.
+The client steps are anonymous and the server step uses a hashed email, so they do not join into one funnel: chart `waitlist_signup` as its own trend (breakdown by `source`).
 
-The key to the stitch: both the browser (`SubscribeSection.astro:413`) and the server (`newsletter.gs:1481`) compute `SHA-256(lowercase(trim(email)))` the same way. The browser calls `posthog.identify(hash)` to alias its anonymous `distinct_id`, and the server sends server-side events under that same hash as `distinct_id`.
+### How the subscription funnel stitches
+
+Both the browser (`SubscribeSection.astro`, before `blog_subscribe_submit`) and the server (`distinctIdForEmail_` in `newsletter.gs`) compute `SHA-256(lowercase(trim(email)))` the same way. The browser calls `posthog.identify(hash)` to alias its anonymous `distinct_id`, and the server sends server-side events under that same hash as `distinct_id`.
 
 ---
 
 ## Autocapture: `data-attr` elements
 
-PostHog autocapture records clicks on elements with a `data-attr` attribute. These are gated on cookie consent (`CookieConsent.astro:57` enables `autocapture` + `enable_heatmaps` only after accept).
+PostHog autocapture records clicks on elements with a `data-attr` attribute. These are gated on cookie consent (`closeConsent` in `CookieConsent.astro` enables `autocapture` + `enable_heatmaps` only after accept).
 
 ### Navigation (`src/components/Header.astro`)
 
