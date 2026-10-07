@@ -1659,7 +1659,12 @@ function injectUnsubscribeUrlText_(text, url) {
   return String(text).split('{{UNSUBSCRIBE_URL}}').join(url);
 }
 
+// Analytics restarted in a new PostHog project at 00:00 UTC on Oct 8, 2026;
+// nothing is sent before then (matches src/components/Analytics.astro).
+var POSTHOG_START_MS_ = Date.parse('2026-10-08T00:00:00Z');
+
 function trackPosthog_(event, distinctId, properties) {
+  if (Date.now() < POSTHOG_START_MS_) return;
   var cfg;
   try { cfg = config_(); } catch (_) { return; }
   if (!cfg.posthogKey) return;
