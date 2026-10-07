@@ -215,6 +215,29 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       <div class="prose" id="post-content">
         <slot />
       </div>
+      {/*
+        Wide tables scroll inside their own box on phones instead of making
+        the whole page scroll sideways. Runs right after the content, before
+        first paint. The box is a labelled, focusable region so keyboard users
+        can scroll it too. Styles: .prose .table-scroll in global.css.
+      */}
+      <script is:inline>
+        (function () {
+          var tables = document.querySelectorAll('#post-content table');
+          for (var i = 0; i < tables.length; i++) {
+            var t = tables[i];
+            if (t.parentElement && t.parentElement.classList.contains('table-scroll')) continue;
+            var box = document.createElement('div');
+            box.className = 'table-scroll';
+            box.setAttribute('role', 'region');
+            box.tabIndex = 0;
+            var cap = t.querySelector('caption');
+            box.setAttribute('aria-label', cap && cap.textContent.trim() ? cap.textContent.trim() + ' (table)' : 'Table');
+            t.parentNode.insertBefore(box, t);
+            box.appendChild(t);
+          }
+        })();
+      </script>
     </div>
 
     <div class="post-bottom-wrapper">
@@ -655,9 +678,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     .toc {
       display: none;
     }
+    /* Same gutter as the header's .container, so text does not touch the
+       screen edge on phones and lines up with the title at every width. */
     .prose {
       max-width: var(--max-width);
       margin: 0 auto;
+      padding: 0 var(--space-4);
     }
   }
 
@@ -679,6 +705,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     .post-bottom-content {
       max-width: var(--max-width);
       margin: 0 auto;
+      padding: 0 var(--space-4);
     }
   }
 

@@ -1306,25 +1306,28 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency }: Con
       )}
 
       {/* Screen-reader table */}
-      <table className="mcnw-srOnly">
-        <caption>Currency concentration by net position</caption>
-        <thead>
-          <tr>
-            <th scope="col">Currency</th>
-            <th scope="col">Concentration</th>
-            <th scope="col">Risk level</th>
-          </tr>
-        </thead>
-        <tbody>
-          {arcs.map((a) => (
-            <tr key={a.pos.code}>
-              <td>{getCurrencyLabel(a.pos.code)}</td>
-              <td>{pct(a.amount)}</td>
-              <td>{a.pos.riskLabel}</td>
+      {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
+      <div className="mcnw-srOnly">
+        <table>
+          <caption>Currency concentration by net position</caption>
+          <thead>
+            <tr>
+              <th scope="col">Currency</th>
+              <th scope="col">Concentration</th>
+              <th scope="col">Risk level</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {arcs.map((a) => (
+              <tr key={a.pos.code}>
+                <td>{getCurrencyLabel(a.pos.code)}</td>
+                <td>{pct(a.amount)}</td>
+                <td>{a.pos.riskLabel}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
