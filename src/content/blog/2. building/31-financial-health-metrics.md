@@ -1,7 +1,7 @@
 ---
 slug: "financial-health-metrics"
 title: "Financial Health Metrics: How to Know If You're on Track"
-description: "Net worth alone doesn't tell you whether your finances are healthy. A handful of ratios does, and they're the same ones professionals use."
+description: "Net worth alone doesn't tell you whether your finances are healthy. A handful of ratios does, and they're close to the ones planners and lenders look at."
 tldr: "Net worth is a snapshot; ratios are the diagnosis. Six metrics cover most of what matters: debt-to-asset ratio (how leveraged you are), liquid asset percentage (how flexible), emergency fund coverage (how resilient to shocks), savings rate (how fast you're building), debt-to-income ratio (how strained cash flow is), and income replacement ratio (how close you are to financial independence). Each has a rough 'healthy' zone, not a single right answer. The goal isn't to optimize every ratio; it's to catch the ones drifting into unhealthy territory early, while the fixes are still small."
 takeaways:
   - "Why ratios tell you more than net worth alone"
@@ -19,9 +19,9 @@ faq:
   - question: "Why do financial ratios beat looking at net worth alone?"
     answer: "Net worth is a snapshot; ratios are the diagnosis. A single number in isolation tells you little. A 25-year-old with 150,000 euros and 5,000 euros of liabilities is in a radically different place than a 55-year-old with the same net worth and 400,000 euros of mortgage left. Ratios set one number against another, producing a comparable, transferable signal that means roughly the same thing whether your scale is thousands or millions. 30,000 euros in savings is great if expenses are 1,500 a month and thin if they are 6,000. A handful of ratios together tells you whether your finances are healthy, where they are drifting, and what to adjust while the fix is still small."
   - question: "Which financial health metrics should I actually track?"
-    answer: "Six cover most of what matters for individuals. Debt-to-asset ratio, total liabilities divided by total assets, shows how leveraged you are. Liquid asset percentage shows how flexible you are, how much you could access within days. Emergency fund coverage shows how many months of essential expenses your cash would cover. Savings rate, income minus expenses divided by income, is the single most predictive metric of long-term outcomes. Debt-to-income ratio shows how much income is committed to debt service. Income replacement ratio, passive income divided by expenses, shows how close you are to financial independence. None is a target to optimize to a single number; each has a healthy zone."
+    answer: "Six cover most of what matters for individuals. Debt-to-asset ratio, total liabilities divided by total assets, shows how leveraged you are. Liquid asset percentage shows how flexible you are, how much you could access within days. Emergency fund coverage shows how many months of essential expenses your cash would cover. Savings rate, income minus expenses divided by income, is one of the biggest levers you control over long-term outcomes. Debt-to-income ratio shows how much income is committed to debt service. Income replacement ratio, passive income divided by expenses, shows how close you are to financial independence. None is a target to optimize to a single number; each has a healthy zone."
   - question: "What is a healthy savings rate?"
-    answer: "Savings rate is income minus expenses, divided by income, and it controls how quickly wealth builds more than any other metric. Rough zones: under 10% is minimal, with very slow accumulation; 10 to 20% is a common baseline, sufficient for retirement over a long career; 20 to 35% is strong and accelerates retirement; 35 to 50% is high and puts financial independence within a couple of decades; 50% and above is very high, with FI achievable in roughly 15 years or less. Because the metric is volatile month to month, track it as a rolling three- or six-month average rather than reacting to single months. A sustained drop is usually the earliest visible sign of lifestyle creep."
+    answer: "Savings rate is income minus expenses, divided by income, and it is one of the main drivers of how quickly wealth builds. Rough zones, which are rules of thumb rather than standards: under 10% is minimal, with very slow accumulation; 10 to 20% is a common baseline, which may be enough over a long career if public or workplace pensions do much of the work; 20 to 35% is strong and accelerates retirement; 35 to 50% is high and puts financial independence within a couple of decades; 50% and above is very high, with FI in roughly 17 years or less under the classic assumptions in the financial independence post. Because the metric is volatile month to month, track it as a rolling three- or six-month average rather than reacting to single months. A sustained drop is usually the earliest visible sign of lifestyle creep."
   - question: "How do I interpret the debt-to-asset ratio?"
     answer: "Divide total liabilities by total assets. Under 20% is very low leverage with lots of flexibility; 20 to 40% is moderate and common for homeowners with a mortgage; 40 to 60% is high but manageable with stable income and fixed rates; 60 to 80% is concerning, especially with variable rates or unstable income; 80% and above is highly stressed, where a modest asset drop can push you underwater. A young person with a 90% loan-to-value mortgage naturally starts near 0.9, which is the expected shape, not automatically bad. It falls over time as the mortgage is paid down and other assets accumulate. For young homeowners, the direction matters more than the absolute level."
   - question: "Should I aim to hit the ideal zone on every metric?"
@@ -45,7 +45,7 @@ Your net worth is €150,000. Is that good? It's impossible to say without conte
 
 Net worth is a snapshot. Ratios are the diagnosis. A handful of them, together, tell you whether your finances are healthy, where they're drifting, and what to adjust while the fix is still small.
 
-This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're zones: a healthy range, a cautionary range, a range that should trigger action.
+This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability.
 
 ## Why ratios beat single numbers
 
@@ -87,7 +87,7 @@ Liquid assets are cash, savings, money market funds, and easily sold investments
 |---|---|
 | Under 10% | Very low flexibility; a forced sale could be devastating |
 | 10-25% | Low but not uncommon for property-heavy households |
-| 25-50% | Healthy for most households |
+| 25-50% | Comfortable for many households; less needed if income is very secure |
 | 50%+ | Very flexible; typical for early accumulators or debt-averse households |
 
 A high-net-worth homeowner with 90% of net worth in property and 10% liquid is still structurally fragile. Losing the ability to access any of the 90% quickly (because a property takes months to sell) means the 10% has to cover every shock.
@@ -118,17 +118,17 @@ The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail
 
 **Formula:** (Income - expenses) ÷ income
 
-**What it measures:** The single most predictive metric for long-term outcomes, as the [FIRE post](/blog/introduction-to-financial-independence/) covered. More than any other metric, savings rate controls how quickly wealth builds.
+**What it measures:** How fast you are building, and one of the biggest levers you control, as the [FIRE post](/blog/introduction-to-financial-independence/) covered. It sets the pace of wealth building alongside returns, taxes, pensions and time, and it is hardest to move on a low income.
 
 **Rough zones:**
 
 | Savings rate | Interpretation |
 |---|---|
 | Under 10% | Minimal; below this, wealth accumulation is very slow |
-| 10-20% | Common baseline; sufficient for retirement over a long career |
+| 10-20% | Common baseline; can be enough over a long career where public or workplace pensions do much of the work, often not where they don't |
 | 20-35% | Strong; accelerates retirement and opens earlier options |
 | 35-50% | High; puts FI within reach within a couple of decades |
-| 50%+ | Very high; FI achievable in roughly 15 years or less |
+| 50%+ | Very high; under the classic assumptions, FI in roughly 17 years or less |
 
 This metric is also the most volatile month to month, so track it as a rolling 3- or 6-month average rather than reacting to single months.
 
@@ -145,7 +145,7 @@ This metric is also the most volatile month to month, so track it as a rolling 3
 | Debt-to-income | Interpretation |
 |---|---|
 | Under 20% | Comfortable; strong capacity to save, invest, or take on new obligations |
-| 20-35% | Manageable; most lenders consider this healthy |
+| 20-35% | Manageable; many lenders treat this as acceptable, though limits and definitions vary by country |
 | 35-45% | Stretched; little room for surprises |
 | 45%+ | Stressed; a lost income stream could tip into distress quickly |
 

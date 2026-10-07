@@ -2,12 +2,12 @@
 slug: "introduction-to-financial-independence"
 title: "Introduction to Financial Independence: What It Means and Why It Matters"
 description: "Financial independence isn't about retiring at 35 on a beach. It's the point where work becomes a choice instead of an obligation."
-tldr: "Financial independence means your investments generate enough to cover your expenses indefinitely. The core math is simple: FIRE number = annual expenses / safe withdrawal rate. At a 4% withdrawal rate, that's 25 times your annual spending. Four common flavors cover most goals: Lean FIRE (bare essentials), Traditional FIRE (your current lifestyle), Fat FIRE (comfortable margin), and Coast FIRE (stop adding, let compounding finish the job). The real lever is savings rate, not income: at 50% savings rate, financial independence is roughly 17 years away regardless of salary. This post is the introduction; advanced FIRE strategies, sequence risk, and drawdown are covered later in Mastery."
+tldr: "Financial independence means your investments generate enough to cover your expenses indefinitely. The core math is simple: FIRE number = annual expenses / safe withdrawal rate. At a 4% withdrawal rate, that's 25 times your annual spending. Four common flavors cover most goals: Lean FIRE (bare essentials), Traditional FIRE (your current lifestyle), Fat FIRE (comfortable margin), and Coast FIRE (stop adding, let compounding finish the job). The real lever is savings rate, not income: at a 50% savings rate, the classic table puts financial independence roughly 17 years away at any salary, before taxes, pensions and market luck. This post is the introduction; advanced FIRE strategies, sequence risk, and drawdown are covered later in Mastery."
 takeaways:
   - "How the FIRE number is built from expenses and withdrawal rate"
   - "What the 4% rule is based on and where it falls short"
   - "How Lean, Traditional, Fat and Coast FIRE differ"
-  - "Why savings rate matters more than income for reaching FI"
+  - "Why savings rate is the main lever on your time to FI"
 order: 25
 pubDate: 2026-06-12
 updatedDate: 2026-06-12
@@ -67,7 +67,7 @@ The uncomfortable-but-freeing insight is that financial independence depends on 
 1. How much you spend each year
 2. How much you've invested
 
-It has almost nothing to do with how much you earn. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next paycheck forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
+Income matters less than you might think; what counts is how much of it you keep. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next paycheck forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
 
 ## The simple math
 
@@ -149,7 +149,7 @@ Tracking your crossover point alongside net worth is one of the most motivating 
 
 ## The lever that actually matters: savings rate
 
-The most counter-intuitive insight in the FIRE literature is that your time to financial independence is determined almost entirely by your savings rate, not your income.
+The most counter-intuitive insight in the FIRE literature is that under the classic assumptions (steady returns, spending that stays the same in retirement), your time to financial independence depends mostly on your savings rate, not your income.
 
 Savings rate = (income - expenses) ÷ income.
 
@@ -203,7 +203,7 @@ We'll return to each in the Mastery level. For now, the goal is to understand wh
 
 1. **Estimate your current annual expenses.** Not your salary, not your take-home. What you actually spend. Twelve months of cash flow is the right window if you've been tracking [cash flow](/blog/cash-flow-101/) or [budgeting](/blog/budgeting/)
 2. **Multiply by 25.** That's a rough traditional FIRE number at today's spending. It's a directional figure, not a promise
-3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage, more than any other single number, decides how far you are from FI
+3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage is one of the strongest levers on how far you are from FI
 4. **Pick a flavor that matches your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. Pick the one that you can imagine sustaining for decades
 5. **Protect savings rate during raises.** The next raise is the easiest lever you have. Route at least half of it to investments before it becomes lifestyle
 6. **Keep learning before making irreversible moves.** Actual early retirement involves sequence risk, drawdown planning, and lifestyle questions that aren't covered here. Treat this post as the map, not the journey

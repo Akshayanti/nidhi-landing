@@ -2,7 +2,7 @@
 slug: "taxes-and-your-financial-plan"
 title: "Taxes and Your Financial Plan: How Taxation Affects Every Decision"
 description: "Taxes reshape every number in your financial plan: take-home pay, investment returns, retirement income. Ignoring them just makes you misread your progress."
-tldr: "Taxes hit your plan in four places: what you earn (income tax), investment income as it arrives, what you sell (capital gains), and what you withdraw in retirement. The compounding cost is easiest to underestimate: a 7% pre-tax return becomes 5.25% after a 25% tax drag, and that gap is enormous over 30+ years. Tax-advantaged accounts shelter investment growth from this drag in exchange for rules about access. Plan in after-tax terms; gross numbers are misleading."
+tldr: "Taxes hit your plan in four places: what you earn (income tax), investment income as it arrives, what you sell (capital gains), and what you withdraw in retirement. The compounding cost is easiest to underestimate: in a deliberately harsh example, a 7% pre-tax return taxed at 25% every year compounds at only 5.25%, and even a smaller real-world gap adds up over 30+ years. Tax-advantaged accounts shelter investment growth from this drag in exchange for rules about access. Plan in after-tax terms; gross numbers are misleading."
 takeaways:
   - "The four places taxes touch your financial plan"
   - "How tax drag on returns compounds over decades"
@@ -19,7 +19,7 @@ faq:
   - question: "Where do taxes affect a financial plan?"
     answer: "Taxes touch your plan in four distinct places, and most people feel only the first. Income tax on what you earn is the reason take-home pay differs from gross salary, usually progressive. Taxes on investment income hit dividends, interest, and rental income the year you receive them, even if you reinvest. Capital gains tax applies to the profit when you sell an investment for more than you paid, often at a different rate than regular income. Taxes on retirement withdrawals depend on account type: money coming out may be fully taxed, partially taxed, or tax-free. Each cuts into a different number, and seeing them as one picture separates a realistic plan from an optimistic one."
   - question: "How much do taxes reduce investment returns over time?"
-    answer: "More than most people expect, because the drag compounds. A hypothetical 7% return taxed at 25% as it accrues compounds at only 5.25%. That sounds small but is not over decades. On 10,000 euros, the gap between 7% untaxed and 5.25% with tax drag is about 3,000 euros after 10 years, nearly 11,000 after 20 years, and over 72,000 after 40 years. Pure tax drag can cut the final amount roughly in half over 40 years, with the same starting amount, horizon, and market returns. This is why tax treatment is not a minor detail: it sits inside the compounding engine of the entire plan."
+    answer: "More than most people expect, because the drag compounds. A hypothetical 7% return taxed at 25% as it accrues compounds at only 5.25%. That sounds small but is not over decades. On 10,000 euros, the gap between 7% untaxed and 5.25% with tax drag is about 3,000 euros after 10 years, nearly 11,000 after 20 years, and over 72,000 after 40 years. With the same starting amount, horizon, and market returns, tax drag in this harsh example cuts the final amount roughly in half over 40 years; real-world drag is often smaller but still compounds. This is why tax treatment is not a minor detail: it sits inside the compounding engine of the entire plan."
   - question: "What is the difference between gross and net, and which should I plan in?"
     answer: "Gross is money before tax; net is money after tax. Plan in net terms, because that is the money you actually control. Your expenses are paid in already-taxed euros, so a 30,000 euro lifestyle is funded with net money. Your savings rate is best calculated on after-tax income, since what you can save is what is left after income tax. Long-term retirement targets must generate enough after-tax income to cover after-tax expenses. The common mental shortcut, gross salary times years compounded somehow, is almost always too optimistic because it ignores the layers of tax between gross income and actual lifestyle funding."
   - question: "How do tax-advantaged accounts reduce the tax drag?"
@@ -42,7 +42,7 @@ referentialReading:
 
 You earn €60,000 gross. You see €42,000 hit your account. You invest €10,000 and watch it grow to €20,000. You sell it, and only €18,500 ends up back in your account. You spend €40,000 in retirement, but have to withdraw €50,000 to do it.
 
-Every one of those gaps is tax. It's the single most predictable drag on financial outcomes, and also the one most financial content skips, because the specifics vary so much between countries that anything concrete runs the risk of being wrong for most readers.
+Every one of those gaps is tax. It's one of the most predictable drags on financial outcomes, and also the one most financial content skips, because the specifics vary so much between countries that anything concrete runs the risk of being wrong for most readers.
 
 This post stays deliberately generic. No specific rates, no jurisdiction-specific products, no "do X because of Y rule." The goal is to make sure you understand the structural role taxes play in your plan, so when you look up the actual rules in your country, you know what to look for.
 
@@ -87,7 +87,7 @@ Imagine an investment earning 7% per year (a hypothetical figure used for illust
 
 *Illustrative example only, not a forecast. The 7% figure is hypothetical; actual investment returns vary, can be negative, and past performance is not a reliable indicator of future results. The 25% drag is a simplification: real-world tax drag depends on the mix of dividends, interest, and realised gains, and is often lower than a flat annual model suggests. Inflation is ignored.*
 
-The same initial investment, the same time horizon, the same underlying market returns. Pure tax drag cuts the final amount roughly in half over 40 years.
+The same initial investment, the same time horizon, the same underlying market returns. In this deliberately harsh example, tax drag cuts the final amount roughly in half over 40 years; real-world drag is often smaller, but it still compounds.
 
 This is why tax treatment of investments isn't a minor detail. It sits in the compounding engine of the entire plan.
 
@@ -189,6 +189,6 @@ The general rule: no blog post can replace jurisdiction-specific advice for larg
 6. **Look up your country's rules on long-term vs. short-term gains.** The holding period that flips tax treatment (where one exists) can materially change how you manage the portfolio
 7. **Get local advice for anything large.** Home purchase, large inheritance, relocation, starting a business, significant equity compensation. The cost of professional advice on these is usually small compared to the tax consequences of getting them wrong
 
-Tax isn't glamorous. It's also the single most consistent force shaping long-term outcomes, alongside savings rate and time. Every gross number you see in financial content hides a net number underneath; every projection that ignores tax is optimistic by a predictable amount. Planning in net terms, using tax-advantaged accounts where they fit, and understanding the structural differences between account types closes most of the gap.
+Tax isn't glamorous. It's also one of the most consistent forces shaping long-term outcomes, alongside savings rate and time. Every gross number you see in financial content hides a net number underneath; every projection that ignores tax is optimistic by a predictable amount. Planning in net terms, using tax-advantaged accounts where they fit, and understanding the structural differences between account types closes most of the gap.
 
 This post stayed deliberately abstract: patterns and principles, no jurisdiction-specific products. The next post gets concrete. Every developed economy has purpose-built accounts that put those patterns into practice (401(k), ISA, SIPP, NPS, Roth IRA, TFSA, RRSP, EPF, Superannuation, ELSS, and many more). Picking the right one and contributing to them in the right order is often the highest-leverage tax decision a new investor makes.

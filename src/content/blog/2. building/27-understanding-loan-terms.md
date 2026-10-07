@@ -259,7 +259,7 @@ The best offer is not always the one with the lowest rate. It's the one whose to
 4. **Check prepayment rules before signing.** Free prepayment is a valuable option even if you never use it
 5. **Model the worst case.** For any variable-rate loan, model the highest realistic rate and confirm you can live with the payment
 6. **Do the break-even math on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
-7. **Prepay aggressively when the rate is high.** For high-interest loans, extra principal is a guaranteed return. For low-interest loans, invest the extra money instead. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
+7. **Prepay aggressively when the rate is high.** For high-interest loans, extra principal is a guaranteed return. For low-interest loans, investing the extra money often comes out ahead over long periods, but prepaying is a guaranteed return and can suit cautious savers. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
 
 Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortisation schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
 

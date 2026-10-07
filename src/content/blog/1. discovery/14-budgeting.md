@@ -55,7 +55,7 @@ Without a budget, your surplus is whatever's left after spending. With a budget,
 
 ## Why budgeting matters
 
-In the [cash flow post](/blog/cash-flow-101/), we introduced the [savings rate](/blog/income-vs-wealth/): the percentage of income that doesn't get spent. That number determines more about your financial future than your salary does.
+In the [cash flow post](/blog/cash-flow-101/), we introduced the [savings rate](/blog/income-vs-wealth/): the percentage of income that doesn't get spent. Over time it often shapes your financial future as much as your salary does, and it is the part you can steer month to month.
 
 But a savings rate only helps if it's intentional. A 15% savings rate that happens by accident one month and disappears the next isn't a plan, it's luck. A budget turns your savings rate from a measurement into a target.
 

@@ -38,7 +38,7 @@ faq:
   - question: "Does inflation help or hurt people with debt?"
     answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favor. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
   - question: "How can I protect my savings from inflation?"
-    answer: "First, think in real terms: subtract inflation from every interest rate, return, and raise so you see the true number. Second, keep your emergency fund accessible but do not let large amounts of extra cash sit idle, because money earning less than the inflation rate is losing value by design. Third, invest surplus money for growth: over the long term, broad stock market investments have historically returned around 5 to 7 percent after inflation across major developed markets, helped by compounding. Fourth, revisit your plan periodically, since prices, your salary, and the right size of your emergency fund all change over time."
+    answer: "First, think in real terms: subtract inflation from every interest rate, return, and raise so you see the true number. Second, keep your emergency fund accessible but do not let large amounts of extra cash sit idle, because money earning less than the inflation rate is losing value by design. Third, invest surplus money for growth: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. Fourth, revisit your plan periodically, since prices, your salary, and the right size of your emergency fund all change over time."
 ---
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it. Not even close.
@@ -127,13 +127,13 @@ When you put money in a savings account earning 1%, and prices rise 2.5%, you di
 | Cash under mattress | 0% | 2.5% | **-2.5%** |
 | Savings account | 1% | 2.5% | **-1.5%** |
 | High-yield savings | 3% | 2.5% | **+0.5%** |
-| Stock market (avg) | 8% | 2.5% | **+5.5%** |
+| Stock market (long-run avg, varies widely) | 7% | 2.5% | **+4.5%** |
 
 A negative real return means you're getting poorer on paper, even as your account balance grows. This is why understanding purchasing power changes every financial decision you make.
 
 ## How inflation interacts with your finances
 
-**Savings**: Cash sitting in a low-interest account is practically guaranteed to lose value over time. If your savings rate is below the inflation rate, you're going backward in real terms.
+**Savings**: Cash sitting in a low-interest account is practically guaranteed to lose value over time. If your savings account's interest rate is below inflation, you're going backward in real terms.
 
 **[Debt](/blog/liabilities/)**: Inflation actually helps borrowers. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
 

@@ -2,7 +2,7 @@
 slug: "setting-financial-goals"
 title: "Setting Financial Goals: From Vague Wishes to Concrete Targets"
 description: "A goal without a number and a date is just a wish. The real work is translating 'someday' into something a spreadsheet can check progress against."
-tldr: "A financial goal needs three things: a specific amount, a specific date, and a path that connects today to both. 'Buy a house' becomes '€45,000 deposit in 5 years, which is roughly €662 per month invested at 5% return.' Break goals into short-term (under 3 years, mostly cash), medium-term (3-7 years, mixed), and long-term (7+ years, mostly investments). When goals compete, priority comes from interest rates, timelines, and non-financial weight, not from whichever goal feels loudest. The real cost of delaying a long-term goal is not linear: starting five years later can halve the final amount, because compounding does most of the work in the last decade."
+tldr: "A financial goal needs three things: a specific amount, a specific date, and a path that connects today to both. 'Buy a house' becomes '€45,000 deposit in 5 years, which is roughly €662 per month at an assumed 5% return, or more if you keep it mostly in cash, as a 5-year goal often should.' Break goals into short-term (under 3 years, mostly cash), medium-term (3-7 years, mixed), and long-term (7+ years, mostly investments). When goals compete, priority comes from interest rates, timelines, and non-financial weight, not from whichever goal feels loudest. The real cost of delaying a long-term goal is not linear: in the post's 7% example, starting ten years later roughly halves what the same monthly amount builds, because compounding does much of its work late."
 takeaways:
   - "Why a goal needs an amount, a date, a path and a place"
   - "How time horizon decides where a goal's money belongs"
@@ -19,13 +19,13 @@ faq:
   - question: "What turns a financial wish into a real goal?"
     answer: "A number and a date. Buy a house is a wish; have 40,000 euros saved for a deposit by June 2031 is a goal. A usable financial goal has four components: a specific target amount in exact euros, not enough to be comfortable; a specific date, a month and year, not in a few years; a path from here to there, meaning how much must move from income to savings each month at an assumed rate of return; and a place it will live, the right container for the timeline. Miss any one and the goal degrades: a target without a date can never be on track or behind, and a date without a target can never be enough."
   - question: "How do I convert a goal into a monthly contribution?"
-    answer: "Translate the wish into a target amount and a date, then work out the monthly contribution at a realistic rate of return. For a 45,000 euro house deposit in five years at an assumed 5% annual return, you need roughly 662 euros a month. Stretch it to seven years and the figure drops to about 449 euros; ten years, about 290 euros; compress it to three years and it jumps to roughly 1,160 euros. This is the value of the translation: it replaces comforting vagueness with a price tag. Someone with 300 euros of monthly capacity now knows the five-year version is not feasible at their current pace, which is useful information, not failure."
+    answer: "Translate the wish into a target amount and a date, then work out the monthly contribution at a realistic rate of return. For a 45,000 euro house deposit in five years at an assumed 5% annual return, you need roughly 662 euros a month, and more if the money sits mostly in cash. Stretch it to seven years and the figure drops to about 449 euros; ten years, about 290 euros; compress it to three years and it jumps to roughly 1,160 euros. This is the value of the translation: it replaces comforting vagueness with a price tag. Someone with 300 euros of monthly capacity now knows the five-year version is not feasible at their current pace, which is useful information, not failure."
   - question: "What are the three time-horizon buckets for goals?"
     answer: "Short-term, zero to three years: the money must be there on a specific date, so market swings are unacceptable. Keep it in cash or savings-equivalent vehicles; returns are low, which is the price of certainty. Examples include a wedding or next year's holiday. Medium-term, three to seven years: long enough that pure cash loses ground to inflation, short enough that a market drop could hurt, so a blend of cash and conservative investments works, biased toward cash as the date nears. Long-term, seven-plus years: volatility averages out in historical data and inflation is the bigger enemy, so diversified, stock-heavy investments belong here. Examples include retirement and a child's university."
   - question: "Why is delaying a long-term goal so expensive?"
     answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
-    answer: "Priority comes from math and timelines, not from whichever goal feels loudest. A reasonable framework: a starter emergency fund of one month of expenses first, non-negotiable. Then high-interest debt, since anything above 5 to 6% tends to dominate any realistic investment return. Then a full emergency fund of three to six months. Then any employer retirement match, which is free money. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+    answer: "Priority comes from math and timelines, not from whichever goal feels loudest. A reasonable framework: a starter emergency fund of one month of expenses first, as the default first step. Then high-interest debt: above roughly 8 to 10% almost always beats realistic investment returns, while 4 to 8% depends on tax, inflation and how much certainty you want. Then a full emergency fund of three to six months. Then any employer retirement match, which is free money; many people take it as soon as the starter fund exists. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
@@ -69,7 +69,7 @@ Example: "I want to buy a house someday."
 - When? → Let's say 5 years
 - So the goal: save/invest to have €45,000 in 5 years
 
-Now the path. If you invest in a diversified portfolio assuming a modest 5% annual return, the monthly contribution required is approximately:
+Now the path. If you assume a 5% annual return, which is optimistic for the cash-heavy mix a 5-year goal usually calls for, the monthly contribution required is approximately:
 
 | Years to goal | Target amount | Monthly contribution (at 5%) |
 |---|---|---|
@@ -104,7 +104,7 @@ Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), chi
 | Medium-term (3-7y) | Mix of savings + conservative investments | Some | Moderate |
 | Long-term (7+y) | Diversified investments | Higher | Higher |
 
-Mismatching bucket and container is the single most common goal-setting error. Putting long-term money in a savings account guarantees inflation erosion. Putting short-term money in the stock market gambles the timeline.
+Mismatching bucket and container is one of the most common goal-setting errors. Putting long-term money in a savings account guarantees inflation erosion. Putting short-term money in the stock market gambles the timeline.
 
 ## The cost of delaying
 
@@ -158,10 +158,10 @@ Almost no one has one goal. They have a house deposit, a retirement target, an e
 
 A reasonable priority framework:
 
-1. **[Starter emergency fund](/blog/emergency-fund/) first.** One month of expenses, non-negotiable, before anything else
-2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** Anything above 5-6% tends to dominate any investment return you could realistically earn
+1. **[Starter emergency fund](/blog/emergency-fund/) first.** One month of expenses, as the default first step
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** Debt above roughly 8-10% almost always beats realistic investment returns; between about 4% and 8% it depends on tax, inflation and how much certainty you want
 3. **Full emergency fund.** Three to six months of expenses
-4. **Employer match on retirement (if any).** Free money. Take it
+4. **Employer match on retirement (if any).** Free money. Take it; many people do so as soon as the starter fund is in place rather than waiting for the full fund
 5. **Long-term retirement / FI contributions.** The compounding engine. Starting late is extremely expensive
 6. **Medium-term goals.** House deposit, specific life events
 7. **Short-term discretionary goals.** Travel, lifestyle, hobbies
@@ -195,7 +195,7 @@ Running this exercise on two or three goals usually tells you something uncomfor
 
 ## Writing them down (and revisiting)
 
-Goals that only live in your head drift. Written goals, even on one page, have much better survival odds because:
+Goals that only live in your head drift. Written goals, even on one page, tend to last longer because:
 
 - They resist forgetting
 - They can be compared to reality

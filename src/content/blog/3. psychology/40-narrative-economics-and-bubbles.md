@@ -2,9 +2,9 @@
 slug: "narrative-economics-and-bubbles"
 title: "Narrative Economics: How a Good Story Inflates a Bubble"
 description: "Narrative economics: every bubble runs on a plausible story, rising prices that seem to prove it, and four dangerous words. This time is different."
-tldr: "Stories move markets more than fundamentals do, an idea the economist Robert Shiller called narrative economics. Across four centuries, from tulip mania in 1637 to the South Sea bubble, the dotcom crash, the 2008 housing crisis, and various crypto cycles, financial bubbles share the same anatomy: a genuinely plausible story, rising prices that appear to confirm it, new-era thinking that says the old rules no longer apply, and the four most expensive words in finance, this time is different. Two biases pour fuel on the fire: recency bias makes us assume the recent trend will continue, and availability bias makes vivid, oft-repeated stories feel more likely than they are. Bubbles look obvious afterwards but are genuinely hard to spot while inside one. The defence is not to predict the top but to stay grounded: keep position sizes sane, diversify, and treat any story that justifies abandoning the basics as a warning sign rather than an invitation."
+tldr: "Stories can move markets alongside fundamentals, and at the extremes sometimes more, an idea the economist Robert Shiller called narrative economics. Across four centuries, from tulip mania in 1637 to the South Sea bubble, the dotcom crash, the 2008 housing crisis, and various crypto cycles, financial bubbles share the same anatomy: a genuinely plausible story, rising prices that appear to confirm it, new-era thinking that says the old rules no longer apply, and the four most expensive words in finance, this time is different. Two biases pour fuel on the fire: recency bias makes us assume the recent trend will continue, and availability bias makes vivid, oft-repeated stories feel more likely than they are. Bubbles look obvious afterwards but are genuinely hard to spot while inside one. The defence is not to predict the top but to stay grounded: keep position sizes sane, diversify, and treat any story that justifies abandoning the basics as a warning sign rather than an invitation."
 takeaways:
-  - "How stories can move markets more than fundamentals do"
+  - "How stories can move markets alongside the fundamentals"
   - "The four-part script nearly every bubble follows"
   - "How sane position sizes and diversification keep you grounded"
 order: 40
@@ -42,13 +42,13 @@ referentialReading:
 
 In 1637, in the Dutch Republic, a single tulip bulb could cost more than a skilled craftsman earned in a decade.
 
-This was not madness in the way we usually imagine madness. The people buying tulips were not fools. There was a real story: tulips were genuinely beautiful, genuinely fashionable, genuinely scarce in their rarest varieties, and prices had genuinely been rising for years. Everyone buying could point to everyone else buying as proof they were right. Then, almost overnight, the story broke, and a bulb that cost a fortune on Monday was nearly worthless by Friday.
+This was not madness in the way we usually imagine madness. The people buying tulips were not fools. There was a real story: tulips were genuinely beautiful, genuinely fashionable, genuinely scarce in their rarest varieties, and prices had genuinely been rising for years. Everyone buying could point to everyone else buying as proof they were right. Then, almost overnight, the story broke, and prices for the most prized bulbs collapsed within days. (Historians now think the mania was narrower, and its fallout milder, than the legend suggests.)
 
 Nearly four hundred years later, the surface details keep changing, the railways, the radio companies, the dotcoms, the houses, the various crypto cycles, but the script underneath stays almost identical. Learning to recognise that script is one of the most protective things an investor can do.
 
-## Stories move markets more than numbers do
+## Stories can move markets as much as numbers do
 
-The economist Robert Shiller, who won a Nobel Prize partly for this work, gave the idea a name: narrative economics. His argument is that markets are not driven purely by cold fundamentals. They are driven, often more powerfully, by stories that spread from person to person like a contagion.
+The Nobel-winning economist Robert Shiller, whose prize recognised his work on asset prices and bubbles, gave the idea a name: narrative economics. His argument is that markets are not driven purely by cold fundamentals. They are also driven, sometimes more powerfully, by stories that spread from person to person like a contagion.
 
 A story takes hold: this technology changes everything, this kind of asset only goes up, the old rules no longer apply. The story spreads. People act on it. Their buying pushes prices up. The rising prices appear to confirm the story, which helps it spread further, which pushes prices higher still. For a while, the story is self-fulfilling, and that is precisely what makes it so convincing from the inside.
 
@@ -116,7 +116,7 @@ So the goal is not to become someone who calls the top, because almost nobody re
 ## What you can do
 
 - **Learn the four-part script.** Plausible story, rising prices, new-era thinking, "this time is different." Once you can name the parts, you can spot the conditions even when you cannot call the timing.
-- **Watch for the warning phrase.** Any time you hear, or catch yourself thinking, "this time is different," slow down. It is the single most reliable signal that a narrative has outrun the numbers.
+- **Watch for the warning phrase.** Any time you hear, or catch yourself thinking, "this time is different," slow down. It is one of the clearest signals that a narrative may have outrun the numbers.
 - **Size for being wrong.** Decide in advance how much of any story-driven bet you could lose entirely without it mattering, and never exceed it. Survival first.
 - **Hold the truth and the price apart.** Ask the two questions separately: is the story true, and is the price sensible? The answers are often yes and no, and the second one is the one that protects your money.
 

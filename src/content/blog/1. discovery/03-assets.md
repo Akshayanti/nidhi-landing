@@ -85,11 +85,11 @@ Think of assets on a spectrum from most to least useful for building net worth:
 | Cash savings | Yes | Flat (loses to inflation) | Yes |
 | Index funds | Mostly | Up (historically) | Moderate |
 | Bonds | Mostly | Up (slowly) | Mostly |
-| Real estate | No | Up (usually) | Mostly |
+| Real estate | No | Up over long periods in many markets, not all | Mostly |
 | Cars | Yes (but at a loss) | Down | No |
 | Collectibles | Maybe | Unpredictable | No |
 
-Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real estate appreciates but is illiquid. Cars lose value the minute you drive them off the lot.
+Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real estate has often appreciated over long periods but is illiquid, and some markets have stayed flat or fallen for a decade or more. Cars lose value the minute you drive them off the lot.
 
 ## What this means for you
 

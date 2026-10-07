@@ -62,7 +62,7 @@ This is why saving feels so hard in the moment and so obvious in hindsight. The 
 
 Here is the part that gives present bias its real power.
 
-Brain-imaging studies have found something quietly unsettling: when people imagine themselves far in the future, the pattern of brain activity looks less like thinking about themselves and more like thinking about another person entirely. The you of thirty years from now registers, neurologically, a bit like a stranger.
+A well-known brain-imaging study found something quietly unsettling: when people imagined themselves far in the future, the pattern of brain activity looked less like thinking about themselves and more like thinking about another person entirely. The you of thirty years from now seemed to register, neurologically, a bit like a stranger.
 
 Sit with what that means for saving. When you put money aside for retirement, part of your brain experiences it not as providing for yourself, but as handing cash to some distant acquaintance you will never meet. Meanwhile, spending today goes to the very real, very present person who wants the thing now.
 
