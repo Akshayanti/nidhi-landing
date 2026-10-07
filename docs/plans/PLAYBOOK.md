@@ -80,7 +80,7 @@ The poll result on day 2 is the reason to come back the next day; it takes about
 
 **Chip and series signal.** Optimizing runs under the chip `Money, Compounding` with no "N of 18" counter, because the Inclusive Finances companions are interleaved. Inclusive Finances is its own theme on Instagram (decided Oct 1, 2026): it has its own chip, `Money, For You and Me`, and its own profile Highlight, with no "N of 16" counter. Each inclusive post still ships interleaved, directly after its host, and opens from the assumption the host post makes. Every series keeps a Highlight so the profile works as a library.
 
-**Beliefs on Sundays.** The six Beliefs posts (Instagram only, `docs/instagram/beliefs/`) run every other Sunday, starting with "Built from frustration" on the Sunday before the restart as the comeback post. They are the only Sunday feed posts. Before they run, they are reworked to the kit format (4:5, no banned hashtags, one ask).
+**Beliefs on Sundays.** The seven Beliefs posts (Instagram only, `docs/instagram-kit/beliefs/`, one standalone kit each, in the order of the beliefs page) run every other Sunday, starting with "Built from frustration" on the Sunday before the restart as the comeback post. They are the only Sunday feed posts. The seventh, "Not just the rules of thumb", was added Oct 7, 2026 with the matching belief on the page. Render with `node scripts/render-kit.mjs beliefs/<file>.md`.
 
 ### 2.2 Series 1 to 3 slots (record)
 
