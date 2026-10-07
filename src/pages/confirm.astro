@@ -122,7 +122,9 @@ const isDev = import.meta.env.DEV;
           );
         } catch (_) {}
         if (window.posthog) {
-          window.posthog.capture('blog_subscribe_confirm_clicked');
+          // Sent at once rather than in the next batch: the page redirects
+          // 300 ms later, well inside PostHog's batching window.
+          window.posthog.capture('blog_subscribe_confirm_clicked', {}, { send_instantly: true });
         }
         // Delay redirect to let PostHog's async flush complete — without
         // this the navigation cancels the in-flight capture request.
