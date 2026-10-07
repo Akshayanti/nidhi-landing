@@ -3,6 +3,11 @@ slug: "rebalancing-your-portfolio"
 title: "Rebalancing: How to Keep Your Portfolio on Target"
 description: "Markets move; your target allocation doesn't. Rebalancing pulls your portfolio back to its original risk profile by selling what's up and buying what's down."
 tldr: "Over time, market movements drift your portfolio away from its target allocation. A 70/30 stocks/bonds split can become 80/20 after a strong equity year, quietly raising your risk. Rebalancing pulls it back. Three methods work: calendar-based (annually), threshold-based (when any asset drifts more than 5% from target), and contribution-based (redirect new money to the under-weight asset). More frequent rebalancing does not improve returns; annual or 5%-band is where most evidence lands. Rebalance in tax-advantaged accounts first (no tax drag on trades); use new contributions to rebalance taxable accounts where possible. The common mistake is rebalancing emotionally in response to news; the other common mistake is ignoring drift for years."
+takeaways:
+  - "Why portfolios drift away from their target allocation"
+  - "That rebalancing is mainly about risk control, not extra return"
+  - "How calendar, threshold and contribution methods compare"
+  - "Why tax-advantaged accounts are the first place to rebalance"
 order: 24
 pubDate: 2026-06-10
 updatedDate: 2026-06-10

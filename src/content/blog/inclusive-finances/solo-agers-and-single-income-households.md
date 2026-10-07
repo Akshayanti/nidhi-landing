@@ -3,6 +3,11 @@ slug: "solo-agers-and-single-income-households"
 title: "One Income, No Backup: Planning for a Household of One"
 description: "Most financial rules of thumb assume a second earner and a family fallback. Which ones to adjust on one income, and how to name your own backup person."
 tldr: "Most financial rules of thumb carry a hidden second adult. A three to six month emergency fund assumes another income keeps arriving. Retirement benchmarks assume two people sharing one set of bills. Planning for illness and old age assumes a partner or a child who will step in. If you live on one income, or expect to grow old without a partner or family nearby, the math is the same and the inputs change. Four adjustments do most of the work: a larger emergency fund, because losing your only income means losing all of it; stronger income protection, because your earning power is the single engine of the plan; a retirement number built from your own expenses, because one person needs about 70% of what a couple needs to live at the same standard, not 50%; and a fixed-cost level set for one income with nobody to share the rent. The second half of the plan is not about money. It is about naming, in writing, the person who would act for you if you could not, and planning for care you may have to pay for. This is not a 'you need more money' post. It is a list of which assumptions to change and by how much."
+takeaways:
+  - "Why common rules of thumb quietly assume a second income"
+  - "Why one income calls for a larger emergency fund"
+  - "Why one person needs about 70% of a couple's budget, not 50%"
+  - "How to name, in writing, who acts for you if you cannot"
 order: 57.5
 companionOf: "income-replacement-ratio"
 pubDate: 2099-01-22

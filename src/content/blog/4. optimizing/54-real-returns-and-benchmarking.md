@@ -3,6 +3,11 @@ slug: "real-returns-and-benchmarking"
 title: "Real Returns: Is Your Portfolio Actually Performing?"
 description: "Most portfolio returns look better than they are. Four adjustments, from inflation to the right benchmark, turn a comforting number into an honest one."
 tldr: "The number you see on your account statement is nominal return: what the portfolio value has grown to, before adjusting for inflation, before subtracting contributions, and without comparison to a relevant benchmark. Real return (inflation-adjusted) is what actually accumulates purchasing power. Contribution-adjusted return (what the market did versus what you added) separates skill or luck from savings behaviour. Benchmark-relative return compares your portfolio to a matched-risk index; without this comparison, you cannot tell whether you did well or the market did. Chasing past performance systematically loses: yesterday's winners revert to average with high reliability. Underperformance is often just normal volatility around a correct allocation and a legitimate benchmark; occasionally it signals a real problem (bad fund choice, wrong asset allocation, high fees). The four honest questions are: what is my real return, how much of my growth came from me versus the market, how did I do against a matched benchmark, and is any underperformance due to volatility or something structural?"
+takeaways:
+  - "Why the growth on your statement is not your real return"
+  - "How to separate what you contributed from what the market did"
+  - "Why a fair benchmark must match your portfolio's risk and mix"
+  - "How to tell normal underperformance from a structural problem"
 order: 54
 pubDate: 2099-01-17
 updatedDate: 2026-08-19

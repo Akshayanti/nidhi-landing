@@ -3,6 +3,10 @@ slug: "herd-behavior-and-fomo"
 title: "Herd Behaviour and FOMO: Why the Crowd Pulls You Off Your Plan"
 description: "The urge to follow the crowd kept our ancestors alive. In markets, herd behaviour and FOMO build bubbles on the way up and crashes on the way down."
 tldr: "Humans are wired to follow the crowd, because for most of history doing what everyone else did was safer than going it alone. In markets this instinct turns dangerous. Buying because everyone else is buying is the mechanism that inflates bubbles; selling because everyone else is selling is the mechanism that drives crashes. FOMO, the fear of missing out, supplies the emotional fuel, especially when a friend's apparent winnings make your own steady plan feel foolish. Social proof means a rising price attracts more buyers regardless of whether anything underneath it has changed. The defence is to make following the crowd harder and your plan easier: keep your finances private rather than performative, automate so crowd noise has nothing to act on, judge decisions against your own goals rather than other people's stories, and remember that you only ever hear about the wins."
+takeaways:
+  - "Why following the crowd means buying high and selling low"
+  - "How a rising price becomes its own social proof"
+  - "Why other people's wins are a highlight reel, not the full story"
 order: 39
 pubDate: 2026-07-15
 updatedDate: 2026-07-15

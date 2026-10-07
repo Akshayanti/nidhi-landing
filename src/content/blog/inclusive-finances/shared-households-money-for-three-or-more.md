@@ -3,6 +3,11 @@ slug: "shared-households-money-for-three-or-more"
 title: "Shared Households: Money for Three or More Adults"
 description: "Flatmates, co-ops and group homes share costs without any legal unit. How to split them on purpose, and what it costs the rest when one person leaves."
 tldr: "Most financial tools picture a household as one adult or a legal pair. Plenty of real households are neither: friends sharing a rented flat, a housing co-operative, a cohousing community, a large shared house, or three or more partners building a life together. What they have in common is that several adults have their money tied together and the law treats them as separate strangers. That creates risks a couple never meets. A lease can make each person liable for the whole rent. A shared account can be emptied by any holder. Two habits handle most of it. First, choose a cost-splitting method on purpose and run the numbers, because an equal split and an income-based split can differ by a factor of five in how heavy the cost feels. Second, run an exit test: what does the household cost the people who remain if any one person leaves next month and the room stays empty? The answer sets the size of the buffer the household needs and shows whose plans matter most to everyone else. Then write down what was agreed. Two companion pieces go further, into owning a home as a group and into households with more than two partners."
+takeaways:
+  - "Why an equal split and an income split weigh so differently"
+  - "How the exit test shows what one departure costs the rest"
+  - "Why a shared lease can make each tenant liable for all the rent"
+  - "What a one-page household agreement should cover"
 order: 47.5
 companionOf: "account-consolidation-and-financial-data-hygiene"
 pubDate: 2099-01-08

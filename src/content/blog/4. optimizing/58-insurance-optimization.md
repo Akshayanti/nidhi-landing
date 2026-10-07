@@ -3,6 +3,11 @@ slug: "insurance-optimization"
 title: "Insurance Optimization: Right-Sizing Your Coverage"
 description: "Insurance sized for a €20,000 net worth is usually wrong at €500,000. How to right-size coverage and insure only the losses you cannot absorb yourself."
 tldr: "Insurance is a transfer of specific risks you cannot self-insure to a party that can, in exchange for a premium. As net worth grows, the set of risks you cannot self-insure shrinks. The framework: for each insurance type, ask what maximum plausible loss it protects against, and what portion your emergency fund plus portfolio could absorb without material harm. Term life beats whole life in nearly every case for pure protection; the invest-the-difference math dominates. Liability cover is one of the cheapest per-euro-of-protection products available: once household assets are meaningful, check that your motor, home and personal liability limits exceed your net worth, and raise them where they do not. Disability insurance should scale down as portfolio grows and the ability to self-fund income disruption rises. Life insurance can typically be dropped once dependants are financially independent. Collision coverage on old vehicles rarely pays. The one insurance not to optimise down: health insurance in jurisdictions where medical costs can be catastrophic. Overall goal: pay only for what you genuinely cannot self-insure, at the lowest total premium consistent with that coverage."
+takeaways:
+  - "Why the losses you can self-insure grow with your net worth"
+  - "Why health cover is the one insurance not to optimise down"
+  - "Why term life usually beats whole life for pure protection"
+  - "Why liability limits should keep pace with what you own"
 order: 58
 pubDate: 2099-01-23
 updatedDate: 2026-08-28

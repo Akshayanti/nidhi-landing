@@ -3,6 +3,11 @@ slug: "when-your-marriage-is-not-recognised-abroad"
 title: "When Your Marriage Isn't Recognised Where You Live"
 description: "A marriage valid at home can vanish at a border, and its financial protections with it. How to check before you move, and the documents that still hold."
 tldr: "A marriage is a legal status, and legal status is granted country by country. A couple legally married in one place can move to another where the marriage is downgraded to a partnership with fewer rights, or not recognised at all. When that happens, every financial protection that flowed from being married can disappear without a divorce and without any notice: the right to inherit, the survivor pension, the authority to make medical decisions, joint tax treatment, and the right of one spouse to live in the country on the other's visa. Same-sex couples face this most often, and it also affects couples married under religious or customary rites, and some mixed-nationality couples. The post has two parts. First, a recognition check to run before any international move: six questions about what the destination does with your marriage. Second, how to build a set of protections that does not depend on recognition, and what makes a document portable: made or re-made locally, translated, legalised, and backed by separate wills where assets sit in more than one country. It does not list which countries recognise what. That changes, and it is a legal research question. It teaches how to find out and what to do with the answer."
+takeaways:
+  - "Why a marriage can lose its legal effect when you cross a border"
+  - "How the recognition check tests a destination before you move"
+  - "Why ownership and contract protect you where status does not"
+  - "What makes a will or power of attorney work in another country"
 order: 69.5
 companionOf: "international-retirement"
 pubDate: 2099-02-01

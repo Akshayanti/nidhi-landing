@@ -3,6 +3,11 @@ slug: "building-your-own-default"
 title: "Building Your Own Default"
 description: "Every financial plan leans on assumptions nobody checked. A one-page register of yours, and a yearly review, make the plan hold when life changes."
 tldr: "This series took more than a dozen situations where standard financial advice quietly fails, and in each one did the same three things: named the default, showed who it misses, and rebuilt the protection on purpose. This closing post turns that method into something you can use on any default, including ones the series never covered. It has two parts. The first is a map: six families of assumption that almost every financial plan rests on, about your relationship, your family, your income, your country, your health, and your beliefs. The second is a practice: an assumption register, one page listing what your plan currently takes for granted, whether it is true today, and what would replace it if it stopped being true, reviewed once a year and after any major life event. The reason to do this even if every default fits you today is that defaults drift. Marriages end, partners die, jobs disappear, people move countries, health changes. Almost nobody stays the default household for a lifetime. A plan built on assumptions you have checked is stronger than one built on assumptions you inherited, for every reader, and not only for those this series was written for."
+takeaways:
+  - "Which six families of assumption most financial plans rest on"
+  - "That every fix is a designation, a structure or a workaround"
+  - "How an assumption register keeps your plan checked over time"
+  - "Why defaults drift, so this matters even if they fit you today"
 order: 75.5
 companionOf: "the-complete-picture"
 pubDate: 2099-02-06

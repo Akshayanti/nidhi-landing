@@ -3,6 +3,11 @@ slug: "income-replacement-ratio"
 title: "Income Replacement Ratio: What You Need to Retire"
 description: "The 70 to 80% income replacement rule is a starting point, not an answer. How to build your own retirement income number from your actual expenses."
 tldr: "Income replacement ratio is the percentage of pre-retirement income you need in retirement to maintain your lifestyle. The 70 to 80% rule of thumb assumes commuting costs disappear, retirement contributions end, and taxes fall as income does. It is a defensible starting point. It is a bad ending point. Real ratios span from below 50% for households that paid off the mortgage and downshifted lifestyle to above 100% for households facing rising healthcare costs, dependants still supported, or a planned retirement upgrade (travel, second home, hobby). Build your own number from actual expected expenses, not from a rule. The ratio matters because it determines the FIRE (Financial Independence, Retire Early) target: at a 4% safe withdrawal rate, you need 25x annual expenses. A 10-percentage-point difference in the replacement ratio can shift the required portfolio by hundreds of thousands. Multiple income streams (pension, portfolio, part-time work, social benefits) combine to replace the salary; the ratio is the total, not just what the portfolio must cover."
+takeaways:
+  - "Where the 70 to 80% rule of thumb comes from and where it breaks"
+  - "How to build your own ratio from expected retirement expenses"
+  - "Why a small change in the ratio moves your portfolio target a lot"
+  - "Why pensions and other income shrink what the portfolio must cover"
 order: 57
 pubDate: 2099-01-21
 updatedDate: 2026-08-26

@@ -3,6 +3,11 @@ slug: "growing-your-income"
 title: "Growing Your Income: Negotiation and Career Capital"
 description: "Income growth is the highest-leverage financial lever over a career, and most people neglect it. The mechanics of negotiation, raises, and career capital."
 tldr: "Cutting expenses has a floor (you cannot spend less than zero on food and shelter). Raising income has no ceiling. A one-time 10% raise, negotiated well, compounds across every future percentage-based raise, every retirement-contribution match, and every savings-rate calculation for the rest of a career. Salary negotiation is a learnable, small-effort skill with an outsized payoff: research market data, anchor the range, use BATNA (best alternative to a negotiated agreement) thinking, negotiate at offer stage where leverage is highest. Career capital (specialised skills, network, credentials, reputation) is an appreciating illiquid personal asset that pays out through compensation, options, and optionality. Side income diversifies earning power. Job-hopping typically produces a wage premium versus staying, but tenure has its own compounding effects (equity vesting, pension accrual, promotion pipelines). Present bias makes us undervalue income growth versus immediate expense-cutting; overconfidence makes us under-prepare for negotiations. Both are correctable."
+takeaways:
+  - "Why raising income has more headroom than cutting expenses"
+  - "How one negotiated raise compounds through every later raise"
+  - "Why offer stage is where you have the most negotiating leverage"
+  - "Why career capital is an asset that pays out through your salary"
 order: 48
 pubDate: 2099-01-09
 updatedDate: 2026-08-05

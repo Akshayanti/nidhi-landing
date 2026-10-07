@@ -3,6 +3,11 @@ slug: "gig-and-informal-economy-work"
 title: "Gig and Informal Work: Planning Without an Employer"
 description: "No payroll, no pension match, no paid leave. How freelancers, gig and cash workers rebuild the benefits an employer provides and smooth uneven income."
 tldr: "Most financial advice assumes an employer stands behind you: tax is withheld before you are paid, a pension contribution arrives without you asking, health cover and sick pay exist, and income lands on the same day each month. Freelancers, platform workers, and people paid in cash get none of that automatically. Two things follow. First, the rate you charge has to fund everything an employer would have paid for, which is why a freelance day rate needs to be roughly one and a half to two times the salaried equivalent just to break even. Second, uneven income is a variance problem, not a discipline problem, and it has a mechanical fix: let all income land in one holding account, move a fixed share aside for tax the day it arrives, and pay yourself the same modest 'salary' every month from what is left. A buffer of a few weeks absorbs the swings. This post walks through the employer bundle item by item, a worked example of the salary method across twelve uneven months, and what changes when income is informal and leaves no paper trail."
+takeaways:
+  - "Why a freelance rate must fund what an employer used to pay for"
+  - "How a holding account and a fixed salary smooth uneven income"
+  - "Why variable income calls for a bigger emergency fund"
+  - "How to build an income record when you are paid in cash"
 order: 48.5
 companionOf: "growing-your-income"
 pubDate: 2099-01-10

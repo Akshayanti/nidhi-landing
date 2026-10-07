@@ -3,6 +3,11 @@ slug: "managing-money-across-currencies"
 title: "Managing Money Across Currencies: When Your Finances Cross Borders"
 description: "If you earn in one currency and live or plan in another, exchange rates quietly move your net worth even when nothing else changes."
 tldr: "Multi-currency life is the normal shape of expat and diaspora finances, not an edge case. Your net worth fluctuates with exchange rates even when your assets don't change in value. The three currencies that matter most are the one you earn in, the one you spend in, and the one you plan to retire in, and they are often different. Currency concentration is the most common hidden under-diversification: most people hold everything in their home currency without noticing. You don't need to trade forex; you need to match your money to the currencies of your actual obligations, avoid concentration that doesn't match your life, and understand that exchange-rate swings are noise over long horizons but can be real over short ones."
+takeaways:
+  - "Why your net worth moves with exchange rates"
+  - "How income, expense and planning currencies fit together"
+  - "Why currency concentration is a hidden under-diversification"
+  - "Why matching assets to obligations beats trading currencies"
 order: 29
 pubDate: 2026-06-22
 updatedDate: 2026-06-22

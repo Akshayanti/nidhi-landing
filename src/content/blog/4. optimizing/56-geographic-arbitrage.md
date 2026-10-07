@@ -3,6 +3,11 @@ slug: "geographic-arbitrage"
 title: "Geographic Arbitrage: How Location Shapes Your Plan"
 description: "Geographic arbitrage: earn where salaries are high, live where costs are low. The math, the visa mechanics, and the parts nobody puts in the spreadsheet."
 tldr: "Geographic arbitrage is the deliberate mismatch between where income is earned and where expenses are incurred. Remote work, retirement relocation, and cross-border employment all enable it. The core math: same nominal income, different expense base equals dramatically different savings rate and FIRE timeline. A household saving 25% of income at €4,000 monthly expenses saves €48k per year; the same household with €2,000 monthly expenses (same income, cheaper location) saves €72k per year, reaching FI (financial independence) in roughly half the time. Practical considerations that shape the actual outcome: visa and tax residency (rules vary enormously; getting this wrong can be expensive), currency risk (income in one currency, expenses in another), healthcare access (often the largest variable across countries), social network and family ties (the biggest non-financial cost), quality-of-life factors that are hard to price in advance. Cross-continent examples matter here: the eurozone default alone does not carry the freight, because geographic arbitrage is inherently about jurisdictional differences."
+takeaways:
+  - "Why a lower cost base raises savings and lowers your FI target"
+  - "Why visa and tax residency rules can make or break the plan"
+  - "What healthcare, family and language cost beyond the spreadsheet"
+  - "How currency moves change your income when you live abroad"
 order: 56
 pubDate: 2099-01-19
 updatedDate: 2026-08-24
@@ -25,6 +30,7 @@ relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
   cta: "See your net worth in the currency you would live in"
+  idea: "When you earn in one currency and spend in another, exchange-rate moves change your effective income."
 reelPromise: "The math of income-versus-expense mismatch, the tax and visa mechanics that make or break the arbitrage, and the non-financial costs that dwarf the spreadsheet gains"
 relatedSlugs: ["why-your-euro-buys-more-in-some-countries", "financial-projections", "cash-flow-101", "managing-money-across-currencies", "introduction-to-financial-independence"]
 referentialReading:

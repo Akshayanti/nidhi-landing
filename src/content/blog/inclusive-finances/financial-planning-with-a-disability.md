@@ -3,6 +3,11 @@ slug: "financial-planning-with-a-disability"
 title: "Disability and Money: Planning Around the Benefit Cliff"
 description: "Earning or saving more can cost a disabled person more in lost benefits than it brings in. How to check the rules first, and the structures that protect."
 tldr: "Standard financial advice says earn more, save more, build a cushion. For a disabled person who relies on means-tested support, following that advice blindly can make them poorer. Means-tested benefits are withdrawn as income or savings rise, and in many systems the withdrawal is not gradual: cross a threshold by a small amount and a large benefit disappears. That is a benefit cliff. A raise, a gift from a grandparent, an inheritance, or a lump sum from a pension can each trigger one. The answer is not to stay poor. It is to check three things before any change (what counts as income, what counts as savings, and what happens at the limit) and to use the structures built for exactly this problem: protected savings accounts that are ignored by the means test, trusts that hold money for a disabled person without it counting as theirs, and supported decision-making arrangements that provide help without removing legal control. Families planning for a disabled child or sibling need the same knowledge, because a well-meant inheritance left the ordinary way can cancel the support it was meant to add to. Thresholds and rules are entirely local and change often. This post teaches what to check, not what the numbers are."
+takeaways:
+  - "How a benefit cliff can leave you worse off after a raise or gift"
+  - "What to check before any change: income, savings and the limit"
+  - "How protected accounts and trusts let you save and keep support"
+  - "Why family should leave money to a structure, not to the person"
 order: 66.5
 companionOf: "pension-income-and-payout-options"
 pubDate: 2099-01-31

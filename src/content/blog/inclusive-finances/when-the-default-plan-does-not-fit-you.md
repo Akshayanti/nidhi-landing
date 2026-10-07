@@ -3,6 +3,11 @@ slug: "when-the-default-plan-does-not-fit-you"
 title: "When the Default Plan Doesn't Fit You"
 description: "Financial defaults assume a particular household. How to spot the assumption behind each one and replace it on purpose when it does not match your life."
 tldr: "Most of what happens to your money in a crisis is decided by defaults: who inherits if there is no will, who a pension pays when you die, who can speak to your bank or your doctor if you cannot, what your employer counts as family, whose credit history counts. Those defaults were designed around one household shape: two legally married adults, a stable local employer, a life lived in one country. If that is you, the defaults quietly do a reasonable job. If it is not, they quietly do the wrong thing, and you usually find out at the worst moment. This post gives you a three-question audit you can apply to any financial decision: what is this default assuming, does that assumption hold for me, and if not, what do I put in its place on purpose. It introduces three terms the rest of this series uses: the default assumption, the deliberate designation (a choice you write down so the default never applies), and the recognition gap (where the law or an institution does not recognise a relationship or a status that your household treats as central). It ends with a one-hour audit you can run this week."
+takeaways:
+  - "Why financial defaults quietly assume one kind of household"
+  - "How to use the three-question audit on any account or rule"
+  - "What deliberate designations and recognition gaps are"
+  - "That most fixes are free or cheap once you know the default exists"
 order: 45.5
 companionOf: "life-events"
 pubDate: 2099-01-05

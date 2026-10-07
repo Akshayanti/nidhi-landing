@@ -3,6 +3,11 @@ slug: "financial-projections"
 title: "Financial Projections: Your Next 10, 20, 30 Years"
 description: "A financial projection turns today's numbers into a picture of your future. Why the assumptions matter more than the model, and why one line is not enough."
 tldr: "A projection takes your current net worth, your monthly contributions, your growth-rate assumptions, and your expected inflation, and plays them forward. It is not a prediction. It is a way of making the compound consequences of today's choices visible so you can decide whether you like where you are heading. The trap is not the math. The trap is overconfidence in the assumptions. A projection at 8% real returns and a projection at 4% real returns tell very different stories about the same starting balance, and the honest answer is usually somewhere in between. Use ranges, not single lines. Use real returns, not nominal. Revisit annually. Monte Carlo simulation goes one step further: thousands of uneven return sequences instead of one smooth line, which shows the spread of outcomes and why the order of returns matters once you draw money out."
+takeaways:
+  - "Why a projection is a conditional picture, not a prediction"
+  - "Why small changes in the growth rate move the result so much"
+  - "Why to plan with a range of real returns, not one nominal line"
+  - "How a Monte Carlo simulation shows the spread and sequence risk"
 order: 43
 pubDate: 2099-01-01
 updatedDate: 2026-10-03
@@ -31,6 +36,7 @@ relatedTool:
   url: "/free/monte-carlo-simulator"
   label: "Monte Carlo simulator"
   cta: "See the spread of outcomes for your own plan"
+  idea: "One smooth line hides the spread of outcomes; many uneven return sequences show the real range."
 referentialReading:
   - title: "Compound Interest Formula"
     url: "https://www.investopedia.com/terms/c/compoundinterest.asp"

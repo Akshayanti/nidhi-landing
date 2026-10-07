@@ -3,6 +3,10 @@ slug: "cash-flow-forecasting"
 title: "Cash Flow Forecasting: Will You Have Enough?"
 description: "A net worth projection shows where your wealth is heading. A cash flow forecast shows whether the money is in the right account at the right time."
 tldr: "Net worth projections describe the size of your wealth. Cash flow forecasts describe its liquidity in time. You can have a growing net worth and still hit a shortfall month if a lumpy expense (annual insurance premium, holiday, tax bill, big medical cost) lands when your buffer is thin. A forecast is a month-by-month simulation of income minus expenses, including the lumpy items that a monthly-average view hides. Three things it makes visible that a net worth number cannot: shortfall months you can plan around, upcoming large expenses that would otherwise force you to sell investments at a bad time, and the cash runway question (if income stopped today, how long could you cover current expenses?). It is not the same tool as a projection and does not replace one; the two live side by side."
+takeaways:
+  - "How a cash flow forecast differs from a net worth projection"
+  - "Why a positive monthly average can still hide shortfall months"
+  - "What cash runway is and why it moves with your expenses"
 order: 44
 pubDate: 2099-01-03
 updatedDate: 2026-07-27

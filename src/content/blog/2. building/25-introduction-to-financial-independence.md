@@ -3,6 +3,11 @@ slug: "introduction-to-financial-independence"
 title: "Introduction to Financial Independence: What It Means and Why It Matters"
 description: "Financial independence isn't about retiring at 35 on a beach. It's the point where work becomes a choice instead of an obligation."
 tldr: "Financial independence means your investments generate enough to cover your expenses indefinitely. The core math is simple: FIRE number = annual expenses / safe withdrawal rate. At a 4% withdrawal rate, that's 25 times your annual spending. Four common flavors cover most goals: Lean FIRE (bare essentials), Traditional FIRE (your current lifestyle), Fat FIRE (comfortable margin), and Coast FIRE (stop adding, let compounding finish the job). The real lever is savings rate, not income: at 50% savings rate, financial independence is roughly 17 years away regardless of salary. This post is the introduction; advanced FIRE strategies, sequence risk, and drawdown are covered later in Mastery."
+takeaways:
+  - "How the FIRE number is built from expenses and withdrawal rate"
+  - "What the 4% rule is based on and where it falls short"
+  - "How Lean, Traditional, Fat and Coast FIRE differ"
+  - "Why savings rate matters more than income for reaching FI"
 order: 25
 pubDate: 2026-06-12
 updatedDate: 2026-06-12

@@ -3,6 +3,10 @@ slug: "multi-partner-households"
 title: "More Than Two Partners: Protecting Everyone"
 description: "Where the law recognises one spouse at most, the other partners get no automatic protection. How to decide who holds that role and cover everyone else."
 tldr: "A household of three or more partners faces everything an unmarried couple does, with one extra constraint. In most countries the law recognises at most one partner as a spouse, so the automatic protections of marriage (inheritance, survivor pensions, medical decision rights, tax treatment, a partner visa) are available to one person in the household and to nobody else. That raises two questions a couple never has to ask. Who, if anyone, holds the one legal slot, and why? And how do the others get equivalent cover? The answer to the second is the same set of documents unmarried couples use, written for more than two: wills naming every partner, beneficiary forms with percentages, healthcare proxies naming alternates in an agreed order, powers of attorney, and a written agreement among the partners. Some things cannot be extended by any document. Joint tax treatment, tax-free transfers between spouses, and immigration rights generally stay with one pair, and the plan has to work around them with insurance, with how assets are held, and with each partner keeping a status of their own. Children add a further limit, since most legal systems allow two legal parents at most."
+takeaways:
+  - "Why the law offers one spouse slot, and what that means for the rest"
+  - "How to adapt wills, forms and proxies for more than two partners"
+  - "What no document extends: joint tax, partner visas and parentage"
 order: 58.7
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-26

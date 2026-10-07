@@ -137,6 +137,43 @@ function parseFrontmatterBlock(frontmatterBlock) {
  * @returns {Promise<Array<{ meta: Record<string, unknown>, body: string }>>}
  */
 export async function loadPostsAtLevel(level) {
+  const posts = await readLevel(level);
+  const launch = await monteCarloLaunch();
+  for (const p of posts) {
+    if (!isMonteCarloUrl(p.meta.relatedTool?.url)) continue;
+    const pub = toDate(p.meta.pubDate);
+    if (!launch || !pub || pub < launch) delete p.meta.relatedTool;
+  }
+  return posts;
+}
+
+// Mirrors src/utils/monte-carlo/release.ts: the simulator launches with the
+// financial-projections post. A post that goes live before then may name it
+// as its relatedTool (the site hides the link until launch), but its reel
+// script and captions must not point at it. Posts scheduled on or after the
+// launch keep the plug, so their reels can be rendered ahead of time.
+const MONTE_CARLO_HOST_SLUG = "financial-projections";
+
+function isMonteCarloUrl(url) {
+  return typeof url === "string" && url.replace(/\/?$/, "/").endsWith("/free/monte-carlo-simulator/");
+}
+
+function toDate(value) {
+  if (!value) return null;
+  const d = new Date(String(value));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+let monteCarloLaunchDate;
+async function monteCarloLaunch() {
+  if (monteCarloLaunchDate === undefined) {
+    const host = (await readLevel("optimizing")).find((p) => p.meta.slug === MONTE_CARLO_HOST_SLUG);
+    monteCarloLaunchDate = toDate(host?.meta.pubDate);
+  }
+  return monteCarloLaunchDate;
+}
+
+async function readLevel(level) {
   const dirName = LEVEL_DIRS[level];
   if (!dirName) throw new Error(`Unknown level: ${level}`);
   const dir = join(BLOG_ROOT, dirName);

@@ -3,6 +3,11 @@ slug: "owning-a-home-with-more-than-two-people"
 title: "Owning a Home With More Than Two People"
 description: "When three or more people buy together, the title decides who ends up with the house. Ownership forms, the mortgage, and the agreement a group needs."
 tldr: "Buying a home as a group of friends or partners is increasingly common and the paperwork is built for couples. Three things decide whether it works. The first is how the title is held. Under a joint tenancy with right of survivorship, each death passes the share to the remaining owners, so in a group the last survivor ends up with the whole house and nobody's will can change that. Under ownership in stated shares, each person's share is theirs to leave. For a group, stated shares are usually the better fit. The second is the mortgage, which is a separate question from the title: lenders limit how many people can be named, everyone named is liable for the whole debt, and a person who pays without being on the title or the loan has the weakest position of all. The third is a co-ownership agreement that records what each person put in and sets a buy-out formula for the day someone wants to leave, because a departure usually means refinancing. Co-operatives, land trusts and cohousing change what you own altogether, and their founding documents answer the same questions."
+takeaways:
+  - "Why joint tenancy turns a group home into a last-survivor contest"
+  - "Why being on the title and being on the mortgage are separate"
+  - "What a co-ownership agreement records, and why buy-outs matter"
+  - "How co-ops, land trusts and cohousing change what you own"
 order: 58.6
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-25

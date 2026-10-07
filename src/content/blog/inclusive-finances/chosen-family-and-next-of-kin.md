@@ -3,6 +3,11 @@ slug: "chosen-family-and-next-of-kin"
 title: "Chosen Family: Planning When the Law Picks Your Relatives"
 description: "If your closest people are friends, the law still puts blood relatives first. How the next-of-kin order works and how to put your own people in charge."
 tldr: "When you cannot speak for yourself, and again when you die, the law consults a list. It is called next of kin, and it runs in a fixed order: spouse, then children, then parents, then siblings, then more distant blood relatives. Friends are not on it, however close and however long. For people whose real family is one they chose (common among LGBTQ+ people estranged from the family they were born into, and also true of many single, widowed, childless, or migrant adults) the list names the wrong people for every role that matters: who the hospital speaks to, who decides on treatment, who arranges the funeral, who inherits. Telling people what you want does not change the list. Only documents do. This post explains the order and why a verbal wish fails, then covers how to build a plan around chosen family: splitting the roles among several people so no single friend carries everything, naming substitutes, funding what you ask of them, the often-missed question of who controls the funeral, and how to make the plan hard for an estranged relative to overturn."
+takeaways:
+  - "Why next of kin follows blood and marriage, not closeness"
+  - "Why telling people your wishes does not give them authority"
+  - "How to split roles among friends, with a substitute for each"
+  - "Why the funeral needs its own written plan"
 order: 70.5
 companionOf: "estate-planning-basics"
 pubDate: 2099-02-02

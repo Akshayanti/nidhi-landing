@@ -3,6 +3,11 @@ slug: "getting-started-investing"
 title: "Getting Started: Investment Accounts, Automation, and Your First Steps"
 description: "You've learned what the asset classes are. This is the step between 'I should invest' and money actually flowing into a portfolio every month."
 tldr: "To start investing you need two things: the right kind of account, and a system that runs without you. Accounts come in three broad flavors: regular brokerage (flexible, taxable), tax-advantaged retirement (locked until later, but tax-efficient), and employer-sponsored schemes (often with matching). Index funds are the default starting point in most financial literature: broad, cheap, diversified. Dollar-cost averaging (investing a fixed amount on a fixed schedule) removes timing from the decision. Automation turns 'I'll start next month' into 'it already happened.' Starting small and early beats starting big and late, because compounding does the heavy lifting."
+takeaways:
+  - "How regular, retirement and employer accounts differ"
+  - "Why broad index funds are the common starting point"
+  - "How dollar-cost averaging and automation remove timing decisions"
+  - "Why starting small and early beats starting big and late"
 order: 21
 pubDate: 2026-06-03
 updatedDate: 2026-06-07

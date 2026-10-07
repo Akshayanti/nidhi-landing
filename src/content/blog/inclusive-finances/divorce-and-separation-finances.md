@@ -3,6 +3,11 @@ slug: "divorce-and-separation-finances"
 title: "Divorce and Separation: Untangling Shared Finances"
 description: "The money mechanics of a separation: inventory first, why equal values are not equal assets, splitting a pension safely, and rebuilding on one income."
 tldr: "A separation is, financially, the reverse of building a household: one set of assets, debts, and plans has to become two. The legal process differs everywhere, but the money mechanics are much the same. Start with an inventory, before any negotiation: every asset and debt, whose name it is in, when it was acquired, and what it is worth, with documents. Know which broad system applies to you, because the default split comes from it. Then avoid the three mistakes that cost the most. The first is treating equal values as equal assets: €200,000 of home equity, €200,000 in a pension, and €200,000 in cash are worth very different amounts after tax, selling costs, and waiting. The second is dividing a retirement account by withdrawing from it, which can trigger tax and penalties that a formal pension-splitting order avoids. The third is leaving old paperwork in place: a former partner still named on a pension or a policy, and joint debts a lender can still collect from either of you whatever the settlement says. After that comes the quieter work of rebuilding a plan on one income. This post is not about custody, maintenance formulas, or legal procedure."
+takeaways:
+  - "Why an inventory of assets and debts comes before negotiation"
+  - "Why equal values are not equal assets after tax, costs and timing"
+  - "How to split a pension without withdrawing it"
+  - "Why beneficiary forms and joint debts outlast a settlement"
 order: 59.5
 pubDate: 2099-01-28
 level: "inclusive-finances"

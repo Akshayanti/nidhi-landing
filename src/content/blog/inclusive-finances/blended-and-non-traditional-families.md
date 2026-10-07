@@ -3,6 +3,11 @@ slug: "blended-and-non-traditional-families"
 title: "Blended Families: When the Rules Expect Two Parents"
 description: "Stepchildren usually inherit nothing by default, and leaving it all to a spouse can cut out your own children. How blended families plan for both."
 tldr: "Financial rules about children assume a simple family: two legal parents, one household, one line of inheritance. Blended families, with stepchildren, children from earlier relationships, co-parents who are not legal parents, or care shared across two homes, break that assumption in ways that stay hidden until something goes wrong. Two problems matter most. The first is inheritance. Stepchildren generally inherit nothing unless they are named, and the most natural will in the world, 'everything to my spouse', can disinherit your own children by accident: your spouse inherits, later leaves everything to their own children, and yours receive nothing. The fixes are structures that provide for a spouse during their lifetime and for your children afterwards, plus assets that pass directly by beneficiary form. The second is running money across households: who pays for which child, who controls an account opened for a child when the adult who funded it has no legal standing, who claims a child for tax and benefits, and what fairness between children means when they arrive with different resources. None of it needs a complicated arrangement. It needs the decisions made out loud and written down."
+takeaways:
+  - "Why stepchildren usually inherit nothing unless you name them"
+  - "How 'everything to my spouse' can leave your own children out"
+  - "How a life interest, separate pots or insurance provide for both"
+  - "Why costs, accounts and claims across homes need agreeing out loud"
 order: 73.5
 companionOf: "financial-vehicles-for-children"
 pubDate: 2099-02-04

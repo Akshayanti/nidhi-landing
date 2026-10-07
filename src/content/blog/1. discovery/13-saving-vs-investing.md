@@ -3,6 +3,10 @@ slug: "saving-vs-investing"
 title: "Saving vs. Investing: When to Do Which"
 description: "Saving and investing are both ways to grow your wealth, but they serve different purposes. Getting the sequence right matters more than most people think."
 tldr: "Saving means setting money aside in low-risk, accessible accounts; think emergency funds and short-term goals. Investing means putting money into assets that can grow over time but carry risk and are less liquid (stocks, bonds, and index funds) for goals five or more years away. The right sequence is: emergency fund first, high-interest debt second, then invest. Doing them in the wrong order creates unnecessary risk."
+takeaways:
+  - "How saving and investing differ in goal, risk and time horizon"
+  - "Why keeping long-term money in savings has a hidden cost"
+  - "Why the order is emergency fund, high-interest debt, then investing"
 order: 13
 pubDate: 2026-05-15
 updatedDate: 2026-10-03

@@ -991,12 +991,15 @@ const faqSchema = {
     gap: 2px;
   }
 
+  /* Number and title stay on one row; a long title wraps beside its
+     number instead of dropping below it. */
   .start-lessons li {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 10px;
   }
+
+  .start-lessons li a { flex: 1 1 auto; min-width: 0; }
 
   .start-lessons a,
   .start-more,
@@ -1035,6 +1038,8 @@ const faqSchema = {
   .start-lessons li::before {
     content: counter(route);
     flex-shrink: 0;
+    /* Centres the number on the first line of the link (6px link padding). */
+    margin-top: 8px;
     width: 1.5em;
     height: 1.5em;
     display: inline-grid;
@@ -1240,12 +1245,12 @@ const faqSchema = {
   .grows-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: 36px;
     align-items: start;
   }
 
   @media (min-width: 960px) {
-    .grows-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; }
+    .grows-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; }
   }
 
   .grows-list {
@@ -1257,7 +1262,7 @@ const faqSchema = {
 
   .grows-list > li {
     position: relative;
-    padding: 0 0 18px 30px;
+    padding: 0 0 24px 34px;
     counter-increment: grows;
   }
 
@@ -1265,10 +1270,10 @@ const faqSchema = {
   .grows-list > li::before {
     content: '';
     position: absolute;
-    left: 5px;
-    top: 7px;
-    width: 12px;
-    height: 12px;
+    left: 6px;
+    top: 5px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     border: 2px solid var(--color-teal);
     background: var(--color-bg-white);
@@ -1278,31 +1283,54 @@ const faqSchema = {
   .grows-list > li:not(:last-child)::after {
     content: '';
     position: absolute;
-    left: 10px;
-    top: 21px;
-    bottom: -5px;
+    left: 12px;
+    top: 20px;
+    bottom: -4px;
     width: 2px;
     background: var(--color-border);
   }
+
+  .grows-list > li:last-child { padding-bottom: 0; }
 
   .grows-list > li:last-child::before { background: var(--color-teal); }
 
   .grows-list h3 {
     font-family: var(--font-heading);
-    font-size: 1.02rem;
+    font-size: 1.08rem;
     color: var(--color-text-primary);
-    margin: 0 0 2px;
+    margin: 0 0 5px;
+    line-height: 1.3;
   }
 
   .grows-list p {
     margin: 0;
     font-size: 0.93rem;
     color: var(--color-text-secondary);
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
-  .grows-links { list-style: none; margin: 4px 0 0; padding: 0; }
-  .grows-links a { font-size: 0.88rem; padding: 3px 0; }
+  .grows-links {
+    list-style: none;
+    margin: 7px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 18px;
+    row-gap: 2px;
+  }
+
+  .grows-links a { font-size: 0.9rem; padding: 4px 0; }
+
+  /* Phones: links stack for comfortable tap targets. */
+  @media (max-width: 759px) {
+    #grows .section-head { margin-bottom: 32px; }
+    .grows-grid { gap: 28px; }
+    .grows-list > li { padding-left: 30px; padding-bottom: 22px; }
+    .grows-list > li:last-child { padding-bottom: 0; }
+    .grows-list > li::before { left: 4px; }
+    .grows-list > li:not(:last-child)::after { left: 10px; }
+    .grows-links { display: grid; gap: 0; }
+  }
 
   .mc-panel {
     padding: 24px;

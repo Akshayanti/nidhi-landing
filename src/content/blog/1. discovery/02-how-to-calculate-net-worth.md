@@ -3,6 +3,10 @@ slug: "how-to-calculate-net-worth"
 title: "How to Calculate Your Net Worth in 10 Minutes"
 description: "A step-by-step guide to listing everything you own and everything you owe, with a free multi-currency calculator for assets spread across countries."
 tldr: "List all your assets (bank balances, investments, property, vehicles) at current value. List all your liabilities (mortgage, loans, credit cards) at outstanding balance. Subtract liabilities from assets. That's your net worth. Update it monthly to see the trend."
+takeaways:
+  - "How to list your assets at current value, not purchase price"
+  - "How to count debts at their outstanding balance"
+  - "Why updating your number monthly reveals the trend"
 order: 2
 pubDate: 2026-04-21
 updatedDate: 2026-06-03

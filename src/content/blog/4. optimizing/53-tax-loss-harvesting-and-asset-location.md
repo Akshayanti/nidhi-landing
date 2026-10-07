@@ -3,6 +3,11 @@ slug: "tax-loss-harvesting-and-asset-location"
 title: "Tax-Loss Harvesting and Asset Location Explained"
 description: "Tax-loss harvesting and asset location do not generate returns. They reduce the tax drag on returns, which compounds to the same thing over decades."
 tldr: "Tax-loss harvesting is realising unrealised losses in taxable accounts to offset gains or ordinary income (up to jurisdictional caps), then reinvesting in a similar but not-substantially-identical position to maintain market exposure. It does not create investment return; it defers tax, which compounds. Wash-sale rules exist in most jurisdictions to prevent gaming; the concept is universal, the specific timing rules are local. Asset location (distinct from asset allocation) is the same overall stock/bond mix, held in different accounts based on tax efficiency: place tax-inefficient assets (bonds, REITs, high-turnover funds, high-yield equity) in tax-advantaged accounts; place tax-efficient assets (broad equity index funds, buy-and-hold individual stocks) in taxable. Long-run drag reduction is typically 0.3 to 0.5% per year without changing the risk profile. Both techniques are more valuable in high-marginal-tax situations and in high-turnover portfolios. Neither should be the tail wagging the dog: correct asset allocation and reasonable fees dominate; tax optimisation is the third-order refinement that adds up over decades."
+takeaways:
+  - "Why tax-loss harvesting defers tax rather than adding return"
+  - "How wash-sale rules work and how a similar fund keeps exposure"
+  - "How asset location puts each asset in its most tax-efficient account"
+  - "Why allocation and fees matter more than either tax technique"
 order: 53
 pubDate: 2099-01-16
 updatedDate: 2026-08-17

@@ -3,6 +3,10 @@ slug: "loss-aversion-and-the-disposition-effect"
 title: "Loss Aversion: Why Losing Hurts Twice as Much"
 description: "Loss aversion: a 1,000 euro loss hurts about twice as much as a 1,000 euro gain feels good. It explains panic-selling and clinging to losing investments."
 tldr: "Losses hurt roughly twice as much as equivalent gains feel good. This is loss aversion, and it quietly drives a long list of expensive behaviours. It makes people sell in a crash to stop the pain, lock in the loss, and miss the recovery. It produces the disposition effect: investors sell winners far too early and cling to losers far too long, hoping to break even, because selling at a loss means admitting a mistake. And it makes frequent checking dangerous: the more often you look, the more individual down-days you see, and each one stings. The countermeasures are structural. Check less often, automate so you are not deciding in the heat of the moment, and judge your portfolio against its multi-year plan rather than its worst week."
+takeaways:
+  - "Why a loss hurts about twice as much as an equal gain feels good"
+  - "Why people sell winners too early and cling to losers"
+  - "How checking less and automating stop panic-selling"
 order: 34
 pubDate: 2026-07-03
 updatedDate: 2026-07-03

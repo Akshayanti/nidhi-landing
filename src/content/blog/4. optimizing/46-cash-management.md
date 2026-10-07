@@ -3,6 +3,10 @@ slug: "cash-management"
 title: "Cash Management: Where to Hold Your Cash"
 description: "Cash management: where to hold your cash, not just how much. Different vehicles fit different buckets, and the right choice moves with interest rates."
 tldr: "Cash sitting in a 0% checking account is a slow loss to inflation. A better structure has three buckets: transactional cash (one month of expenses, in a current account), a safety buffer (three to six months of expenses, in a high-yield savings or money-market fund), and opportunity or near-term goal cash (in a slightly higher-yielding but less liquid vehicle like a T-bill ladder or short-duration bond ETF). Rate environments matter: when rates rise, money-market funds and T-bills track quickly; when rates fall, longer-duration bond ETFs benefit but only after taking the interest-rate hit on the way up. Match the vehicle to the bucket, not to the highest advertised yield. Deposit insurance limits are real; if your cash exceeds the limit at one institution, split. Concept is universal; specific vehicles vary by jurisdiction."
+takeaways:
+  - "Why cash in a 0% account quietly loses value to inflation"
+  - "How to match each cash bucket to a vehicle that fits its job"
+  - "How rising and falling rates affect each cash vehicle differently"
 order: 46
 pubDate: 2099-01-06
 updatedDate: 2026-07-31

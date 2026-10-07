@@ -3,6 +3,11 @@ slug: "widowhood-and-sudden-single-income"
 title: "After a Partner Dies: What Has a Deadline and What Can Wait"
 description: "Losing a partner is grief and a financial restructuring at once. What needs doing in the first weeks, what should wait a year, and how the budget changes."
 tldr: "When a partner dies, two things happen at the same time: the worst weeks of your life, and a financial restructuring with real deadlines. The most useful thing to know in advance is that the tasks divide cleanly. A short list has deadlines and needs doing in the first weeks: registering the death, securing accounts and cash for the next few months, notifying the employer, pension providers and insurers, and claiming survivor benefits, some of which expire if not claimed in time. A much longer list has no deadline and is better left for six to twelve months: selling the home, moving, investing a life insurance payout, lending or giving money to family, changing careers. Grief impairs judgement in measurable ways, and the large decisions made early are the ones most often regretted. The second thing to know is arithmetic. Household income usually falls by more than household costs. A survivor typically needs about 70% of what the couple spent, while income can fall to half or less, and further still where the relationship was not legally recognised and no survivor pension is paid. The post ends with the scams that target the newly bereaved, and how to be unavailable to them."
+takeaways:
+  - "Which tasks after a death have deadlines and which can wait"
+  - "Why major decisions are best left for six to twelve months"
+  - "Why income often falls further than costs after a partner dies"
+  - "How to make yourself hard to reach for scams aimed at the bereaved"
 order: 74.5
 companionOf: "generational-wealth"
 pubDate: 2099-02-05
