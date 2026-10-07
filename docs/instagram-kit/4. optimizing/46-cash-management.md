@@ -18,8 +18,8 @@ withheld: The six cash account types in detail, how each reacts when rates rise 
 
 angle: Cash has three jobs, and each job belongs in a different kind of account
 number: At 2% inflation, €30,000 at 0% loses about €600 of purchasing power a year. Split by job, only the €2,500 spending bucket needs to sit at 0%, about €50 a year.
-takeaway: Give every euro of cash a job, then put it where that job is done best.
-tool: The three bucket test. Needed this month: current account. Needed for an emergency: savings or money market fund. Needed in 2 to 5 years: Treasury bills or term deposits.
+takeaway: A common structure gives cash three jobs, and each job fits a different kind of account. Which accounts exist, and how they are protected and taxed, varies by country.
+tool: The three bucket test. Needed this month: often a current account. Needed for an emergency: often savings or a money market fund. Needed in 2 to 5 years: often Treasury bills or term deposits.
 
 ## Day 1 (reel)
 
@@ -34,13 +34,13 @@ hashtags: #nidhi #nidhicompounding #cashmanagement #savingsgoals #budgetingtips
 
 ### Caption
 
-Your emergency fund is losing money, and no statement will ever show it.
+Cash at 0% loses value to inflation, and no statement shows it.
 
-Eva keeps all €30,000 of her cash in her current account, at 0%. At 2% inflation, that costs her about €600 of purchasing power a year. Split by job, only one month of costs, €2,500, needs to sit there: about €50 a year. The rest goes where its job is done best.
+Eva keeps all €30,000 of her cash in her current account, at 0%. At 2% inflation, that costs her about €600 of purchasing power a year. Split by job, only one month of costs, €2,500, needs to sit there: about €50 a year, if the rest roughly keeps pace with inflation. Savings do not always manage that, but they usually narrow the gap.
 
 Slide 5 is the one to keep: the three bucket test.
 
-→ Save this before you next move your savings
+→ Save this for your next look at your savings
 
 The blog covers six kinds of cash account and when each one fits → link in bio
 
@@ -61,14 +61,14 @@ Your cash has **three jobs**
 
 ### Slide 2 (inputs)
 
-alt: Eva, 32, Lisbon: €30,000 of cash, all in her current account at 0%; costs of about €2,500 a month; €15,000 of it for a flat deposit in about three years. Question: Where should each euro sit?
+alt: Eva, 32, Lisbon: €30,000 of cash, all in her current account at 0%; costs of about €2,500 a month; €15,000 of it for a flat deposit in about three years. Question: Where could each euro sit?
 
 who: Eva, 32
 where: Lisbon
 input: €30,000 | all in her current account, at 0%
 input: €2,500 | her costs, every month
 input: €15,000 | of it for a flat deposit in about 3 years
-question: Where should each euro sit?
+question: Where could each euro sit?
 
 ### Slide 3 (worked)
 
@@ -79,7 +79,7 @@ strip: Illustrative · €2,500 of costs a month
 calc: Spending | 1 month of costs | current account | €2,500 | ink
 calc: Safety buffer | 5 months of costs | savings or money market | €12,500 | teal
 calc: Flat deposit | due in about 3 years | Treasury bills or deposits | €15,000 | warn
-note: 3 to 6 months is a common guideline for the safety buffer. Pick your point in that range from how steady your income is.
+note: 3 to 6 months is a common guideline for the safety buffer. Where people land depends on income stability, dependants and safety nets.
 
 ### Slide 4 (bars)
 
@@ -98,7 +98,7 @@ The loss never shows up on a **statement**.
 alt: Tool card, the three bucket test: needed this month, a current account; needed for an emergency, a savings account or money market fund; needed in 2 to 5 years, Treasury bills or term deposits.
 
 band: The three bucket test
-lead: For every euro of cash
+lead: A common way to sort cash
 row: Needed this month? | Spending | ink | current account
 row: Needed in an emergency? | Buffer | teal | savings or money market fund
 row: Needed in 2 to 5 years? | Goals | warn | Treasury bills or term deposits
@@ -107,30 +107,30 @@ note: Illustrative. Account names and protections vary by country.
 
 ### Slide 6 (scenarios)
 
-alt: Why each bucket gets its own home: spending needs instant access and earning nothing is fine; the buffer can wait a day or two and should earn close to short term rates; goals are tied to a date, so small price moves matter less.
+alt: Why each bucket gets its own home: spending needs instant access and earning nothing is fine; the buffer can often wait a day or two and can earn close to short term rates; goals are tied to a date, so small price moves matter less.
 
 title: Why each bucket gets its own home
 case: Spending | instant access, earning nothing is fine
 case: Buffer | a day or two to reach, earns close to short term rates
 case: Goals | tied to a date, so small price moves matter less
-rule: Match the account to the job
+rule: Each job, a different kind of account
 
 ### Slide 7 (scenarios)
 
-alt: Three checks before you move it: protection, deposit insurance has a limit per bank; access, a one or two day delay is fine for a buffer; fewer is better, two institutions is plenty for most households.
+alt: Three checks before moving cash: protection, deposit insurance has a limit per bank; access, a one or two day delay suits many people for a buffer, though some keep part instantly available; fewer is simpler, and one or two institutions are enough for many households, with more above the deposit limit.
 
-title: Three checks before you move it
+title: Three checks before moving cash
 case: Protection | deposit insurance has a limit per bank
-case: Access | a one or two day delay is fine for a buffer
-case: Fewer is better | two institutions is plenty for most
-rule: Simple beats perfect
+case: Access | a day or two suits many; some keep part instant
+case: Fewer is simpler | one or two banks, more above the protection limit
+rule: Simple is easier to keep up
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Give every euro a job. Then put it where that job is done best. Save slide 5. On the blog: six kinds of cash account, and when each one fits.
+alt: Closing slide: Cash has three jobs. Each one fits a different kind of account. Save slide 5. On the blog: six kinds of cash account, and when each one fits.
 
-kicker: Give every euro a job.
-line: Then put it where that job is done best.
+kicker: Cash has three jobs.
+line: Each one fits a different kind of account.
 save: Save slide 5
 read: Six kinds of cash account, and when each one fits
 
@@ -138,8 +138,8 @@ read: Six kinds of cash account, and when each one fits
 
 angle: Chasing a little extra yield on your emergency fund can cost far more than it earns
 number: On Eva's €12,500 buffer, 0.2% extra yield is €25 a year. A 1 point rate rise can knock about 2% off a fund holding bonds of about two years, €250, which is ten years of the extra yield.
-takeaway: For cash you might need within a year, do not accept price swings for a sliver of extra yield.
-tool: The one year rule. Might you need it within a year? Keep it where the price does not swing. Not for 2 to 5 years? Small price swings are acceptable, especially if you can hold to a date.
+takeaway: For cash that might be needed within a year, taking on price swings for a sliver of extra yield is a trade that rarely pays.
+tool: The one year test. Might you need it within a year? Many keep it where the price does not swing. Not for 2 to 5 years? Small price swings may be acceptable, especially when holding to a date.
 
 ## Day 2 (reel)
 
@@ -158,9 +158,9 @@ hashtags: #nidhi #nidhicompounding #bondfunds #ratehikes #riskandreturn
 
 Eva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%. The extra is €25 a year. But if rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield, possibly in the month she needs the money.
 
-Slide 5 is the one to keep: the one year rule.
+Slide 5 is the one to keep: the one year test.
 
-→ Save this before you move your emergency fund
+→ Save this for your next look at your emergency fund
 
 The blog covers how each cash account reacts when rates rise or fall → link in bio
 
@@ -198,28 +198,28 @@ title: What she gains, what she risks
 strip: Illustrative · €12,500
 calc: Extra yield | 0.2% × €12,500 | each year | €25 | teal
 calc: Rates rise 1 point | bonds of about 2 years | price falls about 2% | €250 | warn
-calc: To earn it back | €250 ÷ €25 | at the extra yield | 10 years | warn
+calc: In years of extra yield | €250 ÷ €25 | the drop equals | 10 years | warn
 note: A fund holding bonds of about two years tends to move about 2% for each 1 point change in rates.
 
 ### Slide 4 (bars)
 
-alt: Bars: roughly what a 1 point rate rise does to €12,500, by what it is held in. Money market fund, little price movement. A fund holding bonds of about 2 years, about €250. A fund holding bonds of about 5 years, about €600. Illustrative.
+alt: Bars: roughly what a 1 point rate rise does to €12,500, by what it is held in. Money market fund, little price movement. A fund holding bonds of about 2 years, about €250. A fund holding bonds of about 5 years, about €625. Illustrative.
 
 title: Longer bonds, bigger drops
 strip: €12,500 · after a 1 point rate rise
 bar: Money market fund | 5 | little movement | teal
 bar: Bonds of about 2 years | 250 | about €250 | warn
-bar: Bonds of about 5 years | 600 | about €600 | warn
+bar: Bonds of about 5 years | 625 | about €625 | warn
 note: Illustrative. Approximate price change; real funds vary.
 
 The longer the bonds, the bigger the !!drop!!.
 
 ### Slide 5 (tool)
 
-alt: Tool card, the one year rule: might you need it within a year? Keep it where the price does not swing, in a savings account or money market fund. Not for 2 to 5 years? Small price swings are acceptable, for example Treasury bills or a short bond fund.
+alt: Tool card, the one year test: might you need it within a year? Many keep it where the price does not swing, in a savings account or money market fund. Not for 2 to 5 years? Some accept small price swings, for example Treasury bills or a short bond fund.
 
-band: The one year rule
-lead: Price swings you can accept
+band: The one year test
+lead: Price swings, by when it is needed
 row: Within a year? | None | warn | savings or money market fund
 row: In 2 to 5 years? | Small | teal | Treasury bills, short bond fund
 also: Holding to a fixed date makes price swings matter less.
@@ -243,14 +243,14 @@ title: It can recover, if you can wait
 case: Given time | the fund rolls into higher paying bonds
 case: The catch | an emergency does not wait
 case: Sell in the dip | and the loss becomes real
-rule: Match the account to the date
+rule: The account follows the date
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Do not trade safety for a sliver of yield. Steady beats clever for money you might need this year. Save slide 5. Also in the full post: what each account does when rates fall, the limit on deposit protection, and how a Treasury bill ladder works.
+alt: Closing slide: For money needed soon, a sliver of yield rarely pays for price swings. Steady often beats clever. Save slide 5. Also in the full post: what each account does when rates fall, the limit on deposit protection, and how a Treasury bill ladder works.
 
-kicker: Do not trade safety for a sliver of yield.
-line: Steady beats clever for money you might need this year.
+kicker: For money needed soon, a sliver of yield rarely pays for price swings.
+line: Steady often beats clever.
 save: Save slide 5
 more: What each account does when rates fall
 more: The limit on deposit protection
@@ -289,9 +289,9 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: Where your cash sits
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the one year rule: within a year? No price swings. In 2 to 5 years? It can take small price swings.
+d2_f3_alt: Story version of the one year test: within a year? No price swings. In 2 to 5 years? It can take small price swings.
 d2_f3_time: evening, with the day 2 carousel
-d2_f3_caption: The one year rule for cash
+d2_f3_caption: The one year test for cash
 
 d2_f4_kind: extra
 d2_f4_alt: Beyond this post: deposit protection has a limit per person per bank. If your savings at one bank go above it, the part above the limit is not covered.
