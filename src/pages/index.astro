@@ -52,11 +52,13 @@ const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
 const roundedEnd = Math.round(ex.end / 100) * 100;
 // Drawn twice: a narrower drawing for phones keeps its labels readable
-// (CSS shows one of the two). The footnote is printed once, under both, so
-// the page text (and anything reading it) carries it only once.
+// (CSS shows one of the two). The description and the footnote are printed
+// once, outside both drawings, so the page text (and anything reading it,
+// crawlers included) carries each only once.
+const starterDesc = `An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`;
 const starterChart = {
   title: 'Example: net worth over ten years',
-  desc: `An example net worth of ${eur(ex.netWorth)} today, with ${eur(STARTER.monthly)} added each month at ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.added)} added and about ${eur(Math.round(ex.growth / 100) * 100)} of growth.`,
+  descId: 'hero-starter-desc',
   pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
   series: [{ name: 'Net worth', values: ex.values, color: 'var(--chart-eur)', area: true }],
   axisStart: 'today',
@@ -215,6 +217,7 @@ const faqSchema = {
             <li>
               <span class="starter-step">Look ahead</span>
               <p class="starter-text">Add {eur(STARTER.monthly)} a month and it could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
+              <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
               <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
               <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={220} {...starterChart} />
               <p class="hc-foot">{starterFootnote}</p>
