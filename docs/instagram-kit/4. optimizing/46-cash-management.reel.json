@@ -52,16 +52,16 @@
       }
     ],
     "emphasis": "buffer",
-    "disclosure": "Illustrative. 3 to 6 months is a common guideline, not a rule. Account types vary by country."
+    "disclosure": "Illustrative. 3 to 6 months is a common guideline, not a rule. Assumes savings keep pace with inflation. Account types vary by country."
   },
   "hookVariants": [
     {
       "id": "three-jobs",
       "layout": "bands-gap",
-      "narration": "If all your cash sits in one account, it is doing three jobs badly.",
+      "narration": "If all your cash sits in one account, it may be doing two of its three jobs poorly.",
       "onscreenLines": [
         "One account",
-        "Three jobs, done badly",
+        "Three jobs",
         ""
       ],
       "anchor": {
@@ -75,10 +75,10 @@
     {
       "id": "invisible-loss",
       "layout": "bands-gap",
-      "narration": "Your emergency fund is losing money, and no statement will ever show it.",
+      "narration": "Cash at zero percent loses value to inflation, and no statement shows it.",
       "onscreenLines": [
-        "Your emergency fund",
-        "is quietly losing money",
+        "Cash at 0%",
+        "quietly loses value",
         ""
       ],
       "anchor": {
@@ -86,7 +86,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "losing"
+        "loses"
       ]
     }
   ],
@@ -107,7 +107,7 @@
     {
       "id": "b2",
       "kind": "list",
-      "narration": "Job one is spending. About one month of costs, for bills and daily life. A current account is right for that.",
+      "narration": "Job one is spending. About one month of costs, for bills and daily life. A current account usually fits that.",
       "onscreenText": "Spending",
       "subtext": "€2,500, one month of costs",
       "emphasis": [],
@@ -191,8 +191,8 @@
     {
       "id": "b7",
       "kind": "story",
-      "narration": "Give every euro a job. Then put it where that job is done best.",
-      "onscreenText": "Give every euro a job",
+      "narration": "Cash has three jobs, and each one fits a different kind of account.",
+      "onscreenText": "Three jobs, three accounts",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -203,14 +203,14 @@
   ],
   "cta": {
     "approved": "save",
-    "narration": "Save this before you next move your savings.",
+    "narration": "Save this for your next look at your savings.",
     "onscreenText": "Save the three bucket test",
     "subtext": "When might I need it?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "If all your cash sits in one account, it is doing three jobs badly.\n\nEva keeps all €30,000 of her cash in her current account, at 0%. Split by job: one month of costs for spending, €2,500; a safety buffer of five months, €12,500; and €15,000 for a flat deposit in about three years. At 2% inflation, all of it at 0% costs her about €600 of purchasing power a year. Split by job, only the spending bucket sits at 0%: about €50.\n\nFor every euro of cash, ask when you might need it. This month: a current account. In an emergency: savings or a money market fund. In 2 to 5 years: Treasury bills or term deposits.\n\n→ Save this before you next move your savings\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. 3 to 6 months is a common guideline, not a rule. Account types and protections vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "If all your cash sits in one account, it is doing three jobs badly.\n\nSpending, a safety buffer, and money with a date each belong somewhere different. Illustrative, varies by country.",
+    "instagram": "If all your cash sits in one account, it may be doing two of its three jobs poorly.\n\nEva keeps all €30,000 of her cash in her current account, at 0%. Split by job: one month of costs for spending, €2,500; a safety buffer of five months, €12,500; and €15,000 for a flat deposit in about three years. At 2% inflation, all of it at 0% costs her about €600 of purchasing power a year. Split by job, only the spending bucket sits at 0%: about €50, if the rest roughly keeps pace with inflation.\n\nA common way to sort cash is by when it might be needed. This month: often a current account. In an emergency: often savings or a money market fund. In 2 to 5 years: often Treasury bills or term deposits.\n\n→ Save this for your next look at your savings\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. 3 to 6 months is a common guideline, not a rule. Account types and protections vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "If all your cash sits in one account, it may be doing two of its three jobs poorly.\n\nSpending, a safety buffer, and money with a date often fit different accounts. Illustrative, varies by country.",
     "instagramKeywords": [
       "where to keep emergency fund",
       "emergency savings",

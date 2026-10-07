@@ -155,14 +155,14 @@
     {
       "id": "b6",
       "kind": "list",
-      "narration": "So use the one year rule. Money you might need within a year stays where the price does not swing. Money for two to five years can take small swings.",
-      "onscreenText": "The one year rule",
+      "narration": "That is why many people use the one year test. Money that might be needed within a year stays where the price does not swing. Money for two to five years can take small swings.",
+      "onscreenText": "The one year test",
       "subtext": "Within a year: no price swings",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The one year rule",
+        "title": "The one year test",
         "rows": [
           {
             "label": "Need it within a year",
@@ -181,8 +181,8 @@
     {
       "id": "b7",
       "kind": "story",
-      "narration": "For money you might need this year, steady beats clever.",
-      "onscreenText": "Steady beats clever",
+      "narration": "For money that might be needed this year, steady often beats clever.",
+      "onscreenText": "Steady often beats clever",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -193,13 +193,13 @@
   ],
   "cta": {
     "approved": "save",
-    "narration": "Save this before you move your emergency fund.",
-    "onscreenText": "Save the one year rule",
+    "narration": "Save this for your next look at your emergency fund.",
+    "onscreenText": "Save the one year test",
     "subtext": "Within a year: no price swings",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nEva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%, so the extra is €25 a year. If rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield. The price can recover if you can wait. An emergency does not wait.\n\nThe one year rule: money you might need within a year stays where the price does not swing. Money for 2 to 5 years can take small swings.\n\n→ Save this before you move your emergency fund\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative yields and rate move. Bond fund prices can rise or fall. Not a recommendation of any product.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nEva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%, so the extra is €25 a year. If rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield. The price can recover if you can wait. An emergency does not wait.\n\nThe one year test, a common pattern: money that might be needed within a year stays where the price does not swing. Money for 2 to 5 years can take small swings.\n\n→ Save this for your next look at your emergency fund\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative yields and rate move. Bond fund prices can rise or fall. Not a recommendation of any product.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
     "tiktok": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nTen years of extra yield, gone in one bad month. Illustrative figures.",
     "instagramKeywords": [
       "emergency fund",
@@ -235,5 +235,6 @@
     "bondfunds",
     "ratehikes",
     "riskandreturn"
-  ]
+  ],
+  "reelPromise": "How each cash account reacts when rates rise or fall, the limit on deposit protection, and how a Treasury bill ladder works"
 }
