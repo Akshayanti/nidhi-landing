@@ -433,6 +433,10 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   .post-series {
+    /* At least 24px tall: the WCAG 2.2 minimum tap target. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     font-size: 0.8rem;
     font-family: var(--font-heading);
     font-weight: 500;
