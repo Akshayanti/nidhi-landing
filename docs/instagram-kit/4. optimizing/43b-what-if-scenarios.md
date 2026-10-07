@@ -34,7 +34,7 @@ hashtags: #nidhi #nidhicompounding #lifestyleinflation #moneyhabits #expatfinanc
 
 ### Caption
 
-The purchase you feel guilty about is probably the wrong one.
+The purchase you feel guilty about may be the small one.
 
 Eva took a €4,000 holiday and felt bad about it for months. The same year she moved to a flat costing €150 a month more and never thought about it again. Invested instead for 30 years, the holiday would be about €23,000. The rent would be about €146,000.
 
@@ -52,14 +52,14 @@ Made by the person building nidhi, a planner that shows its assumptions. No ads,
 
 ### Slide 1 (hook)
 
-alt: Two bars showing what each would become if invested instead for 30 years: one €4,000 holiday becomes €23,000, €150 more rent every month becomes €146,000. Headline: The purchase you feel guilty about is the wrong one.
+alt: Two bars showing what each would become if invested instead for 30 years: one €4,000 holiday becomes €23,000, €150 more rent every month becomes €146,000. Headline: The purchase you feel guilty about may be the small one.
 
 strip: If invested instead · 6% real growth · 30 years
 bar: One €4,000 holiday | 23000 | €23,000 | muted
 bar: €150 more rent, every month | 146000 | €146,000 | warn
-premise: You probably feel guilty about the small one.
+premise: One is loud. One repeats.
 
-The purchase you feel guilty about is the **wrong one**
+The purchase you feel guilty about may be the **small one**
 
 ### Slide 2 (inputs)
 
@@ -90,17 +90,17 @@ bar: One €4,000 holiday | 23000 | €23,000 | muted
 bar: €150 more rent, every month | 146000 | €146,000 | warn
 note: Illustrative. Future returns are not guaranteed.
 
-**Six times** as much, and nobody feels guilty about rent.
+**Six times** as much. A nicer flat may be worth it; the numbers only show the size.
 
 ### Slide 5 (tool)
 
-alt: Tool card, the repeat test: a one time cost times 6, a monthly cost times 1,000, for what it becomes over 30 years at 6% real growth if invested instead. Illustrative rule of thumb.
+alt: Tool card, the repeat test: a one time cost times 6, a monthly cost times 1,000, for what it becomes over 30 years at 6% real growth if invested instead; at 4%, about times 3 and times 700. Illustrative rule of thumb.
 
 band: The repeat test
 lead: What a cost becomes over 30 years
 row: One time | × 6 | ink | a cost you pay once
 row: Monthly | × 1,000 | warn | a cost you pay every month
-also: The same middle rate as the 30 year multiplier: 6% real growth, if invested instead.
+also: At 6% real growth, if invested instead. At 4%, about × 3 and × 700.
 note: Illustrative rule of thumb. Rounded. Not a forecast, and not a reason to skip the holiday.
 
 ### Slide 6 (worked)
@@ -124,13 +124,13 @@ bar: Start now, for 30 years | 195000 | €195,000 | teal
 bar: Start in five years, for 25 | 135000 | €135,000 | muted
 note: Illustrative. Future returns are not guaranteed.
 
-Five years of waiting is about **30%** of the result.
+Five years of waiting costs about **30%** of the result.
 
 ### Slide 8 (closer)
 
-alt: Closing slide: Look hardest at what repeats. None of this says skip the holiday. Save slide 5. On the blog: the five inputs that move a decision most.
+alt: Closing slide: What repeats can outweigh what feels big. None of this says skip the holiday. Save slide 5. On the blog: the five inputs that move a decision most.
 
-kicker: Look hardest at what repeats.
+kicker: What repeats can outweigh what feels big.
 line: None of this says skip the holiday.
 save: Save slide 5
 read: The five inputs that move a decision most
@@ -188,7 +188,7 @@ alt: Eva, 32: €4,000 pay and €3,000 costs a month, so she saves €1,000. A 
 who: Eva, 32
 where: A job offer in a cheaper city
 input: €1,000 | saved each month today
-input: 10% less | pay in the new job
+input: 10% less | take home pay
 input: 20% lower | costs in the new city
 question: Is the move worth it, and why?
 
@@ -261,7 +261,7 @@ more: Placing a one off event in a plan
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
 d1_f1_overlay: The holiday is not the expensive one.
-d1_f1_caption: Why small monthly costs matter more than big purchases
+d1_f1_caption: Why a repeating cost can outweigh one big purchase
 
 d1_f2_kind: poll
 d1_f2_alt: Plain story background with the series label, for the poll sticker asking which costs more over 30 years, a €4,000 holiday once or €150 more rent every month.
@@ -286,7 +286,7 @@ d2_f2_time: 90 minutes later
 d2_f2_label: Yesterday's poll
 d2_f2_title: Over 30 years, which costs more?
 d2_f2_operator: Type the winning answer and its share as overlay text in the empty box. The rent is about €146,000, the holiday about €23,000.
-d2_f2_caption: The answer most people get wrong about recurring costs
+d2_f2_caption: Yesterday's poll: the holiday or the rent?
 
 d2_f3_kind: tool
 d2_f3_alt: Story version of the one at a time test card: each change alone, then all together, then compare.
@@ -294,10 +294,10 @@ d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: A three step test for any big money decision
 
 d2_f4_kind: extra
-d2_f4_alt: Beyond this post: Run the bad case first. The good case tells you nothing you need to know. The bad case tells you whether you can sleep.
+d2_f4_alt: Beyond this post: Why many people run the bad case first. The good case is pleasant to see but rarely changes a decision. The bad case shows whether you can sleep.
 d2_f4_time: late evening
 d2_f4_label: Beyond this post
-d2_f4_title: Run the bad case first.
-d2_f4_body: The good case tells you nothing you need to know. The bad case tells you whether you can sleep.
+d2_f4_title: Why many run the bad case first.
+d2_f4_body: The good case is pleasant to see but rarely changes a decision. The bad case shows whether you can sleep.
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: How to stress test a big money decision

@@ -47,21 +47,6 @@
   "mood": "curious",
   "hookVariants": [
     {
-      "id": "wrong-guilt",
-      "layout": "bar-gap",
-      "narration": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.",
-      "onscreenLines": [
-        "You feel guilty about this one",
-        "This one adds up to 6x more",
-        "Same 30 years"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": []
-    },
-    {
       "id": "which-costs-more",
       "layout": "bar-gap",
       "narration": "A four thousand euro holiday, or a hundred and fifty euros more rent. Which one costs you more?",
@@ -77,9 +62,24 @@
       "emphasis": []
     },
     {
+      "id": "wrong-guilt",
+      "layout": "bar-gap",
+      "narration": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.",
+      "onscreenLines": [
+        "You feel guilty about this one",
+        "This one adds up to about 6x more",
+        "Same 30 years"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    },
+    {
       "id": "loud-and-quiet",
       "layout": "bar-gap",
-      "narration": "The purchase you feel worst about is rarely the one that costs you most.",
+      "narration": "The purchase you feel worst about is often not the one that costs you most.",
       "onscreenLines": [
         "The loud purchase",
         "The quiet one",
@@ -208,9 +208,9 @@
     {
       "id": "b8",
       "kind": "story",
-      "narration": "None of this says skip the holiday. It says look hardest at what repeats.",
+      "narration": "None of this says skip the holiday. It shows that what repeats can outweigh what feels big.",
       "onscreenText": "Keep the holiday",
-      "subtext": "Look hardest at what repeats",
+      "subtext": "What repeats can outweigh what feels big",
       "emphasis": [
         "repeats"
       ],
@@ -228,8 +228,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.\n\nA one time €4,000, invested instead for 30 years, would be about €23,000. €150 a month more rent would be about €146,000. Six times as much, and nobody feels guilty about rent.\n\nGuilt follows how loud a purchase is. The arithmetic follows how often it repeats.\n\nA quick test: multiply a one time cost by 6 and a monthly cost by 1,000.\n\n→ Save this for the next time something repeats\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative, rounded and assume 6% real growth over 30 years. Future returns are not guaranteed. This is not a reason to skip the holiday.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "You feel guilty about the four thousand euro holiday. A hundred and fifty more a month adds up to six times as much.\n\nOne time cost: times 6. Monthly cost: times 1,000. That is roughly what each becomes over 30 years. Illustrative, not a forecast.",
+    "instagram": "A €4,000 holiday, or €150 more rent a month. Which one costs more over 30 years?\n\nA one time €4,000, invested instead for 30 years, would be about €23,000. €150 a month more rent would be about €146,000. Six times as much. A nicer flat may well be worth it; the numbers only show the size.\n\nGuilt follows how loud a purchase is. The arithmetic follows how often it repeats.\n\nA quick test: multiply a one time cost by 6 and a monthly cost by 1,000.\n\n→ Save this for the next time something repeats\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nFigures are illustrative, rounded and assume 6% real growth over 30 years. Future returns are not guaranteed. This is not a reason to skip the holiday.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "A €4,000 holiday, or €150 more rent a month. Which one costs more over 30 years?\n\nOne time cost: times 6. Monthly cost: times 1,000. That is roughly what each becomes over 30 years. Illustrative, not a forecast.",
     "instagramKeywords": [
       "lifestyle creep",
       "recurring expenses",
@@ -250,7 +250,7 @@
       "gastos fijos"
     ],
     "tiktokTopics": [
-      "why small monthly costs matter more than big purchases",
+      "why a repeating cost can outweigh one big purchase",
       "how much does rent cost over 30 years",
       "what is lifestyle inflation"
     ],
@@ -274,5 +274,5 @@
   "seriesTotal": 0,
   "blogPath": "blog/what-if-scenarios",
   "availableFigures": [],
-  "reelPromise": "The five variables that move a projection most, and how to test a plan one change at a time"
+  "reelPromise": "The five inputs that move a decision most, and how to place a one off event in a plan"
 }
