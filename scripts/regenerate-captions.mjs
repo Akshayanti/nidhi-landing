@@ -5,12 +5,15 @@
  * caption-writer logic, frontmatter `relatedTool`, or `reelPromise` changed
  * and you don't want to spend ~3 minutes per reel re-rendering video.
  *
+ * File naming and the reelPromise stamp mirror render-reels.mjs, including
+ * second-angle plans (<NN-slug>-<angle>.json, e.g. the day 2 reel).
+ *
  * Usage:
- *   node scripts/regenerate-captions.mjs                       # all levels
- *   node scripts/regenerate-captions.mjs --level discovery     # one level
+ *   node scripts/regenerate-captions.mjs                       # discovery + building
+ *   node scripts/regenerate-captions.mjs --level optimizing    # one level
  *   node scripts/regenerate-captions.mjs --level discovery --slug emergency-fund
  */
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadPosts } from "./lib/parse-blog-meta.mjs";
@@ -38,30 +41,38 @@ async function main() {
 
   for (const post of filtered) {
     const slug = post.meta.slug;
+    const level = ["discovery", "optimizing", "inclusive-finances"].includes(post.meta.level) ? post.meta.level : "building";
     const order = Number.isFinite(post.meta.order) ? Number(post.meta.order) : null;
-    const filePrefix = order !== null ? `${String(order).padStart(2, "0")}-` : "";
-    const fileBase = `${filePrefix}${slug}`;
-
-    const level = post.meta.level === "discovery" ? "discovery" : "building";
-    const planPath = join(ROOT, "output", "plans", level, `${fileBase}.json`);
+    const filePrefix = order !== null && level !== "inclusive-finances" ? `${String(order).padStart(2, "0")}-` : "";
+    const base = `${filePrefix}${slug}`;
+    const plansDir = join(ROOT, "output", "plans", level);
     const captionsDir = join(ROOT, "output", "captions", level);
 
-    if (!existsSync(planPath)) {
-      console.log(`  skip (no plan): ${level}/${fileBase}`);
-      skipped++;
-      continue;
-    }
+    // The base plan plus any second-angle plans (<base>-<angle>.json).
+    const angleRe = new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-([a-z0-9]+)\\.json$`);
+    const angleFiles = existsSync(plansDir) ? (await readdir(plansDir)).filter(f => angleRe.test(f)) : [];
+    const fileBases = [base, ...angleFiles.map(f => f.slice(0, -".json".length))];
 
-    const plan = JSON.parse(await readFile(planPath, "utf-8"));
-    await writePlatformCaptions({
-      plan,
-      captionsDir,
-      fileBase,
-      relatedTool: post.meta.relatedTool,
-      reelPromise: post.meta.reelPromise,
-    });
-    console.log(`  rewrote: ${level}/${fileBase}`);
-    regenerated++;
+    for (const fileBase of fileBases) {
+      const planPath = join(plansDir, `${fileBase}.json`);
+      if (!existsSync(planPath)) {
+        console.log(`  skip (no plan): ${level}/${fileBase}`);
+        skipped++;
+        continue;
+      }
+
+      const plan = JSON.parse(await readFile(planPath, "utf-8"));
+      await writePlatformCaptions({
+        plan,
+        captionsDir,
+        fileBase,
+        relatedTool: post.meta.relatedTool,
+        // A second-angle plan can carry its own blog teaser; keep it over the post-wide one.
+        reelPromise: plan.reelPromise || post.meta.reelPromise,
+      });
+      console.log(`  rewrote: ${level}/${fileBase}`);
+      regenerated++;
+    }
   }
 
   console.log(`\nDone. ${regenerated} regenerated, ${skipped} skipped (no plan yet).`);
