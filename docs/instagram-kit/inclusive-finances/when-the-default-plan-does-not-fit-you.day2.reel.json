@@ -8,7 +8,7 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "Most of the protection a household needs is free; the common failure is not knowing the default exists",
+  "topic": "Many of the fixes are free; the common failure is not knowing the default exists",
   "topicChip": "FREE FIXES",
   "assumptions": {
     "currency": "EUR",
@@ -21,9 +21,9 @@
         "label": "Free",
         "cost": "An evening",
         "items": [
-          "Name beneficiaries",
-          "Write down who owns what",
-          "List every account"
+          "Beneficiaries named",
+          "Who owns what, written down",
+          "Every account, listed"
         ],
         "tone": "teal"
       },
@@ -57,10 +57,10 @@
     {
       "id": "free-protection",
       "layout": "bands-gap",
-      "narration": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.",
+      "narration": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.",
       "onscreenLines": [
-        "Most protection is free",
-        "Most people skip it",
+        "Many fixes are free",
+        "Many skip them",
         ""
       ],
       "anchor": {
@@ -74,10 +74,10 @@
     {
       "id": "one-evening",
       "layout": "bands-gap",
-      "narration": "One evening of paperwork does most of what a lawyer would.",
+      "narration": "One evening shows which items need a form and which need local legal help.",
       "onscreenLines": [
         "One evening",
-        "does most of it",
+        "shows what needs help",
         ""
       ],
       "anchor": {
@@ -125,7 +125,7 @@
     {
       "id": "b2",
       "kind": "list",
-      "narration": "Free, in an evening. Name beneficiaries on every pension and policy. Write down who owns what. List every account.",
+      "narration": "Free, in an evening. Beneficiaries named on pensions and policies, where allowed. Who owns what, written down. Every account, listed.",
       "onscreenText": "Free: an evening",
       "subtext": "Beneficiaries, ownership, a list",
       "emphasis": [
@@ -151,7 +151,7 @@
     {
       "id": "b4",
       "kind": "warning",
-      "narration": "And hard: gaps no document closes, like a marriage your country does not recognise. There, the tools are workarounds, like insurance and a bigger buffer.",
+      "narration": "And hard: gaps no document closes, like a marriage your country does not recognise. There, the tools are workarounds, like insurance and a bigger buffer, checked under local law.",
       "onscreenText": "Hard: workarounds",
       "subtext": "When no document closes the gap",
       "emphasis": [
@@ -165,8 +165,8 @@
     {
       "id": "b5",
       "kind": "stat",
-      "narration": "Most of the protection sits in the first band. The usual failure is not cost. It is not knowing.",
-      "onscreenText": "Most of it is free",
+      "narration": "Many of the fixes sit in the first band. The usual failure is not cost. It is not knowing.",
+      "onscreenText": "Many fixes are free",
       "subtext": "The failure is not knowing",
       "emphasis": [
         "free"
@@ -179,7 +179,7 @@
     {
       "id": "b6",
       "kind": "list",
-      "narration": "So spend one hour on five lists. Accounts that pay out. What you own jointly. Who inherits with no will. Who could act for you. What you would lose with your job.",
+      "narration": "A first pass takes about an hour, with five lists. Accounts that pay out. What you own jointly. Who inherits with no will. Who could act for you. What you would lose with your job.",
       "onscreenText": "The one hour audit",
       "subtext": "Five lists",
       "emphasis": [
@@ -222,9 +222,9 @@
     {
       "id": "b7",
       "kind": "story",
-      "narration": "You will end with a short list. Most of it will be free to fix.",
+      "narration": "You will end with a short list. Much of it will be free to fix.",
       "onscreenText": "A short list",
-      "subtext": "Mostly free to fix",
+      "subtext": "Much of it free to fix",
       "emphasis": [],
       "anchor": {
         "type": "bands",
@@ -234,14 +234,14 @@
   ],
   "cta": {
     "approved": "save",
-    "narration": "Save this, and book your hour this week.",
+    "narration": "Save this for your one hour audit.",
     "onscreenText": "Save the one hour audit",
-    "subtext": "Five lists, one evening",
+    "subtext": "Five lists, about an hour",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.\n\nFixes come in three bands. Free, in an evening: name beneficiaries on every pension and policy, write down who owns what, list every account where someone you trust can find it. Modest, worth doing properly: a will, powers of attorney, a written agreement about what you own together. Hard: gaps no document closes, handled with workarounds like insurance and a bigger buffer.\n\nThe one hour audit: every account that pays out, what you own jointly, who inherits with no will, who could act for you, and what you would lose with your job.\n\n→ Save this, and book your hour this week\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Not legal advice; rules vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Most of the protection your household needs costs nothing. People skip it because they do not know it is missing.\n\nOne hour, five lists. Not legal advice.",
+    "instagram": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.\n\nFixes come in three bands. Free, in an evening: beneficiaries named on pensions and policies where allowed, who owns what written down, every account listed where someone you trust can find it. Modest, worth doing properly: a will, powers of attorney, a written agreement about what you own together. Hard: gaps no document closes, where possible workarounds include insurance and a bigger buffer, checked under local law.\n\nThe one hour audit: every account that pays out, what you own jointly, who inherits with no will, who could act for you, and what you would lose with your job.\n\n→ Save this for your one hour audit\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Not legal advice; rules vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.\n\nOne hour, five lists. Not legal advice.",
     "instagramKeywords": [
       "life admin",
       "financial checklist",
@@ -250,7 +250,7 @@
       "make a will",
       "emergency binder",
       "estate planning checklist",
-      "financial organisation",
+      "household paperwork",
       "personal finance",
       "global expats",
       "Vorsorgevollmacht",

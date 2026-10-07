@@ -29,7 +29,7 @@ faq:
     answer: "No. Many deliberate designations cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home, keeping a list of accounts where someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
   - question: "Is this post legal advice?"
     answer: "No. The rules on inheritance, relationship recognition, tax, and decision-making authority differ from country to country and sometimes from region to region. This post teaches a way of asking the right questions. The answers for your own situation come from the rules where you live, and for anything with real money or real consequences attached, from a qualified local professional."
-reelPromise: "The three-question audit and the one-hour checklist for finding which financial defaults are quietly deciding things for you"
+reelPromise: "The three question audit and the one hour checklist for finding which financial defaults are quietly deciding things for you"
 relatedSlugs: ["life-events", "insurance-basics", "setting-financial-goals", "financial-dashboard"]
 referentialReading:
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
