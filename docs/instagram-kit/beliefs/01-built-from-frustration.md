@@ -1,7 +1,7 @@
 ---
 type: standalone
 title: "Beliefs 1: Built from frustration"
-when: "Comeback Sunday, the day before the restart. Beliefs 1 of 6, then every other Sunday."
+when: "Comeback Sunday, the day before the restart. Beliefs 1 of 7, then every other Sunday."
 blog_url: "https://nidhi.today/beliefs/"
 chip: "What we believe"
 hashtags_day1: "#expatfinance #buildinpublic #moneytools #movingabroad #nidhi"
@@ -21,9 +21,9 @@ nidhi started because I couldn't find a decent tool to plan my own money, and go
 
 Most finance tools assume a simple life: one country, one currency, one salary. Real lives end up in a spreadsheet like this one, with exchange rates typed in by hand and a total nobody fully trusts.
 
-I'm building a planner for real lives, one that shows its assumptions. It isn't out yet. The free tools are live, and the blog is free, always.
+I'm building a planner for real lives, one that shows its assumptions. It isn't out yet. The free tools are live, and the lessons are free, always.
 
-It's been quiet here for a while. From tomorrow, each blog post gets two days here, with a reel and a carousel each day, on fine tuning a plan you already have.
+It's been quiet here for a while. From tomorrow, each lesson gets two days here, with a reel and a carousel each day, on fine tuning a plan you already have.
 
 → Share this with someone whose money lives in more than one country
 
