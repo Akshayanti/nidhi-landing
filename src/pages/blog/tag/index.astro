@@ -71,7 +71,7 @@ const breadcrumbSchema = {
 const collectionPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: 'Blog topics',
+  name: 'Lesson topics',
   description,
   url: 'https://nidhi.today/blog/tag/',
   isPartOf: {
@@ -102,7 +102,7 @@ const collectionPageSchema = {
         </nav>
         <h1>Browse by topic</h1>
         <p class="tagHub-subtitle">
-          Every topic on the blog, with a post count for each. Pick one to read every post in that area.
+          Every topic on the learning path, with a lesson count for each. Pick one to read every lesson in that area.
         </p>
       </header>
 
@@ -116,7 +116,7 @@ const collectionPageSchema = {
                 <div class="tagHub-cardTop">
                   <span class="tagHub-cardName">{t.formatted}</span>
                   <span class="tagHub-cardCount">
-                    {t.count} {t.count === 1 ? 'post' : 'posts'}
+                    {t.count} {t.count === 1 ? 'lesson' : 'lessons'}
                   </span>
                 </div>
                 <p class="tagHub-cardDesc">{t.description}</p>

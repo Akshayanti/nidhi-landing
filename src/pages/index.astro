@@ -32,9 +32,10 @@ const allPosts = await getCollection('blog');
 assertHomepageSlugs(allPosts);
 
 const showMonteCarlo = await isMonteCarloReleased();
-const startingPoints = resolveStartingPoints(allPosts, now);
+const isToolLive = (href: string) => href !== MONTE_CARLO_URL || showMonteCarlo;
+const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
 const growthTopics = resolveGrowthTopics(allPosts, now);
-const pairs = lessonToolPairs(allPosts, now, (href) => href !== MONTE_CARLO_URL || showMonteCarlo);
+const pairs = lessonToolPairs(allPosts, now, isToolLive);
 const counts = levelCounts(allPosts, now);
 const order = readingOrder(allPosts, now);
 const firstLesson = order[0];
@@ -239,17 +240,36 @@ const faqSchema = {
             <p class="start-meta">
               {s.levelLabel ? <>{s.levelLabel} level &middot; {s.levelCount} lessons</> : <>Lessons from several levels, plus free tools</>}
             </p>
-            <ol class="start-lessons">
+            <p class="start-route-label" id={`start-route-${s.id}`}>Your route</p>
+            <ol class="start-lessons" aria-labelledby={`start-route-${s.id}`}>
               {s.lessons.map((l, i) => (
                 <li>
-                  {i === 0 && <span class="start-here">Start here</span>}
                   <a href={l.href} data-attr={`home-start-${s.id}-${i + 1}`}>{l.title}</a>
                 </li>
               ))}
             </ol>
+            {s.tools.length > 0 && (
+              <p class="start-tools">
+                Then try it on your numbers:{' '}
+                {s.tools.map((t, i) => (
+                  <>{i > 0 && ', '}<a href={t.href} data-attr={`home-start-${s.id}-tool-${i + 1}`}>{t.name}</a></>
+                ))}
+              </p>
+            )}
             {s.id === 'complex' && (
               <a class="start-more" href="#grows" data-attr="home-start-complex-more">How nidhi keeps up with a complicated life</a>
             )}
+            <div class="start-door">
+              <a
+                class="lp-btn lp-btn--primary"
+                href={s.lessons[0].href}
+                data-start-route={JSON.stringify(s.lessons)}
+                data-route-done={s.level ? `/blog/#level-${s.level}` : '/blog/'}
+                data-attr={`home-start-${s.id}-door`}
+              >
+                <span><span data-door-verb>Start with</span>{' '}<span data-door-title>{s.lessons[0].title}</span></span>
+              </a>
+            </div>
           </li>
         ))}
         {inclusive.count > 0 && (
@@ -462,17 +482,51 @@ const faqSchema = {
 </BaseLayout>
 
 <script>
-  // "Continue learning": if this browser has read lessons on the path (the
-  // existing nidhi-reading-progress key, which never leaves the browser),
-  // point to the next unread one instead of the first lesson.
-  import { nextLesson, type LessonLink } from '../utils/home/startingPoints.ts';
+  // Reading progress on the homepage. Both parts read the existing
+  // nidhi-reading-progress key, which never leaves the browser, and only
+  // change where links point.
+  import { nextLesson, routeNext, type LessonLink } from '../utils/home/startingPoints.ts';
 
+  function readSlugs(): string[] {
+    try {
+      const read = JSON.parse(localStorage.getItem('nidhi-reading-progress') || '[]');
+      return Array.isArray(read) ? read.map(String) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  // "Start wherever you are": each card's button leads to the first lesson
+  // on its route this browser has not read yet, from the same local key.
+  const read = readSlugs();
+  document.querySelectorAll<HTMLAnchorElement>('[data-start-route]').forEach((door) => {
+    try {
+      const route = JSON.parse(door.dataset.startRoute || '[]') as LessonLink[];
+      const { next, started } = routeNext(route, read);
+      if (!started) return;
+      const verb = door.querySelector<HTMLElement>('[data-door-verb]')!;
+      const title = door.querySelector<HTMLElement>('[data-door-title]')!;
+      if (next) {
+        door.href = next.href;
+        verb.textContent = 'Continue with';
+        title.textContent = next.title;
+      } else {
+        door.href = door.dataset.routeDone || '/blog/';
+        verb.textContent = 'Route read.';
+        title.textContent = 'Keep going on the learning path';
+      }
+    } catch {
+      /* malformed route: keep the default button */
+    }
+  });
+
+  // "Continue learning": if this browser has read lessons on the path, point
+  // to the next unread one instead of the first lesson.
   const box = document.querySelector<HTMLElement>('[data-continue]');
   if (box) {
     try {
-      const read = JSON.parse(localStorage.getItem('nidhi-reading-progress') || '[]');
       const order = JSON.parse(box.dataset.continue || '[]') as LessonLink[];
-      const next = Array.isArray(read) ? nextLesson(order, read.map(String)) : null;
+      const next = nextLesson(order, read);
       if (next) {
         const line = box.querySelector<HTMLElement>('[data-next-continue]')!;
         const link = line.querySelector('a')!;
@@ -963,22 +1017,67 @@ const faqSchema = {
   .grows-links a:hover,
   .pair-lesson a:hover { text-decoration-color: currentColor; }
 
-  .start-here {
+  .start-route-label {
+    margin: 0 0 2px;
     font-family: var(--font-heading);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-cta-fg);
-    background: var(--color-cta-bg);
-    border-radius: 4px;
-    padding: 2px 6px;
+    color: var(--color-text-secondary);
   }
 
+  /* The route reads as numbered steps, so a card is a path, not a list. */
+  .start-lessons { counter-reset: route; }
+
+  .start-lessons li { counter-increment: route; }
+
+  .start-lessons li::before {
+    content: counter(route);
+    flex-shrink: 0;
+    width: 1.5em;
+    height: 1.5em;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+  }
+
+  .start-tools {
+    margin: 10px 0 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+
+  .start-tools a {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-deep-blue) 35%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  .start-tools a:hover { text-decoration-color: currentColor; }
+
   .start-more {
-    margin-top: auto;
     padding-top: 12px;
     font-size: 0.9rem;
+  }
+
+  /* The door: one clear way in, pinned to the bottom so the buttons line
+     up across a row of cards. */
+  .start-door {
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .start-door .lp-btn {
+    max-width: 100%;
+    text-align: left;
   }
 
   /* Inclusive Finances: a route of its own, across the full width. */

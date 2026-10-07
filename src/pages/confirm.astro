@@ -7,7 +7,7 @@ const isDev = import.meta.env.DEV;
 
 <BaseLayout
   title="Confirm your subscription | nidhi"
-  description="One click to confirm your subscription to the nidhi blog."
+  description="One click to confirm your subscription to new nidhi lessons."
   robots="noindex,nofollow"
 >
   <section class="transactional">
@@ -79,7 +79,7 @@ const isDev = import.meta.env.DEV;
 
     if (!token) {
       btn.disabled = true;
-      setStatus('This link is missing its confirmation token. Try the link from your email again, or subscribe once more from the blog.', 'error');
+      setStatus('This link is missing its confirmation token. Try the link from your email again, or subscribe once more from the learning path.', 'error');
       return;
     }
     if (!endpoint) {

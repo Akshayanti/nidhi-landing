@@ -2,6 +2,8 @@
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 import { getReadingTime } from '../../utils/readingTime';
+import { LADDER_LEVELS } from '../../utils/home/startingPoints';
+import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -81,7 +83,22 @@ export async function getStaticPaths() {
     return picked;
   }
 
+  // Where each lesson sits within its level ("Discovery, lesson 8 of 16").
+  // Only the core ladder levels count: Inclusive Finances is a set of
+  // guides to read in any order, not a sequence.
+  const byLevel = new Map<string, Pub[]>();
+  for (const p of posts) {
+    if (!(LADDER_LEVELS as readonly string[]).includes(p.data.level)) continue;
+    const list = byLevel.get(p.data.level) ?? [];
+    list.push(p);
+    byLevel.set(p.data.level, list);
+  }
+
   return posts.map((post, index) => {
+    const levelPosts = byLevel.get(post.data.level);
+    const seriesPosition = levelPosts
+      ? { index: levelPosts.indexOf(post) + 1, total: levelPosts.length }
+      : null;
     const prevPost = index > 0 ? posts[index - 1] : null;
     const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
     const relatedPosts = pickRelated(post).map((p) => ({
@@ -98,13 +115,21 @@ export async function getStaticPaths() {
         nextSlug: nextPost?.data.slug ?? null,
         nextTitle: nextPost?.data.title ?? null,
         relatedPosts,
+        seriesPosition,
       },
     };
   });
 }
 
-const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts } = Astro.props;
+const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts, seriesPosition } = Astro.props;
 const { Content } = await render(post);
+
+// A lesson can name the Monte Carlo simulator before it launches; the
+// callout appears once the tool does.
+const toolUrl = post.data.relatedTool?.url.replace(/\/?$/, '/');
+const relatedTool = toolUrl === MONTE_CARLO_URL && !(await isMonteCarloReleased())
+  ? undefined
+  : post.data.relatedTool;
 
 const readingTime = getReadingTime(post.body || '');
 ---
@@ -127,7 +152,8 @@ const readingTime = getReadingTime(post.body || '');
   faq={post.data.faq}
   howTo={post.data.howTo}
   relatedPosts={relatedPosts}
-  relatedTool={post.data.relatedTool}
+  seriesPosition={seriesPosition}
+  relatedTool={relatedTool}
 >
   <Content />
 </BlogPost>

@@ -14,6 +14,7 @@ relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
   cta: "Calculate yours in any currency"
+  idea: "Assets at today's value, minus what you still owe on every debt, is your net worth."
 reelPromise: "Free multi-currency calculator + worked example for assets spread across countries"
 referentialReading:
   - title: "The Total Money Makeover"

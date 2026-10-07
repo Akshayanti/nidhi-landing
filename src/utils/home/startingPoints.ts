@@ -46,8 +46,10 @@ interface StartingPointDef {
   detail: string;
   /** The level this situation starts in; null when it draws on several. */
   level: string | null;
-  /** In the order a reader should take them. The first live one is the "start here". */
+  /** In the order a reader should take them. The first live one is where the card's button leads. */
   lessons: string[];
+  /** Free tools to try the route on your own numbers, keyed into TOOL_COPY. */
+  tools?: string[];
 }
 
 export const STARTING_POINTS: StartingPointDef[] = [
@@ -57,6 +59,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
     detail: 'You know you should understand your money better, but not where to begin. Start with the ideas everything else is built on.',
     level: 'discovery',
     lessons: ['what-is-net-worth', 'emergency-fund', 'cash-flow-101'],
+    tools: ['/free/multi-currency-net-worth/'],
   },
   {
     id: 'no-plan',
@@ -64,6 +67,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
     detail: 'Money is building up and you are not sure what it should be doing. Learn what saving, investing and goals each are for.',
     level: 'building',
     lessons: ['saving-vs-investing', 'getting-started-investing', 'setting-financial-goals'],
+    tools: ['/free/monte-carlo-simulator/'],
   },
   {
     id: 'habits',
@@ -78,6 +82,7 @@ export const STARTING_POINTS: StartingPointDef[] = [
     detail: 'A loan or a home, investments, a household to plan for, or money in more than one country. The same ideas still apply, with more moving parts.',
     level: null,
     lessons: ['understanding-loan-terms', 'taxes-and-your-financial-plan', 'managing-money-across-currencies'],
+    tools: ['/free/loan-comparison/', '/free/multi-currency-net-worth/'],
   },
 ];
 
@@ -194,10 +199,14 @@ export interface StartingPoint {
   levelLabel: string | null;
   levelCount: number;
   lessons: LessonLink[];
+  tools: Array<{ href: string; name: string }>;
 }
 
-/** Situations with at least one live lesson; lessons that are not live yet are left out. */
-export function resolveStartingPoints(posts: HomePost[], now: Date): StartingPoint[] {
+/**
+ * Situations with at least one live lesson; lessons that are not live yet
+ * are left out, and so are tools `isToolLive` rejects.
+ */
+export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean = () => true): StartingPoint[] {
   const live = liveIndex(posts, now);
   const { byLevel } = levelCounts(posts, now);
   return STARTING_POINTS.map((s) => ({
@@ -208,7 +217,24 @@ export function resolveStartingPoints(posts: HomePost[], now: Date): StartingPoi
     levelLabel: s.level ? LEVEL_LABELS[s.level] ?? null : null,
     levelCount: s.level ? byLevel[s.level] ?? 0 : 0,
     lessons: toLinks(s.lessons, live),
+    tools: (s.tools ?? [])
+      .filter((href) => TOOL_COPY[href] && isToolLive(href))
+      .map((href) => ({ href, name: TOOL_COPY[href].name })),
   })).filter((s) => s.lessons.length > 0);
+}
+
+/**
+ * Where a starting point's button should lead for someone who has read
+ * `readSlugs`: the first unread lesson on the route. `started` says whether
+ * they have read any of it, so the button can say "Continue" instead of
+ * "Start". `next` is null once the whole route is read.
+ */
+export function routeNext(route: LessonLink[], readSlugs: string[]): { next: LessonLink | null; started: boolean } {
+  const read = new Set(readSlugs);
+  return {
+    next: route.find((l) => !read.has(l.slug)) ?? null,
+    started: route.some((l) => read.has(l.slug)),
+  };
 }
 
 export interface GrowthTopic {

@@ -10,6 +10,11 @@ level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
 tags: ["building", "fire", "goals"]
+relatedTool:
+  url: "/free/monte-carlo-simulator"
+  label: "Monte Carlo simulator"
+  cta: "Model your own plan across thousands of possible markets"
+  idea: "A first estimate of enough is your yearly spending divided by a withdrawal rate: about 25 times spending at 4%. It is a rule of thumb, not a guarantee."
 relatedSlugs: ["saving-vs-investing", "cash-flow-101", "income-vs-wealth", "getting-started-investing", "budgeting"]
 faq:
   - question: "What is a FIRE number and how do I calculate mine?"

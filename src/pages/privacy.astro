@@ -131,11 +131,36 @@ const changelog: ChangelogEntry[] = [
             'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, which return setting you pick (cautious, historical or optimistic), which number of simulated paths you pick, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
             'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
             'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
+            'The lesson Introduction to Financial Independence ends with a link to the simulator.',
             'The tool makes no network requests of its own and adds no third parties.',
           ],
         },
       ]
     : []),
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: true,
+    summary: 'Starting routes on the homepage become doors, lessons show where they sit in their level, and lessons with a free tool end in a Learn, Understand, Apply path.',
+    details: [
+      '"Start wherever you are": each situation now shows its lessons as a numbered route, names the free tools that go with it, and ends in one button into the route. If you have read lessons on that route, the button moves to the first one you have not read, and once you have read them all it points to the learning path. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored.',
+      'Each lesson in Discovery, Building, Psychology, Optimizing and Mastery now says where it sits in its level (for example "Lesson 8 of 16") at the top and above the previous and next links, with a link to that level on the learning path. The numbers come from the published lessons when the site is built; nothing about your reading is used.',
+      'Lessons with a paired free tool end in a short path: the lesson you read, the idea in one line where the lesson gives one, and a link to the tool. Two more lessons now link to the net worth calculator: What Is Net Worth and Managing Money Across Currencies.',
+      'New data-attr labels, so consented interaction analytics can tell the new links apart: home-start-basics-door, home-start-no-plan-door, home-start-habits-door and home-start-complex-door for the route buttons, home-start-<route>-tool-1 and -tool-2 for the tool links on the routes, and post-series-top and post-series-bottom for the level links on lessons. Without consent, these clicks are not captured.',
+      'The learning path page is now titled "Learn Personal Finance", and the subscription pages, the topic list, the free tools page, the about page and the beliefs page call them lessons or the learning path instead of "the blog". The newsletter itself, and what it collects, are unchanged.',
+    ],
+  },
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: false,
+    summary: 'OpenAI\'s training crawler is now blocked, and the summary we offer AI tools describes the learning path by its name.',
+    details: [
+      'robots.txt, the file that tells crawlers which pages they may read, now blocks GPTBot, the crawler OpenAI uses to gather training data. OAI-SearchBot, which powers ChatGPT search and links back to our pages, stays allowed.',
+      'llms.txt, the plain-text summary of the site for AI tools, now calls the lessons the learning path instead of the blog, and opens with who nidhi is for: people starting out as well as people whose finances have grown more complex, with or without more than one currency.',
+      'No change to what data is collected.',
+    ],
+  },
   {
     date: 'Oct 7, 2026',
     iso: '2026-10-07',
@@ -605,7 +630,7 @@ const privacyBreadcrumbSchema = {
       <ul>
         <li>Your cookie-consent choice (<code>nidhi-cookie-consent</code>).</li>
         <li>Your light/dark/system theme preference (<code>nidhi-theme-mode</code>).</li>
-        <li>Which blog posts you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time and suggest your next lesson on the homepage.</li>
+        <li>Which lessons you&rsquo;ve read (<code>nidhi-reading-progress</code>), so we can show a subtle &ldquo;read&rdquo; indicator next time and suggest your next lesson on the homepage, including the next step on each &ldquo;Start wherever you are&rdquo; route.</li>
         <li>Whether you&rsquo;ve confirmed your newsletter subscription (<code>nidhi-newsletter-subscription</code>), so we stop showing you the subscribe form on every page once you&rsquo;ve completed the double-opt-in loop. Set only when you click the confirmation link in your email; never contains your email address.</li>
         <li>Whether you&rsquo;ve dismissed the newsletter subscribe prompt (<code>nidhi-newsletter-dismissed</code>), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.</li>
         <li>Whether you&rsquo;ve signed up for the product-launch waitlist (<code>nidhi-waitlist-signedup</code>), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.</li>
