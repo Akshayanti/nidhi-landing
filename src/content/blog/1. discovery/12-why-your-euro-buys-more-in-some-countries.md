@@ -9,7 +9,7 @@ takeaways:
   - "How to compare salaries across countries in real terms"
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-06-07
+updatedDate: 2026-10-07
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -37,7 +37,7 @@ faq:
   - question: "Should I worry about exchange rates if I earn and spend in the same currency?"
     answer: "If all your income and expenses are in one currency, exchange rates affect you mostly when you travel, since your money stretches further in countries with lower price levels. The picture changes if you earn in one currency and spend in another, for example earning euros while paying a mortgage in British pounds or supporting family abroad. Then a 10 percent swing in EUR/GBP can add or subtract hundreds from your monthly budget, an ongoing and unpredictable living-cost risk. There is also transaction risk, where the rate moves between agreeing a price and paying it. Know exactly which currencies you are exposed to before deciding how much it matters."
   - question: "How do I compare salaries or living costs across countries?"
-    answer: "Compare in real terms, not nominal ones. A salary number means nothing without knowing what it buys locally, so adjust each offer for local price levels using purchasing power parity. Earning 2,000 euros in Lisbon might give you the same lifestyle as 4,000 euros in Copenhagen, because rent, groceries, and everyday costs differ sharply. A salary cut after a move does not automatically mean a lower standard of living. Avoid over-optimizing on exchange rates for everyday conversions, since fees, spreads, and timing risk usually cost more than chasing the best rate saves. Convert when you need to, and reserve careful PPP analysis for major decisions like relocating."
+    answer: "Compare in real terms, not nominal ones. A salary number means nothing without knowing what it buys locally, so adjust each offer for local price levels using purchasing power parity. Earning 2,000 euros in Lisbon might give you the same lifestyle as 4,000 euros in Copenhagen, because rent, groceries, and everyday costs differ sharply. A salary cut after a move does not automatically mean a lower standard of living. For everyday conversions, chasing the best rate usually costs more in fees, spreads and timing risk than it saves, which is why many people simply convert when they need to and save careful PPP analysis for major decisions like relocating."
 ---
 
 You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off? Maybe not.
@@ -140,7 +140,7 @@ Both are real. Both can be managed, but only if you're aware of them.
 
 1. **Think in real terms, not nominal.** A salary number means nothing without knowing what it buys locally
 2. **Know your exposure.** If all your income and expenses are in one currency, exchange rates matter less. If they're not, know exactly which currencies you're exposed to
-3. **Don't over-optimize on exchange rates.** Convert when you need to. Time the market with currency and you'll usually lose
+3. **Over-optimizing on exchange rates rarely pays.** Currency moves are hard to predict, so trying to time conversions usually costs more than it saves; many people convert when they need to
 4. **Account for PPP in major decisions.** Comparing job offers across countries? Adjust for local price levels first
 
 Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others, thinking in real terms instead of nominal ones is the skill that ties it all together.

@@ -2,7 +2,7 @@
 slug: "widowhood-and-sudden-single-income"
 title: "After a Partner Dies: What Has a Deadline and What Can Wait"
 description: "Losing a partner is grief and a financial restructuring at once. What needs doing in the first weeks, what should wait a year, and how the budget changes."
-tldr: "When a partner dies, two things happen at the same time: the worst weeks of your life, and a financial restructuring with real deadlines. The most useful thing to know in advance is that the tasks divide cleanly. A short list has deadlines and needs doing in the first weeks: registering the death, securing accounts and cash for the next few months, notifying the employer, pension providers and insurers, and claiming survivor benefits, some of which expire if not claimed in time. A much longer list has no deadline and is better left for six to twelve months: selling the home, moving, investing a life insurance payout, lending or giving money to family, changing careers. Grief impairs judgement in measurable ways, and the large decisions made early are the ones most often regretted. The second thing to know is arithmetic. Household income usually falls by more than household costs. A survivor typically needs about 70% of what the couple spent, while income can fall to half or less, and further still where the relationship was not legally recognised and no survivor pension is paid. The post ends with the scams that target the newly bereaved, and how to be unavailable to them."
+tldr: "When a partner dies, two things happen at the same time: the worst weeks of your life, and a financial restructuring with real deadlines. The most useful thing to know in advance is that the tasks divide cleanly. A short list has deadlines and needs doing in the first weeks: registering the death, securing accounts and cash for the next few months, notifying the employer, pension providers and insurers, and claiming survivor benefits, some of which expire if not claimed in time. A much longer list has no deadline and is better left for six to twelve months: selling the home, moving, investing a life insurance payout, lending or giving money to family, changing careers. Grief affects concentration and judgement, and in many advisers' experience the large decisions made early are the ones most often regretted. The second thing to know is arithmetic. Household income often falls by more than household costs. On a widely used equivalence scale a survivor needs about 70% of what the couple spent, while income can fall to half or less, and further still where the relationship was not legally recognised and no survivor pension is paid. The post ends with the scams that target the newly bereaved, and how to be unavailable to them."
 takeaways:
   - "Which tasks after a death have deadlines and which can wait"
   - "Why major decisions are best left for six to twelve months"
@@ -20,7 +20,7 @@ faq:
   - question: "What has to be done in the first few weeks after a partner dies?"
     answer: "A short list. Register the death and order several certified copies of the certificate, because every institution will ask for one. Find the will. Make sure you have access to enough cash for two or three months, since accounts in the dead person's sole name are often frozen. Tell the employer, pension providers, and insurers. Claim survivor benefits, some of which have time limits. Keep paying the rent or mortgage and the insurance premiums. Almost everything else can wait."
   - question: "Which decisions should wait?"
-    answer: "Anything large and hard to undo: selling or buying a home, moving city or country, investing or spending a life insurance payout, lending or giving substantial sums to relatives, leaving a job, or changing the ownership of assets. A common guideline is to wait six to twelve months for decisions of that size. Put a lump sum in an ordinary insured savings account in the meantime. Doing nothing with it for a year costs very little. Doing the wrong thing in the first month can cost a great deal."
+    answer: "Anything large and hard to undo: selling or buying a home, moving city or country, investing or spending a life insurance payout, lending or giving substantial sums to relatives, leaving a job, or changing the ownership of assets. A common guideline is to wait six to twelve months for decisions of that size. Many people park a lump sum in an ordinary insured savings account in the meantime, within deposit-insurance limits. Doing nothing with it for a year usually costs little. Doing the wrong thing in the first month can cost a great deal."
   - question: "What is a survivor benefit?"
     answer: "It is income or a lump sum paid to a person because their partner has died: from a state pension system, from a workplace pension, or from social insurance. Rules vary widely. Some benefits are paid only to a legal spouse, some also to a registered or unmarried partner, and some depend on your age, your own income, whether you have children, or how long you were married. Several must be claimed within a set period. Ask every pension scheme and the state system directly."
   - question: "What is probate?"
@@ -93,7 +93,7 @@ A widely used guideline is **no major, irreversible decisions for six to twelve 
 
 The reason is practical. Grief affects concentration, memory, and judgement for a long time. People in the first year describe making decisions they can barely remember. The big choices made early, selling a family home in the third month or handing a lump sum to a persuasive adviser, are the ones most often regretted.
 
-The windfalls post recommended parking any large sum for 30 to 90 days before deciding. After a death, make it longer. A payout sitting in an ordinary insured savings account for a year loses a little to inflation. That is a small price for a decision made with a clear head.
+The windfalls post described parking any large sum for 30 to 90 days before deciding. After a death, many advisers suggest longer. A payout sitting in an ordinary insured savings account for a year loses a little to inflation. That is a small price for a decision made with a clear head.
 
 ### What to say when pressed
 
@@ -138,7 +138,7 @@ For a younger survivor the pattern is sharper. A working partner's salary stops 
 - **The state system.** Survivor pensions, bereavement payments, and benefits for children. Eligibility often depends on marriage, on age, on children, and on the contributions your partner made.
 - **Every workplace pension,** including schemes from jobs your partner left years ago. Many pay a survivor's pension or a refund of contributions.
 - **Life insurance,** including cover attached to a mortgage, a credit card, a bank account, or an employer.
-- **Debts.** In most systems, debts in the dead person's sole name are paid from their estate and are not inherited by the survivor personally. Joint debts remain yours. Do not pay a debt from your own money because a collector says you must. Check first.
+- **Debts.** In most systems, debts in the dead person's sole name are paid from their estate and are not inherited by the survivor personally. Joint debts remain yours. Rules vary by country, so it is worth checking whether a debt is really yours before paying it from your own money because a collector says you must.
 - **Your own position.** Your will probably names the person who has died. So may your beneficiary forms and your powers of attorney. These belong on the wait-a-few-months list, and they do need doing.
 
 ### Rebuilding the plan
@@ -156,7 +156,7 @@ After six to twelve months, the restructuring can begin. It follows the same ord
 
 In many couples one person runs the finances. When that person dies, the survivor inherits a system they have never seen.
 
-Start with a list: every account, policy, pension, and regular payment you can find, from bank statements, post, email, and tax returns. Professional help is worth paying for here. Choose an adviser who charges a fee for their time, and not one paid by commission on products sold to you. Anyone recommending that you move or invest money in the first months is giving you the wrong advice, however kind they are.
+Start with a list: every account, policy, pension, and regular payment you can find, from bank statements, post, email, and tax returns. Many survivors find professional help worth paying for here. An adviser who charges a fee for their time avoids the conflict that comes with commission on products sold to you. Anyone pressing you to move or invest money in the first months deserves caution, however kind they are.
 
 If you are reading this while your partner is alive and you are the one who manages the money, the most useful thing you can do is to write that list now and show them where it is.
 
@@ -195,7 +195,7 @@ Three habits make you hard to reach:
 If this has just happened to you:
 
 - **Do the deadline list, and only that.** Hand off what you can.
-- **Put any lump sum in an ordinary savings account.**
+- **Park any lump sum somewhere simple,** such as an ordinary insured savings account, while you wait.
 - **Choose your date** for decisions, and say it to everyone who asks.
 
 If it has not, and you have a partner:

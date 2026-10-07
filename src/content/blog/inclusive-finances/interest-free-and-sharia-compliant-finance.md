@@ -109,7 +109,7 @@ What matters is which businesses. Screening has two layers.
 
 Where a permitted company earns a small amount of prohibited income, investors commonly give that portion of their dividends to charity. This is known as **purification**.
 
-You do not have to run the screens yourself. Index providers publish screened versions of the major indices, and funds track them. The same guidance from the rest of this blog applies: low cost and broad coverage matter more than picking winners.
+You do not have to run the screens yourself. Index providers publish screened versions of the major indices, and funds track them. The same evidence from the rest of this blog applies: over long periods, low cost and broad coverage have tended to matter more than picking winners.
 
 ### What screening does to diversification
 
@@ -150,7 +150,7 @@ Where no compliant home finance exists, people rent for longer, save a larger sh
 - **Start with the principle, not the product.** Every structure is a sale, a lease, or a partnership. Knowing which one you are looking at tells you which questions to ask.
 - **Compare on total amount payable.** Then ask about early settlement, late payment, and rent reviews.
 - **Check the certification.** Who reviewed the product, and to what standard.
-- **Look inside your retirement account.** Find out whether a screened fund is offered. If not, ask.
+- **Look inside your retirement account.** Find out whether a screened fund is offered, and if not, whether one can be added.
 - **Review your portfolio's spread.** A screened portfolio needs the same check across regions and sectors as any other.
 
 The conventional toolkit and the interest-free one are trying to solve the same problems: a home, a retirement, protection against bad luck. They start from different answers to one question, which is what money is allowed to earn. Once you know the answer you are working from, the rest of financial planning still applies.

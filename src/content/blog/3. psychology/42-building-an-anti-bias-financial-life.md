@@ -2,7 +2,7 @@
 slug: "building-an-anti-bias-financial-life"
 title: "Building an Anti-Bias Financial Life"
 description: "Knowing about your biases helps far less than you'd hope. Instead of trying to be smarter under pressure, design a financial life that does the right thing by default."
-tldr: "This is the capstone of the Psychology series. You cannot reliably retrain a fast, evolved instinct in the heat of a real decision, and awareness of a bias reduces it far less than you would hope, so the most reliable strategy is to design a financial life that works despite your biases rather than relying on willpower to overcome them. Six design principles do most of the work. Automate, so saving and investing happen without a decision. Set good defaults, so the easy path is the right one. Use checklists, to slow down the fast brain when stakes are high. Pre-commit, locking future choices in while calm. Reduce decision frequency, since annual reviews beat daily checking. And keep it boring, because diversified, steady, low-cost investing quietly beats clever tinkering. A dashboard ties it together by replacing gut feeling with numbers. The goal is a system that makes the wrong move the one you would have to go out of your way to make."
+tldr: "This is the capstone of the Psychology series. You cannot reliably retrain a fast, evolved instinct in the heat of a real decision, and awareness of a bias reduces it far less than you would hope, so the most reliable strategy is to design a financial life that works despite your biases rather than relying on willpower to overcome them. Six design principles do most of the work. Automate, so saving and investing happen without a decision. Set good defaults, so the easy path is the right one. Use checklists, to slow down the fast brain when stakes are high. Pre-commit, locking future choices in while calm. Reduce decision frequency, since annual reviews beat daily checking. And keep it boring, because the evidence has generally favoured diversified, steady, low-cost investing over clever tinkering. A dashboard ties it together by replacing gut feeling with numbers. The goal is a system that makes the wrong move the one you would have to go out of your way to make."
 takeaways:
   - "Why designing around your biases beats trying to overcome them"
   - "The six design principles that do most of the work"
@@ -26,6 +26,12 @@ faq:
 reelPromise: "The six design principles of an anti-bias financial life, mapped to every bias in the series, plus the one-page system that ties them together"
 relatedSlugs: ["money-scripts", "why-smart-people-make-dumb-money-decisions", "financial-dashboard", "setting-financial-goals", "getting-started-investing"]
 referentialReading:
+  - title: "The Power of Suggestion: Inertia in 401(k) Participation and Savings Behavior"
+    author: "Brigitte Madrian and Dennis Shea (Quarterly Journal of Economics, 2001)"
+    type: "paper"
+  - title: "Save More Tomorrow: Using Behavioral Economics to Increase Employee Saving"
+    author: "Richard Thaler and Shlomo Benartzi (Journal of Political Economy, 2004)"
+    type: "paper"
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
     author: "Richard Thaler and Cass Sunstein"
     url: "https://www.goodreads.com/book/show/3450744-nudge"
@@ -58,11 +64,11 @@ Six principles do most of the work.
 
 ## 1. Automate, so the good thing happens without a decision
 
-The single most powerful tool. When saving and investing happen automatically, on payday, before the money reaches your spending account, [present bias](/blog/present-bias-and-your-future-self/) never gets a vote and [herd feeling](/blog/herd-behavior-and-fomo/) has no button to press. The good outcome becomes the default, and the only way to stop it is to actively intervene, which most people never bother to do. You have moved the effort from doing the right thing to undoing it.
+One of the most powerful tools. When saving and investing happen automatically, on payday, before the money reaches your spending account, [present bias](/blog/present-bias-and-your-future-self/) never gets a vote and [herd feeling](/blog/herd-behavior-and-fomo/) has no button to press. The good outcome becomes the default, and the only way to stop it is to actively intervene, which most people never bother to do. You have moved the effort from doing the right thing to undoing it.
 
 ## 2. Set good defaults, so the easy path is the right one
 
-We tend to go with whatever is already set. Use that. Make the default contribution automatic and a touch higher than feels comfortable. Make a diversified, hands-off holding the default rather than a portfolio that begs to be tinkered with. Arrange your accounts so that doing nothing produces a good result, because doing nothing is what people reliably do.
+We tend to go with whatever is already set, and that tendency can be put to work. In a well-known study of one US employer, Brigitte Madrian and Dennis Shea found that enrolling new staff in the pension plan automatically raised participation sharply, mostly because few people opted out; Richard Thaler and Shlomo Benartzi found the same pull for automatic contribution increases. The same logic applies to holdings: a hands-off, diversified default invites less tinkering than a portfolio that begs to be adjusted. The idea is an arrangement where doing nothing produces a reasonable result, because doing nothing is what people reliably do.
 
 ## 3. Use checklists, to slow the fast brain when stakes are high
 
@@ -70,7 +76,7 @@ Pilots and surgeons use checklists not because they are forgetful but because ch
 
 ## 4. Pre-commit, locking choices in while you are calm
 
-Decide the rules in advance, in a quiet room, so the heated moment only executes a plan rather than making one. Route future raises into investing before lifestyle claims them. Write down the only conditions under which you would change your investments, a change in your goals, timeline, or circumstances, never a change in this week's price, so a scary week has nothing to act on. These commitment devices bind a future, more emotional you to the judgement of the present, rational you.
+Decide the rules in advance, in a quiet room, so the heated moment only executes a plan rather than making one. Some people commit part of future raises to saving before lifestyle claims them. Others write down the only conditions under which you would change your investments, a change in your goals, timeline, or circumstances, never a change in this week's price, so a scary week has nothing to act on. These commitment devices bind a future, more emotional you to the judgement of the present, rational you.
 
 ## 5. Reduce decision frequency, because looking less is worth more
 
@@ -78,7 +84,7 @@ Every time you check, you create a chance to react, and reacting is usually wher
 
 ## 6. Keep it boring, because boring quietly wins
 
-[Overconfidence](/blog/overconfidence-and-the-planning-fallacy/) makes activity feel like skill, but in investing, effort and reward are often inversely related once a sound plan is in place. A [diversified](/blog/diversification/), low-cost, steadily-contributed-to portfolio, left alone, beats most clever tinkering over time. Boring is not a compromise. Boring is the strategy. The excitement you might crave is exactly the thing that costs you.
+[Overconfidence](/blog/overconfidence-and-the-planning-fallacy/) makes activity feel like skill, but in investing, effort and reward are often inversely related once a sound plan is in place. In the research on individual investors, a [diversified](/blog/diversification/), low-cost, steadily-contributed-to portfolio, left alone, has beaten most clever tinkering over time. Boring is not a compromise. Boring is the strategy. The excitement you might crave is exactly the thing that costs you.
 
 <figure>
 <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-anti-title fig-anti-desc">
@@ -115,10 +121,10 @@ A dashboard is a deliberate System 2 tool for a System 1 species. It replaces gu
 
 ## What you can do
 
-- **Automate one thing this week.** Set a contribution to move to savings or investing automatically on payday. This single change defends against more biases than any amount of reading.
+- **Automate one thing.** A contribution that moves to savings or investing automatically on payday, at an amount your budget can carry, defends against several biases at once, which reading alone rarely does.
 - **Write your investment rules down once.** List the only conditions under which you would change your investments. Then a scary week has a plan to follow instead of a decision to make.
 - **Pick a review cadence and protect it.** Decide how often you will look, and treat every urge to check in between as noise. Looking less is one of the highest-return habits available.
-- **Choose boring on purpose.** A diversified, low-cost, automated plan left alone is not settling. It is the design most likely to survive contact with your own brain.
+- **Notice the appeal of excitement.** A diversified, low-cost, automated plan left alone is not settling. In the research on investor behaviour, it is the design most likely to survive contact with your own brain.
 - **Build the one-page dashboard.** A handful of numbers, reviewed on a schedule, brings your slow, rational mind to the table at a time you chose, rather than at a time your emotions chose for you.
 
 That is the end of the Psychology series. The throughline has been simple and, I hope, freeing: your money mistakes are not failures of character or intelligence. They are the predictable output of an old brain running a new problem. You do not need to rewire that brain, even where slow change is possible. You only need to build a life around it that quietly does the right thing while you get on with everything else.

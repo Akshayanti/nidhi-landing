@@ -92,7 +92,7 @@ A **trust** (a legal arrangement in which a trustee holds assets for named benef
 
 ### Covering the partner with no survivor pension
 
-Where a pension pays a survivor benefit only to a spouse, the other partners have a gap that no form closes. Three ways to fill it:
+Where a pension pays a survivor benefit only to a spouse, the other partners have a gap that no form closes. Households commonly fill it in three ways, depending on what they can afford and what local rules allow:
 
 - **Life insurance** on the pension holder, owned by or payable to the partner who would be left out.
 - **Savings in that partner's own name,** built deliberately during the relationship.
@@ -145,7 +145,7 @@ The post on [one-income households](/blog/solo-agers-and-single-income-household
 
 - **Tonight, for free:** check the beneficiary on every pension, policy and account, and whether each allows several names.
 - **This month:** find out what each pension pays a survivor, and to whom.
-- **This quarter:** wills, healthcare and financial powers of attorney, and hospital forms for every partner, each naming the others.
+- **This quarter:** find out what wills, healthcare and financial powers of attorney, and hospital forms require where you live, for every partner, each naming the others.
 - **This quarter:** a written agreement among the partners.
 - **Once:** decide on purpose who, if anyone, holds the legal spouse role, and make sure the others' cover does not depend on it.
 

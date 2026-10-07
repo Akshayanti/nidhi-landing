@@ -6,7 +6,7 @@ tldr: "A liability is money you owe to someone else, usually with interest. The 
 takeaways:
   - "Why the interest rate matters more than the balance"
   - "How to judge any debt with three questions"
-  - "When to pay down debt before investing"
+  - "How people weigh paying down debt against investing"
 order: 4
 pubDate: 2026-04-25
 updatedDate: 2026-10-07
@@ -36,7 +36,7 @@ faq:
   - question: "How do I tell good debt from bad debt?"
     answer: "Skip the simplistic good-versus-bad labels and ask three questions about any debt. First, what is the interest rate? In low-inflation economies, anything above roughly 8 to 10% is usually expensive and worth tackling quickly; in higher-inflation countries, judge the rate against inflation instead. Second, what did the debt buy? Borrowing for something that appreciates, like education or a home, has a different character than borrowing for consumption, like a holiday or a dinner. Third, can you comfortably make the payments? Even low-interest debt becomes a problem if it eats too much of your monthly cash flow. The answers tell you how worried to be far better than any label."
   - question: "Should I pay off debt or invest first?"
-    answer: "Compare the interest rate on the debt against the return you could realistically expect from investing. If the rate on the debt is higher than that expected return, pay the debt first: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. If the debt is cheap, say a 3% mortgage, it can make sense to keep paying it slowly while investing the difference at a higher expected return. Whatever you decide, always make at least the minimum payment on every debt, because missed payments trigger penalties and damage your credit."
+    answer: "Compare the interest rate on the debt against the return you could realistically expect from investing. When the rate on the debt is higher than that expected return, paying the debt first usually wins: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. When the debt is cheap, say a 3% mortgage, many people keep paying it slowly and invest the difference for a higher expected return, while others value the certainty of prepaying. Tax, inflation and your cash reserve all shift the answer. Missed minimum payments are costly either way, because they trigger penalties and damage your credit."
   - question: "Is mortgage interest tax-deductible?"
     answer: "In some countries it has been, but the benefit is being phased out or restricted across much of Europe, so do not assume it applies to you. Where it exists, mortgage interest relief lowers the effective cost of the loan, which is one reason a mortgage is often the cheapest debt you can hold. Still, treat any tax break as a secondary factor rather than the reason to borrow. Check your own country's current rules, because they change frequently. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
 ---
@@ -85,14 +85,14 @@ Instead of "good debt" and "bad debt", which oversimplifies things, ask three qu
 
 ## The rule of thumb
 
-If the interest rate on your debt is higher than the return you could reasonably expect from investing that money, pay the debt first. There is no reliable investment that pays 20% guaranteed, but your credit card is charging you exactly that.
+A widely used rule of thumb: when the interest rate on a debt is higher than the after-tax return you could reasonably expect from investing, paying the debt down usually comes out ahead. The logic is that paying off debt is a guaranteed return equal to its rate. No reliable investment pays 20% guaranteed, and a credit card charging that is hard to beat. The rule gets fuzzier in the middle: a 5% loan against an uncertain investment return is a judgement call that depends on tax, inflation, how much cash you have in reserve and how much certainty you want.
 
 ## What this means for your net worth
 
-Every liability subtracts from your net worth. But the way you handle them makes a huge difference:
+Every liability subtracts from your net worth. But the way debts are handled makes a huge difference:
 
-- Pay off high-interest debt as fast as possible. It's the highest guaranteed return you can get
-- Don't rush to pay off low-interest debt if you can invest the difference at a higher rate
-- Always make at least the minimum payment on every debt. Missed payments damage your credit and trigger penalties
+- High-interest debt is the clearest case for fast repayment, because clearing it is a high, guaranteed return
+- Low-interest debt is where people differ: some prefer to invest the difference for a higher expected return, others prefer the certainty of being debt-free
+- Missing minimum payments is costly almost everywhere: lenders add fees and penalties, and it damages your credit record
 
-In the next post, we'll look at two proven strategies for paying off debt, and how to pick the one that works for you.
+In the next post, we'll look at two well-known strategies for paying off debt, and what each one suits.

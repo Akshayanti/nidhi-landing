@@ -2,7 +2,7 @@
 slug: "managing-money-across-currencies"
 title: "Managing Money Across Currencies: When Your Finances Cross Borders"
 description: "If you earn in one currency and live or plan in another, exchange rates quietly move your net worth even when nothing else changes."
-tldr: "Multi-currency life is the normal shape of expat and diaspora finances, not an edge case. Your net worth fluctuates with exchange rates even when your assets don't change in value. The three currencies that matter most are the one you earn in, the one you spend in, and the one you plan to retire in, and they are often different. Currency concentration is an easy-to-miss under-diversification for anyone whose future spending crosses borders; for a single-currency life, it is often exactly right. You don't need to trade forex; you need to match your money to the currencies of your actual obligations, avoid concentration that doesn't match your life, and understand that short-term swings are mostly noise, while long-term trends, like higher-inflation currencies weakening, can be very real."
+tldr: "Multi-currency life is the normal shape of expat and diaspora finances, not an edge case. Your net worth fluctuates with exchange rates even when your assets don't change in value. The three currencies that matter most are the one you earn in, the one you spend in, and the one you plan to retire in, and they are often different. Currency concentration is an easy-to-miss under-diversification for anyone whose future spending crosses borders; for a single-currency life, it is often exactly right. Managing it rarely involves trading forex; the common approach is roughly matching money to the currencies of actual obligations, noticing concentration that doesn't match your life, and understanding that short-term swings are mostly noise, while long-term trends, like higher-inflation currencies weakening, can be very real."
 takeaways:
   - "Why your net worth moves with exchange rates"
   - "How income, expense and planning currencies fit together"
@@ -27,9 +27,9 @@ faq:
   - question: "Which three currencies should I focus on?"
     answer: "Rather than tracking every currency you touch, focus on three. Your income currency is the one you earn in, usually your main paycheck, say EUR. Your expense currency is the one you actually spend in day to day, which may differ if you live somewhere your employer does not pay you in the local money. Your planning currency is the one your major future goals are denominated in: retirement in India in INR, a property in the US in USD, or family support abroad. The key question is how well these three match. If all three are EUR, you have no real exposure. If they diverge, one or more dimensions of your life is exchange-rate sensitive."
   - question: "What is currency concentration and why is it risky?"
-    answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, invest in a euro-denominated global fund, and contribute to a euro pension: you are 100% euro-concentrated. That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The fix is to roughly match your asset currency mix to your future obligation currency mix."
-  - question: "Should I diversify into multiple currencies?"
-    answer: "Only when your obligations justify it. Hold multiple currencies if your future spending spans several currencies, if your home currency has been historically volatile, or if you plan to retire, relocate, or support dependents in another currency zone. Stay largely in one currency if your life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The sensible default is to match your asset currency mix to your obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, holding 80% of your portfolio in euros is fine. Chasing currency diversification through frequent trading is almost always worse than staying simple."
+    answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, invest in a euro-denominated global fund, and contribute to a euro pension: you are 100% euro-concentrated. That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The usual way to reduce that risk is to roughly match the currency mix of assets to the currency mix of future obligations."
+  - question: "When does diversifying into multiple currencies make sense?"
+    answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependents in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, holding 80% of your portfolio in euros is fine. Chasing currency diversification through frequent trading is almost always worse than staying simple."
   - question: "How often should I review my currency exposure?"
     answer: "Annually, not daily. Currency markets are pure noise over days and months, so making decisions off short-term moves is a mistake. Real deviations from fair value can persist for years, which is where multi-currency people occasionally feel genuine pain or gain, and over decades currencies of higher-inflation countries tend to weaken against lower-inflation ones. The practical approach is a once-a-year audit alongside other rebalancing checks: map your currency flows across income, expenses, family support, savings, investments, and planned retirement spending, then check the big mismatches. You do not need to trade currencies. You need to notice mismatches and decide whether each is fine, tolerable, or worth reducing."
 referentialReading:
@@ -151,7 +151,7 @@ There is a real trade-off here, and it matters.
 - Cross-border complexity has real costs: transfer fees, spreads, paperwork, tax complications
 - Chasing "currency diversification" by trading often is almost always worse than staying simple
 
-The default answer for most people is to **match your asset currency mix roughly to your obligation currency mix**, with a bias toward simplicity. If 80% of your future spending will be in euros, 80% of your portfolio being euro-denominated is fine and possibly correct.
+The common default is to **roughly match the asset currency mix to the obligation currency mix**, with a bias toward simplicity. If 80% of future spending will be in euros, having about 80% of a portfolio euro-denominated is consistent with that principle. How far to take it depends on the size of the gap, the costs of moving money, and how volatile the currencies involved are.
 
 ## A practical framework
 
@@ -171,7 +171,7 @@ Think of it as a two-step audit, not an ongoing trading exercise.
 
 **Step 2: Check the big mismatches.** For each future obligation, is the currency covered by an asset of roughly the same currency? If not, is that concentration intentional or accidental?
 
-You don't need to match perfectly. You need to notice the mismatches and decide whether they're fine, tolerable, or worth reducing.
+A perfect match isn't the goal. The point is noticing the mismatches and judging whether they're fine, tolerable, or worth reducing.
 
 If you'd rather not assemble the table by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
 
@@ -183,14 +183,14 @@ If you'd rather not assemble the table by hand, the [multi-currency net worth an
 - **Over-hedging.** Some investment products offer currency-hedged versions. They're useful in specific cases but carry costs. For long-horizon equity investments matching your own currency zone, unhedged is usually fine; for shorter-horizon goals in a different currency, hedging can make sense
 - **Treating home currency as risk-free.** It isn't. It's risk-free only if your future life happens entirely in that currency
 
-## What you can do
+## What this means in practice
 
-1. **Map your currency flows.** Use the table above. Most people discover something they hadn't noticed within 15 minutes
+1. **Map your currency flows.** Use the table above. Many people discover something they hadn't noticed within 15 minutes
 2. **Identify the biggest mismatch.** Usually it's between the currency you save in and the currency of your eventual retirement or family support
-3. **Decide deliberately.** Keep full concentration if your life really is single-currency. Tilt some portion to the currency of major future obligations if it's not
-4. **Minimise transfer friction.** Pick low-cost providers for cross-border transfers; batch transfers rather than making small frequent ones; consider multi-currency accounts if you move money often
-5. **Don't trade currencies.** The case for buy-and-hold diversification is strong. The case for active currency trading for most individuals is weak
-6. **Revisit annually, not daily.** Currency markets are noise in the short term. Review your mix once a year, alongside other rebalancing checks
+3. **Concentration can be a deliberate choice.** Full single-currency concentration fits a single-currency life; people with major obligations elsewhere commonly tilt part of their assets toward that currency
+4. **Transfer friction adds up.** Provider spreads and fees vary widely; batching transfers and multi-currency accounts are common ways people reduce them
+5. **Currency trading rarely helps individuals.** The evidence for buy-and-hold diversification is much stronger than for active currency trading
+6. **An annual look is usually enough.** Currency markets are mostly noise in the short term, so many people review their mix once a year, alongside other rebalancing checks
 
 Multi-currency life isn't a complication. It's a feature of international careers and diaspora families. It only becomes a problem when it's invisible. Once you've mapped it, the rest is steady maintenance, the same way you maintain asset allocation or emergency fund sizing.
 

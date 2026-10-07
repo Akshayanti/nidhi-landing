@@ -2,7 +2,7 @@
 slug: "solo-agers-and-single-income-households"
 title: "One Income, No Backup: Planning for a Household of One"
 description: "Most financial rules of thumb assume a second earner and a family fallback. Which ones to adjust on one income, and how to name your own backup person."
-tldr: "Most financial rules of thumb carry a hidden second adult. A three to six month emergency fund assumes another income keeps arriving. Retirement benchmarks assume two people sharing one set of bills. Planning for illness and old age assumes a partner or a child who will step in. If you live on one income, or expect to grow old without a partner or family nearby, the math is the same and the inputs change. Four adjustments do most of the work: a larger emergency fund, because losing your only income means losing all of it; stronger income protection, because your earning power is the single engine of the plan; a retirement number built from your own expenses, because one person needs about 70% of what a couple needs to live at the same standard, not 50%; and a fixed-cost level set for one income with nobody to share the rent. The second half of the plan is not about money. It is about naming, in writing, the person who would act for you if you could not, and planning for care you may have to pay for. This is not a 'you need more money' post. It is a list of which assumptions to change and by how much."
+tldr: "Most financial rules of thumb carry a hidden second adult. A three to six month emergency fund assumes another income keeps arriving. Retirement benchmarks assume two people sharing one set of bills. Planning for illness and old age assumes a partner or a child who will step in. If you live on one income, or expect to grow old without a partner or family nearby, the math is the same and the inputs change. Four adjustments are common: a larger emergency fund, because losing your only income means losing all of it; stronger income protection, because your earning power is the single engine of the plan; a retirement number built from your own expenses, because on a widely used equivalence scale one person needs about 70% of what a couple needs to live at the same standard, not 50%; and fixed costs set for one income with nobody to share the rent. How far to move each depends on income stability, local safety nets and whether anyone depends on you. The second half of the plan is not about money. It is about naming, in writing, the person who would act for you if you could not, and planning for care you may have to pay for. This is not a 'you need more money' post. It is a list of which assumptions to change and by how much."
 takeaways:
   - "Why common rules of thumb quietly assume a second income"
   - "Why one income calls for a larger emergency fund"
@@ -64,8 +64,8 @@ The same assumption sits inside several other rules.
 
 | Rule of thumb | What it quietly assumes | The single-income adjustment |
 |---|---|---|
-| Emergency fund of 3 to 6 months | A second income covers part of the gap | Aim for the upper end or beyond, often 6 to 12 months |
-| Income protection matters less as savings grow | A partner's income is a fallback | Keep it longer; your income is the only engine |
+| Emergency fund of 3 to 6 months | A second income covers part of the gap | Many aim for the upper end or beyond, often 6 to 12 months |
+| Income protection matters less as savings grow | A partner's income is a fallback | Often kept longer; your income is the only engine |
 | Housing at around a third of income | Two incomes, or one as a cushion | Set fixed costs against one income with no cushion |
 | Retirement needs scale with the household | Two people share one set of bills | One person needs about 70% of a couple's spending, not 50% |
 | A survivor benefit protects the partner | There is a partner | No survivor to protect, and no survivor pension to receive |
@@ -88,7 +88,7 @@ Two consequences follow, and they point in opposite directions.
 
 ### Fixed costs
 
-A couple on two incomes can lose one and still pay the rent. A single earner cannot. The practical response is to set fixed costs (housing, loan payments, contracts you cannot cancel quickly) at a level one income covers comfortably, with margin, and to treat that margin as part of the safety plan.
+A couple on two incomes can lose one and still pay the rent. A single earner cannot. A common response is to set fixed costs (housing, loan payments, contracts you cannot cancel quickly) at a level one income covers comfortably, with margin, and to treat that margin as part of the safety plan.
 
 ### The retirement number
 
@@ -131,7 +131,7 @@ Without a spouse or child, the choice is wider than it first seems.
 - **A friend.** Often the person who knows your wishes best. Ask them directly, and give them a copy.
 - **A relative you trust.** A sibling, niece, or nephew.
 - **A professional.** In many countries a solicitor, notary, or licensed fiduciary can be appointed, for a fee.
-- **A substitute.** Always name a second person in case the first cannot act.
+- **A substitute.** A second named person covers the case where the first cannot act.
 
 Where you can, choose someone younger than you. A later post in this series goes further into relying on friends and chosen family where the law expects relatives.
 
@@ -163,7 +163,7 @@ This is the hardest number in the plan to estimate. It is still better as a line
 
 - **Rerun your emergency fund on your own shortfall.** Months of full expenses, with no second income.
 - **Check what happens to your income if you are ill for a year.** Employer sick pay, state support, and any insurance.
-- **Rebuild your retirement number from your own budget.** Do not halve a couple's figure.
+- **Rebuild your retirement number from your own budget.** Halving a couple's figure usually understates it.
 - **Name your person.** Ask them, then put it in writing in the form your country requires.
 - **Write the where-everything-is document.** One evening.
 

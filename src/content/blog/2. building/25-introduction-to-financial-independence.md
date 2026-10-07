@@ -175,7 +175,7 @@ The jaw-dropping part: the table doesn't care what you earn. Two people earning 
 This also means the two most powerful moves aren't about investing at all:
 
 - **Lowering expenses permanently** reduces the target and raises the savings rate in the same move
-- **Sending every raise to savings** before lifestyle inflation absorbs it keeps savings rate rising, and routing it into a [diversified portfolio](/blog/getting-started-investing/) puts it to work immediately
+- **Saving raises** before lifestyle inflation absorbs them keeps the savings rate rising; many FIRE followers route them into a [diversified portfolio](/blog/getting-started-investing/)
 
 ## Why FIRE is not only for extreme savers
 
@@ -202,11 +202,11 @@ We'll return to each in the Mastery level. For now, the goal is to understand wh
 ## What you can do
 
 1. **Estimate your current annual expenses.** Not your salary, not your take-home. What you actually spend. Twelve months of cash flow is the right window if you've been tracking [cash flow](/blog/cash-flow-101/) or [budgeting](/blog/budgeting/)
-2. **Multiply by 25.** That's a rough traditional FIRE number at today's spending. It's a directional figure, not a promise
+2. **Multiply by 25.** That's a rough traditional FIRE number at today's spending, based on the 4% rule. It's a directional figure, not a promise; at 3-3.5% the multiple is closer to 28-33
 3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage is one of the strongest levers on how far you are from FI
-4. **Pick a flavor that matches your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. Pick the one that you can imagine sustaining for decades
-5. **Protect savings rate during raises.** The next raise is the easiest lever you have. Route at least half of it to investments before it becomes lifestyle
-6. **Keep learning before making irreversible moves.** Actual early retirement involves sequence risk, drawdown planning, and lifestyle questions that aren't covered here. Treat this post as the map, not the journey
+4. **Notice which flavor fits your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. The one people tend to sustain is the one they can imagine living with for decades
+5. **Raises are an easy lever.** A raise saved before it becomes lifestyle lifts the savings rate without cutting anything. Some people commit a share, often half, in advance; how much is realistic depends on your budget
+6. **Irreversible moves need more than this post.** Actual early retirement involves sequence risk, drawdown planning, tax, healthcare and lifestyle questions that aren't covered here. This post is the map, not the journey
 
 Financial independence is not a cliff you jump off. It's a line you cross, after which your choices widen dramatically. Most of what happens on the way there is the same as what you're doing already: earning, saving carefully, investing broadly, waiting patiently. The difference, once you have a FIRE number, is that there's a finish line, and you can see how close you are.
 

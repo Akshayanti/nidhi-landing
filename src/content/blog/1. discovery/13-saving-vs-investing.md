@@ -35,16 +35,16 @@ faq:
   - question: "What is the difference between saving and investing?"
     answer: "Saving means setting money aside in safe, accessible accounts where the goal is preservation and availability, not growth. Think current accounts, savings accounts, and high-yield savings: low risk, low return of roughly 0 to 3 percent, and immediate access. Investing means putting money into assets like stocks, bonds, and index funds that can grow over time but carry risk and are less liquid, historically returning around 4 to 6 percent per year after inflation for broad stocks in developed markets, with long stretches well below that. Saving suits money you need within 1 to 3 years; investing suits money you will not touch for 5 or more years. They are complementary tools with different jobs, not competing strategies."
   - question: "When should I save instead of invest?"
-    answer: "Save when you need the money soon or unpredictably. Your emergency fund of 3 to 6 months of expenses belongs in a savings account you can reach within 24 hours, never in the market. Short-term goals under 3 years, such as a holiday, a deposit, or a car, should stay in savings, because markets can drop 20 percent in a month and take years to recover. Known upcoming expenses like a tax bill or insurance renewal also belong in safe accounts. The test is simple: ask whether you could afford to lose 30 percent of the money right when you need it. If not, save."
+    answer: "Saving fits money needed soon or unpredictably. Emergency funds are usually kept in a savings account reachable within a day or so, not in the market. Short-term goals under 3 years, such as a holiday, a deposit, or a car, are commonly kept in savings too, because markets can drop 20 percent in a month and take years to recover. Known upcoming expenses like a tax bill or insurance renewal follow the same logic. A useful test: could you afford to lose 30 percent of this money right when you need it? If not, saving is the usual home for it."
   - question: "When should I invest instead of save?"
-    answer: "Invest when you have time and stability. Money you will not touch for decades, such as retirement, is the strongest case, because market dips have usually recovered over long horizons, though not in every market, and compounding rewards patience. Once your emergency fund is secure and high-interest debt is cleared, surplus cash sitting in a savings account loses purchasing power every year and should be put to work. Goals more than 5 years away, like a house deposit in 7 years or education in 15, also favor investing, since higher average returns outweigh short-term volatility. The longer your time horizon, the stronger the case for investing over saving."
+    answer: "Investing fits money with time and stability behind it. Money not needed for decades, such as retirement, is the strongest case, because market dips have usually recovered over long horizons, though not in every market, and compounding rewards patience. Once an emergency fund is in place and high-interest debt is handled, surplus cash in a savings account tends to lose purchasing power, which is why many people invest it. Goals more than 5 years away, like a house deposit in 7 years or education in 15, also lean toward investing, since higher average returns have historically outweighed short-term volatility. The longer the horizon, and the more flexible the goal date, the stronger the case."
   - question: "What is the right order: emergency fund, debt, or investing?"
-    answer: "A sensible default order matters more than the exact amounts. First, build a starter emergency fund of about one month of expenses in a savings account. If your employer matches retirement contributions, capturing that match early is often worth it. Second, pay off high-interest debt, starting with credit cards: above roughly 8 to 10 percent almost always wins, while 4 to 8 percent is a judgement call that depends on tax, inflation and your risk tolerance. Third, complete your emergency fund to 3 to 6 months of expenses. Fourth, start investing long-term surplus into diversified assets. Skip a step and you create fragility: invest before your safety net exists and one surprise expense pushes you into debt; over-pay low-interest debt while ignoring retirement and you lose years of compound growth. Stabilize first, then optimize, and adjust the order if your country's rules or your income stability call for it."
+    answer: "There is no single right order, but a common default looks like this. First, a starter emergency fund of about one month of expenses in a savings account. Where an employer matches retirement contributions, many people capture that match early. Second, high-interest debt, starting with credit cards: above roughly 8 to 10 percent almost always wins, while 4 to 8 percent is a judgement call that depends on tax, inflation and risk tolerance. Third, a fuller emergency fund of 3 to 6 months of expenses. Fourth, investing long-term surplus in diversified assets. The logic is avoiding fragility: investing before a safety net exists means one surprise can push you into debt, while over-paying cheap debt and ignoring retirement gives up years of compounding. Your country's rules, income stability and debts can all change the order."
   - question: "What is opportunity cost in saving versus investing?"
-    answer: "Opportunity cost is the return you give up by keeping money somewhere it cannot grow. Every euro left in a low-yield savings account is a euro not invested and not compounding. At a 1 percent savings rate versus a 7 percent investment return, 10,000 euros becomes about 11,046 in savings but 19,672 invested after 10 years, and the gap widens to over 62,000 euros after 30 years. This is separate from inflation, which also erodes idle cash. Keeping your emergency fund safe is a deliberate, worthwhile trade-off, but leaving long-term money in savings is an expensive mistake that rarely feels like one."
+    answer: "Opportunity cost is the return you give up by keeping money somewhere it cannot grow. Every euro left in a low-yield savings account is a euro not invested and not compounding. At a 1 percent savings rate versus a 7 percent investment return, 10,000 euros becomes about 11,046 in savings but 19,672 invested after 10 years, and the gap widens to over 62,000 euros after 30 years. This is separate from inflation, which also erodes idle cash. Keeping an emergency fund safe is a deliberate trade-off, but for money that truly is long-term, leaving it in savings is a cost that rarely feels like one."
 ---
 
-Your emergency fund should not be in the stock market. Your retirement fund should not be in a savings account. Both are mistakes, and both come from confusing saving with investing.
+An emergency fund in the stock market can be down 30% the week you need it. A retirement fund in a savings account can lose ground to inflation for decades. Both problems come from confusing saving with investing.
 
 They sound similar. People use them interchangeably. But they serve completely different purposes, carry different risks, and belong at different stages of your financial life.
 
@@ -100,19 +100,19 @@ Investing is about making money grow over time, accepting that the path won't be
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |
 
-## When to save
+## When saving fits
 
-Save when you need the money **soon** or **unpredictably**.
+Saving fits money you need **soon** or **unpredictably**.
 
-- **[Emergency fund](/blog/emergency-fund/)**: This is the foundation. As we covered in the emergency fund post, you need 3-6 months of expenses in a place you can access within 24 hours. Savings account. Not invested
-- **Short-term goals (under 3 years)**: A holiday next year. A deposit you're building for 18 months. A new car in two years. Money you need on a specific timeline shouldn't be exposed to market risk, because markets can drop 20% in a month and take years to recover
-- **Known upcoming expenses**: Tax bill in April. Insurance renewal in six months. If you know you'll need the money, keep it safe
+- **[Emergency fund](/blog/emergency-fund/)**: The foundation. As the emergency fund post covered, a common target is 3-6 months of essential expenses somewhere reachable within a day or so, usually a savings account rather than investments
+- **Short-term goals (under 3 years)**: A holiday next year. A deposit you're building for 18 months. A new car in two years. Money on a specific timeline is usually kept away from market risk, because markets can drop 20% in a month and take years to recover
+- **Known upcoming expenses**: Tax bill in April. Insurance renewal in six months. When the date and amount are known, people usually keep the money safe
 
-The question isn't "will I earn more by investing this?" The question is "can I afford to lose 30% of this right when I need it?" If the answer is no, save.
+A useful question isn't "will I earn more by investing this?" It's "could I afford to lose 30% of this right when I need it?" If the answer is no, saving is the usual home for it.
 
-## When to invest
+## When investing fits
 
-Invest when you have **time** and **stability**.
+Investing fits money with **time** and **stability** behind it.
 
 - **Retirement (5+ years away)**: Money you won't touch for decades. Market dips have usually recovered over long periods, though some markets took decades. Compound interest rewards patience. This is the strongest case for investing
 - **Long-term wealth building**: Beyond your emergency fund and debt payoff, surplus cash that sits in a savings account loses purchasing power every year. As we covered in the [purchasing power post](/blog/purchasing-power/), a savings account earning 1% while inflation runs at 2.5% means you're losing 1.5% per year in real terms
@@ -126,9 +126,9 @@ Money you need in 3-5 years is the hardest to place. The stock market can drop s
 
 Common approaches:
 
-- **Conservative**: Keep it in a high-yield savings account. Accept lower returns for certainty
-- **Moderate**: Split it between savings and a conservative investment (like a bond fund)
-- **Aggressive**: Invest it, knowing you might need to delay your goal if markets drop at the wrong time
+- **Conservative**: Keeping it in a high-yield savings account, accepting lower returns for certainty
+- **Moderate**: Splitting it between savings and a conservative investment (like a bond fund)
+- **Aggressive**: Investing it, knowing the goal might need to be delayed if markets drop at the wrong time
 
 There's no universally right answer here. It depends on how flexible your timeline is and how comfortable you are with uncertainty.
 
@@ -198,30 +198,30 @@ At these illustrative rates, the "safe" choice gives up over €62,000 over 30 y
 
 ## The risk of investing too early
 
-The opposite mistake is investing before you're ready.
+The opposite mistake is investing money that may be needed soon.
 
-If you invest your emergency fund and the market drops 25% the same month you lose your job, you'll be forced to sell at a loss, turning a temporary paper loss into a permanent real one. This is why the sequence matters.
+If an emergency fund is invested and the market drops 25% the same month a job is lost, the money may have to be sold at a loss, turning a temporary paper loss into a permanent real one. This is why the sequence matters.
 
-Investing money you might need soon is speculation, not planning.
+Investing money you might need soon is closer to speculation than planning.
 
-## The right sequence
+## A common sequence
 
-A useful default order, which you can adapt:
+There is no single right order, but a common default, which people adapt to their situation, looks like this:
 
-1. **Build a starter emergency fund** (1 month of expenses in a savings account). If your employer matches retirement contributions, taking the match early is often worth it too
-2. **Pay off [high-interest debt](/blog/how-to-get-out-of-debt/)** (credit cards first; above roughly 8-10% almost always wins, while 4-8% is a judgement call that depends on tax, inflation and your risk tolerance)
-3. **Complete your emergency fund** (3-6 months of expenses)
-4. **Start investing** (long-term surplus into diversified investments)
+1. **A starter emergency fund** (about 1 month of expenses in a savings account). Where an employer matches retirement contributions, many people take the match early too
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/)** (credit cards first; above roughly 8-10% almost always wins, while 4-8% is a judgement call that depends on tax, inflation and risk tolerance)
+3. **A fuller emergency fund** (often 3-6 months of expenses)
+4. **Investing** long-term surplus in diversified investments
 
-Skip a step and you create fragility. Invest before your emergency fund is built and one unexpected expense puts you into debt. Pay off low-interest debt aggressively while ignoring retirement investing and you lose years of compound growth.
+The reasoning is about fragility. Investing before a safety net exists means one unexpected expense can lead to debt. Paying down low-interest debt aggressively while ignoring retirement saving gives up years of compound growth. Country rules, income stability and the size of your debts can all shift the order.
 
-## What you can do
+## What this means in practice
 
-1. **Know where each euro belongs.** Money for the next 1-3 years goes into savings. Money for 5+ years goes into investments. Money for 3-5 years depends on your flexibility
-2. **Don't leave long-term money in a savings account.** After your emergency fund is secure, surplus cash in a savings account is slowly losing value. It needs to work harder
-3. **Don't invest your safety net.** Your emergency fund earns a low return on purpose. That's the price of having it when you need it
-4. **Follow a sequence.** Emergency fund, then debt payoff, then investing, adjusted for any employer match. Boring? Yes. It also stops one bad month from undoing the rest
+1. **Each euro has a timeline.** Money for the next 1-3 years usually sits in savings. Money for 5+ years is where investing is most common. Money for 3-5 years depends on how flexible the goal is
+2. **Long-term money in savings has a cost.** Once an emergency fund exists, surplus cash in a savings account tends to lose value in real terms
+3. **A safety net is meant to be boring.** An emergency fund earns a low return on purpose. That's the price of having it when it's needed
+4. **A sequence prevents one bad month from undoing the rest.** Most variations start with a cushion, deal with expensive debt, then invest
 
-Saving and investing aren't competing strategies. They're complementary tools with different jobs. Use each one where it belongs, in the right order, and your money works as hard as you do.
+Saving and investing aren't competing strategies. They're complementary tools with different jobs, and seeing which job each euro is doing is most of the skill.
 
 Knowing when to save and when to invest is half the battle. The other half is making sure your money actually goes where you intended each month. That's what budgeting is for, and it's where we're heading next.

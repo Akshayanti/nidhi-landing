@@ -35,9 +35,9 @@ faq:
   - question: "Why does starting to invest early matter so much?"
     answer: "Because time is often the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €263,000 and Person B about €244,000. The earlier starter invested one-third as much and finished ahead. At a steady 7%, ten extra years of compounding beat thirty years of triple contributions; with lower or bumpier returns the gap narrows, but the lesson holds, which is why starting now beats waiting for the perfect moment."
   - question: "Is a car an asset or a depreciating expense?"
-    answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years. You count it at current market value, but you should not expect it to build wealth. The practical move is to minimize depreciation: buy a reliable used car rather than new, and avoid financing it at a high rate, which stacks interest on top of falling value."
+    answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years. You count it at current market value, but you should not expect it to build wealth. Ways people limit the hit include buying a reliable used car rather than new, since much of the depreciation has already happened, and not financing it at a high rate, which stacks interest on top of falling value. Reliability, warranty and budget shape which trade-off makes sense."
   - question: "What kinds of assets typically appreciate?"
-    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. The takeaway is to channel money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
+    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. That is why many people direct long-term money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
 ---
 
 You've got [assets](/blog/assets/) on one side and [liabilities](/blog/liabilities/) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.
@@ -119,13 +119,13 @@ When you're evaluating any purchase or investment, ask: will this be worth more 
 | Retirement accounts | Furniture |
 | Education (if it increases earning power) | Clothing |
 
-This doesn't mean you should never buy depreciating assets. You need a car to get to work. You need a laptop. The point is to be honest about what they are: expenses, not investments. And to make sure appreciating assets are making up the difference.
+None of this means depreciating things are bad buys. Most people need a car to get to work, or a laptop. The point is to be honest about what they are: expenses, not investments, and to know whether anything on the appreciating side is making up the difference.
 
-## What you can do
+## What this means in practice
 
-1. **Put money into appreciating assets.** Index funds, retirement accounts, and (eventually) real estate are the most accessible ways to let compound interest work for you.
-2. **Minimize depreciating purchases.** Buy reliable used cars instead of new. Don't finance consumer goods at high rates.
-3. **Eliminate high-interest debt as fast as possible.** As we covered in the [liabilities post](/blog/liabilities/), this is the highest guaranteed return available to you.
-4. **Start now.** Time is the most powerful lever in compounding, and it's the one you can't get back.
+1. **Where compounding works for people.** Broad index funds, retirement accounts and, for some, real estate are the most common ways people let compounding work over long periods, each with its own risks, costs and tax rules depending on your country.
+2. **How depreciation shows up.** A used car loses value more slowly than a new one, and financing a depreciating item at a high rate stacks interest on top of the falling value. Whether that trade-off is worth it depends on reliability, warranty and your budget.
+3. **Why high-interest debt matters here.** As we covered in the [liabilities post](/blog/liabilities/), clearing high-interest debt is a guaranteed return equal to its rate, which is hard for any investment to match.
+4. **Why timing matters.** Time is often the most powerful lever in compounding, and it's the one you can't get back, which is why the start date matters so much in the examples above.
 
 Understanding appreciation and depreciation; and the compound interest that drives both; changes how you see every financial decision. In the next post, we'll look at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.

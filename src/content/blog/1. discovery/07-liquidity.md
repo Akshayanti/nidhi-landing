@@ -34,11 +34,11 @@ faq:
   - question: "Why is low liquidity a financial risk?"
     answer: "Because you can be asset-rich and cash-poor, worth a lot on paper but unable to pay for an emergency. Imagine someone with €50,000 in a house and €2,000 in savings: net worth €52,000. If the car needs a €3,000 repair, they cannot reach the house's value without selling it or borrowing against it, both slow and costly. Compare someone with €20,000 in index funds and €10,000 in savings: lower net worth, but they cover the repair easily. A higher net worth does not always mean a stronger position; without liquid funds, a routine expense becomes a crisis."
   - question: "How much of my money should I keep liquid?"
-    answer: "A practical framework has three tiers. First, an emergency fund: keep three to six months of essential expenses in a savings account, your liquidity baseline. Second, medium-term savings: money you will need in one to five years (a house deposit, a car, a wedding) belongs in safe, accessible places like high-yield savings, short-term bonds, or term deposits. Third, long-term investments: money you will not touch for five years or more can go into index funds and other appreciating but less liquid assets, where accepting ups and downs is the trade-off for higher expected returns. Match liquidity to your timeline."
+    answer: "There is no single right ratio, but a common framework has three tiers. First, an emergency fund: many people hold three to six months of essential expenses in a savings account as a liquidity baseline. Second, medium-term savings: money needed in one to five years (a house deposit, a car, a wedding) is usually kept in safer, accessible places like high-yield savings, short-term bonds, or term deposits. Third, long-term investments: money not needed for five years or more is where people typically accept ups and downs in index funds and similar assets in exchange for higher expected returns. The common thread is matching liquidity to the timeline; income stability, insurance and your country's safety net shift the sizes."
   - question: "Why not just keep everything in cash to stay liquid?"
     answer: "Because cash is liquid but loses purchasing power to inflation every year, so beyond your emergency fund and short-term goals, excess cash slowly erodes in real terms. Illiquid assets exist for good reasons: real estate builds equity and can appreciate significantly, retirement accounts carry tax advantages that often justify the lock-up, and long-term investments have historically rewarded those who could stay invested through the swings. The mistake on the other side is keeping too little in cash, which forces you to sell investments at whatever the market price is, possibly down, exactly when you need the money. Balance beats either extreme."
   - question: "Is an asset I can borrow against the same as a liquid asset?"
-    answer: "No. Accessible is not the same as liquid. A home equity line of credit lets you borrow against your house, but you are taking on debt and paying interest, not converting the asset to cash at its full value. True liquidity means you can turn the asset into spendable money quickly without loss and without creating a new obligation. Confusing the two is a common mistake: people assume a valuable but illiquid asset will cover an emergency, only to find that reaching its value means selling slowly, paying fees, or borrowing at interest. Plan with genuinely liquid funds instead."
+    answer: "No. Accessible is not the same as liquid. A home equity line of credit lets you borrow against your house, but you are taking on debt and paying interest, not converting the asset to cash at its full value. True liquidity means you can turn the asset into spendable money quickly without loss and without creating a new obligation. Confusing the two is a common mistake: people assume a valuable but illiquid asset will cover an emergency, only to find that reaching its value means selling slowly, paying fees, or borrowing at interest. That is why emergency planning usually counts only genuinely liquid funds."
 ---
 
 You might have €100,000 in [net worth](/blog/what-is-net-worth/) and still not be able to pay a €2,000 car repair bill. 
@@ -122,21 +122,23 @@ Higher net worth doesn't always mean better financial position. Liquidity matter
 
 ## When illiquidity is appropriate
 
-This doesn't mean you should keep everything in cash. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
+This doesn't make all-cash the answer. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
 
 - **Real estate** builds equity over the long term and can [appreciate](/blog/appreciation-vs-depreciation/) significantly
 - **Retirement accounts** have tax advantages that often make the lock-up period worthwhile
 - **Long-term investments** have historically earned higher returns as payment for riding out the ups and downs, and [compound interest](/blog/appreciation-vs-depreciation/) rewards that patience
 
-The key is matching your liquidity to your timeline. Money you need in the next few years should be more liquid. Money you won't touch for decades can afford to be less liquid.
+The underlying idea is matching liquidity to timeline. Money needed in the next few years usually needs to be more liquid. Money that won't be touched for decades can afford to be less liquid.
 
-## The right balance
+## A common framework
 
-There's no single correct ratio, but a practical framework:
+There's no single correct ratio, but many people think in three tiers:
 
-1. **Emergency fund first.** Keep enough in a savings account to cover three to six months of essential expenses. This is your liquidity baseline. As we'll cover in the next post, it exists so you never have to sell investments at a loss or take on high-interest debt in a crisis
-2. **Medium-term savings next.** Money you'll need in 1-5 years (a house deposit, a car, a wedding) should be in relatively safe, accessible places: high-yield savings, short-term bonds, or term deposits
-3. **Long-term investments after that.** Money you won't need for 5+ years can go into index funds and other appreciating but less liquid assets. The volatility, and in some accounts the lock-up, is the trade-off for higher expected returns
+1. **Emergency fund.** Enough in a savings account to cover a few months of essential expenses, often three to six. This is the liquidity baseline. As we'll cover in the next post, it exists so a crisis doesn't force a sale of investments at a loss or a high-interest loan
+2. **Medium-term savings.** Money needed in 1-5 years (a house deposit, a car, a wedding) is usually kept in relatively safe, accessible places: high-yield savings, short-term bonds, or term deposits
+3. **Long-term investments.** Money not needed for 5+ years is where people typically use index funds and other growth assets. The volatility, and in some accounts the lock-up, is the trade-off for higher expected returns
+
+The sizes depend on your income stability, insurance, your country's safety net and how soon your goals arrive.
 
 ## Common liquidity mistakes
 

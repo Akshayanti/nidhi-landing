@@ -56,7 +56,7 @@ The value is not the ending number in the alternate scenario. Ending numbers in 
 
 Most scenarios revolve around five inputs. Getting these right captures most of what scenario analysis can tell you.
 
-**Monthly savings.** The single most sensitive input in most projections. €200 a month more for 30 years at 6% real growth is worth roughly €195,000 in ending balance. €500 a month is worth roughly €487,000. This is compounding on recurring contributions, and it is much larger than most people expect.
+**Monthly savings.** Often the most sensitive input you control. €200 a month more for 30 years at 6% real growth is worth roughly €195,000 in ending balance. €500 a month is worth roughly €487,000. This is compounding on recurring contributions, and it is much larger than most people expect.
 
 **The growth assumption.** The projections post showed that two percentage points of growth add roughly half again to a 30-year result. Scenarios often reveal that the decision depends more on which growth rate you assumed than on the decision itself, which is why every scenario should be run at a low and a middle rate, not only one.
 
@@ -82,21 +82,21 @@ Some scenario results surprise people every time.
 
 **One-off changes are much smaller than they feel.** Eva's €4,000 holiday is worth roughly €23,000 at year 30, invested instead of spent. Real money, but dwarfed by the €146,000 the rent costs. Guilt tracks how noticeable a purchase is; the arithmetic tracks how often it repeats. The [mental accounting post](/blog/mental-accounting/) covers why the two come apart.
 
-**Time is asymmetric.** The projections post showed the cost of small delays. It applies to every scenario: a €200 monthly increase started five years late produces roughly 30% less by year 30, because the years you lose are the ones with the most time to compound. Starting small early beats starting big late in almost every scenario.
+**Time is asymmetric.** The projections post showed the cost of small delays. It applies to every scenario: a €200 monthly increase started five years late produces roughly 30% less by year 30, because the years you lose are the ones with the most time to compound. That is why starting small early often comes out closer to starting big late than people expect.
 
 ## Run the bad case first
 
 A plan that only works in the base case is a fragile plan. A plan that survives a bad scenario is one you can actually commit to.
 
-A practical order: baseline first (your current numbers, the middle growth rate), then the downside (low growth, lower income, an unplanned large expense), then the upside (higher growth, a promotion, side income). If the downside still lands somewhere acceptable, the plan is robust. If it does not, that is the signal to change the plan, not to argue with the assumptions.
+A practical order: baseline first (your current numbers, the middle growth rate), then the downside (low growth, lower income, an unplanned large expense), then the upside (higher growth, a promotion, side income). If the downside still lands somewhere acceptable, the plan is robust. If it does not, that is useful information about the plan, and arguing with the assumptions until the downside looks better hides it. What counts as acceptable depends on your buffers, your job security and who depends on you.
 
-Most people run the upside first because it feels good. That order is backwards. The upside tells you nothing you need to know. The downside tells you whether you can sleep.
+Many people run the upside first because it feels good. The upside is pleasant to see, but it rarely changes a decision. The downside tells you whether you can sleep.
 
 ## Getting started
 
 - **Write down the decision you are actually facing.** A job offer, a move, a bigger home, a higher savings rate. One decision, stated as a change to one input.
 - **Run it against your baseline at a low and a middle growth rate.** Note the delta, not the ending balance.
 - **If the decision bundles several changes, split them.** Run each one alone, then together.
-- **Run the bad case before you decide.** If you could live with it, decide. If not, change the plan first.
+- **Run the bad case before you decide.** Ask whether you could live with it. If not, that is worth knowing before the decision, not after.
 
 A scenario is decision support before the decision, not a justification after it. Used that way, it turns "can we afford this?" into a number you can look at, and it moves your attention from the purchases you feel bad about to the ones that repeat.

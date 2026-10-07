@@ -60,20 +60,20 @@ Every tax-advantaged account on earth fits, more or less, into one of these:
 
 Most readers will have access to accounts in at least categories 1, 2, and 3. Categories 4 and 5 vary more by country.
 
-## The order to fill them
+## The order commonly suggested
 
-Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing/) and extends it once you reach the investing stage:
+Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing/) and extends it to the investing stage. It is a description of a common default, not a prescription:
 
-1. **Build a starter emergency fund.** One month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
-2. **[Pay down high-interest debt](/blog/how-to-get-out-of-debt/).** In a low-inflation economy, anything over roughly 8-10% (credit cards, some personal loans); in higher-inflation countries, judge the rate against inflation instead. This is a certain saving equal to the interest rate. Because debt is paid down with after-tax money, the equivalent pre-tax investment return needed to beat it is even higher: at a 30% marginal tax rate, paying off 8% debt is equivalent to roughly an 11% pre-tax investment return. Hard to beat with diversified investments.
-3. **Complete your emergency fund.** Three to six months of essential expenses.
-4. **Capture any employer match (Category 1).** A 50 to 100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place. Many people take the match as soon as the starter fund exists rather than waiting for the full fund; either order is defensible if the money can stay invested.
-5. **Max out tax-advantaged retirement accounts** up to their annual contribution limits. Tax-deferred (Category 2) often suits people in a high bracket now expecting a lower one in retirement; tax-free-growth (Category 3) often suits people in a low bracket now or expecting higher future taxes. Many long-term savers use both to keep optionality on future tax brackets.
-6. **Fill purpose-specific accounts (Category 4) aligned with your goals.** If you have children, education accounts. If you have healthcare exposure, HSA-type accounts.
-7. **Use equity-linked savings (Category 5) only after the above are filled**, and only where the lockup matches your horizon.
-8. **Use a taxable brokerage** for everything that doesn't fit in tax-advantaged wrappers.
+1. **A starter emergency fund.** About one month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** In a low-inflation economy, anything over roughly 8-10% (credit cards, some personal loans); in higher-inflation countries, judge the rate against inflation instead. This is a certain saving equal to the interest rate. Because debt is paid down with after-tax money, the equivalent pre-tax investment return needed to beat it is even higher: at a 30% marginal tax rate, paying off 8% debt is equivalent to roughly an 11% pre-tax investment return. Hard to beat with diversified investments.
+3. **A fuller emergency fund.** Often three to six months of essential expenses.
+4. **Any employer match (Category 1).** A 50 to 100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place. Many people take the match as soon as the starter fund exists rather than waiting for the full fund; either order is defensible if the money can stay invested.
+5. **Tax-advantaged retirement accounts**, often filled up to their annual contribution limits by those who can afford to lock the money away. Tax-deferred (Category 2) often suits people in a high bracket now expecting a lower one in retirement; tax-free-growth (Category 3) often suits people in a low bracket now or expecting higher future taxes. Many long-term savers use both to keep optionality on future tax brackets.
+6. **Purpose-specific accounts (Category 4) where a goal matches.** Education accounts for people with children, HSA-type accounts for people with healthcare exposure.
+7. **Equity-linked savings (Category 5)**, usually after the above, and only where the lockup matches the horizon.
+8. **A taxable brokerage** for everything that doesn't fit in tax-advantaged wrappers.
 
-This ordering aims to get the most benefit from each euro of savings while keeping you safe. Plenty of legitimate reasons exist to deviate from it (an immediate employer-match deadline, imminent debt distress, irregular income, near-term liquidity needs, jurisdictional quirks), but if none of those apply, this is a strong default.
+The logic is to get the most benefit from each euro of savings while staying resilient. Plenty of legitimate reasons exist to deviate from it (an immediate employer-match deadline, imminent debt distress, irregular income, near-term liquidity needs, jurisdictional quirks), which is why it works best as a starting map for your own situation rather than a fixed answer.
 
 The rest of this post explains what each category looks like in practice, with a reference of country-specific vehicles at the end.
 
@@ -85,7 +85,7 @@ The rest of this post explains what each category looks like in practice, with a
 
 **Common examples:** 401(k) plans in the US; workplace pensions under auto-enrolment in the UK; the Employees' Provident Fund (EPF) in India; Superannuation in Australia; CPF in Singapore. Match levels vary widely. US employers typically match 50 to 100% of your first 3 to 6% of salary, while UK auto-enrolment requires at least 3% employer plus 5% employee. The country reference at the end of this post has the full list.
 
-**The general rule:** once a starter emergency fund is in place and any very-high-interest debt is being addressed, capturing the full employer match is typically the next investing move. The match is one of the largest single uplifts available to a retail saver, so leaving it on the table for any extended period is rarely worth it.
+**How it's usually treated:** once a starter emergency fund is in place and any very-high-interest debt is being addressed, most frameworks put capturing the full employer match next. The match is one of the largest single uplifts available to a retail saver; the main reasons people delay it are vesting rules, a likely job change, or not being able to afford locking up the money.
 
 ## Category 2: Tax-deferred personal retirement accounts
 
@@ -172,21 +172,21 @@ A dash means there is no widely-used vehicle in that category in that jurisdicti
 
 ## Common mistakes
 
-- **Ignoring the employer match.** One of the most expensive common mistakes. If you only take one action from this post, capture the full match first.
+- **Ignoring the employer match.** One of the most expensive common mistakes, because the match is an immediate uplift few other moves can equal, subject to vesting and whether the money can stay invested.
 - **Only contributing to one category.** Many long-term savers diversify across multiple wrappers (tax-deferred for current deduction, tax-free-growth for future flexibility). Forcing everything into one wrapper sacrifices optionality on future tax brackets.
-- **Treating tax-advantaged accounts as the investment.** The account is a wrapper. You still need to choose funds inside it. An untouched default fund with high fees can easily erase the tax advantage.
+- **Treating tax-advantaged accounts as the investment.** The account is a wrapper. What it holds still matters. An untouched default fund with high fees can easily erase the tax advantage.
 - **Using purpose-specific accounts for the wrong purpose.** Pulling money out of an HSA for non-medical reasons, or a 529 for non-education, usually triggers taxes and penalties that wipe out the advantage.
-- **Withdrawing early and losing the tax break.** Most tax-advantaged accounts penalise early withdrawals heavily. Contributing money you need in the next five years into a retirement-locked account is usually a mistake.
+- **Withdrawing early and losing the tax break.** Most tax-advantaged accounts penalise early withdrawals heavily. Money likely to be needed in the next five years usually fits poorly in a retirement-locked account.
 - **Not understanding your own country's rules.** The functional categories in this post are a map, not a substitute for reading the actual contribution limits, deduction rules, and withdrawal mechanics in your jurisdiction.
 
-## What you can do
+## What this means in practice
 
-> These are general educational suggestions, not personalised advice. Your circumstances may warrant a different sequence; consider professional advice before making decisions involving real money.
+> This is general education, not personalised advice. Your circumstances may call for a different sequence; consider professional advice before making decisions involving real money.
 
 1. **List the tax-advantaged accounts available to you.** For your country, what's the equivalent of each of the five categories? If you don't know, a single afternoon of reading usually covers it.
-2. **Check your employer match.** If you have one and aren't capturing the full amount once high-interest debt and a starter emergency fund are in place, this is typically the highest-leverage adjustment to make next.
-3. **Order your contributions by the priority above.** Write it down. Automate it. Review it annually.
-4. **Match the account to your tax situation.** High bracket now, expect lower later? Tax-deferred is often a fit. Low bracket now, expect higher later? Tax-free-growth often is. Uncertain? Many savers split across both to keep optionality.
-5. **Don't let account choice delay investing.** Delay from over-analysis can easily cost more than a slightly imperfect account choice. You can always adjust allocations in future years; you cannot recover missed years of growth.
+2. **Find out your employer match terms.** Contribution percentage, vesting and eligibility determine how much the match is worth to you, and why most frameworks rank it so highly.
+3. **The common order is a map, not a rule.** Many people write down their own version of the priority list above, adjusted for their debts, income stability and country, and revisit it once a year.
+4. **The account type follows the tax situation.** High bracket now and lower expected later tends to favour tax-deferred; low bracket now and higher expected later tends to favour tax-free-growth. When the future is uncertain, many savers split across both to keep optionality.
+5. **Perfect can be the enemy of started.** Delay from over-analysis can easily cost more than a slightly imperfect account choice, since contributions can usually be redirected in future years but missed years of growth can't be recovered.
 
 The next post covers rebalancing: how to maintain your target allocation over time once you're actually investing across these accounts.

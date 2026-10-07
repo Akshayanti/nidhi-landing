@@ -2,7 +2,7 @@
 slug: "understanding-loan-terms"
 title: "Understanding Loan Terms: How to Compare Borrowing Options"
 description: "When you borrow, interest rate is only part of the story. APR, amortisation, fixed vs. variable, and prepayment rules decide what the loan really costs."
-tldr: "The advertised rate on a loan is almost never the whole cost. APR (annual percentage rate) includes fees and is the number you should actually compare. Amortisation explains why early payments go mostly to interest and late payments mostly to principal, which matters hugely for refinancing and prepayment decisions. Fixed rates trade predictability for potentially higher cost; variable rates can be cheaper but carry the risk of future payment shock. To compare two loans honestly, normalise for term and amount and compare the total cost of borrowing (or equivalently, the IRR of the cash flows). Prepayment is one of the most powerful ways to reduce total interest paid, as long as your loan allows it without penalty. Kept generic: specific rules and products vary heavily by country and provider."
+tldr: "The advertised rate on a loan is almost never the whole cost. APR (annual percentage rate) includes fees and is the more honest number to compare. Amortisation explains why early payments go mostly to interest and late payments mostly to principal, which matters hugely for refinancing and prepayment decisions. Fixed rates trade predictability for potentially higher cost; variable rates can be cheaper but carry the risk of future payment shock. To compare two loans honestly, normalise for term and amount and compare the total cost of borrowing (or equivalently, the IRR of the cash flows). Prepayment is one of the most powerful ways to reduce total interest paid, as long as your loan allows it without penalty. Kept generic: specific rules and products vary heavily by country and provider."
 takeaways:
   - "Why APR is a fairer comparison than the advertised rate"
   - "How amortisation makes early payments mostly interest"
@@ -259,7 +259,7 @@ The best offer is not always the one with the lowest rate. It's the one whose to
 4. **Check prepayment rules before signing.** Free prepayment is a valuable option even if you never use it
 5. **Model the worst case.** For any variable-rate loan, model the highest realistic rate and confirm you can live with the payment
 6. **Do the break-even math on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
-7. **Prepay aggressively when the rate is high.** For high-interest loans, extra principal is a guaranteed return. For low-interest loans, investing the extra money often comes out ahead over long periods, but prepaying is a guaranteed return and can suit cautious savers. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
+7. **The case for prepaying rises with the rate.** For high-interest loans, extra principal is a guaranteed return that is hard to beat. For low-interest loans, investing the extra money often comes out ahead over long periods, but prepaying is a guaranteed return and can suit cautious savers. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
 
 Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortisation schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
 

@@ -2,7 +2,7 @@
 slug: "gig-and-informal-economy-work"
 title: "Gig and Informal Work: Planning Without an Employer"
 description: "No payroll, no pension match, no paid leave. How freelancers, gig and cash workers rebuild the benefits an employer provides and smooth uneven income."
-tldr: "Most financial advice assumes an employer stands behind you: tax is withheld before you are paid, a pension contribution arrives without you asking, health cover and sick pay exist, and income lands on the same day each month. Freelancers, platform workers, and people paid in cash get none of that automatically. Two things follow. First, the rate you charge has to fund everything an employer would have paid for, which is why a freelance day rate needs to be roughly one and a half to two times the salaried equivalent just to break even. Second, uneven income is a variance problem, not a discipline problem, and it has a mechanical fix: let all income land in one holding account, move a fixed share aside for tax the day it arrives, and pay yourself the same modest 'salary' every month from what is left. A buffer of a few weeks absorbs the swings. This post walks through the employer bundle item by item, a worked example of the salary method across twelve uneven months, and what changes when income is informal and leaves no paper trail."
+tldr: "Most financial advice assumes an employer stands behind you: tax is withheld before you are paid, a pension contribution arrives without you asking, health cover and sick pay exist, and income lands on the same day each month. Freelancers, platform workers, and people paid in cash get none of that automatically. Two things follow. First, the rate you charge has to fund everything an employer would have paid for, which is why a common rule of thumb puts a freelance day rate at roughly one and a half to two times the salaried equivalent just to break even. Second, uneven income is a variance problem, not a discipline problem, and a common mechanical fix is to have all income land in one holding account, move a fixed share aside for tax the day it arrives, and pay a steady, modest 'salary' every month from what is left. A buffer of a few weeks absorbs the swings. This post walks through the employer bundle item by item, a worked example of the salary method across twelve uneven months, and what changes when income is informal and leaves no paper trail."
 takeaways:
   - "Why a freelance rate must fund what an employer used to pay for"
   - "How a holding account and a fixed salary smooth uneven income"
@@ -22,13 +22,13 @@ faq:
   - question: "What is income smoothing?"
     answer: "Income smoothing means separating when money arrives from when you spend it. All income goes into a holding account. A fixed percentage is moved aside for tax immediately. From the rest, you pay yourself a fixed amount on a fixed date, like a salary. Good months top the holding account up; bad months draw it down. Your household budget then runs on the steady figure, not on the month's luck."
   - question: "How do I decide what monthly 'salary' to pay myself?"
-    answer: "Start from the last twelve months of income after tax set-asides and pick a figure somewhat below the average, so that the holding account grows a little over the year. If you do not have twelve months of history, use your weakest realistic month as the salary and treat everything above it as buffer. Review the figure every six months. Raising it is easy. Cutting it after you have adjusted your spending upward is painful, so err low."
+    answer: "A common approach starts from the last twelve months of income after tax set-asides and picks a figure somewhat below the average, so that the holding account grows a little over the year. Without twelve months of history, some people use their weakest realistic month as the salary and treat everything above it as buffer. Reviewing the figure every six months is typical. Raising it is easy; cutting it after spending has adjusted upward is painful, which is why many people start low."
   - question: "How big should the emergency fund be with irregular income?"
     answer: "A common guideline for salaried households is three to six months of expenses. With variable income the same logic points to the upper end or beyond, often six to twelve months, because a quiet period and an emergency can arrive together and there is no sick pay or notice period to bridge the gap. The smoothing buffer and the emergency fund do different jobs: the buffer handles ordinary month-to-month swings, the emergency fund handles a real interruption."
   - question: "What if I am paid in cash and have no payslips?"
     answer: "Then the missing piece is evidence. Landlords, lenders, and visa offices all ask for proof of income, and cash leaves none unless you create it. Keep a simple dated log of what you were paid and by whom, deposit income into an account where that is possible so there is a bank record, and keep any receipts or messages confirming payment. A consistent twelve-month record you made yourself is far more useful than no record."
   - question: "Do I have to pay tax during the year if nobody withholds it?"
-    answer: "In most countries, yes. Where an employer would have withheld tax from each payslip, a self-employed person usually pays in instalments during the year or in a lump after it ends. The schedule and the amounts are set by local rules. The planning point is universal: the tax is owed from the day you earn the money, so set it aside that day. Treating gross income as spendable is the most common way freelancers end up with a bill they cannot pay."
+    answer: "In most countries, yes. Where an employer would have withheld tax from each payslip, a self-employed person usually pays in instalments during the year or in a lump after it ends. The schedule and the amounts are set by local rules. The planning point is universal: the tax is owed from the day you earn the money, so set it aside that day. Treating gross income as spendable is a common way freelancers end up with a bill they cannot pay."
 reelPromise: "A twelve-month worked example of paying yourself a steady salary from uneven income, and the full list of what an employer was quietly paying for"
 relatedSlugs: ["growing-your-income", "cash-flow-forecasting", "emergency-fund", "tax-advantaged-accounts"]
 referentialReading:
@@ -92,7 +92,7 @@ The post on [tax-advantaged accounts](/blog/tax-advantaged-accounts/) explained 
 Two things differ when you do:
 
 - **There is no match.** An employer match is an instant return that nothing else reproduces. Without it, the whole contribution is yours to find, which is another reason the rate has to be higher.
-- **Contributions should follow income, not the calendar.** A fixed monthly contribution can be impossible in a bad month. A percentage of every payment received works in any month.
+- **Contributions can follow income, not the calendar.** A fixed monthly contribution can be impossible in a bad month, which is why many self-employed people contribute a percentage of every payment received instead.
 
 Most countries have a retirement vehicle open to the self-employed, and several have one designed for them. The names are local. The function is the same.
 
@@ -194,9 +194,9 @@ Income that swung between €600 and €5,100 became a flat €2,000 every month
 
 ### Setting the salary
 
-Pick a figure below your after-tax average, not at it. If you have a year of history, something around 90% of the average leaves room for a worse year. If you have no history, start at your weakest realistic month and raise it later.
+A common approach is a figure below the after-tax average, not at it. With a year of history, something around 90% of the average leaves room for a worse year. Without history, some people start at their weakest realistic month and raise it later.
 
-Raising a salary is pleasant. Cutting one after your spending has adjusted upward is not. Err low.
+Raising a salary is pleasant. Cutting one after spending has adjusted upward is not, which is why many people start low.
 
 ## When income is informal
 
@@ -204,7 +204,7 @@ Everything above assumes invoices and a bank account. For cash and informal work
 
 **The evidence gap.** A payslip is proof. Landlords, lenders, and immigration offices all ask for it. Cash income leaves no record unless you make one. A dated log of every payment, regular deposits into an account where you can get one, and saved messages or receipts together form a record that can stand in for payslips. Twelve consistent months of your own records carry real weight.
 
-**The safety-net gap.** Informal work usually sits outside social insurance altogether: no pension credits, no sick pay, no unemployment cover. Some countries allow voluntary contributions into the public pension or health system, and where that exists it is often the cheapest protection available.
+**The safety-net gap.** Informal work usually sits outside social insurance altogether: no pension credits, no sick pay, no unemployment cover. Some countries allow voluntary contributions into the public pension or health system, and where that exists it can be good-value protection, depending on the rules; it is worth checking locally.
 
 Informal workers have also built their own smoothing tools for generations. **Rotating savings groups** (a group of people each pay in a fixed amount regularly, and each member takes the whole pot in turn) exist on every continent under different names: tontine, susu, tanda, chit fund, hui. They turn small irregular surpluses into a usable lump sum and they run on trust. That is also their weakness: if a member defaults or an organiser disappears, there is rarely any legal protection. They work best among people who know each other well, and as a supplement to savings you hold in your own name.
 
@@ -214,7 +214,7 @@ The post on the [emergency fund](/blog/emergency-fund/) gave three to six months
 
 The reason is not that freelancers are reckless. It is that three protections an employee has are missing at once: no sick pay if you are ill, no notice period if a client leaves, and in most places no unemployment benefit. The emergency fund has to stand in for all three.
 
-Keep it separate from the holding account. The holding account handles ordinary swings. The emergency fund is for a real interruption.
+Many people keep it separate from the holding account. The holding account handles ordinary swings. The emergency fund is for a real interruption.
 
 ## Cross-continent notes
 
@@ -229,8 +229,8 @@ Keep it separate from the holding account. The holding account handles ordinary 
 ## Getting started
 
 - **Price your bundle.** Work out your billable days and what you need to earn, including pension and insurance. Compare the result with what you charge now.
-- **Open two accounts.** A holding account and a tax account. Route all income to the first and move the tax share the day money arrives.
-- **Set a salary below your average.** Pay it on a fixed date. Review it in six months.
+- **Consider the two-account setup.** A holding account and a tax account, with all income routed to the first and the tax share moved the day money arrives. Check locally what share to set aside.
+- **Work out a salary below your average,** paid on a fixed date and reviewed after six months.
 - **Start a record if you are paid in cash.** A dated log, from today.
 
 An employer is, among other things, a machine for turning uneven business income into steady pay with benefits attached. Working without one does not mean going without those things. It means building the machine yourself.

@@ -127,16 +127,16 @@ Many people think credit scores only matter if you plan to borrow. But your cred
 
 A good credit score isn't about planning to take on debt. It's about keeping options open.
 
-## How to build good credit
+## What tends to build good credit
 
-Building credit is mostly about consistency and time. Steps 1 to 4 matter most in systems that reward positive history, like the US; in negative-data systems, paying on time and avoiding defaults does most of the work.
+Building credit is mostly about consistency and time. Points 1 to 4 matter most in systems that reward positive history, like the US; in negative-data systems, paying on time and avoiding defaults does most of the work.
 
-1. **Get a credit card and use it for small, regular purchases (if your system rewards it).** A monthly subscription or grocery shopping. The key is to use it, not to carry a large balance
-2. **Pay the full balance every month.** Not the minimum. The full amount. This way you never pay interest but you build a history of reliable repayment
-3. **Keep utilization low.** Use less than 30% of your available limit. If your limit is €3,000, try to keep your balance below €900 at any point
-4. **Don't close old accounts unnecessarily.** In US-style scoring, your oldest credit card contributes to the length of your history. Even if you rarely use it, keeping it open (with a small purchase occasionally) helps
-5. **Avoid applying for multiple credit products at once.** Each hard inquiry has a small, temporary impact. Spacing out applications reduces this
-6. **Pay all bills on time.** Not just credit cards: rent, utilities, phone bills. In many systems, these are tracked too
+1. **Light, regular use of a credit card (where the system rewards it).** In US-style systems, a small recurring purchase paid off each month is a common way to start a history. The scoring benefit comes from use and repayment, not from carrying a large balance
+2. **Paying the full balance each month.** Paying in full avoids interest entirely while still building a record of reliable repayment
+3. **Low utilization.** Many scoring models favour using a small share of your limit; under 30% is a widely quoted guideline. On a €3,000 limit, that means a balance below €900
+4. **Account age.** In US-style scoring, your oldest credit card contributes to the length of your history, which is why people often keep old cards open with an occasional small purchase
+5. **Spacing out applications.** Each hard inquiry has a small, temporary impact, so several applications at once weigh more than the same number spread out
+6. **On-time bills of all kinds.** Not just credit cards: rent, utilities, phone bills. In many systems, these are tracked too
 
 ## Common myths
 
@@ -144,7 +144,7 @@ Building credit is mostly about consistency and time. Steps 1 to 4 matter most i
 
 **"I need to carry a balance to build credit."** No. Paying your full balance every month builds credit just as effectively, and you avoid paying any interest.
 
-**"I have no credit history, so my score must be fine."** Not necessarily. In systems that reward positive history, no history can be as limiting as bad history, because lenders have nothing to base their assessment on. This is common for people new to a country or young adults. Where that applies, start building history early with a basic credit card.
+**"I have no credit history, so my score must be fine."** Not necessarily. In systems that reward positive history, no history can be as limiting as bad history, because lenders have nothing to base their assessment on. This is common for people new to a country or young adults. Where that applies, a basic credit card used lightly is a common way to start a history.
 
 **"All debt is bad for my score."** Not true. A well-managed mortgage or installment loan that you pay on time actually strengthens your score by showing you can handle long-term obligations.
 
@@ -154,13 +154,13 @@ Your credit score doesn't appear on your balance sheet. It's not an [asset](/blo
 
 As we covered in the [liabilities post](/blog/liabilities/), the interest rate is one of the most important numbers on any debt, and your credit record is one of the things that shapes it. Think of it as the meta-number behind your borrowing costs.
 
-## What you can do
+## What this means in practice
 
-1. **Check your credit report.** Know where you stand. Most countries offer free annual credit reports. Look for errors and understand what's being tracked
-2. **Start building if you haven't.** If you have no credit history and your country's system rewards positive history, a basic credit card used lightly and paid in full each month is a common first step
-3. **Protect what you've built.** Pay on time, every time. Don't let a forgotten bill damage years of good history
-4. **Think long-term.** Credit scores reward consistency over time. There are no shortcuts, but the payoff, thousands saved on future borrowing, is worth the patience
+1. **Check your credit report.** Most countries offer free annual credit reports. Look for errors and see what's being tracked
+2. **Know how your country's system works.** If it rewards positive history and you have none, a basic card used lightly and paid in full is a common first step; if it mainly records negative data, a clean record already counts
+3. **One missed bill can outweigh years of good history.** That's why many people automate minimum payments as a backstop
+4. **It's a long game.** Credit records reward consistency over time. There are no shortcuts, and the payoff shows up as easier, often cheaper, borrowing later
 
-Your credit score is the invisible thread connecting your past financial behavior to your future borrowing costs. Take care of it early, and it quietly works in your favor for decades.
+Your credit record is the invisible thread connecting your past financial behavior to your future borrowing costs. Looked after early, it quietly works in your favor for decades.
 
 Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.

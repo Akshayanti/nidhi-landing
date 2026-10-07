@@ -2,7 +2,7 @@
 slug: "multi-generational-household-economics"
 title: "Supporting Parents While Saving for Yourself"
 description: "When three generations share money, a one-household budget misleads. How to plan support for parents as a fixed cost and weigh it against your own future."
-tldr: "Most budgeting advice pictures one couple and their children. For a large part of the world, a household is three generations sharing income, housing, childcare, and the care of elders, and money flows in every direction. Two things go wrong when that household uses advice written for a nuclear one. First, support for parents gets treated as a gift made from whatever is left, when it is really a fixed obligation that should sit near the top of the budget next to rent. Planned that way, it stops crowding out savings by accident. The shared household also has real economic advantages, in housing and childcare, that the standard picture ignores. Second, support for parents today competes directly with saving for your own old age, and the honest answer is that it is a trade-off, not something to be optimised away. €500 a month for twenty years is €120,000 given and roughly €227,000 of retirement savings not built. If that gap is never filled, your children inherit the same obligation. The post offers a way to decide on purpose: define the support, share it among siblings, protect the largest risk with insurance, and keep a floor under your own retirement saving."
+tldr: "Most budgeting advice pictures one couple and their children. For a large part of the world, a household is three generations sharing income, housing, childcare, and the care of elders, and money flows in every direction. Two things go wrong when that household uses advice written for a nuclear one. First, support for parents gets treated as a gift made from whatever is left, when it is really a fixed obligation that should sit near the top of the budget next to rent. Planned that way, it stops crowding out savings by accident. The shared household also has real economic advantages, in housing and childcare, that the standard picture ignores. Second, support for parents today competes directly with saving for your own old age, and the honest answer is that it is a trade-off, not something to be optimised away. €500 a month for twenty years is €120,000 given and, at an illustrative 5% real return, roughly €205,000 of retirement savings not built. If that gap is never filled, your children may inherit the same obligation. The post describes how families decide on purpose: defining the support, sharing it among siblings, insuring the largest risk where cover exists, and keeping a floor under their own retirement saving."
 takeaways:
   - "Why support for parents belongs at the top of the budget"
   - "What a shared household gives back in housing, care and risk"
@@ -18,13 +18,13 @@ tags: ["inclusive-finances", "planning", "goals"]
 regulatoryNote: "caution"
 faq:
   - question: "Is money I send my parents a gift or an expense?"
-    answer: "For planning, treat it as a fixed expense. A gift is optional and comes out of surplus. Support that your parents rely on to live is neither optional nor occasional: it recurs every month and cannot be skipped in a bad one. Putting it in the budget next to rent and utilities, and before discretionary spending and investing, gives you an honest picture of what is left to allocate. Tax law may classify it differently, and in most countries support to relatives gets no tax relief."
+    answer: "For planning, many people find it works better as a fixed expense. A gift is optional and comes out of surplus. Support that your parents rely on to live is neither optional nor occasional: it recurs every month and cannot be skipped in a bad one. Putting it in the budget next to rent and utilities, and before discretionary spending and investing, gives a more honest picture of what is left to allocate. Tax law may classify it differently, and in most countries support to relatives gets no tax relief."
   - question: "Should I support my parents or save for my own retirement first?"
-    answer: "There is no formula that settles it, because it is a genuine trade-off between people you love now and yourself later. A workable approach is to set a floor and a ceiling. The floor is a minimum you save for your own retirement whatever happens, including any employer match. The ceiling is a defined amount of support you can sustain for decades. Between those two lines you have room to respond to circumstances. What rarely works is an open-ended commitment with no retirement saving at all, which passes the same obligation on to your own children."
+    answer: "There is no formula that settles it, because it is a genuine trade-off between people you love now and yourself later. A workable approach is to set a floor and a ceiling. The floor is a minimum you save for your own retirement whatever happens, often set high enough to collect any employer match. The ceiling is a defined amount of support you can sustain for decades. Between those two lines you have room to respond to circumstances. What rarely works is an open-ended commitment with no retirement saving at all, which passes the same obligation on to your own children."
   - question: "What is a joint family household?"
     answer: "It is a household in which more than two adult generations, or several adult siblings and their families, live together or pool a significant part of their income and costs. The details vary widely: some share one home and one purse, some live separately and pool only certain costs such as a parent's care or a family property. What they have in common is that income and obligations are shared across what a conventional budget would count as several households."
   - question: "How should siblings share the cost of supporting parents?"
-    answer: "By agreeing it explicitly and writing it down. Equal shares are simple but can be unfair where incomes differ a great deal. Shares in proportion to income are a common alternative. Time counts as well as money: the sibling who lives nearby and provides daily care is contributing something the others are not, and that can be reflected in who pays what. Without an agreement, the burden tends to fall on whoever is closest or least able to refuse."
+    answer: "Families that avoid conflict over it usually agree it explicitly and write it down. Equal shares are simple but can be unfair where incomes differ a great deal. Shares in proportion to income are a common alternative. Time counts as well as money: the sibling who lives nearby and provides daily care is contributing something the others are not, and that can be reflected in who pays what. Without an agreement, the burden tends to fall on whoever is closest or least able to refuse."
   - question: "Do adult children have a legal duty to support their parents?"
     answer: "In some countries, yes. A number of legal systems allow parents, or the state on their behalf, to claim maintenance from adult children who can afford it, and several Asian and European countries have such laws. In most others there is no legal duty and the obligation is cultural and personal. Where a legal duty exists it can affect what you owe if a parent needs residential care, so it is worth knowing which applies to you."
   - question: "Does living with my parents help or hurt my finances?"
@@ -125,7 +125,7 @@ Every euro sent to parents is a euro not invested for your own old age. The size
 
 €500 a month for 20 years is **€120,000** given.
 
-Had the same €500 a month been invested at 6% real growth (growth after inflation), it would have become about **€227,000**.
+Had the same €500 a month been invested at 5% real growth (growth after inflation, the middle of the long-run range for developed-market equities and not guaranteed), it would have become about **€205,000**.
 
 The figure is illustrative, and it is not an argument against supporting parents. It is the actual price, and it is better known than guessed. A household that supports parents for twenty years and saves nothing for itself arrives at sixty-five needing support from its own children.
 
@@ -135,7 +135,7 @@ That is how the obligation passes down. Each generation supports the one above b
 
 A commitment with no limits is the version that does the most damage. A framework with two lines works better.
 
-**A floor under your own saving.** A minimum you put away for retirement whatever else happens. If your employer matches pension contributions, the floor is at least enough to collect the whole match. Giving that up to fund support is the most expensive money you can send.
+**A floor under your own saving.** A minimum you put away for retirement whatever else happens. Where an employer matches pension contributions, many people set the floor at least high enough to collect the whole match, because giving up an instant 50 to 100% top-up is an expensive way to fund support.
 
 **A ceiling on support.** An amount you can sustain for decades without breaking the floor. It can rise as your income rises. It should be a number.
 
@@ -145,7 +145,7 @@ Between the two lines there is room to be generous when you can and to pull back
 
 Where there are siblings, the cost of parents should rarely fall on one.
 
-- **Agree the split.** Equal shares are simple. Shares in proportion to income are usually fairer.
+- **Agree the split.** Equal shares are simple. Shares in proportion to income are often seen as fairer.
 - **Count time as well as money.** The sibling who lives with or near the parents and does the daily care is paying in hours and often in career. The post on [caregiving](/blog/caregiving-and-the-career-break-wealth-gap/) shows how large that cost is. Money from the others toward that sibling's pension is a way to even it out.
 - **Write it down and review it yearly.** Without an agreement, the load settles on whoever is nearest, eldest, or least able to refuse. It is often a daughter.
 
@@ -153,7 +153,7 @@ Where there are siblings, the cost of parents should rarely fall on one.
 
 Monthly support is predictable. A parent's hospital stay is not, and in countries without universal health care one illness can take a family's entire savings.
 
-Where it is available, **health insurance for your parents** is frequently the most valuable thing the support budget buys. A known premium replaces an unknown and possibly ruinous bill. Buy it while they are healthy. It becomes expensive or unobtainable later.
+Where it is available, **health insurance for your parents** can be one of the most valuable things the support budget buys. A known premium replaces an unknown and possibly ruinous bill. Cover is usually cheaper and easier to get while they are healthy; many policies have age limits, exclusions for existing conditions and waiting periods, so the terms are worth reading closely.
 
 ### Know what your parents have
 
@@ -181,13 +181,13 @@ When the parents are in another country, the cost of getting the money there is 
 
 **Housing.** Tax and benefit systems are usually built around the nuclear household. Living with parents can affect entitlements on both sides, so check before combining households.
 
-**Migrant families.** The obligation often reaches beyond parents to siblings, nieces, nephews, and community commitments at home. The same rule applies to all of it: name it, give it a number, and put it at the top.
+**Migrant families.** The obligation often reaches beyond parents to siblings, nieces, nephews, and community commitments at home. The same approach can apply to all of it: naming it, giving it a number, and putting it at the top of the budget.
 
 ## Getting started
 
 - **Put a number on the support.** Monthly, and what you expect it to become.
 - **Move it to the top of the budget.** Then decide saving from what remains.
-- **Set your floor.** At minimum, the full employer match.
+- **Decide on a floor.** Many people set it at least at the full employer match, where one exists.
 - **Talk to your siblings.** Agree shares and write them down.
 - **Price health cover for your parents.**
 - **Ask the questions.** What they have, what they owe, what they want.

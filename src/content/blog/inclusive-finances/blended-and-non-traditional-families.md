@@ -18,13 +18,13 @@ tags: ["inclusive-finances", "relationships", "planning"]
 regulatoryNote: "danger"
 faq:
   - question: "Do stepchildren inherit automatically?"
-    answer: "In most jurisdictions, no. Inheritance rules for people who die without a will follow legal parentage, and a stepchild is not the legal child of a step-parent unless there has been an adoption. A step-parent who has raised a child for twenty years and dies without a will usually leaves that child nothing. The fix is to name the stepchild explicitly in a will and on beneficiary forms. In some countries stepchildren also pay inheritance tax at the rate for unrelated people, which is worth checking."
+    answer: "In most jurisdictions, no. Inheritance rules for people who die without a will follow legal parentage, and a stepchild is not the legal child of a step-parent unless there has been an adoption. A step-parent who has raised a child for twenty years and dies without a will usually leaves that child nothing. The usual remedy is naming the stepchild explicitly in a will and on beneficiary forms, within whatever limits local law sets (forced heirship rules can restrict it). In some countries stepchildren also pay inheritance tax at the rate for unrelated people, which is worth checking with a local lawyer."
   - question: "How can leaving everything to my spouse disinherit my children?"
     answer: "Because once your spouse inherits, the money is theirs. They are free to leave it as they choose, and if they die without a will, it goes to their legal heirs, which means their own children and not their stepchildren. No bad faith is required. A spouse may remarry, may need the money for care, or may simply never write a new will. Your children from an earlier relationship then receive nothing from your estate."
   - question: "What is the difference between a legal parent and a de facto parent?"
     answer: "A legal parent is recognised by law, through birth, adoption, or a court order, and has rights and duties toward the child. A de facto parent, sometimes called a psychological parent, is an adult who actually does the parenting without that legal status: a step-parent, a partner of the legal parent, a co-parent in a family with more than two adults. The second term is a description and not a legal status in most places. The practical gap is that a de facto parent may be unable to consent to medical treatment, deal with a school, or keep the child in their care if the legal parent dies."
   - question: "Who controls money saved in a child's name?"
-    answer: "The adult named as custodian or account holder, until the child reaches the age at which it becomes theirs. If that adult dies or a relationship ends, control passes according to the account rules and the law, usually to a legal parent. A step-parent or grandparent who has paid into an account held by someone else has no say over it. If control matters to you, open the account yourself where rules allow, name a successor custodian, or use a trust."
+    answer: "The adult named as custodian or account holder, until the child reaches the age at which it becomes theirs. If that adult dies or a relationship ends, control passes according to the account rules and the law, usually to a legal parent. A step-parent or grandparent who has paid into an account held by someone else has no say over it. Where control matters, the usual options are opening the account yourself where rules allow, naming a successor custodian, or using a trust. Which exist depends on the country and account type."
   - question: "What does dependent claim coordination mean?"
     answer: "Many tax and benefit systems give something of value to the adult a child is attached to: an allowance, a credit, a benefit payment, or a pension credit. Where a child moves between two homes, usually only one adult can claim in a given period. Coordinating means agreeing which household claims what, so the family as a whole does not lose out and so that two people do not claim the same thing. It belongs in the written agreement between separated parents."
   - question: "Should children in a blended family be treated equally?"
@@ -60,7 +60,7 @@ A **legal parent** is one the law recognises, through birth, adoption, or a cour
 
 A stepchild is not the legal child of a step-parent unless adopted. So a step-parent who dies without a will leaves a stepchild nothing, in most jurisdictions, however long they were a family. In some countries a stepchild who is named in a will is then taxed on the inheritance at the rate for unrelated people.
 
-The fix for the first problem is simple. Name them. In the will, and on every beneficiary form.
+The usual remedy for the first problem is simple: naming them, in the will and on every beneficiary form, within whatever limits local inheritance law sets.
 
 ### The accidental disinheritance
 
@@ -183,7 +183,7 @@ Three traps:
 - **The custodian dies.** Control passes according to the account's rules, often to the other legal parent. Where an account allows it, name a successor.
 - **Grandparents contribute to one grandchild's account only.** Reasonable from their point of view, and it produces children in the same house with very different futures.
 
-Where control matters, open the account yourself if the rules permit, or use a trust.
+Where control matters, people often open the account themselves if the rules permit, or use a trust.
 
 ### The adult with no legal standing
 
@@ -212,7 +212,7 @@ Tax allowances, child benefits, and pension credits for caring usually go to one
 
 - Two homes cannot normally both claim in the same period.
 - The better claimant is not always obvious. A credit may be worth more to the lower earner. A pension credit may matter most to the parent with gaps in their record, as the post on [caregiving](/blog/caregiving-and-the-career-break-wealth-gap/) explains.
-- Write it into the agreement between separated parents, with a rule for alternating years if that is fairer.
+- Many separated parents write it into their agreement, sometimes with a rule for alternating years. Whether alternating is allowed depends on local tax and benefit rules.
 
 ### Fair is not always equal
 
@@ -244,6 +244,6 @@ Both are legitimate. What does lasting harm is a division nobody explained, disc
 - **Check every beneficiary form** for a former partner.
 - **Decide how children's costs are shared,** and say it out loud.
 - **Name guardians and trustees** for young children.
-- **See a professional who works with blended families.** The structures in part one are routine for them.
+- **Find out what local law allows.** The structures in part one are routine for lawyers who work with blended families, and they vary by country.
 
 A first family gets its financial plan almost for free from the defaults. A blended family has to write its own. That takes more work, and it also means the plan reflects the family that exists.

@@ -84,11 +84,11 @@ The result is your monthly cash flow. If it's positive, you have a surplus to wo
 
 ## What does a healthy cash flow look like?
 
-There's no single right number, but a useful guideline:
+There's no single right number, but a widely quoted guideline (the 50/30/20 split) looks like this:
 
-- Aim to spend no more than 50% of income on needs (housing, food, transport, insurance)
-- Keep at least 20% for savings, debt repayment, or investments
-- The remaining 30% covers wants
+- About 50% of income on needs (housing, food, transport, insurance)
+- At least 20% for savings, debt repayment, or investments
+- The remaining 30% for wants
 
 These are rough targets, not rules. But if your needs eat up 80% of your income, there's very little room to build anything.
 

@@ -20,8 +20,8 @@ faq:
     answer: "Diversification means owning a mix of investments that do not all respond to the same events in the same way. When one asset falls, another may rise or stay flat, so the volatility of the whole portfolio ends up smaller than the volatility of its individual parts. You diversify along several dimensions at once: asset class (stocks, bonds, real estate, cash), geography (multiple countries), industry, company size, currency, and time through regular contributions. The goal is not to pick winners. It is to make sure no single loser can take you down. Owning fifty stocks in the same sector and country is not diversified; it is one bet repeated fifty times."
   - question: "Why is diversification called the only free lunch in finance?"
     answer: "In 1952, Harry Markowitz showed that diversification uniquely lets you reduce risk without proportionally reducing expected return, work that won him the Nobel Prize. The intuition: combine two investments with the same expected return but imperfectly correlated movements, and the combined volatility is less than the weighted average of their individual volatilities. You get the same expected return on a smoother path. That is rare in economics, where reducing risk usually means accepting lower returns. The catch is that it only works if the things you hold actually behave differently from each other. Fifty near-identical holdings give you none of this benefit."
-  - question: "How much diversification is enough for most investors?"
-    answer: "Much less effort than most people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it extremely diversified within equities. Add one broad bond index fund and you have crossed asset classes. A reasonable starting portfolio is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs. That captures most of the benefit institutional investors pay advisors to construct. More complexity is not automatically better: every extra fund adds cost and work. Before adding one, ask whether it covers an exposure you do not already have."
+  - question: "How much diversification is enough?"
+    answer: "Often less effort than people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it highly diversified within equities. Adding a broad bond index fund crosses asset classes. A combination often described as a simple starting structure is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs; the split between them depends on risk capacity and horizon, and fund availability and tax treatment depend on your country. More complexity is not automatically better: every extra fund adds cost and work. A useful test for any addition is whether it covers an exposure you do not already have."
   - question: "What is concentration risk and where does it hide?"
     answer: "Concentration risk is exposure to a single event that moves many of your assets at once. The biggest concentrations usually sit outside investment accounts. Employer concentration: your income, employer stock, and pension all depend on one company, so several pillars can go together. Geographic concentration: your job market, property, and currency all live in one country, so a local recession touches everything. Sector concentration: working in tech, living near a tech hub, and holding tech stocks is three bets on one story. Holding a large share of net worth in one employer's stock because you believe in it is among the most common and damaging mistakes."
   - question: "Does diversification protect you in a market crash?"
@@ -173,19 +173,19 @@ This is why diversification is often called the only free lunch in finance. It i
 
 ## How much diversification is enough?
 
-For most investors, the honest answer is: much less effort than you think.
+Often, the honest answer is: less effort than people expect.
 
-A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector. That is, by itself, extremely diversified within equities. Add one broad bond index fund and you've crossed asset classes. You can stop there for a long time without losing much.
+A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector. That is, by itself, highly diversified within equities. Adding a broad bond index fund crosses asset classes. Many investors run that structure for a long time.
 
-A reasonable "minimum diversified" portfolio at the start might look like:
+A "minimum diversified" structure often described in personal finance literature looks like:
 
 - One global stock index fund (equity exposure across countries, sectors, and company sizes)
 - One bond index fund (stability, different driver than stocks)
-- Cash for [emergency fund](/blog/emergency-fund/) and short-term needs (already covered by your [saving layer](/blog/saving-vs-investing/))
+- Cash for an [emergency fund](/blog/emergency-fund/) and short-term needs (the [saving layer](/blog/saving-vs-investing/))
 
-That's not a glamorous portfolio. It also captures most of the benefit of diversification that sophisticated institutional investors pay advisors to construct.
+That's not a glamorous portfolio, but it captures much of the benefit of diversification. What it leaves open is the important part: the split between stocks and bonds depends on risk capacity and horizon, and which funds are available, cheap and tax-efficient depends on your country and account type.
 
-More complexity isn't automatically better. Every additional fund adds cost, cognitive load, and rebalancing work. The question to ask before adding a fund is: does this actually cover an exposure I don't already have?
+More complexity isn't automatically better. Every additional fund adds cost, cognitive load, and rebalancing work. A useful question before adding a fund is: does this actually cover an exposure I don't already have?
 
 > **Two terms that will come up often:** **asset allocation** is the specific mix you choose to hold, for example 70% stocks and 30% bonds. Diversification is the *principle*; asset allocation is the *number*. **Rebalancing** is the discipline of selling some of what's grown and buying some of what's lagged to return to that target mix. We cover rebalancing in detail in a later post in this series.
 
@@ -198,15 +198,15 @@ Diversification is powerful but not magical:
 - **Overdiversification dulls returns without reducing risk much.** Past a certain point, adding more holdings adds fees and complexity without measurable benefit
 - **Home-country bias is common.** People naturally overweight their own country's stocks. This isn't automatically wrong, but it's worth checking whether your allocation is a choice or a default
 
-## What you can do
+## What this means in practice
 
-1. **Audit your concentrations first.** Employer stock, home country exposure, currency exposure, sector exposure. Which of these is large because you chose it, and which is large because you never noticed?
-2. **Default to broad index funds.** One global stock fund plus one bond fund diversifies most retail investors well. Simplicity is a feature, not a compromise
-3. **Diversify across dimensions, not just count.** Twenty stocks in the same country and sector is one bet. A single global fund is many bets
-4. **Watch your currency exposure.** Earning and saving in one currency while your expenses, retirement plans, or family support happen in another is a hidden concentration most people miss. A later post in this series goes into the mechanics
-5. **Don't over-engineer.** Adding a ninth fund to a portfolio that was already well diversified is usually noise. Check whether each holding adds an exposure you don't already have
-6. **Accept the trade-off.** A diversified portfolio will never be your best-performing asset in any given year. It is much less likely to be your worst
+1. **Start by listing your concentrations.** Employer stock, home country exposure, currency exposure, sector exposure. Which of these is large because you chose it, and which is large because you never noticed?
+2. **Broad index funds are the common default.** Many retail investors get most of their diversification from one global stock fund and one bond fund, because simplicity keeps costs and mistakes down. The right mix and wrapper depend on your situation
+3. **Dimensions matter more than count.** Twenty stocks in the same country and sector is one bet. A single global fund is many bets
+4. **Currency exposure is easy to miss.** Earning and saving in one currency while expenses, retirement plans, or family support happen in another is a hidden concentration. A later post in this series goes into the mechanics
+5. **Over-engineering adds little.** A ninth fund in an already well diversified portfolio is usually noise; the test is whether each holding adds an exposure you don't already have
+6. **The trade-off is built in.** A diversified portfolio will rarely be your best-performing asset in any given year. It is also much less likely to be your worst
 
 Diversification is quiet. It doesn't produce headlines. It doesn't give you stories to tell at dinner. It just keeps working, year after year, absorbing shocks that would otherwise derail the plan. That's its value.
 
-You now know what to invest in and how to spread the risk. The remaining piece is the practical mechanics: which kinds of accounts to open, what to put inside them, and how to make contributions happen automatically every month so the plan runs without you. That's where we go next.
+You now know what the building blocks are and how spreading risk works. The remaining piece is the practical mechanics: the kinds of accounts people use, what typically goes inside them, and how to make contributions happen automatically every month so the plan runs without you. That's where we go next.

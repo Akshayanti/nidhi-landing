@@ -25,7 +25,7 @@ faq:
   - question: "Why is delaying a long-term goal so expensive?"
     answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
-    answer: "Priority comes from math and timelines, not from whichever goal feels loudest. A reasonable framework: a starter emergency fund of one month of expenses first, as the default first step. Then high-interest debt: above roughly 8 to 10% almost always beats realistic investment returns, while 4 to 8% depends on tax, inflation and how much certainty you want. Then a full emergency fund of three to six months. Then any employer retirement match, which is free money; many people take it as soon as the starter fund exists. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+    answer: "Most frameworks set priority by math and timelines rather than by whichever goal feels loudest. A commonly used order: a starter emergency fund of about one month of expenses first. Then high-interest debt: above roughly 8 to 10% almost always beats realistic investment returns, while 4 to 8% depends on tax, inflation and how much certainty you want. Then a full emergency fund of three to six months. Then any employer retirement match, an immediate uplift on your contribution; many people take it as soon as the starter fund exists. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
@@ -86,7 +86,7 @@ That's the value of translating wishes into goals. It replaces comforting vaguen
 
 Every financial goal falls into one of three broad time buckets, each with its own implications:
 
-**Short-term (0-3 years).** The money needs to be there on a specific date. Market fluctuations are unacceptable. Stay in cash or [savings-equivalent](/blog/saving-vs-investing/) vehicles. Returns are low; that's the price of certainty.
+**Short-term (0-3 years).** The money needs to be there on a specific date. Market fluctuations can wreck the timeline, which is why this money usually sits in cash or [savings-equivalent](/blog/saving-vs-investing/) vehicles. Returns are low; that's the price of certainty.
 
 Examples: wedding, next year's holiday, a new appliance, short-term tax obligation, upcoming insurance excess.
 
@@ -94,7 +94,7 @@ Examples: wedding, next year's holiday, a new appliance, short-term tax obligati
 
 Examples: house deposit, starting a business, career break, child's near-term education.
 
-**Long-term (7+ years).** The timeline is long enough that market volatility averages out in historical data, and inflation becomes the bigger enemy. This is where investments belong. Broadly diversified stock-heavy portfolios.
+**Long-term (7+ years).** The timeline is long enough that market volatility has tended to average out in historical data, and inflation becomes the bigger enemy. This is where investing is most common, often in broadly diversified, stock-heavy portfolios, with the exact mix depending on risk capacity.
 
 Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), child's university, generational wealth.
 
@@ -104,7 +104,7 @@ Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), chi
 | Medium-term (3-7y) | Mix of savings + conservative investments | Some | Moderate |
 | Long-term (7+y) | Diversified investments | Higher | Higher |
 
-Mismatching bucket and container is one of the most common goal-setting errors. Putting long-term money in a savings account guarantees inflation erosion. Putting short-term money in the stock market gambles the timeline.
+Mismatching bucket and container is one of the most common goal-setting errors. Long-term money in a savings account tends to erode with inflation. Short-term money in the stock market gambles the timeline.
 
 ## The cost of delaying
 
@@ -156,17 +156,17 @@ This is the [compound growth](/blog/appreciation-vs-depreciation/) story told fr
 
 Almost no one has one goal. They have a house deposit, a retirement target, an emergency fund to finish, some high-interest debt, a family trip, a child's education in sight. They all want the same pool of monthly surplus cash.
 
-A reasonable priority framework:
+A priority framework commonly used in personal finance literature:
 
-1. **[Starter emergency fund](/blog/emergency-fund/) first.** One month of expenses, as the default first step
+1. **[Starter emergency fund](/blog/emergency-fund/).** About one month of expenses, as the usual first step
 2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** Debt above roughly 8-10% almost always beats realistic investment returns; between about 4% and 8% it depends on tax, inflation and how much certainty you want
-3. **Full emergency fund.** Three to six months of expenses
-4. **Employer match on retirement (if any).** Free money. Take it; many people do so as soon as the starter fund is in place rather than waiting for the full fund
-5. **Long-term retirement / FI contributions.** The compounding engine. Starting late is extremely expensive
+3. **Full emergency fund.** Often three to six months of expenses
+4. **Employer match on retirement (if any).** An immediate uplift on your own contribution; many people take it as soon as the starter fund is in place rather than waiting for the full fund
+5. **Long-term retirement / FI contributions.** The compounding engine, where starting late is expensive
 6. **Medium-term goals.** House deposit, specific life events
 7. **Short-term discretionary goals.** Travel, lifestyle, hobbies
 
-The exact ordering depends on your situation. High-interest debt almost always wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from math and timelines, not from whichever goal currently feels most exciting.
+The exact ordering depends on your situation. High-interest debt usually wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from math and timelines, not from whichever goal currently feels most exciting.
 
 ## The "number and a date" check
 
@@ -210,7 +210,7 @@ An annual review is enough for most goals. Life changes; assumptions change; mar
 - **Setting goals without running the monthly math.** Without a monthly contribution number, the goal is still a wish
 - **Using the wrong time horizon container.** Long-term goals in savings accounts, short-term goals in the stock market. Both predictable ways to underperform or panic
 - **Ignoring inflation on long-horizon goals.** €500,000 in 30 years is not worth €500,000 today. A more honest target is the inflation-adjusted amount you actually need
-- **Too many goals at once.** Five active goals competing for a single monthly surplus usually means none of them hit. Better to finish two sequentially than miss all five
+- **Too many goals at once.** Five active goals competing for a single monthly surplus usually means none of them hit. Finishing two in sequence often gets further than splitting across five
 - **No distinction between needs and nice-to-haves.** Retirement and a specific holiday are both goals. They do not carry the same weight, and treating them equally robs the important ones of priority
 - **Never revisiting.** Goals set in 2020 that haven't been touched since are no longer calibrated. Review annually
 - **Under-specifying.** "Save more" is not a goal. "Increase monthly retirement contribution from €200 to €350 by September" is
@@ -219,11 +219,11 @@ An annual review is enough for most goals. Life changes; assumptions change; mar
 
 1. **Write down every financial goal you actually have.** Three to five is usually the honest answer. More than seven means some are wishes, not goals
 2. **Put a number and a date on each.** This is the minimum bar for calling it a goal
-3. **Classify by time horizon.** Short, medium, long. Match each to the right container
+3. **Classify by time horizon.** Short, medium, long. Each bucket points to a different kind of container, as the table above shows
 4. **Run the monthly math.** Present value / future value calculations or a simple online calculator. What does this actually cost per month?
-5. **Sum the required monthly contributions.** Compare to your real monthly surplus. If the sum exceeds surplus, something has to change: amount, date, or selection
-6. **Prioritize from math and timeline, not emotion.** Use the priority framework above. Emergency fund and high-interest debt nearly always come first; long-term starts later are disproportionately expensive
-7. **Review annually.** Life and markets change; your goals should too
+5. **Sum the required monthly contributions.** Compare to your real monthly surplus. If the sum exceeds surplus, something has to give: amount, date, or selection
+6. **Priorities tend to follow math and timeline.** The common framework above puts an emergency cushion and high-interest debt early because they protect everything else, and long-term goals before late-starting ones because delay is expensive; your own order may differ
+7. **Goals drift.** Life and markets change, which is why many people revisit goals once a year
 
 A goal with a number and a date becomes something your monthly system can actually serve. Without that translation, every financial decision is made in the dark, comparing abstract priorities. With it, you have a map: here's where I am, here's where I want to be, here's what that costs in monthly terms.
 

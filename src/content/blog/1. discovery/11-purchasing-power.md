@@ -38,7 +38,7 @@ faq:
   - question: "Does inflation help or hurt people with debt?"
     answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favor. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
   - question: "How can I protect my savings from inflation?"
-    answer: "First, think in real terms: subtract inflation from every interest rate, return, and raise so you see the true number. Second, keep your emergency fund accessible but do not let large amounts of extra cash sit idle, because money earning less than the inflation rate is losing value by design. Third, invest surplus money for growth: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. Fourth, revisit your plan periodically, since prices, your salary, and the right size of your emergency fund all change over time."
+    answer: "The first step is thinking in real terms: subtract inflation from every interest rate, return, and raise to see the true number. Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
 ---
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it. Not even close.
@@ -141,12 +141,12 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 **[Emergency fund](/blog/emergency-fund/)**: Even your safety net loses purchasing power. A fund that covers six months of expenses today might only cover four months in ten years. You need to revisit it periodically.
 
-## What you can do
+## What this means in practice
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
-2. **Don't let cash sit idle.** Beyond your emergency fund, money that isn't earning at least the inflation rate is losing value by design
-3. **Invest for growth.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That's how you preserve and grow your purchasing power
-4. **Revisit your plan.** Prices change. Your emergency fund, your salary, your savings rate, all of these need periodic adjustment.
+2. **Idle cash has a cost.** Beyond an emergency fund, money that earns less than inflation loses value in real terms. How much cash is "idle" depends on your upcoming needs
+3. **Growth assets are the usual answer, with trade-offs.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
+4. **Plans need revisiting.** Prices change. An emergency fund, a salary and a savings rate all drift, so it helps to check them periodically.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.
 

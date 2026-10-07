@@ -116,8 +116,8 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- For most people, capturing an employer match is one of the highest-leverage early investing moves. Turning down a 50% or 100% immediate uplift on your own contribution is rarely mathematically sensible. It is not always *the* first action, though: [clearing very-high-interest debt](/blog/how-to-get-out-of-debt/) and having a [starter emergency fund](/blog/emergency-fund/) typically come first. A later post covers the full priority order across account types
-- The default contribution settings are often too low. Many plans let you contribute more than the default; doing so is often one of the highest-leverage tax decisions available, because every extra euro contributed grows inside the tax-advantaged shelter for decades
+- An employer match is a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules or a need for liquidity can change the picture. A later post covers common priority orders across account types
+- Default contribution settings are often set low. Many plans allow contributing more than the default, and every extra euro inside the shelter grows tax-advantaged for decades, at the cost of locking it up
 
 The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.
 
@@ -147,11 +147,11 @@ The order in which you withdraw from different account types in retirement (with
 
 ## Common mistakes
 
-- **Planning with gross numbers.** "I earn €60,000" doesn't tell you anything actionable. What you can save, spend, and invest is the after-tax number. Build plans in net terms
+- **Planning with gross numbers.** "I earn €60,000" doesn't tell you anything actionable. What you can save, spend, and invest is the after-tax number, which is why plans built in net terms tend to be more realistic
 - **Ignoring tax drag on investments.** A portfolio that earns 7% is not the same as a portfolio that yields 7% in your pocket. The gap is tax
 - **Skipping the employer match.** The match is an immediate after-tax return it's very hard to beat elsewhere
-- **Leaving tax-advantaged contribution room on the table.** Contribution limits are "use it or lose it" in many systems. Not using them trades decades of tax-sheltered growth for marginal extra flexibility today
-- **Assuming retirement income is tax-free.** Depending on account mix, a surprising amount of retirement income can be taxable. Plan in after-tax terms
+- **Leaving tax-advantaged contribution room on the table.** Contribution limits are "use it or lose it" in many systems. Leaving them unused trades decades of tax-sheltered growth for extra flexibility today, a trade that only makes sense if you genuinely need the access
+- **Assuming retirement income is tax-free.** Depending on account mix, a surprising amount of retirement income can be taxable, which after-tax planning brings into view
 - **Trading frequently in taxable accounts.** Every realized gain is a taxable event. Frequent trading turns paper gains into smaller after-tax gains, sometimes dramatically
 - **Ignoring cross-border tax complications.** Living in one country and holding investments in another can introduce double taxation, reporting obligations, or unfavorable treatment. If your life spans borders, it's worth understanding your specific situation before making large moves
 
@@ -162,10 +162,10 @@ Generic principles that travel across jurisdictions:
 - After-tax return is what matters; tax drag compounds
 - Tax-advantaged accounts usually pay off for long-term money
 - Capital gains are only realized on sale; holding period often matters
-- Employer matches are rarely worth skipping
-- Plan in after-tax terms
+- Employer matches are rarely worth skipping, vesting and liquidity permitting
+- After-tax numbers give a more realistic plan than gross ones
 
-Things you should look up (or get advice on) for your specific country:
+Things that depend on your specific country, and are worth looking up or getting advice on:
 
 - Exact contribution limits and which accounts you qualify for
 - Capital gains rate structure and holding period rules
@@ -177,17 +177,17 @@ Things you should look up (or get advice on) for your specific country:
 
 The general rule: no blog post can replace jurisdiction-specific advice for large decisions. What a blog can do is give you the conceptual map so those conversations are productive.
 
-## What you can do
+## What this means in practice
 
-> These are general educational suggestions, not personalised advice. Your circumstances may warrant a different sequence; consider professional advice before making decisions involving real money.
+> This is general education, not personalised advice. Your circumstances may call for something different; consider professional advice before making decisions involving real money.
 
 1. **Run one calculation in after-tax terms.** Your monthly net income, your actual after-tax expenses, your realistic savings rate. This is usually more revealing than the gross version
 2. **Map your current accounts by tax treatment.** Which are pre-tax, which are post-tax, which are tax-deferred, which are plain taxable? If you don't know, finding out is worth an afternoon
-3. **Check whether you have an employer match.** For most people, capturing the full match is one of the highest-leverage early investing moves. Confirm the match terms (contribution percentage, vesting, eligibility) and that it fits your circumstances
-4. **Consider tax-advantaged accounts for long-term money.** For retirement-horizon savings, contributing inside a shelter is generally one of the highest-value moves; the right vehicle depends on your tax situation and goals
-5. **Think twice before selling winners in taxable accounts.** If rebalancing can be done using new contributions or inside a tax-advantaged account, that route often avoids triggering tax
-6. **Look up your country's rules on long-term vs. short-term gains.** The holding period that flips tax treatment (where one exists) can materially change how you manage the portfolio
-7. **Get local advice for anything large.** Home purchase, large inheritance, relocation, starting a business, significant equity compensation. The cost of professional advice on these is usually small compared to the tax consequences of getting them wrong
+3. **Find out whether you have an employer match, and its terms.** Contribution percentage, vesting and eligibility decide how valuable it is in your case, which is why matches rank highly in most frameworks
+4. **Tax-advantaged accounts suit long-term money.** For retirement-horizon savings, a shelter usually adds a lot over decades; which vehicle fits depends on your tax bracket now and later, your country's rules and how soon you might need the money
+5. **Selling winners in taxable accounts has a tax cost.** Rebalancing with new contributions or inside a tax-advantaged account often avoids triggering it
+6. **Look up your country's rules on long-term vs. short-term gains.** The holding period that flips tax treatment (where one exists) can materially change how a portfolio is managed
+7. **Large decisions tend to justify local advice.** Home purchase, large inheritance, relocation, starting a business, significant equity compensation. The cost of professional advice on these is usually small compared to the tax consequences of getting them wrong
 
 Tax isn't glamorous. It's also one of the most consistent forces shaping long-term outcomes, alongside savings rate and time. Every gross number you see in financial content hides a net number underneath; every projection that ignores tax is optimistic by a predictable amount. Planning in net terms, using tax-advantaged accounts where they fit, and understanding the structural differences between account types closes most of the gap.
 

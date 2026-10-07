@@ -102,9 +102,9 @@ This is also why advice like "just be more disciplined" fails. Discipline asks y
 
 The way out is not to fight harder. It is to make the decision a single time, while you are motivated, and then never have to make it again. These are commitment devices: choices you make now that bind your future self to the plan.
 
-1. **Automate the saving.** Set money to move into savings or investments automatically on payday, before it lands in your spending account. Now the good outcome happens by default, and the only way to derail it is to actively cancel the transfer. Most people will not bother. You have flipped the effort: doing the right thing is free, undoing it takes work.
-2. **Pre-commit your raises.** Decide now that the next raise, or a fixed slice of it, goes straight to investing before you ever see it in your spending. You cannot miss money your lifestyle never learned to spend. This quietly sidesteps the trap where income rises and saving somehow never does.
-3. **Add friction to the wrong choice.** Keep longer-term savings somewhere mildly awkward to reach. Not locked away from a real emergency, just inconvenient enough that a weak Tuesday evening does not become a withdrawal.
+1. **Automated saving.** Money moves into savings or investments automatically on payday, before it lands in the spending account. The good outcome happens by default, and the only way to derail it is to actively cancel the transfer. Most people will not bother. You have flipped the effort: doing the right thing is free, undoing it takes work.
+2. **Pre-committed raises.** Deciding in advance that a slice of the next raise goes to saving or investing, before it ever shows up in spending, is one of the best-studied commitment devices. You cannot miss money your lifestyle never learned to spend. This quietly sidesteps the trap where income rises and saving somehow never does.
+3. **Friction on the wrong choice.** Longer-term savings kept somewhere mildly awkward to reach. Not locked away from a real emergency, just inconvenient enough that a weak Tuesday evening does not become a withdrawal.
 4. **Make the future self concrete.** The stranger problem shrinks when the future becomes specific. A named goal with a number and a date, the kind covered when [setting financial goals](/blog/setting-financial-goals/), and a [projection](/blog/introduction-to-financial-independence/) showing where today's contributions actually lead, turn the distant stranger back into recognisably you.
 
 Notice the common thread: every one of these removes the daily decision. That is the entire trick. Willpower is unreliable because it shows up to a fresh battle each day. A system shows up once, wins, and then keeps winning on autopilot.
@@ -112,8 +112,8 @@ Notice the common thread: every one of these removes the daily decision. That is
 ## What you can do
 
 - **Catch the cliff in the act.** When you feel "I'll start saving later," recognise it as the discount curve talking. Later never gets here, because later always turns into now with the same bias attached.
-- **Automate one transfer this week.** Pick an amount you are sure you can spare and set it to move to savings automatically on payday. Start smaller than feels impressive. The habit matters more than the size, and you can raise it later.
-- **Pre-spend your next raise on your future self.** Decide today where the next pay increase goes, before lifestyle expands to claim it.
+- **One automated transfer is the simplest start.** An amount you are sure you can spare, moving to savings on payday, builds the habit. The habit tends to matter more than the size, and the amount can rise later.
+- **Think about your next raise before it arrives.** Deciding in advance where some of it goes keeps lifestyle from claiming all of it by default.
 - **Make the stranger real.** Write down one specific future goal with a number and a date, and look at a simple projection of where your current saving leads. The clearer that future self becomes, the less you will rob them.
 
 Present bias is about how the brain misjudges time, overvaluing now and discounting later. The next bias is about how the brain misjudges itself, specifically the near-universal conviction that we are better-than-average investors and that our plans will go better than other people's. That is overconfidence, and it is where we go next.

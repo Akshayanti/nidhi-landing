@@ -32,9 +32,9 @@ faq:
   - question: "What is the difference between volatility and risk?"
     answer: "Volatility is how much an investment's price moves up and down in the short term. A stock fund might swing 20% in a single year, while a savings account barely moves. Risk, in the broader financial sense, is uncertainty about your final outcome. Volatility is one source of that uncertainty, but it is temporary: prices that fall can recover. The risk that actually destroys wealth is permanent loss, where the money is gone for good, through a bankruptcy, a scam, or a forced sale at the bottom. Confusing the two leads people to treat normal price swings as danger and avoid investments that would have grown their money over time."
   - question: "What is the difference between risk tolerance and risk capacity?"
-    answer: "Risk tolerance is psychological: how much fluctuation you can handle emotionally without panicking and selling. If a 10% drop costs you sleep, your tolerance is low regardless of your finances. Risk capacity is financial: how much loss you can actually absorb without it affecting your life, based on your time horizon, income stability, emergency fund, and when you need the money. The two often diverge. Someone with a 20-year horizon and a full emergency fund has high capacity, but may still have low tolerance. Your investment approach should match whichever of the two is lower, because the higher one cannot rescue you from the lower one."
+    answer: "Risk tolerance is psychological: how much fluctuation you can handle emotionally without panicking and selling. If a 10% drop costs you sleep, your tolerance is low regardless of your finances. Risk capacity is financial: how much loss you can actually absorb without it affecting your life, based on your time horizon, income stability, emergency fund, and when you need the money. The two often diverge. Someone with a 20-year horizon and a full emergency fund has high capacity, but may still have low tolerance. A common principle is to let the lower of the two set the limit, because the higher one cannot rescue you from the lower one."
   - question: "How does time change investment risk?"
-    answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 to 30 years, broadly diversified stock portfolios have historically been positive across almost every rolling window, though this is an average, not a guarantee, and individual markets have had losing 20-year stretches. The practical rule: money you need within 3 years stays in low-volatility savings, while money you will not touch for 5 years or more can absorb short-term swings in exchange for long-term growth."
+    answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 to 30 years, broadly diversified stock portfolios have historically been positive across almost every rolling window, though this is an average, not a guarantee, and individual markets have had losing 20-year stretches. A common rule of thumb follows: money needed within about 3 years is usually kept in low-volatility savings, while money not needed for 5 years or more is where people accept short-term swings in exchange for long-term growth."
   - question: "Is keeping money in a savings account actually risk-free?"
     answer: "No. Cash carries inflation risk, which is the slow erosion of purchasing power. A savings account earning 1% while inflation runs at 2.5% loses 1.5% of its real value every year. Over 20 years, that compounds to roughly a 26% loss in what your money can actually buy, and when rates stay below inflation that loss is close to certain. Keeping everything safe protects you from short-term volatility while making a long-term decline in real terms likely. A risk many people overlook is not market movement but inaction: accepting a likely slow loss to avoid a probable gain with some turbulence along the way."
   - question: "What are the main types of investment risk?"
@@ -74,7 +74,7 @@ These two concepts sound similar but work differently.
 
 The mismatch between these two is where problems arise. Someone with high risk capacity but low risk tolerance might keep everything in savings and miss decades of growth. Someone with low risk capacity but high risk tolerance might invest their emergency fund and face a crisis when markets drop.
 
-Your investment approach should match whichever is lower.
+A common principle is to let whichever is lower set the limit.
 
 ## How time transforms risk
 
@@ -123,7 +123,7 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 
 The pattern is clear: the longer you hold, the narrower the range of outcomes, and the more likely those outcomes are positive. Time doesn't eliminate risk, but it dramatically changes its character.
 
-This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction from the previous post maps directly to time horizons. Short-term money (high risk from volatility) goes into savings. Long-term money (low effective risk if you can wait) goes into investments.
+This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction from the previous post maps directly to time horizons. Short-term money, for which volatility is a real risk, is usually kept in savings. Long-term money, which can wait out downturns, is where investing is most common.
 
 ## The risk you don't see: doing nothing
 
@@ -173,19 +173,19 @@ You can't get stock-like returns with savings-account-like stability. Anyone pro
 
 ## Finding the right amount
 
-The right amount of risk isn't maximum and it isn't zero. It's the amount that:
+The right amount of risk isn't maximum and it isn't zero. Planners usually judge it against four things:
 
-1. **Matches your time horizon.** Money you need in 2 years: minimal risk. Money you won't touch for 20 years: you can absorb volatility
-2. **Matches your risk capacity.** Full emergency fund, stable income, no high-interest debt? You can take more risk. Missing any of those? Reduce risk
-3. **Doesn't keep you awake.** If checking your portfolio gives you anxiety, you're taking too much risk for your temperament, even if the math says you can handle it
-4. **Doesn't guarantee erosion.** If your money is entirely in cash or low-yield savings, you're guaranteeing purchasing power loss. That's not safety
+1. **Time horizon.** Money needed in 2 years usually carries little risk. Money untouched for 20 years has more room to absorb volatility
+2. **Risk capacity.** A full emergency fund, stable income and no high-interest debt add capacity. Missing any of those reduces it
+3. **Temperament.** If checking a portfolio causes real anxiety, the risk may be too high for that person, even if the math says they can handle it
+4. **Erosion.** Money held entirely in cash or low-yield savings tends to lose purchasing power, so zero market risk is not the same as safety
 
-## What you can do
+## What this means in practice
 
-1. **Separate your money by time horizon.** Money you need within 3 years stays in savings (low volatility, instant access). Money you won't need for 5+ years can be invested (accepting short-term swings for long-term growth)
-2. **Build your [emergency fund](/blog/emergency-fund/) before taking investment risk.** This is the buffer that prevents you from selling investments during a downturn
-3. **Recognize the risk of inaction.** Keeping everything "safe" isn't safe. Inflation is persistent. Market drops have usually been temporary for patient, diversified investors, though not always quickly
-4. **Match risk to the lower of your tolerance and capacity.** High risk tolerance + low risk capacity = still low risk. Low risk tolerance + high risk capacity = still low risk. Both need to align
-5. **Don't try to eliminate risk.** You can't. You can only choose the type. The goal is the right amount for your situation and timeline
+1. **Money sorts by time horizon.** Money needed within about 3 years is commonly kept in savings (low volatility, instant access). Money not needed for 5+ years is where people usually accept short-term swings for long-term growth
+2. **An [emergency fund](/blog/emergency-fund/) usually comes before investment risk.** It is the buffer that keeps a downturn from forcing a sale
+3. **Inaction carries risk too.** Keeping everything "safe" has a cost. Inflation is persistent. Market drops have usually been temporary for patient, diversified investors, though not always quickly
+4. **The lower of tolerance and capacity tends to set the limit.** High tolerance with low capacity still points to low risk; low tolerance with high capacity does too
+5. **Risk can't be eliminated, only chosen.** The question is which type, and how much fits your situation and timeline
 
 Risk isn't something to avoid. It's something to understand, calibrate, and use intentionally. Every investment decision is a trade-off between uncertainty now and growth over time. The next post will make this concrete: what exactly are the main investment types, how does each generate returns, and how do they work together?

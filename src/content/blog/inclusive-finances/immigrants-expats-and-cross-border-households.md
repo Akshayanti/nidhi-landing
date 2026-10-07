@@ -2,7 +2,7 @@
 slug: "immigrants-expats-and-cross-border-households"
 title: "Moving Countries: Rebuilding Your Financial Identity"
 description: "A border resets your credit history, bank access and paper trail. How to rebuild a financial identity from zero and cut the cost of sending money home."
-tldr: "Crossing a border resets financial infrastructure that took years to build. Your credit history almost never travels with you, so a lender in the new country sees a blank file however careful you were before. Opening a bank account can require an address, and renting an address can require a bank account. Pension contributions sit stranded in a country you left. Tax rules may treat you as resident in two places at once. This post covers the two problems that cost newcomers the most. The first is rebuilding a financial identity from zero, which has a reliable order: identification and tax number, a basic bank account, proof of address, then small reported credit. The second is the cost of sending money home. The global average cost of a remittance is around 6%, several times what the cheapest providers charge on the same route, and for a household sending €300 a month the difference is well over a thousand euros across a decade. It closes with what changes for people who did not choose to move: refugees, family migrants, and households without full legal status."
+tldr: "Crossing a border resets financial infrastructure that took years to build. Your credit history almost never travels with you, so a lender in the new country sees a blank file however careful you were before. Opening a bank account can require an address, and renting an address can require a bank account. Pension contributions sit stranded in a country you left. Tax rules may treat you as resident in two places at once. This post covers the two problems that cost newcomers the most. The first is rebuilding a financial identity from zero, which tends to follow an order: identification and tax number, a basic bank account, proof of address, then, in countries whose credit systems work that way, small reported credit. The second is the cost of sending money home. The global average cost of a remittance is around 6%, several times what the cheapest providers charge on the same route, and for a household sending €300 a month the difference is well over a thousand euros across a decade. It closes with what changes for people who did not choose to move: refugees, family migrants, and households without full legal status."
 takeaways:
   - "Why a border resets your credit history and banking"
   - "What order rebuilds a financial identity from zero"
@@ -84,7 +84,7 @@ Rebuilding has an order, because each step produces the document the next step a
 
 **4. Income on the record.** Have wages paid into the account. Three to six months of regular deposits is itself a form of financial history, and landlords and lenders will ask for it.
 
-**5. Small, reported credit.** A file is built by borrowing a little and repaying on time. Common starting points are a phone contract in your own name, a secured credit card (one backed by a deposit you provide), or a small credit-builder loan. In some countries rent payments can be reported to the bureaus on request. Put one recurring bill on the card, pay it in full every month, and leave the rest of the limit unused.
+**5. Small, reported credit.** In countries with US or UK style credit scoring, a file is built by borrowing a little and repaying on time. Common starting points are a phone contract in your own name, a secured credit card (one backed by a deposit you provide), or a small credit-builder loan. In some countries rent payments can be reported to the bureaus on request. A common pattern is one recurring bill on the card, paid in full every month, with the rest of the limit unused. Other systems, such as Germany's SCHUFA or the Dutch BKR, work differently and do not require a credit card to build a clean record, so it is worth finding out how the local system scores people first.
 
 **6. Check the file.** After six months, request your credit report. Errors are common for people with foreign names, several addresses, or transliterated spellings, and they are easier to correct early.
 
@@ -155,7 +155,7 @@ Three habits reduce the risk:
 - **Keep evidence of where you lived and worked.** Tenancy agreements, employment contracts, travel records.
 - **Declare foreign accounts where required.** Many countries require residents to report accounts held abroad, and penalties for not doing so can apply even when no tax was due.
 
-The geographic arbitrage post goes further into tax residency. For anything beyond the simplest case, a local tax professional in the year of the move is worth the fee.
+The geographic arbitrage post goes further into tax residency. For anything beyond the simplest case, many people find a local tax professional in the year of the move worth the fee.
 
 ## When the move was not a choice
 
@@ -177,7 +177,7 @@ The plan above assumes documents, a legal right to work, and time. Many people h
 
 **United States.** Credit scores drive renting, borrowing, and sometimes hiring. Secured cards and credit-builder loans are the standard starting point. Some lenders accept an ITIN in place of a Social Security number.
 
-**Gulf states.** Residency is tied to employment, accounts may be frozen when a visa is cancelled, and there is usually no route to a local pension. Savings need to be portable from the start.
+**Gulf states.** Residency is tied to employment, accounts may be frozen when a visa is cancelled, and there is usually no route to a local pension for foreign workers (end-of-service gratuity schemes are the closest equivalent). That is why many expatriates there keep savings portable from the start.
 
 **India, the Philippines, Mexico, and other major receiving countries.** Many offer special account types for citizens working abroad, sometimes with tax advantages. They are worth understanding before choosing how to send money home.
 

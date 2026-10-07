@@ -10,7 +10,7 @@ takeaways:
   - "Why the fair comparison is buying vs renting and investing"
 order: 28
 pubDate: 2026-06-19
-updatedDate: 2026-06-19
+updatedDate: 2026-10-07
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
@@ -26,7 +26,7 @@ faq:
   - question: "Is renting really throwing money away?"
     answer: "No, this is the most damaging real estate myth. Rent pays for shelter, flexibility, and the transfer of property-specific risk to your landlord. Buying does not eliminate those costs, it moves them to your side. Equally, a primary home is not a pure investment: it generates no cash income, costs money every month, and appreciates only at modest real rates after maintenance, taxes, insurance, and transaction costs. The honest comparison is never simply rent versus buy. It is buying versus renting and investing the difference. Where prices are very high relative to rents, renting plus investing often wins; where rents are high relative to prices, owning often wins."
   - question: "Why does illiquidity matter for real estate?"
-    answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is acceptable only if you keep a larger cash buffer than a pure-paper portfolio would need and know you are making that trade deliberately."
+    answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is why owners commonly keep a larger cash buffer than a pure-paper portfolio would need, and why it helps to make that trade deliberately."
 referentialReading:
   - title: "Real Estate Investing"
     url: "https://www.investopedia.com/terms/r/realestate.asp"
@@ -178,18 +178,18 @@ Real estate as an asset class extends beyond the primary residence:
 - **Land**: typically no income until sold; purely a bet on appreciation or use rights
 - **Commercial property**: different dynamics from residential; typically requires larger capital and more expertise
 
-For most retail investors with otherwise modest portfolios, direct rental property is a large undertaking with real operational load. REITs offer a much simpler way to add real-estate-like exposure to a portfolio of stocks and bonds.
+For retail investors with otherwise modest portfolios, direct rental property is a large undertaking with real operational load. REITs are a simpler way many people add real-estate-like exposure to a portfolio of stocks and bonds, though they move more like stocks in the short run and their tax treatment varies by country.
 
-## What you can do
+## What this means in practice
 
-1. **Separate the home decision from the investment decision.** Your primary residence is a lifestyle choice first, a financial one second. Treating it like a pure investment produces bad lifestyle choices; ignoring its financial impact produces bad financial ones
-2. **Run the full-cost calculation before buying.** Mortgage, maintenance, taxes, insurance, transaction costs, realistic appreciation. The number is always bigger than people expect
-3. **Do an honest rent-vs-buy comparison.** Buying vs. renting-and-investing-the-difference is the fair match-up. Sloppy comparisons make buying look much better than it is
-4. **Respect illiquidity.** If you own property, keep a larger cash buffer than a pure-paper portfolio would need. You cannot sell a house in a crisis
-5. **Treat leverage as a feature *and* a risk.** Mortgages amplify outcomes in both directions. Don't confuse easy access to leverage with low risk
-6. **For exposure without the burden, consider REITs.** They won't give you the levered upside of direct ownership, but they add the asset class to your portfolio with none of the operational complexity
-7. **Diversify around concentrated real estate.** If your home is already 60% of net worth, tilting the rest of your portfolio more global, more liquid, and less correlated to local real estate is often wise
+1. **The home decision and the investment decision are different questions.** A primary residence is a lifestyle choice first, a financial one second. Treating it as a pure investment distorts lifestyle choices; ignoring its financial impact distorts financial ones
+2. **The full-cost calculation comes before buying.** Mortgage, maintenance, taxes, insurance, transaction costs, realistic appreciation. The number usually turns out bigger than people expect
+3. **The fair comparison is rent-and-invest versus buy.** Sloppy comparisons make buying look much better than it is, and local price-to-rent ratios decide which way it tips
+4. **Illiquidity changes the cash buffer.** Property owners commonly hold a larger cash buffer than a pure-paper portfolio would need, because a house can't be sold in a crisis
+5. **Leverage is both a feature and a risk.** Mortgages amplify outcomes in both directions; easy access to leverage is not the same as low risk
+6. **REITs offer exposure without the burden.** They don't give the levered upside of direct ownership, but they add the asset class without the operational complexity
+7. **Concentrated real estate shapes the rest of the portfolio.** When a home is already 60% of net worth, many people tilt the rest more global, more liquid, and less correlated to local real estate
 
-Real estate is a real, useful asset class. It's also the one where honest accounting matters most, because the popular accounting is usually optimistic. Know the total cost, respect the illiquidity, and don't mistake access to leverage for free return.
+Real estate is a real, useful asset class. It's also the one where honest accounting matters most, because the popular accounting is usually optimistic: the total cost, the illiquidity and the two-way nature of leverage are where the story usually changes.
 
 A property tied to one country also ties most of its returns to one currency. For anyone whose income, expenses, family obligations, or retirement plans span more than one currency, that concentration becomes a quiet structural risk. The next post unpacks how to manage finances when your money lives in more than one currency at a time.
