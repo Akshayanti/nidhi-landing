@@ -2,13 +2,22 @@
 
 ## Privacy Policy is the Source of Truth
 
-Every material change to the site must be accompanied by a corresponding update to the privacy policy changelog in `src/pages/privacy.astro`. Do not wait for a reminder — this is mandatory.
+Every change that affects privacy must come with an entry in the privacy policy changelog in `src/pages/privacy.astro`. Do not wait for a reminder: this is mandatory. Changes that do not affect privacy get no entry, so the log stays a record of what the site collects and promises, not of everything that ships.
 
 **Rules:**
 1. Before implementing any change, review `src/pages/privacy.astro` to understand current commitments.
-2. If a change touches data collection, storage, new localStorage keys, new third-party calls, new analytics events, new forms, new user-facing flows, or retention — add a changelog entry with `material: true` and detailed bullet points following the existing style.
-3. If a proposed change conflicts with what the privacy policy states, **pause and ask** whether to proceed. Do not silently implement something that contradicts the policy.
-4. Non-material changes (typos, phrasing) still get a changelog entry with `material: false`.
+2. **Decide whether the change needs an entry.** Ask one question: does it change what a visitor's browser stores, sends or reveals, or what the privacy notice says?
+   - **Entry, `material: true`**, with detailed bullet points following the existing style:
+     - New or changed analytics: events, event properties, data-attr labels, capture settings, consent behaviour.
+     - New or changed browser storage (localStorage, sessionStorage, cookies), or a new use of an existing key.
+     - New third-party requests (scripts, fonts, APIs, embeds), or a change to what an existing one sends.
+     - New forms or server-side events. Changes to retention, deletion, vendors or hosting.
+     - A new tool or page that collects or sends anything.
+   - **Entry, `material: false`**: edits to the privacy notice's own text (clarifications, corrections, restructuring).
+   - **No entry**: publishing or scheduling lessons, editorial and figure changes, layout, styling, accessibility, SEO metadata, sitemap, robots.txt and llms.txt, copy elsewhere on the site, refactors, tests and docs.
+   - **Unsure? Ask** before adding an entry or leaving one out.
+3. If a proposed change conflicts with what the privacy policy states, **pause and ask** whether to proceed. Do not silently implement something that contradicts the policy. This applies to every change, whether or not it needs an entry.
+4. Existing entries stay as written, even ones this rule would not require today: the changelog is a record of what the notice said and when.
 5. **One entry per date.** The changelog has at most one entry for any given date. If an entry for that date already exists, add your bullet points to its `details`, broaden its `summary` to cover everything that changed that day, and set `material: true` if any part of the day's changes is material. Never add a second entry with the same `iso` date. The build fails if two hand-written entries share a date.
 
 ## Free Tools Keep Inputs Out of URLs
