@@ -1,6 +1,7 @@
 ---
 slug: "credit-and-credit-scores"
 title: "Credit and Credit Scores: What They Are and Why They Matter"
+seoTitle: "Credit and Credit Scores: What They Are and Why"
 description: "You've never missed a payment. You have no debt. But the rate you're offered on a mortgage is higher than your colleague's. The difference? Your credit history."
 tldr: "A credit score is a number that summarizes how reliably you've handled borrowed money. It's based on your payment history, how much of your available credit you use, how long your accounts have been open, and the types of credit you hold. Every country has its own system; FICO in the US, SCHUFA in Germany, Experian in the UK, CIBIL in India; and the core factors overlap widely. A stronger record usually means easier approval and, in many countries, lower rates on loans and mortgages. Even if you avoid debt entirely, your credit history affects rental applications, insurance, and financial flexibility. Building good credit is mostly about paying on time and keeping borrowing modest; in card-based systems like the US, a small balance paid in full each month helps."
 takeaways:

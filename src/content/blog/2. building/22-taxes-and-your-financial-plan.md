@@ -1,6 +1,7 @@
 ---
 slug: "taxes-and-your-financial-plan"
 title: "Taxes and Your Financial Plan: How Taxation Affects Every Decision"
+seoTitle: "How Taxes Shape Your Financial Plan"
 description: "Taxes reshape every number in your financial plan: take-home pay, investment returns, retirement income. Ignoring them just makes you misread your progress."
 tldr: "Taxes hit your plan in four places: what you earn (income tax), investment income as it arrives, what you sell (capital gains), and what you withdraw in retirement. The compounding cost is easiest to underestimate: in a deliberately harsh example, a 7% pre-tax return taxed at 25% every year compounds at only 5.25%, and even a smaller real-world gap adds up over 30+ years. Tax-advantaged accounts shelter investment growth from this drag in exchange for rules about access. Plan in after-tax terms; gross numbers are misleading."
 takeaways:

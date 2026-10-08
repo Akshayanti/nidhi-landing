@@ -7,6 +7,13 @@ const blog = defineCollection({
   schema: z.object({
     slug: z.string(),
     title: z.string(),
+    /**
+     * Shorter title for search results and link previews (<title>, og:title,
+     * twitter:title), used when "<title> | nidhi" would run past about 60
+     * characters and get cut off. The page heading, schema headline, RSS and
+     * cards keep `title`. Keep it to 57 characters or fewer.
+     */
+    seoTitle: z.string().max(57).optional(),
     description: z.string(),
     tldr: z.string(),
     /**

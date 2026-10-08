@@ -6,6 +6,7 @@ import { LEVEL_LABELS } from '../utils/home/startingPoints';
 
 interface Props {
   title: string;
+  seoTitle?: string;
   description: string;
   tldr: string;
   pubDate: Date;
@@ -46,7 +47,7 @@ interface Props {
   seriesPosition?: { index: number; total: number } | null;
 }
 
-const { title, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [] } = Astro.props;
 const levelLabel = LEVEL_LABELS[level];
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
@@ -147,7 +148,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 ---
 
 <BaseLayout
-  title={`${title} | nidhi`}
+  title={`${seoTitle ?? title} | nidhi`}
   description={description}
   article={{
     publishedTime: pubDate,

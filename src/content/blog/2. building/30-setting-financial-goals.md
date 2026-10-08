@@ -1,6 +1,7 @@
 ---
 slug: "setting-financial-goals"
 title: "Setting Financial Goals: From Vague Wishes to Concrete Targets"
+seoTitle: "Setting Financial Goals: From Wishes to Targets"
 description: "A goal without a number and a date is just a wish. The real work is translating 'someday' into something a spreadsheet can check progress against."
 tldr: "A financial goal needs three things: a specific amount, a specific date, and a path that connects today to both. 'Buy a house' becomes '€45,000 deposit in 5 years, which is roughly €662 per month at an assumed 5% return, or more if you keep it mostly in cash, as a 5-year goal often should.' Break goals into short-term (under 3 years, mostly cash), medium-term (3-7 years, mixed), and long-term (7+ years, mostly investments). When goals compete, priority comes from interest rates, timelines, and non-financial weight, not from whichever goal feels loudest. The real cost of delaying a long-term goal is not linear: in the post's 7% example, starting ten years later roughly halves what the same monthly amount builds, because compounding does much of its work late."
 takeaways:

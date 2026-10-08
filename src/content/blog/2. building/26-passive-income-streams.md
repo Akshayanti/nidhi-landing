@@ -1,6 +1,7 @@
 ---
 slug: "passive-income-streams"
 title: "Passive Income Streams: Making Your Money Work Without You"
+seoTitle: "Passive Income Streams: Money Working Without You"
 description: "Passive income is not free money. It's the return on assets you've already built, and the point at which your life stops depending on your next pay cheque."
 tldr: "Passive income is income you earn without trading time for it directly. The main honest sources are dividends (from stocks and funds), interest (from bonds and cash), rental income (from property), royalties (from creative or intellectual assets), and distributions from businesses where you don't work day-to-day. Most true passive income requires real capital upfront, typically tens or hundreds of thousands of euros of invested assets to replace even a portion of a working salary. The key milestone is the crossover point: when passive income exceeds expenses. At that point, work becomes a choice, not an obligation. Most internet 'passive income' is actually active business income in disguise; real passive income is quieter, less dramatic, and more durable."
 takeaways:
