@@ -1,6 +1,7 @@
 ---
 slug: "framing-anchoring-and-price-psychology"
 title: "Framing and Anchoring: How the Wording Changes Your Decision"
+seoTitle: "Framing and Anchoring: How Wording Changes Decisions"
 description: "Saving 200 euros a month sounds modest; 72,000 euros over thirty years sounds huge. Same decision, new frame. How framing and anchoring steer your choices."
 tldr: "Framing and anchoring are two ways your judgement gets hijacked from outside. Framing is how the same fact, worded differently, produces different decisions: a 1% annual fund fee sounds trivial, but framed over 30 years as roughly a quarter of your returns it sounds alarming, and both are true. Anchoring is how the first number you see, a sticker price, a purchase price, last year's high, becomes the reference point you judge everything else against, regardless of whether it is relevant. The two combine in the sunk cost fallacy, where the price you already paid wrongly drives what you do next. The defence is cheap and powerful: deliberately reframe every decision into the unit that matters, usually the long-horizon total, and question every anchor by asking whether the number is actually relevant or just the first one you happened to see."
 takeaways:

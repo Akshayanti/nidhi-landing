@@ -1,6 +1,7 @@
 ---
 slug: "overconfidence-and-the-planning-fallacy"
 title: "Overconfidence: Why Almost Everyone Thinks They're Above Average"
+seoTitle: "Overconfidence and the Planning Fallacy"
 description: "Overconfidence: most people rate themselves above average, which cannot be true of most people at once. It makes us trade too much and underestimate every plan."
 tldr: "Overconfidence is the tendency to overrate our own abilities, knowledge, and luck. Most people rank themselves above average at things where half of everyone must by definition be below the middle. In money, it shows up as excessive trading, concentrated bets, and the belief that we can pick winners. Its close cousin is the planning fallacy: we systematically underestimate how long things take and how much they cost, including our own savings plans, which is why 'I'll save more once I earn more' rarely happens. The antidote is the outside view: instead of asking how your plan will go, ask how plans like it usually go, and use those base rates. In practice that means setting conservative assumptions, diversifying instead of concentrating, trading less, and building a margin of safety into every projection."
 takeaways:
