@@ -29,20 +29,33 @@
   // tool URL ever carry state, no event may send it: every URL property that
   // points at a /free/ page (current URL, referrer, session entry, person
   // properties) keeps only its utm_* parameters and loses its # part.
-  function cleanToolUrl(value) {
-    if (typeof value !== 'string' || value.indexOf('/free/') === -1) return value;
+  //
+  // The learning path's search box writes what is typed into ?q= (so a search
+  // can be bookmarked or shared); for the same reason, that parameter is
+  // removed from any URL property pointing at a /blog/ page.
+  function cleanUrl(value) {
+    if (typeof value !== 'string') return value;
+    var isTool = value.indexOf('/free/') !== -1;
+    var isBlog = value.indexOf('/blog') !== -1 && value.indexOf('q=') !== -1;
+    if (!isTool && !isBlog) return value;
     var u;
     try { u = new URL(value, window.location.origin); } catch (e) { return value; }
-    if (u.host !== window.location.host || u.pathname.indexOf('/free/') !== 0) return value;
-    var keep = new URLSearchParams();
-    u.searchParams.forEach(function (v, k) { if (k.indexOf('utm_') === 0) keep.append(k, v); });
-    u.search = keep.toString();
-    u.hash = '';
+    if (u.host !== window.location.host) return value;
+    if (u.pathname.indexOf('/free/') === 0) {
+      var keep = new URLSearchParams();
+      u.searchParams.forEach(function (v, k) { if (k.indexOf('utm_') === 0) keep.append(k, v); });
+      u.search = keep.toString();
+      u.hash = '';
+    } else if (u.pathname.indexOf('/blog') === 0 && u.searchParams.has('q')) {
+      u.searchParams.delete('q');
+    } else {
+      return value;
+    }
     return /^https?:/i.test(value) ? u.toString() : u.pathname + u.search;
   }
   function cleanProps(obj) {
     if (!obj) return;
-    for (var key in obj) if (Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = cleanToolUrl(obj[key]);
+    for (var key in obj) if (Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = cleanUrl(obj[key]);
   }
 
   // Every capture feature is set explicitly here. A feature left unset falls
@@ -92,6 +105,10 @@
     capture_dead_clicks: hasFullConsent,
     capture_performance: false,
     capture_exceptions: false,
+    // Clicks are told apart by their data-attr labels, never by their text:
+    // tools show what people type (vendor names, amounts, results), and a
+    // click or dead click on that text would otherwise send it.
+    mask_all_text: true,
     persistence: 'localStorage',
     disable_session_recording: true,
     before_send: function (event) {
