@@ -1,40 +1,31 @@
 ---
+/**
+ * The learning path's front page (/blog/): where to start or continue, the
+ * levels with Inclusive Finances alongside them, and search across every
+ * lesson. Each level's lessons are on its own page (src/layouts/LevelPage.astro).
+ */
 import BaseLayout from './BaseLayout.astro';
-import { LearningPath } from '../components/LearningPath';
+import { LearnHome } from '../components/LearnHome';
 import SubscribeSection from '../components/SubscribeSection.astro';
-import { placeOnPath } from '../utils/companions';
+import { LADDER_LEVELS, LEVEL_LABELS } from '../utils/home/startingPoints';
+import { getHelperLevels, getPathPosts, LEVEL_SUMMARIES } from '../utils/learnPosts';
 
-interface Props {
-  posts: Array<{
-    id: string;
-    data: {
-      slug: string;
-      title: string;
-      description: string;
-      pubDate: Date;
-      level: string;
-      tags: string[];
-      companionOf?: string;
-    };
-    readingTime: number;
-  }>;
-}
+const posts = await getPathPosts();
+const helperLevels = await getHelperLevels();
+const ladder = posts.filter((p) => p.level !== 'inclusive-finances' && p.pathLevel);
+const inclusive = posts.filter((p) => p.level === 'inclusive-finances');
 
-const { posts } = Astro.props;
+const levels = LADDER_LEVELS.map((id) => ({
+  id,
+  label: LEVEL_LABELS[id],
+  summary: LEVEL_SUMMARIES[id],
+  total: ladder.filter((p) => p.level === id).length,
+}));
 
-const placements = placeOnPath(posts);
-const serializedPosts = posts
-  .filter(p => placements.has(p.data.slug))
-  .map(p => ({
-    id: p.id,
-    title: p.data.title,
-    description: p.data.description,
-    pubDate: p.data.pubDate.toISOString(),
-    level: p.data.level,
-    readingTime: p.readingTime,
-    tags: p.data.tags,
-    ...placements.get(p.data.slug)!,
-  }));
+// Ladder lessons in reading order first, then the Inclusive Finances guides.
+const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, readingTime, tags }) => ({
+  id, title, description, level, readingTime, tags,
+}));
 
 const blogBreadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -49,17 +40,18 @@ const blogBreadcrumbSchema = {
   ],
 };
 
+const liveLevels = levels.filter((l) => l.total > 0);
 const blogItemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Financial Literacy Articles',
-  description: 'A structured learning path through personal finance fundamentals.',
-  numberOfItems: posts.length,
-  itemListElement: posts.map((p, i) => ({
+  name: 'Learning path levels',
+  description: 'A structured learning path through personal finance, in levels from the basics to reviewing a plan.',
+  numberOfItems: liveLevels.length,
+  itemListElement: liveLevels.map((l, i) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}/`,
-    name: p.title,
+    url: `https://nidhi.today/blog/${l.id}/`,
+    name: `${l.label}: ${l.summary}`,
   })),
 };
 ---
@@ -69,17 +61,27 @@ const blogItemListSchema = {
   description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
   jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
 >
+  <script is:inline>
+    // Links from before each level had its own page (/blog/#level-building)
+    // go to that page.
+    (function () {
+      var m = /^#level-(discovery|building|psychology|optimizing|mastery)$/.exec(window.location.hash);
+      if (m) window.location.replace('/blog/' + m[1] + '/');
+    })();
+  </script>
   <section class="blog-index">
     <div class="container blog-index-container">
       <header class="blog-index-header">
         <h1>Learn about your money</h1>
-        <p class="blog-index-subtitle">Financial literacy from the ground up.{' '}<span class="blog-index-wideOnly">Start with the basics and build your understanding step by step. Where there is a rule of thumb, each lesson also explains why it exists, where it breaks, and how to think about your own situation.</span></p>
-        <p class="blog-index-topics">
-          <a href="/blog/tag/" data-attr="blog-index-browse-topics">Browse by topic</a>
+        <p class="blog-index-subtitle">
+          Short lessons for every kind of household, in any country. Where local rules matter, lessons say what to check.{' '}
+          <a href="/editorial-policy/#any-country" data-attr="blog-index-any-country">How lessons are written</a>
         </p>
       </header>
-      <SubscribeSection variant="compact" />
-      <LearningPath client:load posts={serializedPosts} showSteps compactOnPhones inclusiveTotal={posts.filter(p => p.data.level === 'inclusive-finances').length} />
+      <LearnHome client:load levels={levels} lessons={lessons} inclusiveCount={inclusive.length} helperLevels={helperLevels} />
+      <div class="blog-index-subscribe">
+        <SubscribeSection variant="compact" />
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -89,77 +91,51 @@ const blogItemListSchema = {
     padding: var(--space-10) 0 var(--space-16);
   }
 
+  .blog-index-container {
+    max-width: 820px;
+  }
+
   .blog-index-header {
-    text-align: center;
-    margin-bottom: var(--space-10);
+    margin-bottom: var(--space-8);
   }
 
   .blog-index-header h1 {
     font-size: 2.5rem;
+    line-height: 1.15;
     color: var(--color-deep-blue);
     margin-bottom: var(--space-3);
   }
 
   .blog-index-subtitle {
     color: var(--color-text-secondary);
-    max-width: 540px;
-    margin: 0 auto;
+    max-width: 640px;
+    margin: 0;
     font-size: 1.05rem;
     line-height: 1.6;
   }
 
-  /* Lightweight pointer to the new tag-hub. Closes finding 5 by giving
-     the `/blog/tag/` route an obvious entry from the blog index. */
-  .blog-index-topics {
-    margin-top: var(--space-2);
-    font-size: 0.85rem;
-  }
-
-  .blog-index-topics a {
+  .blog-index-subtitle a {
     color: var(--color-deep-blue);
-    text-decoration: underline dotted;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .blog-index-topics a:hover,
-  .blog-index-topics a:focus-visible {
-    color: var(--color-teal);
-    text-decoration-style: solid;
-    outline: none;
+  .blog-index-subscribe {
+    margin-top: var(--space-10);
   }
 
-  /* Phones: a short header, and the newsletter after the path rather than
-     before the first lesson. Same markup, moved with order. */
   @media (max-width: 640px) {
     .blog-index { padding: var(--space-6) 0 var(--space-8); }
 
-    .blog-index-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .blog-index-container > :global(.subscribe) {
-      order: 1;
-      margin-top: var(--space-8);
-    }
-
-    .blog-index-header {
-      text-align: left;
-      margin-bottom: var(--space-5);
-    }
+    .blog-index-header { margin-bottom: var(--space-6); }
 
     .blog-index-header h1 {
       font-size: 2rem;
-      line-height: 1.15;
       margin-bottom: var(--space-2);
     }
 
-    .blog-index-subtitle {
-      margin: 0;
-      font-size: 1rem;
-    }
+    .blog-index-subtitle { font-size: 1rem; }
 
-    .blog-index-wideOnly { display: none; }
+    .blog-index-subscribe { margin-top: var(--space-8); }
   }
 </style>

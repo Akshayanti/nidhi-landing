@@ -1,0 +1,211 @@
+---
+/**
+ * One level of the learning path (/blog/<level>/): what it covers, its
+ * lessons in reading order with the Inclusive Finances follow-ups placed
+ * after the lesson they build on, and links to the neighbouring levels.
+ * A level with no published lessons yet says so and stays out of search
+ * (noindex here, and out of the sitemap in astro.config.mjs).
+ */
+import BaseLayout from './BaseLayout.astro';
+import { LevelLessons, LEVELS } from '../components/LearningPath';
+import { LADDER_LEVELS, LEVEL_LABELS } from '../utils/home/startingPoints';
+import { getPathPosts, LEVEL_SUMMARIES } from '../utils/learnPosts';
+
+interface Props {
+  level: (typeof LADDER_LEVELS)[number];
+}
+
+const { level } = Astro.props;
+const meta = LEVELS[level];
+const label = LEVEL_LABELS[level];
+const index = LADDER_LEVELS.indexOf(level);
+
+const posts = await getPathPosts();
+const levelPosts = posts.filter((p) => p.pathLevel === level);
+const core = levelPosts.filter((p) => p.level === level);
+const liveLevels = LADDER_LEVELS.filter((id) => posts.some((p) => p.level === id && p.pathLevel));
+const prev = liveLevels[liveLevels.indexOf(level) - 1];
+const next = liveLevels[liveLevels.indexOf(level) + 1];
+
+const url = `https://nidhi.today/blog/${level}/`;
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Learn', item: 'https://nidhi.today/blog/' },
+    { '@type': 'ListItem', position: 2, name: label, item: url },
+  ],
+};
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${label} lessons`,
+  numberOfItems: core.length,
+  itemListElement: core.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://nidhi.today/blog/${p.id}/`,
+    name: p.title,
+  })),
+};
+---
+
+<BaseLayout
+  title={`${label}: ${LEVEL_SUMMARIES[level]} | nidhi`}
+  description={`${meta.description} ${core.length > 0 ? `${core.length} free lessons, in reading order.` : ''}`.trim()}
+  jsonLd={core.length > 0 ? [breadcrumbSchema, itemListSchema] : [breadcrumbSchema]}
+  robots={core.length === 0 ? 'noindex,follow' : undefined}
+>
+  <section class="level-page" style={`--lc: var(--level-${level})`}>
+    <div class="container level-page-container">
+      <nav class="level-page-crumb" aria-label="Breadcrumb">
+        <a href="/blog/" data-attr="level-page-crumb">Learn</a>
+        <span aria-hidden="true"> / </span>
+        <span aria-current="page">{label}</span>
+      </nav>
+      <header class="level-page-header">
+        <p class="level-page-eyebrow">Level {index + 1} of {LADDER_LEVELS.length}</p>
+        <h1>{label}</h1>
+        <p class="level-page-desc">{meta.description}</p>
+        <details class="level-page-covered">
+          <summary data-attr={`level-page-covered-${level}`}>What this level covers</summary>
+          <p>{meta.covered}.</p>
+        </details>
+        <p class="level-page-scope">
+          Written for any country: where a lesson depends on local rules for tax, accounts or benefits, it says what to check where you live.{' '}
+          <a href="/editorial-policy/#any-country" data-attr="level-page-any-country">How lessons are written</a>
+        </p>
+      </header>
+
+      {core.length > 0 ? (
+        <LevelLessons client:load level={level} posts={levelPosts} />
+      ) : (
+        <p class="level-page-empty">The lessons in this level are being written. New ones appear here as they are published.</p>
+      )}
+
+      <nav class="level-page-nav" aria-label="Levels">
+        {prev ? (
+          <a href={`/blog/${prev}/`} data-attr="level-page-prev">
+            <span aria-hidden="true">←</span> {LEVEL_LABELS[prev]}
+          </a>
+        ) : <a href="/blog/" data-attr="level-page-all">All levels</a>}
+        {next ? (
+          <a href={`/blog/${next}/`} data-attr="level-page-next">
+            Next level: {LEVEL_LABELS[next]} <span aria-hidden="true">→</span>
+          </a>
+        ) : <a href="/blog/inclusive-finances/" data-attr="level-page-inclusive">Inclusive Finances <span aria-hidden="true">→</span></a>}
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .level-page {
+    padding: var(--space-8) 0 var(--space-16);
+  }
+
+  .level-page-container {
+    max-width: 1040px;
+  }
+
+  .level-page-crumb {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .level-page-crumb a {
+    color: var(--color-deep-blue);
+  }
+
+  .level-page-header {
+    max-width: 680px;
+    margin-bottom: var(--space-6);
+  }
+
+  .level-page-eyebrow {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .level-page-header h1 {
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: 2.4rem;
+    line-height: 1.15;
+    color: var(--lc);
+  }
+
+  .level-page-desc {
+    margin: 0 0 var(--space-3);
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+  }
+
+  .level-page-covered {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+  }
+
+  .level-page-covered summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .level-page-covered p {
+    margin: 0;
+  }
+
+  .level-page-scope {
+    margin: var(--space-2) 0 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .level-page-scope a {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .level-page-empty {
+    color: var(--color-text-secondary);
+  }
+
+  .level-page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .level-page-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+  }
+
+  @media (max-width: 640px) {
+    .level-page { padding: var(--space-5) 0 var(--space-8); }
+
+    .level-page-header h1 { font-size: 2rem; }
+
+    .level-page-desc { font-size: 1rem; }
+  }
+</style>

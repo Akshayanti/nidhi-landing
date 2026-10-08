@@ -187,7 +187,7 @@ const faqSchema = {
                 Welcome back. Pick up where you left off: <a href="#" data-attr="home-hero-continue"></a>
               </p>
               <p class="hero-skip">
-                Already know the basics? Skip to <a href="/blog/#level-building" data-attr="home-hero-skip-building">investing, tax and independence</a>, <a href="/blog/#level-psychology" data-attr="home-hero-skip-psychology">the psychology of money</a>, or <a href="/free/" data-attr="home-hero-skip-tools">a tool for your own numbers</a>.
+                Already know the basics? Skip to <a href="/blog/building/" data-attr="home-hero-skip-building">investing, tax and independence</a>, <a href="/blog/psychology/" data-attr="home-hero-skip-psychology">the psychology of money</a>, or <a href="/free/" data-attr="home-hero-skip-tools">a tool for your own numbers</a>.
               </p>
             </div>
           )}
@@ -284,7 +284,7 @@ const faqSchema = {
                 class="lp-btn lp-btn--primary"
                 href={s.lessons[0].href}
                 data-start-route={JSON.stringify(s.lessons)}
-                data-route-done={s.level ? `/blog/#level-${s.level}` : '/blog/'}
+                data-route-done={s.level ? `/blog/${s.level}/` : '/blog/'}
                 data-attr={`home-start-${s.id}-door`}
               >
                 <span><span data-door-verb>Start with</span>{' '}<span data-door-title>{s.lessons[0].title}</span></span>

@@ -35,7 +35,7 @@ export const PALETTE = {
   // On-#1E1E1E (dark-mode foreground / on-dark-bg). Same hue identity.
   redDark:        '#FF9E80',
   deepOrangeDark: '#FFAB91',
-  amberDark:      '#FFCA28',
+  amberDark:      '#FFCC80',
   oliveDark:      '#E6EE5C',
   greenDark:      '#81C784',
   tealDark:       '#80CBC4',

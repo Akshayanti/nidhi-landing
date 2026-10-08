@@ -30,9 +30,10 @@
   // points at a /free/ page (current URL, referrer, session entry, person
   // properties) keeps only its utm_* parameters and loses its # part.
   //
-  // The learning path's search box writes what is typed into ?q= (so a search
-  // can be bookmarked or shared); for the same reason, that parameter is
-  // removed from any URL property pointing at a /blog/ page.
+  // The search box on topic pages (/blog/tag/...) writes what is typed into
+  // ?q= so a search can be bookmarked; /blog/ only reads ?q= when a search
+  // engine sends someone there, then removes it. Either way, that parameter
+  // is removed from any URL property pointing at a /blog/ page.
   function cleanUrl(value) {
     if (typeof value !== 'string') return value;
     var isTool = value.indexOf('/free/') !== -1;
@@ -121,6 +122,9 @@
       if (!hasFullConsent && localStorage.getItem('nidhi-cookie-consent') === 'accepted') {
         ph.set_config({ autocapture: true, enable_heatmaps: true, capture_dead_clicks: true });
       }
+      // The learning path's level helper pauses heatmaps while it is open, so
+      // no click position shows which answer was picked (LearnHome.tsx).
+      if (window.nidhiHeatmapsPaused) ph.set_config({ enable_heatmaps: false });
     },
   })
 

@@ -75,7 +75,7 @@
 
   --palette-red-dark:         #FF9E80;
   --palette-deep-orange-dark: #FFAB91;
-  --palette-amber-dark:       #FFCA28;
+  --palette-amber-dark:       #FFCC80;
   --palette-olive-dark:       #E6EE5C;
   --palette-green-dark:       #81C784;
   --palette-teal-dark:        #80CBC4;
@@ -5869,26 +5869,54 @@ body[data-page="landing"] .hero-mcAmount {
   body[data-page="landing"] .hero-splitBar span { transition: none; }
 }
 
-/* Blog index: two columns of posts on wide screens. The level markers stay on
-   the timeline; per-post dots are hidden because a second column has no rail
-   to sit on. Reading order runs left to right, then down. */
+/* Level pages (/blog/<level>/, LevelLessons): the lesson cards without the
+   path rail, which belongs to the tag pages' timeline. Two columns on wide
+   screens, reading order left to right, then down; compact rows on phones
+   (the .lp-compactOnPhones rules). */
+.lp-pathContainer.lp-levelPage {
+  max-width: none;
+  padding-left: 0;
+}
+.lp-levelPage .lp-nodeDotWrapper,
+.lp-levelPage .lp-nodeConnector {
+  display: none;
+}
+.lp-levelPage .lp-levelActions {
+  margin: 0 0 var(--space-4);
+}
+.lp-levelPageProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 420px;
+  margin-bottom: var(--space-3);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+.lp-levelPageBar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+.lp-levelPageBar > div {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
 @media (min-width: 1024px) {
-  .blog-index .lp-pathContainer {
-    max-width: 1040px;
-  }
-  .blog-index .lp-levelPosts {
+  .lp-levelPage .lp-levelPosts {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
   }
-  .blog-index .lp-levelPosts .lp-postNode {
+  .lp-levelPage .lp-levelPosts .lp-postNode {
     margin-bottom: 0;
     align-items: stretch;
   }
-  .blog-index .lp-levelPosts .lp-nodeDotWrapper,
-  .blog-index .lp-levelPosts .lp-nodeConnector {
-    display: none;
-  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-levelPageBar > div { transition: none; }
 }
 /* Step number on each learning-path card: the reading order within a level. */
 .lp-cardStep {
@@ -5914,12 +5942,507 @@ body[data-page="landing"] .hero-mcAmount {
   font-weight: 600;
 }
 @media (min-width: 1024px) {
-  .blog-index-container {
-    max-width: var(--max-width-wide);
-  }
-  .blog-index .lp-orderHint {
+  .lp-levelPage .lp-orderHint {
     display: block;
   }
+}
+
+/* ============================================================================
+ * Learn page (/blog/, LearnHome): where to start or continue, the level
+ * helper, the levels with Inclusive Finances alongside, and lesson search.
+ * ============================================================================ */
+.learn-home {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.learn-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+}
+
+.learn-startText h2 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.35rem;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.learn-eyebrow {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.learn-sub {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.learn-muted {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.learn-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.learn-bar {
+  max-width: 420px;
+  height: 6px;
+  margin: var(--space-3) 0 6px;
+  border-radius: 3px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+
+.learn-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.learn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.learn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.learn-btnPrimary {
+  border: 0;
+  background: var(--color-cta-bg);
+  color: var(--color-cta-fg);
+}
+
+.learn-btnPrimary:hover {
+  background: var(--color-cta-bg-hover);
+  color: var(--color-cta-fg);
+}
+
+.learn-btnSecondary {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+}
+
+.learn-btnSecondary:hover {
+  border-color: var(--color-text-secondary);
+}
+
+.learn-btnText {
+  padding: 0 var(--space-1);
+  border: 0;
+  background: none;
+  color: var(--color-deep-blue);
+}
+
+.learn-btnQuiet {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+}
+
+.learn-btn:focus-visible,
+.learn-option:focus-visible,
+.learn-level:focus-visible,
+.learn-result:focus-visible,
+.learn-search:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+.learn-helper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.learn-helperQuestion {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.learn-helperQuestion legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin-bottom: var(--space-3);
+}
+
+.learn-helperQuestion legend:focus,
+.learn-helperResult h3:focus {
+  outline: none;
+}
+
+.learn-helperText {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.learn-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.learn-option {
+  min-height: 48px;
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.learn-option:hover {
+  border-color: var(--color-text-secondary);
+}
+
+.learn-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-2);
+}
+
+.learn-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 8px var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.learn-check:has(input:checked) {
+  border-color: var(--color-deep-blue);
+}
+
+.learn-check input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--color-deep-blue);
+}
+
+.learn-check:has(input:focus-visible) {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+.learn-helperNav {
+  margin-top: var(--space-4);
+}
+
+.learn-helperLessons ul {
+  margin: var(--space-1) 0 0;
+  padding-left: 1.2em;
+}
+
+.learn-helperLessons li {
+  margin: 4px 0;
+}
+
+.learn-helperLessons a {
+  color: var(--color-deep-blue);
+  font-weight: 500;
+}
+
+.learn-helperResult {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.learn-helperResult h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.learn-helperResult .learn-actions {
+  margin-top: var(--space-3);
+}
+
+.learn-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.learn-head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+}
+
+.learn-levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.learn-level {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+a.learn-level:hover {
+  border-color: var(--lc);
+  color: var(--color-text-primary);
+}
+
+.learn-levelHere {
+  border: 2px solid var(--lc);
+  padding: 9px calc(var(--space-4) - 1px);
+}
+
+.learn-num {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--lc);
+  color: var(--color-bg-white);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.learn-numRoute {
+  background: none;
+  border: 2px solid var(--lc);
+  color: var(--lc);
+}
+
+.learn-levelText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.learn-levelName {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--lc);
+}
+
+.learn-levelName em {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.learn-levelSummary {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+.learn-levelCount {
+  flex: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.learn-chevron {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+.learn-levelSoon {
+  border-style: dashed;
+  background: none;
+  color: var(--color-text-muted);
+}
+
+.learn-levelSoon .learn-num {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 2px dashed var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+.learn-levelSoon .learn-levelName {
+  color: var(--color-text-muted);
+}
+
+.learn-alongside {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.learn-alongside::before,
+.learn-alongside::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.learn-topics {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+
+.learn-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.learn-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-3);
+}
+
+.learn-results:empty {
+  display: none;
+}
+
+.learn-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.learn-result:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.learn-pill {
+  flex: none;
+  padding: 3px 9px;
+  border: 1px solid var(--lc);
+  border-radius: 999px;
+  color: var(--lc);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.learn-results > .learn-btnText {
+  align-self: flex-start;
+}
+
+[data-theme="dark"] .learn-num:not(.learn-numRoute) {
+  color: var(--color-bg);
+}
+
+@media (max-width: 640px) {
+  .learn-home { gap: var(--space-6); }
+
+  .learn-card { padding: var(--space-5) var(--space-4); }
+
+  .learn-startText h2 { font-size: 1.2rem; }
+
+  .learn-actions .learn-btnPrimary,
+  .learn-actions .learn-btnSecondary { width: 100%; }
+
+  .learn-level { gap: var(--space-3); padding: 10px var(--space-3); }
+
+  .learn-levelHere { padding: 9px calc(var(--space-3) - 1px); }
+
+  .learn-result { align-items: flex-start; flex-direction: column; gap: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-level { transition: none; }
 }
 
 /* Multi-currency net worth: interactive donut */
