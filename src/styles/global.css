@@ -1534,6 +1534,319 @@ strong {
   .lp-levelCompletedBadge { font-size: 0.6rem; padding: 1px 6px; }
   .lp-levelCollapseChevron { width: 14px; height: 14px; }
 }
+
+/* Learning path on phones (blog index, LearningPath compactOnPhones): a
+   dashboard rather than the full archive. Progress and a strip of the five
+   levels first, search and topics behind one button, the level the reader
+   is on open and the others as one row each, lessons as compact rows. The
+   phone-only controls are hidden on wider screens, which are unchanged. */
+.lp-filterToggle,
+.lp-levelPhoneToggle { display: none; }
+
+.lp-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .lp-pathContainer.lp-compactOnPhones {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+  }
+
+  /* The timeline rail, dots and big level markers: the rows carry the
+     level number and colour instead. */
+  .lp-compactOnPhones .lp-pathLine,
+  .lp-compactOnPhones .lp-nodeDotWrapper,
+  .lp-compactOnPhones .lp-nodeConnector,
+  .lp-compactOnPhones .lp-levelWaypoint { display: none; }
+
+  /* Order: progress, the level strip, search and filter, then the levels. */
+  .lp-compactOnPhones .lp-overallProgress {
+    order: -2;
+    margin-bottom: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .lp-compactOnPhones .lp-overallProgressLabel { margin-bottom: 6px; }
+
+  /* One row of levels sharing the width equally (levels with no lessons
+     yet are left out), Inclusive Finances on its own row below. */
+  .lp-compactOnPhones .lp-levelNav {
+    order: -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: var(--space-3);
+  }
+
+  .lp-compactOnPhones .lp-levelNavLink {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    min-height: 44px;
+    padding: 8px 2px;
+    text-align: center;
+  }
+
+  .lp-compactOnPhones .lp-levelNavLinkNum {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .lp-compactOnPhones .lp-levelNavLinkText {
+    flex: none;
+    width: 100%;
+    align-items: center;
+  }
+
+  .lp-compactOnPhones .lp-levelNavLinkLabel {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.68rem;
+  }
+
+  .lp-compactOnPhones .lp-levelNavLinkPrereq { display: none; }
+
+  .lp-compactOnPhones .lp-levelNavLinkCount {
+    font-size: 0.68rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lp-compactOnPhones .lp-levelNavRoute {
+    flex-basis: 100%;
+    flex-direction: row;
+    gap: var(--space-2);
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkText {
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkLabel { font-size: 0.8rem; }
+  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkCount { font-size: 0.75rem; }
+
+  /* Search and topics: one button, the panel below it when open. */
+  .lp-compactOnPhones .lp-filterToggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    margin-bottom: var(--space-4);
+    padding: 0 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .lp-compactOnPhones .lp-filterToggle:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .lp-compactOnPhones .lp-filterToggleIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-muted);
+  }
+
+  .lp-compactOnPhones .lp-filterToggleActive {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--color-deep-blue);
+    color: var(--color-bg-white);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .lp-compactOnPhones .lp-filterToggleChevron {
+    margin-left: auto;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .lp-compactOnPhones .lp-filterToggle[aria-expanded='true'] .lp-filterToggleChevron { transform: rotate(180deg); }
+
+  .lp-compactOnPhones .lp-filterBarPhoneClosed { display: none; }
+
+  .lp-compactOnPhones .lp-filterBar {
+    margin-top: calc(-1 * var(--space-2));
+    margin-bottom: var(--space-4);
+  }
+
+  /* Levels: one row each; the open one shows its lessons below. */
+  .lp-compactOnPhones .lp-levelSection { margin-bottom: var(--space-2); }
+
+  .lp-compactOnPhones .lp-levelSectionCollapsed { background: none; }
+
+  .lp-compactOnPhones .lp-levelPhoneToggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 56px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--level-color);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    font-family: var(--font-heading);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggle:focus-visible {
+    outline: 2px solid var(--level-color);
+    outline-offset: 2px;
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggle .lp-levelNavLinkNum {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggleText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggleLabel {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--level-color);
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneTogglePrereq {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-muted);
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggleCount {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggleChevron {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggle[aria-expanded='true'] {
+    margin-bottom: var(--space-3);
+  }
+
+  .lp-compactOnPhones .lp-levelPhoneToggle[aria-expanded='true'] .lp-levelPhoneToggleChevron { transform: rotate(180deg); }
+
+  .lp-compactOnPhones .lp-phoneFolded .lp-levelBody { display: none; }
+
+  /* The open level's header: its short description; the name, progress and
+     completed state are already in the row above. */
+  .lp-compactOnPhones .lp-levelLabelRow,
+  .lp-compactOnPhones .lp-levelMeta,
+  .lp-compactOnPhones .lp-levelProgress,
+  .lp-compactOnPhones .lp-levelProgressBar { display: none; }
+
+  .lp-compactOnPhones .lp-levelHeader { margin-bottom: var(--space-3); }
+
+  .lp-compactOnPhones .lp-levelActions { margin: 0 0 var(--space-3); }
+
+  .lp-compactOnPhones .lp-levelPosts { padding-bottom: var(--space-4); }
+
+  /* Lessons as rows: step, title and read time, read toggle. The date,
+     summary and topic tags show on wider screens. */
+  .lp-compactOnPhones .lp-postNode { margin-bottom: var(--space-2); }
+
+  .lp-compactOnPhones .lp-nodeCard {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'step companion toggle'
+      'step title toggle'
+      'step time toggle';
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 12px;
+  }
+
+  .lp-compactOnPhones .lp-nodeCard:not(.lp-nodeCardStartHere) { box-shadow: none; }
+
+  .lp-compactOnPhones .lp-nodeCard:hover { transform: none; }
+
+  .lp-compactOnPhones .lp-nodeCardStartHere,
+  .lp-compactOnPhones .lp-nodeCard:has(.lp-cardBadges) { padding-top: 18px; }
+
+  .lp-compactOnPhones .lp-cardTop,
+  .lp-compactOnPhones .lp-cardMeta { display: contents; }
+
+  .lp-compactOnPhones .lp-cardStep { grid-area: step; }
+
+  .lp-compactOnPhones .lp-cardCompanion {
+    grid-area: companion;
+    margin: 0;
+  }
+
+  .lp-compactOnPhones .lp-cardTitle {
+    grid-area: title;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  .lp-compactOnPhones .lp-cardReadingTime { grid-area: time; }
+
+  /* 32px to see, 44px to tap. */
+  .lp-compactOnPhones .lp-readToggle {
+    grid-area: toggle;
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+
+  .lp-compactOnPhones .lp-readToggle::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+  }
+
+  .lp-compactOnPhones .lp-cardDate,
+  .lp-compactOnPhones .lp-cardDesc,
+  .lp-compactOnPhones .lp-cardTags { display: none; }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+  .lp-compactOnPhones .lp-filterToggleChevron,
+  .lp-compactOnPhones .lp-levelPhoneToggleChevron { transition: none; }
+}
 /* ============================================================================
  * Transactional landing pages
  * /confirm, /unsubscribe, /subscription-confirmed, /unsubscribed,
@@ -3010,6 +3323,262 @@ strong {
   .lc-chartSection {
     padding: var(--space-4) var(--space-3);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Phones (640px and narrower): one vendor at a time, optional fields folded,
+   the side-by-side table restacked so nothing scrolls sideways. Wider
+   screens keep the grid of cards with every field showing.
+   --------------------------------------------------------------------------- */
+
+.lc-vendorTabs { display: none; }
+
+@media (min-width: 641px) {
+  /* The fold is a plain block here: no summary row, and the groups keep
+     the card's spacing between them. */
+  .lc-optional {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .lc-optional > .lc-optionalSummary { display: none; }
+}
+
+/* A separate rule, so a browser without ::details-content skips only this.
+   It shows the groups before the fold hook has opened the fold. */
+@media (min-width: 641px) {
+  .lc-optional::details-content {
+    display: contents;
+    content-visibility: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .lc-vendorTabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: var(--space-3);
+  }
+
+  .lc-vendorTab,
+  .lc-vendorTabAdd {
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .lc-vendorTab {
+    --lc-color: var(--color-deep-blue);
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    text-align: left;
+  }
+
+  .lc-vendorTabActive {
+    border-color: var(--lc-color);
+    box-shadow: inset 0 0 0 1px var(--lc-color);
+    background: color-mix(in srgb, var(--lc-color) 10%, var(--color-bg-white));
+  }
+
+  .lc-vendorTabLetter {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--lc-color);
+    border-radius: 50%;
+    color: var(--lc-color);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .lc-vendorTabName {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .lc-vendorTabAdd {
+    border: 1px dashed var(--color-border);
+    background: transparent;
+    color: var(--color-deep-blue);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* Alone on its row: a slimmer full-width row instead of half a tile. */
+  .lc-vendorTabAdd:nth-child(odd) {
+    grid-column: 1 / -1;
+    min-height: 40px;
+  }
+
+  .lc-vendorTab:focus-visible,
+  .lc-vendorTabAdd:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  /* One card at a time; "+ Add" above replaces the dashed add card. */
+  .lc-grid > .lc-card:not(.lc-cardActive),
+  .lc-cardAdd { display: none; }
+
+  /* Formatting sample: useful, but not needed to start. */
+  .lc-fieldPreview { display: none; }
+
+  /* The card's three headline numbers as a compact grid: monthly and APR
+     side by side, total paid below. (.lc-resultList, later in this file,
+     otherwise turns the grid back into a column.) */
+  .lc-resultList.lc-resultListPrimary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .lc-resultListPrimary .lc-resultRow {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .lc-resultListPrimary .lc-resultRowEmphasized { grid-column: 1 / -1; }
+
+  .lc-resultListPrimary .lc-resultValue {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Optional fields folded behind one row saying what is set. */
+  .lc-optional { border-top: 1px dashed var(--color-border); }
+
+  .lc-optionalSummary {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    min-height: 44px;
+    padding: 10px 32px 10px 0;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .lc-optionalSummary::-webkit-details-marker { display: none; }
+
+  .lc-optionalSummary::after {
+    content: '+' / '';
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--color-teal);
+  }
+
+  .lc-optional[open] > .lc-optionalSummary::after { content: '\2212' / ''; }
+
+  .lc-optionalSummary:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-optionalTitle {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-deep-blue);
+  }
+
+  .lc-optionalStatus {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .lc-optional > .lc-fieldGroup:first-of-type {
+    margin-top: 0;
+    padding-top: var(--space-2);
+    border-top: 0;
+  }
+
+  /* Side-by-side: one block per metric, values marked by vendor letter. */
+  .lc-deltaTableWrap { overflow: visible; }
+
+  .lc-deltaTable,
+  .lc-deltaTable tbody { display: block; min-width: 0; }
+
+  .lc-deltaTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .lc-deltaTable tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .lc-deltaTable tbody tr:last-child { border-bottom: 0; }
+
+  .lc-deltaTable tbody th[scope="row"] {
+    grid-column: 1 / -1;
+    padding: 0 0 2px;
+    border: 0;
+    font-size: 0.8rem;
+  }
+
+  .lc-deltaTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .lc-deltaTable td::before {
+    content: attr(data-slot);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--lc-color, var(--color-text-muted));
+  }
+
+  /* Analysis tabs: four on one row. */
+  .lc-tabList { flex-wrap: nowrap; }
+
+  .lc-tab {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    padding: 6px 4px;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* The phone drawing of the payment split is narrower; its labels get a
+     little more size to stay readable once scaled. */
+  .lc-splitChart--phone .lc-splitValueInterest,
+  .lc-splitChart--phone .lc-splitValuePrincipal,
+  .lc-splitChart--phone .lc-splitTickX { font-size: 11.5px; }
 }
 
 /* =============================================================
@@ -4526,6 +5095,159 @@ body[data-page="landing"] .site-footer {
   .mcs-grid,
   .mcs-grid--two {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Monte Carlo simulator: phones (640px and narrower). The headline result
+   sits right under the main inputs, returns, fees and paths fold behind one
+   toggle, the three result cards share a row, and the chart is drawn for the
+   phone's width (MonteCarloSimulator.tsx picks the geometry). Wider screens
+   are unchanged: these three elements only exist on phones. */
+.mcs-quick,
+.mcs-settingsRow,
+.mcs-cardsKey {
+  display: none;
+}
+@media (max-width: 640px) {
+  .mcs-root {
+    gap: var(--space-4);
+  }
+  .mcs-form {
+    gap: var(--space-3);
+  }
+  /* The four main inputs in two columns. */
+  .mcs-grid:not(.mcs-grid--assumptions),
+  .mcs-withdraw .mcs-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .mcs-quick {
+    display: grid;
+    gap: 2px;
+    padding: var(--space-3) var(--space-4);
+    border-left: 4px solid var(--color-deep-blue);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    transition: opacity 0.2s ease;
+  }
+  .mcs-quick--busy {
+    opacity: 0.55;
+  }
+  .mcs-quickTitle {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+  }
+  .mcs-quickValue {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--color-deep-blue);
+    overflow-wrap: anywhere;
+  }
+  .mcs-quickRange {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+  }
+  .mcs-settingsToggle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+    min-height: 44px;
+    padding: var(--space-3) 44px var(--space-3) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .mcs-settingsToggle::after {
+    content: '+' / '';
+    position: absolute;
+    right: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--color-teal);
+  }
+  .mcs-settingsToggle[aria-expanded="true"]::after {
+    content: '\2212' / '';
+  }
+  .mcs-settingsToggle:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+  .mcs-settingsName {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+  .mcs-settingsRow {
+    display: block;
+    position: relative;
+  }
+  /* Room under the name for the values line drawn over the button. */
+  .mcs-settingsRow .mcs-settingsToggle {
+    padding-bottom: calc(var(--space-3) + 1.3em);
+  }
+  .mcs-settingsValue {
+    position: absolute;
+    left: var(--space-3);
+    right: 44px;
+    bottom: var(--space-3);
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+  .mcs-grid--assumptions:not(.mcs-settings--open) {
+    display: none;
+  }
+  .mcs-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+  .mcs-card {
+    gap: 2px;
+    padding: var(--space-2);
+  }
+  .mcs-cardMore {
+    display: none;
+  }
+  .mcs-cardLabel {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .mcs-cardValue {
+    font-size: 0.98rem;
+  }
+  .mcs-cardsKey {
+    display: block;
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+  /* The phone drawing fits the width; no sideways scrolling. */
+  .mcs-chart.mcs-chart--narrow {
+    min-width: 0;
+  }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+  .mcs-quick {
+    transition: none;
   }
 }
 

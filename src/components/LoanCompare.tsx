@@ -358,6 +358,9 @@ interface SplitChartProps {
 }
 
 function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartProps) {
+  // Phones get a narrower drawing, so the labels stay readable once it is
+  // scaled down to the screen instead of shrinking to a few pixels.
+  const phone = usePhone();
   if (schedule.length === 0) {
     return (
       <p className="lc-chartEmpty">
@@ -371,7 +374,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
   // the short English form only when a full amount would not fit the bar.
   const barLabel = (minor: number) => {
     const full = formatAmount(minor / factor, currency);
-    return full.length <= 9 ? full : formatAmount(minor / factor, currency, true);
+    return full.length <= (phone ? 7 : 9) ? full : formatAmount(minor / factor, currency, true);
   };
   const samples = pickSplitSamples(schedule.length, 6);
   const rows = samples.map((m) => schedule[m - 1]);
@@ -384,15 +387,16 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
   const maxPayment = Math.max(...rows.map((r) => r.payment));
   if (maxPayment <= 0) return null;
 
-  const width = 800;
-  const height = 360;
+  const width = phone ? 360 : 800;
+  const height = phone ? 330 : 360;
   const padT = 56;
   const padB = 64;
-  const padL = 56;
-  const padR = 24;
+  const padL = phone ? 8 : 56;
+  const padR = phone ? 8 : 24;
   const plotH = height - padT - padB;
   const plotW = width - padL - padR;
-  const barWidth = Math.min(70, (plotW - 20) / rows.length - 14);
+  // Phones: wider bars and narrower gaps, so each label fits its bar.
+  const barWidth = Math.min(70, (plotW - 20) / rows.length - (phone ? 6 : 14));
   const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
 
   const ariaSummary =
@@ -408,7 +412,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
   return (
     <>
       <svg
-        className="lc-splitChart"
+        className={`lc-splitChart ${phone ? 'lc-splitChart--phone' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={ariaSummary}
@@ -549,6 +553,43 @@ function formatYearLabel(month: number): string {
   return `Year ${Math.floor(month / 12) + 1}`;
 }
 
+// ---- Phone layout ------------------------------------------------------------
+//
+// Phones (640px and narrower, the site's phone breakpoint) show one vendor
+// card at a time and fold the optional fields. Which layout is showing is
+// view state only: it never enters the share link, the address, storage or
+// analytics.
+
+const PHONE_QUERY = '(max-width: 640px)';
+
+/** True on phone-width screens. Starts false so the server render and the
+ *  first client render match (the desktop layout); updates after mount. */
+function usePhone(): boolean {
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE_QUERY);
+    const sync = () => setPhone(mq.matches);
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
+  }, []);
+  return phone;
+}
+
+/** Keeps a <details> open on wider screens and closed on phones, following
+ *  the screen as it rotates or resizes. A phone visitor can still open it. */
+function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE_QUERY);
+    const sync = () => {
+      if (ref.current) ref.current.open = !mq.matches;
+    };
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
+  }, [ref]);
+}
+
 // ---- Main component --------------------------------------------------------
 
 export default function LoanCompare() {
@@ -562,6 +603,10 @@ export default function LoanCompare() {
   // explicit index only when the user has manually picked one, so adding
   // or reordering vendors doesn't trap them on a stale selection.
   const [splitVendorIdx, setSplitVendorIdx] = useState<number | null>(null);
+  // Phones: the vendor whose card is showing. View state only (see above).
+  const [activeVendor, setActiveVendor] = useState(0);
+  const disclaimerRef = useRef<HTMLDetailsElement>(null);
+  useFoldOnPhone(disclaimerRef);
   const currencySelectId = useId();
 
   // Convenience accessor: the currency lives on globalState but most
@@ -623,6 +668,8 @@ export default function LoanCompare() {
   const addVendor = useCallback(() => {
     if (vendors.length >= MAX_VENDORS) return;
     setVendors((prev) => [...prev, makeDefaultVendor(prev.length)]);
+    // On phones, show the card just added.
+    setActiveVendor(vendors.length);
     track('free_loan_comparison_vendor_added', { count: vendors.length + 1 });
   }, [vendors.length]);
 
@@ -630,6 +677,8 @@ export default function LoanCompare() {
     if (vendors.length <= MIN_VENDORS) return;
     const removedLabel = VENDOR_LABELS[index];
     setVendors((prev) => prev.filter((_, i) => i !== index));
+    // On phones, keep showing a neighbouring card.
+    setActiveVendor((a) => (a > index || a === vendors.length - 1 ? Math.max(0, a - 1) : a));
     track('free_loan_comparison_vendor_removed', {
       // `vendor` is the slot label that was removed (A-E). After removal,
       // the remaining vendors shift up positionally; that's fine for
@@ -785,6 +834,7 @@ export default function LoanCompare() {
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
               setGlobalState(DEFAULT_GLOBAL_STATE);
+              setActiveVendor(0);
               track('free_loan_comparison_reset');
             }}
             title="Clear all data and start fresh"
@@ -815,10 +865,46 @@ export default function LoanCompare() {
         </div>
       </div>
 
+      {/* Phones only (hidden from 641px): pick the vendor card to show.
+          Fixed labels only ("A", "Vendor A"): with consent, click capture
+          records a button's text, so nothing typed (names, amounts) goes
+          in here. Choosing one fires no event of its own. "+ Add" is the
+          same action as the dashed card on wider screens, with the same
+          label and event. */}
+      <div className="lc-vendorTabs" role="group" aria-label="Vendor to show">
+        {vendors.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`lc-vendorTab ${i === activeVendor ? 'lc-vendorTabActive' : ''}`}
+            style={{ '--lc-color': VENDOR_COLORS[i] } as React.CSSProperties}
+            aria-pressed={i === activeVendor}
+            aria-controls={`lc-vendor-card-${i}`}
+            onClick={() => setActiveVendor(i)}
+          >
+            <span className="lc-vendorTabLetter" aria-hidden="true">{VENDOR_LABELS[i]}</span>
+            <span className="lc-vendorTabName">Vendor {VENDOR_LABELS[i]}</span>
+          </button>
+        ))}
+        {vendors.length < MAX_VENDORS && (
+          <button
+            type="button"
+            className="lc-vendorTabAdd"
+            onClick={addVendor}
+            aria-label={`Add another vendor to compare (${vendors.length + 1} of ${MAX_VENDORS})`}
+            data-attr="lc-vendor-add"
+          >
+            <span aria-hidden="true">+</span> Add
+          </button>
+        )}
+      </div>
+
       <div className="lc-grid">
         {vendors.map((v, i) => (
           <VendorCard
             key={i}
+            domId={`lc-vendor-card-${i}`}
+            active={i === activeVendor}
             label={VENDOR_LABELS[i]}
             color={VENDOR_COLORS[i]}
             vendor={v}
@@ -866,7 +952,8 @@ export default function LoanCompare() {
         onGlobalChange={(patch) => setGlobalState((g) => ({ ...g, ...patch }))}
       />
 
-      <details className="lc-disclaimerWrap" open>
+      {/* Open on wider screens, folded on phones (useFoldOnPhone). */}
+      <details className="lc-disclaimerWrap" open ref={disclaimerRef}>
         <summary className="lc-disclaimerSummary">Assumptions and disclaimers</summary>
         <p className="lc-disclaimer">
           Calculations assume monthly compounding and on-time payments. APR
@@ -897,6 +984,10 @@ export default function LoanCompare() {
 // ---- Vendor card -----------------------------------------------------------
 
 interface VendorCardProps {
+  /** Element id, so the phone vendor buttons can point at their card. */
+  domId: string;
+  /** The card showing on phones; ignored on wider screens. */
+  active: boolean;
   label: string;
   color: string;
   vendor: VendorInput;
@@ -919,6 +1010,8 @@ interface VendorCardProps {
 // below the cards still shows the differences in money terms, which lets
 // the user see which is cheapest without the calculator declaring it.
 function VendorCard({
+  domId,
+  active,
   label,
   color,
   vendor,
@@ -936,9 +1029,27 @@ function VendorCard({
 
   const moneyHint = `In ${currency}`;
 
+  const optionalRef = useRef<HTMLDetailsElement>(null);
+  useFoldOnPhone(optionalRef);
+
+  // What the folded optional fields hold, in words rather than amounts, so
+  // a phone visitor sees whether anything is set without opening them.
+  const isSet = (s: string) => Number(s) > 0;
+  const optionalStatus = [
+    vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' ? 'Hybrid (ARM)' : 'Fixed rate',
+    isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? 'fees' : null,
+    isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== '' ? 'prepayments' : null,
+    isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth) ? 'penalty' : null,
+  ].filter(Boolean);
+  const optionalSummary =
+    optionalStatus.length === 1
+      ? `${optionalStatus[0]}, no fees or prepayments`
+      : `${optionalStatus[0]} with ${optionalStatus.slice(1).join(', ')}`;
+
   return (
     <article
-      className="lc-card"
+      id={domId}
+      className={`lc-card ${active ? 'lc-cardActive' : ''}`}
       style={{ '--lc-color': color } as React.CSSProperties}
       aria-labelledby={headingId}
     >
@@ -1092,11 +1203,20 @@ function VendorCard({
       )}
 
       {/* ------------------------------------------------------------ */}
-      {/*  Optional groups. All visible by default so the user can see  */}
-      {/*  the available knobs at a glance, but visually de-emphasised  */}
-      {/*  vs. the required block above. Each group has a small         */}
-      {/*  sub-heading so the purpose is scannable.                      */}
+      {/*  Optional groups. On wider screens all visible, so the user   */}
+      {/*  can see the available knobs at a glance, but visually        */}
+      {/*  de-emphasised vs. the required block above; the summary row  */}
+      {/*  is hidden there and CSS shows the content before the fold    */}
+      {/*  hook opens it. On phones they fold behind one row that says  */}
+      {/*  in words what is set, so the result follows the required     */}
+      {/*  fields.                                                      */}
       {/* ------------------------------------------------------------ */}
+
+      <details className="lc-optional" ref={optionalRef}>
+      <summary className="lc-optionalSummary">
+        <span className="lc-optionalTitle">Optional loan details</span>
+        <span className="lc-optionalStatus">{optionalSummary}</span>
+      </summary>
 
       <FieldGroup title="Rate structure" hint="Fixed or fixed-then-variable (ARM)">
         <fieldset className="lc-modeFieldset">
@@ -1315,6 +1435,7 @@ function VendorCard({
           </p>
         </div>
       </FieldGroup>
+      </details>
 
       <div
         className="lc-results"
@@ -1436,9 +1557,9 @@ interface FieldGroupProps {
   children: React.ReactNode;
 }
 
-/** A visually-grouped section of optional fields. The title and hint are
- *  always visible (no collapsibles) so the user can see at a glance what
- *  knobs each card exposes. */
+/** A visually-grouped section of optional fields. On wider screens the
+ *  title and hint are always visible so the user can see at a glance what
+ *  knobs each card exposes; on phones the groups sit inside one fold. */
 function FieldGroup({ title, hint, children }: FieldGroupProps) {
   return (
     <section className="lc-fieldGroup">
@@ -1537,6 +1658,9 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
             <strong>{formatMoney(spreadMinor, currency)}</strong>.</>
         )}
       </p>
+      {/* On phones the table restacks into one block per metric, each value
+          marked with its vendor letter (data-slot) and colour, so nothing
+          scrolls sideways. */}
       <div className="lc-deltaTableWrap">
         <table className="lc-deltaTable">
           <thead>
@@ -1595,7 +1719,7 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
               {valid.map((v) => {
                 const diff = v.r.totalPaidMinor - lowest.r.totalPaidMinor;
                 return (
-                  <td key={v.i}>
+                  <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>
                     {diff === 0 ? (
                       <span className="lc-deltaBaseline" aria-label="baseline (lowest total cost)">baseline</span>
                     ) : (
@@ -1631,7 +1755,7 @@ function DeltaRow({ label, valid, get, format, emphasized }: DeltaRowProps) {
     <tr className={emphasized ? 'lc-deltaRowEmphasized' : ''}>
       <th scope="row">{label}</th>
       {valid.map((v, idx) => (
-        <td key={v.i}>{format(values[idx])}</td>
+        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{format(values[idx])}</td>
       ))}
     </tr>
   );

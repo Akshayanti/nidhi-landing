@@ -325,15 +325,17 @@ const faqSchema = {
 
     <header class="lc-pageHeader">
       <p class="lc-eyebrow">Free tools</p>
+      {/* Phones hide the secondary phrases (.lc-wideOnly); the privacy
+          sentence always shows. */}
       <h1 class="lc-pageTitle">
-        Loan comparison calculator: compare loan offers side by side
+        Loan comparison calculator<span class="lc-wideOnly">: compare loan offers side by side</span>
       </h1>
       <p class="lc-pageLead">
         Plug in two to five lenders. See the monthly payment, payoff
         time, total amount paid, and APR; the one-number cost that
-        folds the fee into the rate. Watch where each payment splits
+        folds the fee into the rate.{' '}<span class="lc-wideOnly">Watch where each payment splits
         between interest and principal. Multi-currency support for USD,
-        EUR, GBP, INR, JPY, and more. Everything runs in your browser;
+        EUR, GBP, INR, JPY, and more.{' '}</span>Everything runs in your browser;
         nothing is sent to a server.
       </p>
     </header>
@@ -805,6 +807,13 @@ const faqSchema = {
       align-items: flex-start;
       gap: var(--space-2);
     }
+
+    /* Phones: shorter title and lead, related cards as kicker and title. */
+    .lc-wideOnly,
+    .lc-relatedDesc { display: none; }
+    .lc-pageHeader { margin-bottom: var(--space-5); }
+    .lc-relatedGrid { gap: var(--space-2); }
+    .lc-relatedCard { padding: var(--space-3); }
   }
 
   @media (prefers-reduced-motion: reduce) {

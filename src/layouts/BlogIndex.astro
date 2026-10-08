@@ -73,13 +73,13 @@ const blogItemListSchema = {
     <div class="container blog-index-container">
       <header class="blog-index-header">
         <h1>Learn about your money</h1>
-        <p class="blog-index-subtitle">Financial literacy from the ground up. Start with the basics and build your understanding step by step. Where there is a rule of thumb, each lesson also explains why it exists, where it breaks, and how to think about your own situation.</p>
+        <p class="blog-index-subtitle">Financial literacy from the ground up.{' '}<span class="blog-index-wideOnly">Start with the basics and build your understanding step by step. Where there is a rule of thumb, each lesson also explains why it exists, where it breaks, and how to think about your own situation.</span></p>
         <p class="blog-index-topics">
           <a href="/blog/tag/" data-attr="blog-index-browse-topics">Browse by topic</a>
         </p>
       </header>
       <SubscribeSection variant="compact" />
-      <LearningPath client:load posts={serializedPosts} showSteps inclusiveTotal={posts.filter(p => p.data.level === 'inclusive-finances').length} />
+      <LearningPath client:load posts={serializedPosts} showSteps compactOnPhones inclusiveTotal={posts.filter(p => p.data.level === 'inclusive-finances').length} />
     </div>
   </section>
 </BaseLayout>
@@ -127,5 +127,39 @@ const blogItemListSchema = {
     color: var(--color-teal);
     text-decoration-style: solid;
     outline: none;
+  }
+
+  /* Phones: a short header, and the newsletter after the path rather than
+     before the first lesson. Same markup, moved with order. */
+  @media (max-width: 640px) {
+    .blog-index { padding: var(--space-6) 0 var(--space-8); }
+
+    .blog-index-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-index-container > :global(.subscribe) {
+      order: 1;
+      margin-top: var(--space-8);
+    }
+
+    .blog-index-header {
+      text-align: left;
+      margin-bottom: var(--space-5);
+    }
+
+    .blog-index-header h1 {
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-bottom: var(--space-2);
+    }
+
+    .blog-index-subtitle {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .blog-index-wideOnly { display: none; }
   }
 </style>
