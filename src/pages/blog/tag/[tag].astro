@@ -88,7 +88,7 @@ const tagItemListSchema = {
         <h1>{formatted}</h1>
         <p class="blog-index-subtitle">{description}</p>
       </header>
-      <LearningPath client:load posts={posts} interceptTagClick={false} />
+      <LearningPath client:load posts={posts} />
       <nav class="tag-allTopics" aria-label="More tag pages">
         <a href="/blog/tag/" class="tag-allTopicsLink" data-attr="tag-browse-all">
           Browse all topics

@@ -1300,12 +1300,6 @@ strong {
   border-color: var(--color-deep-blue);
 }
 
-.lp-cardTagActive {
-  background: var(--color-deep-blue);
-  color: white;
-  border-color: var(--color-deep-blue);
-}
-
 .lp-filterBar {
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
@@ -1413,29 +1407,6 @@ strong {
   border-color: var(--color-deep-blue);
 }
 
-.lp-tagFilterBtnActive {
-  background: var(--color-deep-blue);
-  color: white;
-  border-color: var(--color-deep-blue);
-}
-
-.lp-tagFilterClear {
-  font-size: 0.75rem;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  background: none;
-  color: var(--color-danger);
-  border: 1px solid var(--color-danger);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  font-family: var(--font-body);
-}
-
-.lp-tagFilterClear:hover {
-  background: var(--color-danger);
-  color: white;
-}
-
 .lp-readToggle {
   width: 28px;
   height: 28px;
@@ -1520,7 +1491,6 @@ strong {
   .lp-nodeDot { width: 10px; height: 10px; }
   .lp-nodeConnector { left: -12px; width: 12px; }
   .lp-tagFilterBtn { font-size: 0.65rem; padding: 2px 7px; }
-  .lp-tagFilterClear { font-size: 0.65rem; padding: 2px 7px; }
   .lp-tagFilterLabel { font-size: 0.65rem; }
   .lp-searchInput { font-size: 0.85rem; padding: 7px 32px 7px 32px; }
   .lp-levelNav { grid-template-columns: 1fr 1fr; }
@@ -1535,14 +1505,7 @@ strong {
   .lp-levelCollapseChevron { width: 14px; height: 14px; }
 }
 
-/* Learning path on phones (blog index, LearningPath compactOnPhones): a
-   dashboard rather than the full archive. Progress and a strip of the five
-   levels first, search and topics behind one button, the level the reader
-   is on open and the others as one row each, lessons as compact rows. The
-   phone-only controls are hidden on wider screens, which are unchanged. */
-.lp-filterToggle,
-.lp-levelPhoneToggle { display: none; }
-
+/* Screen-reader-only text, for counts and labels shown visually by other means. */
 .lp-srOnly {
   position: absolute;
   width: 1px;
@@ -1552,240 +1515,15 @@ strong {
   white-space: nowrap;
 }
 
+/* Level pages on phones (LevelLessons): lessons as compact rows: step,
+   title and read time, read toggle. The date, summary and topic tags show
+   on wider screens. */
 @media (max-width: 640px) {
-  .lp-pathContainer.lp-compactOnPhones {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0;
-  }
+  .lp-levelPage .lp-levelPosts { padding-bottom: var(--space-4); }
 
-  /* The timeline rail, dots and big level markers: the rows carry the
-     level number and colour instead. */
-  .lp-compactOnPhones .lp-pathLine,
-  .lp-compactOnPhones .lp-nodeDotWrapper,
-  .lp-compactOnPhones .lp-nodeConnector,
-  .lp-compactOnPhones .lp-levelWaypoint { display: none; }
+  .lp-levelPage .lp-postNode { margin-bottom: var(--space-2); }
 
-  /* Order: progress, the level strip, search and filter, then the levels. */
-  .lp-compactOnPhones .lp-overallProgress {
-    order: -2;
-    margin-bottom: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .lp-compactOnPhones .lp-overallProgressLabel { margin-bottom: 6px; }
-
-  /* One row of levels sharing the width equally (levels with no lessons
-     yet are left out), Inclusive Finances on its own row below. */
-  .lp-compactOnPhones .lp-levelNav {
-    order: -1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: var(--space-3);
-  }
-
-  .lp-compactOnPhones .lp-levelNavLink {
-    flex: 1 1 0;
-    min-width: 0;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 4px;
-    min-height: 44px;
-    padding: 8px 2px;
-    text-align: center;
-  }
-
-  .lp-compactOnPhones .lp-levelNavLinkNum {
-    width: 26px;
-    height: 26px;
-    font-size: 0.75rem;
-  }
-
-  .lp-compactOnPhones .lp-levelNavLinkText {
-    flex: none;
-    width: 100%;
-    align-items: center;
-  }
-
-  .lp-compactOnPhones .lp-levelNavLinkLabel {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.68rem;
-  }
-
-  .lp-compactOnPhones .lp-levelNavLinkPrereq { display: none; }
-
-  .lp-compactOnPhones .lp-levelNavLinkCount {
-    font-size: 0.68rem;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .lp-compactOnPhones .lp-levelNavRoute {
-    flex-basis: 100%;
-    flex-direction: row;
-    gap: var(--space-2);
-    padding: 8px 12px;
-    text-align: left;
-  }
-
-  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkText {
-    flex: 1;
-    align-items: flex-start;
-  }
-
-  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkLabel { font-size: 0.8rem; }
-  .lp-compactOnPhones .lp-levelNavRoute .lp-levelNavLinkCount { font-size: 0.75rem; }
-
-  /* Search and topics: one button, the panel below it when open. */
-  .lp-compactOnPhones .lp-filterToggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    min-height: 44px;
-    margin-bottom: var(--space-4);
-    padding: 0 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-bg-white);
-    color: var(--color-text-primary);
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  .lp-compactOnPhones .lp-filterToggle:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-
-  .lp-compactOnPhones .lp-filterToggleIcon {
-    width: 16px;
-    height: 16px;
-    color: var(--color-text-muted);
-  }
-
-  .lp-compactOnPhones .lp-filterToggleActive {
-    padding: 1px 8px;
-    border-radius: 999px;
-    background: var(--color-deep-blue);
-    color: var(--color-bg-white);
-    font-size: 0.7rem;
-    font-weight: 700;
-  }
-
-  .lp-compactOnPhones .lp-filterToggleChevron {
-    margin-left: auto;
-    color: var(--color-text-muted);
-    transition: transform 0.2s ease;
-  }
-
-  .lp-compactOnPhones .lp-filterToggle[aria-expanded='true'] .lp-filterToggleChevron { transform: rotate(180deg); }
-
-  .lp-compactOnPhones .lp-filterBarPhoneClosed { display: none; }
-
-  .lp-compactOnPhones .lp-filterBar {
-    margin-top: calc(-1 * var(--space-2));
-    margin-bottom: var(--space-4);
-  }
-
-  /* Levels: one row each; the open one shows its lessons below. */
-  .lp-compactOnPhones .lp-levelSection { margin-bottom: var(--space-2); }
-
-  .lp-compactOnPhones .lp-levelSectionCollapsed { background: none; }
-
-  .lp-compactOnPhones .lp-levelPhoneToggle {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    min-height: 56px;
-    padding: 10px 14px;
-    border: 1px solid var(--color-border);
-    border-left: 4px solid var(--level-color);
-    border-radius: var(--radius-md);
-    background: var(--color-bg-white);
-    color: var(--color-text-primary);
-    font-family: var(--font-heading);
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggle:focus-visible {
-    outline: 2px solid var(--level-color);
-    outline-offset: 2px;
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggle .lp-levelNavLinkNum {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggleText {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-width: 0;
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggleLabel {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--level-color);
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneTogglePrereq {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1.3;
-    color: var(--color-text-muted);
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggleCount {
-    flex-shrink: 0;
-    font-size: 0.8rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    color: var(--color-text-secondary);
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggleChevron {
-    flex-shrink: 0;
-    color: var(--color-text-muted);
-    transition: transform 0.2s ease;
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggle[aria-expanded='true'] {
-    margin-bottom: var(--space-3);
-  }
-
-  .lp-compactOnPhones .lp-levelPhoneToggle[aria-expanded='true'] .lp-levelPhoneToggleChevron { transform: rotate(180deg); }
-
-  .lp-compactOnPhones .lp-phoneFolded .lp-levelBody { display: none; }
-
-  /* The open level's header: its short description; the name, progress and
-     completed state are already in the row above. */
-  .lp-compactOnPhones .lp-levelLabelRow,
-  .lp-compactOnPhones .lp-levelMeta,
-  .lp-compactOnPhones .lp-levelProgress,
-  .lp-compactOnPhones .lp-levelProgressBar { display: none; }
-
-  .lp-compactOnPhones .lp-levelHeader { margin-bottom: var(--space-3); }
-
-  .lp-compactOnPhones .lp-levelActions { margin: 0 0 var(--space-3); }
-
-  .lp-compactOnPhones .lp-levelPosts { padding-bottom: var(--space-4); }
-
-  /* Lessons as rows: step, title and read time, read toggle. The date,
-     summary and topic tags show on wider screens. */
-  .lp-compactOnPhones .lp-postNode { margin-bottom: var(--space-2); }
-
-  .lp-compactOnPhones .lp-nodeCard {
+  .lp-levelPage .lp-nodeCard {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
@@ -1798,54 +1536,49 @@ strong {
     padding: 12px;
   }
 
-  .lp-compactOnPhones .lp-nodeCard:not(.lp-nodeCardStartHere) { box-shadow: none; }
+  .lp-levelPage .lp-nodeCard:not(.lp-nodeCardStartHere) { box-shadow: none; }
 
-  .lp-compactOnPhones .lp-nodeCard:hover { transform: none; }
+  .lp-levelPage .lp-nodeCard:hover { transform: none; }
 
-  .lp-compactOnPhones .lp-nodeCardStartHere,
-  .lp-compactOnPhones .lp-nodeCard:has(.lp-cardBadges) { padding-top: 18px; }
+  .lp-levelPage .lp-nodeCardStartHere,
+  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: 18px; }
 
-  .lp-compactOnPhones .lp-cardTop,
-  .lp-compactOnPhones .lp-cardMeta { display: contents; }
+  .lp-levelPage .lp-cardTop,
+  .lp-levelPage .lp-cardMeta { display: contents; }
 
-  .lp-compactOnPhones .lp-cardStep { grid-area: step; }
+  .lp-levelPage .lp-cardStep { grid-area: step; }
 
-  .lp-compactOnPhones .lp-cardCompanion {
+  .lp-levelPage .lp-cardCompanion {
     grid-area: companion;
     margin: 0;
   }
 
-  .lp-compactOnPhones .lp-cardTitle {
+  .lp-levelPage .lp-cardTitle {
     grid-area: title;
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.3;
   }
 
-  .lp-compactOnPhones .lp-cardReadingTime { grid-area: time; }
+  .lp-levelPage .lp-cardReadingTime { grid-area: time; }
 
   /* 32px to see, 44px to tap. */
-  .lp-compactOnPhones .lp-readToggle {
+  .lp-levelPage .lp-readToggle {
     grid-area: toggle;
     position: relative;
     width: 32px;
     height: 32px;
   }
 
-  .lp-compactOnPhones .lp-readToggle::before {
+  .lp-levelPage .lp-readToggle::before {
     content: '';
     position: absolute;
     inset: -6px;
   }
 
-  .lp-compactOnPhones .lp-cardDate,
-  .lp-compactOnPhones .lp-cardDesc,
-  .lp-compactOnPhones .lp-cardTags { display: none; }
-}
-
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
-  .lp-compactOnPhones .lp-filterToggleChevron,
-  .lp-compactOnPhones .lp-levelPhoneToggleChevron { transition: none; }
+  .lp-levelPage .lp-cardDate,
+  .lp-levelPage .lp-cardDesc,
+  .lp-levelPage .lp-cardTags { display: none; }
 }
 /* ============================================================================
  * Transactional landing pages
@@ -3280,7 +3013,6 @@ strong {
   .lp-cardTag,
   .lp-cardTitle,
   .lp-tagFilterBtn,
-  .lp-tagFilterClear,
   .lp-readToggle,
   .lp-noResultsClear,
   .lp-searchInput,
@@ -5872,7 +5604,7 @@ body[data-page="landing"] .hero-mcAmount {
 /* Level pages (/blog/<level>/, LevelLessons): the lesson cards without the
    path rail, which belongs to the tag pages' timeline. Two columns on wide
    screens, reading order left to right, then down; compact rows on phones
-   (the .lp-compactOnPhones rules). */
+   ("Level pages on phones" above). */
 .lp-pathContainer.lp-levelPage {
   max-width: none;
   padding-left: 0;

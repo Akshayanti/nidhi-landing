@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 export interface PostData {
   id: string;
@@ -125,18 +125,7 @@ interface PostNodeProps {
   isRead: boolean;
   isStartHere: boolean;
   levelColor: string;
-  selectedTag: string | null;
-  /**
-   * When true, tag-chip clicks trigger the in-page React filter and
-   * preventDefault() the navigation. The blog index renders chips this
-   * way so a click filters the visible list rather than navigating
-   * away. The per-tag pages render with `interceptTagClick=false`, so
-   * a click on a chip there navigates to the new tag's page (no
-   * filter context to preserve).
-   */
-  interceptTagClick: boolean;
   onToggleRead: (id: string) => void;
-  onTagClick: (tag: string) => void;
   /**
    * Position of the post in its level's reading order (1-based) and the
    * level's count, shown as a step number so the order is unambiguous when
@@ -149,7 +138,7 @@ interface PostNodeProps {
   onPath?: boolean;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, interceptTagClick, onToggleRead, onTagClick, onPath = true, step, stepCount }: PostNodeProps) {
+function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath = true, step, stepCount }: PostNodeProps) {
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
@@ -205,24 +194,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
         {post.tags.length > 0 && (
           <div className="lp-cardTags">
             {post.tags.slice(0, 3).map((tag) => (
-              <a
-                key={tag}
-                href={`/blog/tag/${encodeURIComponent(tag)}/`}
-                className={`lp-cardTag ${selectedTag === tag ? 'lp-cardTagActive' : ''}`}
-                onClick={(e) => {
-                  // On the blog index we want a click to filter the
-                  // visible learning path, not navigate. On a tag page
-                  // we let the link navigate so the user can switch
-                  // tags. Either way the rendered HTML is a real
-                  // anchor with a real href, so crawlers see the link.
-                  if (interceptTagClick) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onTagClick(tag);
-                  }
-                }}
-                aria-pressed={interceptTagClick ? selectedTag === tag : undefined}
-              >
+              <a key={tag} href={`/blog/tag/${encodeURIComponent(tag)}/`} className="lp-cardTag">
                 {tag}
               </a>
             ))}
@@ -233,48 +205,14 @@ function PostNode({ post, isRead, isStartHere, levelColor, selectedTag, intercep
   );
 }
 
-interface LearningPathProps {
-  posts: PostData[];
-  /**
-   * Show step numbers and the reading-order hint. Only for the blog index,
-   * which receives every post; a per-tag page gets a subset, where the
-   * numbers would not match the real learning-path positions.
-   */
-  showSteps?: boolean;
-  /**
-   * Controls tag-chip click behaviour. Defaults to true (the blog index
-   * use case). Pass false when rendering inside a per-tag page where a
-   * chip click should navigate to the new tag's page rather than apply
-   * an in-page filter.
-   */
-  interceptTagClick?: boolean;
-  /**
-   * Size of the whole Inclusive Finances collection, for its card in the
-   * level navigation. `posts` holds only the guides placed on this path,
-   * which leaves out any whose host lesson is not visible yet.
-   */
-  inclusiveTotal?: number;
-  /**
-   * Phones only (the blog index): search and topics fold behind one
-   * button, and only the level the reader is on starts open; the others
-   * show as one row each. Wider screens are unaffected. Open and closed
-   * state lives in memory only: every visit starts the same way.
-   */
-  compactOnPhones?: boolean;
-}
-
-const PHONE_QUERY = '(max-width: 640px)';
-const isPhone = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches;
-
-export function LearningPath({ posts, interceptTagClick = true, showSteps = false, inclusiveTotal, compactOnPhones = false }: LearningPathProps) {
+/**
+ * The learning path for one topic (/blog/tag/<tag>/): that topic's posts,
+ * grouped by level on a timeline, with search and links to other topics.
+ */
+export function LearningPath({ posts }: { posts: PostData[] }) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
-  // Phone layout (compactOnPhones): whether the search and topic panel is
-  // open, and levels the reader opened or closed by hand. Neither is stored.
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [levelOverrides, setLevelOverrides] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     try {
@@ -283,32 +221,19 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
         setReadPosts(new Set(JSON.parse(stored)));
       }
     } catch { /* ignore */ }
-    const params = new URLSearchParams(window.location.search);
-    const tagParam = params.get('tag');
-    if (tagParam) {
-      setSelectedTag(tagParam);
-    }
-    // Honour `?q=` deep links. Wires up the WebSite.SearchAction
-    // schema declared on `/`: a SERP that surfaces the sitelinks search
-    // box submits to `/blog/?q={query}`, and now the page actually
-    // applies that query on load instead of ignoring it. Closes
-    // finding 17.
-    const qParam = params.get('q');
+    const qParam = new URLSearchParams(window.location.search).get('q');
     if (qParam) {
       setSearchQuery(qParam);
     }
-    // A link that arrives with a filter shows the panel it came from.
-    if (tagParam || qParam) setFilterOpen(true);
   }, []);
 
-  // Reflect the current search query into the URL via replaceState.
-  // No history entries are pushed (back-button stays useful), and no
-  // navigation occurs. Empty queries clean the param off the URL so
-  // shared links don't carry a stale `?q=`.
+  // Reflect the current search query into the URL via replaceState, so a
+  // search can be bookmarked. No history entries are pushed (back-button
+  // stays useful), and no navigation occurs. Empty queries clean the param
+  // off the URL so shared links don't carry a stale `?q=`.
   //
-  // Privacy note: query state lives entirely in the visitor's browser
-  // history; we do not exfiltrate it. Server-side, GitHub Pages does
-  // not log query strings in any way we control.
+  // Privacy note: Analytics.astro removes ?q= from every /blog/ URL before
+  // any event is sent (see the privacy notice).
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
@@ -393,46 +318,13 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     }
   }, [posts, saveProgress]);
 
-  // On phones, opens a folded level so a link or button that leads to it
-  // lands on its lessons. Does nothing on wider screens, where every level
-  // is already shown.
-  const openLevelOnPhone = useCallback((level: string) => {
-    if (!compactOnPhones || !isPhone()) return;
-    setLevelOverrides((prev) => ({ ...prev, [level]: true }));
-    setCollapsedSections((prev) => {
-      if (!prev.has(level)) return prev;
-      const next = new Set(prev);
-      next.delete(level);
-      return next;
-    });
-  }, [compactOnPhones]);
-
   const scrollToLevel = useCallback((level: string) => {
-    openLevelOnPhone(level);
-    // After the fold opens, so the level's top is where it will stay.
-    window.requestAnimationFrame(() => {
-      const el = document.getElementById(`level-${level}`);
-      if (!el) return;
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      el.focus({ preventScroll: true });
-    });
-  }, [openLevelOnPhone]);
-
-  // Level links such as /blog/#level-building, on arrival or in the page:
-  // on phones the level opens and comes into view.
-  useEffect(() => {
-    if (!compactOnPhones) return;
-    const fromHash = () => {
-      const match = /^#level-([a-z-]+)$/.exec(window.location.hash);
-      if (match && (LEVEL_ORDER as readonly string[]).includes(match[1]) && isPhone()) {
-        scrollToLevel(match[1]);
-      }
-    };
-    fromHash();
-    window.addEventListener('hashchange', fromHash);
-    return () => window.removeEventListener('hashchange', fromHash);
-  }, [compactOnPhones, scrollToLevel]);
+    const el = document.getElementById(`level-${level}`);
+    if (!el) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    el.focus({ preventScroll: true });
+  }, []);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -441,20 +333,14 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
   }, [posts]);
 
   const filteredPosts = useMemo(() => {
-    let result = posts;
-    if (selectedTag) {
-      result = result.filter((p) => p.tags.includes(selectedTag));
-    }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      result = result.filter((p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-    return result;
-  }, [posts, selectedTag, searchQuery]);
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return posts;
+    return posts.filter((p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tags.some((t) => t.toLowerCase().includes(q))
+    );
+  }, [posts, searchQuery]);
 
   const levelGroups = useMemo(() => {
     return LEVEL_ORDER.map((level) => ({
@@ -467,19 +353,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     }));
   }, [filteredPosts]);
 
-  // Step numbers come from the full, unfiltered order, so a search or tag
-  // filter never renumbers the posts.
-  const steps = useMemo(() => {
-    const map = new Map<string, { step: number; count: number }>();
-    for (const level of LEVEL_ORDER) {
-      const own = posts.filter((p) => p.level === level);
-      own.forEach((p, i) => map.set(p.id, { step: i + 1, count: own.length }));
-    }
-    return map;
-  }, [posts]);
-
-  const inclusiveCount = inclusiveTotal ?? posts.filter(isOptional).length;
-  const hasInclusive = inclusiveCount > 0;
+  const hasInclusive = posts.some(isOptional);
 
   const firstUnreadId = useMemo(() => {
     for (const group of levelGroups) {
@@ -490,46 +364,6 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     return null;
   }, [levelGroups, readPosts]);
 
-  // Phones: the level the reader is on (the first with an unread lesson,
-  // whatever the filter) starts open; the rest start folded. While a search
-  // or topic filter is active, every level with matches starts open.
-  const currentLevel = useMemo(() => {
-    for (const level of LEVEL_ORDER) {
-      if (posts.some((p) => p.level === level && !readPosts.has(p.id))) return level;
-    }
-    return null;
-  }, [posts, readPosts]);
-  const filterActive = Boolean(selectedTag || searchQuery.trim());
-
-  // A new search or topic starts from that default again, so a level closed
-  // earlier never hides its matches.
-  // Skips the first run, so a level opened from a #level- link on arrival
-  // stays open.
-  const filterSeen = useRef(false);
-  useEffect(() => {
-    if (!filterSeen.current) {
-      filterSeen.current = true;
-      return;
-    }
-    setLevelOverrides({});
-  }, [selectedTag, searchQuery]);
-
-  const isOpenOnPhone = (level: string) =>
-    levelOverrides[level] ?? (filterActive || level === currentLevel);
-
-  const togglePhoneLevel = (level: string) => {
-    const open = !isOpenOnPhone(level);
-    setLevelOverrides((prev) => ({ ...prev, [level]: open }));
-    if (open) {
-      setCollapsedSections((prev) => {
-        if (!prev.has(level)) return prev;
-        const next = new Set(prev);
-        next.delete(level);
-        return next;
-      });
-    }
-  };
-
   const shownLevels = levelGroups.filter((g) => g.posts.length > 0).map((g) => g.level);
 
   const corePosts = filteredPosts.filter((p) => !isOptional(p));
@@ -538,7 +372,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
   const overallPercent = totalPosts > 0 ? (totalRead / totalPosts) * 100 : 0;
 
   return (
-    <div className={`lp-pathContainer${compactOnPhones ? ' lp-compactOnPhones' : ''}`}>
+    <div className="lp-pathContainer">
       <div className="lp-pathLine" />
 
       <nav className="lp-levelNav" aria-label="Learning path levels and routes">
@@ -554,7 +388,6 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
               href={`#level-${level}`}
               className="lp-levelNavLink"
               style={{ '--level-color': meta.color } as React.CSSProperties}
-              onClick={() => openLevelOnPhone(level)}
             >
               <span className="lp-levelNavLinkNum">{LEVEL_ORDER.indexOf(level) + 1}</span>
               <div className="lp-levelNavLinkText">
@@ -583,35 +416,13 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
                 Relevant at any stage. Relationships, work, countries, abilities and life changes the standard path does not account for.
               </span>
             </div>
-            <span className="lp-levelNavLinkCount">{inclusiveTotal !== undefined ? `${inclusiveCount} guides` : 'All guides'}</span>
+            <span className="lp-levelNavLinkCount">All guides</span>
           </a>
         )}
       </nav>
 
-      {/* Phones only: one button for search and topics. It never repeats
-          what was typed, so a recorded click cannot carry it. */}
-      {compactOnPhones && allTags.length > 0 && (
-        <button
-          type="button"
-          className="lp-filterToggle"
-          aria-expanded={filterOpen}
-          aria-controls="lp-filterBar"
-          onClick={() => setFilterOpen((open) => !open)}
-        >
-          <svg className="lp-filterToggleIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="9" cy="9" r="6" />
-            <line x1="13.5" y1="13.5" x2="18" y2="18" />
-          </svg>
-          <span>Search and filter</span>
-          {filterActive && <span className="lp-filterToggleActive">On</span>}
-          <svg className="lp-filterToggleChevron" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
-            <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-          </svg>
-        </button>
-      )}
-
       {allTags.length > 0 && (
-        <div id="lp-filterBar" className={`lp-filterBar ${compactOnPhones && !filterOpen ? 'lp-filterBarPhoneClosed' : ''}`}>
+        <div className="lp-filterBar">
           <div className="lp-searchWrapper">
             <svg className="lp-searchIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="9" cy="9" r="6" />
@@ -636,29 +447,10 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
           <span className="lp-tagFilterLabel">Filter by topic:</span>
           <div className="lp-tagList">
             {allTags.map((tag) => (
-              <a
-                key={tag}
-                href={`/blog/tag/${encodeURIComponent(tag)}/`}
-                className={`lp-tagFilterBtn ${selectedTag === tag ? 'lp-tagFilterBtnActive' : ''}`}
-                onClick={(e) => {
-                  // Same dual-mode behaviour as the per-card chips: on the
-                  // blog index, intercept and toggle the React filter; on
-                  // a tag page, let the click navigate to the new tag.
-                  if (interceptTagClick) {
-                    e.preventDefault();
-                    setSelectedTag(selectedTag === tag ? null : tag);
-                  }
-                }}
-                aria-pressed={interceptTagClick ? selectedTag === tag : undefined}
-              >
+              <a key={tag} href={`/blog/tag/${encodeURIComponent(tag)}/`} className="lp-tagFilterBtn">
                 {tag}
               </a>
             ))}
-            {selectedTag && (
-              <button className="lp-tagFilterClear" onClick={() => setSelectedTag(null)}>
-                Clear filter
-              </button>
-            )}
           </div>
         </div>
       )}
@@ -675,11 +467,11 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
         </div>
       )}
 
-      {filteredPosts.length === 0 && (selectedTag || searchQuery.trim()) && (
+      {filteredPosts.length === 0 && searchQuery.trim() && (
         <div className="lp-noResults">
-          <p>No posts found{selectedTag ? ` for "${selectedTag}"` : ''}{searchQuery.trim() ? ` matching "${searchQuery.trim()}"` : ''}.</p>
-          <button className="lp-noResultsClear" onClick={() => { setSelectedTag(null); setSearchQuery(''); }}>
-            Clear all filters
+          <p>No posts found matching "{searchQuery.trim()}".</p>
+          <button className="lp-noResultsClear" onClick={() => setSearchQuery('')}>
+            Clear search
           </button>
         </div>
       )}
@@ -697,51 +489,19 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
           .filter((p) => p.level === group.level)
           .every((p) => readPosts.has(p.id));
 
-        const phoneOpen = isOpenOnPhone(group.level);
-        const sectionClasses = [
-          'lp-levelSection',
-          isCollapsed ? 'lp-levelSectionCollapsed' : '',
-          compactOnPhones && !phoneOpen ? 'lp-phoneFolded' : '',
-        ].filter(Boolean).join(' ');
-
         return (
-          <div key={group.level} id={`level-${group.level}`} tabIndex={-1} className={sectionClasses}>
+          <div
+            key={group.level}
+            id={`level-${group.level}`}
+            tabIndex={-1}
+            className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}
+          >
             <div
               className="lp-levelWaypoint"
               style={{ background: group.meta.color }}
             >
               {index + 1}
             </div>
-
-            {/* Phones only: the level as one row that opens and closes it.
-                Wider screens use the header below. */}
-            {compactOnPhones && (
-              <button
-                type="button"
-                className="lp-levelPhoneToggle"
-                aria-expanded={phoneOpen}
-                aria-controls={`level-${group.level}-body`}
-                onClick={() => togglePhoneLevel(group.level)}
-                style={{ '--level-color': group.meta.color } as React.CSSProperties}
-              >
-                <span className="lp-levelNavLinkNum" aria-hidden="true">{index + 1}</span>
-                <span className="lp-levelPhoneToggleText">
-                  <span className="lp-levelPhoneToggleLabel">{group.meta.label}</span>
-                  <span className="lp-levelPhoneTogglePrereq">{group.meta.prerequisite}</span>
-                </span>
-                {group.core.length > 0 && (
-                  <span className="lp-levelPhoneToggleCount">
-                    {levelRead}/{group.core.length}
-                    <span className="lp-srOnly"> read</span>
-                  </span>
-                )}
-                <svg className="lp-levelPhoneToggleChevron" viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
-                  <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-                </svg>
-              </button>
-            )}
-
-            <div className="lp-levelBody" id={`level-${group.level}-body`}>
 
             <div
               className={`lp-levelHeader ${isCompleted ? 'lp-levelHeaderToggle' : ''}`}
@@ -822,34 +582,20 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
               </div>
             )}
 
-            {/* A grid on wide screens (see .blog-index .lp-levelPosts), one
-                column everywhere else. Step numbers and the hint make the
-                reading order explicit: across, then down. */}
-            {!isCollapsed && showSteps && (
-              <p className="lp-orderHint" style={{ color: group.meta.color }}>
-                Read left to right, then down.
-              </p>
-            )}
             {!isCollapsed && (
               <div className="lp-levelPosts">
                 {group.posts.map((post) => (
                   <PostNode
                     key={post.id}
-                    step={!showSteps || post.level === 'inclusive-finances' ? undefined : steps.get(post.id)?.step}
-                    stepCount={steps.get(post.id)?.count}
                     post={post}
                     isRead={readPosts.has(post.id)}
                     isStartHere={post.id === firstUnreadId}
                     levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : group.meta.color}
-                    selectedTag={selectedTag}
-                    interceptTagClick={interceptTagClick}
                     onToggleRead={toggleRead}
-                    onTagClick={setSelectedTag}
                   />
                 ))}
               </div>
             )}
-            </div>
           </div>
         );
       })}
@@ -892,10 +638,7 @@ export function CollectionList({ posts }: { posts: PostData[] }) {
           isRead={readPosts.has(post.id)}
           isStartHere={false}
           levelColor={LEVELS[post.level].color}
-          selectedTag={null}
-          interceptTagClick={false}
           onToggleRead={toggleRead}
-          onTagClick={() => {}}
           onPath={false}
         />
       ))}
@@ -949,7 +692,7 @@ export function LevelLessons({ level, posts }: { level: string; posts: PostData[
   const steps = new Map(core.map((p, i) => [p.id, i + 1]));
 
   return (
-    <div className="lp-pathContainer lp-compactOnPhones lp-levelPage" style={{ '--level-color': meta.color } as React.CSSProperties}>
+    <div className="lp-pathContainer lp-levelPage" style={{ '--level-color': meta.color } as React.CSSProperties}>
       <div className="lp-levelPageProgress">
         <span>{readCount} of {core.length} read on this device</span>
         <div className="lp-levelPageBar">
@@ -978,10 +721,7 @@ export function LevelLessons({ level, posts }: { level: string; posts: PostData[
             isRead={readPosts.has(post.id)}
             isStartHere={post.id === firstUnreadId}
             levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : meta.color}
-            selectedTag={null}
-            interceptTagClick={false}
             onToggleRead={toggleRead}
-            onTagClick={() => {}}
           />
         ))}
       </div>
