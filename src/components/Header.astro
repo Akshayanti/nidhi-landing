@@ -5,6 +5,53 @@ import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/rele
 const currentPath = Astro.url.pathname;
 const showMonteCarlo = await isMonteCarloReleased();
 
+// The phone menu. Same destinations as the dropdown and the footer columns.
+interface SheetLink {
+  href: string;
+  label: string;
+  key: string;
+  external?: boolean;
+  /** Contact tiles only: the address shown under the label, and its icon. */
+  detail?: string;
+  icon?: 'mail' | 'instagram';
+}
+/** An entry that opens to show its own links, such as the ways to get in touch. */
+interface SheetGroupLink { label: string; key: string; children: SheetLink[] }
+const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
+  {
+    heading: 'Learn',
+    links: [
+      { href: '/blog/', label: 'Learning path', key: 'blog' },
+      { href: '/blog/tag/', label: 'Browse topics', key: 'blog-topics' },
+    ],
+  },
+  {
+    heading: 'Free tools',
+    links: [
+      { href: '/free/multi-currency-net-worth/', label: 'Net worth calculator', key: 'tool-multi-currency-net-worth' },
+      { href: '/free/loan-comparison/', label: 'Loan comparison', key: 'tool-loan-comparison' },
+      ...(showMonteCarlo ? [{ href: MONTE_CARLO_URL, label: 'Monte Carlo simulator', key: 'tool-monte-carlo-simulator' }] : []),
+      { href: '/free/', label: 'All free tools', key: 'tool-all' },
+    ],
+  },
+  {
+    heading: 'About',
+    links: [
+      { href: '/about/', label: 'About nidhi', key: 'about' },
+      { href: '/beliefs/', label: 'Our beliefs', key: 'beliefs' },
+      { href: '/editorial-policy/', label: 'Editorial policy', key: 'editorial-policy' },
+      {
+        label: 'Contact us',
+        key: 'contact',
+        children: [
+          { href: 'mailto:hello@nidhi.today', label: 'Email', detail: 'hello@nidhi.today', icon: 'mail', key: 'email' },
+          { href: 'https://www.instagram.com/nidhi.today', label: 'Instagram', detail: '@nidhi.today', icon: 'instagram', key: 'instagram', external: true },
+        ],
+      },
+    ],
+  },
+];
+
 ---
 
 <header class="site-header">
@@ -52,8 +99,79 @@ const showMonteCarlo = await isMonteCarloReleased();
       </div>
       <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Learn</a>
       <ThemeToggle />
+      <button
+        type="button"
+        class="nav-menuToggle"
+        aria-expanded="false"
+        aria-controls="nav-sheet"
+        aria-label="Menu"
+        data-attr="nav-menu"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path class="nav-menuIcon-open" d="M4 7h16M4 12h16M4 17h16" />
+          <path class="nav-menuIcon-close" d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
     </div>
   </nav>
+
+  {/* Phones only: the site's links in one panel under the header, in place
+      of the dropdown, the Learn link and the footer's link columns. */}
+  <div class="nav-sheet" id="nav-sheet" hidden>
+    <nav class="container container--wide nav-sheetInner" aria-label="Menu">
+      {sheet.map((group) => (
+        <div class="nav-sheetGroup">
+          <p class="nav-sheetHeading">{group.heading}</p>
+          <ul role="list">
+            {group.links.map((l) => (
+              <li>
+                {'children' in l ? (
+                  <details class="nav-sheetSub">
+                    <summary data-attr={`nav-menu-${l.key}`}>{l.label}</summary>
+                    <ul role="list" class="nav-contactTiles">
+                      {l.children.map((c) => (
+                        <li>
+                          <a
+                            href={c.href}
+                            class={`nav-contactTile nav-contactTile--${c.icon}`}
+                            target={c.external ? '_blank' : undefined}
+                            rel={c.external ? 'noopener noreferrer' : undefined}
+                            data-attr={`nav-menu-${c.key}`}
+                          >
+                            <span class="nav-contactIcon" aria-hidden="true">
+                              {c.icon === 'mail' && (
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7 8 6 8-6" /></svg>
+                              )}
+                              {c.icon === 'instagram' && (
+                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" /></svg>
+                              )}
+                            </span>
+                            <span class="nav-contactText">
+                              <span class="nav-contactLabel">{c.label}</span>
+                              <span class="nav-contactDetail">{c.detail}</span>
+                            </span>
+                            <span class="nav-contactGo" aria-hidden="true">{c.external ? '↗' : '→'}</span>
+                            {c.external && <span class="nav-srOnly"> (opens in a new tab)</span>}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ) : (
+                  <a
+                    href={l.href}
+                    class:list={[{ active: currentPath === l.href }]}
+                    aria-current={currentPath === l.href ? 'page' : undefined}
+                    data-attr={`nav-menu-${l.key}`}
+                  >{l.label}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+  </div>
 </header>
 
 <style>
@@ -176,6 +294,7 @@ const showMonteCarlo = await isMonteCarloReleased();
     color: var(--color-text-secondary);
     text-decoration: none;
     transition: color 0.15s ease;
+    white-space: nowrap;
   }
 
   .nav-link:hover,
@@ -194,6 +313,229 @@ const showMonteCarlo = await isMonteCarloReleased();
     .nav-right { gap: var(--space-3); }
     .nav-link { font-size: 0.8rem; }
     .nav-dropdownMenu { right: -40px; min-width: 200px; }
+  }
+
+  /* Phone menu: hidden on wider screens, where the dropdown, the Learn link
+     and the footer columns do the job. */
+  .nav-menuToggle,
+  .nav-sheet { display: none; }
+
+  @media (max-width: 640px) {
+    .nav-dropdown,
+    .nav-right > .nav-link { display: none; }
+
+    .nav-menuToggle {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+      padding: 0;
+      background: none;
+      border: 0;
+      border-radius: var(--radius-md);
+      color: var(--color-deep-blue);
+      cursor: pointer;
+    }
+
+    .nav-menuToggle:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: -2px;
+    }
+
+    .nav-menuIcon-close { display: none; }
+    .nav-menuToggle[aria-expanded='true'] .nav-menuIcon-open { display: none; }
+    .nav-menuToggle[aria-expanded='true'] .nav-menuIcon-close { display: block; }
+
+    .nav-sheet:not([hidden]) {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: calc(100dvh - 60px);
+      overflow-y: auto;
+      background: var(--color-bg-white);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-sheetInner {
+      display: grid;
+      gap: var(--space-5);
+      padding-top: var(--space-4);
+      padding-bottom: var(--space-6);
+    }
+
+    .nav-sheetHeading {
+      margin: 0 0 var(--space-1);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .nav-sheetGroup ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-sheetGroup a {
+      display: block;
+      padding: 10px 0;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.02rem;
+      color: var(--color-text-primary);
+      text-decoration: none;
+    }
+
+    .nav-sheetGroup a.active { color: var(--color-deep-blue); }
+
+    /* "Contact us": a row like the links around it that opens to show
+       its own links, indented beneath it. */
+    .nav-sheetSub > summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.02rem;
+      color: var(--color-text-primary);
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .nav-sheetSub > summary::-webkit-details-marker { display: none; }
+
+    .nav-sheetSub > summary::after {
+      content: '+' / '';
+      font-size: 1.2rem;
+      color: var(--color-teal);
+    }
+
+    .nav-sheetSub[open] > summary::after { content: '\2212' / ''; }
+
+    .nav-sheetSub > summary:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Contact tiles: an icon badge, the channel and its address, and an
+       arrow saying where the tap goes. */
+    .nav-contactTiles {
+      display: grid;
+      gap: 10px;
+      padding: 4px 0 8px;
+      animation: nav-contactIn 0.22s ease-out;
+    }
+
+    @keyframes nav-contactIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .nav-sheetGroup a.nav-contactTile {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      background: var(--color-bg);
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .nav-sheetGroup a.nav-contactTile:active { transform: scale(0.98); }
+
+    .nav-contactTile--mail:hover,
+    .nav-contactTile--mail:focus-visible { border-color: var(--color-teal); }
+
+    .nav-contactTile--instagram:hover,
+    .nav-contactTile--instagram:focus-visible { border-color: #dd2a7b; }
+
+    .nav-contactIcon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+
+    .nav-contactIcon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-contactTile--mail .nav-contactIcon {
+      background: color-mix(in srgb, var(--color-teal) 16%, var(--color-bg-white));
+      color: var(--color-teal);
+    }
+
+    /* Instagram's own gradient, so the tile reads as Instagram at a glance. */
+    .nav-contactTile--instagram .nav-contactIcon {
+      background: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 80%, #515bd4 100%);
+      color: #fff;
+    }
+
+    .nav-contactText {
+      display: grid;
+      min-width: 0;
+    }
+
+    .nav-contactLabel {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-text-primary);
+    }
+
+    .nav-contactDetail {
+      font-family: var(--font-body, inherit);
+      font-weight: 400;
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nav-contactGo {
+      font-size: 1.15rem;
+      color: var(--color-text-muted);
+    }
+
+    .nav-srOnly {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-contactTiles { animation: none; }
+      .nav-sheetGroup a.nav-contactTile { transition: none; }
+      .nav-sheetGroup a.nav-contactTile:active { transform: none; }
+    }
+
+    .nav-sheetGroup a:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
   }
 
   /* JS-managed open state: ensures keyboard toggles also show the menu */
@@ -265,5 +607,43 @@ const showMonteCarlo = await isMonteCarloReleased();
     menu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() { closeMenu(); });
     });
+  })();
+
+  // Phone menu: the button shows and hides the panel. Escape, a tap outside
+  // or following a link closes it. Nothing is stored.
+  (function() {
+    var button = document.querySelector('.nav-menuToggle');
+    var sheet = document.getElementById('nav-sheet');
+    if (!button || !sheet) return;
+    var header = button.closest('.site-header');
+
+    function setOpen(open) {
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+      sheet.hidden = !open;
+      if (open) {
+        document.addEventListener('click', onOutside);
+        document.addEventListener('keydown', onKey);
+      } else {
+        document.removeEventListener('click', onOutside);
+        document.removeEventListener('keydown', onKey);
+      }
+    }
+
+    function onOutside(e) {
+      if (!header.contains(e.target)) setOpen(false);
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') { setOpen(false); button.focus(); }
+    }
+
+    button.addEventListener('click', function() { setOpen(sheet.hidden); });
+    sheet.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() { setOpen(false); });
+    });
+    // Rotating a phone to a wider layout hides the button; close the panel too.
+    var wide = window.matchMedia('(min-width: 641px)');
+    if (wide.addEventListener) wide.addEventListener('change', function(e) { if (e.matches) setOpen(false); });
   })();
 </script>

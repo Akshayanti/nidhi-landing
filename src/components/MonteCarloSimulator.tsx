@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
@@ -62,6 +62,24 @@ const RETURN_TIPS: Record<ReturnSetting, string> = {
 
 // Above this many paths the simulation runs in a worker, off the main thread.
 const WORKER_THRESHOLD = 10_000;
+
+// ---------------------------------------------------------------------------
+// Phones (the site's 640px breakpoint). The server and the first browser
+// render assume a wider screen, so the page hydrates cleanly; phones then
+// switch to the compact chart. Nothing is stored.
+// ---------------------------------------------------------------------------
+
+const PHONE_QUERY = '(max-width: 640px)';
+
+function subscribePhone(onChange: () => void) {
+  const mq = window.matchMedia(PHONE_QUERY);
+  mq.addEventListener?.('change', onChange);
+  return () => mq.removeEventListener?.('change', onChange);
+}
+
+function usePhone(): boolean {
+  return useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE_QUERY).matches, () => false);
+}
 
 // ---------------------------------------------------------------------------
 // Form state: inputs are kept as strings so a field can be empty while typing.
@@ -195,7 +213,11 @@ export default function MonteCarloSimulator() {
   const [settled, setSettled] = useState<ToolState>(DEFAULTS);
   const [copied, setCopied] = useState(false);
   const [tipsDismissed, setTipsDismissed] = useState(false);
+  // Phones only: returns, fees and paths start folded (CSS ignores this
+  // on wider screens, where they always show).
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const ids = {
+    settings: useId(),
     currency: useId(),
     start: useId(),
     monthly: useId(),
@@ -327,7 +349,33 @@ export default function MonteCarloSimulator() {
           <span className="mcs-hint">Rebalanced back to this mix once a year.</span>
         </div>
 
-        <div className="mcs-grid mcs-grid--assumptions">
+        <QuickResult result={result} state={shownState} busy={pending} />
+
+        {/* Phones only: the toggle for the folded settings, showing what they
+            are set to. An invalid fee keeps them open so the error shows.
+            The current values sit outside the button, drawn over it with
+            pointer-events off: with consent, analytics records a clicked
+            button's text, and the fee is a typed value (CLAUDE.md: choices,
+            never values). */}
+        <div className="mcs-settingsRow">
+          <button
+            type="button"
+            className="mcs-settingsToggle"
+            aria-expanded={settingsOpen || errors.feePct}
+            aria-controls={ids.settings}
+            onClick={() => setSettingsOpen((o) => !o)}
+          >
+            <span className="mcs-settingsName">Returns, fees and paths</span>
+          </button>
+          <p className="mcs-settingsValue">
+            {RETURN_LABELS[form.returns]} · {errors.feePct ? '?' : form.feePct}% fees · {form.paths.toLocaleString('en-US')} paths
+          </p>
+        </div>
+
+        <div
+          id={ids.settings}
+          className={`mcs-grid mcs-grid--assumptions${settingsOpen || errors.feePct ? ' mcs-settings--open' : ''}`}
+        >
           <fieldset
             className={`mcs-switch${tipsDismissed ? ' mcs-switch--tipsOff' : ''}`}
             onMouseLeave={() => setTipsDismissed(false)}
@@ -473,6 +521,37 @@ function NumberField(props: {
 // Results
 // ---------------------------------------------------------------------------
 
+/**
+ * Phones only: the headline result right under the main inputs, so it
+ * answers as you type instead of sitting below the whole form. The full
+ * results below say the same, so screen readers skip this copy.
+ */
+function QuickResult({ result, state, busy }: { result: SimulationResult; state: ToolState; busy: boolean }) {
+  const code = state.currency;
+  const r = result.atRetirement;
+  const saving = state.saveYears > 0;
+  const lasted = state.withdrawal > 0 ? result.lasted : null;
+  if (!saving && lasted === null) return null;
+  return (
+    <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}`} aria-hidden="true">
+      {saving && (
+        <>
+          <span className="mcs-quickTitle">Median after {state.saveYears} year{state.saveYears === 1 ? '' : 's'}</span>
+          <span className="mcs-quickValue">{formatAmount(r.p50, code)}</span>
+          <span className="mcs-quickRange">
+            8 in 10 paths between {formatAmount(r.p10, code, true)} and {formatAmount(r.p90, code, true)}
+          </span>
+        </>
+      )}
+      {lasted !== null && (
+        <span className="mcs-quickRange">
+          The money lasted all {state.withdrawYears} years in {inTen(lasted)} paths.
+        </span>
+      )}
+    </div>
+  );
+}
+
 function Results({ result, state, code, busy }: { result: SimulationResult; state: ToolState; code: string; busy: boolean }) {
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
@@ -488,19 +567,24 @@ function Results({ result, state, code, busy }: { result: SimulationResult; stat
       {saving && (
         <>
           <div className="mcs-cards">
+            {/* Phones show the short name only, in three columns, and the
+                explanations once below the cards (mcs-cardsKey). */}
             <div className="mcs-card">
-              <span className="mcs-cardLabel">Low (10th percentile): 1 in 10 paths ended below</span>
+              <span className="mcs-cardLabel">Low<span className="mcs-cardMore"> (10th percentile): 1 in 10 paths ended below</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p10, code)}</span>
             </div>
             <div className="mcs-card mcs-card--mid">
-              <span className="mcs-cardLabel">Median: half the paths ended above, half below</span>
+              <span className="mcs-cardLabel">Median<span className="mcs-cardMore">: half the paths ended above, half below</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p50, code)}</span>
             </div>
             <div className="mcs-card">
-              <span className="mcs-cardLabel">High (90th percentile): 1 in 10 paths ended above</span>
+              <span className="mcs-cardLabel">High<span className="mcs-cardMore"> (90th percentile): 1 in 10 paths ended above</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p90, code)}</span>
             </div>
           </div>
+          <p className="mcs-cardsKey">
+            Low and high: 1 in 10 paths ended below or above (the 10th and 90th percentiles). Median: half ended above, half below.
+          </p>
           <p className="mcs-note">
             A calculator with one fixed return would draw a single line to{' '}
             <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>.{' '}
@@ -580,14 +664,22 @@ function tableYears(years: number): number[] {
 // Chart
 // ---------------------------------------------------------------------------
 
-const W = 760;
-const H = 420;
-const PAD = { top: 40, right: 132, bottom: 56, left: 104 };
-const PLOT_W = W - PAD.left - PAD.right;
+interface Geometry {
+  W: number;
+  H: number;
+  PAD: { top: number; right: number; bottom: number; left: number };
+  /** End-of-line labels need the right-hand gutter; phones read them from the cards. */
+  endLabels: boolean;
+}
+
+const WIDE: Geometry = { W: 760, H: 420, PAD: { top: 40, right: 132, bottom: 56, left: 104 }, endLabels: true };
+// Drawn for a phone's width, so it fits without sideways scrolling and its
+// 16-unit labels stay about 15px on screen.
+const NARROW: Geometry = { W: 360, H: 270, PAD: { top: 18, right: 14, bottom: 50, left: 66 }, endLabels: false };
+
 // Readout swatch colours, matching the chart's dots and inner band.
 const OUTER_DOT = 'color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white))';
 const INNER_BAND = 'color-mix(in srgb, var(--color-deep-blue) 34%, transparent)';
-const PLOT_H = H - PAD.top - PAD.bottom;
 
 /** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
 function niceScale(v: number): { top: number; step: number; count: number } {
@@ -624,6 +716,10 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   const cardRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
   const { bands, straightLine, years } = result;
+  const narrow = usePhone();
+  const { W, H, PAD, endLabels: showEndLabels } = narrow ? NARROW : WIDE;
+  const PLOT_W = W - PAD.left - PAD.right;
+  const PLOT_H = H - PAD.top - PAD.bottom;
 
   // Scale to the middle half of every year, plus the full 8-in-10 band while
   // saving. During withdrawals the luckiest paths keep compounding and would
@@ -730,7 +826,7 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
       ref={figureRef}
       onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(null); }}
     >
-      <p className="mcs-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>
+      {!narrow && <p className="mcs-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>}
       <div className="mcs-chartScroll">
         <div
           className="mcs-chartBox"
@@ -745,7 +841,7 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
             viewBox={`0 0 ${W} ${H}`}
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
-            className="mcs-chart"
+            className={narrow ? 'mcs-chart mcs-chart--narrow' : 'mcs-chart'}
             onPointerMove={(e) => setHover(yearAt(e.clientX))}
             onPointerDown={(e) => setHover(yearAt(e.clientX))}
           >
@@ -815,14 +911,16 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
             {endLabels.map((l, i) => (
               <g key={l.key} className={`mcs-endLabel ${l.cls}`}>
                 {/* A leader line when the label had to move away from its point. */}
-                {Math.abs(endY[i] - endRaw[i]) > 4 && (
+                {showEndLabels && Math.abs(endY[i] - endRaw[i]) > 4 && (
                   <line className="mcs-leader" x1={x(years) + 5} y1={endRaw[i]} x2={W - PAD.right + 8} y2={endY[i] - 7} />
                 )}
-                <circle cx={x(years)} cy={endRaw[i]} r="4" />
-                <text x={W - PAD.right + 12} y={endY[i] - 2}>
-                  <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
-                  <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.value, code, true)}</tspan>
-                </text>
+                {(showEndLabels || l.value <= top) && <circle cx={x(years)} cy={endRaw[i]} r="4" />}
+                {showEndLabels && (
+                  <text x={W - PAD.right + 12} y={endY[i] - 2}>
+                    <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
+                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.value, code, true)}</tspan>
+                  </text>
+                )}
               </g>
             ))}
 
@@ -869,7 +967,10 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
         <span><i className="mcs-key mcs-key--straight" aria-hidden="true" />Single fixed-return line</span>
         <span className="mcs-legendHint">
           Point at the chart, tap it, or use the arrow keys to read any year.
-          {clipped && ' The lightest band runs above the top of the chart; the High label on the right shows where it ends.'}
+          {clipped &&
+            (showEndLabels
+              ? ' The lightest band runs above the top of the chart; the High label on the right shows where it ends.'
+              : ' The lightest band runs above the top of the chart; tap any year to read its high value.')}
         </span>
       </figcaption>
     </figure>

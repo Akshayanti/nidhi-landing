@@ -5,6 +5,7 @@ import HeroChart from '../components/HeroChart.astro';
 import { EXAMPLE_RETURN, STARTER, starterExample } from '../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
+  LADDER_LEVELS,
   lessonToolPairs,
   levelCounts,
   readingOrder,
@@ -169,7 +170,7 @@ const faqSchema = {
           <p class="lp-eyebrow">Money, understood</p>
           <h1 id="hero-heading">Understand your money. Plan what comes next.</h1>
           <p class="lp-subhead">
-            Learn how personal finance works, see what it means for your own money, and plan your future with it. Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
+            <span class="wide-only">Learn how personal finance works, see what it means for your own money, and plan your future with it. </span>Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
           </p>
 
           <div class="hero-actions">
@@ -197,7 +198,7 @@ const faqSchema = {
           <ol class="starter-steps">
             <li>
               <span class="starter-step">Learn</span>
-              <p class="starter-text">Net worth is what you own minus what you owe. It shows whether you are moving forward, whatever you earn.</p>
+              <p class="starter-text">Net worth is what you own minus what you owe.<span class="wide-only"> It shows whether you are moving forward, whatever you earn.</span></p>
             </li>
             <li>
               <span class="starter-step">See yours</span>
@@ -220,8 +221,11 @@ const faqSchema = {
               <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
               <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
               <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
-              <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={220} {...starterChart} />
-              <p class="hc-foot">{starterFootnote}</p>
+              <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
+              <details class="fold" data-phone-fold>
+                <summary class="fold-label">How this example works</summary>
+                <p class="hc-foot">{starterFootnote}</p>
+              </details>
             </li>
           </ol>
         </figure>
@@ -237,19 +241,25 @@ const faqSchema = {
       <div class="section-head">
         <h2 id="start-heading">Start wherever you are.</h2>
         <p class="cap-body">
-          You don&rsquo;t need the jargon, or much money, to begin. Pick the line that sounds most like you. {counts.total > 0 && <>There are {counts.total} free lessons so far, in reading order, each citing its sources.</>}
+          <span class="wide-only">You don&rsquo;t need the jargon, or much money, to begin. </span>Pick the line that sounds most like you. {counts.total > 0 && <span class="wide-only">There are {counts.total} free lessons so far, in reading order, each citing its sources.</span>}
         </p>
       </div>
 
       <ul class="start-grid" role="list">
         {startingPoints.map((s) => (
-          <li class="start-card">
-            <p class="start-route">{s.audience}</p>
-            <h3>{s.situation}</h3>
+          <li class="start-card" style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
+            <details class="fold start-fold" data-phone-fold>
+            <summary class="fold-head">
+              {/* Phones only: the level's number and colour, as on the learning path. */}
+              <span class="start-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
+              <span class="start-route">{s.audience}</span>
+              <h3>{s.situation}</h3>
+              <span class="start-meta">
+                {s.levelLabel ? <>{s.levelLabel} level &middot; {s.levelCount} lessons</> : <>Lessons from several levels, plus free tools</>}
+              </span>
+            </summary>
+            <div class="start-body">
             <p class="start-detail">{s.detail}</p>
-            <p class="start-meta">
-              {s.levelLabel ? <>{s.levelLabel} level &middot; {s.levelCount} lessons</> : <>Lessons from several levels, plus free tools</>}
-            </p>
             <p class="start-route-label" id={`start-route-${s.id}`}>Your route</p>
             <ol class="start-lessons" aria-labelledby={`start-route-${s.id}`}>
               {s.lessons.map((l, i) => (
@@ -280,15 +290,21 @@ const faqSchema = {
                 <span><span data-door-verb>Start with</span>{' '}<span data-door-title>{s.lessons[0].title}</span></span>
               </a>
             </div>
+            </div>
+            </details>
           </li>
         ))}
         {inclusive.count > 0 && (
           <li class="start-card start-card--inclusive">
-            <p class="start-route">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
-              Inclusive Finances &middot; relevant at any stage
-            </p>
-            <h3>The standard plan doesn&rsquo;t fit my life.</h3>
+            <details class="fold start-fold" data-phone-fold>
+            <summary class="fold-head">
+              <span class="start-route">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
+                Inclusive Finances &middot; relevant at any stage
+              </span>
+              <h3>The standard plan doesn&rsquo;t fit my life.</h3>
+            </summary>
+            <div class="start-body">
             <p class="start-detail">
               Most financial advice assumes marriage, steady employment, family the law recognises, and one country. These guides start from the life you actually have.
             </p>
@@ -300,6 +316,8 @@ const faqSchema = {
             <a class="start-more" href={INCLUSIVE_HUB} data-attr="home-inclusive-finances">
               Explore {inclusive.count === 1 ? 'the guide' : `all ${inclusive.count} guides`}
             </a>
+            </div>
+            </details>
           </li>
         )}
       </ul>
@@ -307,7 +325,7 @@ const faqSchema = {
       {/* Depth, said plainly: what a reader who already knows the rules gets. */}
       <div class="depth">
         <h3 id="depth-heading">Not just the rules of thumb.</h3>
-        <p class="depth-body">
+        <p class="depth-body wide-only">
           Where there is a rule of thumb, the lesson also explains why it exists, where it breaks, and how to think about your own situation. Lessons cite their sources and compare countries where the rules differ, so they stay useful once you know the basics.
         </p>
         <ol class="depth-steps">
@@ -333,7 +351,7 @@ const faqSchema = {
         <div class="section-head">
           <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
           <p class="cap-body">
-            Each free tool sits next to a lesson that explains the idea behind it. The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
+            <span class="wide-only">Each free tool sits next to a lesson that explains the idea behind it. </span>The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
           </p>
         </div>
 
@@ -382,7 +400,7 @@ const faqSchema = {
       <div class="section-head">
         <h2 id="grows-heading">nidhi grows with your financial life.</h2>
         <p class="cap-body">
-          The ideas you start with keep mattering as life gets more involved. They just gain more moving parts. nidhi is built to keep up, so you never have to outgrow it.
+          The ideas you start with keep mattering as life gets more involved.<span class="wide-only"> They just gain more moving parts. nidhi is built to keep up, so you never have to outgrow it.</span>
         </p>
       </div>
 
@@ -390,20 +408,22 @@ const faqSchema = {
         <ol class="grows-list">
           {growthTopics.map((t) => (
             <li>
-              <h3>{t.label}</h3>
-              <p>{t.detail}</p>
-              <ul class="grows-links" role="list">
-                {t.lessons.map((l, i) => (
-                  <li><a href={l.href} data-attr={`home-grows-${t.id}-${i + 1}`}>{l.title}</a></li>
-                ))}
-              </ul>
+              <details class="fold" data-phone-fold>
+                <summary class="fold-head"><h3>{t.label}</h3></summary>
+                <p>{t.detail}</p>
+                <ul class="grows-links" role="list">
+                  {t.lessons.map((l, i) => (
+                    <li><a href={l.href} data-attr={`home-grows-${t.id}-${i + 1}`}>{l.title}</a></li>
+                  ))}
+                </ul>
+              </details>
             </li>
           ))}
         </ol>
 
         <div class="mc-panel" data-mc={JSON.stringify(mcItems)}>
           <h3>When your money lives in more than one country</h3>
-          <p>
+          <p class="wide-only">
             Most money tools assume one country and one currency. nidhi doesn&rsquo;t, so a home in one place, savings in another and a pension in a third still add up to one picture, in the currency you actually live in.
           </p>
           <ul class="mc-list">
@@ -444,14 +464,17 @@ const faqSchema = {
           <p class="lp-eyebrow">Opening in stages</p>
           <h2 id="planner-heading">The planner: your whole picture, looking forward.</h2>
           <p class="cap-body">
-            Lessons explain the ideas. Tools answer one question at a time. The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
+            <span class="wide-only">Lessons explain the ideas. Tools answer one question at a time. </span>The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
           </p>
-          <ul class="planner-list">
-            <li>What you own, owe, earn and expect to spend, in one place, in one currency or several.</li>
-            <li>Where that could lead, including retirement timing, with every assumption in plain view.</li>
-            <li>Goals and future costs in the same long-range plan.</li>
-            <li>What-if comparisons: saving more, buying a home, changing jobs, retiring earlier.</li>
-          </ul>
+          <details class="fold" data-phone-fold>
+            <summary class="fold-label">What the planner is meant to cover</summary>
+            <ul class="planner-list">
+              <li>What you own, owe, earn and expect to spend, in one place, in one currency or several.</li>
+              <li>Where that could lead, including retirement timing, with every assumption in plain view.</li>
+              <li>Goals and future costs in the same long-range plan.</li>
+              <li>What-if comparisons: saving more, buying a home, changing jobs, retiring earlier.</li>
+            </ul>
+          </details>
         </div>
         <div class="planner-signup">
           <WaitlistSection />
@@ -468,17 +491,36 @@ const faqSchema = {
       <div class="section-head section-head--center">
         <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
         <p class="cap-body">
-          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert. That is what we mean by <em>money, understood</em>.
+          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert.<span class="wide-only"> That is what we mean by <em>money, understood</em>.</span>
         </p>
       </div>
 
       <ul class="trust-grid" role="list">
-        <li><strong>Free to learn, for good.</strong> No paywall, and no &ldquo;subscribe for the good stuff&rdquo;.</li>
-        <li><strong>No ads, no data selling.</strong> Analytics run on EU servers, and we never share or sell your email.</li>
-        <li><strong>Your numbers stay with you.</strong> The free tools calculate in your browser.</li>
-        <li><strong>Sources you can check.</strong> Lessons cite what they rely on. <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>.</li>
-        <li><strong>Built for real financial lives.</strong> Different households, countries, abilities and ways of working. The site works with screen readers, its charts do not rely on colour alone, it follows your device's reduced motion setting, and every lesson opens with a short summary.</li>
-        <li><strong>Clear about what this is.</strong> Education, not financial advice. <a href="/privacy/" data-attr="home-privacy">Read the privacy policy</a>.</li>
+        {/* Icons are decorative and shown on phones only; the bold line carries the meaning. */}
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z" /><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" /></svg></span>
+          <span class="trust-copy"><strong>Free to learn, for good.</strong> <span class="trust-detail">No paywall, and no &ldquo;subscribe for the good stuff&rdquo;.</span></span>
+        </li>
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" /></svg></span>
+          <span class="trust-copy"><strong>No ads, no data selling.</strong> <span class="trust-detail">Analytics run on EU servers, and we never share or sell your email.</span></span>
+        </li>
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg></span>
+          <span class="trust-copy"><strong>Your numbers stay with you.</strong> <span class="trust-detail">The free tools calculate in your browser.</span></span>
+        </li>
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M8 13h8M8 17h6" /></svg></span>
+          <span class="trust-copy"><strong>Sources you can check.</strong> <span class="trust-detail">Lessons cite what they rely on. <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>.</span></span>
+        </li>
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></svg></span>
+          <span class="trust-copy"><strong>Built for real financial lives.</strong> <span class="trust-detail">Different households, countries, abilities and ways of working.<span class="wide-only"> The site works with screen readers, its charts do not rely on colour alone, it follows your device's reduced motion setting, and every lesson opens with a short summary.</span></span></span>
+        </li>
+        <li>
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 16v-5M12 8h.01" /></svg></span>
+          <span class="trust-copy"><strong>Clear about what this is.</strong> <span class="trust-detail">Education, not financial advice. <a href="/privacy/" data-attr="home-privacy">Read the privacy policy</a>.</span></span>
+        </li>
       </ul>
 
       <p class="trust-founder">
@@ -510,6 +552,34 @@ const faqSchema = {
   // nidhi-reading-progress key, which never leaves the browser, and only
   // change where links point.
   import { nextLesson, routeNext, type LessonLink } from '../utils/home/startingPoints.ts';
+
+  // Phone folds: supporting detail is collapsed on phones and always shown
+  // on wider screens. CSS already shows the content there (::details-content),
+  // so this only keeps the open state, and what assistive tech hears, in step
+  // with the layout. Nothing is stored: every visit starts the same way.
+  const wide = window.matchMedia('(min-width: 641px)');
+  const folds = document.querySelectorAll<HTMLDetailsElement>('details[data-phone-fold]');
+  function syncFolds() {
+    folds.forEach((fold) => {
+      fold.open = wide.matches;
+      // Not inert: a summary can hold the card's heading, which must stay
+      // readable. It just stops being a tab stop while it cannot fold.
+      const summary = fold.querySelector('summary');
+      if (wide.matches) summary?.setAttribute('tabindex', '-1');
+      else summary?.removeAttribute('tabindex');
+    });
+  }
+  syncFolds();
+  // Optional call: older Safari has no MediaQueryList.addEventListener, and
+  // throwing here would also stop the reading-progress code below.
+  wide.addEventListener?.('change', syncFolds);
+  // A screen reader can still activate a summary on wide screens; keep the
+  // fold open there so what it hears matches what is shown.
+  folds.forEach((fold) => {
+    fold.addEventListener('toggle', () => {
+      if (wide.matches && !fold.open) fold.open = true;
+    });
+  });
 
   function readSlugs(): string[] {
     try {
@@ -814,6 +884,64 @@ const faqSchema = {
   .lp-btn:disabled { opacity: 0.6; cursor: wait; }
 
   /* ----------------------------------------------------------------
+     Phone folds (details[data-phone-fold]): closed on phones, a plain
+     always-open block on wider screens. A fold-head summary holds the
+     block's heading and stays visible; a fold-label summary is only the
+     phone toggle and is hidden on wider screens.
+     ---------------------------------------------------------------- */
+  .fold > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .fold > summary::-webkit-details-marker { display: none; }
+
+  .fold > summary:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (min-width: 641px) {
+    .fold > summary { pointer-events: none; cursor: auto; }
+    .fold > summary.fold-label { display: none; }
+  }
+
+  /* Shows the content before the script has opened the fold, so wide
+     screens never see it collapse and reopen. A separate rule, so a browser
+     without ::details-content skips only this. */
+  @media (min-width: 641px) {
+    .fold::details-content { content-visibility: visible; }
+  }
+
+  @media (max-width: 640px) {
+    .fold > summary { position: relative; padding-right: 32px; }
+
+    .fold > summary::after {
+      content: '+' / '';
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      line-height: 1;
+      color: var(--color-teal);
+    }
+
+    .fold[open] > summary::after { content: '\2212' / ''; }
+
+    .fold-label {
+      display: block;
+      padding: 10px 32px 10px 0;
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-deep-blue);
+    }
+  }
+
+  /* ----------------------------------------------------------------
      1. Hero
      ---------------------------------------------------------------- */
   .hero-grid {
@@ -1002,7 +1130,27 @@ const faqSchema = {
     line-height: 1.55;
   }
 
+  /* The fold fills the card, so the door still sits at the bottom. */
+  .start-fold,
+  .start-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+
+  .start-fold::details-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+
+  .start-fold > summary { display: block; }
+
+  /* Block-level, as when it was a paragraph, so no extra line box. */
+  .start-fold > summary .start-route { display: flex; }
+
   .start-meta {
+    display: block;
     margin: 0 0 10px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -1166,7 +1314,7 @@ const faqSchema = {
   }
 
   @media (max-width: 559px) {
-    .depth-steps { flex-direction: column; }
+    .depth-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .depth-steps li:not(:last-child)::after { content: none; }
   }
 
@@ -1573,6 +1721,10 @@ const faqSchema = {
     line-height: 1.5;
   }
 
+  /* Phone-only marks; shown by the small-screen rules below. */
+  .trust-icon,
+  .start-badge { display: none; }
+
   .trust-grid strong {
     display: block;
     font-family: var(--font-heading);
@@ -1653,13 +1805,176 @@ const faqSchema = {
      Small screens
      ---------------------------------------------------------------- */
   @media (max-width: 640px) {
-    .lp-section { padding: 56px 16px; }
-    #hero { padding-top: 32px; }
-    .section-head { margin-bottom: 28px; }
-    .starter { padding: 18px; }
+    .lp-section { padding: 44px 16px; }
+    #hero { padding-top: 28px; }
+    .hero-grid { gap: 28px; }
+    .section-head { margin-bottom: 24px; }
+    .starter { padding: 16px; box-shadow: none; }
+    .starter-kicker { margin-bottom: 10px; }
+    .starter-steps { gap: 12px; }
+    .starter-steps > li { padding-left: 14px; }
+    /* Step names run into their sentence instead of taking a line each. */
+    .starter-step { display: inline; margin-right: 6px; }
+    .starter-step + .starter-text { display: inline; }
+    .starter-step + .starter-table { margin-top: 4px; }
+    .starter-table { font-size: 0.85rem; }
+    .starter-table th,
+    .starter-table td { padding: 1px 0; }
+    .starter-table tfoot th,
+    .starter-table tfoot td { padding-top: 4px; }
+    .starter :global(.starter-chart--narrow) { margin-top: 6px; }
     .hero-actions .lp-btn { flex: 1 1 auto; }
     .mc-panel { padding: 18px; }
     .start-situations { gap: 6px; }
     .start-situations li { font-size: 0.8rem; padding: 2px 8px; }
+
+    /* Secondary sentences that the heading or the content below already
+       carries. Printed once, shown from 641px. */
+    .wide-only { display: none; }
+
+    /* The skip links repeat routes the "Start wherever you are" cards give
+       just below; on a phone they only push the example down. */
+    .hero-skip { display: none; }
+
+    /* Starting points: rows marked by their level's number and colour, each
+       opening its route. Inclusive Finances keeps a box: it sits beside the
+       ladder, not on it. */
+    .start-grid { gap: 0; }
+    .start-card {
+      padding: 16px 2px;
+      border: 0;
+      border-bottom: 1px solid var(--color-border);
+      border-radius: 0;
+      background: transparent;
+    }
+    .start-card:first-child { padding-top: 4px; }
+    .start-card .fold-head { padding-left: 44px; }
+    .start-card .start-route { color: var(--start-level); }
+    .start-badge {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 1.5px solid var(--start-level);
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
+      color: var(--start-level);
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .start-card h3 { margin-bottom: 4px; }
+    .start-fold > summary .start-meta { margin: 0; }
+    .start-fold[open] > summary { margin-bottom: 12px; }
+    .start-card--inclusive {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid color-mix(in srgb, var(--level-inclusive-finances) 40%, var(--color-border));
+      border-left: 4px solid var(--level-inclusive-finances);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--level-inclusive-finances) 7%, var(--color-bg-white));
+    }
+    .start-card--inclusive .fold-head { padding-left: 0; }
+    .start-card--inclusive .start-route { color: var(--color-text-secondary); }
+
+    .depth {
+      margin-top: 28px;
+      padding: 2px 0 2px 16px;
+      border: 0;
+      border-left: 3px solid var(--color-teal);
+      border-radius: 0;
+      background: transparent;
+    }
+
+    /* A tinted band marks the practice chapter halfway down the page. */
+    #apply { background: color-mix(in srgb, var(--chart-eur) 8%, var(--color-bg)); }
+    /* Lesson and tool pairs: one compact card per pair, the tool first and
+       its lesson as a line beneath, so the section fits on one screen. */
+    #apply .pair-list { gap: 10px; }
+    .pair {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 12px 14px 8px;
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      background: var(--color-bg-white);
+    }
+    .an-card {
+      order: -1;
+      grid-template-columns: 48px minmax(0, 1fr);
+      column-gap: 12px;
+      align-items: center;
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+    }
+    .an-card:hover { box-shadow: none; }
+    .an-kicker,
+    .an-desc,
+    .an-cta { display: none; }
+    .an-preview { grid-row: auto; width: 48px; height: 30px; }
+    .an-title::after { content: ' \2192' / ''; }
+    .pair-lesson {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 6px;
+      padding-left: 60px;
+    }
+    .pair-kicker { flex-shrink: 0; font-size: 0.7rem; color: var(--color-text-muted); }
+    .pair-lesson a { font-size: 0.85rem; font-weight: 500; color: var(--color-text-secondary); }
+
+    /* Growth stages: titles only until tapped. */
+    .grows-list > li,
+    .grows-list > li:last-child { padding-bottom: 6px; }
+    .grows-list .fold > summary { padding-top: 0; padding-bottom: 8px; }
+    .grows-list .fold > summary::after { top: 0; transform: none; }
+    .grows-list .fold[open] > summary { padding-bottom: 4px; }
+    .grows-list .fold[open] { padding-bottom: 14px; }
+
+    /* Promises at a glance: icon and headline in two columns. The detail
+       lines and their links sit in the menu, footer and FAQ on phones. */
+    .trust-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 14px;
+    }
+    .trust-grid li,
+    .trust-grid li:last-child {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+    .trust-grid strong { margin: 0; font-size: 0.9rem; line-height: 1.3; }
+    .trust-detail { display: none; }
+    #trust .section-head { margin-bottom: 24px; }
+    .trust-founder { margin-top: 24px; }
+    .trust-icon {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--color-teal) 13%, var(--color-bg-white));
+      color: var(--color-teal);
+    }
+    .trust-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .trust-founder { text-align: left; }
   }
 </style>

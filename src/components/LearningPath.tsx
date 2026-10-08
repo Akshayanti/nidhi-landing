@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 interface PostData {
   id: string;
@@ -254,13 +254,27 @@ interface LearningPathProps {
    * which leaves out any whose host lesson is not visible yet.
    */
   inclusiveTotal?: number;
+  /**
+   * Phones only (the blog index): search and topics fold behind one
+   * button, and only the level the reader is on starts open; the others
+   * show as one row each. Wider screens are unaffected. Open and closed
+   * state lives in memory only: every visit starts the same way.
+   */
+  compactOnPhones?: boolean;
 }
 
-export function LearningPath({ posts, interceptTagClick = true, showSteps = false, inclusiveTotal }: LearningPathProps) {
+const PHONE_QUERY = '(max-width: 640px)';
+const isPhone = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches;
+
+export function LearningPath({ posts, interceptTagClick = true, showSteps = false, inclusiveTotal, compactOnPhones = false }: LearningPathProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
+  // Phone layout (compactOnPhones): whether the search and topic panel is
+  // open, and levels the reader opened or closed by hand. Neither is stored.
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [levelOverrides, setLevelOverrides] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     try {
@@ -283,6 +297,8 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     if (qParam) {
       setSearchQuery(qParam);
     }
+    // A link that arrives with a filter shows the panel it came from.
+    if (tagParam || qParam) setFilterOpen(true);
   }, []);
 
   // Reflect the current search query into the URL via replaceState.
@@ -377,13 +393,46 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     }
   }, [posts, saveProgress]);
 
+  // On phones, opens a folded level so a link or button that leads to it
+  // lands on its lessons. Does nothing on wider screens, where every level
+  // is already shown.
+  const openLevelOnPhone = useCallback((level: string) => {
+    if (!compactOnPhones || !isPhone()) return;
+    setLevelOverrides((prev) => ({ ...prev, [level]: true }));
+    setCollapsedSections((prev) => {
+      if (!prev.has(level)) return prev;
+      const next = new Set(prev);
+      next.delete(level);
+      return next;
+    });
+  }, [compactOnPhones]);
+
   const scrollToLevel = useCallback((level: string) => {
-    const el = document.getElementById(`level-${level}`);
-    if (!el) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-    el.focus({ preventScroll: true });
-  }, []);
+    openLevelOnPhone(level);
+    // After the fold opens, so the level's top is where it will stay.
+    window.requestAnimationFrame(() => {
+      const el = document.getElementById(`level-${level}`);
+      if (!el) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      el.focus({ preventScroll: true });
+    });
+  }, [openLevelOnPhone]);
+
+  // Level links such as /blog/#level-building, on arrival or in the page:
+  // on phones the level opens and comes into view.
+  useEffect(() => {
+    if (!compactOnPhones) return;
+    const fromHash = () => {
+      const match = /^#level-([a-z-]+)$/.exec(window.location.hash);
+      if (match && (LEVEL_ORDER as readonly string[]).includes(match[1]) && isPhone()) {
+        scrollToLevel(match[1]);
+      }
+    };
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+    return () => window.removeEventListener('hashchange', fromHash);
+  }, [compactOnPhones, scrollToLevel]);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -441,6 +490,46 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
     return null;
   }, [levelGroups, readPosts]);
 
+  // Phones: the level the reader is on (the first with an unread lesson,
+  // whatever the filter) starts open; the rest start folded. While a search
+  // or topic filter is active, every level with matches starts open.
+  const currentLevel = useMemo(() => {
+    for (const level of LEVEL_ORDER) {
+      if (posts.some((p) => p.level === level && !readPosts.has(p.id))) return level;
+    }
+    return null;
+  }, [posts, readPosts]);
+  const filterActive = Boolean(selectedTag || searchQuery.trim());
+
+  // A new search or topic starts from that default again, so a level closed
+  // earlier never hides its matches.
+  // Skips the first run, so a level opened from a #level- link on arrival
+  // stays open.
+  const filterSeen = useRef(false);
+  useEffect(() => {
+    if (!filterSeen.current) {
+      filterSeen.current = true;
+      return;
+    }
+    setLevelOverrides({});
+  }, [selectedTag, searchQuery]);
+
+  const isOpenOnPhone = (level: string) =>
+    levelOverrides[level] ?? (filterActive || level === currentLevel);
+
+  const togglePhoneLevel = (level: string) => {
+    const open = !isOpenOnPhone(level);
+    setLevelOverrides((prev) => ({ ...prev, [level]: open }));
+    if (open) {
+      setCollapsedSections((prev) => {
+        if (!prev.has(level)) return prev;
+        const next = new Set(prev);
+        next.delete(level);
+        return next;
+      });
+    }
+  };
+
   const shownLevels = levelGroups.filter((g) => g.posts.length > 0).map((g) => g.level);
 
   const corePosts = filteredPosts.filter((p) => !isOptional(p));
@@ -449,7 +538,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
   const overallPercent = totalPosts > 0 ? (totalRead / totalPosts) * 100 : 0;
 
   return (
-    <div className="lp-pathContainer">
+    <div className={`lp-pathContainer${compactOnPhones ? ' lp-compactOnPhones' : ''}`}>
       <div className="lp-pathLine" />
 
       <nav className="lp-levelNav" aria-label="Learning path levels and routes">
@@ -465,6 +554,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
               href={`#level-${level}`}
               className="lp-levelNavLink"
               style={{ '--level-color': meta.color } as React.CSSProperties}
+              onClick={() => openLevelOnPhone(level)}
             >
               <span className="lp-levelNavLinkNum">{LEVEL_ORDER.indexOf(level) + 1}</span>
               <div className="lp-levelNavLinkText">
@@ -498,8 +588,30 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
         )}
       </nav>
 
+      {/* Phones only: one button for search and topics. It never repeats
+          what was typed, so a recorded click cannot carry it. */}
+      {compactOnPhones && allTags.length > 0 && (
+        <button
+          type="button"
+          className="lp-filterToggle"
+          aria-expanded={filterOpen}
+          aria-controls="lp-filterBar"
+          onClick={() => setFilterOpen((open) => !open)}
+        >
+          <svg className="lp-filterToggleIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" />
+            <line x1="13.5" y1="13.5" x2="18" y2="18" />
+          </svg>
+          <span>Search and filter</span>
+          {filterActive && <span className="lp-filterToggleActive">On</span>}
+          <svg className="lp-filterToggleChevron" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
+          </svg>
+        </button>
+      )}
+
       {allTags.length > 0 && (
-        <div className="lp-filterBar">
+        <div id="lp-filterBar" className={`lp-filterBar ${compactOnPhones && !filterOpen ? 'lp-filterBarPhoneClosed' : ''}`}>
           <div className="lp-searchWrapper">
             <svg className="lp-searchIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="9" cy="9" r="6" />
@@ -585,14 +697,51 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
           .filter((p) => p.level === group.level)
           .every((p) => readPosts.has(p.id));
 
+        const phoneOpen = isOpenOnPhone(group.level);
+        const sectionClasses = [
+          'lp-levelSection',
+          isCollapsed ? 'lp-levelSectionCollapsed' : '',
+          compactOnPhones && !phoneOpen ? 'lp-phoneFolded' : '',
+        ].filter(Boolean).join(' ');
+
         return (
-          <div key={group.level} id={`level-${group.level}`} tabIndex={-1} className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}>
+          <div key={group.level} id={`level-${group.level}`} tabIndex={-1} className={sectionClasses}>
             <div
               className="lp-levelWaypoint"
               style={{ background: group.meta.color }}
             >
               {index + 1}
             </div>
+
+            {/* Phones only: the level as one row that opens and closes it.
+                Wider screens use the header below. */}
+            {compactOnPhones && (
+              <button
+                type="button"
+                className="lp-levelPhoneToggle"
+                aria-expanded={phoneOpen}
+                aria-controls={`level-${group.level}-body`}
+                onClick={() => togglePhoneLevel(group.level)}
+                style={{ '--level-color': group.meta.color } as React.CSSProperties}
+              >
+                <span className="lp-levelNavLinkNum" aria-hidden="true">{index + 1}</span>
+                <span className="lp-levelPhoneToggleText">
+                  <span className="lp-levelPhoneToggleLabel">{group.meta.label}</span>
+                  <span className="lp-levelPhoneTogglePrereq">{group.meta.prerequisite}</span>
+                </span>
+                {group.core.length > 0 && (
+                  <span className="lp-levelPhoneToggleCount">
+                    {levelRead}/{group.core.length}
+                    <span className="lp-srOnly"> read</span>
+                  </span>
+                )}
+                <svg className="lp-levelPhoneToggleChevron" viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
+                  <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
+                </svg>
+              </button>
+            )}
+
+            <div className="lp-levelBody" id={`level-${group.level}-body`}>
 
             <div
               className={`lp-levelHeader ${isCompleted ? 'lp-levelHeaderToggle' : ''}`}
@@ -700,6 +849,7 @@ export function LearningPath({ posts, interceptTagClick = true, showSteps = fals
                 ))}
               </div>
             )}
+            </div>
           </div>
         );
       })}

@@ -254,8 +254,12 @@ const faqSchema = {
       <WaitlistSection variant="hero" cta="Join early access" />
     </aside>
 
-    <section class="mcnw-explainer" aria-labelledby="mcnw-explainer-h">
-      <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">How the calculation works</h2>
+    {/* Collapsed by default, like the FAQ below: the method is there for
+        anyone who wants it, without pushing the FAQ and lessons down. */}
+    <details class="mcnw-explainer">
+      <summary class="mcnw-faqHeading">
+        <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">How the calculation works</h2>
+      </summary>
       <p>
         For each currency, we net your assets and liabilities, then convert
         the result to your functional currency using live exchange rates.
@@ -306,7 +310,7 @@ const faqSchema = {
           and nothing about your assets.
         </li>
       </ul>
-    </section>
+    </details>
 
     <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
       <summary id="mcnw-faq-h" class="mcnw-faqHeading">
@@ -552,6 +556,7 @@ const faqSchema = {
     transition: transform 0.15s ease;
   }
 
+  .mcnw-explainer[open] > .mcnw-faqHeading::before,
   .mcnw-faq[open] > .mcnw-faqHeading::before {
     content: '−';
   }

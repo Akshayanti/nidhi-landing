@@ -38,8 +38,8 @@ const showMonteCarlo = await isMonteCarloReleased();
           <a href="/about/" data-attr="footer-about">About nidhi</a>
           <a href="/beliefs/" data-attr="footer-beliefs">Our Beliefs</a>
           <a href="/editorial-policy/" data-attr="footer-editorial-policy">Editorial policy</a>
-          <a href="/privacy/" data-attr="footer-privacy">Privacy</a>
-          <button type="button" class="footer-cookieSettings" data-cookie-settings data-attr="footer-cookie-settings">Cookie settings</button>
+          <a href="/privacy/" class="footer-keep" data-attr="footer-privacy">Privacy</a>
+          <button type="button" class="footer-cookieSettings footer-keep" data-cookie-settings data-attr="footer-cookie-settings">Cookie settings</button>
         </div>
         <div class="footer-col">
           <strong class="footer-col-heading">Connect</strong>
@@ -56,8 +56,7 @@ const showMonteCarlo = await isMonteCarloReleased();
     </div>
     <div class="footer-bottom">
       <p class="disclaimer">
-        nidhi provides educational information and tools to help you understand your money. It is not a licensed financial adviser.
-        The content and tools are educational and shouldn't be treated as professional financial, investment, or tax advice. Past performance of any investment is not indicative of future results. For decisions that matter, consult a qualified professional.
+        nidhi provides educational information and tools to help you understand your money. It is not a licensed financial adviser.{' '}<span class="footer-wideOnly">The content and tools are educational and shouldn't be treated as professional financial, investment, or tax advice. Past performance of any investment is not indicative of future results. For decisions that matter, consult a qualified professional.</span>
       </p>
       <p class="footer-copy">&copy; {year} nidhi. All rights reserved.</p>
     </div>
@@ -178,10 +177,35 @@ const showMonteCarlo = await isMonteCarloReleased();
     color: var(--color-text-muted);
   }
 
+  /* Phones: the header menu carries the site's links, so the footer keeps
+     only what must sit at the bottom of every page: the privacy policy,
+     Cookie settings (the privacy policy promises it there), a one-sentence
+     disclaimer and the copyright line. */
   @media (max-width: 640px) {
-    .footer-grid {
-      flex-direction: column;
-      gap: var(--space-6);
+    .site-footer {
+      margin-top: var(--space-10);
+      padding: var(--space-5) 0;
+    }
+
+    .footer-brand,
+    .footer-col-heading,
+    .footer-col > :not(.footer-keep),
+    .footer-col:not(:has(.footer-keep)),
+    .footer-wideOnly { display: none; }
+
+    .footer-grid { margin-bottom: var(--space-3); }
+
+    .footer-col {
+      flex-direction: row;
+      gap: var(--space-5);
+    }
+
+    .footer-col a,
+    .footer-cookieSettings { padding: 6px 0; }
+
+    .footer-bottom {
+      border-top: 0;
+      padding-top: 0;
     }
   }
 </style>
