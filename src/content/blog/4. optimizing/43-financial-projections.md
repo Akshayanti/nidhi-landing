@@ -9,7 +9,7 @@ takeaways:
   - "Why to plan with a range of real returns, not one nominal line"
   - "How a Monte Carlo simulation shows the spread and sequence risk"
 order: 43
-pubDate: 2099-01-01
+pubDate: 2026-10-12
 updatedDate: 2026-10-03
 level: "optimizing"
 primaryPersona: "eva"

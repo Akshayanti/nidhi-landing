@@ -9,7 +9,7 @@ takeaways:
   - "Why old pensions usually move provider to provider, not via you"
   - "How closing old credit cards really affects your credit score"
 order: 47
-pubDate: 2099-01-07
+pubDate: 2026-10-26
 updatedDate: 2026-08-03
 level: "optimizing"
 primaryPersona: "eva"
