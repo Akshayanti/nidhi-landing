@@ -59,7 +59,8 @@
       // Analytics.astro reads the stored choice when it starts.
       if (window.posthog && typeof window.posthog.set_config === 'function') {
         var on = choice === 'accepted';
-        window.posthog.set_config({ autocapture: on, enable_heatmaps: on, capture_dead_clicks: on });
+        // Heatmaps stay off while the learning path's level helper is open.
+        window.posthog.set_config({ autocapture: on, enable_heatmaps: on && !window.nidhiHeatmapsPaused, capture_dead_clicks: on });
       }
       document.removeEventListener('keydown', trapFocus);
       // Return focus to the element that was focused before the overlay opened

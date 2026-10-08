@@ -66,15 +66,18 @@ function walkBlogDir(dir) {
  *  - blogLastmod: slug → ISO date (updatedDate ?? pubDate)
  *  - tagLastmod : tag  → ISO date (newest among posts carrying the tag)
  * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
- * none is live), which decides whether the hub is in the sitemap at all.
+ * none is live), which decides whether the hub is in the sitemap at all,
+ * and levelLastmod: level → ISO date (newest live lesson in that level), which
+ * does the same for the level pages (/blog/<level>/).
  *
  * Tag lastmod intentionally tracks newest content under the tag, not the
  * git mtime of [tag].astro: a reader visiting /blog/tag/saving/ cares
  * "did anything new appear under saving?", not "did the template change?".
  */
-const { blogLastmod, tagLastmod, inclusiveLastmod } = (() => {
+const { blogLastmod, tagLastmod, inclusiveLastmod, levelLastmod } = (() => {
   const blog = new Map();
   const tag = new Map();
+  const level = new Map();
   let inclusive = null;
   // Filter by pubDate <= now so future-dated posts (drafts scheduled for
   // a later publish window) don't poison tag-page lastmod values. The
@@ -95,6 +98,7 @@ const { blogLastmod, tagLastmod, inclusiveLastmod } = (() => {
       const iso = d.toISOString();
       blog.set(fm.slug, iso);
       if (fm.level === 'inclusive-finances' && (!inclusive || iso > inclusive)) inclusive = iso;
+      if (fm.level && fm.level !== 'inclusive-finances' && (!level.has(fm.level) || iso > level.get(fm.level))) level.set(fm.level, iso);
       if (Array.isArray(fm.tags)) {
         for (const t of fm.tags) {
           const prev = tag.get(t);
@@ -106,7 +110,7 @@ const { blogLastmod, tagLastmod, inclusiveLastmod } = (() => {
     // Bare checkout, missing dir, or any IO error: leave maps empty.
     // Sitemap will simply omit <lastmod> for blog/tag URLs.
   }
-  return { blogLastmod: blog, tagLastmod: tag, inclusiveLastmod: inclusive };
+  return { blogLastmod: blog, tagLastmod: tag, inclusiveLastmod: inclusive, levelLastmod: level };
 })();
 
 /**
@@ -169,6 +173,9 @@ export default defineConfig({
       // pubDate passes, the same build that drops its noindex and shows
       // the homepage and learning-path cards that link to it.
       if (new URL(page).pathname === '/blog/inclusive-finances/' && !inclusiveLastmod) return false;
+      // A level page with no live lessons is noindex (src/layouts/LevelPage.astro).
+      const levelPath = /^\/blog\/(discovery|building|psychology|optimizing|mastery)\/$/.exec(new URL(page).pathname);
+      if (levelPath && !levelLastmod.has(levelPath[1])) return false;
       return true;
     },
     serialize(item) {
@@ -191,6 +198,9 @@ export default defineConfig({
         // The hub changes when a guide is added or revised: date it by the
         // most recently published or updated guide.
         lastmod = inclusiveLastmod ?? undefined;
+      } else if (levelLastmod.has(path.slice('blog/'.length)) && path.startsWith('blog/')) {
+        // A level page changes when a lesson in it is added or revised.
+        lastmod = levelLastmod.get(path.slice('blog/'.length));
       } else if (path.startsWith('blog/') && path !== 'blog') {
         lastmod = blogLastmod.get(path.slice('blog/'.length));
       } else {

@@ -1,21 +1,5 @@
 ---
 import BlogIndex from '../../layouts/BlogIndex.astro';
-import { getCollection } from 'astro:content';
-import { getReadingTime } from '../../utils/readingTime';
-import { assertCompanionHosts } from '../../utils/companions';
-
-const isDev = import.meta.env.DEV;
-const now = new Date();
-const allPosts = await getCollection('blog');
-assertCompanionHosts(allPosts, now);
-const posts = allPosts
-  .filter(post => isDev || post.data.pubDate <= now)
-  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
-  .map(post => ({
-    id: post.data.slug,
-    data: post.data,
-    readingTime: getReadingTime(post.body || ''),
-  }));
 ---
 
-<BlogIndex posts={posts} />
+<BlogIndex />

@@ -34,7 +34,7 @@ const breadcrumbSchema = {
 
 <BaseLayout
   title="Editorial Policy: How nidhi Researches and Reviews Posts | nidhi"
-  description="How nidhi reviews each post, the sourcing standards we hold to, the boundary between education and advice, and how we handle corrections."
+  description="How nidhi reviews each post, the sourcing standards we hold to, why lessons are written for any country, the boundary between education and advice, and how we handle corrections."
   jsonLd={[webPageSchema, breadcrumbSchema]}
 >
   <section class="policy-page">
@@ -67,6 +67,19 @@ const breadcrumbSchema = {
           take our word for it. Worked examples use realistic figures, and where a number is illustrative
           rather than a forecast, the post says so. Exchange rates shown in the tools come from the
           European Central Bank reference rates, dated on screen.
+        </p>
+
+        <h2 id="any-country">Written for any country</h2>
+        <p>
+          The lessons are written for readers anywhere, not for one country. The ideas they teach, such as
+          net worth, diversification or how inflation shrinks savings, work the same way everywhere. The
+          rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and
+          benefits, credit scoring, deposit protection and consumer law differ from country to country, and
+          sometimes within one. Where a lesson depends on rules like these, it says so and names what to
+          check where you live, such as your tax authority, your financial regulator or a qualified local
+          adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is
+          European. Where evidence comes from one country's data, such as US stock market history, the
+          lesson says that too, along with what it may not tell you about other markets.
         </p>
 
         <h2>Education, not advice</h2>
@@ -135,6 +148,8 @@ const breadcrumbSchema = {
     font-size: 1.15rem;
     color: var(--color-deep-blue);
     margin: var(--space-6) 0 var(--space-2);
+    /* Clears the sticky header when a link lands on a section (#any-country). */
+    scroll-margin-top: 80px;
   }
 
   .policy-body p {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
-interface PostData {
+export interface PostData {
   id: string;
   title: string;
   description: string;
@@ -25,7 +25,7 @@ interface LevelMeta {
   color: string;
 }
 
-const LEVELS: Record<string, LevelMeta> = {
+export const LEVELS: Record<string, LevelMeta> = {
   discovery: {
     label: 'Discovery',
     description: 'The fundamentals. If you\'re new to personal finance, start here.',
@@ -899,6 +899,92 @@ export function CollectionList({ posts }: { posts: PostData[] }) {
           onPath={false}
         />
       ))}
+    </div>
+  );
+}
+
+/**
+ * One level's lessons, for its own page (/blog/<level>/): progress for the
+ * level, the mark-as-read buttons, and the lesson cards in reading order,
+ * with Inclusive Finances follow-ups after the lesson they build on. Reads
+ * and writes the same reading-progress key as everywhere else.
+ */
+export function LevelLessons({ level, posts }: { level: string; posts: PostData[] }) {
+  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
+  const meta = LEVELS[level];
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) setReadPosts(new Set(JSON.parse(stored)));
+    } catch { /* ignore */ }
+  }, []);
+
+  const save = useCallback((next: Set<string>) => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+  }, []);
+
+  const toggleRead = useCallback((id: string) => {
+    setReadPosts((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      save(next);
+      return next;
+    });
+  }, [save]);
+
+  const core = posts.filter((p) => p.level === level);
+  const setLevelRead = (read: boolean) => {
+    setReadPosts((prev) => {
+      const next = new Set(prev);
+      core.forEach((p) => (read ? next.add(p.id) : next.delete(p.id)));
+      save(next);
+      return next;
+    });
+  };
+
+  const readCount = core.filter((p) => readPosts.has(p.id)).length;
+  const allRead = core.length > 0 && readCount === core.length;
+  const firstUnreadId = core.find((p) => !readPosts.has(p.id))?.id ?? null;
+  const steps = new Map(core.map((p, i) => [p.id, i + 1]));
+
+  return (
+    <div className="lp-pathContainer lp-compactOnPhones lp-levelPage" style={{ '--level-color': meta.color } as React.CSSProperties}>
+      <div className="lp-levelPageProgress">
+        <span>{readCount} of {core.length} read on this device</span>
+        <div className="lp-levelPageBar">
+          <div style={{ width: `${core.length ? (readCount / core.length) * 100 : 0}%`, background: meta.color }} />
+        </div>
+      </div>
+      <div className="lp-levelActions">
+        {allRead ? (
+          <button type="button" className="lp-levelAction" onClick={() => setLevelRead(false)} data-attr={`lp-mark-level-unread-${level}`}>
+            Mark the level as unread
+          </button>
+        ) : (
+          <button type="button" className="lp-levelAction" onClick={() => setLevelRead(true)} data-attr={`lp-mark-level-read-${level}`}>
+            Mark the level as read
+          </button>
+        )}
+      </div>
+      <p className="lp-orderHint" style={{ color: meta.color }}>Read left to right, then down.</p>
+      <div className="lp-levelPosts">
+        {posts.map((post) => (
+          <PostNode
+            key={post.id}
+            post={post}
+            step={steps.get(post.id)}
+            stepCount={core.length}
+            isRead={readPosts.has(post.id)}
+            isStartHere={post.id === firstUnreadId}
+            levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : meta.color}
+            selectedTag={null}
+            interceptTagClick={false}
+            onToggleRead={toggleRead}
+            onTagClick={() => {}}
+          />
+        ))}
+      </div>
     </div>
   );
 }

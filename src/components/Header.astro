@@ -23,6 +23,7 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
     links: [
       { href: '/blog/', label: 'Learning path', key: 'blog' },
       { href: '/blog/tag/', label: 'Browse topics', key: 'blog-topics' },
+      { href: '/editorial-policy/', label: 'How lessons are written', key: 'learn-editorial' },
     ],
   },
   {
@@ -97,7 +98,35 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
           </li>
         </ul>
       </div>
-      <a href="/blog/" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} data-attr="nav-blog">Learn</a>
+      <div class="nav-dropdown">
+        <button
+          class:list={['nav-link', 'nav-dropdownToggle', { active: currentPath.startsWith('/blog') }]}
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-attr="nav-learn"
+        >
+          Learn
+          <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
+        </button>
+        <ul class="nav-dropdownMenu" role="menu">
+          <li role="none">
+            <a href="/blog/" class:list={[{ active: currentPath === '/blog/' }]} role="menuitem" data-attr="nav-blog">
+              Learning path
+            </a>
+          </li>
+          <li role="none">
+            <a href="/blog/tag/" class:list={[{ active: currentPath.startsWith('/blog/tag') }]} role="menuitem" data-attr="nav-blog-topics">
+              Browse topics
+            </a>
+          </li>
+          <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
+          <li role="none">
+            <a href="/editorial-policy/" class:list={[{ active: currentPath === '/editorial-policy/' }]} role="menuitem" data-attr="nav-learn-editorial">
+              How lessons are written
+            </a>
+          </li>
+        </ul>
+      </div>
       <ThemeToggle />
       <button
         type="button"
@@ -315,7 +344,7 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
     .nav-dropdownMenu { right: -40px; min-width: 200px; }
   }
 
-  /* Phone menu: hidden on wider screens, where the dropdown, the Learn link
+  /* Phone menu: hidden on wider screens, where the two dropdowns
      and the footer columns do the job. */
   .nav-menuToggle,
   .nav-sheet { display: none; }
@@ -545,9 +574,10 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
 </style>
 
 <script is:inline>
-  (function() {
-    var toggle = document.querySelector('.nav-dropdownToggle');
-    var menu = document.querySelector('.nav-dropdownMenu');
+  // Each dropdown (Free Tools, Learn) opens and closes on its own.
+  document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+    var toggle = dropdown.querySelector('.nav-dropdownToggle');
+    var menu = dropdown.querySelector('.nav-dropdownMenu');
     if (!toggle || !menu) return;
 
     function openMenu() {
@@ -607,7 +637,7 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
     menu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() { closeMenu(); });
     });
-  })();
+  });
 
   // Phone menu: the button shows and hides the panel. Escape, a tap outside
   // or following a link closes it. Nothing is stored.

@@ -166,7 +166,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         <div class="post-meta">
           <LevelBadge level={level} />
           {seriesPosition && (
-            <a class="post-series" href={`/blog/#level-${level}`} data-attr="post-series-top">
+            <a class="post-series" href={`/blog/${level}/`} data-attr="post-series-top">
               Lesson {seriesPosition.index} of {seriesPosition.total}
             </a>
           )}
@@ -329,7 +329,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {seriesPosition && levelLabel && (
           <p class="post-series-foot">
             You are on lesson {seriesPosition.index} of {seriesPosition.total} in {levelLabel}.{' '}
-            <a href={`/blog/#level-${level}`} data-attr="post-series-bottom">See all {levelLabel} lessons</a>
+            <a href={`/blog/${level}/`} data-attr="post-series-bottom">See all {levelLabel} lessons</a>
           </p>
         )}
 
