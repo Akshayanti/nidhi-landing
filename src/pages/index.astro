@@ -1848,7 +1848,7 @@ const faqSchema = {
       background: transparent;
     }
     .start-card:first-child { padding-top: 4px; }
-    .start-card .fold-head { padding-left: 44px; }
+    .start-card .fold-head { padding-left: 38px; }
     .start-card .start-route { color: var(--start-level); }
     .start-badge {
       position: absolute;
@@ -1856,17 +1856,24 @@ const faqSchema = {
       top: 0;
       display: grid;
       place-items: center;
-      width: 30px;
-      height: 30px;
+      width: 26px;
+      height: 26px;
       border: 1.5px solid var(--start-level);
       border-radius: 50%;
       background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
       color: var(--start-level);
       font-family: var(--font-heading);
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       font-weight: 700;
     }
-    .start-card h3 { margin-bottom: 4px; }
+    /* A notch smaller than desktop: the rows read as a list to scan. */
+    .start-card h3 { margin-bottom: 4px; font-size: 1rem; }
+    .start-meta { font-size: 0.75rem; }
+    .start-detail,
+    .start-lessons a,
+    .start-tools,
+    .start-door .lp-btn { font-size: 0.88rem; }
+    .depth h3 { font-size: 1rem; }
     .start-fold > summary .start-meta { margin: 0; }
     .start-fold[open] > summary { margin-bottom: 12px; }
     .start-card--inclusive {
