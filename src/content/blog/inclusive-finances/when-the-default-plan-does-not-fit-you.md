@@ -10,7 +10,7 @@ takeaways:
   - "That most fixes are free or cheap once you know the default exists"
 order: 45.5
 companionOf: "life-events"
-pubDate: 2099-01-05
+pubDate: 2026-10-21
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

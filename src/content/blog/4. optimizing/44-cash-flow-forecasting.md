@@ -8,7 +8,7 @@ takeaways:
   - "Why a positive monthly average can still hide shortfall months"
   - "What cash runway is and why it moves with your expenses"
 order: 44
-pubDate: 2099-01-03
+pubDate: 2026-10-16
 updatedDate: 2026-07-27
 level: "optimizing"
 primaryPersona: "eva"

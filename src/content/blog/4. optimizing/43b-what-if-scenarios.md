@@ -9,7 +9,7 @@ takeaways:
   - "Why costs that repeat monthly outweigh one-off purchases"
   - "Why to change one input at a time and test the bad case first"
 order: 43.3
-pubDate: 2099-01-02
+pubDate: 2026-10-14
 updatedDate: 2026-10-03
 level: "optimizing"
 primaryPersona: "eva"

@@ -8,7 +8,7 @@ takeaways:
   - "Why the income shift after a child can match or exceed its costs"
   - "How an emergency fund, insurance and slack absorb the unforeseeable"
 order: 45
-pubDate: 2099-01-04
+pubDate: 2026-10-19
 updatedDate: 2026-07-29
 level: "optimizing"
 primaryPersona: "eva"

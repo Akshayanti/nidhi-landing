@@ -8,7 +8,7 @@ takeaways:
   - "How each cash bucket maps to vehicles that fit its job"
   - "How rising and falling rates affect each cash vehicle differently"
 order: 46
-pubDate: 2099-01-06
+pubDate: 2026-10-23
 updatedDate: 2026-07-31
 level: "optimizing"
 primaryPersona: "eva"
