@@ -59,7 +59,7 @@ Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.
 |---|-------|-------|----------|------|------------|
 | 1 | discovery | `#005B4F` | 8.0:1 | `#80DEEA` | 10.8:1 |
 | 2 | building | `#0A3D8F` | 10.1:1 | `#90CAF9` | 9.5:1 |
-| 3 | psychology | `#6B4800` | 8.2:1 | `#FFCA28` | 10.9:1 |
+| 3 | psychology | `#6B4800` | 8.2:1 | `#FFCC80` | 11.3:1 |
 | 4 | optimizing | `#991100` | 8.6:1 | `#FF9E80` | 8.3:1 |
 | 5 | mastery | `#311B92` | 12.3:1 | `#E1BEE7` | 10.1:1 |
 
@@ -75,7 +75,7 @@ For charts, graphs, and any visualization needing more than 5 distinguishable co
 |---|------|-------|----------|------|------------|
 | 1 | red | `#991100` | 8.6:1 | `#FF9E80` | 8.3:1 |
 | 2 | deep-orange | `#8B2E00` | 8.4:1 | `#FFAB91` | 9.1:1 |
-| 3 | amber | `#6B4800` | 8.2:1 | `#FFCA28` | 10.9:1 |
+| 3 | amber | `#6B4800` | 8.2:1 | `#FFCC80` | 11.3:1 |
 | 4 | olive | `#4A4A00` | 9.3:1 | `#E6EE5C` | 13.3:1 |
 | 5 | green | `#004D1A` | 10.1:1 | `#81C784` | 8.3:1 |
 | 6 | teal | `#005B4F` | 8.1:1 | `#80CBC4` | 8.9:1 |
