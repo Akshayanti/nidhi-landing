@@ -14,7 +14,6 @@ import {
 } from '../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../utils/inclusiveGuides.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
-import { getReadingTime } from '../utils/readingTime.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
 
@@ -40,8 +39,6 @@ const pairs = lessonToolPairs(allPosts, now, isToolLive);
 const counts = levelCounts(allPosts, now);
 const order = readingOrder(allPosts, now);
 const firstLesson = order[0];
-const firstPost = allPosts.find((p) => p.data.slug === firstLesson?.slug);
-const firstMinutes = firstPost ? getReadingTime(firstPost.body || '') : null;
 
 // Inclusive Finances joins the starting points once a guide in it is live.
 assertInclusiveGroups(allPosts);
@@ -179,15 +176,11 @@ const faqSchema = {
           </div>
 
           {firstLesson && (
-            <div class="hero-next" data-continue={JSON.stringify(order)}>
-              <p data-next-default>
-                Not sure where to begin? Start with <a href={firstLesson.href} data-attr="home-hero-first-lesson">{firstLesson.title}</a>{firstMinutes && <>, a {firstMinutes}-minute read</>}.
-              </p>
-              <p data-next-continue hidden>
+            <div class="hero-next" data-continue={JSON.stringify(order)} hidden>
+              {/* Only for a returning reader: the hero's two buttons are the
+                  first-visit choices, and the routes below say where to begin. */}
+              <p data-next-continue>
                 Welcome back. Pick up where you left off: <a href="#" data-attr="home-hero-continue"></a>
-              </p>
-              <p class="hero-skip">
-                Already know the basics? Skip to <a href="/blog/building/" data-attr="home-hero-skip-building">investing, tax and independence</a>, <a href="/blog/psychology/" data-attr="home-hero-skip-psychology">the psychology of money</a>, or <a href="/free/" data-attr="home-hero-skip-tools">a tool for your own numbers</a>.
               </p>
             </div>
           )}
@@ -253,7 +246,7 @@ const faqSchema = {
               {/* Phones only: the level's number and colour, as on the learning path. */}
               <span class="start-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
               <span class="start-route">{s.audience}</span>
-              <h3>{s.situation}</h3>
+              <h3 id={`start-title-${s.id}`}>{s.situation}</h3>
               <span class="start-meta">
                 {s.levelLabel ? <>{s.levelLabel} level &middot; {s.levelCount} lessons</> : <>Lessons from several levels, plus free tools</>}
               </span>
@@ -262,10 +255,9 @@ const faqSchema = {
             <p class="start-detail">{s.detail}</p>
             <p class="start-route-label" id={`start-route-${s.id}`}>Your route</p>
             <ol class="start-lessons" aria-labelledby={`start-route-${s.id}`}>
-              {s.lessons.map((l, i) => (
-                <li>
-                  <a href={l.href} data-attr={`home-start-${s.id}-${i + 1}`}>{l.title}</a>
-                </li>
+              {/* A preview of the route, not a menu: the one link below starts it. */}
+              {s.lessons.map((l) => (
+                <li><span>{l.title}</span></li>
               ))}
             </ol>
             {s.tools.length > 0 && (
@@ -281,13 +273,14 @@ const faqSchema = {
             )}
             <div class="start-door">
               <a
-                class="lp-btn lp-btn--primary"
+                class="start-door-link"
                 href={s.lessons[0].href}
                 data-start-route={JSON.stringify(s.lessons)}
                 data-route-done={s.level ? `/blog/${s.level}/` : '/blog/'}
                 data-attr={`home-start-${s.id}-door`}
+                aria-describedby={`start-title-${s.id}`}
               >
-                <span><span data-door-verb>Start with</span>{' '}<span data-door-title>{s.lessons[0].title}</span></span>
+                <span data-door-verb>Start this route</span><span data-door-title></span>{' '}<span aria-hidden="true">→</span>
               </a>
             </div>
             </div>
@@ -602,11 +595,11 @@ const faqSchema = {
       const title = door.querySelector<HTMLElement>('[data-door-title]')!;
       if (next) {
         door.href = next.href;
-        verb.textContent = 'Continue with';
+        verb.textContent = 'Continue with ';
         title.textContent = next.title;
       } else {
         door.href = door.dataset.routeDone || '/blog/';
-        verb.textContent = 'Route read.';
+        verb.textContent = 'Route read. ';
         title.textContent = 'Keep going on the learning path';
       }
     } catch {
@@ -622,12 +615,10 @@ const faqSchema = {
       const order = JSON.parse(box.dataset.continue || '[]') as LessonLink[];
       const next = nextLesson(order, read);
       if (next) {
-        const line = box.querySelector<HTMLElement>('[data-next-continue]')!;
-        const link = line.querySelector('a')!;
+        const link = box.querySelector<HTMLAnchorElement>('[data-next-continue] a')!;
         link.href = next.href;
         link.textContent = next.title;
-        line.hidden = false;
-        box.querySelector<HTMLElement>('[data-next-default]')!.hidden = true;
+        box.hidden = false;
       }
     } catch {
       /* storage unavailable: keep the default line */
@@ -995,7 +986,6 @@ const faqSchema = {
     line-height: 1.5;
   }
 
-  .hero-next .hero-skip { margin-top: 8px; }
 
   /* The worked example. Shown at every width; on small screens it follows
      the buttons. */
@@ -1032,12 +1022,13 @@ const faqSchema = {
     border-left: 2px solid var(--color-border);
   }
 
+  /* Neutral, not teal: teal is the colour of the buttons. */
   .starter-step {
     display: block;
     font-family: var(--font-heading);
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--color-teal);
+    color: var(--color-text-secondary);
     margin-bottom: 4px;
   }
 
@@ -1072,7 +1063,7 @@ const faqSchema = {
   .starter-table tfoot th,
   .starter-table tfoot td {
     font-weight: 700;
-    color: var(--color-deep-blue);
+    color: var(--color-text-primary);
     border-top: 1px solid var(--color-border);
     padding-top: 6px;
   }
@@ -1084,6 +1075,8 @@ const faqSchema = {
   .starter :global(.starter-chart--narrow) { display: none; }
   .starter :global(.starter-chart--narrow text) { font-size: 14px; }
   .starter :global(.starter-chart--narrow .hc-endValue) { font-size: 15px; transform: translateY(5px); }
+  /* One series here, so its name needs no series colour; link blue would read as a link. */
+  .starter :global(.hc-endName) { fill: var(--color-text-primary); }
 
   @media (max-width: 640px) {
     .starter :global(.starter-chart--wide) { display: none; }
@@ -1115,11 +1108,12 @@ const faqSchema = {
     background: var(--color-bg);
   }
 
+  /* Text colour, not link blue: at this size a blue title reads as a link. */
   .start-card h3 {
     font-family: var(--font-heading);
     font-size: 1.12rem;
     line-height: 1.3;
-    color: var(--color-deep-blue);
+    color: var(--color-text-primary);
     margin: 0 0 8px;
   }
 
@@ -1173,9 +1167,14 @@ const faqSchema = {
     gap: 10px;
   }
 
-  .start-lessons li a { flex: 1 1 auto; min-width: 0; }
+  .start-lessons li span {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 6px 0;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
 
-  .start-lessons a,
   .start-more,
   .grows-links a,
   .pair-lesson a {
@@ -1189,7 +1188,6 @@ const faqSchema = {
     text-underline-offset: 3px;
   }
 
-  .start-lessons a:hover,
   .start-more:hover,
   .grows-links a:hover,
   .pair-lesson a:hover { text-decoration-color: currentColor; }
@@ -1259,7 +1257,7 @@ const faqSchema = {
   .depth h3 {
     font-family: var(--font-heading);
     font-size: 1.12rem;
-    color: var(--color-deep-blue);
+    color: var(--color-text-primary);
     margin: 0 0 8px;
   }
 
@@ -1299,8 +1297,8 @@ const faqSchema = {
     width: 1.6em;
     height: 1.6em;
     border-radius: 50%;
-    background: var(--color-teal);
-    color: var(--color-bg-white);
+    border: 1.5px solid var(--color-text-secondary);
+    color: var(--color-text-secondary);
     font-size: 0.75rem;
     font-weight: 700;
   }
@@ -1318,16 +1316,35 @@ const faqSchema = {
     .depth-steps li:not(:last-child)::after { content: none; }
   }
 
-  /* The door: one clear way in, pinned to the bottom so the buttons line
-     up across a row of cards. */
+  /* The door: one way into each route, as a text link so the hero's
+     "Start learning" stays the page's only primary button. Pinned to the
+     bottom so the links line up across a row of cards. */
   .start-door {
     margin-top: auto;
-    padding-top: 18px;
+    padding-top: 14px;
   }
 
-  .start-door .lp-btn {
-    max-width: 100%;
-    text-align: left;
+  .start-door-link {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 6px;
+    min-height: 44px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-deep-blue) 35%, transparent);
+    text-underline-offset: 4px;
+  }
+
+  .start-door-link:hover { text-decoration-color: currentColor; }
+
+  .start-door-link:focus-visible {
+    outline: 2px solid var(--color-deep-blue);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
   /* Inclusive Finances: a route of its own, across the full width. */
@@ -1564,7 +1581,8 @@ const faqSchema = {
     row-gap: 2px;
   }
 
-  .grows-links a { font-size: 0.9rem; padding: 4px 0; }
+  /* Dense list: medium weight, so the list reads before the links shout. */
+  .grows-links a { font-size: 0.9rem; padding: 4px 0; font-weight: 500; }
 
   /* Phones: links stack for comfortable tap targets. */
   @media (max-width: 759px) {
@@ -1834,7 +1852,6 @@ const faqSchema = {
 
     /* The skip links repeat routes the "Start wherever you are" cards give
        just below; on a phone they only push the example down. */
-    .hero-skip { display: none; }
 
     /* Starting points: rows marked by their level's number and colour, each
        opening its route. Inclusive Finances keeps a box: it sits beside the
@@ -1849,7 +1866,7 @@ const faqSchema = {
     }
     .start-card:first-child { padding-top: 4px; }
     .start-card .fold-head { padding-left: 38px; }
-    .start-card .start-route { color: var(--start-level); }
+    /* The badge carries the level colour; the label stays neutral, since Building's level blue is the link blue. */
     .start-badge {
       position: absolute;
       left: 0;
