@@ -10,7 +10,8 @@ takeaways:
   - "That the account is a wrapper, not the investment itself"
 order: 23
 pubDate: 2026-06-08
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [tax, pensions]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -58,7 +59,7 @@ Every tax-advantaged account on earth fits, more or less, into one of these:
 4. **Purpose-specific tax-preferred accounts.** Targeted at health, education, children, or other specific goals, with favourable tax treatment in exchange for restricted use.
 5. **Equity-linked savings with lockups.** You get a tax deduction now in exchange for locking your money into equity investments for a fixed period.
 
-Most readers will have access to accounts in at least categories 1, 2, and 3. Categories 4 and 5 vary more by country.
+Most countries have something in categories 1 and 2; category 3 and beyond vary more by country, as the table below shows.
 
 ## The order commonly suggested
 

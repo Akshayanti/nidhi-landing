@@ -9,7 +9,8 @@ takeaways:
   - "A sensible default order, and when to change it"
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [tax, pensions]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -57,7 +58,7 @@ Typical savings vehicles:
 - **Current accounts**: fully liquid, earn almost nothing
 - **Savings accounts**: slightly better interest, still fully accessible
 - **High-yield savings accounts**: best rates for cash, may have minor withdrawal limits
-- **Money market accounts**: similar to high-yield savings, slightly different structure
+- **Money market accounts**: a US bank product, similar to high-yield savings with a slightly different structure (a money market fund, more common elsewhere, is an investment rather than a protected bank deposit)
 
 The defining features of saving:
 
@@ -78,7 +79,7 @@ Typical investment vehicles:
 - **Bonds**: lending to governments or companies; lower returns, more stable
 - **Index funds/ETFs**: baskets that track broad markets; diversified by default
 - **Real estate**: property; has often [appreciated](/blog/appreciation-vs-depreciation/) over long periods, but is highly [illiquid](/blog/liquidity/)
-- **Retirement accounts**: tax-advantaged investment accounts; restricted access until retirement age
+- **Retirement accounts**: investment accounts that, in many countries, carry tax advantages; access is usually restricted until a retirement age set by national rules
 
 The defining features of investing:
 
@@ -106,7 +107,7 @@ Saving fits money you need **soon** or **unpredictably**.
 
 - **[Emergency fund](/blog/emergency-fund/)**: The foundation. As the emergency fund post covered, a common target is 3-6 months of essential expenses somewhere reachable within a day or so, usually a savings account rather than investments
 - **Short-term goals (under 3 years)**: A holiday next year. A deposit you're building for 18 months. A new car in two years. Money on a specific timeline is usually kept away from market risk, because markets can drop 20% in a month and take years to recover
-- **Known upcoming expenses**: Tax bill in April. Insurance renewal in six months. When the date and amount are known, people usually keep the money safe
+- **Known upcoming expenses**: A tax bill due on a known date. Insurance renewal in six months. When the date and amount are known, people usually keep the money safe
 
 A useful question isn't "will I earn more by investing this?" It's "could I afford to lose 30% of this right when I need it?" If the answer is no, saving is the usual home for it.
 
@@ -213,7 +214,7 @@ There is no single right order, but a common default, which people adapt to thei
 3. **A fuller emergency fund** (often 3-6 months of expenses)
 4. **Investing** long-term surplus in diversified investments
 
-The reasoning is about fragility. Investing before a safety net exists means one unexpected expense can lead to debt. Paying down low-interest debt aggressively while ignoring retirement saving gives up years of compound growth. Country rules, income stability and the size of your debts can all shift the order.
+The reasoning is about fragility. Investing before a safety net exists means one unexpected expense can lead to debt. Paying down low-interest debt aggressively while ignoring retirement saving gives up years of compound growth. Country rules, income stability and the size of your debts can all shift the order. Which accounts carry tax advantages, and whether employer matching exists at all, depends on national rules.
 
 ## What this means in practice
 

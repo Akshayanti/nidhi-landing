@@ -10,7 +10,8 @@ takeaways:
   - "Why the fair comparison is buying vs renting and investing"
 order: 28
 pubDate: 2026-06-19
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [property, tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
@@ -59,7 +60,7 @@ Historical data varies enormously by country, city, and decade, but broadly:
 - Long-run residential real estate appreciation has averaged in the low single digits in real (inflation-adjusted) terms in many developed markets
 - Nominal appreciation is higher but much of that is just inflation keeping pace
 - Rental yields typically run 3-6% gross of the property value per year, varying widely by market
-- Total real returns for well-managed residential real estate have historically sat in the 3-6% range after costs: below long-run stock returns, above long-run bond returns
+- Total real returns for well-managed residential real estate are often illustrated in a rough 3-6% range after costs, an indicative figure that varies widely by market and period: below long-run stock returns, above long-run bond returns
 
 Past performance is not predictive, and local conditions swamp general averages. But it's helpful to anchor on the rough order of magnitude, because the popular perception of real estate returns is usually higher than the honest numbers.
 
@@ -80,7 +81,7 @@ Typical ongoing costs of ownership, as an annual percentage of property value:
 
 For a typical residential property, total ongoing costs commonly consume 2-4% of property value per year, and transaction costs alone eat 5-10% when you buy and eventually sell. A property that "appreciated 30% over 10 years" may have delivered much less to the owner once those costs are netted out.
 
-> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 2-4% in the US, 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Always check your local norms before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
+> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 2-4% in the US, 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
 
 This isn't an argument against real estate. It's an argument against treating gross appreciation as your return.
 
@@ -158,7 +159,7 @@ Factors that still make buying structurally attractive in specific situations:
 - Forced savings discipline (the principal portion of the mortgage payment is involuntary saving)
 - Stability and security for families with school-age children
 - Lifestyle value of actually owning the space you live in
-- Favourable tax treatment of primary residences in some jurisdictions (jurisdiction-specific, confirm locally)
+- Favourable tax treatment of primary residences in some jurisdictions (jurisdiction-specific)
 
 Factors that often make renting structurally sensible:
 

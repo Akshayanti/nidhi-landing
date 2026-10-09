@@ -9,7 +9,7 @@ takeaways:
   - "How checking less and automating stop panic-selling"
 order: 34
 pubDate: 2026-07-03
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -18,7 +18,7 @@ faq:
   - question: "What is loss aversion?"
     answer: "Loss aversion is the well-documented tendency for losses to feel more painful than equivalent gains feel pleasant, roughly twice as much in many studies. Losing 1,000 euros can hurt about as much as winning 2,000 euros feels good. The effect was identified by Daniel Kahneman and Amos Tversky as part of prospect theory, and it is one of the best-known findings in behavioural economics, though its exact size is still debated and varies by person and stakes. The asymmetry is not irrational on its face: for our ancestors, a loss could mean starvation while a gain was merely nice, so a brain that feared losses more than it craved gains tended to survive. The trouble is that the same wiring, applied to a diversified portfolio over decades, pushes people into selling at the worst moments and refusing to cut their mistakes."
   - question: "What is the disposition effect?"
-    answer: "The disposition effect is the tendency to sell winning investments too early and hold losing investments too long. Research by Terrance Odean on thousands of brokerage accounts found that investors were roughly 50% more likely to sell a stock that had gone up than one that had gone down, even though, for tax reasons and often for performance reasons, the reverse would have been smarter. The driver is loss aversion combined with the discomfort of admitting a mistake. Selling a winner feels like banking a victory; selling a loser means closing the account and accepting that the original decision was wrong. So people hold the loser and tell themselves they will sell once it gets back to even, which it may never do."
+    answer: "The disposition effect is the tendency to sell winning investments too early and hold losing investments too long. Research by Terrance Odean on thousands of accounts at a US discount brokerage in the late 1980s and early 1990s found that investors were roughly 50% more likely to sell a stock that had gone up than one that had gone down, even though the reverse would often have been smarter for performance reasons and, in tax systems where realised losses can offset gains, as in the US study, for tax reasons too. How much the tax side matters depends on local capital gains rules. Studies in other countries have found a similar pattern, though its size varies. The driver is loss aversion combined with the discomfort of admitting a mistake. Selling a winner feels like banking a victory; selling a loser means closing the account and accepting that the original decision was wrong. So people hold the loser and tell themselves they will sell once it gets back to even, which it may never do."
   - question: "Why does checking my portfolio often make me a worse investor?"
     answer: "Because the more frequently you look, the more often you see a loss, and each loss tends to sting more than an equal gain pleases. Markets rise over long stretches but fall on a large share of individual days. Someone who checks once a day sees a down day very often; someone who checks once a year sees a gain in most years. The daily checker therefore experiences far more emotional pain for the same underlying return, and that accumulated discomfort drives unhelpful action: selling in a dip, abandoning a plan, chasing whatever felt safer. This is sometimes called myopic loss aversion: too short a viewing window turns ordinary volatility into a stream of painful events."
   - question: "How do I stop loss aversion from hurting my returns?"
@@ -74,7 +74,7 @@ Loss aversion has a stranger consequence, one that sounds backwards until you fe
 
 Suppose you own two investments. One is up 30%. One is down 30%. You need to raise some cash, so you have to sell one. Which goes?
 
-Most people sell the winner. Studies of real brokerage accounts by Terrance Odean found investors were about 50% more likely to sell a position that had risen than one that had fallen. Selling the winner feels like banking a victory. Selling the loser means closing the account at a loss, which means admitting, out loud, that the original decision was a mistake. Loss aversion makes that admission feel awful, so we avoid it by holding on and muttering the most expensive sentence in investing: "I'll sell once it gets back to even."
+Most people sell the winner. Terrance Odean's study of real accounts at a US discount brokerage in the late 1980s and early 1990s found investors were about 50% more likely to sell a position that had risen than one that had fallen. Studies in other countries have found a similar pattern, though its size varies. Selling the winner feels like banking a victory. Selling the loser means closing the account at a loss, which means admitting, out loud, that the original decision was a mistake. Loss aversion makes that admission feel awful, so we avoid it by holding on and muttering the most expensive sentence in investing: "I'll sell once it gets back to even."
 
 It may never get back to even. Meanwhile you have sold your winner, which often had further to run, and kept your loser, which often did not. This pattern has a name, the disposition effect, and it quietly drags down returns.
 
@@ -101,7 +101,7 @@ It may never get back to even. Meanwhile you have sold your winner, which often 
 
 Here is the part that surprises people most. The simple act of checking your portfolio frequently makes loss aversion more expensive, even if you never trade.
 
-Markets rise over years but fall on a large share of individual days. So consider what each viewing habit actually exposes you to. Someone who checks once a year opens the statement to a gain far more often than not, though roughly one year in four has historically been down. Someone who checks every single day sees a loss very often, because down days are common in the short run.
+Markets rise over years but fall on a large share of individual days. So consider what each viewing habit actually exposes you to. Someone who checks once a year opens the statement to a gain far more often than not, though in the US stock market over roughly the last century about one year in four has been down, and some other markets and periods have had more down years. Someone who checks every single day sees a loss very often, because down days are common in the short run.
 
 Now layer loss aversion on top. Each of those down days stings about twice as hard as an up day pleases. The daily checker lives through a relentless drip of small, doubled pains for exactly the same long-term return as the calm annual checker who barely notices the journey. Shrink your viewing window and ordinary volatility turns into a stream of painful events. The more you watch, the worse you feel, and the worse you feel, the more likely you are to do something you will regret.
 
@@ -114,7 +114,7 @@ Notice what does not appear anywhere in this post: the advice to "stay calm" or 
 What works is removing the moments where the fear can do damage:
 
 1. **Check less often.** A long-term portfolio has a long-term timescale. Many long-term investors find quarterly enough, and some check a simple, diversified holding only once a year. Fewer looks means fewer panic windows. If you only review the [dashboard](/blog/financial-dashboard/) on a schedule, the dips between reviews never get a vote.
-2. **Automate the contributions.** If your investing happens automatically each month, fear never gets the chance to pause it. The money goes in during the scary months too, which historically are the most rewarding months to keep buying.
+2. **Automate the contributions.** If your investing happens automatically each month, fear never gets the chance to pause it. The money goes in during the scary months too, which in US stock market history have tended to be among the most rewarding months to keep buying, though no period guarantees that.
 3. **Judge against the plan, not the week.** A 20% drop is alarming if your reference point is last month's high. It is unremarkable if your reference point is the multi-year plan you wrote when calm, which already assumed that drops like this happen. The drop did not break the plan. The plan expected it.
 4. **Pre-decide the rules.** Write down, in advance, what would actually make you change your investments: a change in your goals, your timeline, or your circumstances, never a change in this week's price. Then a scary week has nothing to act on, because the decision was already made by your calmer self.
 

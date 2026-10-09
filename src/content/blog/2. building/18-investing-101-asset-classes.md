@@ -9,7 +9,8 @@ takeaways:
   - "Why no single asset class wins in every economic condition"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [deposit-protection, tax, investments]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -142,7 +143,7 @@ Real estate means owning physical property: residential, commercial, or land. It
 
 ## Cash equivalents: safety
 
-Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills. They offer near-zero risk and near-zero return.
+Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills. They offer near-zero risk and near-zero return. That safety rests partly on deposit protection, whose limit and coverage differ by country.
 
 **How they generate returns:**
 

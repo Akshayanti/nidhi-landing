@@ -9,7 +9,8 @@ takeaways:
   - "Why a mix of cash and investments balances safety and growth"
 order: 3
 pubDate: 2026-04-23
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [pensions, tax]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -35,7 +36,7 @@ faq:
   - question: "Why does asset quality matter more than the total?"
     answer: "Because two people with €100,000 in assets can be in very different positions depending on what those assets are. Three dimensions decide quality. Liquidity is how fast you can turn the asset into cash without losing value: a savings account is fully liquid, a house is not. Direction is whether the asset tends to grow (appreciate) or shrink (depreciate): index funds historically appreciate, cars depreciate fast. Stability is how predictable the value is: cash is stable, stocks fluctuate, crypto can swing wildly. The same headline total can be far more useful, or far less, depending on this mix."
   - question: "Are retirement accounts counted as assets?"
-    answer: "Yes. Pension funds, employer-sponsored plans, and private retirement savings count toward your net worth and belong on your asset list. They are investments, but they deserve their own category because their liquidity differs sharply from a regular brokerage account: you usually cannot access the money until a certain age, and withdrawing early often triggers penalties or taxes. So include the current balance in your net worth, but remember it is not money you can reach for an emergency next week. Treat its value as real but largely locked away until later."
+    answer: "Yes. Pension funds, employer-sponsored plans, and private retirement savings count toward your net worth and belong on your asset list. They are investments, but they deserve their own category because their liquidity differs sharply from a regular brokerage account: you usually cannot access the money until a certain age, and withdrawing early often triggers penalties or taxes. The access age, any penalties and the tax treatment depend on your country and the plan. So include the current balance in your net worth, but remember it is not money you can reach for an emergency next week. Treat its value as real but largely locked away until later."
   - question: "Should I hold all my assets in cash to stay safe?"
     answer: "Cash feels safe because its number does not fall, but when it earns less than inflation, an all-cash position erodes in real terms. The opposite extreme, holding everything in stocks, exposes you to volatility that can hurt when you need the money. That is why many people hold a mix: cash and liquid savings for emergencies and short-term needs, and growth assets like index funds for money they will not need for years. The right balance depends on your timeline and how much fluctuation you can tolerate."
 ---
@@ -50,7 +51,7 @@ Common assets:
 
 - **Cash and bank accounts**: current accounts, savings accounts, cash on hand
 - **Investments**: stocks (shares of companies), bonds (loans you make to governments or companies), index funds (collections that track a broad market), ETFs (exchange-traded funds, similar to index funds but bought and sold like stocks)
-- **Retirement accounts**: pension funds, employer-sponsored plans, private retirement savings. These are investments, but they deserve their own category because you usually can't access the money until a certain age and withdrawing early often means penalties or taxes. They count toward your net worth, but their liquidity is very different from a regular brokerage account
+- **Retirement accounts**: pension funds, employer-sponsored plans, private retirement savings. These are investments, but they deserve their own category because you usually can't access the money until a certain age and withdrawing early often means penalties or taxes. The access age, penalties and tax treatment depend on your country and the plan. They count toward your net worth, but their liquidity is very different from a regular brokerage account
 - **Property**: real estate, land
 - **Vehicles**: cars, motorcycles (though they depreciate fast)
 - **Valuables**: jewelry, art, collectibles (if you can actually sell them)

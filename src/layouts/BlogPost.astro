@@ -3,6 +3,8 @@ import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LEVEL_LABELS } from '../utils/home/startingPoints';
+import LocalRules from '../components/LocalRules.astro';
+import type { LocalRuleArea } from '../utils/localRules';
 
 interface Props {
   title: string;
@@ -43,11 +45,13 @@ interface Props {
   relatedTool?: { url: string; label: string; cta: string; idea?: string };
   /** "What you now understand" statements from the post's `takeaways`. */
   takeaways?: string[];
+  /** Rule areas the lesson depends on; shows "Where to check locally". */
+  localRules?: LocalRuleArea[];
   /** Place within the level among published lessons; null outside the ladder. */
   seriesPosition?: { index: number; total: number } | null;
 }
 
-const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], localRules = [] } = Astro.props;
 const levelLabel = LEVEL_LABELS[level];
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
@@ -251,6 +255,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             </ul>
           </section>
         )}
+
+        <LocalRules areas={localRules} />
 
         {/*
           Learn, Understand, Apply: placed straight after the article so a

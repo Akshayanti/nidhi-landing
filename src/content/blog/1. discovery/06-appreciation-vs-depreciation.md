@@ -10,7 +10,8 @@ takeaways:
   - "Why time is often the most powerful lever in compounding"
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [tax]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -36,7 +37,7 @@ faq:
   - question: "Why does starting to invest early matter so much?"
     answer: "Because time is often the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €263,000 and Person B about €244,000. The earlier starter invested one-third as much and finished ahead. At a steady 7%, ten extra years of compounding beat thirty years of triple contributions; with lower or bumpier returns the gap narrows, but the lesson holds, which is why starting now beats waiting for the perfect moment."
   - question: "Is a car an asset or a depreciating expense?"
-    answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years. You count it at current market value, but you should not expect it to build wealth. Ways people limit the hit include buying a reliable used car rather than new, since much of the depreciation has already happened, and not financing it at a high rate, which stacks interest on top of falling value. Reliability, warranty and budget shape which trade-off makes sense."
+    answer: "A car is an asset on your net worth statement, but it is a depreciating one, so treat it honestly as an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years, a common estimate in European and US used-car markets that varies by model and country. You count it at current market value, but you should not expect it to build wealth. Ways people limit the hit include buying a reliable used car rather than new, since much of the depreciation has already happened, and not financing it at a high rate, which stacks interest on top of falling value. Reliability, warranty and budget shape which trade-off makes sense."
   - question: "What kinds of assets typically appreciate?"
     answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. Broad stock investments have returned roughly 4 to 6% per year after inflation across major developed markets over the long run, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. That is why many people direct long-term money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
 ---
@@ -59,7 +60,7 @@ The key insight: appreciation rewards patience. The longer you hold an appreciat
 
 Depreciation is when something loses value over time.
 
-- A new car loses roughly 15-20% of its value in the first year. After five years, it's worth about 40% of what you paid
+- A new car loses roughly 15-20% of its value in the first year. After five years, it's worth about 40% of what you paid (a common estimate in European and US used-car markets; the rate varies by model and country)
 - A laptop bought for €1,200 is worth a few hundred within a few years
 - Furniture, electronics, clothing: almost everything you buy for personal use depreciates
 

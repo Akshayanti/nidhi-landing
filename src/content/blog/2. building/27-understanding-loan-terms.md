@@ -11,7 +11,8 @@ takeaways:
   - "How prepayment and break-even maths change the total cost"
 order: 27
 pubDate: 2026-06-17
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
@@ -88,7 +89,7 @@ The loan with the lowest rate (D) is actually the most expensive once you includ
 
 *The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product priced into APR; they're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
 
-> **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.
+> **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. What an APR must include is set by consumer-credit law, which differs by country. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.
 
 ## Fixed vs. variable rates
 
@@ -217,7 +218,7 @@ Example: the €250,000, 3%, 25-year mortgage above has total interest of roughl
 
 Prepayment is effectively a guaranteed return equal to the loan's interest rate. A 3% mortgage prepayment delivers a guaranteed 3% after-tax return (in jurisdictions without mortgage interest tax relief; the math is slightly different where such relief exists). A 7% consumer loan delivers a guaranteed 7%. That's why high-interest debt dominates investment returns in the prioritization hierarchy covered in the [saving vs. investing post](/blog/saving-vs-investing/).
 
-Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy.
+Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy. Any right to repay early, and any cap on early-repayment fees, is set by consumer-credit law where you live, and the lender can say what your contract allows.
 
 ## Comparing loan offers: the honest method
 

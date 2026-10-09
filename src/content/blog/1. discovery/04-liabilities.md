@@ -10,7 +10,8 @@ takeaways:
   - "How people weigh paying down debt against investing"
 order: 4
 pubDate: 2026-04-25
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [tax, borrowing]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -39,7 +40,7 @@ faq:
   - question: "Should I pay off debt or invest first?"
     answer: "Compare the interest rate on the debt against the return you could realistically expect from investing. When the rate on the debt is higher than that expected return, paying the debt first usually wins: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. When the debt is cheap, say a 3% mortgage, many people keep paying it slowly and invest the difference for a higher expected return, while others value the certainty of prepaying. Tax, inflation and your cash reserve all shift the answer. Missed minimum payments are costly either way, because they trigger penalties and damage your credit."
   - question: "Is mortgage interest tax-deductible?"
-    answer: "In some countries it has been, but the benefit is being phased out or restricted across much of Europe, so do not assume it applies to you. Where it exists, mortgage interest relief lowers the effective cost of the loan, which is one reason a mortgage is often the cheapest debt you can hold. Still, treat any tax break as a secondary factor rather than the reason to borrow. Check your own country's current rules, because they change frequently. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
+    answer: "In some countries it has been, but the benefit is being phased out or restricted across much of Europe, so do not assume it applies to you. Where it exists, mortgage interest relief lowers the effective cost of the loan, which is one reason a mortgage is often the cheapest debt you can hold. Still, treat any tax break as a secondary factor rather than the reason to borrow. Your country's current rules decide this, and they change frequently. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
 ---
 
 We've looked at [what you own](/blog/assets/). Now let's look at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth/) equation. And for most people, they're the side that hurts.
@@ -76,7 +77,7 @@ Instead of "good debt" and "bad debt", which oversimplifies things, ask three qu
 
 ## The main types of debt
 
-**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. In some countries, mortgage interest is tax-deductible, though this benefit is being phased out or restricted across much of Europe. The catch: it's a long commitment and you need stable income.
+**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. In some countries, mortgage interest is tax-deductible, though this benefit is being phased out or restricted across much of Europe. Whether any relief applies is set by national tax law. The catch: it's a long commitment and you need stable income.
 
 **Student loan debt** invests in your earning potential. It makes sense if the education leads to a career that meaningfully increases your income. It doesn't make sense if the degree costs more than the salary increase it delivers.
 

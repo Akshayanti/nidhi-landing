@@ -1,0 +1,77 @@
+---
+/**
+ * "Where to check locally", after a lesson's text: the lesson explains how
+ * the idea works in general, on purpose, and these are the usual places to
+ * check the rules that are set where the reader lives. Areas and wording
+ * come from src/utils/localRules.ts.
+ */
+import { LOCAL_RULE_SOURCES, type LocalRuleArea } from '../utils/localRules';
+
+interface Props {
+  areas: LocalRuleArea[];
+}
+
+const { areas } = Astro.props;
+const rows = areas.map((area) => LOCAL_RULE_SOURCES[area]);
+---
+
+{rows.length > 0 && (
+  <aside class="local-rules" aria-labelledby="local-rules-title">
+    <h2 id="local-rules-title" class="local-rules-title">Where to check locally</h2>
+    <p>
+      This lesson explains how the idea works in general, on purpose. The rules around it are set where
+      you live, and these are the usual places to check them:
+    </p>
+    <ul>
+      {rows.map((row) => (
+        <li><strong>{row.label}:</strong> {row.where}.</li>
+      ))}
+    </ul>
+    <p>For your own circumstances, an adviser who knows your local market can apply the ideas to your situation.</p>
+  </aside>
+)}
+
+<style>
+  .local-rules {
+    margin: var(--space-8) 0;
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .local-rules-title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+  }
+
+  .local-rules p {
+    margin: 0 0 var(--space-3);
+  }
+
+  .local-rules p:last-child {
+    margin-bottom: 0;
+  }
+
+  .local-rules ul {
+    margin: 0 0 var(--space-3);
+    padding-left: 1.2em;
+  }
+
+  .local-rules li {
+    margin-bottom: var(--space-1);
+  }
+
+  .local-rules strong {
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 480px) {
+    .local-rules { padding: var(--space-4); }
+  }
+</style>

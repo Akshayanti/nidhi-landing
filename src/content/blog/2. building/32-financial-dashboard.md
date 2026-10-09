@@ -10,7 +10,8 @@ takeaways:
   - "Which numbers are not worth tracking at all"
 order: 32
 pubDate: 2026-06-29
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [inheritance, pensions]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -114,7 +115,7 @@ Once a year, do the full review. This takes 2-4 hours, ideally with a partner if
 
 **Tax position.** Did the year hold any tax surprises? Are there structural changes for next year (retirement contribution capacity, tax-advantaged account use, jurisdiction shifts)?
 
-**Estate basics.** Is your beneficiary information on retirement accounts current? Is there a will, and is it up to date? This falls outside most people's "personal finance" practice, but it belongs in an annual review.
+**Estate basics.** Is your beneficiary information on retirement accounts current? Is there a will, and is it up to date? This falls outside most people's "personal finance" practice, but it belongs in an annual review. How pensions pass on death, and whether a will can override inheritance rules, differs widely by country.
 
 **Big picture questions.** Am I on track for the life I want? Has anything changed in what that life looks like?
 

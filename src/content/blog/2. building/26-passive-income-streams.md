@@ -11,7 +11,8 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
+localRules: [tax, investments]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
@@ -76,7 +77,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 **Business distributions (where you don't work daily).** A share of profits from a business where you're an investor, not an operator. Higher risk, less liquid, requires selection skill or partnership.
 
-**Interest from lending platforms.** Peer-to-peer lending, private lending. Higher headline yields, much higher risk, often less regulated. Easy to underestimate the risk until a borrower default wave hits.
+**Interest from lending platforms.** Peer-to-peer lending, private lending. Higher headline yields, much higher risk, often less regulated. Whether a platform is supervised, and whether any investor protection applies, depends on the country. Easy to underestimate the risk until a borrower default wave hits.
 
 | Source | Typical annual yield | Effort required | Capital required | Risk |
 |---|---|---|---|---|

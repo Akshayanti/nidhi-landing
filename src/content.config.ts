@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { LOCAL_RULE_AREAS } from './utils/localRules';
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
@@ -36,6 +37,12 @@ const blog = defineCollection({
       type: z.enum(['book', 'blog', 'paper', 'tool']),
     })).optional(),
     regulatoryNote: z.enum(['safe', 'caution', 'danger']).optional(),
+    /**
+     * Rule areas the lesson depends on (tax, pensions, deposit protection
+     * and so on). Each shows a line in "Where to check locally" after the
+     * lesson, naming the usual places to check it (src/utils/localRules.ts).
+     */
+    localRules: z.array(z.enum(LOCAL_RULE_AREAS)).optional(),
     heroImage: z.string().optional(),
     faq: z.array(z.object({
       question: z.string(),

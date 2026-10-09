@@ -10,7 +10,7 @@ takeaways:
   - "How the outside view and conservative assumptions fix plans"
 order: 37
 pubDate: 2026-07-10
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -23,7 +23,7 @@ faq:
   - question: "What is the difference between the inside view and the outside view?"
     answer: "The inside view forecasts a project by looking at its specific details and imagining how they will unfold, which almost always produces an optimistic estimate because we picture the version where nothing goes wrong. The outside view ignores the specifics and instead asks how projects of this general type usually turn out, using the track record of similar cases as the anchor. Kahneman found the outside view to be far more accurate. For money, the inside view says my savings plan will work because I have thought it through. The outside view asks how often plans like mine survive contact with real life, and adjusts the assumptions accordingly. Whenever you can find a base rate, trust it over your own narrative."
   - question: "Does trading more often improve investment returns?"
-    answer: "Generally the opposite. Research on individual investors, notably by Brad Barber and Terrance Odean, found that the most active traders earned the lowest net returns, largely because frequent trading multiplies costs and tends to be driven by overconfidence rather than genuine insight. Each trade assumes you know something the person on the other side does not, and most of the time you do not. The pattern is strong enough that one of the most reliable ways to improve returns is simply to trade less: choose a sensible, diversified allocation, automate contributions, and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
+    answer: "Generally the opposite. Research on individual investors, notably by Brad Barber and Terrance Odean using accounts at a US discount broker in the 1990s, found that the most active traders earned the lowest net returns, largely because frequent trading multiplies costs and tends to be driven by overconfidence rather than genuine insight. A study of day traders in Taiwan found a similar pattern. Each trade assumes you know something the person on the other side does not, and most of the time you do not. The pattern is strong enough that one of the most reliable ways to improve returns is simply to trade less: choose a sensible, diversified allocation, automate contributions, and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
 reelPromise: "The above-average-driver paradox, why the most active traders earn the least, and the outside-view trick that fixes optimistic plans"
 relatedSlugs: ["present-bias-and-your-future-self", "why-smart-people-make-dumb-money-decisions", "getting-started-investing", "diversification", "setting-financial-goals"]
 referentialReading:
@@ -55,7 +55,7 @@ Overconfidence is not the same as confidence. Confidence calibrated to reality i
 
 In money this is expensive in three recurring ways.
 
-**Too much trading.** Each trade is a quiet bet that you know something the person on the other side of it does not. Usually you do not. Research by Brad Barber and Terrance Odean on thousands of accounts found that the most active traders earned the lowest net returns, dragged down by costs and by the very overconfidence that made them trade. Marcus, exactly.
+**Too much trading.** Each trade is a quiet bet that you know something the person on the other side of it does not. Usually you do not. Research by Brad Barber and Terrance Odean on thousands of accounts at a US discount broker in the 1990s found that the most active traders earned the lowest net returns, dragged down by costs and by the very overconfidence that made them trade. A study of day traders in Taiwan found a similar pattern. Marcus, exactly.
 
 **Too little diversification.** Overconfidence whispers that you do not need to spread your bets, because you can see which one will win. So people concentrate, putting too much into one company, often their employer, or one hot sector. When the concentrated bet works, it confirms the overconfidence. When it fails, it takes an outsized chunk with it. [Diversification](/blog/diversification/) is, in part, an admission that you cannot reliably pick the winner, which is exactly the admission overconfidence resists.
 
