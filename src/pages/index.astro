@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
 import HeroChart from '../components/HeroChart.astro';
-import { EXAMPLE_RETURN, STARTER, starterExample } from '../utils/home/heroExamples.ts';
+import { EXAMPLE_RETURN, STARTER, starterExample, yearlyPath } from '../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
   LADDER_LEVELS,
@@ -53,12 +53,23 @@ const roundedEnd = Math.round(ex.end / 100) * 100;
 // once, outside both drawings, so the page text (and anything reading it,
 // crawlers included) carries each only once.
 const roundedGrowth = Math.round(ex.growth / 100) * 100;
-const starterDesc = `An example invested balance of ${eur(ex.invested)} today, with ${eur(STARTER.monthly)} added each month at an illustrative ${pctReturn} a year after inflation, reaches about ${eur(roundedEnd)} after ${STARTER.years} years: ${eur(ex.putIn)} put in and about ${eur(roundedGrowth)} of growth.`;
+// Step 3: the same start with one decision changed, the monthly amount.
+// The gap is split into money put in and growth, so it is not read as
+// growth alone.
+const HIGHER_MONTHLY = 300;
+const alt = yearlyPath(ex.invested, HIGHER_MONTHLY, STARTER.years);
+const roundedAlt = Math.round(alt[STARTER.years] / 100) * 100;
+const gap = roundedAlt - roundedEnd;
+const extraIn = (HIGHER_MONTHLY - STARTER.monthly) * 12 * STARTER.years;
+const starterDesc = `Two example paths from the same ${eur(ex.invested)} invested today, at an illustrative ${pctReturn} a year after inflation. Adding ${eur(STARTER.monthly)} a month reaches about ${eur(roundedEnd)} after ${STARTER.years} years; adding ${eur(HIGHER_MONTHLY)} a month reaches about ${eur(roundedAlt)}. The gap of about ${eur(gap)} is ${eur(extraIn)} more put in and about ${eur(gap - extraIn)} more growth.`;
 const starterChart = {
-  title: 'Example: an invested balance over ten years',
+  title: 'Example: one decision compared over ten years',
   descId: 'hero-starter-desc',
   pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
-  series: [{ name: 'Invested', values: ex.values, color: 'var(--chart-eur)', area: true }],
+  series: [
+    { name: `${HIGHER_MONTHLY} €/mo`, values: alt, color: 'var(--chart-usd)' },
+    { name: `${STARTER.monthly} €/mo`, values: ex.values, color: 'var(--chart-eur)', area: true },
+  ],
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
 };
@@ -78,7 +89,7 @@ const people = [
 const peopleMax = Math.max(...people.flatMap((p) => [p.owns, p.owes]));
 const signedEur = (v: number) => (v < 0 ? `\u2212${eur(-v)}` : eur(v));
 
-const starterFootnote = `Example: ${eur(ex.invested)} invested today and ${eur(STARTER.monthly)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.putIn)} is money put in and about ${eur(roundedGrowth)} is growth. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
+const starterFootnote = `Example: ${eur(ex.invested)} invested today, with ${eur(STARTER.monthly)} or ${eur(HIGHER_MONTHLY)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
 
 
 // Shown on the page and, word for word, in the FAQPage data below.
@@ -104,8 +115,8 @@ const faqs = [
     a: 'They stay on your device and are not sent to nidhi. The free tools calculate in your browser and never put what you type into the page address. When a tool needs outside data, such as the day\'s exchange rates, your browser asks that service for the rates only, never your amounts; like any request, it shows that service your IP address. The privacy page has the details.',
   },
   {
-    q: 'What is the planner, and when can I use it?',
-    a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
+    q: 'What are you building next?',
+    a: 'Something to look ahead with your own numbers, with every assumption in plain view. It is opening in stages. Join the list on this page and you will get one email when it opens.',
   },
 ];
 
@@ -172,7 +183,7 @@ const faqSchema = {
       <div class="hero-grid">
         <div class="hero-copy">
           <h1 id="hero-heading">Understand your money.</h1>
-          <p class="lp-subhead hero-trio"><span>Free lessons.</span> <span>Private tools.</span> <span>A planner on the way.</span></p>
+          <p class="lp-subhead hero-trio"><span>Free lessons.</span> <span>Private tools.</span> <span>More on the way.</span></p>
 
           <div class="hero-actions">
             <a href="/blog/" class="lp-btn lp-btn--primary" data-attr="home-hero-start-learning">Start learning</a>
@@ -327,8 +338,8 @@ const faqSchema = {
   )}
 
   {/* =============================================================
-       4. Step 3, look ahead: an example of growth, then the planner,
-          honestly labelled, with the waitlist
+       4. Step 3, look ahead: one decision compared over ten years, and
+          the waitlist for what comes next (kept as a surprise)
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
@@ -337,10 +348,12 @@ const faqSchema = {
           <p class="lp-eyebrow">Step 3 &middot; Look ahead</p>
           <h2 id="planner-heading">See where it could go.</h2>
           <p class="cap-body">
-            The planner brings it all together, so you can compare decisions before you make them. It is opening in stages.
+            Choices made today play out over years. Here is one, followed for ten.
           </p>
           <div class="starter starter--chart">
-            <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
+            <p class="starter-label">One decision, compared</p>
+            <p class="starter-text">The same {eur(ex.invested)} start, with {eur(STARTER.monthly)} or {eur(HIGHER_MONTHLY)} added each month.</p>
+            <p class="gap"><strong>About {eur(gap)} apart</strong> after {STARTER.years} years: {eur(extraIn)} more put in, and about {eur(gap - extraIn)} more growth.</p>
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
             <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
             <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
@@ -881,7 +894,10 @@ const faqSchema = {
   }
 
   .starter--chart { margin-top: 24px; }
-  .starter--chart .starter-text { margin-bottom: 12px; }
+  .starter--chart .starter-text { margin-bottom: 4px; }
+
+  .gap { margin: 0 0 12px; font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.5; }
+  .gap strong { display: block; font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-text-primary); }
 
   .starter-text {
     margin: 0;
