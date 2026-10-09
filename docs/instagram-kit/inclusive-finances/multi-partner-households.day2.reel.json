@@ -1,0 +1,271 @@
+{
+  "slug": "multi-partner-households",
+  "postTitle": "More Than Two Partners: Protecting Everyone",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/multi-partner-households",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm-authority",
+  "topic": "Most money forms were written for two people, and many of them can hold more",
+  "topicChip": "FORMS FOR MORE",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No figures. From the post: most pension, insurance and investment beneficiary forms allow several names with a percentage each; hospital visitation forms can usually list several people; healthcare and financial powers of attorney name one person at a time with alternates in order; some schemes pay the ongoing survivor pension only to a legal spouse even where a lump sum can go to anyone named. Three common ways to cover that gap: life insurance, savings in the partner's own name, the lump sum."
+  },
+  "columnStory": {
+    "left": {
+      "id": "several",
+      "title": "Several names",
+      "rule": "Name everyone, with shares",
+      "items": [
+        "Beneficiary forms",
+        "Hospital visit forms",
+        "Wills, each partner by name"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "one",
+      "title": "One at a time",
+      "rule": "An agreed order",
+      "items": [
+        "Healthcare proxy",
+        "Financial power of attorney",
+        "Ongoing survivor pension"
+      ],
+      "tone": "amber"
+    },
+    "buffers": [
+      "Life insurance on the pension holder",
+      "Savings in that partner's own name",
+      "The lump sum, where any named person can receive it"
+    ],
+    "swap": {
+      "item": "Ongoing survivor pension",
+      "belongs": "right",
+      "wrongLabel": "any named person",
+      "correctLabel": "often spouse only"
+    },
+    "disclosure": "Illustrative. Rules vary by scheme and country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "forms-for-two",
+      "layout": "columns-gap",
+      "narration": "Three partners, one pension form. Many forms can name all three, with a share for each.",
+      "onscreenLines": [
+        "Three partners, one form",
+        "Many can name all three",
+        "Several names, or an order"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "all"
+      ]
+    },
+    {
+      "id": "three-names-one-pension",
+      "layout": "columns-gap",
+      "narration": "Can a pension form name three partners? Often, yes. The survivor pension is usually another story.",
+      "onscreenLines": [
+        "Three names on one pension?",
+        "Often, with a catch",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "catch"
+      ]
+    },
+    {
+      "id": "one-at-a-time",
+      "layout": "columns-gap",
+      "narration": "One partner is in hospital. If the proxy names one person, who decides when they cannot be reached?",
+      "onscreenLines": [
+        "One partner in hospital",
+        "Who decides?",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "decides"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "list",
+      "narration": "Many forms take several names. Beneficiary forms on pensions, insurance and investments. Hospital visit forms. And wills, naming each partner in full.",
+      "onscreenText": "Several names allowed",
+      "subtext": "Forms, hospital lists, wills",
+      "emphasis": [
+        "several"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "There, households often name everyone, with the share intended. A spouse's legal rights or forced heirship may still limit a will.",
+      "onscreenText": "Name everyone",
+      "subtext": "With a share for each, where allowed",
+      "emphasis": [
+        "everyone"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Other documents name one person at a time. A healthcare proxy. A financial power of attorney.",
+      "onscreenText": "One at a time",
+      "subtext": "Proxies and powers of attorney",
+      "emphasis": [
+        "one"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Households often name each other as alternates in an agreed order, and agree that whoever is named consults the others.",
+      "onscreenText": "An agreed order",
+      "subtext": "Alternates, with the others consulted",
+      "emphasis": [
+        "order"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "warning",
+      "narration": "One form often looks open. A pension lump sum may go to anyone named, the ongoing survivor pension often only to a spouse.",
+      "onscreenText": "The survivor pension",
+      "subtext": "Often paid to a legal spouse only",
+      "emphasis": [
+        "spouse"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "swap"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "Common ways to cover that gap: life insurance on the pension holder, savings in the other partner's name, and the lump sum, where allowed.",
+      "onscreenText": "Covering the gap",
+      "subtext": "Insurance, savings, the lump sum",
+      "emphasis": [
+        "gap"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "For every form, check whether it accepts several names, what order applies if it does not, and whom any survivor pension covers.",
+      "onscreenText": "Three checks per form",
+      "subtext": "Names, order, survivor",
+      "emphasis": [
+        "every"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Three checks per form",
+        "rows": [
+          {
+            "label": "Can it hold several names?",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "If not, what is the order?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Survivor pension: to whom?",
+            "value": "3",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Not legal advice. Rules vary by scheme and country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for every form in the household.",
+    "onscreenText": "Save the three checks",
+    "subtext": "For every form in the household",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Three partners, one pension form. Many forms can name all three, with a share for each.\n\nBeneficiary forms on pensions, insurance and investments often take several names, with a percentage for each. Hospital visit forms can usually list several people. A healthcare proxy or a financial power of attorney names one person at a time, so households often agree an order of alternates. And one form looks open and often is not: the ongoing survivor pension, which many schemes pay to a legal spouse only. Households commonly cover that gap with life insurance, savings in the other partner's own name, or the lump sum where a scheme allows it.\n\nThree checks for every form: can it hold several names, if not what is the order, and what does the pension pay a survivor, and to whom?\n\n→ Save this for every form in the household\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot legal advice. Rules vary by scheme and country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Three partners, one pension form. Many forms can name all three, with a share for each.\n\nThree checks for every form. Rules vary by scheme and country.",
+    "instagramKeywords": [
+      "several beneficiaries",
+      "beneficiary form percentages",
+      "healthcare proxy order",
+      "alternate agent",
+      "survivor pension spouse only",
+      "pension lump sum",
+      "hospital visitation form",
+      "financial power of attorney",
+      "household paperwork",
+      "personal finance",
+      "global expats",
+      "eurozone",
+      "Bezugsberechtigter",
+      "Patientenverfügung",
+      "désignation de bénéficiaire"
+    ],
+    "tiktokTopics": [
+      "can you name more than one beneficiary",
+      "who gets my survivor pension",
+      "paperwork for three partners"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "lifeadmin"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "lifeinsurance",
+    "beneficiarydesignation",
+    "financialplanning"
+  ],
+  "reelPromise": "Why joint tax, partner visas and parenthood stay with one pair, and planning to grow older together"
+}

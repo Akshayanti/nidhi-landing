@@ -1,0 +1,289 @@
+{
+  "slug": "shared-households-money-for-three-or-more",
+  "postTitle": "Shared Households: Money for Three or More Adults",
+  "postLevel": "inclusive-finances",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/shared-households-money-for-three-or-more",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "An equal split of shared bills is equal in euros and very unequal in weight",
+  "topicChip": "SPLITTING BILLS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Four adults share a flat. Net monthly incomes: Alma €5,000, Ben €3,000, Chidi €2,000, Dana €1,000; total €11,000. Shared costs €3,200 a month: €2,400 rent, €300 utilities, €500 food. Equal split: €800 each, which is 16%, 27%, 40% and 80% of each income; 80 ÷ 16 = 5, a five to one gap. Income split: €3,200 ÷ €11,000 = 29.1%; Alma €1,455, Ben €873, Chidi €582, Dana €291. Illustrative."
+  },
+  "barStory": {
+    "mode": "direct",
+    "setup": {
+      "label": "Shared costs, four adults",
+      "display": "€3,200",
+      "note": "Rent, utilities and food, each month",
+      "tone": "ink"
+    },
+    "unit": "%",
+    "basis": "Equal split of €800 each, as a share of each net monthly income, illustrative",
+    "bars": [
+      {
+        "id": "alma",
+        "label": "Alma",
+        "sublabel": "earns €5,000",
+        "value": 16,
+        "display": "16%",
+        "tone": "ink"
+      },
+      {
+        "id": "ben",
+        "label": "Ben",
+        "sublabel": "earns €3,000",
+        "value": 27,
+        "display": "27%",
+        "tone": "ink"
+      },
+      {
+        "id": "chidi",
+        "label": "Chidi",
+        "sublabel": "earns €2,000",
+        "value": 40,
+        "display": "40%",
+        "tone": "ink"
+      },
+      {
+        "id": "dana",
+        "label": "Dana",
+        "sublabel": "earns €1,000",
+        "value": 80,
+        "display": "80%",
+        "tone": "amber"
+      }
+    ],
+    "ratio": {
+      "display": "5 to 1",
+      "from": "alma",
+      "to": "dana",
+      "label": "in how heavy the same €800 feels"
+    },
+    "disclosure": "Illustrative. Equal split of €800 each. Net monthly incomes, rounded."
+  },
+  "hookVariants": [
+    {
+      "id": "equal-not-equal",
+      "layout": "bar-gap",
+      "narration": "Four flatmates split the bills equally. For one, that is sixteen percent of her pay. For another, eighty.",
+      "onscreenLines": [
+        "Same €800 each",
+        "16% of one income, 80% of another",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "eighty"
+      ]
+    },
+    {
+      "id": "is-equal-fair",
+      "layout": "bar-gap",
+      "narration": "Splitting the rent equally with flatmates feels fair. The numbers can say something very different.",
+      "onscreenLines": [
+        "An equal split feels fair",
+        "Run the numbers first",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "numbers"
+      ]
+    },
+    {
+      "id": "five-times",
+      "layout": "bar-gap",
+      "narration": "Same flat, same share of the bills, and one flatmate carries five times the weight.",
+      "onscreenLines": [
+        "Same flat, same share",
+        "Five times the weight",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "five"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Four adults share a flat. Rent, utilities and food come to three thousand two hundred euros a month.",
+      "onscreenText": "€3,200 a month, shared",
+      "subtext": "Rent, utilities and food",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Split equally, everyone pays eight hundred. Alma earns five thousand, so for her that is sixteen percent.",
+      "onscreenText": "Equal: €800 each",
+      "subtext": "16% of Alma's income",
+      "emphasis": [
+        "equally"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Dana earns one thousand. The same eight hundred is eighty percent of her income.",
+      "onscreenText": "80% for Dana",
+      "subtext": "The same €800, a very different weight",
+      "emphasis": [
+        "eighty"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "Equal in euros. Five to one in how heavy the bill feels.",
+      "onscreenText": "Five to one",
+      "subtext": "In how heavy the bill feels",
+      "emphasis": [
+        "five"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "Split by income instead, and everyone pays twenty nine percent of their own pay. Level weight, but everyone shares what they earn.",
+      "onscreenText": "Split by income: 29% each",
+      "subtext": "Alma €1,455, Ben €873, Chidi €582, Dana €291",
+      "emphasis": [
+        "income"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "So before agreeing a split, many households work out each share as a percentage of each income, for every method on the table.",
+      "onscreenText": "The split check",
+      "subtext": "Each share against each income",
+      "emphasis": [
+        "percentage"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The split check",
+        "rows": [
+          {
+            "label": "Equal split",
+            "value": "16 to 80%",
+            "tone": "amber"
+          },
+          {
+            "label": "Split by income",
+            "value": "29% each",
+            "tone": "teal"
+          },
+          {
+            "label": "Room based or hybrid",
+            "value": "In between",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "Capped",
+            "value": "In between",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "Illustrative. Each share ÷ each net monthly income."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "Neither split is the right answer. Each one asks something of someone. The numbers show what, and of whom.",
+      "onscreenText": "Every split asks something",
+      "subtext": "The numbers show of whom",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before your household next splits a bill.",
+    "onscreenText": "Save the split check",
+    "subtext": "Each share against each income",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Four flatmates split the bills equally. For one, that is 16% of her pay. For another, 80%.\n\nFour adults share a flat, with net incomes from €1,000 to €5,000 and €3,200 of shared costs a month. An equal split is €800 each: 16% of Alma's income, 80% of Dana's, a five to one gap in how heavy the same bill feels. A split by income has everyone pay 29% of their own, and asks each person to share what they earn. Room based, hybrid and capped splits sit in between. None of them is the right answer.\n\nThe split check: for each method on the table, each share divided by each net income.\n\n→ Save this before your household next splits a bill\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Net monthly incomes, rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Four flatmates split the bills equally. For one, that is 16% of her pay. For another, 80%.\n\nEach share against each income shows what a split really asks. Illustrative.",
+    "instagramKeywords": [
+      "splitting rent",
+      "split bills fairly",
+      "shared costs",
+      "equal split",
+      "split by income",
+      "living with housemates",
+      "shared flat",
+      "household agreement",
+      "money conversations",
+      "personal finance",
+      "global expats",
+      "Wohngemeinschaft",
+      "Nebenkosten teilen",
+      "colocation",
+      "piso compartido"
+    ],
+    "tiktokTopics": [
+      "how to split rent with roommates fairly",
+      "should flatmates split bills by income",
+      "fair way to share household costs"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "renting"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "flatshare",
+    "splittingbills",
+    "sharedliving"
+  ]
+}

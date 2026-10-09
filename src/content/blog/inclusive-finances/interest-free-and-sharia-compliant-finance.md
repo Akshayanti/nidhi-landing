@@ -78,7 +78,7 @@ The conventional mortgage, covered in the post on [loan terms](/blog/understandi
 
 **Cost-plus sale.** Suppose a flat costs €250,000. The financier buys it and sells it to you for €400,000, payable over 25 years. The €150,000 margin is disclosed and fixed on day one. You know exactly what you will pay in total, and the price cannot rise because market rates rise. This structure is simple and common for cars and goods. For homes it has a drawback: because the price is fixed, there is nothing to reprice if rates fall.
 
-**Lease to own.** The financier owns the property and you rent it, with a promise that ownership passes to you at the end or as you pay. Rent is usually reviewed periodically, so your cost can move with the market.
+**Lease to own.** The financier owns the property and you rent it, with a promise that ownership passes to you, through a separate sale or gift set out in the contract, commonly at the end. Rent is usually reviewed periodically, so your cost can move with the market.
 
 **Shrinking partnership.** You put in €50,000 and the financier puts in €200,000. You own 20% and they own 80%. Each month you pay rent on their 80% and buy a little more of it. As your share grows, the rent portion falls. After 25 years you own 100%. This is the structure most home finance providers use, because the rent can be reviewed and the partnership reflects who really owns what.
 

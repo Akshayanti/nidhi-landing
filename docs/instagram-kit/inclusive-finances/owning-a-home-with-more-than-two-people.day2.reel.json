@@ -1,0 +1,281 @@
+{
+  "slug": "owning-a-home-with-more-than-two-people",
+  "postTitle": "Owning a Home With More Than Two People",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/owning-a-home-with-more-than-two-people",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm-authority",
+  "topic": "The title says who owns, the loan says who owes, and an agreement says what the group meant",
+  "topicChip": "SHARED MORTGAGE",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No euro figures. From the post: lenders often cap the borrowers on one loan at somewhere between two and four, depending on lender and country; everyone named is liable for the whole debt; a departure usually means a new loan in fewer names. Four combinations of being on the title and on the loan. Rules vary by lender and country."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "free",
+        "label": "The title",
+        "cost": "Who owns",
+        "items": [
+          "Names and shares",
+          "Decides who inherits",
+          "Sets each fraction"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "modest",
+        "label": "The loan",
+        "cost": "Who owes",
+        "items": [
+          "Often 2 to 4 names allowed",
+          "Each owes the whole debt",
+          "A leaver means a new loan"
+        ],
+        "tone": "amber"
+      },
+      {
+        "id": "hard",
+        "label": "The agreement",
+        "cost": "What you meant",
+        "items": [
+          "What each put in",
+          "How a share is bought out",
+          "What if someone stops paying"
+        ],
+        "tone": "teal"
+      }
+    ],
+    "emphasis": "hard",
+    "disclosure": "Illustrative. Lending and property rules vary by lender and country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "owes-all",
+      "layout": "bands-gap",
+      "narration": "Three names on a shared mortgage. Each of them owes all of it, not a third.",
+      "onscreenLines": [
+        "Three names on a loan",
+        "Each owes all of it"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "all"
+      ]
+    },
+    {
+      "id": "loan-not-title",
+      "layout": "bands-gap",
+      "narration": "Mortgage names and title names can differ. Someone may pay for a home they do not own.",
+      "onscreenLines": [
+        "On the loan",
+        "Not on the title"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "pay"
+      ]
+    },
+    {
+      "id": "one-leaves",
+      "layout": "bands-gap",
+      "narration": "When one owner of a shared home leaves, the others usually need a whole new mortgage.",
+      "onscreenLines": [
+        "One owner leaves",
+        "The loan starts again"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "new"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "A home shared by a group runs on three separate documents. The title, the loan, and an agreement between the owners.",
+      "onscreenText": "Three documents",
+      "subtext": "Title, loan, agreement",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "The title says who owns the home, and in what shares.",
+      "onscreenText": "The title: who owns",
+      "subtext": "Names and shares",
+      "emphasis": [
+        "owns"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "free"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "The loan says who owes. Lenders often cap it at two to four names, and every borrower owes the whole debt, not a share.",
+      "onscreenText": "The loan: who owes",
+      "subtext": "Every borrower owes the whole debt",
+      "emphasis": [
+        "whole"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "modest"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Only the agreement records what the group meant. What each person put in. How a share is bought out. What happens if someone stops paying.",
+      "onscreenText": "The agreement: what you meant",
+      "subtext": "Contributions, buyouts, missed payments",
+      "emphasis": [
+        "meant"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hard"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "warning",
+      "narration": "A departure often needs a buyout and a new loan on fewer incomes. If that fails, the home may need to be sold.",
+      "onscreenText": "A departure is a refinancing",
+      "subtext": "A new loan, on fewer incomes",
+      "emphasis": [
+        "buyout"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "emphasis"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "It helps to map each person's position: on the title and the loan, the title only, the loan only, or neither.",
+      "onscreenText": "Four positions",
+      "subtext": "On the title, on the loan",
+      "emphasis": [
+        "position"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Title and loan: four positions",
+        "rows": [
+          {
+            "label": "On the title and the loan",
+            "value": "Owns and owes",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "On the title only",
+            "value": "Rare",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "On the loan only",
+            "value": "Owes, owns nothing",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "On neither",
+            "value": "Needs it in writing",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules vary by lender and country."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "Paying is not owning. Someone who pays without being on the title or the loan has, at minimum, a written record to rely on.",
+      "onscreenText": "Paying is not owning",
+      "subtext": "Without a written record",
+      "emphasis": [
+        "not"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before anyone signs a mortgage.",
+    "onscreenText": "Save the four positions",
+    "subtext": "Title and loan, side by side",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Three names on a shared mortgage. Each of them owes all of it, not a third.\n\nA home shared by a group runs on three documents. The title says who owns. The loan says who owes: lenders often cap it at two to four names, and every borrower owes the whole debt. Only an agreement between the owners records what each person put in, how a share is bought out, and what happens if someone stops paying. When one owner leaves, the others usually pay out the share and need a new loan on fewer incomes. If they cannot, the house may have to be sold.\n\nFour positions on a title and a loan: on both, the title only, the loan only, or neither. On the loan only, a person owes the debt and owns nothing.\n\n→ Save this before anyone signs a mortgage\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Lending and property rules vary by lender and country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Three names on a shared mortgage. Each of them owes all of it, not a third.\n\nTitle, loan, agreement: three separate questions. Rules vary by lender and country.",
+    "instagramKeywords": [
+      "mortgage with friends",
+      "how many names on a mortgage",
+      "joint and several liability",
+      "buyout clause",
+      "refinancing",
+      "owners agreement",
+      "title and mortgage",
+      "paying without owning",
+      "housing cooperative",
+      "personal finance",
+      "global expats",
+      "europe",
+      "gemeinsamer Kredit",
+      "hipoteca compartida",
+      "Genossenschaft"
+    ],
+    "tiktokTopics": [
+      "can three people get a mortgage",
+      "what happens when a co owner leaves",
+      "buying a house as a group"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "jointmortgage",
+    "firsthomebuyer",
+    "mortgagebasics"
+  ],
+  "reelPromise": "The six clauses an agreement between owners needs, and how cooperatives, land trusts and cohousing change what you own"
+}

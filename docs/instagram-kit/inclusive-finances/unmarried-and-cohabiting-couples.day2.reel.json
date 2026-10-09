@@ -1,0 +1,302 @@
+{
+  "slug": "unmarried-and-cohabiting-couples",
+  "postTitle": "Unmarried Couples: Building the Protections Marriage Gives",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/unmarried-and-cohabiting-couples",
+  "availableFigures": [],
+  "mode": "faithful",
+  "mood": "reflective",
+  "topic": "Twelve years of half the mortgage, and one name on the flat",
+  "topicChip": "SHARED HOME",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No euro figures. Illustrative couple from the post: Sofia and Lena, together twelve years, never married, no wills. The flat is in Lena's name, bought before they met; Sofia has paid half of every mortgage payment. Lena dies in an accident at 41. In many countries the flat passes to Lena's parents, Sofia has no automatic right to stay, her payments are legally generosity, and Lena's pension pays nothing because the rules name a spouse, and the hospital speaks to Lena's mother. This reel: a will, a recorded ownership share and powers of attorney could have changed much of it; formalising a share may need legal advice and extra costs. Rules vary by country. Not legal advice."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "will",
+        "label": "One will",
+        "cost": "A modest fee",
+        "items": [
+          "Says who inherits",
+          "Within forced heirship limits",
+          "In the form local law requires"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "form",
+        "label": "Powers of attorney",
+        "cost": "A modest fee",
+        "items": [
+          "Money and health decisions",
+          "Who the hospital turns to",
+          "Each partner names the other"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "page",
+        "label": "A written record",
+        "cost": "Legal advice",
+        "items": [
+          "Who paid what into the flat",
+          "Sofia's share, written down",
+          "Hard to prove without it"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "page",
+    "disclosure": "Illustrative story. What happens without these documents varies by country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "generosity",
+      "layout": "bands-gap",
+      "narration": "Twelve years paying half the mortgage. In many countries, legally, that was generosity.",
+      "onscreenLines": [
+        "12 years of half the mortgage",
+        "Legally: generosity",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "generosity"
+      ]
+    },
+    {
+      "id": "one-name",
+      "layout": "bands-gap",
+      "narration": "Only her partner's name was on the flat. Twelve years of payments did not change that.",
+      "onscreenLines": [
+        "One name on the flat",
+        "12 years of payments",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "name"
+      ]
+    },
+    {
+      "id": "three-items",
+      "layout": "bands-gap",
+      "narration": "Not married, sharing a flat in one name? Three small items decide who keeps the home.",
+      "onscreenLines": [
+        "One name on the flat",
+        "Three items decide who keeps it",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "three"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "story",
+      "narration": "Sofia and Lena, together twelve years. The flat is in Lena's name. Sofia has paid half of every mortgage payment.",
+      "onscreenText": "One name on the flat",
+      "subtext": "Half of every payment, for 12 years",
+      "emphasis": [
+        "half"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "No marriage, no will. Lena dies in an accident at 41. In many countries, the flat passes to her parents.",
+      "onscreenText": "The flat goes to her parents",
+      "subtext": "In many countries, with no will",
+      "emphasis": [
+        "parents"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Sofia has no right to stay. The hospital spoke to Lena's mother, not to her.",
+      "onscreenText": "No right to stay",
+      "subtext": "And the hospital spoke to her mother",
+      "emphasis": [
+        "stay"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Nobody intended any of this. It is what the defaults produce. Three items would have changed much of it.",
+      "onscreenText": "Three items",
+      "subtext": "Some steps need legal advice",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "Powers of attorney for money and health, so each partner can act and decide for the other.",
+      "onscreenText": "Powers of attorney",
+      "subtext": "Money and health decisions",
+      "emphasis": [
+        "attorney"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "form"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "One page recording Sofia's share of the flat. Contributions nobody wrote down are hard to prove.",
+      "onscreenText": "One page",
+      "subtext": "Sofia's share, written down",
+      "emphasis": [
+        "page"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "page"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "And one will, in the form local law requires. Where forced heirship applies, it can still give the free part.",
+      "onscreenText": "One will",
+      "subtext": "In the form local law requires",
+      "emphasis": [
+        "will"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "will"
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "list",
+      "narration": "For any couple, one question: if one of us dies, does that share go to the other, or to the heirs?",
+      "onscreenText": "The home question",
+      "subtext": "Three checks for any shared home",
+      "emphasis": [
+        "heirs"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The home question",
+        "rows": [
+          {
+            "label": "How is it owned, in whose name?",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "To the partner, or the heirs?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Who paid what, written down?",
+            "value": "3",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Ownership forms differ by country. Not legal advice."
+      }
+    },
+    {
+      "id": "b9",
+      "kind": "story",
+      "narration": "A few documents, some with legal advice. Marriage is one way there. It is not the only one.",
+      "onscreenText": "Not the only way",
+      "subtext": "A few documents, some with legal advice",
+      "emphasis": [
+        "documents"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "emphasis"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for the next time you talk about your home.",
+    "onscreenText": "Save the home question",
+    "subtext": "Three checks for any shared home",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Twelve years paying half the mortgage. In many countries, legally, that was generosity.\n\nSofia and Lena, an illustrative couple, have been together twelve years. The flat is in Lena's name; Sofia has paid half of every mortgage payment. Neither has a will. If Lena dies, in many countries the flat passes to her parents, Sofia has no automatic right to stay, and the hospital may speak to Lena's mother, not to Sofia.\n\nA will, a recorded ownership share and powers of attorney could have changed much of what followed. Formalising an ownership share may need legal advice, lender consent and extra costs. For any shared home, the question is the same: if one of us dies, does that share go to the other, or to the heirs?\n\n→ Save this for the next time you talk about your home\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative story. Ownership forms and inheritance rules vary by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Twelve years paying half the mortgage. In many countries, legally, that was generosity.\n\nA will, a recorded share, powers of attorney. Rules vary by country.",
+    "instagramKeywords": [
+      "joint tenancy",
+      "tenancy in common",
+      "right of survivorship",
+      "buying a home together",
+      "unmarried couples",
+      "cohabitation agreement",
+      "power of attorney",
+      "make a will",
+      "forced heirship",
+      "personal finance",
+      "global expats",
+      "Miteigentum",
+      "indivision",
+      "copropiedad"
+    ],
+    "tiktokTopics": [
+      "what happens to the house if my partner dies and we are not married",
+      "joint tenants vs tenants in common",
+      "unmarried couple owning a home"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "homeownership",
+    "buyingtogether",
+    "propertylaw"
+  ],
+  "reelPromise": "What marriage switches on automatically, the common law marriage myth, why tax is the row documents cannot fix, and joint debts"
+}

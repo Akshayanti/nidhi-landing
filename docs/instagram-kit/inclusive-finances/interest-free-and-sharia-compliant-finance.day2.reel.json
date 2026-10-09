@@ -1,0 +1,298 @@
+{
+  "slug": "interest-free-and-sharia-compliant-finance",
+  "postTitle": "Interest-Free Finance: A Different Toolkit",
+  "postLevel": "inclusive-finances",
+  "episode": 4,
+  "seriesTotal": 0,
+  "blogPath": "blog/interest-free-and-sharia-compliant-finance",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm-authority",
+  "topic": "Screened investing: which companies pass, and what it does to a portfolio",
+  "topicChip": "SCREENED INVESTING",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No euro figures. Screening has two layers: business activity (conventional banking and insurance, alcohol, gambling, pork products, adult entertainment typically excluded; many screens add tobacco and weapons) and financing (a widely used threshold of around one third for interest bearing debt and for cash and interest bearing securities relative to company size, and around 5% for prohibited income; exact ratios differ between standards). Purification: the prohibited portion of dividends is commonly given to charity. Sukuk replace bonds. Not religious guidance or investment advice."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "activity",
+        "label": "Layer 1",
+        "cost": "What it does",
+        "items": [
+          "Conventional banking and insurance",
+          "Alcohol, gambling, pork products",
+          "Often tobacco and weapons too"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "finance",
+        "label": "Layer 2",
+        "cost": "How it is financed",
+        "items": [
+          "Interest bearing debt: about a third",
+          "Cash and interest securities: about a third",
+          "Prohibited income: about 5%"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "portfolio",
+        "label": "Result",
+        "cost": "A different mix",
+        "items": [
+          "Fewer banks, more technology",
+          "A shorter list of companies",
+          "Sukuk in place of bonds"
+        ],
+        "tone": "ink"
+      }
+    ],
+    "emphasis": "finance",
+    "disclosure": "Thresholds are approximate and differ between standards. Not religious guidance or investment advice."
+  },
+  "hookVariants": [
+    {
+      "id": "which-companies",
+      "layout": "bands-gap",
+      "narration": "Investing in shares can fit an interest free plan. The hard part is which companies.",
+      "onscreenLines": [
+        "Shares can fit",
+        "Which companies?",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "which"
+      ]
+    },
+    {
+      "id": "not-in-step",
+      "layout": "bands-gap",
+      "narration": "A screened portfolio will not move in step with the headline index. Here is why.",
+      "onscreenLines": [
+        "A screened portfolio",
+        "Not in step with the index",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "step"
+      ]
+    },
+    {
+      "id": "no-bonds",
+      "layout": "bands-gap",
+      "narration": "Bonds pay interest. So what steadies a portfolio that cannot hold them?",
+      "onscreenLines": [
+        "No bonds",
+        "So what steadies it?",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "steadies"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "A share is part ownership of a business, with profit and loss shared. That is why shares are generally considered permissible.",
+      "onscreenText": "Shares are ownership",
+      "subtext": "Profit and loss, shared",
+      "emphasis": [
+        "ownership"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "The first screen is what the company does. Conventional banking and insurance, alcohol, gambling and pork products are typically excluded.",
+      "onscreenText": "Layer 1: what it does",
+      "subtext": "Whole industries screened out",
+      "emphasis": [
+        "does"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "activity"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "The second is financing. Common tests cap interest bearing debt and cash at about a third, and prohibited income at about five percent.",
+      "onscreenText": "Layer 2: how it is financed",
+      "subtext": "Ratios differ between standards",
+      "emphasis": [
+        "financed"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "finance"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Where a permitted company earns a little prohibited income, investors commonly give that share of dividends to charity. That is purification.",
+      "onscreenText": "Purification",
+      "subtext": "That share of dividends, to charity",
+      "emphasis": [
+        "charity"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "finance"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "warning",
+      "narration": "Screening changes the portfolio. Fewer banks and insurers, more technology and healthcare, and a shorter list of companies.",
+      "onscreenText": "A different mix",
+      "subtext": "Sometimes ahead of the market, sometimes behind",
+      "emphasis": [
+        "changes"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "portfolio"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "definition",
+      "narration": "Bonds pay interest, so they are out. The closest replacement is the sukuk: a share in an asset and the income it produces.",
+      "onscreenText": "Sukuk in place of bonds",
+      "subtext": "Smaller, less liquid markets",
+      "emphasis": [
+        "sukuk"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "portfolio"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "So the two layer screen asks: what the company does, its debt, its cash, its prohibited income, and what gets purified.",
+      "onscreenText": "The two layer screen",
+      "subtext": "What a screened fund checks",
+      "emphasis": [
+        "two"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The two layer screen",
+        "rows": [
+          {
+            "label": "What the company does",
+            "value": "Layer 1",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "Interest bearing debt",
+            "value": "About ⅓",
+            "tone": "ink"
+          },
+          {
+            "label": "Cash and interest securities",
+            "value": "About ⅓",
+            "tone": "ink"
+          },
+          {
+            "label": "Prohibited income",
+            "value": "About 5%",
+            "tone": "ink"
+          },
+          {
+            "label": "Purification",
+            "value": "To charity",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Thresholds differ between standards. Not religious guidance."
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "story",
+      "narration": "None of this rules out diversification. The spread across regions and sectors still needs checking.",
+      "onscreenText": "Still check the spread",
+      "subtext": "Regions and sectors, like any portfolio",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for the next screened fund you read about.",
+    "onscreenText": "Save the two layer screen",
+    "subtext": "For reading any screened fund",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nA share is part ownership of a business, with profit and loss shared, which is why shares are generally considered permissible. Screening has two layers. What the company does: conventional banking and insurance, alcohol, gambling and pork products are typically excluded. How it is financed: common tests cap interest bearing debt and cash at about a third each, and prohibited income at about 5%, though exact ratios differ between standards. A small prohibited share of dividends is commonly given to charity. The result tilts away from banks and insurers, and sukuk take the place of bonds, so a screened portfolio will not move in step with the headline index.\n\nThe two layer screen: what the company does, its debt, its cash, its prohibited income, and purification.\n\n→ Save this for the next screened fund you read about\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot religious guidance or investment advice. Standards differ between certifiers and countries.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nTwo layers of screening, and what they do to a portfolio. Not religious guidance.",
+    "instagramKeywords": [
+      "screened investing",
+      "sharia screening",
+      "screened index",
+      "purification",
+      "prohibited income",
+      "interest bearing debt",
+      "sector tilt",
+      "ethical portfolio",
+      "personal finance",
+      "global expats",
+      "islamische Geldanlage",
+      "ethisches Investieren",
+      "investissement islamique",
+      "inversión islámica"
+    ],
+    "tiktokTopics": [
+      "how sharia stock screening works",
+      "what replaces bonds in islamic investing",
+      "halal investing explained"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "investingtok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "ethicalinvesting",
+    "sukuk",
+    "investingeurope"
+  ],
+  "reelPromise": "How cost plus, lease and partnership home finance work, and what changes for cash, retirement accounts and insurance"
+}

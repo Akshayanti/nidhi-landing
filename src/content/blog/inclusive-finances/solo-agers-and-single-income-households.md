@@ -43,7 +43,7 @@ referentialReading:
 
 The post on the [income replacement ratio](/blog/income-replacement-ratio/) built a retirement number from a household's expected spending. Like most retirement writing, it spoke about households in the plural: a mortgage paid off together, children becoming independent, dependants still being supported.
 
-A growing number of households are one person. Some people live alone by choice, some after a separation or a death, and some are raising children on a single income. In many European cities, one-person households are the most common kind.
+Some people live alone by choice, some after a separation or a death, and some are raising children on a single income. One-person households are common, and their plans cannot rely on a second adult stepping in.
 
 For those readers, standard advice is not wrong so much as calibrated for someone else. The formulas still work. The numbers that go into them need changing, and one part of the plan that couples get for free has to be built by hand.
 

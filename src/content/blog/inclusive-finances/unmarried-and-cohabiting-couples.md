@@ -196,6 +196,6 @@ Two companion pieces extend this post to households of more than two: one on own
 - **If contributions are unequal:** a cohabitation agreement, with independent advice for each of you.
 - **Once:** look up what your country's tax system does to an unmarried survivor, so the number is not a surprise.
 
-Sofia and Lena needed one will, one beneficiary form, and one page recording Sofia's share of the flat. An evening's work and a modest fee would have changed everything that followed.
+Sofia and Lena needed one will, one beneficiary form, and one page recording Sofia's share of the flat. A will, a written record of Sofia's contributions and powers of attorney could have changed much of what followed.
 
 Marriage is one way to get these protections. It is not the only way. It is just the only one that happens without anyone deciding.

@@ -381,10 +381,12 @@ function CalendarVisual({ input, story, now }: { input: ReelInput; story: Calend
   const cardOut = progress(now, b7.startMs, b7.startMs + 480);
   const chartOpacity = now < b6.startMs ? 1 : now < b7.startMs ? 1 - chartExit : cardOut;
   const cardOpacity = now < b6.startMs ? 0 : now < b7.startMs ? cardIn : 1 - cardOut;
+  // The average ladder plots pay against costs, so it needs a reference
+  // (pay) line; a story without one (an income chart) keeps its bars.
   const mode: CalendarMode = activeStage === "short"
     ? "short"
     : activeStage === "average" || activeStage === "rule"
-      ? "average"
+      ? story.reference ? "average" : "normal"
       : activeStage === "smoothed"
         ? "smoothed"
         : "normal";
