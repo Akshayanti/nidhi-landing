@@ -62,6 +62,22 @@ const starterChart = {
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
 };
+// The hero's journey card ends in a small line of the same ten years.
+const spark = (() => {
+  const w = 120, h = 36, max = Math.max(...ex.values);
+  return ex.values.map((v, i) => `${((i / (ex.values.length - 1)) * w).toFixed(1)},${(h - (v / max) * (h - 4) - 2).toFixed(1)}`).join(' ');
+})();
+
+// Step 2: two illustrative people on the same income, to show that income
+// and net worth are different things.
+const SAME_INCOME = 3_000;
+const people = [
+  { name: 'Alex', owns: 22_000, owes: 31_000, note: 'A car and a card, both on credit' },
+  { name: 'Sam', owns: 16_500, owes: 4_000, note: 'Savings, a pension, a small loan' },
+];
+const peopleMax = Math.max(...people.flatMap((p) => [p.owns, p.owes]));
+const signedEur = (v: number) => (v < 0 ? `\u2212${eur(-v)}` : eur(v));
+
 const starterFootnote = `Example: ${eur(ex.invested)} invested today and ${eur(STARTER.monthly)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.putIn)} is money put in and about ${eur(roundedGrowth)} is growth. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
 
 
@@ -155,11 +171,8 @@ const faqSchema = {
     <div class="lp-section-inner">
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="lp-eyebrow">Money, understood</p>
-          <h1 id="hero-heading">Understand your money. Plan what comes next.</h1>
-          <p class="lp-subhead">
-            Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
-          </p>
+          <h1 id="hero-heading">Understand your money.</h1>
+          <p class="lp-subhead hero-trio"><span>Free lessons.</span> <span>Private tools.</span> <span>A planner on the way.</span></p>
 
           <div class="hero-actions">
             <a href="/blog/" class="lp-btn lp-btn--primary" data-attr="home-hero-start-learning">Start learning</a>
@@ -177,6 +190,28 @@ const faqSchema = {
           )}
         </div>
 
+        {/* The three steps below, as one illustrative person's journey. */}
+        <div class="journey">
+          <p class="journey-label">One example, three steps</p>
+          <ol class="journey-list">
+            <li>
+              <span class="journey-step">1 &middot; Learn</span>
+              <span class="journey-big">What is net worth?</span>
+              <span class="journey-small">What you own, minus what you owe.</span>
+            </li>
+            <li>
+              <span class="journey-step">2 &middot; See yours</span>
+              <span class="journey-big">{eur(ex.netWorth)}</span>
+              <span class="journey-small">{eur(ex.owned)} owned, {eur(ex.owed)} owed.</span>
+            </li>
+            <li>
+              <span class="journey-step">3 &middot; Look ahead</span>
+              <span class="journey-big">{eur(roundedEnd)}</span>
+              <span class="journey-small">In {STARTER.years} years, adding {eur(STARTER.monthly)} a month at an illustrative {pctReturn} a year.</span>
+              <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline points={spark} /></svg>
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>
@@ -243,22 +278,23 @@ const faqSchema = {
         </div>
 
         <div class="tools-grid">
-        <div class="starter starter--table">
-          <p class="starter-label" id="starter-table-label">An example: what you own, minus what you owe</p>
-          <table class="starter-table" aria-labelledby="starter-table-label">
-            <tbody>
-              {STARTER.owns.map((i) => (
-                <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
-              ))}
-              {STARTER.owes.map((i) => (
-                <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
-            </tfoot>
-          </table>
-        </div>
+        <figure class="starter compare">
+          <p class="starter-label">Same income, {eur(SAME_INCOME)} a month each</p>
+          <div class="compare-grid">
+            {people.map((p) => (
+              <div class="compare-person">
+                <p class="compare-name">{p.name}</p>
+                <p class="compare-note">{p.note}</p>
+                <dl class="compare-rows">
+                  <div><dt>Owns</dt><dd><span class="compare-track" aria-hidden="true"><span class="compare-bar compare-bar--own" style={`width: ${(p.owns / peopleMax) * 100}%`}></span></span>{eur(p.owns)}</dd></div>
+                  <div><dt>Owes</dt><dd><span class="compare-track" aria-hidden="true"><span class="compare-bar compare-bar--owe" style={`width: ${(p.owes / peopleMax) * 100}%`}></span></span>{eur(p.owes)}</dd></div>
+                </dl>
+                <p class={`compare-net${p.owns < p.owes ? ' is-negative' : ''}`}>{signedEur(p.owns - p.owes)} <span>net worth</span></p>
+              </div>
+            ))}
+          </div>
+          <figcaption class="compare-caption">Income is what comes in. Net worth is what you own minus what you owe. Illustrative amounts.</figcaption>
+        </figure>
 
         <ul class="tool-list" role="list">
           {pairs.map((p) => {
@@ -368,7 +404,7 @@ const faqSchema = {
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="faq" aria-labelledby="faq-heading" tabindex="-1">
     <div class="lp-section-inner lp-section-inner--narrow">
-      <h2 id="faq-heading" class="faq-heading">Questions people ask first</h2>
+      <h2 id="faq-heading" class="faq-heading">FAQ</h2>
       <div class="faq-list">
         {faqs.map((f, i) => (
           <details class="faq-item" data-attr={`home-faq-${i + 1}`}>
@@ -726,17 +762,18 @@ const faqSchema = {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  @media (min-width: 1024px) {
-    .hero-copy { max-width: 760px; margin: 0 auto; text-align: center; }
-    .hero-copy .lp-subhead,
-    .hero-copy .hero-next { margin-left: auto; margin-right: auto; }
-    .hero-actions { justify-content: center; }
+  @media (min-width: 960px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 56px;
+      align-items: center;
+    }
   }
 
   .hero-copy h1 {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 3.4vw + 0.6rem, 3.1rem);
-    line-height: 1.1;
+    font-size: clamp(2.5rem, 4.6vw + 0.6rem, 4.4rem);
+    line-height: 1.02;
     letter-spacing: -0.02em;
     color: var(--color-deep-blue);
     margin: 0 0 18px;
@@ -751,6 +788,86 @@ const faqSchema = {
     max-width: 54ch;
     margin: 0 0 28px;
     text-wrap: pretty;
+  }
+
+  /* Three short claims, one per step below. */
+  .hero-trio { font-size: clamp(1.1rem, 0.8vw + 0.9rem, 1.35rem); color: var(--color-text-primary); }
+  .hero-trio span { white-space: nowrap; }
+
+  .journey {
+    margin-top: 40px;
+    padding: 22px 24px 18px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 18px;
+    background: var(--color-bg-white);
+    box-shadow: 0 12px 40px color-mix(in srgb, var(--color-deep-blue) 10%, transparent);
+  }
+
+  @media (min-width: 960px) { .journey { margin-top: 0; } }
+
+  .journey-label {
+    margin: 0 0 6px;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .journey-list { list-style: none; margin: 0; padding: 0; }
+
+  .journey-list li {
+    position: relative;
+    display: grid;
+    padding: 14px 0 14px 22px;
+    border-left: 2px solid var(--color-border);
+    margin-left: 5px;
+  }
+
+  .journey-list li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-bg-white);
+    border: 2px solid var(--chart-eur);
+  }
+
+  .journey-list li:last-child::before { background: var(--chart-eur); }
+
+  .journey-step {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+  }
+
+  .journey-big {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .journey-small { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.4; }
+
+  .journey-spark {
+    position: absolute;
+    right: 0;
+    top: 38px;
+    width: 96px;
+    height: 30px;
+    fill: none;
+    stroke: var(--chart-eur);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .hero-actions {
@@ -774,8 +891,7 @@ const faqSchema = {
   }
 
 
-  /* The worked example, one piece per step: the table in Step 2, the
-     ten-year chart in Step 3. */
+  /* Example cards: the comparison in Step 2, the ten-year chart in Step 3. */
   .starter {
     /* Contains the absolutely positioned screen-reader text, which would otherwise widen the page. */
     position: relative;
@@ -805,34 +921,6 @@ const faqSchema = {
     font-size: 0.95rem;
     line-height: 1.5;
     color: var(--color-text-primary);
-  }
-
-  .starter-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .starter-table th {
-    text-align: left;
-    font-weight: 400;
-    color: var(--color-text-secondary);
-    padding: 2px 0;
-  }
-
-  .starter-table td {
-    text-align: right;
-    color: var(--color-text-primary);
-    padding: 2px 0;
-  }
-
-  .starter-table tfoot th,
-  .starter-table tfoot td {
-    font-weight: 700;
-    color: var(--color-text-primary);
-    border-top: 1px solid var(--color-border);
-    padding-top: 6px;
   }
 
   .starter :global(svg) { width: 100%; height: auto; display: block; }
@@ -937,7 +1025,68 @@ const faqSchema = {
   }
 
   @media (min-width: 900px) {
-    .tools-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 24px; }
+    .tools-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 24px; }
+  }
+
+  /* Step 2's example: the same income, two different net worths. */
+  .compare { margin: 0; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .compare-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+
+  .compare-note { margin: 4px 0 12px; font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.4; }
+
+  .compare-rows { margin: 0; display: grid; gap: 6px; }
+  .compare-rows div { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 8px; }
+  .compare-rows dt { font-size: 0.8rem; color: var(--color-text-secondary); }
+  .compare-rows dd {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+  }
+
+  .compare-track { height: 10px; border-radius: 5px; background: var(--color-bg); overflow: hidden; }
+  .compare-bar { display: block; height: 100%; border-radius: 5px; }
+  .compare-bar--own { background: var(--chart-eur); }
+  .compare-bar--owe { background: var(--chart-inr); }
+
+  .compare-net {
+    margin: 14px 0 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 1.5vw + 1rem, 2.1rem);
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+  }
+
+  .compare-net.is-negative { color: var(--color-danger); }
+  .compare-net span { display: block; font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); }
+
+  .compare-caption {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-border-light);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    line-height: 1.5;
   }
 
   .tool-list {
@@ -1132,13 +1281,16 @@ const faqSchema = {
     #hero { padding-top: 28px; }
     .section-head { margin-bottom: 24px; }
     .starter { box-shadow: none; padding: 16px; }
-    .starter-table { font-size: 0.85rem; }
-    .starter-table th,
-    .starter-table td { padding: 1px 0; }
-    .starter-table tfoot th,
-    .starter-table tfoot td { padding-top: 4px; }
     .starter :global(.starter-chart--narrow) { margin-top: 6px; }
     .hero-actions .lp-btn { flex: 1 1 auto; }
+    .journey { margin-top: 28px; padding: 16px 18px 10px; box-shadow: none; }
+    .journey-list li { padding: 10px 0 10px 18px; }
+    .journey-list li::before { top: 14px; }
+    .journey-big { font-size: 1.2rem; }
+    .journey-spark { top: 32px; width: 72px; height: 24px; }
+    .compare-grid { gap: 16px; }
+    .compare-note { display: none; }
+    .compare-rows div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
 
     /* Routes: the start link drops under the title, so long titles keep room. */
     .route {
