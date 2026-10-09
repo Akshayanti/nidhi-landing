@@ -216,6 +216,7 @@ const faqSchema = {
           <div class="ex-slide" id="ex-slide-1" role="group" aria-roledescription="slide" aria-label="1 of 3: Learn">
             <p class="ex-big">Net worth is what you own minus what you owe.</p>
             <p class="starter-text">It shows whether you are moving forward, whatever you earn.</p>
+            <p class="ex-next"><span aria-hidden="true">↓</span> Below: a route for where you are.</p>
           </div>
 
           <div class="ex-slide" id="ex-slide-2" role="group" aria-roledescription="slide" aria-label="2 of 3: See yours">
@@ -232,6 +233,7 @@ const faqSchema = {
                 <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
               </tfoot>
             </table>
+            <p class="ex-next"><span aria-hidden="true">↓</span> Below: free tools to work out yours.</p>
           </div>
 
           <div class="ex-slide" id="ex-slide-3" role="group" aria-roledescription="slide" aria-label="3 of 3: Look ahead">
@@ -239,6 +241,7 @@ const faqSchema = {
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
             <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
             <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
+            <p class="ex-next"><span aria-hidden="true">↓</span> Below: the planner, opening in stages.</p>
             <details class="fold">
               <summary class="fold-label">How this example works</summary>
               <p class="hc-foot">{starterFootnote}</p>
@@ -255,6 +258,7 @@ const faqSchema = {
   <section class="lp-section" id="start" aria-labelledby="start-heading">
     <div class="lp-section-inner">
       <div class="section-head">
+        <p class="lp-eyebrow">Step 1 &middot; Learn</p>
         <h2 id="start-heading">Start wherever you are.</h2>
         <p class="cap-body">
           Pick the line that sounds most like you.
@@ -358,6 +362,7 @@ const faqSchema = {
     <section class="lp-section lp-section--alt" id="apply" aria-labelledby="apply-heading">
       <div class="lp-section-inner">
         <div class="section-head">
+          <p class="lp-eyebrow">Step 2 &middot; See yours</p>
           <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
           <p class="cap-body">
             The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
@@ -438,7 +443,7 @@ const faqSchema = {
     <div class="lp-section-inner">
       <div class="planner-grid">
         <div class="planner-copy">
-          <p class="lp-eyebrow">Opening in stages</p>
+          <p class="lp-eyebrow">Step 3 &middot; Look ahead &middot; opening in stages</p>
           <h2 id="planner-heading">The planner: your whole picture, looking forward.</h2>
           <p class="cap-body">
             The planner brings it together and grows with your financial life, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
@@ -1112,6 +1117,15 @@ const faqSchema = {
   }
 
   .ex-slide .starter-text { margin-bottom: 14px; }
+
+  /* Where the step continues on the page: plain text, so the hero's
+     button stays the only call to action up here. */
+  .ex-next {
+    margin: 14px 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .ex-track { scroll-behavior: auto; transition: none; }
