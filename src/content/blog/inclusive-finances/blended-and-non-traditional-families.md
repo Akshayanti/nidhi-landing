@@ -11,6 +11,7 @@ takeaways:
 order: 73.5
 companionOf: "financial-vehicles-for-children"
 pubDate: 2099-02-04
+localRules: [inheritance, family-law, tax]
 level: "inclusive-finances"
 primaryPersona: "jiri"
 personas: ["jiri", "marcus", "eva", "petra"]

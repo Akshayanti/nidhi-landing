@@ -10,6 +10,7 @@ takeaways:
 order: 63.5
 companionOf: "retirement-planning"
 pubDate: 2099-01-30
+localRules: [pensions, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "petra"
 personas: ["petra", "eva", "jiri", "marcus"]

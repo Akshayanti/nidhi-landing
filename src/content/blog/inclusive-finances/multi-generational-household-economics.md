@@ -11,6 +11,7 @@ takeaways:
 order: 71.5
 companionOf: "charitable-giving-optimization"
 pubDate: 2099-02-03
+localRules: [family-law, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "jiri"
 personas: ["jiri", "eva", "petra", "marcus"]

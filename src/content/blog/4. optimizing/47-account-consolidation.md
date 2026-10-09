@@ -11,6 +11,7 @@ takeaways:
 order: 47
 pubDate: 2026-10-26
 updatedDate: 2026-08-03
+localRules: [pensions, credit]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -173,7 +174,7 @@ Not every old account should be closed. The following are legitimate reasons to 
 
 **Institutional-class or government-plan fund options.** Some large employer plans and government or military retirement plans offer institutional-class funds with expense ratios well below what retail investors can access. If an old employer plan holds such a fund and rollover would force a switch to a higher-expense equivalent, staying may be worth the sprawl cost. Do the math: annual expense difference multiplied by remaining working years, compared to the operational cost of holding the extra account.
 
-**Unique stable-value funds.** Some employer plans include stable-value funds (a bond-like vehicle with equity-like stability, unique to certain plan types) that are not available in personal retirement accounts. If this is a meaningful part of the allocation, it may argue for staying.
+**Unique stable-value funds.** Some employer plans include stable-value funds (a bond-like vehicle with equity-like stability, found mainly in US 401(k) plans) that are not available in personal retirement accounts. If this is a meaningful part of the allocation, it may argue for staying.
 
 **Creditor protection differences.** In some jurisdictions, employer retirement plans have stronger creditor protection than personal retirement accounts. For someone in a profession with high liability exposure (medical, legal, executive), this can matter.
 

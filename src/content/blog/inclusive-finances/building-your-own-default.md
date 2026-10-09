@@ -11,6 +11,7 @@ takeaways:
 order: 75.5
 companionOf: "the-complete-picture"
 pubDate: 2099-02-06
+localRules: [inheritance, tax, pensions]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus", "tomas"]

@@ -11,6 +11,7 @@ takeaways:
 order: 57.5
 companionOf: "income-replacement-ratio"
 pubDate: 2099-01-22
+localRules: [inheritance, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "petra"
 personas: ["petra", "eva", "marcus", "tomas"]

@@ -10,6 +10,7 @@ takeaways:
 order: 56.5
 companionOf: "geographic-arbitrage"
 pubDate: 2099-01-20
+localRules: [residence, tax, pensions]
 level: "inclusive-finances"
 primaryPersona: "jiri"
 personas: ["jiri", "eva", "petra", "marcus"]

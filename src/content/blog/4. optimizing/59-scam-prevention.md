@@ -11,6 +11,7 @@ takeaways:
 order: 59
 pubDate: 2099-01-27
 updatedDate: 2026-08-31
+localRules: [investments, credit]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -57,7 +58,7 @@ Scam scripts change; the underlying patterns do not. Six signals appear across n
 
 **Unsolicited contact.** Someone you did not seek out contacts you with an urgent opportunity, an account problem, or a request for information. The channel varies (phone, text, email, social media, in-person, dating app in advance-fee variants), but the pattern is the same: they initiated contact, and there is now a specific action they want you to take. This is not how legitimate financial relationships work. Your bank does not call you and ask you to verify your account details. Your government tax authority does not call you and demand immediate payment via wire or gift card. Your long-lost relative in another country does not need your help transferring their inheritance.
 
-**Unusual payment methods.** Cryptocurrency, wire transfer, gift cards, in-person cash pickup, prepaid debit cards. Legitimate business payments happen through traceable, reversible channels (credit cards, bank transfers with normal recall protections, checks). Scammers prefer methods that are either irreversible (crypto, wire) or untraceable (gift cards, cash). An unexpected request that insists on one of these methods is a strong scam signal, especially when the other party made first contact. Bank transfers are normal for some large legitimate payments, such as a property purchase, which is exactly why scammers impersonate lawyers and agents and send "updated" account details; confirming those details by phone, on a number you already had, is the usual check.
+**Unusual payment methods.** Cryptocurrency, wire transfer, gift cards, in-person cash pickup, prepaid debit cards. Legitimate business payments happen through traceable channels (credit cards, bank transfers, checks), some of which can be disputed or reversed. Many bank transfers, for example SEPA credit transfers in Europe, cannot be reversed once sent, and recall depends on the bank and country. Scammers prefer methods that are either irreversible (crypto, wire) or untraceable (gift cards, cash). An unexpected request that insists on one of these methods is a strong scam signal, especially when the other party made first contact. Bank transfers are normal for some large legitimate payments, such as a property purchase, which is exactly why scammers impersonate lawyers and agents and send "updated" account details; confirming those details by phone, on a number you already had, is the usual check.
 
 **Tiered or downline structures.** You earn primarily by recruiting others rather than by selling a real product or providing a real service. This is a pyramid scheme, and pyramid schemes are illegal in most jurisdictions. Multi-level marketing (MLM) structures are legally distinct from pyramid schemes but often functionally similar; regulators such as the US FTC warn that most participants earn little or lose money.
 
@@ -189,12 +190,12 @@ When defenses fail, speed matters. The playbook, in order.
 - In the UK: Action Fraud is the primary channel.
 - In the EU: national fraud reporting authority in each country; Europol coordinates cross-border cases.
 - In India: cybercrime.gov.in for cyber-fraud; local police for physical fraud.
-- Report to the credit bureaus and place a fraud alert (in addition to any existing credit freeze).
+- In the US and Canada, report to the credit bureaus and place a fraud alert (in addition to any existing credit freeze).
 - If the fraud involved a wire transfer, contact the receiving bank directly within 24 hours if possible; some jurisdictions allow reversal of wire transfers reported very quickly.
 
 **Step four: monitor.** Check credit reports monthly for the next 12 months. Watch for any new accounts, inquiries, or address changes you did not initiate. Consider extending fraud alerts or credit freezes for longer periods. Some jurisdictions offer free credit monitoring or identity-theft-recovery services (some for free, some through paid services or credit-card benefits).
 
-**Realistic expectation on recovery.** For most fraud types, full recovery of lost funds is unlikely. Wire fraud caught within hours has some chance; credit-card fraud is usually recoverable through the card issuer; crypto losses are almost always permanent; romance-scam losses are almost always permanent. The purpose of the playbook is to prevent further damage, not to guarantee recovery.
+**Realistic expectation on recovery.** For most fraud types, full recovery of lost funds is unlikely. Wire fraud caught within hours has some chance; credit-card fraud is usually recoverable through the card issuer, though this depends on local consumer law and card-network rules; crypto losses are almost always permanent; romance-scam losses are almost always permanent. The purpose of the playbook is to prevent further damage, not to guarantee recovery.
 
 **One critical note.** Do not respond to any "recovery" offers that appear after the initial fraud. A common secondary-scam pattern targets fraud victims with "we can recover your lost funds for a fee." These are very often additional scams; legitimate recovery routes run through your bank, the police or regulators, not cold contact asking for a fee. Report any recovery-scam attempts along with the original fraud.
 

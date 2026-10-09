@@ -11,6 +11,7 @@ takeaways:
 order: 56
 pubDate: 2099-01-19
 updatedDate: 2026-08-24
+localRules: [tax, pensions, benefits]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]

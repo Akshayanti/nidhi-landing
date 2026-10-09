@@ -11,6 +11,7 @@ takeaways:
 order: 47.5
 companionOf: "account-consolidation-and-financial-data-hygiene"
 pubDate: 2099-01-08
+localRules: [tenancy, benefits]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "tomas", "petra", "marcus"]

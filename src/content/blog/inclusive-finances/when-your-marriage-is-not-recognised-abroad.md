@@ -11,6 +11,7 @@ takeaways:
 order: 69.5
 companionOf: "international-retirement"
 pubDate: 2099-02-01
+localRules: [family-law, residence, inheritance]
 level: "inclusive-finances"
 primaryPersona: "marcus"
 personas: ["marcus", "eva", "jiri", "petra"]

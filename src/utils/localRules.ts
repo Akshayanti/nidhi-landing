@@ -21,6 +21,9 @@ export const LOCAL_RULE_AREAS = [
   'inheritance',
   'insurance',
   'benefits',
+  'family-law',
+  'residence',
+  'tenancy',
 ] as const;
 
 export type LocalRuleArea = (typeof LOCAL_RULE_AREAS)[number];
@@ -36,4 +39,7 @@ export const LOCAL_RULE_SOURCES: Record<LocalRuleArea, { label: string; where: s
   inheritance: { label: 'Wills and inheritance', where: 'a local notary or estate lawyer' },
   insurance: { label: 'Insurance', where: 'your national insurance regulator or ombudsman, or an independent local broker' },
   benefits: { label: 'Public benefits and health cover', where: 'your national health, social insurance or benefits authority' },
+  'family-law': { label: 'Marriage, partnership and separation', where: 'a local family lawyer, or the registry or court that handles them' },
+  residence: { label: 'Residence and visas', where: 'the national immigration authority, or a licensed immigration adviser' },
+  tenancy: { label: 'Renting', where: "a tenants' advice service, or the local housing authority" },
 };

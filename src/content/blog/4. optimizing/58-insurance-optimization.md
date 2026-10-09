@@ -11,6 +11,7 @@ takeaways:
 order: 58
 pubDate: 2099-01-23
 updatedDate: 2026-08-28
+localRules: [insurance, benefits]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -151,7 +152,7 @@ Property (homeowners, renters) and auto insurance protect specific assets. As sa
 
 **Why liability cover is different.** Collision protects your car; the liability part of the same policy protects your net worth, as the section above explained, and is compulsory in most countries. Cutting it saves little and exposes a lot.
 
-**Home insurance considerations.** Dwelling coverage (rebuild cost) is usually set to what it would actually cost to rebuild, not the market value (which includes land). Personal property coverage typically defaults to a percentage of dwelling coverage; valuable specific items (jewellery, art, musical instruments) are often scheduled separately or added by rider. Liability limits on home policies should coordinate with umbrella limits.
+**Home insurance considerations.** Dwelling coverage (rebuild cost) is usually set to what it would actually cost to rebuild, not the market value (which includes land). Personal property coverage typically defaults to a percentage of dwelling coverage; valuable specific items (jewellery, art, musical instruments) are often scheduled separately or added by rider. Where umbrella cover is sold, home liability limits are usually coordinated with it.
 
 ## Insurance to consider dropping
 

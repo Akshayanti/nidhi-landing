@@ -11,6 +11,7 @@ takeaways:
 order: 48.5
 companionOf: "growing-your-income"
 pubDate: 2099-01-10
+localRules: [tax, benefits, pensions]
 level: "inclusive-finances"
 primaryPersona: "petra"
 personas: ["petra", "eva", "jiri", "marcus"]

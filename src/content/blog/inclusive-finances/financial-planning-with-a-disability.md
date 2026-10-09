@@ -11,6 +11,7 @@ takeaways:
 order: 66.5
 companionOf: "pension-income-and-payout-options"
 pubDate: 2099-01-31
+localRules: [benefits, tax, inheritance]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

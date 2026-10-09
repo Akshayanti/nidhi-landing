@@ -11,6 +11,7 @@ takeaways:
 order: 58.5
 companionOf: "insurance-optimization"
 pubDate: 2099-01-24
+localRules: [family-law, inheritance, pensions, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

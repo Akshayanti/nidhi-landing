@@ -11,6 +11,7 @@ takeaways:
 order: 52
 pubDate: 2099-01-15
 updatedDate: 2026-08-14
+localRules: [investments, tax]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -88,7 +89,7 @@ Investment cost is not a single number. It comes in layers, each of which can be
 
 **In-fund trading costs.** High-turnover funds (the fund itself trading positions frequently) generate transaction costs inside the fund. These do not appear in the stated expense ratio in most jurisdictions; they are paid from fund assets and reduce reported returns. A high-turnover active fund can have visible transaction costs of 0.3 to 0.6% per year beyond the stated expense ratio.
 
-**Tax drag from fund turnover.** In taxable accounts, high-turnover funds generate more short-term capital-gains distributions than low-turnover funds. These distributions are taxable events even if you did not sell. Two funds with identical expense ratios and identical pre-tax returns can have meaningfully different after-tax returns because of turnover differences.
+**Tax drag from fund turnover.** In taxable accounts under the US regime, high-turnover funds generate more short-term capital-gains distributions than low-turnover funds. These distributions are taxable events even if you did not sell. Many funds elsewhere, such as accumulating funds, do not distribute gains, and fund taxation differs by country and fund type. Two funds with identical expense ratios and identical pre-tax returns can have meaningfully different after-tax returns because of turnover differences.
 
 **Currency-conversion spreads.** When buying non-domestic funds or ETFs, the platform typically converts your currency at a spread above the interbank rate. Spreads of 0.5 to 1.5% per conversion are common; on a large purchase this can be several hundred euros of hidden cost. Some platforms offer competitive FX; others do not.
 
@@ -137,7 +138,7 @@ The advisor question is often the largest single fee decision a household makes.
 **When advisor fees exceed the value.**
 
 - **Simple situations.** Single income, single country of residence, standard retirement accounts, no equity compensation, no complex assets. The value of professional guidance for a straightforward workplace retirement contribution plus a taxable brokerage index-fund allocation is limited. The fee is not.
-- **Commission-based conflict.** Advisors paid by commission from product providers have structural incentives that may not align with client outcomes. Higher-commission products (variable annuities, complex insurance products, actively-managed funds with embedded revenue-sharing) are more likely to be recommended. Fee-only fiduciary advisors avoid this conflict by construction.
+- **Commission-based conflict.** Advisors paid by commission from product providers have structural incentives that may not align with client outcomes. Higher-commission products (variable annuities, complex insurance products, actively-managed funds with embedded revenue-sharing) are more likely to be recommended. Fee-only fiduciary advisors avoid this conflict by construction; "fiduciary" is a US regulatory category, and the duties advisers owe clients differ by country.
 - **Assets-under-management drag.** A 1% AUM fee on a €500,000 portfolio is €5,000 per year. On a €2 million portfolio it is €20,000 per year. At scale, the fee is a meaningful portion of the annual investment return. Flat-fee or hourly-fee models can serve larger portfolios at lower total cost.
 
 **The alternatives.** A fee-only advisor engaged for a project (retirement planning review, estate-planning session, portfolio design consultation) at a flat or hourly fee can provide most of the value at a small fraction of ongoing AUM fees. A robo-advisor at 0.25 to 0.50% provides automated allocation and rebalancing at lower cost than a human advisor, appropriate for households whose needs are largely implementation rather than complex planning. Self-directed investing at 0.05 to 0.15% total cost is the lowest-fee path, appropriate for households with the attention and discipline to handle the implementation directly.
@@ -154,9 +155,9 @@ Some fees are structurally hidden and easy to miss.
 
 **Structured products and equity-linked notes.** Bank-sold structured products often embed fees of 3 to 6% of invested capital at issuance, invisible to the buyer. The stated payoff structure may look attractive but the true cost is buried in the pricing.
 
-**Variable annuities and insurance-linked investment products.** These typically combine an insurance wrapper (with its own annual charges of 1 to 2%) with an investment sub-account (with its own fund fees). Total costs can exceed 3% per year. The benefits are tax deferral and, in some products, guarantees on income or death benefits; the tax deferral is often available more cheaply through standard retirement accounts, so the question is what the guarantees are worth to you.
+**Variable annuities and insurance-linked investment products.** Variable annuities are a US product; insurance-linked investment products exist in many countries under other names. These typically combine an insurance wrapper (with its own annual charges of 1 to 2%) with an investment sub-account (with its own fund fees). Total costs can exceed 3% per year. The benefits are tax deferral and, in some products, guarantees on income or death benefits; the tax deferral is often available more cheaply through standard retirement accounts, so the question is what the guarantees are worth to you.
 
-**Wire transfer and account maintenance fees.** Small individually, they add up on accounts that have not been reviewed in years. Some brokerages charge annual inactivity fees or IRA-custody fees that are easily eliminated by asking or switching.
+**Wire transfer and account maintenance fees.** Small individually, they add up on accounts that have not been reviewed in years. Some brokerages charge annual inactivity fees or account-custody fees (in the US, IRA-custody fees) that are easily eliminated by asking or switching.
 
 The rule for hidden fees: read the annual fee disclosure on every account at least once. The exercise takes an hour and often surfaces fees that can be eliminated with a single email or a single account switch.
 

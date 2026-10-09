@@ -11,6 +11,7 @@ takeaways:
 order: 74.5
 companionOf: "generational-wealth"
 pubDate: 2099-02-05
+localRules: [inheritance, pensions, benefits, deposit-protection]
 level: "inclusive-finances"
 primaryPersona: "petra"
 personas: ["petra", "eva", "marcus", "jiri"]
@@ -20,7 +21,7 @@ faq:
   - question: "What has to be done in the first few weeks after a partner dies?"
     answer: "A short list. Register the death and order several certified copies of the certificate, because every institution will ask for one. Find the will. Make sure you have access to enough cash for two or three months, since accounts in the dead person's sole name are often frozen. Tell the employer, pension providers, and insurers. Claim survivor benefits, some of which have time limits. Keep paying the rent or mortgage and the insurance premiums. Almost everything else can wait."
   - question: "Which decisions should wait?"
-    answer: "Anything large and hard to undo: selling or buying a home, moving city or country, investing or spending a life insurance payout, lending or giving substantial sums to relatives, leaving a job, or changing the ownership of assets. A common guideline is to wait six to twelve months for decisions of that size. Many people park a lump sum in an ordinary insured savings account in the meantime, within deposit-insurance limits. Doing nothing with it for a year usually costs little. Doing the wrong thing in the first month can cost a great deal."
+    answer: "Anything large and hard to undo: selling or buying a home, moving city or country, investing or spending a life insurance payout, lending or giving substantial sums to relatives, leaving a job, or changing the ownership of assets. A common guideline is to wait six to twelve months for decisions of that size. Many people park a lump sum in an ordinary insured savings account in the meantime, within deposit-insurance limits, which differ by country. Doing nothing with it for a year usually costs little. Doing the wrong thing in the first month can cost a great deal."
   - question: "What is a survivor benefit?"
     answer: "It is income or a lump sum paid to a person because their partner has died: from a state pension system, from a workplace pension, or from social insurance. Rules vary widely. Some benefits are paid only to a legal spouse, some also to a registered or unmarried partner, and some depend on your age, your own income, whether you have children, or how long you were married. Several must be claimed within a set period. Ask every pension scheme and the state system directly."
   - question: "What is probate?"

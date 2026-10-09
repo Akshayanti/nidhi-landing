@@ -11,6 +11,7 @@ takeaways:
 order: 53
 pubDate: 2099-01-16
 updatedDate: 2026-08-17
+localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -52,7 +53,7 @@ Tax-loss harvesting is one of the most commonly misunderstood techniques in pers
 
 **What it is not.** It is not a way to make money. It does not increase your investment return. It does not add to the value of your portfolio in any single year. Its benefit is tax deferral: you push the tax bill on your gains into the future, and the deferred amount stays invested and compounds. The value of harvesting is the value of the time delay on the tax bill, plus the value of any bracket arbitrage (if you harvest losses in a high-tax year and eventually realise gains in a lower-tax year).
 
-**Why it works arithmetically.** Suppose you have a €10,000 gain in your portfolio for the year, which will be taxed at (say) 25% short-term capital-gains rate when realised. Without harvesting, you pay €2,500 in tax. With harvesting, you realise €10,000 of losses to offset the gains: net taxable gain is zero, tax is zero. The €2,500 that would have gone to tax stays invested. In year 2 the €2,500, invested at 7%, is €2,675. In year 20, it is roughly €9,700. When you eventually realise the gains on the reinvested position (which now has a lower cost basis, so a larger unrealised gain), you owe more tax at that point. But the extra tax is not much larger than the original €2,500, while the compounded €2,500 has grown substantially. The net benefit is the compounding on the deferred tax minus the incremental tax on the eventual sale.
+**Why it works arithmetically.** Suppose you have a €10,000 gain in your portfolio for the year, which will be taxed at (say) a 25% short-term capital-gains rate when realised, using US-style rates for illustration. Without harvesting, you pay €2,500 in tax. With harvesting, you realise €10,000 of losses to offset the gains: net taxable gain is zero, tax is zero. The €2,500 that would have gone to tax stays invested. In year 2 the €2,500, invested at 7%, is €2,675. In year 20, it is roughly €9,700. When you eventually realise the gains on the reinvested position (which now has a lower cost basis, so a larger unrealised gain), you owe more tax at that point. But the extra tax is not much larger than the original €2,500, while the compounded €2,500 has grown substantially. The net benefit is the compounding on the deferred tax minus the incremental tax on the eventual sale.
 
 The value scales with several factors: your marginal tax rate (higher rate = larger benefit), the volatility of your holdings (more volatility = more harvestable losses in a typical year), the frequency of your attention (annual scanning captures losses that arise during the year), and your investing horizon (more years of deferral = more compounding).
 
@@ -166,7 +167,7 @@ Bonds and REITs in the taxable account generate ordinary-income distributions ta
 - Tax-free retirement (€50k): equity €50k. Puts the highest-expected-return asset in the highest-tax-benefit account.
 - Taxable brokerage (€200k): equity €200k. All equity, tax-efficient index funds only.
 
-The overall allocation is still 70/25/5 (280k equity, 100k bonds, 20k REITs); only the placement changed. The taxable account now generates only equity dividends (typically at qualified-dividend rates, lower than ordinary income) and no bond or REIT ordinary-income distributions. Annual tax drag falls by about €550: the €720 on bond and REIT income goes, and the extra €60,000 of equity in the taxable account adds back roughly €180 of dividend tax (2% yield taxed at 15%). Over 20 years, with the saving reinvested at 5% real, the difference is roughly €18,000 of extra terminal wealth.
+The overall allocation is still 70/25/5 (280k equity, 100k bonds, 20k REITs); only the placement changed. The taxable account now generates only equity dividends (using US-style rates for illustration, typically at qualified-dividend rates, lower than ordinary income) and no bond or REIT ordinary-income distributions. Annual tax drag falls by about €550: the €720 on bond and REIT income goes, and the extra €60,000 of equity in the taxable account adds back roughly €180 of dividend tax (2% yield taxed at 15%). Over 20 years, with the saving reinvested at 5% real, the difference is roughly €18,000 of extra terminal wealth.
 
 **One catch.** The tax-free retirement account holds only equity in the optimised version. If equities have a bad decade and the tax-free account underperforms while the tax-advantaged account (holding bonds and REITs) outperforms, the household loses some of the tax-free advantage. Location is an optimisation that pays off over long horizons; over short horizons it can go either way. Many planners consider the tradeoff worth it over long horizons, but it is worth understanding.
 
