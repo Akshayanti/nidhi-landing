@@ -1,0 +1,286 @@
+{
+  "slug": "solo-agers-and-single-income-households",
+  "postTitle": "One Income, No Backup: Planning for a Household of One",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/solo-agers-and-single-income-households",
+  "availableFigures": [],
+  "mode": "faithful",
+  "mood": "curious",
+  "topic": "The six month emergency fund rule hides a second income",
+  "topicChip": "ONE INCOME",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Worked example from the post, pay after tax. Couple: €2,500 each, €3,600 spending a month; one loses a job, income falls to €2,500, shortfall €1,100 a month; six month fund 6 × €3,600 = €21,600, lasts 21,600 / 1,100 = 19.6 months (nearly 20). Single earner: €3,000 pay, €2,400 spending; loses her job, shortfall €2,400; six month fund 6 × €2,400 = €14,400, lasts exactly 6 months. 19.6 / 6 = 3.3, more than three times the runway. No interest or inflation applied. A common range on one income is 6 to 12 months, not a rule."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "The same rule for both",
+      "display": "6 months",
+      "note": "Of spending, saved as a fund",
+      "tone": "ink"
+    },
+    "unit": "months",
+    "basis": "How long a six month emergency fund lasts after one job loss, illustrative",
+    "bars": [
+      {
+        "id": "couple",
+        "label": "A couple, one job lost",
+        "sublabel": "€21,600 fund, €1,100 a month short",
+        "value": 19.6,
+        "display": "Nearly 20 months",
+        "tone": "teal"
+      },
+      {
+        "id": "single",
+        "label": "A single earner, job lost",
+        "sublabel": "€14,400 fund, €2,400 a month short",
+        "value": 6,
+        "display": "6 months",
+        "tone": "amber"
+      }
+    ],
+    "callout": {
+      "display": "3x",
+      "from": "single",
+      "to": "couple",
+      "label": "More than three times the runway"
+    },
+    "disclosure": "Illustrative. Couple: €2,500 pay each, €3,600 spending a month. Single: €3,000 pay, €2,400 spending. After tax."
+  },
+  "hookVariants": [
+    {
+      "id": "twenty-or-six",
+      "layout": "bar-gap",
+      "narration": "Same emergency fund rule. One household's money lasts nearly twenty months. The other's lasts six.",
+      "onscreenLines": [
+        "Same six month rule",
+        "Nearly 20 months",
+        "Or 6 months"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "six"
+      ]
+    },
+    {
+      "id": "second-income",
+      "layout": "bar-gap",
+      "narration": "The six month emergency fund rule quietly assumes a second income. Many households do not have one.",
+      "onscreenLines": [
+        "The six month rule",
+        "assumes a second income",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "second"
+      ]
+    },
+    {
+      "id": "one-income",
+      "layout": "bar-gap",
+      "narration": "Living on one income? The usual emergency fund advice was written with someone else in mind.",
+      "onscreenLines": [
+        "One income?",
+        "The usual advice",
+        "assumes two"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "one"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Two households follow the same rule: six months of spending, saved as an emergency fund.",
+      "onscreenText": "One rule, two households",
+      "subtext": "Six months of spending, saved",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "A couple each earn €2,500 after tax and spend €3,600 a month. Then one of them loses a job.",
+      "onscreenText": "A couple, one job lost",
+      "subtext": "€1,100 short each month",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "They are €1,100 short a month. Their six month fund of €21,600 lasts nearly twenty months.",
+      "onscreenText": "Nearly 20 months",
+      "subtext": "€21,600, at €1,100 a month",
+      "emphasis": [
+        "twenty"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "A single earner takes home €3,000 and spends €2,400. She loses her job. The shortfall is all of it.",
+      "onscreenText": "A single earner, job lost",
+      "subtext": "€2,400 short each month",
+      "emphasis": [
+        "all"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "stat",
+      "narration": "Her fund of €14,400 lasts exactly six months. The couple has more than three times the runway.",
+      "onscreenText": "More than 3x the runway",
+      "subtext": "Same rule, very different cover",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "definition",
+      "narration": "The rule was never just six months of spending. It was six months with another income still coming in.",
+      "onscreenText": "The hidden second income",
+      "subtext": "Built into the rule, never stated",
+      "emphasis": [
+        "another"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "On one income, many aim higher, often six to twelve months. Income stability and time to new work shape where.",
+      "onscreenText": "The one income check",
+      "subtext": "Three questions, your own numbers",
+      "emphasis": [
+        "higher"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The one income check",
+        "rows": [
+          {
+            "label": "Shortfall: all your spending",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "How stable is the income?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "How long to replace it?",
+            "value": "3",
+            "tone": "teal"
+          },
+          {
+            "label": "A common range on one income",
+            "value": "6 to 12 months",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "Illustrative. A common range, not a rule."
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "story",
+      "narration": "Same formula, different inputs. A household of one runs on its own numbers.",
+      "onscreenText": "Your own numbers",
+      "subtext": "Same formula, different inputs",
+      "emphasis": [
+        "own"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before you next size your emergency fund.",
+    "onscreenText": "Save the one income check",
+    "subtext": "Three questions, your own numbers",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Same emergency fund rule. One household's money lasts nearly twenty months. The other's lasts six.\n\nA couple each earn €2,500 after tax and spend €3,600 a month. One loses a job: they are €1,100 short, and their €21,600 fund lasts nearly 20 months. A single earner takes home €3,000 and spends €2,400. She loses her job: the shortfall is all €2,400, and her €14,400 fund lasts 6 months. The rule quietly assumed a second income.\n\nThe one income check: your shortfall is all of your spending, how stable is the income, and how long would it take to replace it?\n\n→ Save this before you next size your emergency fund\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Pay after tax. 3 to 6 months is a common guideline, and 6 to 12 a common range on one income, not rules. Safety nets vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Same emergency fund rule. One household's money lasts nearly twenty months. The other's lasts six.\n\nOn one income, the shortfall is all of your spending. Illustrative.",
+    "instagramKeywords": [
+      "emergency fund",
+      "one income household",
+      "single earner",
+      "solo ager",
+      "job loss",
+      "income protection",
+      "how many months emergency fund",
+      "financial runway",
+      "personal finance",
+      "global expats",
+      "Notgroschen",
+      "Einpersonenhaushalt",
+      "fonds d'urgence",
+      "fondo de emergencia"
+    ],
+    "tiktokTopics": [
+      "emergency fund on one income",
+      "how big should my emergency fund be if i live alone",
+      "single income money planning"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "singleincome",
+    "livingalone",
+    "emergencysavings"
+  ]
+}

@@ -260,11 +260,21 @@ export function ColumnStoryCTA({ input }: { input: ReelInput }) {
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.columnStory;
   if (!card || !story) return null;
+  // A compact ToolCard is 410px tall for one or two rows, 560 for three or
+  // four and 620 for five. Taller cards start higher (180, clear of the series
+  // chip, as DirectBarCTA does), and the disclosure and
+  // heading follow the card instead of sitting at fixed positions under it.
+  const rows = Math.min(card.rows.length, 5);
+  const tall = rows > 2;
+  const cardTop = tall ? 180 : 280;
+  const cardHeight = rows > 4 ? 620 : rows > 2 ? 560 : 410;
+  const disclosureTop = tall ? cardTop + cardHeight + 18 : 720;
+  const headingTop = tall ? cardTop + cardHeight + 100 : 785;
   return (
     <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
-      <div style={{ position: "absolute", left: 145, top: 280, opacity: enter, transform: `translateY(${(1 - enter) * 20}px) rotate(-1deg)` }}><ToolCard card={card} compact /></div>
-      <div style={{ position: "absolute", left: 130, right: 150, top: 720, textAlign: "center", fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.disclosure}</div>
-      <div style={{ position: "absolute", left: 70, right: 100, top: 785, textAlign: "center", opacity: enter }}>
+      <div style={{ position: "absolute", left: 145, top: cardTop, opacity: enter, transform: `translateY(${(1 - enter) * 20}px) rotate(-1deg)` }}><ToolCard card={card} compact /></div>
+      <div style={{ position: "absolute", left: 130, right: 150, top: disclosureTop, textAlign: "center", fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.disclosure}</div>
+      <div style={{ position: "absolute", left: 70, right: 100, top: headingTop, textAlign: "center", opacity: enter }}>
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>

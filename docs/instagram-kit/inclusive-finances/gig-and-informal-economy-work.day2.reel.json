@@ -1,0 +1,309 @@
+{
+  "slug": "gig-and-informal-economy-work",
+  "postTitle": "Gig and Informal Work: Planning Without an Employer",
+  "postLevel": "inclusive-finances",
+  "episode": 3,
+  "seriesTotal": 0,
+  "blogPath": "blog/gig-and-informal-economy-work",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm-authority",
+  "topic": "Uneven freelance income can become a steady monthly salary",
+  "topicChip": "UNEVEN INCOME",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "One freelance year, monthly income: Jan €1,800, Feb €4,200, Mar €900, Apr €3,600, May €2,700, Jun €5,100, Jul €1,200, Aug €3,300, Sep €2,400, Oct €4,500, Nov €600, Dec €3,900. Total €34,200. 25% set aside for tax (illustrative): €8,550. Left after tax €25,650, about €2,140 a month (25,650 ÷ 12 = 2,137.5). Fixed salary €2,000 a month, €24,000 a year. Holding account running balance lowest at €825 below zero in March; year ends €1,650 ahead (25,650 minus 24,000). Illustrative."
+  },
+  "monthStory": {
+    "unit": "EUR",
+    "bars": [
+      {
+        "month": "Jan",
+        "value": 1800
+      },
+      {
+        "month": "Feb",
+        "value": 4200
+      },
+      {
+        "month": "Mar",
+        "value": 900
+      },
+      {
+        "month": "Apr",
+        "value": 3600
+      },
+      {
+        "month": "May",
+        "value": 2700
+      },
+      {
+        "month": "Jun",
+        "value": 5100
+      },
+      {
+        "month": "Jul",
+        "value": 1200
+      },
+      {
+        "month": "Aug",
+        "value": 3300
+      },
+      {
+        "month": "Sep",
+        "value": 2400
+      },
+      {
+        "month": "Oct",
+        "value": 4500
+      },
+      {
+        "month": "Nov",
+        "value": 600
+      },
+      {
+        "month": "Dec",
+        "value": 3900
+      }
+    ],
+    "smoothed": 2000,
+    "card": {
+      "title": "THE SALARY METHOD",
+      "rows": [
+        {
+          "label": "Every payment lands in",
+          "value": "1 account",
+          "tone": "ink"
+        },
+        {
+          "label": "Tax moved out first",
+          "value": "25%",
+          "tone": "amber"
+        },
+        {
+          "label": "Fixed salary, same date",
+          "value": "€2,000",
+          "tone": "teal"
+        }
+      ],
+      "footnote": "Illustrative. The tax share depends on local rules."
+    },
+    "disclosure": "Illustrative. Monthly income before tax. The tax share depends on local rules."
+  },
+  "hookVariants": [
+    {
+      "id": "rent-does-not",
+      "layout": "month-gap",
+      "narration": "Your income swings from six hundred euros to five thousand one hundred. Your rent does not.",
+      "onscreenLines": [
+        "Income: €600 to €5,100",
+        "Rent: the same every month",
+        "One freelance year"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "rent"
+      ]
+    },
+    {
+      "id": "not-discipline",
+      "layout": "month-gap",
+      "narration": "Uneven income is not a discipline problem. It is a plumbing problem, and plumbing can be fixed.",
+      "onscreenLines": [
+        "Not a discipline problem",
+        "A plumbing problem",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "plumbing"
+      ]
+    },
+    {
+      "id": "monthly-income",
+      "layout": "month-gap",
+      "narration": "Budgeting advice starts with your monthly income. What if you do not have one?",
+      "onscreenLines": [
+        "Start with your monthly income?",
+        "Which month?",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "one"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "One freelance year. Thirty four thousand two hundred euros in total, and no two months alike.",
+      "onscreenText": "€34,200 in a year",
+      "subtext": "No two months alike",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "series"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "March brought nine hundred. November, six hundred. Budget on a good month, and these months break it.",
+      "onscreenText": "The thin months",
+      "subtext": "€900 in March, €600 in November",
+      "emphasis": [
+        "break"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "highlight",
+        "months": [
+          "Mar",
+          "Nov"
+        ]
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "definition",
+      "narration": "The fix is mechanical. Every payment lands in one holding account. The day it arrives, a fixed share moves to a tax account.",
+      "onscreenText": "One account, tax out first",
+      "subtext": "Here, 25% moved aside on arrival",
+      "emphasis": [
+        "mechanical"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "series"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Then, on the same date each month, a fixed salary moves to the everyday account. Here, two thousand euros.",
+      "onscreenText": "Pay yourself a salary",
+      "subtext": "Same amount, same date",
+      "emphasis": [
+        "salary"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "Jagged income in. Two thousand euros out, every month. The holding account does the swinging.",
+      "onscreenText": "Jagged in, flat out",
+      "subtext": "€2,000 every month",
+      "emphasis": [
+        "every"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "smoothed"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "example",
+      "narration": "After tax, the year left about two thousand one hundred and forty a month. So the salary held, with room to spare.",
+      "onscreenText": "About €2,140 after tax",
+      "subtext": "A €2,000 salary, with room to spare",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "smoothed"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "warning",
+      "narration": "The low point came in March, when the holding account sat eight hundred and twenty five euros below zero.",
+      "onscreenText": "Low point: March",
+      "subtext": "€825 below zero, so a buffer matters",
+      "emphasis": [
+        "March"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "highlight",
+        "months": [
+          "Mar"
+        ]
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "story",
+      "narration": "One month's salary as a starting buffer covered it. The year ended one thousand six hundred and fifty euros ahead.",
+      "onscreenText": "€1,650 ahead at year end",
+      "subtext": "Same work, different plumbing",
+      "emphasis": [
+        "ahead"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "smoothed"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for your next uneven month.",
+    "onscreenText": "Save the salary method",
+    "subtext": "One account, tax first, a fixed salary",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your income swings from €600 to €5,100. Your rent does not.\n\nOne freelance year: €34,200 in, no two months alike. With the salary method, every payment lands in one holding account, 25% moves to a tax account the day it arrives, and a fixed €2,000 salary leaves on the same date each month. After tax the year left about €2,140 a month, so the salary held. The holding account's low point was €825 below zero in March, and the year ended €1,650 ahead. A common approach is a salary below the after tax average, reviewed after six months.\n\nThe salary method: one holding account, tax out first, a fixed salary on a fixed date, and the account absorbs the swings.\n\n→ Save this for your next uneven month\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. The tax share depends on local rules. Not tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Your income swings from €600 to €5,100. Your rent does not.\n\nOne holding account, tax out first, a fixed salary. Illustrative, not tax advice.",
+    "instagramKeywords": [
+      "income smoothing",
+      "uneven income",
+      "pay yourself a salary",
+      "holding account",
+      "set aside for tax",
+      "freelance budget",
+      "budgeting with variable income",
+      "income buffer",
+      "freelance cash flow",
+      "personal finance",
+      "global expats",
+      "unregelmäßiges Einkommen",
+      "Steuerrücklage",
+      "revenus irréguliers",
+      "ingresos irregulares"
+    ],
+    "tiktokTopics": [
+      "how to budget on freelance income",
+      "paying yourself a salary as a freelancer",
+      "how much to set aside for tax self employed"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "freelancetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "irregularincome",
+    "freelancefinance",
+    "variableincome"
+  ],
+  "reelPromise": "What an employer was quietly paying for, row by row, and what changes when income is informal and paid in cash"
+}

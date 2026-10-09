@@ -1,0 +1,271 @@
+{
+  "slug": "owning-a-home-with-more-than-two-people",
+  "postTitle": "Owning a Home With More Than Two People",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/owning-a-home-with-more-than-two-people",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "In a group, joint ownership hands the whole house to the last survivor",
+  "topicChip": "SHARED TITLE",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Illustrative household from the post: Mira and Tobias are married, Kai has been their partner for six years. The title names the couple as joint tenants. Kai put in €60,000 of the deposit and pays a third of every mortgage payment, with nothing in writing. Shares of 50%, 30% and 20% are the post's illustrative example. Property law differs by country. No other figures."
+  },
+  "columnStory": {
+    "left": {
+      "id": "joint",
+      "title": "Joint tenancy",
+      "rule": "Survivors take the share",
+      "items": [
+        "First death: two owners left",
+        "Second death: one owns it all",
+        "No will can change that"
+      ],
+      "tone": "amber"
+    },
+    "right": {
+      "id": "shares",
+      "title": "Stated shares",
+      "rule": "Each share is its owner's",
+      "items": [
+        "Shares match what each put in",
+        "A will decides each share",
+        "Each owner needs a will"
+      ],
+      "tone": "teal"
+    },
+    "buffers": [
+      "Stated shares on the title",
+      "A one page record of the €60,000",
+      "A will for each owner"
+    ],
+    "swap": {
+      "item": "A will decides each share",
+      "belongs": "right",
+      "wrongLabel": "not under joint tenancy",
+      "correctLabel": "with stated shares"
+    },
+    "disclosure": "Illustrative. Ownership forms and their names differ by country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "title-saw-two",
+      "layout": "columns-gap",
+      "narration": "Three partners paid for a house. One died. The partner who put in sixty thousand euros owned nothing.",
+      "onscreenLines": [
+        "Three partners, one house",
+        "One died",
+        "€60,000 in, nothing owned"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "nothing"
+      ]
+    },
+    {
+      "id": "last-survivor",
+      "layout": "columns-gap",
+      "narration": "Buying a home as three? Under joint ownership, the last survivor can end up with the whole house.",
+      "onscreenLines": [
+        "Buying a home as three?",
+        "The last survivor gets it all",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "survivor"
+      ]
+    },
+    {
+      "id": "looks-like-a-gift",
+      "layout": "columns-gap",
+      "narration": "Sixty thousand euros into a shared house, and on paper it can look like a gift.",
+      "onscreenLines": [
+        "€60,000 into a house",
+        "On paper, a gift",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "gift"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "list",
+      "narration": "Under a joint tenancy, each death passes that share to the remaining owners. In a group, the last survivor may own everything.",
+      "onscreenText": "Joint tenancy",
+      "subtext": "The last survivor gets the house",
+      "emphasis": [
+        "survivor"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "story",
+      "narration": "Mira and Tobias are married, and the title names them. Kai, their partner, put in sixty thousand euros. When Mira dies, Tobias owns everything.",
+      "onscreenText": "Survivors take the share",
+      "subtext": "Kai's €60,000 looks like a gift",
+      "emphasis": [
+        "everything"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "The other common form holds the home in stated shares. Shares can match what each person put in. Fifty, thirty and twenty percent, say.",
+      "onscreenText": "Stated shares",
+      "subtext": "Shares match what each put in",
+      "emphasis": [
+        "stated"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Each share then passes under its owner's will. Without one, it goes to that owner's relatives, who then share the house with the group.",
+      "onscreenText": "Each share is its owner's",
+      "subtext": "So each owner needs a will",
+      "emphasis": [
+        "will"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "Three records would have helped Kai: stated shares on the title, a written record of the sixty thousand, and a will for each owner.",
+      "onscreenText": "What would have protected Kai",
+      "subtext": "Shares, a record, three wills",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "warning",
+      "narration": "A common surprise: under a joint tenancy, a will cannot pass the share on. The other owners take it first.",
+      "onscreenText": "A will cannot override it",
+      "subtext": "Not under a joint tenancy",
+      "emphasis": [
+        "cannot"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "swap"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "Property rules vary by country. Three questions matter: who owns each share, where it goes after a death, and what happens when someone leaves.",
+      "onscreenText": "Three questions",
+      "subtext": "For any shared title",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Three questions for a shared title",
+        "rows": [
+          {
+            "label": "Who owns what fraction?",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "Where does a share go on a death?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "What if someone wants out?",
+            "value": "3",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Property law differs by country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before anyone signs a title.",
+    "onscreenText": "Save the three questions",
+    "subtext": "Before anyone signs a title",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Three partners paid for a house. One died. The partner who put in €60,000 owned nothing.\n\nMira and Tobias are married, and Kai has been their partner for six years. The title names the couple as joint tenants. Kai put in €60,000 of the deposit and a third of every payment, with nothing in writing. Under a joint tenancy, a death passes the share to the other owners, so when Mira dies, Tobias owns the whole house. Held in stated shares instead, each share passes under its owner's will, which means each owner needs one. The names and the rules differ by country, and forced heirship limits a will in some.\n\nThree questions for any shared title: who owns what fraction, where does a share go on a death, and what happens if someone wants out?\n\n→ Save this before anyone signs a title\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Property law differs by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Three partners paid for a house. One died. The partner who put in €60,000 owned nothing.\n\nThree questions show who ends up with a shared home. Property law differs by country.",
+    "instagramKeywords": [
+      "joint tenancy",
+      "tenancy in common",
+      "right of survivorship",
+      "buying a home with friends",
+      "three owners one house",
+      "what happens to my share when i die",
+      "unmarried partners",
+      "inheritance rules",
+      "forced heirship",
+      "personal finance",
+      "global expats",
+      "europe",
+      "Miteigentum",
+      "indivision",
+      "copropiedad",
+      "podílové spoluvlastnictví"
+    ],
+    "tiktokTopics": [
+      "buying a house with friends",
+      "what is joint tenancy",
+      "what happens if a home owner dies"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "coownership",
+    "buyingahouse",
+    "propertyownership"
+  ]
+}

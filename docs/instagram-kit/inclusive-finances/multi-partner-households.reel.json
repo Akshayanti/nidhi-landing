@@ -1,0 +1,271 @@
+{
+  "slug": "multi-partner-households",
+  "postTitle": "More Than Two Partners: Protecting Everyone",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/multi-partner-households",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "reflective",
+  "topic": "The law offers one spouse slot, and every other partner is covered only by documents",
+  "topicChip": "ONE LEGAL SLOT",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No euro figures. From the post: in most countries marriage covers two people at a time, so automatic protections reach one partner; other partners rely on documents; joint tax treatment, partner visas and legal parenthood (two legal parents at most in most countries) are not extendable by any document. Family law differs by country."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "free",
+        "label": "Automatic",
+        "cost": "One legal spouse",
+        "items": [
+          "Inheritance with no will",
+          "Survivor pension, often",
+          "Medical decisions"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "modest",
+        "label": "By document",
+        "cost": "Every other partner",
+        "items": [
+          "A will naming each partner",
+          "Beneficiary forms, with shares",
+          "Healthcare proxies, in order"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "hard",
+        "label": "Not extendable",
+        "cost": "Plan around it",
+        "items": [
+          "Joint tax treatment",
+          "A partner visa",
+          "Legal parenthood"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "hard",
+    "disclosure": "Illustrative. Family law, tax and immigration rules differ by country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "one-slot",
+      "layout": "bands-gap",
+      "narration": "Three partners share a home. If one dies without a will, a partner may inherit nothing.",
+      "onscreenLines": [
+        "One dies without a will",
+        "A partner may inherit nothing"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "nothing"
+      ]
+    },
+    {
+      "id": "law-sees-a-couple",
+      "layout": "bands-gap",
+      "narration": "Three partners, one hospital bed. Often only a spouse or relative is asked about treatment.",
+      "onscreenLines": [
+        "Three partners, one hospital bed",
+        "Who is asked about treatment?"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "hospital"
+      ]
+    },
+    {
+      "id": "chosen-or-accident",
+      "layout": "bands-gap",
+      "narration": "Only one pair in a household of three partners can usually marry. That choice decides who is protected.",
+      "onscreenLines": [
+        "One pair can usually marry",
+        "Who does that protect?"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "protected"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "Marriage activates legal protections for two people. In a larger household, one partner may receive them while the others do not.",
+      "onscreenText": "One slot",
+      "subtext": "Automatic, by document, or not at all",
+      "emphasis": [
+        "one"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "Automatic, for the spouse: inheritance when there is no will, often a survivor pension, and medical decisions.",
+      "onscreenText": "Automatic: one spouse",
+      "subtext": "Inheritance, pension, decisions",
+      "emphasis": [
+        "spouse"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "free"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Every other partner depends on documents. A will naming each partner. Beneficiary forms with a percentage each. Healthcare proxies, with alternates in an agreed order.",
+      "onscreenText": "By document: everyone else",
+      "subtext": "Wills, forms, proxies",
+      "emphasis": [
+        "documents"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "modest"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "And some things no document extends. Joint tax treatment. A partner visa. Legal parenthood, which most countries cap at two parents.",
+      "onscreenText": "Not extendable",
+      "subtext": "Tax, visas, parenthood: planned around",
+      "emphasis": [
+        "no"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hard"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "example",
+      "narration": "Common workarounds include insurance for an expected tax cost, assets held in deliberate names, and a residence status of each partner's own.",
+      "onscreenText": "Workarounds, not documents",
+      "subtext": "Insurance, names, a status of their own",
+      "emphasis": [
+        "workarounds"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "emphasis"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "Three questions matter: who holds the legal slot and why, how are the others covered, and what needs a workaround?",
+      "onscreenText": "Three questions",
+      "subtext": "For one slot and more partners",
+      "emphasis": [
+        "three"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Three questions for one slot",
+        "rows": [
+          {
+            "label": "Who holds the slot, and why?",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "How is each other partner covered?",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "What needs a workaround?",
+            "value": "3",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Not legal advice. Family law differs by country."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "There is no right answer to who holds it. There is a difference between a choice and an accident.",
+      "onscreenText": "A choice, not an accident",
+      "subtext": "Whoever holds the slot",
+      "emphasis": [
+        "choice"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for your household.",
+    "onscreenText": "Save the three questions",
+    "subtext": "One slot, everyone covered",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Three partners share a home. If one dies without a will, a partner may inherit nothing.\n\nMarriage switches on protections automatically: inheritance with no will, often a survivor pension, medical decisions. In a household of three or more partners, one partner can hold that slot. Every other partner is covered only by what is written down: wills naming each partner, beneficiary forms with a percentage each, healthcare proxies with alternates in an agreed order. And some things no document extends, such as joint tax treatment, a partner visa and legal parenthood, so the plan works around them.\n\nThree questions: who holds the slot and why, how is each other partner covered, and what needs a workaround?\n\n→ Save this for your household\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot legal advice. Family law, tax and immigration rules differ by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Three partners share a home. If one dies without a will, a partner may inherit nothing.\n\nThree questions for who is covered, and how. Rules differ by country.",
+    "instagramKeywords": [
+      "one legal spouse",
+      "more than two partners",
+      "household of three partners",
+      "next of kin",
+      "inheritance without a will",
+      "survivor pension",
+      "partner visa",
+      "legal parenthood",
+      "recognition gap",
+      "personal finance",
+      "global expats",
+      "europe",
+      "Lebensgefährte",
+      "Erbrecht",
+      "pareja de hecho"
+    ],
+    "tiktokTopics": [
+      "can three partners marry",
+      "who inherits if you are not married",
+      "protecting more than two partners"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "inheritanceplanning",
+    "familylaw",
+    "moneyandrelationships"
+  ]
+}

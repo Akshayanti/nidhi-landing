@@ -1,0 +1,272 @@
+{
+  "slug": "solo-agers-and-single-income-households",
+  "postTitle": "One Income, No Backup: Planning for a Household of One",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/solo-agers-and-single-income-households",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "warm",
+  "topic": "Living alone, nobody acts for you unless you name them in writing",
+  "topicChip": "BACKUP PERSON",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No figures. From the post: couples have a default for emergencies, and institutions often accept a spouse without paperwork. Living alone with nothing arranged, the law supplies a default: a relative by blood, however distant, or a court appointed guardian. Five documents replace it: financial power of attorney, healthcare power of attorney, advance directive, will, and a list of where everything is. Names and formalities vary by country. Not legal advice."
+  },
+  "columnStory": {
+    "left": {
+      "id": "partner",
+      "title": "With a partner",
+      "rule": "A default exists",
+      "items": [
+        "Talks to the doctors",
+        "Deals with the bank",
+        "Handles the landlord"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "alone",
+      "title": "Living alone",
+      "rule": "The law picks",
+      "items": [
+        "A relative, however distant",
+        "Or a court appointed guardian",
+        "Maybe not who you would pick"
+      ],
+      "tone": "amber"
+    },
+    "buffers": [
+      "Powers of attorney, money and health",
+      "An advance directive and a will",
+      "A list of where everything is"
+    ],
+    "disclosure": "Illustrative. Names, formalities and recognition of these documents vary by country. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "hospital-tomorrow",
+      "layout": "columns-gap",
+      "narration": "In hospital tomorrow, who deals with your bank? Living alone, the answer may be nobody you chose.",
+      "onscreenLines": [
+        "In hospital tomorrow",
+        "Who deals with your bank?",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "bank"
+      ]
+    },
+    {
+      "id": "couples-get-backup",
+      "layout": "columns-gap",
+      "narration": "Couples get a backup person by default. People living alone have to name one in writing.",
+      "onscreenLines": [
+        "Couples get a backup",
+        "Living alone, you name one",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "name"
+      ]
+    },
+    {
+      "id": "law-picks",
+      "layout": "columns-gap",
+      "narration": "Living alone with nothing in writing? The law picks who decides for you.",
+      "onscreenLines": [
+        "Nothing in writing?",
+        "The law picks for you",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "law"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "With a partner, there is a default. If one is in hospital, the other talks to the doctors, the bank, the landlord.",
+      "onscreenText": "With a partner",
+      "subtext": "Someone steps in by default",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "Institutions often accept a spouse without asking for paperwork. It is a default nobody had to sign.",
+      "onscreenText": "A default nobody signed",
+      "subtext": "Often accepted without paperwork",
+      "emphasis": [
+        "paperwork"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Living alone with nothing arranged, the law supplies the default: a relative by blood, however distant, or a court appointed guardian.",
+      "onscreenText": "Living alone",
+      "subtext": "The law picks a relative or a guardian",
+      "emphasis": [
+        "law"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "That may not be the person you would have picked, or anyone who knows your wishes.",
+      "onscreenText": "Maybe not your choice",
+      "subtext": "Or anyone who knows your wishes",
+      "emphasis": [
+        "wishes"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "The fix is written choices: powers of attorney, an advance directive, a will, and a list of where everything is.",
+      "onscreenText": "Written choices",
+      "subtext": "They replace the default",
+      "emphasis": [
+        "written"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "Five documents in all. The person you name can be a friend, a trusted relative, or a paid professional, plus a substitute.",
+      "onscreenText": "The five documents",
+      "subtext": "And one name, with a substitute",
+      "emphasis": [
+        "five"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The five documents",
+        "rows": [
+          {
+            "label": "Financial power of attorney",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "Healthcare power of attorney",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "Advance directive",
+            "value": "3",
+            "tone": "ink"
+          },
+          {
+            "label": "A will",
+            "value": "4",
+            "tone": "ink"
+          },
+          {
+            "label": "Where everything is",
+            "value": "5",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Names and formalities vary by country. Not legal advice."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "A household of one carries the same risks with fewer places to put them. Much of the gap closes with one name, in writing.",
+      "onscreenText": "One name, in writing",
+      "subtext": "In the form your country requires",
+      "emphasis": [
+        "name"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for the evening you write it down.",
+    "onscreenText": "Save the five documents",
+    "subtext": "Who acts for you, in writing",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "In hospital tomorrow, who deals with your bank? Living alone, the answer may be nobody you chose.\n\nCouples have a default for almost every emergency, and institutions often accept a spouse without paperwork. A person living alone has none. If nothing is arranged, the law supplies one: a relative by blood, however distant, or a guardian appointed by a court. Written choices replace that default.\n\nThe five documents: a financial power of attorney, a healthcare power of attorney, an advance directive, a will, and a list of where everything is. The person named can be a friend, a relative you trust, or in many countries a professional, with a substitute.\n\n→ Save this for the evening you write it down\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Names, formalities and recognition vary by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "In hospital tomorrow, who deals with your bank? Living alone, the answer may be nobody you chose.\n\nFive documents name your backup person. Not legal advice.",
+    "instagramKeywords": [
+      "healthcare proxy",
+      "living will",
+      "next of kin",
+      "solo ager",
+      "living alone",
+      "make a will",
+      "court guardian",
+      "emergency contact",
+      "personal finance",
+      "global expats",
+      "Vorsorgevollmacht",
+      "Patientenverfügung",
+      "directives anticipées",
+      "testamento vital"
+    ],
+    "tiktokTopics": [
+      "who makes decisions for me if i live alone",
+      "documents every single person needs",
+      "planning ahead without family"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "lifeadmin"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "powerofattorney",
+    "advancedirective",
+    "planningahead"
+  ],
+  "reelPromise": "Which rules of thumb change on one income, why one person needs about 70% of a couple's budget, and planning for care you may pay for"
+}

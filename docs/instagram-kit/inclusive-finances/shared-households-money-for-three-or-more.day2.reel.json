@@ -1,0 +1,270 @@
+{
+  "slug": "shared-households-money-for-three-or-more",
+  "postTitle": "Shared Households: Money for Three or More Adults",
+  "postLevel": "inclusive-finances",
+  "episode": 2,
+  "seriesTotal": 0,
+  "blogPath": "blog/shared-households-money-for-three-or-more",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "When one flatmate leaves and the room stays empty, the rest carry the rent",
+  "topicChip": "THE EXIT TEST",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Four adults, net monthly incomes €5,000, €3,000, €2,000 and €1,000, total €11,000. Shared costs €3,200 a month (€2,400 rent, €300 utilities, €500 food), 29% of income. Split by income, Alma pays €1,455. If Alma leaves and her room stays empty: income left €6,000; rent and utilities stay at €2,700; food falls by about a quarter to €375; new total €3,075, 51% of €6,000. The household saves €125 on food and has to find €1,455 minus €125 = €1,330 a month while the room is empty. Illustrative."
+  },
+  "barStory": {
+    "mode": "direct",
+    "setup": {
+      "label": "Shared costs, four adults",
+      "display": "€3,200",
+      "note": "29% of €11,000 combined income",
+      "tone": "ink"
+    },
+    "unit": "%",
+    "basis": "Shared costs as a share of the household's net income, illustrative",
+    "bars": [
+      {
+        "id": "four",
+        "label": "All four",
+        "sublabel": "€3,200 on €11,000",
+        "value": 29,
+        "display": "29%",
+        "tone": "ink"
+      },
+      {
+        "id": "three",
+        "label": "Alma leaves, room empty",
+        "sublabel": "€3,075 on €6,000",
+        "value": 51,
+        "display": "51%",
+        "tone": "amber"
+      }
+    ],
+    "ratio": {
+      "display": "€1,330",
+      "from": "four",
+      "to": "three",
+      "label": "to find each month the room is empty"
+    },
+    "disclosure": "Illustrative. Split by income. Tenancy rules differ by country."
+  },
+  "hookVariants": [
+    {
+      "id": "one-leaves",
+      "layout": "bar-gap",
+      "narration": "Four flatmates: the bills take twenty nine percent of income. One moves out: fifty one percent.",
+      "onscreenLines": [
+        "All four: 29% of income",
+        "One leaves: 51%",
+        "Same flat, same rent"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "fifty"
+      ]
+    },
+    {
+      "id": "least-afford",
+      "layout": "bar-gap",
+      "narration": "Which flatmate could your household least afford to lose? There is a way to work it out.",
+      "onscreenLines": [
+        "Who could you least afford to lose?",
+        "There is a test for it",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "lose"
+      ]
+    },
+    {
+      "id": "empty-room",
+      "layout": "bar-gap",
+      "narration": "An empty room in a shared flat does not empty the rent. Someone still pays it.",
+      "onscreenLines": [
+        "An empty room",
+        "does not empty the rent",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "rent"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Four adults share a flat and three thousand two hundred euros of costs a month, split by income.",
+      "onscreenText": "€3,200 a month, split by income",
+      "subtext": "Four adults, one flat",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Together that is twenty nine percent of their income. Alma, the top earner, pays one thousand four hundred and fifty five euros.",
+      "onscreenText": "Alma pays €1,455",
+      "subtext": "The largest share, split by income",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Then Alma leaves and her room stays empty. Rent and utilities stay. Food falls a quarter. Costs hit fifty one percent of income.",
+      "onscreenText": "51% of the income left",
+      "subtext": "€3,075 on €6,000 a month",
+      "emphasis": [
+        "empty"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "The three who stay save a little on food, but have to find one thousand three hundred and thirty euros a month.",
+      "onscreenText": "€1,330 a month",
+      "subtext": "Until someone new moves in",
+      "emphasis": [
+        "every"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "This is the exit test. For each person, ask what the household would cost the rest if they left next month.",
+      "onscreenText": "The exit test",
+      "subtext": "Run it for every person",
+      "emphasis": [
+        "exit"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "For each person: what they pay, what would fall, the monthly gap, and months the buffer covers it.",
+      "onscreenText": "Four lines per person",
+      "subtext": "Share, what falls, gap, runway",
+      "emphasis": [
+        "four"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The exit test",
+        "rows": [
+          {
+            "label": "What they pay now",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "What would fall if they left",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "The monthly gap",
+            "value": "3",
+            "tone": "amber"
+          },
+          {
+            "label": "Months the buffer covers it",
+            "value": "4",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Tenancy rules differ by country."
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "story",
+      "narration": "The answer shows how large a buffer the household may want, and whose plans matter most to everyone else.",
+      "onscreenText": "Size the buffer",
+      "subtext": "And know whose plans matter most",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "close"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for your household's exit test.",
+    "onscreenText": "Save the exit test",
+    "subtext": "For every person in the household",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Four flatmates: the bills take 29% of income. One moves out: 51%.\n\nFour adults share €3,200 of costs a month, split by income. Alma, the top earner, pays €1,455. If she leaves and her room stays empty, rent and utilities stay at €2,700 and food falls to about €375: €3,075 on €6,000 of income. The three who stay save €125 on food and have to find €1,330 a month until someone new moves in. In many places a shared lease makes each tenant liable for the whole rent, so the gap is theirs either way.\n\nThe exit test, for each person: what they pay now, what would fall if they left, the monthly gap, and how many months the shared buffer covers it.\n\n→ Save this for your household's exit test\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Tenancy rules differ by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Four flatmates: the bills take 29% of income. One moves out: 51%.\n\nThe exit test shows what one empty room costs everyone else. Illustrative.",
+    "instagramKeywords": [
+      "exit test",
+      "housemate moving out",
+      "empty room",
+      "joint tenancy",
+      "joint and several liability",
+      "shared lease",
+      "replacement tenant",
+      "household buffer",
+      "cash runway",
+      "personal finance",
+      "global expats",
+      "Mitbewohner",
+      "Nachmieter",
+      "colocataire",
+      "compañeros de piso"
+    ],
+    "tiktokTopics": [
+      "what happens when a roommate moves out",
+      "who pays rent if a flatmate leaves",
+      "how big should a shared house emergency fund be"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "renttok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "houseshare",
+    "cohousing",
+    "rentingabroad"
+  ],
+  "reelPromise": "How shared leases, deposits and household agreements work across countries, and how to split costs on purpose"
+}

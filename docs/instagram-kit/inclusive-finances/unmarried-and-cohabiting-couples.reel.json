@@ -1,0 +1,291 @@
+{
+  "slug": "unmarried-and-cohabiting-couples",
+  "postTitle": "Unmarried Couples: Building the Protections Marriage Gives",
+  "postLevel": "inclusive-finances",
+  "episode": 1,
+  "seriesTotal": 0,
+  "blogPath": "blog/unmarried-and-cohabiting-couples",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Marriage switches on a bundle of defaults; living together switches on almost none",
+  "topicChip": "LIVING TOGETHER",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No figures. From the post: marriage usually switches on inheritance without a will, survivor pension benefits, medical decision rights, joint or favourable tax, low tax gifts and inheritance between spouses, a property regime, a separation framework and a residency route. Unmarried partners usually get none of these by default in most places. Common law marriage does not exist in most places; England and Wales have no such status; Australia, New Zealand and several Canadian provinces give rights after a qualifying period. Five documents rebuild most of it: a will, beneficiary designations, how the home is owned, a cohabitation agreement, powers of attorney. Tax treatment usually cannot be rebuilt. Rules vary by country. Not legal advice."
+  },
+  "columnStory": {
+    "left": {
+      "id": "married",
+      "title": "Married",
+      "rule": "Switched on",
+      "items": [
+        "Inherits with no will",
+        "Medical decisions",
+        "A regime for shared property"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "together",
+      "title": "Living together",
+      "rule": "Not by default",
+      "items": [
+        "Often inherits nothing",
+        "Next of kin is family",
+        "The name on it owns it"
+      ],
+      "tone": "amber"
+    },
+    "buffers": [
+      "A will",
+      "Who owns the home, recorded",
+      "Powers of attorney"
+    ],
+    "swap": {
+      "item": "Years of living together",
+      "belongs": "right",
+      "wrongLabel": "widely believed",
+      "correctLabel": "rarely counts"
+    },
+    "disclosure": "Illustrative. Rules vary by country, and some give rights after a qualifying period. Not legal advice."
+  },
+  "hookVariants": [
+    {
+      "id": "legal-stranger",
+      "layout": "columns-gap",
+      "narration": "Together for years, not married? In many places, the law can treat your partner as a stranger.",
+      "onscreenLines": [
+        "Together for years",
+        "Not married",
+        "A legal stranger"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "stranger"
+      ]
+    },
+    {
+      "id": "common-law-myth",
+      "layout": "columns-gap",
+      "narration": "Common law marriage is widely believed in. In most places, it does not exist.",
+      "onscreenLines": [
+        "Common law marriage?",
+        "In most places, no",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "believed"
+      ]
+    },
+    {
+      "id": "bundle",
+      "layout": "columns-gap",
+      "narration": "Marriage switches on a bundle of money rules the day you sign. Living together switches on almost none.",
+      "onscreenLines": [
+        "Marriage: a bundle of defaults",
+        "Living together: almost none",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "bundle"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Marriage is also a legal event. The day you sign, defaults switch on: inheritance, medical decisions, a legal regime for shared property.",
+      "onscreenText": "Married: switched on",
+      "subtext": "Inheritance, medical decisions, shared property",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "Often joint tax treatment too, and gifts or inheritance between spouses with little or no tax.",
+      "onscreenText": "Tax follows the marriage",
+      "subtext": "Often little or none between spouses",
+      "emphasis": [
+        "tax"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Living together without marrying, most of that stays off. In many places a partner inherits nothing without a will.",
+      "onscreenText": "Living together: off",
+      "subtext": "In many places, nothing without a will",
+      "emphasis": [
+        "nothing"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "Hospitals turn to next of kin, a spouse or a blood relative. An unmarried partner can be left outside.",
+      "onscreenText": "Next of kin is family",
+      "subtext": "A partner can be shut out",
+      "emphasis": [
+        "outside"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "comparison",
+      "narration": "And the belief that enough years together makes you common law spouses? In most places, it does not.",
+      "onscreenText": "Years together rarely count",
+      "subtext": "Some countries differ, so check yours",
+      "emphasis": [
+        "belief"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "swap"
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "Almost every piece can be rebuilt on purpose. A will, a clear record of who owns the home, and powers of attorney.",
+      "onscreenText": "Rebuilt on purpose",
+      "subtext": "A will, the home record, powers of attorney",
+      "emphasis": [
+        "purpose"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "list",
+      "narration": "Add a cohabitation agreement on who owns and pays what, and beneficiary forms. Five documents do most of the work.",
+      "onscreenText": "The five documents",
+      "subtext": "Each one rebuilds a row",
+      "emphasis": [
+        "five"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The five documents",
+        "rows": [
+          {
+            "label": "A will",
+            "value": "1",
+            "tone": "ink"
+          },
+          {
+            "label": "Beneficiary forms",
+            "value": "2",
+            "tone": "ink"
+          },
+          {
+            "label": "How you own your home",
+            "value": "3",
+            "tone": "ink"
+          },
+          {
+            "label": "A cohabitation agreement",
+            "value": "4",
+            "tone": "ink"
+          },
+          {
+            "label": "Powers of attorney",
+            "value": "5",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Names and force vary by country. Not legal advice."
+      }
+    },
+    {
+      "id": "b8",
+      "kind": "story",
+      "narration": "Marriage is one way to get these protections. It is just the only one that happens without anyone deciding.",
+      "onscreenText": "Not the only way",
+      "subtext": "Just the only automatic one",
+      "emphasis": [
+        "deciding"
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "buffers"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this, and check each row for your country.",
+    "onscreenText": "Save the five documents",
+    "subtext": "Checked for the country you live in",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Together for years, not married? In many places, the law can treat your partner as a stranger.\n\nMarriage switches on a bundle of financial defaults the day you sign: inheritance without a will, medical decisions, a legal regime for shared property, often joint tax. Living together may create no automatic inheritance or decision rights, however long you have been together. Common law marriage is widely believed in and rarely exists, though some countries do give rights after a qualifying period.\n\nWritten records can make the household's intentions visible: a will, a record of how you own your home, a cohabitation agreement and powers of attorney. With beneficiary forms, five documents rebuild most of the bundle. Tax is the row they usually cannot fix.\n\n→ Save this and check each row for your country\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules vary by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Together for years, not married? In many places, the law can treat your partner as a stranger.\n\nFive documents rebuild most of what marriage switches on. Rules vary by country.",
+    "instagramKeywords": [
+      "unmarried couples",
+      "cohabiting couples",
+      "living together",
+      "registered partnership",
+      "civil partnership",
+      "next of kin",
+      "inheritance without a will",
+      "cohabitation agreement",
+      "personal finance",
+      "global expats",
+      "Lebensgefährte",
+      "concubinage",
+      "pareja de hecho",
+      "unione civile"
+    ],
+    "tiktokTopics": [
+      "is common law marriage real",
+      "unmarried partner rights",
+      "what happens if my partner dies and we are not married"
+    ],
+    "tiktokExtraTags": [
+      "moneytok",
+      "financetok"
+    ]
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhiforyouandme",
+    "cohabitation",
+    "commonlawmarriage",
+    "couplesfinance"
+  ]
+}
