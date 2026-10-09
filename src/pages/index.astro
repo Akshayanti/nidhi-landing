@@ -358,11 +358,14 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       5. The belief, and what you can count on
+       5. The belief and what you can count on, beside the FAQ
+          (also in FAQPage data above): the promises are the short
+          version, the answers the detail.
        ============================================================= */}
   <section class="lp-section" id="trust" aria-labelledby="trust-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="section-head section-head--center">
+    <div class="lp-section-inner trust-layout">
+      <div class="trust-col">
+      <div class="section-head">
         <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
         <p class="cap-body">
           It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert.
@@ -370,7 +373,7 @@ const faqSchema = {
       </div>
 
       <ul class="trust-grid" role="list">
-        {/* Icons are decorative and shown on phones only; the bold line carries the meaning. */}
+        {/* Icons are decorative; the bold line carries the meaning. */}
         <li>
           <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" /></svg></span>
           <span class="trust-copy"><strong>No ads, no data selling.</strong> <span class="trust-detail">Analytics run on EU servers, and we never share or sell your email.</span></span>
@@ -396,14 +399,9 @@ const faqSchema = {
       <p class="trust-founder">
         nidhi is made in Prague by one person who couldn&rsquo;t find a tool that fit a real financial life, and decided to build one. <a href="/beliefs/" data-attr="home-cta-beliefs">What we believe</a>.
       </p>
-    </div>
-  </section>
+      </div>
 
-  {/* =============================================================
-       6. FAQ (also in FAQPage data above)
-       ============================================================= */}
-  <section class="lp-section lp-section--alt" id="faq" aria-labelledby="faq-heading" tabindex="-1">
-    <div class="lp-section-inner lp-section-inner--narrow">
+      <div class="faq-col" id="faq" tabindex="-1">
       <h2 id="faq-heading" class="faq-heading">FAQ</h2>
       <div class="faq-list">
         {faqs.map((f, i) => (
@@ -412,6 +410,7 @@ const faqSchema = {
             <p>{f.a}</p>
           </details>
         ))}
+      </div>
       </div>
     </div>
   </section>
@@ -1165,58 +1164,75 @@ const faqSchema = {
   }
 
   /* ----------------------------------------------------------------
-     6. Trust
+     5. Belief and promises, beside the FAQ
      ---------------------------------------------------------------- */
+  .trust-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  @media (min-width: 960px) {
+    .trust-layout { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 64px; align-items: start; }
+  }
+
+  .faq-col:focus { outline: none; }
+
   .trust-grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  @media (min-width: 760px) {
-    .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  @media (min-width: 1024px) {
-    .trust-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    gap: 16px;
   }
 
   .trust-grid li {
-    padding: 18px 20px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-    background: var(--color-bg);
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
     font-size: 0.93rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
   }
 
-  /* Phone-only marks; shown by the small-screen rules below. */
-  .trust-icon { display: none; }
+  .trust-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-teal) 13%, var(--color-bg-white));
+    color: var(--color-teal);
+  }
+
+  .trust-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   .trust-grid strong {
     display: block;
     font-family: var(--font-heading);
     color: var(--color-text-primary);
-    margin-bottom: 4px;
   }
 
   .trust-founder {
-    margin: 28px auto 0;
+    margin: 28px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border-light);
     max-width: 62ch;
-    text-align: center;
     font-size: 0.95rem;
     color: var(--color-text-secondary);
     line-height: 1.55;
   }
 
-  /* ----------------------------------------------------------------
-     7. FAQ
-     ---------------------------------------------------------------- */
-  .faq-heading { text-align: center; margin-bottom: 24px; }
+  .faq-heading { margin: 0 0 20px; }
 
   .faq-list {
     border-top: 1px solid var(--color-border);
@@ -1323,39 +1339,12 @@ const faqSchema = {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px 14px;
     }
-    .trust-grid li,
-    .trust-grid li:last-child {
-      display: grid;
-      grid-template-columns: 30px minmax(0, 1fr);
-      gap: 10px;
-      align-items: center;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-    }
+    .trust-grid li { align-items: center; gap: 10px; grid-template-columns: 30px minmax(0, 1fr); }
+    .trust-icon { width: 30px; height: 30px; }
     .trust-grid strong { margin: 0; font-size: 0.9rem; line-height: 1.3; }
     .trust-detail { display: none; }
     #trust .section-head { margin-bottom: 24px; }
     .trust-founder { margin-top: 24px; }
-    .trust-icon {
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: color-mix(in srgb, var(--color-teal) 13%, var(--color-bg-white));
-      color: var(--color-teal);
-    }
-    .trust-icon svg {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .trust-founder { text-align: left; }
+    .trust-layout { gap: 40px; }
   }
 </style>
