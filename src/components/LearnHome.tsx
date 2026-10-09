@@ -168,6 +168,8 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels }: Lea
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) setReadPosts(new Set(JSON.parse(stored)));
     } catch { /* ignore */ }
+    // The homepage links to /blog/#level-helper: open the helper on arrival.
+    if (window.location.hash === '#level-helper') setHelperOpen(true);
     // A search engine's sitelinks box sends people to /blog/?q=...: apply
     // the query, then take it out of the address.
     try {

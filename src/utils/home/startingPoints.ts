@@ -52,6 +52,11 @@ interface StartingPointDef {
   lessons: string[];
   /** Free tools to try the route on your own numbers, keyed into TOOL_COPY. */
   tools?: string[];
+  /**
+   * Shown even before any of its lessons is live, as an empty route that
+   * fills in as they publish. For a level whose lessons are still scheduled.
+   */
+  showWhenEmpty?: boolean;
 }
 
 export const STARTING_POINTS: StartingPointDef[] = [
@@ -85,10 +90,11 @@ export const STARTING_POINTS: StartingPointDef[] = [
     id: 'complex',
     audience: 'Experienced',
     situation: 'My finances have got complicated.',
-    detail: 'A loan or a home, investments, a household to plan for, or money in more than one country. The same ideas still apply, with more moving parts.',
-    level: null,
-    lessons: ['understanding-loan-terms', 'taxes-and-your-financial-plan', 'managing-money-across-currencies'],
+    detail: 'Projections, what-if scenarios, cash flow, fees and taxes: the same ideas, with more moving parts.',
+    level: 'optimizing',
+    lessons: ['financial-projections', 'what-if-scenarios', 'cash-flow-forecasting'],
     tools: ['/free/loan-comparison/', '/free/multi-currency-net-worth/'],
+    showWhenEmpty: true,
   },
 ];
 
@@ -207,11 +213,13 @@ export interface StartingPoint {
   levelCount: number;
   lessons: LessonLink[];
   tools: Array<{ href: string; name: string }>;
+  showWhenEmpty: boolean;
 }
 
 /**
- * Situations with at least one live lesson; lessons that are not live yet
- * are left out, and so are tools `isToolLive` rejects.
+ * Situations with at least one live lesson, plus those marked showWhenEmpty
+ * (with no lessons until theirs go live); lessons that are not live yet are
+ * left out, and so are tools `isToolLive` rejects.
  */
 export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean = () => true): StartingPoint[] {
   const live = liveIndex(posts, now);
@@ -228,7 +236,8 @@ export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: 
     tools: (s.tools ?? [])
       .filter((href) => TOOL_COPY[href] && isToolLive(href))
       .map((href) => ({ href, name: TOOL_COPY[href].name })),
-  })).filter((s) => s.lessons.length > 0);
+    showWhenEmpty: s.showWhenEmpty ?? false,
+  })).filter((s) => s.lessons.length > 0 || s.showWhenEmpty);
 }
 
 /**

@@ -240,9 +240,22 @@ const faqSchema = {
         <p class="cap-body">Short lessons for any household, in any country, and where local rules matter, they say what to check. No paywall, no account.</p>
       </div>
 
+      <p class="route-help">
+        Not sure which fits? <a href="/blog/#level-helper" data-attr="home-level-helper">Two questions suggest where to start</a>.
+      </p>
+
       {/* One line per route. Each opens the first lesson this browser has not read yet. */}
       <ul class="routes" role="list">
-        {startingPoints.map((s) => (
+        {startingPoints.map((s) => s.lessons.length === 0 ? (
+          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
+            {/* A level whose lessons are still scheduled: shown, not linked, until the first one goes live. */}
+            <div class="route route--soon">
+              <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
+              <span class="route-title">{s.situation}</span>
+              <span class="route-meta">{s.levelLabel ?? 'More lessons'} &middot; lessons coming soon</span>
+            </div>
+          </li>
+        ) : (
           <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
             <a
               class="route"
@@ -1017,6 +1030,24 @@ const faqSchema = {
   .route:hover .route-go,
   .route:focus-visible .route-go { text-decoration: underline; text-underline-offset: 3px; }
   .route:hover { background: color-mix(in srgb, var(--start-level) 5%, transparent); }
+
+  /* An empty route, for a level whose lessons are still scheduled. */
+  .route--soon { color: var(--color-text-secondary); }
+  .route--soon .route-badge { opacity: 0.6; }
+  .route--soon:hover { background: none; }
+
+  .route-help {
+    margin: -16px 0 20px;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+  }
+
+  .route-help a {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 
   .route:focus-visible {
     outline: 2px solid var(--color-deep-blue);
