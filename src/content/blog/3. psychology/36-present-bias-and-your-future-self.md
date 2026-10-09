@@ -9,7 +9,7 @@ takeaways:
   - "How automation and pre-commitment beat daily willpower"
 order: 36
 pubDate: 2026-07-08
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "psychology"
 primaryPersona: "jiri"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -103,7 +103,7 @@ This is also why advice like "just be more disciplined" fails. Discipline asks y
 The way out is not to fight harder. It is to make the decision a single time, while you are motivated, and then never have to make it again. These are commitment devices: choices you make now that bind your future self to the plan.
 
 1. **Automated saving.** Money moves into savings or investments automatically on payday, before it lands in the spending account. The good outcome happens by default, and the only way to derail it is to actively cancel the transfer. Most people will not bother. You have flipped the effort: doing the right thing is free, undoing it takes work.
-2. **Pre-committed raises.** Deciding in advance that a slice of the next raise goes to saving or investing, before it ever shows up in spending, is one of the best-studied commitment devices. You cannot miss money your lifestyle never learned to spend. This quietly sidesteps the trap where income rises and saving somehow never does.
+2. **Pre-committed raises.** Deciding in advance that a slice of the next raise goes to saving or investing, before it ever shows up in spending, is one of the best-studied commitment devices, mostly in US workplace retirement plans through Richard Thaler and Shlomo Benartzi's Save More Tomorrow, so the effect may differ where employers do not offer automatic escalation. You cannot miss money your lifestyle never learned to spend. This quietly sidesteps the trap where income rises and saving somehow never does.
 3. **Friction on the wrong choice.** Longer-term savings kept somewhere mildly awkward to reach. Not locked away from a real emergency, just inconvenient enough that a weak Tuesday evening does not become a withdrawal.
 4. **Make the future self concrete.** The stranger problem shrinks when the future becomes specific. A named goal with a number and a date, the kind covered when [setting financial goals](/blog/setting-financial-goals/), and a [projection](/blog/introduction-to-financial-independence/) showing where today's contributions actually lead, turn the distant stranger back into recognisably you.
 

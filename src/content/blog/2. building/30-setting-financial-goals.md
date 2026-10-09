@@ -11,7 +11,7 @@ takeaways:
   - "How to prioritise goals by math and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -66,7 +66,7 @@ The translation from wish to goal usually exposes something inconvenient: the wi
 Example: "I want to buy a house someday."
 
 - What kind of house, in what area? → A 2-bedroom flat in your city, currently ~€250,000 average
-- What deposit? → 15-20%, so roughly €40,000-€50,000
+- What deposit? → 15-20%, a common range in many markets (minimum deposits and loan-to-value limits are set by lenders, and in some countries by the financial regulator), so roughly €40,000-€50,000
 - When? → Let's say 5 years
 - So the goal: save/invest to have €45,000 in 5 years
 

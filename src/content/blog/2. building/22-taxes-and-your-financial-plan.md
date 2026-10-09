@@ -11,7 +11,7 @@ takeaways:
   - "Why planning in after-tax terms gives a more realistic picture"
 order: 22
 pubDate: 2026-06-05
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -129,7 +129,7 @@ When you sell an investment for more than you paid, the profit is a capital gain
 Key principles that tend to hold broadly:
 
 - **Gains are only realized on sale.** Holding an investment that has risen in value doesn't trigger tax. Selling it does
-- **Holding period rules vary widely.** In some jurisdictions (US, India, others), long-term capital gains are taxed more favourably than short-term gains, rewarding buy-and-hold behaviour. In others (UK, Germany, Czechia under the post-2025 caps), the rate is flat regardless of holding period. Look up how your country handles this
+- **Holding period rules vary widely.** In some jurisdictions (US, India, others), long-term capital gains are taxed more favourably than short-term gains, rewarding buy-and-hold behaviour; Czechia goes further and exempts gains on listed securities held more than 3 years, capped from 2025 at CZK 40 million of exempted gains per year. In others (UK, Germany), the rate is flat regardless of holding period. Look up how your country handles this
 - **Losses can often offset gains.** Realized capital losses may reduce the tax due on realized gains, sometimes within the same year, sometimes carried forward
 - **Unrealized gains don't show up until sold.** This matters for rebalancing decisions. Selling to rebalance a portfolio can trigger tax; doing it inside a tax-advantaged account or using new contributions to rebalance often avoids that
 

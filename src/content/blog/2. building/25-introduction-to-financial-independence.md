@@ -11,7 +11,7 @@ takeaways:
   - "Why savings rate is the main lever on your time to FI"
 order: 25
 pubDate: 2026-06-12
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
@@ -193,7 +193,7 @@ You don't have to aim for extreme early retirement to benefit from the framework
 This post is deliberately the beginning of a longer conversation. Several important topics come later:
 
 - **Sequence of returns risk.** Poor market years early in retirement are far more damaging than later ones. Not every 25× portfolio survives every sequence
-- **Healthcare and insurance gaps.** Early retirees often leave employer coverage and need to plan for the gap until state provisions kick in
+- **Healthcare and insurance gaps.** In some countries, such as the US, health cover is largely tied to employment, so early retirees who leave work face a gap until public provisions begin; in others, cover is public or residence-based. National health and pension authorities can say how cover and state pension ages apply where you live
 - **Withdrawal strategies.** How you actually take money out (which accounts first, how to handle bad market years) affects longevity
 - **Inflation and long horizons.** The 4% rule was built on a 30-year horizon. A 50-year retirement is a different maths problem
 - **Variable spending.** Flexible retirees who cut spending in bad years sustain lower starting portfolios than rigid-spending ones

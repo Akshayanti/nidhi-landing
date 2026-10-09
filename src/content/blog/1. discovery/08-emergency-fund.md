@@ -10,7 +10,7 @@ takeaways:
   - "How to tell if an expense is a genuine emergency"
 order: 8
 pubDate: 2026-05-04
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -95,7 +95,7 @@ Think of it as your financial shock absorber. It doesn't prevent the bump. It st
 
 There are two targets:
 
-**Mini emergency fund: one month of essential expenses.** This covers most small surprises: a car repair, a medical copay, a small home fix. For most people this comes first, before extra debt payments or investing. Use essential expenses (rent, food, insurance, minimum debt payments, utilities) rather than gross salary so the target is the same regardless of how much you earn or save.
+**Mini emergency fund: one month of essential expenses.** This covers most small surprises: a car repair, a medical bill (where your health system charges one), a small home fix. For most people this comes first, before extra debt payments or investing. Use essential expenses (rent, food, insurance, minimum debt payments, utilities) rather than gross salary so the target is the same regardless of how much you earn or save.
 
 **Full emergency fund: three to six months of essential expenses.** This covers the big ones: primarily job loss but can also mean unexpected emergencies. "Essential expenses" means rent, food, insurance, minimum debt payments, and utilities. Not dining out, not entertainment, not subscriptions.
 
@@ -109,7 +109,9 @@ Common places people keep it (names and protections vary by country):
 
 - A separate savings account at their bank
 - A high-yield savings account (an online savings account that pays a higher interest rate than a traditional bank)
-- A money market account (a savings account that typically offers slightly higher rates in exchange for a higher minimum balance)
+- A money market account, a US bank product (a savings account that typically offers slightly higher rates in exchange for a higher minimum balance). A money market fund, more common elsewhere, is an investment rather than a bank deposit, so deposit protection does not cover it
+
+Many countries guarantee bank deposits up to a limit through a deposit guarantee scheme, for example €100,000 per depositor per bank in the EU. Your bank or the financial regulator can confirm whether an account is covered.
 
 Separation is what makes it work for many people. Money in the everyday account tends to get spent; money somewhere visible but not casually tappable tends to stay put.
 

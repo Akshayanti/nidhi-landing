@@ -11,7 +11,7 @@ takeaways:
   - "How to build good credit in your country's system"
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -32,9 +32,9 @@ referentialReading:
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "cash-flow-101", "assets", "what-is-net-worth"]
 faq:
   - question: "Does checking my own credit score lower it?"
-    answer: "No. Checking your own score is a soft inquiry and has no effect. Only applications for new credit (like applying for a loan or credit card) trigger hard inquiries that can temporarily affect your score."
+    answer: "No. In systems like the US and UK, checking your own score is a soft inquiry and has no effect. Only applications for new credit (like applying for a loan or credit card) trigger hard inquiries that can temporarily affect your score."
   - question: "Do I need to carry a credit card balance to build credit?"
-    answer: "No. Paying your full balance every month builds credit just as effectively as carrying a balance, and you avoid paying any interest. The key is using the card regularly and paying on time."
+    answer: "No. Paying your full balance every month builds credit just as effectively as carrying a balance, and you avoid paying any interest. In systems that record positive history, like the US and UK, what counts is using the card regularly and paying on time."
   - question: "What happens if I have no credit history?"
     answer: "It depends on your country's system. In systems that reward positive history, like the US, a thin file can be as limiting as a bad one, because lenders have nothing to base their assessment on, and a basic card used for small purchases and paid in full is a common way to start. In negative-data systems such as SCHUFA in Germany or BKR in the Netherlands, a clean record already counts in your favour. This is common for people new to a country or young adults, so check how your local system works first."
   - question: "How does my credit score affect mortgage rates?"
@@ -61,7 +61,7 @@ Despite these differences, several factors matter across nearly all systems:
 
 ### 1. Payment history (universally the most important)
 
-Have you paid your bills on time? Every late payment, missed payment, or default is recorded. A single missed payment can stay on your record for years. Consistent on-time payment is the single strongest factor in virtually every scoring system worldwide.
+Have you paid your bills on time? Every late payment, missed payment, or default is recorded. A single missed payment can stay on your record for years. Consistent on-time payment is a heavily weighted factor in most scoring systems that publish their criteria.
 
 ### 2. Outstanding debt and credit utilization
 
@@ -141,13 +141,13 @@ Building credit is mostly about consistency and time. Points 1 to 4 matter most 
 
 ## Common myths
 
-**"Checking my own credit score will lower it."** No. Checking your own score is a soft inquiry and has no effect. Only applications for new credit trigger hard inquiries.
+**"Checking my own credit score will lower it."** No. In systems like the US and UK, checking your own score is a soft inquiry and has no effect. Only applications for new credit trigger hard inquiries.
 
 **"I need to carry a balance to build credit."** No. Paying your full balance every month builds credit just as effectively, and you avoid paying any interest.
 
 **"I have no credit history, so my score must be fine."** Not necessarily. In systems that reward positive history, no history can be as limiting as bad history, because lenders have nothing to base their assessment on. This is common for people new to a country or young adults. Where that applies, a basic credit card used lightly is a common way to start a history.
 
-**"All debt is bad for my score."** Not true. A well-managed mortgage or installment loan that you pay on time actually strengthens your score by showing you can handle long-term obligations.
+**"All debt is bad for my score."** Not true. In systems that record positive history, like the US and UK, a well-managed mortgage or installment loan that you pay on time actually strengthens your score by showing you can handle long-term obligations.
 
 ## The credit score and your net worth
 
@@ -157,8 +157,8 @@ As we covered in the [liabilities post](/blog/liabilities/), the interest rate i
 
 ## What this means in practice
 
-1. **Check your credit report.** Most countries offer free annual credit reports. Look for errors and see what's being tracked
-2. **Know how your country's system works.** If it rewards positive history and you have none, a basic card used lightly and paid in full is a common first step; if it mainly records negative data, a clean record already counts
+1. **Check your credit report.** Whether you can see your own credit data, and whether it is free, varies by country; in the EU, data-protection law gives you a right of access to what a bureau holds about you. Look for errors and see what's being tracked
+2. **Know how your country's system works.** If it rewards positive history and you have none, a basic card used lightly and paid in full is a common first step; if it mainly records negative data, a clean record already counts. Your national credit bureau(s), financial regulator or consumer protection agency explain how to request a report and how scoring works where you live
 3. **One missed bill can outweigh years of good history.** That's why many people automate minimum payments as a backstop
 4. **It's a long game.** Credit records reward consistency over time. There are no shortcuts, and the payoff shows up as easier, often cheaper, borrowing later
 

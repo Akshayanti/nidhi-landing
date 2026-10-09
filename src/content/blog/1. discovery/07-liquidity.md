@@ -10,7 +10,7 @@ takeaways:
   - "How to match your money's liquidity to your timeline"
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -39,7 +39,7 @@ faq:
   - question: "Why not just keep everything in cash to stay liquid?"
     answer: "Because cash is liquid but loses purchasing power to inflation every year, so beyond your emergency fund and short-term goals, excess cash slowly erodes in real terms. Illiquid assets exist for good reasons: real estate builds equity and can appreciate significantly, retirement accounts carry tax advantages that often justify the lock-up, and long-term investments have historically rewarded those who could stay invested through the swings. The mistake on the other side is keeping too little in cash, which forces you to sell investments at whatever the market price is, possibly down, exactly when you need the money. Balance beats either extreme."
   - question: "Is an asset I can borrow against the same as a liquid asset?"
-    answer: "No. Accessible is not the same as liquid. A home equity line of credit lets you borrow against your house, but you are taking on debt and paying interest, not converting the asset to cash at its full value. True liquidity means you can turn the asset into spendable money quickly without loss and without creating a new obligation. Confusing the two is a common mistake: people assume a valuable but illiquid asset will cover an emergency, only to find that reaching its value means selling slowly, paying fees, or borrowing at interest. That is why emergency planning usually counts only genuinely liquid funds."
+    answer: "No. Accessible is not the same as liquid. Borrowing against your home (a home equity loan or line of credit, where lenders offer one) gives you access to its value, but you are taking on debt and paying interest, not converting the asset to cash at its full value. True liquidity means you can turn the asset into spendable money quickly without loss and without creating a new obligation. Confusing the two is a common mistake: people assume a valuable but illiquid asset will cover an emergency, only to find that reaching its value means selling slowly, paying fees, or borrowing at interest. That is why emergency planning usually counts only genuinely liquid funds."
 ---
 
 You might have €100,000 in [net worth](/blog/what-is-net-worth/) and still not be able to pay a €2,000 car repair bill. 
@@ -126,7 +126,7 @@ Higher net worth doesn't always mean better financial position. Liquidity matter
 This doesn't make all-cash the answer. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
 
 - **Real estate** builds equity over the long term and can [appreciate](/blog/appreciation-vs-depreciation/) significantly
-- **Retirement accounts** have tax advantages that often make the lock-up period worthwhile
+- **Retirement accounts**, where they exist, have tax advantages that often make the lock-up period worthwhile. The tax treatment and early-access rules are set nationally, and your pension provider or tax authority can confirm them
 - **Long-term investments** have historically earned higher returns as payment for riding out the ups and downs, and [compound interest](/blog/appreciation-vs-depreciation/) rewards that patience
 
 The underlying idea is matching liquidity to timeline. Money needed in the next few years usually needs to be more liquid. Money that won't be touched for decades can afford to be less liquid.
@@ -145,8 +145,8 @@ The sizes depend on your income stability, insurance, your country's safety net 
 
 - **Keeping too much in cash.** Beyond your emergency fund and short-term goals, excess cash slowly loses purchasing power to inflation
 - **Keeping too little in cash.** If every euro is invested, you'll be forced to sell investments at whatever the market price is, which could be down exactly when you need the money
-- **Confusing accessible with liquid.** A home equity line of credit lets you borrow against your house, but you're paying interest. Accessible is not the same as liquid
-- **Forgetting about tax penalties.** Withdrawing from retirement accounts early can trigger taxes and penalties that significantly reduce what you actually get
+- **Confusing accessible with liquid.** Borrowing against your home (a home equity loan or line of credit, where lenders offer one) gives you access to its value, but you're paying interest. Accessible is not the same as liquid
+- **Forgetting about tax penalties.** Withdrawing from retirement accounts early can trigger taxes and penalties that significantly reduce what you actually get. Whether early access is allowed, and what it costs, depends on your country and plan; your pension provider or tax authority can confirm the rules
 
 ## How this connects to net worth
 

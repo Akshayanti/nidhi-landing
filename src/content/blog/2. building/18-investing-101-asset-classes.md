@@ -9,7 +9,7 @@ takeaways:
   - "Why no single asset class wins in every economic condition"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -142,7 +142,7 @@ Real estate means owning physical property: residential, commercial, or land. It
 
 ## Cash equivalents: safety
 
-Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills. They offer near-zero risk and near-zero return.
+Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills. They offer near-zero risk and near-zero return. That safety rests partly on deposit protection, whose limit and coverage differ by country; the national deposit guarantee scheme or banking regulator publishes the limit where you live.
 
 **How they generate returns:**
 
@@ -197,7 +197,7 @@ Investing doesn't require picking individual stocks or bonds. Index funds and ET
 
 A single global stock index fund gives exposure to thousands of companies across dozens of countries. A single bond index fund gives lending exposure to hundreds of governments and companies. The fees are typically very low (0.1-0.3% per year).
 
-Index funds are commonly cited in personal finance literature as a practical starting point. They provide instant diversification within an asset class, require no stock-picking expertise, and cost a fraction of actively managed alternatives (funds where a manager picks individual holdings and charges higher fees; on average they have underperformed comparable index funds after those fees). Which funds are available, and how they are taxed, varies a lot by country and account type.
+Index funds are commonly cited in personal finance literature as a practical starting point. They provide instant diversification within an asset class, require no stock-picking expertise, and cost a fraction of actively managed alternatives (funds where a manager picks individual holdings and charges higher fees; on average they have underperformed comparable index funds after those fees). Which funds are available, and how they are taxed, varies a lot by country and account type; the tax authority's guidance or a qualified local adviser can confirm how funds are taxed where you live.
 
 ## What this means in practice
 

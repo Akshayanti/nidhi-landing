@@ -9,7 +9,7 @@ takeaways:
   - "When insurance is worth it, and when to self-insure"
 order: 16
 pubDate: 2026-05-22
-updatedDate: 2026-10-07
+updatedDate: 2026-10-09
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -82,7 +82,7 @@ Pays a sum of money to your beneficiaries if you die. There are two basic types:
 
 **Cash flow impact:** Term life insurance for a healthy 30-year-old might cost €15-€40 per month for €200,000 of coverage. Whole life costs significantly more.
 
-**Connection to net worth:** Whole life policies build cash value that appears as an asset on your balance sheet. Term life has no cash value, it's pure protection.
+**Connection to net worth:** Whole life policies build cash value that appears as an asset on your balance sheet. Term life has no cash value, it's pure protection. How whole life and endowment policies are taxed and regulated differs by country.
 
 ### Property insurance
 
@@ -97,7 +97,7 @@ Covers damage to or loss of physical property. The two most common forms:
 
 ### Disability insurance
 
-Replaces a portion of your income if you're unable to work due to illness or injury. Some countries provide statutory disability or sickness benefits, but these typically replace only a fraction of your salary (often 60-70%) and may have waiting periods or time limits. In countries with weaker public safety nets, private disability insurance may be your only protection. Either way, private coverage can close the gap between what you'd receive and what you actually need.
+Replaces a portion of your income if you're unable to work due to illness or injury. Some countries provide statutory disability or sickness benefits, but these typically replace only a fraction of your salary (around 60-70% in several European sickness benefit schemes, and much less where the benefit is a flat amount) and may have waiting periods or time limits. In countries with weaker public safety nets, private disability insurance may be your only protection. Either way, private coverage can close the gap between what you'd receive and what you actually need.
 
 **Why it matters financially:** Your ability to earn income is your most valuable financial asset, especially early in your career. A 30-year-old earning €40,000 per year will earn over €1 million in the next 25 years. A disability that prevents you from working cuts off that entire stream. Even with public benefits, the income reduction can be severe.
 
@@ -126,9 +126,9 @@ Insurance premiums are a recurring expense: they reduce your monthly [cash flow]
 | Personal liability | €5-€15 | Legal liability claims |
 | **Total range** | **€110-€460** | |
 
-For someone earning €2,500 net per month, insurance might represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting/) decisions, which is why they belong in your financial plan, not as an afterthought.
+These are illustrative ranges, not quotes: premiums vary widely by country, insurer, age and health. For someone earning €2,500 net per month, costs in this illustrative range would represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting/) decisions, which is why they belong in your financial plan, not as an afterthought.
 
-The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk.
+The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk. Which cover is mandatory, and how policies are taxed, depends on where you live; the national insurance regulator or ombudsman, or an independent local broker, can explain the rules that apply.
 
 ## The insurance-emergency fund relationship
 
