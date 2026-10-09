@@ -80,6 +80,17 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 9, 2026',
+    iso: '2026-10-09',
+    material: true,
+    summary: 'Topic pages use the new learning path layout and no longer have their own search box, so no page on the site writes what you type into its address.',
+    details: [
+      'Topic pages (/blog/tag/...): a topic\'s lessons are grouped by level on the same cards as the level pages, each group linking to its full level. The search box, the level summary and the topic chips are gone. Searching across every lesson happens on /blog/, which keeps what you type on the page. Before, the topic-page search wrote it into the address (?q=), which the analytics script then removed before sending any event; now nothing writes it there at all. The analytics script still strips ?q= from learning path addresses, for old bookmarks and hand-typed links.',
+      'Read status on topic pages uses the existing nidhi-reading-progress key, as before. Nothing new is stored or sent.',
+      'New data-attr labels, recorded only if you accept the cookie banner, as before: topic-level-discovery, topic-level-building, topic-level-psychology, topic-level-optimizing, topic-level-mastery and topic-level-inclusive-finances (the link from a topic\'s level group to that whole level), and tag-search-all (the link to search every lesson). tag-browse-all and blog-card-* keep their meaning. The topic pages\' lp-skip-next-*, lp-go-previous-*, lp-mark-level-read-* and lp-mark-level-unread-* buttons are gone; the last two remain on the level pages.',
+    ],
+  },
+  {
     date: 'Oct 8, 2026',
     iso: '2026-10-08',
     material: true,

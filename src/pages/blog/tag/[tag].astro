@@ -1,70 +1,77 @@
 ---
+/**
+ * One topic (/blog/tag/<tag>/): its lessons grouped by level in reading
+ * order, on the same cards as the level pages, each group linking to its
+ * full level. Inclusive Finances guides with the topic come last. Search
+ * across every lesson lives on /blog/; this page has none, so nothing here
+ * writes to the address.
+ */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { LearningPath } from '../../../components/LearningPath';
-import { getCollection } from 'astro:content';
-import { getReadingTime } from '../../../utils/readingTime';
+import { TopicLessons, type TopicGroup } from '../../../components/LearningPath';
 import { TAG_META, formatTag } from '../../../utils/tags';
-import { placeOnPath } from '../../../utils/companions';
+import { getPathPosts } from '../../../utils/learnPosts';
+import { LADDER_LEVELS, LEVEL_LABELS } from '../../../utils/home/startingPoints';
 
 export async function getStaticPaths() {
-  const isDev = import.meta.env.DEV;
-  const now = new Date();
-  const allPosts = (await getCollection('blog'))
-    .filter(post => isDev || post.data.pubDate <= now)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  const posts = await getPathPosts();
+  const allTags = [...new Set(posts.flatMap((p) => p.tags))];
 
-  const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))];
-  // Placement uses every visible post, so a companion lands under its host's
-  // level even when the host does not carry this tag.
-  const placements = placeOnPath(allPosts);
-
-  return allTags.map(tag => ({
-    params: { tag },
-    props: {
-      tag,
-      posts: allPosts
-        .filter(p => p.data.tags.includes(tag) && placements.has(p.data.slug))
-        .map(p => ({
-          id: p.data.slug,
-          title: p.data.title,
-          description: p.data.description,
-          pubDate: p.data.pubDate.toISOString(),
-          level: p.data.level,
-          readingTime: getReadingTime(p.body || ''),
-          tags: p.data.tags,
-          ...placements.get(p.data.slug)!,
-        })),
-    },
-  }));
+  return allTags.map((tag) => {
+    const groups: TopicGroup[] = [];
+    for (const level of LADDER_LEVELS) {
+      const inLevel = posts.filter((p) => p.level === level && p.pathLevel);
+      const tagged = inLevel
+        .map((p, i) => ({ ...p, step: i + 1, stepCount: inLevel.length }))
+        .filter((p) => p.tags.includes(tag));
+      if (tagged.length > 0) groups.push({ level, posts: tagged, levelTotal: inLevel.length });
+    }
+    const guides = posts.filter((p) => p.level === 'inclusive-finances');
+    const taggedGuides = guides.filter((p) => p.tags.includes(tag));
+    if (taggedGuides.length > 0) groups.push({ level: 'inclusive-finances', posts: taggedGuides, levelTotal: guides.length });
+    return { params: { tag }, props: { tag, groups } };
+  });
 }
 
-const { tag, posts } = Astro.props;
+const { tag, groups } = Astro.props;
+const lessons = groups.flatMap((g) => g.posts);
 const formatted = formatTag(tag);
 const meta = TAG_META[tag];
 // TAG_META titles already end with "| nidhi"; the fallback path appends it
 // once. Either branch ends in the brand suffix, no double-append risk.
 const title = meta?.title ?? `${formatted}: Personal Finance Literacy | nidhi`;
 const description = meta?.description ?? `Articles about ${formatted.toLowerCase()}: practical personal finance literacy and financial education from nidhi.`;
+const levelLabel = (level: string) => LEVEL_LABELS[level] ?? 'Inclusive Finances';
+const ladderGroups = groups.filter((g) => g.level !== 'inclusive-finances');
+const guideGroup = groups.find((g) => g.level === 'inclusive-finances');
+const ladderCount = ladderGroups.reduce((n, g) => n + g.posts.length, 0);
+const levelNames = ladderGroups.map((g) => levelLabel(g.level));
+const levelList = levelNames.length <= 1 ? levelNames.join('') : `${levelNames.slice(0, -1).join(', ')} and ${levelNames[levelNames.length - 1]}`;
+const summaryParts = [
+  ladderCount > 0 ? `${ladderCount} ${ladderCount === 1 ? 'lesson' : 'lessons'} in ${levelList}` : '',
+  guideGroup ? `${guideGroup.posts.length} Inclusive Finances ${guideGroup.posts.length === 1 ? 'guide' : 'guides'}` : '',
+].filter(Boolean);
+const summary = summaryParts.join(', plus ');
 
 const tagBreadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Learn', item: 'https://nidhi.today/blog/' },
+    { '@type': 'ListItem', position: 2, name: 'Topics', item: 'https://nidhi.today/blog/tag/' },
     // encodeURIComponent guards against tags that contain spaces, slashes, or
     // unicode. Today every tag in TAG_META is plain ascii lowercase-with-hyphens,
     // but a future tag like "buy now, pay later" would emit an invalid URL.
-    { '@type': 'ListItem', position: 2, name: formatted, item: `https://nidhi.today/blog/tag/${encodeURIComponent(tag)}/` },
+    { '@type': 'ListItem', position: 3, name: formatted, item: `https://nidhi.today/blog/tag/${encodeURIComponent(tag)}/` },
   ],
 };
 
 const tagItemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: `${formatted} Articles`,
+  name: `${formatted} lessons`,
   description,
-  numberOfItems: posts.length,
-  itemListElement: posts.map((p: any, i: number) => ({
+  numberOfItems: lessons.length,
+  itemListElement: lessons.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     url: `https://nidhi.today/blog/${p.id}/`,
@@ -79,96 +86,112 @@ const tagItemListSchema = {
   robots="noindex,follow"
   jsonLd={[tagBreadcrumbSchema, tagItemListSchema]}
 >
-  <section class="blog-index">
-    <div class="container">
-      <header class="blog-index-header">
-        <nav class="tag-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog/">Learn</a> <span class="sep">/</span> <span>{formatted}</span>
-        </nav>
+  <section class="topic-page">
+    <div class="container topic-page-container">
+      <nav class="topic-page-crumb" aria-label="Breadcrumb">
+        <a href="/blog/">Learn</a>
+        <span aria-hidden="true"> / </span>
+        <a href="/blog/tag/">Topics</a>
+        <span aria-hidden="true"> / </span>
+        <span aria-current="page">{formatted}</span>
+      </nav>
+      <header class="topic-page-header">
+        <p class="topic-page-eyebrow">Topic</p>
         <h1>{formatted}</h1>
-        <p class="blog-index-subtitle">{description}</p>
+        <p class="topic-page-desc">{description}</p>
+        {summary && <p class="topic-page-count">{summary}.</p>}
       </header>
-      <LearningPath client:load posts={posts} />
-      <nav class="tag-allTopics" aria-label="More tag pages">
-        <a href="/blog/tag/" class="tag-allTopicsLink" data-attr="tag-browse-all">
-          Browse all topics
-          <span aria-hidden="true">&nbsp;&rsaquo;</span>
-        </a>
+
+      <TopicLessons client:load groups={groups} />
+
+      <nav class="topic-page-nav" aria-label="More ways to find lessons">
+        <a href="/blog/tag/" data-attr="tag-browse-all">All topics</a>
+        <a href="/blog/#learn-find-h" data-attr="tag-search-all">Search every lesson <span aria-hidden="true">→</span></a>
       </nav>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .blog-index {
-    padding: var(--space-10) 0 var(--space-16);
+  .topic-page {
+    padding: var(--space-8) 0 var(--space-16);
   }
 
-  .blog-index-header {
-    text-align: center;
-    margin-bottom: var(--space-10);
+  .topic-page-container {
+    max-width: 1040px;
   }
 
-  .tag-breadcrumb {
-    font-size: 0.8rem;
+  .topic-page-crumb {
+    font-size: 0.9rem;
     color: var(--color-text-muted);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
   }
 
-  .tag-breadcrumb a {
+  .topic-page-crumb a {
     color: var(--color-deep-blue);
-    text-decoration: underline;
-    text-underline-offset: 2px;
   }
 
-  .tag-breadcrumb a:hover {
-    text-decoration-thickness: 2px;
+  .topic-page-header {
+    max-width: 680px;
+    margin-bottom: var(--space-8);
   }
 
-  .tag-breadcrumb .sep {
-    margin: 0 var(--space-1);
+  .topic-page-eyebrow {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
 
-  .blog-index-header h1 {
-    font-size: 2.5rem;
+  .topic-page-header h1 {
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: 2.4rem;
+    line-height: 1.15;
     color: var(--color-deep-blue);
-    margin-bottom: var(--space-3);
   }
 
-  .blog-index-subtitle {
-    color: var(--color-text-secondary);
-    max-width: 540px;
-    margin: 0 auto;
+  .topic-page-desc {
+    margin: 0 0 var(--space-2);
     font-size: 1.05rem;
-    line-height: 1.6;
+    color: var(--color-text-secondary);
   }
 
-  /* Sits below the post list. Gives readers (and crawlers) an obvious path
-     back up to the tag hub from any individual tag page. Uses the same
-     dotted-underline treatment as the related-tools footer link on the
-     multi-currency tool so the affordance reads consistently across the
-     site. */
-  .tag-allTopics {
+  .topic-page-count {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .topic-page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
     margin-top: var(--space-10);
     padding-top: var(--space-6);
-    border-top: 1px solid var(--color-border-light);
-    text-align: center;
+    border-top: 1px solid var(--color-border);
   }
 
-  .tag-allTopicsLink {
+  .topic-page-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.95rem;
     color: var(--color-deep-blue);
-    text-decoration: underline dotted;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
   }
 
-  .tag-allTopicsLink:hover,
-  .tag-allTopicsLink:focus-visible {
-    text-decoration-style: solid;
-    color: var(--color-teal);
-    outline: none;
+  @media (max-width: 640px) {
+    .topic-page { padding: var(--space-5) 0 var(--space-8); }
+
+    .topic-page-header { margin-bottom: var(--space-6); }
+
+    .topic-page-header h1 { font-size: 2rem; }
+
+    .topic-page-desc { font-size: 1rem; }
   }
 </style>
