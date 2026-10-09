@@ -79,6 +79,12 @@
   --palette-olive-dark:       #E6EE5C;
   --palette-green-dark:       #81C784;
   --palette-teal-dark:        #80CBC4;
+  /* Dark-mode teal for text, accents, charts and the Discovery level. On
+     dark surfaces teal-dark and blue-dark are pastels of nearly the same
+     lightness, so on a dim screen they merge; this one is a clear step
+     darker (L* 62 against blue-dark's 79). 5.6:1 on #1E1E1E, 6.3:1 on
+     #121212: AA, not AAA, by design. teal-dark stays for the logo dot. */
+  --palette-teal-mid-dark:    #26A69A;
   --palette-cyan-dark:        #80DEEA;
   --palette-blue-dark:        #90CAF9;
   --palette-indigo-dark:      #D1C4E9;
@@ -287,11 +293,12 @@
   --color-deep-blue-light:  var(--palette-indigo);
   --color-deep-blue-dark:   var(--palette-cyan-dark);
 
-  /* Dark teal flipped to palette teal-light so taglines/teal accents on
-     dark surfaces meet AA. #80CBC4 on #1E1E1E = 8.9:1, on #121212 = 10.0:1. */
-  --color-teal:             var(--palette-teal-dark);
-  --color-teal-light:       var(--palette-teal-dark);
-  --color-teal-dark:        var(--palette-teal-dark);
+  /* Teal on dark surfaces: a step darker than blue-dark so the two stay
+     apart on a dim screen (see --palette-teal-mid-dark). #26A69A on
+     #1E1E1E = 5.6:1, on #121212 = 6.3:1. */
+  --color-teal:             var(--palette-teal-mid-dark);
+  --color-teal-light:       var(--palette-teal-mid-dark);
+  --color-teal-dark:        var(--palette-teal-mid-dark);
 
   /* Logo mark flipped for dark mode (see :root note for rationale). */
   --color-logo-stroke:      var(--palette-blue);
@@ -326,7 +333,8 @@
 
   /* Level identity colors flipped to lighter shades so they remain legible
      as foreground text against the dark surfaces. */
-  --level-discovery:        var(--palette-cyan-dark);
+  /* Teal, as in light mode: cyan-dark sat too close to building's blue. */
+  --level-discovery:        var(--palette-teal-mid-dark);
   --level-building:         var(--palette-blue-dark);
   --level-psychology:       var(--palette-amber-dark);
   --level-optimizing:       var(--palette-red-dark);
@@ -3982,7 +3990,7 @@ strong {
 }
 [data-theme="dark"] {
   --chart-eur: var(--palette-blue-dark);
-  --chart-usd: var(--palette-teal-dark);
+  --chart-usd: var(--palette-teal-mid-dark);
   --chart-inr: var(--semantic-warning-dark);
 }
 

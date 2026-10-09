@@ -1,8 +1,8 @@
 # Color Palette
 
-> 5 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background.
+> 5 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background, with one deliberate exception: the dark-mode teal used for text, accents, charts and the Discovery level (`#26A69A`, AA at 5.6:1). See "Dark mode: lightness, not just hue" below.
 
-**Last updated:** 2026-05-26
+**Last updated:** 2026-10-10
 
 ---
 
@@ -13,7 +13,7 @@ The nidhi brand identity is built from two palette colors used as a pair:
 | Role | Light mode | Dark mode | Where you see it |
 |------|------------|-----------|------------------|
 | Primary | `#0A3D8F` palette blue | `#90CAF9` palette blue-dark | Wordmark "nidhi", logo background, primary buttons, headings |
-| Accent | `#005B4F` palette teal | `#80CBC4` palette teal-dark | Tagline "Money, understood", logo accent dot, link emphasis |
+| Accent | `#005B4F` palette teal | `#26A69A` palette teal-mid-dark (text, accents); `#80CBC4` palette teal-dark (logo accent dot) | Tagline "Money, understood", logo accent dot, link emphasis |
 
 **Why blue + teal:** finance is conventionally rendered in blue (trust, depth). Teal is a sibling hue that pairs naturally with blue without competing, and signals warmth and approachability against the blue's authority. Both hues exist as palette identities at AAA contrast on their respective backgrounds, so the brand pair never falls below the contrast bar.
 
@@ -57,13 +57,23 @@ Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.
 
 | # | Level | Light | On white | Dark | On #1E1E1E |
 |---|-------|-------|----------|------|------------|
-| 1 | discovery | `#005B4F` | 8.0:1 | `#80DEEA` | 10.8:1 |
+| 1 | discovery | `#005B4F` | 8.0:1 | `#26A69A` | 5.6:1 |
 | 2 | building | `#0A3D8F` | 10.1:1 | `#90CAF9` | 9.5:1 |
 | 3 | psychology | `#6B4800` | 8.2:1 | `#FFCC80` | 11.3:1 |
 | 4 | optimizing | `#991100` | 8.6:1 | `#FF9E80` | 8.3:1 |
 | 5 | mastery | `#311B92` | 12.3:1 | `#E1BEE7` | 10.1:1 |
 
 Hue identity: `teal → blue → amber → red → purple`
+
+---
+
+## Dark mode: lightness, not just hue
+
+On dark surfaces the pastel teal-dark (`#80CBC4`, L* 77), cyan-dark (`#80DEEA`, L* 83) and blue-dark (`#90CAF9`, L* 79) differ almost only in hue. On a dim screen hue is the first thing to go, so teal accents merged into blue headings, the first two chart series merged, and Discovery's badge looked like Building's.
+
+Dark mode therefore uses `--palette-teal-mid-dark` (`#26A69A`, L* 62) for `--color-teal`, `--level-discovery` and `--chart-usd`: 17 L* below blue-dark, so the pair stays apart when dimmed and desaturated. It is 5.6:1 on `#1E1E1E` and 6.3:1 on `#121212`, so it passes AA for text but not AAA. Keeping AAA would mean making blue-dark paler, closer to the white body text, which costs links more than it gains. The logo accent dot keeps `#80CBC4` (brand mark, non-text).
+
+Rule for new dark-mode colours that sit next to each other: at least about 12 L* apart, not hue alone.
 
 ---
 
