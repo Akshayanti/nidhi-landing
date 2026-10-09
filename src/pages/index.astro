@@ -73,12 +73,6 @@ const starterChart = {
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
 };
-// The hero's journey card ends in a small line of the same ten years.
-const spark = (() => {
-  const w = 120, h = 36, max = Math.max(...ex.values);
-  return ex.values.map((v, i) => `${((i / (ex.values.length - 1)) * w).toFixed(1)},${(h - (v / max) * (h - 4) - 2).toFixed(1)}`).join(' ');
-})();
-
 // Step 2: two illustrative people on the same income, to show that income
 // and net worth are different things.
 const SAME_INCOME = 3_000;
@@ -88,6 +82,14 @@ const people = [
 ];
 const peopleMax = Math.max(...people.flatMap((p) => [p.owns, p.owes]));
 const signedEur = (v: number) => (v < 0 ? `\u2212${eur(-v)}` : eur(v));
+
+// The hero card previews the three steps below with their own numbers; its
+// small chart is Step 3's two paths, on one scale.
+const spark = (() => {
+  const w = 120, h = 36, max = Math.max(...alt);
+  const line = (vals: number[]) => vals.map((v, i) => `${((i / (vals.length - 1)) * w).toFixed(1)},${(h - (v / max) * (h - 4) - 2).toFixed(1)}`).join(' ');
+  return { low: line(ex.values), high: line(alt) };
+})();
 
 const starterFootnote = `Example: ${eur(ex.invested)} invested today, with ${eur(STARTER.monthly)} or ${eur(HIGHER_MONTHLY)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
 
@@ -201,9 +203,9 @@ const faqSchema = {
           )}
         </div>
 
-        {/* The three steps below, as one illustrative person's journey. */}
+        {/* The three steps below, at a glance, with the same illustrative numbers. */}
         <div class="journey">
-          <p class="journey-label">One example, three steps</p>
+          <p class="journey-label">Three steps, at a glance &middot; illustrative amounts</p>
           <ol class="journey-list">
             <li>
               <span class="journey-step">1 &middot; Learn</span>
@@ -212,14 +214,14 @@ const faqSchema = {
             </li>
             <li>
               <span class="journey-step">2 &middot; See yours</span>
-              <span class="journey-big">{eur(ex.netWorth)}</span>
-              <span class="journey-small">{eur(ex.owned)} owned, {eur(ex.owed)} owed.</span>
+              <span class="journey-big">{signedEur(people[0].owns - people[0].owes)} or {signedEur(people[1].owns - people[1].owes)}</span>
+              <span class="journey-small">Two people, both earning {eur(SAME_INCOME)} a month.</span>
             </li>
             <li>
               <span class="journey-step">3 &middot; Look ahead</span>
-              <span class="journey-big">{eur(roundedEnd)}</span>
-              <span class="journey-small">In {STARTER.years} years, adding {eur(STARTER.monthly)} a month at an illustrative {pctReturn} a year.</span>
-              <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline points={spark} /></svg>
+              <span class="journey-big">{eur(gap)} apart</span>
+              <span class="journey-small">{eur(STARTER.monthly)} or {eur(HIGHER_MONTHLY)} a month, over {STARTER.years} years.</span>
+              <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline class="journey-spark-high" points={spark.high} /><polyline points={spark.low} /></svg>
             </li>
           </ol>
         </div>
@@ -818,6 +820,7 @@ const faqSchema = {
   }
 
   .journey-list li:last-child::before { background: var(--chart-eur); }
+  .journey-spark .journey-spark-high { stroke: var(--chart-usd); }
 
   .journey-step {
     font-family: var(--font-heading);
