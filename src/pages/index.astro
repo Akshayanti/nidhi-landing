@@ -9,7 +9,6 @@ import {
   lessonToolPairs,
   levelCounts,
   readingOrder,
-  resolveGrowthTopics,
   resolveStartingPoints,
 } from '../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../utils/inclusiveGuides.ts';
@@ -34,7 +33,6 @@ assertHomepageSlugs(allPosts);
 const showMonteCarlo = await isMonteCarloReleased();
 const isToolLive = (href: string) => href !== MONTE_CARLO_URL || showMonteCarlo;
 const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
-const growthTopics = resolveGrowthTopics(allPosts, now);
 const pairs = lessonToolPairs(allPosts, now, isToolLive);
 const counts = levelCounts(allPosts, now);
 const order = readingOrder(allPosts, now);
@@ -254,7 +252,7 @@ const faqSchema = {
   {/* =============================================================
        3. Start wherever you are: situations, each tied to the path
        ============================================================= */}
-  <section class="lp-section lp-section--alt" id="start" aria-labelledby="start-heading">
+  <section class="lp-section" id="start" aria-labelledby="start-heading">
     <div class="lp-section-inner">
       <div class="section-head">
         <h2 id="start-heading">Start wherever you are.</h2>
@@ -291,9 +289,6 @@ const faqSchema = {
                   <>{i > 0 && ', '}<a href={t.href} data-attr={`home-start-${s.id}-tool-${i + 1}`}>{t.name}</a></>
                 ))}
               </p>
-            )}
-            {s.id === 'complex' && (
-              <a class="start-more" href="#grows" data-attr="home-start-complex-more">How nidhi keeps up with a complicated life</a>
             )}
             <div class="start-door">
               <a
@@ -357,10 +352,10 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       4. Learn it, then try it on your own numbers
+       4. Learn it, then try it on your own numbers, with multi-currency as one concrete case
        ============================================================= */}
   {pairs.length > 0 && (
-    <section class="lp-section" id="apply" aria-labelledby="apply-heading">
+    <section class="lp-section lp-section--alt" id="apply" aria-labelledby="apply-heading">
       <div class="lp-section-inner">
         <div class="section-head">
           <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
@@ -401,39 +396,8 @@ const faqSchema = {
           })}
         </ul>
 
-        <p class="section-foot"><a href="/free/" data-attr="home-tools-all">All free tools</a></p>
-      </div>
-    </section>
-  )}
-
-  {/* =============================================================
-       5. Grows with you, with multi-currency as one concrete case
-       ============================================================= */}
-  <section class="lp-section lp-section--alt" id="grows" aria-labelledby="grows-heading" tabindex="-1">
-    <div class="lp-section-inner">
-      <div class="section-head">
-        <h2 id="grows-heading">nidhi grows with your financial life.</h2>
-        <p class="cap-body">
-          The ideas you start with keep mattering as life gets more involved.
-        </p>
-      </div>
-
-      <div class="grows-grid">
-        <ol class="grows-list">
-          {growthTopics.map((t) => (
-            <li>
-              <details class="fold" data-phone-fold>
-                <summary class="fold-head"><h3>{t.label}</h3></summary>
-                <ul class="grows-links" role="list">
-                  {t.lessons.map((l, i) => (
-                    <li><a href={l.href} data-attr={`home-grows-${t.id}-${i + 1}`}>{l.title}</a></li>
-                  ))}
-                </ul>
-              </details>
-            </li>
-          ))}
-        </ol>
-
+        {/* One concrete case: money in more than one country, added up live
+            with the same rates the net worth calculator uses. */}
         <div class="mc-panel" data-mc={JSON.stringify(mcItems)}>
           <h3>When your money lives in more than one country</h3>
           <p class="mc-lead">A home in one place, savings in another, a pension in a third: one picture, in the currency you live in.</p>
@@ -461,12 +425,14 @@ const faqSchema = {
             The button fetches the European Central Bank&rsquo;s rates through Frankfurter, the same open service the net worth calculator uses. None of these amounts, or anything else you type, is sent; like any web request, it shows Frankfurter your IP address. <a href="/free/multi-currency-net-worth/" data-attr="home-mc-tool">Try it with your own numbers</a>.
           </p>
         </div>
+
+        <p class="section-foot"><a href="/free/" data-attr="home-tools-all">All free tools</a></p>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   {/* =============================================================
-       6. The planner, honestly labelled, with the waitlist
+       5. The planner, honestly labelled, with the waitlist
        ============================================================= */}
   <section class="lp-section" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
@@ -475,7 +441,7 @@ const faqSchema = {
           <p class="lp-eyebrow">Opening in stages</p>
           <h2 id="planner-heading">The planner: your whole picture, looking forward.</h2>
           <p class="cap-body">
-            The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
+            The planner brings it together and grows with your financial life, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
           </p>
           <details class="fold" data-phone-fold>
             <summary class="fold-label">What the planner is meant to cover</summary>
@@ -495,7 +461,7 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       7. The belief, and what you can count on
+       6. The belief, and what you can count on
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="trust" aria-labelledby="trust-heading" tabindex="-1">
     <div class="lp-section-inner">
@@ -541,7 +507,7 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       8. FAQ (also in FAQPage data above)
+       7. FAQ (also in FAQPage data above)
        ============================================================= */}
   <section class="lp-section" id="faq" aria-labelledby="faq-heading" tabindex="-1">
     <div class="lp-section-inner lp-section-inner--narrow">
@@ -1295,7 +1261,6 @@ const faqSchema = {
   }
 
   .start-more,
-  .grows-links a,
   .pair-lesson a {
     display: inline-block;
     padding: 6px 0;
@@ -1308,7 +1273,6 @@ const faqSchema = {
   }
 
   .start-more:hover,
-  .grows-links a:hover,
   .pair-lesson a:hover { text-decoration-color: currentColor; }
 
   .start-route-label {
@@ -1612,101 +1576,10 @@ const faqSchema = {
     color: var(--color-deep-blue);
   }
 
-  /* ----------------------------------------------------------------
-     4. Grows with you
-     ---------------------------------------------------------------- */
-  .grows-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 36px;
-    align-items: start;
-  }
-
-  @media (min-width: 960px) {
-    .grows-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; }
-  }
-
-  .grows-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    counter-reset: grows;
-  }
-
-  .grows-list > li {
-    position: relative;
-    padding: 0 0 24px 34px;
-    counter-increment: grows;
-  }
-
-  /* A line joining the stages, drawn from dot to dot. */
-  .grows-list > li::before {
-    content: '';
-    position: absolute;
-    left: 6px;
-    top: 5px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid var(--color-teal);
-    background: var(--color-bg-white);
-    box-sizing: border-box;
-  }
-
-  .grows-list > li:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 20px;
-    bottom: -4px;
-    width: 2px;
-    background: var(--color-border);
-  }
-
-  .grows-list > li:last-child { padding-bottom: 0; }
-
-  .grows-list > li:last-child::before { background: var(--color-teal); }
-
-  .grows-list h3 {
-    font-family: var(--font-heading);
-    font-size: 1.08rem;
-    color: var(--color-text-primary);
-    margin: 0 0 5px;
-    line-height: 1.3;
-  }
-
-  .grows-list p {
-    margin: 0;
-    font-size: 0.93rem;
-    color: var(--color-text-secondary);
-    line-height: 1.55;
-  }
-
-  .grows-links {
-    list-style: none;
-    margin: 7px 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 18px;
-    row-gap: 2px;
-  }
-
-  /* Dense list: medium weight, so the list reads before the links shout. */
-  .grows-links a { font-size: 0.9rem; padding: 4px 0; font-weight: 500; }
-
-  /* Phones: links stack for comfortable tap targets. */
-  @media (max-width: 759px) {
-    #grows .section-head { margin-bottom: 32px; }
-    .grows-grid { gap: 28px; }
-    .grows-list > li { padding-left: 30px; padding-bottom: 22px; }
-    .grows-list > li:last-child { padding-bottom: 0; }
-    .grows-list > li::before { left: 4px; }
-    .grows-list > li:not(:last-child)::after { left: 10px; }
-    .grows-links { display: grid; gap: 0; }
-  }
-
+  /* The multi-currency example, inside 4 ("Learn it, then try it"),
+     after the tool pairs. */
   .mc-panel {
+    margin-top: 32px;
     padding: 24px;
     border: 1px solid var(--color-border);
     border-radius: 16px;
@@ -1716,7 +1589,7 @@ const faqSchema = {
   .mc-panel h3 {
     font-family: var(--font-heading);
     font-size: 1.1rem;
-    color: var(--color-deep-blue);
+    color: var(--color-text-primary);
     margin: 0 0 8px;
   }
 
@@ -2052,14 +1925,6 @@ const faqSchema = {
     }
     .pair-kicker { flex-shrink: 0; font-size: 0.7rem; color: var(--color-text-muted); }
     .pair-lesson a { font-size: 0.85rem; font-weight: 500; color: var(--color-text-secondary); }
-
-    /* Growth stages: titles only until tapped. */
-    .grows-list > li,
-    .grows-list > li:last-child { padding-bottom: 6px; }
-    .grows-list .fold > summary { padding-top: 0; padding-bottom: 8px; }
-    .grows-list .fold > summary::after { top: 0; transform: none; }
-    .grows-list .fold[open] > summary { padding-bottom: 4px; }
-    .grows-list .fold[open] { padding-bottom: 14px; }
 
     /* Promises at a glance: icon and headline in two columns. The detail
        lines and their links sit in the menu, footer and FAQ on phones. */
