@@ -217,6 +217,13 @@ export default defineConfig({
   // without server-side 301s.
   redirects: {
     '/free/currency-risk/': '/free/multi-currency-net-worth/',
+    // Short links for social bios (nidhi.today/ig and so on). The redirect
+    // page loads no analytics; the pageview on the destination carries the
+    // campaign parameters, which the privacy notice already covers. One
+    // campaign name across platforms, so utm_source tells them apart.
+    '/ig/': '/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/tg/': '/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/wa/': '/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
   },
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and
