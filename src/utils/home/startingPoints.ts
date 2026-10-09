@@ -143,17 +143,17 @@ export const GROWTH_TOPICS: GrowthTopicDef[] = [
 export const TOOL_COPY: Record<string, { name: string; desc: string; preview: 'donut' | 'bars' | 'fan' }> = {
   '/free/multi-currency-net-worth/': {
     name: 'Net worth calculator',
-    desc: 'Add what you own and owe and see your net worth. Works with one currency or several, at live ECB rates.',
+    desc: 'One currency or several.',
     preview: 'donut',
   },
   '/free/loan-comparison/': {
     name: 'Loan comparison',
-    desc: 'Put borrowing offers side by side: APR, total cost and how long each takes to pay off.',
+    desc: 'Borrowing offers, side by side.',
     preview: 'bars',
   },
   '/free/monte-carlo-simulator/': {
     name: 'Monte Carlo simulator',
-    desc: 'See the range of ways your savings and retirement could turn out, not just one line.',
+    desc: 'A range of outcomes, not one line.',
     preview: 'fan',
   },
 };
