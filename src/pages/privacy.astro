@@ -83,11 +83,14 @@ const writtenChangelog: ChangelogEntry[] = [
     date: 'Oct 9, 2026',
     iso: '2026-10-09',
     material: true,
-    summary: 'Topic pages use the new learning path layout and no longer have their own search box, so no page on the site writes what you type into its address.',
+    summary: 'Topic pages use the new learning path layout and no longer have their own search box, so no page on the site writes what you type into its address. The homepage has fewer links competing for attention, and no longer contacts the exchange-rate service.',
     details: [
       'Topic pages (/blog/tag/...): a topic\'s lessons are grouped by level on the same cards as the level pages, each group linking to its full level. The search box, the level summary and the topic chips are gone. Searching across every lesson happens on /blog/, which keeps what you type on the page. Before, the topic-page search wrote it into the address (?q=), which the analytics script then removed before sending any event; now nothing writes it there at all. The analytics script still strips ?q= from learning path addresses, for old bookmarks and hand-typed links.',
       'Read status on topic pages uses the existing nidhi-reading-progress key, as before. Nothing new is stored or sent.',
       'New data-attr labels, recorded only if you accept the cookie banner, as before: topic-level-discovery, topic-level-building, topic-level-psychology, topic-level-optimizing, topic-level-mastery and topic-level-inclusive-finances (the link from a topic\'s level group to that whole level), and tag-search-all (the link to search every lesson). tag-browse-all and blog-card-* keep their meaning. The topic pages\' lp-skip-next-*, lp-go-previous-*, lp-mark-level-read-* and lp-mark-level-unread-* buttons are gone; the last two remain on the level pages.',
+      'Homepage: one main button per screen. Each of the four starting routes is now a single line that links to its route, instead of a card with a link per lesson, a link per free tool and a button; the line keeps the button\'s label (home-start-basics-door, home-start-no-plan-door, home-start-habits-door, home-start-complex-door) and still leads to the first lesson on the route you have not read, from the existing nidhi-reading-progress key. The hero no longer has the "Not sure where to begin?" and "Already know the basics?" lines. Labels removed with them: home-hero-first-lesson, home-hero-skip-building, home-hero-skip-psychology, home-hero-skip-tools, the per-lesson route links home-start-<route>-1, -2 and -3, and the per-tool route links home-start-<route>-tool-<n>. The Inclusive Finances route is a single line too, with its existing label (home-inclusive-finances). The "Welcome back" link (home-hero-continue) now shows only to readers with reading progress, as before. Nothing new is stored or sent.',
+      'Homepage: the page is arranged as three steps (learn, see yours, look ahead). The worked example is split across them, with a short summary of it in the hero; the "nidhi grows with your financial life" section is removed, and the free tools are listed on their own, without a lesson link beside each one. Labels removed: home-grows-<stage>-1 and -2 for each stage, home-start-complex-more, home-pair-lesson-<tool> for each tool, and home-tools-all. Nothing new is stored or sent.',
+      'Homepage: the multi-currency example and its "Add it up in euros at today\'s rates" button are removed, so the homepage no longer contacts Frankfurter (the European Central Bank exchange-rate service) at all. Its labels go with it: home-mc-convert and home-mc-tool. The net worth calculator still fetches rates as before, and the section on Frankfurter above no longer mentions the homepage.',
     ],
   },
   {
@@ -559,9 +562,8 @@ const privacyBreadcrumbSchema = {
         <strong>One service your browser contacts directly: Frankfurter</strong>{' '}
         (<code>api.frankfurter.dev</code>), a free, open service that publishes European Central
         Bank exchange rates. Your browser asks it for the day&rsquo;s rates when you open the net
-        worth calculator (and again if you change your spending currency there), and on the
-        homepage only if you press &ldquo;Add it up in euros at
-        today&rsquo;s rates&rdquo;. The request names only currency codes, never your amounts or
+        worth calculator (and again if you change your spending currency there). The request
+        names only currency codes, never your amounts or
         anything you typed. Like any request your browser makes, it shows Frankfurter your IP
         address and browser type. It goes straight from your browser to Frankfurter, so we never
         see it, and Frankfurter is independent of us: what it keeps is up to them.
