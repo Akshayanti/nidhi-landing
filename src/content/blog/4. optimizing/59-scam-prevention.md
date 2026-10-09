@@ -11,6 +11,7 @@ takeaways:
 order: 59
 pubDate: 2099-01-27
 updatedDate: 2026-08-31
+localRules: [investments, credit]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]

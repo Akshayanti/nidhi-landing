@@ -10,6 +10,7 @@ takeaways:
 order: 46
 pubDate: 2026-10-23
 updatedDate: 2026-07-31
+localRules: [deposit-protection, tax]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

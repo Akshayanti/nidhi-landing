@@ -11,6 +11,7 @@ takeaways:
 order: 58
 pubDate: 2099-01-23
 updatedDate: 2026-08-28
+localRules: [insurance, benefits]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]

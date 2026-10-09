@@ -11,6 +11,7 @@ takeaways:
 order: 47
 pubDate: 2026-10-26
 updatedDate: 2026-08-03
+localRules: [pensions, credit]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
