@@ -80,6 +80,16 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 10, 2026',
+    iso: '2026-10-10',
+    material: true,
+    summary: 'The homepage links to the level helper on the learning path, with a new click label.',
+    details: [
+      'Homepage: a "Two questions suggest where to start" link under the starting routes leads to /blog/#level-helper, which opens the level helper when the page loads. New data-attr label, recorded only if you accept the cookie banner, as before: home-level-helper. The helper works as before: your answers are kept only while the page is open, and are not stored or sent.',
+      'Homepage: the "My finances have got complicated" route is now the Optimizing level. Until its first lesson is published it shows as a line without a link; once published, its link keeps the existing label (home-start-complex-door). Nothing new is stored or sent.',
+    ],
+  },
+  {
     date: 'Oct 9, 2026',
     iso: '2026-10-09',
     material: true,

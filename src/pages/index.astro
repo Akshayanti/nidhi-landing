@@ -66,9 +66,12 @@ const starterChart = {
   title: 'Example: one decision compared over ten years',
   descId: 'hero-starter-desc',
   pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
+  // Solid blue for the changed path, dashed grey for the baseline: they
+  // differ in lightness and pattern, not only hue, so they stay apart on a
+  // dim dark screen.
   series: [
-    { name: `${HIGHER_MONTHLY} €/mo`, values: alt, color: 'var(--chart-usd)' },
-    { name: `${STARTER.monthly} €/mo`, values: ex.values, color: 'var(--chart-eur)', area: true },
+    { name: `${HIGHER_MONTHLY} €/mo`, values: alt, color: 'var(--chart-eur)', area: true },
+    { name: `${STARTER.monthly} €/mo`, values: ex.values, color: 'var(--color-text-muted)', dashFrom: 0 },
   ],
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
@@ -117,8 +120,8 @@ const faqs = [
     a: 'They stay on your device and are not sent to nidhi. The free tools calculate in your browser and never put what you type into the page address. When a tool needs outside data, such as the day\'s exchange rates, your browser asks that service for the rates only, never your amounts; like any request, it shows that service your IP address. The privacy page has the details.',
   },
   {
-    q: 'What are you building next?',
-    a: 'Something to look ahead with your own numbers, with every assumption in plain view. It is opening in stages. Join the list on this page and you will get one email when it opens.',
+    q: 'What is the planner, and when can I use it?',
+    a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
   },
 ];
 
@@ -185,7 +188,7 @@ const faqSchema = {
       <div class="hero-grid">
         <div class="hero-copy">
           <h1 id="hero-heading">Understand your money.</h1>
-          <p class="lp-subhead hero-trio"><span>Free lessons.</span> <span>Private tools.</span> <span>More on the way.</span></p>
+          <p class="lp-subhead hero-trio"><span>Free lessons.</span> <span>Private tools.</span> <span>A planner on the way.</span></p>
 
           <div class="hero-actions">
             <a href="/blog/" class="lp-btn lp-btn--primary" data-attr="home-hero-start-learning">Start learning</a>
@@ -205,7 +208,7 @@ const faqSchema = {
 
         {/* The three steps below, at a glance, with the same illustrative numbers. */}
         <div class="journey">
-          <p class="journey-label">Three steps, at a glance &middot; illustrative amounts</p>
+          <p class="journey-label">Learn, take stock, plan ahead &middot; illustrative amounts</p>
           <ol class="journey-list">
             <li>
               <span class="journey-step">1 &middot; Learn</span>
@@ -213,12 +216,12 @@ const faqSchema = {
               <span class="journey-small">What you own, minus what you owe.</span>
             </li>
             <li>
-              <span class="journey-step">2 &middot; See yours</span>
+              <span class="journey-step">2 &middot; Take stock</span>
               <span class="journey-big">{signedEur(people[0].owns - people[0].owes)} or {signedEur(people[1].owns - people[1].owes)}</span>
               <span class="journey-small">Two people, both earning {eur(SAME_INCOME)} a month.</span>
             </li>
             <li>
-              <span class="journey-step">3 &middot; Look ahead</span>
+              <span class="journey-step">3 &middot; Plan ahead</span>
               <span class="journey-big">{eur(gap)} apart</span>
               <span class="journey-small">{eur(STARTER.monthly)} or {eur(HIGHER_MONTHLY)} a month, over {STARTER.years} years.</span>
               <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline class="journey-spark-high" points={spark.high} /><polyline points={spark.low} /></svg>
@@ -235,14 +238,27 @@ const faqSchema = {
   <section class="lp-section lp-section--alt" id="start" aria-labelledby="start-heading">
     <div class="lp-section-inner">
       <div class="section-head">
-        <p class="lp-eyebrow">Step 1 &middot; Learn</p>
+        <p class="step-mark"><span class="step-num" aria-hidden="true">1</span><span class="chart-srOnly">Step 1: </span>Learn</p>
         <h2 id="start-heading">Free lessons, for good.</h2>
-        <p class="cap-body">No paywall, no account. Pick the line that sounds like you.</p>
+        <p class="cap-body">Short lessons for any household, in any country, and where local rules matter, they say what to check. No paywall, no account.</p>
       </div>
+
+      <p class="route-help">
+        Not sure which fits? <a href="/blog/#level-helper" data-attr="home-level-helper">Two questions suggest where to start</a>.
+      </p>
 
       {/* One line per route. Each opens the first lesson this browser has not read yet. */}
       <ul class="routes" role="list">
-        {startingPoints.map((s) => (
+        {startingPoints.map((s) => s.lessons.length === 0 ? (
+          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
+            {/* A level whose lessons are still scheduled: shown, not linked, until the first one goes live. */}
+            <div class="route route--soon">
+              <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
+              <span class="route-title">{s.situation}</span>
+              <span class="route-meta">{s.levelLabel ?? 'More lessons'} &middot; lessons coming soon</span>
+            </div>
+          </li>
+        ) : (
           <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
             <a
               class="route"
@@ -279,13 +295,13 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       3. Step 2, see yours: an example net worth and the free tools
+       3. Step 2, take stock: an example net worth and the free tools
        ============================================================= */}
   {pairs.length > 0 && (
     <section class="lp-section" id="apply" aria-labelledby="apply-heading">
       <div class="lp-section-inner">
         <div class="section-head">
-          <p class="lp-eyebrow">Step 2 &middot; See yours</p>
+          <p class="step-mark"><span class="step-num" aria-hidden="true">2</span><span class="chart-srOnly">Step 2: </span>Take stock</p>
           <h2 id="apply-heading">See where you stand.</h2>
           <p class="cap-body">Free tools that run in your browser, so what you type stays on your device.</p>
         </div>
@@ -340,17 +356,17 @@ const faqSchema = {
   )}
 
   {/* =============================================================
-       4. Step 3, look ahead: one decision compared over ten years, and
-          the waitlist for what comes next (kept as a surprise)
+       4. Step 3, plan ahead: what the planner is, one decision compared
+          over ten years, and the waitlist
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="planner-grid">
         <div class="planner-copy">
-          <p class="lp-eyebrow">Step 3 &middot; Look ahead</p>
+          <p class="step-mark"><span class="step-num" aria-hidden="true">3</span><span class="chart-srOnly">Step 3: </span>Plan ahead</p>
           <h2 id="planner-heading">See where it could go.</h2>
           <p class="cap-body">
-            Choices made today play out over years. Here is one, followed for ten.
+            We are building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.
           </p>
           <div class="starter starter--chart">
             <p class="starter-label">One decision, compared</p>
@@ -388,8 +404,11 @@ const faqSchema = {
         ))}
       </div>
 
+      <p class="trust-why">
+        nidhi started because one person couldn&rsquo;t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So we are building it, and explaining what we learn along the way.
+      </p>
       <p class="trust-line">
-        No ads, no data selling. Lessons cite their sources. Made in Prague by one person.
+        Made in Prague. No ads, no data selling. Lessons cite their sources.
         <span class="trust-links">
           <a href="/beliefs/" data-attr="home-cta-beliefs">What we believe</a>
           <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>
@@ -572,6 +591,31 @@ const faqSchema = {
   .lp-section--alt { background: var(--color-bg-white); }
 
   #hero { padding-top: 56px; }
+
+  /* Step 1, 2 and 3: a numbered marker above each step's heading, so the
+     three steps read as a sequence. */
+  .step-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 12px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-text-primary);
+    color: var(--color-bg);
+    font-size: 0.9rem;
+  }
 
   .lp-section-inner {
     width: 100%;
@@ -820,7 +864,7 @@ const faqSchema = {
   }
 
   .journey-list li:last-child::before { background: var(--chart-eur); }
-  .journey-spark .journey-spark-high { stroke: var(--chart-usd); }
+  .journey-spark polyline:not(.journey-spark-high) { stroke: var(--color-text-muted); stroke-dasharray: 5 4; }
 
   .journey-step {
     font-family: var(--font-heading);
@@ -990,6 +1034,24 @@ const faqSchema = {
   .route:focus-visible .route-go { text-decoration: underline; text-underline-offset: 3px; }
   .route:hover { background: color-mix(in srgb, var(--start-level) 5%, transparent); }
 
+  /* An empty route, for a level whose lessons are still scheduled. */
+  .route--soon { color: var(--color-text-secondary); }
+  .route--soon .route-badge { opacity: 0.6; }
+  .route--soon:hover { background: none; }
+
+  .route-help {
+    margin: -16px 0 20px;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+  }
+
+  .route-help a {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .route:focus-visible {
     outline: 2px solid var(--color-deep-blue);
     outline-offset: 2px;
@@ -1155,8 +1217,17 @@ const faqSchema = {
      ---------------------------------------------------------------- */
   .faq-heading { margin: 0 0 20px; }
 
+  .trust-why {
+    margin: 36px 0 0;
+    padding-left: 16px;
+    border-left: 3px solid var(--color-teal);
+    font-size: 1.02rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+  }
+
   .trust-line {
-    margin: 32px 0 0;
+    margin: 14px 0 0;
     font-size: 0.92rem;
     color: var(--color-text-secondary);
     line-height: 1.6;

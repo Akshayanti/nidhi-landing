@@ -56,7 +56,10 @@ describe('starting points', () => {
       post('cash-flow-101', 'discovery', 10),
     ];
     const points = resolveStartingPoints(posts, NOW);
-    assert.deepEqual(points.map((p) => p.id), ['basics']);
+    // The Optimizing route stays, empty, until its lessons go live.
+    assert.deepEqual(points.map((p) => p.id), ['basics', 'complex']);
+    assert.deepEqual(points[1].lessons, []);
+    assert.equal(points[1].levelLabel, 'Optimizing');
     assert.deepEqual(points[0].lessons.map((l) => l.slug), ['what-is-net-worth', 'cash-flow-101']);
     assert.equal(points[0].levelLabel, 'Discovery');
     assert.equal(points[0].levelCount, 2);
@@ -73,6 +76,16 @@ describe('starting points', () => {
       gated.find((p) => p.id === 'complex')!.tools.map((t) => t.name),
       ['Loan comparison', 'Net worth calculator'],
     );
+  });
+
+  it('the Optimizing route fills in as its lessons publish', () => {
+    const posts = [
+      post('financial-projections', 'optimizing', 43),
+      post('what-if-scenarios', 'optimizing', 43.3, FUTURE),
+    ];
+    const complex = resolveStartingPoints(posts, NOW).find((p) => p.id === 'complex')!;
+    assert.deepEqual(complex.lessons.map((l) => l.slug), ['financial-projections']);
+    assert.equal(complex.levelCount, 1);
   });
 
   it('a route\'s button moves to the first unread lesson', () => {
