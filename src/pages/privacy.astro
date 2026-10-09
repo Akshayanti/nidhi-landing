@@ -994,9 +994,10 @@ const privacyBreadcrumbSchema = {
     border-radius: var(--radius-sm);
   }
 
+  /* Page-background text on teal: 7.4:1 in light mode, 6.3:1 in dark (white on the dark-mode teal would be about 3:1). */
   .changelog-tag--material {
     background: var(--color-teal);
-    color: white;
+    color: var(--color-bg);
   }
 
   /* Scope the changelog summary/details typography so they don't inherit

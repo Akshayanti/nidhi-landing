@@ -39,6 +39,9 @@ export const PALETTE = {
   oliveDark:      '#E6EE5C',
   greenDark:      '#81C784',
   tealDark:       '#80CBC4',
+  // Dark-mode teal for text, accents and charts: a step darker than
+  // tealDark so it stays apart from blueDark on a dim screen. AA (5.6:1).
+  tealMidDark:    '#26A69A',
   cyanDark:       '#80DEEA',
   blueDark:       '#90CAF9',
   indigoDark:     '#D1C4E9',
