@@ -65,6 +65,9 @@ const starterChart = {
 };
 const starterFootnote = `Example: ${eur(ex.invested)} invested today and ${eur(STARTER.monthly)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.putIn)} is money put in and about ${eur(roundedGrowth)} is growth. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
 
+// The three steps of the worked example, in the order the panel shows them.
+const EXAMPLE_STEPS = ['Learn', 'See yours', 'Look ahead'];
+
 // The multi-currency example. Nothing is fetched until the visitor asks.
 const mcItems = [
   { name: 'Apartment, Prague', amount: 280_000, currency: 'EUR' },
@@ -158,7 +161,7 @@ const faqSchema = {
   bodyData={{ 'data-page': 'landing' }}
 >
   {/* =============================================================
-       1. Hero: the promise, two ways in, and one idea walked through
+       1. Hero: the promise and two ways in
        ============================================================= */}
   <section class="lp-section" id="hero" aria-labelledby="hero-heading">
     <div class="lp-section-inner">
@@ -167,7 +170,7 @@ const faqSchema = {
           <p class="lp-eyebrow">Money, understood</p>
           <h1 id="hero-heading">Understand your money. Plan what comes next.</h1>
           <p class="lp-subhead">
-            <span class="wide-only">Learn how personal finance works, see what it means for your own money, and plan your future with it. </span>Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
+            Free lessons and private tools, whether you are learning the basics or your finances have got complicated.
           </p>
 
           <div class="hero-actions">
@@ -186,55 +189,77 @@ const faqSchema = {
           )}
         </div>
 
-        <figure class="starter" aria-labelledby="starter-title">
-          <p class="starter-kicker" id="starter-title">One idea, from learning to planning</p>
-          <ol class="starter-steps">
-            <li>
-              <span class="starter-step">Learn</span>
-              <p class="starter-text">Net worth is what you own minus what you owe.<span class="wide-only"> It shows whether you are moving forward, whatever you earn.</span></p>
-            </li>
-            <li>
-              <span class="starter-step">See yours</span>
-              <table class="starter-table" aria-label="An example net worth">
-                <tbody>
-                  {STARTER.owns.map((i) => (
-                    <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
-                  ))}
-                  {STARTER.owes.map((i) => (
-                    <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
-                </tfoot>
-              </table>
-            </li>
-            <li>
-              <span class="starter-step">Look ahead</span>
-              <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
-              <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
-              <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
-              <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
-              <details class="fold" data-phone-fold>
-                <summary class="fold-label">How this example works</summary>
-                <p class="hc-foot">{starterFootnote}</p>
-              </details>
-            </li>
-          </ol>
-        </figure>
       </div>
     </div>
   </section>
 
   {/* =============================================================
-       2. Start wherever you are: situations, each tied to the path
+       2. One idea, three steps: learn it, see yours, look ahead.
+          A swipeable strip on phones, step buttons everywhere. No
+          autoplay; without JavaScript it is a plain scrollable strip.
+       ============================================================= */}
+  <section class="lp-section lp-section--alt" id="example" aria-labelledby="example-heading">
+    <div class="lp-section-inner">
+      <div class="section-head section-head--center">
+        <p class="lp-eyebrow">One idea, three steps</p>
+        <h2 id="example-heading">From learning to planning.</h2>
+      </div>
+
+      <div class="starter" data-ex role="region" aria-roledescription="carousel" aria-labelledby="example-heading">
+        <div class="ex-steps" role="group" aria-label="Steps">
+          {EXAMPLE_STEPS.map((step, i) => (
+            <button type="button" class="ex-step" data-ex-go={i} aria-controls={`ex-slide-${i + 1}`} aria-current={i === 0 ? 'step' : undefined}>
+              <span class="ex-step-num" aria-hidden="true">{i + 1}</span>{step}
+            </button>
+          ))}
+        </div>
+
+        <div class="ex-track" data-ex-track tabindex="0" aria-label="Example, scroll sideways for the next step">
+          <div class="ex-slide" id="ex-slide-1" role="group" aria-roledescription="slide" aria-label="1 of 3: Learn">
+            <p class="ex-big">Net worth is what you own minus what you owe.</p>
+            <p class="starter-text">It shows whether you are moving forward, whatever you earn.</p>
+          </div>
+
+          <div class="ex-slide" id="ex-slide-2" role="group" aria-roledescription="slide" aria-label="2 of 3: See yours">
+            <table class="starter-table" aria-label="An example net worth">
+              <tbody>
+                {STARTER.owns.map((i) => (
+                  <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
+                ))}
+                {STARTER.owes.map((i) => (
+                  <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="ex-slide" id="ex-slide-3" role="group" aria-roledescription="slide" aria-label="3 of 3: Look ahead">
+            <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
+            <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
+            <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
+            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
+            <details class="fold">
+              <summary class="fold-label">How this example works</summary>
+              <p class="hc-foot">{starterFootnote}</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =============================================================
+       3. Start wherever you are: situations, each tied to the path
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="start" aria-labelledby="start-heading">
     <div class="lp-section-inner">
       <div class="section-head">
         <h2 id="start-heading">Start wherever you are.</h2>
         <p class="cap-body">
-          <span class="wide-only">You don&rsquo;t need the jargon, or much money, to begin. </span>Pick the line that sounds most like you. {counts.total > 0 && <span class="wide-only">There are {counts.total} free lessons so far, in reading order, each citing its sources.</span>}
+          Pick the line that sounds most like you.
         </p>
       </div>
 
@@ -252,7 +277,6 @@ const faqSchema = {
               </span>
             </summary>
             <div class="start-body">
-            <p class="start-detail">{s.detail}</p>
             <p class="start-route-label" id={`start-route-${s.id}`}>Your route</p>
             <ol class="start-lessons" aria-labelledby={`start-route-${s.id}`}>
               {/* A preview of the route, not a menu: the one link below starts it. */}
@@ -318,9 +342,6 @@ const faqSchema = {
       {/* Depth, said plainly: what a reader who already knows the rules gets. */}
       <div class="depth">
         <h3 id="depth-heading">Not just the rules of thumb.</h3>
-        <p class="depth-body wide-only">
-          Where there is a rule of thumb, the lesson also explains why it exists, where it breaks, and how to think about your own situation. Lessons cite their sources and compare countries where the rules differ, so they stay useful once you know the basics.
-        </p>
         <ol class="depth-steps">
           <li>The rule of thumb</li>
           <li>Why it exists</li>
@@ -336,7 +357,7 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       3. Learn it, then try it on your own numbers
+       4. Learn it, then try it on your own numbers
        ============================================================= */}
   {pairs.length > 0 && (
     <section class="lp-section" id="apply" aria-labelledby="apply-heading">
@@ -344,7 +365,7 @@ const faqSchema = {
         <div class="section-head">
           <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
           <p class="cap-body">
-            <span class="wide-only">Each free tool sits next to a lesson that explains the idea behind it. </span>The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
+            The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
           </p>
         </div>
 
@@ -386,14 +407,14 @@ const faqSchema = {
   )}
 
   {/* =============================================================
-       4. Grows with you, with multi-currency as one concrete case
+       5. Grows with you, with multi-currency as one concrete case
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="grows" aria-labelledby="grows-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="section-head">
         <h2 id="grows-heading">nidhi grows with your financial life.</h2>
         <p class="cap-body">
-          The ideas you start with keep mattering as life gets more involved.<span class="wide-only"> They just gain more moving parts. nidhi is built to keep up, so you never have to outgrow it.</span>
+          The ideas you start with keep mattering as life gets more involved.
         </p>
       </div>
 
@@ -403,7 +424,6 @@ const faqSchema = {
             <li>
               <details class="fold" data-phone-fold>
                 <summary class="fold-head"><h3>{t.label}</h3></summary>
-                <p>{t.detail}</p>
                 <ul class="grows-links" role="list">
                   {t.lessons.map((l, i) => (
                     <li><a href={l.href} data-attr={`home-grows-${t.id}-${i + 1}`}>{l.title}</a></li>
@@ -416,9 +436,7 @@ const faqSchema = {
 
         <div class="mc-panel" data-mc={JSON.stringify(mcItems)}>
           <h3>When your money lives in more than one country</h3>
-          <p class="wide-only">
-            Most money tools assume one country and one currency. nidhi doesn&rsquo;t, so a home in one place, savings in another and a pension in a third still add up to one picture, in the currency you actually live in.
-          </p>
+          <p class="mc-lead">A home in one place, savings in another, a pension in a third: one picture, in the currency you live in.</p>
           <ul class="mc-list">
             {mcItems.map((it) => (
               <li>
@@ -448,7 +466,7 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       5. The planner, honestly labelled, with the waitlist
+       6. The planner, honestly labelled, with the waitlist
        ============================================================= */}
   <section class="lp-section" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
@@ -457,7 +475,7 @@ const faqSchema = {
           <p class="lp-eyebrow">Opening in stages</p>
           <h2 id="planner-heading">The planner: your whole picture, looking forward.</h2>
           <p class="cap-body">
-            <span class="wide-only">Lessons explain the ideas. Tools answer one question at a time. </span>The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
+            The planner brings it together, so you can see where your money is heading and compare decisions before you make them. It is not open yet.
           </p>
           <details class="fold" data-phone-fold>
             <summary class="fold-label">What the planner is meant to cover</summary>
@@ -477,14 +495,14 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       6. The belief, and what you can count on
+       7. The belief, and what you can count on
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="trust" aria-labelledby="trust-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="section-head section-head--center">
         <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
         <p class="cap-body">
-          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert.<span class="wide-only"> That is what we mean by <em>money, understood</em>.</span>
+          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert.
         </p>
       </div>
 
@@ -508,7 +526,7 @@ const faqSchema = {
         </li>
         <li>
           <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></svg></span>
-          <span class="trust-copy"><strong>Built for real financial lives.</strong> <span class="trust-detail">Different households, countries, abilities and ways of working.<span class="wide-only"> The site works with screen readers, its charts do not rely on colour alone, it follows your device's reduced motion setting, and every lesson opens with a short summary.</span></span></span>
+          <span class="trust-copy"><strong>Built for real financial lives.</strong> <span class="trust-detail">Different households, countries, abilities and ways of working.</span></span>
         </li>
         <li>
           <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 16v-5M12 8h.01" /></svg></span>
@@ -523,7 +541,7 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       7. FAQ (also in FAQPage data above)
+       8. FAQ (also in FAQPage data above)
        ============================================================= */}
   <section class="lp-section" id="faq" aria-labelledby="faq-heading" tabindex="-1">
     <div class="lp-section-inner lp-section-inner--narrow">
@@ -572,6 +590,42 @@ const faqSchema = {
     fold.addEventListener('toggle', () => {
       if (wide.matches && !fold.open) fold.open = true;
     });
+  });
+
+  // The worked example: step buttons scroll the strip to their slide, and
+  // swiping or scrolling the strip moves the current step with it.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll<HTMLElement>('[data-ex]').forEach((ex) => {
+    const track = ex.querySelector<HTMLElement>('[data-ex-track]');
+    if (!track) return;
+    const slides = Array.from(track.children) as HTMLElement[];
+    const steps = Array.from(ex.querySelectorAll<HTMLButtonElement>('[data-ex-go]'));
+    let current = 0;
+    const fit = () => { track.style.height = `${slides[current].offsetHeight}px`; };
+    const mark = (index: number) => {
+      current = index;
+      steps.forEach((b, j) => {
+        if (j === index) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current');
+      });
+      fit();
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    steps.forEach((button, i) => {
+      button.addEventListener('click', () => {
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+        mark(i);
+      });
+    });
+    let frame = 0;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const index = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        mark(Math.max(0, Math.min(slides.length - 1, index)));
+      });
+    }, { passive: true });
   });
 
   function readSlugs(): string[] {
@@ -935,15 +989,18 @@ const faqSchema = {
   /* ----------------------------------------------------------------
      1. Hero
      ---------------------------------------------------------------- */
+  /* The promise and two ways in; the worked example has its own panel
+     below, so the first screen asks for one thing. Centred from 1024px. */
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
-    align-items: center;
   }
 
   @media (min-width: 1024px) {
-    .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 60px; }
+    .hero-copy { max-width: 760px; margin: 0 auto; text-align: center; }
+    .hero-copy .lp-subhead,
+    .hero-copy .hero-next { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
   }
 
   .hero-copy h1 {
@@ -987,49 +1044,111 @@ const faqSchema = {
   }
 
 
-  /* The worked example. Shown at every width; on small screens it follows
-     the buttons. */
+  /* The worked example, one step at a time: step buttons above a strip of
+     three slides that snap into place. Swipe or scroll on phones, the
+     buttons everywhere; nothing moves on its own. */
   .starter {
-    margin: 0;
+    max-width: 760px;
+    margin: 0 auto;
+    /* Contains absolutely positioned screen-reader text in the off-screen slides, which would otherwise widen the page. */
+    position: relative;
     background: var(--color-bg-white);
     border: 1px solid var(--color-border-light);
     border-radius: 16px;
-    padding: 22px 24px;
+    overflow: hidden;
     box-shadow: 0 8px 32px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
   }
 
-  .starter-kicker {
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 14px;
+  .ex-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--color-border-light);
   }
 
-  .starter-steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 16px;
-  }
-
-  .starter-steps > li {
-    position: relative;
-    padding-left: 18px;
-    border-left: 2px solid var(--color-border);
-  }
-
-  /* Neutral, not teal: teal is the colour of the buttons. */
-  .starter-step {
-    display: block;
-    font-family: var(--font-heading);
-    font-size: 0.8rem;
-    font-weight: 700;
+  /* Neutral pills: filled teal is kept for the page's main button. */
+  .ex-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px 0 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-bg-white);
     color: var(--color-text-secondary);
-    margin-bottom: 4px;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .ex-step:hover { border-color: var(--color-text-secondary); }
+
+  .ex-step[aria-current='step'] {
+    border-color: var(--color-text-primary);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+  }
+
+  .ex-step:focus-visible {
+    outline: 2px solid var(--color-deep-blue);
+    outline-offset: 2px;
+  }
+
+  .ex-step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    font-size: 0.75rem;
+  }
+
+  /* Slides keep their own height; the script sizes the strip to the one
+     showing, so a short step does not sit in a tall, empty panel. */
+  .ex-track {
+    display: flex;
+    align-items: flex-start;
+    transition: height 0.25s ease;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .ex-track::-webkit-scrollbar { display: none; }
+
+  .ex-track:focus-visible {
+    outline: 2px solid var(--color-deep-blue);
+    outline-offset: -2px;
+  }
+
+  .ex-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    padding: 26px 28px 28px;
+  }
+
+  .ex-big {
+    margin: 0 0 10px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 1.6vw + 0.8rem, 1.75rem);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .ex-slide .starter-text { margin-bottom: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ex-track { scroll-behavior: auto; transition: none; }
   }
 
   .starter-text {
@@ -1259,14 +1378,6 @@ const faqSchema = {
     font-size: 1.12rem;
     color: var(--color-text-primary);
     margin: 0 0 8px;
-  }
-
-  .depth-body {
-    margin: 0 0 16px;
-    max-width: 70ch;
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.55;
   }
 
   .depth-steps {
@@ -1825,16 +1936,13 @@ const faqSchema = {
   @media (max-width: 640px) {
     .lp-section { padding: 44px 16px; }
     #hero { padding-top: 28px; }
-    .hero-grid { gap: 28px; }
     .section-head { margin-bottom: 24px; }
-    .starter { padding: 16px; box-shadow: none; }
-    .starter-kicker { margin-bottom: 10px; }
-    .starter-steps { gap: 12px; }
-    .starter-steps > li { padding-left: 14px; }
-    /* Step names run into their sentence instead of taking a line each. */
-    .starter-step { display: inline; margin-right: 6px; }
-    .starter-step + .starter-text { display: inline; }
-    .starter-step + .starter-table { margin-top: 4px; }
+    .starter { box-shadow: none; }
+    .ex-steps { padding: 12px; gap: 6px; }
+    /* Numbers drop on phones so the three steps fit on one line. */
+    .ex-step { padding: 0 12px; font-size: 0.85rem; }
+    .ex-step-num { display: none; }
+    .ex-slide { padding: 18px 16px 20px; }
     .starter-table { font-size: 0.85rem; }
     .starter-table th,
     .starter-table td { padding: 1px 0; }
@@ -1845,13 +1953,6 @@ const faqSchema = {
     .mc-panel { padding: 18px; }
     .start-situations { gap: 6px; }
     .start-situations li { font-size: 0.8rem; padding: 2px 8px; }
-
-    /* Secondary sentences that the heading or the content below already
-       carries. Printed once, shown from 641px. */
-    .wide-only { display: none; }
-
-    /* The skip links repeat routes the "Start wherever you are" cards give
-       just below; on a phone they only push the example down. */
 
     /* Starting points: rows marked by their level's number and colour, each
        opening its route. Inclusive Finances keeps a box: it sits beside the
