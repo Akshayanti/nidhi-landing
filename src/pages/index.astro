@@ -205,7 +205,7 @@ const faqSchema = {
 
         {/* The three steps below, at a glance, with the same illustrative numbers. */}
         <div class="journey">
-          <p class="journey-label">Learn, review, look ahead &middot; illustrative amounts</p>
+          <p class="journey-label">Learn, take stock, plan ahead &middot; illustrative amounts</p>
           <ol class="journey-list">
             <li>
               <span class="journey-step">1 &middot; Learn</span>
@@ -213,12 +213,12 @@ const faqSchema = {
               <span class="journey-small">What you own, minus what you owe.</span>
             </li>
             <li>
-              <span class="journey-step">2 &middot; Review</span>
+              <span class="journey-step">2 &middot; Take stock</span>
               <span class="journey-big">{signedEur(people[0].owns - people[0].owes)} or {signedEur(people[1].owns - people[1].owes)}</span>
               <span class="journey-small">Two people, both earning {eur(SAME_INCOME)} a month.</span>
             </li>
             <li>
-              <span class="journey-step">3 &middot; Look ahead</span>
+              <span class="journey-step">3 &middot; Plan ahead</span>
               <span class="journey-big">{eur(gap)} apart</span>
               <span class="journey-small">{eur(STARTER.monthly)} or {eur(HIGHER_MONTHLY)} a month, over {STARTER.years} years.</span>
               <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline class="journey-spark-high" points={spark.high} /><polyline points={spark.low} /></svg>
@@ -279,13 +279,13 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       3. Step 2, see yours: an example net worth and the free tools
+       3. Step 2, take stock: an example net worth and the free tools
        ============================================================= */}
   {pairs.length > 0 && (
     <section class="lp-section" id="apply" aria-labelledby="apply-heading">
       <div class="lp-section-inner">
         <div class="section-head">
-          <p class="step-mark"><span class="step-num" aria-hidden="true">2</span><span class="chart-srOnly">Step 2: </span>Review</p>
+          <p class="step-mark"><span class="step-num" aria-hidden="true">2</span><span class="chart-srOnly">Step 2: </span>Take stock</p>
           <h2 id="apply-heading">See where you stand.</h2>
           <p class="cap-body">Free tools that run in your browser, so what you type stays on your device.</p>
         </div>
@@ -340,14 +340,14 @@ const faqSchema = {
   )}
 
   {/* =============================================================
-       4. Step 3, look ahead: what the planner is, one decision compared
+       4. Step 3, plan ahead: what the planner is, one decision compared
           over ten years, and the waitlist
        ============================================================= */}
   <section class="lp-section lp-section--alt" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="planner-grid">
         <div class="planner-copy">
-          <p class="step-mark"><span class="step-num" aria-hidden="true">3</span><span class="chart-srOnly">Step 3: </span>Look ahead</p>
+          <p class="step-mark"><span class="step-num" aria-hidden="true">3</span><span class="chart-srOnly">Step 3: </span>Plan ahead</p>
           <h2 id="planner-heading">See where it could go.</h2>
           <p class="cap-body">
             We are building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.
