@@ -42,7 +42,8 @@ const firstLesson = order[0];
 assertInclusiveGroups(allPosts);
 const inclusive = liveInclusive(allPosts, now);
 
-// Hero example, computed (see src/utils/home/heroExamples.ts).
+// The worked example, computed (see src/utils/home/heroExamples.ts): the
+// table sits in Step 2 and the ten-year chart in Step 3.
 const eur = (v: number) => formatAmount(v, 'EUR');
 const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
@@ -62,9 +63,6 @@ const starterChart = {
   axisEnd: `+${STARTER.years} years`,
 };
 const starterFootnote = `Example: ${eur(ex.invested)} invested today and ${eur(STARTER.monthly)} added at the start of each month, at an illustrative ${pctReturn} a year after inflation. Of the ${eur(roundedEnd)}, ${eur(ex.putIn)} is money put in and about ${eur(roundedGrowth)} is growth. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.`;
-
-// The three steps of the worked example, in the order the panel shows them.
-const EXAMPLE_STEPS = ['Learn', 'See yours', 'Look ahead'];
 
 // The multi-currency example. Nothing is fetched until the visitor asks.
 const mcItems = [
@@ -192,78 +190,19 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       2. One idea, three steps: learn it, see yours, look ahead.
-          A swipeable strip on phones, step buttons everywhere. No
-          autoplay; without JavaScript it is a plain scrollable strip.
+       2. Step 1, learn: free lessons, a route for each situation
        ============================================================= */}
-  <section class="lp-section lp-section--alt" id="example" aria-labelledby="example-heading">
-    <div class="lp-section-inner">
-      <div class="section-head section-head--center">
-        <p class="lp-eyebrow">One idea, three steps</p>
-        <h2 id="example-heading">From learning to planning.</h2>
-      </div>
-
-      <div class="starter" data-ex role="region" aria-roledescription="carousel" aria-labelledby="example-heading">
-        <div class="ex-steps" role="group" aria-label="Steps">
-          {EXAMPLE_STEPS.map((step, i) => (
-            <button type="button" class="ex-step" data-ex-go={i} aria-controls={`ex-slide-${i + 1}`} aria-current={i === 0 ? 'step' : undefined}>
-              <span class="ex-step-num" aria-hidden="true">{i + 1}</span>{step}
-            </button>
-          ))}
-        </div>
-
-        <div class="ex-track" data-ex-track tabindex="0" aria-label="Example, scroll sideways for the next step">
-          <div class="ex-slide" id="ex-slide-1" role="group" aria-roledescription="slide" aria-label="1 of 3: Learn">
-            <p class="ex-big">Net worth is what you own minus what you owe.</p>
-            <p class="starter-text">It shows whether you are moving forward, whatever you earn.</p>
-            <p class="ex-next"><span aria-hidden="true">↓</span> Below: a route for where you are.</p>
-          </div>
-
-          <div class="ex-slide" id="ex-slide-2" role="group" aria-roledescription="slide" aria-label="2 of 3: See yours">
-            <table class="starter-table" aria-label="An example net worth">
-              <tbody>
-                {STARTER.owns.map((i) => (
-                  <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
-                ))}
-                {STARTER.owes.map((i) => (
-                  <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
-              </tfoot>
-            </table>
-            <p class="ex-next"><span aria-hidden="true">↓</span> Below: free tools to work out yours.</p>
-          </div>
-
-          <div class="ex-slide" id="ex-slide-3" role="group" aria-roledescription="slide" aria-label="3 of 3: Look ahead">
-            <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
-            <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
-            <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
-            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
-            <p class="ex-next"><span aria-hidden="true">↓</span> Below: the planner, opening in stages.</p>
-            <details class="fold">
-              <summary class="fold-label">How this example works</summary>
-              <p class="hc-foot">{starterFootnote}</p>
-            </details>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* =============================================================
-       3. Start wherever you are: situations, each tied to the path
-       ============================================================= */}
-  <section class="lp-section" id="start" aria-labelledby="start-heading">
+  <section class="lp-section lp-section--alt" id="start" aria-labelledby="start-heading">
     <div class="lp-section-inner">
       <div class="section-head">
-        <p class="lp-eyebrow">Step 1 &middot; Learn</p>
+        <p class="lp-eyebrow">Step 1 &middot; Learn, free for good</p>
         <h2 id="start-heading">Start wherever you are.</h2>
         <p class="cap-body">
-          Pick the line that sounds most like you.
+          Every lesson is free, with no paywall and no account. Pick the line that sounds most like you.
         </p>
       </div>
+
+      <p class="idea"><span class="idea-label">The first idea</span> Net worth is what you own minus what you owe. It shows whether you are moving forward, whatever you earn.</p>
 
       <ul class="start-grid" role="list">
         {startingPoints.map((s) => (
@@ -356,29 +295,43 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       4. Learn it, then try it on your own numbers, with multi-currency as one concrete case
+       3. Step 2, see yours: the free tools, an example net worth,
+          and multi-currency as one concrete case
        ============================================================= */}
   {pairs.length > 0 && (
-    <section class="lp-section lp-section--alt" id="apply" aria-labelledby="apply-heading">
+    <section class="lp-section" id="apply" aria-labelledby="apply-heading">
       <div class="lp-section-inner">
         <div class="section-head">
-          <p class="lp-eyebrow">Step 2 &middot; See yours</p>
-          <h2 id="apply-heading">Learn it, then try it on your own numbers.</h2>
+          <p class="lp-eyebrow">Step 2 &middot; See yours, with free tools</p>
+          <h2 id="apply-heading">Free tools for your own numbers.</h2>
           <p class="cap-body">
-            The tools run in your browser, so what you type stays on your device, and there is nothing to sign up for.
+            They run in your browser, so what you type stays on your device, and there is nothing to sign up for.
           </p>
         </div>
 
-        <ul class="pair-list" role="list">
+        <div class="tools-grid">
+        <div class="starter starter--table">
+          <p class="starter-label" id="starter-table-label">An example net worth</p>
+          <table class="starter-table" aria-labelledby="starter-table-label">
+            <tbody>
+              {STARTER.owns.map((i) => (
+                <tr><th scope="row">{i.name}</th><td>{eur(i.amount)}</td></tr>
+              ))}
+              {STARTER.owes.map((i) => (
+                <tr class="is-owed"><th scope="row">{i.name}</th><td>&minus;{eur(i.amount)}</td></tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr><th scope="row">Net worth</th><td>{eur(ex.netWorth)}</td></tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <ul class="tool-list" role="list">
           {pairs.map((p) => {
             const key = p.tool.href.split('/').filter(Boolean).pop();
             return (
-              <li class="pair">
-                <div class="pair-lesson">
-                  <span class="pair-kicker">Read</span>
-                  <a href={p.lesson.href} data-attr={`home-pair-lesson-${key}`}>{p.lesson.title}</a>
-                </div>
-                <span class="pair-arrow" aria-hidden="true">&rarr;</span>
+              <li>
                 <a href={p.tool.href} class="an-card" data-attr={`home-cta-${key}`}>
                   <span class="an-preview" aria-hidden="true">
                     {p.tool.preview === 'donut' && (
@@ -391,7 +344,6 @@ const faqSchema = {
                       <svg viewBox="0 0 80 48"><path d="M 6 40 L 74 6 L 74 36 Z" fill="var(--chart-eur)" opacity="0.22" /><path d="M 6 40 L 74 14 L 74 28 Z" fill="var(--chart-eur)" opacity="0.4" /><path d="M 6 40 L 74 21" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" /></svg>
                     )}
                   </span>
-                  <span class="an-kicker">Then try it</span>
                   <span class="an-title">{p.tool.name}</span>
                   <span class="an-desc">{p.tool.desc}</span>
                   <span class="an-cta" aria-hidden="true">Open the tool &rarr;</span>
@@ -400,6 +352,7 @@ const faqSchema = {
             );
           })}
         </ul>
+        </div>
 
         {/* One concrete case: money in more than one country, added up live
             with the same rates the net worth calculator uses. */}
@@ -437,9 +390,10 @@ const faqSchema = {
   )}
 
   {/* =============================================================
-       5. The planner, honestly labelled, with the waitlist
+       4. Step 3, look ahead: an example of growth, then the planner,
+          honestly labelled, with the waitlist
        ============================================================= */}
-  <section class="lp-section" id="signup" aria-labelledby="planner-heading" tabindex="-1">
+  <section class="lp-section lp-section--alt" id="signup" aria-labelledby="planner-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="planner-grid">
         <div class="planner-copy">
@@ -459,6 +413,16 @@ const faqSchema = {
           </details>
         </div>
         <div class="planner-signup">
+          <div class="starter starter--chart">
+            <p class="starter-text">Suppose {eur(ex.invested)} were invested, with {eur(STARTER.monthly)} added each month. It could grow to about {eur(roundedEnd)} in {STARTER.years} years.</p>
+            <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
+            <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
+            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
+            <details class="fold">
+              <summary class="fold-label">How this example works</summary>
+              <p class="hc-foot">{starterFootnote}</p>
+            </details>
+          </div>
           <WaitlistSection />
         </div>
       </div>
@@ -466,9 +430,9 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       6. The belief, and what you can count on
+       5. The belief, and what you can count on
        ============================================================= */}
-  <section class="lp-section lp-section--alt" id="trust" aria-labelledby="trust-heading" tabindex="-1">
+  <section class="lp-section" id="trust" aria-labelledby="trust-heading" tabindex="-1">
     <div class="lp-section-inner">
       <div class="section-head section-head--center">
         <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
@@ -479,10 +443,6 @@ const faqSchema = {
 
       <ul class="trust-grid" role="list">
         {/* Icons are decorative and shown on phones only; the bold line carries the meaning. */}
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z" /><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" /></svg></span>
-          <span class="trust-copy"><strong>Free to learn, for good.</strong> <span class="trust-detail">No paywall, and no &ldquo;subscribe for the good stuff&rdquo;.</span></span>
-        </li>
         <li>
           <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" /></svg></span>
           <span class="trust-copy"><strong>No ads, no data selling.</strong> <span class="trust-detail">Analytics run on EU servers, and we never share or sell your email.</span></span>
@@ -512,9 +472,9 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       7. FAQ (also in FAQPage data above)
+       6. FAQ (also in FAQPage data above)
        ============================================================= */}
-  <section class="lp-section" id="faq" aria-labelledby="faq-heading" tabindex="-1">
+  <section class="lp-section lp-section--alt" id="faq" aria-labelledby="faq-heading" tabindex="-1">
     <div class="lp-section-inner lp-section-inner--narrow">
       <h2 id="faq-heading" class="faq-heading">Questions people ask first</h2>
       <div class="faq-list">
@@ -561,42 +521,6 @@ const faqSchema = {
     fold.addEventListener('toggle', () => {
       if (wide.matches && !fold.open) fold.open = true;
     });
-  });
-
-  // The worked example: step buttons scroll the strip to their slide, and
-  // swiping or scrolling the strip moves the current step with it.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  document.querySelectorAll<HTMLElement>('[data-ex]').forEach((ex) => {
-    const track = ex.querySelector<HTMLElement>('[data-ex-track]');
-    if (!track) return;
-    const slides = Array.from(track.children) as HTMLElement[];
-    const steps = Array.from(ex.querySelectorAll<HTMLButtonElement>('[data-ex-go]'));
-    let current = 0;
-    const fit = () => { track.style.height = `${slides[current].offsetHeight}px`; };
-    const mark = (index: number) => {
-      current = index;
-      steps.forEach((b, j) => {
-        if (j === index) b.setAttribute('aria-current', 'step');
-        else b.removeAttribute('aria-current');
-      });
-      fit();
-    };
-    fit();
-    window.addEventListener('resize', fit);
-    steps.forEach((button, i) => {
-      button.addEventListener('click', () => {
-        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-        mark(i);
-      });
-    });
-    let frame = 0;
-    track.addEventListener('scroll', () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const index = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-        mark(Math.max(0, Math.min(slides.length - 1, index)));
-      });
-    }, { passive: true });
   });
 
   function readSlugs(): string[] {
@@ -1015,14 +939,12 @@ const faqSchema = {
   }
 
 
-  /* The worked example, one step at a time: step buttons above a strip of
-     three slides that snap into place. Swipe or scroll on phones, the
-     buttons everywhere; nothing moves on its own. */
+  /* The worked example, one piece per step: the table in Step 2, the
+     ten-year chart in Step 3. */
   .starter {
-    max-width: 760px;
-    margin: 0 auto;
-    /* Contains absolutely positioned screen-reader text in the off-screen slides, which would otherwise widen the page. */
+    /* Contains the absolutely positioned screen-reader text, which would otherwise widen the page. */
     position: relative;
+    padding: 20px 22px;
     background: var(--color-bg-white);
     border: 1px solid var(--color-border-light);
     border-radius: 16px;
@@ -1030,105 +952,39 @@ const faqSchema = {
     box-shadow: 0 8px 32px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
   }
 
-  .ex-steps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  /* Neutral pills: filled teal is kept for the page's main button. */
-  .ex-step {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    padding: 0 14px 0 8px;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    background: var(--color-bg-white);
-    color: var(--color-text-secondary);
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  .ex-step:hover { border-color: var(--color-text-secondary); }
-
-  .ex-step[aria-current='step'] {
-    border-color: var(--color-text-primary);
-    background: var(--color-bg);
-    color: var(--color-text-primary);
-  }
-
-  .ex-step:focus-visible {
-    outline: 2px solid var(--color-deep-blue);
-    outline-offset: 2px;
-  }
-
-  .ex-step-num {
-    display: inline-grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 1.5px solid currentColor;
-    font-size: 0.75rem;
-  }
-
-  /* Slides keep their own height; the script sizes the strip to the one
-     showing, so a short step does not sit in a tall, empty panel. */
-  .ex-track {
-    display: flex;
-    align-items: flex-start;
-    transition: height 0.25s ease;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-
-  .ex-track::-webkit-scrollbar { display: none; }
-
-  .ex-track:focus-visible {
-    outline: 2px solid var(--color-deep-blue);
-    outline-offset: -2px;
-  }
-
-  .ex-slide {
-    flex: 0 0 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    scroll-snap-align: start;
-    padding: 26px 28px 28px;
-  }
-
-  .ex-big {
+  .starter-label {
     margin: 0 0 10px;
     font-family: var(--font-heading);
-    font-size: clamp(1.3rem, 1.6vw + 0.8rem, 1.75rem);
+    font-size: 0.75rem;
     font-weight: 700;
-    line-height: 1.3;
-    color: var(--color-text-primary);
-    text-wrap: balance;
-  }
-
-  .ex-slide .starter-text { margin-bottom: 14px; }
-
-  /* Where the step continues on the page: plain text, so the hero's
-     button stays the only call to action up here. */
-  .ex-next {
-    margin: 14px 0 0;
-    font-size: 0.85rem;
-    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--color-text-muted);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ex-track { scroll-behavior: auto; transition: none; }
+  .starter--chart { margin-bottom: 20px; }
+  .starter--chart .starter-text { margin-bottom: 12px; }
+
+  /* Step 1's opening idea: a quiet note, not a card, so the routes below
+     stay the thing to act on. */
+  .idea {
+    max-width: 680px;
+    margin: -12px 0 28px;
+    padding-left: 14px;
+    border-left: 3px solid var(--color-border);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+
+  .idea-label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
 
   .starter-text {
@@ -1140,7 +996,6 @@ const faqSchema = {
 
   .starter-table {
     width: 100%;
-    max-width: 340px;
     border-collapse: collapse;
     font-size: 0.9rem;
     font-variant-numeric: tabular-nums;
@@ -1274,8 +1129,7 @@ const faqSchema = {
     color: var(--color-text-primary);
   }
 
-  .start-more,
-  .pair-lesson a {
+  .start-more {
     display: inline-block;
     padding: 6px 0;
     color: var(--color-deep-blue);
@@ -1286,8 +1140,7 @@ const faqSchema = {
     text-underline-offset: 3px;
   }
 
-  .start-more:hover,
-  .pair-lesson a:hover { text-decoration-color: currentColor; }
+  .start-more:hover { text-decoration-color: currentColor; }
 
   .start-route-label {
     margin: 0 0 2px;
@@ -1478,51 +1331,26 @@ const faqSchema = {
   }
 
   /* ----------------------------------------------------------------
-     3. Lesson and tool pairs
+     3. Free tools, beside an example net worth
      ---------------------------------------------------------------- */
-  .pair-list {
+  .tools-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .tools-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 24px; }
+  }
+
+  .tool-list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 16px;
+    gap: 12px;
   }
-
-  .pair {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-    align-items: center;
-  }
-
-  @media (min-width: 760px) {
-    .pair { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1.3fr); gap: 16px; }
-  }
-
-  .pair-lesson {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .pair-kicker {
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-teal);
-  }
-
-  .pair-lesson a { font-size: 1.05rem; }
-
-  .pair-arrow {
-    display: none;
-    color: var(--color-text-muted);
-    font-size: 1.4rem;
-    text-align: center;
-  }
-
-  @media (min-width: 760px) { .pair-arrow { display: block; } }
 
   .an-card {
     display: grid;
@@ -1552,22 +1380,13 @@ const faqSchema = {
   }
 
   .an-preview {
-    grid-row: 1 / span 4;
+    grid-row: 1 / span 3;
     width: 80px;
     height: 48px;
     align-self: center;
   }
 
   .an-preview svg { width: 100%; height: 100%; display: block; }
-
-  .an-kicker {
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-teal);
-  }
 
   .an-title {
     font-family: var(--font-heading);
@@ -1590,8 +1409,7 @@ const faqSchema = {
     color: var(--color-deep-blue);
   }
 
-  /* The multi-currency example, inside 4 ("Learn it, then try it"),
-     after the tool pairs. */
+  /* The multi-currency example, in Step 2 after the tools. */
   .mc-panel {
     margin-top: 32px;
     padding: 24px;
@@ -1824,12 +1642,8 @@ const faqSchema = {
     .lp-section { padding: 44px 16px; }
     #hero { padding-top: 28px; }
     .section-head { margin-bottom: 24px; }
-    .starter { box-shadow: none; }
-    .ex-steps { padding: 12px; gap: 6px; }
-    /* Numbers drop on phones so the three steps fit on one line. */
-    .ex-step { padding: 0 12px; font-size: 0.85rem; }
-    .ex-step-num { display: none; }
-    .ex-slide { padding: 18px 16px 20px; }
+    .starter { box-shadow: none; padding: 16px; }
+    .idea { margin: -4px 0 20px; }
     .starter-table { font-size: 0.85rem; }
     .starter-table th,
     .starter-table td { padding: 1px 0; }
@@ -1903,42 +1717,20 @@ const faqSchema = {
 
     /* A tinted band marks the practice chapter halfway down the page. */
     #apply { background: color-mix(in srgb, var(--chart-eur) 8%, var(--color-bg)); }
-    /* Lesson and tool pairs: one compact card per pair, the tool first and
-       its lesson as a line beneath, so the section fits on one screen. */
-    #apply .pair-list { gap: 10px; }
-    .pair {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding: 12px 14px 8px;
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-      background: var(--color-bg-white);
-    }
+    /* Tool cards: one compact line each, so the section fits on one screen. */
+    .tool-list { gap: 10px; }
     .an-card {
-      order: -1;
       grid-template-columns: 48px minmax(0, 1fr);
       column-gap: 12px;
       align-items: center;
-      padding: 0;
-      border: 0;
-      background: none;
+      padding: 12px 14px;
       box-shadow: none;
     }
     .an-card:hover { box-shadow: none; }
-    .an-kicker,
     .an-desc,
     .an-cta { display: none; }
     .an-preview { grid-row: auto; width: 48px; height: 30px; }
     .an-title::after { content: ' \2192' / ''; }
-    .pair-lesson {
-      flex-direction: row;
-      align-items: baseline;
-      gap: 6px;
-      padding-left: 60px;
-    }
-    .pair-kicker { flex-shrink: 0; font-size: 0.7rem; color: var(--color-text-muted); }
-    .pair-lesson a { font-size: 0.85rem; font-weight: 500; color: var(--color-text-secondary); }
 
     /* Promises at a glance: icon and headline in two columns. The detail
        lines and their links sit in the menu, footer and FAQ on phones. */
