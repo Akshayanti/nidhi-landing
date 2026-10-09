@@ -732,6 +732,25 @@ strong {
   font-size: 0.95rem;
 }
 
+/* Top of "Where to check locally" (BlogPost, LocalRules): one quiet line
+   under the header, or the same words inside a notice box above. */
+.local-rules-top {
+  margin: var(--space-5) 0 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.local-rules-top strong {
+  color: var(--color-text-primary);
+}
+
+.local-rules-jump {
+  color: var(--color-deep-blue);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .disclaimer {
   background: var(--color-border-light);
   border-radius: var(--radius-md);

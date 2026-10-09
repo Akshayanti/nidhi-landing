@@ -12,7 +12,7 @@
     "lint": "node scripts/lint.mjs",
     "lint:figures": "node scripts/lint-figures.mjs",
     "audit:mobile": "node scripts/audit-mobile.mjs",
-    "test": "npx tsx --test --test-reporter=spec src/utils/shared/compactUrl.test.ts src/utils/loan/math.test.ts src/utils/loan/url.test.ts src/utils/loan/inputs.test.ts src/utils/multi-currency-net-worth/math.test.ts src/utils/multi-currency-net-worth/url.test.ts src/utils/monte-carlo/math.test.ts src/utils/monte-carlo/url.test.ts src/utils/shared/formatAmount.test.ts src/utils/home/heroExamples.test.ts src/utils/home/startingPoints.test.ts src/utils/privacyChangelog.test.ts src/utils/inclusiveGuides.test.ts src/utils/levelHelper.test.ts src/utils/dependencies.test.ts scripts/indexnow.test.mjs scripts/lib/parse-blog-meta.test.mjs scripts/lib/parse-vtt.test.mjs scripts/lib/scrub-output.test.mjs",
+    "test": "npx tsx --test --test-reporter=spec src/utils/shared/compactUrl.test.ts src/utils/loan/math.test.ts src/utils/loan/url.test.ts src/utils/loan/inputs.test.ts src/utils/multi-currency-net-worth/math.test.ts src/utils/multi-currency-net-worth/url.test.ts src/utils/monte-carlo/math.test.ts src/utils/monte-carlo/url.test.ts src/utils/shared/formatAmount.test.ts src/utils/home/heroExamples.test.ts src/utils/home/startingPoints.test.ts src/utils/privacyChangelog.test.ts src/utils/inclusiveGuides.test.ts src/utils/levelHelper.test.ts src/utils/localRules.test.ts src/utils/dependencies.test.ts scripts/indexnow.test.mjs scripts/lib/parse-blog-meta.test.mjs scripts/lib/parse-vtt.test.mjs scripts/lib/scrub-output.test.mjs",
     "render-ig": "node scripts/render-ig.js",
     "render-figures": "node scripts/render-figures.mjs",
     "render-email-figures": "node scripts/render-email-figures.mjs",

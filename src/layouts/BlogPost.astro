@@ -4,7 +4,7 @@ import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LEVEL_LABELS } from '../utils/home/startingPoints';
 import LocalRules from '../components/LocalRules.astro';
-import type { LocalRuleArea } from '../utils/localRules';
+import { localRulesSummary, type LocalRuleArea } from '../utils/localRules';
 
 interface Props {
   title: string;
@@ -52,6 +52,7 @@ interface Props {
 }
 
 const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], localRules = [] } = Astro.props;
+const localSummary = localRulesSummary(localRules);
 const levelLabel = LEVEL_LABELS[level];
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
@@ -200,13 +201,25 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       {regulatoryNote === 'caution' && (
         <div class="notice-caution">
           <strong>Heads up:</strong> This article covers financial projections. We're here to help you understand the concepts, not tell you what to do with your money. For personal advice, talk to a financial professional.
+          {localSummary && <> {localSummary} <a class="local-rules-jump" href="#local-rules-title">Where to check <span aria-hidden="true">↓</span></a></>}
         </div>
       )}
 
       {regulatoryNote === 'danger' && (
         <div class="notice-danger">
           <strong>Important:</strong> This article touches on tax-related concepts to help you understand how they work. Tax rules vary by country and situation. Talk to a qualified tax professional before making decisions based on what you read here.
+          {localSummary && <> {localSummary} <a class="local-rules-jump" href="#local-rules-title">Where to check <span aria-hidden="true">↓</span></a></>}
         </div>
+      )}
+
+      {/* The top of "Where to check locally": this lesson is general on
+          purpose, and the full note sits after the text. Lessons with a
+          banner above carry the same line inside it instead. */}
+      {localSummary && regulatoryNote !== 'caution' && regulatoryNote !== 'danger' && (
+        <p class="local-rules-top">
+          <strong>General by design.</strong> {localSummary}{' '}
+          <a class="local-rules-jump" href="#local-rules-title">Where to check <span aria-hidden="true">↓</span></a>
+        </p>
       )}
     </div>
 
