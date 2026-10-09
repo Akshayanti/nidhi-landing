@@ -358,50 +358,11 @@ const faqSchema = {
   </section>
 
   {/* =============================================================
-       5. The belief and what you can count on, beside the FAQ
-          (also in FAQPage data above): the promises are the short
-          version, the answers the detail.
+       5. FAQ (also in FAQPage data above), and who is behind nidhi in
+          one line
        ============================================================= */}
-  <section class="lp-section" id="trust" aria-labelledby="trust-heading" tabindex="-1">
-    <div class="lp-section-inner trust-layout">
-      <div class="trust-col">
-      <div class="section-head">
-        <h2 id="trust-heading">Understanding money shouldn&rsquo;t be a privilege.</h2>
-        <p class="cap-body">
-          It shouldn&rsquo;t depend on already knowing finance, paying for advice, or having the time to become an expert.
-        </p>
-      </div>
-
-      <ul class="trust-grid" role="list">
-        {/* Icons are decorative; the bold line carries the meaning. */}
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" /></svg></span>
-          <span class="trust-copy"><strong>No ads, no data selling.</strong> <span class="trust-detail">Analytics run on EU servers, and we never share or sell your email.</span></span>
-        </li>
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg></span>
-          <span class="trust-copy"><strong>Your numbers stay with you.</strong> <span class="trust-detail">The free tools calculate in your browser.</span></span>
-        </li>
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M8 13h8M8 17h6" /></svg></span>
-          <span class="trust-copy"><strong>Sources you can check.</strong> <span class="trust-detail">Lessons cite what they rely on. <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>.</span></span>
-        </li>
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></svg></span>
-          <span class="trust-copy"><strong>Built for real financial lives.</strong> <span class="trust-detail">Different households, countries, abilities and ways of working.</span></span>
-        </li>
-        <li>
-          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 16v-5M12 8h.01" /></svg></span>
-          <span class="trust-copy"><strong>Clear about what this is.</strong> <span class="trust-detail">Education, not financial advice. <a href="/privacy/" data-attr="home-privacy">Read the privacy policy</a>.</span></span>
-        </li>
-      </ul>
-
-      <p class="trust-founder">
-        nidhi is made in Prague by one person who couldn&rsquo;t find a tool that fit a real financial life, and decided to build one. <a href="/beliefs/" data-attr="home-cta-beliefs">What we believe</a>.
-      </p>
-      </div>
-
-      <div class="faq-col" id="faq" tabindex="-1">
+  <section class="lp-section" id="faq" aria-labelledby="faq-heading" tabindex="-1">
+    <div class="lp-section-inner lp-section-inner--narrow">
       <h2 id="faq-heading" class="faq-heading">FAQ</h2>
       <div class="faq-list">
         {faqs.map((f, i) => (
@@ -411,7 +372,15 @@ const faqSchema = {
           </details>
         ))}
       </div>
-      </div>
+
+      <p class="trust-line">
+        No ads, no data selling. Lessons cite their sources. Made in Prague by one person.
+        <span class="trust-links">
+          <a href="/beliefs/" data-attr="home-cta-beliefs">What we believe</a>
+          <a href="/editorial-policy/" data-attr="home-editorial-policy">How we write</a>
+          <a href="/privacy/" data-attr="home-privacy">Privacy policy</a>
+        </span>
+      </p>
     </div>
   </section>
 </BaseLayout>
@@ -647,8 +616,7 @@ const faqSchema = {
 
   .section-foot a,
   .hero-next a,
-  .trust-grid a,
-  .trust-founder a {
+  .trust-line a {
     color: var(--color-deep-blue);
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -1164,75 +1132,19 @@ const faqSchema = {
   }
 
   /* ----------------------------------------------------------------
-     5. Belief and promises, beside the FAQ
+     5. FAQ, and the line about who is behind nidhi
      ---------------------------------------------------------------- */
-  .trust-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 48px;
-  }
-
-  @media (min-width: 960px) {
-    .trust-layout { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 64px; align-items: start; }
-  }
-
-  .faq-col:focus { outline: none; }
-
-  .trust-grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 16px;
-  }
-
-  .trust-grid li {
-    display: grid;
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    font-size: 0.93rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-  }
-
-  .trust-icon {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--color-teal) 13%, var(--color-bg-white));
-    color: var(--color-teal);
-  }
-
-  .trust-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .trust-grid strong {
-    display: block;
-    font-family: var(--font-heading);
-    color: var(--color-text-primary);
-  }
-
-  .trust-founder {
-    margin: 28px 0 0;
-    padding-top: 20px;
-    border-top: 1px solid var(--color-border-light);
-    max-width: 62ch;
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-    line-height: 1.55;
-  }
-
   .faq-heading { margin: 0 0 20px; }
+
+  .trust-line {
+    margin: 32px 0 0;
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .trust-links { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 6px; }
+  .trust-links a { display: inline-block; padding: 4px 0; }
 
   .faq-list {
     border-top: 1px solid var(--color-border);
@@ -1333,18 +1245,5 @@ const faqSchema = {
     .an-card:hover { box-shadow: none; }
     .an-preview { width: 48px; height: 30px; }
 
-    /* Promises at a glance: icon and headline in two columns. The detail
-       lines and their links sit in the menu, footer and FAQ on phones. */
-    .trust-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px 14px;
-    }
-    .trust-grid li { align-items: center; gap: 10px; grid-template-columns: 30px minmax(0, 1fr); }
-    .trust-icon { width: 30px; height: 30px; }
-    .trust-grid strong { margin: 0; font-size: 0.9rem; line-height: 1.3; }
-    .trust-detail { display: none; }
-    #trust .section-head { margin-bottom: 24px; }
-    .trust-founder { margin-top: 24px; }
-    .trust-layout { gap: 40px; }
   }
 </style>
