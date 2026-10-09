@@ -11,6 +11,7 @@ takeaways:
 order: 8
 pubDate: 2026-05-04
 updatedDate: 2026-10-09
+localRules: [deposit-protection]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -111,7 +112,7 @@ Common places people keep it (names and protections vary by country):
 - A high-yield savings account (an online savings account that pays a higher interest rate than a traditional bank)
 - A money market account, a US bank product (a savings account that typically offers slightly higher rates in exchange for a higher minimum balance). A money market fund, more common elsewhere, is an investment rather than a bank deposit, so deposit protection does not cover it
 
-Many countries guarantee bank deposits up to a limit through a deposit guarantee scheme, for example €100,000 per depositor per bank in the EU. Your bank or the financial regulator can confirm whether an account is covered.
+Many countries guarantee bank deposits up to a limit through a deposit guarantee scheme, for example €100,000 per depositor per bank in the EU.
 
 Separation is what makes it work for many people. Money in the everyday account tends to get spent; money somewhere visible but not casually tappable tends to stay put.
 

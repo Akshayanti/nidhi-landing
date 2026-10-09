@@ -12,6 +12,7 @@ takeaways:
 order: 20
 pubDate: 2026-06-01
 updatedDate: 2026-10-09
+localRules: [tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -22,7 +23,7 @@ faq:
   - question: "Why is diversification called the only free lunch in finance?"
     answer: "In 1952, Harry Markowitz showed that diversification uniquely lets you reduce risk without proportionally reducing expected return, work that won him the Nobel Prize. The intuition: combine two investments with the same expected return but imperfectly correlated movements, and the combined volatility is less than the weighted average of their individual volatilities. You get the same expected return on a smoother path. That is rare in economics, where reducing risk usually means accepting lower returns. The catch is that it only works if the things you hold actually behave differently from each other. Fifty near-identical holdings give you none of this benefit."
   - question: "How much diversification is enough?"
-    answer: "Often less effort than people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it highly diversified within equities. Adding a broad bond index fund crosses asset classes. A combination often described as a simple starting structure is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs; the split between them depends on risk capacity and horizon, and fund availability and tax treatment depend on your country, and the tax authority's guidance or a qualified local adviser can say which wrappers and funds are tax-efficient where you live. More complexity is not automatically better: every extra fund adds cost and work. A useful test for any addition is whether it covers an exposure you do not already have."
+    answer: "Often less effort than people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it highly diversified within equities. Adding a broad bond index fund crosses asset classes. A combination often described as a simple starting structure is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs; the split between them depends on risk capacity and horizon, and fund availability and tax treatment depend on your country. More complexity is not automatically better: every extra fund adds cost and work. A useful test for any addition is whether it covers an exposure you do not already have."
   - question: "What is concentration risk and where does it hide?"
     answer: "Concentration risk is exposure to a single event that moves many of your assets at once. The biggest concentrations usually sit outside investment accounts. Employer concentration: your income, employer stock, and pension all depend on one company, so several pillars can go together. Geographic concentration: your job market, property, and currency all live in one country, so a local recession touches everything. Sector concentration: working in tech, living near a tech hub, and holding tech stocks is three bets on one story. Holding a large share of net worth in one employer's stock because you believe in it is among the most common and damaging mistakes."
   - question: "Does diversification protect you in a market crash?"
@@ -184,7 +185,7 @@ A "minimum diversified" structure often described in personal finance literature
 - One bond index fund (stability, different driver than stocks)
 - Cash for an [emergency fund](/blog/emergency-fund/) and short-term needs (the [saving layer](/blog/saving-vs-investing/))
 
-That's not a glamorous portfolio, but it captures much of the benefit of diversification. What it leaves open is the important part: the split between stocks and bonds depends on risk capacity and horizon, and which funds are available, cheap and tax-efficient depends on your country and account type. Your tax authority's guidance or a qualified local adviser can say which wrappers and funds are tax-efficient where you live.
+That's not a glamorous portfolio, but it captures much of the benefit of diversification. What it leaves open is the important part: the split between stocks and bonds depends on risk capacity and horizon, and which funds are available, cheap and tax-efficient depends on your country and account type.
 
 More complexity isn't automatically better. Every additional fund adds cost, cognitive load, and rebalancing work. A useful question before adding a fund is: does this actually cover an exposure I don't already have?
 

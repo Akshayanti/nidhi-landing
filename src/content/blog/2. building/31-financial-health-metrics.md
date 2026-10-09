@@ -11,6 +11,7 @@ takeaways:
 order: 31
 pubDate: 2026-06-26
 updatedDate: 2026-10-09
+localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -45,7 +46,7 @@ Your net worth is €150,000. Is that good? It's impossible to say without conte
 
 Net worth is a snapshot. Ratios are the diagnosis. A handful of them, together, tell you whether your finances are healthy, where they're drifting, and what to adjust while the fix is still small.
 
-This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator; lenders and the regulator's guidance show the local limits.
+This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator.
 
 ## Why ratios beat single numbers
 

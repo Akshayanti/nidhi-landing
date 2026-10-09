@@ -11,6 +11,7 @@ takeaways:
 order: 7
 pubDate: 2026-05-01
 updatedDate: 2026-10-09
+localRules: [pensions, tax, borrowing]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -126,7 +127,7 @@ Higher net worth doesn't always mean better financial position. Liquidity matter
 This doesn't make all-cash the answer. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
 
 - **Real estate** builds equity over the long term and can [appreciate](/blog/appreciation-vs-depreciation/) significantly
-- **Retirement accounts**, where they exist, have tax advantages that often make the lock-up period worthwhile. The tax treatment and early-access rules are set nationally, and your pension provider or tax authority can confirm them
+- **Retirement accounts**, where they exist, have tax advantages that often make the lock-up period worthwhile, though the tax treatment and early-access rules are set nationally
 - **Long-term investments** have historically earned higher returns as payment for riding out the ups and downs, and [compound interest](/blog/appreciation-vs-depreciation/) rewards that patience
 
 The underlying idea is matching liquidity to timeline. Money needed in the next few years usually needs to be more liquid. Money that won't be touched for decades can afford to be less liquid.
@@ -146,7 +147,7 @@ The sizes depend on your income stability, insurance, your country's safety net 
 - **Keeping too much in cash.** Beyond your emergency fund and short-term goals, excess cash slowly loses purchasing power to inflation
 - **Keeping too little in cash.** If every euro is invested, you'll be forced to sell investments at whatever the market price is, which could be down exactly when you need the money
 - **Confusing accessible with liquid.** Borrowing against your home (a home equity loan or line of credit, where lenders offer one) gives you access to its value, but you're paying interest. Accessible is not the same as liquid
-- **Forgetting about tax penalties.** Withdrawing from retirement accounts early can trigger taxes and penalties that significantly reduce what you actually get. Whether early access is allowed, and what it costs, depends on your country and plan; your pension provider or tax authority can confirm the rules
+- **Forgetting about tax penalties.** Withdrawing from retirement accounts early can trigger taxes and penalties that significantly reduce what you actually get. Whether early access is allowed, and what it costs, depends on your country and plan
 
 ## How this connects to net worth
 

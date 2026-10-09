@@ -11,6 +11,7 @@ takeaways:
 order: 28
 pubDate: 2026-06-19
 updatedDate: 2026-10-09
+localRules: [property, tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "tomas"]
@@ -80,7 +81,7 @@ Typical ongoing costs of ownership, as an annual percentage of property value:
 
 For a typical residential property, total ongoing costs commonly consume 2-4% of property value per year, and transaction costs alone eat 5-10% when you buy and eventually sell. A property that "appreciated 30% over 10 years" may have delivered much less to the owner once those costs are netted out.
 
-> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 2-4% in the US, 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths, and a local notary, solicitor or conveyancer can set out the purchase taxes and fees; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
+> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 2-4% in the US, 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
 
 This isn't an argument against real estate. It's an argument against treating gross appreciation as your return.
 
@@ -158,7 +159,7 @@ Factors that still make buying structurally attractive in specific situations:
 - Forced savings discipline (the principal portion of the mortgage payment is involuntary saving)
 - Stability and security for families with school-age children
 - Lifestyle value of actually owning the space you live in
-- Favourable tax treatment of primary residences in some jurisdictions (jurisdiction-specific: the tax authority or a qualified adviser can confirm how property and residence are taxed where you live)
+- Favourable tax treatment of primary residences in some jurisdictions (jurisdiction-specific)
 
 Factors that often make renting structurally sensible:
 
@@ -178,7 +179,7 @@ Real estate as an asset class extends beyond the primary residence:
 - **Land**: typically no income until sold; purely a bet on appreciation or use rights
 - **Commercial property**: different dynamics from residential; typically requires larger capital and more expertise
 
-For retail investors with otherwise modest portfolios, direct rental property is a large undertaking with real operational load. REITs are a simpler way many people add real-estate-like exposure to a portfolio of stocks and bonds, though they move more like stocks in the short run and their tax treatment varies by country; the tax authority or a qualified adviser can confirm how REITs are taxed where you live.
+For retail investors with otherwise modest portfolios, direct rental property is a large undertaking with real operational load. REITs are a simpler way many people add real-estate-like exposure to a portfolio of stocks and bonds, though they move more like stocks in the short run and their tax treatment varies by country.
 
 ## What this means in practice
 

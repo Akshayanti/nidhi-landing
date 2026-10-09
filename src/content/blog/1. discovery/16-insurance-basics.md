@@ -10,6 +10,7 @@ takeaways:
 order: 16
 pubDate: 2026-05-22
 updatedDate: 2026-10-09
+localRules: [insurance, benefits]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -128,7 +129,7 @@ Insurance premiums are a recurring expense: they reduce your monthly [cash flow]
 
 These are illustrative ranges, not quotes: premiums vary widely by country, insurer, age and health. For someone earning €2,500 net per month, costs in this illustrative range would represent 4-18% of income. That's significant. It means insurance decisions are [budget](/blog/budgeting/) decisions, which is why they belong in your financial plan, not as an afterthought.
 
-The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk. Which cover is mandatory, and how policies are taxed, depends on where you live; the national insurance regulator or ombudsman, or an independent local broker, can explain the rules that apply.
+The question isn't whether to have insurance. It's how much of each type, with what deductibles, and at what cost relative to the risk. Which cover is mandatory, and how policies are taxed, depends on where you live.
 
 ## The insurance-emergency fund relationship
 

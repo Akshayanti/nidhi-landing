@@ -12,6 +12,7 @@ takeaways:
 order: 26
 pubDate: 2026-06-15
 updatedDate: 2026-10-09
+localRules: [tax, investments]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "marcus", "petra", "jiri"]
@@ -76,7 +77,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 **Business distributions (where you don't work daily).** A share of profits from a business where you're an investor, not an operator. Higher risk, less liquid, requires selection skill or partnership.
 
-**Interest from lending platforms.** Peer-to-peer lending, private lending. Higher headline yields, much higher risk, often less regulated. Whether a platform is supervised, and whether any investor protection applies, depends on the country; the financial regulator's register shows which firms are authorised. Easy to underestimate the risk until a borrower default wave hits.
+**Interest from lending platforms.** Peer-to-peer lending, private lending. Higher headline yields, much higher risk, often less regulated. Whether a platform is supervised, and whether any investor protection applies, depends on the country. Easy to underestimate the risk until a borrower default wave hits.
 
 | Source | Typical annual yield | Effort required | Capital required | Risk |
 |---|---|---|---|---|
@@ -147,7 +148,7 @@ For many people pursuing FI, the shift in perspective from "asset value" to "inc
 - **Confusing yield with return.** A 6% yielding stock whose price has fallen 40% over three years is not a winning investment
 - **Thinking rental property is passive.** Direct landlording involves real work: tenants, maintenance, vacancies, occasional disputes, tax filings. Professional management reduces it, but also reduces yield
 - **Treating business income as passive.** A small business requires a principal who cares. When the principal checks out, most small businesses wobble
-- **Ignoring taxes.** Passive income is often taxed differently from earned income, and sometimes at higher rates. The after-tax yield is what matters, and the tax authority's guidance on investment and rental income, or a local tax adviser, shows the rate that applies
+- **Ignoring taxes.** Passive income is often taxed differently from earned income, and sometimes at higher rates. The after-tax yield is what matters
 - **Chasing "streams" for their own sake.** Ten small streams of €30/month each is €3,600/year, and ten things to maintain. One broad index fund position that yields the same is simpler and usually more durable
 - **Underestimating reinvestment.** Dividends spent are just dividends. Dividends reinvested during accumulation are the engine. The compounding difference over decades is dramatic
 
@@ -180,7 +181,7 @@ The path many people follow looks like this, though the order and mix vary with 
 4. **Reinvested income compounds.** Dividends spent are one-off pay days; dividends reinvested become the income engine for an older self
 5. **Unusually high yields are a warning sign.** A yield far above its category usually signals higher risk, not a bargain
 6. **The capital requirement is large.** Meaningful passive income takes meaningful capital, built over years rather than months
-7. **Taxes shape the real number.** After-tax passive income is what funds a life, and dividends, interest, rental income, and capital gains are taxed differently from country to country; the tax authority's guidance on investment and rental income, or a local tax adviser, shows the rate that applies
+7. **Taxes shape the real number.** After-tax passive income is what funds a life, and dividends, interest, rental income, and capital gains are taxed differently from country to country
 
 Passive income isn't magic. It's the steady drip from assets you already built. The interesting thing is not any single source. It's the compound effect of reinvested income, the way small streams turn into real coverage over a decade or two, and the psychological shift that happens when your life starts being funded by things you own rather than hours you sell.
 

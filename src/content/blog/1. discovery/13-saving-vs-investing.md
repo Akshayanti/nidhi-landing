@@ -10,6 +10,7 @@ takeaways:
 order: 13
 pubDate: 2026-05-15
 updatedDate: 2026-10-09
+localRules: [tax, pensions]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -213,7 +214,7 @@ There is no single right order, but a common default, which people adapt to thei
 3. **A fuller emergency fund** (often 3-6 months of expenses)
 4. **Investing** long-term surplus in diversified investments
 
-The reasoning is about fragility. Investing before a safety net exists means one unexpected expense can lead to debt. Paying down low-interest debt aggressively while ignoring retirement saving gives up years of compound growth. Country rules, income stability and the size of your debts can all shift the order. Which accounts carry tax advantages, and whether employer matching exists at all, depends on national rules; your tax authority, pension provider or a regulated local adviser can say what applies to you.
+The reasoning is about fragility. Investing before a safety net exists means one unexpected expense can lead to debt. Paying down low-interest debt aggressively while ignoring retirement saving gives up years of compound growth. Country rules, income stability and the size of your debts can all shift the order. Which accounts carry tax advantages, and whether employer matching exists at all, depends on national rules.
 
 ## What this means in practice
 

@@ -12,6 +12,7 @@ takeaways:
 order: 15
 pubDate: 2026-05-20
 updatedDate: 2026-10-09
+localRules: [credit]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -158,7 +159,7 @@ As we covered in the [liabilities post](/blog/liabilities/), the interest rate i
 ## What this means in practice
 
 1. **Check your credit report.** Whether you can see your own credit data, and whether it is free, varies by country; in the EU, data-protection law gives you a right of access to what a bureau holds about you. Look for errors and see what's being tracked
-2. **Know how your country's system works.** If it rewards positive history and you have none, a basic card used lightly and paid in full is a common first step; if it mainly records negative data, a clean record already counts. Your national credit bureau(s), financial regulator or consumer protection agency explain how to request a report and how scoring works where you live
+2. **Know how your country's system works.** If it rewards positive history and you have none, a basic card used lightly and paid in full is a common first step; if it mainly records negative data, a clean record already counts
 3. **One missed bill can outweigh years of good history.** That's why many people automate minimum payments as a backstop
 4. **It's a long game.** Credit records reward consistency over time. There are no shortcuts, and the payoff shows up as easier, often cheaper, borrowing later
 

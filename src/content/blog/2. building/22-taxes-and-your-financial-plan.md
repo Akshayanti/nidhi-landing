@@ -12,6 +12,7 @@ takeaways:
 order: 22
 pubDate: 2026-06-05
 updatedDate: 2026-10-09
+localRules: [tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

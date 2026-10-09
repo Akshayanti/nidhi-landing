@@ -11,6 +11,7 @@ takeaways:
 order: 6
 pubDate: 2026-04-29
 updatedDate: 2026-10-09
+localRules: [tax]
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -124,7 +125,7 @@ None of this means depreciating things are bad buys. Most people need a car to g
 
 ## What this means in practice
 
-1. **Where compounding works for people.** Broad index funds, retirement accounts and, for some, real estate are the most common ways people let compounding work over long periods, each with its own risks, costs and tax rules depending on your country. Your tax authority or a regulated local adviser can say which accounts carry tax advantages where you live.
+1. **Where compounding works for people.** Broad index funds, retirement accounts and, for some, real estate are the most common ways people let compounding work over long periods, each with its own risks, costs and tax rules depending on your country.
 2. **How depreciation shows up.** A used car loses value more slowly than a new one, and financing a depreciating item at a high rate stacks interest on top of the falling value. Whether that trade-off is worth it depends on reliability, warranty and your budget.
 3. **Why high-interest debt matters here.** As we covered in the [liabilities post](/blog/liabilities/), clearing high-interest debt is a guaranteed return equal to its rate, which is hard for any investment to match.
 4. **Why timing matters.** Time is often the most powerful lever in compounding, and it's the one you can't get back, which is why the start date matters so much in the examples above.

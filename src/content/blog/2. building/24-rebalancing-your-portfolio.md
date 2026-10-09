@@ -11,6 +11,7 @@ takeaways:
 order: 24
 pubDate: 2026-06-10
 updatedDate: 2026-10-09
+localRules: [tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -171,7 +172,7 @@ Selling appreciated investments in a regular brokerage account can trigger capit
 - Some jurisdictions have reduced capital gains rates for long-term holdings; timing a sale to qualify can materially reduce the tax cost
 - Tax-loss harvesting (selling losing positions to offset gains elsewhere) can reduce the tax impact of rebalancing if you have losses available
 
-**The asymmetry matters.** Holding the same asset allocation across tax-advantaged and taxable accounts creates flexibility. The usual pattern is to rebalance in the tax-advantaged wrapper first and touch the taxable account only when that alone can't close the gap. How much this saves depends on your country's capital gains rules: rates, holding-period rules and limits on harvesting losses are set nationally, and the tax authority or a qualified adviser can confirm how they apply to you.
+**The asymmetry matters.** Holding the same asset allocation across tax-advantaged and taxable accounts creates flexibility. The usual pattern is to rebalance in the tax-advantaged wrapper first and touch the taxable account only when that alone can't close the gap. How much this saves depends on your country's capital gains rules: rates, holding-period rules and limits on harvesting losses are set nationally.
 
 ## Frequency: what the evidence says
 

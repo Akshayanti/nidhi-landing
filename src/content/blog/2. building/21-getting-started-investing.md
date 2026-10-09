@@ -12,6 +12,7 @@ takeaways:
 order: 21
 pubDate: 2026-06-03
 updatedDate: 2026-10-09
+localRules: [tax, pensions]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -65,7 +66,7 @@ In almost every country, investment accounts fall into three broad categories. N
 
 The specific products, rules, and names vary by country. Conceptually, many people end up with a mix: some money in flexible accounts to stay accessible, and long-term money in tax-advantaged accounts for the tax benefit.
 
-> **Country-specific rules matter.** Tax treatment, contribution limits, and withdrawal rules differ by jurisdiction. Before making large contributions to tax-advantaged accounts, it helps to confirm how your country's rules apply to your situation: the tax authority's published guidance, the pension or financial regulator, or a qualified local adviser can do that.
+> **Country-specific rules matter.** Tax treatment, contribution limits, and withdrawal rules differ by jurisdiction. Before making large contributions to tax-advantaged accounts, it helps to confirm how your country's rules apply to your situation.
 
 ## Index funds: the common starting point
 
