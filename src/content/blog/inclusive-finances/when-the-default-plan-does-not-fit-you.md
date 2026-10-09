@@ -11,6 +11,7 @@ takeaways:
 order: 45.5
 companionOf: "life-events"
 pubDate: 2026-10-21
+localRules: [family-law, inheritance, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

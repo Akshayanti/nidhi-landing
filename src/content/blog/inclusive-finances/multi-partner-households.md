@@ -10,6 +10,7 @@ takeaways:
 order: 58.7
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-26
+localRules: [family-law, inheritance, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "tomas", "petra", "marcus"]

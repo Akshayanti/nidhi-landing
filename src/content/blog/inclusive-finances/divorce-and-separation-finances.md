@@ -10,6 +10,7 @@ takeaways:
   - "Why beneficiary forms and joint debts outlast a settlement"
 order: 59.5
 pubDate: 2099-01-28
+localRules: [family-law, pensions, tax, credit]
 level: "inclusive-finances"
 primaryPersona: "marcus"
 personas: ["marcus", "eva", "petra", "jiri"]

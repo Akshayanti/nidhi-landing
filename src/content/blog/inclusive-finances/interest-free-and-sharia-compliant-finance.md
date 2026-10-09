@@ -11,6 +11,7 @@ takeaways:
 order: 50.5
 companionOf: "refinancing-timing"
 pubDate: 2099-01-13
+localRules: [investments, borrowing, deposit-protection, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

@@ -11,6 +11,7 @@ takeaways:
 order: 70.5
 companionOf: "estate-planning-basics"
 pubDate: 2099-02-02
+localRules: [inheritance, family-law]
 level: "inclusive-finances"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "tomas"]
