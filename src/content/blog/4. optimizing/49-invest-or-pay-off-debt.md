@@ -102,13 +102,13 @@ These bands assume low inflation. In a country where inflation runs at 5% and mo
 
 Often the largest factor in this decision, for anyone with access to it, is the employer match on retirement contributions. This is often overlooked in the "invest or pay off debt" framing because the match sits inside a different mental compartment.
 
-**Why the match carries so much weight.** A full employer match on retirement contributions is typically 50 to 100% of the contribution up to a cap. That is a 50 to 100% return on the matched euro, immediately, before any market movement. Even at the low end (50% match), it exceeds typical consumer debt rates; even 24% credit card debt is below 50%.
+**Why the match carries so much weight.** In plans that offer one, such as US 401(k) plans, a full employer match is typically 50 to 100% of the contribution up to a cap; elsewhere, employer contributions may be fixed by law or absent. That is a 50 to 100% return on the matched euro, immediately, before any market movement. Even at the low end (50% match), it exceeds typical consumer debt rates; even 24% credit card debt is below 50%.
 
 **What "capturing the match" means.** Contributing up to whatever percentage of salary triggers the full match. If an employer matches 100% of contributions up to 6% of salary, that means contributing 6%. If they match 50% up to 8%, it means 8%. Contributing less leaves part of the match unclaimed.
 
 **Where it breaks.** If a debt is at genuine default-risk levels (unable to make minimum payments, facing wage garnishment, credit-collection action), the immediate cash-flow crisis usually comes first. Matched money is typically locked until retirement age, so it does not help with a cash emergency. Some matches vest only after a period of service, so someone likely to leave soon may never keep it. And the match's return applies only to the matched amount, not to every extra euro.
 
-**The urgency.** Employer match is contractually available in the current year only. The match you did not capture in year one is not carried forward. Every year you contribute below the match cap, that year's match evaporates permanently. This is unlike debt payoff, which is available to you next month or next year at the same rate.
+**The urgency.** In US-style matched plans, the match is contractually available in the current year only. The match you did not capture in year one is not carried forward. Every year you contribute below the match cap, that year's match evaporates permanently. This is unlike debt payoff, which is available to you next month or next year at the same rate.
 
 That is why, in the common default order below, the match sits next to high-interest debt rather than after it: many people take it as soon as minimum payments and a small cash buffer are covered, and some take it before clearing even a credit card. Remaining cash is then compared with remaining debt and investment options.
 

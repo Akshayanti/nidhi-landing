@@ -79,7 +79,7 @@ Naming the account matters. "Windfall parking" or "Inheritance holding" or "Bonu
 
 ### Step 2: Plan it
 
-During the parking period, the seven-step default order from the [invest-or-pay-off-debt post](/blog/invest-or-pay-off-debt/) can be applied at the scale of the windfall, adapted to your situation. Two details change when the money arrives as a lump sum. The employer match is still captured through payroll, not from the parked cash, so a windfall can fund living costs while you raise your payroll contribution for the rest of the year. And the tax-advantaged step is limited by how much contribution room is left in the current tax year, which is often less than the windfall.
+During the parking period, the seven-step default order from the [invest-or-pay-off-debt post](/blog/invest-or-pay-off-debt/) can be applied at the scale of the windfall, adapted to your situation. Two details change when the money arrives as a lump sum. Where your employer offers one, the employer match is still captured through payroll, not from the parked cash, so a windfall can fund living costs while you raise your payroll contribution for the rest of the year. And the tax-advantaged step is limited by how much contribution room is left in the current tax year, which is often less than the windfall.
 
 For most households with a moderate windfall, the sequence will run through several of these steps rather than dropping the entire sum into one destination. That is common. The plan is written down before deployment begins.
 

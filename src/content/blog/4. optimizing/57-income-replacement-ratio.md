@@ -45,7 +45,7 @@ referentialReading:
 
 Retirement planning rests on one deceptively simple number: how much money you will need each year once you stop earning. Get this number wrong by 20% and the entire plan is off by hundreds of thousands. Get it wrong by 50% and either you retire too early and run out, or you retire too late having overprepared.
 
-The most widely quoted benchmark is that you will need 70 to 80% of your pre-retirement gross income to maintain your lifestyle. This is a defensible starting point. It is a bad ending point, because your actual retirement expenses depend on your specific situation, not on an average. Some households retire comfortably on 40% of pre-retirement income; others need 100% or more.
+The most widely quoted benchmark is that you will need 70 to 80% of your pre-retirement gross income to maintain your lifestyle. The figure comes mainly from US financial-planning literature, and typical replacement rates differ widely by country (the OECD's Pensions at a Glance compares them). This is a defensible starting point. It is a bad ending point, because your actual retirement expenses depend on your specific situation, not on an average. Some households retire comfortably on 40% of pre-retirement income; others need 100% or more.
 
 This post is about building the honest number from the ground up: which of your current expenses continue into retirement, which stop, which drop, which rise, and which entirely new categories appear. The result is your personal income replacement ratio, and it determines almost everything else about your retirement plan.
 
