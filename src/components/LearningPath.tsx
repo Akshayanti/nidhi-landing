@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export interface PostData {
   id: string;
@@ -70,7 +70,6 @@ export const LEVELS: Record<string, LevelMeta> = {
   },
 };
 
-const LEVEL_ORDER = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'] as const;
 // Inclusive Finances is not a step of the ladder: its posts appear inside
 // the ladder levels, each right after the post it follows up on.
 const INCLUSIVE = LEVELS['inclusive-finances'];
@@ -206,403 +205,6 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
 }
 
 /**
- * The learning path for one topic (/blog/tag/<tag>/): that topic's posts,
- * grouped by level on a timeline, with search and links to other topics.
- */
-export function LearningPath({ posts }: { posts: PostData[] }) {
-  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
-  const [searchQuery, setSearchQuery] = useState('');
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setReadPosts(new Set(JSON.parse(stored)));
-      }
-    } catch { /* ignore */ }
-    const qParam = new URLSearchParams(window.location.search).get('q');
-    if (qParam) {
-      setSearchQuery(qParam);
-    }
-  }, []);
-
-  // Reflect the current search query into the URL via replaceState, so a
-  // search can be bookmarked. No history entries are pushed (back-button
-  // stays useful), and no navigation occurs. Empty queries clean the param
-  // off the URL so shared links don't carry a stale `?q=`.
-  //
-  // Privacy note: Analytics.astro removes ?q= from every /blog/ URL before
-  // any event is sent (see the privacy notice).
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const url = new URL(window.location.href);
-      const trimmed = searchQuery.trim();
-      const current = url.searchParams.get('q') ?? '';
-      if (trimmed === current) return;
-      if (trimmed) {
-        url.searchParams.set('q', trimmed);
-      } else {
-        url.searchParams.delete('q');
-      }
-      window.history.replaceState(null, '', url.toString());
-    } catch { /* ignore: URL constructor failure or replaceState block */ }
-  }, [searchQuery]);
-
-  // Auto-collapse sections when all posts are read
-  useEffect(() => {
-    const newlyCompleted = LEVEL_ORDER.filter((level) => {
-      const levelPosts = posts.filter((p) => p.level === level);
-      return levelPosts.length > 0 && levelPosts.every((p) => readPosts.has(p.id));
-    });
-    if (newlyCompleted.length > 0) {
-      setCollapsedSections((prev) => {
-        const next = new Set(prev);
-        for (const level of newlyCompleted) {
-          next.add(level);
-        }
-        return next;
-      });
-    }
-  }, [readPosts, posts]);
-
-  const toggleSection = useCallback((level: string) => {
-    setCollapsedSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(level)) {
-        next.delete(level);
-      } else {
-        next.add(level);
-      }
-      return next;
-    });
-  }, []);
-
-  const saveProgress = useCallback((newSet: Set<string>) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...newSet]));
-    } catch { /* ignore */ }
-  }, []);
-
-  const toggleRead = useCallback((id: string) => {
-    setReadPosts((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      saveProgress(next);
-      return next;
-    });
-  }, [saveProgress]);
-
-  // Marks every post of the level itself as read or unread, whatever filter
-  // is active. Optional follow-ups placed in the section are left alone.
-  const setLevelRead = useCallback((level: string, read: boolean) => {
-    setReadPosts((prev) => {
-      const next = new Set(prev);
-      posts.filter((p) => p.level === level).forEach((p) => (read ? next.add(p.id) : next.delete(p.id)));
-      saveProgress(next);
-      return next;
-    });
-    // Reading a level collapses it (see the auto-collapse effect); undoing
-    // that should bring the posts back into view.
-    if (!read) {
-      setCollapsedSections((prev) => {
-        const next = new Set(prev);
-        next.delete(level);
-        return next;
-      });
-    }
-  }, [posts, saveProgress]);
-
-  const scrollToLevel = useCallback((level: string) => {
-    const el = document.getElementById(`level-${level}`);
-    if (!el) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-    el.focus({ preventScroll: true });
-  }, []);
-
-  const allTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
-    return [...tagSet].sort();
-  }, [posts]);
-
-  const filteredPosts = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return posts;
-    return posts.filter((p) =>
-      p.title.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }, [posts, searchQuery]);
-
-  const levelGroups = useMemo(() => {
-    return LEVEL_ORDER.map((level) => ({
-      level,
-      meta: LEVELS[level],
-      posts: filteredPosts.filter((p) => (p.pathLevel ?? p.level) === level),
-      // The level's own posts: what progress, completion, and "Start here"
-      // count. Optional follow-ups are shown in the section but never count.
-      core: filteredPosts.filter((p) => p.level === level),
-    }));
-  }, [filteredPosts]);
-
-  const hasInclusive = posts.some(isOptional);
-
-  const firstUnreadId = useMemo(() => {
-    for (const group of levelGroups) {
-      for (const post of group.core) {
-        if (!readPosts.has(post.id)) return post.id;
-      }
-    }
-    return null;
-  }, [levelGroups, readPosts]);
-
-  const shownLevels = levelGroups.filter((g) => g.posts.length > 0).map((g) => g.level);
-
-  const corePosts = filteredPosts.filter((p) => !isOptional(p));
-  const totalPosts = corePosts.length;
-  const totalRead = corePosts.filter((p) => readPosts.has(p.id)).length;
-  const overallPercent = totalPosts > 0 ? (totalRead / totalPosts) * 100 : 0;
-
-  return (
-    <div className="lp-pathContainer">
-      <div className="lp-pathLine" />
-
-      <nav className="lp-levelNav" aria-label="Learning path levels and routes">
-        {LEVEL_ORDER.map((level) => {
-          const meta = LEVELS[level];
-          const group = levelGroups.find((g) => g.level === level);
-          const count = group ? group.core.length : 0;
-          if (count === 0) return null;
-          const readCount = group ? group.core.filter((p) => readPosts.has(p.id)).length : 0;
-          return (
-            <a
-              key={level}
-              href={`#level-${level}`}
-              className="lp-levelNavLink"
-              style={{ '--level-color': meta.color } as React.CSSProperties}
-            >
-              <span className="lp-levelNavLinkNum">{LEVEL_ORDER.indexOf(level) + 1}</span>
-              <div className="lp-levelNavLinkText">
-                <span className="lp-levelNavLinkLabel">{meta.label}</span>
-                <span className="lp-levelNavLinkPrereq">{meta.prerequisite}</span>
-              </div>
-              <span className="lp-levelNavLinkCount">{readCount}/{count}</span>
-            </a>
-          );
-        })}
-        {/* Inclusive Finances is a route beside the ladder, not a step on it:
-            unnumbered, full width, and leading to the hub that groups every
-            guide by situation. On the path itself the guides stay next to the
-            lessons they follow up on. */}
-        {hasInclusive && (
-          <a
-            href="/blog/inclusive-finances/"
-            className="lp-levelNavLink lp-levelNavRoute"
-            data-attr="blog-index-inclusive-hub"
-            style={{ '--level-color': INCLUSIVE.color } as React.CSSProperties}
-          >
-            <span className="lp-levelNavLinkNum"><CompassIcon size={14} /></span>
-            <div className="lp-levelNavLinkText">
-              <span className="lp-levelNavLinkLabel">{INCLUSIVE.label}</span>
-              <span className="lp-levelNavLinkPrereq">
-                Relevant at any stage. Relationships, work, countries, abilities and life changes the standard path does not account for.
-              </span>
-            </div>
-            <span className="lp-levelNavLinkCount">All guides</span>
-          </a>
-        )}
-      </nav>
-
-      {allTags.length > 0 && (
-        <div className="lp-filterBar">
-          <div className="lp-searchWrapper">
-            <svg className="lp-searchIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="9" cy="9" r="6" />
-              <line x1="13.5" y1="13.5" x2="18" y2="18" />
-            </svg>
-            <input
-              type="text"
-              className="lp-searchInput"
-              placeholder="Search posts..."
-              aria-label="Search posts"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button className="lp-searchClear" onClick={() => setSearchQuery('')} aria-label="Clear search">
-                <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
-                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                </svg>
-              </button>
-            )}
-          </div>
-          <span className="lp-tagFilterLabel">Filter by topic:</span>
-          <div className="lp-tagList">
-            {allTags.map((tag) => (
-              <a key={tag} href={`/blog/tag/${encodeURIComponent(tag)}/`} className="lp-tagFilterBtn">
-                {tag}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {totalPosts > 0 && (
-        <div className="lp-overallProgress">
-          <div className="lp-overallProgressLabel">
-            <span>Your progress</span>
-            <span>{totalRead} of {totalPosts} read</span>
-          </div>
-          <div className="lp-overallProgressTrack">
-            <div className="lp-overallProgressFill" style={{ width: `${overallPercent}%` }} />
-          </div>
-        </div>
-      )}
-
-      {filteredPosts.length === 0 && searchQuery.trim() && (
-        <div className="lp-noResults">
-          <p>No posts found matching "{searchQuery.trim()}".</p>
-          <button className="lp-noResultsClear" onClick={() => setSearchQuery('')}>
-            Clear search
-          </button>
-        </div>
-      )}
-
-      {levelGroups.map((group, index) => {
-        if (group.posts.length === 0) return null;
-        const levelRead = group.core.filter((p) => readPosts.has(p.id)).length;
-        const levelPercent = group.core.length > 0 ? (levelRead / group.core.length) * 100 : 0;
-        const isCompleted = group.core.length > 0 && levelRead === group.core.length;
-        const isCollapsed = collapsedSections.has(group.level);
-        const shownIndex = shownLevels.indexOf(group.level);
-        const prevLevel = shownLevels[shownIndex - 1];
-        const nextLevel = shownLevels[shownIndex + 1];
-        const allLevelPostsRead = posts
-          .filter((p) => p.level === group.level)
-          .every((p) => readPosts.has(p.id));
-
-        return (
-          <div
-            key={group.level}
-            id={`level-${group.level}`}
-            tabIndex={-1}
-            className={`lp-levelSection ${isCollapsed ? 'lp-levelSectionCollapsed' : ''}`}
-          >
-            <div
-              className="lp-levelWaypoint"
-              style={{ background: group.meta.color }}
-            >
-              {index + 1}
-            </div>
-
-            <div
-              className={`lp-levelHeader ${isCompleted ? 'lp-levelHeaderToggle' : ''}`}
-              onClick={isCompleted ? () => toggleSection(group.level) : undefined}
-              onKeyDown={isCompleted ? (e: React.KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  toggleSection(group.level);
-                }
-              } : undefined}
-              role={isCompleted ? 'button' : undefined}
-              tabIndex={isCompleted ? 0 : undefined}
-              aria-expanded={isCompleted ? !isCollapsed : undefined}
-              aria-label={isCompleted ? `${isCollapsed ? 'Expand' : 'Collapse'} ${group.meta.label}` : undefined}
-            >
-              <div className="lp-levelLabelRow">
-                <div className="lp-levelLabel" style={{ color: group.meta.color }}>
-                  {group.meta.label}
-                  <span className="lp-levelPrereq">{group.meta.prerequisite}</span>
-                </div>
-                {isCompleted && (
-                  <div className="lp-levelHeaderRight">
-                    <span className="lp-levelCompletedBadge" style={{ color: group.meta.color, borderColor: group.meta.color }}>Completed</span>
-                    <svg
-                      className={`lp-levelCollapseChevron ${isCollapsed ? 'lp-levelCollapseChevronDown' : ''}`}
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      width="16"
-                      height="16"
-                    >
-                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              {!(isCompleted && isCollapsed) && (
-                <>
-                  <p className="lp-levelDesc">{group.meta.description}</p>
-                  <div className="lp-levelMeta">
-                    <span className="lp-levelCovered"><strong>What's covered:</strong> {group.meta.covered}</span>
-                  </div>
-                </>
-              )}
-              {group.core.length > 0 && (
-                <>
-                  <span className="lp-levelProgress">{levelRead}/{group.core.length} read</span>
-                  <div className="lp-levelProgressBar">
-                    <div
-                      className="lp-levelProgressFill"
-                      style={{ width: `${levelPercent}%`, background: group.meta.color }}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-
-            {(group.core.length > 0 || nextLevel || prevLevel) && (
-              <div className="lp-levelActions" style={{ '--level-color': group.meta.color } as React.CSSProperties}>
-                {group.core.length === 0 ? null : allLevelPostsRead ? (
-                  <button type="button" className="lp-levelAction" onClick={() => setLevelRead(group.level, false)} data-attr={`lp-mark-level-unread-${group.level}`}>
-                    Mark the level as unread
-                  </button>
-                ) : (
-                  <button type="button" className="lp-levelAction" onClick={() => setLevelRead(group.level, true)} data-attr={`lp-mark-level-read-${group.level}`}>
-                    Mark the level as read
-                  </button>
-                )}
-                {nextLevel && (
-                  <button type="button" className="lp-levelAction" onClick={() => scrollToLevel(nextLevel)} data-attr={`lp-skip-next-${group.level}`}>
-                    Skip to next <span aria-hidden="true">↓</span>
-                  </button>
-                )}
-                {prevLevel && (
-                  <button type="button" className="lp-levelAction" onClick={() => scrollToLevel(prevLevel)} data-attr={`lp-go-previous-${group.level}`}>
-                    Go to previous <span aria-hidden="true">↑</span>
-                  </button>
-                )}
-              </div>
-            )}
-
-            {!isCollapsed && (
-              <div className="lp-levelPosts">
-                {group.posts.map((post) => (
-                  <PostNode
-                    key={post.id}
-                    post={post}
-                    isRead={readPosts.has(post.id)}
-                    isStartHere={post.id === firstUnreadId}
-                    levelColor={post.level === 'inclusive-finances' ? INCLUSIVE.color : group.meta.color}
-                    onToggleRead={toggleRead}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-/**
  * Flat list of post cards with the same read toggles as the learning path,
  * for pages that list a collection outside the ladder (the Inclusive
  * Finances hub). Reads and writes the same reading-progress key, so a post
@@ -725,6 +327,84 @@ export function LevelLessons({ level, posts }: { level: string; posts: PostData[
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+export interface TopicGroup {
+  /** A ladder level, or 'inclusive-finances' for the guides beside it. */
+  level: string;
+  /** Posts of this topic in reading order; `step` is the post's place in its whole level. */
+  posts: (PostData & { step?: number; stepCount?: number })[];
+  /** How many lessons the whole level has, for "All Discovery lessons (16)". */
+  levelTotal: number;
+}
+
+/**
+ * One topic's lessons (/blog/tag/<tag>/), grouped by level in reading order,
+ * with the same cards and read toggles as the level pages. Each group links
+ * to its full level; step numbers show where a lesson sits in that level.
+ */
+export function TopicLessons({ groups }: { groups: TopicGroup[] }) {
+  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) setReadPosts(new Set(JSON.parse(stored)));
+    } catch { /* ignore */ }
+  }, []);
+
+  const toggleRead = useCallback((id: string) => {
+    setReadPosts((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+      return next;
+    });
+  }, []);
+
+  const firstUnreadId = groups
+    .flatMap((g) => g.posts)
+    .find((p) => !isOptional(p) && !readPosts.has(p.id))?.id ?? null;
+
+  return (
+    <div className="lp-pathContainer lp-levelPage lp-topicPage">
+      {groups.map((group) => {
+        const meta = LEVELS[group.level];
+        const inclusive = group.level === 'inclusive-finances';
+        const href = inclusive ? '/blog/inclusive-finances/' : `/blog/${group.level}/`;
+        return (
+          <section
+            key={group.level}
+            className="lp-topicGroup"
+            aria-labelledby={`topic-${group.level}`}
+            style={{ '--level-color': meta.color } as React.CSSProperties}
+          >
+            <div className="lp-topicGroupHead">
+              <h2 id={`topic-${group.level}`} style={{ color: meta.color }}>{meta.label}</h2>
+              <a href={href} data-attr={`topic-level-${group.level}`}>
+                {inclusive ? `All ${meta.label} guides` : `All ${meta.label} lessons`} ({group.levelTotal})
+              </a>
+            </div>
+            <div className="lp-levelPosts">
+              {group.posts.map((post) => (
+                <PostNode
+                  key={post.id}
+                  post={post}
+                  step={inclusive ? undefined : post.step}
+                  stepCount={post.stepCount}
+                  isRead={readPosts.has(post.id)}
+                  isStartHere={post.id === firstUnreadId}
+                  levelColor={meta.color}
+                  onToggleRead={toggleRead}
+                  onPath={!inclusive}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
