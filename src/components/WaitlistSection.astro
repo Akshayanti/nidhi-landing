@@ -308,6 +308,12 @@ const inputId = `${idPrefix}-email`;
   .waitlist-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); }
   .waitlist-button:active:not(:disabled) { transform: translateY(1px); }
   .waitlist-button:disabled { opacity: 0.6; cursor: wait; }
+  /* On the blue card a teal button nearly vanishes on a dim screen; white
+     with the card's navy as text stands apart in both themes. */
+  .waitlist--default .waitlist-button { background: #fff; color: var(--color-callout-bg); }
+  .waitlist--default .waitlist-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); }
+  .waitlist--default .waitlist-button:focus-visible { outline-color: #fff; }
+
   .waitlist-button:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;

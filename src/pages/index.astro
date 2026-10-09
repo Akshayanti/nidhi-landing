@@ -66,9 +66,12 @@ const starterChart = {
   title: 'Example: one decision compared over ten years',
   descId: 'hero-starter-desc',
   pointLabels: ex.values.map((_, i) => (i === 0 ? 'Today' : `Year ${i}`)),
+  // Solid blue for the changed path, dashed grey for the baseline: they
+  // differ in lightness and pattern, not only hue, so they stay apart on a
+  // dim dark screen.
   series: [
-    { name: `${HIGHER_MONTHLY} €/mo`, values: alt, color: 'var(--chart-usd)' },
-    { name: `${STARTER.monthly} €/mo`, values: ex.values, color: 'var(--chart-eur)', area: true },
+    { name: `${HIGHER_MONTHLY} €/mo`, values: alt, color: 'var(--chart-eur)', area: true },
+    { name: `${STARTER.monthly} €/mo`, values: ex.values, color: 'var(--color-text-muted)', dashFrom: 0 },
   ],
   axisStart: 'today',
   axisEnd: `+${STARTER.years} years`,
@@ -600,7 +603,7 @@ const faqSchema = {
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--color-teal);
+    color: var(--color-text-primary);
   }
 
   .step-num {
@@ -609,8 +612,8 @@ const faqSchema = {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: var(--color-teal);
-    color: var(--color-bg-white);
+    background: var(--color-text-primary);
+    color: var(--color-bg);
     font-size: 0.9rem;
   }
 
@@ -861,7 +864,7 @@ const faqSchema = {
   }
 
   .journey-list li:last-child::before { background: var(--chart-eur); }
-  .journey-spark .journey-spark-high { stroke: var(--chart-usd); }
+  .journey-spark polyline:not(.journey-spark-high) { stroke: var(--color-text-muted); stroke-dasharray: 5 4; }
 
   .journey-step {
     font-family: var(--font-heading);
