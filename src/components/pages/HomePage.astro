@@ -397,6 +397,7 @@ const faqSchema = {
             <p class="starter-label">{home.example.label}</p>
             <p class="starter-text">{t(home.example.text, { start: eur(ex.invested), low: eur(STARTER.monthly), high: eur(HIGHER_MONTHLY) })}</p>
             <p class="gap"><strong>{t(home.example.gapLead, { gap: eur(gap) })}</strong> {t(home.example.gapRest, { years: STARTER.years, extra: eur(extraIn), growth: eur(gap - extraIn) })}</p>
+            <p class="starter-currency">{home.example.currencyNote}</p>
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
             <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
             <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
@@ -978,6 +979,17 @@ const faqSchema = {
     font-size: 0.95rem;
     line-height: 1.5;
     color: var(--color-text-primary);
+  }
+
+  /* Why the example's currency changes nothing about its arithmetic. It sits
+     between the payoff line and the chart, which is where a reader who is not
+     paid in euros has just met some. Muted and a size down, so it reads as a
+     note on the number above it rather than as another claim. */
+  .starter-currency {
+    margin: 0 0 14px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
   }
 
   .starter :global(svg) { width: 100%; height: auto; display: block; }

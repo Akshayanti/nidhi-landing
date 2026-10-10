@@ -488,8 +488,10 @@ export const hi: Dict = {
      * four keys at the bottom.
      */
     example: {
-      label: 'एक फ़ैसला, तुलना में',
+      label: 'एक फैसला, तुलना में',
       text: 'शुरुआत वही {start}, हर महीने {low} या {high} जोड़ने पर।',
+      currencyNote:
+        'यूरो सिर्फ़ इस उदाहरण की मुद्रा है। दोनों रास्ते एक ही प्रतिशत रिटर्न कमाते हैं, इसलिए उनके बीच का फ़र्क़ भी एक अनुपात है: रुपयों या डॉलरों में दोनों रेखाएँ वही आकार बनाएँगी, बदलेगा तो बस अक्ष।',
       /** Bolded, and read as one sentence with `gapRest` after it. */
       gapLead: 'करीब {gap} का फ़र्क़',
       gapRest: '{years} साल बाद: {extra} ज़्यादा डाला गया, और करीब {growth} ज़्यादा रिटर्न।',
