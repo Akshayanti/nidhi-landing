@@ -856,10 +856,10 @@ export const hi: Dict = {
       learnSmall: 'जो आपके पास है, घटा जो आप पर बकाया है।',
       stockStep: '2 · हिसाब लगाएँ',
       stockBig: '{one} या {two}',
-      stockSmall: 'दो लोग, दोनों की आय हर महीने {amount}।',
+      stockSmall: 'दो लोगों की शुद्ध संपत्ति, जिनकी आय एक जैसी है: हर महीने {amount}।',
       planStep: '3 · योजना बनाएँ',
       planBig: '{gap} का फ़र्क़',
-      planSmall: 'हर महीने {low} या {high}, {years} साल तक।',
+      planSmall: 'हर महीने {low} या {high} जोड़ने पर, {years} साल में।',
     },
     /** The numbered marker above each step's heading. */
     steps: {

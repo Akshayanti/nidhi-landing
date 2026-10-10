@@ -976,10 +976,10 @@ export const en = {
        * it is a template rather than two spans and a hardcoded "or".
        */
       stockBig: '{one} or {two}',
-      stockSmall: 'Two people, both earning {amount} a month.',
+      stockSmall: 'Net worth of two people who both earn {amount} a month.',
       planStep: '3 · Plan ahead',
       planBig: '{gap} apart',
-      planSmall: '{low} or {high} a month, over {years} years.',
+      planSmall: 'Adding {low} or {high} a month, over {years} years.',
     },
     /** The numbered marker above each step's heading. */
     steps: {
