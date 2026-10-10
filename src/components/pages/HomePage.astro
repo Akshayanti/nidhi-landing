@@ -33,7 +33,7 @@ import {
   resolveStartingPoints,
 } from '../../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../../utils/inclusiveGuides.ts';
-import { formatAmount } from '../../utils/shared/formatAmount.ts';
+import { formatProseAmount } from '../../utils/shared/formatAmount.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
 
@@ -75,7 +75,7 @@ const inclusive = liveInclusive(allPosts, now);
 
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
 // table sits in Step 2 and the ten-year chart in Step 3.
-const eur = (v: number) => formatAmount(v, 'EUR');
+const eur = (v: number) => formatProseAmount(v, 'EUR');
 const ex = starterExample();
 const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
 const roundedEnd = Math.round(ex.end / 100) * 100;
@@ -112,8 +112,8 @@ const starterChart = {
   // differ in lightness and pattern, not only hue, so they stay apart on a
   // dim dark screen.
   series: [
-    { name: t(home.example.perMonth, { amount: HIGHER_MONTHLY }), values: alt, color: 'var(--chart-eur)', area: true },
-    { name: t(home.example.perMonth, { amount: STARTER.monthly }), values: ex.values, color: 'var(--color-text-muted)', dashFrom: 0 },
+    { name: t(home.example.perMonth, { amount: eur(HIGHER_MONTHLY) }), values: alt, color: 'var(--chart-eur)', area: true },
+    { name: t(home.example.perMonth, { amount: eur(STARTER.monthly) }), values: ex.values, color: 'var(--color-text-muted)', dashFrom: 0 },
   ],
   axisStart: home.example.axisStart,
   axisEnd: t(home.example.axisEnd, { years: STARTER.years }),
@@ -241,7 +241,7 @@ const faqSchema = {
             </li>
             <li>
               <span class="journey-step">{home.journey.stockStep}</span>
-              <span class="journey-big">{signedEur(people[0].owns - people[0].owes)} or {signedEur(people[1].owns - people[1].owes)}</span>
+              <span class="journey-big">{t(home.journey.stockBig, { one: signedEur(people[0].owns - people[0].owes), two: signedEur(people[1].owns - people[1].owes) })}</span>
               <span class="journey-small">{t(home.journey.stockSmall, { amount: eur(SAME_INCOME) })}</span>
             </li>
             <li>

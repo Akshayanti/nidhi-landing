@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { CURRENCIES } from '../loan/math.ts';
-import { formatAmount, formatPercent } from './formatAmount.ts';
+import { formatAmount, formatPercent, formatProseAmount } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
@@ -48,6 +48,30 @@ describe('formatAmount', () => {
   it('keeps lakh and crore for rupees', () => {
     assert.equal(formatAmount(2_163_515, 'INR', true), '₹21.6L');
     assert.equal(formatAmount(11_400_000, 'INR', true), '₹1.14Cr');
+  });
+});
+
+describe('formatProseAmount', () => {
+  it('spells an amount the way the lessons do, whatever the currency', () => {
+    assert.equal(formatProseAmount(9_000, 'EUR'), '€9,000');
+    assert.equal(formatProseAmount(23_200, 'EUR'), '€23,200');
+    assert.equal(formatProseAmount(120_000, 'GBP'), '£120,000');
+    assert.equal(formatProseAmount(250_000, 'USD'), '$250,000');
+  });
+
+  it('ignores the currency\'s own convention, which is the tools\' rule', () => {
+    // The pair `formatAmount` gives for these two is '1.058.721 €' and
+    // '₹10,58,721'. A figure inside a sentence follows the sentence, and every
+    // lesson writes one with the symbol first and commas between thousands.
+    assert.equal(formatProseAmount(1_058_721, 'EUR'), '€1,058,721');
+    assert.equal(formatProseAmount(1_058_721, 'INR'), '₹1,058,721');
+  });
+
+  it('abbreviates in English', () => {
+    assert.equal(formatProseAmount(547_008, 'EUR', true), '€547K');
+    assert.equal(formatProseAmount(2_163_515, 'EUR', true), '€2.16M');
+    assert.equal(formatProseAmount(2.5e9, 'EUR', true), '€2.5B');
+    assert.equal(formatProseAmount(0, 'EUR', true), '€0');
   });
 });
 

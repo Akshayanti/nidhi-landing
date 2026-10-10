@@ -42,6 +42,17 @@ breach as a defect.
 7. **No new browser storage and no keys renamed.** The keys are the same in
    every language, and `nidhi-reading-progress` is deliberately shared, so a
    lesson read in either language counts once.
+8. **An amount keeps the spelling the English lesson gives it**: the symbol
+   first, a comma between thousands, no space (`€10,000`, `$250,000`,
+   `£120,000`). Never a dot between thousands and never a space-grouped form,
+   because the same figure appears in the lesson's prose and in its figure, and
+   `9.000 €` reads to an Indian reader as nine point zero zero zero. This
+   applies to the chrome as well: the homepage's illustrative figures go
+   through `formatProseAmount`, which follows this rule, while the free tools
+   go through `formatAmount`, which formats by the currency the reader picked
+   there. Above a lakh the English lesson writes the number in words
+   (`₹1.25 lakh`), so the `₹10,58,721` lakh-grouped form of rule 4 is the
+   tools' alone.
 
 ## Vocabulary
 

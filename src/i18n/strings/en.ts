@@ -475,6 +475,12 @@ export const en = {
       learnBig: 'What is net worth?',
       learnSmall: 'What you own, minus what you owe.',
       stockStep: '2 · Take stock',
+      /**
+       * The two illustrative net worths side by side, one person's and the
+       * other's. Only the connector between them is translatable, which is why
+       * it is a template rather than two spans and a hardcoded "or".
+       */
+      stockBig: '{one} or {two}',
       stockSmall: 'Two people, both earning {amount} a month.',
       planStep: '3 · Plan ahead',
       planBig: '{gap} apart',
@@ -560,7 +566,7 @@ export const en = {
       axisStart: 'today',
       axisEnd: '+{years} years',
       /** A chart series label, in the legend and read aloud on hover. */
-      perMonth: '{amount} €/mo',
+      perMonth: '{amount}/mo',
       /** Read aloud, and printed for a reader who cannot see the chart. */
       description:
         'Two example paths from the same {invested} invested today, at an illustrative {pct} a year after inflation. Adding {monthly} a month reaches about {end} after {years} years; adding {higher} a month reaches about {alternative}. The gap of about {gap} is {extra} more put in and about {growth} more growth.',

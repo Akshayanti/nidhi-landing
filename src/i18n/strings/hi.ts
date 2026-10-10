@@ -434,6 +434,7 @@ export const hi: Dict = {
       learnBig: 'शुद्ध संपत्ति क्या है?',
       learnSmall: 'जो आपके पास है, घटाकर जो आप पर है।',
       stockStep: '2 · हिसाब लगाएँ',
+      stockBig: '{one} या {two}',
       stockSmall: 'दो लोग, दोनों की आय हर महीने {amount}।',
       planStep: '3 · योजना बनाएँ',
       planBig: '{gap} का फ़र्क़',
@@ -513,7 +514,7 @@ export const hi: Dict = {
       axisStart: 'आज',
       axisEnd: '+{years} साल',
       /** A chart series label, in the legend and read aloud on hover. */
-      perMonth: '{amount} €/महीना',
+      perMonth: '{amount}/महीना',
       /** Read aloud, and printed for a reader who cannot see the chart. */
       description:
         'आज निवेश किए गए उसी {invested} से बने दो उदाहरण रास्ते, महँगाई के बाद सालाना {pct} मानकर। हर महीने {monthly} जोड़ने पर {years} साल बाद करीब {end} बनता है; हर महीने {higher} जोड़ने पर करीब {alternative}। करीब {gap} का फ़र्क़ इतना है: {extra} ज़्यादा डाला गया, और करीब {growth} ज़्यादा रिटर्न।',
