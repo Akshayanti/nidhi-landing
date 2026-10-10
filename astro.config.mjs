@@ -145,7 +145,7 @@ const STATIC_PAGE_SOURCE = {
   // dating by the wrapper would freeze lastmod while the page's copy is edited.
   'about': 'src/components/pages/AboutPage.astro',
   'beliefs': 'src/components/pages/BeliefsPage.astro',
-  'editorial-policy': 'src/pages/editorial-policy.astro',
+  'editorial-policy': 'src/components/pages/EditorialPolicyPage.astro',
   'privacy': 'src/pages/privacy.astro',
   'blog': 'src/layouts/BlogIndex.astro',
   'blog/tag': 'src/pages/blog/tag/index.astro',

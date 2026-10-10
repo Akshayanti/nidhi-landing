@@ -279,4 +279,113 @@ export const en = {
       instagram: 'Slide into our DMs',
     },
   },
+
+  /**
+   * The editorial policy. The longest prose page, and the one that says most
+   * about how the site is made, so it carries more structure than the others:
+   * section headings, a numbered list whose items each open with a bolded
+   * term, and four sentences with a link inside them.
+   *
+   * Two shapes keep markup out of this catalog. A heading is its own key and
+   * the component supplies the `<h2>` and its `id`. A list item is a `lead`
+   * and a `rest`, the component wrapping the lead in `<strong>`, which is what
+   * lets a translation move the comma. Sentences with a link are split the same
+   * way the other pages split them, one key per side of the link; where the
+   * link text is an address that reads the same in every language (the
+   * corrections paragraph's `mailto:`), the component holds the anchor and the
+   * catalog holds only the two halves of the sentence around it.
+   */
+  editorialPolicy: {
+    meta: {
+      title: 'Editorial Policy: How nidhi Writes Its Lessons | nidhi',
+      description:
+        'How each nidhi lesson is built and checked, where its figures come from, why it is written for any country, how AI tools are used, and the line between education and advice.',
+    },
+    schema: {
+      name: 'Editorial Policy',
+      description:
+        'How nidhi builds and checks each lesson, its sourcing standards, why lessons are written for any country, how AI tools are used, the boundary on advice, and how corrections are handled.',
+      breadcrumbHome: 'Home',
+      // Its own key rather than reuse of `name`, as on the other two prose
+      // pages: a breadcrumb label wants to be short, and in some languages a
+      // page title and a trail label genuinely differ.
+      breadcrumbThis: 'Editorial Policy',
+    },
+    title: 'Editorial Policy',
+    intro:
+      'Money writing should be easy to check and honest about its limits. This page explains how every lesson on nidhi is built, sourced, checked and corrected, how AI tools are used along the way, and where the line sits between education and advice.',
+    sections: {
+      howALessonIsBuilt: 'How a lesson is built',
+      anyCountry: 'Written for any country',
+      sourcesAndFigures: 'Sources and figures',
+      ai: 'How AI is used',
+      advice: 'Education, not advice',
+      corrections: 'Corrections',
+      whoIsBehind: 'Who is behind this',
+    },
+    body: {
+      builtIntro:
+        'Each lesson starts from a question a real person would ask and works through it with actual numbers. Many readers are new to money, and a confident sentence can read like an instruction, so lessons explain rather than tell you what to do. Every idea, rule of thumb or common practice goes through the same five steps:',
+      builtSteps: {
+        idea: {
+          lead: 'The idea',
+          rest: ', in plain words, with jargon defined the first time it appears.',
+        },
+        why: {
+          lead: 'Why people use it',
+          rest: ': the problem it solves and why it caught on.',
+        },
+        evidence: {
+          lead: 'The evidence',
+          rest: ", cited, with its limits: which country's data, which years, and what it leaves out.",
+        },
+        breaks: {
+          lead: 'Where it breaks',
+          rest: ': the situations it was not built for.',
+        },
+        depends: {
+          lead: 'What depends on you',
+          rest: ': country, how steady your income is, how long you have, debts and tax.',
+        },
+      },
+      builtOutro:
+        'A rule of thumb is a starting point, not an answer, so lessons describe what many people do and avoid "always" and "never" unless the evidence can carry them. Before a lesson is published, it is read back for two things: whether its claims are supported, and whether a beginner would follow it without a glossary. If one slips through, see Corrections below.',
+      anyCountry:
+        'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a "Where to check locally" note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
+      sourcesAndFigures:
+        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "referential reading," so you can follow the trail rather than take our word for it. Every figure comes with where it is from and what it covers, and the same figure agrees across lessons. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are the European Central Bank\'s reference rates, dated on screen.',
+      aiUsed1:
+        "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
+      aiUsed2: {
+        // No space before the link, and not by oversight: the original markup
+        // broke the line after "the", and Astro drops the newline, so the
+        // English page has always rendered "described in theprivacy notice".
+        // The two halves are split here exactly as the markup split them, so
+        // that a change of shape does not quietly change a character of the
+        // English page. The missing space is a bug, and fixing it is its own
+        // small change rather than a side effect of this one. Hindi keeps the
+        // space, because its sentence is being written now, not moved.
+        before:
+          'AI output is a draft, never a source. A person is involved at every stage, and reads and approves every lesson before it is published. An AI model asked to think like a financial adviser is a check on reasoning, not advice from a licensed professional. The site itself sends nothing you type or do to an AI service; what we collect is described in the',
+        link: 'privacy notice',
+        after: '.',
+      },
+      advice:
+        'nidhi is not a licensed financial adviser, and nothing on the site is personal financial, investment or tax advice. Lessons do not recommend specific products, funds or securities. Past performance of any investment is not indicative of future results. For decisions that depend on your tax residency, legal situation or risk tolerance, a qualified professional can apply these ideas to your circumstances.',
+      corrections: {
+        before:
+          'If something is wrong, we want to fix it. Spot an error, an out-of-date figure or a claim that no longer holds, and email ',
+        after:
+          '. Substantive corrections are made in the lesson and reflected in its "last updated" date, so the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a date change.',
+      },
+      // Two links in one sentence, so five parts rather than three.
+      whoIsBehind: {
+        before: 'For who writes nidhi and the experience behind the writing, see the ',
+        aboutLink: 'about page',
+        middle: '. For the worldview that shapes what we choose to build and publish, read ',
+        beliefsLink: 'our beliefs',
+        after: '.',
+      },
+    },
+  },
 };
