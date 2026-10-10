@@ -1,11 +1,38 @@
 ---
-/**
- * The English unsubscribed page, at its original address, the one the newsletter's
- * emails and redirects use. The page body lives in
- * `src/components/pages/UnsubscribedPage.astro` so the other languages can render the
- * same markup; this file exists only to give it the root path.
- */
-import UnsubscribedPage from '../components/pages/UnsubscribedPage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+// Reached from an English email, so there is no Hindi counterpart to point
+// search engines or a language switcher at.
+import { DEFAULT_LOCALE } from '../i18n';
 ---
 
-<UnsubscribedPage locale="en" />
+<BaseLayout
+  title="Unsubscribed | nidhi"
+  description="You've been unsubscribed from nidhi lesson emails."
+  robots="noindex,nofollow"
+  alternates={[DEFAULT_LOCALE]}
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--muted" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">You&rsquo;re unsubscribed.</h1>
+      <p class="transactional-body">
+        You won&rsquo;t get any more lesson emails from nidhi. Sorry to see
+        you go. If there was a reason, we&rsquo;d love to hear it, so
+        we can fix whatever isn&rsquo;t working.
+      </p>
+
+      <a class="transactional-cta transactional-cta--subtle" href="mailto:hello@nidhi.today?subject=Unsubscribe feedback">
+        Tell us why
+      </a>
+
+      <p class="transactional-secondary">
+        Changed your mind? You can <a href="/blog/">resubscribe from the learning path</a> any time.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
