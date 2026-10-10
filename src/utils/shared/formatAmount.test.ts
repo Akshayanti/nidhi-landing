@@ -18,7 +18,7 @@ function decimalSeparator(locale: string): string {
 
 describe('formatAmount', () => {
   it('formats full amounts in the currency\'s own conventions', () => {
-    assert.equal(formatAmount(1_058_721, 'EUR').replace(/\s/g, ' '), '1.058.721 €');
+    assert.equal(formatAmount(1_058_721, 'EUR'), '€1,058,721');
     assert.equal(formatAmount(1_058_721, 'USD'), '$1,058,721');
     assert.equal(formatAmount(1_058_721, 'INR'), '₹10,58,721');
   });
@@ -39,10 +39,10 @@ describe('formatAmount', () => {
   });
 
   it('uses K, M and B for thousands, millions and billions', () => {
-    assert.equal(formatAmount(547_008, 'EUR', true).replace(/\s/g, ' '), '547K €');
-    assert.equal(formatAmount(2_163_515, 'EUR', true).replace(/\s/g, ' '), '2,16M €');
-    assert.equal(formatAmount(2.5e9, 'EUR', true).replace(/\s/g, ' '), '2,5B €');
-    assert.equal(formatAmount(0, 'EUR', true).replace(/\s/g, ' '), '0 €');
+    assert.equal(formatAmount(547_008, 'EUR', true), '€547K');
+    assert.equal(formatAmount(2_163_515, 'EUR', true), '€2.16M');
+    assert.equal(formatAmount(2.5e9, 'EUR', true), '€2.5B');
+    assert.equal(formatAmount(0, 'EUR', true), '€0');
   });
 
   it('keeps lakh and crore for rupees', () => {
@@ -60,11 +60,12 @@ describe('formatProseAmount', () => {
   });
 
   it('ignores the currency\'s own convention, which is the tools\' rule', () => {
-    // The pair `formatAmount` gives for these two is '1.058.721 €' and
-    // '₹10,58,721'. A figure inside a sentence follows the sentence, and every
-    // lesson writes one with the symbol first and commas between thousands.
-    assert.equal(formatProseAmount(1_058_721, 'EUR'), '€1,058,721');
+    // The tools write these two as '₹10,58,721' and "CHF 1'058'721", because a
+    // reader there picked the currency. A figure inside a sentence follows the
+    // sentence, and every lesson writes one with the symbol first and commas
+    // between thousands.
     assert.equal(formatProseAmount(1_058_721, 'INR'), '₹1,058,721');
+    assert.equal(formatProseAmount(1_058_721, 'CHF').replace(/\s/g, ' '), 'CHF 1,058,721');
   });
 
   it('abbreviates in English', () => {
@@ -77,7 +78,7 @@ describe('formatProseAmount', () => {
 
 describe('formatPercent', () => {
   it('uses the currency\'s decimal separator and spacing', () => {
-    assert.equal(formatPercent(44.13, 'EUR').replace(/\s/g, ' '), '44,1 %');
+    assert.equal(formatPercent(44.13, 'CZK').replace(/\s/g, ' '), '44,1 %');
     assert.equal(formatPercent(44.13, 'USD'), '44.1%');
     assert.equal(formatPercent(44.13, 'CHF'), '44.1%');
   });

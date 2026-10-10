@@ -169,9 +169,10 @@ describe('formatMoney', () => {
     assert.ok(!s.endsWith(' JPY'), `JPY should not have suffix, got: ${s}`);
   });
 
-  it('formats EUR with German grouping (de-DE locale), no code appended', () => {
+  it('formats EUR the way the site writes it, no code appended', () => {
+    // en-IE, so a euro reads the same here as it does in every lesson.
     const s = formatMoney(toMinor(1234567.89, 'EUR'), 'EUR');
-    assert.ok(/1\.234\.567,89/.test(s), `expected German grouping in: ${s}`);
+    assert.ok(/€1,234,567\.89/.test(s), `expected €1,234,567.89 in: ${s}`);
     assert.ok(!s.endsWith(' EUR'), `EUR should not have suffix, got: ${s}`);
   });
 

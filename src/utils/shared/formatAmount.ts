@@ -34,7 +34,7 @@ export function formatAmount(value: number, code: string, compact = false): stri
 
 /**
  * A percentage in the chosen currency's number conventions, so it matches the
- * amounts beside it ("44,1 %" next to "50.000,00 €", "44.1%" next to "$50,000.00").
+ * amounts beside it ("44,1 %" next to "1 000 Kč", "44.1%" next to "$50,000.00").
  */
 export function formatPercent(pct: number, code: string, digits = 1): string {
   const { locale } = getCurrency(code);
@@ -50,11 +50,12 @@ export function formatPercent(pct: number, code: string, digits = 1): string {
  * example and hero chart have to agree with, since those figures sit inside
  * sentences that use the same numbers.
  *
- * `formatAmount` above is the other case: a tool the reader is operating takes
- * the chosen currency's own conventions, so a euro figure there reads
- * "1.058.721 €" beside "44,1 %" and a rupee one "₹10,58,721". A figure quoted in
- * a sentence has no currency choice to honour, and a reader who meets
- * "9.000 €" in a Hindi sentence reads it as nine point zero zero zero.
+ * `formatAmount` above is the other case, for a tool the reader is operating
+ * and a currency they chose there: it follows that currency's own conventions,
+ * so a rupee figure reads "₹10,58,721" beside "44,1 %". A figure quoted inside a
+ * sentence has no such choice to honour and follows the sentence, which is why
+ * the two rules are separate even though they now agree for euros (EUR is
+ * formatted the Irish way, "€1,058,721", in both).
  *
  * The locale is fixed rather than taken from the page, because a lesson keeps
  * an amount exactly as the English writes it in every edition, so a figure and
