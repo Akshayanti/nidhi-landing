@@ -93,6 +93,10 @@ const alt = yearlyPath(ex.invested, HIGHER_MONTHLY, STARTER.years);
 const roundedAlt = Math.round(alt[STARTER.years] / 100) * 100;
 const gap = roundedAlt - roundedEnd;
 const extraIn = (HIGHER_MONTHLY - STARTER.monthly) * 12 * STARTER.years;
+// The card says most of the gap is money put in rather than growth, without
+// the figures (the chart and its description carry those). Fail the build if
+// a change to the example makes that untrue.
+if (extraIn * 2 <= gap) throw new Error('home.example.gapRest says most of the gap is money put in; with these inputs it is not.');
 const starterDesc = t(home.example.description, {
   invested: eur(ex.invested),
   pct: pctReturn,
@@ -400,8 +404,8 @@ const faqSchema = {
           <p class="cap-body">{home.planner.body}</p>
           <div class="starter starter--chart">
             <p class="starter-label">{home.example.label}</p>
-            <p class="starter-text">{t(home.example.text, { start: eur(ex.invested), low: eur(STARTER.monthly), high: eur(HIGHER_MONTHLY) })}</p>
-            <p class="gap"><strong>{t(home.example.gapLead, { gap: eur(gap) })}</strong> {t(home.example.gapRest, { years: STARTER.years, extra: eur(extraIn), growth: eur(gap - extraIn) })}</p>
+            <p class="starter-text">{home.example.text}</p>
+            <p class="gap"><strong>{t(home.example.gapLead, { gap: eur(gap), years: STARTER.years })}</strong> {home.example.gapRest}</p>
             <p class="starter-currency">{home.example.currencyNote}</p>
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
             <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />

@@ -1041,7 +1041,7 @@ export const en = {
      */
     example: {
       label: 'One decision, compared',
-      text: 'The same {start} start, with {low} or {high} added each month.',
+      text: 'Same start; only the amount added each month changes.',
       /**
        * Answers the question a reader who is not paid in euros asks on seeing
        * one. It is the same point `editorialPolicy.anyCountry` makes at length,
@@ -1051,8 +1051,8 @@ export const en = {
       currencyNote:
         'Euros are just the currency this example uses. Both paths earn the same percentage return, so the gap between them is a proportion as well: in rupees or dollars the two lines would draw the same shape, only the axis would change.',
       /** Bolded, and read as one sentence with `gapRest` after it. */
-      gapLead: 'About {gap} apart',
-      gapRest: 'after {years} years: {extra} more put in, and about {growth} more growth.',
+      gapLead: 'About {gap} apart after {years} years.',
+      gapRest: 'Most of that is the extra money put in; the rest is growth.',
       fold: 'How this example works',
       chartTitle: 'Example: one decision compared over ten years',
       /** The chart's x-axis points: the first is `today`, the rest are years. */
