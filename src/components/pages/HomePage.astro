@@ -43,7 +43,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { home } = dict(locale);
+const { home, fullStop } = dict(locale);
 
 /** This page's own address for a root-relative path. */
 const href = (path: string) => localizedPath(locale, path);
@@ -269,7 +269,7 @@ const faqSchema = {
       </div>
 
       <p class="route-help">
-        {home.lessons.helperQuestion} <a href={href('/blog/#level-helper')} data-attr="home-level-helper">{home.lessons.helperLink}</a>.
+        {home.lessons.helperQuestion} <a href={href('/blog/#level-helper')} data-attr="home-level-helper">{home.lessons.helperLink}</a>{fullStop}
       </p>
 
       {/* Every line below opens an English lesson: the routes are named in

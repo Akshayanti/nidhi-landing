@@ -121,7 +121,7 @@ const breadcrumbSchema = {
           dateLocale={DATE_LOCALE[locale]}
         />
       ) : (
-        <p class="if-empty">{inclusiveFinances.empty} <a href={localizedPath(locale, '/blog/')}>{inclusiveFinances.emptyLink}</a>.</p>
+        <p class="if-empty">{inclusiveFinances.empty} <a href={localizedPath(locale, '/blog/')}>{inclusiveFinances.emptyLink}</a>{strings.fullStop}</p>
       )}
     </div>
   </section>

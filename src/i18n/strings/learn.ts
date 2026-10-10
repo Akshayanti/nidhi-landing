@@ -755,7 +755,7 @@ export const learnHi: typeof learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: वित्तीय साक्षरता | nidhi',
-      descriptionFallback: '{tag} पर लेख: व्यावहारिक वित्तीय साक्षरता और nidhi से वित्तीय शिक्षा।',
+      descriptionFallback: '{tag} पर पाठ: व्यावहारिक वित्तीय साक्षरता और nidhi से वित्तीय शिक्षा।',
     },
     schema: {
       itemListName: '{tag} के पाठ',
@@ -787,7 +787,7 @@ export const learnHi: typeof learnEn = {
     h1: 'विषय से देखें',
     subtitle: 'सीखने के रास्ते के सभी विषय, हर एक के पाठ की गिनती के साथ। किसी एक को चुनकर उस क्षेत्र के सभी पाठ पढ़ें।',
     empty: 'अभी कोई विषय नहीं।',
-    fallbackCard: '"{tag}" टैग वाले लेख।',
+    fallbackCard: '"{tag}" टैग वाले पाठ।',
     countOne: '{count} पाठ',
     countMany: '{count} पाठ',
   },

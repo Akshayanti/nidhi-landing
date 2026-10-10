@@ -411,6 +411,13 @@ because a reader who meets them in the newspaper meets them that way. Where a
 word is an abbreviation or a product (EMI, FIRE, ETF, SIP), it stays in Latin
 script.
 
+Verbs addressed to the reader take the plain polite form, -ें or -एँ (देखें,
+करें, चुनें, बताएँ), everywhere: never the more formal -िए or -इए (देखिए,
+कीजिए, बताइए). The two had been mixed inside a single tool. A lesson is पाठ in
+every string, never लेख. A sentence that a template ends after a catalog phrase
+takes its full stop from the catalog's `fullStop` key, which is the danda in
+Hindi, so no Hindi line ends in a Latin full stop.
+
 Spelling follows one convention across every catalog: the chandrabindu in आँकड़े,
 and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास and क़ीमत. Two everyday words
 stay without it, कानून and कदम, because that is how the chrome has always

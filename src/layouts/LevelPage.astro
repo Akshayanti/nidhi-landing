@@ -44,8 +44,11 @@ const posts = await getPathPosts();
 const levelPosts: PostData[] = posts.filter((p) => p.pathLevel === level);
 const core = posts.filter((p) => p.level === level && p.pathLevel);
 const liveLevels = LADDER_LEVELS.filter((id) => posts.some((p) => p.level === id && p.pathLevel));
-const prev = liveLevels[liveLevels.indexOf(level) - 1];
-const next = liveLevels[liveLevels.indexOf(level) + 1];
+// Neighbours by ladder position, so a level with nothing published yet still
+// points back to the published level before it, not round to the first one.
+const ladderIndex = LADDER_LEVELS.indexOf(level);
+const prev = [...liveLevels].reverse().find((id) => LADDER_LEVELS.indexOf(id) < ladderIndex);
+const next = liveLevels.find((id) => LADDER_LEVELS.indexOf(id) > ladderIndex);
 
 // Every tag a card on this page can show needs its own link.
 const tagHrefs: Record<string, string> = {};
@@ -103,7 +106,7 @@ const itemListSchema = {
         <p class="level-page-desc">{meta.description}</p>
         <details class="level-page-covered">
           <summary data-attr={`level-page-covered-${level}`}>{levelStrings.coveredSummary}</summary>
-          <p>{meta.covered}.</p>
+          <p>{meta.covered}{strings.fullStop}</p>
         </details>
         <p class="level-page-scope">
           {levelStrings.scope}{' '}

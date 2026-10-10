@@ -10,8 +10,9 @@
  * What is not here. The `data-attr` labels, which analytics reads and the
  * privacy notice's changelog names; the lesson slugs, which have to match real
  * entries in `src/content/blog`; the FAQ group ids, which are anchors in the
- * page; the `month:amount` lump-sum syntax, which is the wire format and not
- * prose; the formula, which is notation; and the tool's `SHARED_STATE_GLOBAL`,
+ * page; the lump-sum example (`12:5000;36:3000`), which is what a reader types
+ * in any language (the format's name, `island.card.lumpsHelp.format`, is copy);
+ * the formula, which is notation; and the tool's `SHARED_STATE_GLOBAL`,
  * which the island, the head guard and the layout all have to agree on. All of
  * those live in the two components, and the two lists that pair them with copy
  * (the FAQ groups, the related cards) are the same length and the same order as
@@ -358,6 +359,8 @@ export const loanComparisonEn = {
       /** Split around the two `<code>`s, which hold the entry format itself. */
       lumpsHelp: {
         before: 'Format: ',
+        /** The format's name as a reader sees it; what is typed is the digits. */
+        format: 'month:amount',
         mid: ', semicolon-separated. e.g. ',
         after: ' means 5,000 in month 12 and 3,000 in month 36.',
       },
@@ -465,7 +468,7 @@ export const loanComparisonEn = {
         noExtras: ' (without optional extra principal; APR-equivalent view)',
         extraBefore: '. An extra payment in ',
         yearEarly: 'year 1',
-        extraMid: ' cancels 25 years of interest on that euro; the same payment in ',
+        extraMid: ' cancels 25 years of interest on that amount; the same payment in ',
         yearLate: 'year 24',
         extraAfter: ' saves almost nothing.',
       },
@@ -683,7 +686,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
       'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले हाइब्रिड (ARM) लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
       'हॉराइज़न विश्लेषण ("अगर मैं महीने N पर बेच दूँ") हर ऋणदाता के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
-      'रीफ़ाइनेंस परिदृश्य, जो "जारी रखें" और "रीफ़ाइनेंस" की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
+      'रीफ़ाइनेंस परिदृश्य, जो "पुराना लोन चलाते रहें" और "रीफ़ाइनेंस" की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
       'मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) तक सटीक, पूर्णांकों में बना किस्तों का शेड्यूल',
       'किसी भी तुलना का शेयर करने योग्य लिंक, एडवांस्ड फ़ील्ड समेत',
     ],
@@ -745,7 +748,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'APR आम तौर पर सामने लिखी दर से ऊँचा क्यों होता है?',
-              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। विस्तार से समझने के लिए लोन की शर्तों वाला लेख देखें।',
+              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। विस्तार से समझने के लिए लोन की शर्तों वाला पाठ देखें।',
             },
             {
               q: 'क्या APR में हर महीने चुकाया जाने वाला मेरा अतिरिक्त मूलधन शामिल है?',
@@ -770,7 +773,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'एकमुश्त राशि कैसे भरी जाती है?',
-              a: 'month:amount के रूप में, अर्धविराम से अलग करके। उदाहरण के लिए, 12:5000;36:3000;60:10000 का मतलब है महीने 12 में 5,000, महीने 36 में 3,000 और महीने 60 में 10,000 का भुगतान। हर एकमुश्त राशि उस महीने की आम मासिक किस्त के बाद सीधे मूलधन घटाती है, इसलिए उसी महीने उस पर ब्याज नहीं बनता। लोन आम तौर पर अनुबंध की अवधि से पहले चुक जाता है और कुल ब्याज उसी हिसाब से घट जाता है।',
+              a: 'महीना:राशि (month:amount) के रूप में, अर्धविराम से अलग करके। उदाहरण के लिए, 12:5000;36:3000;60:10000 का मतलब है महीने 12 में 5,000, महीने 36 में 3,000 और महीने 60 में 10,000 का भुगतान। हर एकमुश्त राशि उस महीने की आम मासिक किस्त के बाद सीधे मूलधन घटाती है, इसलिए उसी महीने उस पर ब्याज नहीं बनता। लोन आम तौर पर अनुबंध की अवधि से पहले चुक जाता है और कुल ब्याज उसी हिसाब से घट जाता है।',
             },
             {
               q: 'डिस्काउंट पॉइंट्स की बराबरी कैसे काम करती है?',
@@ -842,7 +845,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     related: {
       heading: 'कुछ भी साइन करने से पहले',
-      lead: 'ऐसा चुनाव कीजिए जो पाँच साल बाद भी सही लगे।',
+      lead: 'ऐसा चुनाव करें जो पाँच साल बाद भी सही लगे।',
       items: [
         {
           kicker: 'तुलना कैसे करें',
@@ -871,7 +874,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         },
       ],
       footerTag: 'कर्ज़ और लोन पर और पढ़ें',
-      footerAll: 'या सारे लेख देखें',
+      footerAll: 'या सारे पाठ देखें',
     },
   },
   island: {
@@ -957,6 +960,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       lumps: 'एकमुश्त राशि',
       lumpsHelp: {
         before: 'ढाँचा: ',
+        format: 'महीना:राशि',
         mid: ', अर्धविराम से अलग। जैसे ',
         after: ' का मतलब है महीने 12 में 5,000 और महीने 36 में 3,000।',
       },
@@ -1047,7 +1051,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         noExtras: ' (वैकल्पिक अतिरिक्त मूलधन के बिना; APR जैसा नज़रिया)',
         extraBefore: '। ',
         yearEarly: 'साल 1',
-        extraMid: ' में किया गया एक अतिरिक्त भुगतान उस यूरो पर 25 साल का ब्याज बचा देता है; ',
+        extraMid: ' में किया गया एक अतिरिक्त भुगतान उस रकम पर 25 साल का ब्याज बचा देता है; ',
         yearLate: 'साल 24',
         extraAfter: ' में वही भुगतान लगभग कुछ नहीं बचाता।',
       },

@@ -13,6 +13,12 @@ import { learnEn } from './learn.ts';
 
 export const en = {
   skipToContent: 'Skip to content',
+  /**
+   * The full stop a template adds after a catalog phrase (a list, a count, a
+   * link). Hindi ends a sentence with the danda, so no page writes a bare "."
+   * after words in another script.
+   */
+  fullStop: '.',
   /** Names for landmarks a screen reader announces, shared by every page. */
   a11y: {
     breadcrumb: 'Breadcrumb',
@@ -405,7 +411,7 @@ export const en = {
         // small change rather than a side effect of this one. Hindi keeps the
         // space, because its sentence is being written now, not moved.
         before:
-          'AI output is a draft, never a source. A person is involved at every stage, and reads and approves every lesson before it is published. An AI model asked to think like a financial adviser is a check on reasoning, not advice from a licensed professional. The site itself sends nothing you type or do to an AI service; what we collect is described in the',
+          'AI output is a draft, never a source. A person is involved at every stage, and reads and approves every lesson before it is published. An AI model asked to think like a financial adviser is a check on reasoning, not advice from a licensed professional. The site itself sends nothing you type or do to an AI service; what we collect is described in the ',
         link: 'privacy notice',
         after: '.',
       },

@@ -1559,7 +1559,7 @@ function VendorCard({
           />
           <p className="lc-fieldHelp">
             {strings.card.lumpsHelp.before}
-            <code>month:amount</code>
+            <code>{strings.card.lumpsHelp.format}</code>
             {strings.card.lumpsHelp.mid}
             <code>12:5000;36:3000</code>
             {strings.card.lumpsHelp.after}
