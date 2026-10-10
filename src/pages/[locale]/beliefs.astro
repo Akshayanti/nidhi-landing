@@ -1,0 +1,12 @@
+---
+import BeliefsPage from '../../components/pages/BeliefsPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<BeliefsPage locale={locale} />

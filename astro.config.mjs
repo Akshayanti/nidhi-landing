@@ -140,11 +140,11 @@ function gitLastmod(repoPath) {
  */
 const STATIC_PAGE_SOURCE = {
   '': 'src/pages/index.astro',
-  'beliefs': 'src/pages/beliefs.astro',
   // Pages whose markup moved into src/components/pages/ date by that file: the
   // wrapper in src/pages/ is a few lines that render it and rarely changes, so
   // dating by the wrapper would freeze lastmod while the page's copy is edited.
   'about': 'src/components/pages/AboutPage.astro',
+  'beliefs': 'src/components/pages/BeliefsPage.astro',
   'editorial-policy': 'src/pages/editorial-policy.astro',
   'privacy': 'src/pages/privacy.astro',
   'blog': 'src/layouts/BlogIndex.astro',

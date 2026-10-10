@@ -117,6 +117,7 @@ why this one won, so it is not re-argued in a later lesson.
 | risk tolerance | जोखिम लेने की क्षमता | Not जोखिम उठाने की क्षमता: उठाना is what a person does with loss, and the phrase is about capacity, which is what लेने की क्षमता names. Reused by the about page. |
 | tax residency | कर निवास | The noun: कर निवासी is the person. कर निवास स्थिति is the same thing with a word bolted on. |
 | opportunity cost | अवसर लागत | |
+| rule of thumb | अंगूठे का नियम | The Hindi calque is what Indian financial writing uses, and it is the term the lessons lean on hardest (the 4% rule is the first one a reader meets). Decided against सामान्य नियम, which loses that the rule is a shortcut rather than a fact. |
 | sunk cost | डूबी लागत | |
 | loss aversion | हानि से बचने की प्रवृत्ति | |
 | mental accounting | मानसिक लेखांकन | |
@@ -139,6 +140,22 @@ words.
 | multi-currency | एक से ज़्यादा मुद्राओं में | Spelled out rather than बहुमुद्रा, which a general reader meets far less often. कई मुद्राओं में is shorter and just as good in flow, so the about page's `knowsAbout` label uses it; the lesson prose keeps एक से ज़्यादा, which is the precise one, since two currencies qualify. |
 | referential reading | आगे पढ़ने के लिए | The heading over the sources listed under an article. Decided against संदर्भ सामग्री: it reads as a bibliography, and hides that the list is there to be read rather than cited. |
 | sourcing standards | स्रोत चुनने और उद्धृत करने के मानक | Not स्रोतों के मानक, which reads as standards belonging to the sources rather than the standards for choosing and crediting them. |
+
+### The beliefs page
+
+The page describes the people who write here. A reviewer should read these as
+identity statements, not as vocabulary: the Hindi has to say the same thing at
+the same strength, and the only reason each row needs a note is that the
+obvious rendering is weaker or wrong.
+
+| English | Hindi | Notes |
+| --- | --- | --- |
+| person of colour | गैर-श्वेत | Decided against रंगीन, which means colourful, and against अश्वेत, which is narrower than the English. The sentence lists identities rather than counting them, so it reads "हम क्वीयर हैं, न्यूरोडाइवर्जेंट हैं, और गैर-श्वेत हैं". |
+| queer | क्वीयर | Transliterated, as Indian LGBTQ+ writing does. Do not reach for a Sanskritised coinage. |
+| neurodivergent | न्यूरोडाइवर्जेंट | As above. |
+| dyslexia | डिस्लेक्सिया | Devanagari, because it is a condition rather than a product or a source name. ADHD stays in Latin, being an abbreviation. |
+| word of mouth | मुँह-ज़बानी | |
+| colour blind | रंग न पहचान पाना | Spelled out. वर्णांध is the clinical word and reads as a form. |
 
 ### Site vocabulary already in use
 
@@ -163,6 +180,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | about nidhi | nidhi के बारे में |
 | contact us | हमसे संपर्क करें |
 | page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
+| Prague | प्राग | Devanagari, as Indian Hindi writing has it. It appears once, in the beliefs page's `foundingLocation`. |
 
 ## Transliteration style
 

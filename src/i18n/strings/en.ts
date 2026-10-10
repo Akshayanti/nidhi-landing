@@ -211,4 +211,72 @@ export const en = {
       instagram: 'Instagram @nidhi.today',
     },
   },
+
+  /**
+   * The beliefs page. Prose-heavy like `about`, plus a list of beliefs whose
+   * order and accent colours are hand-picked, so the list lives in the
+   * component and this catalog holds only what a reader reads, keyed by the
+   * name the component looks up.
+   */
+  beliefs: {
+    meta: {
+      title: 'Our Beliefs: Honest Personal Finance Tools | nidhi',
+      description:
+        'What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and lessons that are free forever.',
+    },
+    schema: {
+      name: 'Our Beliefs',
+      description:
+        'What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling.',
+      organization: 'Personal finance tools and financial literacy education.',
+      foundingLocation: 'Prague',
+      knowsAbout: {
+        personalFinance: 'Personal Finance',
+        financialLiteracy: 'Financial Literacy',
+        moneyManagement: 'Money Management',
+        multiCurrencyFinance: 'Multi-Currency Finance',
+      },
+      breadcrumbHome: 'Home',
+      breadcrumbAbout: 'Our Beliefs',
+    },
+    title: 'What We Believe',
+    intro:
+      "nidhi started because one person couldn't find a decent finance tool, and got annoyed enough to build one",
+    items: {
+      frustration: {
+        heading: 'This whole thing started out of frustration',
+        body: "We wanted something that could help a regular person plan their money, see where it's going, and make better decisions about it. Nothing like that existed. So here we are, building it ourselves.",
+      },
+      noPlanner: {
+        heading: "Financial planning shouldn't require a financial planner",
+        body: "Whether you just landed your first job or you're five years from retirement, you deserve tools and guidance that actually make sense. Not jargon. Not upsells. Just straight answers.",
+      },
+      accessibility: {
+        heading: 'Built for everyone tech keeps forgetting',
+        body: "A lot of apps conveniently forget that money tools should work whether you're colour blind, use a screen reader, or take in information differently, for example through ADHD or dyslexia. Being queer, neurodivergent, and a person of colour, we never had that luxury. Leaving anyone out of their own money just feels cheap.",
+      },
+      freeForever: {
+        heading: 'The lessons are free, forever',
+        body: 'No paywalls, no "subscribe for the good stuff" nonsense. If something we wrote helped you make a better decision, even if you never touch our product, that\'s the whole point. Tell us about it. We run on that kind of fuel.',
+      },
+      rulesOfThumb: {
+        heading: 'Not just the rules of thumb',
+        body: 'A rule of thumb is a starting point, not an answer. Where a lesson gives one, it also explains why it exists, where it breaks, and what depends on you: your country, your income, your debts, how far ahead you are planning. We would rather you understand the reasoning than follow a rule that was never written for your life.',
+      },
+      noAds: {
+        heading: 'No ads, no data selling, no asterisks',
+        body: 'We don\'t run ads. We don\'t sell your data. We don\'t do that creepy thing where you search "term insurance" and then see ads for it everywhere for a week. Your finances are your business. Literally.',
+      },
+      madeInPrague: {
+        heading: 'Made in Prague, powered by word of mouth',
+        body: "No VC money. No growth team. No billboard on the highway. If you think nidhi is useful, tell someone. That's our primary marketing strategy.",
+      },
+    },
+    cta: {
+      text: "Convinced? Or think we're full of it?",
+      sub: "Either way, we'd love to hear from you",
+      email: 'Drop us a love letter',
+      instagram: 'Slide into our DMs',
+    },
+  },
 };
