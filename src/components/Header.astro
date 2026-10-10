@@ -15,9 +15,17 @@ interface Props {
    * `BaseLayout` props.
    */
   alternates?: readonly Locale[];
+  /**
+   * A free tool's window property, on a page that carries one. The switcher's
+   * script below puts the state back into the fragment it rewrites, so a reader
+   * who switches language on a shared calculator link lands on the same
+   * calculator with the same values. Empty on every other page. See
+   * `BaseLayout` props.
+   */
+  toolStateGlobal?: string;
 }
 
-const { locale = DEFAULT_LOCALE, alternates = [locale] } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], toolStateGlobal = '' } = Astro.props;
 
 const strings = dict(locale);
 const currentPath = Astro.url.pathname;
@@ -660,7 +668,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 </script>
 
 {otherLocales.length > 0 && (
-<script is:inline define:vars={{ prefixes }}>
+<script is:inline define:vars={{ prefixes, toolStateGlobal }}>
   // The language switchers were rendered with the path this page was built at.
   // A campaign tag is not in that path and has to survive a switch, so the
   // hrefs are rebuilt from the live address before anything else reads it.
@@ -670,12 +678,13 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   // so a stale map can cost the query and the fragment but can never send
   // anyone to the wrong path.
   //
-  // A free tool's # state is not preserved here, because ToolStateGuard has
-  // already moved it out of the address by the time this runs (it sits in
-  // window[<tool>Shared] from then on). Switching language on a shared tool
-  // link therefore opens the tool's other-language page with no state. Fixing
-  // that means handing this script the tool's window property and putting the
-  // state back as the fragment, which belongs with the tool pages.
+  // A free tool's inputs are in the fragment of a shared link, and
+  // `ToolStateGuard` has already moved them out of the address into
+  // `window[<tool>Shared]` by the time this runs. They are put back here, which
+  // is what carries them across a switch: the encoded state names no language,
+  // so the same string means the same plan on either side. Only a tool page
+  // passes `toolStateGlobal`, and the path is preserved, so the state always
+  // belongs to the tool the reader is about to land on.
   (function() {
     var links = document.querySelectorAll('[data-lang-switch]');
     if (!links.length) return;
@@ -697,7 +706,8 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       if (key.indexOf('utm_') === 0) keep.append(key, value);
     });
     var query = keep.toString();
-    var suffix = (query ? '?' + query : '') + window.location.hash;
+    var state = toolStateGlobal ? window[toolStateGlobal] : '';
+    var suffix = (query ? '?' + query : '') + (state ? '#' + state : window.location.hash);
 
     for (var i = 0; i < links.length; i++) {
       var target = links[i].getAttribute('data-lang-switch');

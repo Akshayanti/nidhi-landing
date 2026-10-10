@@ -50,9 +50,20 @@ interface Props {
    *  data-page="landing", which the global stylesheet keys off to flip the
    *  header to its fixed/transparent treatment. */
   bodyData?: Record<string, string>;
+  /**
+   * The window property a free tool reads its inputs from, on a page that
+   * carries one. It is what lets a language switch keep the tool's values:
+   * `ToolStateGuard` moves a shared link's `#` state out of the address in
+   * `<head>`, so the header's script, which runs later, has to put it back.
+   * See `Header` props.
+   *
+   * Every other page leaves this empty, which is the safe default: a page that
+   * has no tool state must not look for any.
+   */
+  toolStateGlobal?: string;
 }
 
-const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData, toolStateGlobal = '' } = Astro.props;
 const strings = dict(locale);
 ---
 
@@ -70,7 +81,7 @@ const strings = dict(locale);
   </head>
   <body {...(bodyData || {})}>
     <a class="skip-link" href="#main-content">{strings.skipToContent}</a>
-    <Header locale={locale} alternates={alternates} />
+    <Header locale={locale} alternates={alternates} toolStateGlobal={toolStateGlobal} />
     <main id="main-content" class={mainClass}>
       <slot />
     </main>

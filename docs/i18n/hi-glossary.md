@@ -220,6 +220,59 @@ Both notes that say all this, the one under the intro and the one above the
 log, are rendered only when the locale is not the default one. On the English
 page they would be telling a reader something they already know.
 
+### The free tools
+
+The three calculators are the densest interface on the site: a reader meets
+forty labels per screen, and the same word appears in the label, the tooltip
+and the FAQ answer that explains it. So the rule here is stricter than the
+lessons': one rendering, everywhere, and the FAQ uses the label's word rather
+than a synonym for it. A label is also short: it has to fit a form column and
+match what the label above it says, which is why several of these are the
+everyday phrase rather than the precise one.
+
+The tools' own output is not translated at all: `formatAmount` writes amounts
+by the chosen currency's conventions, and the currency codes, `APR`, `CSV` and
+`ECB` stay in Latin, as rule 5 says. The chart legends and axis words are prose
+and do translate.
+
+| English | Hindi | Notes |
+| --- | --- | --- |
+| monthly payment | मासिक किस्त | The glossary's EMI entry spelled out, because the tools are not about EMI as a product; a form column and a chart legend both carry it. |
+| loan amount | लोन राशि | |
+| annual interest rate | सालाना ब्याज दर | |
+| term (months) | अवधि (महीने) | अवधि is the glossary's horizon word; the parenthesis is what tells a reader the field counts months, which the label has to do because the field is a number box. |
+| payoff months | चुकाने के महीने | The count of months until the loan is paid off. |
+| amortisation | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortisation schedule` is किस्तों का शेड्यूल. |
+| principal | मूलधन | |
+| interest | ब्याज | |
+| balance | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |
+| total cost | कुल लागत | |
+| origination fee, closing costs | लोन शुल्क और कागज़ी खर्च | कागज़ी खर्च is what Indian writing calls closing costs; the two are one field in the tool, so they are one phrase. |
+| discount points | डिस्काउंट पॉइंट्स | Latin `points` stays in the break-even row, which reports a count of months. |
+| break-even | बराबरी का समय | Not a loanword: the row answers "after how long does this pay for itself", which बराबरी says and ब्रेक-ईवन does not to a general reader. |
+| refinance | रीफ़ाइनेंस | |
+| prepayment, extra principal | समय से पहले भुगतान | |
+| lump sum | एकमुश्त राशि | |
+| penalty | जुर्माना | |
+| net worth | शुद्ध संपत्ति | Glossary. |
+| assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
+| functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. |
+| currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. The chart legend keeps मुद्रा मिश्रण. |
+| exchange rate | विनिमय दर | The privacy notice's rendering, reused. |
+| ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |
+| low, moderate, elevated | कम, मध्यम, ज़्यादा | The band labels. ज़्यादा rather than उच्च, which reads as a grade. |
+| share link, share | शेयर लिंक, शेयर करें | |
+| redacted | आंकड़ों के बिना | The share mode that leaves the amounts out. बिना आंकड़ों वाला is the longer form in a sentence. |
+| upload a CSV | CSV अपलोड करें | |
+| simulation | सिम्युलेशन | |
+| simulated path | सिम्युलेटेड रास्ता | The unit the simulator counts: one run of the plan through the years. |
+| withdrawal | निकासी | Glossary: withdrawal rate is निकासी दर. |
+| after inflation | महँगाई के बाद | The simulator's returns are real returns, so the phrase recurs on every result. |
+| median | बीच का | Never औसत: the tool is careful that the middle of a spread is not an average, and the Hindi has to keep that. |
+| portfolio mix | पोर्टफ़ोलियो का मिश्रण | The stock and bond split. |
+| rebalanced yearly | हर साल पुनर्संतुलित | Glossary: rebalancing is पुनर्संतुलन. |
+| run the simulation | सिम्युलेशन चलाएँ | |
+
 ### Site vocabulary already in use
 
 These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
