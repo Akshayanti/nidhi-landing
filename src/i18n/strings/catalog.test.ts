@@ -53,7 +53,16 @@ const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
  * script, which is the same string in every catalog, so the picker reads them
  * from LOCALE_META in `src/i18n/config.ts`.
  */
-const IDENTICAL_OK = new Set<string>([]);
+const IDENTICAL_OK = new Set<string>([
+  // A person's name is not a word in the catalog's sense: "Alex" and "Sam" are
+  // the same two people in every language, the way a language's own name is.
+  // They are here rather than being transliterated because transliterating a
+  // first name would rename the example's characters from one edition to the
+  // next, and the two names are what make "same income, different net worth"
+  // readable at a glance.
+  'home.compare.people.alex.name',
+  'home.compare.people.sam.name',
+]);
 
 /**
  * True when there is nothing in the value a translator could translate:

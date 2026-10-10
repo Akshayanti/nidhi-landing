@@ -6,9 +6,11 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
+import { en } from '../../i18n/strings/en.ts';
 import {
   assertHomepageSlugs,
   homepageSlugs,
+  LEVEL_LABELS,
   lessonToolPairs,
   levelCounts,
   nextLesson,
@@ -59,10 +61,12 @@ describe('starting points', () => {
     // The Optimizing route stays, empty, until its lessons go live.
     assert.deepEqual(points.map((p) => p.id), ['basics', 'complex']);
     assert.deepEqual(points[1].lessons, []);
-    assert.equal(points[1].levelLabel, 'Optimizing');
+    assert.equal(points[1].level, 'optimizing');
     assert.deepEqual(points[0].lessons.map((l) => l.slug), ['what-is-net-worth', 'cash-flow-101']);
-    assert.equal(points[0].levelLabel, 'Discovery');
+    assert.equal(points[0].level, 'discovery');
     assert.equal(points[0].levelCount, 2);
+    // No words: the caller reads `home.startingPoints[id]` and `home.levels`.
+    assert.equal('situation' in points[0], false);
     assert.equal(points[0].lessons[0].href, '/blog/what-is-net-worth/');
   });
 
@@ -73,8 +77,8 @@ describe('starting points', () => {
     const gated = resolveStartingPoints(posts, NOW, (href) => href !== '/free/monte-carlo-simulator/');
     assert.deepEqual(gated.find((p) => p.id === 'no-plan')!.tools, []);
     assert.deepEqual(
-      gated.find((p) => p.id === 'complex')!.tools.map((t) => t.name),
-      ['Loan comparison', 'Net worth calculator'],
+      gated.find((p) => p.id === 'complex')!.tools.map((t) => t.href),
+      ['/free/loan-comparison/', '/free/multi-currency-net-worth/'],
     );
   });
 
@@ -129,7 +133,8 @@ describe('lesson and tool pairs', () => {
       ['how-to-calculate-net-worth', '/free/multi-currency-net-worth/'],
       ['understanding-loan-terms', '/free/loan-comparison/'],
     ]);
-    assert.equal(pairs[0].tool.name, 'Net worth calculator');
+    assert.equal(pairs[0].tool.key, 'netWorth');
+    assert.equal(pairs[0].tool.preview, 'donut');
   });
 });
 
@@ -160,5 +165,22 @@ describe('continue learning', () => {
     assert.equal(nextLesson(order, []), null);
     assert.equal(nextLesson(order, ['gone', 'x']), null);
     assert.equal(nextLesson(order, ['a', 'b', 'c']), null);
+  });
+});
+
+/**
+ * `LEVEL_LABELS` is the blog chrome's copy of the five level names, kept in
+ * the util rather than imported from the catalog because the home page's
+ * script pulls this module into the browser. Until those four layouts are
+ * localized, this test is what keeps the two copies from drifting apart.
+ */
+describe('level labels', () => {
+  it('agrees with the catalog, level for level', () => {
+    assert.deepEqual(LEVEL_LABELS, en.home.levels);
+  });
+
+  it('names every ladder level, and nothing else', () => {
+    const ladder = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'];
+    assert.deepEqual(Object.keys(LEVEL_LABELS).sort(), [...ladder].sort());
   });
 });

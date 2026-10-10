@@ -355,4 +355,244 @@ export const hi: Dict = {
       },
     },
   },
+  /**
+   * The home page. Same shape as the English one: the card beside the hero, the
+   * three steps, the worked example and the FAQ. Sentences carrying a `{name}`
+   * are templates, and the names are the ones the component passes, so a
+   * sentence may put a number or a link somewhere else than the English does.
+   *
+   * The register is the lessons' own: it explains and lets the reader decide.
+   * The FAQ answers that describe what the tools do are the same promises the
+   * privacy notice makes, so they are worded to match it.
+   */
+  /** The early-access waitlist box. See the English catalog for what it promises. */
+  waitlist: {
+    region: 'अर्ली-एक्सेस वेटलिस्ट',
+    heading: 'प्लानर खुलने पर चाहिए?',
+    emailLabel: 'ईमेल पता',
+    cta: 'मुझे बताएँ',
+    privacyBefore: 'एक्सेस खुलने पर सिर्फ़ एक ईमेल। ',
+    privacyLink: 'प्राइवेसी नीति',
+    privacyAfter: ' देखें।',
+    successTitle: 'आप लिस्ट में हैं',
+    successBody: 'एक्सेस खुलने पर हम एक ईमेल भेजेंगे। बस इतना ही।',
+    sending: 'भेजा जा रहा है…',
+    notConfigured: 'साइनअप अभी सेट नहीं हैं। थोड़ी देर बाद देखें।',
+  },
+  home: {
+    meta: {
+      title: 'nidhi | अपने पैसे को समझें और आगे की योजना बनाएँ',
+      description:
+        'अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल: बुनियादी बातों से लेकर उन वित्तों तक जो कई मुद्राओं में फैले हैं।',
+      imageAlt:
+        'nidhi: पैसा, समझ के साथ। अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल।',
+    },
+    /** Structured data, not visible text. It still reads in the page's language. */
+    schema: {
+      slogan: 'पैसा, समझ के साथ',
+      organization:
+        'nidhi आम लोगों को अपना पैसा समझने में मदद करता है: मुफ़्त और क्रमबद्ध पर्सनल फाइनेंस पाठ, ब्राउज़र में ही चलने वाले निजी टूल, और वित्तीय भविष्य के लिए एक प्लानर। शुरुआत बुनियादी बातों से होती है और वित्त के जटिल होते जाने पर भी यह काम आता है, तब भी जब पैसा कई मुद्राओं और देशों में बँटा हो।',
+      knowsAbout: [
+        'पर्सनल फाइनेंस',
+        'वित्तीय साक्षरता',
+        'शुद्ध संपत्ति',
+        'आपातकालीन कोष',
+        'निवेश',
+        'वित्तीय स्वतंत्रता',
+        'रिटायरमेंट की योजना',
+        'बिहेवियरल फाइनेंस',
+        'कई मुद्राओं में पैसा',
+      ],
+      site: 'पैसा, समझ के साथ। पर्सनल फाइनेंस सीखें, अपने पैसे को समझें, और अपने भविष्य की योजना बनाएँ: बुनियादी बातों से लेकर उन वित्तों तक जो कई मुद्राओं और देशों में फैले हैं।',
+    },
+    hero: {
+      heading: 'अपने पैसे को समझें।',
+      /** Three phrases, each its own element so they can wrap independently. */
+      subhead: ['मुफ़्त पाठ।', 'निजी टूल।', 'प्लानर आ रहा है।'],
+      startLearning: 'सीखना शुरू करें',
+      tryTool: 'कोई मुफ़्त टूल आज़माएँ',
+      /** Shown only to a reader this browser knows has started the path. */
+      welcomeBack: 'फिर से स्वागत है। जहाँ छोड़ा था, वहीं से आगे बढ़ें:',
+    },
+    /**
+     * The card beside the hero: the three steps at a glance. Steps 2 and 3
+     * carry the worked example's numbers, so their sentences are templates.
+     */
+    journey: {
+      label: 'सीखें, हिसाब लगाएँ, योजना बनाएँ · राशियाँ उदाहरण के लिए',
+      learnStep: '1 · सीखें',
+      learnBig: 'शुद्ध संपत्ति क्या है?',
+      learnSmall: 'जो आपके पास है, घटाकर जो आप पर है।',
+      stockStep: '2 · हिसाब लगाएँ',
+      stockSmall: 'दो लोग, दोनों की आय हर महीने {amount}।',
+      planStep: '3 · योजना बनाएँ',
+      planBig: '{gap} का फ़र्क़',
+      planSmall: 'हर महीने {low} या {high}, {years} साल तक।',
+    },
+    /** The numbered marker above each step's heading. */
+    steps: {
+      learn: 'सीखें',
+      stock: 'हिसाब लगाएँ',
+      plan: 'योजना बनाएँ',
+      /** Spoken before the heading, and hidden: "चरण 1: सीखें". */
+      mark: 'चरण {n}: ',
+    },
+    /** Step 1: the ways in, one line each. */
+    lessons: {
+      heading: 'मुफ़्त पाठ, हमेशा के लिए।',
+      body: 'हर तरह के घर और हर देश के लिए छोटे पाठ, और जहाँ जगह-जगह के नियम मायने रखते हैं, वहाँ ये बताते हैं कि क्या देखना है। न पेवॉल, न अकाउंट।',
+      helperQuestion: 'तय नहीं हो रहा कि कहाँ से शुरू करें?',
+      helperLink: 'दो सवाल बता देंगे कि शुरुआत कहाँ से बेहतर बैठेगी',
+      foot: 'पूरा सीखने का रास्ता देखें',
+      /** A route whose lessons are still scheduled: shown, not linked. */
+      comingSoon: '{level} · पाठ जल्द आ रहे हैं',
+      comingSoonNoLevel: 'और पाठ',
+      levelCount: '{level} · {count} पाठ',
+      severalLevels: 'कई स्तरों के पाठ',
+      start: 'शुरू करें',
+      /** Replaces `start` for a route the reader has already begun. */
+      doorContinue: 'आगे बढ़ें: ',
+      /** Replaces it once every lesson on the route is read. */
+      doorRead: 'रास्ता पूरा। ',
+      doorPath: 'सीखने के रास्ते पर आगे बढ़ते रहें',
+      inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
+      inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
+      inclusiveMetaOne: 'सबके लिए वित्त · 1 गाइड, किसी भी पड़ाव पर',
+      inclusiveGo: 'देखें',
+    },
+    /** Step 2: what the free tools are for. */
+    tools: {
+      heading: 'देखें कि आप कहाँ खड़े हैं।',
+      body: 'ऐसे मुफ़्त टूल जो आपके ब्राउज़र में ही चलते हैं, इसलिए आप जो लिखते हैं वह आपके ही डिवाइस पर रहता है।',
+    },
+    /** The two people, same income, different net worth. */
+    compare: {
+      label: 'एक ही आय, हर महीने {amount}',
+      owns: 'जो आपके पास है',
+      owes: 'जो आप पर है',
+      netWorth: 'शुद्ध संपत्ति',
+      caption: 'आय वह है जो अंदर आता है। शुद्ध संपत्ति वह है जो आपके पास है, घटाकर जो आप पर है। राशियाँ उदाहरण के लिए।',
+      people: {
+        alex: { name: 'Alex', note: 'एक कार और एक कार्ड, दोनों उधार पर' },
+        sam: { name: 'Sam', note: 'बचत, एक पेंशन, एक छोटा लोन' },
+      },
+    },
+    /** Step 3: the planner, and the one decision compared. */
+    planner: {
+      heading: 'देखें कि यह कहाँ तक जा सकता है।',
+      body: 'हम एक प्लानर बना रहे हैं: जो आपके पास है, जो आप पर है, जो आप कमाते हैं और जो खर्च करते हैं, सब एक जगह, एक मुद्रा में या कई में, ताकि ऐसे फ़ैसले लेने से पहले आप उनकी तुलना कर सकें।',
+    },
+    /**
+     * The worked example. Its numbers are computed (src/utils/home/), so the
+     * sentences here are templates, and the chart's own labels come from the
+     * four keys at the bottom.
+     */
+    example: {
+      label: 'एक फ़ैसला, तुलना में',
+      text: 'शुरुआत वही {start}, हर महीने {low} या {high} जोड़ने पर।',
+      /** Bolded, and read as one sentence with `gapRest` after it. */
+      gapLead: 'करीब {gap} का फ़र्क़',
+      gapRest: '{years} साल बाद: {extra} ज़्यादा डाला गया, और करीब {growth} ज़्यादा रिटर्न।',
+      fold: 'यह उदाहरण कैसे बना',
+      chartTitle: 'उदाहरण: दस साल में एक फ़ैसले की तुलना',
+      /** The chart's x-axis points: the first is `today`, the rest are years. */
+      today: 'आज',
+      year: 'साल {n}',
+      axisStart: 'आज',
+      axisEnd: '+{years} साल',
+      /** A chart series label, in the legend and read aloud on hover. */
+      perMonth: '{amount} €/महीना',
+      /** Read aloud, and printed for a reader who cannot see the chart. */
+      description:
+        'आज निवेश किए गए उसी {invested} से बने दो उदाहरण रास्ते, महँगाई के बाद सालाना {pct} मानकर। हर महीने {monthly} जोड़ने पर {years} साल बाद करीब {end} बनता है; हर महीने {higher} जोड़ने पर करीब {alternative}। करीब {gap} का फ़र्क़ इतना है: {extra} ज़्यादा डाला गया, और करीब {growth} ज़्यादा रिटर्न।',
+      footnote:
+        'उदाहरण: आज {invested} निवेश किया गया, और हर महीने की शुरुआत में {monthly} या {higher} जोड़े गए, महँगाई के बाद सालाना {pct} मानकर। असली रिटर्न साल दर साल बदलते रहते हैं और नकारात्मक भी हो सकते हैं। पूरी शुद्ध संपत्ति एक ही दर से नहीं बढ़ती: कार की कीमत घटती है और लोन चुकाया जाता है।',
+      /** Spoken to a screen reader that lands on the chart. */
+      keysHint: 'इसके आंकड़े पढ़ने के लिए बाईं और दाईं तीर कुंजियाँ दबाएँ।',
+    },
+    faq: {
+      heading: 'आम सवाल',
+      /**
+       * Questions and answers. The same text is printed on the page and
+       * published as FAQPage structured data, so it is written once here.
+       */
+      items: [
+        {
+          q: 'क्या nidhi शुरुआत करने वालों के लिए है?',
+          a: 'हाँ। सीखने का रास्ता शुद्ध संपत्ति क्या है, इससे शुरू होता है और किसी पहले के ज्ञान की अपेक्षा नहीं करता। हर पाठ अपने शब्द चलते-चलते समझाता है, और अब तक के {total} पाठ पढ़ने के क्रम में हैं, इसलिए ऊपर से शुरू करके आगे बढ़ते जाया जा सकता है।',
+        },
+        {
+          q: 'nidhi इस्तेमाल करने के लिए एक से ज़्यादा मुद्राओं में पैसा होना ज़रूरी है?',
+          a: 'नहीं। सब कुछ एक ही मुद्रा में काम करता है। एक से ज़्यादा मुद्राओं का सहारा तब के लिए है जब आपका जीवन उसकी माँग करे: बचत एक देश में, पेंशन या संपत्ति किसी दूसरे में, या आगे कहीं और जाने की योजना।',
+        },
+        {
+          q: 'nidhi का खर्च क्या है?',
+          a: 'पाठ और मुफ़्त टूल बिल्कुल मुफ़्त हैं और इनके लिए किसी अकाउंट की ज़रूरत नहीं। पाठ आगे भी मुफ़्त रहेंगे, कोई पेवॉल नहीं।',
+        },
+        {
+          q: 'क्या यह वित्तीय सलाह है?',
+          a: 'नहीं। nidhi शिक्षा के लिए है: यह समझाता है कि पैसा कैसे काम करता है और आपको अपनी स्थिति का हिसाब लगाने देता है। यह लाइसेंस प्राप्त वित्तीय सलाहकार नहीं है। जो फ़ैसले मायने रखते हैं, उनके लिए किसी योग्य पेशेवर से बात करना सही रहता है।',
+        },
+        {
+          q: 'टूल में मेरे लिखे आंकड़ों का क्या होता है?',
+          a: 'वे आपके डिवाइस पर ही रहते हैं और nidhi को नहीं भेजे जाते। मुफ़्त टूल आपके ब्राउज़र में हिसाब लगाते हैं और आप जो लिखते हैं उसे कभी पेज के पते में नहीं डालते। जब किसी टूल को बाहर का डेटा चाहिए, जैसे उस दिन की विनिमय दरें, तो आपका ब्राउज़र उस सेवा से सिर्फ़ दरें माँगता है, कभी आपकी राशियाँ नहीं; और हर अनुरोध की तरह यह उस सेवा को आपका IP पता दिखा देता है। ब्यौरा प्राइवेसी पेज पर है।',
+        },
+        {
+          q: 'प्लानर क्या है, और मैं इसे कब इस्तेमाल कर पाऊँगा?',
+          a: 'प्लानर सब कुछ एक जगह लाता है: जो आपके पास है, जो आप पर है, जो आप कमाते हैं और जो खर्च करने की उम्मीद है, सब दिखाई गई मान्यताओं के साथ आगे तक, ताकि फ़ैसला लेने से पहले आप उसकी तुलना कर सकें। यह चरणों में खुल रहा है। लिस्ट में शामिल हो जाइए और खुलते ही एक ईमेल मिलेगा।',
+        },
+      ],
+      why: 'nidhi इसलिए शुरू हुआ कि एक व्यक्ति को ऐसा टूल नहीं मिला जो एक सामान्य वित्तीय जीवन में बैठे: पैसा एक से ज़्यादा देशों में, कर्ज़ किसी और में, और भविष्य जो सीमाओं के पार बना हो। इसलिए हम उसे बना रहे हैं, और साथ-साथ बताते जा रहे हैं कि रास्ते में क्या सीखते हैं।',
+      trustLine: 'प्राग में बना। न विज्ञापन, न डेटा की बिक्री। पाठ अपने स्रोत बताते हैं।',
+      trustBeliefs: 'हमारे सिद्धांत',
+      trustEditorial: 'हम कैसे लिखते हैं',
+      trustPrivacy: 'प्राइवेसी नीति',
+    },
+    /**
+     * The level names, as a level is named on a card. Also still in
+     * `LEVEL_LABELS` in src/utils/home/startingPoints.ts, which the blog
+     * chrome reads; a test keeps the two in step until that one goes.
+     */
+    levels: {
+      discovery: 'शुरुआत',
+      building: 'बनाना',
+      psychology: 'मनोविज्ञान',
+      optimizing: 'अनुकूलन',
+      mastery: 'निपुणता',
+    },
+    /**
+     * The ways in, keyed by the `id` in `STARTING_POINTS`. Only `situation` is
+     * on the page today: `audience` and `detail` are carried rather than shown,
+     * because they are somebody's copy and dropping them belongs in its own
+     * change, not in a translation.
+     */
+    startingPoints: {
+      basics: {
+        audience: 'नए हैं',
+        situation: 'मैं बिल्कुल शुरुआत से चल रहा हूँ।',
+        detail: 'आप जानते हैं कि अपने पैसे को बेहतर समझना चाहिए, पर यह नहीं कि कहाँ से शुरू करें। पहले वे विचार लीजिए जिन पर बाक़ी सब टिका है।',
+      },
+      'no-plan': {
+        audience: 'कुछ अनुभव है',
+        situation: 'कुछ बचत है, पर कोई योजना नहीं।',
+        detail: 'पैसा जमा हो रहा है और तय नहीं कि उसे क्या करना चाहिए। समझिए कि बचत, निवेश और लक्ष्य, इनमें से हर एक किस काम का है।',
+      },
+      habits: {
+        audience: 'सिद्धांत पता है',
+        situation: 'जानता हूँ कि क्या करना है, पर हमेशा कर नहीं पाता।',
+        detail: 'पैसे की ज़्यादातर ग़लतियाँ जानकारी की कमी से नहीं होतीं। देखिए कि ध्यान, आदत और भावना आपके फ़ैसलों को कैसे ढालते हैं।',
+      },
+      complex: {
+        audience: 'तजुर्बा है',
+        situation: 'मेरे वित्त जटिल हो गए हैं।',
+        detail: 'अनुमान, क्या-अगर के परिदृश्य, कैश फ़्लो, शुल्क और कर: वही विचार, बस ज़्यादा चलती हुई चीज़ों के साथ।',
+      },
+    },
+    /** The tool cards, keyed by `TOOLS` in src/utils/home/startingPoints.ts. */
+    toolCards: {
+      netWorth: { name: 'शुद्ध संपत्ति कैलकुलेटर', desc: 'एक मुद्रा में या कई में।' },
+      loanComparison: { name: 'लोन की तुलना', desc: 'उधार के प्रस्ताव, आमने-सामने।' },
+      monteCarlo: { name: 'मोंटे कार्लो सिम्युलेटर', desc: 'एक रेखा नहीं, नतीजों की एक पूरी रेंज।' },
+    },
+  },
 };

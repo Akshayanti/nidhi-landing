@@ -389,4 +389,251 @@ export const en = {
       },
     },
   },
+
+  /**
+   * The home page. Longer than the prose namespaces because this page is a
+   * story rather than a document: three steps, one worked example, and a list
+   * of ways in. Split finely on purpose, so a translation can move a number or
+   * a link to where its own grammar wants it without the component knowing
+   * which language it is rendering. Anything with a `{name}` in it is filled by
+   * `format()`; the names match the ones the component passes.
+   */
+  /**
+   * The early-access waitlist box, on the home page and on the net worth tool.
+   * It posts to the same Google Apps Script endpoint in every language, and the
+   * email it triggers is English, so the copy promises one email and no more:
+   * the box must not promise a language the email does not arrive in.
+   */
+  waitlist: {
+    region: 'Early-access waitlist',
+    heading: 'Want the planner when it opens?',
+    emailLabel: 'Email address',
+    cta: 'Notify me',
+    /** Split around the link, so a translation can move it inside the sentence. */
+    privacyBefore: 'One email when access opens. ',
+    privacyLink: 'Privacy policy',
+    privacyAfter: '.',
+    successTitle: "You're on the list",
+    successBody: "We'll send you one email when access opens. That's it.",
+    /** Shown on the button while the request is in flight. */
+    sending: 'Sending…',
+    /** Shown when the build has no endpoint configured, so a signup cannot land. */
+    notConfigured: 'Signups are not configured yet. Check back soon.',
+  },
+  home: {
+    meta: {
+      title: 'nidhi | Understand your money and plan what comes next',
+      description:
+        'Free personal finance lessons and private tools to understand your money and plan your future, from the basics to finances that span currencies.',
+      imageAlt:
+        'nidhi: money, understood. Free personal finance lessons and private tools to understand your money and plan your future.',
+    },
+    /** Structured data, not visible text. It still reads in the page's language. */
+    schema: {
+      slogan: 'Money, understood',
+      organization:
+        'nidhi helps ordinary people understand their money: free, structured personal finance lessons, private in-browser tools, and a planner for their financial future. It starts with the basics and keeps working as finances get more complex, including when money spans currencies and countries.',
+      knowsAbout: [
+        'Personal finance',
+        'Financial literacy',
+        'Net worth',
+        'Emergency funds',
+        'Investing',
+        'Financial independence',
+        'Retirement planning',
+        'Behavioural finance',
+        'Multi-currency finance',
+      ],
+      site: 'Money, understood. Learn personal finance, understand your own money, and plan your future, from the basics to finances that span currencies and countries.',
+    },
+    hero: {
+      heading: 'Understand your money.',
+      /** Three phrases, each its own element so they can wrap independently. */
+      subhead: ['Free lessons.', 'Private tools.', 'A planner on the way.'],
+      startLearning: 'Start learning',
+      tryTool: 'Try a free tool',
+      /** Shown only to a reader this browser knows has started the path. */
+      welcomeBack: 'Welcome back. Pick up where you left off:',
+    },
+    /**
+     * The card beside the hero: the three steps at a glance. Steps 2 and 3
+     * carry the worked example's numbers, so their sentences are templates.
+     */
+    journey: {
+      label: 'Learn, take stock, plan ahead · illustrative amounts',
+      learnStep: '1 · Learn',
+      learnBig: 'What is net worth?',
+      learnSmall: 'What you own, minus what you owe.',
+      stockStep: '2 · Take stock',
+      stockSmall: 'Two people, both earning {amount} a month.',
+      planStep: '3 · Plan ahead',
+      planBig: '{gap} apart',
+      planSmall: '{low} or {high} a month, over {years} years.',
+    },
+    /** The numbered marker above each step's heading. */
+    steps: {
+      learn: 'Learn',
+      stock: 'Take stock',
+      plan: 'Plan ahead',
+      /** Spoken before the heading, and hidden: "Step 1: Learn". */
+      mark: 'Step {n}: ',
+    },
+    /** Step 1: the ways in, one line each. */
+    lessons: {
+      heading: 'Free lessons, for good.',
+      body: 'Short lessons for any household, in any country, and where local rules matter, they say what to check. No paywall, no account.',
+      helperQuestion: 'Not sure which fits?',
+      helperLink: 'Two questions suggest where to start',
+      foot: 'See the whole learning path',
+      /** A route whose lessons are still scheduled: shown, not linked. */
+      comingSoon: '{level} · lessons coming soon',
+      comingSoonNoLevel: 'More lessons',
+      levelCount: '{level} · {count} lessons',
+      severalLevels: 'Lessons from several levels',
+      start: 'Start',
+      /** Replaces `start` for a route the reader has already begun. */
+      doorContinue: 'Continue with ',
+      /** Replaces it once every lesson on the route is read. */
+      doorRead: 'Route read. ',
+      doorPath: 'Keep going on the learning path',
+      inclusiveTitle: 'The standard plan doesn’t fit my life.',
+      inclusiveMeta: 'Inclusive Finances · {count} guides, any stage',
+      inclusiveMetaOne: 'Inclusive Finances · 1 guide, any stage',
+      inclusiveGo: 'Explore',
+    },
+    /** Step 2: what the free tools are for. */
+    tools: {
+      heading: 'See where you stand.',
+      body: 'Free tools that run in your browser, so what you type stays on your device.',
+    },
+    /** The two people, same income, different net worth. */
+    compare: {
+      label: 'Same income, {amount} a month each',
+      owns: 'Owns',
+      owes: 'Owes',
+      netWorth: 'net worth',
+      caption: 'Income is what comes in. Net worth is what you own minus what you owe. Illustrative amounts.',
+      people: {
+        alex: { name: 'Alex', note: 'A car and a card, both on credit' },
+        sam: { name: 'Sam', note: 'Savings, a pension, a small loan' },
+      },
+    },
+    /** Step 3: the planner, and the one decision compared. */
+    planner: {
+      heading: 'See where it could go.',
+      body: 'We are building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.',
+    },
+    /**
+     * The worked example. Its numbers are computed (src/utils/home/), so the
+     * sentences here are templates, and the chart's own labels come from the
+     * four keys at the bottom.
+     */
+    example: {
+      label: 'One decision, compared',
+      text: 'The same {start} start, with {low} or {high} added each month.',
+      /** Bolded, and read as one sentence with `gapRest` after it. */
+      gapLead: 'About {gap} apart',
+      gapRest: 'after {years} years: {extra} more put in, and about {growth} more growth.',
+      fold: 'How this example works',
+      chartTitle: 'Example: one decision compared over ten years',
+      /** The chart's x-axis points: the first is `today`, the rest are years. */
+      today: 'Today',
+      year: 'Year {n}',
+      axisStart: 'today',
+      axisEnd: '+{years} years',
+      /** A chart series label, in the legend and read aloud on hover. */
+      perMonth: '{amount} €/mo',
+      /** Read aloud, and printed for a reader who cannot see the chart. */
+      description:
+        'Two example paths from the same {invested} invested today, at an illustrative {pct} a year after inflation. Adding {monthly} a month reaches about {end} after {years} years; adding {higher} a month reaches about {alternative}. The gap of about {gap} is {extra} more put in and about {growth} more growth.',
+      footnote:
+        'Example: {invested} invested today, with {monthly} or {higher} added at the start of each month, at an illustrative {pct} a year after inflation. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.',
+      /** Spoken to a screen reader that lands on the chart. */
+      keysHint: 'Use the left and right arrow keys to read its values.',
+    },
+    faq: {
+      heading: 'FAQ',
+      /**
+       * Questions and answers. The same text is printed on the page and
+       * published as FAQPage structured data, so it is written once here.
+       */
+      items: [
+        {
+          q: 'Is nidhi for beginners?',
+          a: 'Yes. The learning path starts with what net worth is and assumes no prior knowledge. Each lesson explains its terms as it goes, and the {total} lessons so far are in reading order, so you can start at the top and keep going.',
+        },
+        {
+          q: 'Do I need money in more than one currency to use nidhi?',
+          a: 'No. Everything works with a single currency. Multi-currency support is there for when your life needs it: savings in one country, a pension or property in another, or plans to move.',
+        },
+        {
+          q: 'What does nidhi cost?',
+          a: 'The lessons and the free tools cost nothing and need no account. The lessons will stay free, with no paywall.',
+        },
+        {
+          q: 'Is this financial advice?',
+          a: 'No. nidhi is educational: it explains how money works and lets you model your own situation. It is not a licensed financial adviser. For decisions that matter, talk to a qualified professional.',
+        },
+        {
+          q: 'What happens to the numbers I type into the tools?',
+          a: 'They stay on your device and are not sent to nidhi. The free tools calculate in your browser and never put what you type into the page address. When a tool needs outside data, such as the day\'s exchange rates, your browser asks that service for the rates only, never your amounts; like any request, it shows that service your IP address. The privacy page has the details.',
+        },
+        {
+          q: 'What is the planner, and when can I use it?',
+          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
+        },
+      ],
+      why: 'nidhi started because one person couldn’t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So we are building it, and explaining what we learn along the way.',
+      trustLine: 'Made in Prague. No ads, no data selling. Lessons cite their sources.',
+      trustBeliefs: 'What we believe',
+      trustEditorial: 'How we write',
+      trustPrivacy: 'Privacy policy',
+    },
+    /**
+     * The level names, as a level is named on a card. Also still in
+     * `LEVEL_LABELS` in src/utils/home/startingPoints.ts, which the blog
+     * chrome reads; a test keeps the two in step until that one goes.
+     */
+    levels: {
+      discovery: 'Discovery',
+      building: 'Building',
+      psychology: 'Psychology',
+      optimizing: 'Optimizing',
+      mastery: 'Mastery',
+    },
+    /**
+     * The ways in, keyed by the `id` in `STARTING_POINTS`. Only `situation` is
+     * on the page today: `audience` and `detail` are carried rather than shown,
+     * because they are somebody's copy and dropping them belongs in its own
+     * change, not in a translation.
+     */
+    startingPoints: {
+      basics: {
+        audience: 'New to this',
+        situation: 'I’m starting from the beginning.',
+        detail: 'You know you should understand your money better, but not where to begin. Start with the ideas everything else is built on.',
+      },
+      'no-plan': {
+        audience: 'Some experience',
+        situation: 'I have some savings, but no plan.',
+        detail: 'Money is building up and you are not sure what it should be doing. Learn what saving, investing and goals each are for.',
+      },
+      habits: {
+        audience: 'You know the theory',
+        situation: 'I know what to do, but I don’t always do it.',
+        detail: 'Most money mistakes are not about knowledge. See how attention, habit and emotion shape the decisions you make.',
+      },
+      complex: {
+        audience: 'Experienced',
+        situation: 'My finances have got complicated.',
+        detail: 'Projections, what-if scenarios, cash flow, fees and taxes: the same ideas, with more moving parts.',
+      },
+    },
+    /** The tool cards, keyed by `TOOLS` in src/utils/home/startingPoints.ts. */
+    toolCards: {
+      netWorth: { name: 'Net worth calculator', desc: 'One currency or several.' },
+      loanComparison: { name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
+      monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
+    },
+  },
 };
