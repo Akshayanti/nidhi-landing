@@ -859,7 +859,7 @@ export const hi: Dict = {
       stockSmall: 'दो लोगों की शुद्ध संपत्ति, जिनकी आय एक जैसी है: हर महीने {amount}।',
       planStep: '3 · योजना बनाएँ',
       planBig: '{gap} का फ़र्क़',
-      planSmall: 'हर महीने {low} या {high} जोड़ने पर, {years} साल में।',
+      planSmall: 'हर महीने {low} या {high} बचाकर निवेश करने पर, {years} साल बाद।',
     },
     /** The numbered marker above each step's heading. */
     steps: {
