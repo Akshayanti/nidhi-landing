@@ -34,6 +34,19 @@ export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLo
   hi: { label: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
 };
 
+/**
+ * The BCP-47 tag to hand to `Intl` (a lesson card's short month, for instance),
+ * keyed by locale. Kept apart from `htmlLang` because the two answer different
+ * questions: `htmlLang` is what the document declares, while this is the
+ * region-specific tag that decides how a date is written. Spelling it out
+ * rather than deriving it keeps the English pages rendering exactly what they
+ * rendered before the locale plumbing existed.
+ */
+export const DATE_LOCALE: Record<Locale, string> = {
+  en: 'en-US',
+  hi: 'hi-IN',
+};
+
 export function isLocale(value: string | undefined): value is Locale {
   return !!value && (LOCALES as readonly string[]).includes(value);
 }
@@ -54,12 +67,19 @@ export function localizedPath(locale: Locale, path: string): string {
   return `${localePrefix(locale)}${normalized}`;
 }
 
-export function blogPath(locale: Locale): string {
-  return localizedPath(locale, '/blog/');
-}
-
-export function blogPostPath(locale: Locale, slug: string): string {
-  return localizedPath(locale, `/blog/${slug}/`);
+/**
+ * A lesson's address. Lessons are written once, in English, and are not
+ * translated: a page in another language lists the English lessons and links
+ * to them here, at their one address. There is deliberately no locale argument,
+ * because there is no second address to get wrong, and a shared lesson link
+ * opens the lesson rather than a copy of it.
+ *
+ * The learning path's own pages (the index, a level page, a topic page, the
+ * hubs) are chrome and are translated, so those keep a locale and go through
+ * `localizedPath` or `blogTagPath`.
+ */
+export function lessonPath(slug: string): string {
+  return `/blog/${slug}/`;
 }
 
 export function blogTagPath(locale: Locale, tag: string): string {

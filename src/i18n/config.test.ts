@@ -10,10 +10,9 @@ import {
   DEFAULT_LOCALE,
   LOCALES,
   LOCALE_META,
-  blogPath,
-  blogPostPath,
   blogTagPath,
   isLocale,
+  lessonPath,
   localePrefix,
   localizedPath,
 } from './config.ts';
@@ -73,9 +72,10 @@ describe('locale prefixes', () => {
   });
 
   it('builds the learning-path URLs', () => {
-    assert.equal(blogPath('en'), '/blog/');
-    assert.equal(blogPath('hi'), '/hi/blog/');
-    assert.equal(blogPostPath('hi', 'what-is-net-worth'), '/hi/blog/what-is-net-worth/');
+    // A lesson has one address, whatever language the page linking to it is
+    // in: lessons are English and are not translated. Everything else on the
+    // path is chrome and takes a locale.
+    assert.equal(lessonPath('what-is-net-worth'), '/blog/what-is-net-worth/');
     assert.equal(blogTagPath('en', 'saving'), '/blog/tag/saving/');
     assert.equal(blogTagPath('hi', 'saving'), '/hi/blog/tag/saving/');
   });

@@ -1,0 +1,234 @@
+---
+/**
+ * The Inclusive Finances hub (/blog/inclusive-finances/), in whichever language
+ * it was asked for. On the learning path these posts sit inside the ladder,
+ * each after the post it follows up on. This page is the one place that lists
+ * them together, for a reader arriving from the homepage or from search with no
+ * prior context. It uses the learning path's cards, so read status is shared
+ * between the two.
+ *
+ * A collection with no guide yet says so and stays out of search (noindex here,
+ * and out of the sitemap in astro.config.mjs). Per language: the Hindi hub joins
+ * on the first Hindi guide.
+ *
+ * English is served from `src/pages/blog/inclusive-finances.astro`, the other
+ * languages through `src/pages/[locale]/blog/inclusive-finances.astro`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CollectionList, type PostData } from '../LearningPath';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { getPathPosts } from '../../utils/learnPosts';
+import { DEFAULT_LOCALE, DATE_LOCALE, LOCALES, blogTagPath, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const { inclusiveFinances, learn } = strings;
+
+const siteUrl = 'https://nidhi.today';
+const hubUrl = new URL(localizedPath(locale, '/blog/inclusive-finances/'), siteUrl).href;
+const hubMeta = learn.tags['inclusive-finances'];
+
+const posts = await getPathPosts();
+const guides = posts.filter((p) => p.level === 'inclusive-finances');
+// The cards keep the English addresses `getPathPosts` set: a guide is one
+// document, not one per language.
+const islandPosts: PostData[] = guides;
+
+// A situation chip only renders when its tag page exists, which is when at
+// least one visible guide carries the tag.
+const SITUATIONS = ['relationships', 'immigration', 'disability'] as const;
+const livePostTags = new Set(guides.flatMap((post) => post.tags));
+const situations = SITUATIONS.filter((tag) => livePostTags.has(tag));
+
+// Every tag a card on this page can show needs its own link.
+const tagHrefs: Record<string, string> = {};
+for (const tag of islandPosts.flatMap((p) => p.tags)) tagHrefs[tag] = blogTagPath(locale, tag);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: learn.crumb.learn,
+      item: new URL(localizedPath(locale, '/blog/'), siteUrl).href,
+    },
+    { '@type': 'ListItem', position: 2, name: learn.crumb.inclusive, item: hubUrl },
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={hubMeta.title}
+  description={hubMeta.description}
+  robots={islandPosts.length === 0 ? 'noindex,follow' : undefined}
+  jsonLd={[breadcrumbSchema]}
+>
+  <section class="if-hub">
+    <div class="container">
+      <header class="if-header">
+        <nav class="if-breadcrumb" aria-label="Breadcrumb">
+          <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a> <span class="sep">/</span> <span>{learn.crumb.inclusive}</span>
+        </nav>
+        <p class="if-eyebrow">{inclusiveFinances.eyebrow}</p>
+        <h1>{inclusiveFinances.h1}</h1>
+        <p class="if-lede">
+          {inclusiveFinances.lede1}
+        </p>
+        <p class="if-lede">
+          {inclusiveFinances.lede2}
+        </p>
+        <p class="if-scope">
+          {inclusiveFinances.scope}
+        </p>
+      </header>
+
+      <LessonsInEnglish locale={locale} />
+
+      {situations.length > 0 && (
+        <nav class="if-situations" aria-label="Explore by situation">
+          <h2>{inclusiveFinances.situations.heading}</h2>
+          <p>{inclusiveFinances.situations.note}</p>
+          <ul>
+            {situations.map((tag) => (
+              <li><a href={blogTagPath(locale, tag)}>{inclusiveFinances.situations[tag]}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
+      {islandPosts.length > 0 ? (
+        <CollectionList
+          client:load
+          posts={islandPosts}
+          strings={learn.island}
+          tagHrefs={tagHrefs}
+          inclusiveLabel={learn.levels['inclusive-finances'] ?? learn.levelFallback}
+          dateLocale={DATE_LOCALE[locale]}
+        />
+      ) : (
+        <p class="if-empty">{inclusiveFinances.empty} <a href={localizedPath(locale, '/blog/')}>{inclusiveFinances.emptyLink}</a>.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .if-hub {
+    padding: var(--space-10) 0 var(--space-16);
+  }
+
+  .if-header {
+    max-width: 640px;
+    margin: 0 auto var(--space-10);
+  }
+
+  .if-breadcrumb {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .if-breadcrumb a {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .if-breadcrumb .sep {
+    margin: 0 var(--space-1);
+  }
+
+  .if-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--level-inclusive-finances);
+    margin: 0 0 var(--space-2);
+  }
+
+  .if-header h1 {
+    font-size: 2.25rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .if-lede {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  .if-scope {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--level-inclusive-finances);
+    background: color-mix(in srgb, var(--level-inclusive-finances) 6%, var(--color-bg-white));
+    border-radius: var(--radius-sm);
+    margin: var(--space-4) 0 0;
+  }
+
+  .if-situations {
+    max-width: 640px;
+    margin: 0 auto var(--space-8);
+  }
+
+  .if-situations h2 {
+    font-size: 1.1rem;
+    margin: 0 0 var(--space-1);
+  }
+
+  .if-situations p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  .if-situations ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .if-situations a {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid color-mix(in srgb, var(--level-inclusive-finances) 45%, var(--color-border));
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--level-inclusive-finances);
+    text-decoration: none;
+    background: var(--color-bg-white);
+  }
+
+  .if-situations a:hover,
+  .if-situations a:focus-visible {
+    box-shadow: var(--shadow-md);
+  }
+
+  .if-empty {
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .if-header h1 { font-size: 1.75rem; }
+  }
+</style>

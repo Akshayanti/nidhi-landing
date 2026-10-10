@@ -1,0 +1,18 @@
+---
+/**
+ * `/hi/free/multi-currency-net-worth/`, the net worth calculator in every
+ * language but the default one. English is served from
+ * `src/pages/free/multi-currency-net-worth.astro`, so it never comes through
+ * here and its address cannot be shadowed by this route.
+ */
+import MultiCurrencyNetWorthPage from '../../../components/pages/MultiCurrencyNetWorthPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<MultiCurrencyNetWorthPage locale={locale} />

@@ -1,0 +1,247 @@
+---
+/**
+ * One topic (/blog/tag/<tag>/), in whichever language it was asked for: its
+ * lessons grouped by level in reading order, on the same cards as the level
+ * pages, each group linking to its full level. Inclusive Finances guides with
+ * the topic come last. Search across every lesson lives on /blog/; this page
+ * has none, so nothing here writes to the address.
+ *
+ * English is served from `src/pages/blog/tag/[tag].astro`, the other languages
+ * through `src/pages/[locale]/blog/tag/[tag].astro`. Both build the page's
+ * groups in `getStaticPaths` (the topics differ per language, because the
+ * lessons do) and hand them down as props.
+ *
+ * A tag with no curated entry in `learn.tags` still gets a page: `formatTag`
+ * turns its slug into a heading, and the catalog's generic title and
+ * description stand in.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TopicLessons, type TopicGroup } from '../LearningPath';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { formatTag } from '../../utils/tags';
+import type { TopicSection } from '../../utils/learnPosts';
+import { LOCALES, DATE_LOCALE, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  tag: string;
+  /** The tag's lessons grouped by level, built by the route's getStaticPaths. */
+  groups: TopicSection[];
+}
+
+const { locale, tag, groups } = Astro.props;
+const strings = dict(locale);
+const { topic: topicStrings, learn } = strings;
+
+const siteUrl = 'https://nidhi.today';
+const meta = learn.tags[tag];
+const formatted = meta?.name ?? formatTag(tag);
+// A curated title already ends with "| nidhi"; the fallback appends it once.
+// Either branch ends in the brand suffix, no double-append risk.
+const title = meta?.title ?? format(topicStrings.meta.titleFallback, { tag: formatted });
+const description = meta?.description
+  ?? format(topicStrings.meta.descriptionFallback, { tag: formatted.toLowerCase() });
+
+const levelLabel = (level: string) => learn.levels[level] ?? learn.levelFallback;
+const islandGroups: TopicGroup[] = groups.map((group) => ({
+  level: group.level,
+  label: levelLabel(group.level),
+  // The level's own page is chrome and follows the language; the lessons
+  // inside keep their one English address, which `getPathPosts` set.
+  href: localizedPath(locale, `/blog/${group.level}/`),
+  posts: group.posts,
+  levelTotal: group.levelTotal,
+}));
+const lessons = islandGroups.flatMap((g) => g.posts);
+
+const ladderGroups = islandGroups.filter((g) => g.level !== 'inclusive-finances');
+const guideGroup = islandGroups.find((g) => g.level === 'inclusive-finances');
+const ladderCount = ladderGroups.reduce((n, g) => n + g.posts.length, 0);
+const levelNames = ladderGroups.map((g) => g.label);
+const levelList = levelNames.length <= 1
+  ? levelNames[0] ?? ''
+  : format(topicStrings.summary.levelList, { list: levelNames.slice(0, -1).join(', '), last: levelNames[levelNames.length - 1] });
+const summaryParts = [
+  ladderCount > 0
+    ? format(ladderCount === 1 ? topicStrings.summary.lessonsOne : topicStrings.summary.lessonsMany, { count: ladderCount, levels: levelList })
+    : '',
+  guideGroup
+    ? format(guideGroup.posts.length === 1 ? topicStrings.summary.guidesOne : topicStrings.summary.guidesMany, { count: guideGroup.posts.length })
+    : '',
+].filter(Boolean);
+const summary = summaryParts.join(topicStrings.summary.join);
+
+// Every tag a card on this page can show needs its own link.
+const tagHrefs: Record<string, string> = {};
+for (const t of lessons.flatMap((p) => p.tags)) tagHrefs[t] = blogTagPath(locale, t);
+
+const tagBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: learn.crumb.learn,
+      item: new URL(localizedPath(locale, '/blog/'), siteUrl).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: learn.crumb.topics,
+      item: new URL(localizedPath(locale, '/blog/tag/'), siteUrl).href,
+    },
+    // encodeURIComponent guards against tags that contain spaces, slashes, or
+    // unicode. Today every tag in the catalog is plain ascii
+    // lowercase-with-hyphens, but a future tag like "buy now, pay later" would
+    // emit an invalid URL.
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: formatted,
+      item: new URL(localizedPath(locale, `/blog/tag/${encodeURIComponent(tag)}/`), siteUrl).href,
+    },
+  ],
+};
+
+const tagItemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: format(topicStrings.schema.itemListName, { tag: formatted }),
+  description,
+  numberOfItems: lessons.length,
+  itemListElement: lessons.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(p.href, siteUrl).href,
+    name: p.title,
+  })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={title}
+  description={description}
+  robots="noindex,follow"
+  jsonLd={[tagBreadcrumbSchema, tagItemListSchema]}
+>
+  <section class="topic-page">
+    <div class="container topic-page-container">
+      <nav class="topic-page-crumb" aria-label="Breadcrumb">
+        <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a>
+        <span aria-hidden="true"> / </span>
+        <a href={localizedPath(locale, '/blog/tag/')}>{learn.crumb.topics}</a>
+        <span aria-hidden="true"> / </span>
+        <span aria-current="page">{formatted}</span>
+      </nav>
+      <header class="topic-page-header">
+        <p class="topic-page-eyebrow">{topicStrings.eyebrow}</p>
+        <h1>{formatted}</h1>
+        <p class="topic-page-desc">{description}</p>
+        {summary && <p class="topic-page-count">{summary}.</p>}
+      </header>
+
+      <LessonsInEnglish locale={locale} />
+
+      <TopicLessons
+        client:load
+        groups={islandGroups}
+        strings={learn.island}
+        tagHrefs={tagHrefs}
+        inclusiveLabel={learn.levels['inclusive-finances'] ?? learn.levelFallback}
+        dateLocale={DATE_LOCALE[locale]}
+      />
+
+      <nav class="topic-page-nav" aria-label="More ways to find lessons">
+        <a href={localizedPath(locale, '/blog/tag/')} data-attr="tag-browse-all">{topicStrings.nav.allTopics}</a>
+        <a href={localizedPath(locale, '/blog/#learn-find-h')} data-attr="tag-search-all">{topicStrings.nav.searchAll} <span aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .topic-page {
+    padding: var(--space-8) 0 var(--space-16);
+  }
+
+  .topic-page-container {
+    max-width: 1040px;
+  }
+
+  .topic-page-crumb {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .topic-page-crumb a {
+    color: var(--color-deep-blue);
+  }
+
+  .topic-page-header {
+    max-width: 680px;
+    margin-bottom: var(--space-8);
+  }
+
+  .topic-page-eyebrow {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .topic-page-header h1 {
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: 2.4rem;
+    line-height: 1.15;
+    color: var(--color-deep-blue);
+  }
+
+  .topic-page-desc {
+    margin: 0 0 var(--space-2);
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+  }
+
+  .topic-page-count {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .topic-page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .topic-page-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+  }
+
+  @media (max-width: 640px) {
+    .topic-page { padding: var(--space-5) 0 var(--space-8); }
+
+    .topic-page-header { margin-bottom: var(--space-6); }
+
+    .topic-page-header h1 { font-size: 2rem; }
+
+    .topic-page-desc { font-size: 1rem; }
+  }
+</style>

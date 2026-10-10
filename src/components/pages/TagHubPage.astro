@@ -1,0 +1,277 @@
+---
+/**
+ * The topic hub (/blog/tag/), in whichever language it was asked for. Closes
+ * audit finding 5 (the route used to 404). Lists every tag the language's
+ * published lessons actually use, with a lesson count and a curated line when
+ * the catalog has one in `learn.tags`.
+ *
+ * A tag the catalog does not know still shows up here with a generated label
+ * and a generic line, so a new tag never silently drops it from the hub (it
+ * just lacks the editorial copy until the catalog gains an entry).
+ *
+ * A language with no lessons yet (Hindi today) has no tags, and says so. The
+ * page is indexable either way: it is the way into the topics, not a topic.
+ *
+ * English is served from `src/pages/blog/tag/index.astro`, which
+ * `astro.config.mjs` reads for this page's sitemap lastmod; the other languages
+ * come through `src/pages/[locale]/blog/tag/index.astro`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatTag } from '../../utils/tags';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { getPathPosts } from '../../utils/learnPosts';
+import { DEFAULT_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const { topics, learn } = strings;
+
+const siteUrl = 'https://nidhi.today';
+const hubUrl = new URL(localizedPath(locale, '/blog/tag/'), siteUrl).href;
+
+const posts = await getPathPosts();
+
+// Count lessons per tag from the language's own corpus, then sort by count
+// (descending), tie-break by tag name (ascending). The most populous tag
+// surfaces first, which is also the tag a curious reader is most likely to
+// be looking for.
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+interface TagRow {
+  slug: string;
+  formatted: string;
+  count: number;
+  description: string;
+}
+
+const tags: TagRow[] = [...tagCounts.entries()]
+  .map(([slug, count]) => {
+    const entry = learn.tags[slug];
+    const formatted = entry?.name ?? formatTag(slug);
+    // The hub card keeps to one short line: `card` holds the first two
+    // sentences of the topic page's description, and a tag without curated
+    // copy falls back to the generic line.
+    const description = entry?.card ?? format(topics.fallbackCard, { tag: formatted.toLowerCase() });
+    return { slug, formatted, count, description };
+  })
+  .sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count;
+    return a.slug.localeCompare(b.slug);
+  });
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: learn.crumb.learn,
+      item: new URL(localizedPath(locale, '/blog/'), siteUrl).href,
+    },
+    { '@type': 'ListItem', position: 2, name: learn.crumb.topics, item: hubUrl },
+  ],
+};
+
+const collectionPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: topics.schema.collectionName,
+  description: topics.meta.description,
+  url: hubUrl,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'nidhi',
+    url: 'https://nidhi.today/',
+  },
+  // Itemize each tag as a child WebPage. Helps crawlers understand the hub
+  // structure and gives the engines an unambiguous list of destinations.
+  hasPart: tags.map((t) => ({
+    '@type': 'WebPage',
+    name: t.formatted,
+    url: new URL(blogTagPath(locale, t.slug), siteUrl).href,
+  })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={topics.meta.title}
+  description={topics.meta.description}
+  jsonLd={[breadcrumbSchema, collectionPageSchema]}
+>
+  <section class="tagHub">
+    <div class="container">
+      <header class="tagHub-header">
+        <nav class="tagHub-breadcrumb" aria-label="Breadcrumb">
+          <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a> <span class="sep">/</span> <span>{learn.crumb.topics}</span>
+        </nav>
+        <h1>{topics.h1}</h1>
+        <p class="tagHub-subtitle">
+          {topics.subtitle}
+        </p>
+      </header>
+
+      <LessonsInEnglish locale={locale} />
+
+      {tags.length === 0 ? (
+        <p class="tagHub-empty">{topics.empty}</p>
+      ) : (
+        <ul class="tagHub-list">
+          {tags.map((t) => (
+            <li class="tagHub-item">
+              <a class="tagHub-card" href={blogTagPath(locale, t.slug)} data-attr={`tag-hub-${t.slug}`}>
+                <div class="tagHub-cardTop">
+                  <span class="tagHub-cardName">{t.formatted}</span>
+                  <span class="tagHub-cardCount">
+                    {format(t.count === 1 ? topics.countOne : topics.countMany, { count: t.count })}
+                  </span>
+                </div>
+                <p class="tagHub-cardDesc">{t.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tagHub {
+    padding: var(--space-10) 0 var(--space-16);
+  }
+
+  .tagHub-header {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .tagHub-breadcrumb {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .tagHub-breadcrumb a {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .tagHub-breadcrumb a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .tagHub-breadcrumb .sep {
+    margin: 0 var(--space-1);
+  }
+
+  .tagHub-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .tagHub-subtitle {
+    color: var(--color-text-secondary);
+    max-width: 580px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .tagHub-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  /* Auto-fitting grid: cards are at least 260px wide and stretch to fill,
+     wrapping naturally as the viewport narrows. Avoids a fixed column
+     count that would either crowd small screens or under-fill wide ones. */
+  .tagHub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .tagHub-item {
+    margin: 0;
+  }
+
+  /* Card visuals mirror the related-reads card on the multi-currency
+     tool page: subtle border, tiny lift on hover, deep-blue title. Keeps
+     the affordance pattern consistent across the site. */
+  .tagHub-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    height: 100%;
+  }
+
+  .tagHub-card:hover,
+  .tagHub-card:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .tagHub-card:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .tagHub-cardTop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .tagHub-cardName {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .tagHub-cardCount {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .tagHub-cardDesc {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+</style>

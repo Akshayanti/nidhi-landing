@@ -77,6 +77,11 @@ const otherLocales = alternates.filter((other) => other !== locale);
 // English is among the languages this page exists in.
 const xDefault = alternates.includes(DEFAULT_LOCALE) ? urlIn(DEFAULT_LOCALE) : canonicalURL;
 const strings = dict(locale);
+// One feed, in English, linked and named the same on every page: there is one
+// lesson library and it is not translated, so a Hindi page's feed link offers
+// the English feed under the English feed's own name, which is what arrives in
+// the reader once they subscribe.
+const feedTitle = dict(DEFAULT_LOCALE).rss.linkTitle;
 // Every page but the home page takes this default, and it opens with the brand
 // tagline, so it is read from the catalog rather than written into this file.
 const imageAlt = Astro.props.imageAlt ?? strings.meta.defaultImageAlt;
@@ -128,7 +133,7 @@ const preloadDevanagari = locale !== DEFAULT_LOCALE;
 <link rel="alternate" hreflang="x-default" href={xDefault} />
 
 <!-- RSS Feed -->
-<link rel="alternate" type="application/rss+xml" title={strings.rss.title} href={localizedPath(locale, '/rss.xml')} />
+<link rel="alternate" type="application/rss+xml" title={feedTitle} href="/rss.xml" />
 
 <!-- Open Graph -->
 <meta property="og:type" content={article ? 'article' : 'website'} />

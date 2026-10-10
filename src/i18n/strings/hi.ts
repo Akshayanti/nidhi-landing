@@ -1,3 +1,5 @@
+import { toolsHi } from './tools/index.ts';
+import { learnHi } from './learn.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -120,8 +122,18 @@ export const hi: Dict = {
     darkTitle: 'डार्क थीम',
   },
 
+  /**
+   * There is no Hindi feed: the lessons are English and so is the feed that
+   * carries them, and `BaseHead` links every page to that one. These values are
+   * still translated, and still here, because the catalog mirrors `en` key for
+   * key; a Hindi string a page does not currently render is cheaper than a key
+   * that exists in one catalog only.
+   */
   rss: {
-    title: 'nidhi | पर्सनल फाइनेंस ब्लॉग',
+    linkTitle: 'nidhi | पर्सनल फाइनेंस ब्लॉग',
+    feedTitle: 'nidhi: पर्सनल फाइनेंस ब्लॉग',
+    feedDescription:
+      'मुफ़्त पर्सनल फाइनेंस पाठ: शुद्ध संपत्ति, बजट, बचत, निवेश और कर्ज़ का प्रबंधन। वित्तीय समझ, कदम दर कदम।',
   },
 
   // Page copy, one namespace per page. The same split-before-the-link,
@@ -979,4 +991,16 @@ export const hi: Dict = {
       monteCarlo: { name: 'मोंटे कार्लो सिम्युलेटर', desc: 'एक रेखा नहीं, नतीजों की एक पूरी रेंज।' },
     },
   },
+
+  /**
+   * The learning path's copy. Assembled from `./learn.ts` for the same reason
+   * as the tools below.
+   */
+  ...learnHi,
+
+  /**
+   * The free tools' copy. Assembled from one module per tool: see
+   * `src/i18n/strings/tools/index.ts` for why they are not in this file.
+   */
+  tools: toolsHi,
 };

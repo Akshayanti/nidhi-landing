@@ -1,0 +1,16 @@
+---
+/**
+ * `/<locale>/blog/inclusive-finances/`, in every language but the default one.
+ * English is served from `src/pages/blog/inclusive-finances.astro`.
+ */
+import InclusiveFinancesPage from '../../../components/pages/InclusiveFinancesPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<InclusiveFinancesPage locale={locale} />

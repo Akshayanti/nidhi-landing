@@ -33,6 +33,21 @@ Every page sends an anonymous pageview and page-leave event, and every PostHog e
 
 A new tool that cannot meet these is a privacy-policy conflict: pause and ask (rule 3 above).
 
+## Copy Changes Reach Every Language
+
+The site serves more than one language, so a copy change is not finished when English reads well: it is finished when every language the site supports at that moment carries it. The site's words live in the catalogs under `src/i18n/strings/` (`en.ts`, `hi.ts`, `learn.ts`, `tools/*.ts`), and they change together. This is mandatory, in the same way the privacy changelog is, and it applies to new strings, reworded strings and deleted strings alike.
+
+**Rules:**
+1. **Add or edit the key in every catalog in the same change.** A new English string gets its Hindi value before the commit, not in a follow-up. A reworded string is reworded in every language. A key that is no longer used is deleted from every catalog at once.
+2. **The catalogs are one shape.** `Dict` is `typeof en`, and `src/i18n/strings/catalog.test.ts` fails on a key present in one catalog only, on a blank value, and on a value left identical to its English source. Those checks are the floor, not the goal: passing them with a stiff literal translation is still an unfinished change.
+3. **Translation happens once per change, not per language later.** A language whose catalog drifts behind is a half-translated site, which is the failure this rule exists to prevent: the reader sees one page in their language and the next one in English.
+4. **A locale added later starts complete.** Its catalog is written before its routes are published, because the parity test will not let a partial catalog through.
+5. **If a change cannot be translated yet, pause and ask** rather than shipping English copy into a catalog that is otherwise translated. Say which string and why.
+6. **Copy in the catalogs means the site's own words**: chrome, page prose, tool labels, headings, meta descriptions, structured data that a reader can see. Two things are deliberately outside it, and neither is an exception to this rule:
+   - **Lessons are content, not copy.** They are written once, in English, and are not translated. A page in another language lists the English lessons, links to them at their one address, and says in its own language that the lessons are English (`LessonsInEnglish.astro`).
+   - **Names stay in their own script**: a language's own name (`LOCALE_META`), the brand, company and product names, and a person's name. Those are the same string in every language and do not belong in a catalog at all.
+7. **The privacy changelog is the one deliberate exception**, and the reason is recorded there: it is kept in English in every edition, so a Hindi reader and an English reader are reading the same record of what changed.
+
 ## Style Rules
 
 - Never use em dashes (`&mdash;` or `—`) or double dashes (`--`) anywhere in the site. Use colons, commas, or reword instead.

@@ -73,6 +73,12 @@ const IDENTICAL_OK = new Set<string>([
   'privacy.where.processors.posthog.name',
   'privacy.where.processors.google.name',
   'privacy.where.processors.github.name',
+
+  // A level page's document title is the level's own name and one-line summary
+  // around the brand suffix, and those two already come from the catalog. The
+  // pattern itself is placeholders plus "nidhi", so there is nothing in it a
+  // translator could translate, and the Hindi page reads it the same way.
+  'level.meta.title',
 ]);
 
 /**

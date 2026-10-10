@@ -1,0 +1,513 @@
+---
+/**
+ * The Monte Carlo simulator page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/free/monte-carlo-simulator/[...path].astro`,
+ * which is a short wrapper around this, and holds the release gate on its own
+ * (see `src/utils/monte-carlo/release.ts`). The other languages come through
+ * `src/pages/[locale]/free/monte-carlo-simulator/[...path].astro`, which
+ * combines that same gate with `localizedStaticPaths()`. Both paths render this
+ * one component, so the two versions cannot drift apart in markup or styling.
+ *
+ * The copy is in the catalog, under `tools.monteCarlo.page`, and the sentence
+ * the tool itself says under `tools.monteCarlo.island`, which is handed to the
+ * island as a prop. The island is given one locale's slice rather than the
+ * locale itself: `dict(locale)` reads a runtime-indexed table holding every
+ * language and every tool, so nothing tree-shakes and the client chunk would
+ * carry the whole catalog to render one calculator.
+ *
+ * Figures are never typed here either. Every sentence that quotes one carries a
+ * `{name}`, and `figures` below holds the values, all read from the constants in
+ * `src/utils/monte-carlo/math.ts` and from the island's own words, so the prose
+ * cannot disagree with the model or with the switch. The returns settings are
+ * here because the FAQ and the method name them.
+ *
+ * What stays in this file rather than in the catalog is what no translator
+ * would touch: the `data-attr` labels on the analytics events, the addresses,
+ * which `localizedPath` prefixes, and the one Latin-only book title inside the
+ * sources paragraph, which reads the same in every language. (A Hindi catalog
+ * value byte-identical to its English one fails `catalog.test.ts` unless it is
+ * on that file's `IDENTICAL_OK` list, and a title has no translation to offer.)
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
+import ToolStateGuard from '../ToolStateGuard.astro';
+import { getCollection } from 'astro:content';
+import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
+import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/monte-carlo/url.ts';
+import { LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { monteCarlo: mc } = dict(locale).tools;
+const strings = mc.page;
+const island = mc.island;
+
+const t = format;
+const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const fmt = (n: number) => n.toLocaleString('en-US');
+const MAX_PATHS = RUN_OPTIONS[RUN_OPTIONS.length - 1];
+
+// Everything the page's copy quotes, in one place. The three return settings
+// and the share button's label come from the island's own strings, so a
+// sentence naming them cannot disagree with the thing it names.
+const figures = {
+  defaultPaths: fmt(DEFAULT_PATHS),
+  maxPaths: fmt(MAX_PATHS),
+  minPaths: fmt(RUN_OPTIONS[0]),
+  stocksMean: pct(STOCKS.mean),
+  stocksSd: pct(STOCKS.sd),
+  bondsMean: pct(BONDS.mean),
+  bondsSd: pct(BONDS.sd),
+  correlation: STOCK_BOND_CORRELATION,
+  maxFeePct: MAX_FEE_PCT,
+  cautious: island.returns.cautious,
+  historical: island.returns.historical,
+  optimistic: island.returns.optimistic,
+  copyLink: island.actions.copy,
+};
+
+const siteUrl = 'https://nidhi.today';
+const canonicalUrl = new URL(localizedPath(locale, MONTE_CARLO_URL), siteUrl).href;
+
+const faqs = strings.faq.items.map((f) => ({ q: t(f.q, figures), a: t(f.a, figures) }));
+
+// Related reading, in order of relevance; unpublished posts are skipped and
+// the next candidate fills in, as on the other tool pages. The slug is the key
+// into the catalog, so a card and its lesson cannot be paired up wrongly.
+const RELATED_CANDIDATES: { slug: keyof typeof strings.related.cards; dataAttr: string }[] = [
+  { slug: 'financial-projections', dataAttr: 'related-financial-projections' },
+  { slug: 'what-if-scenarios', dataAttr: 'related-what-if-scenarios' },
+  { slug: 'income-replacement-ratio', dataAttr: 'related-income-replacement-ratio' },
+  { slug: 'understanding-risk', dataAttr: 'related-understanding-risk' },
+  { slug: 'diversification', dataAttr: 'related-diversification' },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog')).filter((p) => isDev || p.data.pubDate <= now).map((p) => p.data.slug),
+);
+const related = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug))
+  .slice(0, 3)
+  .map((c) => ({ ...c, ...strings.related.cards[c.slug], url: lessonPath(c.slug) }));
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: mc.schema.name,
+  alternateName: mc.schema.alternateNames,
+  url: canonicalUrl,
+  description: mc.meta.description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: mc.schema.operatingSystem,
+  browserRequirements: mc.schema.browserRequirements,
+  isAccessibleForFree: true,
+  featureList: mc.schema.featureList.map((f) => t(f, figures)),
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'nidhi', url: 'https://nidhi.today/' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: strings.breadcrumb.home, item: new URL(localizedPath(locale, '/'), siteUrl).href },
+    { '@type': 'ListItem', position: 2, name: strings.breadcrumb.freeTools, item: new URL(localizedPath(locale, '/free/'), siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: strings.breadcrumb.this, item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={mc.meta.title}
+  description={mc.meta.description}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+  toolStateGlobal={SHARED_STATE_GLOBAL}
+>
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
+  <section class="mcsp-page">
+    <nav class="mcsp-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={localizedPath(locale, '/')}>{strings.breadcrumb.home}</a></li>
+        <li><a href={localizedPath(locale, '/free/')}>{strings.breadcrumb.freeTools}</a></li>
+        <li aria-current="page">{strings.breadcrumb.this}</li>
+      </ol>
+    </nav>
+
+    <header class="mcsp-header">
+      <p class="mcsp-eyebrow">{strings.eyebrow}</p>
+      <h1 class="mcsp-title">{strings.title}</h1>
+      {/* Phones keep the first and last sentences: what it does, and that
+          nothing leaves the browser. */}
+      <p class="mcsp-lead">
+        {strings.lead.before}<span class="mcsp-wideOnly">{strings.lead.wide}</span>{strings.lead.after}
+      </p>
+    </header>
+
+    <MonteCarloSimulator
+      client:load
+      strings={island}
+      netWorthHref={localizedPath(locale, '/free/multi-currency-net-worth/')}
+    />
+
+    {/* Phones show the four limits by name; their explanations open with
+        one button (data-phone-more below). Wider screens show everything. */}
+    <aside class="mcsp-panel mcsp-limits" aria-labelledby="mcsp-limits-h" data-phone-more>
+      <h2 id="mcsp-limits-h" class="mcsp-sectionTitle">{strings.limits.heading}</h2>
+      <ul id="mcsp-limits-list">
+        {Object.values(strings.limits.items).map((item) => (
+          <li><strong>{item.lead}</strong><span class="mcsp-phoneHide">{item.rest}</span></li>
+        ))}
+      </ul>
+      <button type="button" class="mcsp-more" aria-expanded="false" aria-controls="mcsp-limits-list">
+        {strings.limits.more}
+      </button>
+      <p class="mcsp-planner">
+        {strings.planner.before}{' '}
+        <a href={`${localizedPath(locale, '/')}#signup`} data-attr="free-monte-carlo-planner-link">{strings.planner.link}</a>
+      </p>
+    </aside>
+
+    <section class="mcsp-panel" aria-labelledby="mcsp-how-h" data-phone-more>
+      <h2 id="mcsp-how-h" class="mcsp-sectionTitle">{strings.how.heading}</h2>
+      <button type="button" class="mcsp-more" aria-expanded="false" aria-controls="mcsp-how-body">
+        {strings.how.more}
+      </button>
+      <div id="mcsp-how-body" class="mcsp-phoneHide">
+      <ol class="mcsp-steps">
+        <li>{t(strings.how.steps.draws, figures)}</li>
+        <li>{strings.how.steps.blend}</li>
+        <li>{strings.how.steps.flows}</li>
+        <li>{t(strings.how.steps.runs, figures)}</li>
+        <li>{strings.how.steps.deterministic}</li>
+      </ol>
+      <p class="mcsp-source">
+        {strings.how.source.before}{' '}
+        <a href="https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf" target="_blank" rel="noopener noreferrer">Exponential Wealth: Centuries of Stock and Bond Returns</a>{strings.how.source.after}
+      </p>
+      </div>
+    </section>
+
+    <details class="mcsp-panel mcsp-faq">
+      <summary class="mcsp-sectionTitle">{strings.faq.heading}</summary>
+      {faqs.map((f) => (
+        <details class="mcsp-faqItem">
+          <summary class="mcsp-faqQ">{f.q}</summary>
+          <p class="mcsp-faqA">{f.a}</p>
+        </details>
+      ))}
+    </details>
+
+    {related.length > 0 && (
+      <aside class="mcsp-panel" aria-labelledby="mcsp-related-h">
+        <h2 id="mcsp-related-h" class="mcsp-sectionTitle">{strings.related.heading}</h2>
+        <div class="mcsp-relatedGrid">
+          {related.map((post) => (
+            <a href={post.url} class="mcsp-relatedCard" data-attr={post.dataAttr}>
+              <span class="mcsp-relatedKicker">{post.kicker}</span>
+              <span class="mcsp-relatedTitle">{post.title}</span>
+              <span class="mcsp-relatedDesc">{post.desc}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
+  </section>
+</BaseLayout>
+
+<script>
+  // Phones: "What this can't see" shows the limits by name and "How it works"
+  // folds; one button each opens the rest. Marking the panels ready lets the
+  // CSS fold them only once the buttons work. Nothing is stored or sent.
+  document.querySelectorAll<HTMLElement>('[data-phone-more]').forEach((panel) => {
+    const button = panel.querySelector<HTMLButtonElement>('.mcsp-more');
+    if (!button) return;
+    button.addEventListener('click', () => {
+      const open = !panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', String(open));
+    });
+    panel.dataset.ready = '';
+  });
+</script>
+
+<style>
+  .mcsp-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+  .mcsp-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .mcsp-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .mcsp-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+  }
+  .mcsp-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .mcsp-breadcrumbs a:hover,
+  .mcsp-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .mcsp-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+  .mcsp-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+  .mcsp-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+  .mcsp-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+  .mcsp-lead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+  .mcsp-panel {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+  .mcsp-sectionTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+  }
+  .mcsp-panel ul,
+  .mcsp-steps {
+    margin: 0;
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-panel li {
+    margin-bottom: var(--space-2);
+  }
+  .mcsp-panel li strong {
+    color: var(--color-text-primary);
+  }
+  .mcsp-limits {
+    border-left: 4px solid var(--color-teal);
+  }
+  .mcsp-planner {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-planner a {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+    white-space: nowrap;
+  }
+  .mcsp-source {
+    margin: var(--space-4) 0 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+  .mcsp-source a {
+    color: var(--color-text-secondary);
+  }
+  .mcsp-faq > summary {
+    cursor: pointer;
+    margin: 0;
+  }
+  .mcsp-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    margin-top: var(--space-2);
+  }
+  .mcsp-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .mcsp-faqA {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcsp-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .mcsp-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+  }
+  .mcsp-relatedCard:hover,
+  .mcsp-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+  }
+  .mcsp-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-teal);
+  }
+  .mcsp-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-deep-blue);
+  }
+  .mcsp-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  @media (max-width: 800px) {
+    .mcsp-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .mcsp-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .mcsp-header {
+      text-align: left;
+      margin-bottom: var(--space-6);
+    }
+    .mcsp-panel {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+
+  /* Phone toggles for the limits and the method (script above). */
+  .mcsp-more {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .mcsp-wideOnly {
+      display: none;
+    }
+    .mcsp-header {
+      margin-bottom: var(--space-5);
+    }
+    .mcsp-panel {
+      margin-top: var(--space-5);
+    }
+    .mcsp-sectionTitle {
+      font-size: 1.15rem;
+    }
+    [data-phone-more][data-ready]:not(.is-open) .mcsp-phoneHide {
+      display: none;
+    }
+    [data-phone-more][data-ready]:not(.is-open) li {
+      margin-bottom: var(--space-1);
+    }
+    [data-phone-more][data-ready] .mcsp-more {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      width: 100%;
+      min-height: 44px;
+      margin-top: var(--space-2);
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--color-deep-blue);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.92rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    [data-phone-more][data-ready] .mcsp-more::after {
+      content: '+' / '';
+      font-size: 1.3rem;
+      line-height: 1;
+      color: var(--color-teal);
+    }
+    [data-phone-more].is-open .mcsp-more::after {
+      content: '\2212' / '';
+    }
+    .mcsp-more:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    /* "How it works": the button sits under the heading; the method opens below it. */
+    [data-phone-more].is-open #mcsp-how-body {
+      margin-top: var(--space-2);
+    }
+    /* Read more: title and kicker are enough to choose on a phone. */
+    .mcsp-relatedDesc {
+      display: none;
+    }
+    .mcsp-relatedCard {
+      padding: var(--space-3);
+    }
+  }
+</style>

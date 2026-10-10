@@ -8,6 +8,9 @@
  * Deliberately not `as const`: with literal types every translated value would
  * have to equal the English literal.
  */
+import { toolsEn } from './tools/index.ts';
+import { learnEn } from './learn.ts';
+
 export const en = {
   skipToContent: 'Skip to content',
 
@@ -26,9 +29,15 @@ export const en = {
    * the languages themselves are named in their own script, the same string in
    * every catalog, so they live in LOCALE_META in src/i18n/config.ts and adding
    * a locale does not add a string here.
+   *
+   * `label` is not drawn. The trigger shows a globe and the language's own name,
+   * because a reader who cannot read this page cannot read its word for
+   * "language" either, and has to recognise the way out before reading it. The
+   * word is kept for the name a screen reader announces, where the page's
+   * language is the only one available to write it in.
    */
   languagePicker: {
-    /** Leads the control in the header: "Language: English". */
+    /** Precedes the language you are reading in the control's spoken name. */
     label: 'Language',
     /** Spoken after the language you are reading, which the check mark shows. */
     current: 'current language',
@@ -137,9 +146,24 @@ export const en = {
     darkTitle: 'Dark theme',
   },
 
+  /**
+   * The RSS feed, named twice on purpose. `linkTitle` is the `<link>` the page
+   * head offers the feed under, which a browser shows in its feed menu;
+   * `feedTitle` and `feedDescription` are the feed's own `<channel>` title and
+   * description, which a feed reader shows once it has the feed. They are
+   * different strings in English today and were both hardcoded, the link title
+   * in `BaseHead` and the channel in `src/pages/rss.xml.ts`.
+   *
+   * There is one feed and it is English, so every page, in every language, links
+   * to it and names it in English (see `BaseHead`). The other catalogs carry this
+   * namespace for the same reason they carry every other: `Dict` is `typeof en`,
+   * and a catalog missing a key is a build failure.
+   */
   rss: {
-    /** The feed's title, as a feed reader shows it. */
-    title: 'nidhi | Personal Finance Blog',
+    linkTitle: 'nidhi | Personal Finance Blog',
+    feedTitle: 'nidhi: Personal Finance Blog',
+    feedDescription:
+      'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
   },
 
   // ---------------------------------------------------------------------
@@ -1078,4 +1102,17 @@ export const en = {
       monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
     },
   },
+
+  /**
+   * The learning path's copy: the level vocabulary, the tag table, and the
+   * pages of the path. Assembled from `./learn.ts` for the same reason as the
+   * tools below.
+   */
+  ...learnEn,
+
+  /**
+   * The free tools' copy. Assembled from one module per tool: see
+   * `src/i18n/strings/tools/index.ts` for why they are not in this file.
+   */
+  tools: toolsEn,
 };

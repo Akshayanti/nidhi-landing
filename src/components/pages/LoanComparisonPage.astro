@@ -1,0 +1,700 @@
+---
+/**
+ * The loan comparison calculator, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/free/loan-comparison.astro`, which is a
+ * short wrapper around this; the other languages come through
+ * `src/pages/[locale]/free/`. Both paths render this one component, so the two
+ * versions cannot drift apart in markup or in styling.
+ *
+ * What stays here rather than in the catalog: the `data-attr` labels (analytics
+ * reads them, and the privacy notice's changelog refers to those labels by
+ * name), the lesson slugs, which have to match real entries in
+ * `src/content/blog`, the seven FAQ group ids, which are the anchors the
+ * page's own answers link to, the schema.org enumerations and the price, and
+ * the tool's `SHARED_STATE_GLOBAL`, which the island, the head guard and the
+ * layout all have to agree on.
+ *
+ * The related-reading cards come in two halves that are zipped together below:
+ * the slug and the analytics label are not sentences and stay here, while the
+ * kicker, the title and the description are this page's own words about those
+ * lessons and live in the catalog. Both lists are the same length and the same
+ * order, and one is indexed by the other.
+ *
+ * The island is handed its own words as a prop rather than the locale, so that
+ * the hydration payload carries one language's strings and not the whole
+ * catalog. See the `strings` prop in `LoanCompare.tsx`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LoanCompare from '../../components/LoanCompare.tsx';
+import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
+import { getCollection } from 'astro:content';
+import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const tool = dict(locale).tools.loanComparison;
+
+const siteUrl = 'https://nidhi.today';
+
+// Ordered for the calculator, strongest first: how to read an offer, what to
+// have in place before borrowing, then what happens after you sign.
+// Unpublished posts (future pubDate) are filtered out at build time but kept
+// here so they auto-promote into the visible top three the moment they go
+// live (publishedSlugs is rebuilt every build). Slugs MUST match real entries
+// in the locale's lesson collection or they silently filter out, that was the
+// bug that left a related section blank on another page.
+//
+// The list is longer than the three slots we render, so a missing candidate
+// just lets the next one through. A locale whose lessons have not been
+// translated yet has an empty collection, which empties this list and drops
+// the whole section rather than linking three times into nothing.
+const RELATED_CANDIDATES = [
+  { slug: 'understanding-loan-terms', dataAttr: 'related-loan-terms' },
+  { slug: 'emergency-fund', dataAttr: 'related-emergency' },
+  { slug: 'appreciation-vs-depreciation', dataAttr: 'related-appreciation' },
+  { slug: 'how-to-get-out-of-debt', dataAttr: 'related-debt' },
+  { slug: 'liabilities', dataAttr: 'related-liabilities' },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog'))
+    .filter((post) => isDev || post.data.pubDate <= now)
+    .map((post) => post.data.slug),
+);
+const RELATED = RELATED_CANDIDATES.map((candidate, index) => ({
+  ...candidate,
+  ...tool.page.related.items[index],
+}))
+  .filter((candidate) => publishedSlugs.has(candidate.slug))
+  .slice(0, 3);
+
+// The FAQ is split into seven groups so a reader can scan to the topic they
+// care about (basics, costs, prepayments, and so on) instead of reading one
+// flat list of twenty-four answers. Search engines expect a single array, so
+// the JSON-LD below flattens the groups back out. The ids are the anchors, and
+// they are in the same order as the catalog's groups.
+const FAQ_GROUP_IDS = [
+  'basics',
+  'apr-fees',
+  'prepayments-penalties',
+  'hybrid',
+  'analysis-tabs',
+  'sharing-accuracy',
+  'currency',
+];
+const faqSections = tool.page.faq.groups.map((group, index) => ({
+  id: FAQ_GROUP_IDS[index],
+  ...group,
+}));
+const faqs = faqSections.flatMap((section) => section.items);
+
+const canonicalUrl = new URL(localizedPath(locale, '/free/loan-comparison/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+
+// Title and description prioritise the search phrasings real users have typed.
+// Primary terms are "loan", "comparison", and "side by side"; "multi-currency"
+// is the secondary modifier. Both "comparator" and "comparison" are present
+// because they are not interchangeable in search intent: "comparator" trends
+// international/UK/IN, "comparison" trends US. Both live in the catalog now.
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  // One canonical brand name; alternateName collects the other phrasings
+  // users actually search for, so brand-search variants ("nidhi loan
+  // comparator", "nidhi multi-currency loan calculator") still resolve to the
+  // same entity in engines that respect schema.org's alternateName.
+  name: tool.schema.name,
+  alternateName: tool.schema.alternateNames,
+  url: canonicalUrl,
+  description: tool.meta.description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: tool.schema.operatingSystem,
+  browserRequirements: tool.schema.browserRequirements,
+  isAccessibleForFree: true,
+  // featureList helps Google understand what the app does at a glance, which
+  // feeds the rich-result and answer-box surfaces.
+  featureList: tool.schema.featureList,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: homeUrl,
+  },
+};
+
+// Two-level breadcrumb: there is no /free/ hub page for this tool to sit
+// under, so we don't claim one in structured data. A phantom "Free tools"
+// middle item pointing back to this same URL would be misleading to crawlers.
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: tool.page.breadcrumb.home, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: tool.page.breadcrumb.this, item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  toolStateGlobal={SHARED_STATE_GLOBAL}
+  title={tool.meta.title}
+  description={tool.meta.description}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+>
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
+  <section class="lc-page">
+    <nav class="lc-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
+        <li aria-current="page">{tool.page.breadcrumb.this}</li>
+      </ol>
+    </nav>
+    {/* Visible breadcrumb label is "Loan comparison calculator" (the
+        primary intent phrase) rather than "Multi-currency loan comparator"
+        so the on-page text aligns with the H1 and the structured-data
+        breadcrumb above. */}
+
+    <header class="lc-pageHeader">
+      <p class="lc-eyebrow">{tool.page.eyebrow}</p>
+      {/* Phones hide the secondary phrases (.lc-wideOnly); the privacy
+          sentence always shows. */}
+      <h1 class="lc-pageTitle">
+        {tool.page.title.lead}<span class="lc-wideOnly">{tool.page.title.wide}</span>
+      </h1>
+      <p class="lc-pageLead">
+        {tool.page.lead.before}{' '}<span class="lc-wideOnly">{tool.page.lead.wide}{' '}</span>{tool.page.lead.after}
+      </p>
+    </header>
+
+    <LoanCompare client:load strings={tool.island} />
+
+    <details class="lc-faq" aria-labelledby="lc-faq-h">
+      <summary id="lc-faq-h" class="lc-faqHeading">
+        <span class="lc-sectionTitle">{tool.page.faq.heading}</span>
+        <span class="lc-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
+      </summary>
+      {faqSections.map((section) => (
+        <div class="lc-faqGroup" aria-labelledby={`lc-faq-${section.id}-h`}>
+          <h3 id={`lc-faq-${section.id}-h`} class="lc-faqGroupTitle">{section.title}</h3>
+          <div class="lc-faqList">
+            {section.items.map((f) => (
+              <details class="lc-faqItem">
+                <summary class="lc-faqQ">{f.q}</summary>
+                <p class="lc-faqA">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </details>
+
+    {RELATED.length > 0 && (
+      <aside class="lc-related" aria-labelledby="lc-related-h">
+        <header class="lc-relatedHeader">
+          <h2 id="lc-related-h" class="lc-sectionTitle">{tool.page.related.heading}</h2>
+          <p class="lc-relatedLead">
+            {tool.page.related.lead}
+          </p>
+        </header>
+
+        <div class="lc-relatedGrid">
+          {RELATED.map((post) => (
+            <a href={lessonPath(post.slug)} class="lc-relatedCard" data-attr={post.dataAttr}>
+              <span class="lc-relatedKicker">{post.kicker}</span>
+              <span class="lc-relatedTitle">{post.title}</span>
+              <span class="lc-relatedDesc">{post.desc}</span>
+            </a>
+          ))}
+        </div>
+
+        <p class="lc-relatedFooter">
+          <a href={localizedPath(locale, '/blog/tag/debt/')} class="lc-relatedAll" data-attr="related-tag-debt">
+            {tool.page.related.footerTag}
+            <span aria-hidden="true">&nbsp;&rsaquo;</span>
+          </a>
+          <a href={localizedPath(locale, '/blog/')} class="lc-relatedAllSecondary" data-attr="related-all">
+            {tool.page.related.footerAll}
+          </a>
+        </p>
+      </aside>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .lc-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+
+  .lc-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .lc-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .lc-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+    color: var(--color-text-muted);
+  }
+  .lc-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .lc-breadcrumbs a:hover,
+  .lc-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .lc-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+
+  .lc-pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .lc-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+
+  .lc-pageTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+
+  .lc-pageLead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  /* Explainer & FAQ */
+  .lc-explainer,
+  .lc-faq,
+  .lc-related {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .lc-explainer p,
+  .lc-explainerList li,
+  .lc-faqA {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  /* Smaller, italicised note used immediately after the APR formula
+     block to qualify it without competing visually with the rest of the
+     explainer copy. */
+  .lc-explainerNote {
+    margin-top: var(--space-2);
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .lc-formula {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .lc-formula code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .lc-explainerList {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-5);
+  }
+
+  .lc-explainerList li {
+    margin-bottom: var(--space-2);
+  }
+
+  .lc-explainerList li strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .lc-explainerList code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--color-bg);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  /* The whole FAQ section is collapsible. The summary doubles as the
+     section heading; we keep the visual weight of an h2 (.lc-sectionTitle)
+     and add a tiny count badge so the user knows how many questions
+     hide behind it. */
+  .lc-faq[class] {
+    /* details elements default to display:block; nothing else needed. */
+  }
+
+  .lc-faqHeading {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
+    user-select: none;
+  }
+
+  .lc-faqHeading::-webkit-details-marker { display: none; }
+
+  .lc-faqHeading::before {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    color: var(--color-deep-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+  }
+
+  .lc-faq[open] > .lc-faqHeading::before {
+    content: '−';
+  }
+
+  .lc-faqHeading:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-faqHeadingCount {
+    margin-left: auto;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .lc-faqGroup {
+    margin-top: var(--space-4);
+  }
+
+  .lc-faqGroup:first-of-type {
+    margin-top: var(--space-3);
+  }
+
+  .lc-faqGroupTitle {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 var(--space-2);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .lc-faqList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .lc-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+  }
+
+  .lc-faqItem[open] {
+    background: var(--color-bg-white);
+    border-color: var(--color-border);
+  }
+
+  .lc-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+
+  .lc-faqQ::-webkit-details-marker { display: none; }
+
+  .lc-faqQ::before {
+    content: '+';
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    width: 1em;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .lc-faqItem[open] .lc-faqQ::before {
+    content: '−';
+  }
+
+  .lc-faqQ:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-faqA {
+    margin: var(--space-2) 0 0;
+  }
+
+  .lc-relatedHeader {
+    margin-bottom: var(--space-4);
+  }
+
+  .lc-relatedLead {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: var(--space-2) 0 0;
+    max-width: 60ch;
+    /* `balance` is purpose-built for short headings and leads: it
+       redistributes the whole paragraph evenly across lines, avoiding the
+       "long line + orphan clause" pattern that `pretty` only partially
+       solves. Browsers cap it to ~6 lines and ignore it for longer text,
+       so it's safe to apply broadly. */
+    text-wrap: balance;
+  }
+
+  .lc-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 800px) {
+    .lc-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lc-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 100%;
+  }
+
+  .lc-relatedCard:hover,
+  .lc-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .lc-relatedCard:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .lc-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+  }
+
+  .lc-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .lc-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .lc-relatedFooter {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  /* text-decoration (not border-bottom) so the underline follows
+     line wraps correctly on narrow viewports: border-bottom only
+     renders under the last visual line of a wrapped link. Mirrors the
+     fix on multi-currency-net-worth.astro. */
+  .lc-relatedAll {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-style 0.15s ease;
+  }
+
+  .lc-relatedAll:hover,
+  .lc-relatedAll:focus-visible {
+    text-decoration-style: solid;
+  }
+
+  .lc-relatedAllSecondary {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    text-decoration: underline dotted;
+    text-decoration-color: var(--color-text-muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
+  }
+
+  .lc-relatedAllSecondary:hover,
+  .lc-relatedAllSecondary:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration-color: var(--color-deep-blue);
+    text-decoration-style: solid;
+  }
+
+  /* Switch to stacked layout earlier (640px): at widths between
+     480 and 640px the right-aligned wrap makes the two links sit on
+     ragged staggered lines. Stacking them reads cleaner. */
+  @media (max-width: 640px) {
+    .lc-relatedFooter {
+      justify-content: flex-start;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    /* Phones: shorter title and lead, related cards as kicker and title. */
+    .lc-wideOnly,
+    .lc-relatedDesc { display: none; }
+    .lc-pageHeader { margin-bottom: var(--space-5); }
+    .lc-relatedGrid { gap: var(--space-2); }
+    .lc-relatedCard { padding: var(--space-3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-relatedCard {
+      transition: none;
+    }
+    .lc-relatedCard:hover,
+    .lc-relatedCard:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lc-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .lc-pageHeader {
+      margin-bottom: var(--space-6);
+      text-align: left;
+    }
+    .lc-pageLead {
+      font-size: 0.95rem;
+    }
+    .lc-explainer,
+    .lc-faq,
+    .lc-related {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+</style>

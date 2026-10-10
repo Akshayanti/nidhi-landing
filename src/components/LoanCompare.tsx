@@ -5,7 +5,6 @@ import {
   equityAtMonth,
   formatApr,
   formatMoney,
-  formatMonths,
   getCurrency,
   pickSplitSamples,
   pointsBreakEven,
@@ -36,6 +35,93 @@ import {
   parseNumber,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
+import { format } from '../i18n/format.ts';
+import type { Dict } from '../i18n/strings/types.ts';
+
+/**
+ * The tool's words, for one locale.
+ *
+ * A type and not a function: the catalog is indexed at runtime, so reaching for
+ * `dict(locale)` in here would put every language and every tool into this
+ * chunk to render one calculator. The page reads its own locale's slice and
+ * passes it down as `strings`.
+ */
+type Strings = Dict['tools']['loanComparison']['island'];
+
+/**
+ * A count of months the way this language writes it.
+ *
+ * The engine's `formatMonths` returns English ("3 yr 6 mo"), and three call
+ * sites outside this file depend on those exact bytes, so the phrasing moves
+ * here rather than there. Same branches, same output in English; Hindi marks
+ * the singular on the month only.
+ */
+function months(count: number, s: Strings['months']): string {
+  if (!Number.isFinite(count) || count <= 0) return s.na;
+  const y = Math.floor(count / 12);
+  const m = count % 12;
+  if (y === 0) return m === 1 ? s.one : format(s.some, { m });
+  if (m === 0) return format(s.years, { y });
+  if (m === 1) return format(s.yearsOne, { y });
+  return format(s.yearsSome, { y, m });
+}
+
+/**
+ * How the engine's English messages are recognised, longest phrase first so a
+ * general phrase cannot claim a message a specific one owns. `src/utils/loan/
+ * math.ts` computes schedules and knows nothing about languages; it writes
+ * these sentences in English, and the tool shows the reader's language instead.
+ *
+ * The match is on the message as the engine wrote it, never on what the reader
+ * sees, so the analytics classifier below buckets the same way in every locale.
+ */
+const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['errors']][] = [
+  ['does not amortize within', 'notAmortizing'],
+  ['principal must be greater than zero', 'principal'],
+  ['monthly payment must be greater than zero', 'payment'],
+  ['does not even cover the first month', 'belowInterest'],
+  ['refinance month must be at least', 'refiMonth'],
+  ['refinance month must be before', 'refiMonthEnd'],
+  ['new rate must be non-negative', 'refiRate'],
+  ['new term must be at least', 'refiTerm'],
+  ['no remaining balance at the refinance', 'refiBalance'],
+  ['new loan is not valid', 'newLoan'],
+  ['original loan is invalid', 'refiOriginal'],
+  ['term must be at least one month', 'term'],
+];
+
+/**
+ * The engine's message in the reader's language, with its numbers put back.
+ *
+ * A message the engine grows later matches no phrase and comes through
+ * unchanged: a visible English sentence, which is what to show rather than an
+ * empty box. Nothing here is analytics-facing; the caller still passes the raw
+ * message to `track()`.
+ */
+function engineError(raw: string, s: Strings): string {
+  const lower = raw.toLowerCase();
+  const found = ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase));
+  if (!found) return raw;
+  if (found[1] === 'notAmortizing') {
+    const matched = /(\d+)/.exec(raw);
+    return format(s.engine.errors.notAmortizing, { months: matched ? matched[1] : '' });
+  }
+  return s.engine.errors[found[1]];
+}
+
+/**
+ * The engine's warnings, addressed the same way. There are two, both rare: one
+ * is an internal invariant that should never fire, the other a rate so high the
+ * recast payment barely covers interest.
+ */
+function engineWarning(raw: string, s: Strings): string {
+  if (/precision check/i.test(raw)) {
+    const m = /principal sum (\S+) ≠ (\S+)/.exec(raw);
+    return format(s.engine.warnings.precision, { sum: m?.[1] ?? '', expected: m?.[2] ?? '' });
+  }
+  if (/recast payment barely covers/i.test(raw)) return s.engine.warnings.subsequentRate;
+  return raw;
+}
 
 // -----------------------------------------------------------------------------
 // PostHog telemetry helper.
@@ -84,6 +170,7 @@ interface ChartProps {
   colors: string[];
   vendorNames: string[];
   currency: string;
+  strings: Strings;
 }
 
 // Dash patterns tell vendors apart when their lines run close together,
@@ -106,7 +193,7 @@ function niceScale(v: number): { top: number; step: number; count: number } {
   return { top: step * count, step, count };
 }
 
-function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
+function BalanceChart({ results, colors, vendorNames, currency, strings }: ChartProps) {
   const titleId = useId();
   const descId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -126,7 +213,7 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
 
   if (valid.length === 0) {
-    return <p className="lc-chartEmpty">Enter valid inputs above to see a payoff chart.</p>;
+    return <p className="lc-chartEmpty">{strings.balance.empty}</p>;
   }
 
   // Balance (in major units) and interest paid so far, for month m (0 = start).
@@ -161,8 +248,16 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
   const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
 
   const ariaSummary =
-    'Loan balance over time. ' +
-    series.map((s) => `${s.name}: starts at ${formatAmount(s.balance[0], currency)}, paid off in ${formatMonths(s.payoff)}.`).join(' ');
+    strings.balance.ariaPrefix +
+    series
+      .map((s) =>
+        format(strings.balance.seriesLine, {
+          name: s.name,
+          amount: formatAmount(s.balance[0], currency),
+          months: months(s.payoff, strings.months),
+        }),
+      )
+      .join(' ');
 
   function monthAt(clientX: number): number | null {
     const svg = svgRef.current;
@@ -193,9 +288,11 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
   const when = (m: number) => {
     const yr = Math.floor(m / 12);
     const mo = m % 12;
-    if (m === 0) return 'Start';
-    if (mo === 0) return `Year ${yr}`;
-    return yr === 0 ? `Month ${mo}` : `Year ${yr}, month ${mo}`;
+    if (m === 0) return strings.balance.start;
+    if (mo === 0) return format(strings.balance.year, { y: yr });
+    return yr === 0
+      ? format(strings.balance.month, { m: mo })
+      : format(strings.balance.yearMonth, { y: yr, m: mo });
   };
   const rows =
     hover === null
@@ -204,7 +301,15 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
           const v = at(s, hover);
           return {
             label: s.name,
-            value: v.balance <= 0 ? `Paid off, ${formatAmount(v.interest, currency)} interest` : `${formatAmount(v.balance, currency)} left, ${formatAmount(v.interest, currency)} interest`,
+            value:
+              v.balance <= 0
+                ? format(strings.balance.paidOff, {
+                    interest: formatAmount(v.interest, currency),
+                  })
+                : format(strings.balance.left, {
+                    balance: formatAmount(v.balance, currency),
+                    interest: formatAmount(v.interest, currency),
+                  }),
             swatch: 'dot' as const,
             color: s.color,
           };
@@ -221,17 +326,19 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
               <line x1="1" y1="5" x2="27" y2="5" stroke={s.color} strokeWidth="3" strokeDasharray={s.dash} strokeLinecap="round" />
             </svg>
             {s.name}
-            <span className="lc-legendNote">paid off in {formatMonths(s.payoff)}</span>
+            <span className="lc-legendNote">
+              {format(strings.balance.legendNote, { months: months(s.payoff, strings.months) })}
+            </span>
           </span>
         ))}
       </figcaption>
-      <p className="chart-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>
+      <p className="chart-swipe" aria-hidden="true">{strings.balance.swipe}</p>
       <div className="lc-chartScroll">
         <div
           className="lc-chartBox"
           tabIndex={0}
           role="group"
-          aria-label="Balance chart. Use the left and right arrow keys to read each year, with Shift for single months."
+          aria-label={strings.balance.groupAria}
           onKeyDown={onKey}
           onBlur={() => setHover(null)}
         >
@@ -244,7 +351,7 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
             onPointerMove={(e) => setHover(monthAt(e.clientX))}
             onPointerDown={(e) => setHover(monthAt(e.clientX))}
           >
-            <title id={titleId}>Loan balance over time</title>
+            <title id={titleId}>{strings.balance.title}</title>
             <desc id={descId}>{ariaSummary}</desc>
             <rect className="lc-plotBg" x={BPAD.left} y={BPAD.top} width={BPLOT_W} height={BPLOT_H} rx="6" />
             {yMinor.map((t) => (
@@ -265,7 +372,7 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
                 <text className="lc-chartTick" x={x(yr * 12)} y={BH - BPAD.bottom + 24} textAnchor="middle">{yr}</text>
               </g>
             ))}
-            <text className="lc-chartTick lc-chartAxisTitle" x={BPAD.left + BPLOT_W / 2} y={BH - 8} textAnchor="middle">Years</text>
+            <text className="lc-chartTick lc-chartAxisTitle" x={BPAD.left + BPLOT_W / 2} y={BH - 8} textAnchor="middle">{strings.balance.axisYears}</text>
             {series.map((s) => (
               <path
                 key={`line-${s.i}`}
@@ -291,14 +398,14 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
         </div>
       </div>
       {hover !== null && <ChartReadout title={when(hover)} rows={rows} cardRef={cardRef} position={cardLeft} />}
-      <p className="lc-chartHint">Point at the chart, tap it, or use the arrow keys to read the balances in any year.</p>
+      <p className="lc-chartHint">{strings.balance.hint}</p>
       {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
       <div className="lc-srOnly">
         <table>
-          <caption>Loan balance over time, sampled by month</caption>
+          <caption>{strings.balance.tableCaption}</caption>
           <thead>
             <tr>
-              <th scope="col">Month</th>
+              <th scope="col">{strings.words.month}</th>
               {valid.map(({ name, i }) => (
                 <th key={i} scope="col">{name}</th>
               ))}
@@ -309,7 +416,7 @@ function BalanceChart({ results, colors, vendorNames, currency }: ChartProps) {
               <tr key={row.month}>
                 <th scope="row">{row.month}</th>
                 {row.values.map((v, idx) => (
-                  <td key={idx}>{v == null ? 'n/a' : formatMoney(v, currency)}</td>
+                  <td key={idx}>{v == null ? strings.months.na : formatMoney(v, currency)}</td>
                 ))}
               </tr>
             ))}
@@ -355,16 +462,17 @@ interface SplitChartProps {
   currency: string;
   vendorName: string;
   vendorColor: string;
+  strings: Strings;
 }
 
-function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartProps) {
+function SplitChart({ schedule, currency, vendorName, vendorColor, strings }: SplitChartProps) {
   // Phones get a narrower drawing, so the labels stay readable once it is
   // scaled down to the screen instead of shrinking to a few pixels.
   const phone = usePhone();
   if (schedule.length === 0) {
     return (
       <p className="lc-chartEmpty">
-        Enter valid inputs above to see how each payment splits between interest and principal.
+        {strings.charts.splitEmpty}
       </p>
     );
   }
@@ -400,12 +508,16 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
   const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
 
   const ariaSummary =
-    `Where each monthly payment goes for ${vendorName}. ` +
+    format(strings.split.ariaPrefix, { vendor: vendorName }) +
     rows
       .map((r) => {
         const pctInterest = (r.interest / r.payment) * 100;
-        const yearLabel = formatYearLabel(r.month);
-        return `${yearLabel}: interest ${formatMoney(r.interest, currency)} (${pctInterest.toFixed(0)}%), principal ${formatMoney(r.principal, currency)}.`;
+        return format(strings.split.ariaRow, {
+          when: formatYearLabel(r.month, strings),
+          interest: formatMoney(r.interest, currency),
+          pct: pctInterest.toFixed(0),
+          principal: formatMoney(r.principal, currency),
+        });
       })
       .join(' ');
 
@@ -419,15 +531,15 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
         preserveAspectRatio="xMidYMid meet"
         focusable="false"
       >
-        <title>Where each payment goes</title>
+        <title>{strings.split.title}</title>
         <desc>{ariaSummary}</desc>
 
         {/* Eyebrow legend, mirroring the blog figure */}
         <text x={padL} y={padT - 16} className="lc-splitEyebrowInterest">
-          INTEREST
+          {strings.split.eyebrowInterest}
         </text>
         <text x={padL} y={height - padB + 18} className="lc-splitEyebrowPrincipal">
-          PRINCIPAL
+          {strings.split.eyebrowPrincipal}
         </text>
 
         {rows.map((row, idx) => {
@@ -496,7 +608,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
                 className="lc-splitTickX"
                 textAnchor="middle"
               >
-                {formatYearLabel(row.month)}
+                {formatYearLabel(row.month, strings)}
               </text>
             </g>
           );
@@ -508,7 +620,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
           className="lc-splitFootnote"
           textAnchor="middle"
         >
-          Same payment every month, the split changes
+          {strings.split.footnote}
         </text>
       </svg>
 
@@ -516,19 +628,19 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
       {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
       <div className="lc-srOnly">
         <table>
-          <caption>Interest and principal split for {vendorName}, sampled across the loan</caption>
+          <caption>{format(strings.split.tableCaption, { vendor: vendorName })}</caption>
           <thead>
             <tr>
-              <th scope="col">Month</th>
-              <th scope="col">Payment</th>
-              <th scope="col">Interest</th>
-              <th scope="col">Principal</th>
+              <th scope="col">{strings.words.month}</th>
+              <th scope="col">{strings.words.payment}</th>
+              <th scope="col">{strings.words.interest}</th>
+              <th scope="col">{strings.words.principal}</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.month}>
-                <th scope="row">{formatYearLabel(r.month)}</th>
+                <th scope="row">{formatYearLabel(r.month, strings)}</th>
                 <td>{formatMoney(r.payment, currency)}</td>
                 <td>{formatMoney(r.interest, currency)}</td>
                 <td>{formatMoney(r.principal, currency)}</td>
@@ -543,14 +655,16 @@ function SplitChart({ schedule, currency, vendorName, vendorColor }: SplitChartP
 
 /** Render a sampled month as a "Year N" label, falling back to "Month N"
  *  for short-term loans where year framing would be misleading. */
-function formatYearLabel(month: number): string {
+function formatYearLabel(month: number, strings: Strings): string {
   if (month <= 12) {
-    return month === 1 ? 'Year 1' : `Month ${month}`;
+    return month === 1
+      ? format(strings.balance.year, { y: 1 })
+      : format(strings.balance.month, { m: month });
   }
   // Months that fall on a year boundary read as "Year N"; off-boundary
-  // months read as "Year N (mo M)" so the user can still locate them.
-  if (month % 12 === 0) return `Year ${month / 12}`;
-  return `Year ${Math.floor(month / 12) + 1}`;
+  // months read as the year they fall in, so the user can still locate them.
+  if (month % 12 === 0) return format(strings.balance.year, { y: month / 12 });
+  return format(strings.balance.year, { y: Math.floor(month / 12) + 1 });
 }
 
 // ---- Phone layout ------------------------------------------------------------
@@ -592,7 +706,7 @@ function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
 
 // ---- Main component --------------------------------------------------------
 
-export default function LoanCompare() {
+export default function LoanCompare({ strings }: { strings: Strings }) {
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(DEFAULT_GLOBAL_STATE);
   const [hydrated, setHydrated] = useState(false);
@@ -767,16 +881,16 @@ export default function LoanCompare() {
       setShareUrl(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
-      window.prompt('Copy this link:', url);
+      window.prompt(strings.toolbar.copyPrompt, url);
     }
-  }, [vendors, globalState]);
+  }, [vendors, globalState, strings.toolbar.copyPrompt]);
 
   return (
     <div className="lc-root">
-      <div className="lc-toolbar" role="toolbar" aria-label="Loan comparison actions">
+      <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
-            Display currency
+            {strings.toolbar.currencyLabel}
           </label>
           <select
             id={currencySelectId}
@@ -799,7 +913,7 @@ export default function LoanCompare() {
               comparison share one currency, so we surface that scope
               explicitly to avoid implying any FX conversion is happening. */}
           <p id={`${currencySelectId}-hint`} className="lc-fieldHelp">
-            All loans in this comparison use this format.
+            {strings.toolbar.currencyHelp}
           </p>
           {/* Live preview. The sample number 12,345,678.90 is deliberately
               chosen to exercise grouping differences across locales:
@@ -811,7 +925,7 @@ export default function LoanCompare() {
               aria-live=polite so screen readers announce the format when
               the user changes the picker. */}
           <p className="lc-fieldPreview" aria-live="polite">
-            <span className="lc-fieldPreviewLabel">Sample:</span>{' '}
+            <span className="lc-fieldPreviewLabel">{strings.toolbar.sample}</span>{' '}
             <span className="lc-fieldPreviewValue">
               {formatMoney(toMinor(12345678.9, currency), currency)}
             </span>
@@ -823,10 +937,10 @@ export default function LoanCompare() {
             className="lc-shareBtn"
             onClick={copyShareLink}
             aria-describedby="lc-share-status"
-            title="Copy a link that includes all your loan details"
+            title={strings.toolbar.shareTitle}
             data-attr="lc-share-copy"
           >
-            {copied ? 'Link copied' : 'Copy shareable link'}
+            {copied ? strings.toolbar.shareCopied : strings.toolbar.share}
           </button>
           <button
             type="button"
@@ -837,20 +951,20 @@ export default function LoanCompare() {
               setActiveVendor(0);
               track('free_loan_comparison_reset');
             }}
-            title="Clear all data and start fresh"
+            title={strings.toolbar.resetTitle}
             data-attr="lc-reset"
           >
-            Reset to defaults
+            {strings.toolbar.reset}
           </button>
           {copied && shareUrl && (
             <div className="lc-shareUrlBar" role="status" aria-live="polite">
-              <span className="lc-shareUrlLabel">Link copied to clipboard</span>
+              <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
               <input
                 className="lc-shareUrlInput"
                 value={shareUrl}
                 readOnly
                 onFocus={(e) => e.target.select()}
-                aria-label="Shareable link URL"
+                aria-label={strings.toolbar.shareUrlAria}
               />
             </div>
           )}
@@ -860,7 +974,7 @@ export default function LoanCompare() {
             role="status"
             aria-live="polite"
           >
-            {copied ? 'Shareable link copied to clipboard.' : ''}
+            {copied ? strings.toolbar.shareStatus : ''}
           </span>
         </div>
       </div>
@@ -871,7 +985,7 @@ export default function LoanCompare() {
           in here. Choosing one fires no event of its own. "+ Add" is the
           same action as the dashed card on wider screens, with the same
           label and event. */}
-      <div className="lc-vendorTabs" role="group" aria-label="Vendor to show">
+      <div className="lc-vendorTabs" role="group" aria-label={strings.phoneTabs.groupAria}>
         {vendors.map((_, i) => (
           <button
             key={i}
@@ -883,7 +997,7 @@ export default function LoanCompare() {
             onClick={() => setActiveVendor(i)}
           >
             <span className="lc-vendorTabLetter" aria-hidden="true">{VENDOR_LABELS[i]}</span>
-            <span className="lc-vendorTabName">Vendor {VENDOR_LABELS[i]}</span>
+            <span className="lc-vendorTabName">{format(strings.phoneTabs.tabName, { label: VENDOR_LABELS[i] })}</span>
           </button>
         ))}
         {vendors.length < MAX_VENDORS && (
@@ -891,10 +1005,10 @@ export default function LoanCompare() {
             type="button"
             className="lc-vendorTabAdd"
             onClick={addVendor}
-            aria-label={`Add another vendor to compare (${vendors.length + 1} of ${MAX_VENDORS})`}
+            aria-label={format(strings.phoneTabs.addAria, { n: vendors.length + 1, max: MAX_VENDORS })}
             data-attr="lc-vendor-add"
           >
-            <span aria-hidden="true">+</span> Add
+            <span aria-hidden="true">+</span> {strings.phoneTabs.add}
           </button>
         )}
       </div>
@@ -911,6 +1025,7 @@ export default function LoanCompare() {
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
             currency={currency}
+            strings={strings}
             onChange={(patch) => updateVendor(i, patch)}
             // The remove button is only renderable when we're above the
             // minimum; passing undefined hides it. Doing the gating here
@@ -923,13 +1038,13 @@ export default function LoanCompare() {
             type="button"
             className="lc-cardAdd"
             onClick={addVendor}
-            aria-label={`Add another vendor to compare (${vendors.length + 1} of ${MAX_VENDORS})`}
+            aria-label={format(strings.phoneTabs.addAria, { n: vendors.length + 1, max: MAX_VENDORS })}
             data-attr="lc-vendor-add"
           >
             <span className="lc-cardAddIcon" aria-hidden="true">+</span>
-            <span className="lc-cardAddLabel">Add vendor</span>
+            <span className="lc-cardAddLabel">{strings.phoneTabs.addCard}</span>
             <span className="lc-cardAddHint">
-              Compare up to {MAX_VENDORS}
+              {format(strings.phoneTabs.addCardHint, { max: MAX_VENDORS })}
             </span>
           </button>
         )}
@@ -939,6 +1054,7 @@ export default function LoanCompare() {
         results={results}
         vendors={vendors}
         currency={currency}
+        strings={strings}
       />
 
       <AnalysisTabs
@@ -950,31 +1066,14 @@ export default function LoanCompare() {
         onSplitVendorChange={setSplitVendorIdx}
         globalState={globalState}
         onGlobalChange={(patch) => setGlobalState((g) => ({ ...g, ...patch }))}
+        strings={strings}
       />
 
       {/* Open on wider screens, folded on phones (useFoldOnPhone). */}
       <details className="lc-disclaimerWrap" open ref={disclaimerRef}>
-        <summary className="lc-disclaimerSummary">Assumptions and disclaimers</summary>
+        <summary className="lc-disclaimerSummary">{strings.disclaimer.summary}</summary>
         <p className="lc-disclaimer">
-          Calculations assume monthly compounding and on-time payments. APR
-          is shown as a nominal annualized rate (monthly rate × 12)
-          computed against the contractual schedule (without voluntary
-          extras), folding the origination/closing fee into the effective
-          cost of borrowing; jurisdictions differ on which other costs
-          (mandatory insurance, account products, taxes) must be included
-          in their official APR/APRC disclosure, so add those into the
-          fee field if you want them reflected. Canadian residential
-          mortgages compound semi-annually by law and Brazilian and some
-          UK products use other compounding conventions; on those
-          products the monthly-compounding figures here will be slightly
-          off. Real adjustable-rate loans track an index plus a margin
-          and may have rate caps that this calculator does not enforce;
-          the subsequent rate you enter is your best stress-test guess.
-          Property taxes, building or community service charges, home
-          insurance, and the tax treatment of loan interest in your
-          jurisdiction are not modeled. Educational comparison only; not
-          financial advice. For a binding loan comparison or personalized
-          advice, consult a licensed mortgage broker or financial advisor.
+          {strings.disclaimer.body}
         </p>
       </details>
     </div>
@@ -996,6 +1095,7 @@ interface VendorCardProps {
    *  using points. */
   noPointsBaseline: LoanResult | null;
   currency: string;
+  strings: Strings;
   onChange: (patch: Partial<VendorInput>) => void;
   /** Omitted when removing would drop below the minimum vendor count. */
   onRemove?: () => void;
@@ -1018,6 +1118,7 @@ function VendorCard({
   result,
   noPointsBaseline,
   currency,
+  strings,
   onChange,
   onRemove,
 }: VendorCardProps) {
@@ -1027,8 +1128,6 @@ function VendorCard({
   const hasError = Boolean(result.error);
   const headingId = id('heading');
 
-  const moneyHint = `In ${currency}`;
-
   const optionalRef = useRef<HTMLDetailsElement>(null);
   useFoldOnPhone(optionalRef);
 
@@ -1036,15 +1135,24 @@ function VendorCard({
   // a phone visitor sees whether anything is set without opening them.
   const isSet = (s: string) => Number(s) > 0;
   const optionalStatus = [
-    vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' ? 'Hybrid (ARM)' : 'Fixed rate',
-    isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? 'fees' : null,
-    isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== '' ? 'prepayments' : null,
-    isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth) ? 'penalty' : null,
-  ].filter(Boolean);
+    vendor.rateKind === 'hybrid' && vendor.modeKind === 'term'
+      ? strings.card.statusHybrid
+      : strings.card.statusFixed,
+    isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? strings.card.statusFees : null,
+    isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== ''
+      ? strings.card.statusPrepayments
+      : null,
+    isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth)
+      ? strings.card.statusPenalty
+      : null,
+  ].filter((status): status is string => status !== null);
   const optionalSummary =
     optionalStatus.length === 1
-      ? `${optionalStatus[0]}, no fees or prepayments`
-      : `${optionalStatus[0]} with ${optionalStatus.slice(1).join(', ')}`;
+      ? format(strings.card.optionalSingle, { status: optionalStatus[0] })
+      : format(strings.card.optionalMulti, {
+          status: optionalStatus[0],
+          rest: optionalStatus.slice(1).join(', '),
+        });
 
   return (
     <article
@@ -1061,14 +1169,14 @@ function VendorCard({
           noisy nav. h3 keeps the card semantically labelled while letting
           the surrounding section heading own the h2 slot.
         */}
-        <h3 id={headingId} className="lc-cardBadge">Vendor {label}</h3>
+        <h3 id={headingId} className="lc-cardBadge">{format(strings.card.badge, { label })}</h3>
         {onRemove && (
           <button
             type="button"
             className="lc-cardRemove"
             onClick={onRemove}
-            aria-label={`Remove vendor ${label} from comparison`}
-            title="Remove from comparison"
+            aria-label={format(strings.card.removeAria, { label })}
+            title={strings.card.removeTitle}
             data-attr="lc-vendor-remove"
           >
             <span aria-hidden="true">×</span>
@@ -1084,7 +1192,7 @@ function VendorCard({
       {/* ------------------------------------------------------------ */}
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('name')}>Vendor name</label>
+        <label className="lc-fieldLabel" htmlFor={id('name')}>{strings.card.name}</label>
         <input
           id={id('name')}
           type="text"
@@ -1098,7 +1206,7 @@ function VendorCard({
 
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          Loan amount <RequiredMark /> <span className="lc-fieldHint">({currency})</span>
+          {strings.card.principal} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
         </label>
         <input
           id={id('principal')}
@@ -1116,7 +1224,7 @@ function VendorCard({
 
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('rate')}>
-          Annual interest rate (%) <RequiredMark />
+          {strings.card.rate} <RequiredMark title={strings.card.requiredTitle} />
         </label>
         <input
           id={id('rate')}
@@ -1133,7 +1241,7 @@ function VendorCard({
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">Solve for <RequiredMark /></legend>
+        <legend className="lc-fieldLabel">{strings.card.solveFor} <RequiredMark title={strings.card.requiredTitle} /></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1146,7 +1254,7 @@ function VendorCard({
                 track('free_loan_comparison_mode_changed', { vendor: label, mode: 'term' });
               }}
             />
-            <span>Monthly payment</span>
+            <span>{strings.card.modeTerm}</span>
           </label>
           <label className={`lc-modeOption ${vendor.modeKind === 'payment' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1159,7 +1267,7 @@ function VendorCard({
                 track('free_loan_comparison_mode_changed', { vendor: label, mode: 'payment' });
               }}
             />
-            <span>Payoff months</span>
+            <span>{strings.card.modePayment}</span>
           </label>
         </div>
       </fieldset>
@@ -1167,7 +1275,7 @@ function VendorCard({
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('term')}>
-            Term (months) <RequiredMark />
+            {strings.card.term} <RequiredMark title={strings.card.requiredTitle} />
           </label>
           <input
             id={id('term')}
@@ -1185,7 +1293,7 @@ function VendorCard({
       ) : (
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            Monthly payment <RequiredMark /> <span className="lc-fieldHint">({currency})</span>
+            {strings.card.monthly} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={id('monthly')}
@@ -1214,13 +1322,13 @@ function VendorCard({
 
       <details className="lc-optional" ref={optionalRef}>
       <summary className="lc-optionalSummary">
-        <span className="lc-optionalTitle">Optional loan details</span>
+        <span className="lc-optionalTitle">{strings.card.optionalTitle}</span>
         <span className="lc-optionalStatus">{optionalSummary}</span>
       </summary>
 
-      <FieldGroup title="Rate structure" hint="Fixed or fixed-then-variable (ARM)">
+      <FieldGroup title={strings.card.rateStructure.title} hint={strings.card.rateStructure.hint}>
         <fieldset className="lc-modeFieldset">
-          <legend className="lc-srOnly">Rate type</legend>
+          <legend className="lc-srOnly">{strings.card.rateTypeAria}</legend>
           <div className="lc-modeRow">
             <label className={`lc-modeOption ${vendor.rateKind === 'fixed' ? 'lc-modeOptionActive' : ''}`}>
               <input
@@ -1236,7 +1344,7 @@ function VendorCard({
                   });
                 }}
               />
-              <span>Fixed</span>
+              <span>{strings.card.fixed}</span>
             </label>
             <label className={`lc-modeOption ${vendor.rateKind === 'hybrid' ? 'lc-modeOptionActive' : ''}`}>
               <input
@@ -1261,7 +1369,7 @@ function VendorCard({
                   });
                 }}
               />
-              <span>Hybrid (ARM)</span>
+              <span>{strings.card.hybrid}</span>
             </label>
           </div>
         </fieldset>
@@ -1271,15 +1379,18 @@ function VendorCard({
           // explained on first encounter (and aria-describedby has a
           // target to point at).
           <p id={id('hybrid-hint')} className="lc-fieldHelp">
-            Hybrid (ARM) loans need a fixed term. Switch <em>Solve for</em>{' '}
-            above to <em>Monthly payment</em> to enable the ARM fields.
+            {strings.card.hybridHint.before}
+            <em>{strings.card.hybridHint.solveFor}</em>
+            {strings.card.hybridHint.mid}
+            <em>{strings.card.hybridHint.modeTerm}</em>
+            {strings.card.hybridHint.after}
           </p>
         )}
         {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
           <>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                Initial fixed period (months)
+                {strings.card.initialFixed}
               </label>
               <input
                 id={id('initialFixedMonths')}
@@ -1290,11 +1401,11 @@ function VendorCard({
                 onChange={(e) => onChange({ initialFixedMonths: e.target.value })}
                 autoComplete="off"
               />
-              <p className="lc-fieldHelp">Common: 60 (5/1 ARM), 84 (7/1), 120 (10/1).</p>
+              <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
             </div>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                Subsequent rate (%)
+                {strings.card.subsequentRate}
               </label>
               <input
                 id={id('subsequentRatePct')}
@@ -1306,18 +1417,17 @@ function VendorCard({
                 autoComplete="off"
               />
               <p className="lc-fieldHelp">
-                Rate after the fixed window ends. Real ARMs track an index;
-                this is your stress-test guess.
+                {strings.card.subsequentRateHelp}
               </p>
             </div>
           </>
         )}
       </FieldGroup>
 
-      <FieldGroup title="Costs and fees" hint="Origination, closing, and discount points">
+      <FieldGroup title={strings.card.costs.title} hint={strings.card.costs.hint}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('fee')}>
-            Origination / closing fee <span className="lc-fieldHint">({currency})</span>
+            {strings.card.fee} <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={id('fee')}
@@ -1331,7 +1441,7 @@ function VendorCard({
         </div>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('pointsCost')}>
-            Discount points cost <span className="lc-fieldHint">({currency})</span>
+            {strings.card.pointsCost} <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={id('pointsCost')}
@@ -1343,13 +1453,12 @@ function VendorCard({
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
-            Already counted in the fee above. Entering it again here lets the
-            calculator show the points break-even.
+            {strings.card.pointsCostHelp}
           </p>
         </div>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('pointsReduction')}>
-            Rate reduction from points (pp)
+            {strings.card.pointsReduction}
           </label>
           <input
             id={id('pointsReduction')}
@@ -1360,14 +1469,14 @@ function VendorCard({
             onChange={(e) => onChange({ pointsRateReductionPct: e.target.value })}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">e.g. 0.25 means the points cut your rate by 0.25 pp.</p>
+          <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
         </div>
       </FieldGroup>
 
-      <FieldGroup title="Prepayments" hint="Pay extra each month or in lump sums">
+      <FieldGroup title={strings.card.prepayments.title} hint={strings.card.prepayments.hint}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('extra')}>
-            Extra principal per month <span className="lc-fieldHint">({currency})</span>
+            {strings.card.extra} <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={id('extra')}
@@ -1381,7 +1490,7 @@ function VendorCard({
         </div>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('lumpSums')}>
-            Lump-sum prepayments
+            {strings.card.lumps}
           </label>
           <input
             id={id('lumpSums')}
@@ -1394,17 +1503,19 @@ function VendorCard({
             placeholder="12:5000;36:3000"
           />
           <p className="lc-fieldHelp">
-            Format: <code>month:amount</code>, semicolon-separated. e.g.{' '}
-            <code>12:5000;36:3000</code> means 5,000 in month 12 and 3,000 in
-            month 36.
+            {strings.card.lumpsHelp.before}
+            <code>month:amount</code>
+            {strings.card.lumpsHelp.mid}
+            <code>12:5000;36:3000</code>
+            {strings.card.lumpsHelp.after}
           </p>
         </div>
       </FieldGroup>
 
-      <FieldGroup title="Prepayment penalty" hint="Some loans charge a fee for paying off early">
+      <FieldGroup title={strings.card.penalty.title} hint={strings.card.penalty.hint}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
-            Penalty (% of balance)
+            {strings.card.penaltyPct}
           </label>
           <input
             id={id('prepayPct')}
@@ -1418,7 +1529,7 @@ function VendorCard({
         </div>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('prepayUntil')}>
-            Penalty applies through (month)
+            {strings.card.penaltyUntil}
           </label>
           <input
             id={id('prepayUntil')}
@@ -1430,8 +1541,7 @@ function VendorCard({
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
-            Leave at 0 if there is no penalty. Charged only when the loan is
-            paid off on or before this month.
+            {strings.card.penaltyUntilHelp}
           </p>
         </div>
       </FieldGroup>
@@ -1444,7 +1554,7 @@ function VendorCard({
       >
         {hasError ? (
           <p className="lc-error" id={errorId} role="alert">
-            {result.error}
+            {engineError(result.error ?? '', strings)}
           </p>
         ) : (
           <>
@@ -1467,12 +1577,12 @@ function VendorCard({
                 }
               />
               <ResultRow
-                label="APR"
+                label={strings.results.apr}
                 value={formatApr(result.aprNominal, getCurrency(currency).locale)}
-                hint={result.feeMinor > 0 ? 'Includes fees' : 'No fees'}
+                hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
               />
               <ResultRow
-                label="Total paid"
+                label={strings.results.totalPaid}
                 value={formatMoney(result.totalPaidMinor, currency)}
                 emphasized
               />
@@ -1486,41 +1596,49 @@ function VendorCard({
                 }
               }}
             >
-              <summary className="lc-resultDetailsSummary">Show details</summary>
+              <summary className="lc-resultDetailsSummary">{strings.results.showDetails}</summary>
               <dl className="lc-resultList">
                 <ResultRow
-                  label="Time to payoff"
-                  value={formatMonths(result.months)}
-                  hint={`${result.months} payment${result.months === 1 ? '' : 's'}`}
+                  label={strings.results.timeToPayoff}
+                  value={months(result.months, strings.months)}
+                  hint={format(
+                    result.months === 1 ? strings.results.paymentsOne : strings.results.paymentsMany,
+                    { n: result.months },
+                  )}
                 />
                 <ResultRow
-                  label="Total interest"
+                  label={strings.results.totalInterest}
                   value={formatMoney(result.totalInterestMinor, currency)}
                 />
                 {result.feeMinor > 0 && (
-                  <ResultRow label="Fees" value={formatMoney(result.feeMinor, currency)} />
+                  <ResultRow
+                    label={strings.results.fees}
+                    value={formatMoney(result.feeMinor, currency)}
+                  />
                 )}
                 {result.prepaymentPenaltyMinor > 0 && (
                   <ResultRow
-                    label="Prepayment penalty"
+                    label={strings.results.penalty}
                     value={formatMoney(result.prepaymentPenaltyMinor, currency)}
-                    hint="Charged because the loan paid off early within the penalty window"
+                    hint={strings.results.penaltyHint}
                   />
                 )}
                 {noPointsBaseline && !noPointsBaseline.error && (() => {
                   const be = pointsBreakEven(result, noPointsBaseline);
                   return (
                     <ResultRow
-                      label="Points break-even"
+                      label={strings.results.breakEven}
                       value={
                         Number.isFinite(be.months)
-                          ? formatMonths(be.months)
-                          : 'never'
+                          ? months(be.months, strings.months)
+                          : strings.results.never
                       }
                       hint={
                         Number.isFinite(be.months)
-                          ? `Saves ${formatMoney(Math.abs(be.lifetimeSavingsMinor), currency)} over the term`
-                          : 'Points do not lower the monthly enough to recoup'
+                          ? format(strings.results.breakEvenSaves, {
+                              amount: formatMoney(Math.abs(be.lifetimeSavingsMinor), currency),
+                            })
+                          : strings.results.breakEvenNever
                       }
                     />
                   );
@@ -1530,7 +1648,7 @@ function VendorCard({
           </>
         )}
         {result.warnings.map((w, i) => (
-          <p key={i} className="lc-warning" role="status">{w}</p>
+          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
         ))}
       </div>
     </article>
@@ -1543,9 +1661,9 @@ function VendorCard({
  *  presentational; the real semantic signal is the `aria-required` on
  *  the input itself. We hide the asterisk character from screen readers
  *  via aria-hidden so they don't read "required asterisk". */
-function RequiredMark() {
+function RequiredMark({ title }: { title: string }) {
   return (
-    <span className="lc-required" aria-hidden="true" title="Required">
+    <span className="lc-required" aria-hidden="true" title={title}>
       *
     </span>
   );
@@ -1601,19 +1719,24 @@ interface DeltaSummaryProps {
   // Removed when the winner-crowning was stripped: this component now
   // derives the lowest/highest vendors from the results internally and
   // describes the spread without naming a winner.
+  strings: Strings;
 }
 
-function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
+function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
   const valid = results
-    .map((r, i) => ({ r, i, name: vendors[i].name || `Vendor ${VENDOR_LABELS[i]}` }))
+    .map((r, i) => ({
+      r,
+      i,
+      name: vendors[i].name || format(strings.card.badge, { label: VENDOR_LABELS[i] }),
+    }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
 
   if (valid.length < 2) {
     return (
       <section className="lc-deltaSection">
-        <h2 className="lc-sectionTitle">Side-by-side</h2>
+        <h2 className="lc-sectionTitle">{strings.delta.heading}</h2>
         <p className="lc-deltaEmpty">
-          Enter valid inputs for at least two vendors to see how they compare.
+          {strings.delta.empty}
         </p>
       </section>
     );
@@ -1637,7 +1760,7 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
 
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
-      <h2 id="lc-delta-h" className="lc-sectionTitle">Side-by-side</h2>
+      <h2 id="lc-delta-h" className="lc-sectionTitle">{strings.delta.heading}</h2>
       {/*
         aria-live=polite so screen readers re-announce when inputs change.
         The wording is deliberately neutral: it states the range and the
@@ -1648,14 +1771,17 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
       */}
       <p className="lc-deltaHero" aria-live="polite" aria-atomic="true">
         {allSame ? (
-          <>All vendors come out at the same total cost of{' '}
-            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>.</>
-        ) : (
-          <>Total cost ranges from{' '}
+          <>{strings.delta.sameBefore}
             <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
-            {' '}to <strong>{formatMoney(highest.r.totalPaidMinor, currency)}</strong>
-            {' '}across the vendors below: a spread of{' '}
-            <strong>{formatMoney(spreadMinor, currency)}</strong>.</>
+            {strings.delta.sameAfter}</>
+        ) : (
+          <>{strings.delta.rangeBefore}
+            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
+            {strings.delta.rangeTo}
+            <strong>{formatMoney(highest.r.totalPaidMinor, currency)}</strong>
+            {strings.delta.rangeAcross}
+            <strong>{formatMoney(spreadMinor, currency)}</strong>
+            {strings.delta.rangeAfter}</>
         )}
       </p>
       {/* On phones the table restacks into one block per metric, each value
@@ -1665,7 +1791,7 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
         <table className="lc-deltaTable">
           <thead>
             <tr>
-              <th scope="col" aria-label="Metric"><span className="lc-srOnly">Metric</span></th>
+              <th scope="col" aria-label={strings.delta.metricAria}><span className="lc-srOnly">{strings.delta.metricAria}</span></th>
               {valid.map((v) => (
                 <th key={v.i}>{v.name}</th>
               ))}
@@ -1673,19 +1799,19 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
           </thead>
           <tbody>
             <DeltaRow
-              label="Monthly payment"
+              label={strings.delta.monthlyPayment}
               valid={valid}
               get={(r) => r.effectiveMonthlyMinor}
               format={(n) => formatMoney(n, currency)}
             />
             <DeltaRow
-              label="Months to payoff"
+              label={strings.delta.monthsToPayoff}
               valid={valid}
               get={(r) => r.months}
-              format={(n) => formatMonths(n)}
+              format={(n) => months(n, strings.months)}
             />
             <DeltaRow
-              label="APR (incl. fees)"
+              label={strings.delta.aprInclFees}
               valid={valid}
               // We round APRs to 6 decimal places (multiply by 1e6) so
               // formatting is stable even at the limits of the bisection
@@ -1695,13 +1821,13 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
               format={(n) => formatApr(n / 1_000_000, getCurrency(currency).locale)}
             />
             <DeltaRow
-              label="Total interest"
+              label={strings.delta.totalInterest}
               valid={valid}
               get={(r) => r.totalInterestMinor}
               format={(n) => formatMoney(n, currency)}
             />
             <DeltaRow
-              label="Total paid"
+              label={strings.delta.totalPaid}
               valid={valid}
               get={(r) => r.totalPaidMinor}
               format={(n) => formatMoney(n, currency)}
@@ -1715,13 +1841,13 @@ function DeltaSummary({ results, vendors, currency }: DeltaSummaryProps) {
                 recommendation. The 0-diff cell shows an em-dash instead
                 of "cheapest" so we don't crown a winner.
               */}
-              <th scope="row">Difference vs. lowest total cost</th>
+              <th scope="row">{strings.delta.diffRow}</th>
               {valid.map((v) => {
                 const diff = v.r.totalPaidMinor - lowest.r.totalPaidMinor;
                 return (
                   <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>
                     {diff === 0 ? (
-                      <span className="lc-deltaBaseline" aria-label="baseline (lowest total cost)">baseline</span>
+                      <span className="lc-deltaBaseline" aria-label={strings.delta.baselineAria}>{strings.delta.baseline}</span>
                     ) : (
                       <span className="lc-deltaCost">+{formatMoney(diff, currency)}</span>
                     )}
@@ -1770,28 +1896,32 @@ function DeltaRow({ label, valid, get, format, emphasized }: DeltaRowProps) {
 // persisted in the URL so a share link lands the recipient on the same
 // view.
 
-const ANALYSIS_TABS: { id: AnalysisTab; label: string; hint: string }[] = [
-  {
-    id: 'charts',
-    label: 'Charts',
-    hint: 'Balance over time and how each payment splits',
-  },
-  {
-    id: 'horizon',
-    label: 'Horizon',
-    hint: 'Where you stand if you sell or refinance early',
-  },
-  {
-    id: 'refi',
-    label: 'Refinance',
-    hint: 'Compare keep vs. refinance with break-even',
-  },
-  {
-    id: 'how',
-    label: 'How it works',
-    hint: 'Formula and methodology',
-  },
-];
+/** The tab strip, in the order it reads. The ids are view state, and the four
+ *  panels below key off them; only the words come from the catalog. */
+function analysisTabs(strings: Strings): { id: AnalysisTab; label: string; hint: string }[] {
+  return [
+    {
+      id: 'charts',
+      label: strings.tabs.charts.label,
+      hint: strings.tabs.charts.hint,
+    },
+    {
+      id: 'horizon',
+      label: strings.tabs.horizon.label,
+      hint: strings.tabs.horizon.hint,
+    },
+    {
+      id: 'refi',
+      label: strings.tabs.refi.label,
+      hint: strings.tabs.refi.hint,
+    },
+    {
+      id: 'how',
+      label: strings.tabs.how.label,
+      hint: strings.tabs.how.hint,
+    },
+  ];
+}
 
 interface AnalysisTabsProps {
   vendors: VendorInput[];
@@ -1802,6 +1932,7 @@ interface AnalysisTabsProps {
   onSplitVendorChange: (idx: number | null) => void;
   globalState: GlobalState;
   onGlobalChange: (patch: Partial<GlobalState>) => void;
+  strings: Strings;
 }
 
 function AnalysisTabs({
@@ -1813,7 +1944,9 @@ function AnalysisTabs({
   onSplitVendorChange,
   globalState,
   onGlobalChange,
+  strings,
 }: AnalysisTabsProps) {
+  const tabs = analysisTabs(strings);
   const active = globalState.activeTab;
   const panelId = useId();
   // Refs to each tab button so the keyboard handler can move DOM focus
@@ -1833,28 +1966,28 @@ function AnalysisTabs({
   // We select-and-focus in one step so screen-reader users hear the new
   // panel announced as soon as they navigate.
   const onTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const currentIdx = ANALYSIS_TABS.findIndex((t) => t.id === active);
+    const currentIdx = tabs.findIndex((t) => t.id === active);
     let nextIdx = -1;
     switch (e.key) {
       case 'ArrowRight':
       case 'ArrowDown':
-        nextIdx = (currentIdx + 1) % ANALYSIS_TABS.length;
+        nextIdx = (currentIdx + 1) % tabs.length;
         break;
       case 'ArrowLeft':
       case 'ArrowUp':
-        nextIdx = (currentIdx - 1 + ANALYSIS_TABS.length) % ANALYSIS_TABS.length;
+        nextIdx = (currentIdx - 1 + tabs.length) % tabs.length;
         break;
       case 'Home':
         nextIdx = 0;
         break;
       case 'End':
-        nextIdx = ANALYSIS_TABS.length - 1;
+        nextIdx = tabs.length - 1;
         break;
       default:
         return;
     }
     e.preventDefault();
-    const nextTab = ANALYSIS_TABS[nextIdx];
+    const nextTab = tabs[nextIdx];
     onGlobalChange({ activeTab: nextTab.id });
     track('free_loan_comparison_tab_changed', { tab: nextTab.id, via: 'keyboard' });
     // Defer focus until React has committed the new active tab so the
@@ -1865,14 +1998,14 @@ function AnalysisTabs({
   };
 
   return (
-    <section className="lc-analysis" aria-label="Analysis">
+    <section className="lc-analysis" aria-label={strings.tabs.aria}>
       <div
         className="lc-tabList"
         role="tablist"
-        aria-label="Analysis views"
+        aria-label={strings.tabs.listAria}
         onKeyDown={onTabKeyDown}
       >
-        {ANALYSIS_TABS.map((t, i) => {
+        {tabs.map((t, i) => {
           const selected = active === t.id;
           return (
             <button
@@ -1916,6 +2049,7 @@ function AnalysisTabs({
             cheapestByTotal={cheapestByTotal}
             splitVendorIdx={splitVendorIdx}
             onSplitVendorChange={onSplitVendorChange}
+            strings={strings}
           />
         )}
         {active === 'horizon' && (
@@ -1925,6 +2059,7 @@ function AnalysisTabs({
             currency={currency}
             horizonMonths={globalState.horizonMonths}
             onHorizonChange={(next) => onGlobalChange({ horizonMonths: next })}
+            strings={strings}
           />
         )}
         {active === 'refi' && (
@@ -1934,9 +2069,10 @@ function AnalysisTabs({
             currency={currency}
             state={globalState}
             onChange={onGlobalChange}
+            strings={strings}
           />
         )}
-        {active === 'how' && <HowItWorksPanel />}
+        {active === 'how' && <HowItWorksPanel strings={strings} />}
       </div>
     </section>
   );
@@ -1951,6 +2087,7 @@ interface ChartsPanelProps {
   cheapestByTotal: number;
   splitVendorIdx: number | null;
   onSplitVendorChange: (idx: number | null) => void;
+  strings: Strings;
 }
 
 function ChartsPanel({
@@ -1960,6 +2097,7 @@ function ChartsPanel({
   cheapestByTotal,
   splitVendorIdx,
   onSplitVendorChange,
+  strings,
 }: ChartsPanelProps) {
   const splitSelectId = useId();
 
@@ -1975,36 +2113,39 @@ function ChartsPanel({
   const activeIdx = candidateIdx >= 0 ? candidateIdx : 0;
   const activeResult = results[activeIdx];
   const activeVendor = vendors[activeIdx];
-  const vendorName = activeVendor?.name || `Vendor ${VENDOR_LABELS[activeIdx] ?? 'A'}`;
+  const vendorName =
+    activeVendor?.name || format(strings.card.badge, { label: VENDOR_LABELS[activeIdx] ?? 'A' });
 
   return (
     <div className="lc-chartsPanel">
       <section className="lc-chartSection" aria-labelledby="lc-balance-h">
         <header className="lc-chartHeader">
-          <h3 id="lc-balance-h" className="lc-sectionTitle">Balance over time</h3>
+          <h3 id="lc-balance-h" className="lc-sectionTitle">{strings.charts.balanceHeading}</h3>
           <p className="lc-chartLead">
-            Each line is one vendor's outstanding balance, month by month. The dot on the axis marks when it is paid off.
+            {strings.charts.balanceLead}
           </p>
         </header>
         <BalanceChart
           results={results}
           colors={VENDOR_COLORS}
-          vendorNames={vendors.map((v, i) => v.name || `Vendor ${VENDOR_LABELS[i]}`)}
+          vendorNames={vendors.map(
+            (v, i) => v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] }),
+          )}
           currency={currency}
+          strings={strings}
         />
       </section>
 
       <section className="lc-chartSection lc-splitSection" aria-labelledby="lc-split-h">
         <header className="lc-chartHeader">
-          <h3 id="lc-split-h" className="lc-sectionTitle">Where each payment goes</h3>
+          <h3 id="lc-split-h" className="lc-sectionTitle">{strings.charts.splitHeading}</h3>
           <p className="lc-chartLead">
-            Same monthly payment every month. Early on, almost all of it
-            is interest; near the end, almost all of it is principal.
+            {strings.charts.splitLead}
           </p>
         </header>
 
         <div className="lc-splitControls">
-          <label className="lc-fieldLabel" htmlFor={splitSelectId}>Vendor</label>
+          <label className="lc-fieldLabel" htmlFor={splitSelectId}>{strings.charts.vendorLabel}</label>
           <select
             id={splitSelectId}
             className="lc-select lc-splitSelect"
@@ -2029,11 +2170,11 @@ function ChartsPanel({
               "cheapest" / "best" wording): see the regulatory rule in
               docs/strategy/regulatory-advisory-classification.md.
             */}
-            <option value="">Auto (lowest total cost)</option>
+            <option value="">{strings.charts.autoOption}</option>
             {vendors.map((v, i) => (
               <option key={i} value={i} disabled={Boolean(results[i]?.error)}>
-                {v.name || `Vendor ${VENDOR_LABELS[i]}`}
-                {results[i]?.error ? ' (incomplete)' : ''}
+                {v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] })}
+                {results[i]?.error ? strings.charts.incomplete : ''}
               </option>
             ))}
           </select>
@@ -2045,22 +2186,24 @@ function ChartsPanel({
             currency={currency}
             vendorName={vendorName}
             vendorColor={VENDOR_COLORS[activeIdx]}
+            strings={strings}
           />
         ) : (
           <p className="lc-chartEmpty">
-            Enter valid inputs above to see how each payment splits between
-            interest and principal.
+            {strings.charts.splitEmpty}
           </p>
         )}
 
         <p className="lc-splitCaption">
-          Showing <strong>{vendorName}</strong>'s contract schedule
-          {Number(activeVendor?.extraMonthly) > 0 && (
-            <> (without optional extra principal; APR-equivalent view)</>
-          )}
-          . An extra payment in <em>year 1</em> cancels 25 years of
-          interest on that euro; the same payment in <em>year 24</em>{' '}
-          saves almost nothing.
+          {strings.charts.caption.before}
+          <strong>{vendorName}</strong>
+          {strings.charts.caption.afterName}
+          {Number(activeVendor?.extraMonthly) > 0 && strings.charts.caption.noExtras}
+          {strings.charts.caption.extraBefore}
+          <em>{strings.charts.caption.yearEarly}</em>
+          {strings.charts.caption.extraMid}
+          <em>{strings.charts.caption.yearLate}</em>
+          {strings.charts.caption.extraAfter}
         </p>
       </section>
     </div>
@@ -2069,13 +2212,12 @@ function ChartsPanel({
 
 // ---- How it works panel ----------------------------------------------------
 
-function HowItWorksPanel() {
+function HowItWorksPanel({ strings }: { strings: Strings }) {
   return (
     <div className="lc-howPanel">
-      <h3 className="lc-sectionTitle">How the comparison works</h3>
+      <h3 className="lc-sectionTitle">{strings.how.heading}</h3>
       <p>
-        For each lender, the calculator builds a full amortization schedule
-        using the standard fully-amortizing formula:
+        {strings.how.intro}
       </p>
       <p className="lc-formula">
         <code>
@@ -2084,43 +2226,35 @@ function HowItWorksPanel() {
       </p>
       <ul className="lc-howList">
         <li>
-          <strong>P</strong> is the loan principal, <strong>r</strong> is the
-          monthly interest rate (annual rate ÷ 12), and <strong>n</strong> is
-          the number of monthly payments.
+          <strong>P</strong>
+          {strings.how.symbols.p}
+          <strong>r</strong>
+          {strings.how.symbols.r}
+          <strong>n</strong>
+          {strings.how.symbols.n}
         </li>
         <li>
-          Each month's interest is computed on the outstanding balance, the
-          payment is split between interest and principal, and the balance
-          is reduced. The loop runs to the cent.
+          {strings.how.monthly}
         </li>
         <li>
-          <strong>APR</strong> folds the origination/closing fee into the
-          rate by treating the fee as an upfront deduction from what you
-          actually receive, then solving for the monthly rate at which the
-          present value of the contractual payments equals that net amount.
-          Reported as the nominal annual rate (monthly rate × 12), matching
-          US loan disclosures.
+          <strong>{strings.how.apr.strong}</strong>
+          {strings.how.apr.rest}
         </li>
         <li>
-          <strong>Hybrid (ARM) loans</strong> use the initial rate for the
-          fixed window, then recast the payment at the transition month so
-          the loan still amortizes within the original term at the
-          subsequent rate.
+          <strong>{strings.how.hybrid.strong}</strong>
+          {strings.how.hybrid.rest}
         </li>
         <li>
-          <strong>Lump-sum prepayments</strong> are applied as principal
-          AFTER the regular monthly payment, so they don't accrue interest
-          the same month.
+          <strong>{strings.how.lumps.strong}</strong>
+          {strings.how.lumps.rest}
         </li>
         <li>
-          <strong>Prepayment penalties</strong> fire only when the loan is
-          fully paid off on or before the penalty's expiration month.
+          <strong>{strings.how.penalties.strong}</strong>
+          {strings.how.penalties.rest}
         </li>
       </ul>
       <p className="lc-howNote">
-        Everything runs in your browser. Nothing is sent to a server. Use
-        the "Copy shareable link" button to encode every input into a URL
-        you can hand to someone else.
+        {strings.how.note}
       </p>
     </div>
   );
@@ -2134,6 +2268,7 @@ interface HorizonSectionProps {
   currency: string;
   horizonMonths: string;
   onHorizonChange: (next: string) => void;
+  strings: Strings;
 }
 
 /**
@@ -2148,6 +2283,7 @@ function HorizonSection({
   currency,
   horizonMonths,
   onHorizonChange,
+  strings,
 }: HorizonSectionProps) {
   const horizonId = useId();
   // Debounced engagement signal. We don't want to fire one event per
@@ -2193,16 +2329,15 @@ function HorizonSection({
   return (
     <section className="lc-advancedSection lc-horizonSection" aria-labelledby="lc-horizon-h">
       <header>
-        <h3 id="lc-horizon-h" className="lc-sectionTitle">If I sell or refinance at...</h3>
+        <h3 id="lc-horizon-h" className="lc-sectionTitle">{strings.horizon.heading}</h3>
         <p className="lc-sectionLead">
-          Loans look very different at month 36 vs. month 360. Each row
-          shows where the borrower actually stands on that date.
+          {strings.horizon.lead}
         </p>
       </header>
 
       <div className="lc-horizonControls">
         <label className="lc-fieldLabel" htmlFor={horizonId}>
-          Horizon: <strong>{formatMonths(horizon)}</strong>
+          {strings.horizon.label}<strong>{months(horizon, strings.months)}</strong>
         </label>
         <input
           id={horizonId}
@@ -2214,7 +2349,7 @@ function HorizonSection({
           onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
-          aria-valuetext={formatMonths(horizon)}
+          aria-valuetext={months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
         <input
@@ -2223,28 +2358,28 @@ function HorizonSection({
           className="lc-input lc-horizonInput"
           value={horizonMonths}
           onChange={(e) => handleHorizonChange(e.target.value)}
-          aria-label="Horizon in months (text)"
+          aria-label={strings.horizon.inputAria}
         />
       </div>
 
       {validRows.length === 0 ? (
-        <p className="lc-deltaEmpty">Enter valid inputs to see horizon snapshots.</p>
+        <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
         <div className="lc-deltaTableWrap">
           <table className="lc-deltaTable">
             <thead>
               <tr>
-                <th scope="col"><span className="lc-srOnly">Metric</span></th>
+                <th scope="col"><span className="lc-srOnly">{strings.delta.metricAria}</span></th>
                 {validRows.map((row) => (
                   <th key={row.i}>
-                    {row.v.name || `Vendor ${VENDOR_LABELS[row.i]}`}
+                    {row.v.name || format(strings.card.badge, { label: VENDOR_LABELS[row.i] })}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Principal repaid</th>
+                <th scope="row">{strings.horizon.principalRepaid}</th>
                 {validRows.map((row) => {
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
@@ -2255,7 +2390,7 @@ function HorizonSection({
                 })}
               </tr>
               <tr>
-                <th scope="row">Interest paid</th>
+                <th scope="row">{strings.horizon.interestPaid}</th>
                 {validRows.map((row) => {
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
@@ -2266,7 +2401,7 @@ function HorizonSection({
                 })}
               </tr>
               <tr>
-                <th scope="row">Balance remaining</th>
+                <th scope="row">{strings.horizon.balanceRemaining}</th>
                 {validRows.map((row) => {
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
@@ -2277,7 +2412,7 @@ function HorizonSection({
                 })}
               </tr>
               <tr className="lc-deltaRowEmphasized">
-                <th scope="row">Total cash out</th>
+                <th scope="row">{strings.horizon.totalCashOut}</th>
                 {validRows.map((row) => {
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
@@ -2366,17 +2501,15 @@ function RefinanceSection({
   return (
     <section className="lc-advancedSection lc-refiSection" aria-labelledby="lc-refi-h">
       <header>
-        <h3 id="lc-refi-h" className="lc-sectionTitle">Refinance scenario</h3>
+        <h3 id="lc-refi-h" className="lc-sectionTitle">{strings.refi.heading}</h3>
         <p className="lc-sectionLead">
-          Compare keeping a loan to refinancing it at a future month.
-          Useful when rates drop or you're considering buying out an ARM
-          before it resets.
+          {strings.refi.lead}
         </p>
       </header>
 
       <div className="lc-refiInputs">
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={vendorSelectId}>Refinance which loan?</label>
+          <label className="lc-fieldLabel" htmlFor={vendorSelectId}>{strings.refi.whichLoan}</label>
           <select
             id={vendorSelectId}
             className="lc-select"
@@ -2388,15 +2521,15 @@ function RefinanceSection({
           >
             {vendors.map((v, i) => (
               <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
-                {v.name || `Vendor ${VENDOR_LABELS[i]}`}
-                {results[i]?.error ? ' (incomplete)' : ''}
+                {v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] })}
+                {results[i]?.error ? strings.charts.incomplete : ''}
               </option>
             ))}
           </select>
         </div>
 
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={atMonthId}>Refinance at month</label>
+          <label className="lc-fieldLabel" htmlFor={atMonthId}>{strings.refi.atMonth}</label>
           <input
             id={atMonthId}
             type="text"
@@ -2411,7 +2544,7 @@ function RefinanceSection({
         </div>
 
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={newRateId}>New rate (%)</label>
+          <label className="lc-fieldLabel" htmlFor={newRateId}>{strings.refi.newRate}</label>
           <input
             id={newRateId}
             type="text"
@@ -2426,7 +2559,7 @@ function RefinanceSection({
         </div>
 
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={newTermId}>New term (months)</label>
+          <label className="lc-fieldLabel" htmlFor={newTermId}>{strings.refi.newTerm}</label>
           <input
             id={newTermId}
             type="text"
@@ -2442,7 +2575,7 @@ function RefinanceSection({
 
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={newFeeId}>
-            New closing costs <span className="lc-fieldHint">({currency})</span>
+            {strings.refi.newFee} <span className="lc-fieldHint">({currency})</span>
           </label>
           <input
             id={newFeeId}
@@ -2468,44 +2601,44 @@ function RefinanceSection({
             }}
           />
           <label htmlFor={rollFeeId} className="lc-fieldLabel">
-            Roll closing costs into new principal
+            {strings.refi.rollFee}
           </label>
         </div>
       </div>
 
       {!cmp ? (
         <p className="lc-deltaEmpty">
-          Pick a valid vendor and enter a refinance month, rate, and term to see savings.
+          {strings.refi.empty}
         </p>
       ) : 'error' in cmp ? (
-        <p className="lc-error" role="alert">{cmp.error}</p>
+        <p className="lc-error" role="alert">{engineError(cmp.error, strings)}</p>
       ) : (
         <div className="lc-refiResults">
           <dl className="lc-resultList">
             <ResultRow
-              label="Keep current loan: total"
+              label={strings.refi.keepTotal}
               value={formatMoney(cmp.keepTotalMinor, currency)}
             />
             <ResultRow
-              label="Refinance: total (over both legs)"
+              label={strings.refi.refiTotal}
               value={formatMoney(cmp.refinanceTotalMinor, currency)}
             />
             <ResultRow
-              label={cmp.savingsMinor >= 0 ? 'Refi saves' : 'Refi costs more'}
+              label={cmp.savingsMinor >= 0 ? strings.refi.saves : strings.refi.costsMore}
               value={formatMoney(Math.abs(cmp.savingsMinor), currency)}
               emphasized
             />
             <ResultRow
-              label="Break-even (months after refi)"
+              label={strings.refi.breakEven}
               value={
                 Number.isFinite(cmp.breakEvenMonths)
-                  ? formatMonths(cmp.breakEvenMonths)
-                  : 'never'
+                  ? months(cmp.breakEvenMonths, strings.months)
+                  : strings.results.never
               }
               hint={
                 Number.isFinite(cmp.breakEvenMonths)
-                  ? 'How long the new loan must run for closing costs to pay back'
-                  : 'New monthly is not lower; closing costs do not recoup'
+                  ? strings.refi.breakEvenHint
+                  : strings.refi.breakEvenNever
               }
             />
           </dl>

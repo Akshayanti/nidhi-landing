@@ -179,9 +179,10 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
           </ul>
         </div>
       ))}
-      {/* The header's picker is hidden below 640px, so the sheet carries the
-          same choice as a list. Its heading is the nav group heading, which is
-          why the picker itself renders only the rows. */}
+      {/* The sheet's copy of the choice. A list of names reads better here than
+          the header's popup, and it is a second way to the same list rather than
+          the only one: the header keeps its globe on a phone too. Its heading is
+          the nav group heading, which is why the picker renders only the rows. */}
       {otherLocales.length > 0 && (
         <div class="nav-sheetGroup">
           <p class="nav-sheetHeading">{strings.nav.groups.language}</p>

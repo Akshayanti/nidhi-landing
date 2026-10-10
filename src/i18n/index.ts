@@ -11,11 +11,11 @@ export {
   DEFAULT_LOCALE,
   LOCALES,
   LOCALE_META,
+  DATE_LOCALE,
   isLocale,
   localePrefix,
   localizedPath,
-  blogPath,
-  blogPostPath,
+  lessonPath,
   blogTagPath,
 } from './config.ts';
 export type { Locale } from './config.ts';

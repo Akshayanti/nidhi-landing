@@ -1,13 +1,21 @@
 # Hindi glossary
 
-One approved Hindi rendering per recurring term, so the chrome, the lessons and
-the tools keep agreeing. Change a term here first, then everywhere it appears.
-The chrome's own copy lives in `src/i18n/strings/hi.ts`; the lessons live in
-`src/content/blog-hi/`.
+One approved Hindi rendering per recurring term, so the chrome, the learning
+path and the tools keep agreeing. Change a term here first, then everywhere it
+appears. The chrome's and the path's copy lives in `src/i18n/strings/hi.ts`, the
+path's shared vocabulary alongside it in `learn.ts`, and the tools' copy in
+`src/i18n/strings/tools/`.
 
-Status: a starter list, fixed when the first Hindi lesson was written. Terms
-are added as lessons need them, and a term already listed is not re-decided
-per lesson.
+The lessons are the one part of the site that is not translated: they are
+written once, in English, and every language lists those same lessons and links
+to them at their one address. So this glossary governs the Hindi the site
+itself writes, not a Hindi lesson corpus, and a term below is listed because
+the chrome or a tool needs it (the net worth calculator, the loan comparison),
+not because a lesson does.
+
+Status: a starter list, fixed when the first Hindi strings were written. Terms
+are added as the site's own Hindi copy needs them, and a term already listed is
+not re-decided per page.
 
 ## Rules that apply to every string
 
@@ -27,26 +35,28 @@ breach as a defect.
    decisions.
 3. **Translate, do not localise.** Euro amounts, US and EU data caveats, the
    cited sources and the country-neutral "where to check locally" wording stay
-   exactly as the English lesson has them. This keeps the promise in
-   `src/pages/editorial-policy.astro` that the lessons are written for readers
-   anywhere true in both editions, and keeps figures agreeing across lessons.
+   exactly as the English has them, in a tool's Hindi as much as in the English
+   next to it. This keeps the promise in `src/pages/editorial-policy.astro` that
+   the writing is for readers anywhere true in both editions, and keeps figures
+   agreeing between the two languages.
 4. **Digits stay Latin.** `₹`, `€`, `$`, `4%`, `1,00,000` and `2026` are written
    with Latin digits, the way Indian financial writing does. Do not use
    Devanagari numerals.
 5. **The brand stays Latin.** `nidhi` is never transliterated. Product names
    (PostHog, Frankfurter) and source names (the cited papers, institutions and
    data sets) stay as they are.
-6. **English in parentheses on first use.** The first time a lesson uses a
+6. **English in parentheses on first use.** The first time a Hindi string uses a
    translated term, the English term follows it in parentheses, which is
    standard practice in Indian financial writing. Later uses drop it.
 7. **No new browser storage and no keys renamed.** The keys are the same in
    every language, and `nidhi-reading-progress` is deliberately shared, so a
-   lesson read in either language counts once.
-8. **An amount keeps the spelling the English lesson gives it**: the symbol
+   lesson opened from either language counts once.
+8. **An amount keeps the spelling the English gives it**: the symbol
    first, a comma between thousands, no space (`€10,000`, `$250,000`,
    `£120,000`). Never a dot between thousands and never a space-grouped form,
-   because the same figure appears in the lesson's prose and in its figure, and
-   `9.000 €` reads to an Indian reader as nine point zero zero zero. This
+   because the same figure appears twice on a page, in the prose and in the
+   figure or chart beside it, and `9.000 €` reads to an Indian reader as nine
+   point zero zero zero. This
    applies to the chrome as well: the homepage's illustrative figures go
    through `formatProseAmount`, which follows this rule, while the free tools
    go through `formatAmount`, which formats by the currency the reader picked
@@ -128,7 +138,7 @@ why this one won, so it is not re-argued in a later lesson.
 | risk tolerance | जोखिम लेने की क्षमता | Not जोखिम उठाने की क्षमता: उठाना is what a person does with loss, and the phrase is about capacity, which is what लेने की क्षमता names. Reused by the about page. |
 | tax residency | कर निवास | The noun: कर निवासी is the person. कर निवास स्थिति is the same thing with a word bolted on. |
 | opportunity cost | अवसर लागत | |
-| rule of thumb | अंगूठे का नियम | The Hindi calque is what Indian financial writing uses, and it is the term the lessons lean on hardest (the 4% rule is the first one a reader meets). Decided against सामान्य नियम, which loses that the rule is a shortcut rather than a fact. |
+| rule of thumb | अंगूठे का नियम | The Hindi calque is what Indian financial writing uses, and it is the term a reader meets hardest (the 4% rule is the first one). Decided against सामान्य नियम, which loses that the rule is a shortcut rather than a fact. |
 | sunk cost | डूबी लागत | |
 | loss aversion | हानि से बचने की प्रवृत्ति | |
 | mental accounting | मानसिक लेखांकन | |
@@ -140,8 +150,8 @@ why this one won, so it is not re-argued in a later lesson.
 
 ### Reading and sources
 
-Introduced by the about page, and kept here because the lessons use the same
-words.
+Introduced by the about page, and kept here because the chrome and the tools
+use the same words.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
@@ -224,9 +234,9 @@ page they would be telling a reader something they already know.
 
 The three calculators are the densest interface on the site: a reader meets
 forty labels per screen, and the same word appears in the label, the tooltip
-and the FAQ answer that explains it. So the rule here is stricter than the
-lessons': one rendering, everywhere, and the FAQ uses the label's word rather
-than a synonym for it. A label is also short: it has to fit a form column and
+and the FAQ answer that explains it. So the rule here is stricter than the rest
+of the chrome's: one rendering, everywhere, and the FAQ uses the label's word
+rather than a synonym for it. A label is also short: it has to fit a form column and
 match what the label above it says, which is why several of these are the
 everyday phrase rather than the precise one.
 

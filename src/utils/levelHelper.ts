@@ -13,6 +13,12 @@
  * Psychology sits beside the ladder: it has no ideas to tick, and is
  * suggested when the goal is about following through.
  *
+ * Only structure lives here: the ideas' ticks, their level and the lesson that
+ * teaches each one. Every word the reader sees (an idea's label, a goal's
+ * question and the phrase its reason completes) is in the catalog under
+ * `blogIndex.island.concepts` and `blogIndex.island.goals`, so a language's
+ * helper speaks that language without this module knowing any.
+ *
  * Answers never leave the page (see LearnHome.tsx and the privacy notice).
  */
 
@@ -22,42 +28,38 @@ const LADDER = ['discovery', 'building', 'optimizing'] as const;
 export interface Concept {
   id: string;
   level: string;
-  label: string;
   /** The lesson that teaches it. */
   slug: string;
 }
 
 export const CONCEPTS: Concept[] = [
-  { id: 'net-worth', level: 'discovery', label: 'What net worth is, and how to work it out', slug: 'what-is-net-worth' },
-  { id: 'interest', level: 'discovery', label: 'Why the interest rate on a debt matters', slug: 'liabilities' },
-  { id: 'emergency-fund', level: 'discovery', label: 'What an emergency fund is for', slug: 'emergency-fund' },
-  { id: 'inflation', level: 'discovery', label: 'How inflation shrinks what money buys', slug: 'purchasing-power' },
-  { id: 'asset-classes', level: 'building', label: 'How shares, bonds and cash differ', slug: 'investing-101-asset-classes' },
-  { id: 'diversification', level: 'building', label: 'What diversification does, and what it does not', slug: 'diversification' },
-  { id: 'tax-accounts', level: 'building', label: 'What a tax-advantaged account is', slug: 'tax-advantaged-accounts' },
-  { id: 'rebalancing', level: 'building', label: 'Why a portfolio drifts and gets rebalanced', slug: 'rebalancing-your-portfolio' },
-  { id: 'fees', level: 'optimizing', label: 'How a 1% yearly fee adds up over decades', slug: 'fee-optimization' },
-  { id: 'real-returns', level: 'optimizing', label: 'What a real return is, after inflation and costs', slug: 'real-returns-and-benchmarking' },
-  { id: 'tax-loss', level: 'optimizing', label: 'Tax-loss harvesting and asset location', slug: 'tax-loss-harvesting-and-asset-location' },
-  { id: 'glide-path', level: 'optimizing', label: 'What a glide path is', slug: 'advanced-rebalancing' },
+  { id: 'net-worth', level: 'discovery', slug: 'what-is-net-worth' },
+  { id: 'interest', level: 'discovery', slug: 'liabilities' },
+  { id: 'emergency-fund', level: 'discovery', slug: 'emergency-fund' },
+  { id: 'inflation', level: 'discovery', slug: 'purchasing-power' },
+  { id: 'asset-classes', level: 'building', slug: 'investing-101-asset-classes' },
+  { id: 'diversification', level: 'building', slug: 'diversification' },
+  { id: 'tax-accounts', level: 'building', slug: 'tax-advantaged-accounts' },
+  { id: 'rebalancing', level: 'building', slug: 'rebalancing-your-portfolio' },
+  { id: 'fees', level: 'optimizing', slug: 'fee-optimization' },
+  { id: 'real-returns', level: 'optimizing', slug: 'real-returns-and-benchmarking' },
+  { id: 'tax-loss', level: 'optimizing', slug: 'tax-loss-harvesting-and-asset-location' },
+  { id: 'glide-path', level: 'optimizing', slug: 'advanced-rebalancing' },
 ];
 
 export interface Goal {
   id: string;
-  label: string;
   /** Null for "not sure": the ticked ideas decide. */
   level: string | null;
-  /** Completes "the lessons on ...". */
-  topic?: string;
 }
 
 export const GOALS: Goal[] = [
-  { id: 'picture', label: 'Seeing clearly where my money stands', level: 'discovery', topic: 'net worth, cash flow and budgeting' },
-  { id: 'safety', label: 'Building a safety net, or getting on top of debt', level: 'discovery', topic: 'emergency funds and debt' },
-  { id: 'invest', label: 'Starting to invest, or setting goals', level: 'building', topic: 'investing, accounts and goals' },
-  { id: 'habits', label: 'Following through on what I already know', level: 'psychology', topic: 'habits, biases and following through' },
-  { id: 'refine', label: 'Making a plan I already have work better', level: 'optimizing', topic: 'fees, taxes and fine-tuning a plan' },
-  { id: 'unsure', label: 'Not sure yet', level: null },
+  { id: 'picture', level: 'discovery' },
+  { id: 'safety', level: 'discovery' },
+  { id: 'invest', level: 'building' },
+  { id: 'habits', level: 'psychology' },
+  { id: 'refine', level: 'optimizing' },
+  { id: 'unsure', level: null },
 ];
 
 /** A level counts as a gap when this many of its ideas, or fewer, are ticked. */

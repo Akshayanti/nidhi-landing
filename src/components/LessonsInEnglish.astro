@@ -1,0 +1,58 @@
+---
+/**
+ * One line saying the lessons are in English, for the pages outside English
+ * that list them.
+ *
+ * The lessons are written once, in English, and are not translated; a Hindi
+ * page's cards therefore carry English titles, and a reader is owed that
+ * sentence rather than left to work it out from the headings. It renders
+ * nothing on the English pages, where it would be telling a reader what they
+ * already know, which is the same rule the privacy notice's "this log is kept
+ * in English" note follows (see src/components/pages/PrivacyPage.astro).
+ *
+ * The words live in the shared `learn` vocabulary (src/i18n/strings/learn.ts),
+ * because every page on the path that shows lesson cards needs them.
+ */
+import { DEFAULT_LOCALE, dict, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { learn } = dict(locale);
+---
+
+{
+  locale !== DEFAULT_LOCALE && (
+    <p class="lessons-note" role="note">
+      <span class="lessons-note__mark" aria-hidden="true">
+        i
+      </span>
+      {learn.lessonsInEnglish}
+    </p>
+  )
+}
+
+<style>
+  .lessons-note {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    margin: 0 0 var(--space-4);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    background: var(--color-bg);
+    border-inline-start: 3px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .lessons-note__mark {
+    flex: none;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+</style>

@@ -38,6 +38,13 @@ const repoRoot = join(here, '..');
 const TARGET_GLOBS = [
   'src/pages/free',
   'src/pages/privacy.astro',
+  // A locale's mirrored routes, and the page bodies both languages render.
+  // The Hindi edition's pages are hand-written the same way the English ones
+  // are, so they get the same hygiene rules. Without these two entries the
+  // translated pages would be the only pages in the repo the lint never
+  // reads, because `src/pages/free` above matches the English prefix only.
+  'src/pages/[locale]',
+  'src/components/pages',
   'src/components/LoanCompare.tsx',
   'src/utils/loanMath.ts',
   'src/utils/loanMath.test.ts',

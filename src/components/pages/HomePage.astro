@@ -22,6 +22,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import HeroChart from '../HeroChart.astro';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { LOCALES, dict, format, localizedPath, type Locale } from '../../i18n';
 import { EXAMPLE_RETURN, STARTER, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
 import {
@@ -271,6 +272,10 @@ const faqSchema = {
         {home.lessons.helperQuestion} <a href={href('/blog/#level-helper')} data-attr="home-level-helper">{home.lessons.helperLink}</a>.
       </p>
 
+      {/* Every line below opens an English lesson: the routes are named in
+          Hindi, the lessons they open are not. */}
+      <LessonsInEnglish locale={locale} />
+
       {/* One line per route. Each opens the first lesson this browser has not read yet. */}
       <ul class="routes" role="list">
         {startingPoints.map((s) => s.lessons.length === 0 ? (
@@ -286,8 +291,8 @@ const faqSchema = {
           <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
             <a
               class="route"
-              href={href(s.lessons[0].href)}
-              data-start-route={JSON.stringify(s.lessons.map((l) => ({ ...l, href: href(l.href) })))}
+              href={s.lessons[0].href}
+              data-start-route={JSON.stringify(s.lessons)}
               data-route-done={href(s.level ? `/blog/${s.level}/` : '/blog/')}
               data-door-continue={home.lessons.doorContinue}
               data-door-read={home.lessons.doorRead}

@@ -20,6 +20,28 @@
  *    a translation: `हिन्दी` and `Čeština` read the same on every page. A fifth
  *    locale is registry data and its own pages, not a new pair of strings.
  *
+ * The trigger is written for the reader who cannot read the page. Its word for
+ * "language" is in the page's own language, so it is of no use to someone
+ * stranded there: it is there for the screen reader, and hidden. What is left
+ * visible is a globe, the language's own name, and a caret. The globe is the
+ * one part of this control that needs no reading at all, which is the whole
+ * point of it: a reader who cannot read the page still has to recognise the way
+ * out of it before they can use it. A second review, Codex's, put those three
+ * shapes in this order and would have dropped the word outright; it survives
+ * as visually hidden text so the control keeps a spoken name, and that name is
+ * in the page's language for the same reason the visible word was: the only
+ * language a page can write an accessible name in is its own. A reader who
+ * understands neither is not helped by seven translations of "Language"
+ * stacked in a name, and is helped by the row-level `lang` below, which lets
+ * assistive technology pronounce each destination correctly.
+ *
+ * The globe is not only on the wider screens. Below 640px the same control
+ * stays in the header as the globe alone, square and the size of the theme
+ * buttons beside it, rather than being reachable only through the menu button,
+ * which is itself a control a stranded reader has to recognise first. The
+ * sheet still carries the names, because a list reads better than a popup on a
+ * phone, but it is no longer the only way to the list.
+ *
  * The language you are reading is listed too, as text rather than a link. It is
  * a destination you are already at, and a link to itself would be a reload that
  * analytics would count as a language switch.
@@ -47,11 +69,11 @@ interface Props {
    */
   alternates?: readonly Locale[];
   /**
-   * `header` is the disclosure beside the theme toggle, shown above 640px;
-   * `sheet` is the same choice as a list in the phone menu, for the smaller
-   * screens where the header has no room for it. The sheet's heading is the
-   * nav group heading in Header.astro, so the sheet variant renders the list
-   * alone.
+   * `header` is the disclosure beside the theme toggle, at every width: a
+   * globe and the current name on a wider screen, the globe alone on a phone.
+   * `sheet` is the same choice as a list in the phone menu, where a list reads
+   * better than a popup. The sheet's heading is the nav group heading in
+   * Header.astro, so the sheet variant renders the list alone.
    */
   variant?: 'header' | 'sheet';
 }
@@ -78,8 +100,17 @@ const rows = alternates.map((to) => ({
   variant === 'header' ? (
     <details class="lang-picker lang-picker--header">
       <summary class="lang-picker__toggle">
-        <span>{languagePicker.label}:</span>
-        <span lang={LOCALE_META[locale].htmlLang}>{LOCALE_META[locale].label}</span>
+        <span class="lang-picker__globe" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="10" cy="10" r="7.5" />
+            <ellipse cx="10" cy="10" rx="3.5" ry="7.5" />
+            <path d="M2.5 10h15" />
+          </svg>
+        </span>
+        <span class="lang-picker__srOnly">{languagePicker.label}:</span>
+        <span class="lang-picker__name" lang={LOCALE_META[locale].htmlLang}>
+          {LOCALE_META[locale].label}
+        </span>
         <span class="lang-picker__caret" aria-hidden="true">
           &#9662;
         </span>
@@ -143,9 +174,8 @@ const rows = alternates.map((to) => ({
   }
 
   /* A pill the size of the theme toggle beside it, so the two read as one row
-     of controls. It sizes to its text: "Language: Čeština" is wider than
-     "Language: हिन्दी", and the header shifts by the difference when a page
-     switches language. */
+     of controls. It sizes to its text: "Čeština" is wider than "हिन्दी", and the
+     header shifts by the difference when a page switches language. */
   .lang-picker__toggle {
     box-sizing: border-box;
     display: flex;
@@ -164,6 +194,14 @@ const rows = alternates.map((to) => ({
     /* The native triangle, replaced by the caret below so it matches the nav
        dropdowns two centimetres to the left. */
     list-style: none;
+  }
+
+  /* The one part of this control that is legible without reading anything.
+     Sized and stroked like the icons in the theme toggle two buttons along. */
+  .lang-picker__globe {
+    display: flex;
+    flex: none;
+    color: var(--color-teal);
   }
 
   .lang-picker__toggle::-webkit-details-marker {
@@ -196,7 +234,9 @@ const rows = alternates.map((to) => ({
   .lang-picker__list {
     position: absolute;
     top: 100%;
-    right: 0;
+    /* Logical, so the popup hangs off the trigger's inline end and mirrors by
+       itself when an RTL locale arrives. */
+    inset-inline-end: 0;
     z-index: 200;
     min-width: 220px;
     margin: 8px 0 0;
@@ -288,10 +328,46 @@ const rows = alternates.map((to) => ({
     white-space: nowrap;
   }
 
-  /* Below 640px the header carries the theme toggle and the menu button
-     already; the sheet has the list instead. */
+  /* Phones: the globe stays in the header, the name goes. The trigger is a
+     square the size of a theme button, and the popup hangs off `.nav-right`
+     instead of the pill, so that a 220px list anchored to its inline end still
+     lands on a 320px screen rather than off the left of it. */
   @media (max-width: 640px) {
+    /* `:global`, because `.nav-right` is Header.astro's element and this
+       stylesheet's selectors would otherwise carry a scope attribute it does
+       not have. Nothing else in that row is absolutely positioned at this
+       width: the nav dropdowns are hidden and carry their own containing
+       block. */
+    :global(.nav-right) {
+      position: relative;
+    }
+
     .lang-picker--header {
+      position: static;
+    }
+
+    .lang-picker__toggle {
+      justify-content: center;
+      gap: 0;
+      width: 30px;
+      height: 30px;
+      min-height: 30px;
+      padding: 0;
+    }
+
+    /* The name the wider screen shows beside the globe. Kept in the document,
+       because it is what names the control to a screen reader: same
+       declarations as `.lang-picker__srOnly` above. */
+    .lang-picker__name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .lang-picker__caret {
       display: none;
     }
   }

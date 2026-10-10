@@ -12,11 +12,32 @@ import {
 } from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, encodeState, type ToolState } from '../utils/monte-carlo/url.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
+import { format } from '../i18n/format.ts';
+import type { Dict } from '../i18n/strings/types.ts';
 
 // ---------------------------------------------------------------------------
-// PostHog telemetry: interaction metadata only, never the values typed.
+// Copy
+//
+// Every word this island draws comes in through `strings`, one locale's slice
+// of the catalog that `MonteCarloPage.astro` puts together. Not `dict(locale)`:
+// that reads a runtime-indexed table holding every language and every tool, so
+// nothing tree-shakes and the client chunk would carry the whole catalog to
+// render one calculator. The type is a compile-time-only import (erased, no
+// module loaded); `format` is a few lines and fills the `{placeholders}`.
+//
+// A figure is never typed into a string: the sentences carry `{paths}`,
+// `{stocksMean}` and the rest, and the values come from the constants in
+// `../utils/monte-carlo/math.ts`, so the prose and the model cannot drift
+// apart. Amounts stay the currency's own business (formatAmount); path counts
+// keep the fixed grouping the rest of the site uses.
 // ---------------------------------------------------------------------------
 
+type Strings = Dict['tools']['monteCarlo']['island'];
+
+/** Shorthand, as on the pages: a catalog template is filled with `t(...)`. */
+const t = format;
+
+/** PostHog telemetry: interaction metadata only, never the values typed. */
 function track(event: string, properties?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
   try {
@@ -34,31 +55,12 @@ function formatShare(share: number): string {
   return `${Math.round(share * 100)}%`;
 }
 
+const grouped = (n: number) => n.toLocaleString('en-US');
+
 /** "9 in 10" style phrasing, rounded to the nearest tenth. */
-function inTen(share: number): string {
-  return `${Math.round(share * 10)} in 10`;
+function inTen(share: number, strings: Strings): string {
+  return t(strings.inTen, { n: Math.round(share * 10) });
 }
-
-// ---------------------------------------------------------------------------
-// Return settings, as shown on the switch. The figures match math.ts: the
-// historical row quotes the published world figures, the other two the ends
-// of the long-run range used across nidhi's articles.
-// ---------------------------------------------------------------------------
-
-const RETURN_LABELS: Record<ReturnSetting, string> = {
-  cautious: 'Cautious',
-  historical: 'Historical',
-  optimistic: 'Optimistic',
-};
-
-const RETURN_TIPS: Record<ReturnSetting, string> = {
-  cautious:
-    'Stocks grow about 4% a year after inflation and bonds about 1%: the low end of the long-run range. The ups and downs are as large as in history.',
-  historical:
-    'World markets from 1900 to 2025: stocks grew about 5.3% a year after inflation and bonds about 1.7%, with the ups and downs they actually had.',
-  optimistic:
-    'Stocks grow about 6% a year after inflation and bonds about 3%: the high end of the long-run range. The ups and downs are as large as in history.',
-};
 
 // Above this many paths the simulation runs in a worker, off the main thread.
 const WORKER_THRESHOLD = 10_000;
@@ -208,7 +210,7 @@ function useSimulation(state: ToolState): Shown & { busy: boolean } {
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function MonteCarloSimulator() {
+export default function MonteCarloSimulator({ strings, netWorthHref }: { strings: Strings; netWorthHref: string }) {
   const [form, setForm] = useState<FormState>(() => toForm(DEFAULTS));
   const [settled, setSettled] = useState<ToolState>(DEFAULTS);
   const [copied, setCopied] = useState(false);
@@ -267,8 +269,8 @@ export default function MonteCarloSimulator() {
   // chart does not jump around on every keystroke.
   useEffect(() => {
     if (hasErrors) return;
-    const t = window.setTimeout(() => setSettled(toState(form)), 250);
-    return () => window.clearTimeout(t);
+    const timer = window.setTimeout(() => setSettled(toState(form)), 250);
+    return () => window.clearTimeout(timer);
   }, [form, hasErrors]);
 
   const { result, state: shownState, busy: running } = useSimulation(settled);
@@ -291,7 +293,7 @@ export default function MonteCarloSimulator() {
         setCopied(true);
         window.setTimeout(() => setCopied(false), 2500);
       },
-      () => window.prompt('Copy this link:', url),
+      () => window.prompt(strings.actions.copyPrompt, url),
     );
     track('free_monte_carlo_share_copied');
   }
@@ -304,10 +306,10 @@ export default function MonteCarloSimulator() {
 
   return (
     <div className="mcs-root">
-      <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label="Your plan">
+      <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="mcs-grid">
           <div className="mcs-field">
-            <label className="mcs-label" htmlFor={ids.currency}>Currency</label>
+            <label className="mcs-label" htmlFor={ids.currency}>{strings.fields.currency}</label>
             <select
               id={ids.currency}
               className="mcs-input"
@@ -322,19 +324,22 @@ export default function MonteCarloSimulator() {
               ))}
             </select>
           </div>
-          <NumberField id={ids.start} label="Invested today" value={form.start} onChange={update('start')} invalid={errors.start} hint="Today's money" />
-          <NumberField id={ids.monthly} label="Added every month" value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} />
-          <NumberField id={ids.saveYears} label="Years of saving" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint="0 to 60" />
+          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={update('start')} invalid={errors.start} hint={strings.fields.startHint} />
+          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} />
+          <NumberField id={ids.saveYears} label={strings.fields.saveYears} value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint={strings.fields.saveYearsHint} />
         </div>
         <p className="mcs-hint mcs-crossLink">
-          Money in several currencies? Add it up first with the{' '}
-          <a href="/free/multi-currency-net-worth/" data-attr="free-monte-carlo-net-worth-link">net worth calculator</a>,
-          then enter the total here.
+          {strings.fields.crossLink.before}
+          <a href={netWorthHref} data-attr="free-monte-carlo-net-worth-link">{strings.fields.crossLink.link}</a>
+          {strings.fields.crossLink.after}
         </p>
 
         <div className="mcs-field mcs-mix">
           <label className="mcs-label" htmlFor={ids.stockPct}>
-            Mix: <strong>{errors.stockPct ? '?' : form.stockPct}% stocks</strong>, {errors.stockPct ? '?' : 100 - Number(form.stockPct)}% bonds
+            {strings.fields.mixBefore}
+            <strong>{t(strings.fields.mixStocks, { pct: errors.stockPct ? '?' : form.stockPct })}</strong>
+            {strings.fields.mixMiddle}
+            {t(strings.fields.mixBonds, { pct: errors.stockPct ? '?' : 100 - Number(form.stockPct) })}
           </label>
           <input
             id={ids.stockPct}
@@ -346,10 +351,10 @@ export default function MonteCarloSimulator() {
             value={errors.stockPct ? DEFAULTS.stockPct : form.stockPct}
             onChange={update('stockPct')}
           />
-          <span className="mcs-hint">Rebalanced back to this mix once a year.</span>
+          <span className="mcs-hint">{strings.fields.mixHint}</span>
         </div>
 
-        <QuickResult result={result} state={shownState} busy={pending} />
+        <QuickResult result={result} state={shownState} busy={pending} strings={strings} />
 
         {/* Phones only: the toggle for the folded settings, showing what they
             are set to. An invalid fee keeps them open so the error shows.
@@ -365,10 +370,14 @@ export default function MonteCarloSimulator() {
             aria-controls={ids.settings}
             onClick={() => setSettingsOpen((o) => !o)}
           >
-            <span className="mcs-settingsName">Returns, fees and paths</span>
+            <span className="mcs-settingsName">{strings.settings.toggle}</span>
           </button>
           <p className="mcs-settingsValue">
-            {RETURN_LABELS[form.returns]} · {errors.feePct ? '?' : form.feePct}% fees · {form.paths.toLocaleString('en-US')} paths
+            {t(strings.settings.summary, {
+              returns: strings.returns[form.returns],
+              fees: errors.feePct ? '?' : form.feePct,
+              paths: grouped(form.paths),
+            })}
           </p>
         </div>
 
@@ -383,7 +392,7 @@ export default function MonteCarloSimulator() {
               if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setTipsDismissed(false);
             }}
           >
-            <legend className="mcs-label">Returns</legend>
+            <legend className="mcs-label">{strings.settings.legend}</legend>
             <div className="mcs-switchRow">
               {RETURN_SETTINGS.map((s) => (
                 <label key={s} className={`mcs-switchOpt${form.returns === s ? ' mcs-switchOpt--on' : ''}`}>
@@ -398,27 +407,27 @@ export default function MonteCarloSimulator() {
                       track('free_monte_carlo_returns_changed', { setting: s });
                     }}
                   />
-                  <span>{RETURN_LABELS[s]}</span>
-                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{RETURN_TIPS[s]}</span>
+                  <span>{strings.returns[s]}</span>
+                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{strings.returnTips[s]}</span>
                 </label>
               ))}
             </div>
             {/* The chosen setting's description, visible for touch screens
                 where there is no hover. Screen readers get it from the
                 tooltip through aria-describedby, so it is hidden from them. */}
-            <span className="mcs-hint" aria-hidden="true">{RETURN_TIPS[form.returns]}</span>
+            <span className="mcs-hint" aria-hidden="true">{strings.returnTips[form.returns]}</span>
           </fieldset>
           <NumberField
             id={ids.feePct}
-            label="Yearly fees, %"
+            label={strings.settings.feeLabel}
             value={form.feePct}
             onChange={update('feePct')}
             invalid={errors.feePct}
             max={MAX_FEE_PCT}
-            hint="Fund and platform fees, taken off every year's return. 0 to 5."
+            hint={t(strings.settings.feeHint, { maxFeePct: MAX_FEE_PCT })}
           />
           <div className="mcs-field">
-            <label className="mcs-label" htmlFor={ids.paths}>Simulated paths</label>
+            <label className="mcs-label" htmlFor={ids.paths}>{strings.settings.pathsLabel}</label>
             <select
               id={ids.paths}
               className="mcs-input"
@@ -431,10 +440,10 @@ export default function MonteCarloSimulator() {
               }}
             >
               {RUN_OPTIONS.map((n) => (
-                <option key={n} value={n}>{n.toLocaleString('en-US')}</option>
+                <option key={n} value={n}>{grouped(n)}</option>
               ))}
             </select>
-            <span className="mcs-hint" id={`${ids.paths}-hint`}>More paths give steadier figures; past 10,000 they move by a few percent at most.</span>
+            <span className="mcs-hint" id={`${ids.paths}-hint`}>{strings.settings.pathsHint}</span>
           </div>
         </div>
 
@@ -450,38 +459,38 @@ export default function MonteCarloSimulator() {
                   track('free_monte_carlo_withdrawal_toggled', { on });
                 }}
               />
-              Then live off it
+              {strings.withdraw.toggle}
             </label>
           </legend>
           {!form.withdrawOn && (
-            <span className="mcs-hint">Switch on to see how long the money lasts once you start taking it out.</span>
+            <span className="mcs-hint">{strings.withdraw.off}</span>
           )}
           {form.withdrawOn && (
             <div className="mcs-grid mcs-grid--two">
-              <NumberField id={ids.withdrawal} label="Taken out every year" value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} hint="Today's money, taken monthly" />
-              <NumberField id={ids.withdrawYears} label="For how many years" value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} max={60} hint="1 to 60" />
+              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} hint={strings.withdraw.amountHint} />
+              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} max={60} hint={strings.withdraw.yearsHint} />
             </div>
           )}
         </fieldset>
 
         <div className="mcs-actions">
           <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
-            {copied ? 'Link copied' : 'Copy a link to this plan'}
+            {copied ? strings.actions.copied : strings.actions.copy}
           </button>
           <button type="button" className="mcs-btn mcs-btn--ghost" onClick={reset} data-attr="free-monte-carlo-reset">
-            Reset
+            {strings.actions.reset}
           </button>
           <span className="mcs-hint" role="status" aria-live="polite">
             {hasErrors
-              ? 'Fix the highlighted fields to update the results.'
+              ? strings.actions.fix
               : running
-                ? `Running ${settled.paths.toLocaleString('en-US')} paths…`
+                ? t(strings.actions.running, { paths: grouped(settled.paths) })
                 : ''}
           </span>
         </div>
       </form>
 
-      <Results result={result} state={shownState} code={shownState.currency} busy={running} />
+      <Results result={result} state={shownState} code={shownState.currency} busy={running} strings={strings} />
     </div>
   );
 }
@@ -526,7 +535,7 @@ function NumberField(props: {
  * answers as you type instead of sitting below the whole form. The full
  * results below say the same, so screen readers skip this copy.
  */
-function QuickResult({ result, state, busy }: { result: SimulationResult; state: ToolState; busy: boolean }) {
+function QuickResult({ result, state, busy, strings }: { result: SimulationResult; state: ToolState; busy: boolean; strings: Strings }) {
   const code = state.currency;
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
@@ -536,23 +545,27 @@ function QuickResult({ result, state, busy }: { result: SimulationResult; state:
     <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}`} aria-hidden="true">
       {saving && (
         <>
-          <span className="mcs-quickTitle">Median after {state.saveYears} year{state.saveYears === 1 ? '' : 's'}</span>
+          <span className="mcs-quickTitle">
+            {state.saveYears === 1
+              ? strings.quick.medianOne
+              : t(strings.quick.medianOther, { years: state.saveYears })}
+          </span>
           <span className="mcs-quickValue">{formatAmount(r.p50, code)}</span>
           <span className="mcs-quickRange">
-            8 in 10 paths between {formatAmount(r.p10, code, true)} and {formatAmount(r.p90, code, true)}
+            {t(strings.quick.range, { low: formatAmount(r.p10, code, true), high: formatAmount(r.p90, code, true) })}
           </span>
         </>
       )}
       {lasted !== null && (
         <span className="mcs-quickRange">
-          The money lasted all {state.withdrawYears} years in {inTen(lasted)} paths.
+          {t(strings.quick.lasted, { years: state.withdrawYears, inTen: inTen(lasted, strings) })}
         </span>
       )}
     </div>
   );
 }
 
-function Results({ result, state, code, busy }: { result: SimulationResult; state: ToolState; code: string; busy: boolean }) {
+function Results({ result, state, code, busy, strings }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings }) {
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
   const withdrawing = state.withdrawal > 0;
@@ -561,7 +574,11 @@ function Results({ result, state, code, busy }: { result: SimulationResult; stat
   return (
     <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
       <h2 id="mcs-results-h" className="mcs-resultsTitle">
-        {saving ? `After ${state.saveYears} year${state.saveYears === 1 ? '' : 's'} of saving` : 'Starting from today'}
+        {saving
+          ? state.saveYears === 1
+            ? strings.results.headingOne
+            : t(strings.results.headingOther, { years: state.saveYears })
+          : strings.results.headingToday}
       </h2>
 
       {saving && (
@@ -570,68 +587,70 @@ function Results({ result, state, code, busy }: { result: SimulationResult; stat
             {/* Phones show the short name only, in three columns, and the
                 explanations once below the cards (mcs-cardsKey). */}
             <div className="mcs-card">
-              <span className="mcs-cardLabel">Low<span className="mcs-cardMore"> (10th percentile): 1 in 10 paths ended below</span></span>
+              <span className="mcs-cardLabel">{strings.results.lowLabel}<span className="mcs-cardMore">{strings.results.lowMore}</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p10, code)}</span>
             </div>
             <div className="mcs-card mcs-card--mid">
-              <span className="mcs-cardLabel">Median<span className="mcs-cardMore">: half the paths ended above, half below</span></span>
+              <span className="mcs-cardLabel">{strings.results.medianLabel}<span className="mcs-cardMore">{strings.results.medianMore}</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p50, code)}</span>
             </div>
             <div className="mcs-card">
-              <span className="mcs-cardLabel">High<span className="mcs-cardMore"> (90th percentile): 1 in 10 paths ended above</span></span>
+              <span className="mcs-cardLabel">{strings.results.highLabel}<span className="mcs-cardMore">{strings.results.highMore}</span></span>
               <span className="mcs-cardValue">{formatAmount(r.p90, code)}</span>
             </div>
           </div>
           <p className="mcs-cardsKey">
-            Low and high: 1 in 10 paths ended below or above (the 10th and 90th percentiles). Median: half ended above, half below.
+            {strings.results.cardsKey}
           </p>
           <p className="mcs-note">
-            A calculator with one fixed return would draw a single line to{' '}
-            <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>.{' '}
-            {formatShare(result.belowStraightLine)} of the simulated paths ended below it.
+            {strings.results.noteBefore}{' '}
+            <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>
+            {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine) })}
           </p>
         </>
       )}
 
       {!saving && !withdrawing && (
-        <p className="mcs-note">Add some years of saving, or switch on withdrawals, to see a spread of outcomes.</p>
+        <p className="mcs-note">{strings.results.empty}</p>
       )}
 
       {withdrawing && result.lasted !== null && (
         <div className="mcs-lasted">
           <p className="mcs-lastedHead">
-            Taking {formatAmount(state.withdrawal, code)} a year, the money lasted all {state.withdrawYears} years in{' '}
-            <strong>{inTen(result.lasted)}</strong> simulated paths ({formatShare(result.lasted)}).
+            {t(strings.results.lastedHeadBefore, {
+              amount: formatAmount(state.withdrawal, code),
+              years: state.withdrawYears,
+            })}{' '}
+            <strong>{inTen(result.lasted, strings)}</strong>
+            {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted) })}
           </p>
           {result.medianRunOutYear !== null && (
             <p className="mcs-note">
-              Among the paths where it ran out, the median year it did so was year {result.medianRunOutYear} of {state.withdrawYears}.
+              {t(strings.results.runOut, { year: result.medianRunOutYear, years: state.withdrawYears })}
             </p>
           )}
         </div>
       )}
 
       <p className="mcs-caveat">
-        These are shares of {result.paths.toLocaleString('en-US')} simulated paths, not the chance of anything happening
-        to you. The model is a simplification; see what it leaves out below.
-        {result.paths < 10_000 &&
-          ` With only ${result.paths.toLocaleString('en-US')} paths, the figures can be several percent away from what thousands of paths give.`}
+        {t(strings.results.caveat, { paths: grouped(result.paths) })}
+        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths) })}
       </p>
 
-      {result.years > 0 && <Chart result={result} state={state} code={code} />}
+      {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
 
       {result.years > 0 && <details className="mcs-tableWrap" onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) track('free_monte_carlo_table_opened'); }}>
-        <summary className="mcs-tableSummary">Show the numbers as a table</summary>
+        <summary className="mcs-tableSummary">{strings.results.tableSummary}</summary>
         <div className="mcs-tableScroll">
           <table className="mcs-table" aria-describedby={tableId}>
-            <caption id={tableId}>Balance at the end of each year, in today's money</caption>
+            <caption id={tableId}>{strings.results.tableCaption}</caption>
             <thead>
               <tr>
-                <th scope="col">Year</th>
-                <th scope="col">Low (10th)</th>
-                <th scope="col">Median</th>
-                <th scope="col">High (90th)</th>
-                <th scope="col">Single line</th>
+                <th scope="col">{strings.results.tableYear}</th>
+                <th scope="col">{strings.results.tableLow}</th>
+                <th scope="col">{strings.results.tableMedian}</th>
+                <th scope="col">{strings.results.tableHigh}</th>
+                <th scope="col">{strings.results.tableStraight}</th>
               </tr>
             </thead>
             <tbody>
@@ -706,7 +725,7 @@ function spreadLabels(ys: number[], gap: number, min: number, max: number): numb
   return out.map((y) => y - overflow);
 }
 
-function Chart({ result, state, code }: { result: SimulationResult; state: ToolState; code: string }) {
+function Chart({ result, state, code, strings }: { result: SimulationResult; state: ToolState; code: string; strings: Strings }) {
   const titleId = useId();
   const descId = useId();
   const gradId = useId();
@@ -747,8 +766,8 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   const p75 = bands.map((b) => b.p75);
   const p90 = bands.map((b) => b.p90);
 
-  const yTicks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
-  const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
+  const yTicks = Array.from({ length: yCount + 1 }, (_, i) => i * yStep);
+  const yMinor = Array.from({ length: yCount }, (_, i) => (i + 0.5) * yStep);
   const xStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
   const xTicks: number[] = [];
   for (let y = 0; y <= years; y += xStep) xTicks.push(y);
@@ -766,15 +785,19 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
   const endRaw = [end.p90, end.p50, end.p10].map((v) => r1(yPx(v)));
   const endY = spreadLabels(endRaw, 22, PAD.top + 8, H - PAD.bottom).map(r1);
   const endLabels = [
-    { key: 'p90', label: 'High', value: end.p90, cls: 'mcs-endLabel--outer' },
-    { key: 'p50', label: 'Median', value: end.p50, cls: 'mcs-endLabel--median' },
-    { key: 'p10', label: 'Low', value: end.p10, cls: 'mcs-endLabel--outer' },
+    { key: 'p90', label: strings.chart.endHigh, value: end.p90, cls: 'mcs-endLabel--outer' },
+    { key: 'p50', label: strings.chart.endMedian, value: end.p50, cls: 'mcs-endLabel--median' },
+    { key: 'p10', label: strings.chart.endLow, value: end.p10, cls: 'mcs-endLabel--outer' },
   ];
 
-  const desc =
-    `Fan chart of ${result.paths.toLocaleString('en-US')} simulated paths over ${years} years. ` +
-    `At the end, the 10th percentile is ${formatAmount(end.p10, code)}, the median ${formatAmount(end.p50, code)}, ` +
-    `and the 90th percentile ${formatAmount(end.p90, code)}. A single fixed-return line ends at ${formatAmount(straightLine[years], code)}.`;
+  const desc = t(strings.chart.desc, {
+    paths: grouped(result.paths),
+    years,
+    low: formatAmount(end.p10, code),
+    median: formatAmount(end.p50, code),
+    high: formatAmount(end.p90, code),
+    straight: formatAmount(straightLine[years], code),
+  });
 
   // Pointer and keyboard reading of a year's values.
   function yearAt(clientX: number): number | null {
@@ -807,12 +830,21 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
     hover === null || !withdrawing
       ? null
       : hover === 0
-        ? 'Start'
+        ? strings.chart.phaseStart
         : hover <= state.saveYears
-          ? 'Saving'
-          : `Withdrawing, year ${hover - state.saveYears}`;
+          ? strings.chart.phaseSaving
+          : t(strings.chart.phaseWithdrawing, { year: hover - state.saveYears });
   const announce = h
-    ? `Year ${hover}${phase ? `, ${phase.toLowerCase()}` : ''}. High ${formatAmount(h.p90, code)}, middle half ${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}, median ${formatAmount(h.p50, code)}, low ${formatAmount(h.p10, code)}, single line ${formatAmount(straightLine[hover!], code)}.`
+    ? t(strings.chart.announce, {
+        year: hover,
+        phase: phase ? `, ${phase.toLowerCase()}` : '',
+        high: formatAmount(h.p90, code),
+        middleLow: formatAmount(h.p25, code),
+        middleHigh: formatAmount(h.p75, code),
+        median: formatAmount(h.p50, code),
+        low: formatAmount(h.p10, code),
+        straight: formatAmount(straightLine[hover!], code),
+      })
     : '';
 
   useEscapeToClose(hover !== null, useCallback(() => setHover(null), []));
@@ -826,13 +858,13 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
       ref={figureRef}
       onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(null); }}
     >
-      {!narrow && <p className="mcs-swipe" aria-hidden="true">Swipe to see the whole chart &rarr;</p>}
+      {!narrow && <p className="mcs-swipe" aria-hidden="true">{strings.chart.swipe}</p>}
       <div className="mcs-chartScroll">
         <div
           className="mcs-chartBox"
           tabIndex={0}
           role="group"
-          aria-label="Chart. Use the left and right arrow keys to read the values for each year."
+          aria-label={strings.chart.groupLabel}
           onKeyDown={onKey}
           onBlur={() => setHover(null)}
         >
@@ -845,7 +877,7 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
             onPointerMove={(e) => setHover(yearAt(e.clientX))}
             onPointerDown={(e) => setHover(yearAt(e.clientX))}
           >
-            <title id={titleId}>Spread of simulated outcomes</title>
+            <title id={titleId}>{strings.chart.title}</title>
             <desc id={descId}>{desc}</desc>
             <defs>
               <linearGradient id={`${gradId}-outer`} x1="0" y1="0" x2="0" y2="1">
@@ -870,30 +902,30 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
                 <rect className="mcs-phase" x={x(state.saveYears)} y={PAD.top} width={x(years) - x(state.saveYears)} height={PLOT_H} />
                 {/* Only when there is room; the readout names the phase too. */}
                 {x(years) - x(state.saveYears) >= 130 && (
-                  <text className="mcs-phaseLabel" x={x(state.saveYears) + 10} y={PAD.top + 22}>Living off it</text>
+                  <text className="mcs-phaseLabel" x={x(state.saveYears) + 10} y={PAD.top + 22}>{strings.chart.livingOff}</text>
                 )}
               </g>
             )}
 
-            {yMinor.map((t) => (
-              <line key={`ym${t}`} className="mcs-gridMinor" x1={PAD.left} x2={W - PAD.right} y1={yPx(t)} y2={yPx(t)} />
+            {yMinor.map((v) => (
+              <line key={`ym${v}`} className="mcs-gridMinor" x1={PAD.left} x2={W - PAD.right} y1={yPx(v)} y2={yPx(v)} />
             ))}
-            {xMinor.map((t) => (
-              <line key={`xm${t}`} className="mcs-gridMinor" x1={x(t)} x2={x(t)} y1={PAD.top} y2={H - PAD.bottom} />
+            {xMinor.map((v) => (
+              <line key={`xm${v}`} className="mcs-gridMinor" x1={x(v)} x2={x(v)} y1={PAD.top} y2={H - PAD.bottom} />
             ))}
-            {yTicks.map((t) => (
-              <g key={`y${t}`}>
-                <line className={t === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(t)} y2={yPx(t)} />
-                <text className="mcs-axis" x={PAD.left - 12} y={yPx(t) + 5} textAnchor="end">{formatAmount(t, code, true)}</text>
+            {yTicks.map((v) => (
+              <g key={`y${v}`}>
+                <line className={v === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(v)} y2={yPx(v)} />
+                <text className="mcs-axis" x={PAD.left - 12} y={yPx(v) + 5} textAnchor="end">{formatAmount(v, code, true)}</text>
               </g>
             ))}
-            {xTicks.map((t) => (
-              <g key={`x${t}`}>
-                {t > 0 && <line className="mcs-grid" x1={x(t)} x2={x(t)} y1={PAD.top} y2={H - PAD.bottom} />}
-                <text className="mcs-axis" x={x(t)} y={H - PAD.bottom + 24} textAnchor="middle">{t}</text>
+            {xTicks.map((v) => (
+              <g key={`x${v}`}>
+                {v > 0 && <line className="mcs-grid" x1={x(v)} x2={x(v)} y1={PAD.top} y2={H - PAD.bottom} />}
+                <text className="mcs-axis" x={x(v)} y={H - PAD.bottom + 24} textAnchor="middle">{v}</text>
               </g>
             ))}
-            <text className="mcs-axis mcs-axisTitle" x={PAD.left + PLOT_W / 2} y={H - 8} textAnchor="middle">Years from today</text>
+            <text className="mcs-axis mcs-axisTitle" x={PAD.left + PLOT_W / 2} y={H - 8} textAnchor="middle">{strings.chart.axisYears}</text>
 
             <g clipPath={`url(#${clipId})`}>
               <path d={area(p10, p90)} fill={`url(#${gradId}-outer)`} />
@@ -945,32 +977,32 @@ function Chart({ result, state, code }: { result: SimulationResult; state: ToolS
           the crosshair. */}
       {h && hover !== null && (
         <ChartReadout
-          title={`Year ${hover}`}
+          title={t(strings.chart.readoutYear, { year: hover })}
           tag={phase}
           cardRef={cardRef}
           position={cardLeft}
           rows={[
             // Swatches match the dots on the chart: band-edge dots for high
             // and low, the median dot, the single-line dot, and the inner band.
-            { label: 'High (90th)', value: formatAmount(h.p90, code), swatch: 'dot', color: OUTER_DOT },
-            { label: 'Middle half', value: `${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}`, swatch: 'band', color: INNER_BAND },
-            { label: 'Median', value: formatAmount(h.p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
-            { label: 'Low (10th)', value: formatAmount(h.p10, code), swatch: 'dot', color: OUTER_DOT },
-            { label: 'Single line', value: formatAmount(straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },
+            { label: strings.chart.readoutHigh, value: formatAmount(h.p90, code), swatch: 'dot', color: OUTER_DOT },
+            { label: strings.chart.readoutMiddle, value: `${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}`, swatch: 'band', color: INNER_BAND },
+            { label: strings.chart.readoutMedian, value: formatAmount(h.p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
+            { label: strings.chart.readoutLow, value: formatAmount(h.p10, code), swatch: 'dot', color: OUTER_DOT },
+            { label: strings.chart.readoutStraight, value: formatAmount(straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },
           ]}
         />
       )}
       <figcaption className="mcs-legend">
-        <span><i className="mcs-key mcs-key--outer" aria-hidden="true" />8 in 10 paths</span>
-        <span><i className="mcs-key mcs-key--inner" aria-hidden="true" />Middle half</span>
-        <span><i className="mcs-key mcs-key--median" aria-hidden="true" />Median balance</span>
-        <span><i className="mcs-key mcs-key--straight" aria-hidden="true" />Single fixed-return line</span>
+        <span><i className="mcs-key mcs-key--outer" aria-hidden="true" />{strings.chart.legendPaths}</span>
+        <span><i className="mcs-key mcs-key--inner" aria-hidden="true" />{strings.chart.legendMiddle}</span>
+        <span><i className="mcs-key mcs-key--median" aria-hidden="true" />{strings.chart.legendMedian}</span>
+        <span><i className="mcs-key mcs-key--straight" aria-hidden="true" />{strings.chart.legendStraight}</span>
         <span className="mcs-legendHint">
-          Point at the chart, tap it, or use the arrow keys to read any year.
+          {strings.chart.legendHint}
           {clipped &&
             (showEndLabels
-              ? ' The lightest band runs above the top of the chart; the High label on the right shows where it ends.'
-              : ' The lightest band runs above the top of the chart; tap any year to read its high value.')}
+              ? strings.chart.clippedLabels
+              : strings.chart.clippedPhone)}
         </span>
       </figcaption>
     </figure>
