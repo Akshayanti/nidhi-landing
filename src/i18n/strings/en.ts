@@ -130,4 +130,81 @@ export const en = {
     /** The feed's title, as a feed reader shows it. */
     title: 'nidhi | Personal Finance Blog',
   },
+
+  // ---------------------------------------------------------------------
+  // Page copy. One namespace per page, named after the page, carrying both
+  // what the reader sees and what the page's JSON-LD says, so a page's
+  // language and its structured data cannot drift apart.
+  // ---------------------------------------------------------------------
+
+  about: {
+    meta: {
+      title: 'About nidhi: Who Writes This and Why You Can Trust It | nidhi',
+      description:
+        'Who writes nidhi, the qualifications behind the writing, and how every personal finance post is researched and sourced.',
+    },
+    schema: {
+      name: 'About nidhi',
+      description:
+        'Who writes nidhi, why the writing can be trusted, and how each post is researched and sourced.',
+      organization:
+        'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the posts describe and sources every article against cited references.',
+      /**
+       * Read in this order into the JSON-LD `knowsAbout` array, so reordering
+       * here reorders the structured data. Named keys rather than an array so
+       * a translator sees what each entry is.
+       */
+      knowsAbout: {
+        personalFinance: 'Personal Finance',
+        financialLiteracy: 'Financial Literacy',
+        netWorthTracking: 'Net Worth Tracking',
+        multiCurrencyFinance: 'Multi-Currency Finance',
+        financialIndependence: 'Financial Independence',
+        moneyManagement: 'Money Management',
+      },
+      breadcrumbHome: 'Home',
+      breadcrumbAbout: 'About',
+    },
+    title: 'About nidhi',
+    intro:
+      'nidhi is the name on this writing, and the project it belongs to. One person started it, the name stuck, and it is who you are reading when you read the lessons.',
+    sections: {
+      whoIsWriting: 'Who is writing',
+      whyYouCanTrustIt: 'Why you can trust it',
+      howPostsAreMade: 'How posts are made',
+      whatNidhiKnowsAbout: 'What nidhi knows about',
+    },
+    body: {
+      whoIsWriting:
+        'Every post on this site is written and edited under one name: nidhi. The project began because one person could not find a finance tool that handled an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The writing comes from that same place: the questions a real person actually has to answer, explained the way they wished someone had explained them.',
+      whyYouCanTrustIt1:
+        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post makes a claim, it points to the source: the books, reference pages, and primary material listed on each article under "referential reading."',
+      whyYouCanTrustIt2:
+        'What this is not: licensed financial advice. nidhi explains how money works so you can make your own decisions. It does not tell you which fund to buy, and it never will. For decisions that turn on your specific tax residency, legal situation, or risk tolerance, a qualified professional is the right call. That boundary is deliberate, and it is the same one stated in the footer of every page.',
+      /**
+       * Sentences with a link inside them are split into three parts. A
+       * translation is free to move the link within the sentence, which a
+       * single format string with a placeholder would not allow: Hindi wants
+       * its word for "page" after the link, not before it. `before` ends with
+       * a space and `after` starts with whatever punctuation the link needs.
+       */
+      howPostsAreMade: {
+        before:
+          'Each article starts from a concrete question, gets worked through with real numbers and worked examples, and is checked against cited references before it goes out. The full process, sourcing standards, and how corrections are handled live on the ',
+        link: 'editorial policy page',
+        after: '.',
+      },
+      whatNidhiKnowsAbout: {
+        before:
+          'The writing concentrates on net worth and how to measure it, managing money across currencies, cash flow and saving, debt, and the path to financial independence. If you want the worldview behind all of it, read ',
+        link: 'our beliefs',
+        after: '.',
+      },
+    },
+    cta: {
+      text: 'Questions, corrections, or just want to say hello?',
+      email: 'Email hello@nidhi.today',
+      instagram: 'Instagram @nidhi.today',
+    },
+  },
 };

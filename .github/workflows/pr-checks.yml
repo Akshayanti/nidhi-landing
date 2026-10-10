@@ -55,6 +55,12 @@ on:
       # Site-wide base components and public assets that affect every page.
       - 'src/components/BaseHead.astro'
       - 'src/layouts/**'
+      # Page bodies. Since the Hindi edition, a page's markup lives in a
+      # component here and `src/pages/` holds only the thin routes that render
+      # it, so a PR that edits a page's copy or layout touches this directory
+      # and nothing else. Without the glob those PRs would merge with no CI at
+      # all, which is the opposite of what this workflow is for.
+      - 'src/components/pages/**'
       # String catalogs and locale plumbing. Every page reads from them, and
       # the test job's catalog tests live here, so a copy fix that touches
       # nothing else still gets the suite run over it.

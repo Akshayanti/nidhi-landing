@@ -124,6 +124,19 @@ why this one won, so it is not re-argued in a later lesson.
 | financial fragility | आर्थिक कमज़ोरी | |
 | FIRE | FIRE | Kept in Latin, defined in words on first use as आर्थिक स्वतंत्रता और जल्दी रिटायरमेंट. |
 
+### Reading and sources
+
+Introduced by the about page, and kept here because the lessons use the same
+words.
+
+| English | Hindi | Notes |
+| --- | --- | --- |
+| financial literacy | वित्तीय साक्षरता | |
+| personal finance | पर्सनल फाइनेंस | Matches the RSS feed title already in `src/i18n/strings/hi.ts`. वैयक्तिक वित्त is the official phrasing and reads as a form. |
+| money management | पैसे का प्रबंधन | |
+| multi-currency | एक से ज़्यादा मुद्राओं में | Spelled out rather than बहुमुद्रा, which a general reader meets far less often. |
+| referential reading | आगे पढ़ने के लिए | The heading over the sources listed under an article. Decided against संदर्भ सामग्री: it reads as a bibliography, and hides that the list is there to be read rather than cited. |
+
 ### Site vocabulary already in use
 
 These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
