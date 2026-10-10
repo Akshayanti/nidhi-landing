@@ -1066,7 +1066,7 @@ export const en = {
       description:
         'Two example paths from the same {invested} invested today, at an illustrative {pct} a year after inflation. Adding {monthly} a month reaches about {end} after {years} years; adding {higher} a month reaches about {alternative}. The gap of about {gap} is {extra} more put in and about {growth} more growth.',
       footnote:
-        'Example: {invested} invested today, with {monthly} or {higher} added at the start of each month, at an illustrative {pct} a year after inflation. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.',
+        'Assumes an illustrative {pct} a year after inflation, with each month\'s amount added at the start of the month. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.',
       /** Spoken to a screen reader that lands on the chart. */
       keysHint: 'Use the left and right arrow keys to read its values.',
     },
