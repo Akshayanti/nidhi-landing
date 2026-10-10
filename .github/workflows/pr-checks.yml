@@ -10,9 +10,14 @@ name: PR Checks (free tools)
 # the jobs in this workflow as REQUIRED status checks. See
 # docs/free-tools-pr-checks.md for the exact required-checks list and
 # rationale.
+#
+# `feat/hindi-locale` is the integration branch for the Hindi edition. Its
+# stacked PRs target each other rather than `main`, so without listing the
+# branch here they would merge with no CI at all; the final PR of the stack
+# targets `main` and is still covered by that entry.
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feat/hindi-locale]
     paths:
       # The /free/* pages and any utility/component they pull in.
       - 'src/pages/free/**'
@@ -47,6 +52,10 @@ on:
       # Site-wide base components and public assets that affect every page.
       - 'src/components/BaseHead.astro'
       - 'src/layouts/**'
+      # String catalogs and locale plumbing. Every page reads from them, and
+      # the test job's catalog tests live here, so a copy fix that touches
+      # nothing else still gets the suite run over it.
+      - 'src/i18n/**'
       - 'public/robots.txt'
       - 'public/llms.txt'
 
