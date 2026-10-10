@@ -978,8 +978,8 @@ export const en = {
       stockBig: '{one} or {two}',
       stockSmall: 'Net worth of two people who both earn {amount} a month.',
       planStep: '3 · Plan ahead',
-      planBig: '{gap} apart',
-      planSmall: 'Saving and investing {low} or {high} a month, after {years} years.',
+      planBig: '{gap} more after {years} years',
+      planSmall: 'From saving and investing {extra} more each month.',
     },
     /** The numbered marker above each step's heading. */
     steps: {

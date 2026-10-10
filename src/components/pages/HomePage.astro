@@ -247,8 +247,8 @@ const faqSchema = {
             </li>
             <li>
               <span class="journey-step">{home.journey.planStep}</span>
-              <span class="journey-big">{t(home.journey.planBig, { gap: eur(gap) })}</span>
-              <span class="journey-small">{t(home.journey.planSmall, { low: eur(STARTER.monthly), high: eur(HIGHER_MONTHLY), years: STARTER.years })}</span>
+              <span class="journey-big">{t(home.journey.planBig, { gap: eur(gap), years: STARTER.years })}</span>
+              <span class="journey-small">{t(home.journey.planSmall, { extra: eur(HIGHER_MONTHLY - STARTER.monthly) })}</span>
               <svg class="journey-spark" viewBox="0 0 120 36" aria-hidden="true"><polyline class="journey-spark-high" points={spark.high} /><polyline points={spark.low} /></svg>
             </li>
           </ol>
