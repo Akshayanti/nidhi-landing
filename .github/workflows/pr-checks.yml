@@ -11,13 +11,16 @@ name: PR Checks (free tools)
 # docs/free-tools-pr-checks.md for the exact required-checks list and
 # rationale.
 #
-# `feat/hindi-locale` is the integration branch for the Hindi edition. Its
-# stacked PRs target each other rather than `main`, so without listing the
-# branch here they would merge with no CI at all; the final PR of the stack
-# targets `main` and is still covered by that entry.
+# The Hindi edition is built as a stack of PRs: each one targets the branch
+# below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
+# `feat/hindi-locale`, the integration branch, which merges to `main` once the
+# whole edition is ready. A stacked PR's base is another feature branch, not
+# `main`, so without these entries every PR in the stack would merge with no CI
+# at all. `hindi/*` covers the stack as it grows; `feat/hindi-locale` and `main`
+# cover the two branches that end it.
 on:
   pull_request:
-    branches: [main, feat/hindi-locale]
+    branches: [main, feat/hindi-locale, 'hindi/*']
     paths:
       # The /free/* pages and any utility/component they pull in.
       - 'src/pages/free/**'

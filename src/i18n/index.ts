@@ -20,6 +20,7 @@ export {
 } from './config.ts';
 export type { Locale } from './config.ts';
 export { stripLocale, swapLocale, utmSearch, localizedHref } from './url.ts';
+export { format } from './format.ts';
 export type { Dict } from './strings/types.ts';
 
 /**

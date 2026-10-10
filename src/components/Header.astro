@@ -1,139 +1,107 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import LangSwitcher from './LangSwitcher.astro';
 import LogoMark from './LogoMark.astro';
-import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
+import { DEFAULT_LOCALE, LOCALES, dict, localePrefix, localizedPath, stripLocale, type Locale } from '../i18n';
+import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
+import { DESKTOP_DROPDOWNS, navGroups, navHref, navLabel, type NavGroup, type NavLink } from './nav.ts';
+
+interface Props {
+  locale?: Locale;
+  /**
+   * The locales this page exists in, including this one. A language switcher
+   * is shown only for the others; with none, there is nothing to switch to.
+   */
+  alternates?: readonly Locale[];
+}
+
+const { locale = DEFAULT_LOCALE, alternates = LOCALES } = Astro.props;
+
+const strings = dict(locale);
 const currentPath = Astro.url.pathname;
 const showMonteCarlo = await isMonteCarloReleased();
+const groups = navGroups({ showMonteCarlo });
 
-// The phone menu. Same destinations as the dropdown and the footer columns.
-interface SheetLink {
-  href: string;
-  label: string;
-  key: string;
-  external?: boolean;
-  /** Contact tiles only: the address shown under the label, and its icon. */
-  detail?: string;
-  icon?: 'mail' | 'instagram';
-}
-/** An entry that opens to show its own links, such as the ways to get in touch. */
-interface SheetGroupLink { label: string; key: string; children: SheetLink[] }
-const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
-  {
-    heading: 'Learn',
-    links: [
-      { href: '/blog/', label: 'Learning path', key: 'blog' },
-      { href: '/blog/tag/', label: 'Browse topics', key: 'blog-topics' },
-      { href: '/editorial-policy/', label: 'How lessons are written', key: 'learn-editorial' },
-    ],
-  },
-  {
-    heading: 'Free tools',
-    links: [
-      { href: '/free/multi-currency-net-worth/', label: 'Net worth calculator', key: 'tool-multi-currency-net-worth' },
-      { href: '/free/loan-comparison/', label: 'Loan comparison', key: 'tool-loan-comparison' },
-      ...(showMonteCarlo ? [{ href: MONTE_CARLO_URL, label: 'Monte Carlo simulator', key: 'tool-monte-carlo-simulator' }] : []),
-      { href: '/free/', label: 'All free tools', key: 'tool-all' },
-    ],
-  },
-  {
-    heading: 'About',
-    links: [
-      { href: '/about/', label: 'About nidhi', key: 'about' },
-      { href: '/beliefs/', label: 'Our beliefs', key: 'beliefs' },
-      { href: '/editorial-policy/', label: 'Editorial policy', key: 'editorial-policy' },
-      {
-        label: 'Contact us',
-        key: 'contact',
-        children: [
-          { href: 'mailto:hello@nidhi.today', label: 'Email', detail: 'hello@nidhi.today', icon: 'mail', key: 'email' },
-          { href: 'https://www.instagram.com/nidhi.today', label: 'Instagram', detail: '@nidhi.today', icon: 'instagram', key: 'instagram', external: true },
-        ],
-      },
-    ],
-  },
-];
+// The desktop nav's two dropdowns, in the desktop nav's order.
+const dropdowns = DESKTOP_DROPDOWNS.map((key) => groups.find((group) => group.key === key)).filter(
+  (group): group is NavGroup => group !== undefined,
+);
 
+// Usually one; more if a third language ever lands.
+const otherLocales = alternates.filter((other) => other !== locale);
+
+/** Localizes a header link, leaving addresses that leave the site alone. */
+const href = (path: string) => navHref(locale, path);
+
+// A nav entry is compared against the path without the locale prefix, so the
+// same entry is current on /blog/ and on /hi/blog/. `href` above is the
+// localized address, which only the rendered link needs.
+const barePath = stripLocale(currentPath).path;
+
+/** Whether a desktop dropdown entry is the page you are on. */
+const isMenuActive = (entry: NavLink) =>
+  entry.activePrefix ? barePath.startsWith(entry.activePrefix) : barePath === entry.href;
+
+/**
+ * Whether a sheet entry is the page you are on. The sheet marks on an exact
+ * match only, where the dropdown above also marks a whole section, and so does
+ * not use `isMenuActive`.
+ */
+const isSheetActive = (path: string) => barePath === path;
+
+// What the inline script below needs to rebuild a switcher's href from the
+// live address: the locale prefixes, so it can move a path between them.
+const prefixes: Record<string, string> = {};
+for (const l of LOCALES) prefixes[l] = localePrefix(l);
 ---
 
 <header class="site-header">
-  <nav class="site-nav container container--wide" aria-label="Primary">
-    <a href="/" class="logo" data-attr="nav-logo" aria-label="nidhi home">
+  <nav class="site-nav container container--wide" aria-label={strings.nav.primaryLabel}>
+    <a href={href('/')} class="logo" data-attr="nav-logo" aria-label={strings.nav.homeLabel}>
       <LogoMark size={32} />
       <span class="logo-text">nidhi</span>
     </a>
     <div class="nav-right">
-      <div class="nav-dropdown">
-        <button
-          class:list={['nav-link', 'nav-dropdownToggle', { active: currentPath.startsWith('/free') }]}
-          aria-haspopup="true"
-          aria-expanded="false"
-          data-attr="nav-free-tools"
-        >
-          Free Tools
-          <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
-        </button>
-        <ul class="nav-dropdownMenu" role="menu">
-          <li role="none">
-            <a href="/free/multi-currency-net-worth/" class:list={[{ active: currentPath === '/free/multi-currency-net-worth/' }]} role="menuitem" data-attr="nav-tool-multi-currency-net-worth">
-              Net Worth Calculator
-            </a>
-          </li>
-          <li role="none">
-            <a href="/free/loan-comparison/" class:list={[{ active: currentPath === '/free/loan-comparison/' }]} role="menuitem" data-attr="nav-tool-loan-comparison">
-              Loan Comparison
-            </a>
-          </li>
-          {showMonteCarlo && (
-            <li role="none">
-              <a href={MONTE_CARLO_URL} class:list={[{ active: currentPath === MONTE_CARLO_URL }]} role="menuitem" data-attr="nav-tool-monte-carlo-simulator">
-                Monte Carlo Simulator
-              </a>
-            </li>
-          )}
-          <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
-          <li role="none">
-            <a href="/free/" class:list={[{ active: currentPath === '/free/' }]} role="menuitem" data-attr="nav-tool-all">
-              View all free tools
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="nav-dropdown">
-        <button
-          class:list={['nav-link', 'nav-dropdownToggle', { active: currentPath.startsWith('/blog') }]}
-          aria-haspopup="true"
-          aria-expanded="false"
-          data-attr="nav-learn"
-        >
-          Learn
-          <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
-        </button>
-        <ul class="nav-dropdownMenu" role="menu">
-          <li role="none">
-            <a href="/blog/" class:list={[{ active: currentPath === '/blog/' }]} role="menuitem" data-attr="nav-blog">
-              Learning path
-            </a>
-          </li>
-          <li role="none">
-            <a href="/blog/tag/" class:list={[{ active: currentPath.startsWith('/blog/tag') }]} role="menuitem" data-attr="nav-blog-topics">
-              Browse topics
-            </a>
-          </li>
-          <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>
-          <li role="none">
-            <a href="/editorial-policy/" class:list={[{ active: currentPath === '/editorial-policy/' }]} role="menuitem" data-attr="nav-learn-editorial">
-              How lessons are written
-            </a>
-          </li>
-        </ul>
-      </div>
-      <ThemeToggle />
+      {dropdowns.map((group) => (
+        <div class="nav-dropdown">
+          <button
+            class:list={['nav-link', 'nav-dropdownToggle', { active: barePath.startsWith(group.button.activePath) }]}
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-attr={group.button.attr}
+          >
+            {strings.nav.buttons[group.button.key]}
+            <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
+          </button>
+          <ul class="nav-dropdownMenu" role="menu">
+            {group.entries.map((entry) => (
+              'children' in entry ? null : (
+                <>
+                  {entry.dividerBefore && <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>}
+                  <li role="none">
+                    <a
+                      href={href(entry.href)}
+                      class:list={[{ active: isMenuActive(entry) }]}
+                      role="menuitem"
+                      data-attr={`nav-${entry.attr}`}
+                    >
+                      {navLabel(strings, entry.key, 'menu')}
+                    </a>
+                  </li>
+                </>
+              )
+            ))}
+          </ul>
+        </div>
+      ))}
+      {otherLocales.map((to) => <LangSwitcher locale={locale} to={to} variant="header" />)}
+      <ThemeToggle locale={locale} />
       <button
         type="button"
         class="nav-menuToggle"
         aria-expanded="false"
         aria-controls="nav-sheet"
-        aria-label="Menu"
+        aria-label={strings.nav.menuLabel}
         data-attr="nav-menu"
       >
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -147,40 +115,40 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
   {/* Phones only: the site's links in one panel under the header, in place
       of the dropdown, the Learn link and the footer's link columns. */}
   <div class="nav-sheet" id="nav-sheet" hidden>
-    <nav class="container container--wide nav-sheetInner" aria-label="Menu">
-      {sheet.map((group) => (
+    <nav class="container container--wide nav-sheetInner" aria-label={strings.nav.menuLabel}>
+      {groups.map((group) => (
         <div class="nav-sheetGroup">
-          <p class="nav-sheetHeading">{group.heading}</p>
+          <p class="nav-sheetHeading">{strings.nav.groups[group.key]}</p>
           <ul role="list">
-            {group.links.map((l) => (
+            {group.entries.map((entry) => (
               <li>
-                {'children' in l ? (
+                {'children' in entry ? (
                   <details class="nav-sheetSub">
-                    <summary data-attr={`nav-menu-${l.key}`}>{l.label}</summary>
+                    <summary data-attr={`nav-menu-${entry.attr}`}>{navLabel(strings, entry.key)}</summary>
                     <ul role="list" class="nav-contactTiles">
-                      {l.children.map((c) => (
+                      {entry.children.map((child) => (
                         <li>
                           <a
-                            href={c.href}
-                            class={`nav-contactTile nav-contactTile--${c.icon}`}
-                            target={c.external ? '_blank' : undefined}
-                            rel={c.external ? 'noopener noreferrer' : undefined}
-                            data-attr={`nav-menu-${c.key}`}
+                            href={href(child.href)}
+                            class={`nav-contactTile nav-contactTile--${child.icon}`}
+                            target={child.external ? '_blank' : undefined}
+                            rel={child.external ? 'noopener noreferrer' : undefined}
+                            data-attr={`nav-menu-${child.attr}`}
                           >
                             <span class="nav-contactIcon" aria-hidden="true">
-                              {c.icon === 'mail' && (
+                              {child.icon === 'mail' && (
                                 <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7 8 6 8-6" /></svg>
                               )}
-                              {c.icon === 'instagram' && (
+                              {child.icon === 'instagram' && (
                                 <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" /></svg>
                               )}
                             </span>
                             <span class="nav-contactText">
-                              <span class="nav-contactLabel">{c.label}</span>
-                              <span class="nav-contactDetail">{c.detail}</span>
+                              <span class="nav-contactLabel">{navLabel(strings, child.key)}</span>
+                              <span class="nav-contactDetail">{child.detail}</span>
                             </span>
-                            <span class="nav-contactGo" aria-hidden="true">{c.external ? '↗' : '→'}</span>
-                            {c.external && <span class="nav-srOnly"> (opens in a new tab)</span>}
+                            <span class="nav-contactGo" aria-hidden="true">{child.external ? '↗' : '→'}</span>
+                            {child.external && <span class="nav-srOnly">{strings.nav.newTabHint}</span>}
                           </a>
                         </li>
                       ))}
@@ -188,17 +156,29 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
                   </details>
                 ) : (
                   <a
-                    href={l.href}
-                    class:list={[{ active: currentPath === l.href }]}
-                    aria-current={currentPath === l.href ? 'page' : undefined}
-                    data-attr={`nav-menu-${l.key}`}
-                  >{l.label}</a>
+                    href={href(entry.href)}
+                    class:list={[{ active: isSheetActive(entry.href) }]}
+                    aria-current={isSheetActive(entry.href) ? 'page' : undefined}
+                    data-attr={`nav-menu-${entry.attr}`}
+                  >{navLabel(strings, entry.key)}</a>
                 )}
               </li>
             ))}
           </ul>
         </div>
       ))}
+      {/* The header's switcher is hidden below 640px, so the sheet carries
+          the same link. */}
+      {otherLocales.length > 0 && (
+        <div class="nav-sheetGroup">
+          <p class="nav-sheetHeading">{strings.nav.groups.language}</p>
+          <ul role="list">
+            {otherLocales.map((to) => (
+              <li><LangSwitcher locale={locale} to={to} variant="sheet" /></li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   </div>
 </header>
@@ -573,7 +553,7 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
   }
 </style>
 
-<script is:inline>
+<script is:inline define:vars={{ menuLabel: strings.nav.menuLabel, menuCloseLabel: strings.nav.menuCloseLabel }}>
   // Each dropdown (Free Tools, Learn) opens and closes on its own.
   document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
     var toggle = dropdown.querySelector('.nav-dropdownToggle');
@@ -649,7 +629,7 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
 
     function setOpen(open) {
       button.setAttribute('aria-expanded', open ? 'true' : 'false');
-      button.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+      button.setAttribute('aria-label', open ? menuCloseLabel : menuLabel);
       sheet.hidden = !open;
       if (open) {
         document.addEventListener('click', onOutside);
@@ -677,3 +657,52 @@ const sheet: { heading: string; links: (SheetLink | SheetGroupLink)[] }[] = [
     if (wide.addEventListener) wide.addEventListener('change', function(e) { if (e.matches) setOpen(false); });
   })();
 </script>
+
+{otherLocales.length > 0 && (
+<script is:inline define:vars={{ prefixes }}>
+  // The language switchers were rendered with the path this page was built at.
+  // A campaign tag is not in that path and has to survive a switch, so the
+  // hrefs are rebuilt from the live address before anything else reads it.
+  //
+  // Nothing is written to the address: this only reads it and rewrites the
+  // links. A target locale the map does not know is left as it was rendered,
+  // so a stale map can cost the query and the fragment but can never send
+  // anyone to the wrong path.
+  //
+  // A free tool's # state is not preserved here, because ToolStateGuard has
+  // already moved it out of the address by the time this runs (it sits in
+  // window[<tool>Shared] from then on). Switching language on a shared tool
+  // link therefore opens the tool's other-language page with no state. Fixing
+  // that means handing this script the tool's window property and putting the
+  // state back as the fragment, which belongs with the tool pages.
+  (function() {
+    var links = document.querySelectorAll('[data-lang-switch]');
+    if (!links.length) return;
+
+    // Move the path out of this page's locale prefix, the same way
+    // src/i18n/url.ts does at build time. Only prefixes the site serves are
+    // stripped: never a bare two letter segment, which a page path could be.
+    var path = window.location.pathname;
+    if (path.charAt(0) !== '/') path = '/' + path;
+    for (var locale in prefixes) {
+      var prefix = prefixes[locale];
+      if (!prefix) continue;
+      if (path === prefix || path === prefix + '/') { path = '/'; break; }
+      if (path.indexOf(prefix + '/') === 0) { path = path.slice(prefix.length); break; }
+    }
+
+    var keep = new URLSearchParams();
+    new URLSearchParams(window.location.search).forEach(function(value, key) {
+      if (key.indexOf('utm_') === 0) keep.append(key, value);
+    });
+    var query = keep.toString();
+    var suffix = (query ? '?' + query : '') + window.location.hash;
+
+    for (var i = 0; i < links.length; i++) {
+      var target = links[i].getAttribute('data-lang-switch');
+      if (!Object.prototype.hasOwnProperty.call(prefixes, target)) continue;
+      links[i].setAttribute('href', prefixes[target] + path + suffix);
+    }
+  })();
+</script>
+)}

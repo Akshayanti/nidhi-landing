@@ -1,7 +1,24 @@
 ---
 import { NEUTRAL, SEMANTIC } from '../styles/palette.ts';
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  LOCALE_META,
+  dict,
+  localizedPath,
+  stripLocale,
+  type Locale,
+} from '../i18n';
 
 interface Props {
+  /** The language this page is written in. Defaults to English. */
+  locale?: Locale;
+  /**
+   * The locales this page exists in, including `locale`. `hreflang` links and
+   * `og:locale:alternate` are built from this list, so a page that has no
+   * counterpart in another language points search engines at nothing.
+   */
+  alternates?: readonly Locale[];
   title: string;
   description: string;
   image?: string;
@@ -36,6 +53,8 @@ interface Props {
 const defaultImage = '/brand/social/og-image.png';
 const defaultImageAlt = 'nidhi: Money, understood. Personal finance tools and financial literacy.';
 const {
+  locale = DEFAULT_LOCALE,
+  alternates = LOCALES,
   title,
   description,
   image = defaultImage,
@@ -48,7 +67,18 @@ const {
   jsonLd = [],
   robots,
 } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// The same page in another language is the same path under a different locale
+// prefix, so the canonical URL is built from the path with the prefix removed
+// rather than from the address this page happens to be served at.
+const path = stripLocale(Astro.url.pathname).path;
+const urlIn = (target: Locale) => new URL(localizedPath(target, path), Astro.site);
+const canonicalURL = urlIn(locale);
+const otherLocales = alternates.filter((other) => other !== locale);
+// x-default is the address to fall back to, which is the English one whenever
+// English is among the languages this page exists in.
+const xDefault = alternates.includes(DEFAULT_LOCALE) ? urlIn(DEFAULT_LOCALE) : canonicalURL;
+const strings = dict(locale);
 ---
 
 <!-- Flash prevention: apply theme before render -->
@@ -83,11 +113,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />
-<link rel="alternate" hreflang="en" href={canonicalURL} />
-<link rel="alternate" hreflang="x-default" href={canonicalURL} />
+{alternates.map((alternate) => (
+  <link rel="alternate" hreflang={LOCALE_META[alternate].htmlLang} href={urlIn(alternate)} />
+))}
+<link rel="alternate" hreflang="x-default" href={xDefault} />
 
 <!-- RSS Feed -->
-<link rel="alternate" type="application/rss+xml" title="nidhi | Personal Finance Blog" href="/rss.xml" />
+<link rel="alternate" type="application/rss+xml" title={strings.rss.title} href={localizedPath(locale, '/rss.xml')} />
 
 <!-- Open Graph -->
 <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -99,7 +131,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:image:height" content={String(imageHeight)} />
 <meta property="og:image:alt" content={imageAlt} />
 <meta property="og:site_name" content="nidhi" />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={LOCALE_META[locale].ogLocale} />
+{otherLocales.map((other) => (
+  <meta property="og:locale:alternate" content={LOCALE_META[other].ogLocale} />
+))}
 
 <!-- Article-specific OG -->
 {article && (

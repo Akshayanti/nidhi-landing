@@ -1,19 +1,25 @@
 ---
+import { DEFAULT_LOCALE, dict, localizedPath, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
 ---
 
-<div id="cookie-overlay" class="cookie-overlay" role="dialog" aria-label="Cookie consent" aria-modal="true">
+<div id="cookie-overlay" class="cookie-overlay" role="dialog" aria-label={strings.cookie.dialogLabel} aria-modal="true">
   <div class="cookie-modal">
     <p class="cookie-text">
-      We count anonymous pageviews either way, to see what&rsquo;s helping.
-      Can we also record <em>clicks</em> so we can spot broken links and
-      layouts that confuse people? No ads, no data sold.
+      {strings.cookie.textBefore}<em>{strings.cookie.textEmphasis}</em>{strings.cookie.textAfter}
     </p>
     <p class="cookie-sub">
-      <a href="/privacy/" data-attr="cookie-privacy-link">See what we actually collect &rarr;</a>
+      <a href={localizedPath(locale, '/privacy/')} data-attr="cookie-privacy-link">{strings.cookie.privacyLink}</a>
     </p>
     <div class="cookie-actions">
-      <button id="cookie-decline" class="cookie-btn cookie-btn--decline" data-attr="cookie-decline">No thanks</button>
-      <button id="cookie-accept" class="cookie-btn cookie-btn--accept" data-attr="cookie-accept">Sure, that&rsquo;s fine</button>
+      <button id="cookie-decline" class="cookie-btn cookie-btn--decline" data-attr="cookie-decline">{strings.cookie.decline}</button>
+      <button id="cookie-accept" class="cookie-btn cookie-btn--accept" data-attr="cookie-accept">{strings.cookie.accept}</button>
     </div>
   </div>
 </div>

@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// One 404 for the whole host, in English, so there is no counterpart URL for
+// hreflang or the language switcher to point at.
+import { DEFAULT_LOCALE } from '../i18n';
 ---
 
-<BaseLayout title="Page not found (404) | nidhi" description="That page doesn't exist on nidhi. It may have been moved, the URL might be mistyped, or the link may be out of date. Head back home to continue." robots="noindex, nofollow">
+<BaseLayout title="Page not found (404) | nidhi" description="That page doesn't exist on nidhi. It may have been moved, the URL might be mistyped, or the link may be out of date. Head back home to continue." robots="noindex, nofollow" alternates={[DEFAULT_LOCALE]}>
   <div class="container" style="text-align: center; padding: 8rem 1.5rem;">
     <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">404</h1>
     <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
