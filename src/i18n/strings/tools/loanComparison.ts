@@ -17,10 +17,11 @@
  * (the FAQ groups, the related cards) are the same length and the same order as
  * the ones here, indexed by this file.
  *
- * The currency names are not here either. The dropdown reads `CURRENCIES[].label`
- * from `src/utils/loan/math.ts`, which all three free tools share, so a Hindi
- * name for a currency is one change across three tools and lives with the
- * others. Currency codes stay Latin in every language, as does `APR`.
+ * The currency names are not here either. The three tools' currency dropdowns
+ * read their names from `./currencies.ts`, beside this file, so a currency
+ * renamed once is renamed in all three; what arrives in `island.currencies` is
+ * that list spread in, because a prop is how the island is handed its copy.
+ * Currency codes stay Latin in every language, as does `APR`.
  *
  * `island` reaches the tool as a prop, one locale's slice and not the whole
  * catalog: `dict(locale)` reads a runtime-indexed table holding every language
@@ -32,6 +33,8 @@
  * cannot be priced; neither knows about languages. The first is reassembled
  * here (`island.months`), and the second is matched and replaced (`island.engine`).
  */
+import { currenciesEn, currenciesHi } from './currencies.ts';
+
 export const loanComparisonEn = {
   meta: {
     title: 'Loan Comparison Calculator: Side-by-Side, Multi-Currency | nidhi',
@@ -259,6 +262,8 @@ export const loanComparisonEn = {
     },
   },
   island: {
+    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    currencies: currenciesEn,
     /** The bar above the cards: currency, share and reset. */
     toolbar: {
       aria: 'Loan comparison actions',
@@ -814,7 +819,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कौन-सी मुद्राएँ शामिल हैं?',
-              a: '29 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुरी डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
+              a: '29 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
             },
             {
               q: 'यहाँ "कई मुद्राओं" का क्या मतलब है?',
@@ -859,6 +864,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
   },
   island: {
+    currencies: currenciesHi,
     toolbar: {
       aria: 'लोन की तुलना के काम',
       currencyLabel: 'किस मुद्रा में दिखाना है',

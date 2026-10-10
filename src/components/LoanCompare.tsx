@@ -904,7 +904,7 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
             aria-describedby={`${currencySelectId}-hint`}
           >
             {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>{c.label}</option>
+              <option key={c.code} value={c.code}>{strings.currencies[c.code] ?? c.label}</option>
             ))}
           </select>
           {/* The currency selector controls *display formatting only*: symbol,

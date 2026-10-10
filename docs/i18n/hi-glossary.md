@@ -283,6 +283,35 @@ and do translate.
 | rebalanced yearly | हर साल पुनर्संतुलित | Glossary: rebalancing is पुनर्संतुलन. |
 | run the simulation | सिम्युलेशन चलाएँ | |
 
+#### The currency names
+
+All 29 names live in one list, `src/i18n/strings/tools/currencies.ts`, because
+the three tools share one dropdown and one engine table: a currency renamed
+there is renamed in all three. A code stays Latin in every language, in the key
+and in the bracket the name ends with, because it is what a reader looks up and
+what the tool writes into its own address. Only the name is Hindi. A test in
+`src/i18n/strings/catalog.test.ts` holds that list to `RAW_CURRENCIES` in
+`src/utils/loan/math.ts`, so a currency added to the engine fails the build
+rather than arriving as a bare code in a dropdown, and the English half is
+asserted to be the engine's own label so the two cannot drift apart.
+
+`Intl.DisplayNames` was tried and rejected. It returns `यूएस डॉलर`,
+`ब्रिटिश पाउंड स्टर्लिंग` and `चेक गणराज्य कोरुना`, and the FAQ answers beside
+the dropdown already say `अमेरिकी डॉलर` and `ब्रिटिश पाउंड`. Two spellings of one
+currency on one screen read as two currencies, so every name here is written by
+hand, from what the tools' own prose already calls it.
+
+Two words the FAQ answers had split were settled with this list: `सिंगापुर
+डॉलर`, not `सिंगापुरी`, which is how Indian dailies write it and what the Hindi
+Wikipedia article is titled; and `लैटिन अमेरिकी`, not `लातिन`. Both had drifted
+between `loanComparison.ts` and `multiCurrencyNetWorth.ts`, which is the kind of
+split this list exists to stop.
+
+Two more were settled against Hindi Wikipedia and RBI's Hindi publications, both
+in the direction of the form a reader will actually type: `ब्राज़ीली रियाल` and
+not `रियल`, which is the article's own title, and `थाई बाट` and not `बात`, which
+is a different Hindi word entirely and reads as "Thai talk".
+
 ### Site vocabulary already in use
 
 These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.

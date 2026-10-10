@@ -351,7 +351,7 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
           >
             {CURRENCIES.map((c) => (
               <option key={c.code} value={c.code}>
-                {c.label}
+                {strings.currencies[c.code] ?? c.label}
               </option>
             ))}
           </select>
@@ -754,7 +754,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
           </dl>
         )}
         <p className="mcnw-singleNote">
-          {format(strings.results.singleNote, { currency: getCurrencyLabel(functionalCurrency) })}
+          {format(strings.results.singleNote, { currency: getCurrencyLabel(functionalCurrency, strings.currencies) })}
         </p>
       </section>
     );
@@ -806,7 +806,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                 {riskBadge(strings, pos.riskLevel)}
               </span>
               <span className="mcnw-riskCurrency">
-                {getCurrencyLabel(pos.code)}
+                {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable ? (
                   <> - <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
                 ) : hidePct ? (
@@ -1221,7 +1221,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
   const activeArc = arcs.find((a) => a.pos.code === active) ?? null;
   const announce = activeArc
     ? format(showAmounts ? strings.chart.announceWithAmount : strings.chart.announce, {
-        name: getCurrencyLabel(activeArc.pos.code),
+        name: getCurrencyLabel(activeArc.pos.code, strings.currencies),
         pct: pct(activeArc.amount),
         amount: amountOf(activeArc.pos),
       })
@@ -1235,7 +1235,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           className="mcnw-chart"
           viewBox={`-10 -10 ${size + 20} ${size + 20}`}
           role="img"
-          aria-label={format(strings.chart.aria, { list: arcs.map((a) => `${getCurrencyLabel(a.pos.code)}: ${pct(a.amount)}`).join('. ') })}
+          aria-label={format(strings.chart.aria, { list: arcs.map((a) => `${getCurrencyLabel(a.pos.code, strings.currencies)}: ${pct(a.amount)}`).join('. ') })}
           aria-describedby={legendId}
           focusable="false"
         >
@@ -1316,7 +1316,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           <tbody>
             {arcs.map((a) => (
               <tr key={a.pos.code}>
-                <td>{getCurrencyLabel(a.pos.code)}</td>
+                <td>{getCurrencyLabel(a.pos.code, strings.currencies)}</td>
                 <td>{pct(a.amount)}</td>
                 <td>{riskLabel(strings, a.pos.riskLevel)}</td>
               </tr>

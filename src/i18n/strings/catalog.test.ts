@@ -16,6 +16,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
+import { CURRENCIES } from '../../utils/loan/math.ts';
+import { currenciesEn, currenciesHi } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
 
@@ -153,8 +155,41 @@ describe('the Hindi catalog is translated, not copied', () => {
   });
 });
 
-describe('style rules from CLAUDE.md hold in every catalog', () => {
-  it('uses no em dash, in either its character or entity form', () => {
+/**
+ * The three free tools name their currencies from `./tools/currencies.ts`, and
+ * the codes they offer come from the engine's own table in
+ * `src/utils/loan/math.ts`. The two are written by hand in different files, so
+ * these three assertions are what keeps them one list: a currency added to the
+ * engine without a name fails here, a name for a currency the engine does not
+ * have fails here, and so does a Hindi name that quotes the wrong code.
+ */
+describe('the tools name every currency they offer', () => {
+  const CODES = CURRENCIES.map((c) => c.code).sort();
+
+  it('names exactly the engine\'s currencies, in both languages', () => {
+    assert.deepEqual(Object.keys(currenciesEn).sort(), CODES);
+    assert.deepEqual(Object.keys(currenciesHi).sort(), CODES);
+  });
+
+  it('keeps the English name the engine\'s own label, so the two cannot drift', () => {
+    for (const c of CURRENCIES) {
+      assert.equal(currenciesEn[c.code], c.label, `${c.code} disagrees with the engine's label`);
+    }
+  });
+
+  it('keeps the code Latin and in brackets in every language', () => {
+    // The code is what a reader searches for and what the tool writes into its
+    // own address, so it is the same string in both maps; only the name moves.
+    for (const c of CURRENCIES) {
+      assert.ok(
+        currenciesHi[c.code].endsWith(`(${c.code})`),
+        `${c.code} in Hindi does not end with its own code`,
+      );
+    }
+  });
+});
+
+describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses no em dash, in either its character or entity form', () => {
     const offenders = [...EN, ...HI].filter(({ value }) =>
       /—|&mdash;|&#8212;|&#x2014;/i.test(value),
     );

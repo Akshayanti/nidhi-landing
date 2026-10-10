@@ -50,6 +50,8 @@ export interface NetWorthExplainerItem {
   after?: string;
 }
 
+import { currenciesEn, currenciesHi } from './currencies.ts';
+
 export const multiCurrencyNetWorthEn = {
   meta: {
     title: 'Net Worth Calculator, in One Currency or Several | nidhi',
@@ -259,6 +261,8 @@ export const multiCurrencyNetWorthEn = {
     },
   },
   island: {
+    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    currencies: currenciesEn,
     toolbar: {
       aria: 'Net worth calculator actions',
       currencyLabel: 'Your currency (the one you spend in)',
@@ -537,7 +541,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'कौन सी मुद्राएँ समर्थित हैं?',
           a:
-            '29 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लातिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें ECB से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
+            '29 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें ECB से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
         },
         {
           q: 'शेयर करने के "पूरे" और "आंकड़ों के बिना" तरीकों में क्या फ़र्क़ है?',
@@ -629,6 +633,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     },
   },
   island: {
+    currencies: currenciesHi,
     toolbar: {
       aria: 'शुद्ध संपत्ति कैलकुलेटर के बटन',
       currencyLabel: 'आपकी मुद्रा (जिसमें आप खर्च करते हैं)',

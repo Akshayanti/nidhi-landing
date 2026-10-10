@@ -406,10 +406,20 @@ function splitCSVLine(line: string): string[] {
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Resolves a code to a human-readable label for chart legends and risk cards. */
-export function getCurrencyLabel(code: string): string {
+/**
+ * Resolves a code to a human-readable label for chart legends and risk cards.
+ *
+ * `names` is one language's currency names, keyed by code, as the tools' catalog
+ * holds them (`src/i18n/strings/tools/currencies.ts`), and it is optional on
+ * purpose: without one the engine's own English label stands, which is what the
+ * tests exercise and what a caller that has no catalog gets. So this module
+ * knows a lookup table and no language at all, and the Hindi island does not
+ * have to reach for the engine's English text.
+ */
+export function getCurrencyLabel(code: string, names?: Record<string, string>): string {
   const info = getCurrencyInfo(code);
-  return info ? info.label : code;
+  if (!info) return code;
+  return names?.[info.code] ?? info.label;
 }
 
 /** One decimal is enough for concentration percentages; more precision is visual noise. */

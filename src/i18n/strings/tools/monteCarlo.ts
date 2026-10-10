@@ -50,6 +50,8 @@
  * lets the reader decide, and is careful, as the English is, that a share of
  * simulated paths is not a chance of anything happening to a person.
  */
+import { currenciesEn, currenciesHi } from './currencies.ts';
+
 export const monteCarloEn = {
   meta: {
     title: 'Monte Carlo Retirement Simulator: Free, In Your Browser | nidhi',
@@ -253,6 +255,8 @@ export const monteCarloEn = {
    * Hindi does not pluralise a noun the way English adds an "s".
    */
   island: {
+    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    currencies: currenciesEn,
     formLabel: 'Your plan',
     fields: {
       currency: 'Currency',
@@ -574,6 +578,7 @@ export const monteCarloHi: typeof monteCarloEn = {
     },
   },
   island: {
+    currencies: currenciesHi,
     formLabel: 'आपकी योजना',
     fields: {
       currency: 'मुद्रा',
