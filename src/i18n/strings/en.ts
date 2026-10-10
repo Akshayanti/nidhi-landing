@@ -401,6 +401,91 @@ export const en = {
   },
 
   /**
+   * The free tools hub at `/free/`. A directory rather than a document: a card
+   * per released tool, one explainer block, one line of footer.
+   *
+   * Each card's preview drawing, its `data-attr` label and its address stay in
+   * the component: the first is structure, the second is an analytics label the
+   * privacy notice's changelog names, and the third is what `localizedPath`
+   * prefixes. The words are keyed by the same tool name the component uses, so a
+   * new tool is one row there and one entry in every catalog.
+   */
+  freeHub: {
+    meta: {
+      title: 'Free Personal Finance Tools and Calculators | nidhi',
+      description:
+        'Free personal finance calculators: net worth in one currency or several, loan comparison and a Monte Carlo retirement simulator. No signup, no tracking, all calculations run in your browser.',
+      // The simulator is listed only once it is released, so the description must
+      // not promise a card the page does not show.
+      descriptionWithoutSimulator:
+        'Free personal finance calculators for net worth (in one currency or several) and loan comparison. No signup, no tracking, all calculations run in your browser.',
+    },
+    schema: {
+      breadcrumbHome: 'Home',
+      breadcrumbThis: 'Free Tools',
+      itemListName: 'nidhi free personal finance tools',
+      collectionName: 'Free Personal Finance Tools',
+    },
+    breadcrumb: {
+      home: 'Home',
+      this: 'Free Tools',
+    },
+    eyebrow: 'Free tools',
+    title: 'Free personal finance tools that run in your browser.',
+    lead: 'No signup, no account, no data sent to a server. Every calculator below runs entirely in your browser, with live ECB exchange rates where currency conversion is needed. Built for expats, cross-border savers, and anyone who has outgrown a spreadsheet.',
+    tools: {
+      multiCurrencyNetWorth: {
+        kicker: 'One currency or several',
+        title: 'Net Worth Calculator',
+        desc: 'Add what you own and what you owe to see your net worth. Works in one currency or across 29, at live ECB rates, and if you hold several it shows how much sits in currencies you do not spend in.',
+        itemName: 'Net Worth Calculator and Currency Risk Analyzer',
+      },
+      loanComparison: {
+        kicker: 'Borrowing decisions',
+        title: 'Loan Comparison Calculator',
+        desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-vendor amortisation, without a spreadsheet.',
+        itemName: 'Loan Comparison Calculator',
+      },
+      monteCarlo: {
+        kicker: 'Projections and retirement',
+        title: 'Monte Carlo Simulator',
+        desc: 'Play your savings forward thousands of times with returns from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it.',
+        itemName: 'Monte Carlo Retirement Simulator',
+      },
+    },
+    how: {
+      title: 'How these tools work',
+      browser: {
+        strong: 'All calculation runs in your browser.',
+        rest: ' The numbers you type, the values you upload, and any results are kept on your device. They are not sent to nidhi or to any third party.',
+      },
+      // The link in this bullet is a product name, so it stays in the component
+      // and is the same string in every language, as the privacy notice does with
+      // the services it lists. The spaces live at the ends of the two fragments.
+      rates: {
+        strong: 'Live ECB exchange rates where needed.',
+        before: ' When a tool needs a currency conversion, your browser fetches reference rates from the ',
+        after: ' API (a free, open mirror of European Central Bank reference rates). The request includes only your selected functional currency, not your asset data.',
+      },
+      noSignup: {
+        strong: 'No signup, no account, no email needed.',
+        rest: ' The tools are usable straight from the page. Nothing goes into the page address while you use a tool. An optional share link carries your inputs after the # sign, a part of the address browsers never send to a server, so you control whether to share, and with whom.',
+      },
+      education: {
+        strong: 'Educational, not advice.',
+        rest: ' Each tool shows you the math behind the answer and the assumptions it makes, so you can apply the same logic to your own situation. For decisions that matter, talk to a qualified professional.',
+      },
+    },
+    footer: {
+      before: 'Want the longer reasoning behind these tools? Read the ',
+      blogLink: 'nidhi learning path',
+      middle: ', the curriculum that informs them, or learn what we ',
+      beliefsLink: 'believe about money and planning',
+      after: '.',
+    },
+  },
+
+  /**
    * The home page. Longer than the prose namespaces because this page is a
    * story rather than a document: three steps, one worked example, and a list
    * of ways in. Split finely on purpose, so a translation can move a number or
