@@ -52,7 +52,7 @@ why this one won, so it is not re-argued in a later lesson.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| net worth | शुद्ध संपत्ति | Decided against कुल संपत्ति, which reads as total assets and would let a reader add up what they own without subtracting what they owe. शुद्ध is the word for net. |
+| net worth | शुद्ध संपत्ति | Decided against कुल संपत्ति, which reads as total assets and would let a reader add up what they own without subtracting what they owe. शुद्ध is the word for net. नेट वर्थ was the other candidate and is common in Hindi business writing; शुद्ध संपत्ति won because the term a reader meets first should teach the subtraction rather than hide it behind a loanword, and rule 6 puts नेट वर्थ in parentheses on first use anyway. |
 | assets | संपत्तियाँ | Singular संपत्ति where the sentence needs it. |
 | liabilities | देनदारियाँ | Not ऋण: देनदारियाँ covers mortgages, card balances and informal debt alike. |
 | debt | कर्ज़ | The everyday word. ऋण is formal and is avoided outside quoted material. |
@@ -101,7 +101,7 @@ why this one won, so it is not re-argued in a later lesson.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| financial independence | आर्थिक स्वतंत्रता | |
+| financial independence | वित्तीय स्वतंत्रता | Reversed after the about page: it was आर्थिक स्वतंत्रता, which is the commoner phrase. वित्तीय wins on the rule that one English term gets one Hindi rendering: this list already has वित्तीय साक्षरता for financial literacy and वित्तीय सलाह for financial advice, and आर्थिक means economic, which is a different word. |
 | retirement | रिटायरमेंट | सेवानिवृत्ति is the official word and reads as a form. |
 | withdrawal rate | निकासी दर | |
 | safe withdrawal rate | सुरक्षित निकासी दर | |
@@ -114,6 +114,8 @@ why this one won, so it is not re-argued in a later lesson.
 | cover, sum insured | बीमा राशि | |
 | deductible | कटौती योग्य राशि | |
 | liquidity | तरलता | |
+| risk tolerance | जोखिम लेने की क्षमता | Not जोखिम उठाने की क्षमता: उठाना is what a person does with loss, and the phrase is about capacity, which is what लेने की क्षमता names. Reused by the about page. |
+| tax residency | कर निवास | The noun: कर निवासी is the person. कर निवास स्थिति is the same thing with a word bolted on. |
 | opportunity cost | अवसर लागत | |
 | sunk cost | डूबी लागत | |
 | loss aversion | हानि से बचने की प्रवृत्ति | |
@@ -121,8 +123,8 @@ why this one won, so it is not re-argued in a later lesson.
 | overconfidence | अति आत्मविश्वास | |
 | anchors, anchoring | एंकर, एंकरिंग | |
 | herd behaviour | भेड़चाल | |
-| financial fragility | आर्थिक कमज़ोरी | |
-| FIRE | FIRE | Kept in Latin, defined in words on first use as आर्थिक स्वतंत्रता और जल्दी रिटायरमेंट. |
+| financial fragility | आर्थिक कमज़ोरी | आर्थिक here, not वित्तीय: the phrase is about a household's circumstances, not about money as a subject. |
+| FIRE | FIRE | Kept in Latin, defined in words on first use as वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट. |
 
 ### Reading and sources
 
@@ -134,8 +136,9 @@ words.
 | financial literacy | वित्तीय साक्षरता | |
 | personal finance | पर्सनल फाइनेंस | Matches the RSS feed title already in `src/i18n/strings/hi.ts`. वैयक्तिक वित्त is the official phrasing and reads as a form. |
 | money management | पैसे का प्रबंधन | |
-| multi-currency | एक से ज़्यादा मुद्राओं में | Spelled out rather than बहुमुद्रा, which a general reader meets far less often. |
+| multi-currency | एक से ज़्यादा मुद्राओं में | Spelled out rather than बहुमुद्रा, which a general reader meets far less often. कई मुद्राओं में is shorter and just as good in flow, so the about page's `knowsAbout` label uses it; the lesson prose keeps एक से ज़्यादा, which is the precise one, since two currencies qualify. |
 | referential reading | आगे पढ़ने के लिए | The heading over the sources listed under an article. Decided against संदर्भ सामग्री: it reads as a bibliography, and hides that the list is there to be read rather than cited. |
+| sourcing standards | स्रोत चुनने और उद्धृत करने के मानक | Not स्रोतों के मानक, which reads as standards belonging to the sources rather than the standards for choosing and crediting them. |
 
 ### Site vocabulary already in use
 
@@ -159,6 +162,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | language | भाषा |
 | about nidhi | nidhi के बारे में |
 | contact us | हमसे संपर्क करें |
+| page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
 
 ## Transliteration style
 
