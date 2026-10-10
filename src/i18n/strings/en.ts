@@ -182,11 +182,15 @@ export const en = {
       whyYouCanTrustIt2:
         'What this is not: licensed financial advice. nidhi explains how money works so you can make your own decisions. It does not tell you which fund to buy, and it never will. For decisions that turn on your specific tax residency, legal situation, or risk tolerance, a qualified professional is the right call. That boundary is deliberate, and it is the same one stated in the footer of every page.',
       /**
-       * Sentences with a link inside them are split into three parts. A
-       * translation is free to move the link within the sentence, which a
-       * single format string with a placeholder would not allow: Hindi wants
-       * its word for "page" after the link, not before it. `before` ends with
-       * a space and `after` starts with whatever punctuation the link needs.
+       * Sentences with a link inside them are split into three parts, so a
+       * translation can put the link where its own clause order wants it. The
+       * two languages do not have to agree: Hindi writes "... पढ़नी हो तो
+       * हमारे सिद्धांत पढ़ें।" where English writes "... read our beliefs.",
+       * with the verb landed after the link rather than before it. A single
+       * format string with a placeholder could not move a link across a verb,
+       * nor put the closing punctuation on the side the target language wants
+       * it. `before` ends with a space; `after` starts with whatever the link
+       * needs, which for the editorial-policy sentence is a leading space.
        */
       howPostsAreMade: {
         before:
