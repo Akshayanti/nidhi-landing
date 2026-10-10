@@ -28,6 +28,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
 import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
@@ -50,9 +51,8 @@ const siteUrl = 'https://nidhi.today';
 // bug that left a related section blank on another page.
 //
 // The list is longer than the three slots we render, so a missing candidate
-// just lets the next one through. A locale whose lessons have not been
-// translated yet has an empty collection, which empties this list and drops
-// the whole section rather than linking three times into nothing.
+// just lets the next one through. If none is live, the list is empty and the
+// whole section is dropped rather than linking three times into nothing.
 const RELATED_CANDIDATES = [
   { slug: 'understanding-loan-terms', dataAttr: 'related-loan-terms' },
   { slug: 'emergency-fund', dataAttr: 'related-emergency' },
@@ -169,7 +169,7 @@ const faqSchema = {
 >
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="lc-page">
-    <nav class="lc-breadcrumbs" aria-label="Breadcrumb">
+    <nav class="lc-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
         <li aria-current="page">{tool.page.breadcrumb.this}</li>
@@ -223,9 +223,11 @@ const faqSchema = {
           </p>
         </header>
 
+        <LessonsInEnglish locale={locale} />
+
         <div class="lc-relatedGrid">
           {RELATED.map((post) => (
-            <a href={lessonPath(post.slug)} class="lc-relatedCard" data-attr={post.dataAttr}>
+            <a href={lessonPath(post.slug)} hreflang="en" class="lc-relatedCard" data-attr={post.dataAttr}>
               <span class="lc-relatedKicker">{post.kicker}</span>
               <span class="lc-relatedTitle">{post.title}</span>
               <span class="lc-relatedDesc">{post.desc}</span>

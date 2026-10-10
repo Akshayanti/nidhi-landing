@@ -6,10 +6,9 @@
  * neighbouring levels.
  *
  * A level with no published lessons yet says so and stays out of search
- * (noindex here, and out of the sitemap in astro.config.mjs). That covers a
- * language whose lessons are still being written, Hindi today: its five level
- * pages exist, say the lessons are on their way, and join the index as their
- * lessons publish.
+ * (noindex here, and out of the sitemap in astro.config.mjs). There is one
+ * lesson library, in English, so that is the same question in every language:
+ * a Hindi level page lists the same English lessons and goes live with them.
  *
  * The body lives in this file rather than in `src/components/pages/` for the
  * same shape as the rest of the path: a body both languages render, an English
@@ -21,6 +20,7 @@ import { LevelLessons, type PostData } from '../components/LearningPath';
 import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import { getPathPosts } from '../utils/learnPosts';
+import { tagChipLabel } from '../utils/tags';
 import { DEFAULT_LOCALE, DATE_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../i18n';
 
 interface Props {
@@ -38,7 +38,7 @@ const index = LADDER_LEVELS.indexOf(level);
 const siteUrl = 'https://nidhi.today';
 const levelUrl = new URL(localizedPath(locale, `/blog/${level}/`), siteUrl).href;
 
-const posts = await getPathPosts(locale);
+const posts = await getPathPosts();
 // Cards keep the English addresses `getPathPosts` set; the level's own links
 // below are chrome and follow the language.
 const levelPosts: PostData[] = posts.filter((p) => p.pathLevel === level);
@@ -49,7 +49,11 @@ const next = liveLevels[liveLevels.indexOf(level) + 1];
 
 // Every tag a card on this page can show needs its own link.
 const tagHrefs: Record<string, string> = {};
-for (const tag of levelPosts.flatMap((p) => p.tags)) tagHrefs[tag] = blogTagPath(locale, tag);
+const tagLabels: Record<string, string> = {};
+for (const tag of levelPosts.flatMap((p) => p.tags)) {
+  tagHrefs[tag] = blogTagPath(locale, tag);
+  tagLabels[tag] = tagChipLabel(tag, learn.tags[tag]?.name, locale === DEFAULT_LOCALE);
+}
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -88,7 +92,7 @@ const itemListSchema = {
 >
   <section class="level-page" style={`--lc: var(--level-${level})`}>
     <div class="container level-page-container">
-      <nav class="level-page-crumb" aria-label="Breadcrumb">
+      <nav class="level-page-crumb" aria-label={strings.a11y.breadcrumb}>
         <a href={localizedPath(locale, '/blog/')} data-attr="level-page-crumb">{learn.crumb.learn}</a>
         <span aria-hidden="true"> / </span>
         <span aria-current="page">{label}</span>
@@ -116,6 +120,7 @@ const itemListSchema = {
           posts={levelPosts}
           strings={learn.island}
           tagHrefs={tagHrefs}
+          tagLabels={tagLabels}
           inclusiveLabel={learn.levels['inclusive-finances'] ?? learn.levelFallback}
           dateLocale={DATE_LOCALE[locale]}
         />
@@ -123,7 +128,7 @@ const itemListSchema = {
         <p class="level-page-empty">{levelStrings.empty}</p>
       )}
 
-      <nav class="level-page-nav" aria-label="Levels">
+      <nav class="level-page-nav" aria-label={levelStrings.nav.label}>
         {prev ? (
           <a href={localizedPath(locale, `/blog/${prev}/`)} data-attr="level-page-prev">
             <span aria-hidden="true">←</span> {learn.levels[prev]}

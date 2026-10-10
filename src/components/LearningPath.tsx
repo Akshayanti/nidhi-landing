@@ -65,6 +65,8 @@ interface CardContext {
   strings: Strings;
   /** Tag slug to its locale-aware link, built by the page. */
   tagHrefs: Record<string, string>;
+  /** Tag slug to the chip's text in the page's language, built by the page. */
+  tagLabels: Record<string, string>;
   /** The Inclusive Finances level name, for a companion with no host line. */
   inclusiveLabel: string;
   /** BCP-47 tag for the card's short date, so a month reads in the page's language. */
@@ -137,8 +139,8 @@ interface PostNodeProps extends CardContext {
   onPath?: boolean;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath = true, step, stepCount, strings, tagHrefs, inclusiveLabel, dateLocale }: PostNodeProps) {
-  const ctx: CardContext = { strings, tagHrefs, inclusiveLabel, dateLocale };
+function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath = true, step, stepCount, strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale }: PostNodeProps) {
+  const ctx: CardContext = { strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale };
   const d = new Date(post.pubDate);
   const dateStr = `${d.toLocaleString(dateLocale, { month: 'short' })} ${d.getDate()}`;
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
@@ -187,15 +189,17 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
             <span>{companionLine(post, onPath, ctx)}</span>
           </p>
         )}
-        <a href={post.href} className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
+        {/* Lessons are English on every edition, so their words carry their own
+            language for a screen reader on a Hindi page. */}
+        <a href={post.href} lang="en" hrefLang="en" className={`lp-cardTitle ${isRead ? 'lp-cardTitleRead' : ''}`} data-attr={`blog-card-${post.id}`}>
           {post.title}
         </a>
-        <p className="lp-cardDesc">{post.description}</p>
+        <p className="lp-cardDesc" lang="en">{post.description}</p>
         {post.tags.length > 0 && (
           <div className="lp-cardTags">
             {post.tags.slice(0, 3).map((tag) => (
               <a key={tag} href={tagHrefs[tag]} className="lp-cardTag">
-                {tag}
+                {tagLabels[tag] ?? tag}
               </a>
             ))}
           </div>

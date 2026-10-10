@@ -28,6 +28,7 @@ import {
   type VendorInput,
 } from '../utils/loan/url.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import {
   computeFromInput,
@@ -51,10 +52,10 @@ type Strings = Dict['tools']['loanComparison']['island'];
 /**
  * A count of months the way this language writes it.
  *
- * The engine's `formatMonths` returns English ("3 yr 6 mo"), and three call
- * sites outside this file depend on those exact bytes, so the phrasing moves
- * here rather than there. Same branches, same output in English; Hindi marks
- * the singular on the month only.
+ * The engine's `formatMonths` returns English ("3 yr 6 mo"), and its unit
+ * tests in `src/utils/loan/math.test.ts` pin those exact bytes; nothing else
+ * calls it. The phrasing lives here so the engine stays language-free. Same
+ * branches, same output in English; Hindi marks the singular on the month only.
  */
 function months(count: number, s: Strings['months']): string {
   if (!Number.isFinite(count) || count <= 0) return s.na;
@@ -67,19 +68,65 @@ function months(count: number, s: Strings['months']): string {
 }
 
 /**
- * How the engine's English messages are recognised, longest phrase first so a
- * general phrase cannot claim a message a specific one owns. `src/utils/loan/
- * math.ts` computes schedules and knows nothing about languages; it writes
- * these sentences in English, and the tool shows the reader's language instead.
+ * An APR as the tool prints it. `formatApr` writes an undefined APR (a fee
+ * that swallows the loan) as the English "n/a"; the tool says it in the
+ * reader's language instead.
+ */
+function aprText(apr: number, currency: string, s: Strings): string {
+  return Number.isFinite(apr) ? formatApr(apr, getCurrency(currency).locale) : s.results.aprNa;
+}
+
+/**
+ * The default names `makeDefaultVendor` writes ("Vendor A" to "Vendor E"),
+ * each paired with its letter. Share links carry these exact spellings.
+ */
+const DEFAULT_NAMES = new Map<string, string>(
+  VENDOR_LABELS.map((label, i) => [makeDefaultVendor(i).name, label]),
+);
+
+/**
+ * A vendor's name as the tool shows it in legends, headers, menus and readouts.
+ *
+ * The name is the reader's own text and is shown as typed, with one exception:
+ * an untouched default is shown in the reader's language, so a Hindi page does
+ * not label its charts in English. The letter comes from the name and not the
+ * slot, because removing a card shifts the ones after it up while their names
+ * stay put ("Vendor C" can sit in slot B). The stored name, and so the share
+ * link, does not change. An empty name falls back to the slot's own letter.
+ */
+function shownName(name: string, index: number, s: Strings): string {
+  const label = name ? DEFAULT_NAMES.get(name) : VENDOR_LABELS[index] ?? VENDOR_LABELS[0];
+  return label ? format(s.card.badge, { label }) : name;
+}
+
+/**
+ * How the engine's English messages are recognised. Each phrase occurs in
+ * exactly one message, so the order does not decide a match; the
+ * `engineError` test in `src/utils/loan/math.test.ts` reads every message
+ * `src/utils/loan/math.ts` can return and checks that each one is claimed by
+ * one phrase. The engine computes schedules and knows nothing about
+ * languages; it writes these sentences in English, and the tool shows the
+ * reader's language instead.
  *
  * The match is on the message as the engine wrote it, never on what the reader
  * sees, so the analytics classifier below buckets the same way in every locale.
  */
-const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['errors']][] = [
+export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['errors']][] = [
+  // `buildSchedule` / `buildScheduleAdvanced`.
   ['does not amortize within', 'notAmortizing'],
   ['principal must be greater than zero', 'principal'],
   ['monthly payment must be greater than zero', 'payment'],
   ['does not even cover the first month', 'belowInterest'],
+  ['term must be at least one month', 'term'],
+  // `computeLoan`'s input checks.
+  ['enter a loan amount greater than zero', 'amount'],
+  ['enter a non-negative interest rate', 'rate'],
+  ['initial fixed period must be a positive number', 'initialFixed'],
+  ['enter a term of at least one month', 'termMin'],
+  ['term cannot exceed', 'termMax'],
+  ['enter a monthly payment greater than zero', 'paymentEnter'],
+  ['must be entered in term mode', 'hybridMode'],
+  // `refinanceComparison`.
   ['refinance month must be at least', 'refiMonth'],
   ['refinance month must be before', 'refiMonthEnd'],
   ['new rate must be non-negative', 'refiRate'],
@@ -87,8 +134,10 @@ const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['errors']][]
   ['no remaining balance at the refinance', 'refiBalance'],
   ['new loan is not valid', 'newLoan'],
   ['original loan is invalid', 'refiOriginal'],
-  ['term must be at least one month', 'term'],
 ];
+
+/** The two messages that carry a count of months, which goes back in as `{months}`. */
+const WITH_MONTHS = new Set<keyof Strings['engine']['errors']>(['notAmortizing', 'termMax']);
 
 /**
  * The engine's message in the reader's language, with its numbers put back.
@@ -98,13 +147,13 @@ const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['errors']][]
  * empty box. Nothing here is analytics-facing; the caller still passes the raw
  * message to `track()`.
  */
-function engineError(raw: string, s: Strings): string {
+export function engineError(raw: string, s: Strings): string {
   const lower = raw.toLowerCase();
   const found = ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase));
   if (!found) return raw;
-  if (found[1] === 'notAmortizing') {
+  if (WITH_MONTHS.has(found[1])) {
     const matched = /(\d+)/.exec(raw);
-    return format(s.engine.errors.notAmortizing, { months: matched ? matched[1] : '' });
+    return format(s.engine.errors[found[1]], { months: matched ? matched[1] : '' });
   }
   return s.engine.errors[found[1]];
 }
@@ -138,13 +187,7 @@ function engineWarning(raw: string, s: Strings): string {
 // both consented and anonymous users, and we keep the property payloads
 // strictly non-PII so that's safe.
 // -----------------------------------------------------------------------------
-declare global {
-  interface Window {
-    posthog?: {
-      capture?: (event: string, properties?: Record<string, unknown>) => void;
-    };
-  }
-}
+// `window.posthog` is declared once, in src/types/posthog.d.ts.
 
 function track(event: string, properties?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
@@ -754,7 +797,9 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
     // `?utm_source=...` campaign click does not get mislabelled as a shared
     // comparison view. The utm-source value is reported as a property so
     // funnels can split direct shares (utm_source=share) from organic landings.
-    if (shared) {
+    // A language switch carries the state too, but that view was already
+    // counted on the page it came from.
+    if (shared && !arrivedByLanguageSwitch()) {
       track('free_loan_comparison_shared_view_opened', {
         vendors: decoded.length,
         utm_source: new URLSearchParams(window.location.search).get('utm_source') ?? null,
@@ -765,6 +810,14 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
   // The inputs are never written into the address while you type: a URL can
   // reach analytics and server logs. They only leave the form in a share
   // link, after the # (CLAUDE.md, "Free tools keep inputs out of URLs").
+
+  // Keeps what is on screen where the header's language switch can carry it,
+  // after the # and only at click time (see src/utils/shared/toolState.ts).
+  // Never the address: nothing here writes to it.
+  useEffect(() => {
+    if (!hydrated) return;
+    publishToolState(SHARED_STATE_GLOBAL, encodeToQueryString(vendors, globalState));
+  }, [hydrated, vendors, globalState]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -1197,7 +1250,9 @@ function VendorCard({
           id={id('name')}
           type="text"
           className="lc-input"
-          value={vendor.name}
+          // An untouched default reads in the page's language; the stored
+          // name stays "Vendor A" until the reader edits it (`shownName`).
+          value={DEFAULT_NAMES.has(vendor.name) ? shownName(vendor.name, 0, strings) : vendor.name}
           onChange={(e) => onChange({ name: e.target.value })}
           autoComplete="off"
           spellCheck={false}
@@ -1565,20 +1620,23 @@ function VendorCard({
                 the "Show details" expander to keep the card compact. */}
             <dl className="lc-resultList lc-resultListPrimary">
               <ResultRow
-                label="Monthly"
+                label={strings.results.monthly}
                 value={formatMoney(result.effectiveMonthlyMinor, currency)}
                 hint={
                   Number(vendor.extraMonthly) > 0
-                    ? `${formatMoney(result.monthlyPaymentMinor, currency)} + ${formatMoney(
-                        result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
-                        currency,
-                      )} extra`
+                    ? format(strings.results.monthlyExtra, {
+                        base: formatMoney(result.monthlyPaymentMinor, currency),
+                        extra: formatMoney(
+                          result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
+                          currency,
+                        ),
+                      })
                     : undefined
                 }
               />
               <ResultRow
                 label={strings.results.apr}
-                value={formatApr(result.aprNominal, getCurrency(currency).locale)}
+                value={aprText(result.aprNominal, currency, strings)}
                 hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
               />
               <ResultRow
@@ -1727,7 +1785,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
     .map((r, i) => ({
       r,
       i,
-      name: vendors[i].name || format(strings.card.badge, { label: VENDOR_LABELS[i] }),
+      name: shownName(vendors[i].name, i, strings),
     }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
 
@@ -1818,7 +1876,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
               // solver. Six decimals is well below anything we'd ever
               // display in the UI.
               get={(r) => Math.round(r.aprNominal * 1_000_000)}
-              format={(n) => formatApr(n / 1_000_000, getCurrency(currency).locale)}
+              format={(n) => aprText(n / 1_000_000, currency, strings)}
             />
             <DeltaRow
               label={strings.delta.totalInterest}
@@ -2114,7 +2172,7 @@ function ChartsPanel({
   const activeResult = results[activeIdx];
   const activeVendor = vendors[activeIdx];
   const vendorName =
-    activeVendor?.name || format(strings.card.badge, { label: VENDOR_LABELS[activeIdx] ?? 'A' });
+    shownName(activeVendor?.name ?? '', activeIdx, strings);
 
   return (
     <div className="lc-chartsPanel">
@@ -2129,7 +2187,7 @@ function ChartsPanel({
           results={results}
           colors={VENDOR_COLORS}
           vendorNames={vendors.map(
-            (v, i) => v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] }),
+            (v, i) => shownName(v.name, i, strings),
           )}
           currency={currency}
           strings={strings}
@@ -2173,7 +2231,7 @@ function ChartsPanel({
             <option value="">{strings.charts.autoOption}</option>
             {vendors.map((v, i) => (
               <option key={i} value={i} disabled={Boolean(results[i]?.error)}>
-                {v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] })}
+                {shownName(v.name, i, strings)}
                 {results[i]?.error ? strings.charts.incomplete : ''}
               </option>
             ))}
@@ -2372,7 +2430,7 @@ function HorizonSection({
                 <th scope="col"><span className="lc-srOnly">{strings.delta.metricAria}</span></th>
                 {validRows.map((row) => (
                   <th key={row.i}>
-                    {row.v.name || format(strings.card.badge, { label: VENDOR_LABELS[row.i] })}
+                    {shownName(row.v.name, row.i, strings)}
                   </th>
                 ))}
               </tr>
@@ -2438,6 +2496,7 @@ interface RefinanceSectionProps {
   currency: string;
   state: GlobalState;
   onChange: (patch: Partial<GlobalState>) => void;
+  strings: Strings;
 }
 
 /**
@@ -2451,6 +2510,7 @@ function RefinanceSection({
   currency,
   state,
   onChange,
+  strings,
 }: RefinanceSectionProps) {
   const vendorSelectId = useId();
   const atMonthId = useId();
@@ -2521,7 +2581,7 @@ function RefinanceSection({
           >
             {vendors.map((v, i) => (
               <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
-                {v.name || format(strings.card.badge, { label: VENDOR_LABELS[i] })}
+                {shownName(v.name, i, strings)}
                 {results[i]?.error ? strings.charts.incomplete : ''}
               </option>
             ))}

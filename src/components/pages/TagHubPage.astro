@@ -9,12 +9,12 @@
  * and a generic line, so a new tag never silently drops it from the hub (it
  * just lacks the editorial copy until the catalog gains an entry).
  *
- * A language with no lessons yet (Hindi today) has no tags, and says so. The
- * page is indexable either way: it is the way into the topics, not a topic.
+ * With no lessons published there are no tags, and the page says so. It is
+ * indexable either way: it is the way into the topics, not a topic.
  *
- * English is served from `src/pages/blog/tag/index.astro`, which
- * `astro.config.mjs` reads for this page's sitemap lastmod; the other languages
- * come through `src/pages/[locale]/blog/tag/index.astro`.
+ * English is served from `src/pages/blog/tag/index.astro`, the other languages
+ * through `src/pages/[locale]/blog/tag/index.astro`. `astro.config.mjs` reads
+ * this file, with the catalogs, for the sitemap lastmod.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatTag } from '../../utils/tags';
@@ -113,7 +113,7 @@ const collectionPageSchema = {
   <section class="tagHub">
     <div class="container">
       <header class="tagHub-header">
-        <nav class="tagHub-breadcrumb" aria-label="Breadcrumb">
+        <nav class="tagHub-breadcrumb" aria-label={strings.a11y.breadcrumb}>
           <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a> <span class="sep">/</span> <span>{learn.crumb.topics}</span>
         </nav>
         <h1>{topics.h1}</h1>

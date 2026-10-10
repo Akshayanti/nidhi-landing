@@ -13,6 +13,10 @@ import { learnEn } from './learn.ts';
 
 export const en = {
   skipToContent: 'Skip to content',
+  /** Names for landmarks a screen reader announces, shared by every page. */
+  a11y: {
+    breadcrumb: 'Breadcrumb',
+  },
 
   /**
    * Site-wide defaults for the document head. `BaseHead` falls back to
@@ -435,6 +439,8 @@ export const en = {
    * new tool is one row there and one entry in every catalog.
    */
   freeHub: {
+    /** The line at the foot of each tool card. */
+    cta: 'Open the tool',
     meta: {
       title: 'Free Personal Finance Tools and Calculators | nidhi',
       description:
@@ -851,6 +857,45 @@ export const en = {
   },
 
   /**
+   * The newsletter box: compact on the learning path, full under a lesson. It
+   * posts to the same endpoint in every language and the emails it leads to
+   * are English, like the lessons they announce, so a page in another language
+   * says so (`inEnglish`, shown only outside English).
+   */
+  subscribe: {
+    region: 'Newsletter subscription',
+    title: 'Receive new posts directly in your inbox',
+    text: 'One email when something new goes up. No spam, unsubscribe anytime.',
+    inEnglish: 'The lessons and the emails are in English.',
+    emailLabel: 'Email address',
+    button: 'Subscribe',
+    /** Split around the link, so a translation can move it inside the sentence. */
+    privacyBefore: 'Double opt-in. Unsubscribe anytime. ',
+    privacyLink: 'Privacy policy',
+    privacyAfter: '.',
+    rssFollow: 'Follow by RSS',
+    alreadySubscribed: 'I already subscribed',
+    notNow: 'Not now',
+    successTitle: 'Check your inbox',
+    successBefore: 'We sent a confirmation link to ',
+    successAfter: '. Click the button in that email to finish subscribing. Takes a second.',
+    /** Stands in for the address until the script fills in the one typed. */
+    yourEmail: 'your email',
+    hintBefore: 'No email after a minute? Check spam, or ',
+    hintRetry: 'try a different address',
+    hintAfter: '.',
+    compactSentBefore: 'Confirmation link sent to ',
+    compactSentAfter: '.',
+    compactRetry: 'Use a different email',
+    undo: 'Undo',
+    dismissedPermanent: 'Thanks for subscribing! We won’t show this banner on this device again.',
+    dismissedLater: 'We’ll check back later.',
+    sending: 'Sending…',
+    notConfigured: 'Subscriptions are not configured yet. Check back soon, or grab the RSS feed.',
+    error: 'Something went wrong. Please try again in a moment.',
+  },
+
+  /**
    * The early-access waitlist box, on the home page and on the net worth tool.
    * It posts to the same Google Apps Script endpoint in every language, and the
    * email it triggers is English, so the copy promises one email and no more:
@@ -871,6 +916,8 @@ export const en = {
     sending: 'Sending…',
     /** Shown when the build has no endpoint configured, so a signup cannot land. */
     notConfigured: 'Signups are not configured yet. Check back soon.',
+    /** Shown when the request fails. */
+    error: 'Something went wrong. Please try again in a moment.',
   },
   home: {
     meta: {
@@ -1055,11 +1102,7 @@ export const en = {
       trustEditorial: 'How we write',
       trustPrivacy: 'Privacy policy',
     },
-    /**
-     * The level names, as a level is named on a card. Also still in
-     * `LEVEL_LABELS` in src/utils/home/startingPoints.ts, which the blog
-     * chrome reads; a test keeps the two in step until that one goes.
-     */
+    /** The level names, as a level is named on a card. */
     levels: {
       discovery: 'Discovery',
       building: 'Building',

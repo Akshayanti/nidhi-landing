@@ -170,9 +170,9 @@ const webSiteSchema = {
   name: 'nidhi',
   url: 'https://nidhi.today/',
   description: home.schema.site,
-  // The blog index honours `?q=` as a deep link and writes the value back
-  // into the URL via `replaceState` as the search field changes (see
-  // `src/components/LearningPath.tsx`).
+  // The blog index honours `?q=` as a deep link: it reads the value into its
+  // search box and then removes it from the address (see
+  // `src/components/LearnHome.tsx`).
   potentialAction: {
     '@type': 'SearchAction',
     target: {
@@ -225,7 +225,7 @@ const faqSchema = {
               {/* Only for a returning reader: the hero's two buttons are the
                   first-visit choices, and the routes below say where to begin. */}
               <p data-next-continue>
-                {home.hero.welcomeBack} <a href="#" data-attr="home-hero-continue"></a>
+                {home.hero.welcomeBack} <a href="#" data-attr="home-hero-continue" lang="en" hreflang="en"></a>
               </p>
             </div>
           )}
@@ -508,10 +508,13 @@ const faqSchema = {
         door.href = next.href;
         verb.textContent = door.dataset.doorContinue || '';
         title.textContent = next.title;
+        // A lesson title is English on every edition; the path's name is not.
+        title.lang = 'en';
       } else {
         door.href = door.dataset.routeDone || '/blog/';
         verb.textContent = door.dataset.doorRead || '';
         title.textContent = door.dataset.doorPath || '';
+        title.removeAttribute('lang');
       }
     } catch {
       /* malformed route: keep the default button */
@@ -863,6 +866,13 @@ const faqSchema = {
   }
 
   @media (min-width: 960px) { .journey { margin-top: 0; } }
+
+  /* Devanagari reads smaller than Latin at the same size, and the uppercase
+     and tracking that make this label a label do nothing for it. */
+  :global(html[lang='hi']) .journey-label {
+    font-size: 0.8rem;
+    letter-spacing: normal;
+  }
 
   .journey-label {
     margin: 0 0 6px;

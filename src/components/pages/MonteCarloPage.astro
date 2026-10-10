@@ -32,6 +32,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getCollection } from 'astro:content';
 import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
 import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
@@ -139,7 +140,7 @@ const faqSchema = {
 >
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="mcsp-page">
-    <nav class="mcsp-breadcrumbs" aria-label="Breadcrumb">
+    <nav class="mcsp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{strings.breadcrumb.home}</a></li>
         <li><a href={localizedPath(locale, '/free/')}>{strings.breadcrumb.freeTools}</a></li>
@@ -214,9 +215,10 @@ const faqSchema = {
     {related.length > 0 && (
       <aside class="mcsp-panel" aria-labelledby="mcsp-related-h">
         <h2 id="mcsp-related-h" class="mcsp-sectionTitle">{strings.related.heading}</h2>
+        <LessonsInEnglish locale={locale} />
         <div class="mcsp-relatedGrid">
           {related.map((post) => (
-            <a href={post.url} class="mcsp-relatedCard" data-attr={post.dataAttr}>
+            <a href={post.url} hreflang="en" class="mcsp-relatedCard" data-attr={post.dataAttr}>
               <span class="mcsp-relatedKicker">{post.kicker}</span>
               <span class="mcsp-relatedTitle">{post.title}</span>
               <span class="mcsp-relatedDesc">{post.desc}</span>

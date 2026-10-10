@@ -102,7 +102,7 @@ const inputId = `${idPrefix}-email`;
   </div>
 </section>
 
-<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured }}>
+<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error }}>
   (function () {
     var STORAGE_KEY = 'nidhi-waitlist-signedup';
 
@@ -209,7 +209,7 @@ const inputId = `${idPrefix}-email`;
         }
       }).catch(function () {
         submitting = false;
-        setStatus('Something went wrong. Please try again in a moment.', 'error');
+        setStatus(errorMessage, 'error');
         if (button) { button.disabled = false; button.textContent = ctaLabel; }
       });
     });

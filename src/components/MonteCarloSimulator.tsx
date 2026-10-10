@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore }
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   MAX_FEE_PCT,
   RETURN_SETTINGS,
@@ -243,16 +244,33 @@ export default function MonteCarloSimulator({ strings, netWorthHref }: { strings
   // Shared links carry the plan after the #, which browsers never send to a
   // server. A script in the page head moves it out of the address bar before
   // analytics start (see the page file), and leaves it here for us to read.
+  // Nothing is published until the shared plan has been read, so the publish
+  // below cannot overwrite it with the defaults first.
+  const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
     const shared = typeof raw === 'string' ? decodeState(raw) : null;
+    setHydrated(true);
     if (!shared) return;
     setForm(toForm(shared));
     setSettled(shared);
+    // A language switch carries the plan too, but that view was already
+    // counted on the page it came from.
+    if (arrivedByLanguageSwitch()) return;
     track('free_monte_carlo_shared_view_opened', {
       utm_source: new URLSearchParams(window.location.search).get('utm_source'),
     });
   }, []);
+
+  // Keeps what is on screen where the header's language switch can carry it,
+  // after the # and only at click time (see src/utils/shared/toolState.ts).
+  // Never the address: nothing here writes to it.
+  // The settled plan, the one the results show, the same one a share link
+  // would carry.
+  useEffect(() => {
+    if (!hydrated) return;
+    publishToolState(SHARED_STATE_GLOBAL, encodeState(settled));
+  }, [hydrated, settled]);
 
   const errors = {
     start: !isValid(form.start, 0, 1e12),
@@ -834,7 +852,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
         : hover <= state.saveYears
           ? strings.chart.phaseSaving
           : t(strings.chart.phaseWithdrawing, { year: hover - state.saveYears });
-  const announce = h
+  const announce = h && hover !== null
     ? t(strings.chart.announce, {
         year: hover,
         phase: phase ? `, ${phase.toLowerCase()}` : '',
@@ -843,7 +861,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
         middleHigh: formatAmount(h.p75, code),
         median: formatAmount(h.p50, code),
         low: formatAmount(h.p10, code),
-        straight: formatAmount(straightLine[hover!], code),
+        straight: formatAmount(straightLine[hover], code),
       })
     : '';
 
@@ -985,7 +1003,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
             // Swatches match the dots on the chart: band-edge dots for high
             // and low, the median dot, the single-line dot, and the inner band.
             { label: strings.chart.readoutHigh, value: formatAmount(h.p90, code), swatch: 'dot', color: OUTER_DOT },
-            { label: strings.chart.readoutMiddle, value: `${formatAmount(h.p25, code)} to ${formatAmount(h.p75, code)}`, swatch: 'band', color: INNER_BAND },
+            { label: strings.chart.readoutMiddle, value: t(strings.chart.readoutMiddleRange, { low: formatAmount(h.p25, code), high: formatAmount(h.p75, code) }), swatch: 'band', color: INNER_BAND },
             { label: strings.chart.readoutMedian, value: formatAmount(h.p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
             { label: strings.chart.readoutLow, value: formatAmount(h.p10, code), swatch: 'dot', color: OUTER_DOT },
             { label: strings.chart.readoutStraight, value: formatAmount(straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },

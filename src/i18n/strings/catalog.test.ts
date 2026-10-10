@@ -81,6 +81,12 @@ const IDENTICAL_OK = new Set<string>([
   // pattern itself is placeholders plus "nidhi", so there is nothing in it a
   // translator could translate, and the Hindi page reads it the same way.
   'level.meta.title',
+
+  // Instagram is a product name, and CLAUDE.md keeps product names in their own
+  // script; Facebook and LinkedIn already stay Latin in the Hindi chrome. The
+  // about page's link adds only the account handle, which is a name too.
+  'nav.items.instagram',
+  'about.cta.instagram',
 ]);
 
 /**

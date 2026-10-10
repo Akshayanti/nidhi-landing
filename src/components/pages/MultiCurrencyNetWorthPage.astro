@@ -22,6 +22,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
 import WaitlistSection from '../../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
@@ -145,7 +146,7 @@ const faqSchema = {
   <link slot="head" rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
   <section class="mcnw-page">
-    <nav class="mcnw-breadcrumbs" aria-label="Breadcrumb">
+    <nav class="mcnw-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
         <li aria-current="page">{tool.page.breadcrumb.this}</li>
@@ -227,9 +228,11 @@ const faqSchema = {
         </p>
       </header>
 
+      <LessonsInEnglish locale={locale} />
+
       <div class="mcnw-relatedGrid">
         {RELATED.map((post) => (
-          <a href={lessonPath(post.slug)} class="mcnw-relatedCard" data-attr={post.dataAttr}>
+          <a href={lessonPath(post.slug)} hreflang="en" class="mcnw-relatedCard" data-attr={post.dataAttr}>
             <span class="mcnw-relatedKicker">{post.kicker}</span>
             <span class="mcnw-relatedTitle">{post.title}</span>
             <span class="mcnw-relatedDesc">{post.desc}</span>

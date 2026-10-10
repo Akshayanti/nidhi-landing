@@ -12,6 +12,7 @@ import {
 } from '../utils/multi-currency-net-worth/math.ts';
 import {
   decodeFromQueryString,
+  encodeFullData,
   encodeShared,
   SHARED_STATE_GLOBAL,
   type ShareMode,
@@ -19,6 +20,7 @@ import {
 } from '../utils/multi-currency-net-worth/url.ts';
 import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
 import { formatAmount, formatPercent } from '../utils/shared/formatAmount.ts';
+import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
@@ -45,13 +47,7 @@ type Strings = Dict['tools']['multiCurrencyNetWorth']['island'];
 // PostHog telemetry
 // ---------------------------------------------------------------------------
 
-declare global {
-  interface Window {
-    posthog?: {
-      capture?: (event: string, properties?: Record<string, unknown>) => void;
-    };
-  }
-}
+// `window.posthog` is declared once, in src/types/posthog.d.ts.
 
 function track(event: string, properties?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
@@ -118,15 +114,30 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
       // Capture utm_source so funnels can split direct shares (utm_source=share)
       // from other inbound campaigns. Mirrors the behavior on LoanCompare.tsx
       // (the cross-tool consistency was an explicit audit finding).
+      // A language switch carries the shared view too, but it was already
+      // counted on the page it came from.
       const utmSource = new URLSearchParams(window.location.search).get('utm_source');
-      track('free_multi_currency_net_worth_shared_view_opened', {
-        mode: decoded.shareMode ?? 'unknown',
-        positions: decoded.sharedPositions.length,
-        utm_source: utmSource ?? null,
-      });
+      if (!arrivedByLanguageSwitch()) {
+        track('free_multi_currency_net_worth_shared_view_opened', {
+          mode: decoded.shareMode ?? 'unknown',
+          positions: decoded.sharedPositions.length,
+          utm_source: utmSource ?? null,
+        });
+      }
     }
     setHydrated(true);
   }, []);
+
+  // Keeps what is on screen where the header's language switch can carry it,
+  // after the # and only at click time (see src/utils/shared/toolState.ts).
+  // Never the address: nothing here writes to it.
+  // A read-only shared view keeps the link's own state, which is already in
+  // the property, so a switch opens the same view; your own figures travel in
+  // the editable layout, so a switch never turns them into a read-only view.
+  useEffect(() => {
+    if (!hydrated || isReadOnlyView) return;
+    publishToolState(SHARED_STATE_GLOBAL, encodeFullData(rows, functionalCurrency));
+  }, [hydrated, isReadOnlyView, rows, functionalCurrency]);
 
   // Fetch exchange rates when functional currency changes.
   useEffect(() => {
@@ -544,7 +555,10 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
             <ul>
               {csvErrors.map((e) => (
                 <li key={e.line}>
-                  {format(strings.table.errorLine, { line: e.line, message: e.message })}
+                  {format(strings.table.errorLine, {
+                    line: e.line,
+                    message: format(strings.table.csvErrors[e.reason], e.values ?? {}),
+                  })}
                 </li>
               ))}
             </ul>

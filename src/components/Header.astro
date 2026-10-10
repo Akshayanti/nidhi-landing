@@ -2,7 +2,7 @@
 import ThemeToggle from './ThemeToggle.astro';
 import LangPicker from './LangPicker.astro';
 import LogoMark from './LogoMark.astro';
-import { DEFAULT_LOCALE, LOCALES, dict, localePrefix, localizedPath, stripLocale, type Locale } from '../i18n';
+import { DEFAULT_LOCALE, LOCALES, dict, localePrefix, stripLocale, type Locale } from '../i18n';
 import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
 import { DESKTOP_DROPDOWNS, navGroups, navHref, navLabel, type NavGroup, type NavLink } from './nav.ts';
 
@@ -679,10 +679,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   // so a stale map can cost the query and the fragment but can never send
   // anyone to the wrong path.
   //
-  // A free tool's inputs are in the fragment of a shared link, and
-  // `ToolStateGuard` has already moved them out of the address into
-  // `window[<tool>Shared]` by the time this runs. They are put back here, which
-  // is what carries them across a switch: the encoded state names no language,
+  // A free tool keeps its current inputs, encoded, in `window[<tool>Shared]`:
+  // `ToolStateGuard` puts a shared link's state there before the tool mounts,
+  // and the tool then keeps it in step with what is on screen
+  // (src/utils/shared/toolState.ts). It is put back after the # when a
+  // switcher is clicked (see the click handler at the end), which is what
+  // carries the inputs across a switch: the encoded state names no language,
   // so the same string means the same plan on either side. Only a tool page
   // passes `toolStateGlobal`, and the path is preserved, so the state always
   // belongs to the tool the reader is about to land on.
@@ -707,14 +709,36 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       if (key.indexOf('utm_') === 0) keep.append(key, value);
     });
     var query = keep.toString();
-    var state = toolStateGlobal ? window[toolStateGlobal] : '';
-    var suffix = (query ? '?' + query : '') + (state ? '#' + state : window.location.hash);
+    var suffix = (query ? '?' + query : '') + window.location.hash;
 
     for (var i = 0; i < links.length; i++) {
       var target = links[i].getAttribute('data-lang-switch');
       if (!Object.prototype.hasOwnProperty.call(prefixes, target)) continue;
       links[i].setAttribute('href', prefixes[target] + path + suffix);
     }
+
+    // The tool state is never written into the href: PostHog autocapture
+    // records a clicked link's href (`attr__href`), and `before_send` does not
+    // reach into element attributes. It is added only as the browser leaves,
+    // after autocapture has read the clean link. A click that opens a new tab
+    // or window (Cmd, Ctrl, Shift, or the middle button) gets the values too,
+    // through window.open; Alt, which saves the link, keeps the clean href.
+    if (!toolStateGlobal) return;
+    function carry(e) {
+      var state = window[toolStateGlobal];
+      if (!state || e.defaultPrevented || e.altKey) return;
+      var link = e.target instanceof Element ? e.target.closest('[data-lang-switch]') : null;
+      if (!link) return;
+      var url = link.getAttribute('href').split('#')[0] + '#' + state;
+      var newTab = e.button === 1 || e.metaKey || e.ctrlKey || e.shiftKey;
+      if (e.button !== 0 && e.button !== 1) return;
+      e.preventDefault();
+      if (newTab) window.open(url, '_blank', 'noopener');
+      else window.location.assign(url);
+    }
+    document.addEventListener('click', carry);
+    // The middle button fires auxclick, not click.
+    document.addEventListener('auxclick', function(e) { if (e.button === 1) carry(e); });
   })();
 </script>
 )}

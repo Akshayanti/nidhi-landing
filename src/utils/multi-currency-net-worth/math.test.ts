@@ -16,6 +16,11 @@ import {
   getCurrencyLabel,
   type AssetRow,
 } from './math.ts';
+import { format } from '../../i18n/format.ts';
+import {
+  multiCurrencyNetWorthEn,
+  multiCurrencyNetWorthHi,
+} from '../../i18n/strings/tools/multiCurrencyNetWorth.ts';
 
 // ---------------------------------------------------------------------------
 // isSupportedCurrency
@@ -437,6 +442,27 @@ Test,50000,USD,asset`;
     assert.equal(errors.length, 0);
     assert.equal(rows.length, 1);
     assert.equal(rows[0].name, 'Test');
+  });
+
+  it('gives every error a reason the tool renders in both languages', () => {
+    const csv = `onlyone
+Bad,abc,USD
+NoCurrency,100,
+Test,50000,XYZ`;
+    const { errors } = parseCSV(csv);
+    const all = [...errors, ...parseCSV('').errors];
+    assert.deepEqual(
+      all.map((e) => e.reason),
+      ['columns', 'invalidValue', 'emptyCurrency', 'unsupportedCurrency', 'empty'],
+    );
+    for (const e of all) {
+      // English reads exactly as the parser's own message, so nothing changes on the English page.
+      const en = format(multiCurrencyNetWorthEn.island.table.csvErrors[e.reason], e.values ?? {});
+      assert.equal(en, e.message);
+      const hi = format(multiCurrencyNetWorthHi.island.table.csvErrors[e.reason], e.values ?? {});
+      assert.notEqual(hi, e.message);
+      assert.ok(!/[{}]/.test(hi), `unfilled placeholder in ${hi}`);
+    }
   });
 });
 

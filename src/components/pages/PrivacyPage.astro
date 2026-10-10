@@ -21,11 +21,9 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { relative } from 'node:path';
 import { isMonteCarloReleased, monteCarloReleaseDate } from '../../utils/monte-carlo/release.ts';
 import { assertOneEntryPerDate, mergeByDate, type ChangelogEntry } from '../../utils/privacyChangelog.ts';
-import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
+import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -148,15 +146,16 @@ const writtenChangelog: ChangelogEntry[] = [
     date: 'Oct 10, 2026',
     iso: '2026-10-10',
     material: true,
-    summary: 'The site is published in Hindi as well as English. The Hindi edition at /hi/ collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Hindi page says so. Also: two new click labels, one on the learning path and one on the homepage.',
+    summary: 'The site is published in Hindi as well as English. The Hindi edition at /hi/ collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Hindi page says so. Also: two new click labels, one on the learning path and one on the homepage, and five sentences of the Hindi notice corrected to say what this one says.',
     details: [
-      'The Hindi edition, at /hi/: every page of the site is published in Hindi as well. A Hindi page sends the same anonymous pageview and page-leave events an English page sends, through the same PostHog project under the same consent choice. There are no new kinds of event, and no event or property carries anything you type, the same promise the English site makes. The two calculators and the free-tools page behave as their English counterparts do, including the rule that a tool never writes what you type into the page address. Hindi is an address and nothing else: no language is stored in your browser, and no automatic redirect picks one for you from your device settings.',
+      'The Hindi edition, at /hi/: the site\'s pages are published in Hindi as well, apart from the lessons (see below) and the pages a subscription email links to, which stay in English. A Hindi page sends the same anonymous pageview and page-leave events an English page sends, through the same PostHog project under the same consent choice. There are no new kinds of event, and no event or property carries anything you type, the same promise the English site makes. The two calculators and the free-tools page behave as their English counterparts do, including the rule that a tool never writes what you type into the page address. Hindi is an address and nothing else: no language is stored in your browser, and no automatic redirect picks one for you from your device settings.',
       'The lessons stay in English, and there is one feed. A Hindi page lists the same lessons, in English, and says in Hindi that they are in English, so a reader is not left to work it out from the headings; opening one takes them to that lesson at its one address, which is the English one and is the same address an English reader gets. Every page, in either language, links the one English feed.',
       'The learning path: an English lesson page now carries a link back to the Hindi learning path, so a reader who prefers Hindi can find it from the lesson they are reading. New data-attr label, recorded only if you accept the cookie banner, as before: post-hindi-path. The lesson cards on a Hindi page keep the labels they already had (blog-card-<lesson> and the rest); what changed is where they lead, which is the lesson\'s one address. Nothing new is stored or sent.',
-      'The language picker: the header holds a language control, which opens a short list of the languages a page is published in and leads to the same page in the one you choose. Each choice carries one click label, lang-switch-hi on an English page and lang-switch-en on a Hindi page, recorded only if you accept the cookie banner, like every other click label. Opening the control carries no label of its own, because opening it is not switching language. If you switch language on a tool page you reached by a share link, the values that link carried come with you, and they stay behind the # sign, the part of an address a browser never sends to a server.',
+      'The language picker: the header holds a language control, which opens a short list of the languages a page is published in and leads to the same page in the one you choose. Each choice carries one click label, lang-switch-hi on an English page and lang-switch-en on a Hindi page, recorded only if you accept the cookie banner, like every other click label. Opening the control carries no label of its own, because opening it is not switching language. If you switch language on a tool page, the values on screen come with you, whether you typed them or a share link filled them in, and they travel behind the # sign, the part of an address a browser never sends to a server. They are added to the address only as you leave the page, never written into the link itself, so a recorded click on the language control never includes them. Until then they stay in the open page, which keeps an encoded copy of the current values for this purpose and stores nothing. A tool opened this way does not send its shared-view event again, because the page you came from already sent it.',
       'Browser storage is unchanged: the same keys as before, in both languages, and nidhi-reading-progress is deliberately shared, because the lessons are the same lessons whichever edition you reach them from and your place on the learning path should survive switching. The backstop that removes everything but campaign parameters from a free-tool address before any event is sent now covers /hi/free/... as well as /free/.... The Devanagari typeface is served from nidhi.today like the others, so a Hindi page makes no request an English page does not. The Hindi privacy notice is a translation of this one, and this English notice is the version that governs.',
       'Homepage: a "Two questions suggest where to start" link under the starting routes leads to /blog/#level-helper, which opens the level helper when the page loads. New data-attr label, recorded only if you accept the cookie banner, as before: home-level-helper. The helper works as before: your answers are kept only while the page is open, and are not stored or sent.',
       'Homepage: the "My finances have got complicated" route is now the Optimizing level. Until its first lesson is published it shows as a line without a link; once published, its link keeps the existing label (home-start-complex-door). Nothing new is stored or sent.',
+      'The Hindi privacy notice, checked line by line against this one: five sentences said something different and now match. They are the promise that we do not sell, rent, license or syndicate your data (the Hindi had said "share" for syndicate, which would have contradicted the processors this notice names); which changes the log below flags as material (the Hindi had said changes that reveal, not changes that affect, how personal data is handled); that we remove you from the newsletter or the waitlist by hand when you ask; that nothing typed into a free tool goes into the page address; and the "short version" opening line. The rest of the Hindi notice also had smaller wording, grammar and spelling fixes, such as naming what the Monte Carlo simulator never sends as amounts and a portfolio mix rather than "figures" and a "mix"; none of them changes what it promises. No practice changed, and this English notice, which governs, is unchanged.',
     ],
   },
   {
@@ -419,7 +418,10 @@ function gitLastCommitDate(filePath: string): { date: string; iso: string } | nu
   }
 }
 
-const thisFileRel = relative(process.cwd(), fileURLToPath(import.meta.url));
+// Spelled out rather than read from `import.meta.url`: at build time that URL
+// points at the bundled chunk, which git has never seen, so the lookup always
+// fell back to the changelog date. Keep this in step if the file moves.
+const thisFileRel = 'src/components/pages/PrivacyPage.astro';
 const gitMeta = gitLastCommitDate(thisFileRel);
 
 // An entry can appear on a launch date without a commit to this file (the
@@ -427,6 +429,20 @@ const gitMeta = gitLastCommitDate(thisFileRel);
 const entryIsNewer = !!first && (!gitMeta || first.iso > gitMeta.iso);
 const lastUpdated = (entryIsNewer ? first?.date : gitMeta?.date) ?? '';
 const lastUpdatedIso = (entryIsNewer ? first?.iso : gitMeta?.iso) ?? '';
+
+// The entries are English in every edition, but the dates around them are the
+// page's own chrome, so another language writes them its own way. English keeps
+// the strings it always printed.
+const localDate = (iso: string, opts: Intl.DateTimeFormatOptions) =>
+  new Date(iso).toLocaleDateString(DATE_LOCALE[locale], { ...opts, timeZone: 'UTC' });
+const lastUpdatedShown =
+  locale === DEFAULT_LOCALE || !lastUpdatedIso
+    ? lastUpdated
+    : localDate(lastUpdatedIso, { year: 'numeric', month: 'long', day: 'numeric' });
+const monthLabel = (group: { label: string; entries: ChangelogEntry[] }) =>
+  locale === DEFAULT_LOCALE || !group.entries[0]
+    ? group.label
+    : localDate(group.entries[0].iso, { year: 'numeric', month: 'long' });
 
 // Earliest changelog entry is the publication date; newest is the modified
 // date. Both are ISO yyyy-mm-dd already, which is exactly what schema.org
@@ -499,7 +515,7 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
         <p class="privacy-intro">{privacy.intro}</p>
         {!englishGoverns && <p class="privacy-note">{privacy.englishIsAuthoritative}</p>}
         <p class="privacy-updated">
-          {privacy.updatedLabel}<time datetime={lastUpdatedIso}>{lastUpdated}</time> ·{' '}
+          {privacy.updatedLabel}<time datetime={lastUpdatedIso}>{lastUpdatedShown}</time> ·{' '}
           <a href="#changelog">{privacy.updatedLink}</a>
         </p>
       </header>
@@ -644,9 +660,9 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
                     <span class="changelog-tag changelog-tag--material" aria-label={log.materialLabel}>{log.materialTag}</span>
                   )}
                 </div>
-                <p class="changelog-summary">{first.summary}</p>
+                <p class="changelog-summary" lang="en">{first.summary}</p>
                 {first.details && first.details.length > 0 && (
-                  <ul class="changelog-details">
+                  <ul class="changelog-details" lang="en">
                     {first.details.map((d) => <li>{d}</li>)}
                   </ul>
                 )}
@@ -668,9 +684,9 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
                     </div>
                   </summary>
                   <div class="changelog-body">
-                    <p class="changelog-summary">{group.entry.summary}</p>
+                    <p class="changelog-summary" lang="en">{group.entry.summary}</p>
                     {group.entry.details && group.entry.details.length > 0 && (
-                      <ul class="changelog-details">
+                      <ul class="changelog-details" lang="en">
                         {group.entry.details.map((d) => <li>{d}</li>)}
                       </ul>
                     )}
@@ -689,8 +705,8 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
                   <span class="changelog-groupCount">{olderCount}</span>
                 </summary>
                 {earlier.map((group) => group.kind === 'month' && (
-                  <section class="changelog-month" aria-label={group.label}>
-                    <h3 class="changelog-monthLabel">{group.label}</h3>
+                  <section class="changelog-month" aria-label={monthLabel(group)}>
+                    <h3 class="changelog-monthLabel">{monthLabel(group)}</h3>
                     <ol class="changelog-groupEntries">
                       {group.entries.map((entry) => (
                         <li class="changelog-groupEntry">
@@ -700,9 +716,9 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
                               <span class="changelog-tag changelog-tag--material" aria-label={log.materialLabel}>{log.materialTag}</span>
                             )}
                           </div>
-                          <p class="changelog-summary">{entry.summary}</p>
+                          <p class="changelog-summary" lang="en">{entry.summary}</p>
                           {entry.details && entry.details.length > 0 && (
-                            <ul class="changelog-details">
+                            <ul class="changelog-details" lang="en">
                               {entry.details.map((d) => <li>{d}</li>)}
                             </ul>
                           )}

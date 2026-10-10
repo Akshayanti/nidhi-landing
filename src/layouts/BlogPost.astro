@@ -2,10 +2,10 @@
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
-import { LEVEL_LABELS } from '../utils/home/startingPoints';
+import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
-import { LOCALE_META, localizedPath } from '../i18n';
+import { DEFAULT_LOCALE, LOCALE_META, dict, localizedPath } from '../i18n';
 
 interface Props {
   title: string;
@@ -53,7 +53,9 @@ interface Props {
 }
 
 const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], localRules = [] } = Astro.props;
-const levelLabel = LEVEL_LABELS[level];
+// A lesson is English in every edition, so its chrome reads the English names.
+// Ladder levels only: an Inclusive Finances guide is not a step in a series.
+const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });

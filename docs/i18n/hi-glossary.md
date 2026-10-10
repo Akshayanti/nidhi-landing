@@ -140,7 +140,19 @@ why this one won, so it is not re-argued in a later lesson.
 | opportunity cost | अवसर लागत | |
 | rule of thumb | अंगूठे का नियम | The Hindi calque is what Indian financial writing uses, and it is the term a reader meets hardest (the 4% rule is the first one). Decided against सामान्य नियम, which loses that the rule is a shortcut rather than a fact. |
 | sunk cost | डूबी लागत | |
-| loss aversion | हानि से बचने की प्रवृत्ति | |
+| loss aversion | हानि से बचने की प्रवृत्ति | Not हानि से बचाव, which reads as protection from loss and turns a bias into a strategy. |
+| bias | पूर्वाग्रह | Not पक्षपात, which is favouritism. Present bias is वर्तमान पूर्वाग्रह. |
+| behavioural (finance, biases) | व्यवहारगत | Not व्यवहारिक, one matra from व्यावहारिक (practical), which many readers take it for. |
+| mental models | मानसिक मॉडल | Not मानसिक नमूने: नमूना is a sample. |
+| default (assumption, plan) | आम धारणा, आम योजना | Not डिफ़ॉल्ट, which on a finance site reads as a loan default. |
+| asset classes | परिसंपत्ति वर्ग | |
+| asset location | एसेट लोकेशन (कौन-सा निवेश किस खाते में) | The gloss on first use; the literal परिसंपत्ति स्थान is opaque. |
+| leverage | लीवरेज (उधार से निवेश) | Not उत्तोलन, a physics word Indian financial writing does not use. |
+| real return | असली रिटर्न | Elsewhere the tools say महँगाई के बाद, which is the same thing. |
+| estate planning | एस्टेट योजना (वसीयत और उत्तराधिकार) | |
+| means-tested benefits | आय और संपत्ति की जाँच पर मिलने वाले सरकारी लाभ | Not माध्यम-परीक्षित लाभ, which no reader can decode. A heading may shorten it to आय-संपत्ति की जाँच वाले सरकारी लाभ. |
+| financial health metrics | वित्तीय सेहत के पैमाने | Not स्वास्थ्य मापदंड, which reads as medical. |
+| unmarried, cohabiting couples | अविवाहित, लिव-इन जोड़े | Not विवाहित न रहने वाले, which reads as couples who did not stay married. |
 | mental accounting | मानसिक लेखांकन | |
 | overconfidence | अति आत्मविश्वास | |
 | anchors, anchoring | एंकर, एंकरिंग | |
@@ -175,7 +187,7 @@ obvious rendering is weaker or wrong.
 | queer | क्वीयर | Transliterated, as Indian LGBTQ+ writing does. Do not reach for a Sanskritised coinage. |
 | neurodivergent | न्यूरोडाइवर्जेंट | As above. |
 | dyslexia | डिस्लेक्सिया | Devanagari, because it is a condition rather than a product or a source name. ADHD stays in Latin, being an abbreviation. |
-| word of mouth | मुँह-ज़बानी | |
+| word of mouth | लोगों की ज़ुबानी | Not मुँह-ज़बानी, which means "orally, by heart" rather than spreading by recommendation. |
 | colour blind | रंग न पहचान पाना | Spelled out. वर्णांध is the clinical word and reads as a form. |
 
 ### The privacy notice
@@ -193,7 +205,7 @@ a promise costs the reader more than it teaches.
 | processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
 | consent | सहमति | "Cookie consent" is कुकी सहमति. |
 | retention | रिटेंशन | |
-| material (change) | महत्वपूर्ण | The badge on a log entry, and the word the log's own intro explains. Hindi has no adjective that carries "affects how your data is handled" on its own, so the intro sentence is built around it: जिन बदलावों से पता चलता है कि हम निजी डेटा कैसे संभालते हैं (...) उन्हें **महत्वपूर्ण** कहा जाता है। |
+| material (change) | महत्वपूर्ण | The badge on a log entry, and the word the log's own intro explains. Hindi has no adjective that carries "affects how your data is handled" on its own, so the intro sentence is built around it: जिन बदलावों का असर इस पर पड़ता है कि हम निजी डेटा कैसे संभालते हैं (...) उन पर **महत्वपूर्ण** का निशान लगाया जाता है। An earlier wording, जिन बदलावों से पता चलता है, said "reveal" where the English says "affect". |
 | changelog | बदलावों का रिकॉर्ड | Not चेंजलॉग, which is a developer's word. रिकॉर्ड is what Hindi calls a record kept of something. |
 | Earlier changes | पहले के बदलाव | The label on the collapsed group. The log's intro quotes it, so the two must match word for word; changing one means changing the other. |
 | anonymous | बिना नाम का | Spelled out. गुमनाम is what a form says about a respondent, and is the right word there; here the notice keeps repeating "no name, no email, no user ID", which is what बिना नाम का says. |
@@ -255,7 +267,11 @@ and do translate.
 | amortisation | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortisation schedule` is किस्तों का शेड्यूल. |
 | principal | मूलधन | |
 | interest | ब्याज | |
-| balance | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |
+| balance (of a loan) | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |
+| balance (of a portfolio) | पोर्टफ़ोलियो की रकम | Not बकाया, which reads as money owed and made an investment look like a debt, and not जमा रकम, which can read as the amount originally put in rather than what it is worth now. A chart legend shortens it to रकम. |
+| lender, vendor | ऋणदाता | Decided against विक्रेता, which means seller: beside the horizon question ("अगर मैं बेच दूँ") it read as the person selling the house. ऋणदाता is the word Indian banking writing uses for a lender, so it is the exception to the debt entry's avoidance of ऋण. The English says vendor in the interface and lender in prose; the Hindi uses one word for both. |
+| recast (the payment) | किस्त नए सिरे से निकालना | What a hybrid loan does when its fixed period ends. Not दोबारा जोड़ना, which says re-add. |
+| apply to principal | मूलधन घटाना | A prepayment or lump sum reduces the principal. Never मूलधन में जोड़ना, which says the debt grows; that phrase is right only for a fee rolled into a new loan. |
 | total cost | कुल लागत | |
 | origination fee, closing costs | लोन शुल्क और कागज़ी खर्च | कागज़ी खर्च is what Indian writing calls closing costs; the two are one field in the tool, so they are one phrase. |
 | discount points | डिस्काउंट पॉइंट्स | Latin `points` stays in the break-even row, which reports a count of months. |
@@ -266,13 +282,19 @@ and do translate.
 | penalty | जुर्माना | |
 | net worth | शुद्ध संपत्ति | Glossary. |
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
-| functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. |
-| currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. The chart legend keeps मुद्रा मिश्रण. |
+| functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. In prose the short form is खर्च की मुद्रा; मुख्य मुद्रा is kept for the badge alone, because मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
+| currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. Prose and the table caption say जमाव; the chart itself (its heading, aria label, legend and the feature list naming it) keeps मुद्रा मिश्रण. |
 | exchange rate | विनिमय दर | The privacy notice's rendering, reused. |
 | ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |
 | low, moderate, elevated | कम, मध्यम, ज़्यादा | The band labels. ज़्यादा rather than उच्च, which reads as a grade. |
 | share link, share | शेयर लिंक, शेयर करें | |
-| redacted | आंकड़ों के बिना | The share mode that leaves the amounts out. बिना आंकड़ों वाला is the longer form in a sentence. |
+| net debt (a currency position) | शुद्ध देनदारी | Pairs with देनदारी on the row toggle, so not शुद्ध कर्ज़. |
+| subsequent rate | बाद की दर | The field label; not अगली दर. |
+| cent-precise | मुद्रा की सबसे छोटी इकाई तक सटीक | Not पैसे तक, which reads as "to the money". |
+| stress-test guess | दर बढ़ने की स्थिति का अनुमान | |
+| about (an approximate figure) | लगभग | One word across the tools. |
+| fixed and one-off charges | तय और एकबारगी शुल्क | |
+| redacted | रकम और नाम छिपाकर | The share mode that leaves the amounts and the names out; its other half is पूरा हिसाब, and the FAQ quotes both labels as the modal shows them. Decided against आँकड़ों के बिना, which was the first rendering: the redacted share still carries percentages, which are आँकड़े too, and the names go as well. Not गोपनीय, which promises a protected link, nor संशोधित, which reads as a revised version. |
 | upload a CSV | CSV अपलोड करें | |
 | simulation | सिम्युलेशन | |
 | simulated path | सिम्युलेटेड रास्ता | The unit the simulator counts: one run of the plan through the years. |
@@ -301,6 +323,12 @@ the dropdown already say `अमेरिकी डॉलर` and `ब्रि�
 currency on one screen read as two currencies, so every name here is written by
 hand, from what the tools' own prose already calls it.
 
+Two names are written to avoid a misreading. The Czech koruna is `चेक गणराज्य
+का कोरुना`, not `चेक कोरुना`, because on a finance site `चेक` alone reads as a
+cheque. The Brazilian real is `ब्राज़ीलियाई रियाल`, the commoner form and the
+same -ाई pattern as `ऑस्ट्रेलियाई`. The other adjectives (हंगेरियन, मैक्सिकन,
+नॉर्वेजियन) keep the forms Hindi news uses rather than being forced into -ई.
+
 Two words the FAQ answers had split were settled with this list: `सिंगापुर
 डॉलर`, not `सिंगापुरी`, which is how Indian dailies write it and what the Hindi
 Wikipedia article is titled; and `लैटिन अमेरिकी`, not `लातिन`. Both had drifted
@@ -322,6 +350,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | lesson | पाठ |
 | topic | विषय |
 | level | स्तर |
+| the six level names | शुरुआत, निर्माण, मनोविज्ञान, निखार, निपुणता, सबके लिए वित्त. Building was बनाना, which reads as a verb (and as "banana"); Optimizing was अनुकूलन, which reads as adaptation. |
 | free tools | मुफ़्त टूल |
 | net worth calculator | शुद्ध संपत्ति कैलकुलेटर |
 | loan comparison | लोन की तुलना |
@@ -366,3 +395,9 @@ Devanagari (बजट, क्रेडिट, पोर्टफ़ोलिय�
 because a reader who meets them in the newspaper meets them that way. Where a
 word is an abbreviation or a product (EMI, FIRE, ETF, SIP), it stays in Latin
 script.
+
+Spelling follows one convention across every catalog: the chandrabindu in आँकड़े,
+and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास and क़ीमत. Two everyday words
+stay without it, कानून and कदम, because that is how the chrome has always
+written them. Write the nukta as the decomposed pair (letter plus ़), which is
+what the catalogs already use, so a search for one spelling finds every use.

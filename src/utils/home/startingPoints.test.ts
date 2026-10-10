@@ -10,7 +10,6 @@ import { en } from '../../i18n/strings/en.ts';
 import {
   assertHomepageSlugs,
   homepageSlugs,
-  LEVEL_LABELS,
   lessonToolPairs,
   levelCounts,
   nextLesson,
@@ -168,19 +167,3 @@ describe('continue learning', () => {
   });
 });
 
-/**
- * `LEVEL_LABELS` is the blog chrome's copy of the five level names, kept in
- * the util rather than imported from the catalog because the home page's
- * script pulls this module into the browser. Until those four layouts are
- * localized, this test is what keeps the two copies from drifting apart.
- */
-describe('level labels', () => {
-  it('agrees with the catalog, level for level', () => {
-    assert.deepEqual(LEVEL_LABELS, en.home.levels);
-  });
-
-  it('names every ladder level, and nothing else', () => {
-    const ladder = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'];
-    assert.deepEqual(Object.keys(LEVEL_LABELS).sort(), [...ladder].sort());
-  });
-});

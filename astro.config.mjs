@@ -70,7 +70,7 @@ function walkBlogDir(dir) {
 const CONTENT_DIR = join('src/content', 'blog');
 
 /**
- * Four lookup maps, built once per build:
+ * The lookup maps, built once per build:
  *  - blogLastmod: slug → ISO date (updatedDate ?? pubDate)
  *  - tagLastmod : tag  → ISO date (newest among posts carrying the tag)
  * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
@@ -178,7 +178,7 @@ const STATIC_PAGE_SOURCE = {
   'editorial-policy': ['src/components/pages/EditorialPolicyPage.astro'],
   'privacy': ['src/components/pages/PrivacyPage.astro'],
   'blog': ['src/layouts/BlogIndex.astro'],
-  'blog/tag': ['src/pages/blog/tag/index.astro'],
+  'blog/tag': ['src/components/pages/TagHubPage.astro'],
   'free': ['src/components/pages/FreeHubPage.astro'],
   'free/multi-currency-net-worth': [
     'src/components/pages/MultiCurrencyNetWorthPage.astro',
@@ -201,17 +201,22 @@ const STATIC_PAGE_SOURCE = {
 
 /**
  * The repo files a locale's version of a static page is built from: the same
- * components as the English page, plus that language's catalog, because a
- * change to `src/i18n/strings/hi.ts` is a change to every Hindi page. That is
- * coarse on purpose: one file holds every page's words, so any Hindi copy edit
- * moves every Hindi page's date. A date that moves too often is a smaller
- * wrong than a date that freezes while the page's text changes, and the
- * coarseness goes away when the catalogs are split per page.
+ * components, plus the catalog that holds that language's words for it. A
+ * page's copy lives in the catalog, not the component, so leaving the catalog
+ * out would freeze lastmod while the text changes: English reads `en.ts`, the
+ * learning path's pages also read `learn.ts` (which holds both languages), and
+ * any other language reads its own file. That is coarse on purpose: one file
+ * holds every page's words, so any copy edit moves every page's date in that
+ * language. A date that moves too often is a smaller wrong than a date that
+ * freezes while the page's text changes, and the coarseness goes away when the
+ * catalogs are split per page.
  */
 function staticPageSources(locale, path) {
-  const english = STATIC_PAGE_SOURCE[path];
-  if (!english) return null;
-  return locale === DEFAULT_LOCALE ? english : [...english, `src/i18n/strings/${locale}.ts`];
+  const components = STATIC_PAGE_SOURCE[path];
+  if (!components) return null;
+  const catalogs = [`src/i18n/strings/${locale}.ts`];
+  if (path === 'blog' || path.startsWith('blog/')) catalogs.push('src/i18n/strings/learn.ts');
+  return [...components, ...catalogs];
 }
 
 export default defineConfig({
@@ -270,23 +275,22 @@ export default defineConfig({
       // valid sitemap protocol and lets the integration's defaults
       // handle them gracefully.
       const { locale, path } = splitLocalePath(new URL(item.url).pathname);
-      const maps = contentMaps;
       let lastmod;
       if (path === 'blog/tag') {
         // Tag-hub page itself: lastmod = the newest content under any
         // tag the corpus uses. Falls back to the source file's git
         // author-date if the tag map is empty.
-        const newestAcrossTags = [...maps.tag.values()].sort().pop();
-        lastmod = newestAcrossTags ?? gitLastmod(STATIC_PAGE_SOURCE['blog/tag']) ?? undefined;
+        const newestAcrossTags = [...contentMaps.tag.values()].sort().pop();
+        lastmod = newestAcrossTags ?? gitLastmod(staticPageSources(locale, 'blog/tag')) ?? undefined;
       } else if (path === 'blog/inclusive-finances') {
         // The hub changes when a guide is added or revised: date it by the
         // most recently published or updated guide.
-        lastmod = maps.inclusive ?? undefined;
-      } else if (path.startsWith('blog/') && maps.level.has(path.slice('blog/'.length))) {
+        lastmod = contentMaps.inclusive ?? undefined;
+      } else if (path.startsWith('blog/') && contentMaps.level.has(path.slice('blog/'.length))) {
         // A level page changes when a lesson in it is added or revised.
-        lastmod = maps.level.get(path.slice('blog/'.length));
+        lastmod = contentMaps.level.get(path.slice('blog/'.length));
       } else if (path.startsWith('blog/') && path !== 'blog') {
-        lastmod = maps.blog.get(path.slice('blog/'.length));
+        lastmod = contentMaps.blog.get(path.slice('blog/'.length));
       } else {
         const sources = staticPageSources(locale, path);
         if (sources) lastmod = gitLastmod(sources) ?? undefined;

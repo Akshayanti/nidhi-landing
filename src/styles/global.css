@@ -471,6 +471,17 @@ html[lang="hi"] .prose figcaption {
   line-height: 1.7; /* Latin rule: 1.55 */
 }
 
+/* Uppercase is a Latin device: it does nothing to Devanagari and only shouts
+   the Latin words a Hindi label carries, so the brand in "nidhi के बारे में"
+   came out as "NIDHI". The tracking that goes with it is a Latin correction
+   too. The extra ancestor outweighs the components' scoped rules, which
+   carry Astro's scope attribute. */
+html[lang="hi"] .site-footer .footer-col-heading,
+html[lang="hi"] .site-header .nav-sheetHeading {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 /* The figure titles are set in the heading face at a size where the same
    negative tracking applies. The rest of a figure's typography is tuned per
    figure alongside its translation. */
@@ -4139,13 +4150,20 @@ body[data-page="landing"] .site-footer {
     padding-top: 4px;
     padding-bottom: 4px;
   }
-  /* Breadcrumbs on the free tools, the tools index and the topics page were
-     15px tall: below the 24px minimum. */
+  /* Breadcrumbs on the free tools, the tools index, the topics pages and the
+     level pages were 15 to 17px tall: below the 24px minimum. A one-word crumb
+     can also be narrower than 24px: Hindi's "होम" is 18px wide where "Home" is
+     not, so every crumb gets a minimum width too. */
   .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a,
-  .ft-breadcrumbs a, .tagHub-breadcrumb a {
+  .ft-breadcrumbs a, .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a {
     display: inline-block !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+  }
+  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a, .ft-breadcrumbs a,
+  .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a, .if-breadcrumb a {
+    min-width: 24px;
+    text-align: center;
   }
 }
 

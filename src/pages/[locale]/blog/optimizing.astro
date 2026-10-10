@@ -3,9 +3,9 @@
  * `/<locale>/blog/optimizing/`, in every language but the default one. English is
  * served from `src/pages/blog/optimizing.astro`.
  *
- * The page stays out of search until the language has a live lesson in this
- * level (see the layout), which is what a language whose lessons are still
- * being written needs.
+ * The page stays out of search until this level has a live lesson (see the
+ * layout). The lessons are the one English library, so that happens in every
+ * language at once.
  */
 import LevelPage from '../../../layouts/LevelPage.astro';
 import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';

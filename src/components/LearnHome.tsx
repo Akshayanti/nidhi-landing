@@ -69,7 +69,7 @@ const RESULT_LIMIT = 8;
 
 declare global {
   interface Window {
-    posthog?: { __loaded?: boolean; set_config?: (config: Record<string, unknown>) => void };
+    // `posthog` is declared once, in src/types/posthog.d.ts.
     nidhiHeatmapsPaused?: boolean;
   }
 }
@@ -151,13 +151,13 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
         <div className="learn-helperLessons">
           <p className="learn-note">{strings.gapsNote}</p>
           <ul>
-            {gaps.map((g) => <li key={g.id}><a href={g.href}>{g.title}</a></li>)}
+            {gaps.map((g) => <li key={g.id}><a href={g.href} lang="en" hrefLang="en">{g.title}</a></li>)}
           </ul>
         </div>
       ) : firstLesson && (
         <div className="learn-helperLessons">
           <p className="learn-note">{strings.firstLessonNote}</p>
-          <ul><li><a href={firstLesson.href}>{firstLesson.title}</a></li></ul>
+          <ul><li><a href={firstLesson.href} lang="en" hrefLang="en">{firstLesson.title}</a></li></ul>
         </div>
       )}
       {also && (
@@ -300,7 +300,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
         ) : returning && nextInfo ? (
           <div className="learn-startText">
             <p className="learn-eyebrow">{strings.returningEyebrow}</p>
-            <h2 id="learn-start-h">{nextInfo.lesson.title}</h2>
+            <h2 id="learn-start-h" lang="en">{nextInfo.lesson.title}</h2>
             <p className="learn-sub">
               {format(strings.returningSub, { level: nextInfo.levelLabel, index: nextInfo.index, total: nextInfo.total })} <span className="learn-muted">· {nextInfo.lesson.readingTime} {strings.minRead}</span>
             </p>
@@ -314,7 +314,8 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
             <p className="learn-eyebrow">{strings.newEyebrow}</p>
             <h2 id="learn-start-h">{format(strings.newHeading, { level: nextInfo.levelLabel })}</h2>
             <p className="learn-sub">
-              {format(strings.newSub, { title: nextInfo.lesson.title })} <span className="learn-muted">{nextInfo.lesson.readingTime} {strings.minRead}</span>
+              {/* The title is an English lesson's, so it gets its own `lang` inside a line in the page's language. */}
+              {strings.newSub.split('{title}')[0]}<span lang="en">{nextInfo.lesson.title}</span>{strings.newSub.split('{title}')[1] ?? ''}{' '}<span className="learn-muted">{nextInfo.lesson.readingTime} {strings.minRead}</span>
             </p>
           </div>
         ) : null}
@@ -500,7 +501,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
             const inclusive = l.level === INCLUSIVE;
             return (
               <a key={l.id} className="learn-result" href={l.href} data-attr="blog-search-result">
-                <span>{l.title}</span>
+                <span lang="en">{l.title}</span>
                 <span className="learn-pill" style={{ '--lc': `var(--level-${l.level})` } as React.CSSProperties}>
                   {inclusive ? strings.inclusivePill : levelById.get(l.level)?.label}
                 </span>

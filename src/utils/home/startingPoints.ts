@@ -32,25 +32,6 @@ export interface LessonLink {
 /** The core ladder levels, in reading order. Inclusive Finances is not a step. */
 export const LADDER_LEVELS = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'] as const;
 
-/**
- * English level names, for the lesson chrome that has not been localized yet:
- * the blog index, a level page, a post and a tag page, all four of which are
- * English-only until they take a locale. The home page reads `home.levels` from
- * the catalog instead, which is where these five words actually live now, and a
- * test in this file keeps the two copies from drifting apart in the meantime.
- * This map goes when those four layouts are localized.
- *
- * Kept here rather than imported from the catalog because this module is also
- * pulled into the browser by the home page's script, and importing a catalog
- * would put every string in it on the wire.
- */
-export const LEVEL_LABELS: Record<string, string> = {
-  discovery: 'Discovery',
-  building: 'Building',
-  psychology: 'Psychology',
-  optimizing: 'Optimizing',
-  mastery: 'Mastery',
-};
 
 /**
  * A route in, as structure alone: which level it starts in, the lessons it

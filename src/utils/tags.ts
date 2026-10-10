@@ -18,3 +18,12 @@
 export function formatTag(tag: string): string {
   return tag.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+/**
+ * The text of a tag chip on a lesson card. English shows the bare slug, as it
+ * always has; any other language shows the catalog's name for the tag, because
+ * the slug is an English word and would sit untranslated on that page.
+ */
+export function tagChipLabel(tag: string, catalogName: string | undefined, isDefaultLocale: boolean): string {
+  return isDefaultLocale ? tag : (catalogName ?? formatTag(tag));
+}

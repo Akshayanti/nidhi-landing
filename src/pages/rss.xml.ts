@@ -5,9 +5,9 @@ import { DEFAULT_LOCALE } from '../i18n/config.ts';
 import { dict } from '../i18n/index.ts';
 
 /**
- * The English feed, at /rss.xml. Its Hindi counterpart is the mirrored route
- * in `src/pages/[locale]/rss.xml.ts`; the two differ only in the locale they
- * read and the words they use, so any change here likely belongs there too.
+ * The one feed, at /rss.xml, in English. The lessons are not translated, so
+ * there is no per-language feed: every page in every language links this one
+ * (see BaseHead).
  */
 export async function GET(context: APIContext) {
   const now = new Date();

@@ -127,7 +127,7 @@ const collectionPageSchema = {
   jsonLd={[breadcrumbSchema, itemListSchema, collectionPageSchema]}
 >
   <section class="ft-page">
-    <nav class="ft-breadcrumbs" aria-label="Breadcrumb">
+    <nav class="ft-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{hub.breadcrumb.home}</a></li>
         <li aria-current="page">{hub.breadcrumb.this}</li>
@@ -195,7 +195,7 @@ const collectionPageSchema = {
             <span class="ft-kicker">{tool.kicker}</span>
             <span class="ft-title">{tool.title}</span>
             <span class="ft-desc">{tool.desc}</span>
-            <span class="ft-cta" aria-hidden="true">Open the tool &rarr;</span>
+            <span class="ft-cta" aria-hidden="true">{hub.cta} &rarr;</span>
           </a>
         </li>
       ))}
