@@ -64,7 +64,7 @@ export const currenciesEn: Record<string, string> = {
 
 export const currenciesHi: Record<string, string> = {
   AUD: 'ऑस्ट्रेलियाई डॉलर (AUD)',
-  BRL: 'ब्राज़ीलियाई रियाल (BRL)',
+  BRL: 'ब्राज़ीली रियाल (BRL)',
   CAD: 'कनाडाई डॉलर (CAD)',
   CHF: 'स्विस फ़्रैंक (CHF)',
   CNY: 'चीनी युआन (CNY)',

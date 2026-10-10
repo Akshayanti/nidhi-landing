@@ -73,13 +73,14 @@ interface CardContext {
   dateLocale: string;
 }
 
-function companionLine(post: PostData, onPath: boolean, { strings, inclusiveLabel }: CardContext): string {
+function companionLine(post: PostData, onPath: boolean, { strings, inclusiveLabel }: CardContext): React.ReactNode {
   if (!post.companionTitle) {
     return onPath ? format(strings.companionOptionalLabel, { label: inclusiveLabel }) : inclusiveLabel;
   }
-  return onPath
-    ? format(strings.companionOptionalFollows, { host: post.companionTitle })
-    : format(strings.companionFollows, { host: post.companionTitle });
+  // The host is an English lesson's title, so it gets its own `lang` inside a
+  // line in the page's language.
+  const [before, after = ''] = (onPath ? strings.companionOptionalFollows : strings.companionFollows).split('{host}');
+  return <>{before}<span lang="en">{post.companionTitle}</span>{after}</>;
 }
 
 function CompassIcon({ size = 20 }: { size?: number }) {
@@ -142,7 +143,10 @@ interface PostNodeProps extends CardContext {
 function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath = true, step, stepCount, strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale }: PostNodeProps) {
   const ctx: CardContext = { strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale };
   const d = new Date(post.pubDate);
-  const dateStr = `${d.toLocaleString(dateLocale, { month: 'short' })} ${d.getDate()}`;
+  // One Intl call, so each language puts the day and month in its own order
+  // ("Apr 19", "19 अप्रैल"). UTC, because a pubDate is a UTC midnight: a local
+  // time zone west of UTC would show the day before.
+  const dateStr = d.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', timeZone: 'UTC' });
   const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
   const isInclusive = post.level === INCLUSIVE;
   const cardClasses = [

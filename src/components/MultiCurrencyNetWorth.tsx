@@ -1249,7 +1249,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           className="mcnw-chart"
           viewBox={`-10 -10 ${size + 20} ${size + 20}`}
           role="img"
-          aria-label={format(strings.chart.aria, { list: arcs.map((a) => `${getCurrencyLabel(a.pos.code, strings.currencies)}: ${pct(a.amount)}`).join('. ') })}
+          aria-label={format(strings.chart.aria, { list: arcs.map((a) => `${getCurrencyLabel(a.pos.code, strings.currencies)}: ${pct(a.amount)}`).join(strings.chart.listSeparator) })}
           aria-describedby={legendId}
           focusable="false"
         >

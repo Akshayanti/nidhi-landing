@@ -162,7 +162,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
       )}
       {also && (
         <p className="learn-sub">
-          {strings.alsoLead}<a href={also.href}>{also.label}</a>.
+          {strings.alsoLead}<a href={also.href}>{also.label}</a>{strings.alsoEnd}
         </p>
       )}
       <div className="learn-actions">

@@ -47,7 +47,10 @@ breach as a defect.
    data sets) stay as they are.
 6. **English in parentheses on first use.** The first time a Hindi string uses a
    translated term, the English term follows it in parentheses, which is
-   standard practice in Indian financial writing. Later uses drop it.
+   standard practice in Indian financial writing. Later uses drop it. On the
+   learning path this applies to the level "covered" lists and the level
+   helper's concepts, not to tag descriptions and cards, where it would crowd a
+   two-line summary.
 7. **No new browser storage and no keys renamed.** The keys are the same in
    every language, and `nidhi-reading-progress` is deliberately shared, so a
    lesson opened from either language counts once.
@@ -144,7 +147,7 @@ why this one won, so it is not re-argued in a later lesson.
 | bias | पूर्वाग्रह | Not पक्षपात, which is favouritism. Present bias is वर्तमान पूर्वाग्रह. |
 | behavioural (finance, biases) | व्यवहारगत | Not व्यवहारिक, one matra from व्यावहारिक (practical), which many readers take it for. |
 | mental models | मानसिक मॉडल | Not मानसिक नमूने: नमूना is a sample. |
-| default (assumption, plan) | आम धारणा, आम योजना | Not डिफ़ॉल्ट, which on a finance site reads as a loan default. |
+| default (assumption, plan, setting) | आम धारणा, आम योजना; plural आम धारणाएँ | Not डिफ़ॉल्ट, which on a finance site reads as a loan default. A tool's default setting is पहले से तय, its default values शुरुआती मान, and a vendor's default retention its "अपनी तय की हुई" period. |
 | asset classes | परिसंपत्ति वर्ग | |
 | asset location | एसेट लोकेशन (कौन-सा निवेश किस खाते में) | The gloss on first use; the literal परिसंपत्ति स्थान is opaque. |
 | leverage | लीवरेज (उधार से निवेश) | Not उत्तोलन, a physics word Indian financial writing does not use. |
@@ -153,12 +156,18 @@ why this one won, so it is not re-argued in a later lesson.
 | means-tested benefits | आय और संपत्ति की जाँच पर मिलने वाले सरकारी लाभ | Not माध्यम-परीक्षित लाभ, which no reader can decode. A heading may shorten it to आय-संपत्ति की जाँच वाले सरकारी लाभ. |
 | financial health metrics | वित्तीय सेहत के पैमाने | Not स्वास्थ्य मापदंड, which reads as medical. |
 | unmarried, cohabiting couples | अविवाहित, लिव-इन जोड़े | Not विवाहित न रहने वाले, which reads as couples who did not stay married. |
+| widowhood | जीवनसाथी को खोना | Not विधवापन, which covers widows only. |
+| survivor benefits | जीवनसाथी की मृत्यु के बाद मिलने वाले लाभ | Not उत्तरजीवी लाभ, which a beginner cannot decode. |
+| no prerequisite | पहले कुछ पढ़ना ज़रूरी नहीं | Not पूर्व शर्त, which reads as an eligibility condition. |
+| follow-up (a companion lesson) | के आगे का पाठ | Not अनुवर्ती. |
+| tracking (progress) | नज़र रखना, प्रगति पर नज़र | Not ट्रैक करना or निगरानी, which were mixed in one tag. |
+| Inclusive Finances (the search pill) | सबके लिए वित्त | Never सबके लिए alone, which on a search result says the other lessons are not for everyone. |
 | mental accounting | मानसिक लेखांकन | |
 | overconfidence | अति आत्मविश्वास | |
 | anchors, anchoring | एंकर, एंकरिंग | |
 | herd behaviour | भेड़चाल | |
 | financial fragility | आर्थिक कमज़ोरी | आर्थिक here, not वित्तीय: the phrase is about a household's circumstances, not about money as a subject. |
-| FIRE | FIRE | Kept in Latin, defined in words on first use as वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट. |
+| FIRE | FIRE | Kept in Latin, defined in words on first use as वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट. A tight kicker may use FIRE (जल्दी रिटायरमेंट); a bare FIRE fails the catalog test's identical-value check. |
 
 ### Reading and sources
 
@@ -200,7 +209,7 @@ a promise costs the reader more than it teaches.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. |
+| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence. |
 | analytics | एनालिटिक्स | |
 | processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
 | consent | सहमति | "Cookie consent" is कुकी सहमति. |
@@ -294,6 +303,10 @@ and do translate.
 | stress-test guess | दर बढ़ने की स्थिति का अनुमान | |
 | about (an approximate figure) | लगभग | One word across the tools. |
 | fixed and one-off charges | तय और एकबारगी शुल्क | |
+| loan comparison (before a noun) | लोन तुलना | लोन तुलना कैलकुलेटर. The standalone nav label stays लोन की तुलना, which cannot stand before a noun. |
+| horizon (the loan tool's tab) | हॉराइज़न | Glossed हॉराइज़न (किस महीने तक का हिसाब) on first use in the FAQ. Not अवधि, which the same tool uses for the term. |
+| middle half (25th to 75th percentile) | बीच के आधे रास्ते | Never बीच का आधा: beside the median label बीच का it reads as half of the median. |
+| everything runs in your browser | सारी गणना आपके ब्राउज़र में होती है | Not पूरा हिसाब, which is the full share mode's label. |
 | redacted | रकम और नाम छिपाकर | The share mode that leaves the amounts and the names out; its other half is पूरा हिसाब, and the FAQ quotes both labels as the modal shows them. Decided against आँकड़ों के बिना, which was the first rendering: the redacted share still carries percentages, which are आँकड़े too, and the names go as well. Not गोपनीय, which promises a protected link, nor संशोधित, which reads as a revised version. |
 | upload a CSV | CSV अपलोड करें | |
 | simulation | सिम्युलेशन | |
@@ -323,11 +336,11 @@ the dropdown already say `अमेरिकी डॉलर` and `ब्रि�
 currency on one screen read as two currencies, so every name here is written by
 hand, from what the tools' own prose already calls it.
 
-Two names are written to avoid a misreading. The Czech koruna is `चेक गणराज्य
+One name is written to avoid a misreading: the Czech koruna is `चेक गणराज्य
 का कोरुना`, not `चेक कोरुना`, because on a finance site `चेक` alone reads as a
-cheque. The Brazilian real is `ब्राज़ीलियाई रियाल`, the commoner form and the
-same -ाई pattern as `ऑस्ट्रेलियाई`. The other adjectives (हंगेरियन, मैक्सिकन,
-नॉर्वेजियन) keep the forms Hindi news uses rather than being forced into -ई.
+cheque. The other adjectives (हंगेरियन, मैक्सिकन, नॉर्वेजियन) keep the forms Hindi
+news uses rather than being forced into -ई, and the Brazilian real stays
+`ब्राज़ीली रियाल`, as settled below.
 
 Two words the FAQ answers had split were settled with this list: `सिंगापुर
 डॉलर`, not `सिंगापुरी`, which is how Indian dailies write it and what the Hindi
@@ -350,6 +363,8 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | lesson | पाठ |
 | topic | विषय |
 | level | स्तर |
+| About (the nav and footer group) | हमारे बारे में | Distinct from its first link, nidhi के बारे में, so the menu does not say the same thing twice. |
+| a level named in a template | {level} स्तर | A template writes the word स्तर after the name and keeps the verb शुरू away from it, because the first level is called शुरुआत. |
 | the six level names | शुरुआत, निर्माण, मनोविज्ञान, निखार, निपुणता, सबके लिए वित्त. Building was बनाना, which reads as a verb (and as "banana"); Optimizing was अनुकूलन, which reads as adaptation. |
 | free tools | मुफ़्त टूल |
 | net worth calculator | शुद्ध संपत्ति कैलकुलेटर |
