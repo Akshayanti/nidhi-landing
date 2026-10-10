@@ -17,11 +17,9 @@ import type { Dict } from './types.ts';
 export const hi: Dict = {
   skipToContent: 'मुख्य सामग्री पर जाएँ',
 
-  langSwitch: {
-    toHindi: 'हिन्दी',
-    toEnglish: 'English',
-    ariaToHindi: 'यह पेज हिन्दी में पढ़ें',
-    ariaToEnglish: 'यह पेज अंग्रेज़ी में पढ़ें',
+  languagePicker: {
+    label: 'भाषा',
+    current: 'वर्तमान भाषा',
   },
 
   nav: {

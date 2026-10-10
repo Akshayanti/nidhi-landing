@@ -1,6 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
-import LangSwitcher from './LangSwitcher.astro';
+import LangPicker from './LangPicker.astro';
 import LogoMark from './LogoMark.astro';
 import { DEFAULT_LOCALE, LOCALES, dict, localePrefix, localizedPath, stripLocale, type Locale } from '../i18n';
 import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
@@ -94,7 +94,9 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
           </ul>
         </div>
       ))}
-      {otherLocales.map((to) => <LangSwitcher locale={locale} to={to} variant="header" />)}
+      {otherLocales.length > 0 && (
+        <LangPicker locale={locale} alternates={alternates} variant="header" />
+      )}
       <ThemeToggle locale={locale} />
       <button
         type="button"
@@ -167,16 +169,13 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
           </ul>
         </div>
       ))}
-      {/* The header's switcher is hidden below 640px, so the sheet carries
-          the same link. */}
+      {/* The header's picker is hidden below 640px, so the sheet carries the
+          same choice as a list. Its heading is the nav group heading, which is
+          why the picker itself renders only the rows. */}
       {otherLocales.length > 0 && (
         <div class="nav-sheetGroup">
           <p class="nav-sheetHeading">{strings.nav.groups.language}</p>
-          <ul role="list">
-            {otherLocales.map((to) => (
-              <li><LangSwitcher locale={locale} to={to} variant="sheet" /></li>
-            ))}
-          </ul>
+          <LangPicker locale={locale} alternates={alternates} variant="sheet" />
         </div>
       )}
     </nav>

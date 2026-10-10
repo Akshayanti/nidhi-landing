@@ -45,13 +45,15 @@ const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
  * Paths where the two catalogs are allowed to hold the same text. Keep this
  * short and justified: it is the one place where "not translated" and
  * "correctly identical" look the same.
+ *
+ * Empty, and deliberately kept so that the next value which really must read
+ * the same in two languages has somewhere to go with its reason. The only
+ * entries it has held were the two language names, `हिन्दी` and `English`, and
+ * those are not in the catalogs at all any more: a language is named in its own
+ * script, which is the same string in every catalog, so the picker reads them
+ * from LOCALE_META in `src/i18n/config.ts`.
  */
-const IDENTICAL_OK = new Set<string>([
-  // A language is named in its own script, so the switcher reads the same in
-  // both editions and neither catalog translates these two words.
-  'langSwitch.toHindi',
-  'langSwitch.toEnglish',
-]);
+const IDENTICAL_OK = new Set<string>([]);
 
 /**
  * True when there is nothing in the value a translator could translate:

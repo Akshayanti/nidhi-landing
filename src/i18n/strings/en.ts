@@ -12,15 +12,16 @@ export const en = {
   skipToContent: 'Skip to content',
 
   /**
-   * The language switcher. Each catalog names both languages in their own
-   * script, so these two labels read the same in every locale; the aria
-   * labels are the page's own language saying where the link goes.
+   * The language picker. Only the two words around the choice are translated:
+   * the languages themselves are named in their own script, the same string in
+   * every catalog, so they live in LOCALE_META in src/i18n/config.ts and adding
+   * a locale does not add a string here.
    */
-  langSwitch: {
-    toHindi: 'हिन्दी',
-    toEnglish: 'English',
-    ariaToHindi: 'Read this page in Hindi',
-    ariaToEnglish: 'Read this page in English',
+  languagePicker: {
+    /** Leads the control in the header: "Language: English". */
+    label: 'Language',
+    /** Spoken after the language you are reading, which the check mark shows. */
+    current: 'current language',
   },
 
   nav: {

@@ -22,9 +22,15 @@ export const LOCALES = ['en', 'hi'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
+/**
+ * Each locale's own name for itself, in its own script, plus the tags the
+ * document and its structured data need. `label` is the same string on every
+ * page and in every catalog, which is why it is here rather than in the string
+ * files: the language picker reads it, and adding a locale adds a row here and
+ * no translated strings.
+ */
 export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLocale: string }> = {
   en: { label: 'English', htmlLang: 'en', ogLocale: 'en_US' },
-  // Native name, so the language switcher reads the same in both locales.
   hi: { label: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
 };
 
