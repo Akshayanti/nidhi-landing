@@ -79,6 +79,13 @@ const otherLocales = alternates.filter((other) => other !== locale);
 // English is among the languages this page exists in.
 const xDefault = alternates.includes(DEFAULT_LOCALE) ? urlIn(DEFAULT_LOCALE) : canonicalURL;
 const strings = dict(locale);
+
+// A Hindi page's first paint is set in Devanagari: the nav, the headings and the
+// body are Devanagari before Inter sees a Latin word, so that face is worth
+// preloading beside it. Inter stays preloaded on every page, because the Latin
+// words and every amount are set in it. Only a Hindi page gets the second
+// preload. It is the same origin, so neither adds a third-party request.
+const preloadDevanagari = locale !== DEFAULT_LOCALE;
 ---
 
 <!-- Flash prevention: apply theme before render -->
@@ -103,6 +110,7 @@ const strings = dict(locale);
      global.css for the body face. Latin-ext is excluded on purpose: it's
      rarely needed on first paint and would slow LCP for the common case. -->
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+{preloadDevanagari && <link rel="preload" href="/fonts/noto-devanagari.woff2" as="font" type="font/woff2" crossorigin />}
 <meta name="theme-color" content={NEUTRAL.offWhite} />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content={NEUTRAL.pageBgDark} />
 <meta name="msapplication-TileColor" content={SEMANTIC.calloutBg} />
