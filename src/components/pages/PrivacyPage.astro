@@ -1,0 +1,1150 @@
+---
+/**
+ * The privacy notice, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/privacy.astro`, which is a three line
+ * wrapper around this; the other languages come through
+ * `src/pages/[locale]/privacy.astro`. Both paths render this one component, so
+ * the two editions cannot drift apart in markup, in styling, or in the
+ * changelog they carry.
+ *
+ * This is the one page on the site whose text is a promise rather than a
+ * lesson, and the English is the version that governs in every edition. A page
+ * that is not English says so under the intro, and says separately, under the
+ * changelog heading, that the log below it is kept in English: one copy of the
+ * record is the point of it, so the entries are in the component rather than in
+ * the catalog and read the same in every language.
+ *
+ * The "Last updated" date is derived at build time from git's last-commit
+ * timestamp of this file, as it was from the page before the extraction. Local
+ * dev and shallow CI checkouts fall back to the top changelog entry's date.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { execSync } from 'node:child_process';
+import { isMonteCarloReleased, monteCarloReleaseDate } from '../../utils/monte-carlo/release.ts';
+import { assertOneEntryPerDate, mergeByDate, type ChangelogEntry } from '../../utils/privacyChangelog.ts';
+import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { privacy } = dict(locale);
+const {
+  collect,
+  newsletter,
+  waitlist: waitlistNotice,
+  browserStorage,
+  why,
+  where,
+  dontDo,
+  retention,
+  rights,
+  whoWeAre,
+  changelog: log,
+  lead,
+  sections,
+} = privacy;
+
+/**
+ * The literals the notice asks a reader to recognise: storage keys, addresses,
+ * parameter names, and the word that goes in an email subject. They are the
+ * same string in every language, which is what makes them this file's rather
+ * than the catalog's: a translated key name would be a key name that no longer
+ * matches anything in the reader's browser.
+ */
+const KEY = {
+  utmSource: 'utm_source',
+  utmMedium: 'utm_medium',
+  hello: 'hello@nidhi.today',
+  updates: 'updates@nidhi.today',
+  rates: 'api.frankfurter.dev',
+  cookieConsent: 'nidhi-cookie-consent',
+  themeMode: 'nidhi-theme-mode',
+  internal: 'nidhi-internal',
+  readingProgress: 'nidhi-reading-progress',
+  newsletterSubscription: 'nidhi-newsletter-subscription',
+  newsletterDismissed: 'nidhi-newsletter-dismissed',
+  waitlistSignedUp: 'nidhi-waitlist-signedup',
+  /** The word a reader is asked to put in a subject line. One inbox reads every edition. */
+  privacyWord: 'privacy',
+};
+
+// The Monte Carlo simulator's events, and its changelog entry, appear once the
+// tool itself is live (src/utils/monte-carlo/release.ts). The entry is dated
+// with the launch, not with the day the code was written.
+const showMonteCarlo = await isMonteCarloReleased();
+const monteCarloLaunch = await monteCarloReleaseDate();
+
+type ChangelogGroup =
+  | { kind: 'single'; entry: ChangelogEntry; open: boolean }
+  | { kind: 'month'; label: string; entries: ChangelogEntry[] };
+
+// How many entries after the latest stay open, so the most recent changes
+// (including any recent incident and its fix) are read in full.
+const OPEN_RECENT = 2;
+
+/**
+ * The latest entry is shown in full, the next OPEN_RECENT open below it.
+ * Everything older is kept word for word under one collapsed "Earlier
+ * changes" section, grouped by month, newest first. Nothing is dropped:
+ * the log is a record of what this notice said and when.
+ */
+function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | null; recent: ChangelogGroup[]; earlier: ChangelogGroup[]; earlierCount: number } {
+  if (entries.length === 0) return { first: null, recent: [], earlier: [], earlierCount: 0 };
+  const [first, ...rest] = entries;
+  const recent: ChangelogGroup[] = rest.slice(0, OPEN_RECENT).map((entry) => ({ kind: 'single', entry, open: true }));
+  const older = rest.slice(OPEN_RECENT);
+  const months = new Map<string, ChangelogEntry[]>();
+  for (const e of older) {
+    const key = new Date(e.iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
+    const bucket = months.get(key) ?? [];
+    bucket.push(e);
+    months.set(key, bucket);
+  }
+  const earlier: ChangelogGroup[] = [...months].map(([label, items]) => ({ kind: 'month', label, entries: items }));
+  return { first, recent, earlier, earlierCount: older.length };
+}
+
+// Entries that appear with a launch rather than on the day they were written.
+const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
+    ? [
+        {
+          date: monteCarloLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
+          iso: monteCarloLaunch.toISOString().slice(0, 10),
+          material: true,
+          summary: 'New free tool: a Monte Carlo simulator.',
+          details: [
+            'The simulator plays a savings and withdrawal plan forward thousands of times with random yearly returns. The whole simulation runs in your browser (large runs in a background thread of the same page); the amounts, years, fees and stock/bond mix you enter are not sent to us or anyone else.',
+            'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, which return setting you pick (cautious, historical or optimistic), which number of simulated paths you pick, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
+            'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
+            'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
+            'The lesson Introduction to Financial Independence ends with a link to the simulator.',
+            'The tool makes no network requests of its own and adds no third parties.',
+          ],
+        },
+      ]
+    : [];
+
+/**
+ * The notice's changelog. Newest first, one entry per date.
+ *
+ * It is written and dated in English and is never translated. Everything in it
+ * describes what the site did on a day: which events fired, which key was
+ * written, which request left a browser. A translation would put a second,
+ * slightly different copy of that record into the world, and the record is
+ * worth more than the convenience.
+ *
+ * The top-of-page "Last updated" date comes from git's last commit to this file
+ * rather than from the newest entry here, so a change that only moves markup
+ * still moves the date. See the doc comment at the top of the frontmatter.
+ */
+// One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
+const writtenChangelog: ChangelogEntry[] = [
+  {
+    date: 'Oct 10, 2026',
+    iso: '2026-10-10',
+    material: true,
+    summary: 'The site is published in Hindi as well as English. The Hindi edition at /hi/ collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Hindi page says so. Also: two new click labels, one on the learning path and one on the homepage, and seven sentences of the Hindi notice corrected to say what this one says.',
+    details: [
+      'The Hindi edition, at /hi/: the site\'s pages are published in Hindi as well, apart from the lessons (see below) and the pages a subscription email links to, which stay in English. A Hindi page sends the same anonymous pageview and page-leave events an English page sends, through the same PostHog project under the same consent choice. There are no new kinds of event, and no event or property carries anything you type, the same promise the English site makes. The two calculators and the free-tools page behave as their English counterparts do, including the rule that a tool never writes what you type into the page address. Hindi is an address and nothing else: no language is stored in your browser, and no automatic redirect picks one for you from your device settings.',
+      'The lessons stay in English, and there is one feed. A Hindi page lists the same lessons, in English, and says in Hindi that they are in English, so a reader is not left to work it out from the headings; opening one takes them to that lesson at its one address, which is the English one and is the same address an English reader gets. Every page, in either language, links the one English feed.',
+      'The learning path: an English lesson page now carries a link back to the Hindi learning path, so a reader who prefers Hindi can find it from the lesson they are reading. New data-attr label, recorded only if you accept the cookie banner, as before: post-hindi-path. The lesson cards on a Hindi page keep the labels they already had (blog-card-<lesson> and the rest); what changed is where they lead, which is the lesson\'s one address. Nothing new is stored or sent.',
+      'The language picker: the header holds a language control, which opens a short list of the languages a page is published in and leads to the same page in the one you choose. Each choice carries one click label, lang-switch-hi on an English page and lang-switch-en on a Hindi page, recorded only if you accept the cookie banner, like every other click label. Opening the control carries no label of its own, because opening it is not switching language. If you switch language on a tool page, the values on screen come with you, whether you typed them or a share link filled them in, and they travel behind the # sign, the part of an address a browser never sends to a server. They are added to the address only as you leave the page, never written into the link itself, so a recorded click on the language control never includes them. Until then they stay in the open page, which keeps an encoded copy of the current values for this purpose and stores nothing. A tool opened this way does not send its shared-view event again, because the page you came from already sent it.',
+      'Browser storage is unchanged: the same keys as before, in both languages, and nidhi-reading-progress is deliberately shared, because the lessons are the same lessons whichever edition you reach them from and your place on the learning path should survive switching. The backstop that removes everything but campaign parameters from a free-tool address before any event is sent now covers /hi/free/... as well as /free/.... The Devanagari typeface is served from nidhi.today like the others, so a Hindi page makes no request an English page does not. The Hindi privacy notice is a translation of this one, and this English notice is the version that governs.',
+      'Homepage: a "Two questions suggest where to start" link under the starting routes leads to /blog/#level-helper, which opens the level helper when the page loads. New data-attr label, recorded only if you accept the cookie banner, as before: home-level-helper. The helper works as before: your answers are kept only while the page is open, and are not stored or sent.',
+      'Homepage: the "My finances have got complicated" route is now the Optimizing level. Until its first lesson is published it shows as a line without a link; once published, its link keeps the existing label (home-start-complex-door). Nothing new is stored or sent.',
+      'The Hindi privacy notice, checked line by line against this one: five sentences said something different and now match. They are the promise that we do not sell, rent, license or syndicate your data (the Hindi had said "share" for syndicate, which would have contradicted the processors this notice names); which changes the log below flags as material (the Hindi had said changes that reveal, not changes that affect, how personal data is handled); that we remove you from the newsletter or the waitlist by hand when you ask; that nothing typed into a free tool goes into the page address; and the "short version" opening line. The rest of the Hindi notice also had smaller wording, grammar and spelling fixes, such as naming what the Monte Carlo simulator never sends as amounts and a portfolio mix rather than "figures" and a "mix"; none of them changes what it promises. A second check corrected two more sentences: the newsletter row is kept for up to 30 days after you unsubscribe, which is a maximum (the Hindi read as a fixed 30 days), and the loan comparison records whether you switch between solving for the term and for the monthly payment (the Hindi described which of the two you were in). A third check left the promises as they were and only evened out the wording: the three places that invite you to email us use the same plain verb form as the rest of the Hindi site. No practice changed, and this English notice, which governs, is unchanged.',
+    ],
+  },
+  {
+    date: 'Oct 9, 2026',
+    iso: '2026-10-09',
+    material: true,
+    summary: 'Topic pages use the new learning path layout and no longer have their own search box, so no page on the site writes what you type into its address. The homepage has fewer links competing for attention, and no longer contacts the exchange-rate service.',
+    details: [
+      'Topic pages (/blog/tag/...): a topic\'s lessons are grouped by level on the same cards as the level pages, each group linking to its full level. The search box, the level summary and the topic chips are gone. Searching across every lesson happens on /blog/, which keeps what you type on the page. Before, the topic-page search wrote it into the address (?q=), which the analytics script then removed before sending any event; now nothing writes it there at all. The analytics script still strips ?q= from learning path addresses, for old bookmarks and hand-typed links.',
+      'Read status on topic pages uses the existing nidhi-reading-progress key, as before. Nothing new is stored or sent.',
+      'New data-attr labels, recorded only if you accept the cookie banner, as before: topic-level-discovery, topic-level-building, topic-level-psychology, topic-level-optimizing, topic-level-mastery and topic-level-inclusive-finances (the link from a topic\'s level group to that whole level), and tag-search-all (the link to search every lesson). tag-browse-all and blog-card-* keep their meaning. The topic pages\' lp-skip-next-*, lp-go-previous-*, lp-mark-level-read-* and lp-mark-level-unread-* buttons are gone; the last two remain on the level pages.',
+      'Homepage: one main button per screen. Each of the four starting routes is now a single line that links to its route, instead of a card with a link per lesson, a link per free tool and a button; the line keeps the button\'s label (home-start-basics-door, home-start-no-plan-door, home-start-habits-door, home-start-complex-door) and still leads to the first lesson on the route you have not read, from the existing nidhi-reading-progress key. The hero no longer has the "Not sure where to begin?" and "Already know the basics?" lines. Labels removed with them: home-hero-first-lesson, home-hero-skip-building, home-hero-skip-psychology, home-hero-skip-tools, the per-lesson route links home-start-<route>-1, -2 and -3, and the per-tool route links home-start-<route>-tool-<n>. The Inclusive Finances route is a single line too, with its existing label (home-inclusive-finances). The "Welcome back" link (home-hero-continue) now shows only to readers with reading progress, as before. Nothing new is stored or sent.',
+      'Homepage: the page is arranged as three steps (learn, see yours, look ahead). The worked example is split across them, with a short summary of it in the hero; the "nidhi grows with your financial life" section is removed, and the free tools are listed on their own, without a lesson link beside each one. Labels removed: home-grows-<stage>-1 and -2 for each stage, home-start-complex-more, home-pair-lesson-<tool> for each tool, and home-tools-all. Nothing new is stored or sent.',
+      'Homepage: the multi-currency example and its "Add it up in euros at today\'s rates" button are removed, so the homepage no longer contacts Frankfurter (the European Central Bank exchange-rate service) at all. Its labels go with it: home-mc-convert and home-mc-tool. The net worth calculator still fetches rates as before, and the section on Frankfurter above no longer mentions the homepage.',
+    ],
+  },
+  {
+    date: 'Oct 8, 2026',
+    iso: '2026-10-08',
+    material: true,
+    summary: 'The previous PostHog project, holding all analytics recorded before October 8, 2026, was deleted. Analytics have gone to a new project since 00:00 UTC on October 8. Also: two ways typed text could reach analytics are closed, shorter page titles and descriptions for search results, a menu on phones, and a new learning path page with one page per level, an optional helper for choosing a level, and a search that keeps your words out of the page address.',
+    details: [
+      'Deleted: every analytics event recorded before October 8, 2026, including the pageview and page-leave events that carried what people typed into the loan comparison and the net worth calculator (see October 7). We deleted the whole PostHog project rather than searching for the affected events one by one, so the anonymous visitor profiles, click data and heatmaps from that period are gone too. None of it can be restored.',
+      'Since 00:00 UTC on October 8, 2026, analytics go to a new PostHog Cloud EU project; nothing was recorded between the pause on October 7 and then. What is collected, when, and under what consent is unchanged, as described above. The newsletter and waitlist server-side events go to the same new project.',
+      'Search results: lessons whose title ran past about 60 characters in search results now give search engines and link previews a shorter title (for example "Introduction to Financial Independence | nidhi"); the heading on the page is unchanged. The homepage and three lessons have shorter descriptions, and the anti-bias lesson\'s description now explains what many people do instead of telling you what to do. Wording only; nothing is collected or sent.',
+      'Phone menu: on phones, the site\'s links move into a menu in the header. New data-attr labels nav-menu, nav-menu-contact and one per link (nav-menu-blog, nav-menu-about, nav-menu-email and so on). As with every click, they are recorded only if you accept the cookie banner.',
+      'Learning path search: the words you search for go into the page address (?q=), and pageview events carry the address, so they reached our analytics. The analytics script now removes ?q= from learning path addresses before any event is sent.',
+      'Click text: if you accepted the cookie banner, a recorded click, including a click on something that does not respond, carried the text of what was clicked. On the free tools that text can be a vendor name you typed or a figure worked out from your numbers. Clicks are now recorded without any text, told apart by their data-attr labels only.',
+      'Learning path (/blog/): the page no longer lists every lesson. It shows where to start, or, if you have read lessons, the next one; the five levels and Inclusive Finances as one list, each with how many lessons it has (and how many you have read); and a search box. Each level\'s lessons are on their own page (/blog/discovery/, /blog/building/ and so on), with the same read toggles as before. Starting points, counts and "You are here" come from the existing nidhi-reading-progress key in your browser. Nothing is sent to us or anyone else, and no new key is stored.',
+      'Search: what you type into the learning path\'s search box stays on the page. It is no longer written into the page address (?q=), so it never reaches page-view analytics. When a search engine sends you to /blog/?q=..., the page uses those words for the search and then removes them from the address. The analytics script still strips ?q= from learning path addresses as a backstop, and the search on topic pages (/blog/tag/...) is unchanged.',
+      'Level helper: "Help me choose a level" asks which ideas you could explain to a friend and what would help most right now, then suggests a level to begin with and the lessons on the ideas you did not tick. Your answers are kept only while the page is open: they are not stored in your browser, put in the address or sent anywhere. Its area is excluded from recorded clicks, and while it is open click heatmaps are paused, so that, even if you accepted the cookie banner, nothing records which answer you picked. Following its link to a level is an ordinary page view of that level\'s page.',
+      'New data-attr labels, recorded only if you accept the cookie banner, as before: blog-start-first-lesson, blog-start-continue, blog-start-inclusive, blog-level-helper (opening or closing the helper, not its answers), blog-level-discovery, blog-level-building, blog-level-psychology, blog-level-optimizing and blog-level-mastery, blog-search-result and blog-search-show-all (never the words searched), and on the level pages level-page-crumb, level-page-covered-<level>, level-page-prev, level-page-next, level-page-all, level-page-inclusive and level-page-any-country, and blog-index-any-country for the note that lessons are written for any country. In the header, Learn now opens a menu like Free Tools: nav-learn (the menu button), nav-blog (Learning path, the same destination as before), nav-blog-topics and nav-learn-editorial (How lessons are written, the editorial policy), with nav-menu-learn-editorial for the same link in the phone menu. The existing blog-index-browse-topics, blog-index-inclusive-hub, blog-card-*, lp-mark-level-read-* and lp-mark-level-unread-* labels keep their meaning. Lesson pages and the homepage now link to the level pages instead of a section of /blog/; their labels are unchanged.',
+    ],
+  },
+  {
+    date: 'Oct 7, 2026',
+    iso: '2026-10-07',
+    material: true,
+    summary: 'Fixed free tools that put what you typed into page addresses analytics recorded. Also: a homepage that leads with learning, starting routes you can follow, lessons that show where you are and end with what you now understand, a simpler one-currency net worth view, Frankfurter named in the notice, and OpenAI\'s training crawler blocked.',
+    details: [
+      'Internal visits: the team\'s own browsers can be marked so they are never counted. Opening any page with ?internal=1 sets a new key in your browser, nidhi-internal, and from then on that browser runs no analytics at all, not even anonymous pageviews; ?internal=0 removes it. The parameter is taken out of the address right away. Visitors who never open such a link see no change.',
+      'Cookie settings: a "Cookie settings" link at the bottom of every page reopens the cookie banner, so you can change your answer as easily as you gave it. Before, a choice could only be undone by clearing your browser\'s site data. Choosing "No thanks" there after an earlier yes switches click recording off immediately, not just from your next visit. The choice is still stored only in your browser (nidhi-cookie-consent), and the link\'s own click is recorded only if you had accepted (data-attr footer-cookie-settings).',
+      'Analytics paused, then a fresh start: from today until 00:00 UTC on October 8, 2026, the site records no analytics at all, and the newsletter sends no events either. From then on, analytics go to a new, empty PostHog Cloud EU project, under the same rules described above. The previous PostHog project, holding everything recorded before today, is being deleted.',
+      'Free tools, what went wrong: the loan comparison (since it launched on May 10, 2026) and the net worth calculator (since May 17, 2026) wrote what you typed into the page address as you typed, so the page could be reloaded or bookmarked. Every page sends an anonymous pageview and page-leave event, and those carry the page address. So the amounts, rates, names and currencies you entered on those two tools reached our analytics (PostHog Cloud EU) inside that address, and so did the contents of any shared link opened to one of them. A link to any of the three tools with values after a ? would have been recorded the same way. The events carried no name, email or user ID, but this broke our promise that the values you type are never sent.',
+      'Beliefs and the learning path: the principle behind every lesson is now said where people meet the site. The beliefs page has a new belief, "Not just the rules of thumb": a rule of thumb is a starting point, and each lesson explains why it exists, where it breaks and what depends on you. The learning path introduction says the same in one sentence. Wording only.',
+      'Footer disclaimer: "nidhi offers guidance" and "Our suggestions are educational" read like advice, which the rest of the site is careful not to give. It now says nidhi provides educational information and tools, and that the content and tools are educational, not professional financial, investment or tax advice. Wording only.',
+      'Homepage FAQ, "What happens to the numbers I type into the tools?": it said the numbers are not sent "to nidhi or anyone else". That was broader than precise. It now says they stay on your device and are not sent to nidhi, never go into the page address, and that when a tool needs outside data such as exchange rates, your browser asks that service for the rates only, never your amounts, which like any request shows it your IP address. Nothing changed in what is sent.',
+      'Phones: no page scrolls sideways any more. Wide lesson tables scroll inside their own box (a small script wraps each table in a labelled, keyboard-focusable region as the page loads; it reads and stores nothing), the loan comparison\'s screen-reader data tables no longer widen the page, lesson text has the same side margin as its title, breadcrumbs on the tools and topics pages are at least 24 pixels tall, and topic card lesson counts are at least 12 pixels. Spaces that went missing next to links on the about, editorial policy, free tools, privacy and subscription-confirmed pages are back. Layout and wording only.',
+      'Net worth calculator on phones: in the Share window, the Cancel and Copy link buttons sat half under the recipient preview, so a tap on their lower half missed. They now sit above it. Layout only.',
+      'Free tools, what changed: no tool writes your inputs into the page address any more. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start, so the pageview never sees them. Older links that carried the values after a ? still open, and are cleaned the same way. As a backstop, the analytics script now removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent. The section on what we collect now says this. One consequence: reloading a tool page no longer keeps what you typed; a share link keeps a copy. The events already recorded with these addresses are being deleted from PostHog.',
+      'Lessons: every lesson and Inclusive Finances guide now ends with a short "What you now understand" list restating its main ideas, in a tinted box that mirrors the TL;DR at the top, before the free tool and the previous and next links.',
+      'Homepage, for readers who already know the basics: a line under the hero buttons links straight to the Building and Psychology levels and to the free tools (data-attr labels home-hero-skip-building, home-hero-skip-psychology and home-hero-skip-tools, captured only with consent, as before), each starting card says who its route suits, and a short section explains how lessons go past the rule of thumb. No change to what data is collected.',
+      'Lessons: each lesson in Discovery, Building, Psychology, Optimizing and Mastery says where it sits in its level (for example "Lesson 8 of 16") at the top and above the previous and next links, with a link to that level on the learning path. That link is at least 24 pixels tall, the minimum size for a tap target. The numbers come from the published lessons when the site is built; nothing about your reading is used.',
+      'Lessons: those with a paired free tool end in a short path: the lesson you read, the idea in one line, and a link to the tool. Two more lessons now link to the net worth calculator: What Is Net Worth and Managing Money Across Currencies.',
+      'Homepage, "Start wherever you are": each situation shows its lessons as a numbered route, names the free tools that go with it, and ends in one button into the route. If you have read lessons on that route, the button moves to the first one you have not read, and once you have read them all it points to the learning path. It reads the existing nidhi-reading-progress key in your browser to do this. Nothing is sent to us or anyone else, and no new key is stored.',
+      'Homepage: numbered lessons keep their titles beside their numbers, "nidhi grows with your financial life" has more space between stages, and on phones the example chart is drawn narrower so its labels stay readable. Its footnote, and the description of the chart for screen readers, are now printed once in the page, not once per drawing. Small labels are at least 12 pixels, and the "Free Tools" menu button in the header is at least 24 pixels tall, the minimum size for a tap target.',
+      'Homepage redesign: the page now leads with the free lessons and tools: where to start for your situation, which lesson goes with which tool, and how nidhi keeps up as finances get more complex. The planner and its early-access list come after them. The early-access form in the hero is gone; the one further down is the same form, sending and storing exactly what it did before. A short FAQ on the homepage is also published as structured data for search engines.',
+      'Homepage example: the look-ahead step now grows an invested balance (€3,400 invested, €150 added a month, an illustrative 5% a year after inflation) instead of the whole net worth, because a net worth made of a car, cash, a pension and a loan does not grow at one rate. Its note now counts the starting €3,400 as money put in alongside the €18,000 added. Editorial only; nothing is collected or sent.',
+      'Homepage: if you have read lessons on the learning path, it suggests the next one, using the same nidhi-reading-progress key. Without any reading progress it suggests the first lesson.',
+      'Homepage: the multi-currency example no longer contacts Frankfurter (the European Central Bank exchange-rate service) when the page loads, and the page no longer opens a connection to it in advance. The request is made only if you press "Add it up in euros at today\'s rates", and it carries none of the amounts on the page or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type.',
+      'Frankfurter in the notice: until now it was mentioned only in changelog entries. "Where it lives" now has a paragraph on it: when your browser contacts it, what the request contains, and what it reveals. Earlier entries said the request carries "no personal data". That was imprecise: it carries only currency codes, never your amounts, but like any request your browser makes it shows Frankfurter your IP address and browser type, and an IP address can count as personal data. The earlier entries stay as written, as a record; this corrects them. Nothing changed in what the site sends.',
+      'New data-attr labels, so consented interaction analytics can tell links apart: on the homepage home-hero-start-learning, home-hero-tools, home-hero-first-lesson, home-hero-continue, home-start-* (including the route buttons home-start-basics-door, home-start-no-plan-door, home-start-habits-door and home-start-complex-door, and the route tool links home-start-<route>-tool-1 and -tool-2), home-pair-lesson-*, home-tools-all, home-grows-*, home-mc-convert, home-mc-tool, home-editorial-policy, home-privacy and home-faq-*; on lessons post-series-top and post-series-bottom. Without consent, these clicks are not captured, as before; only the anonymous pageviews described above are recorded.',
+      'Net worth calculator: when everything you enter is in your own currency, the results show what you own, what you owe and your net worth, instead of a currency chart and per-currency risk cards. This view needs no exchange rates. Add something in another currency and the currency chart and risk cards appear as before. Wording now says "your currency" instead of "functional currency". Everything still runs in your browser, and nothing new is sent or stored.',
+      'Inclusive Finances, once its first guide is published: a full-width card in "Start wherever you are" on the homepage, listing the situations the guides cover and linking to all of them, and a card beside the numbered levels on the learning path, using the existing data-attr labels home-inclusive-finances and blog-index-inclusive-hub. The hub joins the sitemap, the list of pages we offer to search engines, in the same update, dated by its most recently published or updated guide.',
+      'Names: the navigation link and breadcrumbs say "Learn" and the footer link says "Learning path". They still lead to /blog/ and keep their nav-blog and footer-blog labels. The learning path page is titled "Learn Personal Finance", and the subscription pages, the topic list, the free tools page, the about page and the beliefs page call them lessons or the learning path instead of "the blog". The newsletter itself, and what it collects, are unchanged. The net worth tool is now called the net worth calculator; its address (/free/multi-currency-net-worth/) and link labels are unchanged.',
+      'The trust section on the homepage says nidhi is built for different households, countries, abilities and ways of working, and names what that means in practice: the site works with screen readers, its charts do not rely on colour alone, it follows your device\'s reduced motion setting, and every lesson opens with a short summary. The beliefs page names the needs it means instead of saying "wired differently".',
+      'Crawlers and AI tools: robots.txt, the file that tells crawlers which pages they may read, now blocks GPTBot, the crawler OpenAI uses to gather training data. OAI-SearchBot, which powers ChatGPT search and links back to our pages, stays allowed. llms.txt, the plain-text summary of the site for AI tools, calls the lessons the learning path and opens with who nidhi is for.',
+      'The short social videos made from lessons no longer mention a free tool before that tool is available.',
+      'Social posts made from the upcoming Optimizing and Inclusive Finances lessons now follow the same "teach, don\'t prescribe" wording as the lessons: they describe what many people do and what depends on your situation instead of telling you what to do, carry their sources and assumptions, and drop claims stronger than the lessons make. The one-line teasers these posts use to point back to each lesson were updated to match, and one lesson figure was corrected (€500 a month at 5% a year after inflation for 30 years is about €408,000, using the same method as the lesson\'s other figures). The upcoming cash management lesson\'s FAQ no longer says rate-sensitive funds are fine for money needed within a year: their price drop when rates rise is immediate, as the lesson itself explains. Editorial only.',
+      'Editorial pass over the 42 published lessons: claims stated more firmly than the evidence supports now say where the rule of thumb breaks, figures that disagreed between lessons now agree (long-run stock returns of about 4 to 6% a year after inflation, one threshold for high-interest debt, one order for emergency fund, debt and employer match), two figures were corrected against their sources (long-run bond returns, and how much more often investors sell winners than losers), and one attribution was fixed (what Robert Shiller\'s Nobel Prize recognised). The 36 lessons this changed now show today as their update date. Editorial only.',
+      'Second editorial pass, "teach, don\'t prescribe": across all lessons, published and upcoming, wording that told readers what to do with their money (what to buy, which debt to pay first, which account to open) now explains what people commonly do, why, the evidence, where it breaks and what depends on your situation. Upcoming Optimizing and Inclusive Finances lessons were brought in line with the published figures, and a few errors were fixed along the way (a retirement formula, an example\'s arithmetic, and a statement that money-market funds are deposit-insured). Published lessons this changed show today as their update date. Editorial only.',
+      'This changelog is easier to read: the latest entry and the two before it are shown in full, and everything older sits under one collapsed "Earlier changes" section, grouped by month. Every entry is kept word for word; nothing was removed.',
+      'This changelog now keeps one entry per day. Days that had several entries (May 25, October 1, October 5 and today) were combined into one each. Only repeated lines were dropped; no change was left out.',
+    ],
+  },
+  {
+    date: 'Oct 5, 2026',
+    iso: '2026-10-05',
+    material: true,
+    summary: 'Fixed two kinds of analytics that could run without your consent and a cookie banner that could stick open, plus interactive charts in both tools, a continuous homepage, a two-column learning path, and tool links inside articles.',
+    details: [
+      'Analytics, what went wrong: two PostHog features, page-speed measurements ("web vitals") and clicks on things that did not respond ("dead clicks"), were switched on in our PostHog project settings. Our site code did not switch them off for visitors who had not accepted the cookie banner, so they ran for those visitors too. In the 30 days before the fix that was 59 page-speed events and 8 dead-click events across 23 visits. They carried no name, email or user ID, but they went beyond the anonymous pageviews this policy promises without consent.',
+      'Analytics, what changed: the site now sets every PostHog capture feature itself instead of leaving any to the project settings. Dead clicks are recorded only after you accept, together with heatmaps and autocaptured clicks. Page-speed measurements and browser error capture are off for everyone. The "Only if you click Sure, that\'s fine" list above now names dead clicks explicitly and says page-speed measurements and browser errors are not recorded.',
+      'Cookie banner: if you clicked "Sure, that\'s fine" before the analytics script finished loading, or with an ad blocker that stops it, the banner could stay open. It now always closes, and your choice is applied as soon as the script loads, or never if it is blocked.',
+      'Multi-currency net worth: pointing at, tapping or selecting a currency in the chart or its legend highlights it and shows its share and amount. The legend lists amounts as well as shares. Shared links that hide amounts still hide them. Percentages follow your spending currency\'s number format, and a currency with no exchange rate is left out of the chart and named underneath, instead of being drawn at a size that mixed two currencies.',
+      'Loan comparison: the balance-over-time chart has a years axis, more gridlines, and lines told apart by dash pattern as well as colour. Pointing at it, tapping it or using the arrow keys shows each loan\'s remaining balance and the interest paid so far, all in your browser. The payment-split chart shows whole amounts in your currency\'s usual format.',
+      'Homepage: it no longer snaps between full-screen sections and scrolls as one page. The examples in the hero are calculated from the assumptions printed under each chart, and you can point at or tap a chart to read its values. The multi-currency example converts its amounts at the day\'s European Central Bank rates in your browser, through the same Frankfurter service the page already used; the request now asks for the US dollar and Indian rupee rates instead of only the dollar. The free tools and reading links appear as cards with small previews.',
+      'Learning path: on wide screens each level\'s posts sit in two columns, numbered in reading order, with a note to read left to right, then down. Phones keep one column. The subscribe box puts the email field and button on one row, with the RSS link and the dismiss links beneath; nothing changes in what the form sends or stores. Removed the line promising new posts every Monday, Wednesday and Friday, which no longer matched the publishing schedule.',
+      'Some posts mention their paired free tool once inside the article, at the point where it helps, as well as in the "Free tool" card after it. The mention is a plain link to the tool page with its own data-attr label (post-inline-tool-loan-comparison or post-inline-tool-multi-currency-net-worth), so consented interaction analytics can tell the two placements apart. Without consent, nothing is captured, as before.',
+    ],
+  },
+  {
+    date: 'Oct 3, 2026',
+    iso: '2026-10-03',
+    material: false,
+    summary: 'Tightened upcoming blog posts: removed passages that repeated earlier posts and merged the Monte Carlo post into the projections post.',
+    details: [
+      'Editorial changes only: repeated explanations replaced with a link to the earlier post, and one post folded into another. No new data collection, forms, localStorage keys, analytics events, or third-party calls.',
+      'A second pass removed passages that repeated within a post or between the Optimizing and Inclusive Finances posts, corrected one worked example, and redrew the starting point of one chart. Also editorial only, with no change to how personal data is handled.',
+      'Corrected the long-run stock return stated in published posts (Purchasing Power, Saving vs Investing, Understanding Risk, Investing 101) from 5 to 7% to about 4 to 6% a year after inflation, so the whole site uses one range backed by the cited historical data. Rebuilt one upcoming chart from a public historical dataset with a script anyone can rerun. Editorial only.',
+      'The "min read" shown on posts now counts only readable text, not the code behind charts, so posts with figures show a slightly shorter, more accurate time. One upcoming post was split in two to keep every post under 15 minutes. No change to how personal data is handled.',
+      'Made the site easier to use on phones: charts now keep a readable size and scroll sideways, summaries and FAQ answers use larger text, no text is smaller than 12px, and links and buttons are easier to tap. Layout only, with no change to how personal data is handled.',
+    ],
+  },
+  {
+    date: 'Oct 2, 2026',
+    iso: '2026-10-02',
+    material: false,
+    summary: 'Fact-checked and corrected figures, sources, and charts in upcoming blog posts before they are published.',
+    details: [
+      'Editorial changes only: corrected numbers, updated limits and regulator names, removed named commercial products, and redrew charts to scale. No new data collection, forms, localStorage keys, analytics events, or third-party calls.',
+    ],
+  },
+  {
+    date: 'Oct 1, 2026',
+    iso: '2026-10-01',
+    material: false,
+    summary: 'Added the Inclusive Finances collection and per-level buttons on the learning path, and posts that pair with a free tool now show a "Free tool" card after the article.',
+    details: [
+      'Inclusive Finances: a hub page at /blog/inclusive-finances/, optional follow-up posts on the learning path, and a homepage link. The hub and the new posts are static pages like the rest of the blog.',
+      'Read status for the new posts, and the new "Mark the level as read" and "Mark the level as unread" buttons, use the existing nidhi-reading-progress key, which stays in your browser only. "Skip to next" and "Go to previous" only scroll the page.',
+      'The "Free tool" card is a plain link to the tool page (for example /free/loan-comparison). The tools themselves work as before.',
+      'The new links carry data-attr labels (for example home-inclusive-finances, lp-mark-level-read-discovery and post-tool-loan-comparison) so consented interaction analytics can tell them apart from other links. Without consent, nothing is captured, as before.',
+      'No new data collection, forms, localStorage keys, or third-party calls.',
+    ],
+  },
+  {
+    date: 'May 26, 2026',
+    iso: '2026-05-26',
+    material: false,
+    summary: 'Added updates@nidhi.today as the sending address for automated emails (newsletter, beta invites).',
+    details: [
+      'hello@nidhi.today remains the address for general contact, support, and privacy requests. Replies to updates@ go to the same inbox.',
+      'Same Google Workspace account, same processor, same data. No change to how your information is handled, just clarifying which address you will see in your inbox.',
+    ],
+  },
+  {
+    date: 'May 25, 2026',
+    iso: '2026-05-25',
+    material: true,
+    summary: 'Added a product-launch waitlist signup on the landing page, and a single reminder for newsletter subscribers who have not confirmed.',
+    details: [
+      'New waitlist form on the homepage for people who want one email when nidhi launches. Single opt-in (no confirmation email). Separate from the blog newsletter: different Apps Script backend, different sheet tab, different purpose.',
+      'New localStorage key nidhi-waitlist-signedup. Stored only in your browser. Set when you submit the waitlist form, so we hide the form on future visits. Contains only a status flag and timestamp, never your email address. Cleared when you clear your browser site data.',
+      'Waitlist subscribers stored in a dedicated "beta waitlist" tab in the same Google Sheet as the newsletter. Collects: email, source page, signup timestamp. No confirmation tokens, no unsubscribe tokens (single opt-in).',
+      'Newsletter reminder: if you submit the newsletter form but do not click the confirmation link within 3 days, we send exactly one reminder email asking you to finish subscribing. Sent between 9 AM and 12 PM Prague time (CET/CEST). After that, no further reminders. No new data collected and no change to processors, storage, or retention; the pending status was already tracked.',
+    ],
+  },
+  {
+    date: 'May 24, 2026',
+    iso: '2026-05-24',
+    material: true,
+    summary: 'Dismissible subscribe prompt; subscription key now set only on confirmation.',
+    details: [
+      'New localStorage key nidhi-newsletter-dismissed. Stored only in your browser, never sent to us or any third party. Records your choice when you click "I already subscribed" (permanent) or "Not now" (30-day cooldown) below the subscribe form, so we honor that choice across pages.',
+      'Changed nidhi-newsletter-subscription to be set only when you click the confirmation link in your email (double-opt-in complete). Previously it was also set on form submit, which hid the prompt before you\'d actually confirmed. Does not store your email address.',
+      'Both keys cleared on Undo (for dismiss) or unsubscribe (for subscription), or when you clear your browser site data. No category of personal data on our servers changed.',
+    ],
+  },
+  {
+    date: 'May 17, 2026',
+    iso: '2026-05-17',
+    material: true,
+    summary: 'Renamed the currency tool, refreshed its event list, and added a few error-and-engagement signals on both free tools.',
+    details: [
+      'The free tool at /free/currency-risk is now /free/multi-currency-net-worth (the old URL redirects). The tool itself is unchanged in what it computes; the new name better reflects that the headline output is your net worth converted into one currency, with the concentration / risk view as a secondary panel.',
+      'New anonymous events on /free/multi-currency-net-worth: free_multi_currency_net_worth_rates_error (fired when the exchange-rate fetch from Frankfurter fails outright; carries the functional currency you had selected and a short, generic reason string from the failed fetch, never your asset data), and free_multi_currency_net_worth_csv_parse_errors (fired when a CSV upload contains invalid rows; carries the count of valid and invalid rows and a coarse reason bucket like "invalid_value" or "unsupported_currency"). Neither event ships any of the values you typed.',
+      'The free_multi_currency_net_worth_shared_view_opened event now also includes the utm_source URL parameter. This lets us tell apart someone arriving via a copied share link (utm_source=share) from any other inbound campaign. The utm_source value is the campaign source you yourself sent in the URL; we never invent it.',
+      'New anonymous events on /free/loan-comparison: free_loan_comparison_validation_error (debounced, fires 600ms after a burst of input edits if any vendor card has a validation error; carries the count of errored cards, a coarse error reason like "missing_principal", and the slot label of the first errored vendor, never the actual values), free_loan_comparison_horizon_changed (debounced; carries the chosen horizon in months), and free_loan_comparison_refi_changed (debounced; carries which refinance field was last edited: vendor index, refinance month, new rate, new term, new fees, or "roll fee" toggle). None of these events carry the underlying loan numbers.',
+      'Most React-rendered buttons in both tools now have a stable data-attr label (for example data-attr="lc-share-copy", data-attr="mcnw-asset-add"). For users who consent to interaction analytics, this gives the autocaptured click events a stable selector instead of a fragile auto-generated one. For users who do not consent, this changes nothing: autocapture is gated on consent.',
+    ],
+  },
+  {
+    date: 'May 16, 2026',
+    iso: '2026-05-16',
+    material: true,
+    summary: 'Added the Currency Risk Analyzer tool and disclosed a new third-party API call from your browser.',
+    details: [
+      'New free tool at /free/multi-currency-net-worth (formerly /free/currency-risk): add assets and liabilities across currencies, see your net worth in your chosen currency, and check your currency concentration. No data is sent to us, everything runs in your browser.',
+      'New anonymous interaction events on /free/multi-currency-net-worth: which functional currency you select, when you add or remove an asset, when you upload a CSV file, when you copy a shareable link (and which sharing mode: "full" or "redacted"), and when you reset the form. The financial values you type (asset names, amounts, currencies) are never sent; only interaction metadata is captured.',
+      'The tool makes one network request from your browser to api.frankfurter.dev (a free, open ECB exchange-rate API). The request includes only the functional currency code you selected (e.g. ?from=EUR). No personal data is sent. This is a direct browser-to-API call; we never see the request or the response.',
+      'The header navigation now includes a dropdown listing all free tools.',
+    ],
+  },
+  {
+    date: 'May 10, 2026',
+    iso: '2026-05-10',
+    material: true,
+    summary: 'Disclosed a small set of anonymous interaction events on the Free Tools pages.',
+    details: [
+      'New anonymous events on /free/loan-comparison: which currency you select, whether you toggle solve-for-term vs solve-for-payment, whether you switch a vendor between fixed and hybrid (ARM) rate kinds, whether you change the analysis tab (side-by-side, horizon, refinance, etc.), whether you change the vendor selected for the per-vendor split chart, whether you open the per-vendor "Show details" expander, whether you copy the shareable link, and whether you click Reset to defaults.',
+      'These events do not include any of the financial values you type (loan amount, interest rate, fees, monthly payment, vendor name). The point of the calculator is that the math runs in your browser; we are not exfiltrating the inputs.',
+      'These events fire whether or not you accept the cookie banner; they are categorised the same way as pageview and page-leave: anonymous, no name, no email, no user ID.',
+    ],
+  },
+  {
+    date: 'May 6, 2026',
+    iso: '2026-05-06',
+    material: true,
+    summary: 'Added a local-only key that remembers whether you’ve subscribed.',
+    details: [
+      'New localStorage key nidhi-newsletter-subscription. Stored only in your browser, never sent to us or any third party.',
+      'Purpose: once you’ve submitted the newsletter form (or confirmed via email), we hide the subscribe prompt on the rest of the site so you don’t get pitched on every blog post.',
+      'Cleared automatically when you unsubscribe via the one-click link, when you use the “try a different email” link on the success card, or when you clear your browser site data. No category of personal data on our servers changed.',
+    ],
+  },
+  {
+    date: 'May 5, 2026',
+    iso: '2026-05-05',
+    material: true,
+    summary: 'Initial publication.',
+    details: [
+      'First version of this notice.',
+      'Describes PostHog Cloud EU (analytics), Google Workspace EU (newsletter storage + sending), GitHub Pages (static hosting), and browser localStorage (local preferences) as the only processors.',
+      'Newsletter uses double opt-in with a one-click unsubscribe in every email.',
+    ],
+  },
+];
+
+assertOneEntryPerDate(writtenChangelog);
+const changelog = mergeByDate([...launchEntries, ...writtenChangelog]);
+
+const groupedLog = groupChangelog(changelog);
+const { first, recent, earlier, earlierCount } = groupedLog;
+
+/**
+ * Ask git when this file was last committed. Runs only at build time.
+ *
+ * We use **author date** (`%aI`) rather than committer date (`%cI`) so the
+ * timestamp reflects when the change was actually made, not when it was
+ * rebased/cherry-picked onto main. Both are "commit-based" in the sense
+ * that both come from `git log`, but author date is the one that stays
+ * stable across history rewrites.
+ *
+ * The path is asked of the runtime rather than written out, so moving this
+ * file cannot freeze the date at the day of a move: `git log` on a path that
+ * does not exist returns nothing, which the fallbacks below would swallow.
+ *
+ * We fall back to the newest changelog entry if:
+ *  - we're outside a git checkout (e.g. a deployed preview from a tarball)
+ *  - the CI checkout is too shallow to see the relevant commit (workflow
+ *    uses fetch-depth: 0 in prod precisely to avoid this)
+ *  - git isn't on the PATH (weird local setups)
+ */
+function gitLastCommitDate(filePath: string): { date: string; iso: string } | null {
+  try {
+    const iso = execSync(
+      `git log -1 --format=%aI -- "${filePath}"`,
+      { stdio: ['ignore', 'pipe', 'ignore'] },
+    ).toString().trim();
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return null;
+    const display = d.toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+    return { date: display, iso: iso.slice(0, 10) };
+  } catch {
+    return null;
+  }
+}
+
+// Spelled out rather than read from `import.meta.url`: at build time that URL
+// points at the bundled chunk, which git has never seen, so the lookup always
+// fell back to the changelog date. Keep this in step if the file moves.
+const thisFileRel = 'src/components/pages/PrivacyPage.astro';
+const gitMeta = gitLastCommitDate(thisFileRel);
+
+// An entry can appear on a launch date without a commit to this file (the
+// Monte Carlo simulator's does), so the newest entry wins when it is later.
+const entryIsNewer = !!first && (!gitMeta || first.iso > gitMeta.iso);
+const lastUpdated = (entryIsNewer ? first?.date : gitMeta?.date) ?? '';
+const lastUpdatedIso = (entryIsNewer ? first?.iso : gitMeta?.iso) ?? '';
+
+// The entries are English in every edition, but the dates around them are the
+// page's own chrome, so another language writes them its own way. English keeps
+// the strings it always printed.
+const localDate = (iso: string, opts: Intl.DateTimeFormatOptions) =>
+  new Date(iso).toLocaleDateString(DATE_LOCALE[locale], { ...opts, timeZone: 'UTC' });
+const lastUpdatedShown =
+  locale === DEFAULT_LOCALE || !lastUpdatedIso
+    ? lastUpdated
+    : localDate(lastUpdatedIso, { year: 'numeric', month: 'long', day: 'numeric' });
+const monthLabel = (group: { label: string; entries: ChangelogEntry[] }) =>
+  locale === DEFAULT_LOCALE || !group.entries[0]
+    ? group.label
+    : localDate(group.entries[0].iso, { year: 'numeric', month: 'long' });
+
+// Earliest changelog entry is the publication date; newest is the modified
+// date. Both are ISO yyyy-mm-dd already, which is exactly what schema.org
+// asks for. Falling back to the git-derived dates keeps the schema valid
+// even on a bare checkout where the changelog array is somehow empty.
+const earliest = changelog[changelog.length - 1];
+const datePublished = earliest?.iso ?? lastUpdatedIso;
+const dateModified = first?.iso ?? lastUpdatedIso;
+
+const siteUrl = 'https://nidhi.today';
+// Built from the path rather than hardcoded with a locale prefix, so the
+// addresses here agree with the canonical link BaseHead emits for the same
+// page. `localizedPath` returns '/privacy/' for English, which is what this
+// page has always advertised.
+const noticeUrl = new URL(localizedPath(locale, '/privacy/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+const beliefsUrl = localizedPath(locale, '/beliefs/');
+
+const privacyWebPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: privacy.schema.name,
+  description: privacy.schema.description,
+  url: noticeUrl,
+  inLanguage: LOCALE_META[locale].htmlLang,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'nidhi',
+    url: homeUrl,
+  },
+  ...(datePublished ? { datePublished } : {}),
+  ...(dateModified ? { dateModified } : {}),
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: privacy.schema.breadcrumbHome, item: homeUrl },
+      { '@type': 'ListItem', position: 2, name: privacy.schema.breadcrumbThis, item: noticeUrl },
+    ],
+  },
+};
+
+const privacyBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: privacy.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: privacy.schema.breadcrumbThis, item: noticeUrl },
+  ],
+};
+
+// English is the notice that governs, so only a page that is not English
+// carries the two notes that say so.
+const englishGoverns = locale === DEFAULT_LOCALE;
+const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { count: earlierCount });
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={privacy.meta.title}
+  description={privacy.meta.description}
+  jsonLd={[privacyWebPageSchema, privacyBreadcrumbSchema]}
+  robots="index,follow"
+>
+  <section class="privacy">
+    <div class="privacy-container">
+
+      <header class="privacy-hero">
+        <h1 class="privacy-title">{privacy.title}</h1>
+        <p class="privacy-intro">{privacy.intro}</p>
+        {!englishGoverns && <p class="privacy-note">{privacy.englishIsAuthoritative}</p>}
+        <p class="privacy-updated">
+          {privacy.updatedLabel}<time datetime={lastUpdatedIso}>{lastUpdatedShown}</time> ·{' '}
+          <a href="#changelog">{privacy.updatedLink}</a>
+        </p>
+      </header>
+
+      <h2>{sections.collect}</h2>
+
+      <p><strong>{lead.always}</strong></p>
+      <ul>
+        <li>
+          {collect.pageviews.before}<a href="https://posthog.com/eu" target="_blank" rel="noopener noreferrer">{collect.pageviews.link}</a>{collect.pageviews.after}
+        </li>
+        <li>
+          {collect.freeTools.before}<strong>{collect.freeTools.strong}</strong>{collect.freeTools.after}
+        </li>
+        <li>{collect.toolAddresses}</li>
+        {showMonteCarlo && (
+          <li>
+            {collect.monteCarlo.before}<strong>{collect.monteCarlo.strong}</strong>
+          </li>
+        )}
+        <li>
+          {collect.campaigns.before}<code>{KEY.utmSource}</code>{collect.campaigns.middle}<code>{KEY.utmMedium}</code>{collect.campaigns.after}
+        </li>
+      </ul>
+
+      <p><strong>{lead.withConsent}</strong></p>
+      <ul>
+        <li>{collect.consentClicks}</li>
+      </ul>
+
+      <p><strong>{lead.newsletter}</strong></p>
+      <ul>
+        <li>{newsletter.email}</li>
+        <li>{newsletter.page}</li>
+        <li>{newsletter.timestamps}</li>
+        <li>{newsletter.status}</li>
+        <li>
+          {newsletter.from.before}<code>{KEY.updates}</code>{newsletter.from.after}
+        </li>
+      </ul>
+
+      <p><strong>{lead.waitlist}</strong></p>
+      <ul>
+        <li>{waitlistNotice.email}</li>
+        <li>{waitlistNotice.page}</li>
+        <li>{waitlistNotice.timestamp}</li>
+        <li>{waitlistNotice.singleOptIn}</li>
+        <li>
+          {waitlistNotice.from.before}<code>{KEY.updates}</code>{waitlistNotice.from.after}
+        </li>
+      </ul>
+
+      <p><strong>{lead.browserOnly}</strong></p>
+      <ul>
+        <li>{browserStorage.consent.before}<code>{KEY.cookieConsent}</code>{browserStorage.consent.after}</li>
+        <li>{browserStorage.theme.before}<code>{KEY.themeMode}</code>{browserStorage.theme.after}</li>
+        <li>{browserStorage.internal.before}<code>{KEY.internal}</code>{browserStorage.internal.after}</li>
+        <li>{browserStorage.reading.before}<code>{KEY.readingProgress}</code>{browserStorage.reading.after}</li>
+        <li>{browserStorage.subscription.before}<code>{KEY.newsletterSubscription}</code>{browserStorage.subscription.after}</li>
+        <li>{browserStorage.dismissed.before}<code>{KEY.newsletterDismissed}</code>{browserStorage.dismissed.after}</li>
+        <li>{browserStorage.waitlistSignedUp.before}<code>{KEY.waitlistSignedUp}</code>{browserStorage.waitlistSignedUp.after}</li>
+      </ul>
+
+      <p>{privacy.clearsEverything}</p>
+
+      <h2>{sections.why}</h2>
+      <ul>
+        <li><strong>{why.analytics.lead}</strong>{why.analytics.rest}</li>
+        <li><strong>{why.newsletter.lead}</strong>{why.newsletter.rest}</li>
+        <li><strong>{why.waitlist.lead}</strong>{why.waitlist.rest}</li>
+        <li><strong>{why.localPreferences.lead}</strong>{why.localPreferences.rest}</li>
+      </ul>
+
+      <h2>{sections.whereItLives}</h2>
+      <ul>
+        <li><strong>{where.processors.posthog.name}</strong>{where.processors.posthog.rest}</li>
+        <li>
+          <strong>{where.processors.google.name}</strong>{where.processors.google.before}<code>{KEY.hello}</code>{where.processors.google.middle}<code>{KEY.updates}</code>{where.processors.google.after}
+        </li>
+        <li><strong>{where.processors.github.name}</strong>{where.processors.github.rest}</li>
+        <li><strong>{where.processors.browser.name}</strong>{where.processors.browser.rest}</li>
+      </ul>
+
+      <p>{where.thatIsAll}</p>
+
+      <p>
+        <strong>{where.frankfurter.lead}</strong> (<code>{KEY.rates}</code>){where.frankfurter.rest}
+      </p>
+
+      <h2>{sections.whatWeDontDo}</h2>
+      <ul>
+        <li>{dontDo.ads}</li>
+        <li>{dontDo.sell}</li>
+        <li>{dontDo.crossSite}</li>
+        <li>{dontDo.screen}</li>
+        <li>{dontDo.replies}</li>
+        <li>{dontDo.imports}</li>
+      </ul>
+
+      <h2>{sections.retention}</h2>
+      <ul>
+        <li><strong>{retention.analytics.lead}</strong>{retention.analytics.rest}</li>
+        <li><strong>{retention.newsletter.lead}</strong>{retention.newsletter.rest}</li>
+        <li><strong>{retention.waitlist.lead}</strong>{retention.waitlist.rest}</li>
+        <li><strong>{retention.bounced.lead}</strong>{retention.bounced.rest}</li>
+        <li><strong>{retention.localStorage.lead}</strong>{retention.localStorage.rest}</li>
+      </ul>
+
+      <h2>{sections.rights}</h2>
+      <p>{rights.intro}</p>
+      <ul>
+        <li>{rights.unsubscribe}</li>
+        <li>
+          {rights.analytics.before}<strong>{rights.analytics.strong}</strong>{rights.analytics.after}
+        </li>
+        <li>
+          {rights.contact.before}<a href={`mailto:${KEY.hello}?subject=${KEY.privacyWord}`}>{KEY.hello}</a>{rights.contact.middle}<strong>{KEY.privacyWord}</strong>{rights.contact.after}
+        </li>
+      </ul>
+
+      <h2>{sections.children}</h2>
+      <p>{privacy.children}</p>
+
+      <section class="changelog-section" aria-labelledby="changelog">
+        <p class="changelog-eyebrow">{log.eyebrow}</p>
+        <h2 id="changelog">{log.title}</h2>
+        {!englishGoverns && <p class="changelog-intro changelog-intro--note">{log.entriesInEnglish}</p>}
+        <p class="changelog-intro">
+          {log.intro.before}<strong>{log.materialTag}</strong>{log.intro.after}
+        </p>
+        <p class="changelog-intro">{log.second}</p>
+
+        <ol class="changelog">
+          {/* First (latest) entry: always fully visible, no collapse */}
+          {first && (
+            <li class="changelog-entry">
+              <div class="changelog-marker" aria-hidden="true"></div>
+              <div class="changelog-body">
+                <div class="changelog-head">
+                  <time datetime={first.iso} class="changelog-date">{first.iso}</time>
+                  {first.material && (
+                    <span class="changelog-tag changelog-tag--material" aria-label={log.materialLabel}>{log.materialTag}</span>
+                  )}
+                </div>
+                <p class="changelog-summary" lang="en">{first.summary}</p>
+                {first.details && first.details.length > 0 && (
+                  <ul class="changelog-details" lang="en">
+                    {first.details.map((d) => <li>{d}</li>)}
+                  </ul>
+                )}
+              </div>
+            </li>
+          )}
+
+          {/* The next most recent entries, open */}
+          {recent.map((group) => group.kind === 'single' && (
+              <li class="changelog-entry">
+                <details open={group.open} class="changelog-collapse">
+                  <summary class="changelog-collapseSummary">
+                    <div class="changelog-marker" aria-hidden="true"></div>
+                    <div class="changelog-head">
+                      <time datetime={group.entry.iso} class="changelog-date">{group.entry.iso}</time>
+                      {group.entry.material && (
+                        <span class="changelog-tag changelog-tag--material" aria-label={log.materialLabel}>{log.materialTag}</span>
+                      )}
+                    </div>
+                  </summary>
+                  <div class="changelog-body">
+                    <p class="changelog-summary" lang="en">{group.entry.summary}</p>
+                    {group.entry.details && group.entry.details.length > 0 && (
+                      <ul class="changelog-details" lang="en">
+                        {group.entry.details.map((d) => <li>{d}</li>)}
+                      </ul>
+                    )}
+                  </div>
+                </details>
+              </li>
+          ))}
+
+          {/* Everything older, word for word, under one collapsed section */}
+          {earlierCount > 0 && (
+            <li class="changelog-entry changelog-entry--group">
+              <details class="changelog-collapse">
+                <summary class="changelog-collapseSummary">
+                  <div class="changelog-marker" aria-hidden="true"></div>
+                  <span class="changelog-groupLabel">{log.earlier}</span>
+                  <span class="changelog-groupCount">{olderCount}</span>
+                </summary>
+                {earlier.map((group) => group.kind === 'month' && (
+                  <section class="changelog-month" aria-label={monthLabel(group)}>
+                    <h3 class="changelog-monthLabel">{monthLabel(group)}</h3>
+                    <ol class="changelog-groupEntries">
+                      {group.entries.map((entry) => (
+                        <li class="changelog-groupEntry">
+                          <div class="changelog-head">
+                            <time datetime={entry.iso} class="changelog-date">{entry.iso}</time>
+                            {entry.material && (
+                              <span class="changelog-tag changelog-tag--material" aria-label={log.materialLabel}>{log.materialTag}</span>
+                            )}
+                          </div>
+                          <p class="changelog-summary" lang="en">{entry.summary}</p>
+                          {entry.details && entry.details.length > 0 && (
+                            <ul class="changelog-details" lang="en">
+                              {entry.details.map((d) => <li>{d}</li>)}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+              </details>
+            </li>
+          )}
+        </ol>
+      </section>
+
+      <h2>{sections.whoWeAre}</h2>
+      <p>{whoWeAre.intro}</p>
+      <ul class="contact-list">
+        <li><a href={`mailto:${KEY.hello}`}>{KEY.hello}</a>{whoWeAre.contact.hello}</li>
+        <li><a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer">@nidhi.today</a>{whoWeAre.contact.instagram}</li>
+        <li><a href={beliefsUrl}>{whoWeAre.contact.beliefsLink}</a>{whoWeAre.contact.beliefsRest}</li>
+      </ul>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .privacy-container {
+    max-width: 640px;
+    width: 100%;
+  }
+
+  .privacy-hero {
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .privacy-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+
+  .privacy-intro {
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  /* The note that says the English text governs, and the one about the
+     changelog's language. Both are set apart from the copy they qualify:
+     a reader who skims the intro or the log should still not miss them. */
+  .privacy-note {
+    font-size: 0.95rem;
+    color: var(--color-deep-blue);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-border-light);
+    border-left: 3px solid var(--color-teal);
+    border-radius: var(--radius-sm);
+  }
+
+  .privacy-updated {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .privacy-container h2 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-8) 0 var(--space-3);
+    letter-spacing: -0.01em;
+  }
+
+  .privacy-container h2:first-of-type {
+    margin-top: var(--space-2);
+  }
+
+  .privacy-container p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .privacy-container ul {
+    margin: 0 0 var(--space-4);
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .privacy-container li {
+    margin-bottom: var(--space-2);
+  }
+
+  .privacy-container li:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-container strong {
+    color: var(--color-deep-blue);
+    font-weight: 600;
+  }
+
+  .privacy-container a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .privacy-container a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .privacy-container code {
+    background: var(--color-border-light);
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--color-deep-blue);
+  }
+
+  .contact-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .contact-list li {
+    padding-left: 0;
+  }
+
+  /* --- Changelog section ----------------------------------------------
+     A visually-distinct block that signals "this is meta/audit content,
+     not policy text". Card background + an eyebrow label, plus entries
+     rendered in a timeline style with a left rail and date markers. */
+  .changelog-section {
+    margin-top: var(--space-10);
+    padding: var(--space-6) var(--space-6) var(--space-5);
+    background: var(--color-border-light);
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--color-deep-blue);
+  }
+
+  .changelog-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+  }
+
+  /* Override the generic h2 treatment inside this section. It's a meta
+     section, not a primary policy chapter, so dial the visual weight back. */
+  .changelog-section h2 {
+    font-size: 1.1rem;
+    margin: 0 0 var(--space-3);
+  }
+
+  .changelog-intro {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  .changelog-intro strong {
+    color: var(--color-deep-blue);
+  }
+
+  /* Teal rule on the left, so it reads as a note about the section rather
+     than as one more paragraph of it. */
+  .changelog-intro--note {
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-white);
+    border-left: 3px solid var(--color-teal);
+    border-radius: var(--radius-sm);
+    color: var(--color-deep-blue);
+  }
+
+  .changelog {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    position: relative;
+  }
+
+  /* The vertical timeline rail, offset to sit under the marker dots. */
+  .changelog::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--color-border-light);
+    border-radius: 1px;
+    /* Override: the section's own background IS border-light, so draw the
+       rail in something slightly darker for contrast. */
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .changelog-entry {
+    position: relative;
+    padding-left: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+
+  .changelog-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .changelog-marker {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-bg-white);
+    border: 2px solid var(--color-deep-blue);
+    box-sizing: border-box;
+  }
+
+  .changelog-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-1);
+  }
+
+  .changelog-date {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-deep-blue);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .changelog-tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Page-background text on teal: 7.4:1 in light mode, 6.3:1 in dark (white on the dark-mode teal would be about 3:1). */
+  .changelog-tag--material {
+    background: var(--color-teal);
+    color: var(--color-bg);
+  }
+
+  /* Scope the changelog summary/details typography so they don't inherit
+     the default .privacy-container p/ul styles. */
+  .changelog-summary {
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .changelog-details {
+    margin: var(--space-2) 0 0;
+    padding-left: var(--space-4);
+    list-style: disc;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .changelog-details li {
+    margin-bottom: var(--space-1);
+  }
+
+  .changelog-details li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* --- Collapsible changelog groups ----------------------------------- */
+
+  .changelog-collapse {
+    /* Reset default <details> spacing. */
+    margin: 0;
+    padding: 0;
+  }
+
+  .changelog-collapseSummary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    list-style: none;
+    padding: 4px 0;
+  }
+
+  .changelog-collapseSummary::-webkit-details-marker {
+    display: none;
+  }
+
+  .changelog-collapseSummary .changelog-marker {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  /* Chevron indicator before the summary text. */
+  .changelog-collapseSummary::before {
+    content: '▸';
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--color-deep-blue);
+    transition: transform 0.15s ease;
+    width: 14px;
+    flex-shrink: 0;
+  }
+
+  details[open] > .changelog-collapseSummary::before {
+    transform: rotate(90deg);
+  }
+
+  .changelog-collapseSummary .changelog-head {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .changelog-collapse .changelog-body {
+    margin-top: var(--space-2);
+    padding-left: 0;
+  }
+
+  /* Group header (month/year) styling. */
+  .changelog-groupLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-deep-blue);
+  }
+
+  .changelog-groupCount {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+  }
+
+  .changelog-month {
+    margin-top: var(--space-4);
+  }
+
+  /* Event names and paths (free_multi_currency_net_worth_shared_view_opened)
+     have no break points; let them wrap so a phone never scrolls sideways. */
+  .changelog-section {
+    overflow-wrap: anywhere;
+  }
+
+  .changelog-monthLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .changelog-groupEntries {
+    list-style: none;
+    padding: 0 0 0 var(--space-4);
+    margin: var(--space-2) 0 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .changelog-groupEntry {
+    margin-bottom: var(--space-3);
+  }
+
+  .changelog-groupEntry:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Grouped entry marker: smaller dot, no rail connection needed. */
+  .changelog-entry--group .changelog-marker {
+    background: var(--color-border);
+    border-color: var(--color-text-muted);
+  }
+
+  @media (max-width: 480px) {
+    .privacy-title { font-size: 1.6rem; }
+    .privacy-intro { font-size: 1rem; }
+    .privacy-container h2 { font-size: 1.1rem; }
+    .privacy-container p,
+    .privacy-container ul { font-size: 0.9rem; }
+
+    .changelog-section {
+      padding: var(--space-5) var(--space-4);
+    }
+    .changelog-section h2 { font-size: 1rem; }
+    .changelog-entry { padding-left: var(--space-4); }
+    .changelog-details { font-size: 0.8rem; }
+  }
+</style>

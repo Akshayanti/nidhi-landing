@@ -16,9 +16,14 @@
  *   Anonymous pageviews + UTM: always (no PII, legitimate interest)
  *   Heatmaps + autocapture: only after consent
  */
+import { LOCALES, localePrefix } from '../i18n';
+
+// The known locale prefixes (`['/hi']`), built from the locale registry rather
+// than spelled out, so the URL backstop below cannot drift from the routes.
+const localePrefixes = LOCALES.map(localePrefix).filter(Boolean);
 ---
 
-<script is:inline define:vars={{ posthogKey: import.meta.env.PUBLIC_POSTHOG_KEY }}>
+<script is:inline define:vars={{ posthogKey: import.meta.env.PUBLIC_POSTHOG_KEY, localePrefixes }}>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 
   var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
@@ -34,6 +39,20 @@
   // when a search engine sends someone there, then removes it. Should a
   // /blog/ URL still carry ?q= (an old bookmark, a hand-typed link), that
   // parameter is removed from any URL property pointing at it.
+  // A locale prefix sits in front of the page path once the Hindi edition
+  // exists, so the /free/ and /blog tests below read the path with a known
+  // prefix removed. Only prefixes from the locale registry are stripped: a
+  // pattern like /^\/[a-z]{2}\// would swallow a real two-letter page segment
+  // such as /history-of-money/ and start rewriting a URL that is not a tool.
+  function withoutLocale(pathname) {
+    for (var i = 0; i < localePrefixes.length; i++) {
+      var prefix = localePrefixes[i];
+      if (pathname === prefix || pathname.indexOf(prefix + '/') === 0) {
+        return pathname.slice(prefix.length) || '/';
+      }
+    }
+    return pathname;
+  }
   function cleanUrl(value) {
     if (typeof value !== 'string') return value;
     var isTool = value.indexOf('/free/') !== -1;
@@ -42,12 +61,13 @@
     var u;
     try { u = new URL(value, window.location.origin); } catch (e) { return value; }
     if (u.host !== window.location.host) return value;
-    if (u.pathname.indexOf('/free/') === 0) {
+    var path = withoutLocale(u.pathname);
+    if (path.indexOf('/free/') === 0) {
       var keep = new URLSearchParams();
       u.searchParams.forEach(function (v, k) { if (k.indexOf('utm_') === 0) keep.append(k, v); });
       u.search = keep.toString();
       u.hash = '';
-    } else if (u.pathname.indexOf('/blog') === 0 && u.searchParams.has('q')) {
+    } else if (path.indexOf('/blog') === 0 && u.searchParams.has('q')) {
       u.searchParams.delete('q');
     } else {
       return value;

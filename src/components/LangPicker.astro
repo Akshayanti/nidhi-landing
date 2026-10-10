@@ -1,0 +1,374 @@
+---
+/**
+ * The language picker: the language you are reading, and the other languages
+ * this page exists in.
+ *
+ * A native `<details>` disclosure holding ordinary links, deliberately not the
+ * button and `role="menu"` pair the nav dropdowns beside it use. Three reasons,
+ * in the order they matter here:
+ *
+ * 1. With scripts off, `<details>` still opens and the rows inside are real
+ *    links, so a reader can change language. The nav dropdowns open on CSS
+ *    `:hover`/`:focus-within`, which a touch screen cannot reach, and their
+ *    toggle is a script.
+ * 2. `role="menu"` promises an application menu: managed focus, arrow keys,
+ *    Home and End, Escape. This is navigation between documents, and the site
+ *    does not implement that keyboard model, so the role is not claimed. WAI's
+ *    disclosure navigation pattern draws the same line.
+ * 3. Nothing here grows a key per target language. A locale is one row in
+ *    `LOCALE_META` carrying the name that language calls itself, which is not
+ *    a translation: `हिन्दी` and `Čeština` read the same on every page. A fifth
+ *    locale is registry data and its own pages, not a new pair of strings.
+ *
+ * The trigger is written for the reader who cannot read the page. Its word for
+ * "language" is in the page's own language, so it is of no use to someone
+ * stranded there: it is there for the screen reader, and hidden. What is left
+ * visible is a globe, the language's own name, and a caret. The globe is the
+ * one part of this control that needs no reading at all, which is the whole
+ * point of it: a reader who cannot read the page still has to recognise the way
+ * out of it before they can use it. A second review, Codex's, put those three
+ * shapes in this order and would have dropped the word outright; it survives
+ * as visually hidden text so the control keeps a spoken name, and that name is
+ * in the page's language for the same reason the visible word was: the only
+ * language a page can write an accessible name in is its own. A reader who
+ * understands neither is not helped by seven translations of "Language"
+ * stacked in a name, and is helped by the row-level `lang` below, which lets
+ * assistive technology pronounce each destination correctly.
+ *
+ * The globe is not only on the wider screens. Below 640px the same control
+ * stays in the header as the globe alone, square and the size of the theme
+ * buttons beside it, rather than being reachable only through the menu button,
+ * which is itself a control a stranded reader has to recognise first. The
+ * sheet still carries the names, because a list reads better than a popup on a
+ * phone, but it is no longer the only way to the list.
+ *
+ * The language you are reading is listed too, as text rather than a link. It is
+ * a destination you are already at, and a link to itself would be a reload that
+ * analytics would count as a language switch.
+ *
+ * Each name carries the `lang` it is written in, so a screen reader pronounces
+ * it in its own language rather than in the page's. The links keep
+ * `data-lang-switch`, which Header.astro's script uses to carry the campaign
+ * tag and a free tool's `#` state across the switch, and `data-attr`, which is
+ * how PostHog tells one click from another: `lang-switch-hi`, one label per
+ * locale, the same whichever language you are switching from. The `<summary>`
+ * carries no label at all, because opening the picker is not switching
+ * language, and a label on it would name a target in the privacy notice that
+ * records no choice.
+ */
+import { LOCALE_META, dict, swapLocale, type Locale } from '../i18n';
+
+interface Props {
+  /** The language of the page the picker sits on. */
+  locale: Locale;
+  /**
+   * The locales this page exists in, including this one. A locale with no
+   * counterpart page is left out: offering it would offer a 404. Defaults to
+   * this page's own language, which renders an empty picker, so a caller that
+   * forgets to pass it cannot invent a destination. See `BaseLayout` props.
+   */
+  alternates?: readonly Locale[];
+  /**
+   * `header` is the disclosure beside the theme toggle, at every width: a
+   * globe and the current name on a wider screen, the globe alone on a phone.
+   * `sheet` is the same choice as a list in the phone menu, where a list reads
+   * better than a popup. The sheet's heading is the nav group heading in
+   * Header.astro, so the sheet variant renders the list alone.
+   */
+  variant?: 'header' | 'sheet';
+}
+
+const { locale, alternates = [locale], variant = 'header' } = Astro.props;
+const strings = dict(locale);
+const { languagePicker } = strings;
+
+// A language's own name, in its own script, is the same string on every page
+// and in every locale, so it is read from the registry and never translated.
+const rows = alternates.map((to) => ({
+  to,
+  ...LOCALE_META[to],
+  // The href a visitor with no scripts follows: the same page under the other
+  // prefix, without the campaign tag and without a free tool's `#` state,
+  // neither of which the build can see. Header.astro rebuilds these from the
+  // live address on load. Nothing else is lost, and `#` state never reaches a
+  // server in the first place.
+  href: swapLocale(Astro.url.pathname, to),
+}));
+---
+
+{
+  variant === 'header' ? (
+    <details class="lang-picker lang-picker--header">
+      <summary class="lang-picker__toggle">
+        <span class="lang-picker__globe" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="10" cy="10" r="7.5" />
+            <ellipse cx="10" cy="10" rx="3.5" ry="7.5" />
+            <path d="M2.5 10h15" />
+          </svg>
+        </span>
+        <span class="lang-picker__srOnly">{languagePicker.label}:</span>
+        <span class="lang-picker__name" lang={LOCALE_META[locale].htmlLang}>
+          {LOCALE_META[locale].label}
+        </span>
+        <span class="lang-picker__caret" aria-hidden="true">
+          &#9662;
+        </span>
+      </summary>
+      <ul class="lang-picker__list" role="list">
+        {rows.map((row) => (
+          <li>
+            {row.to === locale ? (
+              <span class="lang-picker__row lang-picker__row--current" aria-current="true">
+                <span lang={row.htmlLang}>{row.label}</span>
+                <span class="lang-picker__srOnly">, {languagePicker.current}</span>
+              </span>
+            ) : (
+              <a
+                class="lang-picker__row"
+                href={row.href}
+                hreflang={row.htmlLang}
+                data-attr={`lang-switch-${row.to}`}
+                data-lang-switch={row.to}
+              >
+                <span lang={row.htmlLang}>{row.label}</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
+  ) : (
+    <ul class="lang-picker__sheetList" role="list">
+      {rows.map((row) => (
+        <li>
+          {row.to === locale ? (
+            <span class="lang-picker__sheetRow lang-picker__row--current" aria-current="true">
+              <span lang={row.htmlLang}>{row.label}</span>
+              <span class="lang-picker__srOnly">, {languagePicker.current}</span>
+            </span>
+          ) : (
+            <a
+              class="lang-picker__sheetRow"
+              href={row.href}
+              hreflang={row.htmlLang}
+              data-attr={`lang-switch-${row.to}`}
+              data-lang-switch={row.to}
+            >
+              <span lang={row.htmlLang}>{row.label}</span>
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .lang-picker {
+    font-family: var(--font-heading);
+  }
+
+  .lang-picker--header {
+    position: relative;
+  }
+
+  /* A pill the size of the theme toggle beside it, so the two read as one row
+     of controls. It sizes to its text: "Čeština" is wider than "हिन्दी", and the
+     header shifts by the difference when a page switches language. */
+  .lang-picker__toggle {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 30px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    cursor: pointer;
+    /* The native triangle, replaced by the caret below so it matches the nav
+       dropdowns two centimetres to the left. */
+    list-style: none;
+  }
+
+  /* The one part of this control that is legible without reading anything.
+     Sized and stroked like the icons in the theme toggle two buttons along. */
+  .lang-picker__globe {
+    display: flex;
+    flex: none;
+    color: var(--color-teal);
+  }
+
+  .lang-picker__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang-picker__toggle::marker {
+    content: '';
+  }
+
+  .lang-picker__toggle:hover {
+    color: var(--color-deep-blue);
+  }
+
+  .lang-picker__toggle:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .lang-picker__caret {
+    font-size: 0.65rem;
+    transition: transform 0.15s ease;
+  }
+
+  /* `[open]` is the disclosure's own state, so no script has to mirror it. */
+  .lang-picker--header[open] .lang-picker__caret {
+    transform: rotate(180deg);
+  }
+
+  .lang-picker__list {
+    position: absolute;
+    top: 100%;
+    /* Logical, so the popup hangs off the trigger's inline end and mirrors by
+       itself when an RTL locale arrives. */
+    inset-inline-end: 0;
+    z-index: 200;
+    min-width: 220px;
+    margin: 8px 0 0;
+    padding: var(--space-1) 0;
+    overflow: hidden;
+    list-style: none;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .lang-picker__row,
+  .lang-picker__sheetRow {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    /* 44px: a comfortable touch target, and this list is reached by thumb on
+       the sheet. */
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+  }
+
+  a.lang-picker__row:hover,
+  a.lang-picker__row:focus-visible {
+    color: var(--color-deep-blue);
+    background: var(--color-bg);
+    outline: none;
+    /* Focus is shown by the bar rather than by the browser's ring, which on a
+       row this wide draws attention away from the name. */
+    box-shadow: inset 3px 0 0 var(--color-teal);
+  }
+
+  /* The language you are reading: not a link, and marked as where you are. The
+     check is a shape rather than a colour, so it survives a colour blind
+     reader and a monochrome print. */
+  .lang-picker__row--current {
+    color: var(--color-text-primary);
+  }
+
+  .lang-picker__row--current::before {
+    content: '\2713';
+    display: inline-block;
+    width: 1.25rem;
+    color: var(--color-teal);
+  }
+
+  .lang-picker__sheetList {
+    margin: var(--space-1) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Sheet rows are as tall as the nav rows around them rather than 44px, so
+     the group's four rows do not look spaced differently from its other
+     groups. */
+  .lang-picker__sheetRow {
+    padding: 10px 0;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+  }
+
+  a.lang-picker__sheetRow:hover,
+  a.lang-picker__sheetRow:focus-visible {
+    color: var(--color-deep-blue);
+  }
+
+  a.lang-picker__sheetRow:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Spoken, not shown: a sighted reader has the check mark. Same declarations
+     as the sr-only rules elsewhere in the site. */
+  .lang-picker__srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* Phones: the globe stays in the header, the name goes. The trigger is a
+     square the size of a theme button, and the popup hangs off `.nav-right`
+     instead of the pill, so that a 220px list anchored to its inline end still
+     lands on a 320px screen rather than off the left of it. */
+  @media (max-width: 640px) {
+    /* `:global`, because `.nav-right` is Header.astro's element and this
+       stylesheet's selectors would otherwise carry a scope attribute it does
+       not have. Nothing else in that row is absolutely positioned at this
+       width: the nav dropdowns are hidden and carry their own containing
+       block. */
+    :global(.nav-right) {
+      position: relative;
+    }
+
+    .lang-picker--header {
+      position: static;
+    }
+
+    .lang-picker__toggle {
+      justify-content: center;
+      gap: 0;
+      width: 30px;
+      height: 30px;
+      min-height: 30px;
+      padding: 0;
+    }
+
+    /* The name the wider screen shows beside the globe. Kept in the document,
+       because it is what names the control to a screen reader: same
+       declarations as `.lang-picker__srOnly` above. */
+    .lang-picker__name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .lang-picker__caret {
+      display: none;
+    }
+  }
+</style>

@@ -4,9 +4,27 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Analytics from '../components/Analytics.astro';
+import { DEFAULT_LOCALE, LOCALE_META, dict, type Locale } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
+  /**
+   * The language this page is written in. Defaults to English, so an English
+   * page that says nothing keeps working exactly as it did.
+   */
+  locale?: Locale;
+  /**
+   * The locales this page exists in, including `locale`. It decides the
+   * `hreflang` links and whether the header offers a language picker.
+   *
+   * It defaults to this page's own language, so a page that also exists under
+   * another prefix is the one that says so, rather than every other page
+   * having to say that it does not. That is the safe default here: a mirrored
+   * route that has not been built yet must not be offered as a destination,
+   * and claiming it would put a link to a 404 in the header and an `hreflang`
+   * pointing nowhere in the head.
+   */
+  alternates?: readonly Locale[];
   title: string;
   description: string;
   image?: string;
@@ -32,15 +50,27 @@ interface Props {
    *  data-page="landing", which the global stylesheet keys off to flip the
    *  header to its fixed/transparent treatment. */
   bodyData?: Record<string, string>;
+  /**
+   * The window property a free tool reads its inputs from, on a page that
+   * carries one. It is what lets a language switch keep the tool's values:
+   * `ToolStateGuard` moves a shared link's `#` state out of the address in
+   * `<head>`, so the header's script, which runs later, has to put it back.
+   * See `Header` props.
+   *
+   * Every other page leaves this empty, which is the safe default: a page that
+   * has no tool state must not look for any.
+   */
+  toolStateGlobal?: string;
 }
 
-const { title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData, toolStateGlobal = '' } = Astro.props;
+const strings = dict(locale);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={LOCALE_META[locale].htmlLang}>
   <head>
-    <BaseHead title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
+    <BaseHead locale={locale} alternates={alternates} title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
     {/*
       Per-page head additions (preconnects, page-specific link tags). The
       slot is empty by default so existing pages are unaffected; the
@@ -50,13 +80,13 @@ const { title, description, image, imageWidth, imageHeight, imageAlt, article, p
     <slot name="head" />
   </head>
   <body {...(bodyData || {})}>
-    <a class="skip-link" href="#main-content">Skip to content</a>
-    <Header />
+    <a class="skip-link" href="#main-content">{strings.skipToContent}</a>
+    <Header locale={locale} alternates={alternates} toolStateGlobal={toolStateGlobal} />
     <main id="main-content" class={mainClass}>
       <slot />
     </main>
-    <Footer />
-    <CookieConsent />
+    <Footer locale={locale} />
+    <CookieConsent locale={locale} />
     <Analytics />
   </body>
 </html>

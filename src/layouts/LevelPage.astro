@@ -1,99 +1,147 @@
 ---
 /**
- * One level of the learning path (/blog/<level>/): what it covers, its
- * lessons in reading order with the Inclusive Finances follow-ups placed
- * after the lesson they build on, and links to the neighbouring levels.
+ * One level of the learning path (/blog/<level>/), in whichever language it was
+ * asked for: what it covers, its lessons in reading order with the Inclusive
+ * Finances follow-ups placed after the lesson they build on, and links to the
+ * neighbouring levels.
+ *
  * A level with no published lessons yet says so and stays out of search
- * (noindex here, and out of the sitemap in astro.config.mjs).
+ * (noindex here, and out of the sitemap in astro.config.mjs). There is one
+ * lesson library, in English, so that is the same question in every language:
+ * a Hindi level page lists the same English lessons and goes live with them.
+ *
+ * The body lives in this file rather than in `src/components/pages/` for the
+ * same shape as the rest of the path: a body both languages render, an English
+ * wrapper at the root path (src/pages/blog/<level>.astro), and one mirrored
+ * route under src/pages/[locale]/blog/.
  */
 import BaseLayout from './BaseLayout.astro';
-import { LevelLessons, LEVELS } from '../components/LearningPath';
-import { LADDER_LEVELS, LEVEL_LABELS } from '../utils/home/startingPoints';
-import { getPathPosts, LEVEL_SUMMARIES } from '../utils/learnPosts';
+import { LevelLessons, type PostData } from '../components/LearningPath';
+import LessonsInEnglish from '../components/LessonsInEnglish.astro';
+import { LADDER_LEVELS } from '../utils/home/startingPoints';
+import { getPathPosts } from '../utils/learnPosts';
+import { tagChipLabel } from '../utils/tags';
+import { DEFAULT_LOCALE, DATE_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../i18n';
 
 interface Props {
   level: (typeof LADDER_LEVELS)[number];
+  locale?: Locale;
 }
 
-const { level } = Astro.props;
-const meta = LEVELS[level];
-const label = LEVEL_LABELS[level];
+const { level, locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const { learn, level: levelStrings } = strings;
+const meta = learn.levelMeta[level];
+const label = learn.levels[level] ?? learn.levelFallback;
 const index = LADDER_LEVELS.indexOf(level);
 
-const posts = await getPathPosts();
-const levelPosts = posts.filter((p) => p.pathLevel === level);
-const core = levelPosts.filter((p) => p.level === level);
-const liveLevels = LADDER_LEVELS.filter((id) => posts.some((p) => p.level === id && p.pathLevel));
-const prev = liveLevels[liveLevels.indexOf(level) - 1];
-const next = liveLevels[liveLevels.indexOf(level) + 1];
+const siteUrl = 'https://nidhi.today';
+const levelUrl = new URL(localizedPath(locale, `/blog/${level}/`), siteUrl).href;
 
-const url = `https://nidhi.today/blog/${level}/`;
+const posts = await getPathPosts();
+// Cards keep the English addresses `getPathPosts` set; the level's own links
+// below are chrome and follow the language.
+const levelPosts: PostData[] = posts.filter((p) => p.pathLevel === level);
+const core = posts.filter((p) => p.level === level && p.pathLevel);
+const liveLevels = LADDER_LEVELS.filter((id) => posts.some((p) => p.level === id && p.pathLevel));
+// Neighbours by ladder position, so a level with nothing published yet still
+// points back to the published level before it, not round to the first one.
+const ladderIndex = LADDER_LEVELS.indexOf(level);
+const prev = [...liveLevels].reverse().find((id) => LADDER_LEVELS.indexOf(id) < ladderIndex);
+const next = liveLevels.find((id) => LADDER_LEVELS.indexOf(id) > ladderIndex);
+
+// Every tag a card on this page can show needs its own link.
+const tagHrefs: Record<string, string> = {};
+const tagLabels: Record<string, string> = {};
+for (const tag of levelPosts.flatMap((p) => p.tags)) {
+  tagHrefs[tag] = blogTagPath(locale, tag);
+  tagLabels[tag] = tagChipLabel(tag, learn.tags[tag]?.name, locale === DEFAULT_LOCALE);
+}
+
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Learn', item: 'https://nidhi.today/blog/' },
-    { '@type': 'ListItem', position: 2, name: label, item: url },
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: learn.crumb.learn,
+      item: new URL(localizedPath(locale, '/blog/'), siteUrl).href,
+    },
+    { '@type': 'ListItem', position: 2, name: label, item: levelUrl },
   ],
 };
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: `${label} lessons`,
+  name: format(levelStrings.schema.itemListName, { label }),
   numberOfItems: core.length,
   itemListElement: core.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${p.id}/`,
+    url: new URL(p.href, siteUrl).href,
     name: p.title,
   })),
 };
 ---
 
 <BaseLayout
-  title={`${label}: ${LEVEL_SUMMARIES[level]} | nidhi`}
-  description={`${meta.description} ${core.length > 0 ? `${core.length} free lessons, in reading order.` : ''}`.trim()}
+  locale={locale}
+  alternates={LOCALES}
+  title={format(levelStrings.meta.title, { label, summary: learn.summaries[level] })}
+  description={core.length > 0 ? format(levelStrings.meta.descriptionWithCount, { description: meta.description, count: core.length }) : meta.description}
   jsonLd={core.length > 0 ? [breadcrumbSchema, itemListSchema] : [breadcrumbSchema]}
   robots={core.length === 0 ? 'noindex,follow' : undefined}
 >
   <section class="level-page" style={`--lc: var(--level-${level})`}>
     <div class="container level-page-container">
-      <nav class="level-page-crumb" aria-label="Breadcrumb">
-        <a href="/blog/" data-attr="level-page-crumb">Learn</a>
+      <nav class="level-page-crumb" aria-label={strings.a11y.breadcrumb}>
+        <a href={localizedPath(locale, '/blog/')} data-attr="level-page-crumb">{learn.crumb.learn}</a>
         <span aria-hidden="true"> / </span>
         <span aria-current="page">{label}</span>
       </nav>
       <header class="level-page-header">
-        <p class="level-page-eyebrow">Level {index + 1} of {LADDER_LEVELS.length}</p>
+        <p class="level-page-eyebrow">{format(levelStrings.eyebrow, { index: index + 1, total: LADDER_LEVELS.length })}</p>
         <h1>{label}</h1>
         <p class="level-page-desc">{meta.description}</p>
         <details class="level-page-covered">
-          <summary data-attr={`level-page-covered-${level}`}>What this level covers</summary>
-          <p>{meta.covered}.</p>
+          <summary data-attr={`level-page-covered-${level}`}>{levelStrings.coveredSummary}</summary>
+          <p>{meta.covered}{strings.fullStop}</p>
         </details>
         <p class="level-page-scope">
-          Written for any country: where a lesson depends on local rules for tax, accounts or benefits, it says what to check where you live.{' '}
-          <a href="/editorial-policy/#any-country" data-attr="level-page-any-country">How lessons are written</a>
+          {levelStrings.scope}{' '}
+          <a href={localizedPath(locale, '/editorial-policy/#any-country')} data-attr="level-page-any-country">{levelStrings.scopeLink}</a>
         </p>
       </header>
 
+      <LessonsInEnglish locale={locale} />
+
       {core.length > 0 ? (
-        <LevelLessons client:load level={level} posts={levelPosts} />
+        <LevelLessons
+          client:load
+          level={level}
+          posts={levelPosts}
+          strings={learn.island}
+          tagHrefs={tagHrefs}
+          tagLabels={tagLabels}
+          inclusiveLabel={learn.levels['inclusive-finances'] ?? learn.levelFallback}
+          dateLocale={DATE_LOCALE[locale]}
+        />
       ) : (
-        <p class="level-page-empty">The lessons in this level are being written. New ones appear here as they are published.</p>
+        <p class="level-page-empty">{levelStrings.empty}</p>
       )}
 
-      <nav class="level-page-nav" aria-label="Levels">
+      <nav class="level-page-nav" aria-label={levelStrings.nav.label}>
         {prev ? (
-          <a href={`/blog/${prev}/`} data-attr="level-page-prev">
-            <span aria-hidden="true">←</span> {LEVEL_LABELS[prev]}
+          <a href={localizedPath(locale, `/blog/${prev}/`)} data-attr="level-page-prev">
+            <span aria-hidden="true">←</span> {learn.levels[prev]}
           </a>
-        ) : <a href="/blog/" data-attr="level-page-all">All levels</a>}
+        ) : <a href={localizedPath(locale, '/blog/')} data-attr="level-page-all">{levelStrings.nav.allLevels}</a>}
         {next ? (
-          <a href={`/blog/${next}/`} data-attr="level-page-next">
-            Next level: {LEVEL_LABELS[next]} <span aria-hidden="true">→</span>
+          <a href={localizedPath(locale, `/blog/${next}/`)} data-attr="level-page-next">
+            {format(levelStrings.nav.next, { label: learn.levels[next] })} <span aria-hidden="true">→</span>
           </a>
-        ) : <a href="/blog/inclusive-finances/" data-attr="level-page-inclusive">Inclusive Finances <span aria-hidden="true">→</span></a>}
+        ) : <a href={localizedPath(locale, '/blog/inclusive-finances/')} data-attr="level-page-inclusive">{levelStrings.nav.inclusive} <span aria-hidden="true">→</span></a>}
       </nav>
     </div>
   </section>

@@ -35,6 +35,43 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Noto Sans Devanagari (SIL Open Font License), self-hosted from this origin,
+   so the Hindi edition adds no third-party request and no new processor. One
+   variable file covers the whole 100 to 900 weight axis, which is every weight
+   the site uses.
+
+   The file carries no Latin glyphs at all (checked against its cmap), so it can
+   never take over Latin text. It is also listed after Inter and Roboto in the
+   stacks below, so it is reached only for characters they do not have, and an
+   English page never requests it: no English page but the switcher's three
+   glyph label uses a Devanagari codepoint.
+
+   The range is the file's own coverage, read from its cmap rather than copied
+   from a stylesheet. That matters in one direction only: a range wider than the
+   subset lets the browser choose this face for a character it would then draw
+   as an empty box, while a range narrower than the subset only costs a
+   fallback. To regenerate after a font update:
+     python3 -c "from fontTools.ttLib import TTFont as T; print(sorted(set(T(f).getBestCmap())))"  */
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/noto-devanagari.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+/* The Devanagari face is added to both stacks on Hindi pages only. Appending
+   it to the tokens above instead would put a 120 KB download on every English
+   page, because the switcher's "हिन्दी" label is a Devanagari codepoint: three
+   glyphs, drawn from the system face, at the cost of a whole font. Scoping it
+   to `html[lang="hi"]` also means the English tokens are untouched, so no
+   English page's rendering depends on this rule at all. */
+html[lang="hi"] {
+  --font-heading: 'Inter', 'Noto Sans Devanagari', sans-serif;
+  --font-body: 'Roboto', 'Noto Sans Devanagari', sans-serif;
+}
+
 /* ============================================================================
  * Color constants — single source of truth.
  *
@@ -392,6 +429,65 @@ h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
 h2 { font-size: 1.75rem; letter-spacing: -0.01em; }
 h3 { font-size: 1.25rem; }
 h4 { font-size: 1rem; font-weight: 600; }
+
+/* Hindi typography.
+
+   Devanagari stacks marks above and below the baseline where Latin does not, so
+   the face lays out a taller line box than Roboto does for the same type size:
+   1.30em against 1.17em, read from the two files' own metrics. At an unchanged
+   `line-height` that leaves Hindi with 0.13em less leading than the Latin rules
+   were tuned for, which is enough for a two line heading to bring one line's
+   upper matra against the line above. Each override below adds that difference
+   back, rather than picking a new number, so Hindi gets the leading the Latin
+   values were chosen for.
+
+   The negative tracking on h1 and h2 is a Latin optical correction: large Latin
+   type opens gaps between letters that the tracking closes again. Devanagari
+   clusters are already tight, so it only squeezes them. Positive tracking on
+   the small label styles is left alone: it adds air between clusters and the
+   shaping engine never splits a cluster to do it.
+
+   Figures inside lessons are a separate job. Their labels are positioned by hand
+   against Latin widths, and re-tuning them is part of translating each lesson. */
+html[lang="hi"] body {
+  line-height: 1.75; /* Latin rule: 1.6 */
+}
+
+html[lang="hi"] h1,
+html[lang="hi"] h2,
+html[lang="hi"] h3,
+html[lang="hi"] h4,
+html[lang="hi"] h5,
+html[lang="hi"] h6 {
+  line-height: 1.4; /* Latin rule: 1.25 */
+  letter-spacing: normal;
+}
+
+html[lang="hi"] .prose {
+  line-height: 1.9; /* Latin rule: 1.75 */
+}
+
+html[lang="hi"] .prose figcaption {
+  line-height: 1.7; /* Latin rule: 1.55 */
+}
+
+/* Uppercase is a Latin device: it does nothing to Devanagari and only shouts
+   the Latin words a Hindi label carries, so the brand in "nidhi के बारे में"
+   came out as "NIDHI". The tracking that goes with it is a Latin correction
+   too. The extra ancestor outweighs the components' scoped rules, which
+   carry Astro's scope attribute. */
+html[lang="hi"] .site-footer .footer-col-heading,
+html[lang="hi"] .site-header .nav-sheetHeading {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* The figure titles are set in the heading face at a size where the same
+   negative tracking applies. The rest of a figure's typography is tuned per
+   figure alongside its translation. */
+html[lang="hi"] .prose figure svg .fig-title {
+  letter-spacing: normal;
+}
 
 a {
   color: var(--color-teal-dark);
@@ -4054,13 +4150,20 @@ body[data-page="landing"] .site-footer {
     padding-top: 4px;
     padding-bottom: 4px;
   }
-  /* Breadcrumbs on the free tools, the tools index and the topics page were
-     15px tall: below the 24px minimum. */
+  /* Breadcrumbs on the free tools, the tools index, the topics pages and the
+     level pages were 15 to 17px tall: below the 24px minimum. A one-word crumb
+     can also be narrower than 24px: Hindi's "होम" is 18px wide where "Home" is
+     not, so every crumb gets a minimum width too. */
   .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a,
-  .ft-breadcrumbs a, .tagHub-breadcrumb a {
+  .ft-breadcrumbs a, .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a {
     display: inline-block !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+  }
+  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a, .ft-breadcrumbs a,
+  .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a, .if-breadcrumb a {
+    min-width: 24px;
+    text-align: center;
   }
 }
 

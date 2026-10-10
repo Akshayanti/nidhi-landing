@@ -1,8 +1,18 @@
 ---
 import LogoMark from './LogoMark.astro';
-import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
+import { DEFAULT_LOCALE, dict, format, type Locale } from '../i18n';
+import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
+import { navHref } from './nav.ts';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
 const year = new Date().getFullYear();
 const showMonteCarlo = await isMonteCarloReleased();
+const href = (path: string) => navHref(locale, path);
 
 ---
 
@@ -14,35 +24,35 @@ const showMonteCarlo = await isMonteCarloReleased();
           <LogoMark size={28} />
           <span class="footer-logo">nidhi</span>
         </div>
-        <p class="footer-tagline">Money, understood</p>
+        <p class="footer-tagline">{strings.footer.tagline}</p>
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <strong class="footer-col-heading">Learn</strong>
-          <a href="/blog/" data-attr="footer-blog">Learning path</a>
-          <a href="/blog/tag/" data-attr="footer-blog-topics">Browse topics</a>
+          <strong class="footer-col-heading">{strings.footer.columns.learn}</strong>
+          <a href={href('/blog/')} data-attr="footer-blog">{strings.footer.links.blog}</a>
+          <a href={href('/blog/tag/')} data-attr="footer-blog-topics">{strings.footer.links.blogTopics}</a>
         </div>
         <div class="footer-col">
-          <strong class="footer-col-heading">Free Tools</strong>
-          <a href="/free/multi-currency-net-worth/" data-attr="footer-multi-currency-net-worth">Net worth calculator</a>
-          <a href="/free/loan-comparison/" data-attr="footer-loan-comparison">Loan comparison</a>
-          {showMonteCarlo && <a href={MONTE_CARLO_URL} data-attr="footer-monte-carlo-simulator">Monte Carlo simulator</a>}
-          <a href="/free/" data-attr="footer-all-tools">View all</a>
+          <strong class="footer-col-heading">{strings.footer.columns.tools}</strong>
+          <a href={href('/free/multi-currency-net-worth/')} data-attr="footer-multi-currency-net-worth">{strings.footer.links.multiCurrencyNetWorth}</a>
+          <a href={href('/free/loan-comparison/')} data-attr="footer-loan-comparison">{strings.footer.links.loanComparison}</a>
+          {showMonteCarlo && <a href={href('/free/monte-carlo-simulator/')} data-attr="footer-monte-carlo-simulator">{strings.footer.links.monteCarloSimulator}</a>}
+          <a href={href('/free/')} data-attr="footer-all-tools">{strings.footer.links.allTools}</a>
         </div>
         <div class="footer-col">
-          <strong class="footer-col-heading">Product</strong>
-          <a href="/" data-attr="footer-home">Home</a>
+          <strong class="footer-col-heading">{strings.footer.columns.product}</strong>
+          <a href={href('/')} data-attr="footer-home">{strings.footer.links.home}</a>
         </div>
         <div class="footer-col">
-          <strong class="footer-col-heading">About</strong>
-          <a href="/about/" data-attr="footer-about">About nidhi</a>
-          <a href="/beliefs/" data-attr="footer-beliefs">Our Beliefs</a>
-          <a href="/editorial-policy/" data-attr="footer-editorial-policy">Editorial policy</a>
-          <a href="/privacy/" class="footer-keep" data-attr="footer-privacy">Privacy</a>
-          <button type="button" class="footer-cookieSettings footer-keep" data-cookie-settings data-attr="footer-cookie-settings">Cookie settings</button>
+          <strong class="footer-col-heading">{strings.footer.columns.about}</strong>
+          <a href={href('/about/')} data-attr="footer-about">{strings.footer.links.about}</a>
+          <a href={href('/beliefs/')} data-attr="footer-beliefs">{strings.footer.links.beliefs}</a>
+          <a href={href('/editorial-policy/')} data-attr="footer-editorial-policy">{strings.footer.links.editorialPolicy}</a>
+          <a href={href('/privacy/')} class="footer-keep" data-attr="footer-privacy">{strings.footer.links.privacy}</a>
+          <button type="button" class="footer-cookieSettings footer-keep" data-cookie-settings data-attr="footer-cookie-settings">{strings.footer.links.cookieSettings}</button>
         </div>
         <div class="footer-col">
-          <strong class="footer-col-heading">Connect</strong>
+          <strong class="footer-col-heading">{strings.footer.columns.connect}</strong>
           <a href="mailto:hello@nidhi.today" class="footer-social" data-attr="footer-email">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
             hello@nidhi.today
@@ -56,9 +66,9 @@ const showMonteCarlo = await isMonteCarloReleased();
     </div>
     <div class="footer-bottom">
       <p class="disclaimer">
-        nidhi provides educational information and tools to help you understand your money. It is not a licensed financial adviser.{' '}<span class="footer-wideOnly">The content and tools are educational and shouldn't be treated as professional financial, investment, or tax advice. Past performance of any investment is not indicative of future results. For decisions that matter, consult a qualified professional.</span>
+        {strings.footer.disclaimerShort}{' '}<span class="footer-wideOnly">{strings.footer.disclaimerLong}</span>
       </p>
-      <p class="footer-copy">&copy; {year} nidhi. All rights reserved.</p>
+      <p class="footer-copy">{format(strings.footer.copyright, { year })}</p>
     </div>
   </div>
 </footer>

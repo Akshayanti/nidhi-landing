@@ -1,0 +1,16 @@
+---
+/**
+ * `/<locale>/blog/tag/`, in every language but the default one. English is
+ * served from `src/pages/blog/tag/index.astro`.
+ */
+import TagHubPage from '../../../../components/pages/TagHubPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<TagHubPage locale={locale} />

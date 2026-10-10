@@ -1,14 +1,38 @@
 ---
 /**
- * The learning path's front page (/blog/): where to start or continue, the
- * levels with Inclusive Finances alongside them, and search across every
- * lesson. Each level's lessons are on its own page (src/layouts/LevelPage.astro).
+ * The learning path's front page (/blog/), in whichever language it was asked
+ * for: where to start or continue, the levels with Inclusive Finances alongside
+ * them, and search across every lesson. Each level's lessons are on its own
+ * page (src/layouts/LevelPage.astro).
+ *
+ * The body lives in this file rather than in `src/components/pages/` because
+ * `astro.config.mjs` dates the page by its git history: the date moves when the
+ * page does. English is served from `src/pages/blog/index.astro`, the other
+ * languages through `src/pages/[locale]/blog/index.astro`.
+ *
+ * Every word the reader sees comes from the catalog, including the JSON-LD, and
+ * every link is built here with `localizedPath` and handed to the island as a
+ * plain string, so `LearnHome.tsx` never has to know about languages.
  */
 import BaseLayout from './BaseLayout.astro';
 import { LearnHome } from '../components/LearnHome';
+import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
-import { LADDER_LEVELS, LEVEL_LABELS } from '../utils/home/startingPoints';
-import { getHelperLevels, getPathPosts, LEVEL_SUMMARIES } from '../utils/learnPosts';
+import { LADDER_LEVELS } from '../utils/home/startingPoints';
+import { getHelperLevels, getPathPosts } from '../utils/learnPosts';
+import { DEFAULT_LOCALE, LOCALES, dict, localizedPath, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const { learn, blogIndex } = strings;
+
+const siteUrl = 'https://nidhi.today';
+const blogUrl = new URL(localizedPath(locale, '/blog/'), siteUrl).href;
+const levelHref = (id: string) => localizedPath(locale, `/blog/${id}/`);
 
 const posts = await getPathPosts();
 const helperLevels = await getHelperLevels();
@@ -17,14 +41,17 @@ const inclusive = posts.filter((p) => p.level === 'inclusive-finances');
 
 const levels = LADDER_LEVELS.map((id) => ({
   id,
-  label: LEVEL_LABELS[id],
-  summary: LEVEL_SUMMARIES[id],
+  label: learn.levels[id],
+  summary: learn.summaries[id],
   total: ladder.filter((p) => p.level === id).length,
+  href: levelHref(id),
 }));
 
 // Ladder lessons in reading order first, then the Inclusive Finances guides.
-const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, readingTime, tags }) => ({
-  id, title, description, level, readingTime, tags,
+// `href` is the lesson's own English address, set by `getPathPosts`: a lesson
+// is one document, not one per language, while the level links above are chrome.
+const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, readingTime, tags, href }) => ({
+  id, title, description, level, readingTime, tags, href,
 }));
 
 const blogBreadcrumbSchema = {
@@ -34,8 +61,8 @@ const blogBreadcrumbSchema = {
     {
       '@type': 'ListItem',
       position: 1,
-      name: 'Learn',
-      item: 'https://nidhi.today/blog/',
+      name: blogIndex.schema.breadcrumbLearn,
+      item: blogUrl,
     },
   ],
 };
@@ -44,43 +71,57 @@ const liveLevels = levels.filter((l) => l.total > 0);
 const blogItemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Learning path levels',
-  description: 'A structured learning path through personal finance, in levels from the basics to reviewing a plan.',
+  name: blogIndex.schema.itemListName,
+  description: blogIndex.schema.itemListDescription,
   numberOfItems: liveLevels.length,
   itemListElement: liveLevels.map((l, i) => ({
     '@type': 'ListItem',
     position: i + 1,
-    url: `https://nidhi.today/blog/${l.id}/`,
+    url: new URL(levelHref(l.id), siteUrl).href,
     name: `${l.label}: ${l.summary}`,
   })),
 };
 ---
 
 <BaseLayout
-  title="Learn Personal Finance | nidhi"
-  description="Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides."
+  locale={locale}
+  alternates={LOCALES}
+  title={blogIndex.meta.title}
+  description={blogIndex.meta.description}
   jsonLd={[blogBreadcrumbSchema, blogItemListSchema]}
 >
   <script is:inline>
     // Links from before each level had its own page (/blog/#level-building)
-    // go to that page.
+    // go to that page. The target is relative, so one script serves every
+    // language: from /hi/blog/ it lands on /hi/blog/<level>/.
     (function () {
       var m = /^#level-(discovery|building|psychology|optimizing|mastery)$/.exec(window.location.hash);
-      if (m) window.location.replace('/blog/' + m[1] + '/');
+      if (m) window.location.replace(m[1] + '/');
     })();
   </script>
   <section class="blog-index">
     <div class="container blog-index-container">
       <header class="blog-index-header">
-        <h1>Learn about your money</h1>
+        <h1>{blogIndex.header.h1}</h1>
         <p class="blog-index-subtitle">
-          Short lessons for every kind of household, in any country. Where local rules matter, lessons say what to check.{' '}
-          <a href="/editorial-policy/#any-country" data-attr="blog-index-any-country">How lessons are written</a>
+          {blogIndex.header.subtitle}{' '}
+          <a href={localizedPath(locale, '/editorial-policy/#any-country')} data-attr="blog-index-any-country">{blogIndex.header.link}</a>
         </p>
       </header>
-      <LearnHome client:load levels={levels} lessons={lessons} inclusiveCount={inclusive.length} helperLevels={helperLevels} />
+      {/* The cards below carry English titles: say so before the list, not after it. */}
+      <LessonsInEnglish locale={locale} />
+      <LearnHome
+        client:load
+        levels={levels}
+        lessons={lessons}
+        inclusiveCount={inclusive.length}
+        helperLevels={helperLevels}
+        strings={blogIndex.island}
+        inclusiveHref={localizedPath(locale, '/blog/inclusive-finances/')}
+        topicsHref={localizedPath(locale, '/blog/tag/')}
+      />
       <div class="blog-index-subscribe">
-        <SubscribeSection variant="compact" />
+        <SubscribeSection variant="compact" locale={locale} />
       </div>
     </div>
   </section>

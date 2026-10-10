@@ -1,0 +1,267 @@
+---
+/**
+ * The about page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/about.astro`, which is a three line
+ * wrapper around this; the other languages come through
+ * `src/pages/[locale]/about.astro`. Both paths render this one component, so
+ * the two versions cannot drift apart in markup or in styling.
+ *
+ * Everything the reader sees comes from the catalog, including the JSON-LD,
+ * so the structured data speaks the same language as the page and points at
+ * the page's own address rather than at the English one.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+// Both the English page and the `[locale]` mirror render this component, so
+// this page exists in every locale and the header may offer the others.
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = dict(locale);
+const { about } = strings;
+
+const siteUrl = 'https://nidhi.today';
+// Built from the path rather than hardcoded with a locale prefix, so the
+// addresses here agree with the canonical link BaseHead emits for the same
+// page. `localizedPath` returns '/about/' for English, which is what this page
+// has always advertised.
+const aboutUrl = new URL(localizedPath(locale, '/about/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+
+const profilePageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: about.schema.name,
+  url: aboutUrl,
+  description: about.schema.description,
+  // nidhi is the publishing Organization. Using Organization matches the
+  // author type on blog posts (changed in commit 41ca037). Inlined here
+  // (not a separate JSON-LD document) so Google can resolve the type without
+  // cross-document @id references.
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: aboutUrl,
+    description: about.schema.organization,
+    knowsAbout: Object.values(about.schema.knowsAbout),
+    sameAs: ['https://www.instagram.com/nidhi.today'],
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: about.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: about.schema.breadcrumbAbout, item: aboutUrl },
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={about.meta.title}
+  description={about.meta.description}
+  jsonLd={[profilePageSchema, breadcrumbSchema]}
+>
+  <section class="about-page">
+    <div class="about-container">
+      <div class="about-hero">
+        <div class="about-avatar">
+          {/* Brand icon mark. Two variants toggled by [data-theme] so the
+              avatar follows the manual theme switch, not just the OS
+              preference. Rendered at 80px; the 256px source covers DPR 2. */}
+          <img
+            class="brand-mark brand-mark--light"
+            src="/brand/logo/icon-only/icon-256.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            class="brand-mark brand-mark--dark"
+            src="/brand/logo/icon-only/icon-256-dark.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <h1 class="about-title">{about.title}</h1>
+        <p class="about-intro">{about.intro}</p>
+      </div>
+
+      <div class="about-body">
+        <h2>{about.sections.whoIsWriting}</h2>
+        <p>{about.body.whoIsWriting}</p>
+
+        <h2>{about.sections.whyYouCanTrustIt}</h2>
+        <p>{about.body.whyYouCanTrustIt1}</p>
+        <p>{about.body.whyYouCanTrustIt2}</p>
+
+        <h2>{about.sections.howPostsAreMade}</h2>
+        <p>
+          {about.body.howPostsAreMade.before}
+          <a href={localizedPath(locale, '/editorial-policy/')}>{about.body.howPostsAreMade.link}</a>
+          {about.body.howPostsAreMade.after}
+        </p>
+
+        <h2>{about.sections.whatNidhiKnowsAbout}</h2>
+        <p>
+          {about.body.whatNidhiKnowsAbout.before}
+          <a href={localizedPath(locale, '/beliefs/')}>{about.body.whatNidhiKnowsAbout.link}</a>
+          {about.body.whatNidhiKnowsAbout.after}
+        </p>
+      </div>
+
+      <div class="about-cta">
+        <p class="about-cta-text">{about.cta.text}</p>
+        <div class="about-cta-links">
+          <a href="mailto:hello@nidhi.today" class="about-cta-link" data-attr="about-cta-email">
+            {about.cta.email}
+          </a>{' '}
+          <a
+            href="https://www.instagram.com/nidhi.today"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-cta-link"
+            data-attr="about-cta-instagram"
+          >
+            {about.cta.instagram}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .about-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .about-hero {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .about-avatar img {
+    width: 80px;
+    height: auto;
+    margin-bottom: var(--space-4);
+  }
+
+  /* Theme-aware brand mark: show the variant matching the active theme.
+     Default (light) shows the light mark; [data-theme="dark"] swaps it. */
+  .about-avatar .brand-mark--dark {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .about-avatar .brand-mark--light {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .about-avatar .brand-mark--dark {
+    display: inline-block;
+  }
+
+  .about-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-2);
+  }
+
+  .about-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .about-body h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .about-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .about-body a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-body a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .about-cta {
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    text-align: center;
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .about-cta-text {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-4);
+  }
+
+  .about-cta-links {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .about-cta-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    color: var(--color-deep-blue);
+    border: 1px solid var(--color-deep-blue);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .about-cta-link:hover {
+    background: var(--color-deep-blue);
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    .about-title { font-size: 1.6rem; }
+    .about-cta-links { flex-direction: column; align-items: center; }
+  }
+</style>

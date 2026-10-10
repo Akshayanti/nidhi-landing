@@ -1,15 +1,86 @@
 ---
+/**
+ * The 404 page. One page for the whole host, in every language.
+ *
+ * GitHub Pages answers every missing address with this one file, so there is
+ * no `/hi/404/` to build and no counterpart URL for `hreflang` or the language
+ * picker to point at, which is why `alternates` stays `[DEFAULT_LOCALE]` and
+ * the header offers no picker here. Instead every language's block is rendered
+ * into the same page and a script in `<head>` reveals the one that matches the
+ * address, before the browser paints.
+ *
+ * It keys off the document's `lang`, which is the same thing a screen reader
+ * picks its voice from, so the two never disagree. With scripts off the
+ * English block is the one left standing, which is the right fallback: the
+ * header, footer and cookie banner around it are English either way.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { DEFAULT_LOCALE, LOCALE_META, dict, localePrefix, localizedPath } from '../i18n';
+import { MIRRORED_LOCALES } from '../i18n/routes.ts';
+
+const en = dict(DEFAULT_LOCALE).notFound;
+const blocks = [DEFAULT_LOCALE, ...MIRRORED_LOCALES].map((locale) => ({
+  locale,
+  lang: LOCALE_META[locale].htmlLang,
+  strings: dict(locale).notFound,
+  home: localizedPath(locale, '/'),
+}));
+
+// What the head script needs to recognise a prefixed address: the prefix, the
+// `lang` to set and the title to show.
+const prefixed = MIRRORED_LOCALES.map((locale) => ({
+  prefix: localePrefix(locale),
+  lang: LOCALE_META[locale].htmlLang,
+  title: dict(locale).notFound.meta.title,
+}));
+
+// Every block but English starts hidden; one rule per language then hides
+// English and shows that language's block once the head script has set `lang`.
+// Generated, so a new locale needs no edit here, and unscoped, so all of these
+// rules weigh the same as each other (a scoped rule would carry Astro's extra
+// attribute and outweigh the switch).
+const switchCss = [
+  `.notfound:not(.notfound--${DEFAULT_LOCALE}) { display: none; }`,
+  ...MIRRORED_LOCALES.map((locale) => {
+    const lang = LOCALE_META[locale].htmlLang;
+    return `html[lang='${lang}'] .notfound--${DEFAULT_LOCALE} { display: none; } html[lang='${lang}'] .notfound--${locale} { display: block; }`;
+  }),
+].join('\n');
 ---
 
-<BaseLayout title="Page not found (404) | nidhi" description="That page doesn't exist on nidhi. It may have been moved, the URL might be mistyped, or the link may be out of date. Head back home to continue." robots="noindex, nofollow">
-  <div class="container" style="text-align: center; padding: 8rem 1.5rem;">
-    <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">404</h1>
-    <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
-      The page you're looking for doesn't exist.
-    </p>
-    <a href="/" class="transactional-cta">
-      Go home
-    </a>
-  </div>
+<BaseLayout
+  title={en.meta.title}
+  description={en.meta.description}
+  robots="noindex, nofollow"
+  alternates={[DEFAULT_LOCALE]}
+>
+  <script slot="head" is:inline define:vars={{ prefixed }}>
+    // Runs in <head>, before the body is parsed and before the first paint, so
+    // a prefixed address never flashes the English block. The trailing slash is
+    // what the rest of the site uses, but a reader who typed the address by
+    // hand may well have left it off, so both spellings count.
+    var path = window.location.pathname;
+    for (var i = 0; i < prefixed.length; i++) {
+      var p = prefixed[i];
+      if (path === p.prefix || path.indexOf(p.prefix + '/') === 0) {
+        document.documentElement.lang = p.lang;
+        document.title = p.title;
+        break;
+      }
+    }
+  </script>
+  <style slot="head" is:inline set:html={switchCss}></style>
+
+  {/* English first: it is the block that a reader with scripts off keeps. */}
+  {blocks.map((block) => (
+    <div class={`container notfound notfound--${block.locale}`} lang={block.lang} style="text-align: center; padding: 8rem 1.5rem;">
+      <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">{block.strings.heading}</h1>
+      <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+        {block.strings.body}
+      </p>
+      <a href={block.home} class="transactional-cta">
+        {block.strings.cta}
+      </a>
+    </div>
+  ))}
 </BaseLayout>

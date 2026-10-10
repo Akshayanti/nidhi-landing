@@ -1,0 +1,23 @@
+---
+/**
+ * The home page in every language but the default one. English is served from
+ * `src/pages/index.astro`, so it never comes through here and its address
+ * cannot be shadowed by this route.
+ *
+ * This is the page a language picker has the most to prove on: it is the one
+ * visitors land on, and the header's picker only offers a language this page
+ * exists in. It passes `alternates={LOCALES}` on to `BaseLayout` for that
+ * reason, so `/` and `/hi/` name each other in the header and in the head's
+ * `hreflang` tags.
+ */
+import HomePage from '../../components/pages/HomePage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<HomePage locale={locale} />

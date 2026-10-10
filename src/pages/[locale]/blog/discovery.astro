@@ -1,0 +1,20 @@
+---
+/**
+ * `/<locale>/blog/discovery/`, in every language but the default one. English is
+ * served from `src/pages/blog/discovery.astro`.
+ *
+ * The page stays out of search until this level has a live lesson (see the
+ * layout). The lessons are the one English library, so that happens in every
+ * language at once.
+ */
+import LevelPage from '../../../layouts/LevelPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<LevelPage level="discovery" locale={locale} />

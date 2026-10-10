@@ -1,0 +1,1373 @@
+---
+/**
+ * The multi-currency net worth calculator, in whichever language it was asked
+ * for.
+ *
+ * English is served from `src/pages/free/multi-currency-net-worth.astro`, which
+ * is a short wrapper around this; the other languages come through
+ * `src/pages/[locale]/free/`. Both paths render this one component, so the two
+ * versions cannot drift apart in markup or in styling.
+ *
+ * What stays here rather than in the catalog: the `data-attr` labels (analytics
+ * reads them, and the privacy notice's changelog refers to those labels by
+ * name), the lesson slugs, which have to match real entries in
+ * `src/content/blog`, the `?from=EUR` sample inside the explainer's `<code>`,
+ * the schema.org enumerations, and the tool's `SHARED_STATE_GLOBAL`, which the
+ * island, the head guard and the layout all have to agree on.
+ *
+ * The island is handed its own words as a prop rather than the locale, so that
+ * the hydration payload carries one language's strings and not the whole
+ * catalog. See the `strings` prop in `MultiCurrencyNetWorth.tsx`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
+import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
+import WaitlistSection from '../../components/WaitlistSection.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const tool = dict(locale).tools.multiCurrencyNetWorth;
+
+const siteUrl = 'https://nidhi.today';
+
+// Ordered for the calculator, strongest first: the net worth basics, then
+// money across currencies, then where net worth leads.
+// Unpublished posts (future pubDate) are filtered out at build time but kept
+// here so they auto-promote into the visible top three the moment they go
+// live (publishedSlugs is rebuilt every build). Slugs MUST match real entries
+// in src/content/blog/**/*.md or they silently filter out, that was the
+// bug that made this section render blank ("net-worth" and "assets-vs-
+// liabilities" were never real slugs).
+//
+// The kicker, title and description are this page's own sentences about those
+// lessons, so they live in the catalog; the slug and the analytics label are
+// not sentences and stay here. The two lists are the same length and the same
+// order, and the catalog is indexed by this one.
+const RELATED_CANDIDATES = [
+  { slug: 'what-is-net-worth', dataAttr: 'related-net-worth' },
+  { slug: 'how-to-calculate-net-worth', dataAttr: 'related-how-to-calculate-net-worth' },
+  { slug: 'managing-money-across-currencies', dataAttr: 'related-multi-currency' },
+  { slug: 'liabilities', dataAttr: 'related-liabilities' },
+  {
+    slug: 'why-your-euro-buys-more-in-some-countries',
+    dataAttr: 'related-purchasing-power-cross-country',
+  },
+  { slug: 'purchasing-power', dataAttr: 'related-purchasing-power' },
+  { slug: 'introduction-to-financial-independence', dataAttr: 'related-fire-intro' },
+  { slug: 'setting-financial-goals', dataAttr: 'related-goals' },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog'))
+    .filter((post) => isDev || post.data.pubDate <= now)
+    .map((post) => post.data.slug),
+);
+const RELATED = RELATED_CANDIDATES.map((candidate, index) => ({
+  ...candidate,
+  ...tool.page.related.items[index],
+}))
+  .filter((c) => publishedSlugs.has(c.slug))
+  .slice(0, 3);
+
+const canonicalUrl = new URL(localizedPath(locale, '/free/multi-currency-net-worth/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: tool.schema.name,
+  alternateName: tool.schema.alternateName,
+  url: canonicalUrl,
+  description: tool.meta.description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: tool.schema.operatingSystem,
+  browserRequirements: tool.schema.browserRequirements,
+  isAccessibleForFree: true,
+  featureList: tool.schema.featureList,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: homeUrl,
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: tool.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: tool.schema.breadcrumbThis, item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: tool.page.faq.items.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  toolStateGlobal={SHARED_STATE_GLOBAL}
+  title={tool.meta.title}
+  description={tool.meta.description}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+>
+  {/*
+    Preconnect to the Frankfurter FX API so the first rates request on
+    page load isn't gated on a fresh DNS lookup + TLS handshake. The
+    rates fetch fires in MultiCurrencyNetWorth.tsx as soon as the React
+    island hydrates; the preconnect typically saves 50-150 ms on the
+    first paint with conversion data.
+  */}
+  <link slot="head" rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
+  <section class="mcnw-page">
+    <nav class="mcnw-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
+      <ol>
+        <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
+        <li aria-current="page">{tool.page.breadcrumb.this}</li>
+      </ol>
+    </nav>
+
+    <header class="mcnw-pageHeader">
+      <p class="mcnw-eyebrow">{tool.page.eyebrow}</p>
+      <h1 class="mcnw-pageTitle">
+        {tool.page.title}
+      </h1>
+      <p class="mcnw-pageLead">
+        {tool.page.lead}
+      </p>
+    </header>
+
+    <MultiCurrencyNetWorth client:load strings={tool.island} />
+
+    <aside class="mcnw-accessCta" aria-labelledby="mcnw-access-cta-h">
+      <div class="mcnw-accessCtaCopy">
+        <p class="mcnw-eyebrow">{tool.page.accessCta.eyebrow}</p>
+        <h2 id="mcnw-access-cta-h" class="mcnw-sectionTitle">
+          {tool.page.accessCta.title}
+        </h2>
+        <p>
+          {tool.page.accessCta.body}
+        </p>
+      </div>
+      <WaitlistSection locale={locale} variant="hero" cta={tool.page.accessCta.cta} />
+    </aside>
+
+    {/* Collapsed by default, like the FAQ below: the method is there for
+        anyone who wants it, without pushing the FAQ and lessons down. */}
+    <details class="mcnw-explainer">
+      <summary class="mcnw-faqHeading">
+        <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">{tool.page.explainer.heading}</h2>
+      </summary>
+      <p>
+        {tool.page.explainer.intro}
+      </p>
+      <p class="mcnw-formula">
+        <code>
+          {tool.page.explainer.formula}
+        </code>
+      </p>
+      <ul class="mcnw-explainerList">
+        {tool.page.explainer.items.map((item) => (
+          <li>
+            <strong>{item.strong}</strong>{item.rest}{item.after !== undefined && (
+              <>
+                <code>?from=EUR</code>{item.after}
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
+
+    <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
+      <summary id="mcnw-faq-h" class="mcnw-faqHeading">
+        <span class="mcnw-sectionTitle">{tool.page.faq.heading}</span>
+        <span class="mcnw-faqHeadingCount" aria-hidden="true">{tool.page.faq.items.length}</span>
+      </summary>
+      <div class="mcnw-faqList">
+        {tool.page.faq.items.map((f) => (
+          <details class="mcnw-faqItem">
+            <summary class="mcnw-faqQ">{f.q}</summary>
+            <p class="mcnw-faqA">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </details>
+
+    <aside class="mcnw-related" aria-labelledby="mcnw-related-h">
+      <header class="mcnw-relatedHeader">
+        <h2 id="mcnw-related-h" class="mcnw-sectionTitle">{tool.page.related.heading}</h2>
+        <p class="mcnw-relatedLead">
+          {tool.page.related.lead}
+        </p>
+      </header>
+
+      <LessonsInEnglish locale={locale} />
+
+      <div class="mcnw-relatedGrid">
+        {RELATED.map((post) => (
+          <a href={lessonPath(post.slug)} hreflang="en" class="mcnw-relatedCard" data-attr={post.dataAttr}>
+            <span class="mcnw-relatedKicker">{post.kicker}</span>
+            <span class="mcnw-relatedTitle">{post.title}</span>
+            <span class="mcnw-relatedDesc">{post.desc}</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="mcnw-relatedFooter">
+        <a href={localizedPath(locale, '/blog/tag/currency/')} class="mcnw-relatedAll" data-attr="related-tag-currency">
+          {tool.page.related.footerTag}
+          <span aria-hidden="true">&nbsp;&rsaquo;</span>
+        </a>
+        <a href={localizedPath(locale, '/blog/')} class="mcnw-relatedAllSecondary" data-attr="related-all">
+          {tool.page.related.footerAll}
+        </a>
+      </p>
+    </aside>
+  </section>
+</BaseLayout>
+
+<style>
+  .mcnw-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+
+  .mcnw-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .mcnw-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .mcnw-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+    color: var(--color-text-muted);
+  }
+  .mcnw-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .mcnw-breadcrumbs a:hover,
+  .mcnw-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .mcnw-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+
+  .mcnw-pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .mcnw-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+
+  .mcnw-pageTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+
+  .mcnw-pageLead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  .mcnw-sectionTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-deep-blue);
+    margin: 0;
+  }
+
+  /* Explainer & FAQ */
+  .mcnw-accessCta,
+  .mcnw-explainer,
+  .mcnw-faq,
+  .mcnw-related {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mcnw-accessCta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  .mcnw-accessCtaCopy p:last-child {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 62ch;
+    margin: var(--space-2) 0 0;
+    text-wrap: pretty;
+  }
+
+  .mcnw-accessCta :global(.waitlist) {
+    margin: 0;
+  }
+
+  .mcnw-accessCta :global(.waitlist-box) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  @media (max-width: 800px) {
+    .mcnw-accessCta {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+  }
+
+  .mcnw-explainer p,
+  .mcnw-explainerList li,
+  .mcnw-faqA {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .mcnw-formula {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .mcnw-formula code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .mcnw-explainerList {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-5);
+  }
+
+  .mcnw-explainerList li {
+    margin-bottom: var(--space-2);
+  }
+
+  .mcnw-explainerList li strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  /* FAQ: entire section is collapsible. The summary doubles as the
+     section heading; we keep the visual weight of an h2 and add a tiny
+     count badge so the user knows how many questions are hidden. */
+  .mcnw-faqHeading {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
+    user-select: none;
+  }
+
+  .mcnw-faqHeading::-webkit-details-marker { display: none; }
+
+  .mcnw-faqHeading::before {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    color: var(--color-deep-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+  }
+
+  .mcnw-explainer[open] > .mcnw-faqHeading::before,
+  .mcnw-faq[open] > .mcnw-faqHeading::before {
+    content: '−';
+  }
+
+  .mcnw-faqHeading:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .mcnw-faqHeadingCount {
+    margin-left: auto;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .mcnw-faqList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .mcnw-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+  }
+
+  .mcnw-faqItem[open] {
+    background: var(--color-bg-white);
+    border-color: var(--color-border);
+  }
+
+  .mcnw-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+
+  .mcnw-faqQ::-webkit-details-marker { display: none; }
+
+  .mcnw-faqQ::before {
+    content: '+';
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    width: 1em;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .mcnw-faqItem[open] .mcnw-faqQ::before {
+    content: '\2212';
+  }
+
+  .mcnw-faqQ:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .mcnw-faqA {
+    margin: var(--space-2) 0 0;
+  }
+
+  /* Related reading */
+  .mcnw-relatedHeader {
+    margin-bottom: var(--space-4);
+  }
+
+  .mcnw-relatedLead {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: var(--space-2) 0 0;
+    max-width: 60ch;
+    text-wrap: balance;
+  }
+
+  .mcnw-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 800px) {
+    .mcnw-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .mcnw-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 100%;
+  }
+
+  .mcnw-relatedCard:hover,
+  .mcnw-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+
+  .mcnw-relatedCard:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .mcnw-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+  }
+
+  .mcnw-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    line-height: 1.3;
+  }
+
+  .mcnw-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .mcnw-relatedFooter {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  /* text-decoration (not border-bottom) so the underline follows
+     line wraps correctly on narrow viewports: border-bottom only
+     renders under the last visual line of a wrapped link. */
+  .mcnw-relatedAll {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-style 0.15s ease;
+  }
+
+  .mcnw-relatedAll:hover,
+  .mcnw-relatedAll:focus-visible {
+    text-decoration-style: solid;
+  }
+
+  .mcnw-relatedAllSecondary {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    text-decoration: underline dotted;
+    text-decoration-color: var(--color-text-muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
+  }
+
+  .mcnw-relatedAllSecondary:hover,
+  .mcnw-relatedAllSecondary:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration-color: var(--color-deep-blue);
+    text-decoration-style: solid;
+  }
+
+  /* Switch to stacked layout earlier (640px): at widths between
+     480 and 640px the right-aligned wrap makes the two links sit on
+     ragged staggered lines. Stacking them reads cleaner. */
+  @media (max-width: 640px) {
+    .mcnw-relatedFooter {
+      justify-content: flex-start;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mcnw-relatedCard {
+      transition: none;
+    }
+    .mcnw-relatedCard:hover,
+    .mcnw-relatedCard:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .mcnw-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .mcnw-pageHeader {
+      margin-bottom: var(--space-6);
+      text-align: left;
+    }
+    .mcnw-pageLead {
+      font-size: 0.95rem;
+    }
+    .mcnw-explainer,
+    .mcnw-accessCta,
+    .mcnw-faq,
+    .mcnw-related {
+      padding: var(--space-4) var(--space-3);
+    }
+  }
+
+  /* =================================================================
+   * Component styles (MultiCurrencyNetWorth)
+   * ============================================================= */
+
+  .mcnw-srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .mcnw-root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    color: var(--color-text-primary);
+  }
+
+  /* Toolbar */
+  .mcnw-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .mcnw-funcCurrencyField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 260px;
+  }
+
+  .mcnw-fieldLabel {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .mcnw-select {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 12px;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .mcnw-selectSm {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .mcnw-select:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .mcnw-select:focus-visible {
+    outline: none;
+    border-color: var(--color-deep-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  }
+
+  .mcnw-fieldHelp {
+    margin: 4px 0 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    max-width: 36ch;
+  }
+
+  .mcnw-toolbarActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .mcnw-shareGroup {
+    display: flex;
+    gap: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-deep-blue);
+  }
+
+  .mcnw-shareBtn,
+  .mcnw-shareBtnOutline {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 10px 14px;
+    min-height: 44px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mcnw-shareBtn {
+    background: var(--color-deep-blue);
+    color: var(--neutral-white);
+  }
+
+  .mcnw-shareBtn:hover:not(:disabled),
+  .mcnw-shareBtn:focus-visible:not(:disabled) {
+    background: var(--color-deep-blue-dark);
+  }
+
+  .mcnw-shareBtnOutline {
+    background: transparent;
+    color: var(--color-deep-blue);
+    border-left: 1px solid var(--color-deep-blue);
+  }
+
+  .mcnw-shareBtnOutline:hover:not(:disabled),
+  .mcnw-shareBtnOutline:focus-visible:not(:disabled) {
+    background: var(--color-bg);
+  }
+
+  .mcnw-shareBtn:disabled,
+  .mcnw-shareBtnOutline:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .mcnw-resetBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--color-deep-blue);
+    background: transparent;
+    color: var(--color-deep-blue);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mcnw-resetBtn:hover,
+  .mcnw-resetBtn:focus-visible {
+    background: var(--color-deep-blue);
+    color: var(--neutral-white);
+  }
+
+  /* :global() escapes Astro's component scoping so the rule actually
+     matches when [data-theme="dark"] is set on <html>. */
+  :global([data-theme="dark"]) .mcnw-shareBtn {
+    color: var(--neutral-page-bg-dark);
+  }
+
+  :global([data-theme="dark"]) .mcnw-resetBtn:hover,
+  :global([data-theme="dark"]) .mcnw-resetBtn:focus-visible {
+    color: var(--neutral-page-bg-dark);
+  }
+
+  /* Banners */
+  .mcnw-banner {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .mcnw-bannerWarn {
+    background: var(--warning-light-bg);
+    border: 1px solid var(--warning-light-border-strong);
+    color: var(--warning-light-text-strong);
+  }
+
+  .mcnw-bannerInfo {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  :global([data-theme="dark"]) .mcnw-bannerWarn {
+    background: var(--warning-dark-bg);
+    border-color: var(--warning-dark-border);
+    color: var(--warning-light-text-amber);
+  }
+
+  .mcnw-retryBtn {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    color: inherit;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* Input */
+  .mcnw-input {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 12px;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .mcnw-input:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .mcnw-input:focus-visible {
+    outline: none;
+    border-color: var(--color-deep-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
+  }
+
+  /* Asset table */
+  .mcnw-tableSection {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mcnw-tableHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+
+  .mcnw-rowCount {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .mcnw-tableHead {
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .mcnw-tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 40px;
+    gap: var(--space-2);
+    align-items: center;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mcnw-tableRowHead {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    padding-bottom: var(--space-2);
+  }
+
+  @media (max-width: 700px) {
+    .mcnw-tableRow {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-1);
+      padding: var(--space-3) 0;
+    }
+    .mcnw-tableRowHead {
+      display: none;
+    }
+    .mcnw-cellName { grid-column: 1 / -1; }
+    .mcnw-cellValue { grid-column: 1; }
+    .mcnw-cellCurrency { grid-column: 2; }
+    .mcnw-cellType { grid-column: 1; }
+    .mcnw-cellActions { grid-column: 2; justify-self: end; }
+  }
+
+  /* Table footer */
+  .mcnw-tableFooter {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .mcnw-addBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 2px dashed var(--color-border);
+    background: transparent;
+    color: var(--color-deep-blue);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .mcnw-addBtn:hover,
+  .mcnw-addBtn:focus-visible {
+    border-color: var(--color-deep-blue);
+    background: var(--color-bg);
+    outline: none;
+  }
+
+  .mcnw-csvBtn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .mcnw-csvBtn:hover,
+  .mcnw-csvBtn:focus-visible {
+    border-color: var(--color-deep-blue);
+    color: var(--color-deep-blue);
+    outline: none;
+  }
+
+  .mcnw-removeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .mcnw-removeBtn:hover,
+  .mcnw-removeBtn:focus-visible {
+    background: var(--color-bg);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+    outline: none;
+  }
+
+  /* CSV confirm */
+  .mcnw-csvConfirm {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .mcnw-csvConfirm p {
+    margin: 0 0 var(--space-2);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+  }
+
+  .mcnw-csvConfirmActions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .mcnw-csvConfirmYes {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: var(--color-deep-blue);
+    color: var(--neutral-white);
+  }
+
+  .mcnw-csvConfirmNo {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: transparent;
+    color: var(--color-text-secondary);
+  }
+
+  /* CSV errors */
+  .mcnw-csvErrors {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background: var(--warning-light-bg);
+    border: 1px solid var(--warning-light-border-strong);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: var(--warning-light-text-strong);
+  }
+
+  :global([data-theme="dark"]) .mcnw-csvErrors {
+    background: var(--warning-dark-bg);
+    border-color: var(--warning-dark-border);
+    color: var(--warning-light-text-amber);
+  }
+
+  .mcnw-csvErrorsTitle {
+    margin: 0 0 var(--space-1);
+    font-weight: 600;
+  }
+
+  .mcnw-csvErrors ul {
+    margin: 0;
+    padding-left: var(--space-4);
+  }
+
+  /* Results */
+  .mcnw-results {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mcnw-emptyState {
+    text-align: center;
+    padding: var(--space-8) var(--space-4);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .mcnw-total {
+    text-align: center;
+    margin-bottom: var(--space-5);
+  }
+
+  .mcnw-totalLabel {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .mcnw-totalValue {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+  }
+
+  .mcnw-totalHint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+
+  /* Chart */
+  .mcnw-chartSection {
+    margin-bottom: var(--space-5);
+  }
+
+  .mcnw-chartTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+  }
+
+  .mcnw-chartWrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .mcnw-chart {
+    flex-shrink: 0;
+    max-width: 240px;
+    height: auto;
+  }
+
+  .mcnw-chartCenterLabel {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    fill: var(--color-deep-blue);
+  }
+
+  .mcnw-chartCenterSub {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    fill: var(--color-text-muted);
+  }
+
+  .mcnw-chartEmpty {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .mcnw-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mcnw-legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .mcnw-legendSwatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .mcnw-legendCode {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    min-width: 3em;
+  }
+
+  .mcnw-legendPct {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Risk cards */
+  .mcnw-riskCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .mcnw-riskCardsTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-deep-blue);
+    margin: 0;
+  }
+
+  .mcnw-riskCard {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-light);
+    background: var(--color-bg);
+  }
+
+  .mcnw-riskCard--functional {
+    border-left: 4px solid var(--color-teal);
+  }
+
+  .mcnw-riskCard--low {
+    border-left: 4px solid var(--semantic-success-light);
+  }
+
+  .mcnw-riskCard--moderate {
+    border-left: 4px solid var(--chart-amber);
+  }
+
+  .mcnw-riskCard--elevated,
+  .mcnw-riskCard--net-debt {
+    border-left: 4px solid var(--semantic-danger-light);
+  }
+
+  .mcnw-riskCardHead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-1);
+  }
+
+  .mcnw-riskBadge {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neutral-white);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .mcnw-riskCurrency {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+  }
+
+  .mcnw-riskLabel {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+  }
+
+  .mcnw-riskRec {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Disclaimer */
+  .mcnw-disclaimer {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 480px) {
+    .mcnw-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .mcnw-funcCurrencyField {
+      min-width: auto;
+    }
+    .mcnw-toolbarActions {
+      justify-content: flex-end;
+    }
+    .mcnw-shareGroup {
+      flex: 1;
+    }
+    .mcnw-shareBtn,
+    .mcnw-shareBtnOutline {
+      flex: 1;
+      text-align: center;
+      font-size: 0.72rem;
+      padding: 10px 8px;
+    }
+    .mcnw-chartWrap {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

@@ -7,6 +7,10 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+import { ENGINE_PHRASES, engineError } from '../../components/LoanCompare.tsx';
+import { loanComparisonEn, loanComparisonHi } from '../../i18n/strings/tools/loanComparison.ts';
 
 import {
   CURRENCIES,
@@ -169,9 +173,10 @@ describe('formatMoney', () => {
     assert.ok(!s.endsWith(' JPY'), `JPY should not have suffix, got: ${s}`);
   });
 
-  it('formats EUR with German grouping (de-DE locale), no code appended', () => {
+  it('formats EUR the way the site writes it, no code appended', () => {
+    // en-IE, so a euro reads the same here as it does in every lesson.
     const s = formatMoney(toMinor(1234567.89, 'EUR'), 'EUR');
-    assert.ok(/1\.234\.567,89/.test(s), `expected German grouping in: ${s}`);
+    assert.ok(/€1,234,567\.89/.test(s), `expected €1,234,567.89 in: ${s}`);
     assert.ok(!s.endsWith(' EUR'), `EUR should not have suffix, got: ${s}`);
   });
 
@@ -1446,4 +1451,40 @@ describe('refinanceComparison', () => {
       assert.equal(cmp.keepTotalMinor, original.totalPaidMinor);
     }
   });
+});
+
+// ---------------------------------------------------------------------------
+// Every message the engine can return reaches the reader in their language
+// ---------------------------------------------------------------------------
+
+describe('engineError covers every engine message', () => {
+  // Read from the source rather than listed by hand, so a message added to
+  // math.ts later fails here until the tool has a catalog key for it.
+  const source = readFileSync(new URL('./math.ts', import.meta.url), 'utf8');
+  const maxTerm = /const MAX_TERM_MONTHS = (\d+);/.exec(source)?.[1];
+  const pattern =
+    /(?:error:\s*|emptyResult\(\s*feeMinor,\s*|error \?\? )(['"`])((?:\\.|(?!\1).)*?)\1/g;
+  const messages = [
+    ...new Set(
+      [...source.matchAll(pattern)].map((m) =>
+        m[2].replace(/\\'/g, "'").replace('${MAX_TERM_MONTHS}', maxTerm ?? ''),
+      ),
+    ),
+  ];
+
+  it('finds the messages in math.ts', () => {
+    assert.ok(maxTerm, 'MAX_TERM_MONTHS not found');
+    assert.ok(messages.length >= 19, `only ${messages.length} messages found`);
+  });
+
+  for (const raw of messages) {
+    it(raw, () => {
+      const claimed = ENGINE_PHRASES.filter(([phrase]) => raw.toLowerCase().includes(phrase));
+      assert.equal(claimed.length, 1, `claimed by ${claimed.length} phrases`);
+      assert.equal(engineError(raw, loanComparisonEn.island), raw, 'English must read as the engine wrote it');
+      const hi = engineError(raw, loanComparisonHi.island);
+      assert.notEqual(hi, raw);
+      assert.ok(!/[{}]/.test(hi), `unfilled placeholder in ${hi}`);
+    });
+  }
 });

@@ -40,7 +40,14 @@ const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [
   { code: 'CNY', label: 'Chinese Yuan (CNY)', locale: 'zh-CN' },
   { code: 'CZK', label: 'Czech Koruna (CZK)', locale: 'cs-CZ' },
   { code: 'DKK', label: 'Danish Krone (DKK)', locale: 'da-DK' },
-  { code: 'EUR', label: 'Euro (EUR)', locale: 'de-DE' },
+  /**
+   * A euro has no one convention: Germany writes "1.058.721 €", France
+   * "1 058 721 €" and Ireland "€1,058,721". This picks the English-speaking
+   * eurozone, which is the one the site's own writing uses (`€10,000` in every
+   * lesson, and `formatProseAmount` for the figures quoted in prose), so a
+   * reader never meets two spellings of the same euro amount.
+   */
+  { code: 'EUR', label: 'Euro (EUR)', locale: 'en-IE' },
   { code: 'GBP', label: 'British Pound (GBP)', locale: 'en-GB' },
   { code: 'HKD', label: 'Hong Kong Dollar (HKD)', locale: 'zh-HK' },
   { code: 'HUF', label: 'Hungarian Forint (HUF)', locale: 'hu-HU' },

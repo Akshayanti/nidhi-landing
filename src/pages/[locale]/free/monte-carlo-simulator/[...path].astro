@@ -1,0 +1,26 @@
+---
+/**
+ * The Hindi Monte Carlo simulator page, and every other non-default locale's.
+ *
+ * English is served from `src/pages/free/monte-carlo-simulator/[...path].astro`.
+ * Both render `src/components/pages/MonteCarloPage.astro`, so the two versions
+ * cannot drift apart in markup or styling.
+ *
+ * A rest route, like its English twin, so the tool is left out of the
+ * production build until it launches with post 43: the shared release gate is
+ * checked before the locale list is generated, so a Hindi hub cannot list a
+ * tool that has no Hindi page.
+ */
+import MonteCarloPage from '../../../../components/pages/MonteCarloPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../../i18n/routes.ts';
+import { isMonteCarloReleased } from '../../../../utils/monte-carlo/release.ts';
+
+export async function getStaticPaths() {
+  if (!(await isMonteCarloReleased())) return [];
+  return localizedStaticPaths().map((entry) => ({ params: { ...entry.params, path: undefined } }));
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<MonteCarloPage locale={locale} />

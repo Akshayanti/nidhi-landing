@@ -4,13 +4,14 @@ import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from './src/i18n/config.ts';
 
 /**
- * Read frontmatter dates and tags from every markdown file under
- * src/content/blog/. We can't use `getCollection('blog')` from
- * astro:content here: this file is loaded before the content layer is
- * available. So we do a small purpose-built parse — enough to pull
- * `slug:`, `pubDate:`, `updatedDate:` and `tags:` for sitemap lastmod.
+ * Read frontmatter dates and tags from every markdown file under a locale's
+ * content directory. We can't use `getCollection('blog')` from astro:content
+ * here: this file is loaded before the content layer is available. So we do a
+ * small purpose-built parse — enough to pull `slug:`, `pubDate:`,
+ * `updatedDate:` and `tags:` for sitemap lastmod.
  *
  * The parser is intentionally minimal (line-based, single-quoted scalar
  * tolerant) to avoid pulling in a YAML dep just for the sitemap. It only
@@ -62,7 +63,14 @@ function walkBlogDir(dir) {
 }
 
 /**
- * Two lookup maps built once per build:
+ * The directory holding the lessons: one, in English. There is one lesson
+ * library and it is not translated, so every language's pages date themselves
+ * from the same files (see `lessonPath` in src/i18n/config.ts).
+ */
+const CONTENT_DIR = join('src/content', 'blog');
+
+/**
+ * The lookup maps, built once per build:
  *  - blogLastmod: slug → ISO date (updatedDate ?? pubDate)
  *  - tagLastmod : tag  → ISO date (newest among posts carrying the tag)
  * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
@@ -74,7 +82,7 @@ function walkBlogDir(dir) {
  * git mtime of [tag].astro: a reader visiting /blog/tag/saving/ cares
  * "did anything new appear under saving?", not "did the template change?".
  */
-const { blogLastmod, tagLastmod, inclusiveLastmod, levelLastmod } = (() => {
+function readContentMaps() {
   const blog = new Map();
   const tag = new Map();
   const level = new Map();
@@ -85,8 +93,7 @@ const { blogLastmod, tagLastmod, inclusiveLastmod, levelLastmod } = (() => {
   // not what's queued.
   const now = new Date();
   try {
-    const files = walkBlogDir('src/content/blog');
-    for (const f of files) {
+    for (const f of walkBlogDir(CONTENT_DIR)) {
       const fm = readFrontmatter(f);
       if (!fm || !fm.slug || !fm.pubDate) continue;
       const pub = new Date(fm.pubDate);
@@ -107,22 +114,42 @@ const { blogLastmod, tagLastmod, inclusiveLastmod, levelLastmod } = (() => {
       }
     }
   } catch {
-    // Bare checkout, missing dir, or any IO error: leave maps empty.
-    // Sitemap will simply omit <lastmod> for blog/tag URLs.
+    // Empty content directory, missing directory, or any IO error: leave the
+    // maps empty. The sitemap will omit <lastmod> for blog/tag URLs and keep
+    // the level pages out until the level has a lesson.
   }
-  return { blogLastmod: blog, tagLastmod: tag, inclusiveLastmod: inclusive, levelLastmod: level };
-})();
+  return { blog, tag, level, inclusive };
+}
+
+const contentMaps = readContentMaps();
 
 /**
- * Ask git for the author-date of the last commit that touched a given
- * path. Author date (`%aI`) reflects when the change was actually made,
- * not when it was rebased or cherry-picked. Returns null on any error
- * (git not on PATH, file not in repo, shallow checkout that does not
- * see the commit).
+ * Split an absolute pathname into its locale and the path inside that locale.
+ * The locale list is explicit (`LOCALES`), never a `/[a-z]{2}/` pattern: a
+ * future page whose first segment happens to be two letters must not be read
+ * as a language.
  */
-function gitLastmod(repoPath) {
+function splitLocalePath(pathname) {
+  for (const locale of LOCALES) {
+    if (locale === DEFAULT_LOCALE) continue;
+    const prefix = `/${locale}`;
+    if (pathname === `${prefix}/` || pathname.startsWith(`${prefix}/`)) {
+      return { locale, path: pathname.slice(prefix.length).replace(/^\/+|\/+$/g, '') };
+    }
+  }
+  return { locale: DEFAULT_LOCALE, path: pathname.replace(/^\/+|\/+$/g, '') };
+}
+
+/**
+ * Ask git for the author-date of the last commit that touched any of the given
+ * paths. Author date (`%aI`) reflects when the change was actually made, not
+ * when it was rebased or cherry-picked. Returns null on any error (git not on
+ * PATH, file not in repo, shallow checkout that does not see the commit).
+ */
+function gitLastmod(repoPaths) {
   try {
-    const iso = execSync(`git log -1 --format=%aI -- "${repoPath}"`, {
+    const args = repoPaths.map((p) => `"${p}"`).join(' ');
+    const iso = execSync(`git log -1 --format=%aI -- ${args}`, {
       stdio: ['ignore', 'pipe', 'ignore'],
     })
       .toString()
@@ -134,80 +161,148 @@ function gitLastmod(repoPath) {
 }
 
 /**
- * URL-pathname → repo source file. Used for static pages that lack a
- * frontmatter date. Keys match the pathname between `nidhi.today/` and
- * the trailing slash.
+ * URL-pathname (without the locale prefix) → repo source files. Used for
+ * static pages that lack a frontmatter date. Keys match the pathname between
+ * `nidhi.today/` and the trailing slash.
+ *
+ * Values are the files that carry the page's own copy, so the date moves when
+ * the page does: the component that renders it, and any island or catalog
+ * module its words also live in. The wrapper in `src/pages/` is deliberately
+ * left out: it is a few lines that render the component and rarely change, so
+ * dating by the wrapper would freeze lastmod while the page's copy is edited.
  */
 const STATIC_PAGE_SOURCE = {
-  '': 'src/pages/index.astro',
-  'beliefs': 'src/pages/beliefs.astro',
-  'about': 'src/pages/about.astro',
-  'editorial-policy': 'src/pages/editorial-policy.astro',
-  'privacy': 'src/pages/privacy.astro',
-  'blog': 'src/layouts/BlogIndex.astro',
-  'blog/tag': 'src/pages/blog/tag/index.astro',
-  'free': 'src/pages/free/index.astro',
-  'free/multi-currency-net-worth': 'src/pages/free/multi-currency-net-worth.astro',
-  'free/loan-comparison': 'src/pages/free/loan-comparison.astro',
+  '': ['src/components/pages/HomePage.astro'],
+  'about': ['src/components/pages/AboutPage.astro'],
+  'beliefs': ['src/components/pages/BeliefsPage.astro'],
+  'editorial-policy': ['src/components/pages/EditorialPolicyPage.astro'],
+  'privacy': ['src/components/pages/PrivacyPage.astro'],
+  'blog': ['src/layouts/BlogIndex.astro'],
+  'blog/tag': ['src/components/pages/TagHubPage.astro'],
+  'free': ['src/components/pages/FreeHubPage.astro'],
+  'free/multi-currency-net-worth': [
+    'src/components/pages/MultiCurrencyNetWorthPage.astro',
+    'src/components/MultiCurrencyNetWorth.tsx',
+    'src/i18n/strings/tools/multiCurrencyNetWorth.ts',
+  ],
+  'free/loan-comparison': [
+    'src/components/pages/LoanComparisonPage.astro',
+    'src/components/LoanCompare.tsx',
+    'src/i18n/strings/tools/loanComparison.ts',
+  ],
   // :(literal) stops git reading the brackets in the filename as a pattern.
-  'free/monte-carlo-simulator': ':(literal)src/pages/free/monte-carlo-simulator/[...path].astro',
+  'free/monte-carlo-simulator': [
+    ':(literal)src/pages/free/monte-carlo-simulator/[...path].astro',
+    'src/components/pages/MonteCarloPage.astro',
+    'src/components/MonteCarloSimulator.tsx',
+    'src/i18n/strings/tools/monteCarlo.ts',
+  ],
 };
+
+/**
+ * The repo files a locale's version of a static page is built from: the same
+ * components, plus the catalog that holds that language's words for it. A
+ * page's copy lives in the catalog, not the component, so leaving the catalog
+ * out would freeze lastmod while the text changes: English reads `en.ts`, the
+ * learning path's pages also read `learn.ts` (which holds both languages), and
+ * any other language reads its own file. That is coarse on purpose: one file
+ * holds every page's words, so any copy edit moves every page's date in that
+ * language. A date that moves too often is a smaller wrong than a date that
+ * freezes while the page's text changes, and the coarseness goes away when the
+ * catalogs are split per page.
+ */
+function staticPageSources(locale, path) {
+  const components = STATIC_PAGE_SOURCE[path];
+  if (!components) return null;
+  const catalogs = [`src/i18n/strings/${locale}.ts`];
+  if (path === 'blog' || path.startsWith('blog/')) catalogs.push('src/i18n/strings/learn.ts');
+  return [...components, ...catalogs];
+}
 
 export default defineConfig({
   site: 'https://nidhi.today',
   integrations: [react(), sitemap({
     filter: (page) => {
-      // Transactional and confirmation pages have no place in search.
+      const { locale, path } = splitLocalePath(new URL(page).pathname);
+      // Transactional and confirmation pages have no place in search, in any
+      // language. Matched on the first path segment rather than anywhere in the
+      // URL, so a lesson slug that happens to contain one of these words is
+      // still listed.
       const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed'];
-      if (transactional.some(p => page.includes(p))) return false;
+      if (transactional.includes(path.split('/')[0])) return false;
       // Per-tag listings (/blog/tag/<tag>/) carry `noindex,follow` in
       // src/pages/blog/tag/[tag].astro. Listing a noindexed URL in the
       // sitemap sends crawlers two opposite signals, so keep them out.
       // The hub at /blog/tag/ is indexable and stays in. If the tag
       // pages are ever made indexable, drop this line and restore a
       // per-tag lastmod from `tagLastmod` in serialize() below.
-      if (/\/blog\/tag\/[^/]+\/?$/.test(new URL(page).pathname)) return false;
+      if (/^blog\/tag\/[^/]+$/.test(path)) return false;
       // The Inclusive Finances hub is noindex while it has no live posts
       // (src/pages/blog/inclusive-finances.astro), so it stays out of the
       // sitemap until then. It joins on its own once the first guide's
       // pubDate passes, the same build that drops its noindex and shows
-      // the homepage and learning-path cards that link to it.
-      if (new URL(page).pathname === '/blog/inclusive-finances/' && !inclusiveLastmod) return false;
-      // A level page with no live lessons is noindex (src/layouts/LevelPage.astro).
-      const levelPath = /^\/blog\/(discovery|building|psychology|optimizing|mastery)\/$/.exec(new URL(page).pathname);
-      if (levelPath && !levelLastmod.has(levelPath[1])) return false;
+      // the homepage and learning-path cards that link to it. Both languages'
+      // hubs carry the same lessons, so whether it is live is the same
+      // question in either.
+      if (path === 'blog/inclusive-finances' && !contentMaps.inclusive) return false;
+      // A level page with no live lessons is noindex (src/layouts/LevelPage.astro),
+      // in every language, for the same reason.
+      const levelPath = /^blog\/(discovery|building|psychology|optimizing|mastery)$/.exec(path);
+      if (levelPath && !contentMaps.level.has(levelPath[1])) return false;
       return true;
+    },
+    // Pairs each page with its counterparts in the other languages and fills
+    // `item.links`, which the sitemap writes as
+    // `<xhtml:link rel="alternate" hreflang="...">`. The tags come from
+    // LOCALE_META so the sitemap and the `<link rel="alternate">` tags BaseHead
+    // writes in the page head cannot disagree. A page with no counterpart gets
+    // no links at all, which is why a wrapper has to opt in with
+    // `alternates={LOCALES}`: the sitemap can only pair pages that exist.
+    //
+    // Keys are URL segments and must include `defaultLocale`; the integration
+    // validates them against `[a-zA-Z-]+`, so a future locale whose htmlLang
+    // carries an underscore (zh_Hant) or a script suffix zod rejects would fail
+    // the build here rather than quietly dropping the pairing.
+    i18n: {
+      defaultLocale: DEFAULT_LOCALE,
+      locales: Object.fromEntries(LOCALES.map((locale) => [locale, LOCALE_META[locale].htmlLang])),
     },
     serialize(item) {
       // Per-URL lastmod resolution. Blog posts use frontmatter dates;
       // the tag hub uses the newest pubDate across all tags; other
-      // static pages use the git author-date of their source file. URLs
+      // static pages use the git author-date of their source files. URLs
       // without a resolvable lastmod simply omit the field, which is
       // valid sitemap protocol and lets the integration's defaults
       // handle them gracefully.
-      const u = new URL(item.url);
-      const path = u.pathname.replace(/^\/+|\/+$/g, '');
+      const { locale, path } = splitLocalePath(new URL(item.url).pathname);
       let lastmod;
       if (path === 'blog/tag') {
         // Tag-hub page itself: lastmod = the newest content under any
         // tag the corpus uses. Falls back to the source file's git
         // author-date if the tag map is empty.
-        const newestAcrossTags = [...tagLastmod.values()].sort().pop();
-        lastmod = newestAcrossTags ?? gitLastmod(STATIC_PAGE_SOURCE['blog/tag']) ?? undefined;
+        const newestAcrossTags = [...contentMaps.tag.values()].sort().pop();
+        lastmod = newestAcrossTags ?? gitLastmod(staticPageSources(locale, 'blog/tag')) ?? undefined;
       } else if (path === 'blog/inclusive-finances') {
         // The hub changes when a guide is added or revised: date it by the
         // most recently published or updated guide.
-        lastmod = inclusiveLastmod ?? undefined;
-      } else if (levelLastmod.has(path.slice('blog/'.length)) && path.startsWith('blog/')) {
+        lastmod = contentMaps.inclusive ?? undefined;
+      } else if (path.startsWith('blog/') && contentMaps.level.has(path.slice('blog/'.length))) {
         // A level page changes when a lesson in it is added or revised.
-        lastmod = levelLastmod.get(path.slice('blog/'.length));
+        lastmod = contentMaps.level.get(path.slice('blog/'.length));
       } else if (path.startsWith('blog/') && path !== 'blog') {
-        lastmod = blogLastmod.get(path.slice('blog/'.length));
+        lastmod = contentMaps.blog.get(path.slice('blog/'.length));
       } else {
-        const source = STATIC_PAGE_SOURCE[path];
-        if (source) lastmod = gitLastmod(source) ?? undefined;
+        const sources = staticPageSources(locale, path);
+        if (sources) lastmod = gitLastmod(sources) ?? undefined;
       }
       if (lastmod) item.lastmod = lastmod;
+      if (item.links?.length) {
+        // x-default is the address to fall back to, which is the English one.
+        // BaseHead writes the same tag in the page head, so the two agree on
+        // what the pair is and where a reader with no matching language goes.
+        const english = item.links.find((link) => link.lang === LOCALE_META[DEFAULT_LOCALE].htmlLang);
+        if (english) item.links = [...item.links, { lang: 'x-default', url: english.url }];
+      }
       return item;
     },
   })],
@@ -230,6 +325,13 @@ export default defineConfig({
     '/blog/tg/': '/blog/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/wa/': '/blog/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/dsc/': '/blog/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+    // The Hindi edition's own short links, for a biography written in Hindi.
+    // They land on the Hindi home page, so the address a visitor ends up at
+    // (and the pageview it sends) says which language and which platform.
+    '/hi/ig/': '/hi/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/hi/tg/': '/hi/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/hi/wa/': '/hi/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/hi/dsc/': '/hi/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
   },
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and

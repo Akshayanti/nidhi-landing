@@ -37,12 +37,25 @@ function slugs(dir) {
   return out;
 }
 
-const pages = [
+// Every page that exists in more than one language. Lessons have one address,
+// in English, so they are listed once below.
+const chrome = [
   '/', '/about/', '/beliefs/', '/privacy/', '/editorial-policy/', '/free/',
   '/free/loan-comparison/', '/free/multi-currency-net-worth/',
   // Built only in dev until it launches with post 43 (src/utils/monte-carlo/release.ts).
   '/free/monte-carlo-simulator/', '/blog/',
-  '/blog/inclusive-finances/', '/blog/tag/optimizing/', '/404',
+  '/blog/inclusive-finances/', '/blog/discovery/', '/blog/tag/', '/blog/tag/optimizing/',
+];
+// The Hindi edition's pages: longer words and a taller script can wrap or
+// overflow where English fits, so they are audited alongside the English ones.
+// Kept in step with LOCALES in src/i18n/config.ts by hand: this script runs
+// under plain node and does not import TypeScript.
+const LOCALE_PREFIXES = ['/hi'];
+
+const pages = [
+  ...chrome,
+  '/404',
+  ...LOCALE_PREFIXES.flatMap((prefix) => [...chrome.map((p) => prefix + p), `${prefix}/no-such-page/`]),
   ...slugs(join(ROOT, 'src/content/blog')).map((s) => `/blog/${s}/`),
 ];
 

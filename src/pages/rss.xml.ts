@@ -1,16 +1,24 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { DEFAULT_LOCALE } from '../i18n/config.ts';
+import { dict } from '../i18n/index.ts';
 
+/**
+ * The one feed, at /rss.xml, in English. The lessons are not translated, so
+ * there is no per-language feed: every page in every language links this one
+ * (see BaseHead).
+ */
 export async function GET(context: APIContext) {
   const now = new Date();
   const posts = (await getCollection('blog'))
     .filter(post => post.data.pubDate <= now)
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  const { rss: feed } = dict(DEFAULT_LOCALE);
 
   return rss({
-    title: 'nidhi: Personal Finance Blog',
-    description: 'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
+    title: feed.feedTitle,
+    description: feed.feedDescription,
     site: context.site!,
     items: posts.map(post => ({
       title: post.data.title,

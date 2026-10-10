@@ -1,0 +1,21 @@
+---
+/**
+ * The free tools hub in every language but the default one. English is served
+ * from `src/pages/free/index.astro`, so it never comes through here and its
+ * address cannot be shadowed by this route.
+ *
+ * The hub lists only the tools that are released, and it reads that from the same
+ * shared gate the tool routes do, so a language cannot show a card that leads
+ * nowhere.
+ */
+import FreeHubPage from '../../../components/pages/FreeHubPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<FreeHubPage locale={locale} />

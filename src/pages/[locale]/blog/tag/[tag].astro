@@ -1,0 +1,28 @@
+---
+/**
+ * `/<locale>/blog/tag/<tag>/`, in every language but the default one. English
+ * is served from `src/pages/blog/tag/[tag].astro`.
+ *
+ * Each language gets a page per tag the lessons use. There is one lesson
+ * library, in English, so every language generates the same tags; the paths
+ * are still built per locale here so each page gets its locale's groups.
+ */
+import TagPage from '../../../../components/pages/TagPage.astro';
+import { getTopicIndex, type TopicSection } from '../../../../utils/learnPosts';
+import { MIRRORED_LOCALES, routeLocale } from '../../../../i18n/routes.ts';
+
+export async function getStaticPaths() {
+  const paths: Array<{ params: { locale: string; tag: string }; props: { tag: string; groups: TopicSection[] } }> = [];
+  for (const locale of MIRRORED_LOCALES) {
+    for (const { tag, groups } of await getTopicIndex()) {
+      paths.push({ params: { locale, tag }, props: { tag, groups } });
+    }
+  }
+  return paths;
+}
+
+const locale = routeLocale(Astro.params);
+const { tag, groups } = Astro.props;
+---
+
+<TagPage locale={locale} tag={tag} groups={groups} />

@@ -6,7 +6,11 @@
 // Configure PUBLIC_NEWSLETTER_ENDPOINT to the Apps Script Web App exec URL.
 // See docs/blog-subscription-setup.md for full setup instructions.
 
+import { DEFAULT_LOCALE, dict, localizedPath, type Locale } from '../i18n';
+
 export interface Props {
+  /** The language of the page the box sits on. Defaults to English. */
+  locale?: Locale;
   /**
    * `full`    — large centered box with heading + copy. Use at the end of a
    *             blog post (high-intent moment after reading).
@@ -16,7 +20,11 @@ export interface Props {
   variant?: 'full' | 'compact';
 }
 
-const { variant = 'full' } = Astro.props;
+const { variant = 'full', locale = DEFAULT_LOCALE } = Astro.props;
+const t = dict(locale).subscribe;
+// The emails are English, like the lessons, so another language says so.
+const showInEnglish = locale !== DEFAULT_LOCALE;
+const privacyHref = localizedPath(locale, '/privacy/');
 const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
 const isDev = import.meta.env.DEV;
 
@@ -27,13 +35,14 @@ const statusId = `subscribe-status-${variant}`;
 const inputId = `subscribe-email-${variant}`;
 ---
 
-<section class={`subscribe subscribe--${variant}`} aria-label="Newsletter subscription" data-variant={variant}>
+<section class={`subscribe subscribe--${variant}`} aria-label={t.region} data-variant={variant}>
   {variant === 'full' && (
     <div class="subscribe-box">
       {/* Pre-submit: form. */}
       <div class="subscribe-pre" data-subscribe-state="pre">
-        <h3 class="subscribe-title">Receive new posts directly in your inbox</h3>
-        <p class="subscribe-text">One email when something new goes up. No spam, unsubscribe anytime.</p>
+        <h3 class="subscribe-title">{t.title}</h3>
+        <p class="subscribe-text">{t.text}</p>
+        {showInEnglish && <p class="subscribe-text" role="note">{t.inEnglish}</p>}
 
         <form
           id={formId}
@@ -41,7 +50,7 @@ const inputId = `subscribe-email-${variant}`;
           data-endpoint={endpoint}
         >
           <div class="subscribe-input-group">
-            <label class="sr-only" for={inputId}>Email address</label>
+            <label class="sr-only" for={inputId}>{t.emailLabel}</label>
             <input
               id={inputId}
               type="email"
@@ -51,18 +60,18 @@ const inputId = `subscribe-email-${variant}`;
               autocomplete="email"
               class="subscribe-input"
             />
-            <button type="submit" class="subscribe-button">Subscribe</button>
+            <button type="submit" class="subscribe-button">{t.button}</button>
           </div>
           <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
           <p class="subscribe-privacy">
-            Double opt-in. Unsubscribe anytime. <a href="/privacy/">Privacy policy</a>.
+            {t.privacyBefore}<a href={privacyHref}>{t.privacyLink}</a>{t.privacyAfter}
             {' · '}<a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>
           </p>
         </form>
         <div class="subscribe-dismiss">
-          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">I already subscribed</button>
+          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">{t.alreadySubscribed}</button>
           <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="not-now">Not now</button>
+          <button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button>
         </div>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
@@ -80,21 +89,19 @@ const inputId = `subscribe-email-${variant}`;
             <polyline points="22,6 12,13 2,6"/>
           </svg>
         </div>
-        <h3 class="subscribe-success-title">Check your inbox</h3>
+        <h3 class="subscribe-success-title">{t.successTitle}</h3>
         <p class="subscribe-success-body">
-          We sent a confirmation link to <strong data-subscribe-email>your email</strong>.
-          Click the button in that email to finish subscribing. Takes a second.
+          {t.successBefore}<strong data-subscribe-email>{t.yourEmail}</strong>{t.successAfter}
         </p>
         <p class="subscribe-success-hint">
-          No email after a minute? Check spam, or
-          <button type="button" class="subscribe-success-retry" data-subscribe-retry>try a different address</button>.
+          {t.hintBefore}<button type="button" class="subscribe-success-retry" data-subscribe-retry>{t.hintRetry}</button>{t.hintAfter}
         </p>
       </div>
 
       {/* Dismissed: shown when user clicks "I already subscribed" or "Not now". */}
       <div class="subscribe-dismissed" data-subscribe-state="dismissed" hidden>
         <p class="subscribe-dismissed-text" data-dismissed-text></p>
-        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>Undo</button>
+        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>{t.undo}</button>
       </div>
     </div>
   )}
@@ -103,13 +110,13 @@ const inputId = `subscribe-email-${variant}`;
     <div class="subscribe-compact">
       <div class="subscribe-pre" data-subscribe-state="pre">
         <div class="subscribe-compact-row">
-          <span class="subscribe-compact-label">Receive new posts directly in your inbox</span>
+          <span class="subscribe-compact-label">{t.title}</span>
           <form
             id={formId}
             class="subscribe-form subscribe-form--compact"
             data-endpoint={endpoint}
           >
-            <label class="sr-only" for={inputId}>Email address</label>
+            <label class="sr-only" for={inputId}>{t.emailLabel}</label>
             <input
               id={inputId}
               type="email"
@@ -119,9 +126,10 @@ const inputId = `subscribe-email-${variant}`;
               autocomplete="email"
               class="subscribe-input"
             />
-            <button type="submit" class="subscribe-button">Subscribe</button>
+            <button type="submit" class="subscribe-button">{t.button}</button>
           </form>
         </div>
+        {showInEnglish && <p class="subscribe-compact-note" role="note">{t.inEnglish}</p>}
         <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
@@ -130,11 +138,11 @@ const inputId = `subscribe-email-${variant}`;
           </p>
         )}
         <div class="subscribe-dismiss subscribe-dismiss--compact">
-          <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml">Follow by RSS</a>
+          <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml">{t.rssFollow}</a>
           <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">I already subscribed</button>
+          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">{t.alreadySubscribed}</button>
           <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="not-now">Not now</button>
+          <button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button>
         </div>
       </div>
 
@@ -146,10 +154,10 @@ const inputId = `subscribe-email-${variant}`;
           </svg>
         </div>
         <div>
-          <p class="subscribe-success-title subscribe-success-title--compact">Check your inbox</p>
+          <p class="subscribe-success-title subscribe-success-title--compact">{t.successTitle}</p>
           <p class="subscribe-success-body subscribe-success-body--compact">
-            Confirmation link sent to <strong data-subscribe-email>your email</strong>.
-            <button type="button" class="subscribe-success-retry" data-subscribe-retry>Use a different email</button>
+            {t.compactSentBefore}<strong data-subscribe-email>{t.yourEmail}</strong>{t.compactSentAfter}{' '}
+            <button type="button" class="subscribe-success-retry" data-subscribe-retry>{t.compactRetry}</button>
           </p>
         </div>
       </div>
@@ -157,13 +165,13 @@ const inputId = `subscribe-email-${variant}`;
       {/* Dismissed state for compact variant. */}
       <div class="subscribe-dismissed subscribe-dismissed--compact" data-subscribe-state="dismissed" hidden>
         <p class="subscribe-dismissed-text" data-dismissed-text></p>
-        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>Undo</button>
+        <button type="button" class="subscribe-dismissed-undo" data-dismiss-undo>{t.undo}</button>
       </div>
     </div>
   )}
 </section>
 
-<script is:inline define:vars={{ formId, statusId, variant }}>
+<script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, sending: t.sending, notConfigured: t.notConfigured, error: t.error, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
   (function () {
     // Single localStorage key shared across all SubscribeSection instances
     // and the confirm/unsubscribe pages. See /privacy.
@@ -309,8 +317,8 @@ const inputId = `subscribe-email-${variant}`;
           var textEl = dismissedEl.querySelector('[data-dismissed-text]');
           if (textEl) {
             textEl.textContent = dismiss.type === 'permanent'
-              ? 'Thanks for subscribing! We won’t show this banner on this device again.'
-              : 'We’ll check back later.';
+              ? msg.dismissedPermanent
+              : msg.dismissedLater;
           }
         }
         return;
@@ -322,7 +330,7 @@ const inputId = `subscribe-email-${variant}`;
       if (dismissedEl) dismissedEl.hidden = true;
       if (preEl)  preEl.hidden = false;
       setStatus('', 'idle');
-      if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
+      if (button) { button.disabled = false; button.textContent = msg.button; }
       submitting = false;
     }
 
@@ -393,12 +401,12 @@ const inputId = `subscribe-email-${variant}`;
       // mislead the user into thinking they're subscribed.
       if (!endpoint) {
         console.warn('[SubscribeSection] PUBLIC_NEWSLETTER_ENDPOINT is not set. Submissions are no-ops.');
-        setStatus('Subscriptions are not configured yet. Check back soon, or grab the RSS feed.', 'error');
+        setStatus(msg.notConfigured, 'error');
         return;
       }
 
       submitting = true;
-      if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+      if (button) { button.disabled = true; button.textContent = msg.sending; }
       setStatus('', 'idle');
 
       // Identify the browser's anon PostHog distinct_id to the server-side
@@ -449,8 +457,8 @@ const inputId = `subscribe-email-${variant}`;
         }
       }).catch(function () {
         submitting = false;
-        setStatus('Something went wrong. Please try again in a moment.', 'error');
-        if (button) { button.disabled = false; button.textContent = 'Subscribe'; }
+        setStatus(msg.error, 'error');
+        if (button) { button.disabled = false; button.textContent = msg.button; }
       });
     });
 
@@ -615,6 +623,12 @@ const inputId = `subscribe-email-${variant}`;
     flex-shrink: 0;
   }
   .subscribe-form--compact .subscribe-input-group { margin-bottom: 0; }
+  /* Outside English only: the lessons and emails the box leads to are English. */
+  .subscribe-compact-note {
+    margin: var(--space-2) 0 0;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
   .subscribe-rss {
     font-size: inherit;
     color: var(--color-text-muted);

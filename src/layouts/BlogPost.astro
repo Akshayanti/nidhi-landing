@@ -2,9 +2,10 @@
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
-import { LEVEL_LABELS } from '../utils/home/startingPoints';
+import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
+import { DEFAULT_LOCALE, LOCALE_META, dict, localizedPath } from '../i18n';
 
 interface Props {
   title: string;
@@ -52,7 +53,9 @@ interface Props {
 }
 
 const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], localRules = [] } = Astro.props;
-const levelLabel = LEVEL_LABELS[level];
+// A lesson is English in every edition, so its chrome reads the English names.
+// Ladder levels only: an Inclusive Finances guide is not a step in a series.
+const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -182,6 +185,24 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               Updated <time datetime={updatedDate.toISOString()}>{updatedStr}</time>
             </span>
           )}
+          {/* A lesson is written once, in English, and has no Hindi counterpart,
+              so the header's picker has nothing to offer on this page and is not
+              rendered here. This is the way back for a reader who arrived from
+              the Hindi learning path: the path in Hindi, which lists these same
+              lessons and says in Hindi that they are in English. A language's
+              own name is the same string on every page, so it comes from
+              LOCALE_META rather than a catalog, exactly as the picker's rows do. */}
+          <span class="post-langs">
+            Language:{' '}
+            <a
+              href={localizedPath('hi', '/blog/')}
+              hreflang={LOCALE_META.hi.htmlLang}
+              lang={LOCALE_META.hi.htmlLang}
+              data-attr="post-hindi-path"
+            >
+              {LOCALE_META.hi.label}
+            </a>
+          </span>
         </div>
         <h1 class="post-title">{title}</h1>
         <div class="post-tldr">
@@ -477,6 +498,28 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   .post-series:hover { color: var(--color-teal); }
+
+  /* The way to the Hindi learning path, in the same row as the lesson's other
+     meta. Sized and coloured like the series link beside it. */
+  .post-langs {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+  }
+
+  .post-langs a {
+    /* At least 24px tall: the WCAG 2.2 minimum tap target. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 3px;
+  }
+
+  .post-langs a:hover { color: var(--color-teal); }
 
   .post-series-foot {
     margin-top: var(--space-10);

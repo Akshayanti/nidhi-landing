@@ -1,0 +1,23 @@
+---
+/**
+ * `/hi/privacy/`, the privacy notice in every language but the default one.
+ * English is served from `src/pages/privacy.astro`, so it never comes through
+ * here and its address cannot be shadowed by this route.
+ *
+ * The notice is the one page whose text is a promise, so the English stays
+ * authoritative and this edition says so under its intro. The changelog below
+ * the sections is the same English log in both, and only one copy of it exists:
+ * a translated record of what the site did on a given day would be a second,
+ * slightly different record.
+ */
+import PrivacyPage from '../../components/pages/PrivacyPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<PrivacyPage locale={locale} />

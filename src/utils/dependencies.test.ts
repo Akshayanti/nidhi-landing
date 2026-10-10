@@ -66,6 +66,9 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   puppeteer: '^25.12.0',
+  // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
+  // errors on its own.
+  typescript: '5.6.3',
 };
 
 const EXPECTED_NODE_ENGINE = '>=22.12.0';

@@ -1,0 +1,18 @@
+---
+/**
+ * `/hi/free/loan-comparison/`, the loan comparison calculator in every
+ * language but the default one. English is served from
+ * `src/pages/free/loan-comparison.astro`, so it never comes through here and
+ * its address cannot be shadowed by this route.
+ */
+import LoanComparisonPage from '../../../components/pages/LoanComparisonPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<LoanComparisonPage locale={locale} />

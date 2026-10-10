@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// Reached from an English email, so there is no Hindi counterpart to point
+// search engines or a language switcher at.
+import { DEFAULT_LOCALE } from '../i18n';
 
 const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
 const isDev = import.meta.env.DEV;
@@ -9,6 +12,7 @@ const isDev = import.meta.env.DEV;
   title="Unsubscribe | nidhi"
   description="Unsubscribe from nidhi lesson emails. One click and you will stop receiving new-lesson emails."
   robots="noindex,nofollow"
+  alternates={[DEFAULT_LOCALE]}
 >
   <section class="transactional">
     <div class="transactional-card">

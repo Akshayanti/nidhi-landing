@@ -65,8 +65,23 @@ export interface AggregationResult {
   hasRates: RatesAvailability;
 }
 
+/**
+ * Why `parseCSV` refused a line, as a code the tool can put in the reader's
+ * language. `values` holds what the sentence quotes back (the bad value, the
+ * supported codes), keyed by the catalog template's placeholder names.
+ */
+export type ParseErrorReason =
+  | 'empty'
+  | 'columns'
+  | 'invalidValue'
+  | 'emptyCurrency'
+  | 'unsupportedCurrency';
+
 export interface ParseError {
   line: number;
+  reason: ParseErrorReason;
+  values?: Record<string, string>;
+  /** The same reason in English. Analytics classifies on this text. */
   message: string;
 }
 
@@ -293,7 +308,7 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
 
   const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
   if (lines.length === 0) {
-    return { rows, errors: [{ line: 0, message: 'CSV is empty.' }] };
+    return { rows, errors: [{ line: 0, reason: 'empty', message: 'CSV is empty.' }] };
   }
 
   // Detect header row: if the first line contains "value" and "currency"
@@ -309,7 +324,11 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
     const cols = splitCSVLine(lines[i]);
 
     if (cols.length < 2) {
-      errors.push({ line: lineNum, message: 'Expected at least value and currency columns.' });
+      errors.push({
+        line: lineNum,
+        reason: 'columns',
+        message: 'Expected at least value and currency columns.',
+      });
       continue;
     }
 
@@ -340,19 +359,27 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
     // Validate value.
     const value = parseAmount(valueStr);
     if (!Number.isFinite(value) || value <= 0) {
-      errors.push({ line: lineNum, message: `"${valueStr}" is not a valid positive number.` });
+      errors.push({
+        line: lineNum,
+        reason: 'invalidValue',
+        values: { value: valueStr },
+        message: `"${valueStr}" is not a valid positive number.`,
+      });
       continue;
     }
 
     // Validate currency.
     if (!currencyStr) {
-      errors.push({ line: lineNum, message: 'Currency code is empty.' });
+      errors.push({ line: lineNum, reason: 'emptyCurrency', message: 'Currency code is empty.' });
       continue;
     }
     if (!isSupportedCurrency(currencyStr)) {
+      const supported = CURRENCIES.map((c) => c.code).join(', ');
       errors.push({
         line: lineNum,
-        message: `"${currencyStr}" is not a supported currency. Supported: ${CURRENCIES.map((c) => c.code).join(', ')}.`,
+        reason: 'unsupportedCurrency',
+        values: { value: currencyStr, supported },
+        message: `"${currencyStr}" is not a supported currency. Supported: ${supported}.`,
       });
       continue;
     }
@@ -406,10 +433,20 @@ function splitCSVLine(line: string): string[] {
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Resolves a code to a human-readable label for chart legends and risk cards. */
-export function getCurrencyLabel(code: string): string {
+/**
+ * Resolves a code to a human-readable label for chart legends and risk cards.
+ *
+ * `names` is one language's currency names, keyed by code, as the tools' catalog
+ * holds them (`src/i18n/strings/tools/currencies.ts`), and it is optional on
+ * purpose: without one the engine's own English label stands, which is what the
+ * tests exercise and what a caller that has no catalog gets. So this module
+ * knows a lookup table and no language at all, and the Hindi island does not
+ * have to reach for the engine's English text.
+ */
+export function getCurrencyLabel(code: string, names?: Record<string, string>): string {
   const info = getCurrencyInfo(code);
-  return info ? info.label : code;
+  if (!info) return code;
+  return names?.[info.code] ?? info.label;
 }
 
 /** One decimal is enough for concentration percentages; more precision is visual noise. */

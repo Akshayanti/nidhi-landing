@@ -1,0 +1,12 @@
+---
+import EditorialPolicyPage from '../../components/pages/EditorialPolicyPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<EditorialPolicyPage locale={locale} />

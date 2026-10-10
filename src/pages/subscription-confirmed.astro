@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// Reached from an English email, so there is no Hindi counterpart to point
+// search engines or a language switcher at.
+import { DEFAULT_LOCALE } from '../i18n';
 ---
 
 <BaseLayout
   title="Subscribed | nidhi"
   description="You're subscribed to new nidhi lessons. Expect an email when a new lesson is published."
   robots="noindex,nofollow"
+  alternates={[DEFAULT_LOCALE]}
 >
   <section class="transactional">
     <div class="transactional-card">

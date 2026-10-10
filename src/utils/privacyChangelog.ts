@@ -26,7 +26,7 @@ export function assertOneEntryPerDate(entries: ChangelogEntry[]): void {
   if (repeated.size > 0) {
     throw new Error(
       `The privacy changelog has more than one entry for ${[...repeated].join(', ')}. ` +
-      'Merge them into one entry per date in src/pages/privacy.astro.',
+      'Merge them into one entry per date in src/components/pages/PrivacyPage.astro.',
     );
   }
 }

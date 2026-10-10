@@ -1,55 +1,28 @@
 name: PR Checks (free tools)
 
-# Runs the test, lint, audit, and build gates whenever a PR touches files
-# that power /free/* tools. The path filter keeps the gate fast and
-# focused; unrelated PRs (a typo fix in the privacy page, for example)
-# don't pay the cost of running the full suite.
+# Runs the install, lint, type check, test, audit, and build gates whenever a
+# PR touches files that power the site's tools, pages or build. Unrelated PRs
+# (a lesson draft, for example) don't pay the cost of running the full suite.
 #
-# Branch protection (configured in the GitHub UI under
-# Settings -> Branches -> Branch protection rules for `main`) should mark
-# the jobs in this workflow as REQUIRED status checks. See
-# docs/free-tools-pr-checks.md for the exact required-checks list and
-# rationale.
+# Every job is a REQUIRED status check on `main` (Settings -> Branches). That
+# is why the path filter lives in the "Detect changes" job below rather than
+# under `on.pull_request.paths`: a workflow that a path filter stops from
+# starting never reports, and GitHub then waits for its required checks
+# forever, blocking the merge. A job skipped by `if:` reports "skipped", which
+# satisfies a required check. Required checks, by job name:
+#   Detect changes, Install (lockfile integrity), Lint, Type check, Tests,
+#   npm audit (high+), Build (static).
+#
+# The Hindi edition is built as a stack of PRs: each one targets the branch
+# below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
+# `feat/hindi-locale`, the integration branch, which merges to `main` once the
+# whole edition is ready. A stacked PR's base is another feature branch, not
+# `main`, so without these entries every PR in the stack would merge with no CI
+# at all. `hindi/*` covers the stack as it grows; `feat/hindi-locale` and `main`
+# cover the two branches that end it.
 on:
   pull_request:
-    branches: [main]
-    paths:
-      # The /free/* pages and any utility/component they pull in.
-      - 'src/pages/free/**'
-      - 'src/pages/privacy.astro'
-      - 'src/components/LoanCompare.tsx'
-      - 'src/components/MultiCurrencyNetWorth.tsx'
-      # Loan comparator utilities (math, URL state, validated inputs)
-      # were grouped under src/utils/loan/ so a PR that touches only the
-      # math (e.g. changing an APR formula) still triggers the gate.
-      - 'src/utils/loan/**'
-      # Multi-currency net worth analyzer utilities (math + URL state).
-      # Renamed from the earlier currency-risk dir; without this glob a
-      # PR touching only the math would silently skip CI.
-      - 'src/utils/multi-currency-net-worth/**'
-      - 'src/utils/dependencies.test.ts'
-      - 'scripts/**/*'
-      # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
-      # would silently break the deploy workflow's post-deploy step;
-      # gating it on the same checks the rest of the deploy depends on
-      # is the cheapest way to catch regressions before merge.
-      - 'scripts/indexnow.mjs'
-      - 'scripts/indexnow.test.mjs'
-      # Anything that affects the build or dep graph.
-      - 'package.json'
-      - 'package-lock.json'
-      - 'astro.config.mjs'
-      - 'tsconfig.json'
-      # The lint script and this workflow itself.
-      - 'scripts/lint.mjs'
-      - 'scripts/lint-figures.mjs'
-      - '.github/workflows/pr-checks.yml'
-      # Site-wide base components and public assets that affect every page.
-      - 'src/components/BaseHead.astro'
-      - 'src/layouts/**'
-      - 'public/robots.txt'
-      - 'public/llms.txt'
-
+    branches: [main, feat/hindi-locale, 'hindi/*']
   # Allow manual runs for debugging.
   workflow_dispatch:
 
@@ -63,6 +36,107 @@ concurrency:
 
 jobs:
   # ---------------------------------------------------------------------------
+  # Which files the PR touches. The other jobs run only when one of them
+  # matches a pattern here (a manual run always runs everything). Patterns are
+  # bash globs, where `*` also matches `/`, so `src/utils/loan/*` covers the
+  # whole tree under it.
+  # ---------------------------------------------------------------------------
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.filter.outputs.run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # The PR's merge commit and its first parent, the base it merges
+          # into, so `HEAD^1 HEAD` is exactly what the PR changes.
+          fetch-depth: 2
+
+      - name: Match changed files
+        id: filter
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" != "pull_request" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          patterns=(
+            # The /free/* pages and any utility/component they pull in.
+            'src/pages/free/*'
+            'src/pages/privacy.astro'
+            'src/components/pages/PrivacyPage.astro'
+            'src/components/LoanCompare.tsx'
+            'src/components/MultiCurrencyNetWorth.tsx'
+            'src/components/MonteCarloSimulator.tsx'
+            'src/components/ToolStateGuard.astro'
+            'src/components/chart/*'
+            # The header carries a tool's state across a language switch, and the
+            # helpers both sides use live in shared utils.
+            'src/components/Header.astro'
+            'src/components/LangPicker.astro'
+            'src/components/Analytics.astro'
+            'src/utils/shared/*'
+            'src/utils/monte-carlo/*'
+            # Global type declarations the type check reads.
+            'src/types/*'
+            # Loan comparator utilities (math, URL state, validated inputs)
+            # were grouped under src/utils/loan/ so a PR that touches only the
+            # math (e.g. changing an APR formula) still triggers the gate.
+            'src/utils/loan/*'
+            # Multi-currency net worth analyzer utilities (math + URL state).
+            # Renamed from the earlier currency-risk dir; without this glob a
+            # PR touching only the math would silently skip CI.
+            'src/utils/multi-currency-net-worth/*'
+            'src/utils/dependencies.test.ts'
+            'scripts/*'
+            # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
+            # would silently break the deploy workflow's post-deploy step;
+            # gating it on the same checks the rest of the deploy depends on
+            # is the cheapest way to catch regressions before merge.
+            'scripts/indexnow.mjs'
+            'scripts/indexnow.test.mjs'
+            # Anything that affects the build or dep graph.
+            'package.json'
+            'package-lock.json'
+            'astro.config.mjs'
+            'tsconfig.json'
+            # The lint script and this workflow itself.
+            'scripts/lint.mjs'
+            'scripts/lint-figures.mjs'
+            '.github/workflows/pr-checks.yml'
+            # Site-wide base components and public assets that affect every page.
+            'src/components/BaseHead.astro'
+            'src/layouts/*'
+            # Page bodies. Since the Hindi edition, a page's markup lives in a
+            # component here and `src/pages/` holds only the thin routes that render
+            # it, so a PR that edits a page's copy or layout touches this directory
+            # and nothing else. Without the glob those PRs would merge with no CI at
+            # all, which is the opposite of what this workflow is for.
+            'src/components/pages/*'
+            # String catalogs and locale plumbing. Every page reads from them, and
+            # the test job's catalog tests live here, so a copy fix that touches
+            # nothing else still gets the suite run over it.
+            'src/i18n/*'
+            'public/robots.txt'
+            'public/llms.txt'
+          )
+          run=false
+          while IFS= read -r file; do
+            for pattern in "${patterns[@]}"; do
+              # Unquoted on purpose: the pattern is a glob.
+              if [[ "$file" == $pattern ]]; then
+                echo "matched: $file ($pattern)"
+                run=true
+                break 2
+              fi
+            done
+          done < <(git diff --name-only HEAD^1 HEAD)
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+  # ---------------------------------------------------------------------------
   # Lockfile + dependency integrity. `npm ci` fails fast if package.json and
   # package-lock.json disagree, which is the cheapest possible signal to
   # surface for any dep change.
@@ -70,6 +144,10 @@ jobs:
   install:
     name: Install (lockfile integrity)
     runs-on: ubuntu-latest
+    # Every other job needs this one, so when it is skipped they are skipped
+    # too, and all of them report "skipped" to branch protection.
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -108,6 +186,34 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+  # ---------------------------------------------------------------------------
+  # Type check of every .ts and .tsx file. The string catalogs are typed as one
+  # shape (`Dict`), and the islands take their copy as typed props, so this is
+  # what catches a missing key or a component reading text it was never given
+  # (the loan comparison's Refinance tab once shipped reading an undefined
+  # `strings`, which throws in the browser). `astro sync` writes the content
+  # collection types the check reads. Astro templates are not covered.
+  # ---------------------------------------------------------------------------
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
 
   # ---------------------------------------------------------------------------
   # Unit tests + dependency-snapshot test. The snapshot test fails any PR
@@ -169,7 +275,7 @@ jobs:
   build:
     name: Build (static)
     runs-on: ubuntu-latest
-    needs: [lint, test, audit]
+    needs: [lint, typecheck, test, audit]
     steps:
       - name: Checkout
         uses: actions/checkout@v7

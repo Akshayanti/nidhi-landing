@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// Reached from an English email, so there is no Hindi counterpart to point
+// search engines or a language switcher at.
+import { DEFAULT_LOCALE } from '../i18n';
 ---
 
 <BaseLayout
   title="Link not valid | nidhi"
   description="This subscription link is no longer valid. The link may have expired or already been used. Try subscribing again from the homepage."
   robots="noindex,nofollow"
+  alternates={[DEFAULT_LOCALE]}
 >
   <section class="transactional">
     <div class="transactional-card">

@@ -32,25 +32,20 @@ export interface LessonLink {
 /** The core ladder levels, in reading order. Inclusive Finances is not a step. */
 export const LADDER_LEVELS = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'] as const;
 
-export const LEVEL_LABELS: Record<string, string> = {
-  discovery: 'Discovery',
-  building: 'Building',
-  psychology: 'Psychology',
-  optimizing: 'Optimizing',
-  mastery: 'Mastery',
-};
 
-interface StartingPointDef {
+/**
+ * A route in, as structure alone: which level it starts in, the lessons it
+ * walks through in order, and the free tools that go with it. Every word a
+ * reader sees for a route lives in the `home` catalog namespace under the same
+ * `id`, so translating this page is a catalog entry rather than an edit here.
+ */
+export interface StartingPointDef {
   id: string;
-  /** Who the route suits, shown above the situation so experienced readers see their way in. */
-  audience: string;
-  situation: string;
-  detail: string;
   /** The level this situation starts in; null when it draws on several. */
   level: string | null;
   /** In the order a reader should take them. The first live one is where the card's button leads. */
   lessons: string[];
-  /** Free tools to try the route on your own numbers, keyed into TOOL_COPY. */
+  /** Free tools to try the route on your own numbers, keyed into TOOLS. */
   tools?: string[];
   /**
    * Shown even before any of its lessons is live, as an empty route that
@@ -62,35 +57,23 @@ interface StartingPointDef {
 export const STARTING_POINTS: StartingPointDef[] = [
   {
     id: 'basics',
-    audience: 'New to this',
-    situation: 'I’m starting from the beginning.',
-    detail: 'You know you should understand your money better, but not where to begin. Start with the ideas everything else is built on.',
     level: 'discovery',
     lessons: ['what-is-net-worth', 'emergency-fund', 'cash-flow-101'],
     tools: ['/free/multi-currency-net-worth/'],
   },
   {
     id: 'no-plan',
-    audience: 'Some experience',
-    situation: 'I have some savings, but no plan.',
-    detail: 'Money is building up and you are not sure what it should be doing. Learn what saving, investing and goals each are for.',
     level: 'building',
     lessons: ['saving-vs-investing', 'getting-started-investing', 'setting-financial-goals'],
     tools: ['/free/monte-carlo-simulator/'],
   },
   {
     id: 'habits',
-    audience: 'You know the theory',
-    situation: 'I know what to do, but I don’t always do it.',
-    detail: 'Most money mistakes are not about knowledge. See how attention, habit and emotion shape the decisions you make.',
     level: 'psychology',
     lessons: ['why-smart-people-make-dumb-money-decisions', 'present-bias-and-your-future-self', 'mental-accounting'],
   },
   {
     id: 'complex',
-    audience: 'Experienced',
-    situation: 'My finances have got complicated.',
-    detail: 'Projections, what-if scenarios, cash flow, fees and taxes: the same ideas, with more moving parts.',
     level: 'optimizing',
     lessons: ['financial-projections', 'what-if-scenarios', 'cash-flow-forecasting'],
     tools: ['/free/loan-comparison/', '/free/multi-currency-net-worth/'],
@@ -145,23 +128,16 @@ export const GROWTH_TOPICS: GrowthTopicDef[] = [
   },
 ];
 
-/** Homepage wording for the tools that lessons point to, keyed by URL. */
-export const TOOL_COPY: Record<string, { name: string; desc: string; preview: 'donut' | 'bars' | 'fan' }> = {
-  '/free/multi-currency-net-worth/': {
-    name: 'Net worth calculator',
-    desc: 'One currency or several.',
-    preview: 'donut',
-  },
-  '/free/loan-comparison/': {
-    name: 'Loan comparison',
-    desc: 'Borrowing offers, side by side.',
-    preview: 'bars',
-  },
-  '/free/monte-carlo-simulator/': {
-    name: 'Monte Carlo simulator',
-    desc: 'A range of outcomes, not one line.',
-    preview: 'fan',
-  },
+/**
+ * What a tool's card on the home page needs that is not a word: which address
+ * it points at, which small drawing illustrates it, and which catalog entry
+ * (`home.tools`) names and describes it. Keyed by URL, because that is how a
+ * lesson names its `relatedTool`.
+ */
+export const TOOLS: Record<string, { key: 'netWorth' | 'loanComparison' | 'monteCarlo'; preview: 'donut' | 'bars' | 'fan' }> = {
+  '/free/multi-currency-net-worth/': { key: 'netWorth', preview: 'donut' },
+  '/free/loan-comparison/': { key: 'loanComparison', preview: 'bars' },
+  '/free/monte-carlo-simulator/': { key: 'monteCarlo', preview: 'fan' },
 };
 
 const withSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
@@ -203,39 +179,35 @@ export function levelCounts(posts: HomePost[], now: Date): { byLevel: Record<str
   return { byLevel, total: levels.reduce((s, l) => s + byLevel[l], 0), levels };
 }
 
+/** A route ready to render: its structure, plus how much of it is live. */
 export interface StartingPoint {
   id: string;
-  audience: string;
-  situation: string;
-  detail: string;
   level: string | null;
-  levelLabel: string | null;
   levelCount: number;
   lessons: LessonLink[];
-  tools: Array<{ href: string; name: string }>;
+  tools: Array<{ href: string }>;
   showWhenEmpty: boolean;
 }
 
 /**
- * Situations with at least one live lesson, plus those marked showWhenEmpty
+ * Routes with at least one live lesson, plus those marked showWhenEmpty
  * (with no lessons until theirs go live); lessons that are not live yet are
  * left out, and so are tools `isToolLive` rejects.
+ *
+ * No words come back from here: the caller looks up `home.startingPoints[id]`
+ * and `home.levels[level]` for those.
  */
 export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean = () => true): StartingPoint[] {
   const live = liveIndex(posts, now);
   const { byLevel } = levelCounts(posts, now);
   return STARTING_POINTS.map((s) => ({
     id: s.id,
-    audience: s.audience,
-    situation: s.situation,
-    detail: s.detail,
     level: s.level,
-    levelLabel: s.level ? LEVEL_LABELS[s.level] ?? null : null,
     levelCount: s.level ? byLevel[s.level] ?? 0 : 0,
     lessons: toLinks(s.lessons, live),
     tools: (s.tools ?? [])
-      .filter((href) => TOOL_COPY[href] && isToolLive(href))
-      .map((href) => ({ href, name: TOOL_COPY[href].name })),
+      .filter((href) => TOOLS[href] && isToolLive(href))
+      .map((href) => ({ href })),
     showWhenEmpty: s.showWhenEmpty ?? false,
   })).filter((s) => s.lessons.length > 0 || s.showWhenEmpty);
 }
@@ -268,12 +240,13 @@ export function resolveGrowthTopics(posts: HomePost[], now: Date): GrowthTopic[]
 
 export interface LessonToolPair {
   lesson: LessonLink;
-  tool: { href: string; name: string; desc: string; preview: 'donut' | 'bars' | 'fan' };
+  tool: { href: string; key: 'netWorth' | 'loanComparison' | 'monteCarlo'; preview: 'donut' | 'bars' | 'fan' };
 }
 
 /**
  * One pair per tool: the earliest live lesson (in reading order) that names
  * it as its `relatedTool`. `isToolLive` lets the caller hide gated tools.
+ * The tool's name and description come from `home.tools[tool.key]`.
  */
 export function lessonToolPairs(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean): LessonToolPair[] {
   const sorted = posts
@@ -282,11 +255,11 @@ export function lessonToolPairs(posts: HomePost[], now: Date, isToolLive: (href:
   const pairs = new Map<string, LessonToolPair>();
   for (const p of sorted) {
     const href = withSlash(p.data.relatedTool!.url);
-    const copy = TOOL_COPY[href];
-    if (!copy || pairs.has(href) || !isToolLive(href)) continue;
+    const meta = TOOLS[href];
+    if (!meta || pairs.has(href) || !isToolLive(href)) continue;
     pairs.set(href, {
       lesson: { slug: p.data.slug, title: p.data.title, href: `/blog/${p.data.slug}/` },
-      tool: { href, ...copy },
+      tool: { href, ...meta },
     });
   }
   return [...pairs.values()];

@@ -6,7 +6,7 @@
  * which reads the data-* attributes written here); the same numbers are in
  * the <desc> for screen readers, or in the element named by descId.
  */
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { formatProseAmount } from '../utils/shared/formatAmount.ts';
 
 interface Series {
   name: string;
@@ -80,7 +80,7 @@ const hoverData = JSON.stringify({
     name: s.name,
     color: s.color,
     ys: s.values.map((v) => y(v) / H),
-    values: s.values.map((v) => formatAmount(v, 'EUR')),
+    values: s.values.map((v) => formatProseAmount(v, 'EUR')),
   })),
 });
 ---
@@ -99,7 +99,7 @@ const hoverData = JSON.stringify({
     {ticks.map((t) => (
       <g>
         <line class={t === 0 ? 'hc-axis' : 'hc-grid'} x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} />
-        <text class="hc-tick" x={PAD.left - 8} y={y(t) + 4} text-anchor="end">{formatAmount(t, 'EUR', true)}</text>
+        <text class="hc-tick" x={PAD.left - 8} y={y(t) + 4} text-anchor="end">{formatProseAmount(t, 'EUR', true)}</text>
       </g>
     ))}
     {target && (
@@ -132,7 +132,7 @@ const hoverData = JSON.stringify({
       <g>
         <circle cx={x(n - 1)} cy={y(s.values[n - 1])} r="4" fill={s.color} class="hc-endDot" />
         <text class="hc-endName" x={W - PAD.right + 10} y={ly - 3} fill={s.color}>{s.name}</text>
-        <text class="hc-endValue" x={W - PAD.right + 10} y={ly + 12}>{formatAmount(s.values[n - 1], 'EUR', true)}</text>
+        <text class="hc-endValue" x={W - PAD.right + 10} y={ly + 12}>{formatProseAmount(s.values[n - 1], 'EUR', true)}</text>
       </g>
     ))}
     <text class="hc-tick" x={PAD.left} y={H - PAD.bottom + 16}>{axisStart}</text>

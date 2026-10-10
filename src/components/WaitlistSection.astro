@@ -18,12 +18,23 @@
 // shared, submitting one variant on a page that renders both will also
 // hide the other, which is the intended outcome.
 
+import { dict, localizedPath, type Locale } from '../i18n';
+
 interface Props {
+  /** The language of the page the box sits on. */
+  locale: Locale;
   variant?: 'default' | 'hero';
+  /**
+   * Overrides the button's label. Left undefined everywhere today, so the
+   * catalog's own word is used; kept because the prop predates the catalog and
+   * a caller may still want a shorter label for a narrow slot.
+   */
   cta?: string;
 }
 
-const { variant = 'default', cta = 'Notify me' } = Astro.props;
+const { locale, variant = 'default', cta } = Astro.props;
+const { waitlist } = dict(locale);
+const ctaLabel = cta ?? waitlist.cta;
 
 const endpoint = import.meta.env.PUBLIC_WAITLIST_ENDPOINT || '';
 const isDev = import.meta.env.DEV;
@@ -34,13 +45,13 @@ const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
 ---
 
-<section class:list={['waitlist', `waitlist--${variant}`]} aria-label="Early-access waitlist">
+<section class:list={['waitlist', `waitlist--${variant}`]} aria-label={waitlist.region}>
   <div class="waitlist-box">
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
       {variant === 'default' && (
         <>
-          <h3 class="waitlist-title">Want the planner when it opens?</h3>
+          <h3 class="waitlist-title">{waitlist.heading}</h3>
         </>
       )}
 
@@ -50,7 +61,7 @@ const inputId = `${idPrefix}-email`;
         data-endpoint={endpoint}
       >
         <div class="waitlist-input-group">
-          <label class="sr-only" for={inputId}>Email address</label>
+          <label class="sr-only" for={inputId}>{waitlist.emailLabel}</label>
           <input
             id={inputId}
             type="email"
@@ -60,11 +71,11 @@ const inputId = `${idPrefix}-email`;
             autocomplete="email"
             class="waitlist-input"
           />
-          <button type="submit" class="waitlist-button" data-cta={cta}>{cta}</button>
+          <button type="submit" class="waitlist-button" data-cta={ctaLabel}>{ctaLabel}</button>
         </div>
         <p id={statusId} class="waitlist-status" role="status" aria-live="polite"></p>
         <p class="waitlist-privacy">
-          One email when access opens. <a href="/privacy/">Privacy policy</a>.
+          {waitlist.privacyBefore}<a href={localizedPath(locale, '/privacy/')}>{waitlist.privacyLink}</a>{waitlist.privacyAfter}
         </p>
       </form>
 
@@ -83,15 +94,15 @@ const inputId = `${idPrefix}-email`;
           <polyline points="20 6 9 17 4 12" />
         </svg>
       </div>
-      <h3 class="waitlist-success-title">You're on the list</h3>
+      <h3 class="waitlist-success-title">{waitlist.successTitle}</h3>
       <p class="waitlist-success-body">
-        We'll send you one email when access opens. That's it.
+        {waitlist.successBody}
       </p>
     </div>
   </div>
 </section>
 
-<script is:inline define:vars={{ formId, statusId }}>
+<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error }}>
   (function () {
     var STORAGE_KEY = 'nidhi-waitlist-signedup';
 
@@ -122,7 +133,7 @@ const inputId = `${idPrefix}-email`;
     var endpoint = form.getAttribute('data-endpoint') || '';
     var button = form.querySelector('button[type="submit"]');
     var input = form.querySelector('input[type="email"]');
-    var ctaLabel = (button && button.getAttribute('data-cta')) || 'Notify me';
+    var ctaLabel = (button && button.getAttribute('data-cta')) || '';
 
     var submitting = false;
 
@@ -163,12 +174,12 @@ const inputId = `${idPrefix}-email`;
 
       if (!endpoint) {
         console.warn('[WaitlistSection] PUBLIC_WAITLIST_ENDPOINT is not set. Submissions are no-ops.');
-        setStatus('Signups are not configured yet. Check back soon.', 'error');
+        setStatus(notConfigured, 'error');
         return;
       }
 
       submitting = true;
-      if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+      if (button) { button.disabled = true; button.textContent = sending; }
       setStatus('', 'idle');
 
       if (window.posthog) {
@@ -198,7 +209,7 @@ const inputId = `${idPrefix}-email`;
         }
       }).catch(function () {
         submitting = false;
-        setStatus('Something went wrong. Please try again in a moment.', 'error');
+        setStatus(errorMessage, 'error');
         if (button) { button.disabled = false; button.textContent = ctaLabel; }
       });
     });

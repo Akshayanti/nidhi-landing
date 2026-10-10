@@ -1,110 +1,29 @@
 /**
- * Shared tag metadata for blog tag pages.
+ * Tag helpers for the blog's topic pages.
  *
- * Used by:
- *  - `src/pages/blog/tag/[tag].astro` to render per-tag SEO title and intro.
- *  - `src/pages/blog/tag/index.astro` to render the "Browse by topic" hub.
+ * The curated copy that used to live here (a per-tag title and description) is
+ * now in the catalog, under `learn.tags`: it is prose a reader sees, so it has
+ * to exist once per language, and a module of its own keeps it next to the
+ * level names it mirrors. See `src/i18n/strings/learn.ts`.
  *
- * Add a new entry here when introducing a new tag with editorial weight. Tags
- * not present in this table still get a generated tag page via `[tag].astro`'s
- * fallback path; they just lack the curated description.
+ * A tag with no catalog entry still gets a page: `formatTag` turns its slug
+ * into a heading, and the topic hub uses its generic card line.
  */
-export interface TagMetaEntry {
-  /** Page <title> for the tag listing. Already includes the brand suffix. */
-  title: string;
-  /** Page meta description and intro paragraph copy. */
-  description: string;
-}
-
-export const TAG_META: Record<string, TagMetaEntry> = {
-  // Level tags. Every post carries exactly one; they mirror the `level`
-  // frontmatter field and the sections of the learning path.
-  'discovery': {
-    title: 'Discovery Series: Personal Finance Fundamentals | nidhi',
-    description: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner guides meant to be read in order.',
-  },
-  'building': {
-    title: 'Building Series: Investing, Taxes, and Planning | nidhi',
-    description: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Guides for putting the basics to work.',
-  },
-  'psychology': {
-    title: 'Psychology of Money: Behavioural Finance Basics | nidhi',
-    description: 'Why knowing the right money move is not the same as making it: loss aversion, mental accounting, present bias, herd behaviour. Behavioural finance, explained.',
-  },
-  'optimizing': {
-    title: 'Optimizing Series: Projections, Fees, and Taxes | nidhi',
-    description: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Guides for tuning a plan that already works.',
-  },
-  'inclusive-finances': {
-    title: 'Inclusive Finances: When the Default Plan Does Not Fit | nidhi',
-    description: 'Financial planning for households the standard advice skips: unmarried couples, solo agers, gig workers, disability, cross-border families. No prerequisite.',
-  },
-  // Situation tags. Power the "Explore by situation" entry point and
-  // surface matching posts across every level, not only Inclusive Finances.
-  'relationships': {
-    title: 'Money and Relationships: Couples, Families, Households | nidhi',
-    description: 'How couples, blended families, chosen family, and shared households can plan money when the law and the defaults do not match how they live.',
-  },
-  'disability': {
-    title: 'Financial Planning with a Disability | nidhi',
-    description: 'Saving and planning around means-tested benefits, care costs, and income that may not follow a standard career. Frameworks, not country-specific legal advice.',
-  },
-  'immigration': {
-    title: 'Money Across Borders: Immigrants and Expats | nidhi',
-    description: 'Credit history, banking, pensions, and recognition gaps when your household crosses borders. Planning frameworks for immigrants and cross-border families.',
-  },
-  // Topic tags.
-  'fundamentals': {
-    title: 'Financial Fundamentals: Personal Finance Literacy | nidhi',
-    description: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
-  },
-  'debt': {
-    title: 'Understanding and Managing Debt: Finance Literacy | nidhi',
-    description: 'How debt works, why interest rates matter, and proven strategies to get out of debt. Practical personal finance literacy from nidhi.',
-  },
-  'saving': {
-    title: 'Saving Money: Personal Finance Basics | nidhi',
-    description: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy guides from nidhi.',
-  },
-  'investing': {
-    title: 'Investing Basics: Financial Literacy | nidhi',
-    description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
-  },
-  'risk': {
-    title: 'Understanding Financial Risk: Investing Literacy | nidhi',
-    description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
-  },
-  'planning': {
-    title: 'Financial Planning: Accounts, Taxes, and Tracking | nidhi',
-    description: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning guides from nidhi.',
-  },
-  'goals': {
-    title: 'Financial Goals and Tracking Your Progress | nidhi',
-    description: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning guides from nidhi.',
-  },
-  'fire': {
-    title: 'Financial Independence (FIRE): The Basics | nidhi',
-    description: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest guides from nidhi.',
-  },
-  'taxes': {
-    title: 'Taxes and Investing: Personal Finance Literacy | nidhi',
-    description: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational guides with a country-by-country reference table.',
-  },
-  'currency': {
-    title: 'Multi-Currency Money: Exchange Rates and Risk | nidhi',
-    description: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Guides for a cross-border life.',
-  },
-  'real-estate': {
-    title: 'Real Estate as an Investment: The Basics | nidhi',
-    description: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy math. Personal finance literacy from nidhi.',
-  },
-};
 
 /**
  * Convert a kebab-case tag like "net-worth" to a display-friendly
- * "Net Worth". Used as a fallback when a tag is not in TAG_META and as the
- * heading text on the tag listing page.
+ * "Net Worth". Used as a fallback when a tag is not in the catalog's
+ * `learn.tags` table and as the heading text on the tag listing page.
  */
 export function formatTag(tag: string): string {
   return tag.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/**
+ * The text of a tag chip on a lesson card. English shows the bare slug, as it
+ * always has; any other language shows the catalog's name for the tag, because
+ * the slug is an English word and would sit untranslated on that page.
+ */
+export function tagChipLabel(tag: string, catalogName: string | undefined, isDefaultLocale: boolean): string {
+  return isDefaultLocale ? tag : (catalogName ?? formatTag(tag));
 }

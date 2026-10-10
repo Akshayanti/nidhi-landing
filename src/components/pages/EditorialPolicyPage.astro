@@ -1,0 +1,232 @@
+---
+/**
+ * The editorial policy, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/editorial-policy.astro`, which is a three
+ * line wrapper around this; the other languages come through
+ * `src/pages/[locale]/editorial-policy.astro`. Both paths render this one
+ * component, so the two versions cannot drift apart in markup or in styling.
+ *
+ * The markup is written out rather than mapped over the catalog, as on the
+ * beliefs page: only three of the seven headings carry an `id` (they are the
+ * ones a lesson or a post links into), and the body is a mix of paragraphs and
+ * a numbered list, so a map would need a shape per section to say as much as
+ * the markup does in one reading. The three anchors keep their English
+ * spelling in every language, so an existing link to `#any-country` still
+ * lands after a switch to Hindi.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { relative } from 'node:path';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+// Both the English page and the `[locale]` mirror render this component, so
+// this page exists in every locale and the header may offer the others.
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = dict(locale);
+const { editorialPolicy: policy } = strings;
+
+const siteUrl = 'https://nidhi.today';
+const published = '2026-06-03';
+
+// Last change to this page (UTC date), from git as the privacy notice does.
+// Falls back to the publication date outside a git checkout.
+//
+// The path is asked of the runtime rather than written out, so moving this file
+// again cannot silently freeze the date at the day of the move: `git log` on a
+// path that does not exist returns nothing, which the fallback below would
+// swallow as "outside a git checkout". The English copy now lives in
+// src/i18n/strings/en.ts rather than in this file, and that catalog holds every
+// page's copy, so it is deliberately not consulted here: dating by it would
+// make an edit to any other page move this page's dateModified. The trade is
+// the other way round for a commit that only moves this file, which advances
+// the date without changing a word the reader sees.
+function lastModified(): string {
+  try {
+    const iso = execSync(`git log -1 --format=%aI -- "${relative(process.cwd(), fileURLToPath(import.meta.url))}"`, {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString().trim();
+    return iso ? new Date(iso).toISOString().slice(0, 10) : published;
+  } catch {
+    return published;
+  }
+}
+const modified = lastModified();
+
+// Built from the path rather than hardcoded with a locale prefix, so the
+// addresses here agree with the canonical link BaseHead emits for the same
+// page. `localizedPath` returns '/editorial-policy/' for English, which is what
+// this page has always advertised.
+const policyUrl = new URL(localizedPath(locale, '/editorial-policy/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+const privacyUrl = localizedPath(locale, '/privacy/');
+const aboutUrl = localizedPath(locale, '/about/');
+const beliefsUrl = localizedPath(locale, '/beliefs/');
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: policy.schema.name,
+  url: policyUrl,
+  description: policy.schema.description,
+  datePublished: published,
+  dateModified: modified,
+  publisher: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: homeUrl,
+  },
+  breadcrumb: { '@id': `${policyUrl}#breadcrumb` },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${policyUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: policy.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: policy.schema.breadcrumbThis, item: policyUrl },
+  ],
+};
+
+const { body } = policy;
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={policy.meta.title}
+  description={policy.meta.description}
+  jsonLd={[webPageSchema, breadcrumbSchema]}
+>
+  <section class="policy-page">
+    <div class="policy-container">
+      <header class="policy-header">
+        <h1 class="policy-title">{policy.title}</h1>
+        <p class="policy-intro">{policy.intro}</p>
+      </header>
+
+      <div class="policy-body">
+        <h2 id="how-a-lesson-is-built">{policy.sections.howALessonIsBuilt}</h2>
+        <p>{body.builtIntro}</p>
+        <ol>
+          <li><strong>{body.builtSteps.idea.lead}</strong>{body.builtSteps.idea.rest}</li>
+          <li><strong>{body.builtSteps.why.lead}</strong>{body.builtSteps.why.rest}</li>
+          <li><strong>{body.builtSteps.evidence.lead}</strong>{body.builtSteps.evidence.rest}</li>
+          <li><strong>{body.builtSteps.breaks.lead}</strong>{body.builtSteps.breaks.rest}</li>
+          <li><strong>{body.builtSteps.depends.lead}</strong>{body.builtSteps.depends.rest}</li>
+        </ol>
+        <p>{body.builtOutro}</p>
+
+        <h2 id="any-country">{policy.sections.anyCountry}</h2>
+        <p>{body.anyCountry}</p>
+
+        <h2>{policy.sections.sourcesAndFigures}</h2>
+        <p>{body.sourcesAndFigures}</p>
+
+        <h2 id="ai">{policy.sections.ai}</h2>
+        <p>{body.aiUsed1}</p>
+        <p>
+          {body.aiUsed2.before}<a href={privacyUrl}>{body.aiUsed2.link}</a>{body.aiUsed2.after}
+        </p>
+
+        <h2>{policy.sections.advice}</h2>
+        <p>{body.advice}</p>
+
+        <h2>{policy.sections.corrections}</h2>
+        <p>
+          {body.corrections.before}<a href="mailto:hello@nidhi.today">hello@nidhi.today</a>{body.corrections.after}
+        </p>
+
+        <h2>{policy.sections.whoIsBehind}</h2>
+        <p>
+          {body.whoIsBehind.before}<a href={aboutUrl}>{body.whoIsBehind.aboutLink}</a>{body.whoIsBehind.middle}<a
+            href={beliefsUrl}>{body.whoIsBehind.beliefsLink}</a>{body.whoIsBehind.after}
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .policy-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .policy-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .policy-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .policy-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .policy-body h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+    /* Clears the sticky header when a link lands on a section (#any-country, #ai). */
+    scroll-margin-top: 80px;
+  }
+
+  .policy-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .policy-body ol {
+    margin: 0 0 var(--space-3);
+    padding-left: 1.4em;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .policy-body li {
+    margin-bottom: var(--space-1);
+  }
+
+  .policy-body li strong {
+    color: var(--color-text-primary);
+  }
+
+  .policy-body a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .policy-body a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  @media (max-width: 480px) {
+    .policy-title { font-size: 1.6rem; }
+  }
+</style>

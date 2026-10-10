@@ -1,0 +1,389 @@
+---
+/**
+ * The beliefs page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/beliefs.astro`, which is a three line
+ * wrapper around this; the other languages come through
+ * `src/pages/[locale]/beliefs.astro`. Both paths render this one component, so
+ * the two versions cannot drift apart in markup or in styling.
+ *
+ * The list is written out rather than mapped over the catalog, for two
+ * reasons. Each belief carries its own accent colour and icon, which are
+ * styling rather than copy and would have to be kept somewhere anyway; and the
+ * commented-out belief below has to stay exactly where it is, which a map
+ * could not express. The English of every string, that commented block
+ * included, is unchanged.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+// Both the English page and the `[locale]` mirror render this component, so
+// this page exists in every locale and the header may offer the others.
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = dict(locale);
+const { beliefs } = strings;
+
+const siteUrl = 'https://nidhi.today';
+// Built from the path rather than hardcoded with a locale prefix, so the
+// addresses here agree with the canonical link BaseHead emits for the same
+// page. `localizedPath` returns '/beliefs/' for English, which is what this
+// page has always advertised.
+const beliefsUrl = new URL(localizedPath(locale, '/beliefs/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: beliefs.schema.name,
+  description: beliefs.schema.description,
+  url: beliefsUrl,
+  about: {
+    '@type': 'Organization',
+    name: 'nidhi',
+    url: homeUrl,
+    description: beliefs.schema.organization,
+    foundingLocation: { '@type': 'Place', name: beliefs.schema.foundingLocation },
+    knowsAbout: Object.values(beliefs.schema.knowsAbout),
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: beliefs.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: beliefs.schema.breadcrumbAbout, item: beliefsUrl },
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={beliefs.meta.title}
+  description={beliefs.meta.description}
+  jsonLd={[aboutPageSchema, breadcrumbSchema]}
+>
+  <section class="beliefs-page">
+    <div class="beliefs-container">
+      <div class="hero">
+        <div class="hero-icon">
+          {/* Brand icon mark, theme-aware via [data-theme]. Rendered at
+              80px; the 256px source covers DPR 2 cleanly. */}
+          <img
+            class="brand-mark brand-mark--light"
+            src="/brand/logo/icon-only/icon-256.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            class="brand-mark brand-mark--dark"
+            src="/brand/logo/icon-only/icon-256-dark.png"
+            width="256"
+            height="256"
+            alt="nidhi"
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <h1 class="beliefs-title">{beliefs.title}</h1>
+        <p class="beliefs-intro">{beliefs.intro}</p>
+      </div>
+
+      <div class="beliefs-list">
+        <div class="belief" style="--accent: var(--color-teal);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.frustration.heading}</strong>
+            <p>{beliefs.items.frustration.body}</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-deep-blue);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.noPlanner.heading}</strong>
+            <p>{beliefs.items.noPlanner.body}</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-teal);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.accessibility.heading}</strong>
+            <p>{beliefs.items.accessibility.body}</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-deep-blue);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.freeForever.heading}</strong>
+            <p>{beliefs.items.freeForever.body}</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-teal);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.rulesOfThumb.heading}</strong>
+            <p>{beliefs.items.rulesOfThumb.body}</p>
+          </div>
+        </div>
+
+        <div class="belief" style="--accent: var(--color-danger);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.noAds.heading}</strong>
+            <p>{beliefs.items.noAds.body}</p>
+          </div>
+        </div>
+
+        <!--<div class="belief" style="&#45;&#45;accent: var(&#45;&#45;color-teal);">-->
+        <!--  <div class="belief-icon">-->
+        <!--    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>-->
+        <!--  </div>-->
+        <!--  <div class="belief-body">-->
+        <!--    <strong>Your money doesn't stay in one currency. Neither do we</strong>-->
+        <!--    <p>Whether you're an expat, a freelancer with international clients, or just someone who travels and invests across borders, most finance tools pretend that doesn't happen. We built nidhi with multicurrency from day one because we needed it ourselves.</p>-->
+        <!--  </div>-->
+        <!--</div>-->
+
+        <div class="belief" style="--accent: var(--color-deep-blue);">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </div>
+          <div class="belief-body">
+            <strong>{beliefs.items.madeInPrague.heading}</strong>
+            <p>{beliefs.items.madeInPrague.body}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <p class="cta-text">{beliefs.cta.text}</p>
+        <p class="cta-sub">{beliefs.cta.sub}</p>
+        <div class="cta-links">
+          <a href="mailto:hello@nidhi.today" class="cta-link" data-attr="beliefs-cta-email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            {beliefs.cta.email}
+          </a>
+          <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer" class="cta-link" data-attr="beliefs-cta-instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            {beliefs.cta.instagram}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .beliefs-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .beliefs-container {
+    max-width: 640px;
+    width: 100%;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .hero-icon {
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-icon img {
+    width: 80px;
+    height: auto;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Theme-aware brand mark: show the variant matching the active theme. */
+  .hero-icon .brand-mark--dark {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .hero-icon .brand-mark--light {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .hero-icon .brand-mark--dark {
+    display: inline-block;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-icon img { animation: none; }
+  }
+
+  .beliefs-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-2);
+  }
+
+  .beliefs-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .beliefs-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .belief {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border-left: 3px solid var(--accent);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .belief:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .belief-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: rgba(0, 137, 123, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+
+  .belief-body {
+    flex: 1;
+  }
+
+  .belief strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-1);
+  }
+
+  .belief p {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .belief a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .belief a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .cta-block {
+    margin-top: var(--space-10);
+    padding: var(--space-6);
+    text-align: center;
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cta-text {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-1);
+  }
+
+  .cta-sub {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta-links {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    color: var(--color-deep-blue);
+    border: 1px solid var(--color-deep-blue);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .cta-link:hover {
+    background: var(--color-deep-blue);
+    color: white;
+    text-decoration: none;
+  }
+
+  @media (max-width: 480px) {
+    .beliefs-title { font-size: 1.6rem; }
+    .belief { flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
+    .belief-icon { width: 36px; height: 36px; }
+    .belief strong { font-size: 0.88rem; }
+    .belief p { font-size: 0.84rem; }
+    .cta-links { flex-direction: column; align-items: center; }
+  }
+</style>
