@@ -2,7 +2,6 @@
 import { NEUTRAL, SEMANTIC } from '../styles/palette.ts';
 import {
   DEFAULT_LOCALE,
-  LOCALES,
   LOCALE_META,
   dict,
   localizedPath,
@@ -17,6 +16,7 @@ interface Props {
    * The locales this page exists in, including `locale`. `hreflang` links and
    * `og:locale:alternate` are built from this list, so a page that has no
    * counterpart in another language points search engines at nothing.
+   * Defaults to this page's own language: see `BaseLayout` props.
    */
   alternates?: readonly Locale[];
   title: string;
@@ -54,7 +54,7 @@ const defaultImage = '/brand/social/og-image.png';
 const defaultImageAlt = 'nidhi: Money, understood. Personal finance tools and financial literacy.';
 const {
   locale = DEFAULT_LOCALE,
-  alternates = LOCALES,
+  alternates = [locale],
   title,
   description,
   image = defaultImage,

@@ -9,13 +9,15 @@ import { DESKTOP_DROPDOWNS, navGroups, navHref, navLabel, type NavGroup, type Na
 interface Props {
   locale?: Locale;
   /**
-   * The locales this page exists in, including this one. A language switcher
-   * is shown only for the others; with none, there is nothing to switch to.
+   * The locales this page exists in, including this one. A language picker is
+   * offered only when there is another one, so a page with nothing to switch
+   * to carries no control. Defaults to this page's own language: see
+   * `BaseLayout` props.
    */
   alternates?: readonly Locale[];
 }
 
-const { locale = DEFAULT_LOCALE, alternates = LOCALES } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale] } = Astro.props;
 
 const strings = dict(locale);
 const currentPath = Astro.url.pathname;

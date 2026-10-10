@@ -12,7 +12,9 @@
  * the page's own address rather than at the English one.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+// Both the English page and the `[locale]` mirror render this component, so
+// this page exists in every locale and the header may offer the others.
 
 interface Props {
   locale: Locale;
@@ -62,6 +64,7 @@ const breadcrumbSchema = {
 
 <BaseLayout
   locale={locale}
+  alternates={LOCALES}
   title={about.meta.title}
   description={about.meta.description}
   jsonLd={[profilePageSchema, breadcrumbSchema]}

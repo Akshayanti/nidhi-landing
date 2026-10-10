@@ -34,14 +34,16 @@
  * language, and a label on it would name a target in the privacy notice that
  * records no choice.
  */
-import { LOCALES, LOCALE_META, dict, swapLocale, type Locale } from '../i18n';
+import { LOCALE_META, dict, swapLocale, type Locale } from '../i18n';
 
 interface Props {
   /** The language of the page the picker sits on. */
   locale: Locale;
   /**
    * The locales this page exists in, including this one. A locale with no
-   * counterpart page is left out: offering it would offer a 404.
+   * counterpart page is left out: offering it would offer a 404. Defaults to
+   * this page's own language, which renders an empty picker, so a caller that
+   * forgets to pass it cannot invent a destination. See `BaseLayout` props.
    */
   alternates?: readonly Locale[];
   /**
@@ -54,7 +56,7 @@ interface Props {
   variant?: 'header' | 'sheet';
 }
 
-const { locale, alternates = LOCALES, variant = 'header' } = Astro.props;
+const { locale, alternates = [locale], variant = 'header' } = Astro.props;
 const strings = dict(locale);
 const { languagePicker } = strings;
 

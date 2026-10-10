@@ -15,7 +15,9 @@
  * included, is unchanged.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+// Both the English page and the `[locale]` mirror render this component, so
+// this page exists in every locale and the header may offer the others.
 
 interface Props {
   locale: Locale;
@@ -61,6 +63,7 @@ const breadcrumbSchema = {
 
 <BaseLayout
   locale={locale}
+  alternates={LOCALES}
   title={beliefs.meta.title}
   description={beliefs.meta.description}
   jsonLd={[aboutPageSchema, breadcrumbSchema]}

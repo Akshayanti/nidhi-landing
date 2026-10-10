@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Analytics from '../components/Analytics.astro';
-import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, type Locale } from '../i18n';
+import { DEFAULT_LOCALE, LOCALE_META, dict, type Locale } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -15,8 +15,14 @@ interface Props {
   locale?: Locale;
   /**
    * The locales this page exists in, including `locale`. It decides the
-   * `hreflang` links and whether the header offers a language switcher, so a
-   * page with no counterpart in another language passes `['en']`.
+   * `hreflang` links and whether the header offers a language picker.
+   *
+   * It defaults to this page's own language, so a page that also exists under
+   * another prefix is the one that says so, rather than every other page
+   * having to say that it does not. That is the safe default here: a mirrored
+   * route that has not been built yet must not be offered as a destination,
+   * and claiming it would put a link to a 404 in the header and an `hreflang`
+   * pointing nowhere in the head.
    */
   alternates?: readonly Locale[];
   title: string;
@@ -46,7 +52,7 @@ interface Props {
   bodyData?: Record<string, string>;
 }
 
-const { locale = DEFAULT_LOCALE, alternates = LOCALES, title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData } = Astro.props;
 const strings = dict(locale);
 ---
 
