@@ -168,6 +168,58 @@ obvious rendering is weaker or wrong.
 | word of mouth | मुँह-ज़बानी | |
 | colour blind | रंग न पहचान पाना | Spelled out. वर्णांध is the clinical word and reads as a form. |
 
+### The privacy notice
+
+The notice is the one document on the site whose job is to be precise, so its
+Hindi is the least free of the four prose pages: a word that shifts the meaning
+of a promise is a defect, not a wording choice. There is no rule 6 here either,
+for the same reason: a parenthesis full of English inside a sentence that makes
+a promise costs the reader more than it teaches.
+
+| English | Hindi | Notes |
+| --- | --- | --- |
+| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. |
+| analytics | एनालिटिक्स | |
+| processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
+| consent | सहमति | "Cookie consent" is कुकी सहमति. |
+| retention | रिटेंशन | |
+| material (change) | महत्वपूर्ण | The badge on a log entry, and the word the log's own intro explains. Hindi has no adjective that carries "affects how your data is handled" on its own, so the intro sentence is built around it: जिन बदलावों से पता चलता है कि हम निजी डेटा कैसे संभालते हैं (...) उन्हें **महत्वपूर्ण** कहा जाता है। |
+| changelog | बदलावों का रिकॉर्ड | Not चेंजलॉग, which is a developer's word. रिकॉर्ड is what Hindi calls a record kept of something. |
+| Earlier changes | पहले के बदलाव | The label on the collapsed group. The log's intro quotes it, so the two must match word for word; changing one means changing the other. |
+| anonymous | बिना नाम का | Spelled out. गुमनाम is what a form says about a respondent, and is the right word there; here the notice keeps repeating "no name, no email, no user ID", which is what बिना नाम का says. |
+| localStorage | localStorage | Latin, like the six key names that follow it in the same list. A reader who wants to look up where those keys live needs the API's name, not a transliteration of it. |
+| pending (a subscription) | लंबित | Not बाक़ी, which means what is left over. The newsletter's three states are लंबित, कन्फ़र्म and अनसब्सक्राइब. |
+| viewport size | ब्राउज़र विंडो का आकार | Spelled out rather than व्यूपोर्ट, and deliberately not स्क्रीन का आकार: the screen and the window the page is drawn in are different measurements, and in a list of what is collected the wrong one is a worse error than a clunky phrase. |
+| a flag (a stored setting) | एक फ़्लैग | Not झंडा, which is a flag on a pole. फ़्लैग is what Indian technical writing uses, and it sits beside six Latin key names in the same list. |
+
+`नोटिस` is feminine here, so the page says `यह नोटिस अंग्रेज़ी में लिखी गई है` and
+`किसी दिन यह नोटिस क्या कहती थी`. Hindi newspapers write the loanword both ways
+and its gender is genuinely unsettled; feminine is the commoner of the two in
+print, and it is what every string on this page uses, including the meta
+description. Keep it, and if it is ever changed, change all of them at once.
+
+#### The English governs, and the changelog is never translated
+
+The Hindi notice is a translation and says so, in Hindi, above everything else:
+the English text is the one that binds. Two things follow from that, and both
+are structural rather than editorial.
+
+`PrivacyPage.astro` holds the changelog once, in English, and renders it into
+every edition, so the Hindi page has no second copy of the record that could
+drift from it. A translated log would be a second, slightly different account
+of what the site did on a given day, and the record is worth more than the
+convenience.
+
+The notice's dates stay English in every edition: `Oct 10, 2026` at the top,
+`2026-10-10` on each entry. They sit directly above a log that is English and
+is read as one document with it, and Indian publishing writes dates with
+English month names as a matter of course, so this costs the Hindi reader
+nothing.
+
+Both notes that say all this, the one under the intro and the one above the
+log, are rendered only when the locale is not the default one. On the English
+page they would be telling a reader something they already know.
+
 ### Site vocabulary already in use
 
 These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.

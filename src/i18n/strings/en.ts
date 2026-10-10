@@ -409,6 +409,339 @@ export const en = {
    * `format()`; the names match the ones the component passes.
    */
   /**
+   * The privacy notice. Unlike the other prose pages this one is a legal
+   * document: the English is the version that governs in every edition, and
+   * the component says so on any page that is not English (`englishIsAuthoritative`).
+   *
+   * The changelog is not in this catalog. It is a record of what the notice said
+   * on a given day, written and dated in English, and having exactly one copy of
+   * that record is the point of it, so its entries stay in the component and read
+   * the same in every language. Only the framing around them is here, plus
+   * `entriesInEnglish`, which explains that to a reader of a translation.
+   *
+   * Splits follow the editorial policy's rule. A `<strong>` lead and the prose
+   * after it are separate keys, with the punctuation at the start of the second,
+   * so a translation can move the colon. The component holds the `<code>`
+   * elements and the anchors whose text is identical in every language: the
+   * parameter names, the storage keys, the addresses, and the word a reader is
+   * asked to put in an email subject. Product and service names stay in this
+   * catalog and are deliberately the same string in every language; they are the
+   * paths listed in IDENTICAL_OK in catalog.test.ts.
+   */
+  privacy: {
+    meta: {
+      title: 'Privacy Notice: How nidhi Handles Your Data | nidhi',
+      description:
+        'Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it.',
+    },
+    schema: {
+      name: 'Privacy Notice: How nidhi Handles Your Data',
+      description:
+        'Plain-language privacy notice for nidhi.today: what we collect, why, where it lives, and how to get rid of it.',
+      breadcrumbHome: 'Home',
+      breadcrumbThis: 'Privacy',
+    },
+    title: 'Privacy, honestly',
+    intro:
+      'The short version: we collect as little as we can, we don’t sell anything, and you can get rid of what we have whenever you want.',
+    /** The label before the date. The trailing space is the one before `<time>`. */
+    updatedLabel: 'Last updated: ',
+    updatedLink: 'see what changed',
+    /**
+     * Under the intro, on every page but the English one. Nothing renders it in
+     * English, where a notice calling itself authoritative would be talking
+     * about the page you are already reading; it is written out here because
+     * this file is what a translator works from.
+     */
+    englishIsAuthoritative:
+      'This notice is written in English, and the English version is the one that governs. The translation is here so you can read it in your own language.',
+    sections: {
+      collect: 'What we collect, and when',
+      why: 'Why we collect it',
+      whereItLives: 'Where it lives',
+      whatWeDontDo: 'What we don’t do',
+      retention: 'How long we keep it',
+      rights: 'Your rights',
+      children: 'Children',
+      whoWeAre: 'Who we are',
+    },
+
+    /** The bold line that opens a list. The component supplies the `<strong>`. */
+    lead: {
+      always: 'Always, to keep the site working and improving:',
+      withConsent: 'Only if you click “Sure, that’s fine” on the cookie banner:',
+      newsletter: 'If you subscribe to the blog newsletter:',
+      waitlist: 'If you join the product-launch waitlist:',
+      browserOnly: 'Stored only in your browser, never sent to us:',
+    },
+
+    collect: {
+      pageviews: {
+        before: 'Anonymous pageview and page-leave events, via ',
+        link: 'PostHog Cloud EU',
+        after:
+          '. That includes the URL you visited, the URL you came from, your approximate country (derived from your IP address, which PostHog then discards), and your browser, OS, and viewport size. No name, no email, no user ID.',
+      },
+      // The bold clause sits mid-sentence, so `before` ends with the space that
+      // precedes it and `after` begins with the colon that follows it.
+      freeTools: {
+        before:
+          'Anonymous interaction events on the Free Tools pages: which currency you pick on the loan-comparison calculator, whether you toggle between solving for term vs monthly payment, whether you open the “More options” panel, whether you copy the shareable link, and whether you reset the form. ',
+        strong: 'The financial values you type are never sent',
+        after:
+          ': not the loan amount, not the interest rate, not the fees, not the vendor name. The whole point of the calculator is that the math runs in your browser.',
+      },
+      toolAddresses:
+        'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
+      monteCarlo: {
+        before:
+          'Anonymous interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',
+        strong: 'The amounts, years, fees and mix you enter are never sent.',
+      },
+      // Two `<code>` elements in one sentence, so the component supplies both
+      // and takes `middle` as the comma between them.
+      campaigns: {
+        before: 'Campaign parameters (',
+        middle: ', ',
+        after: ', etc.) if you arrived from a link we or someone else tagged.',
+      },
+      consentClicks:
+        'Click heatmaps and autocaptured events: basically, which elements on a page get clicked, including clicks on things that don’t respond (“dead clicks”). We use this to spot broken links and layouts that confuse people. We don’t record page-speed measurements or browser errors at all.',
+    },
+
+    newsletter: {
+      email: 'Your email address.',
+      page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there).',
+      timestamps: 'Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.',
+      status: 'Your subscription status: pending, confirmed, or unsubscribed.',
+      // The address itself is a `<code>` in the component.
+      from: {
+        before: 'Newsletter emails come from ',
+        after: '. Add it to your contacts so new-post notifications reach your inbox.',
+      },
+    },
+    waitlist: {
+      email: 'Your email address.',
+      page: 'The page you signed up from.',
+      timestamp: 'Timestamp for when you signed up.',
+      singleOptIn: 'No confirmation step, no status tracking. Single opt-in.',
+      from: {
+        before: 'The launch email will come from ',
+        after: '. Add it to your contacts so it doesn’t land in spam.',
+      },
+    },
+    /**
+     * The list of what stays in the browser. Each row is the sentence around
+     * one `<code>` storage key, which the component supplies so that the key
+     * reads the same in every edition.
+     */
+    browserStorage: {
+      consent: { before: 'Your cookie-consent choice (', after: ').' },
+      theme: { before: 'Your light/dark/system theme preference (', after: ').' },
+      internal: {
+        before: 'For the nidhi team only: a flag (',
+        after:
+          ') set by opening a page from a special link, so our own visits aren’t counted. While it is set, no analytics run in that browser at all.',
+      },
+      reading: {
+        before: 'Which lessons you’ve read (',
+        after:
+          '), so we can show a subtle “read” indicator next time and suggest your next lesson on the homepage and the learning path, including the next step on each “Start wherever you are” route.',
+      },
+      subscription: {
+        before: 'Whether you’ve confirmed your newsletter subscription (',
+        after:
+          '), so we stop showing you the subscribe form on every page once you’ve completed the double-opt-in loop. Set only when you click the confirmation link in your email; never contains your email address.',
+      },
+      dismissed: {
+        before: 'Whether you’ve dismissed the newsletter subscribe prompt (',
+        after:
+          '), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.',
+      },
+      waitlistSignedUp: {
+        before: 'Whether you’ve signed up for the product-launch waitlist (',
+        after:
+          '), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.',
+      },
+    },
+    clearsEverything: 'Clearing your browser’s site data wipes all of the above instantly.',
+
+    why: {
+      analytics: {
+        lead: 'Analytics:',
+        rest: ' to figure out which posts actually help people and which ones lose them halfway through. We can’t fix what we can’t see.',
+      },
+      newsletter: {
+        lead: 'Newsletter:',
+        rest:
+          ' to email you when a new blog post is published, plus one reminder if you start subscribing but do not confirm within 3 days (sent between 9 AM and 12 PM Prague time). No other emails. No promos, no “we miss you” sequences, no cross-promoting other products.',
+      },
+      waitlist: {
+        lead: 'Waitlist:',
+        rest: ' to send you exactly one email when the nidhi product launches. Nothing else. Not a newsletter, not a drip sequence, not cross-promotion.',
+      },
+      localPreferences: {
+        lead: 'Local preferences:',
+        rest: ' to make the site feel consistent for you without a server round-trip. All of that stays on your device.',
+      },
+    },
+
+    where: {
+      /**
+       * The four processors. `posthog`, `google` and `github` name a service, so
+       * the name is the same string in every catalog; `browser` is prose and is
+       * translated. Google's row is the only one with two `<code>` addresses in
+       * it, which is why it is the only one with a `middle`.
+       */
+      processors: {
+        posthog: {
+          name: 'PostHog Cloud EU',
+          rest: ' (Frankfurt, Germany): our analytics processor. Session recording is disabled. We use their standard product, with no custom person properties that would identify you, unless you subscribe, in which case your subscription status becomes a property on the anonymous person record for funnel analysis.',
+        },
+        google: {
+          name: 'Google Workspace',
+          before: ' (Google Cloud EU regions): our email addresses (',
+          middle: ' for general contact and support, ',
+          after:
+            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs). Only we can read it.',
+        },
+        github: {
+          name: 'GitHub Pages',
+          rest: ' (a GitHub / Microsoft service): hosts the static files of this website. GitHub keeps short-lived server access logs for abuse prevention. We don’t read them and don’t get copies.',
+        },
+        browser: {
+          name: 'Your browser',
+          rest: ': for the local preferences listed above.',
+        },
+      },
+      thatIsAll:
+        'That’s the whole list of services that handle data for us. There’s no fourth processor in a footnote somewhere.',
+      // The bold lead names the service; the component supplies the address in
+      // parentheses after it, and `rest` carries the comma that follows them.
+      frankfurter: {
+        lead: 'One service your browser contacts directly: Frankfurter',
+        rest: ', a free, open service that publishes European Central Bank exchange rates. Your browser asks it for the day’s rates when you open the net worth calculator (and again if you change your spending currency there). The request names only currency codes, never your amounts or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type. It goes straight from your browser to Frankfurter, so we never see it, and Frankfurter is independent of us: what it keeps is up to them.',
+      },
+    },
+
+    dontDo: {
+      ads: 'We don’t run ads. No ad tech on this site at all.',
+      sell: 'We don’t sell, rent, license, or syndicate your data to anyone.',
+      crossSite:
+        'We don’t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
+      screen: 'We don’t record your screen, keystrokes, form values, or continuous scroll stream.',
+      replies: 'We don’t read replies to newsletter emails and feed them back into any analytics or ads system.',
+      imports: 'We don’t import the newsletter or waitlist lists into any other tool or mailing system.',
+    },
+
+    retention: {
+      analytics: {
+        lead: 'Analytics events:',
+        rest: ' 12 months (PostHog’s default retention; we haven’t extended it), then auto-deleted.',
+      },
+      newsletter: {
+        lead: 'Newsletter subscribers:',
+        rest: ' while you’re subscribed, plus up to 30 days after you unsubscribe so we can make sure you don’t get one more email by accident. After that, the row is deleted.',
+      },
+      waitlist: {
+        lead: 'Waitlist signups:',
+        rest: ' until we send the launch email and you’ve had time to act on it, or until you ask us to remove you. Email us anytime.',
+      },
+      bounced: {
+        lead: 'Bounced or invalid emails:',
+        rest: ' removed as soon as we notice them, usually within a week.',
+      },
+      localStorage: {
+        lead: 'Your localStorage:',
+        rest: ' until you clear your browser data. Again, we never see it.',
+      },
+    },
+
+    rights: {
+      intro:
+        'Under the GDPR (and similar regulations), you have the right to ask us what we hold about you, correct it, export it, restrict how we use it, object to it, or delete it.',
+      unsubscribe:
+        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist, email us and we’ll remove you. We’ll do it manually for either.',
+      analytics: {
+        before:
+          'For analytics, the events are anonymous; we don’t have a way to look up “your” events because we don’t know who you are. If this bothers you, just decline the cookie banner, or use a content blocker. Nothing on the site breaks. You can change your answer any time with ',
+        strong: 'Cookie settings',
+        after: ' at the bottom of every page; saying no there stops click recording straight away.',
+      },
+      // The address is the component's, and so is the word the reader is asked
+      // to type in the subject: the same inbox reads every edition, and the
+      // word has to be the one that reaches it.
+      contact: {
+        before: 'For anything else, email ',
+        middle: ' with the word ',
+        after: ' in the subject. We reply within a few days.',
+      },
+    },
+
+    children:
+      'This site is written for adults trying to figure out their own money. We don’t knowingly collect anything from children under 16. If you think we have, email us and we’ll delete it.',
+
+    whoWeAre: {
+      intro:
+        'nidhi is a small independent project. No investors, no growth team, no ad budget. Currently built and run by one person in Prague.',
+      /** The two handles are the component's; only the tail of each row is here. */
+      contact: {
+        hello: ': for anything, privacy or otherwise',
+        instagram: ': if you prefer DMs',
+        beliefsLink: 'Our beliefs',
+        beliefsRest: ': if you want the why',
+      },
+    },
+
+    /**
+     * The framing around the changelog, not its entries. See the namespace
+     * comment above for why the entries are not translated.
+     */
+    changelog: {
+      eyebrow: 'Changelog',
+      title: 'Changes to this notice',
+      intro: {
+        before:
+          'We update this page in place. Every change gets an entry in the log below, newest first, no matter how small. The latest few are shown in full; older ones are kept word for word under “Earlier changes”. Changes that affect how we handle personal data (a new processor, a new category of data, a retention change) are flagged ',
+        after: '.',
+      },
+      second:
+        'We don’t push “we updated our privacy policy” emails. If you want to keep an eye on it, bookmark this page or read the log below when you’re curious. If a change ever makes you uncomfortable, unsubscribing from the newsletter is a one-click link in every email, and clearing your browser’s site data wipes everything stored locally.',
+      earlier: 'Earlier changes',
+      // Two forms rather than a plural rule: Hindi's word for "change" does not
+      // inflect for number, and `format()` has no plural machinery to lean on.
+      countOne: '{count} change',
+      countOther: '{count} changes',
+      materialTag: 'material',
+      materialLabel: 'Material change',
+      /**
+       * Under the changelog heading, on every page but the English one. The
+       * entries below it are English in every edition, so a reader of a
+       * translation is owed the reason.
+       */
+      entriesInEnglish:
+        'The log below is kept in English, in the words it was written in, and is not translated: it is a record of what this notice said on a given day.',
+    },
+  },
+
+  /**
+   * The 404. One file serves every missing path on the host, in both languages,
+   * with the path prefix deciding which of the two blocks is shown, so these
+   * strings are the only page copy on the site that is not reached through a
+   * route's own locale.
+   */
+  notFound: {
+    meta: {
+      title: 'Page not found (404) | nidhi',
+      description:
+        "That page doesn't exist on nidhi. It may have been moved, the URL might be mistyped, or the link may be out of date. Head back home to continue.",
+    },
+    heading: '404',
+    body: "The page you're looking for doesn't exist.",
+    cta: 'Go home',
+  },
+
+  /**
    * The early-access waitlist box, on the home page and on the net worth tool.
    * It posts to the same Google Apps Script endpoint in every language, and the
    * email it triggers is English, so the copy promises one email and no more:

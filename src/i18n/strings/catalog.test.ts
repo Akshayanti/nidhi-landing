@@ -62,6 +62,17 @@ const IDENTICAL_OK = new Set<string>([
   // readable at a glance.
   'home.compare.people.alex.name',
   'home.compare.people.sam.name',
+
+  // The privacy notice names four services, and three of those names are the
+  // services' own (the fourth, "Your browser", is prose and is translated). A
+  // reader who wants to look one up has to look up the name it actually has,
+  // and a translator rendering "Google Workspace" in Devanagari would be
+  // inventing a company. `privacy.collect.pageviews.link` is the same name
+  // again, as a link.
+  'privacy.collect.pageviews.link',
+  'privacy.where.processors.posthog.name',
+  'privacy.where.processors.google.name',
+  'privacy.where.processors.github.name',
 ]);
 
 /**

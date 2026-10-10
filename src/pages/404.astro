@@ -1,18 +1,78 @@
 ---
+/**
+ * The 404 page. One page for the whole host, in both languages.
+ *
+ * GitHub Pages answers every missing address with this one file, so there is
+ * no `/hi/404/` to build and no counterpart URL for `hreflang` or the language
+ * picker to point at, which is why `alternates` stays `[DEFAULT_LOCALE]` and
+ * the header offers no picker here. Instead both language blocks are rendered
+ * into the same page and a script in `<head>` reveals the one that matches the
+ * address, before the browser paints.
+ *
+ * It keys off the document's `lang`, which is the same thing a screen reader
+ * picks its voice from, so the two never disagree. With scripts off the
+ * English block is the one left standing, which is the right fallback: the
+ * header, footer and cookie banner around it are English either way.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-// One 404 for the whole host, in English, so there is no counterpart URL for
-// hreflang or the language switcher to point at.
-import { DEFAULT_LOCALE } from '../i18n';
+import { DEFAULT_LOCALE, dict } from '../i18n';
+
+const en = dict('en').notFound;
+const hi = dict('hi').notFound;
 ---
 
-<BaseLayout title="Page not found (404) | nidhi" description="That page doesn't exist on nidhi. It may have been moved, the URL might be mistyped, or the link may be out of date. Head back home to continue." robots="noindex, nofollow" alternates={[DEFAULT_LOCALE]}>
-  <div class="container" style="text-align: center; padding: 8rem 1.5rem;">
-    <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">404</h1>
+<BaseLayout
+  title={en.meta.title}
+  description={en.meta.description}
+  robots="noindex, nofollow"
+  alternates={[DEFAULT_LOCALE]}
+>
+  <script slot="head" is:inline define:vars={{ hiTitle: hi.meta.title }}>
+    // Runs in <head>, before the body is parsed and before the first paint, so
+    // a Hindi address never flashes the English block. The trailing slash is
+    // what the rest of the site uses, but a reader who typed the address by
+    // hand may well have left it off, so both spellings count.
+    var path = window.location.pathname;
+    if (path === '/hi' || path.indexOf('/hi/') === 0) {
+      document.documentElement.lang = 'hi';
+      document.title = hiTitle;
+    }
+  </script>
+
+  <!-- English first: it is the block that a reader with scripts off keeps. -->
+  <div class="container notfound-en" style="text-align: center; padding: 8rem 1.5rem;">
+    <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">{en.heading}</h1>
     <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
-      The page you're looking for doesn't exist.
+      {en.body}
     </p>
     <a href="/" class="transactional-cta">
-      Go home
+      {en.cta}
+    </a>
+  </div>
+
+  <div class="container notfound-hi" style="text-align: center; padding: 8rem 1.5rem;">
+    <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">{hi.heading}</h1>
+    <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+      {hi.body}
+    </p>
+    <a href="/hi/" class="transactional-cta">
+      {hi.cta}
     </a>
   </div>
 </BaseLayout>
+
+<style>
+  .notfound-hi {
+    display: none;
+  }
+
+  /* The head script sets `lang` on <html>, so this is the same switch a screen
+     reader makes: no second flag to keep in step with it. */
+  :global(html[lang='hi']) .notfound-en {
+    display: none;
+  }
+
+  :global(html[lang='hi']) .notfound-hi {
+    display: block;
+  }
+</style>
