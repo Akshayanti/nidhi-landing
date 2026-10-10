@@ -1,0 +1,51 @@
+---
+/**
+ * The page the unsubscribe page redirects to, in whichever language it was
+ * asked for.
+ *
+ * English is served from `src/pages/unsubscribed.astro`, which is also where
+ * the Apps Script endpoint redirects; the other languages come through
+ * `src/pages/[locale]/unsubscribed.astro`, which the unsubscribe page in that
+ * language redirects to.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = dict(locale).transactional.unsubscribed;
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={t.meta.title}
+  description={t.meta.description}
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--muted" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">{t.heading}</h1>
+      <p class="transactional-body">
+        {t.body}
+      </p>
+
+      <a class="transactional-cta transactional-cta--subtle" href={`mailto:hello@nidhi.today?subject=${encodeURIComponent(t.emailSubject)}`}>
+        {t.cta}
+      </a>
+
+      <p class="transactional-secondary">
+        {t.secondaryBefore}<a href={localizedPath(locale, '/blog/')}>{t.secondaryLink}</a>{t.secondaryAfter}
+      </p>
+    </div>
+  </section>
+</BaseLayout>

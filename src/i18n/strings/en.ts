@@ -632,7 +632,7 @@ export const en = {
 
     newsletter: {
       email: 'Your email address.',
-      page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there).',
+      page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there, and, if it was a page of the Hindi edition, so your confirmation, reminder and welcome emails and the pages they link to are in Hindi).',
       timestamps: 'Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.',
       status: 'Your subscription status: pending, confirmed, or unsubscribed.',
       // The address itself is a `<code>` in the component.
@@ -751,7 +751,7 @@ export const en = {
       crossSite:
         'We don’t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
       screen: 'We don’t record your screen, keystrokes, form values, or continuous scroll stream.',
-      replies: 'We don’t read replies to newsletter emails and feed them back into any analytics or ads system.',
+      replies: 'Replies to newsletter emails reach a person at hello@nidhi.today, who reads them. We never feed them into any analytics or ads system.',
       imports: 'We don’t import the newsletter or waitlist lists into any other tool or mailing system.',
     },
 
@@ -872,7 +872,7 @@ export const en = {
     region: 'Newsletter subscription',
     title: 'Receive new posts directly in your inbox',
     text: 'One email when something new goes up. No spam, unsubscribe anytime.',
-    inEnglish: 'The lessons and the emails are in English.',
+    inEnglish: 'The lessons, and the emails announcing them, are in English.',
     emailLabel: 'Email address',
     button: 'Subscribe',
     /** Split around the link, so a translation can move it inside the sentence. */
@@ -925,6 +925,102 @@ export const en = {
     /** Shown when the request fails. */
     error: 'Something went wrong. Please try again in a moment.',
   },
+  /**
+   * The five newsletter pages a reader reaches from an email or from the
+   * double opt-in: confirm, confirmed, invalid link, unsubscribe, unsubscribed.
+   * All noindex. The status and error lines are set by each page's inline
+   * script, which cannot import the catalog, so the page hands them over with
+   * `define:vars`. The email addresses and the brand stay in the components.
+   */
+  transactional: {
+    confirm: {
+      meta: {
+        title: 'Confirm your subscription | nidhi',
+        description: 'One click to confirm your subscription to new nidhi lessons.',
+      },
+      heading: 'Confirm your subscription',
+      /** Split around the brand, which the page sets in bold. */
+      bodyBefore: 'You asked to get new posts from ',
+      bodyAfter:
+        ' by email. One click below and you’re set. We’ll email you when something new is published. Nothing else.',
+      button: 'Yes, subscribe me',
+      /** On the button while the request is in flight. */
+      confirming: 'Confirming…',
+      secondary: 'Didn’t sign up? You can just close this tab: without your click, nothing happens.',
+      missingToken:
+        'This link is missing its confirmation token. Try the link from your email again, or subscribe once more from the learning path.',
+      notConfigured: 'Subscriptions are not configured on this environment.',
+      error: 'Something went wrong. Please try the link again in a moment.',
+    },
+    confirmed: {
+      meta: {
+        title: 'Subscribed | nidhi',
+        description:
+          "You're subscribed to new nidhi lessons. Expect an email when a new lesson is published.",
+      },
+      heading: 'You’re in.',
+      /** Split around the sending address, which the page sets in bold. */
+      bodyBefore: 'Thanks for confirming. We’ll ping you from ',
+      bodyAfter:
+        ' whenever a new lesson goes up, nothing else. Until then, there’s already a pile of them to read.',
+      cta: 'Start the learning path',
+      homeLink: 'Or head back to the home page',
+      homeAfter: '.',
+    },
+    invalid: {
+      meta: {
+        title: 'Link not valid | nidhi',
+        description:
+          'This subscription link is no longer valid. The link may have expired or already been used. Try subscribing again from the homepage.',
+      },
+      heading: 'This link isn’t valid.',
+      body: 'Either it’s been used already, it’s expired, or something got mangled in transit. Nothing on your account has changed.',
+      /** Replaces `body` when the Apps Script redirect says `?reason=confirm`. */
+      reasonConfirm:
+        'This confirmation link has already been used or has expired. If you meant to subscribe, pop your email back into the form on the learning path and we’ll send a new confirmation.',
+      /** Replaces `body` when the Apps Script redirect says `?reason=unsubscribe`. */
+      reasonUnsubscribe:
+        'This unsubscribe link isn’t valid anymore. If you want to stop getting our emails, reply to any of them and we’ll remove you manually.',
+      cta: 'Go to the learning path',
+      emailUs: 'Email us',
+      emailSubject: 'subscription link issue',
+      /** Split around the word the page sets in bold. */
+      secondaryBefore: 'If you meant to ',
+      secondaryStrong: 'unsubscribe',
+      secondaryAfter: ' and nothing happened, reply to any of our emails and we’ll remove you manually.',
+    },
+    unsubscribe: {
+      meta: {
+        title: 'Unsubscribe | nidhi',
+        description:
+          'Unsubscribe from nidhi lesson emails. One click and you will stop receiving new-lesson emails.',
+      },
+      heading: 'Unsubscribe from nidhi',
+      body: 'Click the button below and you’ll stop receiving emails from us. No questions, no “are you sure,” no re-engagement sequence.',
+      button: 'Unsubscribe me',
+      /** On the button while the request is in flight. */
+      unsubscribing: 'Unsubscribing…',
+      secondary: 'Changed your mind? Just close this tab. You’ll stay subscribed.',
+      missingToken: 'This link is missing its unsubscribe token. Try the link from your email again.',
+      notConfigured: 'Unsubscribe endpoint is not configured on this environment.',
+      error: 'Something went wrong. Please try again in a moment.',
+    },
+    unsubscribed: {
+      meta: {
+        title: 'Unsubscribed | nidhi',
+        description: "You've been unsubscribed from nidhi lesson emails.",
+      },
+      heading: 'You’re unsubscribed.',
+      body: 'You won’t get any more lesson emails from nidhi. Sorry to see you go. If there was a reason, we’d love to hear it, so we can fix whatever isn’t working.',
+      cta: 'Tell us why',
+      emailSubject: 'Unsubscribe feedback',
+      /** Split around the link, so a translation can move it inside the sentence. */
+      secondaryBefore: 'Changed your mind? You can ',
+      secondaryLink: 'resubscribe from the learning path',
+      secondaryAfter: ' any time.',
+    },
+  },
+
   home: {
     meta: {
       title: 'nidhi | Understand your money and plan what comes next',

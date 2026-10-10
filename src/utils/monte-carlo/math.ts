@@ -60,6 +60,19 @@ const COMPOUND_TARGETS: Record<Exclude<ReturnSetting, 'historical'>, { stocks: n
   optimistic: { stocks: 0.06, bonds: 0.03 },
 };
 
+/**
+ * The compound yearly rates each setting's description quotes. "historical"
+ * quotes the published geometric means (Exhibits 11.3 and 11.5), not the
+ * lognormal fit's 5.4%, because that is the figure a reader can look up; the
+ * other two are the targets the model is set to. Kept here so the tooltip
+ * can never disagree with the model it describes.
+ */
+export const QUOTED_RATES: Record<ReturnSetting, { stocks: number; bonds: number }> = {
+  cautious: COMPOUND_TARGETS.cautious,
+  historical: { stocks: 0.053, bonds: 0.017 },
+  optimistic: COMPOUND_TARGETS.optimistic,
+};
+
 /** Run counts the page offers. More runs settle the percentiles; past 100,000 nothing visible changes. */
 export const RUN_OPTIONS = [100, 1_000, 10_000, 100_000] as const;
 export const DEFAULT_PATHS = 10_000;

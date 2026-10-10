@@ -1,0 +1,155 @@
+---
+/**
+ * The unsubscribe page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/unsubscribe.astro`, the address every
+ * email's footer links to; the other languages come through
+ * `src/pages/[locale]/unsubscribe.astro`. Both render this one component.
+ *
+ * The inline script cannot import the catalog, so the lines it sets and the
+ * address it redirects to are handed over with `define:vars`. Everything else
+ * it does (the token, the endpoint, the request body, the localStorage key and
+ * the PostHog event) is the same in every language.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = dict(locale).transactional.unsubscribe;
+
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
+const isDev = import.meta.env.DEV;
+
+const msg = {
+  button: t.button,
+  unsubscribing: t.unsubscribing,
+  missingToken: t.missingToken,
+  notConfigured: t.notConfigured,
+  error: t.error,
+};
+const unsubscribedPath = localizedPath(locale, '/unsubscribed');
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={t.meta.title}
+  description={t.meta.description}
+  robots="noindex,nofollow"
+>
+  <section class="transactional">
+    <div class="transactional-card">
+      <div class="transactional-icon transactional-icon--muted" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+          <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <h1 class="transactional-title">{t.heading}</h1>
+      <p class="transactional-body">
+        {t.body}
+      </p>
+
+      <button
+        id="unsubscribe-button"
+        class="transactional-cta transactional-cta--destructive"
+        type="button"
+        disabled
+        data-endpoint={endpoint}
+      >
+        {t.button}
+      </button>
+
+      <p id="unsubscribe-status" class="transactional-status" role="status" aria-live="polite"></p>
+
+      <p class="transactional-secondary">
+        {t.secondary}
+      </p>
+
+      {isDev && !endpoint && (
+        <p class="transactional-dev-warning">
+          ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set locally. See
+          <code>docs/blog-subscription-setup.md</code>.
+        </p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline define:vars={{ msg, unsubscribedPath }}>
+  (function () {
+    var btn = document.getElementById('unsubscribe-button');
+    var status = document.getElementById('unsubscribe-status');
+    if (!btn || !status) return;
+
+    var params = new URLSearchParams(window.location.search);
+    var token = params.get('t') || '';
+    if (token) {
+      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+    }
+
+    var endpoint = btn.getAttribute('data-endpoint') || '';
+
+    function setStatus(text, kind) {
+      status.textContent = text;
+      status.className = 'transactional-status transactional-status--' + kind;
+    }
+
+    if (!token) {
+      btn.disabled = true;
+      setStatus(msg.missingToken, 'error');
+      return;
+    }
+    if (!endpoint) {
+      btn.disabled = true;
+      setStatus(msg.notConfigured, 'error');
+      return;
+    }
+
+    btn.disabled = false;
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      btn.textContent = msg.unsubscribing;
+      setStatus('', 'idle');
+
+      var body = new URLSearchParams();
+      body.set('action', 'unsubscribe');
+      body.set('t', token);
+
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).then(function () {
+        // Clear the local subscription flag so the SubscribeSection CTA
+        // reappears on the site, symmetrical to ConfirmPage writing it.
+        // See /privacy.
+        try {
+          localStorage.removeItem('nidhi-newsletter-subscription');
+        } catch (_) {}
+        if (window.posthog) {
+          // Sent at once rather than in the next batch: the page redirects
+          // 300 ms later, well inside PostHog's batching window.
+          window.posthog.capture('blog_unsubscribe_clicked', {}, { send_instantly: true });
+        }
+        // Delay redirect to let PostHog's async flush complete. Without
+        // this the navigation cancels the in-flight capture request.
+        setTimeout(function () {
+          window.location.replace(unsubscribedPath);
+        }, 300);
+      }).catch(function () {
+        setStatus(msg.error, 'error');
+        btn.disabled = false;
+        btn.textContent = msg.button;
+      });
+    });
+  })();
+</script>

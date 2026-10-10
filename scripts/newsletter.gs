@@ -280,6 +280,123 @@ function findRowByToken_(sh, colIndex, token) {
   return 0;
 }
 
+// ============================================================================
+// Language
+// ============================================================================
+//
+// The site has an English and a Hindi edition (/hi/). A subscriber's emails
+// and the pages those emails lead to follow the edition they signed up on,
+// read from the `source` column the form already sends (the signup page's
+// path). Nothing new is collected for it. The lessons themselves are English
+// in both editions, so the newsletter issues stay English; only the
+// confirmation, reminder and welcome emails, their footer and the pages they
+// link to change language.
+
+function langForSource_(source) {
+  return /^\/hi(\/|$)/.test(String(source || '')) ? 'hi' : 'en';
+}
+
+function langOfRow_(sh, row) {
+  return row ? langForSource_(sh.getRange(row, COL.source).getValue()) : 'en';
+}
+
+/**
+ * The edition for a request whose token matched no row, which therefore
+ * cannot be traced to a subscriber: a caller may pass `lang=hi` to land on
+ * the Hindi error page. Anything else gets the English one.
+ */
+function langOfParam_(e) {
+  return (e && e.parameter && e.parameter.lang) === 'hi' ? 'hi' : 'en';
+}
+
+/** A site page in the subscriber's edition: `/confirm` → `/hi/confirm` for Hindi. */
+function sitePath_(cfg, lang, path) {
+  return cfg.siteUrl + (lang === 'hi' ? '/hi' : '') + path;
+}
+
+var EMAIL_COPY = {
+  en: {
+    htmlLang: 'en',
+    hi: 'Hi,',
+    tagline: 'Money, understood.',
+    confirm: {
+      subject: function (name) { return 'Confirm your subscription to ' + name; },
+      textTitle: function (name) { return name + ', confirm your subscription'; },
+      textBody: function (name) { return 'Click the link below to confirm you’d like a heads-up from ' + name + ' whenever a new post goes up:'; },
+      htmlBody: function (nameHtml) { return 'Click the button below to confirm you’d like a heads-up from ' + nameHtml + ' whenever a new post goes up.'; },
+      button: 'Confirm subscription',
+      copyLink: 'If the button doesn’t work, copy and paste this link into your browser:',
+      ignore: 'If you didn’t sign up, ignore this email and you won’t hear from us again.',
+    },
+    remind: {
+      subject: function (name) { return 'Finish subscribing to ' + name + '?'; },
+      textTitle: function (name) { return name + ', reminder'; },
+      textBody: function (name) { return 'You started subscribing to the ' + name + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\nIf you still want in, click below:'; },
+      htmlBody: function (nameHtml) { return 'You started subscribing to the ' + nameHtml + ' blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.'; },
+      button: 'Finish subscribing',
+      copyLink: 'Or copy and paste this link:',
+      ignore: 'Changed your mind? No worries, ignore this email and we won’t email you again.',
+    },
+    welcome: {
+      subject: function (name) { return 'You’re subscribed to ' + name; },
+      textTitle: function (name) { return name + ', you’re in.'; },
+      heading: 'You’re in.',
+      thanks: function (fromHtml) { return 'Thanks for confirming. We’ll ping you from ' + fromHtml + ' whenever a new post goes up, nothing else. No digests, no surprises, no "special offers".'; },
+      whileWait: 'While you wait for the next one, the existing posts are all on the blog:',
+      button: 'Start reading &rarr;',
+      reply: 'Reply to this email if anything ever lands wrong: a real person reads it.',
+      unsubLabel: 'Unsubscribe: ',
+      privacyLabel: 'Privacy:     ',
+    },
+    footer: {
+      why: function (linkHtml) { return 'You’re getting this because you subscribed to ' + linkHtml + '.'; },
+      unsubscribe: 'Unsubscribe',
+      privacy: 'Privacy',
+      disclaimer: 'Educational, not financial advice. Everyone’s situation is different.',
+    },
+  },
+  hi: {
+    htmlLang: 'hi',
+    hi: 'नमस्ते,',
+    tagline: 'पैसा, समझ आ गया।',
+    confirm: {
+      subject: function (name) { return name + ' \u0915\u0940 \u0938\u0926\u0938\u094d\u092f\u0924\u093e \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0947\u0902'; },
+      textTitle: function (name) { return name + ': \u0905\u092a\u0928\u0940 \u0938\u0926\u0938\u094d\u092f\u0924\u093e \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0947\u0902'; },
+      textBody: function (name) { return '\u0928\u0940\u091a\u0947 \u0926\u093f\u090f \u0932\u093f\u0902\u0915 \u092a\u0930 \u0915\u094d\u0932\u093f\u0915 \u0915\u0930\u0915\u0947 \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0947\u0902 \u0915\u093f \u091c\u092c \u092d\u0940 \u0915\u094b\u0908 \u0928\u092f\u093e \u092a\u093e\u0920 \u091b\u092a\u0947, \u0906\u092a {name} \u0938\u0947 \u090f\u0915 \u0938\u0942\u091a\u0928\u093e \u092a\u093e\u0928\u093e \u091a\u093e\u0939\u0924\u0947 \u0939\u0948\u0902:'.replace('{name}', name); },
+      htmlBody: function (nameHtml) { return '\u0928\u0940\u091a\u0947 \u0926\u093f\u090f \u092c\u091f\u0928 \u092a\u0930 \u0915\u094d\u0932\u093f\u0915 \u0915\u0930\u0915\u0947 \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0947\u0902 \u0915\u093f \u091c\u092c \u092d\u0940 \u0915\u094b\u0908 \u0928\u092f\u093e \u092a\u093e\u0920 \u091b\u092a\u0947, \u0906\u092a {name} \u0938\u0947 \u090f\u0915 \u0938\u0942\u091a\u0928\u093e \u092a\u093e\u0928\u093e \u091a\u093e\u0939\u0924\u0947 \u0939\u0948\u0902\u0964'.replace('{name}', nameHtml); },
+      button: '\u0938\u0926\u0938\u094d\u092f\u0924\u093e \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0947\u0902',
+      copyLink: '\u0905\u0917\u0930 \u092c\u091f\u0928 \u0915\u093e\u092e \u0928 \u0915\u0930\u0947, \u0924\u094b \u092f\u0939 \u0932\u093f\u0902\u0915 \u0915\u0949\u092a\u0940 \u0915\u0930\u0915\u0947 \u0905\u092a\u0928\u0947 \u092c\u094d\u0930\u093e\u0909\u091c\u093c\u0930 \u092e\u0947\u0902 \u0916\u094b\u0932\u0947\u0902:',
+      ignore: '\u0905\u0917\u0930 \u0906\u092a\u0928\u0947 \u0938\u093e\u0907\u0928 \u0905\u092a \u0928\u0939\u0940\u0902 \u0915\u093f\u092f\u093e, \u0924\u094b \u0907\u0938 \u0908\u092e\u0947\u0932 \u0915\u094b \u0905\u0928\u0926\u0947\u0916\u093e \u0915\u0930\u0947\u0902, \u0939\u092e \u0906\u092a\u0915\u094b \u0926\u094b\u092c\u093e\u0930\u093e \u0908\u092e\u0947\u0932 \u0928\u0939\u0940\u0902 \u0915\u0930\u0947\u0902\u0917\u0947\u0964',
+    },
+    remind: {
+      subject: function (name) { return '{name} \u0915\u0940 \u0938\u0926\u0938\u094d\u092f\u0924\u093e \u092a\u0942\u0930\u0940 \u0915\u0930\u0928\u0940 \u0939\u0948?'.replace('{name}', name); },
+      textTitle: function (name) { return '{name}: \u090f\u0915 \u0930\u093f\u092e\u093e\u0907\u0902\u0921\u0930'.replace('{name}', name); },
+      textBody: function (name) { return '\u0906\u092a\u0928\u0947 \u0915\u0941\u091b \u0926\u093f\u0928 \u092a\u0939\u0932\u0947 {name} \u0915\u094b \u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c \u0915\u0930\u0928\u093e \u0936\u0941\u0930\u0942 \u0915\u093f\u092f\u093e \u0925\u093e, \u092a\u0930 \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e\u0947\u0936\u0928 \u0932\u093f\u0902\u0915 \u092a\u0930 \u0905\u092d\u0940 \u0915\u094d\u0932\u093f\u0915 \u0928\u0939\u0940\u0902 \u0915\u093f\u092f\u093e\u0964\r\n\r\n\u0905\u0917\u0930 \u0905\u092c \u092d\u0940 \u091c\u0941\u0921\u093c\u0928\u093e \u091a\u093e\u0939\u0947\u0902, \u0924\u094b \u0928\u0940\u091a\u0947 \u0926\u093f\u090f \u0932\u093f\u0902\u0915 \u092a\u0930 \u0915\u094d\u0932\u093f\u0915 \u0915\u0930\u0947\u0902:'.replace('{name}', name); },
+      htmlBody: function (nameHtml) { return '\u0906\u092a\u0928\u0947 \u0915\u0941\u091b \u0926\u093f\u0928 \u092a\u0939\u0932\u0947 {name} \u0915\u094b \u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c \u0915\u0930\u0928\u093e \u0936\u0941\u0930\u0942 \u0915\u093f\u092f\u093e \u0925\u093e, \u092a\u0930 \u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e\u0947\u0936\u0928 \u0932\u093f\u0902\u0915 \u092a\u0930 \u0905\u092d\u0940 \u0915\u094d\u0932\u093f\u0915 \u0928\u0939\u0940\u0902 \u0915\u093f\u092f\u093e\u0964 \u0905\u0917\u0930 \u0905\u092c \u092d\u0940 \u091c\u0941\u0921\u093c\u0928\u093e \u091a\u093e\u0939\u0947\u0902, \u0924\u094b \u0928\u0940\u091a\u0947 \u0926\u093f\u090f \u092c\u091f\u0928 \u0938\u0947 \u0907\u0938\u0947 \u092a\u0942\u0930\u093e \u0915\u0930\u0947\u0902\u0964'.replace('{name}', nameHtml); },
+      button: '\u0938\u0926\u0938\u094d\u092f\u0924\u093e \u092a\u0942\u0930\u0940 \u0915\u0930\u0947\u0902',
+      copyLink: '\u092f\u093e \u092f\u0939 \u0932\u093f\u0902\u0915 \u0915\u0949\u092a\u0940 \u0915\u0930\u0915\u0947 \u0916\u094b\u0932\u0947\u0902:',
+      ignore: '\u0907\u0930\u093e\u0926\u093e \u092c\u0926\u0932 \u0917\u092f\u093e? \u0915\u094b\u0908 \u092c\u093e\u0924 \u0928\u0939\u0940\u0902, \u0907\u0938 \u0908\u092e\u0947\u0932 \u0915\u094b \u0905\u0928\u0926\u0947\u0916\u093e \u0915\u0930\u0947\u0902, \u0939\u092e \u0906\u092a\u0915\u094b \u0926\u094b\u092c\u093e\u0930\u093e \u0908\u092e\u0947\u0932 \u0928\u0939\u0940\u0902 \u0915\u0930\u0947\u0902\u0917\u0947\u0964',
+    },
+    welcome: {
+      subject: function (name) { return '\u0906\u092a\u0928\u0947 {name} \u0915\u094b \u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c \u0915\u0930 \u0932\u093f\u092f\u093e \u0939\u0948'.replace('{name}', name); },
+      textTitle: function (name) { return '{name}: \u0938\u0926\u0938\u094d\u092f\u0924\u093e \u092a\u0915\u094d\u0915\u0940 \u0939\u094b \u0917\u0908\u0964'.replace('{name}', name); },
+      heading: '\u0938\u0926\u0938\u094d\u092f\u0924\u093e \u092a\u0915\u094d\u0915\u0940 \u0939\u094b \u0917\u0908\u0964',
+      thanks: function (fromHtml) { return '\u0915\u0928\u094d\u092b\u093c\u0930\u094d\u092e \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0927\u0928\u094d\u092f\u0935\u093e\u0926\u0964 \u091c\u092c \u092d\u0940 \u0915\u094b\u0908 \u0928\u092f\u093e \u092a\u093e\u0920 \u091b\u092a\u0947\u0917\u093e, \u0939\u092e {from} \u0938\u0947 \u0906\u092a\u0915\u094b \u090f\u0915 \u0908\u092e\u0947\u0932 \u092d\u0947\u091c\u0947\u0902\u0917\u0947, \u0914\u0930 \u0915\u0941\u091b \u0928\u0939\u0940\u0902\u0964 \u0928 \u0921\u093e\u0907\u091c\u0947\u0938\u094d\u091f, \u0928 \u0915\u094b\u0908 \u0938\u0930\u092a\u094d\u0930\u093e\u0907\u091c\u093c, \u0928 \u0915\u094b\u0908 "\u0938\u094d\u092a\u0947\u0936\u0932 \u0911\u092b\u093c\u0930"\u0964 \u092a\u093e\u0920 \u0905\u0902\u0917\u094d\u0930\u0947\u091c\u093c\u0940 \u092e\u0947\u0902 \u0939\u0948\u0902, \u0907\u0938\u0932\u093f\u090f \u0935\u0947 \u0908\u092e\u0947\u0932 \u092d\u0940 \u0905\u0902\u0917\u094d\u0930\u0947\u091c\u093c\u0940 \u092e\u0947\u0902 \u0906\u090f\u0901\u0917\u0947\u0964'.replace('{from}', fromHtml); },
+      whileWait: '\u0905\u0917\u0932\u0947 \u092a\u093e\u0920 \u0924\u0915, \u0905\u092c \u0924\u0915 \u0915\u0947 \u0938\u092d\u0940 \u092a\u093e\u0920 \u0938\u0940\u0916\u0928\u0947 \u0915\u0947 \u0930\u093e\u0938\u094d\u0924\u0947 \u092a\u0930 \u0939\u0948\u0902:',
+      button: '\u092a\u0922\u093c\u0928\u093e \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902 &rarr;',
+      reply: '\u0905\u0917\u0930 \u0915\u092d\u0940 \u0915\u0941\u091b \u0920\u0940\u0915 \u0928 \u0932\u0917\u0947, \u0924\u094b \u0907\u0938 \u0908\u092e\u0947\u0932 \u0915\u093e \u091c\u0935\u093e\u092c \u0926\u0947\u0902: \u0909\u0938\u0947 \u090f\u0915 \u0907\u0902\u0938\u093e\u0928 \u092a\u0922\u093c\u0924\u093e \u0939\u0948\u0964',
+      unsubLabel: '\u0905\u0928\u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c: ',
+      privacyLabel: '\u092a\u094d\u0930\u093e\u0907\u0935\u0947\u0938\u0940:     ',
+    },
+    footer: {
+      why: function (linkHtml) { return '\u092f\u0939 \u0908\u092e\u0947\u0932 \u0906\u092a\u0915\u094b \u0907\u0938\u0932\u093f\u090f \u092e\u093f\u0932\u093e \u0915\u094d\u092f\u094b\u0902\u0915\u093f \u0906\u092a\u0928\u0947 {link} \u0915\u094b \u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c \u0915\u093f\u092f\u093e \u0925\u093e\u0964'.replace('{link}', linkHtml); },
+      unsubscribe: '\u0905\u0928\u0938\u092c\u094d\u0938\u0915\u094d\u0930\u093e\u0907\u092c',
+      privacy: '\u092a\u094d\u0930\u093e\u0907\u0935\u0947\u0938\u0940 \u0928\u094b\u091f\u093f\u0938',
+      disclaimer: '\u0936\u0948\u0915\u094d\u0937\u093f\u0915 \u091c\u093e\u0928\u0915\u093e\u0930\u0940, \u0935\u093f\u0924\u094d\u0924\u0940\u092f \u0938\u0932\u093e\u0939 \u0928\u0939\u0940\u0902\u0964 \u0939\u0930 \u0915\u093f\u0938\u0940 \u0915\u0940 \u0938\u094d\u0925\u093f\u0924\u093f \u0905\u0932\u0917 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964',
+    },
+  },
+};
+
 function listConfirmedSubscribers_() {
   var sh = sheet_();
   var last = sh.getLastRow();
@@ -291,6 +408,7 @@ function listConfirmedSubscribers_() {
       out.push({
         email: String(rows[i][0]).trim(),
         unsubToken: String(rows[i][7]).trim(),
+        lang: langForSource_(rows[i][2]),
       });
     }
   }
@@ -637,7 +755,7 @@ function handleSubscribe_(e) {
     ]]);
   }
 
-  sendConfirmationEmail_(email, confirmToken);
+  sendConfirmationEmail_(email, confirmToken, langForSource_(source));
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
 }
@@ -683,7 +801,7 @@ function handleTestRemind_(e) {
     var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
     if (!confirmToken) return jsonResponse_({ ok: false, error: 'no confirm token found for this email' });
 
-    sendReminderEmail_(email, confirmToken);
+    sendReminderEmail_(email, confirmToken, langForSource_(row[COL.source - 1]));
     trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
       days_since_signup: 'test',
     });
@@ -746,7 +864,7 @@ function handleRemindPending() {
     if (!email || !confirmToken) continue;
 
     try {
-      sendReminderEmail_(email, confirmToken);
+      sendReminderEmail_(email, confirmToken, langForSource_(row[COL.source - 1]));
       sh.getRange(r + 2, COL.reminderSentAt).setValue(now);
       trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
         days_since_signup: Math.round(ageMs / (24 * 60 * 60 * 1000)),
@@ -771,27 +889,28 @@ function handleRemindPending() {
  * "you started subscribing, finish here" messaging. Carries the existing
  * confirm token so the link still works.
  */
-function sendReminderEmail_(email, confirmToken) {
+function sendReminderEmail_(email, confirmToken, lang) {
   var cfg = config_();
   var campaign = 'remind';
+  lang = lang === 'hi' ? 'hi' : 'en';
+  var c = EMAIL_COPY[lang];
 
-  var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
+  var confirmPageUrlRaw = sitePath_(cfg, lang, '/confirm') + '?t=' + confirmToken;
   var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
 
-  var subject = 'Finish subscribing to ' + cfg.fromName + '?';
+  var subject = c.remind.subject(cfg.fromName);
 
   var text =
-    cfg.fromName + ', reminder\r\n\r\n' +
-    'Hi,\r\n\r\n' +
-    'You started subscribing to the ' + cfg.fromName + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
-    'If you still want in, click below:\r\n\r\n' +
+    c.remind.textTitle(cfg.fromName) + '\r\n\r\n' +
+    c.hi + '\r\n\r\n' +
+    c.remind.textBody(cfg.fromName) + '\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'Changed your mind? No worries, ignore this email and we won’t email you again.\r\n\r\n' +
+    c.remind.ignore + '\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n';
 
   var html =
-    '<!doctype html><html lang="en"><head>' +
+    '<!doctype html><html lang="' + c.htmlLang + '"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
@@ -800,16 +919,16 @@ function sendReminderEmail_(email, confirmToken) {
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
         '<tr><td align="center" style="padding:24px 12px;">' +
           '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
-            brandBannerHtml_(cfg, campaign) +
+            brandBannerHtml_(cfg, campaign, lang) +
             '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
-              '<p style="margin:0 0 12px;color:#666;font-size:14px;">Or copy and paste this link:</p>' +
+              '<p style="margin:0 0 16px;">' + escapeHtml_(c.hi) + '</p>' +
+              '<p style="margin:0 0 20px;">' + c.remind.htmlBody('<strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong>') + '</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">' + escapeHtml_(c.remind.button) + '</a></p>' +
+              '<p style="margin:0 0 12px;color:#666;font-size:14px;">' + escapeHtml_(c.remind.copyLink) + '</p>' +
               '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
+              '<p style="margin:0;color:#666;font-size:14px;">' + escapeHtml_(c.remind.ignore) + '</p>' +
             '</td></tr>' +
-            footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
+            footerHtml_(cfg, null, /* isNewsletter */ false, campaign, lang) +
           '</table>' +
         '</td></tr>' +
       '</table>' +
@@ -840,11 +959,12 @@ function handleConfirm_(e) {
   var row = findRowByToken_(sh, COL.confirmToken, token);
 
   if (row === 0) {
-    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=confirm');
+    return redirectResponse_(sitePath_(cfg, langOfParam_(e), '/subscription-invalid') + '?reason=confirm');
   }
 
   var email = String(sh.getRange(row, COL.email).getValue()).trim();
   var unsubToken = String(sh.getRange(row, COL.unsubToken).getValue()).trim();
+  var lang = langOfRow_(sh, row);
 
   // Flip status to confirmed; clear unsubscribedAt in case this row was
   // previously unsubscribed; invalidate the confirm token so the link is
@@ -858,7 +978,7 @@ function handleConfirm_(e) {
   // so the subscriber sees an immediate "you're in" beyond the landing
   // page. Non-fatal — if Gmail hiccups, we still confirm the row.
   try {
-    sendWelcomeEmail_(email, unsubToken);
+    sendWelcomeEmail_(email, unsubToken, lang);
   } catch (err) {
     // Welcome email is non-blocking (the subscriber IS confirmed regardless),
     // but we still want a signal so a silent Gmail outage doesn't mean
@@ -872,7 +992,7 @@ function handleConfirm_(e) {
   }
 
   trackPosthog_('blog_subscribe_confirmed', distinctIdForEmail_(email), {});
-  return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
+  return redirectResponse_(sitePath_(cfg, lang, '/subscription-confirmed'));
 }
 
 // ============================================================================
@@ -889,7 +1009,7 @@ function handleUnsubscribe_(e, method) {
     if (method === 'POST') {
       return jsonResponse_({ ok: false, error: 'invalid_token' });
     }
-    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+    return redirectResponse_(sitePath_(cfg, langOfParam_(e), '/subscription-invalid') + '?reason=unsubscribe');
   }
 
   var email = String(sh.getRange(row, COL.email).getValue()).trim();
@@ -918,7 +1038,7 @@ function handleUnsubscribe_(e, method) {
   if (method === 'POST') {
     return jsonResponse_({ ok: true });
   }
-  return redirectResponse_(cfg.siteUrl + '/unsubscribed');
+  return redirectResponse_(sitePath_(cfg, langOfRow_(sh, row), '/unsubscribed'));
 }
 
 // ============================================================================
@@ -1056,7 +1176,7 @@ function handleSendPost_(e) {
       // User-facing unsubscribe link shown in the email body, goes to the
       // branded landing page on nidhi.today (not Apps Script) so subscribers
       // never see script.google.com URLs and preview bots don't trigger it.
-      var unsubPageUrl = cfg.siteUrl + '/unsubscribe?t=' + sub.unsubToken;
+      var unsubPageUrl = sitePath_(cfg, sub.lang, '/unsubscribe') + '?t=' + sub.unsubToken;
 
       var personalizedHtml = injectUnsubscribeUrl_(payload.html, unsubPageUrl);
       var personalizedText = injectUnsubscribeUrlText_(payload.text, unsubPageUrl);
@@ -1247,9 +1367,11 @@ function handleScanBounces_(e) {
 // Confirmation email (branded)
 // ============================================================================
 
-function sendConfirmationEmail_(email, confirmToken) {
+function sendConfirmationEmail_(email, confirmToken, lang) {
   var cfg = config_();
   var campaign = 'confirm';
+  lang = lang === 'hi' ? 'hi' : 'en';
+  var c = EMAIL_COPY[lang];
 
   // Confirmation link lands on the branded nidhi.today page which then
   // POSTs to Apps Script on explicit user click — same pattern as
@@ -1257,7 +1379,7 @@ function sendConfirmationEmail_(email, confirmToken) {
   // bots don't auto-confirm.
   // No trailing slash before `?` — astro.config.mjs sets trailingSlash:'never'
   // and the previous `/confirm/?t=...` form 404s on strict static hosts.
-  var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
+  var confirmPageUrlRaw = sitePath_(cfg, lang, '/confirm') + '?t=' + confirmToken;
   var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
 
   // For the List-Unsubscribe header on this email we don't have an unsub
@@ -1271,21 +1393,21 @@ function sendConfirmationEmail_(email, confirmToken) {
   // unexpected params in the header.
   var listUnsubPostUrl = cfg.webAppUrl + '?action=unsubscribe&t=' + unsubToken;
 
-  var subject = 'Confirm your subscription to ' + cfg.fromName;
-  var banner = brandBannerHtml_(cfg, campaign);
+  var subject = c.confirm.subject(cfg.fromName);
+  var banner = brandBannerHtml_(cfg, campaign, lang);
   var logoAlt = cfg.fromName;
 
   var text =
-    cfg.fromName + ', confirm your subscription\r\n\r\n' +
-    'Hi,\r\n\r\n' +
-    'Click the link below to confirm you\u2019d like a heads-up from ' + cfg.fromName + ' whenever a new post goes up:\r\n\r\n' +
+    c.confirm.textTitle(cfg.fromName) + '\r\n\r\n' +
+    c.hi + '\r\n\r\n' +
+    c.confirm.textBody(cfg.fromName) + '\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.\r\n\r\n' +
+    c.confirm.ignore + '\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n';
 
   var html =
-    '<!doctype html><html lang="en"><head>' +
+    '<!doctype html><html lang="' + c.htmlLang + '"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
@@ -1296,14 +1418,14 @@ function sendConfirmationEmail_(email, confirmToken) {
           '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
             banner +
             '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
-              '<p style="margin:0 0 12px;color:#666;font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
+              '<p style="margin:0 0 16px;">' + escapeHtml_(c.hi) + '</p>' +
+              '<p style="margin:0 0 20px;">' + c.confirm.htmlBody('<strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong>') + '</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">' + escapeHtml_(c.confirm.button) + '</a></p>' +
+              '<p style="margin:0 0 12px;color:#666;font-size:14px;">' + escapeHtml_(c.confirm.copyLink) + '</p>' +
               '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:#666;font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
+              '<p style="margin:0;color:#666;font-size:14px;">' + escapeHtml_(c.confirm.ignore) + '</p>' +
             '</td></tr>' +
-            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign) +
+            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign, lang) +
           '</table>' +
         '</td></tr>' +
       '</table>' +
@@ -1333,40 +1455,42 @@ function sendConfirmationEmail_(email, confirmToken) {
  * email. Shares the same MIME builder / list-unsubscribe plumbing as the
  * newsletter and confirmation emails.
  */
-function sendWelcomeEmail_(email, unsubToken) {
+function sendWelcomeEmail_(email, unsubToken, lang) {
   var cfg = config_();
   var campaign = 'welcome';
+  lang = lang === 'hi' ? 'hi' : 'en';
+  var c = EMAIL_COPY[lang];
 
-  var blogUrl = withUtm_(cfg.siteUrl + '/blog', campaign);
+  var blogUrl = withUtm_(sitePath_(cfg, lang, '/blog'), campaign);
   // Bare per-recipient unsubscribe page. This one is substituted into the
   // `{{UNSUBSCRIBE_URL}}` placeholder that footerHtml_ already pairs with
   // `&utm_...`. Appending UTMs here would double-stamp them on the final
   // href; keep this variant bare and use `unsubPageUrlTracked` when we need
   // a plain-text "Unsubscribe: <url>" line.
-  var unsubPageUrlBare = cfg.siteUrl + '/unsubscribe?t=' + encodeURIComponent(unsubToken);
+  var unsubPageUrlBare = sitePath_(cfg, lang, '/unsubscribe') + '?t=' + encodeURIComponent(unsubToken);
   var unsubPageUrlTracked = withUtm_(unsubPageUrlBare, campaign);
   // List-Unsubscribe *header* stays UTM-free (machine-parsed, not clicked).
   var listUnsubPostUrl = cfg.webAppUrl + '?action=unsubscribe&t=' + encodeURIComponent(unsubToken);
 
-  var subject = 'You\u2019re subscribed to ' + cfg.fromName;
-  var banner = brandBannerHtml_(cfg, campaign);
+  var subject = c.welcome.subject(cfg.fromName);
+  var banner = brandBannerHtml_(cfg, campaign, lang);
 
   var text =
-    cfg.fromName + ', you\u2019re in.\r\n\r\n' +
-    'Thanks for confirming. We\u2019ll ping you from ' + cfg.fromEmail + ' whenever a new post goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
-    'While you wait for the next one, the existing posts are all on the blog:\r\n' +
+    c.welcome.textTitle(cfg.fromName) + '\r\n\r\n' +
+    c.welcome.thanks(cfg.fromEmail) + '\r\n\r\n' +
+    c.welcome.whileWait + '\r\n' +
     blogUrl + '\r\n\r\n' +
-    'Reply to this email if anything ever lands wrong, a real person reads it.\r\n\r\n' +
+    c.welcome.reply + '\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl, campaign) + '\r\n\r\n' +
     '---\r\n' +
     // Text body shows the clickable URL with UTMs inline (the footerHtml_
     // template path uses the bare variant since it appends UTMs itself).
-    'Unsubscribe: ' + unsubPageUrlTracked + '\r\n' +
-    'Privacy:     ' + withUtm_(cfg.siteUrl + '/privacy', campaign) + '\r\n';
+    c.welcome.unsubLabel + unsubPageUrlTracked + '\r\n' +
+    c.welcome.privacyLabel + withUtm_(sitePath_(cfg, lang, '/privacy'), campaign) + '\r\n';
 
   var html =
-    '<!doctype html><html lang="en"><head>' +
+    '<!doctype html><html lang="' + c.htmlLang + '"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
@@ -1377,17 +1501,17 @@ function sendWelcomeEmail_(email, unsubToken) {
           '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
             banner +
             '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up , nothing else. No digests, no surprises, no "special offers".</p>' +
-              '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if anything ever lands wrong , a real person reads it.</p>' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">' + escapeHtml_(c.welcome.heading) + '</h1>' +
+              '<p style="margin:0 0 16px;">' + c.welcome.thanks('<strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong>') + '</p>' +
+              '<p style="margin:0 0 20px;">' + escapeHtml_(c.welcome.whileWait) + '</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">' + c.welcome.button + '</a></p>' +
+              '<p style="margin:0 0 12px;color:#555;font-size:14px;">' + escapeHtml_(c.welcome.reply) + '</p>' +
               '<p style="margin:24px 0 0;color:#555;font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in
             // the BARE unsub URL. Using the tracked variant here would
             // double-stamp the UTM params on the final href.
-            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ true, campaign).replace('{{UNSUBSCRIBE_URL}}', escapeHtml_(unsubPageUrlBare)) +
+            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ true, campaign, lang).replace('{{UNSUBSCRIBE_URL}}', escapeHtml_(unsubPageUrlBare)) +
           '</table>' +
         '</td></tr>' +
       '</table>' +
@@ -1414,53 +1538,56 @@ function sendWelcomeEmail_(email, unsubToken) {
  * the Jinja template is rendered client-side (Python); Apps Script only
  * emits this banner on its own confirmation email.
  */
-function brandBannerHtml_(cfg, campaign) {
+function brandBannerHtml_(cfg, campaign, lang) {
+  var c = EMAIL_COPY[lang === 'hi' ? 'hi' : 'en'];
   // The PNG already contains the wordmark "nidhi" and the tagline
   // "Money, understood." — don't repeat the tagline as text below.
   // Source image is 400px wide; we display at 200px for a crisp 2x on retina.
   var logoUrl = cfg.siteUrl + '/brand/logo/full/logo-full-400-light.png';
-  var bannerHref = withUtm_(cfg.siteUrl + '/blog', campaign);
+  var bannerHref = withUtm_(sitePath_(cfg, lang, '/blog'), campaign);
   return (
     '<tr><td style="padding:0;">' +
       '<div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
       '<div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">' +
         '<a href="' + escapeHtml_(bannerHref) + '" style="text-decoration:none;color:inherit;display:inline-block;">' +
-          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ' - Money, understood." width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
+          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName + ': ' + c.tagline) + '" width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
         '</a>' +
       '</div>' +
     '</td></tr>'
   );
 }
 
-function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
+function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign, lang) {
+  lang = lang === 'hi' ? 'hi' : 'en';
+  var c = EMAIL_COPY[lang].footer;
   // Newsletter path: the body contains the literal `{{UNSUBSCRIBE_URL}}`
   // placeholder which Apps Script (or sendWelcomeEmail_) swaps in per
   // recipient. UTMs are appended after the placeholder so the final URL
   // ends up `…/unsubscribe?t=TOKEN&utm_…` without breaking the token.
   var unsubLink = isNewsletter
     ? '{{UNSUBSCRIBE_URL}}&' + utmQuery_(campaign)
-    : withUtm_(cfg.siteUrl + '/unsubscribe?t=__N/A__', campaign);
+    : withUtm_(sitePath_(cfg, lang, '/unsubscribe') + '?t=__N/A__', campaign);
 
-  var blogHref    = withUtm_(cfg.siteUrl + '/blog',    campaign);
-  var privacyHref = withUtm_(cfg.siteUrl + '/privacy', campaign);
+  var blogHref    = withUtm_(sitePath_(cfg, lang, '/blog'),    campaign);
+  var privacyHref = withUtm_(sitePath_(cfg, lang, '/privacy'), campaign);
   var rssHref     = withUtm_(cfg.siteUrl + '/rss.xml', campaign);
 
   return (
     '<tr><td style="padding:20px 28px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.5;">' +
       (isNewsletter ?
-        '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:#0D47A1;text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
+        '<p style="margin:0 0 8px;">' + c.why('<a href="' + escapeHtml_(blogHref) + '" style="color:#0D47A1;text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + (lang === 'hi' ? '/hi' : '') + '/blog</a>') + '</p>' +
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(unsubLink) + '" style="color:#777;text-decoration:underline;">Unsubscribe</a> &middot; ' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(unsubLink) + '" style="color:#777;text-decoration:underline;">' + escapeHtml_(c.unsubscribe) + '</a> &middot; ' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">' + escapeHtml_(c.privacy) + '</a> &middot; ' +
           '<a href="' + escapeHtml_(rssHref) + '" style="color:#777;text-decoration:underline;">RSS</a>' +
         '</p>'
       :
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">' + escapeHtml_(c.privacy) + '</a> &middot; ' +
           '<a href="' + escapeHtml_(rssHref) + '" style="color:#777;text-decoration:underline;">RSS</a>' +
         '</p>'
       ) +
-      '<p style="margin:0;color:#999;">Educational, not financial advice. Everyone\u2019s situation is different.</p>' +
+      '<p style="margin:0;color:#999;">' + escapeHtml_(c.disclaimer) + '</p>' +
     '</td></tr>'
   );
 }

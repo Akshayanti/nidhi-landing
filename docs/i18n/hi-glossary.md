@@ -220,6 +220,7 @@ a promise costs the reader more than it teaches.
 | Earlier changes | पहले के बदलाव | The label on the collapsed group. The log's intro quotes it, so the two must match word for word; changing one means changing the other. |
 | anonymous | बिना नाम का | Spelled out. गुमनाम is what a form says about a respondent, and is the right word there; here the notice keeps repeating "no name, no email, no user ID", which is what बिना नाम का says. |
 | localStorage | localStorage | Latin, like the six key names that follow it in the same list. A reader who wants to look up where those keys live needs the API's name, not a transliteration of it. |
+| subscribe, subscription | सब्सक्राइब करना (the verb), सदस्यता (the noun) | One noun for the subscription in the notice, the five newsletter pages and the Hindi emails `scripts/newsletter.gs` sends. Not सब्सक्रिप्शन, which had crept into a draft of those emails. |
 | pending (a subscription) | लंबित | Not बाक़ी, which means what is left over. The newsletter's three states are लंबित, कन्फ़र्म and अनसब्सक्राइब. |
 | viewport size | ब्राउज़र विंडो का आकार | Spelled out rather than व्यूपोर्ट, and deliberately not स्क्रीन का आकार: the screen and the window the page is drawn in are different measurements, and in a list of what is collected the wrong one is a worse error than a clunky phrase. |
 | a flag (a stored setting) | एक फ़्लैग | Not झंडा, which is a flag on a pole. फ़्लैग is what Indian technical writing uses, and it sits beside six Latin key names in the same list. |

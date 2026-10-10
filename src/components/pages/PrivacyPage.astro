@@ -143,6 +143,17 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 11, 2026',
+    iso: '2026-10-11',
+    material: true,
+    summary: 'A subscriber who signs up from a Hindi page now gets the confirmation, reminder and welcome emails in Hindi, and the pages those emails open are in Hindi too. The language comes from the page you subscribed from, which we already kept; nothing new is collected. Also: the line about replies to newsletter emails now says plainly that a person reads them.',
+    details: [
+      'Newsletter language: the subscription form has always sent the address of the page you subscribed from, and we keep it with your subscription. That address now has a second use: if it is a page of the Hindi edition (it starts with /hi/), the confirmation email, the one reminder and the welcome email are written in Hindi, and their links, and the pages you land on after confirming or unsubscribing, are the Hindi ones (/hi/confirm, /hi/subscription-confirmed, /hi/subscription-invalid, /hi/unsubscribe, /hi/unsubscribed). The unsubscribe link in each new-lesson email follows the same rule. The new-lesson emails themselves stay in English, because the lessons are. No new data is collected, stored or sent, and no browser storage changes: the five Hindi pages use the same nidhi-newsletter-subscription key and the same events as their English counterparts.',
+      'Replies: the line in "What we don\'t do" read as if replies to newsletter emails were not read at all. They are: replies go to hello@nidhi.today, where a person reads them. What the line promises is unchanged: replies are never fed into any analytics or ads system.',
+      'The note on a Hindi page\'s subscribe box now says the lessons, and the emails announcing them, are in English, since the confirmation emails no longer are.',
+    ],
+  },
+  {
     date: 'Oct 10, 2026',
     iso: '2026-10-10',
     material: true,

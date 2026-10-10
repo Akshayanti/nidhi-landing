@@ -1,0 +1,17 @@
+---
+/**
+ * `/hi/unsubscribed/`, the unsubscribed page in every language but the default one. English
+ * is served from `src/pages/unsubscribed.astro`, so it never comes through here and
+ * its address cannot be shadowed by this route.
+ */
+import UnsubscribedPage from '../../components/pages/UnsubscribedPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<UnsubscribedPage locale={locale} />
