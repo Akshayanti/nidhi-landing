@@ -12,6 +12,16 @@ export const en = {
   skipToContent: 'Skip to content',
 
   /**
+   * Site-wide defaults for the document head. `BaseHead` falls back to
+   * `defaultImageAlt` whenever a page passes no `imageAlt` of its own, which is
+   * every page but the home page, so it has to read in the page's language
+   * rather than stay an English literal inside the component.
+   */
+  meta: {
+    defaultImageAlt: 'nidhi: Money, understood. Personal finance tools and financial literacy.',
+  },
+
+  /**
    * The language picker. Only the two words around the choice are translated:
    * the languages themselves are named in their own script, the same string in
    * every catalog, so they live in LOCALE_META in src/i18n/config.ts and adding

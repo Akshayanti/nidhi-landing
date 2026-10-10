@@ -17,6 +17,16 @@ import type { Dict } from './types.ts';
 export const hi: Dict = {
   skipToContent: 'मुख्य सामग्री पर जाएँ',
 
+  /**
+   * The brand line, "Money, understood", in its one approved Hindi rendering.
+   * It appears five times in this file (here, the footer tagline, and three
+   * keys under `home`) and must read identically in all five, which is what
+   * `docs/i18n/hi-glossary.md` records it for.
+   */
+  meta: {
+    defaultImageAlt: 'nidhi: पैसा, समझ आ गया। मुफ़्त पर्सनल फाइनेंस टूल और वित्तीय साक्षरता।',
+  },
+
   languagePicker: {
     label: 'भाषा',
     current: 'वर्तमान भाषा',
@@ -57,7 +67,7 @@ export const hi: Dict = {
   },
 
   footer: {
-    tagline: 'पैसे की समझ',
+    tagline: 'पैसा, समझ आ गया।',
     columns: {
       learn: 'सीखें',
       tools: 'मुफ़्त टूल',
@@ -385,11 +395,11 @@ export const hi: Dict = {
       description:
         'अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल: बुनियादी बातों से लेकर उन वित्तों तक जो कई मुद्राओं में फैले हैं।',
       imageAlt:
-        'nidhi: पैसा, समझ के साथ। अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल।',
+        'nidhi: पैसा, समझ आ गया। अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल।',
     },
     /** Structured data, not visible text. It still reads in the page's language. */
     schema: {
-      slogan: 'पैसा, समझ के साथ',
+      slogan: 'पैसा, समझ आ गया।',
       organization:
         'nidhi आम लोगों को अपना पैसा समझने में मदद करता है: मुफ़्त और क्रमबद्ध पर्सनल फाइनेंस पाठ, ब्राउज़र में ही चलने वाले निजी टूल, और वित्तीय भविष्य के लिए एक प्लानर। शुरुआत बुनियादी बातों से होती है और वित्त के जटिल होते जाने पर भी यह काम आता है, तब भी जब पैसा कई मुद्राओं और देशों में बँटा हो।',
       knowsAbout: [
@@ -403,7 +413,7 @@ export const hi: Dict = {
         'बिहेवियरल फाइनेंस',
         'कई मुद्राओं में पैसा',
       ],
-      site: 'पैसा, समझ के साथ। पर्सनल फाइनेंस सीखें, अपने पैसे को समझें, और अपने भविष्य की योजना बनाएँ: बुनियादी बातों से लेकर उन वित्तों तक जो कई मुद्राओं और देशों में फैले हैं।',
+      site: 'पैसा, समझ आ गया। पर्सनल फाइनेंस सीखें, अपने पैसे को समझें, और अपने भविष्य की योजना बनाएँ: बुनियादी बातों से लेकर उन वित्तों तक जो कई मुद्राओं और देशों में फैले हैं।',
     },
     hero: {
       heading: 'अपने पैसे को समझें।',

@@ -51,7 +51,6 @@ interface Props {
 }
 
 const defaultImage = '/brand/social/og-image.png';
-const defaultImageAlt = 'nidhi: Money, understood. Personal finance tools and financial literacy.';
 const {
   locale = DEFAULT_LOCALE,
   alternates = [locale],
@@ -60,7 +59,6 @@ const {
   image = defaultImage,
   imageWidth = 1200,
   imageHeight = 630,
-  imageAlt = defaultImageAlt,
   article,
   prevUrl,
   nextUrl,
@@ -79,6 +77,9 @@ const otherLocales = alternates.filter((other) => other !== locale);
 // English is among the languages this page exists in.
 const xDefault = alternates.includes(DEFAULT_LOCALE) ? urlIn(DEFAULT_LOCALE) : canonicalURL;
 const strings = dict(locale);
+// Every page but the home page takes this default, and it opens with the brand
+// tagline, so it is read from the catalog rather than written into this file.
+const imageAlt = Astro.props.imageAlt ?? strings.meta.defaultImageAlt;
 
 // A Hindi page's first paint is set in Devanagari: the nav, the headings and the
 // body are Devanagari before Inter sees a Latin word, so that face is worth

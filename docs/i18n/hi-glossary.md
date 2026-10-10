@@ -181,6 +181,27 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | contact us | हमसे संपर्क करें |
 | page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
 | Prague | प्राग | Devanagari, as Indian Hindi writing has it. It appears once, in the beliefs page's `foundingLocation`. |
+| Money, understood (brand tagline) | पैसा, समझ आ गया। | |
+
+#### The brand tagline
+
+"Money, understood" appears five times in `src/i18n/strings/hi.ts` as
+`meta.defaultImageAlt`, `footer.tagline`, `home.schema.slogan`,
+`home.meta.imageAlt` and `home.schema.site`, and it has to read identically in
+all five. It got translated twice before this line existed (`पैसे की समझ` in the
+footer, `पैसा, समझ के साथ` on the home page), which is the failure this entry
+prevents.
+
+`पैसा, समझ आ गया।` was chosen over the two obvious candidates for two reasons.
+`पैसे की समझ` is a noun phrase with no beat to it: it names a topic where the
+English makes a claim. `पैसा, समझा` keeps the two-beat shape and the participle
+does agree with masculine `पैसा`, but a bare `समझा` stranded by a comma is read
+first as a transitive clause with a dropped subject, "understood the money",
+rather than as the appositive the English has. `समझ आ गया` is the idiom Hindi
+actually uses for something clicking, and its perfective aspect says what the
+English past participle says. It ends in a danda, unlike the English, which
+drops its full stop: a Hindi line that ends on a finite verb reads as truncated
+without one.
 
 ## Transliteration style
 
