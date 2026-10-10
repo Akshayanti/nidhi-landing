@@ -78,6 +78,7 @@ why this one won, so it is not re-argued in a later lesson.
 | --- | --- | --- |
 | net worth | शुद्ध संपत्ति | Decided against कुल संपत्ति, which reads as total assets and would let a reader add up what they own without subtracting what they owe. शुद्ध is the word for net. नेट वर्थ was the other candidate and is common in Hindi business writing; शुद्ध संपत्ति won because the term a reader meets first should teach the subtraction rather than hide it behind a loanword, and rule 6 puts नेट वर्थ in parentheses on first use anyway. |
 | assets | संपत्तियाँ | Singular संपत्ति where the sentence needs it. |
+| what you owe | जो आप पर बकाया है | Never the bare जो आप पर है, which is "what is on you" and reads as unfinished. In a list (what you own, owe, earn and spend) use nouns instead: आपकी संपत्ति, आपका कर्ज़, आपकी कमाई और आपका खर्च. |
 | liabilities | देनदारियाँ | Not ऋण: देनदारियाँ covers mortgages, card balances and informal debt alike. |
 | debt | कर्ज़ | The everyday word. ऋण is formal and is avoided outside quoted material. |
 | loan | लोन | ऋण avoided for readability, see above. |
