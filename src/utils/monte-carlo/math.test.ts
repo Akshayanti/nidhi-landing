@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   BONDS,
+  QUOTED_RATES,
   STOCKS,
   compoundRates,
   impliedGeometricMean,
@@ -45,9 +46,16 @@ describe('return model', () => {
     }
   });
 
-  it('implied geometric means stay close to the published 5.3% and 1.7%', () => {
-    assert.ok(Math.abs(impliedGeometricMean(STOCKS.mean, STOCKS.sd) - 0.053) < 0.002);
-    assert.ok(Math.abs(impliedGeometricMean(BONDS.mean, BONDS.sd) - 0.017) < 0.002);
+  it('implied geometric means stay close to the published rates the page quotes', () => {
+    assert.ok(Math.abs(impliedGeometricMean(STOCKS.mean, STOCKS.sd) - QUOTED_RATES.historical.stocks) < 0.002);
+    assert.ok(Math.abs(impliedGeometricMean(BONDS.mean, BONDS.sd) - QUOTED_RATES.historical.bonds) < 0.002);
+  });
+
+  it('the cautious and optimistic descriptions quote the rates the model runs at', () => {
+    for (const s of ['cautious', 'optimistic'] as const) {
+      assert.ok(Math.abs(compoundRates(s).stocks - QUOTED_RATES[s].stocks) < 1e-9);
+      assert.ok(Math.abs(compoundRates(s).bonds - QUOTED_RATES[s].bonds) < 1e-9);
+    }
   });
 
   it('cautious and optimistic hit the ends of the 4 to 6% and 1 to 3% ranges', () => {

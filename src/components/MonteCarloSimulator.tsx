@@ -5,6 +5,7 @@ import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   MAX_FEE_PCT,
+  QUOTED_RATES,
   RETURN_SETTINGS,
   RUN_OPTIONS,
   simulate,
@@ -57,6 +58,12 @@ function formatShare(share: number): string {
 }
 
 const grouped = (n: number) => n.toLocaleString('en-US');
+
+/** A return setting's description, with the rates it quotes filled in from the model. */
+function returnTip(strings: Strings, s: ReturnSetting): string {
+  const pct = (r: number) => `${(r * 100).toFixed(1).replace(/\.0$/, '')}%`;
+  return format(strings.returnTips[s], { stocks: pct(QUOTED_RATES[s].stocks), bonds: pct(QUOTED_RATES[s].bonds) });
+}
 
 /** "9 in 10" style phrasing, rounded to the nearest tenth. */
 function inTen(share: number, strings: Strings): string {
@@ -426,14 +433,14 @@ export default function MonteCarloSimulator({ strings, netWorthHref }: { strings
                     }}
                   />
                   <span>{strings.returns[s]}</span>
-                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{strings.returnTips[s]}</span>
+                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{returnTip(strings, s)}</span>
                 </label>
               ))}
             </div>
             {/* The chosen setting's description, visible for touch screens
                 where there is no hover. Screen readers get it from the
                 tooltip through aria-describedby, so it is hidden from them. */}
-            <span className="mcs-hint" aria-hidden="true">{strings.returnTips[form.returns]}</span>
+            <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns)}</span>
           </fieldset>
           <NumberField
             id={ids.feePct}

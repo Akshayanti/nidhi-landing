@@ -291,11 +291,11 @@ export const monteCarloEn = {
     /** Each setting's explanation, on hover, on focus and below the switch on a touch screen. */
     returnTips: {
       cautious:
-        'Stocks grow about 4% a year after inflation and bonds about 1%: the low end of the long-run range. The ups and downs are as large as in history.',
+        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: the low end of the long-run range. The ups and downs are as large as in history.',
       historical:
-        'World markets from 1900 to 2025: stocks grew about 5.3% a year after inflation and bonds about 1.7%, with the ups and downs they actually had.',
+        'World markets from 1900 to 2025: stocks grew about {stocks} a year after inflation and bonds about {bonds}, with the ups and downs they actually had.',
       optimistic:
-        'Stocks grow about 6% a year after inflation and bonds about 3%: the high end of the long-run range. The ups and downs are as large as in history.',
+        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: the high end of the long-run range. The ups and downs are as large as in history.',
     },
     settings: {
       /** The button that opens the folded settings on a phone. */
@@ -607,11 +607,11 @@ export const monteCarloHi: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'शेयर महँगाई के बाद सालाना लगभग 4% बढ़ते हैं और बॉन्ड लगभग 1%: लंबी अवधि की सीमा का निचला सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
+        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: लंबी अवधि की सीमा का निचला सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
       historical:
-        '1900 से 2025 तक के दुनिया के बाज़ार: शेयर महँगाई के बाद सालाना लगभग 5.3% बढ़े और बॉन्ड लगभग 1.7%, और उतार-चढ़ाव वही जो असल में आए।',
+        '1900 से 2025 तक के दुनिया के बाज़ार: शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़े और बॉन्ड लगभग {bonds}, और उतार-चढ़ाव वही जो असल में आए।',
       optimistic:
-        'शेयर महँगाई के बाद सालाना लगभग 6% बढ़ते हैं और बॉन्ड लगभग 3%: लंबी अवधि की सीमा का ऊपरी सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
+        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: लंबी अवधि की सीमा का ऊपरी सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
     },
     settings: {
       toggle: 'रिटर्न, शुल्क और रास्ते',

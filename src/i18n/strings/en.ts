@@ -751,7 +751,7 @@ export const en = {
       crossSite:
         'We don’t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
       screen: 'We don’t record your screen, keystrokes, form values, or continuous scroll stream.',
-      replies: 'We don’t read replies to newsletter emails and feed them back into any analytics or ads system.',
+      replies: 'Replies to newsletter emails reach a person at hello@nidhi.today, who reads them. We never feed them into any analytics or ads system.',
       imports: 'We don’t import the newsletter or waitlist lists into any other tool or mailing system.',
     },
 
