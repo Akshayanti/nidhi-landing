@@ -2,10 +2,10 @@
  * Catalog tests for the string catalogs in this directory.
  *
  * `Dict` is `typeof en` and every catalog is annotated with it, so a missing
- * key and an unknown key are both type errors. Note that nothing in
- * `package.json` or in CI runs a type check, so that only shows up in an
- * editor: the key-parity test below is what actually fails a build over a
- * missing key, and that is why it is worth its duplication.
+ * key and an unknown key are both type errors, which `npm run typecheck`
+ * catches in CI. The key-parity test below says the same thing in a form that
+ * names the missing path, runs with the rest of the suite, and also covers
+ * values the type cannot see into.
  *
  * The rest covers what types cannot see at all: a blank translation, and an
  * English sentence left standing in the Hindi catalog by accident.
@@ -203,10 +203,7 @@ describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses n
   });
 
   it('uses no double dash', () => {
-    const offenders = [...EN, ...HI].filter(({ value, path }) => {
-      // A path may legitimately contain one; a value may not.
-      return /--/.test(value) && !path.startsWith('code');
-    });
+    const offenders = [...EN, ...HI].filter(({ value }) => /--/.test(value));
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 });

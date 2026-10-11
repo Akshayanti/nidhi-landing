@@ -122,6 +122,18 @@ jobs:
             'src/i18n/*'
             'public/robots.txt'
             'public/llms.txt'
+            # Everything else the build compiles. Once these checks are
+            # required, a skipped run counts as a pass, so any file that can
+            # break the build has to be listed: every route (including the
+            # `[locale]` mirror), every component and style, the content
+            # schema and the public assets. Lesson files are left out on
+            # purpose, as before: drafts change often and the deploy builds
+            # them anyway.
+            'src/pages/*'
+            'src/components/*'
+            'src/styles/*'
+            'src/content.config.ts'
+            'public/*'
           )
           run=false
           while IFS= read -r file; do

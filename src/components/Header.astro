@@ -629,6 +629,24 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     });
   });
 
+  // The language picker is a native <details>, which opens and closes on its
+  // own but not on a tap elsewhere or Escape, and which the back button
+  // restores still open from the page cache. All three close it here.
+  (function() {
+    var picker = document.querySelector('.lang-picker--header');
+    if (!picker) return;
+    document.addEventListener('click', function(e) {
+      if (picker.open && !picker.contains(e.target)) picker.open = false;
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape' || !picker.open) return;
+      picker.open = false;
+      var summary = picker.querySelector('summary');
+      if (summary) summary.focus();
+    });
+    window.addEventListener('pageshow', function() { picker.open = false; });
+  })();
+
   // Phone menu: the button shows and hides the panel. Escape, a tap outside
   // or following a link closes it. Nothing is stored.
   (function() {

@@ -92,6 +92,7 @@ const imageAlt = Astro.props.imageAlt ?? strings.meta.defaultImageAlt;
 // words and every amount are set in it. Only a Hindi page gets the second
 // preload. It is the same origin, so neither adds a third-party request.
 const preloadDevanagari = locale !== DEFAULT_LOCALE;
+const noindex = !!robots && /noindex/i.test(robots);
 ---
 
 <!-- Flash prevention: apply theme before render -->
@@ -127,10 +128,12 @@ const preloadDevanagari = locale !== DEFAULT_LOCALE;
 
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />
-{alternates.map((alternate) => (
+{/* A noindex page (the 404, the transactional pages) has nothing for search
+    engines to pair, and the 404's own path is not a real address. */}
+{!noindex && alternates.map((alternate) => (
   <link rel="alternate" hreflang={LOCALE_META[alternate].htmlLang} href={urlIn(alternate)} />
 ))}
-<link rel="alternate" hreflang="x-default" href={xDefault} />
+{!noindex && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 
 <!-- RSS Feed -->
 <link rel="alternate" type="application/rss+xml" title={feedTitle} href="/rss.xml" />
