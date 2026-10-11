@@ -1,7 +1,13 @@
 /**
- * Path arithmetic for a prefixed locale. Pure functions only, so the language
- * switcher, the hreflang tags and the sitemap all derive the other locale's URL
- * the same way and can be tested without a browser.
+ * Path arithmetic for a prefixed locale. Pure functions only, so the hreflang
+ * tags, the language picker's no-script hrefs and the tools' switch detection
+ * derive the other locale's URL the same way and can be tested without a
+ * browser.
+ *
+ * The live language switch (campaign tags kept, a free tool's state added
+ * after the # at click time) is the inline script in `Header.astro`, which is
+ * the source of truth for it: it must never put tool state into an href,
+ * because PostHog autocapture records a clicked link's href.
  */
 import { DEFAULT_LOCALE, LOCALES, localePrefix, localizedPath, type Locale } from './config.ts';
 
@@ -29,30 +35,4 @@ export function stripLocale(pathname: string): { locale: Locale; path: string } 
 /** The same page in another locale: `/about/` to Hindi becomes `/hi/about/`. */
 export function swapLocale(pathname: string, to: Locale): string {
   return localizedPath(to, stripLocale(pathname).path);
-}
-
-/**
- * Keep only campaign parameters, returning '' or a string starting with '?'.
- * Used by the language switcher so a switch carries `utm_source` and friends
- * but drops anything else an address might hold. Free-tool state is never in
- * the query string (it travels after the `#`), so nothing else needs keeping.
- */
-export function utmSearch(search: string): string {
-  const keep = new URLSearchParams();
-  new URLSearchParams(search).forEach((value, key) => {
-    if (key.startsWith('utm_')) keep.append(key, value);
-  });
-  const out = keep.toString();
-  return out ? `?${out}` : '';
-}
-
-/**
- * The href a language switcher should point at. `hash` may be given with or
- * without its leading '#'; an empty one means no fragment. The fragment
- * matters for the free tools, where a share link carries the tool state after
- * the '#', a part of the address browsers never send to a server.
- */
-export function localizedHref(to: Locale, pathname: string, search = '', hash = ''): string {
-  const fragment = hash && !hash.startsWith('#') ? `#${hash}` : hash;
-  return `${swapLocale(pathname, to)}${utmSearch(search)}${fragment}`;
 }
