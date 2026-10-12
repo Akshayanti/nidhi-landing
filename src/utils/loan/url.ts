@@ -359,6 +359,32 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
   return serializeParams(params);
 }
 
+/** The untouched global state for a page whose tools start in `currency`. */
+export function defaultGlobalState(currency: string = DEFAULT_CURRENCY): GlobalState {
+  return { ...DEFAULT_GLOBAL_STATE, currency };
+}
+
+/**
+ * Whether the comparison is still the page's untouched starting state: the
+ * default vendors and settings, in the page's own starting currency.
+ */
+export function isPristineState(vendors: VendorInput[], global: GlobalState, pageCurrency: string): boolean {
+  return (
+    global.currency === pageCurrency &&
+    encodeToQueryString(vendors, { ...global, currency: DEFAULT_CURRENCY }) ===
+      encodeToQueryString(DEFAULT_VENDORS, DEFAULT_GLOBAL_STATE)
+  );
+}
+
+/**
+ * What the tool publishes for the language switch: nothing while it is
+ * untouched, so the other page opens with its own starting currency, and the
+ * encoded state (the share-link encoding, unchanged) once anything changed.
+ */
+export function publishableState(vendors: VendorInput[], global: GlobalState, pageCurrency: string): string {
+  return isPristineState(vendors, global, pageCurrency) ? '' : encodeToQueryString(vendors, global);
+}
+
 export interface DecodeResult {
   vendors: VendorInput[];
   /** Kept as `string | null` for backwards compatibility with the legacy decoder. */

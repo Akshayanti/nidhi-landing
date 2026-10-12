@@ -7,6 +7,7 @@
  * the <desc> for screen readers, or in the element named by descId.
  */
 import { formatProseAmount } from '../utils/shared/formatAmount.ts';
+import { DEFAULT_LOCALE, type Locale } from '../i18n';
 
 interface Series {
   name: string;
@@ -37,11 +38,15 @@ interface Props {
   /** Drawing size in SVG units. A narrower one keeps labels readable when the chart is shown small, on phones. */
   width?: number;
   height?: number;
+  /** The edition the chart sits in, which decides how its amounts are written. */
+  locale?: Locale;
+  /** The currency the amounts are in. */
+  currency?: string;
   /** Extra class on the outer box, e.g. to show it only at some widths. */
   class?: string;
 }
 
-const { id, title, desc, descId, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote, width = 480, height = 270, class: extraClass } = Astro.props;
+const { id, title, desc, descId, pointLabels, series, axisStart, axisEnd, axisMid, target, marker, footnote, width = 480, height = 270, locale = DEFAULT_LOCALE, currency = 'EUR', class: extraClass } = Astro.props;
 
 const W = width;
 const H = height;
@@ -80,7 +85,7 @@ const hoverData = JSON.stringify({
     name: s.name,
     color: s.color,
     ys: s.values.map((v) => y(v) / H),
-    values: s.values.map((v) => formatProseAmount(v, 'EUR')),
+    values: s.values.map((v) => formatProseAmount(v, currency, false, locale)),
   })),
 });
 ---
@@ -99,7 +104,7 @@ const hoverData = JSON.stringify({
     {ticks.map((t) => (
       <g>
         <line class={t === 0 ? 'hc-axis' : 'hc-grid'} x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} />
-        <text class="hc-tick" x={PAD.left - 8} y={y(t) + 4} text-anchor="end">{formatProseAmount(t, 'EUR', true)}</text>
+        <text class="hc-tick" x={PAD.left - 8} y={y(t) + 4} text-anchor="end">{formatProseAmount(t, currency, true, locale)}</text>
       </g>
     ))}
     {target && (
@@ -132,7 +137,7 @@ const hoverData = JSON.stringify({
       <g>
         <circle cx={x(n - 1)} cy={y(s.values[n - 1])} r="4" fill={s.color} class="hc-endDot" />
         <text class="hc-endName" x={W - PAD.right + 10} y={ly - 3} fill={s.color}>{s.name}</text>
-        <text class="hc-endValue" x={W - PAD.right + 10} y={ly + 12}>{formatProseAmount(s.values[n - 1], 'EUR', true)}</text>
+        <text class="hc-endValue" x={W - PAD.right + 10} y={ly + 12}>{formatProseAmount(s.values[n - 1], currency, true, locale)}</text>
       </g>
     ))}
     <text class="hc-tick" x={PAD.left} y={H - PAD.bottom + 16}>{axisStart}</text>

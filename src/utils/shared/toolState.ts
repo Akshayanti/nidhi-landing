@@ -11,9 +11,30 @@
  *
  * Browser-safe and tiny on purpose: the islands import it.
  */
+import type { Locale } from '../../i18n/config.ts';
 import { stripLocale } from '../../i18n/url.ts';
 
-/** Store the tool's current encoded state ('' for "nothing to carry"). */
+/**
+ * The currency a free tool opens in when it has no shared state, by page
+ * language. This is the page's starting point only: the share-link codecs keep
+ * `DEFAULT_CURRENCY` (EUR) as their baseline whatever the page, so a link with
+ * no currency in it means EUR on every page and old links keep working. The
+ * page component reads it and hands it to the island as a prop.
+ */
+export const TOOL_DEFAULT_CURRENCY: Record<Locale, string> = {
+  en: 'EUR',
+  hi: 'INR',
+  es: 'EUR',
+};
+
+/**
+ * Store the tool's current encoded state ('' for "nothing to carry").
+ *
+ * A tool still in its untouched starting state publishes '' (see each tool's
+ * `publishableState`), so a language switch carries nothing and the page on
+ * the other side opens with its own starting currency. The header's switch
+ * adds no '#' at all for an empty value.
+ */
 export function publishToolState(globalName: string, encoded: string): void {
   if (typeof window === 'undefined') return;
   (window as unknown as Record<string, unknown>)[globalName] = encoded;

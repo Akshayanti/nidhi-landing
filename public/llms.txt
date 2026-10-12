@@ -9,6 +9,12 @@ nidhi is designed for people starting their financial journey as well as people 
 - [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
 - [Learning Path](https://nidhi.today/blog/): All lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
 
+## Languages
+The site is published in English (the default, at the root), Hindi at [/hi/](https://nidhi.today/hi/) and Spanish at [/es/](https://nidhi.today/es/). Each edition translates the site's own pages: the home page, the learning path's level and topic pages, the free tools, the about, beliefs and editorial-policy pages and the privacy notice. The lessons are written once, in English, and every edition links to the same English lesson at its one address. Every page names its other editions with hreflang.
+- [Inicio (español)](https://nidhi.today/es/): The Spanish home page.
+- [Herramientas gratuitas](https://nidhi.today/es/free/): The free tools in Spanish.
+- [हिन्दी](https://nidhi.today/hi/): The Hindi home page.
+
 ## Free Tools
 - [Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Add up what you own and owe to see your net worth, in one currency or several, with real-time FX rates. Privacy-first - data stays in your browser.
 - [Loan Comparison Calculator](https://nidhi.today/free/loan-comparison/): Compare two loan offers side-by-side including fees, APR, amortisation, and total cost of borrowing.

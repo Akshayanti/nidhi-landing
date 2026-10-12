@@ -4,6 +4,7 @@
  * same rule; see `formatProseAmount` for the second.
  */
 import { getCurrency } from '../loan/math.ts';
+import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**
  * Amounts use the chosen currency's own conventions (separators, symbol
@@ -43,8 +44,9 @@ export function formatPercent(pct: number, code: string, digits = 1): string {
 }
 
 /**
- * An amount as the site's own writing spells it: symbol first, a comma between
- * thousands, in every currency. That is how all 78 lessons write one, whether
+ * An amount as the site's own writing spells it. In English that is symbol
+ * first and a comma between thousands, in every currency, which is how all 78
+ * lessons write one, whether
  * the figure is quoted in euros ("€10,000"), pounds ("£120,000"), dollars
  * ("$250,000") or rupees ("₹1.25 lakh"), and it is what the homepage's worked
  * example and hero chart have to agree with, since those figures sit inside
@@ -57,21 +59,31 @@ export function formatPercent(pct: number, code: string, digits = 1): string {
  * the two rules are separate even though they now agree for euros (EUR is
  * formatted the Irish way, "€1,058,721", in both).
  *
- * The locale is fixed rather than taken from the page, because a lesson keeps
- * an amount exactly as the English writes it in every edition, so a figure and
- * the sentence around it must not drift apart when a new locale arrives.
+ * Lessons are English in every edition and keep English figures. The site's
+ * own copy follows its edition's reader instead (`PROSE_NUMBER_LOCALE`): an
+ * English or Hindi page writes `€10,000`, a Spanish page `10.000 €`. The
+ * catalog strings that quote an amount literally are written to agree.
  */
-const PROSE_LOCALE = 'en';
-
-export function formatProseAmount(value: number, code: string, compact = false): string {
+export function formatProseAmount(
+  value: number,
+  code: string,
+  compact = false,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  const tag = PROSE_NUMBER_LOCALE[locale];
   const v = Math.round(value);
   if (!compact) {
-    return new Intl.NumberFormat(PROSE_LOCALE, { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat(tag, { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(v);
   }
-  return new Intl.NumberFormat(PROSE_LOCALE, {
+  return new Intl.NumberFormat(tag, {
     style: 'currency',
     currency: code,
     notation: 'compact',
     maximumSignificantDigits: 3,
   }).format(v);
+}
+
+/** A whole percentage in the edition's own style: `7%` in English, `7 %` in Spanish. */
+export function formatProsePercent(fraction: number, locale: Locale = DEFAULT_LOCALE): string {
+  return new Intl.NumberFormat(PROSE_NUMBER_LOCALE[locale], { style: 'percent', maximumFractionDigits: 0 }).format(fraction);
 }

@@ -39,6 +39,11 @@ breach as a defect.
    next to it. This keeps the promise in `src/pages/editorial-policy.astro` that
    the writing is for readers anywhere true in both editions, and keeps figures
    agreeing between the two languages.
+   **One exception, decided 2026-10-12:** the home page's worked example and
+   its chart are in rupees in the Hindi edition, with figures chosen at Indian
+   scale (`EXAMPLES.INR` in `src/utils/home/heroExamples.ts`), not converted.
+   Where Hindi copy names several currencies, the order is rupees, then
+   dollars, then euros. The lessons, which are English, keep their euros.
 4. **Digits stay Latin.** `₹`, `€`, `$`, `4%`, `1,00,000` and `2026` are written
    with Latin digits, the way Indian financial writing does. Do not use
    Devanagari numerals.

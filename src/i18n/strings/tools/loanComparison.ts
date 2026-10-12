@@ -34,7 +34,7 @@
  * cannot be priced; neither knows about languages. The first is reassembled
  * here (`island.months`), and the second is matched and replaced (`island.engine`).
  */
-import { currenciesEn, currenciesHi } from './currencies.ts';
+import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const loanComparisonEn = {
   meta: {
@@ -1189,6 +1189,557 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया हमें इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
+      },
+    },
+  },
+};
+
+/**
+ * The Spanish edition. Same shape and the same figures as the other two.
+ *
+ * The words follow `docs/i18n/es-glossary.md`, "The free tools": cuota
+ * mensual, cantidad del préstamo, tasa de interés anual, plazo, tabla de
+ * amortización, saldo pendiente, capital, comisión de apertura y gastos
+ * iniciales, puntos de descuento, punto de equilibrio, pago anticipado,
+ * refinanciar. A "vendor" is the lender, `entidad financiera`, shortened to
+ * `entidad` on the cards. Lump sums are `pagos extraordinarios`.
+ *
+ * `APR` and `ARM` stay Latin, as in every language; APR is glossed once as
+ * the tasa de porcentaje anual (not *tasa anual equivalente*, which is what
+ * TAE stands for), and the EU APRC is called the TAE, its name in the
+ * directive's Spanish text. The tool's figure is the US nominal APR, so it is
+ * never labelled TAE. The months use `a.` for años so that one
+ * form serves 1 and many years, as `yr` does in English.
+ */
+export const loanComparisonEs: typeof loanComparisonEn = {
+  meta: {
+    title: 'Comparador de préstamos: lado a lado y multimoneda | nidhi',
+    description:
+      'Comparador de préstamos gratuito: de dos a cinco ofertas lado a lado, con cuota mensual, plazo, intereses totales, APR y costo total. En varias monedas.',
+  },
+  schema: {
+    name: 'Comparador de préstamos de nidhi',
+    alternateNames: [
+      'Calculadora para comparar préstamos de nidhi',
+      'Calculadora de préstamos de nidhi',
+      'Comparador de préstamos en varias monedas de nidhi',
+      'Calculadora de préstamos en varias monedas de nidhi',
+      'Comparación de préstamos lado a lado de nidhi',
+    ],
+    operatingSystem: 'Cualquiera (navegador web)',
+    browserRequirements: 'Requiere JavaScript. Navegador moderno.',
+    featureList: [
+      'Compara de 2 a 5 ofertas de préstamo lado a lado',
+      'APR (tasa de porcentaje anual) de cada oferta, que incorpora las comisiones en una sola tasa comparable',
+      'Gráfico del reparto entre intereses y capital de cada préstamo, que muestra adónde va cada cuota durante toda la vida del préstamo',
+      'Compatible con 29 monedas, entre ellas USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
+      'Calcula la cuota mensual a partir de un plazo fijo, o el tiempo hasta liquidar el préstamo a partir de una cuota fija',
+      'Incluye la comisión de apertura y los pagos extra al capital cada mes',
+      'Modo avanzado: préstamos híbridos (ARM) con la cuota recalculada en la transición, punto de equilibrio de los puntos de descuento, pagos extraordinarios y penalización por pago anticipado',
+      'Análisis por horizonte («si vendo en el mes N») con el capital devuelto, los intereses pagados, el saldo pendiente y el desembolso total de cada entidad',
+      'Escenario de refinanciación que compara «mantener» y «refinanciar» con gastos iniciales y punto de equilibrio',
+      'Tabla de amortización exacta hasta la unidad monetaria más pequeña (como el céntimo o el centavo), calculada con números enteros',
+      'Enlace para compartir cualquier comparación, con todos los campos avanzados',
+    ],
+  },
+  page: {
+    breadcrumb: {
+      home: 'Inicio',
+      this: 'Comparador de préstamos',
+    },
+    eyebrow: 'Herramientas gratuitas',
+    title: {
+      lead: 'Comparador de préstamos',
+      wide: ': compara ofertas de préstamo lado a lado',
+    },
+    lead: {
+      before:
+        'Añade de dos a cinco entidades financieras. Verás la cuota mensual, el tiempo hasta liquidar el préstamo, el total pagado y el APR: la cifra única de costo que incorpora la comisión a la tasa.',
+      wide: 'Observa cómo se reparte cada cuota entre intereses y capital. Compatible con USD, EUR, GBP, INR, JPY y más monedas.',
+      after: 'Todo funciona en tu navegador; no se envía nada a ningún servidor.',
+    },
+    faq: {
+      heading: 'Preguntas frecuentes',
+      groups: [
+        {
+          title: 'Cómo empezar',
+          items: [
+            {
+              q: '¿Cómo funciona este comparador de préstamos?',
+              a: 'Escribe la cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual de cada entidad financiera que quieras comparar. Puedes comparar de dos a cinco ofertas de préstamo lado a lado. La calculadora construye la tabla de amortización completa de cada préstamo y muestra la cuota mensual, el total de meses hasta liquidarlo, los intereses totales, el APR (que incorpora la comisión a la tasa) y el total pagado.',
+            },
+            {
+              q: '¿Qué tipos de préstamos puedo comparar?',
+              a: 'Hipotecas, préstamos para vehículos, préstamos personales y préstamos de estudios con planes de pago estándar. La calculadora admite préstamos a tasa fija y préstamos híbridos (del tipo ARM), en los que una tasa fija inicial va seguida de otra tasa distinta. No modela periodos en los que solo se pagan intereses ni pagos finales abultados (cuota balón).',
+            },
+            {
+              q: '¿Cuántos préstamos puedo comparar a la vez?',
+              a: 'De dos a cinco. La página empieza con dos tarjetas lado a lado y un recuadro bien visible de «Añadir entidad» que permite ampliar la comparación hasta un máximo de cinco ofertas de préstamo. Cada tarjeta tiene un botón para quitarla, por si una entidad deja de encajar.',
+            },
+            {
+              q: '¿Puedo comparar préstamos con plazos o tasas distintos?',
+              a: 'Sí. Puedes combinar plazos, tasas, comisiones e incluso cuotas mensuales distintas entre todos los préstamos que compares. En la tarjeta de cada entidad eliges si calcular la cuota mensual (con plazo fijo) o el tiempo hasta liquidar el préstamo (con cuota mensual fija).',
+            },
+            {
+              q: '¿Qué campos son obligatorios?',
+              a: 'La cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual (según lo que quieras calcular). Están marcados con un asterisco rojo. Todos los demás campos de la tarjeta (comisión de apertura, capital extra, puntos, pagos extraordinarios, penalización por pago anticipado, tasa híbrida) son opcionales y puedes dejarlos con su valor predeterminado.',
+            },
+            {
+              q: '¿Se envían mis datos a algún sitio?',
+              a: 'No. Todo funciona en tu navegador; ningún dato que escribes se envía a ningún servidor. Mientras usas la herramienta, no se añade nada a la dirección de la página. Cuando copias un enlace para compartir, tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
+            },
+          ],
+        },
+        {
+          title: 'APR y comisiones',
+          items: [
+            {
+              q: '¿Qué es el APR y cómo se calcula aquí?',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. El APR se expresa como tasa anual nominal (tasa mensual × 12), que coincide con la convención de la información obligatoria de los préstamos en EE. UU. y apunta en la misma dirección que la TAE de la UE. Cuando la comisión es cero, el APR es igual a la tasa nominal.',
+            },
+            {
+              q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
+              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa efectiva que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
+            },
+            {
+              q: '¿El APR incluye el capital extra que pienso pagar cada mes?',
+              a: 'No. El APR mide el costo contractual que cobra la entidad financiera, no lo que tú decidas hacer de forma voluntaria. Los pagos extra al capital son opcionales, e incluirlos haría que el APR informado pareciera más bajo de lo que es. El gráfico «Adónde va cada cuota» y la fila del APR usan la tabla contractual (sin capital extra); la cuota mensual, el tiempo hasta liquidar el préstamo y el total pagado reflejan la tabla que incluye tus pagos extra.',
+            },
+            {
+              q: '¿Hay que incluir en la comisión los seguros obligatorios o los productos vinculados?',
+              a: 'Si una entidad te exige contratar un producto junto con el préstamo (un seguro de vida, una cuenta, un producto de inversión), el costo de ese producto forma parte de tu costo real del préstamo. Las normas sobre el APR varían según la jurisdicción en cuanto a si esos productos deben incluirse en la cifra oficial. Para comparar con honestidad, suma al campo de la comisión el costo de cualquier producto vinculado obligatorio durante toda la vida del préstamo. El APR mostrado reflejará entonces el costo completo.',
+            },
+            {
+              q: '¿La calculadora tiene en cuenta la comisión de apertura y los gastos iniciales?',
+              a: 'Sí. Escríbelos en el campo «Comisión de apertura y gastos iniciales», dentro de «Costos y comisiones», en la tarjeta de cada entidad. Las comisiones se suman al total pagado, así que la comparación lado a lado refleja el costo real del préstamo, y se incorporan al APR mostrado.',
+            },
+          ],
+        },
+        {
+          title: 'Pagos anticipados, puntos y penalizaciones',
+          items: [
+            {
+              q: '¿Puedo simular un pago extra al capital cada mes?',
+              a: 'Sí. Escribe una cantidad en «Capital extra al mes», dentro del grupo «Pagos anticipados» de la tarjeta de cada entidad. La calculadora la aplica directamente al capital cada mes, lo que acorta el tiempo hasta liquidar el préstamo y reduce los intereses totales.',
+            },
+            {
+              q: '¿Cómo se introducen los pagos extraordinarios?',
+              a: 'Con el formato mes:cantidad, separados por punto y coma. Por ejemplo, 12:5000;36:3000;60:10000 significa un pago anticipado de 5000 en el mes 12, de 3000 en el mes 36 y de 10.000 en el mes 60. Cada pago extraordinario se aplica al capital DESPUÉS de la cuota mensual ordinaria de ese mes, así que no genera intereses ese mismo mes. Normalmente el préstamo se liquida antes del plazo contractual y los intereses totales bajan en consecuencia.',
+            },
+            {
+              q: '¿Cómo funciona el punto de equilibrio de los puntos de descuento?',
+              a: 'Los puntos de descuento (pagos por adelantado para bajar la tasa) son un costo inicial que compra una tasa de interés más baja. Que compensen o no depende de cuánto tiempo mantengas el préstamo. Escribe el costo de los puntos y la rebaja de tasa que compraron, y la calculadora construye una referencia hipotética «sin puntos» (el mismo préstamo, con la comisión menos el costo de los puntos y la tasa más la rebaja) y compara ambas. La fila «Punto de equilibrio de los puntos» muestra cuántos meses de cuotas más bajas hacen falta para recuperar el costo inicial. Si la nueva cuota mensual no es realmente más baja, el punto de equilibrio figura como «nunca».',
+            },
+            {
+              q: '¿Cómo funciona la penalización por pago anticipado?',
+              a: 'Algunos préstamos cobran una penalización si los liquidas antes de tiempo. Escribe la penalización como porcentaje del saldo pendiente y el último mes en que se aplica. La penalización solo se cobra cuando el préstamo se liquida por completo (con pagos extraordinarios, capital extra o una refinanciación) en ese mes o antes. Las penalizaciones se suman al total pagado, así que la comparación lado a lado refleja el costo real de liquidar antes de tiempo con penalización.',
+            },
+          ],
+        },
+        {
+          title: 'Préstamos híbridos (ARM)',
+          items: [
+            {
+              q: '¿Cómo trata la calculadora los préstamos híbridos (ARM 5/1, 7/1, 10/1)?',
+              a: 'Cambia el tipo de tasa a Híbrida en el grupo «Estructura de la tasa» y escribe el periodo fijo inicial (por ejemplo, 60 meses para un ARM 5/1) y la tasa que se aplica cuando termina ese periodo fijo. La tabla de amortización se construye con la tasa inicial hasta el mes de transición y después se recalcula la cuota: el saldo pendiente se vuelve a amortizar durante los meses contractuales que quedan a la tasa posterior, de modo que el préstamo se sigue liquidando en el plazo original. El APR mostrado usa esta tabla tal como se informa, que es como las entidades financieras indican el APR en productos ARM reales.',
+            },
+            {
+              q: '¿Por qué la opción híbrida está desactivada cuando elijo «Meses hasta liquidar»?',
+              a: 'Los préstamos híbridos necesitan un plazo contractual fijo para que la calculadora pueda recalcular la cuota en el cambio de tasa. Cuando calculas «Meses hasta liquidar» no indicas un plazo contractual (indicas una cuota mensual fija), así que el recálculo no está definido. Cambia «Calcular» a «Cuota mensual» para activar la opción híbrida.',
+            },
+          ],
+        },
+        {
+          title: 'Pestañas de análisis',
+          items: [
+            {
+              q: '¿Qué muestra el gráfico «Adónde va cada cuota»?',
+              a: 'Divide una cuota mensual representativa de cada año del préstamo en su parte de intereses y su parte de capital, apiladas en una sola barra. Todas las barras tienen la misma altura total (la misma cuota mensual), pero el reparto cambia mucho: en los primeros años casi toda la cuota son intereses, y en los últimos casi toda es capital. Por eso los pagos anticipados en los primeros años de un préstamo largo tienen un efecto desproporcionado: cada euro que se resta pronto al capital evita intereses durante todo el plazo restante.',
+            },
+            {
+              q: '¿Qué es el análisis por horizonte («si vendo o refinancio en...»)?',
+              a: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. La pestaña Horizonte pregunta: en el mes que elijas, ¿cuánto capital has devuelto realmente, cuántos intereses has pagado, cuál es el saldo pendiente y cuánto dinero has desembolsado en total hasta ese momento (cuotas más comisión de apertura)? Es la vista adecuada si prevés vender, mudarte o refinanciar bastante antes del final contractual del préstamo, porque la entidad con el menor costo total a 360 meses puede no ser la de menor costo si sales en el mes 60.',
+            },
+            {
+              q: '¿Cómo funciona el escenario de refinanciación?',
+              a: 'Elige qué entidad refinanciar, el mes en que se refinancia, la nueva tasa, el nuevo plazo y los gastos iniciales. La calculadora compara el dinero total desembolsado si «mantienes el préstamo original hasta el final» con el de «pagar las cuotas originales hasta el mes de la refinanciación y luego liquidar el saldo pendiente con un préstamo nuevo que dura hasta su propio final contractual». También indica un punto de equilibrio: cuántos meses de cuotas más bajas hacen falta para recuperar los gastos iniciales de la refinanciación. Si la nueva cuota mensual no es más baja, el punto de equilibrio es «nunca».',
+            },
+          ],
+        },
+        {
+          title: 'Compartir y precisión',
+          items: [
+            {
+              q: '¿Los enlaces para compartir están completos por sí solos?',
+              a: 'Sí. El enlace para compartir codifica todo lo que necesita quien lo recibe: todos los campos de cada entidad (tipo de tasa, calendario híbrido, puntos, pagos extraordinarios, penalización por pago anticipado), la moneda, la pestaña de análisis activa y los datos del horizonte y del escenario de refinanciación. Quien lo abre llega a la misma vista que estabas viendo, con todos tus datos. La dirección solo contiene los valores que difieren de los predeterminados, así que una comparación nueva sigue produciendo un enlace corto.',
+            },
+            {
+              q: '¿Qué precisión tienen los cálculos?',
+              a: 'Toda la amortización se calcula en números enteros de la unidad monetaria más pequeña (como céntimos o centavos) para evitar errores de redondeo de coma flotante. La fórmula cerrada de la cuota mensual se redondea a la unidad más cercana, y la última cuota de cada tabla se ajusta para que la suma de los pagos de capital coincida exactamente con la cantidad del préstamo original. El APR se resuelve por bisección sobre la ecuación del valor actual con la misma tabla en enteros, con una precisión muy superior a la de cualquier información oficial de una entidad financiera.',
+            },
+          ],
+        },
+        {
+          title: 'Varias monedas',
+          items: [
+            {
+              q: '¿Qué monedas se admiten?',
+              a: 'Se admiten veintinueve monedas, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, centroeuropeas, latinoamericanas y del sudeste asiático. Cada moneda se muestra con sus propias convenciones locales. Por ejemplo, la INR usa la agrupación india en lakhs y crores (1,23,45,678) y el JPY no usa decimales.',
+            },
+            {
+              q: '¿Qué significa aquí «varias monedas»?',
+              a: 'Significa que la calculadora da formato a los datos y a los resultados según las convenciones de la moneda que elijas. El símbolo, los decimales y la agrupación de dígitos cambian según la configuración regional. Los cálculos son idénticos: un préstamo a tasa fija que se amortiza se comporta igual tanto si llamas a las unidades dólares como rupias o yenes. Todos los préstamos de una misma comparación comparten una moneda, porque comparar cuotas nominales en monedas distintas (sin un tipo de cambio actualizado) sería engañoso.',
+            },
+          ],
+        },
+      ],
+    },
+    related: {
+      heading: 'Antes de firmar nada',
+      lead: 'Una decisión que te siga pareciendo acertada dentro de cinco años.',
+      items: [
+        {
+          kicker: 'Cómo comparar',
+          title: 'Entender las condiciones de un préstamo',
+          desc: 'APR, amortización, tasa fija o variable, penalizaciones por pago anticipado: la letra pequeña que decide qué oferta tiene el menor costo total.',
+        },
+        {
+          kicker: 'Antes de pedir prestado',
+          title: 'Primero, el fondo de emergencia',
+          desc: 'Si un mal mes te obligaría a saltarte una cuota, el préstamo es demasiado grande. Crea un colchón antes de asumirlo.',
+        },
+        {
+          kicker: 'Modelo mental',
+          title: 'Revalorización y depreciación',
+          desc: 'Una casa puede ganar valor mientras la pagas. Un vehículo normalmente lo pierde. La misma cuota mensual no significa el mismo trato.',
+        },
+        {
+          kicker: 'Después de firmar',
+          title: 'Cómo salir de las deudas',
+          desc: 'Un método práctico para reducir lo que debes sin agotarte a mitad de camino.',
+        },
+        {
+          kicker: 'Fundamentos',
+          title: 'Qué cuenta como pasivo',
+          desc: 'La diferencia entre la deuda que construye algo y la que solo le quita dinero al hogar.',
+        },
+      ],
+      footerTag: 'Más sobre deudas y préstamos',
+      footerAll: 'O explora todos los artículos',
+    },
+  },
+  island: {
+    currencies: currenciesEs,
+    toolbar: {
+      aria: 'Acciones del comparador de préstamos',
+      currencyLabel: 'Moneda en pantalla',
+      currencyHelp: 'Todos los préstamos de esta comparación usan este formato.',
+      sample: 'Ejemplo:',
+      share: 'Copiar enlace para compartir',
+      shareCopied: 'Enlace copiado',
+      shareTitle: 'Copia un enlace que incluye todos los datos de tus préstamos',
+      reset: 'Restablecer valores predeterminados',
+      resetTitle: 'Borra todos los datos y empieza de cero',
+      copiedBar: 'Enlace copiado al portapapeles',
+      shareUrlAria: 'Dirección del enlace para compartir',
+      shareStatus: 'Enlace para compartir copiado al portapapeles.',
+      copyPrompt: 'Copia este enlace:',
+    },
+    phoneTabs: {
+      groupAria: 'Entidad que se muestra',
+      tabName: 'Entidad {label}',
+      add: 'Añadir',
+      addAria: 'Añadir otra entidad para comparar ({n} de {max})',
+      addCard: 'Añadir entidad',
+      addCardHint: 'Compara hasta {max}',
+    },
+    card: {
+      badge: 'Entidad {label}',
+      removeAria: 'Quitar la entidad {label} de la comparación',
+      removeTitle: 'Quitar de la comparación',
+      name: 'Nombre de la entidad',
+      principal: 'Cantidad del préstamo',
+      rate: 'Tasa de interés anual (%)',
+      solveFor: 'Calcular',
+      modeTerm: 'Cuota mensual',
+      modePayment: 'Meses hasta liquidar',
+      term: 'Plazo (meses)',
+      monthly: 'Cuota mensual',
+      requiredTitle: 'Obligatorio',
+      optionalTitle: 'Datos opcionales del préstamo',
+      optionalSingle: '{status}, sin comisiones ni pagos anticipados',
+      optionalMulti: '{status} con {rest}',
+      statusHybrid: 'Tasa híbrida (ARM)',
+      statusFixed: 'Tasa fija',
+      statusFees: 'comisiones',
+      statusPrepayments: 'pagos anticipados',
+      statusPenalty: 'penalización',
+      rateStructure: {
+        title: 'Estructura de la tasa',
+        hint: 'Fija, o fija y luego variable (ARM)',
+      },
+      rateTypeAria: 'Tipo de tasa',
+      fixed: 'Fija',
+      hybrid: 'Híbrida (ARM)',
+      hybridHint: {
+        before: 'Los préstamos híbridos (ARM) necesitan un plazo fijo. Cambia ',
+        solveFor: 'Calcular',
+        mid: ' arriba a ',
+        modeTerm: 'Cuota mensual',
+        after: ' para activar los campos ARM.',
+      },
+      initialFixed: 'Periodo fijo inicial (meses)',
+      initialFixedHelp: 'Habituales: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
+      subsequentRate: 'Tasa posterior (%)',
+      subsequentRateHelp:
+        'Tasa cuando termina el periodo fijo. Los ARM reales siguen un índice; esta es tu estimación para una prueba de estrés.',
+      costs: {
+        title: 'Costos y comisiones',
+        hint: 'Comisión de apertura, gastos iniciales y puntos de descuento',
+      },
+      fee: 'Comisión de apertura y gastos iniciales',
+      pointsCost: 'Costo de los puntos de descuento',
+      pointsCostHelp:
+        'Ya está incluido en la comisión de arriba. Escribirlo de nuevo aquí permite que la calculadora muestre el punto de equilibrio de los puntos.',
+      pointsReduction: 'Rebaja de tasa por los puntos (p. p.)',
+      pointsReductionHelp: 'Por ejemplo, 0,25 significa que los puntos bajan tu tasa 0,25 puntos porcentuales.',
+      prepayments: {
+        title: 'Pagos anticipados',
+        hint: 'Pagos extra cada mes o pagos extraordinarios',
+      },
+      extra: 'Capital extra al mes',
+      lumps: 'Pagos extraordinarios',
+      lumpsHelp: {
+        before: 'Formato: ',
+        format: 'mes:cantidad',
+        mid: ', separados por punto y coma. Por ejemplo, ',
+        after: ' significa 5000 en el mes 12 y 3000 en el mes 36.',
+      },
+      penalty: {
+        title: 'Penalización por pago anticipado',
+        hint: 'Algunos préstamos cobran una comisión por liquidarlos antes de tiempo',
+      },
+      penaltyPct: 'Penalización (% del saldo)',
+      penaltyUntil: 'La penalización se aplica hasta el mes',
+      penaltyUntilHelp:
+        'Déjalo en 0 si no hay penalización. Solo se cobra cuando el préstamo se liquida en este mes o antes.',
+    },
+    results: {
+      monthly: 'Mensual',
+      monthlyExtra: '{base} + {extra} de pago extra',
+      apr: 'APR',
+      aprNa: 'n. d.',
+      aprFees: 'Incluye comisiones',
+      aprNoFees: 'Sin comisiones',
+      totalPaid: 'Total pagado',
+      showDetails: 'Ver detalles',
+      timeToPayoff: 'Tiempo hasta liquidarlo',
+      paymentsOne: '1 cuota',
+      paymentsMany: '{n} cuotas',
+      totalInterest: 'Intereses totales',
+      fees: 'Comisiones',
+      penalty: 'Penalización por pago anticipado',
+      penaltyHint: 'Se cobra porque el préstamo se liquidó antes de tiempo dentro del periodo de penalización',
+      breakEven: 'Punto de equilibrio de los puntos',
+      never: 'nunca',
+      breakEvenSaves: 'Ahorra {amount} durante el plazo',
+      breakEvenNever: 'Los puntos no bajan la cuota mensual lo suficiente para recuperar su costo',
+    },
+    delta: {
+      heading: 'Lado a lado',
+      empty: 'Escribe datos válidos de al menos dos entidades para ver cómo se comparan.',
+      sameBefore: 'Todas las entidades salen con el mismo costo total: ',
+      sameAfter: '.',
+      rangeBefore: 'El costo total va de ',
+      rangeTo: ' a ',
+      rangeAcross: ' entre las entidades de abajo: una diferencia de ',
+      rangeAfter: '.',
+      metricAria: 'Métrica',
+      monthlyPayment: 'Cuota mensual',
+      monthsToPayoff: 'Meses hasta liquidar',
+      aprInclFees: 'APR (con comisiones)',
+      totalInterest: 'Intereses totales',
+      totalPaid: 'Total pagado',
+      diffRow: 'Diferencia frente al menor costo total',
+      baseline: 'referencia',
+      baselineAria: 'referencia (menor costo total)',
+    },
+    tabs: {
+      aria: 'Análisis',
+      listAria: 'Vistas de análisis',
+      charts: {
+        label: 'Gráficos',
+        hint: 'Saldo pendiente a lo largo del tiempo y reparto de cada cuota',
+      },
+      horizon: {
+        label: 'Horizonte',
+        hint: 'Tu situación si vendes o refinancias antes',
+      },
+      refi: {
+        label: 'Refinanciar',
+        hint: 'Compara mantener y refinanciar, con punto de equilibrio',
+      },
+      how: {
+        label: 'Cómo funciona',
+        hint: 'Fórmula y metodología',
+      },
+    },
+    charts: {
+      balanceHeading: 'Saldo pendiente a lo largo del tiempo',
+      balanceLead:
+        'Cada línea es el saldo pendiente de una entidad, mes a mes. El punto sobre el eje marca cuándo queda liquidado.',
+      splitHeading: 'Adónde va cada cuota',
+      splitLead:
+        'La misma cuota mensual cada mes. Al principio, casi toda son intereses; hacia el final, casi toda es capital.',
+      vendorLabel: 'Entidad',
+      autoOption: 'Automático (menor costo total)',
+      incomplete: ' (incompleta)',
+      splitEmpty:
+        'Escribe datos válidos arriba para ver cómo se reparte cada cuota entre intereses y capital.',
+      caption: {
+        before: 'Se muestra la tabla de amortización de ',
+        afterName: ' según el contrato',
+        noExtras: ' (sin el capital extra opcional; la misma vista que el APR)',
+        extraBefore: '. Un pago extra en el ',
+        yearEarly: 'año 1',
+        extraMid: ' evita 25 años de intereses sobre esa cantidad; el mismo pago en el ',
+        yearLate: 'año 24',
+        extraAfter: ' casi no ahorra nada.',
+      },
+    },
+    balance: {
+      empty: 'Escribe datos válidos arriba para ver un gráfico de amortización.',
+      ariaPrefix: 'Saldo pendiente del préstamo a lo largo del tiempo. ',
+      seriesLine: '{name}: empieza en {amount} y se liquida en {months}.',
+      start: 'Inicio',
+      year: 'Año {y}',
+      month: 'Mes {m}',
+      yearMonth: 'Año {y}, mes {m}',
+      paidOff: 'Liquidado, {interest} de intereses',
+      left: 'Quedan {balance}, {interest} de intereses',
+      legendNote: 'liquidado en {months}',
+      swipe: 'Desliza para ver todo el gráfico →',
+      groupAria:
+        'Gráfico del saldo pendiente. Usa las flechas izquierda y derecha para leer cada año, y Shift para meses sueltos.',
+      title: 'Saldo pendiente del préstamo a lo largo del tiempo',
+      axisYears: 'Años',
+      hint: 'Pasa el puntero por el gráfico, tócalo o usa las flechas para leer el saldo pendiente de cualquier año.',
+      tableCaption: 'Saldo pendiente del préstamo a lo largo del tiempo, con meses de muestra',
+    },
+    split: {
+      ariaPrefix: 'Adónde va cada cuota mensual de {vendor}. ',
+      ariaRow: '{when}: intereses {interest} ({pct} %), capital {principal}.',
+      title: 'Adónde va cada cuota',
+      eyebrowInterest: 'INTERESES',
+      eyebrowPrincipal: 'CAPITAL',
+      footnote: 'La misma cuota cada mes, el reparto cambia',
+      tableCaption: 'Reparto entre intereses y capital de {vendor}, con muestras a lo largo del préstamo',
+    },
+    words: {
+      month: 'Mes',
+      payment: 'Cuota',
+      interest: 'Intereses',
+      principal: 'Capital',
+    },
+    how: {
+      heading: 'Cómo funciona la comparación',
+      intro:
+        'Para cada entidad financiera, la calculadora construye la tabla de amortización completa con la fórmula estándar de un préstamo que se amortiza por completo:',
+      symbols: {
+        p: ' es el capital del préstamo, ',
+        r: ' es la tasa de interés mensual (tasa anual ÷ 12) y ',
+        n: ' es el número de cuotas mensuales.',
+      },
+      monthly:
+        'Los intereses de cada mes se calculan sobre el saldo pendiente, la cuota se reparte entre intereses y capital, y el saldo se reduce. El cálculo es exacto hasta la unidad monetaria más pequeña.',
+      apr: {
+        strong: 'APR',
+        rest: ' incorpora la comisión de apertura y los gastos iniciales a la tasa: trata la comisión como una deducción inicial de lo que realmente recibes y busca la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Se expresa como tasa anual nominal (tasa mensual × 12), como en la información obligatoria de los préstamos en EE. UU.',
+      },
+      hybrid: {
+        strong: 'Los préstamos híbridos (ARM)',
+        rest: ' usan la tasa inicial durante el periodo fijo y después recalculan la cuota en el mes de transición, para que el préstamo se siga amortizando dentro del plazo original a la tasa posterior.',
+      },
+      lumps: {
+        strong: 'Los pagos extraordinarios',
+        rest: ' se aplican al capital DESPUÉS de la cuota mensual ordinaria, así que no generan intereses ese mismo mes.',
+      },
+      penalties: {
+        strong: 'Las penalizaciones por pago anticipado',
+        rest: ' solo se aplican cuando el préstamo se liquida por completo en el último mes de la penalización o antes.',
+      },
+      note: 'Todo funciona en tu navegador. No se envía nada a ningún servidor. Usa el botón «Copiar enlace para compartir» para codificar todos los datos en una dirección que puedes pasar a otra persona.',
+    },
+    horizon: {
+      heading: 'Si vendo o refinancio en...',
+      lead: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. Cada fila muestra la situación real de quien pidió el préstamo en esa fecha.',
+      label: 'Horizonte: ',
+      inputAria: 'Horizonte en meses (texto)',
+      empty: 'Escribe datos válidos para ver la situación en cada horizonte.',
+      principalRepaid: 'Capital devuelto',
+      interestPaid: 'Intereses pagados',
+      balanceRemaining: 'Saldo pendiente',
+      totalCashOut: 'Desembolso total',
+    },
+    refi: {
+      heading: 'Escenario de refinanciación',
+      lead: 'Compara mantener un préstamo con refinanciarlo en un mes futuro. Es útil cuando bajan las tasas o cuando te planteas liquidar un ARM antes de que cambie su tasa.',
+      whichLoan: '¿Qué préstamo refinanciar?',
+      atMonth: 'Refinanciar en el mes',
+      newRate: 'Nueva tasa (%)',
+      newTerm: 'Nuevo plazo (meses)',
+      newFee: 'Nuevos gastos iniciales',
+      rollFee: 'Financiar los gastos iniciales dentro del nuevo préstamo',
+      empty: 'Elige una entidad válida y escribe el mes, la tasa y el plazo de la refinanciación para ver el ahorro.',
+      keepTotal: 'Mantener el préstamo actual: total',
+      refiTotal: 'Refinanciar: total (de ambos tramos)',
+      saves: 'La refinanciación ahorra',
+      costsMore: 'La refinanciación cuesta más',
+      breakEven: 'Punto de equilibrio (meses tras refinanciar)',
+      breakEvenHint: 'Cuánto tiempo debe durar el nuevo préstamo para recuperar los gastos iniciales',
+      breakEvenNever: 'La nueva cuota mensual no es más baja; los gastos iniciales no se recuperan',
+    },
+    disclaimer: {
+      summary: 'Supuestos y advertencias',
+      body: 'Los cálculos suponen capitalización mensual y pagos en su fecha. El APR se muestra como tasa anual nominal (tasa mensual × 12) calculada sobre la tabla contractual (sin pagos extra voluntarios), e incorpora la comisión de apertura y los gastos iniciales al costo efectivo del préstamo; cada jurisdicción decide qué otros costos (seguros obligatorios, cuentas vinculadas, impuestos) deben incluirse en su cifra oficial de APR/TAE, así que súmalos al campo de la comisión si quieres que se reflejen. Las hipotecas residenciales canadienses capitalizan semestralmente por ley, y los productos brasileños y algunos británicos usan otras convenciones de capitalización; en esos productos, las cifras con capitalización mensual de esta calculadora se desviarán ligeramente. Los préstamos a tasa variable reales siguen un índice más un margen y pueden tener topes de tasa que esta calculadora no aplica; la tasa posterior que escribes es tu mejor estimación para una prueba de estrés. No se modelan los impuestos sobre la propiedad, las cuotas de mantenimiento del edificio o de las zonas comunes, el seguro del hogar ni el tratamiento fiscal de los intereses del préstamo en tu jurisdicción. Es una comparación solo educativa; no es asesoramiento financiero. Para una comparación vinculante o asesoramiento personalizado, consulta a un intermediario hipotecario o a un asesor financiero con licencia.',
+    },
+    months: {
+      na: 'n. d.',
+      one: '1 mes',
+      some: '{m} meses',
+      years: '{y} a.',
+      yearsOne: '{y} a. y 1 mes',
+      yearsSome: '{y} a. y {m} meses',
+    },
+    engine: {
+      errors: {
+        principal: 'El capital debe ser mayor que cero.',
+        payment: 'La cuota mensual debe ser mayor que cero.',
+        belowInterest:
+          'La cuota mensual es demasiado baja para liquidar el préstamo; ni siquiera cubre los intereses del primer mes.',
+        notAmortizing: 'El préstamo no se amortiza en {months} meses. Aumenta la cuota mensual.',
+        term: 'El plazo debe ser de al menos un mes.',
+        amount: 'Escribe una cantidad del préstamo mayor que cero.',
+        rate: 'Escribe una tasa de interés que no sea negativa.',
+        initialFixed: 'El periodo fijo inicial debe ser un número positivo de meses.',
+        termMin: 'Escribe un plazo de al menos un mes.',
+        termMax: 'El plazo no puede superar los {months} meses.',
+        paymentEnter: 'Escribe una cuota mensual mayor que cero.',
+        hybridMode:
+          'Los préstamos de tasa híbrida deben introducirse en modo de plazo (la cuota mensual se calcula).',
+        refiOriginal: 'El préstamo original no es válido; no se puede calcular la refinanciación.',
+        refiMonth: 'El mes de refinanciación debe ser al menos 1.',
+        refiMonthEnd: 'El mes de refinanciación debe ser anterior al final del préstamo original.',
+        refiRate: 'La nueva tasa no puede ser negativa.',
+        refiTerm: 'El nuevo plazo debe ser de al menos 1 mes.',
+        refiBalance: 'El préstamo original no tiene saldo pendiente en el mes de refinanciación.',
+        newLoan: 'El préstamo nuevo no es válido.',
+      },
+      warnings: {
+        precision:
+          'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avísanos, por favor.',
+        subsequentRate:
+          'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
       },
     },
   },

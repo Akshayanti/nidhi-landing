@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES, DEFAULT_CURRENCY, formatMoney } from '../utils/loan/math.ts';
+import { CURRENCIES, formatMoney } from '../utils/loan/math.ts';
 import {
   aggregate,
   getCurrencyLabel,
@@ -12,8 +12,9 @@ import {
 } from '../utils/multi-currency-net-worth/math.ts';
 import {
   decodeFromQueryString,
-  encodeFullData,
   encodeShared,
+  makeDefaultRows,
+  publishableState,
   SHARED_STATE_GLOBAL,
   type ShareMode,
   type SharedPositionData,
@@ -73,12 +74,16 @@ const RISK_COLORS: Record<string, string> = PALETTE_RISK_COLORS;
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function MultiCurrencyNetWorth({ strings }: { strings: Strings }) {
-  const [rows, setRows] = useState<AssetRow[]>([
-    { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
-    { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
-  ]);
-  const [functionalCurrency, setFunctionalCurrency] = useState<string>(DEFAULT_CURRENCY);
+/**
+ * `defaultCurrency` is the page's starting currency (TOOL_DEFAULT_CURRENCY in
+ * src/utils/shared/toolState.ts, chosen by the page component for its
+ * language): the spending currency and the currency of blank rows when no
+ * shared state arrived, after a reset, and for rows added later. A shared
+ * link's state decodes the same on every page.
+ */
+export default function MultiCurrencyNetWorth({ strings, defaultCurrency }: { strings: Strings; defaultCurrency: string }) {
+  const [rows, setRows] = useState<AssetRow[]>(() => makeDefaultRows(defaultCurrency));
+  const [functionalCurrency, setFunctionalCurrency] = useState<string>(defaultCurrency);
   const [rates, setRates] = useState<Record<string, number> | null>(null);
   const [ratesLoading, setRatesLoading] = useState(true);
   const [ratesError, setRatesError] = useState(false);
@@ -104,9 +109,12 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
-    const decoded = decodeFromQueryString(typeof raw === 'string' ? raw : '');
-    setRows(decoded.rows);
-    setFunctionalCurrency(decoded.functionalCurrency);
+    const shared = typeof raw === 'string' ? raw : '';
+    const decoded = decodeFromQueryString(shared);
+    // No shared state: start in this page's currency. A shared state keeps
+    // the codec's reading (no currency means EUR), so links mean the same anywhere.
+    setRows(shared ? decoded.rows : makeDefaultRows(defaultCurrency));
+    setFunctionalCurrency(shared ? decoded.functionalCurrency : defaultCurrency);
     if (decoded.isReadOnly && decoded.sharedPositions) {
       setSharedPositions(decoded.sharedPositions);
       setSharedRedacted(decoded.shareMode === 'redacted');
@@ -136,8 +144,10 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
   // the editable layout, so a switch never turns them into a read-only view.
   useEffect(() => {
     if (!hydrated || isReadOnlyView) return;
-    publishToolState(SHARED_STATE_GLOBAL, encodeFullData(rows, functionalCurrency));
-  }, [hydrated, isReadOnlyView, rows, functionalCurrency]);
+    // Untouched publishes '' so the other language opens with its own
+    // starting currency; anything changed carries as encoded.
+    publishToolState(SHARED_STATE_GLOBAL, publishableState(rows, functionalCurrency, defaultCurrency));
+  }, [hydrated, isReadOnlyView, rows, functionalCurrency, defaultCurrency]);
 
   // Fetch exchange rates when functional currency changes.
   useEffect(() => {
@@ -214,7 +224,7 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
   const addRow = useCallback(() => {
     setRows((prev) => [
       ...prev,
-      { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' as const },
+      { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
     ]);
     // Read length from a functional set via a microtask-stable closure:
     // we already know the new length is `rows.length + 1` because the
@@ -222,7 +232,7 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
     // safe because StrictMode does not double-invoke the *enclosing*
     // callback, only the updater.
     track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length]);
+  }, [rows.length, defaultCurrency]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;
@@ -273,13 +283,13 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
   const applyCsvRows = useCallback((newRows: AssetRow[]) => {
     // Ensure at least 2 rows for the form.
     const padded = newRows.length < 2
-      ? [...newRows, ...Array.from({ length: 2 - newRows.length }, () => ({ name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' as const }))]
+      ? [...newRows, ...Array.from({ length: 2 - newRows.length }, () => ({ name: '', value: '', currency: defaultCurrency, type: 'asset' as const }))]
       : newRows;
     setRows(padded);
     setCsvConfirmPending(null);
     setCsvErrors([]);
     track('free_multi_currency_net_worth_csv_uploaded', { count: newRows.length });
-  }, []);
+  }, [defaultCurrency]);
 
   const confirmCsvOverwrite = useCallback(() => {
     if (csvConfirmPending) {
@@ -327,18 +337,15 @@ export default function MultiCurrencyNetWorth({ strings }: { strings: Strings })
   }, [rows, result.positions, functionalCurrency, shareMode]);
 
   const reset = useCallback(() => {
-    setRows([
-      { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
-      { name: '', value: '', currency: DEFAULT_CURRENCY, type: 'asset' },
-    ]);
-    setFunctionalCurrency(DEFAULT_CURRENCY);
+    setRows(makeDefaultRows(defaultCurrency));
+    setFunctionalCurrency(defaultCurrency);
     setIsReadOnlyView(false);
     setSharedPositions(null);
     setSharedRedacted(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
     track('free_multi_currency_net_worth_reset');
-  }, []);
+  }, [defaultCurrency]);
 
   const filledCount = rows.filter((r) => r.value.trim() !== '').length;
 

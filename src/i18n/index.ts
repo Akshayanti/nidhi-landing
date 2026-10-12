@@ -5,6 +5,7 @@
 import type { Locale } from './config.ts';
 import { en } from './strings/en.ts';
 import { hi } from './strings/hi.ts';
+import { es } from './strings/es.ts';
 import type { Dict } from './strings/types.ts';
 
 export {
@@ -28,7 +29,7 @@ export type { Dict } from './strings/types.ts';
  * a locale to `LOCALES` without adding its catalog fails the build, which is
  * the intended way to find out.
  */
-export const DICTS: Record<Locale, Dict> = { en, hi };
+export const DICTS: Record<Locale, Dict> = { en, hi, es };
 
 export function dict(locale: Locale): Dict {
   return DICTS[locale];

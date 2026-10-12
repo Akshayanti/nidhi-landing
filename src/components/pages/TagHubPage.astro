@@ -20,7 +20,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatTag } from '../../utils/tags';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getPathPosts } from '../../utils/learnPosts';
-import { DEFAULT_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, DEFAULT_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale?: Locale;
@@ -85,6 +85,7 @@ const breadcrumbSchema = {
 const collectionPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: topics.schema.collectionName,
   description: topics.meta.description,
   url: hubUrl,

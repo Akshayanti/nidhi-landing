@@ -93,3 +93,39 @@ export const currenciesHi: Record<string, string> = {
   USD: 'अमेरिकी डॉलर (USD)',
   ZAR: 'दक्षिण अफ़्रीकी रैंड (ZAR)',
 };
+
+/**
+ * Spanish names, lower case as Spanish writes a currency (*el dólar*, *el euro*),
+ * except the capital the sorted dropdown needs at the start of each row.
+ */
+export const currenciesEs: Record<string, string> = {
+  AUD: 'Dólar australiano (AUD)',
+  BRL: 'Real brasileño (BRL)',
+  CAD: 'Dólar canadiense (CAD)',
+  CHF: 'Franco suizo (CHF)',
+  CNY: 'Yuan chino (CNY)',
+  CZK: 'Corona checa (CZK)',
+  DKK: 'Corona danesa (DKK)',
+  EUR: 'Euro (EUR)',
+  GBP: 'Libra esterlina (GBP)',
+  HKD: 'Dólar de Hong Kong (HKD)',
+  HUF: 'Forinto húngaro (HUF)',
+  IDR: 'Rupia indonesia (IDR)',
+  INR: 'Rupia india (INR)',
+  ISK: 'Corona islandesa (ISK)',
+  JPY: 'Yen japonés (JPY)',
+  KRW: 'Won surcoreano (KRW)',
+  MXN: 'Peso mexicano (MXN)',
+  MYR: 'Ringgit malayo (MYR)',
+  NOK: 'Corona noruega (NOK)',
+  NZD: 'Dólar neozelandés (NZD)',
+  PHP: 'Peso filipino (PHP)',
+  PLN: 'Esloti polaco (PLN)',
+  RON: 'Leu rumano (RON)',
+  SEK: 'Corona sueca (SEK)',
+  SGD: 'Dólar de Singapur (SGD)',
+  THB: 'Baht tailandés (THB)',
+  TRY: 'Lira turca (TRY)',
+  USD: 'Dólar estadounidense (USD)',
+  ZAR: 'Rand sudafricano (ZAR)',
+};

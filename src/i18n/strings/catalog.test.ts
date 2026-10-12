@@ -17,9 +17,10 @@ import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
 import { CURRENCIES } from '../../utils/loan/math.ts';
-import { currenciesEn, currenciesHi } from './tools/currencies.ts';
+import { currenciesEn, currenciesEs, currenciesHi } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
+import { es } from './es.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -41,6 +42,9 @@ function leaves(node: unknown, prefix = ''): Leaf[] {
 
 const EN = leaves(en);
 const HI = leaves(hi);
+const ES = leaves(es);
+/** Every translated catalog, by language, for the checks that apply to all of them. */
+const TRANSLATED: Array<[string, Leaf[]]> = [['Hindi', HI], ['Spanish', ES]];
 const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
 
 /**
@@ -109,19 +113,20 @@ describe('catalog structure', () => {
   });
 
   it('resolves every key in every catalog, so nothing is blank', () => {
-    for (const { path, value } of [...EN, ...HI]) {
+    for (const { path, value } of [...EN, ...HI, ...ES]) {
       assert.ok(value.trim().length > 0, `${path} is blank`);
     }
   });
 });
 
 describe('catalogs agree on their keys', () => {
-  it('gives the two catalogs the same key set', () => {
+  it('gives every catalog the same key set as English', () => {
     // The gate that actually runs. It also still holds if a catalog is ever
     // built dynamically, loaded from JSON, or cast out of its type.
     const enKeys = EN.map((leaf) => leaf.path).sort();
-    const hiKeys = HI.map((leaf) => leaf.path).sort();
-    assert.deepEqual(hiKeys, enKeys);
+    for (const [name, catalog] of TRANSLATED) {
+      assert.deepEqual(catalog.map((leaf) => leaf.path).sort(), enKeys, `${name} keys differ from English`);
+    }
   });
 
   it('resolves a catalog through dict() for each locale', () => {
@@ -162,6 +167,49 @@ describe('the Hindi catalog is translated, not copied', () => {
 });
 
 /**
+ * Spanish shares more spellings with English than Hindi does (`Euro`, a
+ * cognate like `Total`), so a value identical to English is allowed here only
+ * with a reason, on top of the shared `IDENTICAL_OK`.
+ */
+const IDENTICAL_OK_ES = new Set<string>([
+  // "Euro" is the currency's name in Spanish too, and the code is the same.
+  'tools.loanComparison.island.currencies.EUR',
+  'tools.multiCurrencyNetWorth.island.currencies.EUR',
+  'tools.monteCarlo.island.currencies.EUR',
+]);
+
+/**
+ * Strings whose figure is the example being shown, not a figure in the
+ * sentence's own style: the loan FAQ shows how the tool writes rupees, in
+ * lakhs and crores.
+ */
+const AMOUNT_EXAMPLE_OK_ES = new Set<string>(['tools.loanComparison.page.faq.groups.6.items.0.a']);
+
+describe('the Spanish catalog is translated, not copied', () => {
+  it('leaves no English word untranslated', () => {
+    const copied = ES.filter(({ path, value }) => {
+      if (IDENTICAL_OK.has(path) || IDENTICAL_OK_ES.has(path)) return false;
+      if (value !== EN_BY_PATH.get(path)) return false;
+      return !isLanguageNeutral(value);
+    }).map(({ path, value }) => `${path}: ${value}`);
+
+    assert.deepEqual(
+      copied,
+      [],
+      `Spanish values still identical to English:\n  ${copied.join('\n  ')}\n\n` +
+        'Translate them, or add the path to IDENTICAL_OK_ES in this file with a reason.',
+    );
+  });
+
+  it('writes amounts the Spanish way, never as €10,000', () => {
+    // docs/i18n/es-glossary.md rule 6: in Spanish, "10,000" reads as ten with
+    // three decimals. A literal amount in the Spanish copy is "10.000 €".
+    const english = ES.filter(({ path, value }) => !AMOUNT_EXAMPLE_OK_ES.has(path) && /€\s?\d|\d,\d{3}\b/.test(value)).map((l) => `${l.path}: ${l.value}`);
+    assert.deepEqual(english, []);
+  });
+});
+
+/**
  * The three free tools name their currencies from `./tools/currencies.ts`, and
  * the codes they offer come from the engine's own table in
  * `src/utils/loan/math.ts`. The two are written by hand in different files, so
@@ -175,6 +223,7 @@ describe('the tools name every currency they offer', () => {
   it('names exactly the engine\'s currencies, in both languages', () => {
     assert.deepEqual(Object.keys(currenciesEn).sort(), CODES);
     assert.deepEqual(Object.keys(currenciesHi).sort(), CODES);
+    assert.deepEqual(Object.keys(currenciesEs).sort(), CODES);
   });
 
   it('keeps the English name the engine\'s own label, so the two cannot drift', () => {
@@ -191,19 +240,23 @@ describe('the tools name every currency they offer', () => {
         currenciesHi[c.code].endsWith(`(${c.code})`),
         `${c.code} in Hindi does not end with its own code`,
       );
+      assert.ok(
+        currenciesEs[c.code].endsWith(`(${c.code})`),
+        `${c.code} in Spanish does not end with its own code`,
+      );
     }
   });
 });
 
 describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses no em dash, in either its character or entity form', () => {
-    const offenders = [...EN, ...HI].filter(({ value }) =>
+    const offenders = [...EN, ...HI, ...ES].filter(({ value }) =>
       /—|&mdash;|&#8212;|&#x2014;/i.test(value),
     );
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 
   it('uses no double dash', () => {
-    const offenders = [...EN, ...HI].filter(({ value }) => /--/.test(value));
+    const offenders = [...EN, ...HI, ...ES].filter(({ value }) => /--/.test(value));
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 });

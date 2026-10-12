@@ -37,7 +37,8 @@ import { getCollection } from 'astro:content';
 import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
 import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/monte-carlo/url.ts';
-import { LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
+import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
+import { LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -100,6 +101,7 @@ const related = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug))
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: mc.schema.name,
   alternateName: mc.schema.alternateNames,
   url: canonicalUrl,
@@ -126,6 +128,7 @@ const breadcrumbSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 ---
@@ -162,6 +165,7 @@ const faqSchema = {
       client:load
       strings={island}
       netWorthHref={localizedPath(locale, '/free/multi-currency-net-worth/')}
+      defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
     />
 
     {/* Phones show the four limits by name; their explanations open with

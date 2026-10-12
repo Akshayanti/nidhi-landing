@@ -209,6 +209,35 @@ export function encodeFullData(
   return serializeParams(params);
 }
 
+/** The blank starter rows for a page whose tools start in `currency`. */
+export function makeDefaultRows(currency: string = DEFAULT_CURRENCY): AssetRow[] {
+  return Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow(currency));
+}
+
+/**
+ * Whether the form is still the page's untouched starting state: the
+ * spending currency is the page's own, and every row is blank (no name, no
+ * value) in that same currency. Blank rows added later count as untouched,
+ * as they do in `encodeFullData`.
+ */
+export function isPristineFullData(rows: AssetRow[], functionalCurrency: string, pageCurrency: string): boolean {
+  return (
+    functionalCurrency === pageCurrency &&
+    rows.every((r) => r.name.trim() === '' && r.value.trim() === '' && r.currency === pageCurrency)
+  );
+}
+
+/**
+ * What the tool publishes for the language switch: nothing while it is
+ * untouched, so the other page opens with its own starting currency, and the
+ * editable full-data encoding (unchanged) once anything changed.
+ */
+export function publishableState(rows: AssetRow[], functionalCurrency: string, pageCurrency: string): string {
+  // Never '' once changed: blank rows alone encode as `n=0`, which decodes as
+  // blank euro rows, so euros picked on a rupee page stay euros.
+  return isPristineFullData(rows, functionalCurrency, pageCurrency) ? '' : encodeFullData(rows, functionalCurrency);
+}
+
 // ---------------------------------------------------------------------------
 // Encode: shareable links (full or redacted)
 // ---------------------------------------------------------------------------

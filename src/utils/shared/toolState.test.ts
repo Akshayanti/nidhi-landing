@@ -6,7 +6,9 @@
 import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { arrivedByLanguageSwitch, publishToolState } from './toolState.ts';
+import { TOOL_DEFAULT_CURRENCY, arrivedByLanguageSwitch, publishToolState } from './toolState.ts';
+import { LOCALES } from '../../i18n/config.ts';
+import { CURRENCIES } from '../loan/math.ts';
 
 const g = globalThis as unknown as Record<string, unknown>;
 
@@ -46,5 +48,17 @@ describe('publishToolState', () => {
     visit('https://nidhi.today/free/loan-comparison/', '');
     publishToolState('__test', 'c=INR');
     assert.equal((g.window as Record<string, unknown>).__test, 'c=INR');
+  });
+});
+
+describe('TOOL_DEFAULT_CURRENCY', () => {
+  it('opens the tools in rupees on Hindi pages and in euros on English and Spanish ones', () => {
+    assert.deepEqual(TOOL_DEFAULT_CURRENCY, { en: 'EUR', hi: 'INR', es: 'EUR' });
+  });
+
+  it('names a currency the tools offer, for every locale the site serves', () => {
+    for (const locale of LOCALES) {
+      assert.ok(CURRENCIES.some((c) => c.code === TOOL_DEFAULT_CURRENCY[locale]), locale);
+    }
   });
 });

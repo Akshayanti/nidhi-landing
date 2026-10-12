@@ -20,6 +20,7 @@ import { format } from '../../i18n/format.ts';
 import {
   multiCurrencyNetWorthEn,
   multiCurrencyNetWorthHi,
+  multiCurrencyNetWorthEs,
 } from '../../i18n/strings/tools/multiCurrencyNetWorth.ts';
 
 // ---------------------------------------------------------------------------
@@ -459,9 +460,11 @@ Test,50000,XYZ`;
       // English reads exactly as the parser's own message, so nothing changes on the English page.
       const en = format(multiCurrencyNetWorthEn.island.table.csvErrors[e.reason], e.values ?? {});
       assert.equal(en, e.message);
-      const hi = format(multiCurrencyNetWorthHi.island.table.csvErrors[e.reason], e.values ?? {});
-      assert.notEqual(hi, e.message);
-      assert.ok(!/[{}]/.test(hi), `unfilled placeholder in ${hi}`);
+      for (const catalog of [multiCurrencyNetWorthHi, multiCurrencyNetWorthEs]) {
+        const translated = format(catalog.island.table.csvErrors[e.reason], e.values ?? {});
+        assert.notEqual(translated, e.message);
+        assert.ok(!/[{}]/.test(translated), `unfilled placeholder in ${translated}`);
+      }
     }
   });
 });

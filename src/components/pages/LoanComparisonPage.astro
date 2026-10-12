@@ -28,10 +28,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
+import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
-import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -106,6 +107,7 @@ const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
+  inLanguage: LOCALE_META[locale].htmlLang,
   // One canonical brand name; alternateName collects the other phrasings
   // users actually search for, so brand-search variants ("nidhi loan
   // comparator", "nidhi multi-currency loan calculator") still resolve to the
@@ -148,6 +150,7 @@ const breadcrumbSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: faqs.map((f) => ({
     '@type': 'Question',
     name: f.q,
@@ -192,7 +195,7 @@ const faqSchema = {
       </p>
     </header>
 
-    <LoanCompare client:load strings={tool.island} />
+    <LoanCompare client:load strings={tool.island} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]} />
 
     <details class="lc-faq" aria-labelledby="lc-faq-h">
       <summary id="lc-faq-h" class="lc-faqHeading">
