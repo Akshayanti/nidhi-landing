@@ -31,7 +31,7 @@ import ToolStateGuard from '../../components/ToolStateGuard.astro';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
-import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -106,6 +106,7 @@ const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
+  inLanguage: LOCALE_META[locale].htmlLang,
   // One canonical brand name; alternateName collects the other phrasings
   // users actually search for, so brand-search variants ("nidhi loan
   // comparator", "nidhi multi-currency loan calculator") still resolve to the
@@ -148,6 +149,7 @@ const breadcrumbSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: faqs.map((f) => ({
     '@type': 'Question',
     name: f.q,

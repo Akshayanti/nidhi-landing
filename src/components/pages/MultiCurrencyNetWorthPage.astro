@@ -26,7 +26,7 @@ import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
 import WaitlistSection from '../../components/WaitlistSection.astro';
 import { getCollection } from 'astro:content';
-import { LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -84,6 +84,7 @@ const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: tool.schema.name,
   alternateName: tool.schema.alternateName,
   url: canonicalUrl,
@@ -117,6 +118,7 @@ const breadcrumbSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: tool.page.faq.items.map((f) => ({
     '@type': 'Question',
     name: f.q,

@@ -19,7 +19,7 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
-import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -108,6 +108,7 @@ const itemListSchema = {
 const collectionPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: hub.schema.collectionName,
   description,
   url: hubUrl,

@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { CURRENCIES } from '../loan/math.ts';
-import { formatAmount, formatPercent, formatProseAmount } from './formatAmount.ts';
+import { formatAmount, formatPercent, formatProseAmount, formatProsePercent } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
@@ -73,6 +73,26 @@ describe('formatProseAmount', () => {
     assert.equal(formatProseAmount(2_163_515, 'EUR', true), '€2.16M');
     assert.equal(formatProseAmount(2.5e9, 'EUR', true), '€2.5B');
     assert.equal(formatProseAmount(0, 'EUR', true), '€0');
+  });
+
+  it('keeps English figures on a Hindi page', () => {
+    assert.equal(formatProseAmount(23_200, 'EUR', false, 'hi'), '€23,200');
+  });
+
+  it('writes a Spanish page\'s figures the Spanish way', () => {
+    // In Spanish, "10,000" reads as ten with three decimals.
+    const nbsp = (v: string) => v.replace(/\u00a0/g, ' ');
+    assert.equal(nbsp(formatProseAmount(23_200, 'EUR', false, 'es')), '23.200 €');
+    assert.equal(nbsp(formatProseAmount(1_500, 'EUR', false, 'es')), '1500 €');
+    assert.equal(nbsp(formatProseAmount(547_008, 'EUR', true, 'es')), '547 mil €');
+  });
+});
+
+describe('formatProsePercent', () => {
+  it('follows the edition', () => {
+    assert.equal(formatProsePercent(0.07), '7%');
+    assert.equal(formatProsePercent(0.07, 'hi'), '7%');
+    assert.equal(formatProsePercent(0.07, 'es').replace(/\u00a0/g, ' '), '7 %');
   });
 });
 

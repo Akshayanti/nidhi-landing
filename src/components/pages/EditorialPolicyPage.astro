@@ -19,7 +19,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { relative } from 'node:path';
-import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -71,6 +71,7 @@ const beliefsUrl = localizedPath(locale, '/beliefs/');
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: policy.schema.name,
   url: policyUrl,
   description: policy.schema.description,

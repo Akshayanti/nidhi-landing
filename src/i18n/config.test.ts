@@ -40,7 +40,8 @@ describe('locale registry', () => {
   it('recognises locales and rejects everything else', () => {
     assert.equal(isLocale('hi'), true);
     assert.equal(isLocale('en'), true);
-    assert.equal(isLocale('es'), false);
+    assert.equal(isLocale('es'), true);
+    assert.equal(isLocale('de'), false);
     assert.equal(isLocale(''), false);
     assert.equal(isLocale(undefined), false);
     // A locale has to be an exact match: no fallback guessing.

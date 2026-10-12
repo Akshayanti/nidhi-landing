@@ -50,7 +50,7 @@ export interface NetWorthExplainerItem {
   after?: string;
 }
 
-import { currenciesEn, currenciesHi } from './currencies.ts';
+import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const multiCurrencyNetWorthEn = {
   meta: {
@@ -797,6 +797,365 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       copy: 'लिंक कॉपी करें',
       copied: 'कॉपी हो गया!',
       previewHeading: 'पाने वाले को क्या दिखेगा',
+    },
+  },
+};
+
+/**
+ * "Functional currency" is *moneda de referencia* throughout, the glossary's
+ * term for the home currency; the risk badge shortens it to *Referencia*.
+ */
+export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
+  meta: {
+    title: 'Calculadora de patrimonio neto: una o varias monedas | nidhi',
+    description:
+      'Calculadora gratuita de patrimonio neto en una o varias monedas: 29 monedas, tipos del BCE al día y riesgo cambiario. En tu navegador, sin enviar nada.',
+  },
+  schema: {
+    name: 'Calculadora de patrimonio neto de nidhi',
+    alternateName: [
+      'Calculadora de patrimonio neto multimoneda de nidhi',
+      'Calculadora de patrimonio neto multimoneda y análisis del riesgo cambiario de nidhi',
+      'Calculadora de patrimonio neto para quienes viven en el extranjero, de nidhi',
+      'Análisis del riesgo cambiario de nidhi',
+      'Calculadora de exposición a divisas de nidhi',
+      'Herramienta de riesgo cambiario de nidhi',
+      'Comprobador de concentración en divisas de nidhi',
+    ],
+    operatingSystem: 'Cualquiera (navegador web)',
+    browserRequirements: 'Requiere JavaScript. Navegador actualizado.',
+    featureList: [
+      'Calcula tu patrimonio neto total en 29 monedas, expresado en la moneda de referencia que elijas',
+      'Añade todos los activos y pasivos que quieras, en cualquier moneda disponible',
+      'Tipos de cambio de referencia del BCE al día, a través de la API de Frankfurter',
+      'Gráfico de anillo de la concentración por moneda',
+      'Evaluación del riesgo por moneda (bajo, moderado, elevado)',
+      'Selector de activo o pasivo para calcular la posición neta',
+      'Carga masiva desde CSV',
+      'Dos formas de compartir: datos completos o anónimos',
+      'Todo funciona en tu navegador; no se envía ningún dato a ningún servidor',
+    ],
+    breadcrumbHome: 'Inicio',
+    breadcrumbThis: 'Calculadora de patrimonio neto',
+  },
+  page: {
+    breadcrumb: {
+      home: 'Inicio',
+      this: 'Calculadora de patrimonio neto',
+    },
+    eyebrow: 'Herramientas gratuitas',
+    title: 'Calculadora de patrimonio neto, en una moneda o en varias',
+    lead:
+      'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio del BCE al día. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Todo funciona en tu navegador. No se envía nada a ningún servidor. Admite USD, EUR, GBP, INR, JPY y 24 más.',
+    accessCta: {
+      eyebrow: 'Planificador completo',
+      title: '¿Quieres conectar esto con el momento de tu jubilación y tus gastos futuros?',
+      body:
+        'El planificador completo de nidhi convierte tu patrimonio neto en varias monedas en un plan a largo plazo, para que veas cómo el lugar donde vives, la moneda en la que gastas y las grandes decisiones cambian el camino.',
+      cta: 'Únete al acceso anticipado',
+    },
+    explainer: {
+      heading: 'Cómo se hace el cálculo',
+      intro:
+        'Para cada moneda, restamos tus pasivos de tus activos y convertimos el resultado a tu moneda de referencia con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
+      formula:
+        'Concentración % = (Neto en la moneda X × Tipo a la moneda de referencia) / Patrimonio neto total × 100',
+      items: [
+        {
+          strong: 'Posición neta',
+          rest:
+            ' por moneda = suma de los activos menos suma de los pasivos en esa moneda. Una posición neta negativa significa que en esa moneda debes más de lo que tienes.',
+        },
+        {
+          strong: 'Tipo a la moneda de referencia',
+          rest:
+            ' es el multiplicador que convierte una unidad de la moneda X en tu moneda de referencia. Procede del Banco Central Europeo a través de la API de Frankfurter y tu navegador lo obtiene directamente. Los tipos se actualizan cada día hábil. Los tipos de referencia del BCE son valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
+        },
+        {
+          strong: 'Niveles de concentración',
+          rest:
+            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia nunca se señala.',
+        },
+        {
+          strong: 'Exposición neta frente a bruta.',
+          rest:
+            ' La concentración se calcula sobre posiciones netas. Si tienes una deuda grande en una moneda extranjera que compensa un activo en esa misma moneda (por ejemplo, una hipoteca en USD y una cuenta de ahorro en USD), la posición neta es pequeña, pero tu exposición cambiaria bruta en cada lado es mucho mayor. Esta herramienta mide la neta; las cifras brutas conviene mirarlas aparte al dimensionar el riesgo cambiario real.',
+        },
+        {
+          strong: 'Todo el cálculo se hace en tu dispositivo.',
+          rest:
+            ' Los nombres, valores y totales de tus activos nunca salen de tu navegador. La única petición de red es una consulta puntual de los tipos de cambio a Frankfurter, que lleva el código de tu moneda de referencia (por ejemplo, ',
+          after: ') y nada sobre tus activos.',
+        },
+      ],
+    },
+    faq: {
+      heading: 'Preguntas frecuentes',
+      items: [
+        {
+          q: '¿Cómo funciona la calculadora de patrimonio neto?',
+          a:
+            'Añades tus activos y pasivos con su moneda y su valor actual. La herramienta obtiene los tipos de cambio de referencia del BCE al día (a través de la API gratuita de Frankfurter), lo convierte todo a la moneda de referencia que elijas y muestra tu patrimonio neto total como una sola cifra. Debajo, muestra tu concentración por moneda en un gráfico de anillo y señala cualquier moneda distinta de la de referencia en la que tu exposición sea elevada.',
+        },
+        {
+          q: '¿Qué es el riesgo de concentración en una moneda?',
+          a:
+            'Si una gran parte de tu patrimonio neto está en una moneda en la que no gastas, una variación del tipo de cambio altera tu poder adquisitivo real. Por ejemplo, si piensas jubilarte en Europa pero tienes el 70 % de tu patrimonio en USD, un movimiento del 10 % en el USD/EUR (una magnitud que el EUR/USD ha registrado en muchos años naturales) cambiaría tu fondo de jubilación en torno a un 7 % medido en euros.',
+        },
+        {
+          q: '¿Envía esto mis datos financieros a algún sitio?',
+          a:
+            'No. Todo funciona en tu navegador. Los nombres, valores y monedas de tus activos nunca se envían a ningún servidor. La única petición externa es a la API de Frankfurter para obtener los tipos de cambio, y solo incluye el código de tu moneda de referencia, no los datos de tus activos. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando copias un enlace para compartir, tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que empiece la analítica. Tú decides si compartes.',
+        },
+        {
+          q: '¿Qué monedas están disponibles?',
+          a:
+            'Hay veintinueve monedas disponibles, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, de Europa central, de América Latina y del sudeste asiático. Los tipos de cambio proceden del BCE a través de Frankfurter; son tipos de referencia y pueden diferir de los que los bancos ofrecen a sus clientes particulares.',
+        },
+        {
+          q: '¿Qué diferencia hay entre las formas de compartir «Versión completa» y «Versión anónima»?',
+          a:
+            'La forma completa incluye en la URL todos los nombres, valores, monedas y tipos de tus activos: quien tenga el enlace puede ver todo el desglose y comprobar las cuentas. La forma anónima incluye solo los porcentajes de concentración por moneda y los niveles de riesgo: ni cantidades ni nombres de activos. Las dos se copian en tu portapapeles como un único enlace, y tú eliges cuál enviar.',
+        },
+        {
+          q: '¿De dónde salen los tipos de cambio?',
+          a:
+            'Los tipos proceden del Banco Central Europeo a través de la API gratuita de Frankfurter (api.frankfurter.dev). Son tipos de referencia que se actualizan cada día hábil del BCE y sirven como valores orientativos, no como cotizaciones a las que se pueda operar. Los tipos que obtienes de verdad en tu banco o tu bróker incluyen un margen y pueden ser bastante distintos, sobre todo en monedas menos negociadas. No hace falta clave de API, y la petición sale directamente de tu navegador.',
+        },
+        {
+          q: '¿Qué significa «moneda de referencia»?',
+          a:
+            'Tu moneda de referencia es la moneda en la que gastas y vives principalmente: aquella en la que están tus facturas, tu alquiler y la compra del día a día. La dejamos fuera de los avisos de riesgo porque los movimientos del tipo de cambio no cambian lo que compras con el dinero que tienes en la moneda en la que gastas.',
+        },
+        {
+          q: '¿Qué significan «bajo», «moderado» y «elevado»?',
+          a:
+            'Son niveles descriptivos para las monedas que no son la de referencia: menos del 20 % del patrimonio neto es «bajo», del 20 % al 40 % es «moderado» y más del 40 % es «elevado». Describen el tamaño de la concentración, no lo que deberías hacer al respecto. Que un nivel encaje o no con tu situación depende de tus planes de gasto futuros, de dónde piensas jubilarte y de cómo eliges equilibrar el riesgo cambiario con otros objetivos.',
+        },
+        {
+          q: '¿Puedo incluir deudas y pasivos?',
+          a:
+            'Sí. Cada fila tiene un selector de activo o pasivo. Las cantidades de los pasivos se restan de la posición neta de esa moneda. Si tienes una hipoteca en USD junto con ahorros en USD, la herramienta muestra tu exposición neta al USD. Una moneda en la que debes más de lo que tienes se marca como «Deuda neta».',
+        },
+        {
+          q: '¿Cómo funciona la carga de un CSV?',
+          a:
+            'Crea un archivo CSV con estas columnas: name (opcional), value (obligatoria), currency (obligatoria, código de 3 letras), type (opcional, «asset» o «liability»; si falta, se toma como activo). Haz clic en «Subir CSV», elige el archivo y las filas se rellenan solas. Las filas no válidas aparecen con su número de línea para que puedas corregirlas. Al subir el archivo se sustituyen los datos que ya tienes, después de pedirte confirmación.',
+        },
+      ],
+    },
+    related: {
+      heading: 'Entiende tu patrimonio neto',
+      lead: 'Desde qué es el patrimonio neto hasta cómo gestionar dinero en varias monedas.',
+      items: [
+        {
+          kicker: 'Fundamentos',
+          title: 'Qué es el patrimonio neto y por qué importa',
+          desc:
+            'Activos menos pasivos es la medida más sencilla de la salud financiera. Esta herramienta la extiende a lo que tienes en varias monedas.',
+        },
+        {
+          kicker: 'Patrimonio neto',
+          title: 'Cómo calcular tu patrimonio neto en 10 minutos',
+          desc:
+            'El método de dos columnas que aplica esta calculadora: anota lo que tienes, anota lo que debes y calcula la diferencia.',
+        },
+        {
+          kicker: 'Gestión de divisas',
+          title: 'Gestionar dinero en varias monedas',
+          desc:
+            'Estrategias prácticas para ganar, ahorrar y gastar en varias monedas sin perder dinero en comisiones de cambio.',
+        },
+        {
+          kicker: 'Deuda',
+          title: 'Pasivos: lo que debes y por qué importa la tasa de interés',
+          desc:
+            'Un préstamo en moneda extranjera tiene dos riesgos a la vez: el costo de los intereses y la evolución del tipo de cambio. La calculadora tiene en cuenta los dos en la posición neta.',
+        },
+        {
+          kicker: 'Poder adquisitivo',
+          title: 'Por qué tu euro rinde más en unos países que en otros',
+          desc:
+            'El tipo de cambio es solo la mitad de la historia. Al comparar patrimonios entre países, el nivel de precios local importa tanto como el cambio de divisa.',
+        },
+        {
+          kicker: 'Inflación',
+          // A lesson title: the figure is left as the lesson writes it (brief rule).
+          title: 'Poder adquisitivo: por qué 1000 € hoy no son 1000 € mañana',
+          desc:
+            'La moneda es una forma de mirar la riqueza real; la inflación es la otra. Ninguna de las dos se ve en un saldo nominal.',
+        },
+        {
+          kicker: 'FIRE (jubilación anticipada)',
+          title: 'Introducción a la independencia financiera',
+          desc:
+            'Los fundamentos del movimiento FIRE (independencia financiera y jubilación anticipada) y por qué importa diversificar entre monedas cuando tu jubilación abarca varios países.',
+        },
+        {
+          kicker: 'Planificación',
+          title: 'Cómo fijar objetivos financieros',
+          desc:
+            'Cómo los objetivos suelen dar forma a la asignación de activos, incluidas las monedas en las que la gente mantiene su dinero.',
+        },
+      ],
+      footerTag: 'Lee más sobre gestión de divisas',
+      footerAll: 'O consulta todos los artículos',
+    },
+  },
+  island: {
+    currencies: currenciesEs,
+    toolbar: {
+      aria: 'Acciones de la calculadora de patrimonio neto',
+      currencyLabel: 'Tu moneda (en la que gastas)',
+      currencyHelp:
+        'Tu patrimonio neto se muestra en esta moneda. Lo que esté en otra moneda se convierte con los tipos del BCE de hoy.',
+      share: 'Compartir',
+      shareTitle: 'Comparte tu patrimonio neto',
+      reset: 'Restablecer',
+      resetTitle: 'Borra todos los datos y empieza de cero',
+      copiedLabel: 'Enlace copiado en el portapapeles',
+      shareUrlAria: 'URL del enlace para compartir',
+    },
+    rates: {
+      errorBefore: 'Tipos de cambio no disponibles: se muestran las cantidades originales sin convertir.',
+      retry: 'Reintentar',
+      loading: 'Cargando tipos de cambio…',
+      partial:
+        'Falta el tipo de cambio actual de una o más monedas, así que quedan fuera del total de abajo. Sus cantidades en la moneda original se muestran en las tarjetas de cada moneda.',
+    },
+    shared: {
+      readOnly:
+        'Estás viendo un patrimonio neto compartido. Los datos que ves son los que quien lo envió decidió incluir. Puedes empezar de cero con el formulario de abajo.',
+    },
+    table: {
+      heading: 'Tus activos y pasivos',
+      itemsOne: '{count} elemento',
+      itemsMany: '{count} elementos',
+      aria: 'Activos y pasivos',
+      colName: 'Nombre',
+      colValue: 'Valor',
+      colCurrency: 'Moneda',
+      colType: 'Tipo',
+      colActions: 'Acciones',
+      addAsset: '+ Añadir activo',
+      uploadCsv: 'Subir CSV',
+      uploadCsvAria: 'Subir archivo CSV',
+      downloadCsv: 'Descargar CSV',
+      downloadTitle: 'Descarga tus activos en CSV',
+      errorTitleOne: 'No se pudo importar {count} fila:',
+      errorTitleMany: 'No se pudieron importar {count} filas:',
+      errorLine: 'Línea {line}: {message}',
+      // `value` and `currency` stay Latin: they are the column names the parser reads.
+      csvErrors: {
+        empty: 'El CSV está vacío.',
+        columns: 'Se esperaban al menos las columnas value y currency.',
+        invalidValue: '«{value}» no es un número positivo válido.',
+        emptyCurrency: 'El código de moneda está vacío.',
+        unsupportedCurrency: '«{value}» no es una moneda disponible. Disponibles: {supported}.',
+      },
+    },
+    row: {
+      nameAria: 'Nombre del activo (fila {index} de {total})',
+      valueAria: 'Valor (fila {index})',
+      currencyAria: 'Moneda (fila {index})',
+      typeAria: 'Tipo (fila {index})',
+      namePlaceholder: 'Nombre del activo o pasivo',
+      asset: 'Activo',
+      liability: 'Pasivo',
+      removeTitle: 'Eliminar',
+      removeAria: 'Eliminar la fila {index}',
+    },
+    results: {
+      empty: 'Añade al menos un activo para ver tu patrimonio neto.',
+      totalLabel: 'Patrimonio neto total',
+      hidden: 'Oculto',
+      whatYouOwn: 'Lo que tienes',
+      whatYouOwe: 'Lo que debes',
+      singleNote:
+        'Todo lo que hay aquí está en {currency}, así que los tipos de cambio no le afectan. Si añades algo que tengas en otra moneda, también verás qué parte de tu patrimonio neto depende de los tipos de cambio.',
+      partialHint:
+        'Faltaba el tipo de cambio actual de al menos una moneda, que queda fuera de este total.',
+      rateUnavailable: 'Tipo no disponible',
+      noRateAvailable:
+        'No hay tipo de cambio actual de {code} frente a {currency}; se muestra sin convertir',
+      badgeFunctional: 'Referencia',
+      badgeNetDebt: 'Deuda neta',
+      badgeElevated: 'Elevado',
+      badgeModerate: 'Moderado',
+      badgeLow: 'Bajo',
+      riskHeading: 'Evaluación del riesgo por moneda',
+      labelFunctional: 'La moneda en la que gastas',
+      labelNetDebt: 'Deuda neta en esta moneda',
+      labelElevated: 'Exposición elevada',
+      labelModerate: 'Exposición moderada',
+      labelLow: 'Exposición baja',
+      disclaimer:
+        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia del BCE que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un asesor financiero con licencia.',
+    },
+    rec: {
+      noRate:
+        'El BCE no devolvió el tipo de cambio actual de {code} frente a {currency}, así que esta posición queda fuera del cálculo de concentración. La cantidad neta en la moneda original se sigue mostrando arriba.',
+      functionalHidden:
+        'Esta es la moneda en la que gastas. El porcentaje de concentración no se incluye en lo que se ha compartido.',
+      functionalMost:
+        'El {pct} % de tu patrimonio neto está en la moneda en la que gastas ({currency}). El {rest} % restante está en otras monedas y varía con sus tipos de cambio.',
+      functionalMuch:
+        'El {pct} % de tu patrimonio neto está en la moneda en la que gastas ({currency}). El {rest} % restante está en otras monedas, así que una parte considerable de tu poder adquisitivo diario varía con sus tipos de cambio.',
+      functionalLittle:
+        'Solo el {pct} % de tu patrimonio neto está en la moneda en la que gastas ({currency}). El {rest} % restante está en otras monedas, así que la mayor parte de tu poder adquisitivo varía con sus tipos de cambio.',
+      netDebt:
+        'En {code} debes más de lo que tienes (una posición de «deuda neta»). Cuando en una moneda tienes más pasivos que activos, el efecto es el contrario: si el {code} se fortalece frente al {currency}, lo que debes aumenta y tu patrimonio neto baja; si el {code} se debilita, tu patrimonio neto sube.',
+      elevatedHidden:
+        'En lo que se ha compartido, tu posición en {code} es una parte grande del patrimonio neto. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él en una cantidad considerable.',
+      elevatedShown:
+        'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
+      moderateHidden:
+        'Una parte moderada de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente una décima parte de lo que tienes en {code}.',
+      moderateShown:
+        'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
+      lowHidden:
+        'Una parte pequeña de tu patrimonio neto está en {code}. El tipo {code}/{currency} tiene un efecto limitado en tu patrimonio neto total.',
+      lowShown:
+        'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
+    },
+    chart: {
+      heading: 'Concentración por moneda',
+      emptyNoRates:
+        'Ahora mismo no hay tipos de cambio disponibles, así que las monedas no se pueden comparar en un gráfico.',
+      emptyNoValues: 'Escribe valores arriba para ver un gráfico de concentración.',
+      currencyOne: 'moneda',
+      currencyMany: 'monedas',
+      legendAria: 'Monedas',
+      aria: 'Gráfico de anillo de la concentración por moneda. {list}',
+      listSeparator: '. ',
+      announce: '{name}: {pct} de tu patrimonio neto.',
+      announceWithAmount: '{name}: {pct} de tu patrimonio neto, {amount}.',
+      note:
+        'Fuera del gráfico: {codes}, porque ahora mismo no hay tipo de cambio a {currency}.',
+      tableCaption: 'Concentración por moneda según la posición neta',
+      tableColCurrency: 'Moneda',
+      tableColConcentration: 'Concentración',
+      tableColRisk: 'Nivel de riesgo',
+    },
+    csv: {
+      confirmOne:
+        'Al subir un CSV, lo que tienes ahora ({current} elemento) se sustituirá por el contenido del archivo ({pending}). ¿Quieres continuar?',
+      confirmMany:
+        'Al subir un CSV, lo que tienes ahora ({current} elementos) se sustituirá por el contenido del archivo ({pending}). ¿Quieres continuar?',
+      replace: 'Sustituir',
+      cancel: 'Cancelar',
+    },
+    shareModal: {
+      title: 'Comparte tu análisis',
+      legend: 'Elige qué compartir:',
+      fullName: 'Versión completa',
+      fullDesc: 'Todos los detalles de los activos, sus valores y el patrimonio neto',
+      redactedName: 'Versión anónima',
+      redactedDesc: 'Solo el reparto por moneda en % y los niveles de riesgo. Sin cantidades ni nombres.',
+      cancel: 'Cancelar',
+      copy: 'Copiar enlace',
+      copied: '¡Copiado!',
+      previewHeading: 'Lo que verá quien lo reciba',
     },
   },
 };

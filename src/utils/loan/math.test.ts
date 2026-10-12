@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 import { ENGINE_PHRASES, engineError } from '../../components/LoanCompare.tsx';
-import { loanComparisonEn, loanComparisonHi } from '../../i18n/strings/tools/loanComparison.ts';
+import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from '../../i18n/strings/tools/loanComparison.ts';
 
 import {
   CURRENCIES,
@@ -1482,9 +1482,11 @@ describe('engineError covers every engine message', () => {
       const claimed = ENGINE_PHRASES.filter(([phrase]) => raw.toLowerCase().includes(phrase));
       assert.equal(claimed.length, 1, `claimed by ${claimed.length} phrases`);
       assert.equal(engineError(raw, loanComparisonEn.island), raw, 'English must read as the engine wrote it');
-      const hi = engineError(raw, loanComparisonHi.island);
-      assert.notEqual(hi, raw);
-      assert.ok(!/[{}]/.test(hi), `unfilled placeholder in ${hi}`);
+      for (const island of [loanComparisonHi.island, loanComparisonEs.island]) {
+        const translated = engineError(raw, island);
+        assert.notEqual(translated, raw);
+        assert.ok(!/[{}]/.test(translated), `unfilled placeholder in ${translated}`);
+      }
     });
   }
 });

@@ -15,7 +15,7 @@
  * included, is unchanged.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -38,6 +38,7 @@ const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 const aboutPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: beliefs.schema.name,
   description: beliefs.schema.description,
   url: beliefsUrl,

@@ -1,0 +1,939 @@
+import { toolsEs } from './tools/index.ts';
+import { learnEs } from './learn.ts';
+import type { Dict } from './types.ts';
+
+/**
+ * Spanish strings. Typed as `Dict`, so a missing or an extra key is a type error
+ * and `catalog.test.ts` re-checks the key sets at build time.
+ *
+ * Neutral international Spanish, addressed with tú. The vocabulary, the amount
+ * format (`10.000 €`) and the other rules are fixed by docs/i18n/es-glossary.md;
+ * change a term there first, so the chrome, the path and the tools keep agreeing.
+ */
+export const es: Dict = {
+  skipToContent: 'Saltar al contenido',
+  // Spanish ends a sentence with the same full stop as English.
+  fullStop: '.',
+  a11y: {
+    breadcrumb: 'Ruta de navegación',
+  },
+
+  /**
+   * The brand line, "Money, understood", is "El dinero, entendido" in Spanish
+   * (lower case after the colon here, per the RAE). It must read the same
+   * wherever it appears: here, the footer tagline and the keys under `home`.
+   */
+  meta: {
+    defaultImageAlt: 'nidhi: el dinero, entendido. Herramientas de finanzas personales y educación financiera.',
+  },
+
+  languagePicker: {
+    label: 'Idioma',
+    current: 'idioma actual',
+  },
+
+  nav: {
+    primaryLabel: 'Principal',
+    menuLabel: 'Menú',
+    menuCloseLabel: 'Cerrar menú',
+    homeLabel: 'Inicio de nidhi',
+    newTabHint: ' (se abre en una pestaña nueva)',
+    groups: { learn: 'Aprende', tools: 'Herramientas gratuitas', about: 'Acerca de', language: 'Idioma' },
+    buttons: { tools: 'Herramientas gratuitas', learn: 'Aprende' },
+    items: {
+      blog: 'Ruta de aprendizaje',
+      blogTopics: 'Explorar temas',
+      learnEditorial: 'Cómo se escriben las lecciones',
+      multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
+      loanComparison: 'Comparador de préstamos',
+      monteCarloSimulator: 'Simulador Monte Carlo',
+      allTools: 'Todas las herramientas gratuitas',
+      about: 'Sobre nidhi',
+      beliefs: 'En qué creemos',
+      editorialPolicy: 'Política editorial',
+      contact: 'Contáctanos',
+      email: 'Correo electrónico',
+      instagram: 'Instagram',
+    },
+    // Sentence case in Spanish, so the dropdown's tool names match the sheet's.
+    // The keys stay because `Dict` requires them.
+    menu: {
+      multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
+      loanComparison: 'Comparador de préstamos',
+      monteCarloSimulator: 'Simulador Monte Carlo',
+      allTools: 'Ver todas las herramientas gratuitas',
+    },
+  },
+
+  footer: {
+    tagline: 'El dinero, entendido',
+    columns: {
+      learn: 'Aprende',
+      tools: 'Herramientas gratuitas',
+      product: 'Producto',
+      about: 'Acerca de',
+      connect: 'Contacto',
+    },
+    links: {
+      blog: 'Ruta de aprendizaje',
+      blogTopics: 'Explorar temas',
+      multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
+      loanComparison: 'Comparador de préstamos',
+      monteCarloSimulator: 'Simulador Monte Carlo',
+      allTools: 'Ver todas',
+      home: 'Inicio',
+      about: 'Sobre nidhi',
+      beliefs: 'En qué creemos',
+      editorialPolicy: 'Política editorial',
+      privacy: 'Privacidad',
+      cookieSettings: 'Configuración de cookies',
+    },
+    disclaimerShort:
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
+    disclaimerLong:
+      'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no garantiza resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
+    copyright: '© {year} nidhi. Todos los derechos reservados.',
+  },
+
+  cookie: {
+    dialogLabel: 'Consentimiento de cookies',
+    // The space at the end of `textBefore` and the one at the start of
+    // `textAfter` are part of the sentence. The opening ¿ sits in `textBefore`.
+    textBefore:
+      'Contamos visitas anónimas a las páginas en cualquier caso, para ver qué resulta útil. ¿Podemos registrar también los ',
+    textEmphasis: 'clics',
+    textAfter:
+      ' para detectar enlaces rotos y diseños que confunden a la gente? Sin anuncios y sin vender datos.',
+    privacyLink: 'Mira lo que recogemos de verdad →',
+    decline: 'No, gracias',
+    accept: 'Sí, me parece bien',
+  },
+
+  theme: {
+    groupLabel: 'Tema',
+    light: 'Claro',
+    lightTitle: 'Tema claro',
+    system: 'Sistema',
+    systemTitle: 'Seguir el tema del sistema',
+    dark: 'Oscuro',
+    darkTitle: 'Tema oscuro',
+  },
+
+  // There is no Spanish feed (the lessons are English); translated anyway
+  // because the catalog mirrors `en` key for key.
+  rss: {
+    linkTitle: 'nidhi | Blog de finanzas personales',
+    feedTitle: 'nidhi: blog de finanzas personales',
+    feedDescription:
+      'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Mejora tu educación financiera paso a paso.',
+  },
+
+  // Page copy, one namespace per page, with the same split-around-the-link
+  // shape as the English catalog.
+
+  about: {
+    meta: {
+      title: 'Sobre nidhi: quién escribe y por qué puedes confiar | nidhi',
+      description:
+        'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada artículo de finanzas personales.',
+    },
+    schema: {
+      name: 'Sobre nidhi',
+      description:
+        'Quién escribe nidhi, por qué puedes confiar en lo que escribe y cómo se investiga y documenta cada artículo.',
+      organization:
+        'Educación en finanzas personales basada en la práctica y la investigación, en nidhi.today, sobre patrimonio neto, gestión del dinero en varias monedas e independencia financiera. Construye las herramientas descritas en los artículos y respalda cada uno con referencias citadas.',
+      knowsAbout: {
+        personalFinance: 'Finanzas personales',
+        financialLiteracy: 'Educación financiera',
+        netWorthTracking: 'Seguimiento del patrimonio neto',
+        multiCurrencyFinance: 'Finanzas en varias monedas',
+        financialIndependence: 'Independencia financiera',
+        moneyManagement: 'Gestión del dinero',
+      },
+      breadcrumbHome: 'Inicio',
+      breadcrumbAbout: 'Acerca de',
+    },
+    title: 'Sobre nidhi',
+    intro:
+      'nidhi es el nombre que firma estos textos y el del proyecto al que pertenecen. Lo empezó una persona, el nombre se quedó, y es a quien lees cuando lees las lecciones.',
+    sections: {
+      whoIsWriting: 'Quién escribe',
+      whyYouCanTrustIt: 'Por qué puedes confiar en ello',
+      howPostsAreMade: 'Cómo se hacen los artículos',
+      whatNidhiKnowsAbout: 'De qué sabe nidhi',
+    },
+    body: {
+      // No gendered subject for the one person behind the site, as in the English.
+      whoIsWriting:
+        'Cada artículo de este sitio se escribe y se edita bajo un solo nombre: nidhi. El proyecto nació porque una persona no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Los textos salen de ese mismo lugar: las preguntas que una persona real tiene que responder, explicadas como le habría gustado que se las explicaran.',
+      // "referential reading" is the lessons' own English heading, so it is
+      // quoted as it appears there and glossed in Spanish.
+      whyYouCanTrustIt1:
+        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo afirma algo, señala la fuente: los libros, las páginas de referencia y el material primario que aparecen en cada artículo bajo «referential reading» (lecturas de referencia).',
+      whyYouCanTrustIt2:
+        'Lo que esto no es: asesoramiento financiero con licencia. nidhi explica cómo funciona el dinero para que puedas tomar tus propias decisiones. No te dice qué fondo comprar, ni lo hará nunca. Para las decisiones que dependen de tu residencia fiscal concreta, tu situación legal o tu tolerancia al riesgo, lo adecuado es acudir a un profesional acreditado. Ese límite es deliberado, y es el mismo que figura en el pie de cada página.',
+      howPostsAreMade: {
+        before:
+          'Cada artículo parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
+        link: 'página de política editorial',
+        after: '.',
+      },
+      whatNidhiKnowsAbout: {
+        before:
+          'Los textos se centran en el patrimonio neto y cómo medirlo, la gestión del dinero entre monedas, el flujo de efectivo y el ahorro, las deudas y el camino hacia la independencia financiera. Si quieres conocer la visión del mundo que hay detrás de todo esto, lee ',
+        link: 'en qué creemos',
+        after: '.',
+      },
+    },
+    cta: {
+      text: '¿Tienes preguntas, correcciones o simplemente quieres saludar?',
+      email: 'Escribe a hello@nidhi.today',
+      instagram: 'Instagram @nidhi.today',
+    },
+  },
+
+  /**
+   * The beliefs page keeps the English's warm, blunt first person plural.
+   * The identity terms are "queer" (used as is in Spanish writing),
+   * "neurodivergentes" and "racializadas" for "person of colour", which reads
+   * as respectful and current across regions where "de color" can read as
+   * dated. "Personas" carries them so no gender is marked.
+   */
+  beliefs: {
+    meta: {
+      title: 'En qué creemos: herramientas financieras honestas | nidhi',
+      description:
+        'En qué creemos en nidhi: herramientas financieras honestas, educación financiera gratuita, sin anuncios ni venta de datos y lecciones gratis para siempre.',
+    },
+    schema: {
+      name: 'En qué creemos',
+      description:
+        'En qué creemos en nidhi: herramientas honestas de finanzas personales, educación financiera gratuita, sin anuncios y sin venta de datos.',
+      organization: 'Herramientas de finanzas personales y educación financiera.',
+      foundingLocation: 'Praga',
+      knowsAbout: {
+        personalFinance: 'Finanzas personales',
+        financialLiteracy: 'Educación financiera',
+        moneyManagement: 'Gestión del dinero',
+        multiCurrencyFinance: 'Finanzas en varias monedas',
+      },
+      breadcrumbHome: 'Inicio',
+      breadcrumbAbout: 'En qué creemos',
+    },
+    title: 'En qué creemos',
+    intro:
+      'nidhi empezó porque una persona no encontraba una herramienta financiera decente y se hartó lo suficiente como para construir una',
+    items: {
+      frustration: {
+        heading: 'Todo esto empezó por pura frustración',
+        body: 'Queríamos algo que ayudara a cualquier persona a planificar su dinero, ver adónde va y tomar mejores decisiones con él. No existía nada así. Así que aquí estamos, construyéndolo por nuestra cuenta.',
+      },
+      noPlanner: {
+        heading: 'Planificar tus finanzas no debería exigir un planificador financiero',
+        body: 'Tanto si acabas de conseguir tu primer trabajo como si te faltan cinco años para jubilarte, mereces herramientas y orientación que de verdad tengan sentido. Sin jerga. Sin intentos de venderte más. Solo respuestas claras.',
+      },
+      accessibility: {
+        heading: 'Hecho para todas las personas que la tecnología sigue olvidando',
+        body: 'Muchas aplicaciones olvidan, muy oportunamente, que las herramientas de dinero deberían funcionar tanto si tienes daltonismo como si usas un lector de pantalla o procesas la información de otra manera, por ejemplo por TDAH o dislexia. Como personas queer, neurodivergentes y racializadas, nunca tuvimos ese lujo. Dejar a alguien fuera de su propio dinero nos parece mezquino.',
+      },
+      freeForever: {
+        heading: 'Las lecciones son gratis, para siempre',
+        body: 'Sin muros de pago, sin tonterías de «suscríbete para ver lo bueno». Si algo que escribimos te ayudó a tomar una mejor decisión, aunque nunca llegues a usar nuestro producto, de eso se trata. Cuéntanoslo. Funcionamos con ese tipo de combustible.',
+      },
+      rulesOfThumb: {
+        heading: 'No solo las reglas generales',
+        body: 'Una regla general es un punto de partida, no una respuesta. Cuando una lección da una, también explica por qué existe, dónde falla y qué depende de ti: tu país, tus ingresos, tus deudas, con cuánta antelación planificas. Preferimos que entiendas el razonamiento a que sigas una regla que nunca se escribió para tu vida.',
+      },
+      noAds: {
+        heading: 'Sin anuncios, sin venta de datos, sin letra pequeña',
+        body: 'No ponemos anuncios. No vendemos tus datos. No hacemos eso tan inquietante de que busques «seguro de vida temporal» y luego te persigan anuncios de eso por todas partes durante una semana. Tus finanzas son asunto tuyo. Literalmente.',
+      },
+      madeInPrague: {
+        heading: 'Hecho en Praga, impulsado por el boca a boca',
+        body: 'Sin dinero de capital de riesgo. Sin equipo de crecimiento. Sin carteles en la autopista. Si nidhi te parece útil, cuéntaselo a alguien. Esa es nuestra principal estrategia de marketing.',
+      },
+    },
+    cta: {
+      text: '¿Te hemos convencido? ¿O crees que solo decimos tonterías?',
+      sub: 'Sea como sea, nos encantará saber de ti',
+      email: 'Mándanos una carta de amor',
+      instagram: 'Escríbenos por mensaje privado',
+    },
+  },
+
+  /**
+   * The editorial policy. The five step names match the lessons' own order:
+   * the idea, why people use it, the evidence, where it breaks, what depends
+   * on you. Headings quoted from English lessons ("Where to check locally",
+   * "referential reading", "last updated") stay in English with a gloss,
+   * because that is what the reader will see on the lesson.
+   */
+  editorialPolicy: {
+    meta: {
+      title: 'Política editorial: cómo escribe nidhi sus lecciones | nidhi',
+      description:
+        'Cómo se escribe y revisa cada lección de nidhi: el origen de sus cifras, por qué vale en cualquier país, el uso de la IA y el límite con el asesoramiento.',
+    },
+    schema: {
+      name: 'Política editorial',
+      description:
+        'Cómo construye y revisa nidhi cada lección, sus criterios sobre fuentes, por qué las lecciones se escriben para cualquier país, cómo se usan las herramientas de IA, el límite con el asesoramiento y cómo se gestionan las correcciones.',
+      breadcrumbHome: 'Inicio',
+      breadcrumbThis: 'Política editorial',
+    },
+    title: 'Política editorial',
+    intro:
+      'Lo que se escribe sobre dinero debería ser fácil de comprobar y honesto sobre sus límites. Esta página explica cómo se construye, documenta, revisa y corrige cada lección de nidhi, cómo se usan las herramientas de IA en el proceso y dónde está la línea entre educación y asesoramiento.',
+    sections: {
+      howALessonIsBuilt: 'Cómo se construye una lección',
+      anyCountry: 'Escrito para cualquier país',
+      sourcesAndFigures: 'Fuentes y cifras',
+      ai: 'Cómo se usa la IA',
+      advice: 'Educación, no asesoramiento',
+      corrections: 'Correcciones',
+      whoIsBehind: 'Quién está detrás',
+    },
+    body: {
+      builtIntro:
+        'Cada lección parte de una pregunta que haría una persona real y la trabaja con números de verdad. Muchas personas que leen esto se acercan al dinero por primera vez, y una frase dicha con seguridad puede sonar a instrucción, así que las lecciones explican en lugar de decirte qué hacer. Cada idea, regla general o práctica habitual pasa por los mismos cinco pasos:',
+      builtSteps: {
+        idea: {
+          lead: 'La idea',
+          rest: ', en palabras sencillas, con la jerga definida la primera vez que aparece.',
+        },
+        why: {
+          lead: 'Por qué se usa',
+          rest: ': el problema que resuelve y por qué se extendió.',
+        },
+        evidence: {
+          lead: 'La evidencia',
+          rest: ', citada y con sus límites: de qué país son los datos, de qué años y qué deja fuera.',
+        },
+        breaks: {
+          lead: 'Dónde falla',
+          rest: ': las situaciones para las que no se pensó.',
+        },
+        depends: {
+          lead: 'Qué depende de ti',
+          rest: ': el país, lo estables que son tus ingresos, cuánto tiempo tienes, las deudas y los impuestos.',
+        },
+      },
+      builtOutro:
+        'Una regla general es un punto de partida, no una respuesta, así que las lecciones describen lo que hace mucha gente y evitan «siempre» y «nunca» salvo que la evidencia lo respalde. Antes de publicar una lección, se relee buscando dos cosas: si sus afirmaciones están respaldadas y si alguien que empieza podría seguirla sin un glosario. Si algo se escapa, consulta Correcciones más abajo.',
+      anyCountry:
+        'Las lecciones están escritas para quien lea desde cualquier lugar, no para un solo país. Las ideas que enseñan, como el patrimonio neto, la diversificación o cómo la inflación reduce el valor de los ahorros, funcionan igual en todas partes. Las reglas en torno a esas ideas no: los impuestos, la jubilación y las cuentas con ventajas fiscales, las pensiones y ayudas públicas, la puntuación de crédito, la protección de los depósitos y la legislación de protección al consumidor cambian de un país a otro, y a veces dentro de un mismo país. Las lecciones explican la idea general a propósito. Cuando una lección depende de reglas como estas, lo dice, y una nota «Where to check locally» (dónde consultarlo en tu país) al final de la lección indica los lugares habituales para comprobarlas allí donde vives, como tu autoridad fiscal, tu regulador financiero o un asesor local acreditado. Los ejemplos suelen estar en euros; es una elección de moneda, no una señal de que una regla sea europea. Cuando la evidencia viene de los datos de un solo país, como el historial de la bolsa de EE. UU., la lección también lo dice, junto con lo que quizá no te diga sobre otros mercados.',
+      sourcesAndFigures:
+        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «referential reading» (lecturas de referencia), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Cada cifra indica de dónde sale y qué abarca, y la misma cifra coincide en todas las lecciones. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son los tipos de referencia del Banco Central Europeo, con su fecha en pantalla.',
+      aiUsed1:
+        'nidhi usa herramientas de IA en su trabajo, entre ellas Claude, de Anthropic, y otros agentes de IA. Ayudan a investigar, redactar y editar las lecciones; a revisar las lecciones frente a esta página; a cuestionar el razonamiento financiero de una lección o de una herramienta desde el punto de vista de un asesor con experiencia; y a construir el sitio y sus herramientas gratuitas. Distintos agentes de IA se enfrentan a propósito al trabajo de los demás, para detectar lo que a uno se le escapa.',
+      aiUsed2: {
+        // Spanish keeps the space before the link; the English's missing
+        // space is a known bug in that page only.
+        before:
+          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero es una comprobación del razonamiento, no el consejo de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
+        link: 'aviso de privacidad',
+        after: '.',
+      },
+      advice:
+        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento personal financiero, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no garantiza resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+      corrections: {
+        before:
+          'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
+        after:
+          '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «last updated» (última actualización), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
+      },
+      whoIsBehind: {
+        before: 'Para saber quién escribe nidhi y la experiencia que hay detrás de los textos, consulta la ',
+        aboutLink: 'página Sobre nidhi',
+        middle: '. Para conocer la visión del mundo que guía lo que decidimos construir y publicar, lee ',
+        beliefsLink: 'en qué creemos',
+        after: '.',
+      },
+    },
+  },
+
+  /**
+   * The free tools hub. The two bullets a reader would check against the
+   * privacy notice (where the network call goes, what the address carries)
+   * are worded to match it.
+   */
+  freeHub: {
+    cta: 'Abrir la herramienta',
+    meta: {
+      title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
+      description:
+        'Calculadoras financieras gratuitas: patrimonio neto en una o varias monedas, préstamos y simulador Monte Carlo de jubilación. Sin registro ni rastreo.',
+      descriptionWithoutSimulator:
+        'Calculadoras gratuitas de finanzas personales: patrimonio neto en una o varias monedas y comparador de préstamos. Sin registro ni rastreo, en tu navegador.',
+    },
+    schema: {
+      breadcrumbHome: 'Inicio',
+      breadcrumbThis: 'Herramientas gratuitas',
+      itemListName: 'Herramientas gratuitas de finanzas personales de nidhi',
+      collectionName: 'Herramientas gratuitas de finanzas personales',
+    },
+    breadcrumb: {
+      home: 'Inicio',
+      this: 'Herramientas gratuitas',
+    },
+    eyebrow: 'Herramientas gratuitas',
+    title: 'Herramientas gratuitas de finanzas personales que funcionan en tu navegador.',
+    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio del BCE en vivo cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
+    tools: {
+      multiCurrencyNetWorth: {
+        kicker: 'Una moneda o varias',
+        title: 'Calculadora de patrimonio neto',
+        desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 29, con tipos del BCE en vivo, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
+        itemName: 'Calculadora de patrimonio neto y análisis del riesgo cambiario',
+      },
+      loanComparison: {
+        kicker: 'Decisiones de endeudamiento',
+        title: 'Comparador de préstamos',
+        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. APR, costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
+        itemName: 'Calculadora para comparar préstamos',
+      },
+      monteCarlo: {
+        kicker: 'Proyecciones y jubilación',
+        title: 'Simulador Monte Carlo',
+        desc: 'Proyecta tus ahorros miles de veces con rentabilidades tomadas del historial a largo plazo de los mercados mundiales. Mira un resultado bajo, uno mediano y uno alto, y con qué frecuencia el dinero dura una vez que vives de él.',
+        itemName: 'Simulador Monte Carlo para la jubilación',
+      },
+    },
+    how: {
+      title: 'Cómo funcionan estas herramientas',
+      browser: {
+        strong: 'Todos los cálculos se hacen en tu navegador.',
+        rest: ' Los números que escribes, los valores que subes y cualquier resultado se quedan en tu dispositivo. No se envían a nidhi ni a ningún tercero.',
+      },
+      // The link between `before` and `after` is a product name held by the
+      // component; the spaces live at the ends of the two fragments.
+      rates: {
+        strong: 'Tipos de cambio del BCE en vivo cuando hacen falta.',
+        before: ' Cuando una herramienta necesita convertir monedas, tu navegador obtiene los tipos de referencia de la API de ',
+        after: ' (una réplica gratuita y abierta de los tipos de referencia del Banco Central Europeo). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
+      },
+      noSignup: {
+        strong: 'Sin registro, sin cuenta y sin correo electrónico.',
+        rest: ' Puedes usar las herramientas directamente desde la página. Mientras usas una herramienta, no se escribe nada en la dirección de la página. Un enlace para compartir opcional lleva tus datos después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, así que tú decides si compartes y con quién.',
+      },
+      education: {
+        strong: 'Educativas, no asesoramiento.',
+        rest: ' Cada herramienta te muestra los cálculos que hay detrás del resultado y los supuestos que usa, para que puedas aplicar la misma lógica a tu situación. Para las decisiones importantes, consulta a un profesional acreditado.',
+      },
+    },
+    footer: {
+      before: '¿Quieres el razonamiento completo detrás de estas herramientas? Lee la ',
+      blogLink: 'ruta de aprendizaje de nidhi',
+      middle: ', el temario en el que se basan, o descubre ',
+      beliefsLink: 'lo que creemos sobre el dinero y la planificación',
+      after: '.',
+    },
+  },
+
+  privacy: {
+    meta: {
+      title: 'Aviso de privacidad: cómo trata nidhi tus datos | nidhi',
+      description:
+        'Aviso de privacidad de nidhi.today en lenguaje claro: qué recopilamos, por qué, dónde se guarda y cómo deshacerte de ello.',
+    },
+    schema: {
+      name: 'Aviso de privacidad: cómo trata nidhi tus datos',
+      description:
+        'Aviso de privacidad de nidhi.today en lenguaje claro: qué recopilamos, por qué, dónde se guarda y cómo deshacerte de ello.',
+      breadcrumbHome: 'Inicio',
+      breadcrumbThis: 'Privacidad',
+    },
+    title: 'Privacidad, con franqueza',
+    intro:
+      'En pocas palabras: recopilamos lo menos posible, no vendemos nada y puedes deshacerte de lo que tenemos cuando quieras.',
+    // The trailing space is the one before the date.
+    updatedLabel: 'Última actualización: ',
+    updatedLink: 'ver qué cambió',
+    englishIsAuthoritative:
+      'Este aviso está redactado en inglés, y la versión en inglés es la que prevalece. La traducción está aquí para que puedas leerlo en tu idioma.',
+    sections: {
+      collect: 'Qué recopilamos y cuándo',
+      why: 'Por qué lo recopilamos',
+      whereItLives: 'Dónde se guarda',
+      whatWeDontDo: 'Lo que no hacemos',
+      retention: 'Cuánto tiempo lo conservamos',
+      rights: 'Tus derechos',
+      children: 'Menores',
+      whoWeAre: 'Quiénes somos',
+    },
+
+    lead: {
+      always: 'Siempre, para que el sitio funcione y siga mejorando:',
+      // Quotes the Spanish cookie banner's accept button (cookie.accept).
+      withConsent: 'Solo si haces clic en «Sí, me parece bien» en el aviso de cookies:',
+      newsletter: 'Si te suscribes al boletín del blog:',
+      waitlist: 'Si te apuntas a la lista de espera para el lanzamiento del producto:',
+      browserOnly: 'Guardado solo en tu navegador, nunca se nos envía:',
+    },
+
+    collect: {
+      pageviews: {
+        before: 'Eventos anónimos de visita y de salida de página, a través de ',
+        link: 'PostHog Cloud EU',
+        after:
+          '. Eso incluye la URL que visitaste, la URL desde la que llegaste, tu país aproximado (deducido de tu dirección IP, que PostHog descarta después) y tu navegador, sistema operativo y tamaño de ventana. Sin nombre, sin correo electrónico, sin ID de usuario.',
+      },
+      freeTools: {
+        before:
+          'Eventos anónimos de interacción en las páginas de herramientas gratuitas: qué moneda eliges en el comparador de préstamos, si cambias entre calcular el plazo y la cuota mensual, si abres el panel «Más opciones», si copias el enlace para compartir y si restableces el formulario. ',
+        strong: 'Los valores financieros que escribes nunca se envían',
+        after:
+          ': ni la cantidad del préstamo, ni la tasa de interés, ni las comisiones, ni el nombre de la entidad financiera. La razón de ser de la calculadora es que los cálculos se hacen en tu navegador.',
+      },
+      toolAddresses:
+        'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
+      monteCarlo: {
+        before:
+          'Eventos anónimos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
+        strong: 'Las cantidades, los años, las comisiones y la combinación de activos que introduces nunca se envían.',
+      },
+      campaigns: {
+        before: 'Parámetros de campaña (',
+        middle: ', ',
+        after: ', etc.) si llegaste desde un enlace etiquetado por nosotros o por otra persona.',
+      },
+      consentClicks:
+        'Mapas de calor de clics y eventos capturados automáticamente: básicamente, en qué elementos de una página se hace clic, incluidos los clics en cosas que no responden («clics muertos»). Lo usamos para detectar enlaces rotos y diseños que confunden a la gente. No registramos en absoluto mediciones de velocidad de página ni errores del navegador.',
+    },
+
+    newsletter: {
+      email: 'Tu dirección de correo electrónico.',
+      page: 'La página desde la que te suscribiste (para saber si te trajo el índice del blog o una entrada concreta).',
+      timestamps: 'La fecha y hora en que te suscribiste, confirmaste y (si lo haces) cancelaste la suscripción.',
+      status: 'El estado de tu suscripción: pendiente, confirmada o cancelada.',
+      from: {
+        before: 'Los correos del boletín llegan desde ',
+        after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
+      },
+    },
+    waitlist: {
+      email: 'Tu dirección de correo electrónico.',
+      page: 'La página desde la que te apuntaste.',
+      timestamp: 'La fecha y hora en que te apuntaste.',
+      singleOptIn: 'Sin paso de confirmación ni seguimiento de estado. Alta directa (single opt-in).',
+      from: {
+        before: 'El correo del lanzamiento llegará desde ',
+        after: '. Añádela a tus contactos para que no acabe en spam.',
+      },
+    },
+    browserStorage: {
+      consent: { before: 'Tu elección sobre las cookies (', after: ').' },
+      theme: { before: 'Tu preferencia de tema claro, oscuro o del sistema (', after: ').' },
+      internal: {
+        before: 'Solo para el equipo de nidhi: un indicador (',
+        after:
+          ') que se activa al abrir una página desde un enlace especial, para que no se cuenten nuestras propias visitas. Mientras está activo, no se ejecuta ninguna analítica en ese navegador.',
+      },
+      reading: {
+        before: 'Qué lecciones has leído (',
+        after:
+          '), para mostrarte un discreto indicador de «leída» la próxima vez y sugerirte tu siguiente lección en la página de inicio y en la ruta de aprendizaje, incluido el siguiente paso de cada recorrido de «Empieza donde estés».',
+      },
+      subscription: {
+        before: 'Si has confirmado tu suscripción al boletín (',
+        after:
+          '), para dejar de mostrarte el formulario de suscripción en cada página una vez completada la doble confirmación. Solo se guarda cuando haces clic en el enlace de confirmación de tu correo; nunca contiene tu dirección de correo electrónico.',
+      },
+      dismissed: {
+        before: 'Si has cerrado el aviso de suscripción al boletín (',
+        after:
+          '), para respetar tu decisión de no volver a verlo durante un tiempo. Solo contiene un tipo de cierre y una fecha y hora, sin dirección de correo ni datos personales.',
+      },
+      waitlistSignedUp: {
+        before: 'Si te has apuntado a la lista de espera para el lanzamiento del producto (',
+        after:
+          '), para dejar de mostrarte el formulario de la lista de espera en futuras visitas. Solo contiene un indicador de estado y una fecha y hora, nunca tu dirección de correo electrónico.',
+      },
+    },
+    clearsEverything: 'Si borras los datos del sitio en tu navegador, todo lo anterior desaparece al instante.',
+
+    why: {
+      analytics: {
+        lead: 'Analítica:',
+        rest: ' para averiguar qué entradas ayudan de verdad a la gente y en cuáles se pierde a mitad de camino. No podemos arreglar lo que no vemos.',
+      },
+      newsletter: {
+        lead: 'Boletín:',
+        rest:
+          ' para enviarte un correo cuando se publica una nueva entrada del blog, más un recordatorio si empiezas a suscribirte pero no confirmas en 3 días (enviado entre las 9:00 y las 12:00, hora de Praga). Ningún otro correo. Sin promociones, sin secuencias de «te echamos de menos», sin promoción cruzada de otros productos.',
+      },
+      waitlist: {
+        lead: 'Lista de espera:',
+        rest: ' para enviarte exactamente un correo cuando se lance el producto nidhi. Nada más. Ni un boletín, ni una secuencia automática de correos, ni promoción cruzada.',
+      },
+      localPreferences: {
+        lead: 'Preferencias locales:',
+        rest: ' para que el sitio te resulte coherente sin tener que consultar a un servidor. Todo eso se queda en tu dispositivo.',
+      },
+    },
+
+    where: {
+      processors: {
+        posthog: {
+          name: 'PostHog Cloud EU',
+          rest: ' (Fráncfort, Alemania): nuestro encargado del tratamiento para la analítica. La grabación de sesiones está desactivada. Usamos su producto estándar, sin propiedades personalizadas de persona que te identifiquen, salvo si te suscribes: en ese caso, el estado de tu suscripción pasa a ser una propiedad del registro anónimo de persona para el análisis del embudo.',
+        },
+        google: {
+          name: 'Google Workspace',
+          before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
+          middle: ' para contacto general y soporte, ',
+          after:
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas). Solo nosotros podemos leerla.',
+        },
+        github: {
+          name: 'GitHub Pages',
+          rest: ' (un servicio de GitHub / Microsoft): aloja los archivos estáticos de este sitio web. GitHub conserva durante poco tiempo registros de acceso al servidor para prevenir abusos. No los leemos ni recibimos copias.',
+        },
+        browser: {
+          name: 'Tu navegador',
+          rest: ': para las preferencias locales indicadas arriba.',
+        },
+      },
+      thatIsAll:
+        'Esa es la lista completa de servicios que tratan datos por nosotros. No hay un cuarto encargado del tratamiento escondido en una nota al pie.',
+      frankfurter: {
+        lead: 'Un servicio al que tu navegador se conecta directamente: Frankfurter',
+        rest: ', un servicio gratuito y abierto que publica los tipos de cambio del Banco Central Europeo. Tu navegador le pide los tipos del día cuando abres la calculadora de patrimonio neto (y otra vez si cambias allí la moneda de tus gastos). La solicitud solo incluye códigos de moneda, nunca tus cantidades ni nada que hayas escrito. Como cualquier solicitud que hace tu navegador, le muestra a Frankfurter tu dirección IP y el tipo de navegador. Va directamente de tu navegador a Frankfurter, así que nosotros nunca la vemos, y Frankfurter es independiente de nosotros: lo que conserve depende de ellos.',
+      },
+    },
+
+    dontDo: {
+      ads: 'No mostramos anuncios. Ninguna tecnología publicitaria en este sitio.',
+      sell: 'No vendemos, alquilamos, licenciamos ni redistribuimos tus datos a nadie.',
+      crossSite:
+        'No te rastreamos entre sitios. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
+      screen: 'No grabamos tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento.',
+      replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
+      imports: 'No importamos las listas del boletín ni de la lista de espera a ninguna otra herramienta ni sistema de envío de correos.',
+    },
+
+    retention: {
+      analytics: {
+        lead: 'Eventos de analítica:',
+        rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente.',
+      },
+      newsletter: {
+        lead: 'Suscripciones al boletín:',
+        rest: ' mientras mantengas la suscripción, y hasta 30 días después de que canceles la suscripción, para asegurarnos de que no te llegue ni un correo más por error. Pasado ese tiempo, se elimina la fila.',
+      },
+      waitlist: {
+        lead: 'Altas en la lista de espera:',
+        rest: ' hasta que enviemos el correo del lanzamiento y hayas tenido tiempo de actuar, o hasta que nos pidas que te eliminemos. Escríbenos cuando quieras.',
+      },
+      bounced: {
+        lead: 'Correos rebotados o no válidos:',
+        rest: ' se eliminan en cuanto los detectamos, normalmente en una semana.',
+      },
+      localStorage: {
+        lead: 'Tu localStorage:',
+        rest: ' hasta que borres los datos de tu navegador. Una vez más: nosotros nunca lo vemos.',
+      },
+    },
+
+    rights: {
+      intro:
+        'Según el RGPD (y normativas similares), tienes derecho a preguntarnos qué datos tenemos sobre ti, a rectificarlos, a exportarlos, a limitar cómo los usamos, a oponerte a su uso o a suprimirlos.',
+      unsubscribe:
+        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y hacerlo también programa la eliminación descrita arriba. En el caso de la lista de espera, escríbenos y te eliminaremos. En cualquiera de los dos casos, lo haremos a mano si nos lo pides.',
+      analytics: {
+        before:
+          'En cuanto a la analítica, los eventos son anónimos; no tenemos forma de buscar «tus» eventos porque no sabemos quién eres. Si eso te molesta, simplemente rechaza el aviso de cookies o usa un bloqueador de contenido. No se rompe nada en el sitio. Puedes cambiar tu respuesta en cualquier momento con ',
+        strong: 'Configuración de cookies',
+        after: ', al pie de cada página; si ahí respondes que no, el registro de clics se detiene de inmediato.',
+      },
+      // The address and the subject word are the component's: one inbox reads
+      // every edition.
+      contact: {
+        before: 'Para cualquier otra cosa, escribe a ',
+        middle: ' con la palabra ',
+        after: ' en el asunto. Respondemos en unos pocos días.',
+      },
+    },
+
+    children:
+      'Este sitio está escrito para personas adultas que intentan entender su propio dinero. No recopilamos a sabiendas nada de menores de 16 años. Si crees que lo hemos hecho, escríbenos y lo eliminaremos.',
+
+    whoWeAre: {
+      intro:
+        'nidhi es un pequeño proyecto independiente. Sin inversores, sin equipo de crecimiento, sin presupuesto publicitario. Ahora mismo lo crea y lo gestiona una sola persona en Praga.',
+      contact: {
+        hello: ': para cualquier cosa, de privacidad o no',
+        instagram: ': si prefieres los mensajes directos',
+        beliefsLink: 'En qué creemos',
+        beliefsRest: ': si quieres saber el porqué',
+      },
+    },
+
+    changelog: {
+      eyebrow: 'Registro de cambios',
+      title: 'Cambios en este aviso',
+      intro: {
+        before:
+          'Actualizamos esta página sobre la marcha. Cada cambio, por pequeño que sea, tiene una entrada en el registro de abajo, empezando por el más reciente. Los últimos se muestran completos; los anteriores se conservan palabra por palabra en «Cambios anteriores». Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
+        after: '.',
+      },
+      second:
+        'No enviamos correos de «hemos actualizado nuestra política de privacidad». Si quieres seguirla de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
+      earlier: 'Cambios anteriores',
+      countOne: '{count} cambio',
+      countOther: '{count} cambios',
+      materialTag: 'relevante',
+      materialLabel: 'Cambio relevante',
+      entriesInEnglish:
+        'El registro de abajo se mantiene en inglés, con las palabras con que se escribió, y no se traduce: es la constancia de lo que decía este aviso en una fecha concreta.',
+    },
+  },
+
+  notFound: {
+    meta: {
+      title: 'Página no encontrada (404) | nidhi',
+      description:
+        'Esa página no existe en nidhi. Puede que se haya movido, que la URL esté mal escrita o que el enlace esté desactualizado. Vuelve al inicio para continuar.',
+    },
+    heading: '404',
+    body: 'La página que buscas no existe.',
+    cta: 'Ir al inicio',
+  },
+
+  /** The newsletter box. See the English catalog for what it promises. */
+  subscribe: {
+    region: 'Suscripción al boletín',
+    title: 'Recibe las nuevas entradas directamente en tu correo',
+    text: 'Un correo cuando hay algo nuevo. Sin spam, cancela cuando quieras.',
+    inEnglish: 'Las lecciones y los correos están en inglés.',
+    emailLabel: 'Correo electrónico',
+    button: 'Suscribirme',
+    privacyBefore: 'Doble confirmación. Cancela cuando quieras. ',
+    privacyLink: 'Política de privacidad',
+    privacyAfter: '.',
+    rssFollow: 'Seguir por RSS',
+    alreadySubscribed: 'Ya me suscribí',
+    notNow: 'Ahora no',
+    successTitle: 'Revisa tu correo',
+    successBefore: 'Hemos enviado un enlace de confirmación a ',
+    successAfter: '. Haz clic en el botón de ese correo para completar la suscripción. Es un momento.',
+    yourEmail: 'tu correo',
+    hintBefore: '¿No te ha llegado nada en un minuto? Revisa el spam o ',
+    hintRetry: 'prueba con otra dirección',
+    hintAfter: '.',
+    compactSentBefore: 'Enlace de confirmación enviado a ',
+    compactSentAfter: '.',
+    compactRetry: 'Usar otro correo',
+    undo: 'Deshacer',
+    dismissedPermanent: '¡Gracias por suscribirte! No volveremos a mostrar este aviso en este dispositivo.',
+    dismissedLater: 'Volveremos a preguntar más adelante.',
+    sending: 'Enviando…',
+    notConfigured: 'Las suscripciones aún no están configuradas. Vuelve pronto o suscríbete al feed RSS.',
+    error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',
+  },
+
+  /** The early-access waitlist box. See the English catalog for what it promises. */
+  waitlist: {
+    region: 'Lista de espera de acceso anticipado',
+    heading: '¿Quieres el planificador cuando se abra el acceso?',
+    emailLabel: 'Correo electrónico',
+    cta: 'Avísame',
+    privacyBefore: 'Un correo cuando se abra el acceso. ',
+    privacyLink: 'Política de privacidad',
+    privacyAfter: '.',
+    successTitle: 'Ya estás en la lista',
+    successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más.',
+    sending: 'Enviando…',
+    notConfigured: 'Las altas aún no están configuradas. Vuelve pronto.',
+    error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',
+  },
+
+  home: {
+    meta: {
+      title: 'nidhi | Entiende tu dinero y planifica lo que viene',
+      description:
+        'Lecciones gratuitas de finanzas personales y herramientas privadas para entender tu dinero y planificar el futuro, de lo básico a las finanzas multimoneda.',
+      // The brand line "Money, understood" is rendered "El dinero, entendido"
+      // everywhere; lower case here only because it follows a colon.
+      imageAlt:
+        'nidhi: el dinero, entendido. Lecciones gratuitas de finanzas personales y herramientas privadas para entender tu dinero y planificar tu futuro.',
+    },
+    /** Structured data, not visible text. It still reads in the page's language. */
+    schema: {
+      slogan: 'El dinero, entendido',
+      organization:
+        'nidhi ayuda a personas corrientes a entender su dinero: lecciones gratuitas y estructuradas de finanzas personales, herramientas privadas que funcionan en el navegador y un planificador para su futuro financiero. Empieza por lo básico y sigue siendo útil a medida que las finanzas se complican, también cuando el dinero está repartido entre varias monedas y países.',
+      knowsAbout: [
+        'Finanzas personales',
+        'Educación financiera',
+        'Patrimonio neto',
+        'Fondos de emergencia',
+        'Inversión',
+        'Independencia financiera',
+        'Planificación de la jubilación',
+        'Finanzas conductuales',
+        'Finanzas en varias monedas',
+      ],
+      site: 'El dinero, entendido. Aprende finanzas personales, entiende tu propio dinero y planifica tu futuro, desde lo básico hasta unas finanzas repartidas entre varias monedas y países.',
+    },
+    hero: {
+      heading: 'Entiende tu dinero.',
+      subhead: ['Lecciones gratuitas.', 'Herramientas privadas.', 'Un planificador en camino.'],
+      startLearning: 'Empieza a aprender',
+      tryTool: 'Prueba una herramienta gratuita',
+      welcomeBack: 'Hola de nuevo. Sigue donde lo dejaste:',
+    },
+    journey: {
+      label: 'Aprende, haz balance, planifica · cifras ilustrativas',
+      learnStep: '1 · Aprende',
+      learnBig: '¿Qué es el patrimonio neto?',
+      learnSmall: 'Lo que tienes, menos lo que debes.',
+      stockStep: '2 · Haz balance',
+      // Both values are signed (+/−), so "o" never needs to become "u".
+      stockBig: '{one} o {two}',
+      stockSmall: 'Patrimonio neto de dos personas que ganan {amount} al mes cada una.',
+      planStep: '3 · Planifica',
+      planBig: '{gap} más al cabo de {years} años',
+      planSmall: 'Por ahorrar e invertir {extra} más cada mes.',
+    },
+    steps: {
+      learn: 'Aprende',
+      stock: 'Haz balance',
+      plan: 'Planifica',
+      /** Spoken before the heading, and hidden: "Paso 1: Aprende". */
+      mark: 'Paso {n}: ',
+    },
+    lessons: {
+      heading: 'Lecciones gratuitas, para siempre.',
+      body: 'Lecciones breves para cualquier hogar, en cualquier país, y, donde importan las normas locales, te dicen qué comprobar. Sin muro de pago y sin cuenta.',
+      helperQuestion: '¿No sabes cuál te encaja?',
+      helperLink: 'Dos preguntas te sugieren por dónde empezar',
+      foot: 'Ver toda la ruta de aprendizaje',
+      comingSoon: '{level} · lecciones próximamente',
+      comingSoonNoLevel: 'Más lecciones',
+      levelCount: '{level} · {count} lecciones',
+      severalLevels: 'Lecciones de varios niveles',
+      // Followed by the route's first lesson title, like doorContinue.
+      start: 'Empieza',
+      doorContinue: 'Continúa con ',
+      doorRead: 'Ruta leída. ',
+      doorPath: 'Sigue en la ruta de aprendizaje',
+      inclusiveTitle: 'El plan estándar no encaja con mi vida.',
+      inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
+      inclusiveMetaOne: 'Finanzas inclusivas · 1 guía, para cualquier etapa',
+      inclusiveGo: 'Explorar',
+    },
+    tools: {
+      heading: 'Mira dónde estás.',
+      body: 'Herramientas gratuitas que funcionan en tu navegador, así que lo que escribes se queda en tu dispositivo.',
+    },
+    compare: {
+      label: 'Mismos ingresos: {amount} al mes por persona',
+      owns: 'Tiene',
+      owes: 'Debe',
+      netWorth: 'patrimonio neto',
+      caption: 'Los ingresos son lo que entra. El patrimonio neto es lo que tienes menos lo que debes. Cifras ilustrativas.',
+      people: {
+        // "Vehículo" for "car": neither coche nor carro (glossary rule 4).
+        alex: { name: 'Alex', note: 'Un vehículo y una tarjeta, ambos a crédito' },
+        sam: { name: 'Sam', note: 'Ahorros, una pensión y un pequeño préstamo' },
+      },
+    },
+    planner: {
+      heading: 'Mira adónde podría llegar.',
+      body: 'Estamos creando un planificador: lo que tienes, debes, ganas y gastas en un solo lugar, en una moneda o en varias, para que puedas comparar decisiones como esta antes de tomarlas.',
+    },
+    example: {
+      label: 'Una decisión, comparada',
+      text: 'El mismo punto de partida; solo cambia lo que se añade cada mes.',
+      currencyNote:
+        'Los euros son solo la moneda que usa este ejemplo. Los dos caminos obtienen la misma rentabilidad porcentual, así que la diferencia entre ellos también es una proporción: en rupias o en dólares, las dos líneas dibujarían la misma forma; solo cambiaría el eje.',
+      gapLead: 'Unos {gap} de diferencia al cabo de {years} años.',
+      gapRest: 'La mayor parte es el dinero extra aportado; el resto es crecimiento.',
+      fold: 'Cómo funciona este ejemplo',
+      chartTitle: 'Ejemplo: una decisión comparada a lo largo de diez años',
+      today: 'Hoy',
+      year: 'Año {n}',
+      axisStart: 'hoy',
+      axisEnd: '+{years} años',
+      perMonth: '{amount}/mes',
+      description:
+        'Dos trayectorias de ejemplo a partir de los mismos {invested} invertidos hoy, con una rentabilidad ilustrativa del {pct} anual descontada la inflación. Añadiendo {monthly} al mes se llega a unos {end} al cabo de {years} años; añadiendo {higher} al mes, a unos {alternative}. La diferencia, de unos {gap}, se debe a {extra} más aportados y a unos {growth} más de crecimiento.',
+      footnote:
+        'Supone una rentabilidad ilustrativa del {pct} anual descontada la inflación, y que la cantidad de cada mes se añade al principio del mes. La rentabilidad real varía de un año a otro y puede ser negativa. Un patrimonio neto completo no crece a un solo ritmo: un vehículo pierde valor y un préstamo se va pagando.',
+      keysHint: 'Usa las flechas izquierda y derecha del teclado para leer sus valores.',
+    },
+    faq: {
+      heading: 'Preguntas frecuentes',
+      items: [
+        {
+          q: '¿nidhi es para quien empieza de cero?',
+          a: 'Sí. La ruta de aprendizaje empieza por explicar qué es el patrimonio neto y no da nada por sabido. Cada lección explica sus términos sobre la marcha, y las {total} lecciones publicadas hasta ahora están en orden de lectura, así que puedes empezar por la primera y seguir adelante.',
+        },
+        {
+          q: '¿Necesito tener dinero en más de una moneda para usar nidhi?',
+          a: 'No. Todo funciona con una sola moneda. La opción de varias monedas está ahí para cuando tu vida lo requiera: ahorros en un país, una pensión o una vivienda en otro, o planes de mudarte.',
+        },
+        {
+          q: '¿Cuánto cuesta nidhi?',
+          a: 'Las lecciones y las herramientas gratuitas no cuestan nada y no necesitan cuenta. Las lecciones seguirán siendo gratuitas, sin muro de pago.',
+        },
+        {
+          q: '¿Esto es asesoramiento financiero?',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
+        },
+        {
+          q: '¿Qué pasa con los números que escribo en las herramientas?',
+          a: 'Se quedan en tu dispositivo y no se envían a nidhi. Las herramientas gratuitas calculan en tu navegador y nunca ponen lo que escribes en la dirección de la página. Cuando una herramienta necesita datos externos, como los tipos de cambio del día, tu navegador le pide a ese servicio solo los tipos, nunca tus cantidades; como cualquier solicitud, eso le muestra tu dirección IP. La página de privacidad tiene los detalles.',
+        },
+        {
+          q: '¿Qué es el planificador y cuándo podré usarlo?',
+          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Se está abriendo por etapas. Apúntate a la lista y recibirás un solo correo cuando se abra el acceso.',
+        },
+      ],
+      why: 'nidhi nació porque una persona no encontraba una herramienta que encajara con una vida financiera corriente: dinero en más de un país, deudas en otro, un futuro que cruza fronteras. Así que la estamos construyendo, y contando lo que aprendemos por el camino.',
+      trustLine: 'Hecho en Praga. Sin anuncios y sin venta de datos. Las lecciones citan sus fuentes.',
+      trustBeliefs: 'En qué creemos',
+      trustEditorial: 'Cómo escribimos',
+      trustPrivacy: 'Política de privacidad',
+    },
+    levels: {
+      discovery: 'Descubrimiento',
+      building: 'Construcción',
+      psychology: 'Psicología',
+      optimizing: 'Optimización',
+      mastery: 'Dominio',
+    },
+    startingPoints: {
+      basics: {
+        audience: 'Desde cero',
+        situation: 'Empiezo desde el principio.',
+        detail: 'Sabes que te convendría entender mejor tu dinero, pero no por dónde empezar. Empieza por las ideas sobre las que se construye todo lo demás.',
+      },
+      'no-plan': {
+        audience: 'Algo de experiencia',
+        situation: 'Tengo algunos ahorros, pero ningún plan.',
+        detail: 'El dinero se va acumulando y no tienes claro qué debería estar haciendo ese dinero. Aprende para qué sirve cada cosa: el ahorro, la inversión y los objetivos.',
+      },
+      habits: {
+        audience: 'Conoces la teoría',
+        situation: 'Sé lo que tengo que hacer, pero no siempre lo hago.',
+        detail: 'La mayoría de los errores con el dinero no tienen que ver con el conocimiento. Mira cómo la atención, los hábitos y las emociones moldean las decisiones que tomas.',
+      },
+      complex: {
+        audience: 'Con experiencia',
+        situation: 'Mis finanzas se han complicado.',
+        detail: 'Proyecciones, escenarios hipotéticos, flujo de efectivo, comisiones e impuestos: las mismas ideas, con más piezas en juego.',
+      },
+    },
+    toolCards: {
+      netWorth: { name: 'Calculadora de patrimonio neto', desc: 'Una moneda o varias.' },
+      loanComparison: { name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
+      monteCarlo: { name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
+    },
+  },
+
+  ...learnEs,
+  tools: toolsEs,
+};

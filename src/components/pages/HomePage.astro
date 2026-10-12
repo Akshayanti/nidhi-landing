@@ -34,7 +34,7 @@ import {
   resolveStartingPoints,
 } from '../../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../../utils/inclusiveGuides.ts';
-import { formatProseAmount } from '../../utils/shared/formatAmount.ts';
+import { formatProseAmount, formatProsePercent } from '../../utils/shared/formatAmount.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
 
@@ -76,9 +76,9 @@ const inclusive = liveInclusive(allPosts, now);
 
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
 // table sits in Step 2 and the ten-year chart in Step 3.
-const eur = (v: number) => formatProseAmount(v, 'EUR');
+const eur = (v: number) => formatProseAmount(v, 'EUR', false, locale);
 const ex = starterExample();
-const pctReturn = `${Math.round(EXAMPLE_RETURN * 100)}%`;
+const pctReturn = formatProsePercent(Math.round(EXAMPLE_RETURN * 100) / 100, locale);
 const roundedEnd = Math.round(ex.end / 100) * 100;
 // Drawn twice: a narrower drawing for phones keeps its labels readable
 // (CSS shows one of the two). The description and the footnote are printed
@@ -193,6 +193,7 @@ const webSiteSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: faqs.map((f) => ({
     '@type': 'Question',
     name: f.q,
@@ -411,8 +412,8 @@ const faqSchema = {
             <p class="gap"><strong>{t(home.example.gapLead, { gap: eur(gap), years: STARTER.years })}</strong> {home.example.gapRest}</p>
             <p class="starter-currency">{home.example.currencyNote}</p>
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
-            <HeroChart id="hero-starter" class="starter-chart--wide" {...starterChart} />
-            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} {...starterChart} />
+            <HeroChart id="hero-starter" class="starter-chart--wide" locale={locale} {...starterChart} />
+            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} locale={locale} {...starterChart} />
             <details class="fold" data-phone-fold>
               <summary class="fold-label">{home.example.fold}</summary>
               <p class="hc-foot">{starterFootnote}</p>

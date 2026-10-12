@@ -12,7 +12,7 @@
  * the page's own address rather than at the English one.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -35,6 +35,7 @@ const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 const profilePageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
+  inLanguage: LOCALE_META[locale].htmlLang,
   name: about.schema.name,
   url: aboutUrl,
   description: about.schema.description,

@@ -3,7 +3,7 @@
  *
  * English is the default locale and stays where it is: the site root, with no
  * prefix, no redirect and no query parameter. Every other locale lives under
- * its own single-segment prefix. Hindi is the first of them, at /hi/.
+ * its own single-segment prefix: Hindi at /hi/, Spanish at /es/.
  *
  * The path is the only place a locale is recorded. Nothing is written to
  * localStorage for it, and there is no automatic redirect from Accept-Language
@@ -18,7 +18,7 @@
  */
 export const DEFAULT_LOCALE = 'en' as const;
 
-export const LOCALES = ['en', 'hi'] as const;
+export const LOCALES = ['en', 'hi', 'es'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -32,6 +32,7 @@ export type Locale = (typeof LOCALES)[number];
 export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLocale: string }> = {
   en: { label: 'English', htmlLang: 'en', ogLocale: 'en_US' },
   hi: { label: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
+  es: { label: 'Español', htmlLang: 'es', ogLocale: 'es_ES' },
 };
 
 /**
@@ -45,6 +46,26 @@ export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLo
 export const DATE_LOCALE: Record<Locale, string> = {
   en: 'en-US',
   hi: 'hi-IN',
+  // Plain 'es', not 'es-ES' or 'es-419': the Spanish edition is written for
+  // every Spanish-speaking country, and the dates it prints read the same in
+  // all of them.
+  es: 'es',
+};
+
+/**
+ * How a figure in the site's own copy is written in each edition: the home
+ * page's worked example, its chart, and any amount a catalog string quotes.
+ * English and Hindi readers both write `€10,000`. A Spanish reader reads
+ * `10,000` as ten with three decimals, so the Spanish edition writes
+ * `10.000 €`, as the RAE and every euro country that speaks Spanish do.
+ *
+ * Lessons are not affected: they are English and keep English figures. Nor are
+ * the free tools, which format an amount by the currency the reader chose.
+ */
+export const PROSE_NUMBER_LOCALE: Record<Locale, string> = {
+  en: 'en',
+  hi: 'en',
+  es: 'es',
 };
 
 export function isLocale(value: string | undefined): value is Locale {

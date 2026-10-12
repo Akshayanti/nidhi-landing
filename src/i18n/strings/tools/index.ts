@@ -9,16 +9,16 @@
  * ones, and a change to one tool touches one file.
  *
  * The shape is the same as the rest of the catalog, and the key-parity test in
- * `../catalog.test.ts` covers these modules through `en` and `hi` like any other
+ * `../catalog.test.ts` covers these modules through every catalog like any other
  * namespace: `tools.loanComparison.meta.title` is a path it walks.
  *
- * Each module exports its English object and its Hindi object, the Hindi typed
- * as `typeof` the English one so the two cannot drift in shape. English first,
+ * Each module exports one object per language, each typed as `typeof` the
+ * English one so none can drift in shape. English first,
  * because `en` is the source of truth the other languages are measured against.
  */
-import { loanComparisonEn, loanComparisonHi } from './loanComparison.ts';
-import { multiCurrencyNetWorthEn, multiCurrencyNetWorthHi } from './multiCurrencyNetWorth.ts';
-import { monteCarloEn, monteCarloHi } from './monteCarlo.ts';
+import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from './loanComparison.ts';
+import { multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi } from './multiCurrencyNetWorth.ts';
+import { monteCarloEn, monteCarloEs, monteCarloHi } from './monteCarlo.ts';
 
 export const toolsEn = {
   loanComparison: loanComparisonEn,
@@ -30,4 +30,10 @@ export const toolsHi = {
   loanComparison: loanComparisonHi,
   multiCurrencyNetWorth: multiCurrencyNetWorthHi,
   monteCarlo: monteCarloHi,
+};
+
+export const toolsEs = {
+  loanComparison: loanComparisonEs,
+  multiCurrencyNetWorth: multiCurrencyNetWorthEs,
+  monteCarlo: monteCarloEs,
 };

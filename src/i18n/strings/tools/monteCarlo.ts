@@ -50,7 +50,7 @@
  * lets the reader decide, and is careful, as the English is, that a share of
  * simulated paths is not a chance of anything happening to a person.
  */
-import { currenciesEn, currenciesHi } from './currencies.ts';
+import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const monteCarloEn = {
   meta: {
@@ -708,6 +708,302 @@ export const monteCarloHi: typeof monteCarloEn = {
         ' सबसे हल्की पट्टी चार्ट की ऊपरी सीमा से बाहर निकल जाती है; दाईं ओर का ज़्यादा वाला लेबल दिखाता है कि वह कहाँ ख़त्म होती है।',
       clippedPhone:
         ' सबसे हल्की पट्टी चार्ट की ऊपरी सीमा से बाहर निकल जाती है; किसी भी साल पर टैप करके उसका ज़्यादा वाला आँकड़ा पढ़िए।',
+    },
+  },
+};
+
+/**
+ * The Spanish edition. Same shape and the same figures as the English, from
+ * the same constants. Words follow `docs/i18n/es-glossary.md`: simulación,
+ * trayectoria, mediana, percentil, cartera, valor de la cartera (never saldo),
+ * rentabilidad, comisiones, reequilibrio. A withdrawal is a retiro. Percentages
+ * take a no-break space before the sign. What stays Latin is what the Hindi
+ * keeps: currency codes, `JavaScript`, `CFA Institute`, the sources' authors,
+ * titles and exhibit labels, and `nidhi`.
+ */
+export const monteCarloEs: typeof monteCarloEn = {
+  meta: {
+    title: 'Simulador Monte Carlo de jubilación, en tu navegador | nidhi',
+    description:
+      'Simulador Monte Carlo de jubilación gratuito: mira el abanico de resultados posibles, en dinero de hoy. Sin registro y con los cálculos en tu navegador.',
+  },
+  schema: {
+    name: 'Simulador Monte Carlo de nidhi',
+    alternateNames: ['Calculadora Monte Carlo de jubilación de nidhi', 'Simulador de jubilación de nidhi'],
+    operatingSystem: 'Cualquiera (navegador web)',
+    browserRequirements: 'Requiere JavaScript. Navegador moderno.',
+    featureList: [
+      'De {minPaths} a {maxPaths} trayectorias simuladas de rentabilidades anuales',
+      'Supuestos de rentabilidad basados en los mercados mundiales de acciones y bonos de 1900 a 2025, con escenarios prudente y optimista',
+      'Comisiones anuales',
+      'Fase de ahorro y fase de retiros opcional',
+      'Combinación de acciones y bonos, con reequilibrio anual',
+      'Resultados en dinero de hoy, en 29 monedas',
+      'Enlace para compartir cualquier plan',
+    ],
+  },
+  page: {
+    breadcrumb: {
+      home: 'Inicio',
+      freeTools: 'Herramientas gratuitas',
+      this: 'Simulador Monte Carlo',
+    },
+    eyebrow: 'Herramientas gratuitas',
+    title: 'Simulador Monte Carlo: el abanico, no una sola línea',
+    lead: {
+      before: 'Proyecta tus ahorros hacia el futuro miles de veces',
+      wide: ', con rentabilidades tomadas del historial a largo plazo de los mercados mundiales. Mira un resultado bajo, la mediana y uno alto, y con qué frecuencia el dinero alcanza una vez que empiezas a vivir de él',
+      after: '. Todo se ejecuta en tu navegador; no se envía nada a ningún servidor.',
+    },
+    limits: {
+      heading: 'Lo que esto no puede ver',
+      items: {
+        onePot: {
+          lead: 'Una sola cartera, una sola moneda.',
+          rest: ' Si tus ahorros están en más de una moneda, o te vas a jubilar en un lugar que usa otra, el tipo de cambio añade un riesgo que este modelo no incluye.',
+        },
+        steady: {
+          lead: 'Ahorro y gasto constantes.',
+          rest: ' La vida real trae una pausa en la carrera, una vivienda, estudios, una herencia. Cada una cambia el resultado, a veces más que los mercados.',
+        },
+        taxes: {
+          lead: 'Sin impuestos, y comisiones simplificadas.',
+          rest: ' En la realidad, los impuestos se descuentan en cada trayectoria y dependen de dónde vives y de qué cuentas usas. Las comisiones son un único porcentaje anual; los cargos fijos y puntuales quedan fuera.',
+        },
+        extremes: {
+          lead: 'Extremos más suaves que en la historia.',
+          rest: ' Cada año se extrae de forma independiente de una distribución suave, así que las rachas largas de años malos y las caídas como la de 2008 (las acciones mundiales perdieron un 42,9 % descontada la inflación) son aquí más raras de lo que fueron en realidad.',
+        },
+      },
+      more: 'Por qué importa cada una',
+    },
+    planner: {
+      before:
+        'El planificador de nidhi hace este tipo de simulación sobre tu situación completa: cada cuenta en su propia moneda, tus ingresos y gastos a lo largo del tiempo, y los acontecimientos que estás planeando.',
+      link: 'Únete a la lista de acceso anticipado',
+    },
+    how: {
+      heading: 'Cómo funciona',
+      more: 'El método y sus fuentes',
+      steps: {
+        draws:
+          'Cada año simulado extrae una rentabilidad para las acciones y otra para los bonos, descontada la inflación. Sus medias y oscilaciones coinciden con las de los mercados mundiales de 1900 a 2025: acciones, {stocksMean} anual de media con una desviación estándar de {stocksSd}; bonos, {bondsMean} con {bondsSd}. Las dos están ligeramente relacionadas (una correlación de aproximadamente {correlation}). Esa relación ha variado mucho a lo largo de la historia, a veces positiva y a veces negativa, así que esto es una simplificación. «{cautious}» y «{optimistic}» mantienen estas oscilaciones y llevan la rentabilidad compuesta de las acciones al 4 % o al 6 % anual y la de los bonos al 1 % o al 3 %.',
+        blend:
+          'Tu cartera obtiene la combinación de ambas rentabilidades según la proporción que elijas, con reequilibrio una vez al año, menos tus comisiones anuales. La rentabilidad del año se reparte por igual entre sus doce meses.',
+        flows:
+          'Tu ahorro mensual entra al principio de cada mes. Si activas los retiros, cuando terminan los años de ahorro sale cada mes una doceava parte de la cantidad anual. Una trayectoria que llega a cero se queda en cero.',
+        runs:
+          'Esto se repite tantas veces como elijas, {defaultPaths} de forma predeterminada. El gráfico muestra dónde caen las trayectorias cada año: las bandas sombreadas contienen las 8 de cada 10 centrales y la mitad central.',
+        deterministic:
+          'Los mismos datos dan siempre el mismo resultado, así que un enlace compartido muestra exactamente lo que viste.',
+      },
+      source: {
+        before:
+          'Fuentes: Elroy Dimson, Paul Marsh y Mike Staunton, «Global Markets over the Last 126 Years» (Exhibits 11.3 y 11.5, de la DMS Database), y Edward F. McQuarrie, «US Stocks and Bonds before 1926» (Exhibit 10.4), en',
+        after: ', publicado por la CFA Institute Research Foundation en 2026.',
+      },
+    },
+    faq: {
+      heading: 'Preguntas frecuentes',
+      items: [
+        {
+          q: '¿Qué es una simulación Monte Carlo?',
+          a: 'En lugar de suponer una única rentabilidad fija cada año, proyecta tu plan miles de veces ({defaultPaths} de forma predeterminada), cada vez con una secuencia aleatoria distinta de años buenos y malos. El resultado es un abanico: cómo podrían ser un resultado bajo, la mediana y uno alto. Muestra cuánto puede variar el resultado, algo que una sola línea oculta.',
+        },
+        {
+          q: '¿De dónde salen los supuestos de rentabilidad?',
+          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en el extremo bajo y el alto del rango a largo plazo que se usa en los artículos de nidhi: acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
+        },
+        {
+          q: '¿Cuántas trayectorias conviene simular?',
+          a: 'Con {defaultPaths} hay de sobra: subir a {maxPaths} suele mover las cifras baja, mediana y alta unos pocos puntos porcentuales como mucho, y tarda bastante más, sobre todo en un teléfono. Con menos trayectorias se ve cuánto puede desviarse una muestra pequeña: con {minPaths}, las cifras pueden alejarse varios puntos porcentuales de lo que dan miles de trayectorias.',
+        },
+        {
+          q: '¿Cómo se tienen en cuenta las comisiones?',
+          a: 'Como un porcentaje anual del valor de la cartera, descontado de la rentabilidad de cada año, de 0 a {maxFeePct} %. Escribe la suma de los gastos anuales de tu fondo (TER, un porcentaje de lo que tienes invertido) y de la comisión de la plataforma, si la hay. Las comisiones fijas y los cargos puntuales no se modelan.',
+        },
+        {
+          q: '¿Por qué está todo en dinero de hoy?',
+          a: 'Todas las rentabilidades son reales, es decir, descontada la inflación. Un resultado de 500.000 significa 500.000 con el poder adquisitivo de hoy, así que puedes compararlo directamente con precios y sueldos que conoces. También significa que tu ahorro mensual y tu retiro anual se mantienen constantes en términos reales, que es aproximadamente lo que ocurre si los subes con la inflación.',
+        },
+        {
+          q: '¿Qué significa «el dinero alcanzó en 8 de cada 10 trayectorias»?',
+          a: 'De todas las trayectorias simuladas, 8 de cada 10 pagaron cada retiro completo durante todos los años que elegiste. No es un 80 % de probabilidad de que tu plan funcione: el modelo deja fuera los impuestos y los cambios en tu gasto, y el mundo real puede ser peor (o mejor) que cualquier modelo. Tómalo como una forma de comparar planes, no como una promesa.',
+        },
+        {
+          q: '¿Por qué la línea única queda por encima de la mayoría de las trayectorias?',
+          a: 'La volatilidad le resta al efecto del interés compuesto: una pérdida del 20 % necesita una ganancia del 25 % para volver al punto de partida. Por eso, un plan que obtiene de media cierta rentabilidad con altibajos suele terminar por debajo del mismo plan con esa rentabilidad todos los años. La línea única usa la tasa compuesta, que ya es más baja que la media simple, y aun así cerca de la mitad de las trayectorias terminan por debajo de ella.',
+        },
+        {
+          q: '¿Se envían mis datos a algún sitio?',
+          a: 'No. La simulación se ejecuta en tu navegador y los números que escribes no se nos envían ni a nosotros ni a nadie más. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
+        },
+        {
+          q: '¿Esto es asesoramiento financiero?',
+          a: 'No. Es un modelo educativo de una sola cartera. No puede decirte en qué invertir, cuánto retirar ni cuándo puedes jubilarte.',
+        },
+      ],
+    },
+    related: {
+      heading: 'Para seguir leyendo',
+      cards: {
+        'financial-projections': {
+          kicker: 'La idea detrás de esta herramienta',
+          title: 'Proyecciones financieras',
+          desc: 'Por qué una sola línea recta engaña, y cómo leer en su lugar un abanico de resultados.',
+        },
+        'what-if-scenarios': {
+          kicker: 'Siguiente paso',
+          title: 'Escenarios hipotéticos',
+          desc: 'Pon a prueba una decisión cada vez frente a tu situación de partida antes de tomarla.',
+        },
+        'income-replacement-ratio': {
+          kicker: 'Cuánto retirar',
+          title: 'Tasa de reemplazo de ingresos',
+          desc: 'Qué parte de tus ingresos de la etapa laboral probablemente necesitarás cuando dejes de trabajar.',
+        },
+        'understanding-risk': {
+          kicker: 'Fundamentos',
+          title: 'Entender el riesgo',
+          desc: 'Qué significa la volatilidad para tu dinero, y por qué importa el orden de las rentabilidades.',
+        },
+        diversification: {
+          kicker: 'Fundamentos',
+          title: 'Diversificación',
+          desc: 'Por qué una cartera mundial oscila menos que la de cualquier país por separado.',
+        },
+      },
+    },
+  },
+  island: {
+    currencies: currenciesEs,
+    formLabel: 'Tu plan',
+    fields: {
+      currency: 'Moneda',
+      start: 'Invertido hoy',
+      startHint: 'Dinero de hoy',
+      monthly: 'Aportación mensual',
+      saveYears: 'Años de ahorro',
+      saveYearsHint: 'De 0 a 60',
+      mixBefore: 'Combinación: ',
+      mixStocks: '{pct} % acciones',
+      mixMiddle: ', ',
+      mixBonds: '{pct} % bonos',
+      mixHint: 'Se reequilibra a esta combinación una vez al año.',
+      crossLink: {
+        before: '¿Tienes dinero en varias monedas? Súmalo primero con la ',
+        link: 'calculadora de patrimonio neto',
+        after: ' y luego escribe aquí el total.',
+      },
+    },
+    returns: {
+      cautious: 'Prudente',
+      historical: 'Histórico',
+      optimistic: 'Optimista',
+    },
+    returnTips: {
+      cautious:
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: el extremo bajo del rango a largo plazo. Los altibajos son tan grandes como en la historia.',
+      historical:
+        'Los mercados mundiales de 1900 a 2025: las acciones crecieron alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}, con los altibajos que tuvieron en realidad.',
+      optimistic:
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: el extremo alto del rango a largo plazo. Los altibajos son tan grandes como en la historia.',
+    },
+    settings: {
+      toggle: 'Rentabilidad, comisiones y trayectorias',
+      summary: '{returns} · {fees} % de comisiones · {paths} trayectorias',
+      legend: 'Rentabilidad',
+      feeLabel: 'Comisiones anuales, %',
+      feeHint: 'Comisiones del fondo y de la plataforma, descontadas de la rentabilidad de cada año. De 0 a {maxFeePct}.',
+      pathsLabel: 'Trayectorias simuladas',
+      pathsHint:
+        'Más trayectorias dan cifras más estables; por encima de 10.000 cambian unos pocos puntos porcentuales como mucho.',
+    },
+    withdraw: {
+      toggle: 'Después, vivir de ese dinero',
+      off: 'Actívalo para ver cuánto dura el dinero una vez que empiezas a retirarlo.',
+      amountLabel: 'Retiro anual',
+      amountHint: 'Dinero de hoy, retirado cada mes',
+      yearsLabel: 'Durante cuántos años',
+      yearsHint: 'De 1 a 60',
+    },
+    actions: {
+      copy: 'Copiar un enlace a este plan',
+      copied: 'Enlace copiado',
+      copyPrompt: 'Copia este enlace:',
+      reset: 'Restablecer',
+      fix: 'Corrige los campos resaltados para actualizar los resultados.',
+      running: 'Simulando {paths} trayectorias…',
+    },
+    quick: {
+      medianOne: 'Mediana tras 1 año',
+      medianOther: 'Mediana tras {years} años',
+      range: '8 de cada 10 trayectorias entre {low} y {high}',
+      lasted: 'El dinero alcanzó para los {years} años en {inTen} trayectorias.',
+    },
+    inTen: '{n} de cada 10',
+    results: {
+      headingOne: 'Tras 1 año de ahorro',
+      headingOther: 'Tras {years} años de ahorro',
+      headingToday: 'Desde hoy',
+      lowLabel: 'Bajo',
+      lowMore: ' (percentil 10): 1 de cada 10 trayectorias terminó por debajo',
+      medianLabel: 'Mediana',
+      medianMore: ': la mitad de las trayectorias terminó por encima y la mitad por debajo',
+      highLabel: 'Alto',
+      highMore: ' (percentil 90): 1 de cada 10 trayectorias terminó por encima',
+      cardsKey:
+        'Bajo y alto: 1 de cada 10 trayectorias terminó por debajo o por encima (los percentiles 10 y 90). Mediana: la mitad terminó por encima y la mitad por debajo.',
+      noteBefore: 'Una calculadora con una única rentabilidad fija trazaría una sola línea hasta',
+      noteAfter: '. El {share} de las trayectorias simuladas terminó por debajo.',
+      empty: 'Añade algunos años de ahorro, o activa los retiros, para ver un abanico de resultados.',
+      lastedHeadBefore: 'Retirando {amount} al año, el dinero alcanzó para los {years} años en',
+      lastedHeadAfter: ' trayectorias simuladas ({share}).',
+      runOut:
+        'En las trayectorias en las que se agotó, la mediana del año en que ocurrió fue el año {year} de {years}.',
+      caveat:
+        'Son proporciones de {paths} trayectorias simuladas, no la probabilidad de que te ocurra nada. El modelo es una simplificación; más abajo se explica lo que deja fuera.',
+      caveatFew:
+        ' Con solo {paths} trayectorias, las cifras pueden alejarse varios puntos porcentuales de lo que dan miles de trayectorias.',
+      tableSummary: 'Ver las cifras en una tabla',
+      tableCaption: 'Valor de la cartera al final de cada año, en dinero de hoy',
+      tableYear: 'Año',
+      tableLow: 'Bajo (p10)',
+      tableMedian: 'Mediana',
+      tableHigh: 'Alto (p90)',
+      tableStraight: 'Línea única',
+    },
+    chart: {
+      swipe: 'Desliza para ver el gráfico completo →',
+      groupLabel: 'Gráfico. Usa las flechas izquierda y derecha del teclado para leer los valores de cada año.',
+      title: 'Abanico de resultados simulados',
+      desc: 'Gráfico de abanico de {paths} trayectorias simuladas a lo largo de {years} años. Al final, el percentil 10 es {low}, la mediana {median} y el percentil 90 {high}. Una sola línea con rentabilidad fija termina en {straight}.',
+      livingOff: 'Viviendo de ese dinero',
+      axisYears: 'Años desde hoy',
+      endHigh: 'Alto',
+      endMedian: 'Mediana',
+      endLow: 'Bajo',
+      readoutYear: 'Año {year}',
+      readoutHigh: 'Alto (p90)',
+      readoutMiddle: 'Mitad central',
+      readoutMiddleRange: 'De {low} a {high}',
+      readoutMedian: 'Mediana',
+      readoutLow: 'Bajo (p10)',
+      readoutStraight: 'Línea única',
+      announce:
+        'Año {year}{phase}. Alto {high}, mitad central de {middleLow} a {middleHigh}, mediana {median}, bajo {low}, línea única {straight}.',
+      phaseStart: 'Inicio',
+      phaseSaving: 'Ahorro',
+      phaseWithdrawing: 'Retiros, año {year}',
+      legendPaths: '8 de cada 10 trayectorias',
+      legendMiddle: 'Mitad central',
+      legendMedian: 'Valor mediano de la cartera',
+      legendStraight: 'Línea única con rentabilidad fija',
+      legendHint: 'Señala el gráfico, tócalo o usa las flechas del teclado para leer cualquier año.',
+      clippedLabels:
+        ' La banda más clara sobrepasa el borde superior del gráfico; la etiqueta Alto de la derecha indica dónde termina.',
+      clippedPhone:
+        ' La banda más clara sobrepasa el borde superior del gráfico; toca cualquier año para leer su valor alto.',
     },
   },
 };

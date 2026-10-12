@@ -5,7 +5,16 @@ import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
-import { DEFAULT_LOCALE, LOCALE_META, dict, localizedPath } from '../i18n';
+import { DEFAULT_LOCALE, LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
+import { MIRRORED_LOCALES } from '../i18n/routes';
+
+// One click label per language's way back to its learning path. Hindi's label
+// predates the rest and keeps its name, so the analytics history stays one
+// series; the privacy changelog lists each.
+const POST_PATH_LABEL: Record<Exclude<Locale, typeof DEFAULT_LOCALE>, string> = {
+  hi: 'post-hindi-path',
+  es: 'post-spanish-path',
+};
 
 interface Props {
   title: string;
@@ -185,23 +194,29 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               Updated <time datetime={updatedDate.toISOString()}>{updatedStr}</time>
             </span>
           )}
-          {/* A lesson is written once, in English, and has no Hindi counterpart,
-              so the header's picker has nothing to offer on this page and is not
-              rendered here. This is the way back for a reader who arrived from
-              the Hindi learning path: the path in Hindi, which lists these same
-              lessons and says in Hindi that they are in English. A language's
-              own name is the same string on every page, so it comes from
-              LOCALE_META rather than a catalog, exactly as the picker's rows do. */}
+          {/* A lesson is written once, in English, and has no translated
+              counterpart, so the header's picker has nothing to offer on this
+              page and is not rendered here. These are the way back for a reader
+              who arrived from another language's learning path: the path in
+              that language, which lists these same lessons and says in that
+              language that they are in English. A language's own name is the
+              same string on every page, so it comes from LOCALE_META rather
+              than a catalog, exactly as the picker's rows do. */}
           <span class="post-langs">
             Language:{' '}
-            <a
-              href={localizedPath('hi', '/blog/')}
-              hreflang={LOCALE_META.hi.htmlLang}
-              lang={LOCALE_META.hi.htmlLang}
-              data-attr="post-hindi-path"
-            >
-              {LOCALE_META.hi.label}
-            </a>
+            {MIRRORED_LOCALES.map((l, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a
+                  href={localizedPath(l, '/blog/')}
+                  hreflang={LOCALE_META[l].htmlLang}
+                  lang={LOCALE_META[l].htmlLang}
+                  data-attr={POST_PATH_LABEL[l]}
+                >
+                  {LOCALE_META[l].label}
+                </a>
+              </>
+            ))}
           </span>
         </div>
         <h1 class="post-title">{title}</h1>

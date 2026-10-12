@@ -11,17 +11,17 @@
  * pages), so `LearnHome.tsx` and `LearningPath.tsx` can take exactly one
  * locale's slice as a prop and never import this module at runtime.
  *
- * Why a module of its own rather than two more entries in `../en.ts` and
- * `../hi.ts`: the same reason as the free tools (see `./tools/index.ts`). The
+ * Why a module of its own rather than more entries in each language's main
+ * catalog (`../en.ts`, `../hi.ts` and the rest): the same reason as the free tools (see `./tools/index.ts`). The
  * path is the densest prose on the site after the calculators, and `LEVELS`,
  * `LEVEL_SUMMARIES`, `TAG_META`, `CONCEPTS` and `GOALS` all read better as one
- * file than as a ninth of two very long ones. The key-parity test in
- * `./catalog.test.ts` covers these namespaces through `en` and `hi` like any
+ * file than as a ninth of several very long ones. The key-parity test in
+ * `./catalog.test.ts` covers these namespaces in every language like any
  * other: `learn.tags.debt.title` is a path it walks.
  *
  * English first, because `en` is the source of truth the other languages are
- * measured against; the Hindi object is typed as `typeof` the English one so
- * the two cannot drift in shape.
+ * measured against; every other language's object is typed as `typeof` the
+ * English one so none can drift in shape.
  */
 
 export const learnEn = {
@@ -807,5 +807,372 @@ export const learnHi: typeof learnEn = {
     },
     empty: 'इस संग्रह की पहली मार्गदर्शिकाएँ जल्द आ रही हैं।',
     emptyLink: 'तब तक सीखने का रास्ता देखें',
+  },
+};
+
+export const learnEs: typeof learnEn = {
+  learn: {
+    levels: {
+      discovery: 'Descubrimiento',
+      building: 'Construcción',
+      psychology: 'Psicología',
+      optimizing: 'Optimización',
+      mastery: 'Dominio',
+      'inclusive-finances': 'Finanzas inclusivas',
+    },
+    summaries: {
+      discovery: 'El lenguaje básico del dinero',
+      building: 'Presupuesto, riesgo y primeras inversiones',
+      psychology: 'Hábitos y sesgos que moldean decisiones',
+      optimizing: 'Revisar y afinar un plan',
+      mastery: 'Planificación patrimonial y el largo plazo',
+    },
+    levelMeta: {
+      discovery: {
+        description: 'Los fundamentos. Si las finanzas personales son nuevas para ti, este es un punto de partida habitual.',
+        covered: 'Patrimonio neto, activos, pasivos, flujo de efectivo, deuda, interés compuesto, liquidez, fondos de emergencia, poder adquisitivo, valor temporal del dinero, ahorrar frente a invertir, crédito, seguros',
+      },
+      building: {
+        description: 'Unir las piezas. Presupuestos, sistemas de ahorro y las primeras inversiones.',
+        covered: 'Presupuesto, riesgo, clases de activos, cuentas de inversión, diversificación, introducción a la independencia financiera, dinero en varias monedas, inmuebles, condiciones de los préstamos, ingresos pasivos, objetivos, panel de seguimiento, indicadores de salud financiera, impuestos',
+      },
+      psychology: {
+        description: 'Cómo tu mente ayuda y perjudica a tu dinero. Sesgos conductuales, modelos mentales y mejores hábitos.',
+        covered: 'Aversión a la pérdida, contabilidad mental, sesgo del presente, exceso de confianza, encuadre y anclaje, efecto manada, economía narrativa, guiones de dinero (money scripts), sistemas contra los sesgos',
+      },
+      optimizing: {
+        description: 'Afinar lo que funciona. Eficiencia fiscal, reequilibrio de la cartera y estrategias avanzadas.',
+        covered: 'Aprovechamiento fiscal de pérdidas (tax-loss harvesting), reequilibrio de la cartera, ubicación de activos, diversificación',
+      },
+      mastery: {
+        description: 'El largo plazo. Riqueza intergeneracional, planificación patrimonial (testamento y herencia) e independencia financiera.',
+        covered: 'Planificación patrimonial, FIRE (independencia financiera y jubilación anticipada), riqueza intergeneracional, estrategias para retirar dinero de la cartera',
+      },
+      'inclusive-finances': {
+        description: 'Para los hogares en los que no pensaba el consejo habitual. Cada guía toma un supuesto de partida, muestra qué falla cuando no se cumple y lo reconstruye a conciencia.',
+        covered: 'Parejas no casadas y parejas que conviven, hogares compartidos, trabajo por encargo, finanzas sin intereses, hogares entre países, personas que envejecen solas, divorcio, cuidado de otras personas, discapacidad, familia elegida, familias reconstituidas, viudez',
+      },
+    },
+    tags: {
+      'discovery': {
+        name: 'Descubrimiento',
+        title: 'Descubrimiento: fundamentos de finanzas personales | nidhi',
+        description: 'El primer nivel de la ruta de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Guías para empezar, en orden de lectura.',
+        card: 'El primer nivel de la ruta de aprendizaje de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Guías para quien empieza, pensadas para leerse en orden.',
+      },
+      'building': {
+        name: 'Construcción',
+        title: 'Construcción: inversión, impuestos y planificación | nidhi',
+        description: 'El segundo nivel de la ruta de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Guías para aplicar lo básico.',
+        card: 'El segundo nivel de la ruta de aprendizaje de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Guías para poner en práctica lo básico.',
+      },
+      'psychology': {
+        name: 'Psicología',
+        title: 'Psicología del dinero: finanzas conductuales | nidhi',
+        description: 'Por qué saber la decisión correcta con el dinero no es lo mismo que tomarla: aversión a la pérdida, contabilidad mental, sesgo del presente, efecto manada.',
+        card: 'Por qué saber cuál es la decisión correcta con el dinero no es lo mismo que tomarla: aversión a la pérdida, contabilidad mental, sesgo del presente, efecto manada. Las finanzas conductuales, explicadas.',
+      },
+      'optimizing': {
+        name: 'Optimización',
+        title: 'Serie Optimización: proyecciones, comisiones e impuestos | nidhi',
+        description: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Guías para afinar un plan que ya funciona.',
+        card: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Guías para afinar un plan que ya funciona.',
+      },
+      'inclusive-finances': {
+        name: 'Finanzas inclusivas',
+        title: 'Finanzas inclusivas: si el plan estándar no encaja | nidhi',
+        description: 'Planificación para hogares que el consejo habitual omite: parejas no casadas, vejez en solitario, trabajo por encargo, discapacidad, familias entre países.',
+        card: 'Planificación financiera para los hogares que el consejo habitual pasa por alto: parejas no casadas, personas que envejecen solas, trabajo por encargo, discapacidad, familias entre países. No hace falta leer nada antes.',
+      },
+      'relationships': {
+        name: 'Relaciones',
+        title: 'Dinero y relaciones: parejas, familias, hogares | nidhi',
+        description: 'Cómo pueden planificar el dinero las parejas, las familias reconstituidas, la familia elegida y los hogares compartidos cuando la ley y los supuestos habituales no se ajustan a su forma de vivir.',
+        card: 'Cómo pueden planificar el dinero las parejas, las familias reconstituidas, la familia elegida y los hogares compartidos cuando la ley y los supuestos habituales no se ajustan a su forma de vivir.',
+      },
+      'disability': {
+        name: 'Discapacidad',
+        title: 'Planificación financiera con una discapacidad | nidhi',
+        description: 'Ahorrar y planificar teniendo en cuenta las ayudas sujetas a nivel de ingresos y patrimonio, los costos de los cuidados y unos ingresos que quizá no sigan una carrera profesional estándar. Marcos de referencia, no asesoramiento legal específico de un país.',
+        card: 'Ahorrar y planificar teniendo en cuenta las ayudas sujetas a nivel de ingresos y patrimonio, los costos de los cuidados y unos ingresos que quizá no sigan una carrera profesional estándar. Marcos de referencia, no asesoramiento legal específico de un país.',
+      },
+      'immigration': {
+        name: 'Inmigración',
+        title: 'Dinero entre fronteras: inmigrantes y expatriados | nidhi',
+        description: 'Historial crediticio, banca, pensiones y lo que un país no reconoce de otro cuando tu hogar cruza fronteras. Marcos de planificación para inmigrantes y familias entre países.',
+        card: 'Historial crediticio, banca, pensiones y lo que un país no reconoce de otro cuando tu hogar cruza fronteras. Marcos de planificación para inmigrantes y familias entre países.',
+      },
+      'fundamentals': {
+        name: 'Fundamentos',
+        title: 'Fundamentos financieros: finanzas personales | nidhi',
+        description: 'Lo esencial de las finanzas personales para toda persona adulta: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratis.',
+        card: 'Conceptos básicos de finanzas personales que toda persona adulta debería conocer: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratuita de nidhi.',
+      },
+      'debt': {
+        name: 'Deuda',
+        title: 'Entender y gestionar la deuda: educación financiera | nidhi',
+        description: 'Cómo funciona la deuda, por qué importan las tasas de interés y estrategias probadas para salir de deudas. Educación financiera práctica de nidhi.',
+        card: 'Cómo funciona la deuda, por qué importan las tasas de interés y estrategias probadas para salir de deudas. Educación financiera práctica de nidhi.',
+      },
+      'saving': {
+        name: 'Ahorro',
+        title: 'Ahorrar dinero: nociones de finanzas personales | nidhi',
+        description: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Guías de educación financiera de nidhi.',
+        card: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Guías de educación financiera de nidhi.',
+      },
+      'investing': {
+        name: 'Inversión',
+        title: 'Nociones de inversión: educación financiera | nidhi',
+        description: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para principiantes y educación financiera.',
+        card: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para quien empieza, como parte de la educación financiera.',
+      },
+      'risk': {
+        name: 'Riesgo',
+        title: 'Entender el riesgo financiero al invertir | nidhi',
+        description: 'El riesgo no es peligro, es incertidumbre: la diferencia entre volatilidad y pérdida permanente, y cómo el tiempo cambia el riesgo. Educación financiera.',
+        card: 'El riesgo no es peligro, es incertidumbre. Aprende la diferencia entre volatilidad y pérdida permanente, y cómo el tiempo transforma el riesgo.',
+      },
+      'planning': {
+        name: 'Planificación',
+        title: 'Planificación financiera: cuentas, impuestos y control | nidhi',
+        description: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Guías prácticas de planificación.',
+        card: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Guías prácticas de planificación financiera de nidhi.',
+      },
+      'goals': {
+        name: 'Objetivos',
+        title: 'Objetivos financieros y seguimiento de tu progreso | nidhi',
+        description: 'Cómo fijar objetivos financieros concretos y saber si vas por buen camino: cantidades objetivo, indicadores de salud financiera y un panel sencillo.',
+        card: 'Cómo fijar objetivos financieros concretos y saber si vas por buen camino: cantidades objetivo, indicadores de salud financiera y un panel sencillo. Guías de planificación de nidhi.',
+      },
+      'fire': {
+        name: 'FIRE',
+        title: 'Independencia financiera (FIRE): lo básico | nidhi',
+        description: 'Qué significa la independencia financiera, cómo funcionan la cifra FIRE y las tasas de retiro seguras, y qué exigen de verdad los ingresos pasivos.',
+        card: 'Qué significa la independencia financiera, cómo funcionan la cifra FIRE y las tasas de retiro seguras, y qué exigen de verdad los ingresos pasivos. Guías honestas de nidhi.',
+      },
+      'taxes': {
+        name: 'Impuestos',
+        title: 'Impuestos e inversión: educación financiera | nidhi',
+        description: 'Cómo influyen los impuestos en cada decisión financiera y qué papel tienen las cuentas con ventajas fiscales. Guías con una tabla de referencia por país.',
+        card: 'Cómo los impuestos influyen en cada decisión financiera y qué lugar ocupan las cuentas con ventajas fiscales. Guías educativas con una tabla de referencia país por país.',
+      },
+      'currency': {
+        name: 'Monedas',
+        title: 'Dinero en varias monedas: tipos de cambio y riesgo | nidhi',
+        description: 'Gestionar el dinero en varias monedas: tipos de cambio, poder adquisitivo y riesgo cambiario cuando tus finanzas cruzan fronteras. Para vivir entre países.',
+        card: 'Gestionar el dinero en varias monedas: tipos de cambio, poder adquisitivo y riesgo cambiario cuando tus finanzas cruzan fronteras. Guías para una vida entre países.',
+      },
+      'real-estate': {
+        name: 'Inmuebles',
+        title: 'Los inmuebles como inversión: lo básico | nidhi',
+        description: 'Los inmuebles más allá de la vivienda propia: rentabilidad, apalancamiento, falta de liquidez y las cuentas de alquilar o comprar. Educación financiera.',
+        card: 'Los inmuebles más allá de tener vivienda propia: rentabilidad, apalancamiento, falta de liquidez y las cuentas de alquilar frente a comprar. Educación financiera de nidhi.',
+      },
+    },
+    crumb: {
+      learn: 'Aprende',
+      topics: 'Temas',
+      inclusive: 'Finanzas inclusivas',
+    },
+    levelFallback: 'Finanzas inclusivas',
+    lessonsInEnglish: 'Las lecciones están en inglés. Tu navegador puede traducirlas mientras lees.',
+    island: {
+      minRead: 'min de lectura',
+      startHere: 'Empieza aquí',
+      new: 'Nueva',
+      markRead: 'Marcar como leída',
+      markUnread: 'Marcar como no leída',
+      step: 'Paso {step} de {count}',
+      companionOptionalLabel: 'Opcional · {label}',
+      companionOptionalFollows: 'Continuación opcional de {host}',
+      companionFollows: 'Continuación de {host}',
+      readCount: '{read} de {total} leídas en este dispositivo',
+      markLevelRead: 'Marcar el nivel como leído',
+      markLevelUnread: 'Marcar el nivel como no leído',
+      orderHint: 'Se lee de izquierda a derecha y luego hacia abajo.',
+      allLessons: 'Todas las lecciones de {level}',
+      allGuides: 'Todas las guías de {level}',
+    },
+  },
+
+  blogIndex: {
+    meta: {
+      title: 'Aprende finanzas personales | nidhi',
+      description: 'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Aprende paso a paso con guías prácticas.',
+    },
+    schema: {
+      breadcrumbLearn: 'Aprende',
+      itemListName: 'Niveles de la ruta de aprendizaje',
+      itemListDescription: 'Una ruta de aprendizaje estructurada por las finanzas personales, en niveles que van de lo básico a la revisión de un plan.',
+    },
+    header: {
+      h1: 'Aprende sobre tu dinero',
+      subtitle: 'Lecciones breves para todo tipo de hogar, en cualquier país. Donde importan las normas locales, las lecciones dicen qué comprobar.',
+      link: 'Cómo se escriben las lecciones',
+    },
+    island: {
+      minRead: 'min de lectura',
+      finishedEyebrow: 'Todas las lecciones leídas',
+      finishedHeading: 'Has leído las {count} lecciones publicadas hasta ahora en la ruta',
+      finishedSub: 'Las lecciones nuevas aparecen aquí a medida que se publican. Finanzas inclusivas y la lista de temas son otras formas de volver a entrar.',
+      returningEyebrow: 'Sigue donde lo dejaste',
+      returningSub: '{level}, lección {index} de {total}',
+      returningNote: '{read} de {total} lecciones de {level} leídas en este dispositivo',
+      newEyebrow: '¿Primera vez aquí?',
+      newHeading: 'Un punto de partida habitual es {level}, el lenguaje básico del dinero',
+      newSub: 'Lección 1: {title}',
+      continueReading: 'Seguir leyendo',
+      readLesson1: 'Leer la lección 1',
+      exploreInclusive: 'Explorar Finanzas inclusivas',
+      helperClose: 'Cerrar la ayuda para elegir nivel',
+      helperOpen: 'Ayúdame a elegir un nivel',
+      q1Note: 'Pregunta 1 de 2',
+      q1Text: '¿Cuáles de estas ideas podrías explicarle a alguien de confianza?',
+      q1Hint: 'Marca las que correspondan. También está bien dejarlas todas sin marcar.',
+      next: 'Siguiente',
+      q2Note: 'Pregunta 2 de 2',
+      q2Text: '¿Qué te ayudaría más ahora mismo?',
+      back: 'Atrás',
+      answersNote: 'Tus respuestas no se guardan, y ninguna analítica registra cuáles eliges.',
+      resultHeading: '{level} puede ser un punto de partida útil',
+      resultSuffix: 'Es solo una sugerencia de lectura: todos los niveles siguen abiertos.',
+      resultReasonFoundation: 'Has marcado {ticked} de las {total} ideas de {level}, y los niveles siguientes se apoyan en ellas.',
+      resultReasonGoalPsych: 'Ahí están las lecciones sobre {topic}, y se complementan con cualquier nivel.',
+      resultReasonGoal: 'Ahí están las lecciones sobre {topic}, y has marcado suficientes de las ideas en las que se apoya.',
+      resultReasonGoalKnown: 'Ahí están las lecciones sobre {topic}. Has marcado {ticked} de sus {total} ideas, así que algunas partes pueden resultarte conocidas.',
+      resultReasonAllKnownPsych: 'Has marcado la mayoría de las ideas de todos los niveles publicados. Psicología examina la distancia entre saber qué hacer y hacerlo.',
+      resultReasonAllKnown: 'Has marcado la mayoría de las ideas de todos los niveles publicados.',
+      gapsNote: 'Lecciones sobre las ideas que no has marcado:',
+      firstLessonNote: 'Su primera lección:',
+      alsoLead: 'Después, o a la vez: ',
+      /** Spanish closes the sentence with the same full stop as English. */
+      alsoEnd: '.',
+      seeAll: 'Ver todas las lecciones de {level}',
+      startOver: 'Empezar de nuevo',
+      pathHeading: 'La ruta de aprendizaje',
+      pathProgress: '{read} de {total} leídas en este dispositivo',
+      pathHint: 'Léela en orden o abre cualquier nivel',
+      beingWritten: 'En preparación',
+      youAreHere: 'Estás aquí',
+      srRead: 'leída',
+      lessonsCount: '{count} lecciones',
+      alongside: 'Junto a todos los niveles',
+      inclusiveName: 'Finanzas inclusivas',
+      inclusiveSr: ', junto a todos los niveles',
+      inclusiveSummary: 'Cuando el plan estándar no encaja: parejas, hogares compartidos, mudarse de país, discapacidad y más',
+      guideOne: 'guía',
+      guideMany: 'guías',
+      findHeading: 'Encuentra una lección',
+      browseByTopic: 'Explorar por tema',
+      searchLabel: 'Buscar lecciones',
+      /** The search runs over the English titles and descriptions, so it says so. */
+      searchPlaceholder: 'Las lecciones están en inglés: busca en inglés, por ejemplo debt, renting, couples',
+      noMatches: 'Ninguna lección coincide. La búsqueda mira los títulos y descripciones en inglés; una palabra más amplia en inglés, o la lista de temas, puede ayudar.',
+      lessonOne: 'lección',
+      lessonMany: 'lecciones',
+      /** The glossary never shortens the name to "inclusivas" alone. */
+      inclusivePill: 'Finanzas inclusivas',
+      showAll: 'Mostrar las {count}',
+      concepts: {
+        'net-worth': 'Qué es el patrimonio neto y cómo se calcula',
+        'interest': 'Por qué importa la tasa de interés de una deuda',
+        'emergency-fund': 'Para qué sirve un fondo de emergencia',
+        'inflation': 'Cómo la inflación reduce lo que puede comprar el dinero',
+        'asset-classes': 'En qué se diferencian las acciones, los bonos y el efectivo',
+        'diversification': 'Qué hace la diversificación, y qué no',
+        'tax-accounts': 'Qué es una cuenta con ventajas fiscales',
+        'rebalancing': 'Por qué una cartera se desvía y se reequilibra',
+        'fees': 'Cuánto suma una comisión anual del 1 % a lo largo de décadas',
+        'real-returns': 'Qué es la rentabilidad real, después de la inflación y los costos',
+        'tax-loss': 'Aprovechamiento fiscal de pérdidas y ubicación de activos',
+        'glide-path': 'Qué es un glide path (la senda que reduce el riesgo de la cartera con los años)',
+      },
+      goals: {
+        picture: { label: 'Ver con claridad cómo está mi dinero', topic: 'patrimonio neto, flujo de efectivo y presupuesto' },
+        safety: { label: 'Crear un colchón de seguridad o controlar mis deudas', topic: 'fondos de emergencia y deuda' },
+        invest: { label: 'Empezar a invertir o fijar objetivos', topic: 'inversión, cuentas y objetivos' },
+        habits: { label: 'Llevar a la práctica lo que ya sé', topic: 'hábitos, sesgos y cómo pasar a la práctica' },
+        refine: { label: 'Hacer que funcione mejor un plan que ya tengo', topic: 'comisiones, impuestos y cómo afinar un plan' },
+        unsure: { label: 'Aún no lo sé' },
+      },
+    },
+  },
+
+  level: {
+    meta: {
+      title: '{label}: {summary} | nidhi',
+      descriptionWithCount: '{description} {count} lecciones gratuitas, en orden de lectura.',
+    },
+    schema: {
+      itemListName: 'Lecciones de {label}',
+    },
+    eyebrow: 'Nivel {index} de {total}',
+    coveredSummary: 'Qué abarca este nivel',
+    scope: 'Escrito para cualquier país: cuando una lección depende de las normas locales sobre impuestos, cuentas o ayudas, indica qué comprobar donde vives.',
+    scopeLink: 'Cómo se escriben las lecciones',
+    empty: 'Las lecciones de este nivel se están escribiendo. Las nuevas aparecen aquí a medida que se publican.',
+    nav: {
+      label: 'Niveles',
+      allLevels: 'Todos los niveles',
+      next: 'Siguiente nivel: {label}',
+      inclusive: 'Finanzas inclusivas',
+    },
+  },
+
+  topic: {
+    meta: {
+      titleFallback: '{tag}: educación en finanzas personales | nidhi',
+      descriptionFallback: 'Artículos sobre {tag}: finanzas personales y educación financiera prácticas, de nidhi.',
+    },
+    schema: {
+      itemListName: 'Lecciones sobre {tag}',
+    },
+    eyebrow: 'Tema',
+    summary: {
+      lessonsOne: '{count} lección en {levels}',
+      lessonsMany: '{count} lecciones en {levels}',
+      guidesOne: '{count} guía de Finanzas inclusivas',
+      guidesMany: '{count} guías de Finanzas inclusivas',
+      join: ', además de ',
+      levelList: '{list} y {last}',
+    },
+    nav: {
+      label: 'Más formas de encontrar lecciones',
+      allTopics: 'Todos los temas',
+      searchAll: 'Buscar en todas las lecciones',
+    },
+  },
+
+  topics: {
+    meta: {
+      title: 'Explorar por tema | nidhi',
+      description: 'Todos los temas del blog de nidhi: patrimonio neto, presupuesto, deuda, inversión, riesgo y más. Elige un tema para leer todos los artículos de esa área.',
+    },
+    schema: {
+      collectionName: 'Temas de las lecciones',
+    },
+    h1: 'Explorar por tema',
+    subtitle: 'Todos los temas de la ruta de aprendizaje, con el número de lecciones de cada uno. Elige uno para leer todas las lecciones de esa área.',
+    empty: 'Aún no hay temas.',
+    fallbackCard: 'Artículos con la etiqueta «{tag}».',
+    countOne: '{count} lección',
+    countMany: '{count} lecciones',
+  },
+
+  inclusiveFinances: {
+    eyebrow: 'No hace falta leer nada antes; útil en cualquier etapa',
+    h1: 'Cuando el plan estándar no encaja contigo',
+    lede1: 'La mayoría de los consejos financieros dan por hecho, sin decirlo, un solo tipo de hogar: una pareja casada legalmente o una persona adulta sola, un empleo estable, una familia que la ley reconoce, una vida en un solo país. Las prestaciones por fallecimiento de la pareja, la declaración conjunta de impuestos, las normas de herencia y las pensiones ligadas al empleo se construyen en torno a esa forma.',
+    lede2: 'Estas guías son para todas las demás personas. Cada una toma un solo supuesto de partida, muestra qué falla cuando no se cumple en tu caso y repasa las decisiones deliberadas que lo sustituyen. No hace falta haber leído nada más en este sitio.',
+    scope: 'Estas guías enseñan qué comprobar y qué preguntar. Los detalles legales cambian de un país a otro, así que nunca te dirán lo que establece la ley donde vives. Para eso, busca asesoramiento profesional local.',
+    situations: {
+      heading: 'Explorar por situación',
+      note: 'Cada enlace muestra las guías relacionadas de todo el sitio, no solo de esta colección.',
+      relationships: 'Parejas, familias y hogares compartidos',
+      immigration: 'Cruzar fronteras',
+      disability: 'Discapacidad y ayudas sujetas a nivel de ingresos y patrimonio',
+    },
+    empty: 'Las primeras guías de esta colección están en camino.',
+    emptyLink: 'Mientras tanto, explora la ruta de aprendizaje',
   },
 };
