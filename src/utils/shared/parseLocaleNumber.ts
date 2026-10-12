@@ -47,14 +47,13 @@ export function numberSeparators(locale: string): { group: string; decimal: stri
  */
 function ungroup(int: string, sep: string, indian: boolean): string | null {
   if (!int.includes(sep)) return /^\d+$/.test(int) ? int : null;
-  const groups = int.split(sep);
-  const [first, ...rest] = groups;
-  if (!/^\d{1,3}$/.test(first)) return null;
-  for (let i = 0; i < rest.length; i++) {
-    const last = i === rest.length - 1;
-    if (!(last || !indian ? /^\d{3}$/ : /^\d{2,3}$/).test(rest[i])) return null;
-  }
-  return groups.join('');
+  const e = sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // The whole number matches one system or the other, never a mix of the two
+  // ("1,234,56,789" is neither): western groups of three throughout, or, in
+  // Indian locales, twos before the last three.
+  const western = new RegExp(`^\\d{1,3}(${e}\\d{3})+$`);
+  const lakh = new RegExp(`^\\d{1,2}(${e}\\d{2})*${e}\\d{3}$`);
+  return western.test(int) || (indian && lakh.test(int)) ? int.split(sep).join('') : null;
 }
 
 /** True when `s` is a valid grouped whole number with `sep` as its only separator. */

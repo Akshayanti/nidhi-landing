@@ -134,3 +134,16 @@ describe('formatForInput', () => {
     }
   });
 });
+
+describe('grouping is one system or the other, never a mix', () => {
+  it('rejects western and Indian groups mixed in one number', () => {
+    assert.equal(parseLocaleNumber('1,234,56,789', 'hi'), null);
+    assert.equal(parseLocaleNumber('123,45,678', 'hi'), null);
+  });
+
+  it('still reads each system on its own', () => {
+    assert.equal(parseLocaleNumber('1,00,00,000', 'hi'), 10_000_000);
+    assert.equal(parseLocaleNumber('1,234,567', 'hi'), 1_234_567);
+    assert.equal(parseLocaleNumber('1.234.567', 'es'), 1_234_567);
+  });
+});
