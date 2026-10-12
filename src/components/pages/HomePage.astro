@@ -24,7 +24,7 @@ import WaitlistSection from '../WaitlistSection.astro';
 import HeroChart from '../HeroChart.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
-import { EXAMPLE_RETURN, STARTER, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
+import { EXAMPLES, EXAMPLE_CURRENCY, EXAMPLE_RETURN, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
   LADDER_LEVELS,
@@ -76,8 +76,14 @@ const inclusive = liveInclusive(allPosts, now);
 
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
 // table sits in Step 2 and the ten-year chart in Step 3.
-const eur = (v: number) => formatProseAmount(v, 'EUR', false, locale);
-const ex = starterExample();
+// Each edition's example is in a currency its readers live with: euros in
+// English and Spanish, rupees in Hindi (EXAMPLE_CURRENCY). `eur` keeps its
+// name from when every edition used euros; it formats the example currency.
+const currency = EXAMPLE_CURRENCY[locale];
+const example = EXAMPLES[currency];
+const STARTER = example.starter;
+const eur = (v: number) => formatProseAmount(v, currency, false, locale);
+const ex = starterExample(STARTER);
 const pctReturn = formatProsePercent(Math.round(EXAMPLE_RETURN * 100) / 100, locale);
 const roundedEnd = Math.round(ex.end / 100) * 100;
 // Drawn twice: a narrower drawing for phones keeps its labels readable
@@ -88,7 +94,7 @@ const roundedGrowth = Math.round(ex.growth / 100) * 100;
 // Step 3: the same start with one decision changed, the monthly amount.
 // The gap is split into money put in and growth, so it is not read as
 // growth alone.
-const HIGHER_MONTHLY = 300;
+const HIGHER_MONTHLY = example.higherMonthly;
 const alt = yearlyPath(ex.invested, HIGHER_MONTHLY, STARTER.years);
 const roundedAlt = Math.round(alt[STARTER.years] / 100) * 100;
 const gap = roundedAlt - roundedEnd;
@@ -125,10 +131,10 @@ const starterChart = {
 };
 // Step 2: two illustrative people on the same income, to show that income
 // and net worth are different things.
-const SAME_INCOME = 3_000;
+const SAME_INCOME = example.sameIncome;
 const people = [
-  { ...home.compare.people.alex, owns: 22_000, owes: 31_000 },
-  { ...home.compare.people.sam, owns: 16_500, owes: 4_000 },
+  { ...home.compare.people.alex, ...example.people.alex },
+  { ...home.compare.people.sam, ...example.people.sam },
 ];
 const peopleMax = Math.max(...people.flatMap((p) => [p.owns, p.owes]));
 const signedEur = (v: number) => (v < 0 ? `−${eur(-v)}` : eur(v));
@@ -412,8 +418,8 @@ const faqSchema = {
             <p class="gap"><strong>{t(home.example.gapLead, { gap: eur(gap), years: STARTER.years })}</strong> {home.example.gapRest}</p>
             <p class="starter-currency">{home.example.currencyNote}</p>
             <p id="hero-starter-desc" class="chart-srOnly">{starterDesc}</p>
-            <HeroChart id="hero-starter" class="starter-chart--wide" locale={locale} {...starterChart} />
-            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} locale={locale} {...starterChart} />
+            <HeroChart id="hero-starter" class="starter-chart--wide" locale={locale} currency={currency} {...starterChart} />
+            <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} locale={locale} currency={currency} {...starterChart} />
             <details class="fold" data-phone-fold>
               <summary class="fold-label">{home.example.fold}</summary>
               <p class="hc-foot">{starterFootnote}</p>

@@ -75,8 +75,10 @@ describe('formatProseAmount', () => {
     assert.equal(formatProseAmount(0, 'EUR', true), '€0');
   });
 
-  it('keeps English figures on a Hindi page', () => {
-    assert.equal(formatProseAmount(23_200, 'EUR', false, 'hi'), '€23,200');
+  it('writes a Hindi page\'s rupees with Indian grouping', () => {
+    assert.equal(formatProseAmount(1_50_000, 'INR', false, 'hi'), '₹1,50,000');
+    assert.equal(formatProseAmount(1_50_000, 'INR', true, 'hi'), '₹1.5L');
+    assert.equal(formatProseAmount(2_30_00_000, 'INR', true, 'hi'), '₹2.3Cr');
   });
 
   it('writes a Spanish page\'s figures the Spanish way', () => {

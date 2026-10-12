@@ -55,7 +55,8 @@ export const DATE_LOCALE: Record<Locale, string> = {
 /**
  * How a figure in the site's own copy is written in each edition: the home
  * page's worked example, its chart, and any amount a catalog string quotes.
- * English and Hindi readers both write `€10,000`. A Spanish reader reads
+ * English readers write `€10,000`, Hindi readers `₹1,50,000` (the Hindi example
+ * is in rupees, see `EXAMPLE_CURRENCY`). A Spanish reader reads
  * `10,000` as ten with three decimals, so the Spanish edition writes
  * `10.000 €`, as the RAE and every euro country that speaks Spanish do.
  *
@@ -64,7 +65,9 @@ export const DATE_LOCALE: Record<Locale, string> = {
  */
 export const PROSE_NUMBER_LOCALE: Record<Locale, string> = {
   en: 'en',
-  hi: 'en',
+  // Indian grouping: the Hindi example is in rupees, written ₹1,50,000 and,
+  // abbreviated on a chart, ₹1.5L and ₹2.3Cr, as Indian readers write them.
+  hi: 'en-IN',
   es: 'es',
 };
 

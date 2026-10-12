@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { STARTER, monthlyPath, starterExample, yearlyPath } from './heroExamples.ts';
+import { EXAMPLES, EXAMPLE_CURRENCY, STARTER, monthlyPath, starterExample, yearlyPath } from './heroExamples.ts';
 
 describe('growth helpers', () => {
   it('a year of 5% growth on a lump sum with no saving is exactly 5%', () => {
@@ -41,4 +41,25 @@ describe('hero example', () => {
     assert.ok(e.growth > 0);
     assert.ok(Math.abs(e.putIn + e.growth - e.end) < 1e-6);
   });
+});
+
+describe('the example each edition shows', () => {
+  it('is in rupees for Hindi readers and in euros elsewhere', () => {
+    assert.equal(EXAMPLE_CURRENCY.hi, 'INR');
+    assert.equal(EXAMPLE_CURRENCY.en, 'EUR');
+    assert.equal(EXAMPLE_CURRENCY.es, 'EUR');
+  });
+
+  for (const [code, ex] of Object.entries(EXAMPLES)) {
+    it(`${code}: keeps the shape the copy describes`, () => {
+      const e = starterExample(ex.starter);
+      // The look-ahead starts at the vehicle's value, so the step reads on from the table.
+      assert.equal(e.netWorth, ex.starter.owns[1].amount);
+      assert.ok(e.netWorth > 0);
+      assert.equal(ex.higherMonthly, ex.starter.monthly * 2);
+      // Same income, one person under water and one ahead.
+      assert.ok(ex.people.alex.owns < ex.people.alex.owes);
+      assert.ok(ex.people.sam.owns > ex.people.sam.owes);
+    });
+  }
 });
