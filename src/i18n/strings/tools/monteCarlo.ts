@@ -723,9 +723,9 @@ export const monteCarloHi: typeof monteCarloEn = {
  */
 export const monteCarloEs: typeof monteCarloEn = {
   meta: {
-    title: 'Simulador Monte Carlo de jubilación, en tu navegador | nidhi',
+    title: 'Simulador Monte Carlo de jubilación gratuito | nidhi',
     description:
-      'Simulador Monte Carlo de jubilación gratuito: mira el abanico de resultados posibles, en dinero de hoy. Sin registro y con los cálculos en tu navegador.',
+      'Simulador Monte Carlo de jubilación gratuito: mira el abanico de resultados posibles, en dinero de hoy. Sin registro.',
   },
   schema: {
     name: 'Simulador Monte Carlo de nidhi',
@@ -793,7 +793,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         flows:
           'Tu ahorro mensual entra al principio de cada mes. Si activas los retiros, cuando terminan los años de ahorro sale cada mes una doceava parte de la cantidad anual. Una trayectoria que llega a cero se queda en cero.',
         runs:
-          'Esto se repite tantas veces como elijas, {defaultPaths} de forma predeterminada. El gráfico muestra dónde caen las trayectorias cada año: las bandas sombreadas contienen las 8 de cada 10 centrales y la mitad central.',
+          'Esto se repite tantas veces como elijas, {defaultPaths} de forma predeterminada. El gráfico muestra dónde caen las trayectorias cada año: las bandas sombreadas abarcan el 80 % central y el 50 % central de las trayectorias.',
         deterministic:
           'Los mismos datos dan siempre el mismo resultado, así que un enlace compartido muestra exactamente lo que viste.',
       },
@@ -820,14 +820,14 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿Cómo se tienen en cuenta las comisiones?',
-          a: 'Como un porcentaje anual del valor de la cartera, descontado de la rentabilidad de cada año, de 0 a {maxFeePct} %. Escribe la suma de los gastos anuales de tu fondo (TER, un porcentaje de lo que tienes invertido) y de la comisión de la plataforma, si la hay. Las comisiones fijas y los cargos puntuales no se modelan.',
+          a: 'Como un porcentaje anual del valor de la cartera, descontado de la rentabilidad de cada año, de 0 a {maxFeePct} %. Escribe la suma de los gastos anuales de tu fondo y de la comisión de la plataforma, si la hay. Las comisiones fijas y los cargos puntuales no se modelan.',
         },
         {
           q: '¿Por qué está todo en dinero de hoy?',
           a: 'Todas las rentabilidades son reales, es decir, descontada la inflación. Un resultado de 500.000 significa 500.000 con el poder adquisitivo de hoy, así que puedes compararlo directamente con precios y sueldos que conoces. También significa que tu ahorro mensual y tu retiro anual se mantienen constantes en términos reales, que es aproximadamente lo que ocurre si los subes con la inflación.',
         },
         {
-          q: '¿Qué significa «el dinero alcanzó en 8 de cada 10 trayectorias»?',
+          q: '¿Qué significa «el dinero duró en 8 de cada 10 trayectorias»?',
           a: 'De todas las trayectorias simuladas, 8 de cada 10 pagaron cada retiro completo durante todos los años que elegiste. No es un 80 % de probabilidad de que tu plan funcione: el modelo deja fuera los impuestos y los cambios en tu gasto, y el mundo real puede ser peor (o mejor) que cualquier modelo. Tómalo como una forma de comparar planes, no como una promesa.',
         },
         {

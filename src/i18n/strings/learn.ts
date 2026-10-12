@@ -849,7 +849,7 @@ export const learnEs: typeof learnEn = {
         covered: 'Planificación patrimonial, FIRE (independencia financiera y jubilación anticipada), riqueza intergeneracional, estrategias para retirar dinero de la cartera',
       },
       'inclusive-finances': {
-        description: 'Para los hogares en los que no pensaba el consejo habitual. Cada guía toma un supuesto de partida, muestra qué falla cuando no se cumple y lo reconstruye a conciencia.',
+        description: 'Para hogares que el consejo habitual no tiene en cuenta. Cada guía examina un supuesto, muestra qué falla si no se cumple y lo replantea con cuidado.',
         covered: 'Parejas no casadas y parejas que conviven, hogares compartidos, trabajo por encargo, finanzas sin intereses, hogares entre países, personas que envejecen solas, divorcio, cuidado de otras personas, discapacidad, familia elegida, familias reconstituidas, viudez',
       },
     },
@@ -869,7 +869,7 @@ export const learnEs: typeof learnEn = {
       'psychology': {
         name: 'Psicología',
         title: 'Psicología del dinero: finanzas conductuales | nidhi',
-        description: 'Por qué saber la decisión correcta con el dinero no es lo mismo que tomarla: aversión a la pérdida, contabilidad mental, sesgo del presente, efecto manada.',
+        description: 'Finanzas conductuales: por qué saber qué hacer con el dinero no basta para hacerlo. Aversión a la pérdida, contabilidad mental, sesgo del presente.',
         card: 'Por qué saber cuál es la decisión correcta con el dinero no es lo mismo que tomarla: aversión a la pérdida, contabilidad mental, sesgo del presente, efecto manada. Las finanzas conductuales, explicadas.',
       },
       'optimizing': {
@@ -887,13 +887,13 @@ export const learnEs: typeof learnEn = {
       'relationships': {
         name: 'Relaciones',
         title: 'Dinero y relaciones: parejas, familias, hogares | nidhi',
-        description: 'Cómo planifican el dinero parejas, familias reconstituidas, familia elegida y hogares compartidos cuando la ley no encaja con su forma de vivir.',
+        description: 'Cómo planifican el dinero parejas, familias reconstituidas, familia elegida y hogares compartidos cuando la ley y lo habitual no encajan con su vida.',
         card: 'Cómo pueden planificar el dinero las parejas, las familias reconstituidas, la familia elegida y los hogares compartidos cuando la ley y los supuestos habituales no se ajustan a su forma de vivir.',
       },
       'disability': {
         name: 'Discapacidad',
         title: 'Planificación financiera con una discapacidad | nidhi',
-        description: 'Ahorrar y planificar con ayudas según ingresos y patrimonio, costos de cuidados e ingresos fuera de una carrera estándar. Marcos, no asesoramiento legal.',
+        description: 'Ahorrar y planificar con ayudas según ingresos y bienes, costos de cuidado e ingresos sin trayectoria laboral estándar. Marcos, no asesoría legal local.',
         card: 'Ahorrar y planificar teniendo en cuenta las ayudas sujetas a nivel de ingresos y patrimonio, los costos de los cuidados y unos ingresos que quizá no sigan una carrera profesional estándar. Marcos de referencia, no asesoramiento legal específico de un país.',
       },
       'immigration': {

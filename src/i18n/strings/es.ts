@@ -89,9 +89,9 @@ export const es: Dict = {
       cookieSettings: 'Configuración de cookies',
     },
     disclaimerShort:
-      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un profesional acreditado de las finanzas.',
     disclaimerLong:
-      'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no garantiza resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
+      'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
     copyright: '© {year} nidhi. Todos los derechos reservados.',
   },
 
@@ -133,7 +133,7 @@ export const es: Dict = {
 
   about: {
     meta: {
-      title: 'Sobre nidhi: quién escribe y por qué puedes confiar | nidhi',
+      title: 'Sobre nidhi: quién escribe y por qué confiar | nidhi',
       description:
         'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada artículo de finanzas personales.',
     },
@@ -273,7 +273,7 @@ export const es: Dict = {
     meta: {
       title: 'Política editorial: cómo escribe nidhi sus lecciones | nidhi',
       description:
-        'Cómo se escribe y revisa cada lección de nidhi: el origen de sus cifras, por qué vale en cualquier país, el uso de la IA y el límite con el asesoramiento.',
+        'Cómo se escribe y revisa cada lección de nidhi: de dónde salen sus cifras, por qué sirve en cualquier país, cómo se usa la IA y dónde acaba la educación.',
     },
     schema: {
       name: 'Política editorial',
@@ -331,12 +331,12 @@ export const es: Dict = {
         // Spanish keeps the space before the link; the English's missing
         // space is a known bug in that page only.
         before:
-          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero es una comprobación del razonamiento, no el consejo de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
+          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional acreditado. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
         link: 'aviso de privacidad',
         after: '.',
       },
       advice:
-        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento personal financiero, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no garantiza resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+        'nidhi no es un profesional acreditado de las finanzas, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
           'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
@@ -363,9 +363,9 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras financieras gratuitas: patrimonio neto en una o varias monedas, préstamos y simulador Monte Carlo de jubilación. Sin registro ni rastreo.',
+        'Calculadoras gratuitas: patrimonio neto en una o varias monedas, préstamos y simulador Monte Carlo de jubilación. Sin registro ni rastreo, en tu navegador.',
       descriptionWithoutSimulator:
-        'Calculadoras gratuitas de finanzas personales: patrimonio neto en una o varias monedas y comparador de préstamos. Sin registro ni rastreo, en tu navegador.',
+        'Calculadoras gratuitas de patrimonio neto (en una o varias monedas) y de préstamos. Sin registro ni rastreo; todos los cálculos se hacen en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
@@ -379,18 +379,18 @@ export const es: Dict = {
     },
     eyebrow: 'Herramientas gratuitas',
     title: 'Herramientas gratuitas de finanzas personales que funcionan en tu navegador.',
-    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio del BCE en vivo cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
+    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio actuales del BCE cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'Una moneda o varias',
         title: 'Calculadora de patrimonio neto',
-        desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 29, con tipos del BCE en vivo, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
-        itemName: 'Calculadora de patrimonio neto y análisis del riesgo cambiario',
+        desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 29, con tipos actuales del BCE, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
+        itemName: 'Calculadora de patrimonio neto y analizador de riesgo cambiario',
       },
       loanComparison: {
         kicker: 'Decisiones de endeudamiento',
         title: 'Comparador de préstamos',
-        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. APR, costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
+        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
         itemName: 'Calculadora para comparar préstamos',
       },
       monteCarlo: {
@@ -409,7 +409,7 @@ export const es: Dict = {
       // The link between `before` and `after` is a product name held by the
       // component; the spaces live at the ends of the two fragments.
       rates: {
-        strong: 'Tipos de cambio del BCE en vivo cuando hacen falta.',
+        strong: 'Tipos de cambio actuales del BCE cuando hacen falta.',
         before: ' Cuando una herramienta necesita convertir monedas, tu navegador obtiene los tipos de referencia de la API de ',
         after: ' (una réplica gratuita y abierta de los tipos de referencia del Banco Central Europeo). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
       },
@@ -619,7 +619,7 @@ export const es: Dict = {
         rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente.',
       },
       newsletter: {
-        lead: 'Suscripciones al boletín:',
+        lead: 'Suscriptores del boletín:',
         rest: ' mientras mantengas la suscripción, y hasta 30 días después de que canceles la suscripción, para asegurarnos de que no te llegue ni un correo más por error. Pasado ese tiempo, se elimina la fila.',
       },
       waitlist: {
@@ -640,7 +640,7 @@ export const es: Dict = {
       intro:
         'Según el RGPD (y normativas similares), tienes derecho a preguntarnos qué datos tenemos sobre ti, a rectificarlos, a exportarlos, a limitar cómo los usamos, a oponerte a su uso o a suprimirlos.',
       unsubscribe:
-        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y hacerlo también programa la eliminación descrita arriba. En el caso de la lista de espera, escríbenos y te eliminaremos. En cualquiera de los dos casos, lo haremos a mano si nos lo pides.',
+        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera, escríbenos y te eliminaremos. En cualquiera de los dos casos, lo haremos a mano si nos lo pides.',
       analytics: {
         before:
           'En cuanto a la analítica, los eventos son anónimos; no tenemos forma de buscar «tus» eventos porque no sabemos quién eres. Si eso te molesta, simplemente rechaza el aviso de cookies o usa un bloqueador de contenido. No se rompe nada en el sitio. Puedes cambiar tu respuesta en cualquier momento con ',
@@ -675,7 +675,7 @@ export const es: Dict = {
       title: 'Cambios en este aviso',
       intro: {
         before:
-          'Actualizamos esta página sobre la marcha. Cada cambio, por pequeño que sea, tiene una entrada en el registro de abajo, empezando por el más reciente. Los últimos se muestran completos; los anteriores se conservan palabra por palabra en «Cambios anteriores». Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
+          'Actualizamos esta misma página. Cada cambio, por pequeño que sea, tiene una entrada en el registro de abajo, empezando por el más reciente. Los últimos se muestran completos; los anteriores se conservan palabra por palabra en «Cambios anteriores». Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
         after: '.',
       },
       second:
@@ -745,7 +745,7 @@ export const es: Dict = {
     successTitle: 'Ya estás en la lista',
     successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más.',
     sending: 'Enviando…',
-    notConfigured: 'Las altas aún no están configuradas. Vuelve pronto.',
+    notConfigured: 'Las inscripciones aún no están configuradas. Vuelve pronto.',
     error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',
   },
 
@@ -775,7 +775,7 @@ export const es: Dict = {
         'Finanzas conductuales',
         'Finanzas en varias monedas',
       ],
-      site: 'El dinero, entendido. Aprende finanzas personales, entiende tu propio dinero y planifica tu futuro, desde lo básico hasta unas finanzas repartidas entre varias monedas y países.',
+      site: 'El dinero, entendido. Aprende finanzas personales, entiende tu propio dinero y planifica tu futuro, desde lo básico hasta las finanzas que abarcan varias monedas y países.',
     },
     hero: {
       heading: 'Entiende tu dinero.',
@@ -806,7 +806,7 @@ export const es: Dict = {
     },
     lessons: {
       heading: 'Lecciones gratuitas, para siempre.',
-      body: 'Lecciones breves para cualquier hogar, en cualquier país, y, donde importan las normas locales, te dicen qué comprobar. Sin muro de pago y sin cuenta.',
+      body: 'Lecciones breves para cualquier hogar, en cualquier país; cuando importan las normas locales, te indican qué comprobar. Sin muro de pago y sin cuenta.',
       helperQuestion: '¿No sabes cuál te encaja?',
       helperLink: 'Dos preguntas te sugieren por dónde empezar',
       foot: 'Ver toda la ruta de aprendizaje',
@@ -817,7 +817,7 @@ export const es: Dict = {
       // Followed by the route's first lesson title, like doorContinue.
       start: 'Empieza',
       doorContinue: 'Continúa con ',
-      doorRead: 'Ruta leída. ',
+      doorRead: 'Has leído la ruta. ',
       doorPath: 'Sigue en la ruta de aprendizaje',
       inclusiveTitle: 'El plan estándar no encaja con mi vida.',
       inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
@@ -848,7 +848,7 @@ export const es: Dict = {
       label: 'Una decisión, comparada',
       text: 'El mismo punto de partida; solo cambia lo que se añade cada mes.',
       currencyNote:
-        'Los euros son solo la moneda que usa este ejemplo. Los dos caminos obtienen la misma rentabilidad porcentual, así que la diferencia entre ellos también es una proporción: en rupias o en dólares, las dos líneas dibujarían la misma forma; solo cambiaría el eje.',
+        'Los euros son solo la moneda que usa este ejemplo. Los dos caminos obtienen la misma rentabilidad porcentual, así que la diferencia entre ellos también es proporcional: en rupias o en dólares, las dos líneas dibujarían la misma forma; solo cambiaría el eje.',
       gapLead: 'Unos {gap} de diferencia al cabo de {years} años.',
       gapRest: 'La mayor parte es el dinero extra aportado; el resto es crecimiento.',
       fold: 'Cómo funciona este ejemplo',
@@ -881,7 +881,7 @@ export const es: Dict = {
         },
         {
           q: '¿Esto es asesoramiento financiero?',
-          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un profesional acreditado de las finanzas. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
         {
           q: '¿Qué pasa con los números que escribo en las herramientas?',

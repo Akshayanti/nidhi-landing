@@ -809,7 +809,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Calculadora de patrimonio neto: una o varias monedas | nidhi',
     description:
-      'Calculadora gratuita de patrimonio neto en una o varias monedas: 29 monedas, tipos del BCE al día y riesgo cambiario. En tu navegador, sin enviar nada.',
+      'Calculadora gratuita de patrimonio neto en 29 monedas, con tipos diarios del BCE y riesgo cambiario. Se calcula en tu navegador, sin que salgan tus datos.',
   },
   schema: {
     name: 'Calculadora de patrimonio neto de nidhi',
@@ -859,7 +859,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       intro:
         'Para cada moneda, restamos tus pasivos de tus activos y convertimos el resultado a tu moneda de referencia con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
       formula:
-        'Concentración % = (Neto en la moneda X × Tipo a la moneda de referencia) / Patrimonio neto total × 100',
+        'Concentración % = (Neto en la moneda X × Tipo de cambio a la moneda de referencia) / Patrimonio neto total × 100',
       items: [
         {
           strong: 'Posición neta',
@@ -867,7 +867,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
             ' por moneda = suma de los activos menos suma de los pasivos en esa moneda. Una posición neta negativa significa que en esa moneda debes más de lo que tienes.',
         },
         {
-          strong: 'Tipo a la moneda de referencia',
+          strong: 'Tipo de cambio a la moneda de referencia',
           rest:
             ' es el multiplicador que convierte una unidad de la moneda X en tu moneda de referencia. Procede del Banco Central Europeo a través de la API de Frankfurter y tu navegador lo obtiene directamente. Los tipos se actualizan cada día hábil. Los tipos de referencia del BCE son valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
         },
@@ -913,9 +913,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
             'Hay veintinueve monedas disponibles, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, de Europa central, de América Latina y del sudeste asiático. Los tipos de cambio proceden del BCE a través de Frankfurter; son tipos de referencia y pueden diferir de los que los bancos ofrecen a sus clientes particulares.',
         },
         {
-          q: '¿Qué diferencia hay entre las formas de compartir «Versión completa» y «Versión anónima»?',
+          q: '¿Qué diferencia hay entre las formas de compartir «Versión completa» y «Versión con datos ocultos»?',
           a:
-            'La forma completa incluye en la URL todos los nombres, valores, monedas y tipos de tus activos: quien tenga el enlace puede ver todo el desglose y comprobar las cuentas. La forma anónima incluye solo los porcentajes de concentración por moneda y los niveles de riesgo: ni cantidades ni nombres de activos. Las dos se copian en tu portapapeles como un único enlace, y tú eliges cuál enviar.',
+            'El modo completo incluye en la URL todos los nombres, valores, monedas y tipos de tus activos: quien tenga el enlace puede ver todo el desglose y comprobar las cuentas. El modo con datos ocultos incluye solo los porcentajes de concentración por moneda y las etiquetas de las bandas: ni cantidades ni nombres de activos. Ambos se copian en tu portapapeles como un único enlace, y tú eliges cuál enviar.',
         },
         {
           q: '¿De dónde salen los tipos de cambio?',
@@ -1090,7 +1090,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       labelModerate: 'Exposición moderada',
       labelLow: 'Exposición baja',
       disclaimer:
-        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia del BCE que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un asesor financiero con licencia.',
+        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia del BCE que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
     },
     rec: {
       noRate:
@@ -1110,11 +1110,11 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       elevatedShown:
         'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
       moderateHidden:
-        'Una parte moderada de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente una décima parte de lo que tienes en {code}.',
+        'Una parte moderada de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente una décima parte del porcentaje de tu patrimonio neto que está en {code}.',
       moderateShown:
         'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
       lowHidden:
-        'Una parte pequeña de tu patrimonio neto está en {code}. El tipo {code}/{currency} tiene un efecto limitado en tu patrimonio neto total.',
+        'Una parte pequeña de tu patrimonio neto está en {code}. El tipo de cambio {code}/{currency} tiene un efecto limitado en tu patrimonio neto total.',
       lowShown:
         'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
     },
@@ -1150,7 +1150,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       legend: 'Elige qué compartir:',
       fullName: 'Versión completa',
       fullDesc: 'Todos los detalles de los activos, sus valores y el patrimonio neto',
-      redactedName: 'Versión anónima',
+      redactedName: 'Versión con datos ocultos',
       redactedDesc: 'Solo el reparto por moneda en % y los niveles de riesgo. Sin cantidades ni nombres.',
       cancel: 'Cancelar',
       copy: 'Copiar enlace',

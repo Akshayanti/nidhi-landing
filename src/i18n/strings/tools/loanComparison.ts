@@ -1299,7 +1299,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
-              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa efectiva que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos (en inglés).',
+              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa efectiva que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
             },
             {
               q: '¿El APR incluye el capital extra que pienso pagar cada mes?',
@@ -1701,7 +1701,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Supuestos y advertencias',
-      body: 'Los cálculos suponen capitalización mensual y pagos en su fecha. El APR se muestra como tasa anual nominal (tasa mensual × 12) calculada sobre la tabla contractual (sin pagos extra voluntarios), e incorpora la comisión de apertura y los gastos iniciales al costo efectivo del préstamo; cada jurisdicción decide qué otros costos (seguros obligatorios, cuentas vinculadas, impuestos) deben incluirse en su cifra oficial de APR/TAE, así que súmalos al campo de la comisión si quieres que se reflejen. Las hipotecas residenciales canadienses capitalizan semestralmente por ley, y los productos brasileños y algunos británicos usan otras convenciones de capitalización; en esos productos, las cifras con capitalización mensual de esta calculadora se desviarán ligeramente. Los préstamos a tasa variable reales siguen un índice más un margen y pueden tener topes de tasa que esta calculadora no aplica; la tasa posterior que escribes es tu mejor estimación para una prueba de estrés. No se modelan los impuestos sobre la propiedad, las cuotas de comunidad o de mantenimiento del edificio, el seguro del hogar ni el tratamiento fiscal de los intereses del préstamo en tu jurisdicción. Es una comparación solo educativa; no es asesoramiento financiero. Para una comparación vinculante o asesoramiento personalizado, consulta a un intermediario hipotecario o a un asesor financiero con licencia.',
+      body: 'Los cálculos suponen capitalización mensual y pagos en su fecha. El APR se muestra como tasa anual nominal (tasa mensual × 12) calculada sobre la tabla contractual (sin pagos extra voluntarios), e incorpora la comisión de apertura y los gastos iniciales al costo efectivo del préstamo; cada jurisdicción decide qué otros costos (seguros obligatorios, cuentas vinculadas, impuestos) deben incluirse en su cifra oficial de APR/TAE, así que súmalos al campo de la comisión si quieres que se reflejen. Las hipotecas residenciales canadienses capitalizan semestralmente por ley, y los productos brasileños y algunos británicos usan otras convenciones de capitalización; en esos productos, las cifras con capitalización mensual de esta calculadora se desviarán ligeramente. Los préstamos a tasa variable reales siguen un índice más un margen y pueden tener topes de tasa que esta calculadora no aplica; la tasa posterior que escribes es tu mejor estimación para una prueba de estrés. No se modelan los impuestos sobre la propiedad, las cuotas de mantenimiento del edificio o de las zonas comunes, el seguro del hogar ni el tratamiento fiscal de los intereses del préstamo en tu jurisdicción. Es una comparación solo educativa; no es asesoramiento financiero. Para una comparación vinculante o asesoramiento personalizado, consulta a un intermediario hipotecario o a un asesor financiero con licencia.',
     },
     months: {
       na: 'n. d.',
@@ -1726,7 +1726,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
         hybridMode:
-          'Los préstamos de tasa híbrida (ARM) necesitan un plazo: en «Calcular», elige «Cuota mensual» y la cuota se calculará sola.',
+          'Los préstamos de tasa híbrida deben introducirse en modo de plazo (la cuota mensual se calcula).',
         refiOriginal: 'El préstamo original no es válido; no se puede calcular la refinanciación.',
         refiMonth: 'El mes de refinanciación debe ser al menos 1.',
         refiMonthEnd: 'El mes de refinanciación debe ser anterior al final del préstamo original.',
