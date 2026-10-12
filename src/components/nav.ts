@@ -10,6 +10,7 @@
  */
 import { localizedPath, type Dict, type Locale } from '../i18n';
 import { MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
+import { INFLATION_URL } from '../utils/inflation/history.ts';
 
 /**
  * Every destination the header links to. Derived from the catalog, so a link
@@ -86,6 +87,7 @@ export function navGroups({ showMonteCarlo }: { showMonteCarlo: boolean }): NavG
         ...(showMonteCarlo
           ? [{ key: 'monteCarloSimulator' as const, href: MONTE_CARLO_URL, attr: 'tool-monte-carlo-simulator' }]
           : []),
+        { key: 'inflationCalculator', href: INFLATION_URL, attr: 'tool-inflation-calculator' },
         { key: 'allTools', href: '/free/', attr: 'tool-all', dividerBefore: true },
       ],
     },

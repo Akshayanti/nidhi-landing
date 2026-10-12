@@ -143,6 +143,20 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 13, 2026',
+    iso: '2026-10-13',
+    material: true,
+    summary: 'A new free tool, an inflation calculator. It sends only the choices you make (which question, currency and country), never the numbers you type, and loads country inflation history from nidhi.today rather than from the World Bank.',
+    details: [
+      'New free tool: an inflation calculator, at /free/inflation-calculator/ (and /hi/free/... and /es/free/...). It answers four questions (what an amount will buy, what a price will cost, what a past amount is worth today, and whether a raise or a savings return keeps up with inflation) entirely in your browser. The amounts, rates and years you type are not sent to us or anyone else, and it stores nothing in your browser: no new localStorage, sessionStorage or cookie key.',
+      'New anonymous interaction events on the inflation calculator, sent the same way as every other tool event: free_inflation_mode_changed (which question tab you pick: buy, cost, past or keep), free_inflation_currency_changed (the currency code you pick), free_inflation_country_changed (the three-letter code of the country whose inflation history you pick, or none; a choice from a list, like the currency, never anything you type), free_inflation_average_used (you used a country\'s recent average as the rate; the average itself is not sent), free_inflation_share_copied, free_inflation_reset, and free_inflation_shared_view_opened with the link\'s utm_source when you arrive from a shared link (not again when you only switch language). No event carries an amount, a rate, a number of years, a starting year or the encoded state.',
+      'Country inflation history: the calculator shows yearly consumer price inflation from the World Bank (indicator FP.CPI.TOTL.ZG, CC BY 4.0). nidhi keeps a copy in its own code, refreshed by a monthly job that opens a pull request for review, and serves it from nidhi.today. When you pick a country, your browser fetches /data/inflation-history.json from nidhi.today, the same site and the same host as the page, and never contacts the World Bank. The request carries nothing about you or your choice: it is the same file for every country. On the Hindi page, India\'s history is built into the page, so nothing is fetched until you pick another country. This adds no third party.',
+      'Share links for the calculator follow the rule every free tool keeps: nothing goes into the page address while you use it, a copied link carries your values after the # sign (a part of the address browsers never send to a server), and the page moves them out of the address bar into the page itself before analytics start. The analytics backstop that strips everything but campaign parameters from any free-tool address covers this tool in every language without change.',
+      'Click labels, recorded only if you accept the cookie banner: the calculator\'s question tabs (free-inflation-tab-buy, -cost, -past, -keep), free-inflation-share, free-inflation-reset, free-inflation-use-average, the lesson link free-inflation-lesson-link, and its related-reading cards (related-purchasing-power, related-saving-vs-investing, related-why-your-euro-buys-more). The new tool also gets a card on the free tools page (free-cta-inflation-calculator), a menu entry (nav-tool-inflation-calculator, nav-menu-tool-inflation-calculator) and a footer link (footer-inflation-calculator). Like every clickable element, they are told apart by these labels, never by their text.',
+      'The "What we collect" section of this notice now lists the inflation calculator\'s events, in every language.',
+    ],
+  },
+  {
     date: 'Oct 12, 2026',
     iso: '2026-10-12',
     material: true,
@@ -559,6 +573,9 @@ const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { 
             {collect.monteCarlo.before}<strong>{collect.monteCarlo.strong}</strong>
           </li>
         )}
+        <li>
+          {collect.inflation.before}<strong>{collect.inflation.strong}</strong>
+        </li>
         <li>
           {collect.campaigns.before}<code>{KEY.utmSource}</code>{collect.campaigns.middle}<code>{KEY.utmMedium}</code>{collect.campaigns.after}
         </li>

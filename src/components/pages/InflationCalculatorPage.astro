@@ -1,0 +1,456 @@
+---
+/**
+ * The inflation calculator page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/free/inflation-calculator.astro`, the other
+ * languages from `src/pages/[locale]/free/inflation-calculator.astro`; both
+ * render this one component, so the editions cannot drift apart in markup or
+ * styling.
+ *
+ * The copy is in the catalog, under `tools.inflation.page`, and what the tool
+ * says under `tools.inflation.island`, which is handed to the island as a
+ * prop: one locale's slice, never `dict(locale)`, which would ship every
+ * language and every tool to the browser.
+ *
+ * The country history is the World Bank's (src/data/inflation/worldbank.json,
+ * refreshed monthly by .github/workflows/inflation-data.yml). Only what the
+ * select needs is passed to the island: each country's code, its name written
+ * here with `Intl.DisplayNames` in the page's language, and its currency when
+ * the tools have it. The yearly figures stay out of the page, except the one
+ * country it starts with (India on the Hindi page), so a page that shows no
+ * history loads none. The rest is fetched from this site's own origin
+ * (`/data/inflation-history.json`) when a reader picks a country; the
+ * reader's browser never contacts the World Bank.
+ *
+ * What stays here rather than in the catalog is what no translator would
+ * touch: the `data-attr` labels, which the privacy notice's changelog names;
+ * the addresses, which `localizedPath` prefixes; the lesson slugs; and the
+ * English title of the lesson the notes link to, since lessons are English
+ * in every edition.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InflationCalculator, { type CountryOption } from '../InflationCalculator.tsx';
+import ToolStateGuard from '../ToolStateGuard.astro';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { getCollection } from 'astro:content';
+import data from '../../data/inflation/worldbank.json';
+import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
+import { HISTORY_URL, INFLATION_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
+import { MAX_RATE, MIN_RATE } from '../../utils/inflation/math.ts';
+import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/inflation/url.ts';
+import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
+import { CURRENCIES } from '../../utils/loan/math.ts';
+import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
+import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+/**
+ * The country whose history the page starts with: India on the Hindi page,
+ * none elsewhere. A page's language is the only thing this reads; the tool
+ * never detects a reader's location.
+ */
+const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '' };
+
+const { locale } = Astro.props;
+const { inflation } = dict(locale).tools;
+const strings = inflation.page;
+const island = inflation.island;
+const t = format;
+const htmlLang = LOCALE_META[locale].htmlLang;
+const file = data as WorldBankFile;
+
+// The select's countries, named in the page's language from their ISO codes.
+// The euro area has no ISO code, so its name is the catalog's.
+const toolCurrencies = new Set(CURRENCIES.map((c) => c.code));
+const regionNames = new Intl.DisplayNames([htmlLang], { type: 'region' });
+const countries: CountryOption[] = Object.entries(file.countries)
+  .map(([code, entry]) => {
+    const named = code === 'EMU' ? island.history.euroArea : regionNames.of(entry.iso2);
+    const currency = COUNTRY_CURRENCY[code];
+    return {
+      code,
+      name: named && named !== entry.iso2 ? named : code,
+      currency: currency && toolCurrencies.has(currency) ? currency : null,
+    };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name, htmlLang));
+
+const defaultCountry = DEFAULT_COUNTRY[locale];
+const defaultSeries = defaultCountry ? toCompactSeries(file.countries[defaultCountry]?.years ?? {}) : null;
+const initialHistory = defaultCountry && defaultSeries ? { code: defaultCountry, series: defaultSeries } : null;
+
+const proseNumber = (n: number) => n.toLocaleString(PROSE_NUMBER_LOCALE[locale]);
+const updated = new Intl.DateTimeFormat(DATE_LOCALE[locale], { dateStyle: 'long', timeZone: 'UTC' }).format(
+  new Date(`${file.lastUpdated}T00:00:00Z`),
+);
+
+// Everything the page's copy quotes, in one place.
+const figures = {
+  countries: proseNumber(Object.keys(file.countries).filter((c) => c !== 'EMU').length),
+  minRate: proseNumber(MIN_RATE),
+  maxRate: proseNumber(MAX_RATE),
+  updated,
+  copyLink: island.actions.copy,
+};
+
+const siteUrl = 'https://nidhi.today';
+const canonicalUrl = new URL(localizedPath(locale, INFLATION_URL), siteUrl).href;
+const faqs = strings.faq.items.map((f) => ({ q: t(f.q, figures), a: t(f.a, figures) }));
+
+// The lesson the notes link to. Its title is English in every edition.
+const LESSON = { slug: 'purchasing-power', title: "Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow" };
+
+// Related reading, in order of relevance; an unpublished lesson is skipped.
+const RELATED_CANDIDATES: { slug: keyof typeof strings.related.cards; dataAttr: string }[] = [
+  { slug: 'purchasing-power', dataAttr: 'related-purchasing-power' },
+  { slug: 'saving-vs-investing', dataAttr: 'related-saving-vs-investing' },
+  { slug: 'why-your-euro-buys-more-in-some-countries', dataAttr: 'related-why-your-euro-buys-more' },
+];
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const publishedSlugs = new Set(
+  (await getCollection('blog')).filter((p) => isDev || p.data.pubDate <= now).map((p) => p.data.slug),
+);
+const lessonPublished = publishedSlugs.has(LESSON.slug);
+const related = RELATED_CANDIDATES.filter((c) => publishedSlugs.has(c.slug)).map((c) => ({
+  ...c,
+  ...strings.related.cards[c.slug],
+  url: lessonPath(c.slug),
+}));
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  inLanguage: htmlLang,
+  name: inflation.schema.name,
+  alternateName: inflation.schema.alternateNames,
+  url: canonicalUrl,
+  description: inflation.meta.description,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: inflation.schema.operatingSystem,
+  browserRequirements: inflation.schema.browserRequirements,
+  isAccessibleForFree: true,
+  featureList: inflation.schema.featureList.map((f) => t(f, figures)),
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'nidhi', url: 'https://nidhi.today/' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: strings.breadcrumb.home, item: new URL(localizedPath(locale, '/'), siteUrl).href },
+    { '@type': 'ListItem', position: 2, name: strings.breadcrumb.freeTools, item: new URL(localizedPath(locale, '/free/'), siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: strings.breadcrumb.this, item: canonicalUrl },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: htmlLang,
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={inflation.meta.title}
+  description={inflation.meta.description}
+  jsonLd={[webAppSchema, breadcrumbSchema, faqSchema]}
+  toolStateGlobal={SHARED_STATE_GLOBAL}
+>
+  <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
+  <section class="ifcp-page">
+    <nav class="ifcp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
+      <ol>
+        <li><a href={localizedPath(locale, '/')}>{strings.breadcrumb.home}</a></li>
+        <li><a href={localizedPath(locale, '/free/')}>{strings.breadcrumb.freeTools}</a></li>
+        <li aria-current="page">{strings.breadcrumb.this}</li>
+      </ol>
+    </nav>
+
+    <header class="ifcp-header">
+      <p class="ifcp-eyebrow">{strings.eyebrow}</p>
+      <h1 class="ifcp-title">{strings.title}</h1>
+      <p class="ifcp-lead">
+        {strings.lead.before}<span class="ifcp-wideOnly">{strings.lead.wide}</span>{strings.lead.after}
+      </p>
+    </header>
+
+    <InflationCalculator
+      client:load
+      strings={island}
+      defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
+      defaultCountry={defaultCountry}
+      countries={countries}
+      initialHistory={initialHistory}
+      historyUrl={HISTORY_URL}
+      numberLocale={PROSE_NUMBER_LOCALE[locale]}
+    />
+
+    <aside class="ifcp-panel ifcp-notes" aria-labelledby="ifcp-notes-h">
+      <h2 id="ifcp-notes-h" class="ifcp-sectionTitle">{strings.notes.heading}</h2>
+      <ul>
+        {Object.values(strings.notes.items).map((item) => (
+          <li><strong>{item.lead}</strong>{item.rest}</li>
+        ))}
+      </ul>
+      {lessonPublished && (
+        <p class="ifcp-lesson">
+          {strings.notes.lesson.before}<a href={lessonPath(LESSON.slug)} hreflang="en" data-attr="free-inflation-lesson-link">{LESSON.title}</a>{strings.notes.lesson.after}
+        </p>
+      )}
+    </aside>
+
+    <section class="ifcp-panel" aria-labelledby="ifcp-source-h">
+      <h2 id="ifcp-source-h" class="ifcp-sectionTitle">{strings.source.heading}</h2>
+      <p class="ifcp-source">
+        {strings.source.before}<a href="https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG" target="_blank" rel="noopener noreferrer">{strings.source.link}</a>{t(strings.source.after, figures)}
+      </p>
+    </section>
+
+    <details class="ifcp-panel ifcp-faq">
+      <summary class="ifcp-sectionTitle">{strings.faq.heading}</summary>
+      {faqs.map((f) => (
+        <details class="ifcp-faqItem">
+          <summary class="ifcp-faqQ">{f.q}</summary>
+          <p class="ifcp-faqA">{f.a}</p>
+        </details>
+      ))}
+    </details>
+
+    {related.length > 0 && (
+      <aside class="ifcp-panel" aria-labelledby="ifcp-related-h">
+        <h2 id="ifcp-related-h" class="ifcp-sectionTitle">{strings.related.heading}</h2>
+        <LessonsInEnglish locale={locale} />
+        <div class="ifcp-relatedGrid">
+          {related.map((post) => (
+            <a href={post.url} hreflang="en" class="ifcp-relatedCard" data-attr={post.dataAttr}>
+              <span class="ifcp-relatedKicker">{post.kicker}</span>
+              <span class="ifcp-relatedTitle">{post.title}</span>
+              <span class="ifcp-relatedDesc">{post.desc}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .ifcp-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+  .ifcp-breadcrumbs {
+    margin-bottom: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .ifcp-breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .ifcp-breadcrumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+  }
+  .ifcp-breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .ifcp-breadcrumbs a:hover,
+  .ifcp-breadcrumbs a:focus-visible {
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
+  .ifcp-breadcrumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+  .ifcp-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+  .ifcp-eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-teal);
+    margin: 0 0 var(--space-2);
+  }
+  .ifcp-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+    color: var(--color-deep-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
+  }
+  .ifcp-lead {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 62ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+  .ifcp-panel {
+    margin-top: var(--space-8);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+  .ifcp-sectionTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+  }
+  .ifcp-panel ul {
+    margin: 0;
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .ifcp-panel li {
+    margin-bottom: var(--space-2);
+  }
+  .ifcp-panel li strong {
+    color: var(--color-text-primary);
+  }
+  .ifcp-notes {
+    border-left: 4px solid var(--color-teal);
+  }
+  .ifcp-lesson {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .ifcp-lesson a {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+  }
+  .ifcp-source {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .ifcp-source a {
+    color: var(--color-deep-blue);
+  }
+  .ifcp-faq > summary {
+    cursor: pointer;
+    margin: 0;
+  }
+  .ifcp-faqItem {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    margin-top: var(--space-2);
+  }
+  .ifcp-faqQ {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .ifcp-faqA {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .ifcp-relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .ifcp-relatedCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+  }
+  .ifcp-relatedCard:hover,
+  .ifcp-relatedCard:focus-visible {
+    border-color: var(--color-deep-blue);
+  }
+  .ifcp-relatedKicker {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-teal);
+  }
+  .ifcp-relatedTitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-deep-blue);
+  }
+  .ifcp-relatedDesc {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  @media (max-width: 800px) {
+    .ifcp-relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .ifcp-wideOnly {
+      display: none;
+    }
+    .ifcp-header {
+      text-align: left;
+      margin-bottom: var(--space-5);
+    }
+    .ifcp-page {
+      padding: var(--space-4) var(--space-3) var(--space-8);
+    }
+    .ifcp-panel {
+      margin-top: var(--space-5);
+      padding: var(--space-4) var(--space-3);
+    }
+    .ifcp-sectionTitle {
+      font-size: 1.15rem;
+    }
+    .ifcp-relatedDesc {
+      display: none;
+    }
+    .ifcp-relatedCard {
+      padding: var(--space-3);
+    }
+  }
+</style>

@@ -80,6 +80,10 @@ jobs:
             'src/components/Analytics.astro'
             'src/utils/shared/*'
             'src/utils/monte-carlo/*'
+            'src/utils/inflation/*'
+            # The inflation calculator's World Bank data, refreshed monthly by
+            # inflation-data.yml in a pull request that should run the suite.
+            'src/data/*'
             # Global type declarations the type check reads.
             'src/types/*'
             # Loan comparator utilities (math, URL state, validated inputs)

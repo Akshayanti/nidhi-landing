@@ -202,6 +202,7 @@ listed is not re-decided per page.
 | net worth calculator | calculadora de patrimonio neto | |
 | loan comparison | comparador de préstamos | |
 | Monte Carlo simulator | simulador Monte Carlo | |
+| inflation calculator | calculadora de inflación | |
 | waitlist | lista de espera | |
 | newsletter | boletín | |
 | share link | enlace para compartir | |
@@ -295,3 +296,14 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | input prompt (Enter...) | Escribe... | *Escribe la cantidad*, *Escribe valores arriba*; not *Introduce*. |
 | Add (button) | Añadir | Infinitive on buttons: *Añadir entidad*, *+ Añadir activo*. |
 | simulation, path | simulación, trayectoria | |
+| inflation calculator | calculadora de inflación | |
+| raise (in pay) | subida salarial | *Aumento de sueldo* is fine in prose; the field says *subida*. |
+| real rate | tasa real | Follows *rentabilidad real*. |
+| geometric average | media geométrica | |
+| percentage point | punto porcentual | *Punto* alone where the sentence already says porcentual. |
+| scenario, forecast | escenario, previsión | Not *pronóstico*, which leans to weather and sport. |
+| basket (CPI) | conjunto de bienes y servicios | *Cesta* (Spain) and *canasta* (Latin America) each lean to one side. |
+| hyperinflation | hiperinflación | |
+| about (an approximate amount) | unos | *Unos 7440 €*; *más de* and *menos de* for the capped forms. |
+| the four questions (tabs) | ¿Qué comprará?, ¿Cuánto costará?, Del pasado a hoy, ¿Sigue el ritmo? | Quoted with «» in the FAQ and the privacy notice. |
+| euro area | zona del euro | |

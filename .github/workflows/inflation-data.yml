@@ -1,0 +1,76 @@
+name: Inflation data refresh
+
+# Refreshes the inflation calculator's country history from the World Bank
+# (indicator FP.CPI.TOTL.ZG) once a month, and opens a pull request when the
+# data changed. Never pushes to main: the new figures are reviewed and merged
+# like any other change, and the site serves them from its own origin.
+#
+# scripts/fetch-inflation.mjs exits non-zero on any unexpected response and
+# never writes a partial file, so a changed API fails this run loudly instead
+# of opening a pull request with a thinner dataset. When the World Bank has
+# nothing new, the script leaves the file untouched and no pull request opens.
+#
+# Note: a pull request opened with GITHUB_TOKEN does not trigger other
+# workflows, so PR Checks do not start on their own. Run them from the pull
+# request (close and reopen it, or push an empty commit) before merging.
+
+on:
+  schedule:
+    # 05:17 UTC on the 3rd of every month, away from the deploy and
+    # newsletter crons.
+    - cron: '17 5 3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: inflation-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      - name: Fetch World Bank inflation data
+        run: node scripts/fetch-inflation.mjs
+
+      - name: Open a pull request if the data changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          FILE=src/data/inflation/worldbank.json
+          if git diff --quiet -- "$FILE"; then
+            echo "No change in $FILE."
+            exit 0
+          fi
+          DATE=$(date -u +%Y-%m-%d)
+          BRANCH="data/inflation-$DATE"
+          UPDATED=$(node -e "console.log(require('./$FILE').lastUpdated)")
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add "$FILE"
+          git commit -m "chore(data): refresh World Bank inflation history ($DATE)"
+          git push --force origin "$BRANCH"
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+            echo "A pull request for $BRANCH is already open; it now has the new commit."
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Inflation calculator: World Bank data, $DATE" \
+            --body "Monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0). The World Bank's own update date is $UPDATED.
+
+          Opened by .github/workflows/inflation-data.yml. Review the diff for implausible values before merging; PR Checks need to be started by hand (see the note at the top of the workflow)."

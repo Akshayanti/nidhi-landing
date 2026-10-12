@@ -18,6 +18,7 @@ The site is published in English (the default, at the root), Hindi at [/hi/](htt
 ## Free Tools
 - [Net Worth Calculator](https://nidhi.today/free/multi-currency-net-worth/): Add up what you own and owe to see your net worth, in one currency or several, with real-time FX rates. Privacy-first - data stays in your browser.
 - [Loan Comparison Calculator](https://nidhi.today/free/loan-comparison/): Compare two loan offers side-by-side including fees, APR, amortisation, and total cost of borrowing.
+- [Inflation Calculator](https://nidhi.today/free/inflation-calculator/): What an amount buys after years of inflation, what a price may cost later, what a past amount is worth today (with World Bank inflation history for most countries), and whether a raise or return keeps up. Each answer is also shown one percentage point lower and higher. Runs in your browser.
 
 ## Learn: Discovery Series (Fundamentals)
 - [What Is Net Worth and Why Does It Matter?](https://nidhi.today/blog/what-is-net-worth/): Net worth as the single number that captures your full financial picture - more important than salary alone.

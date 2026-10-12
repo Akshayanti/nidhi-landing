@@ -47,6 +47,7 @@ export const es: Dict = {
       multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
+      inflationCalculator: 'Calculadora de inflación',
       allTools: 'Todas las herramientas gratuitas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creemos',
@@ -61,6 +62,7 @@ export const es: Dict = {
       multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
+      inflationCalculator: 'Calculadora de inflación',
       allTools: 'Ver todas las herramientas gratuitas',
     },
   },
@@ -80,6 +82,7 @@ export const es: Dict = {
       multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
+      inflationCalculator: 'Calculadora de inflación',
       allTools: 'Ver todas',
       home: 'Inicio',
       about: 'Sobre nidhi',
@@ -363,9 +366,9 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras gratuitas: patrimonio neto en una o varias monedas, préstamos y simulador Monte Carlo de jubilación. Sin registro ni rastreo, en tu navegador.',
+        'Calculadoras gratuitas: patrimonio neto, préstamos, inflación y simulador Monte Carlo de jubilación. Sin registro ni rastreo, todo en tu navegador.',
       descriptionWithoutSimulator:
-        'Calculadoras gratuitas de patrimonio neto (en una o varias monedas) y de préstamos. Sin registro ni rastreo; todos los cálculos se hacen en tu navegador.',
+        'Calculadoras gratuitas de patrimonio neto, préstamos e inflación. Sin registro ni rastreo; todos los cálculos se hacen en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
@@ -398,6 +401,12 @@ export const es: Dict = {
         title: 'Simulador Monte Carlo',
         desc: 'Proyecta tus ahorros miles de veces con rentabilidades tomadas del historial a largo plazo de los mercados mundiales. Mira un resultado bajo, uno mediano y uno alto, y con qué frecuencia el dinero dura una vez que vives de él.',
         itemName: 'Simulador Monte Carlo para la jubilación',
+      },
+      inflation: {
+        kicker: 'Los precios con el tiempo',
+        title: 'Calculadora de inflación',
+        desc: 'Mira qué compra una cantidad tras años de inflación, cuánto podría costar algo más adelante y si una subida salarial sigue el ritmo, con la historia anual de casi todos los países, del Banco Mundial.',
+        itemName: 'Calculadora de inflación',
       },
     },
     how: {
@@ -492,6 +501,11 @@ export const es: Dict = {
         before:
           'Eventos anónimos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
         strong: 'Las cantidades, los años, las comisiones y la combinación de activos que introduces nunca se envían.',
+      },
+      inflation: {
+        before:
+          'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («¿Qué comprará?», «¿Cuánto costará?», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+        strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
       },
       campaigns: {
         before: 'Parámetros de campaña (',
