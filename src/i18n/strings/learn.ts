@@ -874,8 +874,8 @@ export const learnEs: typeof learnEn = {
       },
       'optimizing': {
         name: 'Optimización',
-        title: 'Serie Optimización: proyecciones, comisiones e impuestos | nidhi',
-        description: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Guías para afinar un plan que ya funciona.',
+        title: 'Optimización: proyecciones, comisiones e impuestos | nidhi',
+        description: 'Cuarto nivel de la ruta de nidhi: proyecciones, efectivo, refinanciación, comisiones y eficiencia fiscal, para afinar un plan que ya funciona.',
         card: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Guías para afinar un plan que ya funciona.',
       },
       'inclusive-finances': {
@@ -887,19 +887,19 @@ export const learnEs: typeof learnEn = {
       'relationships': {
         name: 'Relaciones',
         title: 'Dinero y relaciones: parejas, familias, hogares | nidhi',
-        description: 'Cómo pueden planificar el dinero las parejas, las familias reconstituidas, la familia elegida y los hogares compartidos cuando la ley y los supuestos habituales no se ajustan a su forma de vivir.',
+        description: 'Cómo planifican el dinero parejas, familias reconstituidas, familia elegida y hogares compartidos cuando la ley no encaja con su forma de vivir.',
         card: 'Cómo pueden planificar el dinero las parejas, las familias reconstituidas, la familia elegida y los hogares compartidos cuando la ley y los supuestos habituales no se ajustan a su forma de vivir.',
       },
       'disability': {
         name: 'Discapacidad',
         title: 'Planificación financiera con una discapacidad | nidhi',
-        description: 'Ahorrar y planificar teniendo en cuenta las ayudas sujetas a nivel de ingresos y patrimonio, los costos de los cuidados y unos ingresos que quizá no sigan una carrera profesional estándar. Marcos de referencia, no asesoramiento legal específico de un país.',
+        description: 'Ahorrar y planificar con ayudas según ingresos y patrimonio, costos de cuidados e ingresos fuera de una carrera estándar. Marcos, no asesoramiento legal.',
         card: 'Ahorrar y planificar teniendo en cuenta las ayudas sujetas a nivel de ingresos y patrimonio, los costos de los cuidados y unos ingresos que quizá no sigan una carrera profesional estándar. Marcos de referencia, no asesoramiento legal específico de un país.',
       },
       'immigration': {
         name: 'Inmigración',
         title: 'Dinero entre fronteras: inmigrantes y expatriados | nidhi',
-        description: 'Historial crediticio, banca, pensiones y lo que un país no reconoce de otro cuando tu hogar cruza fronteras. Marcos de planificación para inmigrantes y familias entre países.',
+        description: 'Historial crediticio, banca, pensiones y reconocimientos que se pierden al cruzar fronteras. Marcos para inmigrantes y familias entre países.',
         card: 'Historial crediticio, banca, pensiones y lo que un país no reconoce de otro cuando tu hogar cruza fronteras. Marcos de planificación para inmigrantes y familias entre países.',
       },
       'fundamentals': {
