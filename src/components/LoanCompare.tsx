@@ -14,14 +14,15 @@ import {
   type LoanResult,
 } from '../utils/loan/math.ts';
 import {
-  DEFAULT_GLOBAL_STATE,
   DEFAULT_VENDORS,
   MAX_VENDORS,
   MIN_VENDORS,
   VENDOR_LABELS,
   decodeFromQueryString,
+  defaultGlobalState,
   encodeToQueryString,
   makeDefaultVendor,
+  publishableState,
   SHARED_STATE_GLOBAL,
   type AnalysisTab,
   type GlobalState,
@@ -749,9 +750,15 @@ function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
 
 // ---- Main component --------------------------------------------------------
 
-export default function LoanCompare({ strings }: { strings: Strings }) {
+/**
+ * `defaultCurrency` is the page's starting currency (TOOL_DEFAULT_CURRENCY in
+ * src/utils/shared/toolState.ts, chosen by the page component for its
+ * language). It applies only when no shared state arrived; a shared link's
+ * state decodes the same on every page.
+ */
+export default function LoanCompare({ strings, defaultCurrency }: { strings: Strings; defaultCurrency: string }) {
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
-  const [globalState, setGlobalState] = useState<GlobalState>(DEFAULT_GLOBAL_STATE);
+  const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
@@ -784,6 +791,9 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
     const shared = typeof raw === 'string' ? raw : '';
     const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(shared);
     setVendors(decoded);
+    // No shared state: start in this page's currency. A shared state keeps
+    // the codec's reading (no `c` means EUR), so links mean the same anywhere.
+    if (!shared) decodedGlobal.currency = defaultCurrency;
     // Validate the currency we got back; an unknown code falls back to
     // the default rather than putting the dropdown into a broken state.
     if (!CURRENCIES.some((c) => c.code === decodedGlobal.currency)) {
@@ -816,8 +826,10 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
   // Never the address: nothing here writes to it.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, encodeToQueryString(vendors, globalState));
-  }, [hydrated, vendors, globalState]);
+    // Untouched publishes '' so the other language opens with its own
+    // starting currency; anything changed carries as encoded.
+    publishToolState(SHARED_STATE_GLOBAL, publishableState(vendors, globalState, defaultCurrency));
+  }, [hydrated, vendors, globalState, defaultCurrency]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -1000,7 +1012,7 @@ export default function LoanCompare({ strings }: { strings: Strings }) {
             className="lc-resetBtn"
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
-              setGlobalState(DEFAULT_GLOBAL_STATE);
+              setGlobalState(defaultGlobalState(defaultCurrency));
               setActiveVendor(0);
               track('free_loan_comparison_reset');
             }}

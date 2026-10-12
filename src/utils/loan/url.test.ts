@@ -21,10 +21,13 @@ import {
   VENDOR_LABELS,
   VENDOR_TEMPLATES,
   decodeFromQueryString,
+  defaultGlobalState,
   encodeLumpSums,
   encodeToQueryString,
+  isPristineState,
   makeDefaultVendor,
   parseLumpSums,
+  publishableState,
   type GlobalState,
   type VendorInput,
 } from './url.ts';
@@ -661,5 +664,47 @@ describe('URL length (regression: keep share links chat-friendly)', () => {
     ];
     const qs = encodeToQueryString(vendors, withGlobal({ currency: 'GBP' }));
     assert.ok(qs.length < 200, `expected <200 chars, got ${qs.length}: ${qs}`);
+  });
+});
+
+describe('page starting currency and the language switch', () => {
+  const fresh = () => DEFAULT_VENDORS.map((v) => ({ ...v }));
+
+  it('keeps EUR as the codec baseline: a link without c decodes as EUR', () => {
+    assert.equal(decodeFromQueryString('h=120').global.currency, 'EUR');
+    assert.equal(decodeFromQueryString('').global.currency, 'EUR');
+  });
+
+  it('encodes c=INR for a state in rupees, on any page', () => {
+    assert.match(encodeToQueryString(fresh(), defaultGlobalState('INR')), /(^|&)c=INR(&|$)/);
+    assert.doesNotMatch(encodeToQueryString(fresh(), defaultGlobalState('EUR')), /(^|&)c=/);
+  });
+
+  it('treats the untouched comparison in the page currency as pristine', () => {
+    assert.equal(isPristineState(fresh(), defaultGlobalState('EUR'), 'EUR'), true);
+    assert.equal(isPristineState(fresh(), defaultGlobalState('INR'), 'INR'), true);
+  });
+
+  it('treats any change, or a currency other than the page one, as not pristine', () => {
+    assert.equal(isPristineState(fresh(), defaultGlobalState('EUR'), 'INR'), false);
+    assert.equal(isPristineState(fresh(), defaultGlobalState('INR'), 'EUR'), false);
+    const typed = fresh();
+    typed[0] = { ...typed[0], principal: '123456' };
+    assert.equal(isPristineState(typed, defaultGlobalState('INR'), 'INR'), false);
+    assert.equal(isPristineState(fresh(), { ...defaultGlobalState('INR'), horizonMonths: '120' }, 'INR'), false);
+  });
+
+  it('publishes nothing while pristine and the share encoding once changed', () => {
+    assert.equal(publishableState(fresh(), defaultGlobalState('INR'), 'INR'), '');
+    // The reader on the Hindi page picked euros: carried as the codec has it,
+    // with no c, which reads as EUR on the other side.
+    const eur = publishableState(fresh(), defaultGlobalState('EUR'), 'INR');
+    assert.notEqual(eur, '');
+    assert.equal(decodeFromQueryString(eur).global.currency, 'EUR');
+    const typed = fresh();
+    typed[0] = { ...typed[0], principal: '123456' };
+    const inr = publishableState(typed, defaultGlobalState('INR'), 'INR');
+    assert.equal(inr, encodeToQueryString(typed, defaultGlobalState('INR')));
+    assert.equal(decodeFromQueryString(inr).global.currency, 'INR');
   });
 });

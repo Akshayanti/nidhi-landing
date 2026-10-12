@@ -70,6 +70,29 @@ export function encodeState(state: ToolState): string {
   return serializeParams(p);
 }
 
+/** The untouched plan for a page whose tools start in `currency`. */
+export function defaultState(currency: string = DEFAULTS.currency): ToolState {
+  return { ...DEFAULTS, currency };
+}
+
+/** Whether the plan is still the page's untouched starting plan, in its own starting currency. */
+export function isPristineState(state: ToolState, pageCurrency: string): boolean {
+  return state.currency === pageCurrency && encodeState({ ...state, currency: DEFAULTS.currency }) === '';
+}
+
+/**
+ * What the tool publishes for the language switch: nothing while it is
+ * untouched, so the other page opens with its own starting currency, and the
+ * encoded plan (the share-link encoding, unchanged) once anything changed.
+ */
+export function publishableState(state: ToolState, pageCurrency: string): string {
+  if (isPristineState(state, pageCurrency)) return '';
+  // The defaults in another page's starting currency (a reader on the Hindi
+  // page who picked euros) encode as ''; name the currency so the other page
+  // does not read '' as "use your own".
+  return encodeState(state) || `c=${state.currency}`;
+}
+
 /** Decodes a query string; returns null when it carries no tool state. */
 export function decodeState(search: string): ToolState | null {
   const p = new URLSearchParams(/^[?#]/.test(search) ? search.slice(1) : search);

@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DEFAULTS, decodeState, encodeState } from './url.ts';
+import { DEFAULTS, decodeState, defaultState, encodeState, isPristineState, publishableState } from './url.ts';
 
 describe('encodeState', () => {
   it('encodes the defaults as an empty string', () => {
@@ -78,5 +78,39 @@ describe('decodeState', () => {
 
   it('accepts a lower-case currency code', () => {
     assert.equal(decodeState('c=usd')?.currency, 'USD');
+  });
+});
+
+describe('page starting currency and the language switch', () => {
+  it('keeps EUR as the codec baseline: a link without c decodes as EUR', () => {
+    assert.equal(DEFAULTS.currency, 'EUR');
+    assert.equal(decodeState('s=1000')?.currency, 'EUR');
+  });
+
+  it('encodes c=INR for a plan in rupees', () => {
+    assert.equal(encodeState(defaultState('INR')), 'c=INR');
+    assert.equal(decodeState(encodeState(defaultState('INR')))?.currency, 'INR');
+  });
+
+  it('treats the untouched plan in the page currency as pristine', () => {
+    assert.equal(isPristineState(defaultState('EUR'), 'EUR'), true);
+    assert.equal(isPristineState(defaultState('INR'), 'INR'), true);
+  });
+
+  it('treats any change, or a currency other than the page one, as not pristine', () => {
+    assert.equal(isPristineState(defaultState('EUR'), 'INR'), false);
+    assert.equal(isPristineState(defaultState('INR'), 'EUR'), false);
+    assert.equal(isPristineState({ ...defaultState('INR'), start: 2_500_000 }, 'INR'), false);
+    assert.equal(isPristineState({ ...defaultState('INR'), returns: 'cautious' }, 'INR'), false);
+  });
+
+  it('publishes nothing while pristine and the share encoding once changed', () => {
+    assert.equal(publishableState(defaultState('INR'), 'INR'), '');
+    assert.equal(publishableState(defaultState('EUR'), 'EUR'), '');
+    assert.equal(publishableState({ ...defaultState('INR'), start: 2_500_000 }, 'INR'), 'c=INR&s=2500000');
+    assert.equal(publishableState({ ...defaultState('EUR'), start: 2_500_000 }, 'INR'), 's=2500000');
+    // Euros picked on a page that starts in rupees: still carried as euros.
+    assert.equal(publishableState(defaultState('EUR'), 'INR'), 'c=EUR');
+    assert.equal(decodeState('c=EUR')?.currency, 'EUR');
   });
 });

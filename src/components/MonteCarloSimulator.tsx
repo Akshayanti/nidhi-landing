@@ -12,7 +12,7 @@ import {
   type ReturnSetting,
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
-import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, encodeState, type ToolState } from '../utils/monte-carlo/url.ts';
+import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -218,9 +218,23 @@ function useSimulation(state: ToolState): Shown & { busy: boolean } {
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function MonteCarloSimulator({ strings, netWorthHref }: { strings: Strings; netWorthHref: string }) {
-  const [form, setForm] = useState<FormState>(() => toForm(DEFAULTS));
-  const [settled, setSettled] = useState<ToolState>(DEFAULTS);
+/**
+ * `defaultCurrency` is the page's starting currency (TOOL_DEFAULT_CURRENCY in
+ * src/utils/shared/toolState.ts, chosen by the page component for its
+ * language). It applies only when no shared plan arrived, and after a reset;
+ * a shared plan decodes the same on every page (no `c` means EUR).
+ */
+export default function MonteCarloSimulator({
+  strings,
+  netWorthHref,
+  defaultCurrency,
+}: {
+  strings: Strings;
+  netWorthHref: string;
+  defaultCurrency: string;
+}) {
+  const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
+  const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
   const [copied, setCopied] = useState(false);
   const [tipsDismissed, setTipsDismissed] = useState(false);
   // Phones only: returns, fees and paths start folded (CSS ignores this
@@ -276,8 +290,10 @@ export default function MonteCarloSimulator({ strings, netWorthHref }: { strings
   // would carry.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, encodeState(settled));
-  }, [hydrated, settled]);
+    // Untouched publishes '' so the other language opens with its own
+    // starting currency; anything changed carries as encoded.
+    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency));
+  }, [hydrated, settled, defaultCurrency]);
 
   const errors = {
     start: !isValid(form.start, 0, 1e12),
@@ -310,7 +326,9 @@ export default function MonteCarloSimulator({ strings, netWorthHref }: { strings
 
   // Shares the plan the results show (the settled state), not a half-typed one.
   function copyShareLink() {
-    const state = encodeState(settled);
+    // publishableState, not encodeState: an all-default plan in euros encodes
+    // to '' and would reopen in rupees on a Hindi link, so it says c=EUR.
+    const state = publishableState(settled, defaultCurrency);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=monte_carlo';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -324,8 +342,9 @@ export default function MonteCarloSimulator({ strings, netWorthHref }: { strings
   }
 
   function reset() {
-    setForm(toForm(DEFAULTS));
-    setSettled(DEFAULTS);
+    const start = defaultState(defaultCurrency);
+    setForm(toForm(start));
+    setSettled(start);
     track('free_monte_carlo_reset');
   }
 

@@ -37,6 +37,7 @@ import { getCollection } from 'astro:content';
 import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
 import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/monte-carlo/url.ts';
+import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
 
 interface Props {
@@ -164,6 +165,7 @@ const faqSchema = {
       client:load
       strings={island}
       netWorthHref={localizedPath(locale, '/free/multi-currency-net-worth/')}
+      defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
     />
 
     {/* Phones show the four limits by name; their explanations open with

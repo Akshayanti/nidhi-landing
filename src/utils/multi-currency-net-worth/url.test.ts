@@ -16,6 +16,9 @@ import {
   decodeFromQueryString,
   encodeShared,
   encodeFullData,
+  isPristineFullData,
+  makeDefaultRows,
+  publishableState,
 } from './url.ts';
 import type { AssetRow, CurrencyPosition } from './math.ts';
 
@@ -524,5 +527,60 @@ describe('URL length (regression: keep share links chat-friendly)', () => {
     ];
     const qs = encodeShared(rows, positions, 'EUR', 'full');
     assert.ok(qs.length < 700, `expected <700 chars, got ${qs.length}: ${qs}`);
+  });
+});
+
+describe('page starting currency and the language switch', () => {
+  it('keeps EUR as the codec baseline: a link without f or row currency decodes as EUR', () => {
+    const d = decodeFromQueryString('a1=Cash,100');
+    assert.equal(d.functionalCurrency, 'EUR');
+    assert.equal(d.rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('').functionalCurrency, 'EUR');
+  });
+
+  it('encodes INR for a state in rupees', () => {
+    const qs = encodeFullData([{ name: 'Cash', value: '100', currency: 'INR', type: 'asset' }], 'INR');
+    const p = new URLSearchParams(qs);
+    assert.equal(p.get('f'), 'INR');
+    const d = decodeFromQueryString(qs);
+    assert.equal(d.functionalCurrency, 'INR');
+    assert.equal(d.rows[0].currency, 'INR');
+  });
+
+  it('builds the blank starter rows in the page currency', () => {
+    const rows = makeDefaultRows('INR');
+    assert.equal(rows.length, 2);
+    assert.ok(rows.every((r) => r.currency === 'INR' && r.name === '' && r.value === '' && r.type === 'asset'));
+    assert.ok(makeDefaultRows().every((r) => r.currency === 'EUR'));
+  });
+
+  it('treats blank rows and the spending currency in the page currency as pristine', () => {
+    assert.equal(isPristineFullData(makeDefaultRows('INR'), 'INR', 'INR'), true);
+    assert.equal(isPristineFullData(makeDefaultRows('EUR'), 'EUR', 'EUR'), true);
+    // Blank rows added later still count as untouched.
+    assert.equal(isPristineFullData([...makeDefaultRows('INR'), ...makeDefaultRows('INR')], 'INR', 'INR'), true);
+  });
+
+  it('treats a value, a name, a row currency or a spending currency change as not pristine', () => {
+    const rows = makeDefaultRows('INR');
+    assert.equal(isPristineFullData(rows, 'EUR', 'INR'), false);
+    assert.equal(isPristineFullData([{ ...rows[0], value: '5' }, rows[1]], 'INR', 'INR'), false);
+    assert.equal(isPristineFullData([{ ...rows[0], name: 'Flat' }, rows[1]], 'INR', 'INR'), false);
+    assert.equal(isPristineFullData([{ ...rows[0], currency: 'USD' }, rows[1]], 'INR', 'INR'), false);
+    assert.equal(isPristineFullData(makeDefaultRows('EUR'), 'EUR', 'INR'), false);
+  });
+
+  it('publishes nothing while pristine and the full-data encoding once changed', () => {
+    assert.equal(publishableState(makeDefaultRows('INR'), 'INR', 'INR'), '');
+    const rows = [{ name: '', value: '2500000', currency: 'INR', type: 'asset' as const }, ...makeDefaultRows('INR').slice(1)];
+    const qs = publishableState(rows, 'INR', 'INR');
+    assert.equal(qs, encodeFullData(rows, 'INR'));
+    assert.equal(decodeFromQueryString(qs).rows[0].currency, 'INR');
+    assert.equal(decodeFromQueryString(qs).functionalCurrency, 'INR');
+    // Euros picked on a page that starts in rupees: still carried as euros.
+    const eur = publishableState(makeDefaultRows('EUR'), 'EUR', 'INR');
+    assert.notEqual(eur, '');
+    assert.equal(decodeFromQueryString(eur).functionalCurrency, 'EUR');
+    assert.ok(decodeFromQueryString(eur).rows.every((r) => r.currency === 'EUR'));
   });
 });
