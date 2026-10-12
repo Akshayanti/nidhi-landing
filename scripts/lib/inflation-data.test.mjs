@@ -109,6 +109,17 @@ describe('parseIndicator', () => {
     const out = parseIndicator(paged, parseCountries(countryPages));
     assert.ok(out.countries.USA && out.countries.IND);
   });
+
+  it('refuses pages from two different World Bank updates', () => {
+    const { countryPages, indicatorPages } = fixture();
+    const [[m, rows]] = indicatorPages;
+    const half = Math.ceil(rows.length / 2);
+    const mixed = [
+      [{ ...m, pages: 2 }, rows.slice(0, half)],
+      [{ ...m, page: 2, pages: 2, lastupdated: '2026-11-05' }, rows.slice(half)],
+    ];
+    assert.throws(() => parseIndicator(mixed, parseCountries(countryPages)), /different updates/);
+  });
 });
 
 describe('round2', () => {

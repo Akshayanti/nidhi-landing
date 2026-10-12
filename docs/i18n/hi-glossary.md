@@ -333,7 +333,8 @@ and do translate.
 | basket (of goods and services, for CPI) | वस्तुओं और सेवाओं की टोकरी | How Indian CPI reporting says it. |
 | hyperinflation | हाइपरइन्फ़्लेशन | The loanword Indian news uses; अति-मुद्रास्फीति would break the महँगाई rule. |
 | statistics office | सांख्यिकी विभाग | |
-| the four questions (tabs) | आगे इससे कितना ख़रीद पाएँगे?, आगे कितने का होगा?, बीते साल से आज तक, क्या बराबरी हो रही है? | The FAQ and the privacy notice quote them as written here. |
+| the four questions (tabs) | आगे कितना ख़रीदा जा सकता है?, आगे कितने का हो सकता है?, बीते साल से आज तक, क्या बराबरी हो रही है? | The FAQ and the privacy notice quote them as written here. Possibility, not the future tense: a result is a scenario, never a forecast, so the tool's Hindi says सकता है where it could say सकेगा or होगा. |
+| recorded, observed (inflation figures) | दर्ज हुई, दर्ज | A country's past figures. Never असली, which this glossary keeps for "real" as in real return. |
 | euro area | यूरो क्षेत्र | The one region the country list cannot name through `Intl.DisplayNames`. |
 
 #### The currency names

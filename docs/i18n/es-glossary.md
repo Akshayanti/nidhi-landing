@@ -305,5 +305,5 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | basket (CPI) | conjunto de bienes y servicios | *Cesta* (Spain) and *canasta* (Latin America) each lean to one side. |
 | hyperinflation | hiperinflación | |
 | about (an approximate amount) | unos | *Unos 7440 €*; *más de* and *menos de* for the capped forms. |
-| the four questions (tabs) | ¿Qué comprará?, ¿Cuánto costará?, Del pasado a hoy, ¿Sigue el ritmo? | Quoted with «» in the FAQ and the privacy notice. |
+| the four questions (tabs) | Poder de compra futuro, Costo futuro, Del pasado a hoy, ¿Sigue el ritmo? | Quoted with «» in the FAQ and the privacy notice. No bare future (*comprará*, *costará*): a result is a scenario, so headings say *podría* and result sentences use the conditional (*comprarían*, *costaría*). |
 | euro area | zona del euro | |

@@ -125,23 +125,28 @@ describe('roundAbout', () => {
   });
 });
 
-describe('typed values', () => {
-  it('accepts 0 to 10,000 with up to two decimals, comma or dot', () => {
+describe('typed values, by the page locale', () => {
+  it('accepts 0 to 10,000 with up to two decimals', () => {
     assert.equal(parsePercent('3', 0, MAX_RATE), 3);
     assert.equal(parsePercent(' 3.25 ', 0, MAX_RATE), 3.25);
-    assert.equal(parsePercent('3,5', 0, MAX_RATE), 3.5);
     assert.equal(parsePercent('0', 0, MAX_RATE), 0);
     assert.equal(parsePercent('10000', 0, MAX_RATE), 10_000);
+    assert.equal(parsePercent('10,000', 0, MAX_RATE, 'en'), 10_000);
+    assert.equal(parsePercent('10.000', 0, MAX_RATE, 'es'), 10_000);
+    assert.equal(parsePercent('2,5', 0, MAX_RATE, 'es'), 2.5);
+    assert.equal(parsePercent('2.5', 0, MAX_RATE, 'en-IN'), 2.5);
   });
 
   it('rejects more decimals, words, negatives where not allowed, and out-of-range rates', () => {
-    for (const bad of ['', 'abc', '3.255', '10000.01', '10001', '-1', '1e3', '3.', '.5', '1,000.5']) {
+    for (const bad of ['', 'abc', '3.255', '10000.01', '10001', '-1', '1e3', '3.', '.5', '1,000.5.5']) {
       assert.equal(parsePercent(bad, 0, MAX_RATE), null, bad);
     }
+    assert.equal(parsePercent('10.000,01', 0, MAX_RATE, 'es'), null);
   });
 
   it('allows a negative raise down to -99.99', () => {
     assert.equal(parsePercent('-2.5', -99.99, MAX_RATE), -2.5);
+    assert.equal(parsePercent('-2,5', -99.99, MAX_RATE, 'es'), -2.5);
     assert.equal(parsePercent('-100', -99.99, MAX_RATE), null);
     assert.equal(parsePercent('-0', -99.99, MAX_RATE), 0);
   });
@@ -152,9 +157,14 @@ describe('typed values', () => {
     assert.equal(parseYears('101'), null);
     assert.equal(parseYears('2.5'), null);
     assert.equal(parseAmount('1000.50'), 1000.5);
+    assert.equal(parseAmount('10,000', 'en'), 10_000);
+    assert.equal(parseAmount('10.000', 'es'), 10_000);
+    assert.equal(parseAmount('10.000,50', 'es'), 10_000.5);
+    assert.equal(parseAmount('10,00,000', 'en-IN'), 1_000_000);
     assert.equal(parseAmount(''), null);
     assert.equal(parseAmount('-5'), null);
     assert.equal(parseAmount('2e12'), null);
+    assert.equal(parseAmount('2000000000000'), null);
   });
 });
 

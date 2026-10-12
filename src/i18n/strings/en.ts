@@ -630,7 +630,7 @@ export const en = {
       },
       inflation: {
         before:
-          "Anonymous interaction events on the inflation calculator: which question you pick (what it will buy, what it will cost, past to today, keeping up), which currency and which country's history you pick, whether you use a country's average as the rate, whether you copy the shareable link, and whether you reset the form. Picking a country loads its history from nidhi.today itself, never from the World Bank. ",
+          "Anonymous interaction events on the inflation calculator: which question you pick (buying power later, cost later, past to today, keeping up), which currency and which country's history you pick, whether you use a country's average as the rate, whether you copy the shareable link, and whether you reset the form. Picking a country loads its history from nidhi.today itself, never from the World Bank. ",
         strong: 'The amounts, rates and years you enter are never sent.',
       },
       // Two `<code>` elements in one sentence, so the component supplies both

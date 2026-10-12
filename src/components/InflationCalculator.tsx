@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { CURRENCIES, getCurrency } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   DISPLAY_CEILING,
@@ -38,7 +39,7 @@ import { SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type 
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Copy
 //
 // Every word this island draws comes in through `strings`, one locale's slice
@@ -49,7 +50,7 @@ import type { Dict } from '../i18n/strings/types.ts';
 //
 // Country names arrive already written in the page's language (the page uses
 // `Intl.DisplayNames` on the server), so the island never needs a list of them.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 type Strings = Dict['tools']['inflation']['island'];
 
@@ -72,11 +73,11 @@ export interface CountryOption {
   currency: string | null;
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Phones (the site's 640px breakpoint). The server and the first browser
 // render assume a wider screen, so the page hydrates cleanly; phones then
 // switch to the charts drawn for their width.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 const PHONE_QUERY = '(max-width: 640px)';
 
@@ -90,9 +91,9 @@ function usePhone(): boolean {
   return useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE_QUERY).matches, () => false);
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // The history file, fetched once per page from the site's own origin.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 let historyRequest: Promise<CompactHistory> | null = null;
 
@@ -107,13 +108,18 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Formatting. Amounts follow the chosen currency's own conventions, as on the
 // other tools, and so do the percentages beside them.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
-function pct(v: number, code: string, digits = 2, signed = false): string {
-  return new Intl.NumberFormat(getCurrency(code).locale, {
+/**
+ * A percentage in the page's own number style ("1.94%", "1,94 %"), since it
+ * sits in the page's sentences. Amounts keep the chosen currency's style, as on
+ * the other tools.
+ */
+function pct(v: number, locale: string, digits = 2, signed = false): string {
+  return new Intl.NumberFormat(locale, {
     style: 'percent',
     maximumFractionDigits: digits,
     minimumFractionDigits: 0,
@@ -142,9 +148,9 @@ function yearsPhrase(n: number, strings: Strings): string {
   return n === 1 ? strings.results.years.one : t(strings.results.years.other, { n });
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Form state: inputs are kept as strings so a field can be empty while typing.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 interface FormState {
   mode: Mode;
@@ -158,28 +164,28 @@ interface FormState {
   from: string;
 }
 
-function toForm(s: ToolState): FormState {
+function toForm(s: ToolState, locale: string): FormState {
   return {
     mode: s.mode,
     currency: s.currency,
-    amount: String(s.amount),
-    rate: String(s.rate),
+    amount: formatForInput(s.amount, locale),
+    rate: formatForInput(s.rate, locale),
     years: String(s.years),
-    growth: String(s.growth),
+    growth: formatForInput(s.growth, locale),
     country: s.country,
     from: s.from === null ? '' : String(s.from),
   };
 }
 
 /** The form as a state, keeping `prev`'s value for any field that does not parse. */
-function toState(f: FormState, prev: ToolState): ToolState {
+function toState(f: FormState, prev: ToolState, locale: string): ToolState {
   return {
     mode: f.mode,
     currency: f.currency,
-    amount: parseAmount(f.amount) ?? prev.amount,
-    rate: parsePercent(f.rate, MIN_RATE, MAX_RATE) ?? prev.rate,
+    amount: parseAmount(f.amount, locale) ?? prev.amount,
+    rate: parsePercent(f.rate, MIN_RATE, MAX_RATE, locale) ?? prev.rate,
     years: parseYears(f.years) ?? prev.years,
-    growth: parsePercent(f.growth, MIN_GROWTH, MAX_GROWTH) ?? prev.growth,
+    growth: parsePercent(f.growth, MIN_GROWTH, MAX_GROWTH, locale) ?? prev.growth,
     country: f.country,
     from: f.from === '' ? null : Number(f.from),
   };
@@ -209,9 +215,9 @@ function effectiveFrom(from: number | null, options: number[]): number | null {
   return defaultFrom(options);
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Main component
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 /**
  * `defaultCurrency` and `defaultCountry` are the page's starting point
@@ -237,7 +243,7 @@ export default function InflationCalculator({
   numberLocale: string;
 }) {
   const start = defaultState(defaultCurrency, defaultCountry);
-  const [form, setForm] = useState<FormState>(() => toForm(start));
+  const [form, setForm] = useState<FormState>(() => toForm(start, numberLocale));
   const [settled, setSettled] = useState<ToolState>(() => start);
   const [copied, setCopied] = useState(false);
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
@@ -272,7 +278,7 @@ export default function InflationCalculator({
     setHydrated(true);
     if (!decoded) return;
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
-    setForm(toForm(shared));
+    setForm(toForm(shared, numberLocale));
     setSettled(shared);
     // A language switch carries the state too, but that view was counted on
     // the page it came from.
@@ -280,7 +286,7 @@ export default function InflationCalculator({
     track('free_inflation_shared_view_opened', {
       utm_source: new URLSearchParams(window.location.search).get('utm_source'),
     });
-  }, [countryByCode]);
+  }, [countryByCode, numberLocale]);
 
   // Keeps what is on screen where the header's language switch can find it
   // (after the #, at click time; see src/utils/shared/toolState.ts). Never
@@ -337,10 +343,10 @@ export default function InflationCalculator({
   const pastByHistory = form.mode === 'past' && (formState === 'loading' || (formState === 'ready' && fromOptions.length > 0));
 
   const errors = {
-    amount: parseAmount(form.amount) === null,
-    rate: !pastByHistory && parsePercent(form.rate, MIN_RATE, MAX_RATE) === null,
+    amount: parseAmount(form.amount, numberLocale) === null,
+    rate: !pastByHistory && parsePercent(form.rate, MIN_RATE, MAX_RATE, numberLocale) === null,
     years: !pastByHistory && parseYears(form.years) === null,
-    growth: form.mode === 'keep' && parsePercent(form.growth, MIN_GROWTH, MAX_GROWTH) === null,
+    growth: form.mode === 'keep' && parsePercent(form.growth, MIN_GROWTH, MAX_GROWTH, numberLocale) === null,
   };
   const hasErrors = Object.values(errors).some(Boolean);
 
@@ -348,9 +354,9 @@ export default function InflationCalculator({
   // answer does not jump on every keystroke.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled((prev) => toState(form, prev)), 250);
+    const timer = window.setTimeout(() => setSettled((prev) => toState(form, prev, numberLocale)), 250);
     return () => window.clearTimeout(timer);
-  }, [form, hasErrors]);
+  }, [form, hasErrors, numberLocale]);
 
   const update = (key: 'amount' | 'rate' | 'years' | 'growth') => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -387,7 +393,7 @@ export default function InflationCalculator({
   // a quarter of a second out of date.
   function copyShareLink() {
     if (hasErrors) return;
-    const state = publishableState(toState(form, settled), defaultCurrency, defaultCountry);
+    const state = publishableState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -401,7 +407,7 @@ export default function InflationCalculator({
   }
 
   function reset() {
-    setForm(toForm(start));
+    setForm(toForm(start, numberLocale));
     setSettled(start);
     track('free_inflation_reset');
   }
@@ -442,7 +448,7 @@ export default function InflationCalculator({
           <p className="ifc-question">{question}</p>
 
           <div className="ifc-grid">
-            <div className="ifc-field">
+            <div className="ifc-field ifc-field--currency">
               <label className="ifc-label" htmlFor={ids.currency}>{strings.fields.currency}</label>
               <select
                 id={ids.currency}
@@ -466,7 +472,6 @@ export default function InflationCalculator({
               onChange={update('amount')}
               error={errors.amount ? t(strings.fields.amountError, { max: num(MAX_AMOUNT) }) : null}
               inputMode="decimal"
-              type="number"
             />
             {!pastByHistory && (
               <>
@@ -521,9 +526,11 @@ export default function InflationCalculator({
                     <option key={y} value={y}>{y}</option>
                   ))}
                 </select>
-                <span className="ifc-hint" id={`${ids.from}-hint`}>
-                  {t(strings.fields.fromHint, { last: fromOptions[fromOptions.length - 1] + 1 })}
-                </span>
+                <div className="ifc-fieldNote">
+                  <span className="ifc-hint" id={`${ids.from}-hint`}>
+                    {t(strings.fields.fromHint, { last: fromOptions[fromOptions.length - 1] + 1 })}
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -538,9 +545,10 @@ export default function InflationCalculator({
             state={formState}
             showUse={!pastByHistory}
             narrow={narrow}
+            numberLocale={numberLocale}
             onCountry={chooseCountry}
             onUse={(avg) => {
-              setForm((f) => ({ ...f, rate: String(round2(avg)) }));
+              setForm((f) => ({ ...f, rate: formatForInput(round2(avg), numberLocale) }));
               track('free_inflation_average_used');
             }}
           />
@@ -553,9 +561,9 @@ export default function InflationCalculator({
           <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset} data-attr="free-inflation-reset">
             {strings.actions.reset}
           </button>
-          <span className="ifc-hint" role="status" aria-live="polite">
-            {hasErrors ? strings.results.fix : ''}
-          </span>
+          {/* Visible next to the buttons; the live announcement is the one over
+              the stale answer, so it is not said twice. */}
+          <span className="ifc-hint">{hasErrors ? strings.results.fix : ''}</span>
         </div>
       </form>
 
@@ -567,6 +575,7 @@ export default function InflationCalculator({
         series={seriesFor(settled.country)}
         historyStatus={historyState(settled.country)}
         narrow={narrow}
+        numberLocale={numberLocale}
       />
     </div>
   );
@@ -605,16 +614,18 @@ function Field(props: {
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
-      {props.error && <span className="ifc-error" id={errorId}>{props.error}</span>}
-      {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
+      <div className="ifc-fieldNote">
+        {props.error && <span className="ifc-error" id={errorId}>{props.error}</span>}
+        {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
+      </div>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // History panel: the country select, and once one is picked its yearly
 // inflation, the recent average and the option to use it as the rate.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 function HistoryPanel({
   strings,
@@ -626,6 +637,7 @@ function HistoryPanel({
   state,
   showUse,
   narrow,
+  numberLocale,
   onCountry,
   onUse,
 }: {
@@ -638,6 +650,7 @@ function HistoryPanel({
   state: 'none' | 'loading' | 'ready' | 'error';
   showUse: boolean;
   narrow: boolean;
+  numberLocale: string;
   onCountry: (code: string) => void;
   onUse: (avg: number) => void;
 }) {
@@ -689,22 +702,22 @@ function HistoryPanel({
                     country: country.name,
                     first: years[0],
                     last: years[years.length - 1],
-                    high: pct(ext.high.rate, code, 1),
+                    high: pct(ext.high.rate, numberLocale, 1),
                     highYear: ext.high.year,
-                    low: pct(ext.low.rate, code, 1),
+                    low: pct(ext.low.rate, numberLocale, 1),
                     lowYear: ext.low.year,
                   })
                 : ''
             }
             strings={strings}
-            code={code}
+            numberLocale={numberLocale}
             narrow={narrow}
           />
           <p className="ifc-historyAvg">
             <strong>
               {recent.span > recent.count
-                ? t(h.averageGaps, { country: country.name, count: recent.count, first: recent.first, last: recent.last, average: pct(recent.average, code, 1) })
-                : t(h.average, { country: country.name, first: recent.first, last: recent.last, average: pct(recent.average, code, 1) })}
+                ? t(h.averageGaps, { country: country.name, count: recent.count, first: recent.first, last: recent.last, average: pct(recent.average, numberLocale, 1) })
+                : t(h.average, { country: country.name, first: recent.first, last: recent.last, average: pct(recent.average, numberLocale, 1) })}
             </strong>{' '}
             {h.averageNote}
           </p>
@@ -719,7 +732,7 @@ function HistoryPanel({
                 {h.use}
               </button>
             ) : (
-              <p className="ifc-hint">{t(h.useOutside, { min: MIN_RATE, max: MAX_RATE })}</p>
+              <p className="ifc-hint">{t(h.useOutside, { min: MIN_RATE.toLocaleString(numberLocale), max: MAX_RATE.toLocaleString(numberLocale) })}</p>
             ))}
           <details className="ifc-tableWrap">
             <summary className="ifc-tableSummary">{h.tableSummary}</summary>
@@ -738,7 +751,7 @@ function HistoryPanel({
                     .map((y) => (
                       <tr key={y}>
                         <th scope="row">{y}</th>
-                        <td>{y in series ? pct(series[y], code, 2) : h.tableNone}</td>
+                        <td>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -778,14 +791,14 @@ function HistoryBars({
   recentFirst,
   label,
   strings,
-  code,
+  numberLocale,
   narrow,
 }: {
   series: Series;
   recentFirst: number;
   label: string;
   strings: Strings;
-  code: string;
+  numberLocale: string;
   narrow: boolean;
 }) {
   const years = allYears(series);
@@ -803,7 +816,7 @@ function HistoryBars({
   const bw = plotW / Math.max(1, years.length);
   const y = (v: number) => PAD.top + ((top - Math.max(bottom, Math.min(top, v))) / (top - bottom)) * plotH;
   const zero = y(0);
-  const fmt = (v: number) => pct(v, code, 0);
+  const fmt = (v: number) => pct(v, numberLocale, 0);
   const first = years[0];
   const last = years[years.length - 1];
   return (
@@ -843,9 +856,9 @@ function HistoryBars({
   );
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // The answer, the line under it, and the chart of the path.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 interface Answer {
   headline: string;
@@ -864,6 +877,7 @@ function computeAnswer(
   country: CountryOption | null,
   series: Series | null,
   historyStatus: 'none' | 'loading' | 'ready' | 'error',
+  numberLocale: string,
 ): Answer | 'loading' {
   const r = strings.results;
   const code = s.currency;
@@ -884,7 +898,7 @@ function computeAnswer(
       headline: aboutText(value, code, strings),
       sentences: [
         t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings), to }),
-        t(r.pastCountryRise, { total: pct((factor - 1) * 100, code, 0), years: yearsPhrase(span, strings), average: pct(average, code, 1) }),
+        t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings), average: pct(average, numberLocale, 1) }),
       ],
       band: [],
       method: r.methodHistory,
@@ -908,13 +922,13 @@ function computeAnswer(
     const same = Math.abs(real) < 0.005;
     const lead = same ? r.keepSame : real > 0 ? r.keepMore : r.keepLess;
     return {
-      headline: t(r.keepHeadline, { real: pct(same ? 0 : real, code, 2, true) }),
+      headline: t(r.keepHeadline, { real: pct(same ? 0 : real, numberLocale, 2, true) }),
       sentences: [
-        t(lead, { growth: pct(g, code), rate: pct(i, code), real: pct(Math.abs(real), code) }),
-        t(r.keepAfter, { years, amount, growth: pct(g, code), result: aboutText(after, code, strings) }),
-        t(r.keepExact, { growth: pct(g, code), rate: pct(i, code), shortcut: `${pct(g, code)} − ${pct(i, code)} = ${pct(g - i, code)}` }),
+        t(lead, { growth: pct(g, numberLocale), rate: pct(i, numberLocale), real: pct(Math.abs(real), numberLocale) }),
+        t(r.keepAfter, { years, amount, growth: pct(g, numberLocale), result: aboutText(after, code, strings) }),
+        t(r.keepExact, { growth: pct(g, numberLocale), rate: pct(i, numberLocale), shortcut: `${pct(g, numberLocale)} − ${pct(i, numberLocale)} = ${pct(g - i, numberLocale)}` }),
       ],
-      band: sides.map((rate) => t(r.bandKeep, { rate: pct(rate, code), real: pct(realRate(g, rate), code, 2, true) })),
+      band: sides.map((rate) => t(r.bandKeep, { rate: pct(rate, numberLocale), real: pct(realRate(g, rate), numberLocale, 2, true) })),
       method: r.method,
       points: answerPath('keep', A, i, n, g).map((value, x) => ({ x, value })),
       calendar: false,
@@ -929,8 +943,8 @@ function computeAnswer(
   const template = mode === 'buy' ? r.buy : mode === 'cost' ? r.cost : r.past;
   return {
     headline: aboutText(value, code, strings),
-    sentences: [t(template, { rate: pct(i, code), amount, years, result: aboutText(value, code, strings) })],
-    band: sides.map((rate) => t(r.bandItem, { rate: pct(rate, code), result: aboutText(answer(formula, A, rate, n), code, strings) })),
+    sentences: [t(template, { rate: pct(i, numberLocale), amount, years, result: aboutText(value, code, strings) })],
+    band: sides.map((rate) => t(r.bandItem, { rate: pct(rate, numberLocale), result: aboutText(answer(formula, A, rate, n), code, strings) })),
     method: r.method,
     points: answerPath(formula, A, i, n).map((v, x) => ({ x, value: v })),
     calendar: false,
@@ -947,6 +961,7 @@ function Results({
   series,
   historyStatus,
   narrow,
+  numberLocale,
 }: {
   strings: Strings;
   state: ToolState;
@@ -955,15 +970,33 @@ function Results({
   series: Series | null;
   historyStatus: 'none' | 'loading' | 'ready' | 'error';
   narrow: boolean;
+  numberLocale: string;
 }) {
-  const result = computeAnswer(state, strings, country, series, historyStatus);
+  const result = computeAnswer(state, strings, country, series, historyStatus, numberLocale);
+
+  // Each recalculation is announced once it has settled: the rounded headline
+  // and its sentence, in a polite live region that is otherwise invisible. Not
+  // on the first render, which is the page loading, and not while loading.
+  const [announcement, setAnnouncement] = useState('');
+  const firstState = useRef(state);
+  const announceText = result === 'loading' ? '' : t(strings.results.announce, { headline: result.headline, sentence: result.sentences[0] });
+  useEffect(() => {
+    if (state === firstState.current || !announceText) return;
+    setAnnouncement(announceText);
+    // A new answer only: the text follows the state, not every render.
+  }, [state, historyStatus]);
+
   return (
     <section className={`ifc-results${stale ? ' ifc-results--stale' : ''}`} aria-labelledby="ifc-results-h">
       <h2 id="ifc-results-h" className="ifc-resultsTitle">{strings.results.heading}</h2>
+      <span className="ifc-srOnly" aria-live="polite">{stale ? '' : announcement}</span>
+      {/* While a field is invalid the answer below is the previous one: it is
+          dimmed, hidden from assistive technology, and this says why. */}
+      {stale && <p className="ifc-staleNote" role="status" aria-live="polite">{strings.results.stale}</p>}
       {result === 'loading' ? (
         <p className="ifc-note" role="status">{strings.history.loading}</p>
       ) : (
-        <>
+        <div className="ifc-resultBody" aria-hidden={stale || undefined}>
           <div className="ifc-answer">
             <p className="ifc-headline">{result.headline}</p>
             {result.sentences.map((s, i) => (
@@ -991,7 +1024,7 @@ function Results({
             strings={strings}
             narrow={narrow}
           />
-        </>
+        </div>
       )}
     </section>
   );

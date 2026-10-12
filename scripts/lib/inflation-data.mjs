@@ -101,6 +101,9 @@ export function parseIndicator(pages, countries) {
       fail(`metadata has no lastupdated date (${JSON.stringify(meta.lastupdated)})`);
     }
     lastUpdated ??= meta.lastupdated;
+    // Pages from two different World Bank releases must never be combined
+    // under one update date: the fetch is retried whole instead.
+    if (meta.lastupdated !== lastUpdated) fail(`pages come from different updates (${lastUpdated} and ${meta.lastupdated})`);
     for (const row of rows) {
       if (!isObject(row) || !isObject(row.indicator) || row.indicator.id !== INDICATOR) {
         fail(`unexpected indicator row ${JSON.stringify(row)}`);

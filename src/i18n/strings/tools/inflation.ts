@@ -122,7 +122,7 @@ export const inflationEn = {
       items: [
         {
           q: 'What does the answer mean?',
-          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? "What will it buy?" turns an amount in the future into today\'s money. "What will it cost?" carries a price forward. "Past to today" brings an old amount up to date. "Keeping up" compares a raise or a savings return with inflation. Answers are rounded and say "about", because the rate is an assumption, not a measurement.',
+          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? "Buying power later" shows what an amount could buy in the future, in today\'s money. "Cost later" carries a price forward. "Past to today" brings an old amount up to date. "Keeping up" compares a raise or a savings return with inflation. Answers are rounded and say "about", because the rate is an assumption, not a measurement.',
         },
         {
           q: 'Why does every answer come with two more?',
@@ -191,15 +191,15 @@ export const inflationEn = {
     formLabel: 'Inflation calculator',
     tabsLabel: 'Choose a question',
     tabs: {
-      buy: 'What will it buy?',
-      cost: 'What will it cost?',
+      buy: 'Buying power later',
+      cost: 'Cost later',
       past: 'Past to today',
       keep: 'Keeping up',
     },
     /** The question each tab answers, shown above the fields. */
     questions: {
-      buy: "What will an amount buy after some years of inflation, in today's money?",
-      cost: 'What might something that costs this today cost later?',
+      buy: "What could an amount buy after some years of inflation, in today's money?",
+      cost: 'What could something that costs this today cost later, if prices keep rising?',
       past: 'What is an amount from the past worth today, at a rate you choose?',
       pastCountry: "What is an amount from the past worth today in {country}, using its actual yearly inflation?",
       keep: 'Does a raise or a savings return keep up with inflation?',
@@ -287,6 +287,10 @@ export const inflationEn = {
       method: 'Compounded once a year, at the same rate every year. A scenario, not a forecast.',
       methodHistory: "Compounded year by year with each year's actual figure. History, not a forecast.",
       fix: 'Fix the highlighted fields to see the answer.',
+      /** Shown, and announced, over a stale answer while a field is invalid. */
+      stale: 'This answer is out of date: fix the highlighted fields to update it.',
+      /** Announced to screen readers after each recalculation. */
+      announce: 'Updated answer: {headline}. {sentence}',
     },
     chart: {
       title: {
@@ -330,7 +334,7 @@ export const inflationHi: typeof inflationEn = {
   meta: {
     title: 'महँगाई कैलकुलेटर (Inflation Calculator) | nidhi',
     description:
-      'मुफ़्त महँगाई कैलकुलेटर: सालों बाद पैसे से कितना ख़रीदा जा सकेगा, कोई चीज़ आगे कितने की हो सकती है, और देशों की महँगाई का इतिहास। ब्राउज़र में चलता है।',
+      'मुफ़्त महँगाई कैलकुलेटर: सालों बाद पैसे से कितना ख़रीदा जा सकता है, कोई चीज़ आगे कितने की हो सकती है, और देशों की महँगाई का इतिहास। ब्राउज़र में चलता है।',
   },
   schema: {
     name: 'nidhi महँगाई कैलकुलेटर',
@@ -338,9 +342,9 @@ export const inflationHi: typeof inflationEn = {
     operatingSystem: 'कोई भी (वेब ब्राउज़र)',
     browserRequirements: 'JavaScript ज़रूरी है। आधुनिक ब्राउज़र।',
     featureList: [
-      'सालों की महँगाई के बाद किसी रकम से आज के पैसे में कितना ख़रीदा जा सकेगा',
+      'सालों की महँगाई के बाद किसी रकम से आज के पैसे में कितना ख़रीदा जा सकता है',
       'सालों की महँगाई के बाद किसी चीज़ की कीमत',
-      'पुरानी रकम आज कितनी के बराबर है, आपकी चुनी दर पर या किसी देश की असली सालाना महँगाई के साथ',
+      'पुरानी रकम आज कितनी के बराबर है, आपकी चुनी दर पर या किसी देश की दर्ज हुई सालाना महँगाई के साथ',
       'वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चलता है या नहीं, सटीक असली दर के साथ',
       'हर नतीजा एक प्रतिशत अंक कम और ज़्यादा पर भी',
       'World Bank से {countries} देशों और यूरो क्षेत्र की सालाना महँगाई का इतिहास',
@@ -359,7 +363,7 @@ export const inflationHi: typeof inflationEn = {
     title: 'महँगाई कैलकुलेटर: समय के साथ पैसे से कितना ख़रीदा जा सकता है',
     lead: {
       before: 'देखें कि सालों में महँगाई किसी रकम पर क्या असर डालती है',
-      wide: ', आगे की ओर या पीछे की ओर, आपकी चुनी दर पर या किसी देश के असली इतिहास के साथ। हर जवाब के साथ वही हिसाब एक अंक कम और एक अंक ज़्यादा पर भी दिखता है, क्योंकि यह एक परिदृश्य है, पूर्वानुमान नहीं',
+      wide: ', आगे की ओर या पीछे की ओर, आपकी चुनी दर पर या किसी देश के दर्ज इतिहास के साथ। हर जवाब के साथ वही हिसाब एक अंक कम और एक अंक ज़्यादा पर भी दिखता है, क्योंकि यह एक परिदृश्य है, पूर्वानुमान नहीं',
       after: '। सब कुछ आपके ब्राउज़र में चलता है; आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता।',
     },
     notes: {
@@ -367,7 +371,7 @@ export const inflationHi: typeof inflationEn = {
       items: {
         steady: {
           lead: 'एक दर, हर साल।',
-          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। असली कीमतें एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
+          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। कीमतें असल में एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
         },
         personal: {
           lead: 'देश की महँगाई एक औसत है।',
@@ -395,7 +399,7 @@ export const inflationHi: typeof inflationEn = {
       items: [
         {
           q: 'जवाब का मतलब क्या है?',
-          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर कीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर होगी? "आगे इससे कितना ख़रीद पाएँगे?" भविष्य की रकम को आज के पैसे में बदलता है। "आगे कितने का होगा?" आज की कीमत को आगे ले जाता है। "बीते साल से आज तक" पुरानी रकम को आज तक लाता है। "क्या बराबरी हो रही है?" वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके "लगभग" के साथ दिखते हैं, क्योंकि दर एक अनुमान है, माप नहीं।',
+          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर कीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर बैठती है? "आगे कितना ख़रीदा जा सकता है?" दिखाता है कि भविष्य में कोई रकम आज के पैसे में कितनी चीज़ें ख़रीद सकती है। "आगे कितने का हो सकता है?" आज की कीमत को आगे ले जाता है। "बीते साल से आज तक" पुरानी रकम को आज तक लाता है। "क्या बराबरी हो रही है?" वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके "लगभग" के साथ दिखते हैं, क्योंकि दर एक अनुमान है, माप नहीं।',
         },
         {
           q: 'हर जवाब के साथ दो और जवाब क्यों दिखते हैं?',
@@ -407,7 +411,7 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'इतिहास कहाँ से आता है, और कितना ताज़ा है?',
-          a: 'World Bank के World Development Indicators से: "Inflation, consumer prices (annual %)" (इंडिकेटर FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF के छापे आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: "बीते साल से आज तक" सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है।',
+          a: 'World Bank के World Development Indicators से: "Inflation, consumer prices (annual %)" (इंडिकेटर FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: "बीते साल से आज तक" सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है।',
         },
         {
           q: 'दर {maxRate}% तक क्यों जा सकती है?',
@@ -453,16 +457,16 @@ export const inflationHi: typeof inflationEn = {
     formLabel: 'महँगाई कैलकुलेटर',
     tabsLabel: 'सवाल चुनें',
     tabs: {
-      buy: 'आगे इससे कितना ख़रीद पाएँगे?',
-      cost: 'आगे कितने का होगा?',
+      buy: 'आगे कितना ख़रीदा जा सकता है?',
+      cost: 'आगे कितने का हो सकता है?',
       past: 'बीते साल से आज तक',
       keep: 'क्या बराबरी हो रही है?',
     },
     questions: {
-      buy: 'कुछ सालों की महँगाई के बाद किसी रकम से, आज के पैसे में, कितना ख़रीदा जा सकेगा?',
+      buy: 'कुछ सालों की महँगाई के बाद किसी रकम से, आज के पैसे में, कितना ख़रीदा जा सकता है?',
       cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है?',
       past: 'बीते समय की कोई रकम आज कितने के बराबर है, आपकी चुनी दर पर?',
-      pastCountry: 'बीते समय की कोई रकम {country} में आज कितने के बराबर है, वहाँ की असली सालाना महँगाई के हिसाब से?',
+      pastCountry: 'बीते समय की कोई रकम {country} में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
       keep: 'क्या वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चल रहा है?',
     },
     fields: {
@@ -524,34 +528,36 @@ export const inflationHi: typeof inflationEn = {
     results: {
       heading: 'जवाब',
       years: { one: '1 साल', other: '{n} साल' },
-      buy: 'अगर महँगाई औसतन {rate} सालाना रहे, तो {years} बाद {amount} से उतना ही ख़रीदा जा सकेगा जितना आज {result} से।',
-      cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की होगी।',
+      buy: 'अगर महँगाई औसतन {rate} सालाना रहे, तो {years} बाद {amount} से उतना ही ख़रीदा जा सकता है जितना आज {result} से।',
+      cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
       past: 'अगर महँगाई औसतन {rate} सालाना रही, तो {years} पहले के {amount} से उतना ख़रीदा जा सकता था जितना आज {result} से।',
       pastCountry: '{country} में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
       pastCountryRise: 'इन {years} में कीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
       keepMore: '{growth} सालाना वेतन वृद्धि या रिटर्न और औसतन {rate} महँगाई पर, क्रय शक्ति हर साल लगभग {real} बढ़ती है।',
       keepLess: '{growth} सालाना वेतन वृद्धि या रिटर्न और औसतन {rate} महँगाई पर, क्रय शक्ति हर साल लगभग {real} घटती है।',
       keepSame: '{growth} सालाना वेतन वृद्धि या रिटर्न और औसतन {rate} महँगाई पर, क्रय शक्ति लगभग वैसी ही रहती है।',
-      keepAfter: '{years} बाद, {growth} सालाना बढ़ते {amount} से उतना ख़रीदा जा सकेगा जितना आज {result} से।',
+      keepAfter: '{years} बाद, {growth} सालाना बढ़ते {amount} से उतना ख़रीदा जा सकता है जितना आज {result} से।',
       keepExact:
         'सटीक हिसाब: (1 + {growth}) ÷ (1 + {rate}) − 1। एक दर में से दूसरी घटाना ({shortcut}) एक आम छोटा तरीक़ा है, जो कम दरों पर क़रीब रहता है और ऊँची दरों पर बहुत दूर।',
       keepHeadline: '{real} सालाना',
       about: 'लगभग {amount}',
-      moreThan: '{amount} से ज़्यादा',
-      lessThan: '{amount} से कम',
+      moreThan: '{amount} से ज़्यादा रकम',
+      lessThan: '{amount} से कम रकम',
       bandLabel: 'एक अंक कम और ज़्यादा पर:',
       bandItem: '{rate} पर: {result}',
       bandKeep: '{rate} महँगाई पर: {real} सालाना',
       method: 'साल में एक बार चक्रवृद्धि, हर साल एक ही दर पर। यह एक परिदृश्य है, पूर्वानुमान नहीं।',
-      methodHistory: 'हर साल के असली आँकड़े के साथ साल-दर-साल चक्रवृद्धि। यह इतिहास है, पूर्वानुमान नहीं।',
+      methodHistory: 'हर साल के दर्ज आँकड़े के साथ साल-दर-साल चक्रवृद्धि। यह इतिहास है, पूर्वानुमान नहीं।',
       fix: 'जवाब देखने के लिए चिह्नित खाने ठीक करें।',
+      stale: 'यह जवाब पुराना है: इसे अपडेट करने के लिए चिह्नित खाने ठीक करें।',
+      announce: 'नया जवाब: {headline}। {sentence}',
     },
     chart: {
       title: {
-        buy: '{amount} से हर साल कितना ख़रीदा जा सकेगा, आज के पैसे में',
+        buy: '{amount} से हर साल कितना ख़रीदा जा सकता है, आज के पैसे में',
         cost: '{amount} हर साल कितना हो जाता है',
         past: '{amount} उसके बाद हर साल कितने के बराबर है',
-        keep: '{amount} से हर साल कितना ख़रीदा जा सकेगा, आज के पैसे में',
+        keep: '{amount} से हर साल कितना ख़रीदा जा सकता है, आज के पैसे में',
       },
       axis: {
         buy: 'अब से साल',
@@ -583,7 +589,7 @@ export const inflationHi: typeof inflationEn = {
  */
 export const inflationEs: typeof inflationEn = {
   meta: {
-    title: 'Calculadora de inflación: qué comprará tu dinero | nidhi',
+    title: 'Calculadora de inflación: qué compra tu dinero | nidhi',
     description:
       'Calculadora de inflación gratuita: qué compra tu dinero tras años de inflación, cuánto podría costar algo después y la historia por país. En tu navegador.',
   },
@@ -650,7 +656,7 @@ export const inflationEs: typeof inflationEn = {
       items: [
         {
           q: '¿Qué significa la respuesta?',
-          a: 'Calcula un escenario: si los precios suben a la tasa que escribiste, cada año, durante los años que elegiste, ¿a qué equivale una cantidad? «¿Qué comprará?» convierte una cantidad futura en dinero de hoy. «¿Cuánto costará?» lleva un precio hacia el futuro. «Del pasado a hoy» trae una cantidad antigua al presente. «¿Sigue el ritmo?» compara una subida salarial o la rentabilidad de tus ahorros con la inflación. Las respuestas se redondean y dicen «unos», porque la tasa es un supuesto, no una medición.',
+          a: 'Calcula un escenario: si los precios suben a la tasa que escribiste, cada año, durante los años que elegiste, ¿a qué equivale una cantidad? «Poder de compra futuro» muestra lo que una cantidad podría comprar en el futuro, en dinero de hoy. «Costo futuro» lleva un precio hacia el futuro. «Del pasado a hoy» trae una cantidad antigua al presente. «¿Sigue el ritmo?» compara una subida salarial o la rentabilidad de tus ahorros con la inflación. Las respuestas se redondean y dicen «unos», porque la tasa es un supuesto, no una medición.',
         },
         {
           q: '¿Por qué cada respuesta viene con dos más?',
@@ -708,13 +714,13 @@ export const inflationEs: typeof inflationEn = {
     formLabel: 'Calculadora de inflación',
     tabsLabel: 'Elige una pregunta',
     tabs: {
-      buy: '¿Qué comprará?',
-      cost: '¿Cuánto costará?',
+      buy: 'Poder de compra futuro',
+      cost: 'Costo futuro',
       past: 'Del pasado a hoy',
       keep: '¿Sigue el ritmo?',
     },
     questions: {
-      buy: '¿Qué comprará una cantidad tras unos años de inflación, en dinero de hoy?',
+      buy: '¿Qué podría comprar una cantidad tras unos años de inflación, en dinero de hoy?',
       cost: '¿Cuánto podría costar más adelante algo que hoy cuesta esto?',
       past: '¿Cuánto vale hoy una cantidad del pasado, a la tasa que elijas?',
       pastCountry: '¿Cuánto vale hoy en {country} una cantidad del pasado, con su inflación anual real?',
@@ -779,15 +785,15 @@ export const inflationEs: typeof inflationEn = {
     results: {
       heading: 'La respuesta',
       years: { one: '1 año', other: '{n} años' },
-      buy: 'Si la inflación media es del {rate} anual, {amount} dentro de {years} comprarán lo que hoy compran {result}.',
-      cost: 'Si los precios suben de media un {rate} anual, algo que hoy cuesta {amount} costará {result} dentro de {years}.',
+      buy: 'Si la inflación media fuera del {rate} anual, {amount} dentro de {years} comprarían lo que hoy compran {result}.',
+      cost: 'Si los precios subieran de media un {rate} anual, algo que hoy cuesta {amount} costaría {result} dentro de {years}.',
       past: 'Si la inflación media fue del {rate} anual, {amount} de hace {years} compran lo que hoy compran {result}.',
       pastCountry: 'En {country}, {amount} en {from} compraban lo que en {to} compraban {result}.',
       pastCountryRise: 'Los precios subieron un {total} en total en esos {years}, una media del {average} anual.',
       keepMore: 'Con una subida o rentabilidad del {growth} anual y una inflación media del {rate}, el poder adquisitivo crece alrededor de un {real} al año.',
       keepLess: 'Con una subida o rentabilidad del {growth} anual y una inflación media del {rate}, el poder adquisitivo se reduce alrededor de un {real} al año.',
       keepSame: 'Con una subida o rentabilidad del {growth} anual y una inflación media del {rate}, el poder adquisitivo se mantiene más o menos igual.',
-      keepAfter: 'Dentro de {years}, {amount} que crecen un {growth} anual comprarán lo que hoy compran {result}.',
+      keepAfter: 'Dentro de {years}, {amount} que crecen un {growth} anual comprarían lo que hoy compran {result}.',
       keepExact:
         'Cálculo exacto: (1 + {growth}) ÷ (1 + {rate}) − 1. Restar una tasa de la otra ({shortcut}) es un atajo habitual, que se acerca con tasas bajas y se aleja mucho con tasas altas.',
       keepHeadline: '{real} al año',
@@ -800,6 +806,8 @@ export const inflationEs: typeof inflationEn = {
       method: 'Capitalización una vez al año, a la misma tasa cada año. Un escenario, no una previsión.',
       methodHistory: 'Capitalización año a año con la cifra real de cada año. Historia, no una previsión.',
       fix: 'Corrige los campos marcados para ver la respuesta.',
+      stale: 'Esta respuesta está desactualizada: corrige los campos marcados para actualizarla.',
+      announce: 'Respuesta actualizada: {headline}. {sentence}',
     },
     chart: {
       title: {

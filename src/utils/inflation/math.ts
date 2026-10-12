@@ -16,6 +16,8 @@
  * result from claiming a precision that a guessed rate cannot carry.
  */
 
+import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+
 export type Mode = 'buy' | 'cost' | 'past' | 'keep';
 export const MODES: readonly Mode[] = ['buy', 'cost', 'past', 'keep'];
 
@@ -106,18 +108,17 @@ export function roundAbout(v: number): number {
   return Math.round(v / mag) * mag;
 }
 
-// ---------------------------------------------------------------------------
-// Validation of typed values. A rate or a raise is typed with at most two
-// decimals, and a comma is read as the decimal mark, as many readers write it.
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Validation of typed values, read by the page's number conventions (see
+// src/utils/shared/parseLocaleNumber.ts): "2.5" and "10,000" on an English or
+// Hindi page, "2,5" and "10.000" on a Spanish one. A rate or a raise has at
+// most two decimals.
+// ===========================================================================
 
-/** Parses a typed percentage, or returns null when it is not one. */
-export function parsePercent(raw: string, min: number, max: number): number | null {
-  const v = raw.trim().replace(/\s/g, '').replace(',', '.');
-  if (!/^-?\d{1,5}(\.\d{1,2})?$/.test(v)) return null;
-  const n = Number(v);
-  if (!Number.isFinite(n) || n < min || n > max) return null;
-  return Object.is(n, -0) ? 0 : n;
+/** Parses a typed percentage within [min, max], or returns null when it is not one. */
+export function parsePercent(raw: string, min: number, max: number, locale = 'en'): number | null {
+  const n = parseLocaleNumber(raw, locale, { maxDecimals: 2, allowNegative: min < 0 });
+  return n !== null && n >= min && n <= max ? n : null;
 }
 
 /** Parses a typed whole number of years, or null. */
@@ -128,18 +129,16 @@ export function parseYears(raw: string): number | null {
   return n >= MIN_YEARS && n <= MAX_YEARS ? n : null;
 }
 
-/** Parses a typed amount, or null. */
-export function parseAmount(raw: string): number | null {
-  const v = raw.trim();
-  if (v === '') return null;
-  const n = Number(v);
-  return Number.isFinite(n) && n >= 0 && n <= MAX_AMOUNT ? n : null;
+/** Parses a typed amount from 0 to MAX_AMOUNT, to the cent at most, or null. */
+export function parseAmount(raw: string, locale = 'en'): number | null {
+  const n = parseLocaleNumber(raw, locale, { maxDecimals: 2 });
+  return n !== null && n <= MAX_AMOUNT ? n : null;
 }
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // A country's history: yearly inflation in percent, keyed by year. A year the
 // World Bank has no figure for is simply absent, so a gap is a missing key.
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 export type Series = Record<number, number>;
 

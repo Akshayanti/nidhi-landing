@@ -504,7 +504,7 @@ export const es: Dict = {
       },
       inflation: {
         before:
-          'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («¿Qué comprará?», «¿Cuánto costará?», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+          'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
       },
       campaigns: {

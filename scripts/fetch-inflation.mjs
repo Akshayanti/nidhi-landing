@@ -50,13 +50,30 @@ async function getAllPages(baseUrl) {
   return pages;
 }
 
-async function main() {
+/**
+ * Fetches and parses everything, retrying the whole fetch (not one page) if
+ * the pages came from two different World Bank updates.
+ */
+async function fetchParsed() {
   const year = new Date().getUTCFullYear();
-  const [indicatorPages, countryPages] = await Promise.all([
-    getAllPages(`${API}/country/all/indicator/${INDICATOR}?format=json&date=1960:${year}&per_page=${PER_PAGE}`),
-    getAllPages(`${API}/country?format=json&per_page=400`),
-  ]);
-  const parsed = parseIndicator(indicatorPages, parseCountries(countryPages));
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const [indicatorPages, countryPages] = await Promise.all([
+      getAllPages(`${API}/country/all/indicator/${INDICATOR}?format=json&date=1960:${year}&per_page=${PER_PAGE}`),
+      getAllPages(`${API}/country?format=json&per_page=400`),
+    ]);
+    try {
+      return parseIndicator(indicatorPages, parseCountries(countryPages));
+    } catch (err) {
+      if (!/different updates/.test(err.message)) throw err;
+      lastError = err;
+    }
+  }
+  throw lastError;
+}
+
+async function main() {
+  const parsed = await fetchParsed();
   const dataset = buildDataset(parsed, new Date().toISOString().slice(0, 10));
 
   let previous = null;
