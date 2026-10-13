@@ -36,7 +36,7 @@ This is the current structure. It governs every blog post from post 43 onward, i
 
 Day 2 is a second, distinct angle, not a continuation of day 1. A follower who saw day 1 should meet a new topic on day 2. Post 43 is the reference: day 1 is "one growth assumption moves a 30 year projection by €1.06M", day 2 is "what moves the line is what repeats" (a €4,000 holiday against €150 a month more rent).
 
-**Weekly rhythm.** Three blog posts a week, two days each, Monday to Saturday. Sundays carry only the fortnightly Beliefs post (below).
+**Weekly rhythm.** Three blog posts a week, two days each, Monday to Saturday. Sundays alternate: the Beliefs post one Sunday, a free tools post the next (below).
 
 | | Mon | Tue | Wed | Thu | Fri | Sat |
 |---|---|---|---|---|---|---|
@@ -80,11 +80,39 @@ The poll result on day 2 is the reason to come back the next day; it takes about
 
 **Chip and series signal.** Optimizing runs under the chip `Money, Compounding` with no "N of 18" counter, because the Inclusive Finances companions are interleaved. Inclusive Finances is its own theme on Instagram (decided Oct 1, 2026): it has its own chip, `Money, For You and Me`, and its own profile Highlight, with no "N of 16" counter. Each inclusive post still ships interleaved, directly after its host, and opens from the assumption the host post makes. Every series keeps a Highlight so the profile works as a library.
 
-**Beliefs on Sundays.** The seven Beliefs posts (Instagram only, `docs/instagram-kit/beliefs/`, one standalone kit each, in the order of the beliefs page) run every other Sunday, starting with "Built from frustration" on the Sunday before the restart as the comeback post. They are the only Sunday feed posts. The seventh, "Not just the rules of thumb", was added Oct 7, 2026 with the matching belief on the page. Render with `node scripts/render-kit.mjs beliefs/<file>.md`.
+**Beliefs on Sundays.** The seven Beliefs posts (Instagram only, `docs/instagram-kit/beliefs/`, one standalone kit each, in the order of the beliefs page) run every other Sunday, starting with "Built from frustration" on the Sunday before the restart (Oct 11, 2026) as the comeback post. The seventh, "Not just the rules of thumb", was added Oct 7, 2026 with the matching belief on the page. Render with `node scripts/render-kit.mjs beliefs/<file>.md`.
+
+**Free tools on the other Sundays (decided Oct 13, 2026).** Every caption ends on "Free tools you can use today", but until now no post showed them. The Sundays between Beliefs posts carry one standalone post each (`docs/instagram-kit/sundays/`, same kit format, story pattern and 14:30 CET slot as Beliefs; render with `node scripts/render-kit.mjs sundays/<file>.md`):
+
+| Sunday | Post |
+|---|---|
+| Oct 18 | Inflation calculator (the newest tool; pairs with the purchasing power ideas in the restart run) |
+| Oct 25 | Beliefs 2 |
+| Nov 1 | Languages: the site and all four tools in Hindi and Spanish |
+| Nov 8 | Beliefs 3 |
+| Nov 15 | Net worth calculator |
+| Nov 22 | Beliefs 4 |
+| Nov 29 | Loan comparison |
+| Dec 6 | Beliefs 5 |
+| Dec 13 | Monte Carlo simulator |
+| Dec 20 | Beliefs 6 |
+| Dec 27 | No feed post, stories only (the week between Christmas and New Year) |
+| Jan 3, 2027 | Beliefs 7, the last |
+
+Rules for these posts:
+- **Three slides for a tool post** (the languages post has two). What the tool answers; one worked example, computed with the tool's own maths and labelled illustrative; what it can't see, with the privacy fact. Caption and stories carry the rest.
+- **The privacy fact, exactly:** calculations run in your browser and the numbers you type are not sent anywhere. Never "no data leaves your browser": the pages fetch exchange rates and count anonymous pageviews.
+- **The tools are live, the planner is not.** Say "free tools at nidhi.today", never "nidhi now does" anything. No ask beyond save; the link is stated as a fact, never as "try it".
+- **Limits on the slide, not only on the page.** The Monte Carlo post says it is not a forecast and names its return source; the loan post says APR rules differ by country and the result is a comparison, not a lender's quote; the inflation post says history is not a forecast.
+- **Every tool post mentions Hindi and Spanish** in one caption line, so a follower who reads either does not wait for the languages post.
+- **The languages post is one post for both languages,** framed as access, not identity: English caption, no identity, country or festival hashtags, no flags, Hindi and Spanish search terms only in the keyword block (§3 "Account-level cohort hygiene"). It says plainly that the lessons stay in English. A later locale (Czech) gets stories when it goes live and a feed post only in a later written plan; it is not teased before it ships.
+- **Link sticker and bio link** go to the tool page, not the blog, tagged `utm_source=instagram&utm_medium=social&utm_campaign=sunday_tools&utm_content=<tool>` (§9).
+
+After Beliefs 7 and these five posts, Sundays have no feed post until a new Sunday plan is written here.
 
 ### 2.2 Series 1 to 3 slots (record)
 
-How Discovery, Building and Psychology were scheduled: one feed post per blog post, Tuesday to Thursday. The holiday and Sunday rules below still apply to the two-angle run.
+How Discovery, Building and Psychology were scheduled: one feed post per blog post, Tuesday to Thursday. The holiday rules below still apply to the two-angle run; Sundays follow §2.1 (Beliefs every other Sunday), not the old Sunday note below.
 
 ### Primary slot — `14:30 CET · Tue / Wed / Thu`
 - EU afternoon scroll (end of lunch, early afternoon)
@@ -111,9 +139,10 @@ How Discovery, Building and Psychology were scheduled: one feed post per blog po
 - **Post normally** on Black Friday / shopping days (content has relevance).
 
 ### Sundays
-- Currently not posting on Sundays. Fine to continue.
-- Alternative: Sunday 18:00–20:00 CET ("Sunday scaries") is actually a strong save-rate window for financial content if ever reactivated.
-- Can also do story-only Sundays (reshare + polls + "Sunday reset" prompt).
+- Series 1 to 3 did not post on Sundays. From the two-angle restart, Sundays alternate between Beliefs and free tools posts (§2.1), at 14:30 CET.
+- After Beliefs 7, Sundays go back to no feed post until a new Sunday plan is written here.
+- Sunday 18:00 to 20:00 CET ("Sunday scaries") is a strong save-rate window for financial content; try it only as a deliberate timing test, so the Sunday results stay comparable.
+- A Sunday without a feed post can be story-only (reshare, polls, a "Sunday reset" prompt).
 
 ---
 
@@ -510,6 +539,7 @@ One per cascade max, on frame 1 (the announce frame). Hashtag sticker, small, tu
 
 ### Link targeting
 - All "learn more" / "full post" links → specific blog article for that post
+- Exception: the Sunday free tools posts (§2.1) link to the tool page itself, since the tool is the thing being shown
 - Bio link → swap daily to match the current day's post
 - **Recommended:** build a `/basics` hub page listing all 16 discovery posts — lets Post 16b ("Discovery Complete") point to a single durable URL
 
