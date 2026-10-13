@@ -80,6 +80,7 @@ export const en = {
       multiCurrencyNetWorth: 'Net worth calculator',
       loanComparison: 'Loan comparison',
       monteCarloSimulator: 'Monte Carlo simulator',
+      inflationCalculator: 'Inflation calculator',
       allTools: 'All free tools',
       about: 'About nidhi',
       beliefs: 'Our beliefs',
@@ -97,6 +98,7 @@ export const en = {
       multiCurrencyNetWorth: 'Net Worth Calculator',
       loanComparison: 'Loan Comparison',
       monteCarloSimulator: 'Monte Carlo Simulator',
+      inflationCalculator: 'Inflation Calculator',
       allTools: 'View all free tools',
     },
   },
@@ -116,6 +118,7 @@ export const en = {
       multiCurrencyNetWorth: 'Net worth calculator',
       loanComparison: 'Loan comparison',
       monteCarloSimulator: 'Monte Carlo simulator',
+      inflationCalculator: 'Inflation calculator',
       allTools: 'View all',
       home: 'Home',
       about: 'About nidhi',
@@ -450,11 +453,11 @@ export const en = {
     meta: {
       title: 'Free Personal Finance Tools and Calculators | nidhi',
       description:
-        'Free personal finance calculators: net worth in one currency or several, loan comparison and a Monte Carlo retirement simulator. No signup, no tracking, all calculations run in your browser.',
+        'Free personal finance calculators: net worth in one currency or several, loan comparison, inflation and a Monte Carlo retirement simulator. No signup, no tracking, all calculations run in your browser.',
       // The simulator is listed only once it is released, so the description must
       // not promise a card the page does not show.
       descriptionWithoutSimulator:
-        'Free personal finance calculators for net worth (in one currency or several) and loan comparison. No signup, no tracking, all calculations run in your browser.',
+        'Free personal finance calculators for net worth (in one currency or several), loan comparison and inflation. No signup, no tracking, all calculations run in your browser.',
     },
     schema: {
       breadcrumbHome: 'Home',
@@ -487,6 +490,12 @@ export const en = {
         title: 'Monte Carlo Simulator',
         desc: 'Play your savings forward thousands of times with returns from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it.',
         itemName: 'Monte Carlo Retirement Simulator',
+      },
+      inflation: {
+        kicker: 'Prices over time',
+        title: 'Inflation Calculator',
+        desc: 'See what an amount buys after years of inflation, what a price may cost later, and whether a raise keeps up, with yearly history for most countries from the World Bank.',
+        itemName: 'Inflation Calculator',
       },
     },
     how: {
@@ -618,6 +627,11 @@ export const en = {
         before:
           'Anonymous interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',
         strong: 'The amounts, years, fees and mix you enter are never sent.',
+      },
+      inflation: {
+        before:
+          "Anonymous interaction events on the inflation calculator: which question you pick (buying power later, cost later, past to today, keeping up), which currency and which country's history you pick, whether you use a country's average as the rate, whether you copy the shareable link, and whether you reset the form. Picking a country loads its history from nidhi.today itself, never from the World Bank. ",
+        strong: 'The amounts, rates and years you enter are never sent.',
       },
       // Two `<code>` elements in one sentence, so the component supplies both
       // and takes `middle` as the comma between them.
@@ -1149,6 +1163,7 @@ export const en = {
       netWorth: { name: 'Net worth calculator', desc: 'One currency or several.' },
       loanComparison: { name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
       monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
+      inflation: { name: 'Inflation calculator', desc: 'What money buys, over the years.' },
     },
   },
 

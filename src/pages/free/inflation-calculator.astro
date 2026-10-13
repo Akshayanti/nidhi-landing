@@ -1,0 +1,12 @@
+---
+/**
+ * The inflation calculator, at /free/inflation-calculator/.
+ *
+ * A thin wrapper, so that every language renders one component: the page
+ * itself is `src/components/pages/InflationCalculatorPage.astro`, and the
+ * other languages come through `src/pages/[locale]/free/inflation-calculator.astro`.
+ */
+import InflationCalculatorPage from '../../components/pages/InflationCalculatorPage.astro';
+---
+
+<InflationCalculatorPage locale="en" />

@@ -134,10 +134,14 @@ export const GROWTH_TOPICS: GrowthTopicDef[] = [
  * (`home.tools`) names and describes it. Keyed by URL, because that is how a
  * lesson names its `relatedTool`.
  */
-export const TOOLS: Record<string, { key: 'netWorth' | 'loanComparison' | 'monteCarlo'; preview: 'donut' | 'bars' | 'fan' }> = {
+export const TOOLS: Record<
+  string,
+  { key: 'netWorth' | 'loanComparison' | 'monteCarlo' | 'inflation'; preview: 'donut' | 'bars' | 'fan' | 'rise' }
+> = {
   '/free/multi-currency-net-worth/': { key: 'netWorth', preview: 'donut' },
   '/free/loan-comparison/': { key: 'loanComparison', preview: 'bars' },
   '/free/monte-carlo-simulator/': { key: 'monteCarlo', preview: 'fan' },
+  '/free/inflation-calculator/': { key: 'inflation', preview: 'rise' },
 };
 
 const withSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
@@ -240,7 +244,7 @@ export function resolveGrowthTopics(posts: HomePost[], now: Date): GrowthTopic[]
 
 export interface LessonToolPair {
   lesson: LessonLink;
-  tool: { href: string; key: 'netWorth' | 'loanComparison' | 'monteCarlo'; preview: 'donut' | 'bars' | 'fan' };
+  tool: { href: string } & (typeof TOOLS)[string];
 }
 
 /**

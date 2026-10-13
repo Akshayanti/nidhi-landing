@@ -197,6 +197,13 @@ const STATIC_PAGE_SOURCE = {
     'src/components/MonteCarloSimulator.tsx',
     'src/i18n/strings/tools/monteCarlo.ts',
   ],
+  'free/inflation-calculator': [
+    'src/components/pages/InflationCalculatorPage.astro',
+    'src/components/InflationCalculator.tsx',
+    'src/i18n/strings/tools/inflation.ts',
+    // The page quotes the World Bank's update date, so new data is a new page.
+    'src/data/inflation/worldbank.json',
+  ],
 };
 
 /**

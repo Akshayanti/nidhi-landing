@@ -323,6 +323,19 @@ and do translate.
 | portfolio mix | पोर्टफ़ोलियो का मिश्रण | The stock and bond split. |
 | rebalanced yearly | हर साल पुनर्संतुलित | Glossary: rebalancing is पुनर्संतुलन. |
 | run the simulation | सिम्युलेशन चलाएँ | |
+| inflation calculator | महँगाई कैलकुलेटर | The page title adds (Inflation Calculator) in Latin, rule 6, because that is what a reader searches for. |
+| raise (in pay) | वेतन वृद्धि | Not इंक्रीमेंट, which is the word for a fixed annual step rather than any raise. |
+| real rate (after inflation) | असली दर | Follows the glossary's असली रिटर्न. |
+| geometric average | ज्यामितीय औसत | Explained in the same sentence as "the steady rate with the same total effect". |
+| percentage point | प्रतिशत अंक | A short label may say अंक alone. |
+| scenario | परिदृश्य | |
+| forecast | पूर्वानुमान | |
+| basket (of goods and services, for CPI) | वस्तुओं और सेवाओं की टोकरी | How Indian CPI reporting says it. |
+| hyperinflation | हाइपरइन्फ़्लेशन | The loanword Indian news uses; अति-मुद्रास्फीति would break the महँगाई rule. |
+| statistics office | सांख्यिकी विभाग | |
+| the four questions (tabs) | आगे कितना ख़रीदा जा सकता है?, आगे कितने का हो सकता है?, बीते साल से आज तक, क्या बराबरी हो रही है? | The FAQ and the privacy notice quote them as written here. Possibility, not the future tense: a result is a scenario, never a forecast, so the tool's Hindi says सकता है where it could say सकेगा or होगा. |
+| recorded, observed (inflation figures) | दर्ज हुई, दर्ज | A country's past figures. Never असली, which this glossary keeps for "real" as in real return. |
+| euro area | यूरो क्षेत्र | The one region the country list cannot name through `Intl.DisplayNames`. |
 
 #### The currency names
 
@@ -376,6 +389,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | net worth calculator | शुद्ध संपत्ति कैलकुलेटर |
 | loan comparison | लोन की तुलना |
 | Monte Carlo simulator | मोंटे कार्लो सिम्युलेटर |
+| inflation calculator | महँगाई कैलकुलेटर |
 | our beliefs | हमारे सिद्धांत |
 | editorial policy | संपादकीय नीति |
 | privacy | प्राइवेसी |

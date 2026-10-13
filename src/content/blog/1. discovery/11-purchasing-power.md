@@ -28,6 +28,11 @@ referentialReading:
     url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
     type: "book"
 relatedSlugs: ["appreciation-vs-depreciation", "emergency-fund", "income-vs-wealth", "cash-flow-101", "liabilities"]
+relatedTool:
+  url: "/free/inflation-calculator"
+  label: "Inflation calculator"
+  cta: "See what an amount could buy in the years ahead, or what it bought in the past, at a rate you choose"
+  idea: "A rate that looks small adds up: at a steady 2.5%, 10,000 euros buys about 6,100 euros' worth after twenty years."
 faq:
   - question: "What is purchasing power?"
     answer: "Purchasing power is how much your money can actually buy, not the number printed on your account. If a basket of groceries costs 100 euros today and 110 next year, your purchasing power has fallen by roughly 10 percent even though your balance has not changed. The figure in your account is the nominal value; what it can buy is the real value. The two drift apart over time because prices tend to rise. This is why a fixed amount of cash left untouched for years quietly buys less and less, even when the digits on the screen stay exactly the same."

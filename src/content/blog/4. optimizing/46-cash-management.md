@@ -28,6 +28,11 @@ faq:
     answer: "There is a diminishing-returns point past which additional cash stops adding safety and starts costing real returns. A common rule of thumb: transactional bucket around one month of expenses, safety buffer around three to six months (people with volatile income often hold more, stable dual-earner households often less), and near-term-goal cash sized to actual near-term goals rather than to comfort. Cash beyond that tends to earn less than it might invested over long periods, though invested money can fall in value too. A large expense scheduled within a couple of years is usually treated as goal cash, not excess. Where the line sits also depends on job security, debts and how you would cope with a market fall."
 reelPromise: "The three cash buckets many households use, why chasing yield with a bond fund can cost more than it earns, and what actually happens to your savings account when rates change"
 relatedSlugs: ["emergency-fund", "cash-flow-forecasting", "liquidity", "purchasing-power"]
+relatedTool:
+  url: "/free/inflation-calculator"
+  label: "Inflation calculator"
+  cta: "See what a cash balance could buy in a few years if prices keep rising, and what return would keep up"
+  idea: "Cash at 0% against 2% inflation loses about 2% of what it can buy each year: on a €30,000 emergency fund, about €600 in the first year."
 referentialReading:
   - title: "Money Market Funds Explained"
     url: "https://www.investopedia.com/terms/m/money-marketfund.asp"

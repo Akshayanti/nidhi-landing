@@ -1,8 +1,8 @@
 /**
- * The three free tools' copy, in every language, one module each.
+ * The free tools' copy, in every language, one module each.
  *
  * The prose pages keep their copy in `../en.ts` and `../hi.ts`, next to all the
- * chrome. These three do not, for one reason: a calculator is the densest
+ * chrome. The tools do not, for one reason: a calculator is the densest
  * interface on the site. Each tool is several hundred short labels, chart
  * legends and FAQ answers that share words with one another and with nothing
  * else, so a tool reads better as one file than as a fifth of two very long
@@ -19,21 +19,25 @@
 import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from './loanComparison.ts';
 import { multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi } from './multiCurrencyNetWorth.ts';
 import { monteCarloEn, monteCarloEs, monteCarloHi } from './monteCarlo.ts';
+import { inflationEn, inflationEs, inflationHi } from './inflation.ts';
 
 export const toolsEn = {
   loanComparison: loanComparisonEn,
   multiCurrencyNetWorth: multiCurrencyNetWorthEn,
   monteCarlo: monteCarloEn,
+  inflation: inflationEn,
 };
 
 export const toolsHi = {
   loanComparison: loanComparisonHi,
   multiCurrencyNetWorth: multiCurrencyNetWorthHi,
   monteCarlo: monteCarloHi,
+  inflation: inflationHi,
 };
 
 export const toolsEs = {
   loanComparison: loanComparisonEs,
   multiCurrencyNetWorth: multiCurrencyNetWorthEs,
   monteCarlo: monteCarloEs,
+  inflation: inflationEs,
 };

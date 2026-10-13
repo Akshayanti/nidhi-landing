@@ -22,6 +22,7 @@ import {
 import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
 import { formatAmount, formatPercent } from '../utils/shared/formatAmount.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
+import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
@@ -81,7 +82,16 @@ const RISK_COLORS: Record<string, string> = PALETTE_RISK_COLORS;
  * shared state arrived, after a reset, and for rows added later. A shared
  * link's state decodes the same on every page.
  */
-export default function MultiCurrencyNetWorth({ strings, defaultCurrency }: { strings: Strings; defaultCurrency: string }) {
+export default function MultiCurrencyNetWorth({
+  strings,
+  defaultCurrency,
+  numberLocale,
+}: {
+  strings: Strings;
+  defaultCurrency: string;
+  /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
+  numberLocale: string;
+}) {
   const [rows, setRows] = useState<AssetRow[]>(() => makeDefaultRows(defaultCurrency));
   const [functionalCurrency, setFunctionalCurrency] = useState<string>(defaultCurrency);
   const [rates, setRates] = useState<Record<string, number> | null>(null);
@@ -350,6 +360,7 @@ export default function MultiCurrencyNetWorth({ strings, defaultCurrency }: { st
   const filledCount = rows.filter((r) => r.value.trim() !== '').length;
 
   return (
+    <NumberLocaleContext.Provider value={numberLocale}>
     <div className="mcnw-root">
       {/* ---- Toolbar ---- */}
       <div className="mcnw-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
@@ -613,6 +624,7 @@ export default function MultiCurrencyNetWorth({ strings, defaultCurrency }: { st
         />
       )}
     </div>
+    </NumberLocaleContext.Provider>
   );
 }
 
@@ -660,13 +672,12 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         <label htmlFor={valueId} className="mcnw-srOnly">
           {format(strings.row.valueAria, { index: index + 1 })}
         </label>
-        <input
+        <LocaleNumberInput
           id={valueId}
-          type="text"
           inputMode="decimal"
           className="mcnw-input"
           value={row.value}
-          onChange={(e) => onChange({ value: e.target.value })}
+          onValueChange={(v) => onChange({ value: v })}
           placeholder="50000"
           autoComplete="off"
         />

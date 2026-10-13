@@ -19,6 +19,7 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
+import { INFLATION_URL } from '../../utils/inflation/history.ts';
 import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
@@ -30,7 +31,7 @@ const { freeHub: hub } = dict(locale);
 
 const siteUrl = 'https://nidhi.today';
 
-type Preview = 'donut' | 'bars' | 'browse' | 'fan';
+type Preview = 'donut' | 'bars' | 'browse' | 'fan' | 'rise';
 type ToolKey = keyof typeof hub.tools;
 
 interface ToolSpec {
@@ -66,6 +67,12 @@ const specs: ToolSpec[] = [
         },
       ]
     : []),
+  {
+    key: 'inflation',
+    url: localizedPath(locale, INFLATION_URL),
+    preview: 'rise',
+    dataAttr: 'free-cta-inflation-calculator',
+  },
 ];
 
 const tools = specs.map((spec) => ({ ...spec, ...hub.tools[spec.key] }));
@@ -178,6 +185,17 @@ const collectionPageSchema = {
                   <path d="M 10 46 L 70 10 L 70 40 Z" fill="var(--chart-eur)" opacity="0.25" />
                   <path d="M 10 46 L 70 18 L 70 32 Z" fill="var(--chart-eur)" opacity="0.45" />
                   <path d="M 10 46 L 70 25" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" />
+                </svg>
+              )}
+              {tool.preview === 'rise' && (
+                <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  {/* Bars for what a fixed amount buys, shrinking, under a
+                      rising price line: inflation, without text. */}
+                  <rect x="12" y="22" width="9" height="26" rx="1.5" fill="var(--chart-usd)" opacity="0.85" />
+                  <rect x="27" y="28" width="9" height="20" rx="1.5" fill="var(--chart-usd)" opacity="0.7" />
+                  <rect x="42" y="33" width="9" height="15" rx="1.5" fill="var(--chart-usd)" opacity="0.55" />
+                  <rect x="57" y="37" width="9" height="11" rx="1.5" fill="var(--chart-usd)" opacity="0.4" />
+                  <path d="M 12 40 Q 40 34 68 12" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" />
                 </svg>
               )}
               {tool.preview === 'browse' && (

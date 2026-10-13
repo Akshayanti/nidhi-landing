@@ -18,7 +18,9 @@ import {
   MAX_VENDORS,
   MIN_VENDORS,
   VENDOR_LABELS,
+  canonicalLumpSums,
   decodeFromQueryString,
+  displayLumpSums,
   defaultGlobalState,
   encodeToQueryString,
   makeDefaultVendor,
@@ -30,6 +32,7 @@ import {
 } from '../utils/loan/url.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
+import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import {
   computeFromInput,
@@ -756,7 +759,16 @@ function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
  * language). It applies only when no shared state arrived; a shared link's
  * state decodes the same on every page.
  */
-export default function LoanCompare({ strings, defaultCurrency }: { strings: Strings; defaultCurrency: string }) {
+export default function LoanCompare({
+  strings,
+  defaultCurrency,
+  numberLocale,
+}: {
+  strings: Strings;
+  defaultCurrency: string;
+  /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
+  numberLocale: string;
+}) {
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
   const [hydrated, setHydrated] = useState(false);
@@ -951,6 +963,7 @@ export default function LoanCompare({ strings, defaultCurrency }: { strings: Str
   }, [vendors, globalState, strings.toolbar.copyPrompt]);
 
   return (
+    <NumberLocaleContext.Provider value={numberLocale}>
     <div className="lc-root">
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
@@ -1142,6 +1155,7 @@ export default function LoanCompare({ strings, defaultCurrency }: { strings: Str
         </p>
       </details>
     </div>
+    </NumberLocaleContext.Provider>
   );
 }
 
@@ -1275,13 +1289,12 @@ function VendorCard({
         <label className="lc-fieldLabel" htmlFor={id('principal')}>
           {strings.card.principal} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
         </label>
-        <input
+        <LocaleNumberInput
           id={id('principal')}
-          type="text"
           inputMode="decimal"
           className="lc-input"
           value={vendor.principal}
-          onChange={(e) => onChange({ principal: e.target.value })}
+          onValueChange={(v) => onChange({ principal: v })}
           aria-invalid={hasError || undefined}
           aria-required="true"
           aria-describedby={hasError ? errorId : undefined}
@@ -1293,13 +1306,12 @@ function VendorCard({
         <label className="lc-fieldLabel" htmlFor={id('rate')}>
           {strings.card.rate} <RequiredMark title={strings.card.requiredTitle} />
         </label>
-        <input
+        <LocaleNumberInput
           id={id('rate')}
-          type="text"
           inputMode="decimal"
           className="lc-input"
           value={vendor.annualRatePct}
-          onChange={(e) => onChange({ annualRatePct: e.target.value })}
+          onValueChange={(v) => onChange({ annualRatePct: v })}
           aria-invalid={hasError || undefined}
           aria-required="true"
           aria-describedby={hasError ? errorId : undefined}
@@ -1344,13 +1356,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('term')}>
             {strings.card.term} <RequiredMark title={strings.card.requiredTitle} />
           </label>
-          <input
+          <LocaleNumberInput
             id={id('term')}
-            type="text"
             inputMode="numeric"
             className="lc-input"
             value={vendor.termMonths}
-            onChange={(e) => onChange({ termMonths: e.target.value })}
+            onValueChange={(v) => onChange({ termMonths: v })}
             aria-invalid={hasError || undefined}
             aria-required="true"
             aria-describedby={hasError ? errorId : undefined}
@@ -1362,13 +1373,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('monthly')}>
             {strings.card.monthly} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
           </label>
-          <input
+          <LocaleNumberInput
             id={id('monthly')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.monthlyPayment}
-            onChange={(e) => onChange({ monthlyPayment: e.target.value })}
+            onValueChange={(v) => onChange({ monthlyPayment: v })}
             aria-invalid={hasError || undefined}
             aria-required="true"
             aria-describedby={hasError ? errorId : undefined}
@@ -1459,13 +1469,12 @@ function VendorCard({
               <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
                 {strings.card.initialFixed}
               </label>
-              <input
+              <LocaleNumberInput
                 id={id('initialFixedMonths')}
-                type="text"
                 inputMode="numeric"
                 className="lc-input"
                 value={vendor.initialFixedMonths}
-                onChange={(e) => onChange({ initialFixedMonths: e.target.value })}
+                onValueChange={(v) => onChange({ initialFixedMonths: v })}
                 autoComplete="off"
               />
               <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
@@ -1474,13 +1483,12 @@ function VendorCard({
               <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
                 {strings.card.subsequentRate}
               </label>
-              <input
+              <LocaleNumberInput
                 id={id('subsequentRatePct')}
-                type="text"
                 inputMode="decimal"
                 className="lc-input"
                 value={vendor.subsequentRatePct}
-                onChange={(e) => onChange({ subsequentRatePct: e.target.value })}
+                onValueChange={(v) => onChange({ subsequentRatePct: v })}
                 autoComplete="off"
               />
               <p className="lc-fieldHelp">
@@ -1496,13 +1504,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('fee')}>
             {strings.card.fee} <span className="lc-fieldHint">({currency})</span>
           </label>
-          <input
+          <LocaleNumberInput
             id={id('fee')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.feeMajor}
-            onChange={(e) => onChange({ feeMajor: e.target.value })}
+            onValueChange={(v) => onChange({ feeMajor: v })}
             autoComplete="off"
           />
         </div>
@@ -1510,13 +1517,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('pointsCost')}>
             {strings.card.pointsCost} <span className="lc-fieldHint">({currency})</span>
           </label>
-          <input
+          <LocaleNumberInput
             id={id('pointsCost')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.pointsCostMajor}
-            onChange={(e) => onChange({ pointsCostMajor: e.target.value })}
+            onValueChange={(v) => onChange({ pointsCostMajor: v })}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
@@ -1527,13 +1533,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('pointsReduction')}>
             {strings.card.pointsReduction}
           </label>
-          <input
+          <LocaleNumberInput
             id={id('pointsReduction')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.pointsRateReductionPct}
-            onChange={(e) => onChange({ pointsRateReductionPct: e.target.value })}
+            onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
@@ -1545,13 +1550,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('extra')}>
             {strings.card.extra} <span className="lc-fieldHint">({currency})</span>
           </label>
-          <input
+          <LocaleNumberInput
             id={id('extra')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.extraMonthly}
-            onChange={(e) => onChange({ extraMonthly: e.target.value })}
+            onValueChange={(v) => onChange({ extraMonthly: v })}
             autoComplete="off"
           />
         </div>
@@ -1559,12 +1563,13 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('lumpSums')}>
             {strings.card.lumps}
           </label>
-          <input
+          <LocaleNumberInput
+            toCanonical={canonicalLumpSums}
+            toDisplay={displayLumpSums}
             id={id('lumpSums')}
-            type="text"
             className="lc-input"
             value={vendor.lumpSumsEncoded}
-            onChange={(e) => onChange({ lumpSumsEncoded: e.target.value })}
+            onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
             autoComplete="off"
             spellCheck={false}
             placeholder="12:5000;36:3000"
@@ -1584,13 +1589,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
             {strings.card.penaltyPct}
           </label>
-          <input
+          <LocaleNumberInput
             id={id('prepayPct')}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={vendor.prepayPenaltyPct}
-            onChange={(e) => onChange({ prepayPenaltyPct: e.target.value })}
+            onValueChange={(v) => onChange({ prepayPenaltyPct: v })}
             autoComplete="off"
           />
         </div>
@@ -1598,13 +1602,12 @@ function VendorCard({
           <label className="lc-fieldLabel" htmlFor={id('prepayUntil')}>
             {strings.card.penaltyUntil}
           </label>
-          <input
+          <LocaleNumberInput
             id={id('prepayUntil')}
-            type="text"
             inputMode="numeric"
             className="lc-input"
             value={vendor.prepayPenaltyUntilMonth}
-            onChange={(e) => onChange({ prepayPenaltyUntilMonth: e.target.value })}
+            onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
@@ -2422,12 +2425,11 @@ function HorizonSection({
           aria-valuetext={months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
-        <input
-          type="text"
+        <LocaleNumberInput
           inputMode="numeric"
           className="lc-input lc-horizonInput"
           value={horizonMonths}
-          onChange={(e) => handleHorizonChange(e.target.value)}
+          onValueChange={(v) => handleHorizonChange(v)}
           aria-label={strings.horizon.inputAria}
         />
       </div>
@@ -2602,14 +2604,13 @@ function RefinanceSection({
 
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={atMonthId}>{strings.refi.atMonth}</label>
-          <input
+          <LocaleNumberInput
             id={atMonthId}
-            type="text"
             inputMode="numeric"
             className="lc-input"
             value={state.refiAtMonth}
-            onChange={(e) => {
-              onChange({ refiAtMonth: e.target.value });
+            onValueChange={(v) => {
+              onChange({ refiAtMonth: v });
               trackRefiChange('refiAtMonth');
             }}
           />
@@ -2617,14 +2618,13 @@ function RefinanceSection({
 
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={newRateId}>{strings.refi.newRate}</label>
-          <input
+          <LocaleNumberInput
             id={newRateId}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={state.refiNewRatePct}
-            onChange={(e) => {
-              onChange({ refiNewRatePct: e.target.value });
+            onValueChange={(v) => {
+              onChange({ refiNewRatePct: v });
               trackRefiChange('refiNewRatePct');
             }}
           />
@@ -2632,14 +2632,13 @@ function RefinanceSection({
 
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={newTermId}>{strings.refi.newTerm}</label>
-          <input
+          <LocaleNumberInput
             id={newTermId}
-            type="text"
             inputMode="numeric"
             className="lc-input"
             value={state.refiNewTermMonths}
-            onChange={(e) => {
-              onChange({ refiNewTermMonths: e.target.value });
+            onValueChange={(v) => {
+              onChange({ refiNewTermMonths: v });
               trackRefiChange('refiNewTermMonths');
             }}
           />
@@ -2649,14 +2648,13 @@ function RefinanceSection({
           <label className="lc-fieldLabel" htmlFor={newFeeId}>
             {strings.refi.newFee} <span className="lc-fieldHint">({currency})</span>
           </label>
-          <input
+          <LocaleNumberInput
             id={newFeeId}
-            type="text"
             inputMode="decimal"
             className="lc-input"
             value={state.refiNewFeeMajor}
-            onChange={(e) => {
-              onChange({ refiNewFeeMajor: e.target.value });
+            onValueChange={(v) => {
+              onChange({ refiNewFeeMajor: v });
               trackRefiChange('refiNewFeeMajor');
             }}
           />

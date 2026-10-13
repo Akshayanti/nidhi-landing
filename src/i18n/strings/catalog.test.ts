@@ -176,6 +176,7 @@ const IDENTICAL_OK_ES = new Set<string>([
   'tools.loanComparison.island.currencies.EUR',
   'tools.multiCurrencyNetWorth.island.currencies.EUR',
   'tools.monteCarlo.island.currencies.EUR',
+  'tools.inflation.island.currencies.EUR',
 ]);
 
 /**
