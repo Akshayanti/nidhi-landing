@@ -62,6 +62,14 @@ const inputId = `subscribe-email-${variant}`;
             />
             <button type="submit" class="subscribe-button">{t.button}</button>
           </div>
+          {/* Shown before anything is sent, so a typo can be caught. */}
+          <div class="subscribe-confirm" data-confirm hidden>
+            <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
+            <div class="subscribe-confirm-actions">
+              <button type="button" class="subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+              <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
+            </div>
+          </div>
           <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
           <p class="subscribe-privacy">
             {t.privacyBefore}<a href={privacyHref}>{t.privacyLink}</a>{t.privacyAfter}
@@ -129,6 +137,14 @@ const inputId = `subscribe-email-${variant}`;
             <button type="submit" class="subscribe-button">{t.button}</button>
           </form>
         </div>
+        {/* Shown before anything is sent, so a typo can be caught. */}
+        <div class="subscribe-confirm" data-confirm hidden>
+          <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
+          <div class="subscribe-confirm-actions">
+            <button type="button" class="subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+            <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
+          </div>
+        </div>
         {showInEnglish && <p class="subscribe-compact-note" role="note">{t.inEnglish}</p>}
         <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
         {isDev && !endpoint && (
@@ -171,7 +187,7 @@ const inputId = `subscribe-email-${variant}`;
   )}
 </section>
 
-<script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, sending: t.sending, notConfigured: t.notConfigured, error: t.error, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
+<script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, confirmYes: t.confirmYes, sending: t.sending, notConfigured: t.notConfigured, error: t.error, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
   (function () {
     // Single localStorage key shared across all SubscribeSection instances
     // and the confirm/unsubscribe pages. See /privacy.
@@ -255,6 +271,10 @@ const inputId = `subscribe-email-${variant}`;
     var endpoint = form.getAttribute('data-endpoint') || '';
     var button = form.querySelector('button[type="submit"]');
     var input = form.querySelector('input[type="email"]');
+    var confirmEl = section && section.querySelector('[data-confirm]');
+    var confirmEmail = confirmEl && confirmEl.querySelector('[data-confirm-email]');
+    var yesBtn = confirmEl && confirmEl.querySelector('[data-confirm-yes]');
+    var changeBtn = confirmEl && confirmEl.querySelector('[data-confirm-change]');
 
     // Reentrancy guard. `button.disabled` already blocks clicks, but Enter-key
     // submits and programmatic `.submit()` calls can sneak past that, and we
@@ -331,7 +351,31 @@ const inputId = `subscribe-email-${variant}`;
       if (preEl)  preEl.hidden = false;
       setStatus('', 'idle');
       if (button) { button.disabled = false; button.textContent = msg.button; }
+      closeConfirm();
       submitting = false;
+    }
+
+    // The check before sending: the typed address, a yes and a change.
+    // While it shows, the address can't be edited, so what is confirmed is
+    // what is sent.
+    var pendingEmail = '';
+    function openConfirm(email) {
+      if (!confirmEl) return false;
+      pendingEmail = email;
+      if (confirmEmail) confirmEmail.textContent = email;
+      if (input) input.readOnly = true;
+      if (button) button.hidden = true;
+      confirmEl.hidden = false;
+      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; try { yesBtn.focus(); } catch (_) {} }
+      return true;
+    }
+    function closeConfirm() {
+      pendingEmail = '';
+      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; }
+      if (changeBtn) changeBtn.disabled = false;
+      if (confirmEl) confirmEl.hidden = true;
+      if (input) input.readOnly = false;
+      if (button) button.hidden = false;
     }
 
     // In-session success view. We still show the "Check your inbox" panel
@@ -405,8 +449,30 @@ const inputId = `subscribe-email-${variant}`;
         return;
       }
 
+      setStatus('', 'idle');
+      if (!openConfirm(email)) send(email);
+    });
+
+    if (changeBtn) {
+      changeBtn.addEventListener('click', function () {
+        if (submitting) return;
+        closeConfirm();
+        if (input) { try { input.focus(); input.select(); } catch (_) {} }
+      });
+    }
+    if (yesBtn) {
+      yesBtn.addEventListener('click', function () {
+        // The address shown, not the input's value now: autofill can still
+        // change a read-only field.
+        send(pendingEmail);
+      });
+    }
+
+    async function send(email) {
+      if (submitting || !email) return;
       submitting = true;
-      if (button) { button.disabled = true; button.textContent = msg.sending; }
+      if (yesBtn) { yesBtn.disabled = true; yesBtn.textContent = msg.sending; }
+      if (changeBtn) changeBtn.disabled = true;
       setStatus('', 'idle');
 
       // Identify the browser's anon PostHog distinct_id to the server-side
@@ -450,6 +516,8 @@ const inputId = `subscribe-email-${variant}`;
         // status:'confirmed' and hides the CTA across the site.
         clearDismissState();
         form.reset();
+        closeConfirm();
+        if (changeBtn) changeBtn.disabled = false;
         submitting = false;
         showSuccessInSession(email);
         if (window.posthog) {
@@ -458,9 +526,10 @@ const inputId = `subscribe-email-${variant}`;
       }).catch(function () {
         submitting = false;
         setStatus(msg.error, 'error');
-        if (button) { button.disabled = false; button.textContent = msg.button; }
+        if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; }
+        if (changeBtn) changeBtn.disabled = false;
       });
-    });
+    }
 
     // bfcache: hitting back after submitting can restore the DOM with the
     // button stuck disabled as "Sending…" or the success panel showing the
@@ -546,6 +615,30 @@ const inputId = `subscribe-email-${variant}`;
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
   }
+
+  .subscribe-confirm { margin-top: var(--space-3); text-align: left; }
+  .subscribe-confirm[hidden], .subscribe-button[hidden] { display: none; }
+  .subscribe-confirm-text {
+    margin: 0 0 var(--space-3);
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+    overflow-wrap: anywhere;
+  }
+  .subscribe--full .subscribe-confirm-text { color: white; }
+  .subscribe-confirm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .subscribe-confirm-change {
+    background: none;
+    border: none;
+    padding: var(--space-2) 0;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .subscribe--full .subscribe-confirm-change { color: rgba(255, 255, 255, 0.85); }
+  .subscribe--full .subscribe-confirm-change:hover:not(:disabled) { color: white; }
+  .subscribe-confirm-change:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
 
   .subscribe-status {
     font-size: 0.85rem;

@@ -33,9 +33,11 @@
  * Endpoints (relative to /exec URL):
  *
  *   POST ?action=waitlist   form body: email, source
- *                            Appends a row with status=confirmed (no
- *                            double-opt-in). Responds { ok: true } on any
- *                            valid email.
+ *                            Appends a row (single opt-in) unless the
+ *                            address is already on the list, in which case
+ *                            nothing is written. Responds { ok: true } on
+ *                            any valid email either way, so the response
+ *                            never reveals who is on the list.
  *
  *   GET  ?action=health     Per-dependency ok/error JSON report.
  */
@@ -209,15 +211,72 @@ function handleWaitlist_(e) {
   var source = String((e.parameter && e.parameter.source) || '').slice(0, 200);
   if (!isValidEmail_(email)) return jsonResponse_({ ok: false, error: 'invalid_email' });
 
-  var now = new Date();
-  sheet_().appendRow([email, source, now]);
+  // The lock makes check-then-append atomic, so two submits arriving
+  // together (a double click, or both boxes on one page) can't both append.
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  var added = false;
+  try {
+    var sh = sheet_();
+    dedupeOnce_(sh);
+    if (!hasEmail_(sh, email)) {
+      sh.appendRow([email, source, new Date()]);
+      added = true;
+    }
+  } finally {
+    lock.releaseLock();
+  }
 
-  trackPosthog_('waitlist_signup', distinctIdForEmail_(email), {
-    source: source,
-    email_domain: emailDomain_(email),
-  });
+  // A repeat changes nothing and sends nothing, and gets the same reply as a
+  // new signup: the response must not say whether an address is on the list.
+  if (added) {
+    trackPosthog_('waitlist_signup', distinctIdForEmail_(email), {
+      source: source,
+      email_domain: emailDomain_(email),
+    });
+  }
 
   return jsonResponse_({ ok: true });
+}
+
+/** Whether the (normalised) address already has a row. */
+function hasEmail_(sh, email) {
+  var last = sh.getLastRow();
+  if (last < 2) return false;
+  var values = sh.getRange(2, COL.email, last - 1, 1).getValues();
+  for (var i = 0; i < values.length; i++) {
+    if (normalizeEmail_(values[i][0]) === email) return true;
+  }
+  return false;
+}
+
+/**
+ * One-time cleanup of rows stored before duplicates were blocked: keeps the
+ * first (earliest) row for each address and deletes the later ones. Runs on
+ * the first signup after this version is deployed, under the same lock, then
+ * records that it ran so it never scans again.
+ */
+var DEDUPE_FLAG_ = 'waitlist_deduped_v1';
+
+function dedupeOnce_(sh) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty(DEDUPE_FLAG_)) return;
+  var last = sh.getLastRow();
+  if (last >= 2) {
+    var values = sh.getRange(2, COL.email, last - 1, 1).getValues();
+    var seen = {};
+    var later = [];
+    for (var i = 0; i < values.length; i++) {
+      var key = normalizeEmail_(values[i][0]);
+      if (!key) continue;
+      if (seen[key]) later.push(i + 2);
+      else seen[key] = true;
+    }
+    // Bottom up, so deleting a row doesn't shift the ones still to delete.
+    for (var j = later.length - 1; j >= 0; j--) sh.deleteRow(later[j]);
+    console.log('[waitlist] removed ' + later.length + ' duplicate row(s)');
+  }
+  props.setProperty(DEDUPE_FLAG_, new Date().toISOString());
 }
 
 // ============================================================================

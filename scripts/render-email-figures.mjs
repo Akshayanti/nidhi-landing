@@ -101,12 +101,53 @@ function extractCssBlock(css, startMarker, endMarker) {
   return css.slice(start, end > 0 ? end : css.length);
 }
 
+/**
+ * Every `:root { ... }` rule at the top level of the stylesheet, in order.
+ * Rules nested in @media / @supports are skipped, so a dark-mode
+ * `@media (prefers-color-scheme: dark) { :root { ... } }` never leaks in.
+ * Comments are blanked first so braces inside them don't skew the depth.
+ */
+function topLevelRootBlocks(css) {
+  const text = css.replace(/\/\*[\s\S]*?\*\//g, (c) => " ".repeat(c.length));
+  const blocks = [];
+  let depth = 0;
+  let ruleStart = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === "{") {
+      if (depth === 0) {
+        const selector = text.slice(ruleStart, i).trim();
+        if (selector === ":root") {
+          let d = 1;
+          let j = i + 1;
+          for (; j < text.length && d > 0; j++) {
+            if (text[j] === "{") d++;
+            else if (text[j] === "}") d--;
+          }
+          blocks.push(`:root ${css.slice(i, j)}`);
+          i = j - 1;
+          ruleStart = j;
+          continue;
+        }
+      }
+      depth++;
+    } else if (ch === "}") {
+      depth--;
+      if (depth === 0) ruleStart = i + 1;
+    } else if (ch === ";" && depth === 0) {
+      ruleStart = i + 1;
+    }
+  }
+  return blocks;
+}
+
 function buildBrandCss(globalCss) {
-  // :root brand variables (light-mode palette only — emails always render
-  // against the light theme; the [data-theme="dark"] override block is
-  // intentionally NOT included).
-  const rootMatch = globalCss.match(/:root\s*\{[\s\S]*?\}/);
-  const rootVars = rootMatch ? rootMatch[0] : "";
+  // :root brand variables (light-mode only: emails always render against
+  // the light theme; the [data-theme="dark"] override blocks are
+  // intentionally NOT included). global.css splits them across several
+  // top-level :root blocks (raw palette first, then the --color-* / --font-*
+  // tokens the figures use), so every one is kept, not just the first.
+  const rootVars = topLevelRootBlocks(globalCss).join("\n");
 
   // Figure container + .fig-* class library + figcaption (we don't use the
   // figcaption rule in this script, but pulling the whole "Inline figures"

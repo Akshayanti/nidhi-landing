@@ -901,12 +901,17 @@ export const en = {
     successAfter: '. Click the button in that email to finish subscribing. Takes a second.',
     /** Stands in for the address until the script fills in the one typed. */
     yourEmail: 'your email',
-    hintBefore: 'No email after a minute? Check spam, or ',
+    /** Covers an address that was already subscribed, which gets no new email: the form never says which case it is. */
+    hintBefore: 'No email after a minute? If this address was already subscribed, nothing changes and no new email comes. Otherwise check spam, or ',
     hintRetry: 'try a different address',
     hintAfter: '.',
     compactSentBefore: 'Confirmation link sent to ',
     compactSentAfter: '.',
     compactRetry: 'Use a different email',
+    /** The check shown before anything is sent, with the typed address after it. */
+    confirmPrompt: 'Is this the right address?',
+    confirmYes: 'Yes, subscribe',
+    confirmChange: 'Change it',
     undo: 'Undo',
     dismissedPermanent: 'Thanks for subscribing! We won’t show this banner on this device again.',
     dismissedLater: 'We’ll check back later.',
@@ -931,7 +936,12 @@ export const en = {
     privacyLink: 'Privacy policy',
     privacyAfter: '.',
     successTitle: "You're on the list",
-    successBody: "We'll send you one email when access opens. That's it.",
+    /** Also true for an address already on the list: the page never says which case it is. */
+    successBody: "We'll send you one email when access opens. That's it. An address already on the list stays on it once.",
+    /** The check shown before anything is sent, with the typed address after it. */
+    confirmPrompt: 'Is this the right address?',
+    confirmYes: 'Yes, notify me',
+    confirmChange: 'Change it',
     /** Shown on the button while the request is in flight. */
     sending: 'Sending…',
     /** Shown when the build has no endpoint configured, so a signup cannot land. */
