@@ -945,6 +945,7 @@ export const es: Dict = {
       netWorth: { name: 'Calculadora de patrimonio neto', desc: 'Una moneda o varias.' },
       loanComparison: { name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
       monteCarlo: { name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
+      inflation: { name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
     },
   },
 

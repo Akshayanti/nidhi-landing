@@ -1163,6 +1163,7 @@ export const en = {
       netWorth: { name: 'Net worth calculator', desc: 'One currency or several.' },
       loanComparison: { name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
       monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
+      inflation: { name: 'Inflation calculator', desc: 'What money buys, over the years.' },
     },
   },
 

@@ -384,6 +384,9 @@ const faqSchema = {
                     {p.tool.preview === 'bars' && (
                       <svg viewBox="0 0 80 48"><path d="M 6 8 C 30 12, 50 26, 74 42" stroke="var(--chart-eur)" stroke-width="3" fill="none" stroke-linecap="round" /><path d="M 6 8 C 26 16, 44 30, 64 42" stroke="var(--chart-usd)" stroke-width="3" fill="none" stroke-dasharray="5 4" stroke-linecap="round" /></svg>
                     )}
+                    {p.tool.preview === 'rise' && (
+                      <svg viewBox="0 0 80 48"><rect x="8" y="32" width="10" height="10" rx="1.5" fill="var(--chart-eur)" opacity="0.35" /><rect x="22" y="27" width="10" height="15" rx="1.5" fill="var(--chart-eur)" opacity="0.5" /><rect x="36" y="21" width="10" height="21" rx="1.5" fill="var(--chart-eur)" opacity="0.65" /><rect x="50" y="14" width="10" height="28" rx="1.5" fill="var(--chart-eur)" opacity="0.8" /><rect x="64" y="6" width="10" height="36" rx="1.5" fill="var(--chart-eur)" /><path d="M 8 10 C 30 14, 50 24, 74 30" stroke="var(--chart-usd)" stroke-width="2.5" fill="none" stroke-dasharray="5 4" stroke-linecap="round" /></svg>
+                    )}
                     {p.tool.preview === 'fan' && (
                       <svg viewBox="0 0 80 48"><path d="M 6 40 L 74 6 L 74 36 Z" fill="var(--chart-eur)" opacity="0.22" /><path d="M 6 40 L 74 14 L 74 28 Z" fill="var(--chart-eur)" opacity="0.4" /><path d="M 6 40 L 74 21" stroke="var(--chart-eur)" stroke-width="2.5" fill="none" /></svg>
                     )}
