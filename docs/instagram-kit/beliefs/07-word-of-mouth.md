@@ -23,7 +23,7 @@ No VC money. No growth team. No billboard on the highway, and no retargeting cam
 
 If a lesson helped, share it. If a tool was useful, tell someone. For an independent project, that isn't a small thing. It is how it grows.
 
-That's the last of the beliefs series. Next Sunday, back to money.
+That's the last of the beliefs series. The money posts carry on, Monday to Saturday.
 
 → Share this with someone who would use a calmer finance tool
 
