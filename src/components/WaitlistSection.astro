@@ -73,6 +73,14 @@ const inputId = `${idPrefix}-email`;
           />
           <button type="submit" class="waitlist-button" data-cta={ctaLabel}>{ctaLabel}</button>
         </div>
+        <!-- Shown before anything is sent, so a typo can be caught. -->
+        <div class="waitlist-confirm" data-confirm hidden>
+          <p class="waitlist-confirm-text">{waitlist.confirmPrompt} <strong data-confirm-email></strong></p>
+          <div class="waitlist-confirm-actions">
+            <button type="button" class="waitlist-button" data-confirm-yes data-attr={`${idPrefix}-confirm-yes`}>{waitlist.confirmYes}</button>
+            <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr={`${idPrefix}-confirm-change`}>{waitlist.confirmChange}</button>
+          </div>
+        </div>
         <p id={statusId} class="waitlist-status" role="status" aria-live="polite"></p>
         <p class="waitlist-privacy">
           {waitlist.privacyBefore}<a href={localizedPath(locale, '/privacy/')}>{waitlist.privacyLink}</a>{waitlist.privacyAfter}
@@ -102,7 +110,7 @@ const inputId = `${idPrefix}-email`;
   </div>
 </section>
 
-<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error }}>
+<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error, confirmYesLabel: waitlist.confirmYes }}>
   (function () {
     var STORAGE_KEY = 'nidhi-waitlist-signedup';
 
@@ -134,6 +142,10 @@ const inputId = `${idPrefix}-email`;
     var button = form.querySelector('button[type="submit"]');
     var input = form.querySelector('input[type="email"]');
     var ctaLabel = (button && button.getAttribute('data-cta')) || '';
+    var confirmEl = form.querySelector('[data-confirm]');
+    var confirmEmail = confirmEl && confirmEl.querySelector('[data-confirm-email]');
+    var yesBtn = confirmEl && confirmEl.querySelector('[data-confirm-yes]');
+    var changeBtn = confirmEl && confirmEl.querySelector('[data-confirm-change]');
 
     var submitting = false;
 
@@ -153,7 +165,31 @@ const inputId = `${idPrefix}-email`;
       if (preEl)  preEl.hidden = false;
       setStatus('', 'idle');
       if (button) { button.disabled = false; button.textContent = ctaLabel; }
+      closeConfirm();
       submitting = false;
+    }
+
+    // The check before sending: the typed address, a yes and a change.
+    // While it shows, the address can't be edited, so what is confirmed is
+    // what is sent.
+    var pendingEmail = '';
+    function openConfirm(email) {
+      if (!confirmEl) return false;
+      pendingEmail = email;
+      if (confirmEmail) confirmEmail.textContent = email;
+      if (input) input.readOnly = true;
+      if (button) button.hidden = true;
+      confirmEl.hidden = false;
+      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; try { yesBtn.focus(); } catch (_) {} }
+      return true;
+    }
+    function closeConfirm() {
+      pendingEmail = '';
+      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; }
+      if (changeBtn) changeBtn.disabled = false;
+      if (confirmEl) confirmEl.hidden = true;
+      if (input) input.readOnly = false;
+      if (button) button.hidden = false;
     }
 
     function showSuccess() {
@@ -178,8 +214,30 @@ const inputId = `${idPrefix}-email`;
         return;
       }
 
+      setStatus('', 'idle');
+      if (!openConfirm(email)) send(email);
+    });
+
+    if (changeBtn) {
+      changeBtn.addEventListener('click', function () {
+        if (submitting) return;
+        closeConfirm();
+        if (input) { try { input.focus(); input.select(); } catch (_) {} }
+      });
+    }
+    if (yesBtn) {
+      yesBtn.addEventListener('click', function () {
+        // The address shown, not the input's value now: autofill can still
+        // change a read-only field.
+        send(pendingEmail);
+      });
+    }
+
+    function send(email) {
+      if (submitting || !email) return;
       submitting = true;
-      if (button) { button.disabled = true; button.textContent = sending; }
+      if (yesBtn) { yesBtn.disabled = true; yesBtn.textContent = sending; }
+      if (changeBtn) changeBtn.disabled = true;
       setStatus('', 'idle');
 
       if (window.posthog) {
@@ -202,6 +260,8 @@ const inputId = `${idPrefix}-email`;
         body: body.toString(),
       }).then(function () {
         form.reset();
+        closeConfirm();
+        if (changeBtn) changeBtn.disabled = false;
         submitting = false;
         showSuccess();
         if (window.posthog) {
@@ -210,9 +270,10 @@ const inputId = `${idPrefix}-email`;
       }).catch(function () {
         submitting = false;
         setStatus(errorMessage, 'error');
-        if (button) { button.disabled = false; button.textContent = ctaLabel; }
+        if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; }
+        if (changeBtn) changeBtn.disabled = false;
       });
-    });
+    }
 
     window.addEventListener('pageshow', function (e) {
       if (e.persisted) applyState();
@@ -329,6 +390,30 @@ const inputId = `${idPrefix}-email`;
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
   }
+
+  .waitlist-confirm { margin-top: var(--space-3); }
+  .waitlist-confirm[hidden] { display: none; }
+  .waitlist-confirm-text {
+    margin: 0 0 var(--space-3);
+    font-size: 0.95rem;
+    color: white;
+    overflow-wrap: anywhere;
+  }
+  .waitlist-confirm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .waitlist-confirm-change {
+    background: none;
+    border: none;
+    padding: var(--space-2) 0;
+    font: inherit;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .waitlist-confirm-change:hover:not(:disabled) { color: white; }
+  .waitlist-confirm-change:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .waitlist-button[hidden] { display: none; }
+  .waitlist--default .waitlist-confirm-actions { justify-content: center; }
 
   .waitlist-status {
     font-size: 0.85rem;
@@ -459,6 +544,10 @@ const inputId = `${idPrefix}-email`;
   [data-theme="dark"] .waitlist--hero .waitlist-status--error {
     color: var(--palette-deep-orange-dark);
   }
+
+  .waitlist--hero .waitlist-confirm-text { color: var(--color-text-primary); }
+  .waitlist--hero .waitlist-confirm-change { color: var(--color-deep-blue); }
+  .waitlist--hero .waitlist-confirm-change:focus-visible { outline-color: var(--color-teal); }
 
   .waitlist--hero .waitlist-privacy {
     color: var(--color-text-muted);
