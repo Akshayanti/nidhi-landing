@@ -6,7 +6,13 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { formatForInput, numberSeparators, parseLocaleNumber } from './parseLocaleNumber.ts';
+import {
+  canonicalNumber,
+  displayNumber,
+  formatForInput,
+  numberSeparators,
+  parseLocaleNumber,
+} from './parseLocaleNumber.ts';
 
 const EN = 'en';
 const HI = 'en-IN';
@@ -34,7 +40,10 @@ describe('English and Hindi pages: comma groups, point is the decimal', () => {
   it('reads Indian lakh grouping', () => {
     assert.equal(parseLocaleNumber('10,00,000', HI), 1_000_000);
     assert.equal(parseLocaleNumber('1,25,00,000.50', HI), 12_500_000.5);
-    assert.equal(parseLocaleNumber('10,00,000', EN), null, 'groups of two are Indian grouping only');
+    // No western number groups in twos, so an Indian reader on the English page is read too.
+    assert.equal(parseLocaleNumber('10,00,000', EN), 1_000_000);
+    assert.equal(parseLocaleNumber('10,00,000', ES), 1_000_000);
+    assert.equal(parseLocaleNumber('10.00.000', ES), null, 'lakh grouping is written with commas');
   });
 
   it('reads "10.000" as ten, since the point is the decimal mark here', () => {
@@ -86,7 +95,6 @@ describe('what is rejected rather than guessed', () => {
     ['', EN],
     ['abc', EN],
     ['1,23,4', EN],
-    ['10,00,000', EN],
     ['1,2,3', EN],
     ['1.2.3', ES],
     ['12.34.567', ES],
@@ -145,5 +153,50 @@ describe('grouping is one system or the other, never a mix', () => {
     assert.equal(parseLocaleNumber('1,00,00,000', 'hi'), 10_000_000);
     assert.equal(parseLocaleNumber('1,234,567', 'hi'), 1_234_567);
     assert.equal(parseLocaleNumber('1.234.567', 'es'), 1_234_567);
+  });
+});
+
+describe('canonicalNumber and displayNumber: the input box and plain-number state', () => {
+  it('turns what a reader types into JavaScript\'s own spelling', () => {
+    assert.equal(canonicalNumber('10.000', ES), '10000');
+    assert.equal(canonicalNumber('2,5', ES), '2.5');
+    assert.equal(canonicalNumber('1.234,56', ES), '1234.56');
+    assert.equal(canonicalNumber('10,000', EN), '10000');
+    assert.equal(canonicalNumber('10,00,000', HI), '1000000');
+    assert.equal(canonicalNumber('6.5', EN), '6.5');
+    assert.equal(canonicalNumber('  ', ES), '');
+    assert.equal(canonicalNumber('2,', ES), '2', 'a decimal mark still being typed');
+    assert.equal(canonicalNumber('2.', EN), '2');
+    assert.equal(canonicalNumber('.5', EN), '0.5', 'a leading decimal mark, as the tools always read it');
+    assert.equal(canonicalNumber(',5', ES), '0.5');
+  });
+
+  it('marks text that is not a number as NaN rather than reading it another way', () => {
+    assert.equal(canonicalNumber('1,23,4', EN), 'NaN');
+    assert.equal(canonicalNumber('abc', ES), 'NaN');
+    assert.equal(Number(canonicalNumber('1.2.3', ES)), NaN);
+  });
+
+  it('shows plain numbers in the page\'s style', () => {
+    assert.equal(displayNumber('2.5', ES), '2,5');
+    assert.equal(displayNumber('5.125', ES), '5,125');
+    assert.equal(displayNumber('250000', ES), '250000');
+    assert.equal(displayNumber('2.5', EN), '2.5');
+    assert.equal(displayNumber('', ES), '');
+    assert.equal(displayNumber('1.123456789012', ES), '1,123456789012', 'every digit kept');
+    assert.equal(displayNumber('007', EN), '007', 'shown as stored');
+  });
+
+  it('shows an older link\'s comma-grouped value as the number those tools read', () => {
+    assert.equal(displayNumber('250,000', ES), '250000');
+    assert.equal(displayNumber('250,000', EN), '250000');
+  });
+
+  it('round-trips: what is shown reads back as the same number', () => {
+    for (const locale of [EN, HI, ES]) {
+      for (const v of ['0', '6.5', '5.125', '250000', '1234.56', '0.01']) {
+        assert.equal(canonicalNumber(displayNumber(v, locale), locale), v, `${v} on ${locale}`);
+      }
+    }
   });
 });

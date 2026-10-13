@@ -29,6 +29,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
 import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
+import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
@@ -195,7 +196,9 @@ const faqSchema = {
       </p>
     </header>
 
-    <LoanCompare client:load strings={tool.island} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]} />
+    <LoanCompare client:load strings={tool.island} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
+      numberLocale={PROSE_NUMBER_LOCALE[locale]}
+    />
 
     <details class="lc-faq" aria-labelledby="lc-faq-h">
       <summary id="lc-faq-h" class="lc-faqHeading">

@@ -45,6 +45,7 @@
 
 import { DEFAULT_CURRENCY } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
+import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 
 /**
  * Where a shared link's state lives. Links carry it after the #, which
@@ -256,6 +257,36 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
     out.push({ month: Math.floor(month), amountMajor: amount });
   }
   return out;
+}
+
+/**
+ * The lump-sum box's text as the plain "12:5000;36:3000" the tool keeps, with
+ * each amount read the way the page writes numbers ("12:5.000,50" on a Spanish
+ * page). A pair that does not read is kept as typed, and `parseLumpSums` skips it.
+ */
+export function canonicalLumpSums(raw: string, locale: string): string {
+  return raw
+    .split(';')
+    .map((pair) => {
+      const colon = pair.indexOf(':');
+      if (colon < 0) return pair;
+      const month = canonicalNumber(pair.slice(0, colon), locale);
+      const amount = canonicalNumber(pair.slice(colon + 1), locale);
+      return month === 'NaN' || amount === 'NaN' ? pair : `${month}:${amount}`;
+    })
+    .join(';');
+}
+
+/** The tool's "12:5000;36:3000" as the page writes numbers: "12:5000,5" on a Spanish page. */
+export function displayLumpSums(value: string, locale: string): string {
+  return value
+    .split(';')
+    .map((pair) => {
+      const colon = pair.indexOf(':');
+      if (colon < 0) return pair;
+      return `${pair.slice(0, colon)}:${displayNumber(pair.slice(colon + 1), locale)}`;
+    })
+    .join(';');
 }
 
 /** Returns '' for an empty list so the encoder can drop the key entirely. */

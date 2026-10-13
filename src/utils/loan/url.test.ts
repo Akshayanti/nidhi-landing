@@ -30,6 +30,8 @@ import {
   publishableState,
   type GlobalState,
   type VendorInput,
+  canonicalLumpSums,
+  displayLumpSums,
 } from './url.ts';
 
 /** Test helper: build a GlobalState that differs from default only in
@@ -706,5 +708,24 @@ describe('page starting currency and the language switch', () => {
     const inr = publishableState(typed, defaultGlobalState('INR'), 'INR');
     assert.equal(inr, encodeToQueryString(typed, defaultGlobalState('INR')));
     assert.equal(decodeFromQueryString(inr).global.currency, 'INR');
+  });
+});
+
+describe('lump-sum box: read as the page writes numbers', () => {
+  it('reads Spanish amounts and keeps the plain format', () => {
+    assert.equal(canonicalLumpSums('12:5.000;36:2.500,50', 'es'), '12:5000;36:2500.5');
+    assert.equal(canonicalLumpSums('12:5,000; 36:3000', 'en'), '12:5000;36:3000');
+    assert.deepEqual(parseLumpSums(canonicalLumpSums('12:5.000', 'es')), [{ month: 12, amountMajor: 5000 }]);
+  });
+
+  it('keeps a pair still being typed as it is', () => {
+    assert.equal(canonicalLumpSums('12:5000;3', 'es'), '12:5000;3');
+    assert.equal(canonicalLumpSums('12:5000;36:', 'es'), '12:5000;36:');
+  });
+
+  it('shows the plain format in the page\'s style', () => {
+    assert.equal(displayLumpSums('12:5000;36:2500.5', 'es'), '12:5000;36:2500,5');
+    assert.equal(displayLumpSums('12:5000;36:2500.5', 'en'), '12:5000;36:2500.5');
+    assert.equal(displayLumpSums('', 'es'), '');
   });
 });
