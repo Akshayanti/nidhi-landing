@@ -22,7 +22,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
-import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
+import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
@@ -169,6 +169,7 @@ const faqSchema = {
 
     <MultiCurrencyNetWorth client:load strings={tool.island} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
+      amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
     <aside class="mcnw-accessCta" aria-labelledby="mcnw-access-cta-h">

@@ -51,6 +51,44 @@ describe('formatAmount', () => {
   });
 });
 
+describe('formatAmount on a page with its own amount style', () => {
+  it('writes every currency the Spanish way, with its narrow symbol after', () => {
+    assert.equal(formatAmount(1_058_721, 'EUR', false, 'es'), '1.058.721\u00a0€');
+    assert.equal(formatAmount(1_058_721, 'GBP', false, 'es'), '1.058.721\u00a0£');
+    assert.equal(formatAmount(1_058_721, 'INR', false, 'es'), '1.058.721\u00a0₹');
+    assert.equal(formatAmount(1500, 'EUR', false, 'es'), '1500\u00a0€');
+  });
+
+  it('never writes "10,000" on a Spanish page, in any currency', () => {
+    for (const c of CURRENCIES) {
+      for (const compact of [false, true]) {
+        const s = formatAmount(2_163_515, c.code, compact, 'es');
+        assert.doesNotMatch(s, /\d,\d{3}\b/, `${c.code}: ${s}`);
+        assert.doesNotMatch(s, /^\D/, `${c.code} starts with its symbol: ${s}`);
+      }
+    }
+  });
+
+  it('keeps short forms in K and M with a decimal comma', () => {
+    assert.equal(formatAmount(2_163_515, 'EUR', true, 'es'), '2,16M\u00a0€');
+    assert.equal(formatAmount(547_008, 'EUR', true, 'es'), '547K\u00a0€');
+  });
+
+  it('writes billions as "mil M", never "B" (billón is a million millions)', () => {
+    assert.equal(formatAmount(2.5e9, 'EUR', true, 'es'), '2,5 mil M\u00a0€');
+    assert.equal(formatAmount(2.5e9, 'EUR', true), '€2.5B');
+  });
+
+  it('writes percentages the same way', () => {
+    assert.equal(formatPercent(44.1, 'CZK', 1, 'es'), '44,1\u00a0%');
+  });
+
+  it('keeps the currency\'s own conventions without one', () => {
+    assert.equal(formatAmount(1_058_721, 'EUR', false, null), '€1,058,721');
+    assert.equal(formatAmount(1_058_721, 'INR', false, null), '₹10,58,721');
+  });
+});
+
 describe('formatProseAmount', () => {
   it('spells an amount the way the lessons do, whatever the currency', () => {
     assert.equal(formatProseAmount(9_000, 'EUR'), '€9,000');

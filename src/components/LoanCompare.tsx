@@ -3,6 +3,7 @@ import {
   CURRENCIES,
   DEFAULT_CURRENCY,
   equityAtMonth,
+  amountStyle,
   formatApr,
   formatMoney,
   getCurrency,
@@ -30,7 +31,7 @@ import {
   type GlobalState,
   type VendorInput,
 } from '../utils/loan/url.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
@@ -76,8 +77,8 @@ function months(count: number, s: Strings['months']): string {
  * that swallows the loan) as the English "n/a"; the tool says it in the
  * reader's language instead.
  */
-function aprText(apr: number, currency: string, s: Strings): string {
-  return Number.isFinite(apr) ? formatApr(apr, getCurrency(currency).locale) : s.results.aprNa;
+function aprText(apr: number, currency: string, s: Strings, amountLocale: string | null): string {
+  return Number.isFinite(apr) ? formatApr(apr, amountStyle(currency, amountLocale).locale) : s.results.aprNa;
 }
 
 /**
@@ -241,6 +242,7 @@ function niceScale(v: number): { top: number; step: number; count: number } {
 }
 
 function BalanceChart({ results, colors, vendorNames, currency, strings }: ChartProps) {
+  const { formatAmount, formatMoney } = useMoney();
   const titleId = useId();
   const descId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -513,6 +515,7 @@ interface SplitChartProps {
 }
 
 function SplitChart({ schedule, currency, vendorName, vendorColor, strings }: SplitChartProps) {
+  const { formatAmount, formatMoney } = useMoney();
   // Phones get a narrower drawing, so the labels stay readable once it is
   // scaled down to the screen instead of shrinking to a few pixels.
   const phone = usePhone();
@@ -763,11 +766,14 @@ export default function LoanCompare({
   strings,
   defaultCurrency,
   numberLocale,
+  amountLocale,
 }: {
   strings: Strings;
   defaultCurrency: string;
   /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
   numberLocale: string;
+  /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
+  amountLocale: string | null;
 }) {
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
@@ -964,6 +970,7 @@ export default function LoanCompare({
 
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
+    <AmountLocaleContext.Provider value={amountLocale}>
     <div className="lc-root">
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
@@ -1005,7 +1012,7 @@ export default function LoanCompare({
           <p className="lc-fieldPreview" aria-live="polite">
             <span className="lc-fieldPreviewLabel">{strings.toolbar.sample}</span>{' '}
             <span className="lc-fieldPreviewValue">
-              {formatMoney(toMinor(12345678.9, currency), currency)}
+              {formatMoney(toMinor(12345678.9, currency), currency, amountLocale)}
             </span>
           </p>
         </div>
@@ -1155,6 +1162,7 @@ export default function LoanCompare({
         </p>
       </details>
     </div>
+    </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );
 }
@@ -1201,6 +1209,7 @@ function VendorCard({
   onChange,
   onRemove,
 }: VendorCardProps) {
+  const { formatMoney, amountLocale } = useMoney();
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
@@ -1651,7 +1660,7 @@ function VendorCard({
               />
               <ResultRow
                 label={strings.results.apr}
-                value={aprText(result.aprNominal, currency, strings)}
+                value={aprText(result.aprNominal, currency, strings, amountLocale)}
                 hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
               />
               <ResultRow
@@ -1796,6 +1805,7 @@ interface DeltaSummaryProps {
 }
 
 function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
+  const { formatMoney, amountLocale } = useMoney();
   const valid = results
     .map((r, i) => ({
       r,
@@ -1891,7 +1901,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
               // solver. Six decimals is well below anything we'd ever
               // display in the UI.
               get={(r) => Math.round(r.aprNominal * 1_000_000)}
-              format={(n) => aprText(n / 1_000_000, currency, strings)}
+              format={(n) => aprText(n / 1_000_000, currency, strings, amountLocale)}
             />
             <DeltaRow
               label={strings.delta.totalInterest}
@@ -2358,6 +2368,7 @@ function HorizonSection({
   onHorizonChange,
   strings,
 }: HorizonSectionProps) {
+  const { formatMoney } = useMoney();
   const horizonId = useId();
   // Debounced engagement signal. We don't want to fire one event per
   // slider tick (a single drag would send dozens), so we schedule a
@@ -2526,6 +2537,7 @@ function RefinanceSection({
   onChange,
   strings,
 }: RefinanceSectionProps) {
+  const { formatMoney } = useMoney();
   const vendorSelectId = useId();
   const atMonthId = useId();
   const newRateId = useId();

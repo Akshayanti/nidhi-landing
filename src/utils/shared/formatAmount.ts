@@ -3,7 +3,7 @@
  * illustrative figures the site quotes in its own writing. The two are not the
  * same rule; see `formatProseAmount` for the second.
  */
-import { getCurrency } from '../loan/math.ts';
+import { amountStyle } from '../loan/math.ts';
 import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**
@@ -13,19 +13,26 @@ import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/con
  * notation would write "Mio.", "mln" or "万" on an English page. English
  * locales already abbreviate in English (and en-IN in lakh and crore), so
  * they use it as is.
+ *
+ * `amountLocale` is the page's own number style where it has one
+ * (`TOOL_AMOUNT_LOCALE`): every currency is then written in that style, with
+ * its narrow symbol ("1.058.721 €", "1,06M £" on a Spanish page), and a
+ * Spanish page writes billions as "mil M".
  */
-export function formatAmount(value: number, code: string, compact = false): string {
-  const { locale } = getCurrency(code);
+export function formatAmount(value: number, code: string, compact = false, amountLocale?: string | null): string {
+  const { locale, display } = amountStyle(code, amountLocale);
   const v = Math.round(value);
   if (!compact) {
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, maximumFractionDigits: 0 }).format(v);
   }
   if (locale.startsWith('en-')) {
     return new Intl.NumberFormat(locale, { style: 'currency', currency: code, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
   }
   const abs = Math.abs(v);
-  const [div, suffix] = abs >= 1e9 ? [1e9, 'B'] : abs >= 1e6 ? [1e6, 'M'] : abs >= 1e3 ? [1e3, 'K'] : [1, ''];
-  const parts = new Intl.NumberFormat(locale, { style: 'currency', currency: code, maximumSignificantDigits: 3 }).formatToParts(v / div);
+  // A Spanish reader takes "B" for billón, a million millions: "2,5 mil M €".
+  const billion = amountLocale?.startsWith('es') ? ' mil M' : 'B';
+  const [div, suffix] = abs >= 1e9 ? [1e9, billion] : abs >= 1e6 ? [1e6, 'M'] : abs >= 1e3 ? [1e3, 'K'] : [1, ''];
+  const parts = new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 3 }).formatToParts(v / div);
   let lastNumeric = -1;
   parts.forEach((p, i) => {
     if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;
@@ -34,11 +41,12 @@ export function formatAmount(value: number, code: string, compact = false): stri
 }
 
 /**
- * A percentage in the chosen currency's number conventions, so it matches the
- * amounts beside it ("44,1 %" next to "1 000 Kč", "44.1%" next to "$50,000.00").
+ * A percentage in the same number conventions as the amounts beside it: the
+ * chosen currency's ("44,1 %" next to "1 000 Kč", "44.1%" next to "$50,000.00"),
+ * or the page's own where it has one (`amountLocale`).
  */
-export function formatPercent(pct: number, code: string, digits = 1): string {
-  const { locale } = getCurrency(code);
+export function formatPercent(pct: number, code: string, digits = 1, amountLocale?: string | null): string {
+  const { locale } = amountStyle(code, amountLocale);
   const v = Number.isFinite(pct) ? pct / 100 : 0;
   return new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
 }

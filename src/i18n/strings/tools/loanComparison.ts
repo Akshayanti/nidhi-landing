@@ -1384,11 +1384,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué monedas se admiten?',
-              a: 'Se admiten veintinueve monedas, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, centroeuropeas, latinoamericanas y del sudeste asiático. Cada moneda se muestra con sus propias convenciones locales. Por ejemplo, la INR usa la agrupación india en lakhs y crores (1,23,45,678) y el JPY no usa decimales.',
+              a: 'Se admiten veintinueve monedas, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, centroeuropeas, latinoamericanas y del sudeste asiático. Todas las cantidades se escriben como se escriben las cifras en español, con el símbolo o el código detrás (1.234.567,80 €, 1.234.567,80 ₹), y cada moneda conserva sus decimales: el JPY, por ejemplo, no usa decimales.',
             },
             {
               q: '¿Qué significa aquí «varias monedas»?',
-              a: 'Significa que la calculadora da formato a los datos y a los resultados según las convenciones de la moneda que elijas. El símbolo, los decimales y la agrupación de dígitos cambian según la configuración regional. Los cálculos son idénticos: un préstamo a tasa fija que se amortiza se comporta igual tanto si llamas a las unidades dólares como rupias o yenes. Todos los préstamos de una misma comparación comparten una moneda, porque comparar cuotas nominales en monedas distintas (sin un tipo de cambio actualizado) sería engañoso.',
+              a: 'Significa que la calculadora trabaja en la moneda que elijas: los resultados llevan su símbolo y sus decimales, escritos como se escriben las cifras en español. Los cálculos son idénticos: un préstamo a tasa fija que se amortiza se comporta igual tanto si llamas a las unidades dólares como rupias o yenes. Todos los préstamos de una misma comparación comparten una moneda, porque comparar cuotas nominales en monedas distintas (sin un tipo de cambio actualizado) sería engañoso.',
             },
           ],
         },

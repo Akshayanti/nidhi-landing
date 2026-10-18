@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, getCurrency } from '../utils/loan/math.ts';
+import { CURRENCIES, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
@@ -110,13 +111,14 @@ function loadHistory(url: string): Promise<CompactHistory> {
 
 // ===========================================================================
 // Formatting. Amounts follow the chosen currency's own conventions, as on the
-// other tools, and so do the percentages beside them.
+// other tools, unless the page has its own amount style (`TOOL_AMOUNT_LOCALE`).
+// Percentages follow the page.
 // ===========================================================================
 
 /**
  * A percentage in the page's own number style ("1.94%", "1,94 %"), since it
- * sits in the page's sentences. Amounts keep the chosen currency's style, as on
- * the other tools.
+ * sits in the page's sentences. Amounts follow `amountStyle`, as on the other
+ * tools.
  */
 function pct(v: number, locale: string, digits = 2, signed = false): string {
   return new Intl.NumberFormat(locale, {
@@ -128,20 +130,22 @@ function pct(v: number, locale: string, digits = 2, signed = false): string {
 }
 
 /** What the reader typed, to the cent where they typed cents. */
-function typedAmount(v: number, code: string): string {
-  return new Intl.NumberFormat(getCurrency(code).locale, {
+function typedAmount(v: number, code: string, amountLocale: string | null): string {
+  const { locale, display } = amountStyle(code, amountLocale);
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: code,
+    currencyDisplay: display,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(v);
 }
 
 /** A result, rounded and said as "about", "more than" or "less than". */
-function aboutText(v: number, code: string, strings: Strings): string {
-  if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code) });
-  if (v > 0 && roundAbout(v) < 1) return t(strings.results.lessThan, { amount: formatAmount(1, code) });
-  return t(strings.results.about, { amount: formatAmount(roundAbout(v), code) });
+function aboutText(v: number, code: string, strings: Strings, amountLocale: string | null): string {
+  if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code, false, amountLocale) });
+  if (v > 0 && roundAbout(v) < 1) return t(strings.results.lessThan, { amount: formatAmount(1, code, false, amountLocale) });
+  return t(strings.results.about, { amount: formatAmount(roundAbout(v), code, false, amountLocale) });
 }
 
 function yearsPhrase(n: number, strings: Strings): string {
@@ -233,6 +237,7 @@ export default function InflationCalculator({
   initialHistory,
   historyUrl,
   numberLocale,
+  amountLocale,
 }: {
   strings: Strings;
   defaultCurrency: string;
@@ -241,6 +246,8 @@ export default function InflationCalculator({
   initialHistory: { code: string; series: CompactSeries } | null;
   historyUrl: string;
   numberLocale: string;
+  /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
+  amountLocale: string | null;
 }) {
   const start = defaultState(defaultCurrency, defaultCountry);
   const [form, setForm] = useState<FormState>(() => toForm(start, numberLocale));
@@ -420,6 +427,7 @@ export default function InflationCalculator({
       : strings.questions[form.mode];
 
   return (
+    <AmountLocaleContext.Provider value={amountLocale}>
     <div className="ifc-root">
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="ifc-tabs" role="tablist" aria-label={strings.tabsLabel} onKeyDown={onTabKey}>
@@ -578,6 +586,7 @@ export default function InflationCalculator({
         numberLocale={numberLocale}
       />
     </div>
+    </AmountLocaleContext.Provider>
   );
 }
 
@@ -878,11 +887,12 @@ function computeAnswer(
   series: Series | null,
   historyStatus: 'none' | 'loading' | 'ready' | 'error',
   numberLocale: string,
+  amountLocale: string | null,
 ): Answer | 'loading' {
   const r = strings.results;
   const code = s.currency;
   const A = s.amount;
-  const amount = typedAmount(A, code);
+  const amount = typedAmount(A, code, amountLocale);
   const options = fromYearsFor(series);
   const byHistory = s.mode === 'past' && !!country && (historyStatus === 'loading' || (historyStatus === 'ready' && options.length > 0));
 
@@ -895,9 +905,9 @@ function computeAnswer(
     const value = A * factor;
     const average = (Math.pow(factor, 1 / span) - 1) * 100;
     return {
-      headline: aboutText(value, code, strings),
+      headline: aboutText(value, code, strings, amountLocale),
       sentences: [
-        t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings), to }),
+        t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
         t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings), average: pct(average, numberLocale, 1) }),
       ],
       band: [],
@@ -925,7 +935,7 @@ function computeAnswer(
       headline: t(r.keepHeadline, { real: pct(same ? 0 : real, numberLocale, 2, true) }),
       sentences: [
         t(lead, { growth: pct(g, numberLocale), rate: pct(i, numberLocale), real: pct(Math.abs(real), numberLocale) }),
-        t(r.keepAfter, { years, amount, growth: pct(g, numberLocale), result: aboutText(after, code, strings) }),
+        t(r.keepAfter, { years, amount, growth: pct(g, numberLocale), result: aboutText(after, code, strings, amountLocale) }),
         t(r.keepExact, { growth: pct(g, numberLocale), rate: pct(i, numberLocale), shortcut: `${pct(g, numberLocale)} − ${pct(i, numberLocale)} = ${pct(g - i, numberLocale)}` }),
       ],
       band: sides.map((rate) => t(r.bandKeep, { rate: pct(rate, numberLocale), real: pct(realRate(g, rate), numberLocale, 2, true) })),
@@ -942,9 +952,9 @@ function computeAnswer(
   const value = answer(formula, A, i, n);
   const template = mode === 'buy' ? r.buy : mode === 'cost' ? r.cost : r.past;
   return {
-    headline: aboutText(value, code, strings),
-    sentences: [t(template, { rate: pct(i, numberLocale), amount, years, result: aboutText(value, code, strings) })],
-    band: sides.map((rate) => t(r.bandItem, { rate: pct(rate, numberLocale), result: aboutText(answer(formula, A, rate, n), code, strings) })),
+    headline: aboutText(value, code, strings, amountLocale),
+    sentences: [t(template, { rate: pct(i, numberLocale), amount, years, result: aboutText(value, code, strings, amountLocale) })],
+    band: sides.map((rate) => t(r.bandItem, { rate: pct(rate, numberLocale), result: aboutText(answer(formula, A, rate, n), code, strings, amountLocale) })),
     method: r.method,
     points: answerPath(formula, A, i, n).map((v, x) => ({ x, value: v })),
     calendar: false,
@@ -972,7 +982,8 @@ function Results({
   narrow: boolean;
   numberLocale: string;
 }) {
-  const result = computeAnswer(state, strings, country, series, historyStatus, numberLocale);
+  const { amountLocale } = useMoney();
+  const result = computeAnswer(state, strings, country, series, historyStatus, numberLocale, amountLocale);
 
   // Each recalculation is announced once it has settled: the rounded headline
   // and its sentence, in a polite live region that is otherwise invisible. Not
@@ -1047,6 +1058,7 @@ function LineChart({
   strings: Strings;
   narrow: boolean;
 }) {
+  const { formatAmount, amountLocale } = useMoney();
   const titleId = useId();
   const descId = useId();
   if (points.length < 2) return null;
@@ -1083,8 +1095,8 @@ function LineChart({
   const start = points[0];
   const end = points[points.length - 1];
   const desc = t(strings.chart.desc, {
-    start: aboutText(start.value, code, strings),
-    end: aboutText(end.value, code, strings),
+    start: aboutText(start.value, code, strings, amountLocale),
+    end: aboutText(end.value, code, strings, amountLocale),
     from: xLabel(start.x),
     to: xLabel(end.x),
   });

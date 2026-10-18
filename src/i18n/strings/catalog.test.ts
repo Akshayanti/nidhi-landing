@@ -179,13 +179,6 @@ const IDENTICAL_OK_ES = new Set<string>([
   'tools.inflation.island.currencies.EUR',
 ]);
 
-/**
- * Strings whose figure is the example being shown, not a figure in the
- * sentence's own style: the loan FAQ shows how the tool writes rupees, in
- * lakhs and crores.
- */
-const AMOUNT_EXAMPLE_OK_ES = new Set<string>(['tools.loanComparison.page.faq.groups.6.items.0.a']);
-
 describe('the Spanish catalog is translated, not copied', () => {
   it('leaves no English word untranslated', () => {
     const copied = ES.filter(({ path, value }) => {
@@ -205,7 +198,7 @@ describe('the Spanish catalog is translated, not copied', () => {
   it('writes amounts the Spanish way, never as €10,000', () => {
     // docs/i18n/es-glossary.md rule 6: in Spanish, "10,000" reads as ten with
     // three decimals. A literal amount in the Spanish copy is "10.000 €".
-    const english = ES.filter(({ path, value }) => !AMOUNT_EXAMPLE_OK_ES.has(path) && /€\s?\d|\d,\d{3}\b/.test(value)).map((l) => `${l.path}: ${l.value}`);
+    const english = ES.filter(({ value }) => /€\s?\d|\d,\d{3}\b/.test(value)).map((l) => `${l.path}: ${l.value}`);
     assert.deepEqual(english, []);
   });
 });

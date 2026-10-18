@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   MAX_FEE_PCT,
@@ -31,7 +31,9 @@ import type { Dict } from '../i18n/strings/types.ts';
 // `{stocksMean}` and the rest, and the values come from the constants in
 // `../utils/monte-carlo/math.ts`, so the prose and the model cannot drift
 // apart. Amounts stay the currency's own business (formatAmount); path counts
-// keep the fixed grouping the rest of the site uses.
+// keep the fixed grouping the rest of the site uses. A page with its own amount
+// style (`TOOL_AMOUNT_LOCALE`, Spanish) writes all three its way, since
+// "10,000 paths" reads as ten to a Spanish reader.
 // ---------------------------------------------------------------------------
 
 type Strings = Dict['tools']['monteCarlo']['island'];
@@ -53,15 +55,19 @@ function track(event: string, properties?: Record<string, unknown>) {
 // Formatting
 // ---------------------------------------------------------------------------
 
-function formatShare(share: number): string {
-  return `${Math.round(share * 100)}%`;
+function formatShare(share: number, amountLocale: string | null): string {
+  if (!amountLocale) return `${Math.round(share * 100)}%`;
+  return new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: 0 }).format(share);
 }
 
-const grouped = (n: number) => n.toLocaleString('en-US');
+const grouped = (n: number, amountLocale: string | null) => n.toLocaleString(amountLocale ?? 'en-US');
 
 /** A return setting's description, with the rates it quotes filled in from the model. */
-function returnTip(strings: Strings, s: ReturnSetting): string {
-  const pct = (r: number) => `${(r * 100).toFixed(1).replace(/\.0$/, '')}%`;
+function returnTip(strings: Strings, s: ReturnSetting, amountLocale: string | null): string {
+  const pct = (r: number) =>
+    amountLocale
+      ? new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: 1 }).format(r)
+      : `${(r * 100).toFixed(1).replace(/\.0$/, '')}%`;
   return format(strings.returnTips[s], { stocks: pct(QUOTED_RATES[s].stocks), bonds: pct(QUOTED_RATES[s].bonds) });
 }
 
@@ -228,10 +234,13 @@ export default function MonteCarloSimulator({
   strings,
   netWorthHref,
   defaultCurrency,
+  amountLocale,
 }: {
   strings: Strings;
   netWorthHref: string;
   defaultCurrency: string;
+  /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
+  amountLocale: string | null;
 }) {
   const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
@@ -349,6 +358,7 @@ export default function MonteCarloSimulator({
   }
 
   return (
+    <AmountLocaleContext.Provider value={amountLocale}>
     <div className="mcs-root">
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="mcs-grid">
@@ -420,7 +430,7 @@ export default function MonteCarloSimulator({
             {t(strings.settings.summary, {
               returns: strings.returns[form.returns],
               fees: errors.feePct ? '?' : form.feePct,
-              paths: grouped(form.paths),
+              paths: grouped(form.paths, amountLocale),
             })}
           </p>
         </div>
@@ -452,14 +462,14 @@ export default function MonteCarloSimulator({
                     }}
                   />
                   <span>{strings.returns[s]}</span>
-                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{returnTip(strings, s)}</span>
+                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{returnTip(strings, s, amountLocale)}</span>
                 </label>
               ))}
             </div>
             {/* The chosen setting's description, visible for touch screens
                 where there is no hover. Screen readers get it from the
                 tooltip through aria-describedby, so it is hidden from them. */}
-            <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns)}</span>
+            <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
           </fieldset>
           <NumberField
             id={ids.feePct}
@@ -484,7 +494,7 @@ export default function MonteCarloSimulator({
               }}
             >
               {RUN_OPTIONS.map((n) => (
-                <option key={n} value={n}>{grouped(n)}</option>
+                <option key={n} value={n}>{grouped(n, amountLocale)}</option>
               ))}
             </select>
             <span className="mcs-hint" id={`${ids.paths}-hint`}>{strings.settings.pathsHint}</span>
@@ -528,7 +538,7 @@ export default function MonteCarloSimulator({
             {hasErrors
               ? strings.actions.fix
               : running
-                ? t(strings.actions.running, { paths: grouped(settled.paths) })
+                ? t(strings.actions.running, { paths: grouped(settled.paths, amountLocale) })
                 : ''}
           </span>
         </div>
@@ -536,6 +546,7 @@ export default function MonteCarloSimulator({
 
       <Results result={result} state={shownState} code={shownState.currency} busy={running} strings={strings} />
     </div>
+    </AmountLocaleContext.Provider>
   );
 }
 
@@ -580,6 +591,7 @@ function NumberField(props: {
  * results below say the same, so screen readers skip this copy.
  */
 function QuickResult({ result, state, busy, strings }: { result: SimulationResult; state: ToolState; busy: boolean; strings: Strings }) {
+  const { formatAmount } = useMoney();
   const code = state.currency;
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
@@ -610,6 +622,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
 }
 
 function Results({ result, state, code, busy, strings }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings }) {
+  const { formatAmount, amountLocale } = useMoney();
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
   const withdrawing = state.withdrawal > 0;
@@ -649,7 +662,7 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
           <p className="mcs-note">
             {strings.results.noteBefore}{' '}
             <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>
-            {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine) })}
+            {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine, amountLocale) })}
           </p>
         </>
       )}
@@ -666,7 +679,7 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
               years: state.withdrawYears,
             })}{' '}
             <strong>{inTen(result.lasted, strings)}</strong>
-            {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted) })}
+            {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted, amountLocale) })}
           </p>
           {result.medianRunOutYear !== null && (
             <p className="mcs-note">
@@ -677,8 +690,8 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
       )}
 
       <p className="mcs-caveat">
-        {t(strings.results.caveat, { paths: grouped(result.paths) })}
-        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths) })}
+        {t(strings.results.caveat, { paths: grouped(result.paths, amountLocale) })}
+        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, amountLocale) })}
       </p>
 
       {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
@@ -770,6 +783,7 @@ function spreadLabels(ys: number[], gap: number, min: number, max: number): numb
 }
 
 function Chart({ result, state, code, strings }: { result: SimulationResult; state: ToolState; code: string; strings: Strings }) {
+  const { formatAmount, amountLocale } = useMoney();
   const titleId = useId();
   const descId = useId();
   const gradId = useId();
@@ -835,7 +849,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
   ];
 
   const desc = t(strings.chart.desc, {
-    paths: grouped(result.paths),
+    paths: grouped(result.paths, amountLocale),
     years,
     low: formatAmount(end.p10, code),
     median: formatAmount(end.p50, code),

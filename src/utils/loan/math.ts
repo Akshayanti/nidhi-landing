@@ -45,7 +45,9 @@ const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [
    * "1 058 721 €" and Ireland "€1,058,721". This picks the English-speaking
    * eurozone, which is the one the site's own writing uses (`€10,000` in every
    * lesson, and `formatProseAmount` for the figures quoted in prose), so a
-   * reader never meets two spellings of the same euro amount.
+   * reader never meets two spellings of the same euro amount. A Spanish page
+   * writes every amount the Spanish way instead (`TOOL_AMOUNT_LOCALE`), which
+   * is how its prose writes them too.
    */
   { code: 'EUR', label: 'Euro (EUR)', locale: 'en-IE' },
   { code: 'GBP', label: 'British Pound (GBP)', locale: 'en-GB' },
@@ -131,15 +133,31 @@ export function fromMinor(units: number, currencyCode: string): number {
   return units / factor;
 }
 
+/**
+ * The locale and symbol style for a tool's amount: the page's own style when
+ * it has one, otherwise the currency's. A page style writes the narrow symbol
+ * ("$", "£", "₹"), since the Spanish default spells most currencies as a code
+ * ("1500 GBP") and the currency is already chosen beside the figure.
+ */
+export function amountStyle(code: string, amountLocale?: string | null): { locale: string; display: 'symbol' | 'narrowSymbol' } {
+  return amountLocale ? { locale: amountLocale, display: 'narrowSymbol' } : { locale: getCurrency(code).locale, display: 'symbol' };
+}
+
 /** Currencies that share the "$" symbol and need disambiguation. */
 const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);
 
-export function formatMoney(units: number, currencyCode: string): string {
-  const { code, locale } = getCurrency(currencyCode);
+/**
+ * `amountLocale` is the page's own number style where it has one
+ * (`TOOL_AMOUNT_LOCALE`); see `amountStyle` above.
+ */
+export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {
+  const { code } = getCurrency(currencyCode);
+  const { locale, display } = amountStyle(code, amountLocale);
   const value = fromMinor(units, code);
   const formatted = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: code,
+    currencyDisplay: display,
   }).format(value);
   return DOLLAR_CURRENCIES.has(code) ? `${formatted} ${code}` : formatted;
 }

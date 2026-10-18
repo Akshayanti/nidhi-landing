@@ -38,7 +38,7 @@ import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
 import { HISTORY_URL, INFLATION_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
 import { MAX_RATE, MIN_RATE } from '../../utils/inflation/math.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/inflation/url.ts';
-import { TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
+import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { CURRENCIES } from '../../utils/loan/math.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
@@ -192,6 +192,7 @@ const faqSchema = {
       initialHistory={initialHistory}
       historyUrl={HISTORY_URL}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
+      amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
     <aside class="ifcp-panel ifcp-notes" aria-labelledby="ifcp-notes-h">

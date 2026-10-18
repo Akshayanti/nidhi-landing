@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES, formatMoney } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/loan/math.ts';
 import {
   aggregate,
   getCurrencyLabel,
@@ -20,9 +20,9 @@ import {
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
 import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
-import { formatAmount, formatPercent } from '../utils/shared/formatAmount.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
+import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
@@ -86,11 +86,14 @@ export default function MultiCurrencyNetWorth({
   strings,
   defaultCurrency,
   numberLocale,
+  amountLocale,
 }: {
   strings: Strings;
   defaultCurrency: string;
   /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
   numberLocale: string;
+  /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
+  amountLocale: string | null;
 }) {
   const [rows, setRows] = useState<AssetRow[]>(() => makeDefaultRows(defaultCurrency));
   const [functionalCurrency, setFunctionalCurrency] = useState<string>(defaultCurrency);
@@ -361,6 +364,7 @@ export default function MultiCurrencyNetWorth({
 
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
+    <AmountLocaleContext.Provider value={amountLocale}>
     <div className="mcnw-root">
       {/* ---- Toolbar ---- */}
       <div className="mcnw-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
@@ -624,6 +628,7 @@ export default function MultiCurrencyNetWorth({
         />
       )}
     </div>
+    </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );
 }
@@ -748,6 +753,7 @@ interface ResultsPanelProps {
 }
 
 function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows }: ResultsPanelProps) {
+  const { formatMoney, formatPercent } = useMoney();
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
@@ -877,6 +883,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
  * these lines: a band says how big a share is, never what to do about it.
  */
 function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: { pos: ReturnType<typeof aggregate>['positions'][0]; functionalCurrency: string; hidePct?: boolean; strings: Strings }) {
+  const { amountLocale } = useMoney();
   if (pos.rateUnavailable) {
     return (
       <p className="mcnw-riskRec">
@@ -926,7 +933,9 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: {
   // so a 1% position doesn't render as "0.1%" with confusing precision.
   const absPct = Math.abs(pos.pctOfTotal);
   const sensitivity = Math.max(0.1, absPct / 10);
-  const sensitivityStr = sensitivity >= 1 ? sensitivity.toFixed(0) : sensitivity.toFixed(1);
+  const sensitivityStr = amountLocale
+    ? sensitivity.toLocaleString(amountLocale, { maximumFractionDigits: sensitivity >= 1 ? 0 : 1 })
+    : sensitivity >= 1 ? sensitivity.toFixed(0) : sensitivity.toFixed(1);
   const values = { pct: absPct.toFixed(0), sensitivity: sensitivityStr, code, currency: functionalCurrency };
   if (pos.riskLevel === 'elevated') {
     return (
@@ -1164,6 +1173,7 @@ interface ConcentrationChartProps {
 }
 
 function ConcentrationChart({ positions: allPositions, functionalCurrency, strings }: ConcentrationChartProps) {
+  const { formatAmount, formatPercent } = useMoney();
   const [active, setActive] = useState<string | null>(null);
   const legendId = useId();
 
