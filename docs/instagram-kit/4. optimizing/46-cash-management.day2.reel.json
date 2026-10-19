@@ -54,10 +54,10 @@
     {
       "id": "costs-two",
       "layout": "bar-gap",
-      "narration": "Chasing point two percent more on your emergency fund can cost you two percent.",
+      "narration": "In this example, point two percent more earns twenty five euros a year. A one point rate rise can cut the same fund by two hundred and fifty.",
       "onscreenLines": [
-        "Chasing 0.2% more",
-        "can cost you 2%",
+        "Earn €25 a year more",
+        "Risk a €250 fall",
         "Same emergency fund"
       ],
       "anchor": {
@@ -65,7 +65,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "two"
+        "cut"
       ]
     },
     {
@@ -199,8 +199,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nEva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%, so the extra is €25 a year. If rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield. The price can recover if you can wait. An emergency does not wait.\n\nThe one year test, a common pattern: money that might be needed within a year stays where the price does not swing. Money for 2 to 5 years can take small swings.\n\n→ Save this for your next look at your emergency fund\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative yields and rate move. Bond fund prices can rise or fall. Not a recommendation of any product.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Chasing 0.2% more on your emergency fund can cost you 2%.\n\nTen years of extra yield, gone in one bad month. Illustrative figures.",
+    "instagram": "In this example, 0.2% more on an emergency fund earns €25 a year. A 1 point rate rise can cut the same fund by €250.\n\nEva's €12,500 safety buffer earns an illustrative 3.8% in a money market fund. A short bond fund pays 4.0%, so the extra is €25 a year. If rates rise by 1 point, a fund holding bonds of about two years can fall about 2%: €250, ten years of that extra yield. The price can recover if you can wait. An emergency does not wait.\n\nThe one year test, a common pattern: money that might be needed within a year stays where the price does not swing. Money for 2 to 5 years can take small swings.\n\n→ Save this for your next look at your emergency fund\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative yields and rate move. Bond fund prices can rise or fall. Not a recommendation of any product.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "In this example, 0.2% more on an emergency fund earns €25 a year. A 1 point rate rise can cut the same fund by €250.\n\nTen years of extra yield, gone in one bad month. Illustrative figures.",
     "instagramKeywords": [
       "emergency fund",
       "interest rates",

@@ -56,10 +56,10 @@
     {
       "id": "knew-it",
       "layout": "columns-gap",
-      "narration": "Most money shocks are not shocks. You knew they were coming.",
+      "narration": "Which of your money shocks could you see coming?",
       "onscreenLines": [
-        "Most money shocks",
-        "are not shocks",
+        "Which money shocks",
+        "can you see coming?",
         "A plan or a buffer"
       ],
       "anchor": {
@@ -67,7 +67,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "not"
+        "coming"
       ]
     },
     {
@@ -224,8 +224,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Most money shocks are not shocks. You knew they were coming.\n\nSome life events you can see years ahead: a child, a home, a career break, a move abroad. Those can get a plan: a rough date, a number, and the bad case tested. Others nobody sees coming: an illness, a redundancy, a family emergency, a market shock. Those usually get a buffer: an emergency fund (a common guideline is three to six months of costs), insurance that fits the household, and a plan with some slack.\n\nThe sorting question: can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.\n\n→ Save this for your next five years\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Not a recommendation for any product or amount.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Most money shocks are not shocks. You knew they were coming.\n\nCan you name roughly when it happens? It can go in the plan. If not, it usually gets a buffer.",
+    "instagram": "Which of your money shocks could you see coming?\n\nSome life events you can see years ahead: a child, a home, a career break, a move abroad. Those can get a plan: a rough date, a number, and the bad case tested. Others nobody sees coming: an illness, a redundancy, a family emergency, a market shock. Those usually get a buffer: an emergency fund (a common guideline is three to six months of costs), insurance that fits the household, and a plan with some slack.\n\nThe sorting question: can you name roughly when it happens? Then it can go in the plan. If not, it usually gets a buffer.\n\n→ Save this for your next five years\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Not a recommendation for any product or amount.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Which of your money shocks could you see coming?\n\nCan you name roughly when it happens? It can go in the plan. If not, it usually gets a buffer.",
     "instagramKeywords": [
       "planning for big life changes",
       "financial planning",
