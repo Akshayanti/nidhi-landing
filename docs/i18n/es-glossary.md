@@ -43,12 +43,17 @@ listed is not re-decided per page.
    `Intl.NumberFormat('es')` writes it. Decimals take a comma: `4,5 %`,
    `0,25 %`. A percentage takes a space before the sign (`4 %`), per the RAE.
    This is the format `formatProseAmount('es', ...)` produces, so a catalog
-   figure and a computed one beside it agree. Never touch the tools' computed
-   amounts, which follow the reader's chosen currency, and never a lesson's.
+   figure and a computed one beside it agree. The tools write their computed
+   amounts the same way on a Spanish page, in every currency, with the
+   currency's narrow symbol after the number (`1.058.721 €`, `1500 £`, see
+   `TOOL_AMOUNT_LOCALE`). A lesson's figures are never touched.
    Use a no-break space (U+00A0) between a number and `€` or `%`, as `Intl`
    does, so the two never wrap apart. DeepSeek noted that `10.000` is not the
    convention in Mexico and Central America; it is the RAE's and the euro's,
-   which is why it was kept.
+   which is why it was kept. A native speaker later asked for the symbol
+   first (`€150`); Claude, Codex and DeepSeek agreed to keep `150 €`, since
+   FundéuRAE notes `15 €` is usual in Spain and `€15` in the Americas, so
+   neither is neutral and the RAE form stays the house style.
 7. **Placeholders stay exactly as written**: `{amount}`, `{count}`, `{name}`.
    Keep the same set of placeholders in every string; their order may change.
 8. **Opening marks**: questions and exclamations take `¿` and `¡`.

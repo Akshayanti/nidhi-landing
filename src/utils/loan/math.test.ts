@@ -111,6 +111,23 @@ describe('CURRENCIES catalogue', () => {
   });
 });
 
+describe('formatMoney on a page with its own amount style', () => {
+  it('writes every currency the Spanish way, symbol after', () => {
+    assert.equal(formatMoney(toMinor(1234567.89, 'EUR'), 'EUR', 'es'), '1.234.567,89\u00a0€');
+    assert.equal(formatMoney(toMinor(1234567.89, 'INR'), 'INR', 'es'), '1.234.567,89\u00a0₹');
+    assert.equal(formatMoney(toMinor(1234.5, 'EUR'), 'EUR', 'es'), '1234,50\u00a0€');
+  });
+
+  it('still names the dollar it means', () => {
+    assert.equal(formatMoney(toMinor(1234.5, 'USD'), 'USD', 'es'), '1234,50\u00a0$ USD');
+    assert.equal(formatMoney(toMinor(1234.5, 'CAD'), 'CAD', 'es'), '1234,50\u00a0$ CAD');
+  });
+
+  it('keeps the currency\'s own style without one', () => {
+    assert.equal(formatMoney(toMinor(1234567.89, 'EUR'), 'EUR', null), formatMoney(toMinor(1234567.89, 'EUR'), 'EUR'));
+  });
+});
+
 describe('formatMoney', () => {
   // We use Intl, whose exact whitespace/symbol rendering can vary slightly
   // between Node versions and ICU bundles. We assert on stable, observable
