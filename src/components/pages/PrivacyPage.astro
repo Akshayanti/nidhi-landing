@@ -23,7 +23,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { isMonteCarloReleased, monteCarloReleaseDate } from '../../utils/monte-carlo/release.ts';
 import { assertOneEntryPerDate, mergeByDate, type ChangelogEntry } from '../../utils/privacyChangelog.ts';
-import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
+import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -142,6 +142,21 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
  */
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
+  {
+    date: 'Oct 20, 2026',
+    iso: '2026-10-20',
+    material: true,
+    summary: 'The site is published in Czech as well, at /cs/. The Czech edition collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Czech page says so. The free tools start in Czech koruna on Czech pages, and the inflation calculator starts with Czechia\'s history there.',
+    details: [
+      'The Czech edition, at /cs/: the site\'s pages are published in Czech as well, on the same terms as the Hindi and Spanish editions. The lessons and the pages a subscription email links to stay in English, and a Czech page says so. A Czech page sends the same anonymous pageview and page-leave events an English page sends, through the same PostHog project under the same consent choice. There are no new kinds of event, and no event or property carries anything you type. The free tools behave as their English counterparts do, including the rule that a tool never writes what you type into the page address, and the backstop that removes everything but campaign parameters from a free-tool address before any event is sent now covers /cs/free/... as well. Czech is an address and nothing else: no language is stored in your browser, and no automatic redirect picks one for you from your device settings.',
+      'Click labels, recorded only if you accept the cookie banner, as before: the language picker\'s Czech choice carries lang-switch-cs. The picker on a Czech page uses the labels it already had (lang-switch-en, lang-switch-hi, lang-switch-es).',
+      'Short links for a Czech social profile, /cs/ig, /cs/tg, /cs/wa and /cs/dsc, lead to the Czech home page with the same campaign parameters the English short links carry. The redirect page itself loads no analytics.',
+      'Typefaces: Czech letters with diacritics (č, ř, ě, ů and the rest) are drawn from the extended-Latin files of the two typefaces the site already uses. Your browser fetches those files from nidhi.today itself, the same host as the page, only when a page needs them; a Czech page asks for the Inter one straight away, as a Hindi page does for its Devanagari typeface. Spanish pages no longer fetch the Devanagari typeface in advance, which they did by mistake and never used. This adds no third party.',
+      'Czech pages: the free tools start in Czech koruna there until you pick another currency, as they start in rupees on Hindi pages. So on an untouched Czech net worth calculator, the request to Frankfurter asks for koruna rates rather than euro rates; it still names only currency codes. The existing rates-error event, which records the spending currency the tool was set to, reports CZK on such a page. Share links are unchanged: a link that names no currency still opens in euros on every page, and a link made on a Czech page in koruna says so. When you switch language on a tool you have not touched, nothing is carried and the new page starts in its own currency.',
+      'Inflation calculator on the Czech page: it starts with Czechia\'s inflation history, which is built into the page, so nothing is fetched until you pick another country, as with India on the Hindi page. Picking a country still sends the existing free_inflation_country_changed event with the country\'s three-letter code.',
+      'Browser storage is unchanged: the same keys as before, in every language, and nidhi-reading-progress is shared across editions, as it already was. The Czech privacy notice is a translation of this one, and this English notice is the version that governs.',
+    ],
+  },
   {
     date: 'Oct 19, 2026',
     iso: '2026-10-19',
@@ -548,7 +563,7 @@ const privacyBreadcrumbSchema = {
 // English is the notice that governs, so only a page that is not English
 // carries the two notes that say so.
 const englishGoverns = locale === DEFAULT_LOCALE;
-const olderCount = format(earlierCount === 1 ? log.countOne : log.countOther, { count: earlierCount });
+const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log.countOne, log.countFew, log.countOther), { count: earlierCount });
 ---
 
 <BaseLayout

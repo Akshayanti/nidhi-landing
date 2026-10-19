@@ -85,6 +85,25 @@ describe('formatAmount on a page with its own amount style', () => {
     assert.equal(formatPercent(44.1, 'CZK', 1, 'es'), '44,1\u00a0%');
   });
 
+  it('writes every currency the Czech way on a Czech page', () => {
+    const nbsp = (v: string) => v.replace(/\u00a0/g, ' ');
+    assert.equal(nbsp(formatAmount(1_058_721, 'CZK', false, 'cs')), '1 058 721 Kč');
+    assert.equal(nbsp(formatAmount(1_058_721, 'EUR', false, 'cs')), '1 058 721 €');
+    assert.equal(nbsp(formatPercent(44.1, 'EUR', 1, 'cs')), '44,1 %');
+  });
+
+  it('abbreviates in Czech on a Czech page: tis., mil., mld., never K, M or B', () => {
+    // docs/i18n/cs-glossary.md rule 7: Czech "bilion" is a million millions.
+    const nbsp = (v: string) => v.replace(/\u00a0/g, ' ');
+    assert.equal(nbsp(formatAmount(547_008, 'EUR', true, 'cs')), '547 tis. €');
+    assert.equal(nbsp(formatAmount(2_163_515, 'CZK', true, 'cs')), '2,16 mil. Kč');
+    assert.equal(nbsp(formatAmount(2.5e9, 'CZK', true, 'cs')), '2,5 mld. Kč');
+    for (const c of CURRENCIES) {
+      const s = formatAmount(2_163_515, c.code, true, 'cs');
+      assert.doesNotMatch(s, /\d[KMB]\b|\d,\d{3}\b/, `${c.code}: ${s}`);
+    }
+  });
+
   it('keeps the currency\'s own conventions without one', () => {
     assert.equal(formatAmount(1_058_721, 'EUR', false, null), '€1,058,721');
     assert.equal(formatAmount(1_058_721, 'INR', false, null), '₹10,58,721');
@@ -128,6 +147,13 @@ describe('formatProseAmount', () => {
     assert.equal(nbsp(formatProseAmount(1_500, 'EUR', false, 'es')), '1500 €');
     assert.equal(nbsp(formatProseAmount(547_008, 'EUR', true, 'es')), '547 mil €');
   });
+
+  it('writes a Czech page\'s koruna the Czech way', () => {
+    const nbsp = (v: string) => v.replace(/\u00a0/g, ' ');
+    assert.equal(nbsp(formatProseAmount(40_000, 'CZK', false, 'cs')), '40 000 Kč');
+    assert.equal(nbsp(formatProseAmount(547_008, 'CZK', true, 'cs')), '547 tis. Kč');
+    assert.equal(nbsp(formatProseAmount(2.3e9, 'CZK', true, 'cs')), '2,3 mld. Kč');
+  });
 });
 
 describe('formatProsePercent', () => {
@@ -135,6 +161,7 @@ describe('formatProsePercent', () => {
     assert.equal(formatProsePercent(0.07), '7%');
     assert.equal(formatProsePercent(0.07, 'hi'), '7%');
     assert.equal(formatProsePercent(0.07, 'es').replace(/\u00a0/g, ' '), '7 %');
+    assert.equal(formatProsePercent(0.07, 'cs').replace(/\u00a0/g, ' '), '7 %');
   });
 });
 

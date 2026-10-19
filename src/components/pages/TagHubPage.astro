@@ -20,7 +20,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatTag } from '../../utils/tags';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getPathPosts } from '../../utils/learnPosts';
-import { LOCALE_META, DEFAULT_LOCALE, LOCALES, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, DEFAULT_LOCALE, LOCALES, blogTagPath, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale?: Locale;
@@ -135,7 +135,7 @@ const collectionPageSchema = {
                 <div class="tagHub-cardTop">
                   <span class="tagHub-cardName">{t.formatted}</span>
                   <span class="tagHub-cardCount">
-                    {format(t.count === 1 ? topics.countOne : topics.countMany, { count: t.count })}
+                    {format(plural(LOCALE_META[locale].htmlLang, t.count, topics.countOne, topics.countFew, topics.countMany), { count: t.count })}
                   </span>
                 </div>
                 <p class="tagHub-cardDesc">{t.description}</p>

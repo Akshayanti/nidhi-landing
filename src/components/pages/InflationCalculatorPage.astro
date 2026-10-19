@@ -49,10 +49,10 @@ interface Props {
 
 /**
  * The country whose history the page starts with: India on the Hindi page,
- * none elsewhere. A page's language is the only thing this reads; the tool
+ * Czechia on the Czech page, none elsewhere. A page's language is the only thing this reads; the tool
  * never detects a reader's location.
  */
-const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '' };
+const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '', cs: 'CZE' };
 
 const { locale } = Astro.props;
 const { inflation } = dict(locale).tools;

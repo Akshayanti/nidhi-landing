@@ -344,6 +344,11 @@ export default defineConfig({
     '/es/tg/': '/es/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
     '/es/wa/': '/es/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
     '/es/dsc/': '/es/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    // The Czech edition's, likewise.
+    '/cs/ig/': '/cs/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/cs/tg/': '/cs/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/cs/wa/': '/cs/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    '/cs/dsc/': '/cs/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
   },
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and

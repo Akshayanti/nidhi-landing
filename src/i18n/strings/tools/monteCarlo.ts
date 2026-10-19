@@ -50,7 +50,7 @@
  * lets the reader decide, and is careful, as the English is, that a share of
  * simulated paths is not a chance of anything happening to a person.
  */
-import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const monteCarloEn = {
   meta: {
@@ -1004,6 +1004,304 @@ export const monteCarloEs: typeof monteCarloEn = {
         ' La banda más clara sobrepasa el borde superior del gráfico; la etiqueta Alto de la derecha indica dónde termina.',
       clippedPhone:
         ' La banda más clara sobrepasa el borde superior del gráfico; toca cualquier año para leer su valor alto.',
+    },
+  },
+};
+
+/**
+ * The Czech edition. Same shape and the same figures; vykání and „...“ quotes,
+ * per `docs/i18n/cs-glossary.md`: simulace, trajektorie, výběr, po odečtení
+ * inflace, medián, poměr akcií a dluhopisů, rebalancování.
+ *
+ * Counts the code fills without picking a form (`{paths}`, `{years}`) sit
+ * where every form of the noun reads right: after *z* or *po* (*z 10 000
+ * trajektorií*, *po 3 letech*), or in brackets after a label (*počet let:
+ * {years}*). Path counts are always 5 or more, so *trajektorií* is right for
+ * every one the tool offers.
+ */
+export const monteCarloCs: typeof monteCarloEn = {
+  meta: {
+    title: 'Simulátor Monte Carlo pro důchod: zdarma, v prohlížeči | nidhi',
+    description:
+      'Důchodový simulátor Monte Carlo zdarma: rozpětí možných výsledků, v dnešních penězích. Bez registrace.',
+  },
+  schema: {
+    name: 'Simulátor Monte Carlo nidhi',
+    alternateNames: ['Důchodová kalkulačka Monte Carlo nidhi', 'Důchodový simulátor nidhi'],
+    operatingSystem: 'Libovolný operační systém (webový prohlížeč)',
+    browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
+    featureList: [
+      '{minPaths} až {maxPaths} simulovaných trajektorií ročních výnosů',
+      'Předpoklady výnosů ze světových akciových a dluhopisových trhů v letech 1900 až 2025, s opatrným a optimistickým nastavením',
+      'Roční poplatky',
+      'Fáze spoření a volitelná fáze výběrů',
+      'Poměr akcií a dluhopisů, rebalancovaný jednou ročně',
+      'Výsledky v dnešních penězích, ve 38 měnách',
+      'Odkaz ke sdílení libovolného plánu',
+    ],
+  },
+  page: {
+    breadcrumb: {
+      home: 'Domů',
+      freeTools: 'Nástroje zdarma',
+      this: 'Simulátor Monte Carlo',
+    },
+    eyebrow: 'Nástroje zdarma',
+    title: 'Simulátor Monte Carlo: rozpětí, ne jedna čára',
+    lead: {
+      before: 'Nasimulujte budoucí vývoj svých úspor v tisících variant',
+      wide: ' s výnosy vybíranými z dlouhodobé historie světových trhů. Uvidíte nízký, mediánový a vysoký výsledek a jak často peníze vydrží, až z nich budete žít',
+      after: '. Vše běží ve vašem prohlížeči; nic se neposílá na server.',
+    },
+    limits: {
+      heading: 'Co tento model nevidí',
+      items: {
+        onePot: {
+          lead: 'Jedno portfolio, jedna měna.',
+          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje.',
+        },
+        steady: {
+          lead: 'Stálé spoření a utrácení.',
+          rest: ' Ve skutečném životě přichází přestávka v kariéře, dům, školné nebo dědictví. Každá taková věc výsledek změní, někdy víc než trhy.',
+        },
+        taxes: {
+          lead: 'Žádné daně a jednoduché poplatky.',
+          rest: ' Daně snižují výsledek každé skutečné trajektorie a závisí na tom, kde žijete a jaké účty používáte. Poplatky model zachycuje jedinou roční procentní sazbou; pevné a jednorázové poplatky vynechává.',
+        },
+        extremes: {
+          lead: 'Klidnější extrémy než v historii.',
+          rest: ' Roky se losují nezávisle z hladkého rozdělení, takže dlouhé série špatných let a propady jako v roce 2008 (světové akcie −42,9 % po odečtení inflace) jsou tu vzácnější, než byly ve skutečnosti.',
+        },
+      },
+      more: 'Proč na každém z nich záleží',
+    },
+    planner: {
+      before:
+        'Plánovač nidhi provádí tento druh simulace pro celou vaši finanční situaci: každý účet v jeho vlastní měně, vaše příjmy a výdaje v čase a události, na které se připravujete.',
+      link: 'Zapište se na čekací listinu pro přednostní přístup',
+    },
+    how: {
+      heading: 'Jak to funguje',
+      more: 'Metoda a její zdroje',
+      steps: {
+        draws:
+          'Každý simulovaný rok vylosuje výnos akcií a výnos dluhopisů po odečtení inflace. Jejich průměry a výkyvy odpovídají světovým trhům v letech 1900 až 2025: akcie v průměru {stocksMean} ročně se směrodatnou odchylkou {stocksSd}, dluhopisy {bondsMean} s {bondsSd}. Obojí je mírně provázané (korelace zhruba {correlation}). Tato vazba se v historii výrazně měnila, byla kladná i záporná, takže jde o zjednodušení. „{cautious}“ a „{optimistic}“ ponechávají tyto výkyvy a posouvají složený výnos akcií na 4 % nebo 6 % ročně a dluhopisů na 1 % nebo 3 %.',
+        blend:
+          'Výnos vašeho portfolia odpovídá zvolenému poměru obou tříd aktiv, který se jednou ročně rebalancuje, po odečtení ročních poplatků. Výnos za daný rok se rozloží rovnoměrně do jeho dvanácti měsíců.',
+        flows:
+          'Měsíční vklad se přidává na začátku každého měsíce. Pokud zapnete výběry, po skončení let spoření se každý měsíc vybere dvanáctina roční částky. Trajektorie, která klesne na nulu, na nule zůstane.',
+        runs:
+          'Simulace se opakuje tolikrát, kolikrát zvolíte; výchozí počet opakování je {defaultPaths}. Graf ukazuje, kde se trajektorie v jednotlivých letech nacházejí: stínované pásy zahrnují prostředních 8 z 10 trajektorií a jejich prostřední polovinu.',
+        deterministic:
+          'Stejné vstupy vždy dají stejný výsledek, takže sdílený odkaz ukáže přesně stejný výsledek.',
+      },
+      source: {
+        before:
+          'Zdroje: Elroy Dimson, Paul Marsh a Mike Staunton, „Global Markets over the Last 126 Years“ (Exhibits 11.3 a 11.5, z databáze DMS), a Edward F. McQuarrie, „US Stocks and Bonds before 1926“ (Exhibit 10.4), v publikaci',
+        after: ', CFA Institute Research Foundation, 2026.',
+      },
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      items: [
+        {
+          q: 'Co je simulace Monte Carlo?',
+          a: 'Místo předpokladu jednoho pevného výnosu každý rok model nasimuluje budoucí vývoj vašeho plánu v tisících variant (ve výchozím nastavení {defaultPaths}), pokaždé s jiným náhodným sledem dobrých a špatných let. Výsledkem je rozpětí: jak by mohl vypadat nízký, mediánový a vysoký výsledek. Ukazuje, jak moc se výsledek může lišit, což jedna čára skryje.',
+        },
+        {
+          q: 'Odkud pocházejí předpoklady výnosů?',
+          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po odečtení inflace měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají články nidhi: akcie 4 % nebo 6 % ročně po odečtení inflace, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
+        },
+        {
+          q: 'Kolik trajektorií spustit?',
+          a: 'Výchozí počet {defaultPaths} bohatě stačí: zvýšení počtu na {maxPaths} obvykle posune nízký, mediánový a vysoký výsledek nanejvýš o pár procent a trvá znatelně déle, zvlášť na telefonu. Menší počet trajektorií ukazuje, jak daleko se může malý vzorek odchýlit: při počtu {minPaths} mohou být výsledky o několik procent jinde než u tisíců trajektorií.',
+        },
+        {
+          q: 'Jak se počítají poplatky?',
+          a: 'Jako roční procento z hodnoty portfolia, odečtené od výnosu každého roku, od 0 do {maxFeePct} %. Běžně se zadává součet průběžných nákladů fondu a případného poplatku platformy. Pevné a jednorázové poplatky se nemodelují.',
+        },
+        {
+          q: 'Proč je vše v dnešních penězích?',
+          a: 'Všechny výnosy jsou reálné, po odečtení inflace. Výsledek 500 000 znamená 500 000 v dnešní kupní síle, takže ho lze přímo porovnat s cenami a platy, které znáte. Znamená to také, že měsíční vklad a roční výběr zůstávají v reálném vyjádření stálé, což zhruba odpovídá tomu, když je s inflací zvyšujete.',
+        },
+        {
+          q: 'Co znamená „peníze vydržely v 8 z 10 trajektorií“?',
+          a: 'Ze všech simulovaných trajektorií 8 z 10 vyplatilo každý výběr v plné výši po všechny zvolené roky. Není to 80% šance, že váš plán vyjde: model vynechává daně a změny vašich výdajů a skutečný svět může být horší (nebo lepší) než jakýkoli model. Berte to jako způsob, jak porovnávat plány, ne jako slib.',
+        },
+        {
+          q: 'Proč jedna čára leží nad většinou trajektorií?',
+          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára používá složenou sazbu, která je už nižší než prostý průměr, a přesto pod ní skončí téměř polovina trajektorií.',
+        },
+        {
+          q: 'Posílají se moje data někam?',
+          a: 'Ne. Simulace běží ve vašem prohlížeči a čísla, která zadáte, se neposílají nám ani nikomu jinému. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
+        },
+        {
+          q: 'Je to finanční poradenství?',
+          a: 'Ne. Je to vzdělávací model jednoho portfolia. Nedokáže říct, do čeho investovat, kolik vybírat ani kdy můžete odejít do důchodu.',
+        },
+      ],
+    },
+    related: {
+      heading: 'Čtěte dál',
+      cards: {
+        'financial-projections': {
+          kicker: 'Princip tohoto nástroje',
+          title: 'Finanční projekce',
+          desc: 'Proč jedna přímka klame a jak místo toho číst rozpětí výsledků.',
+        },
+        'what-if-scenarios': {
+          kicker: 'Další krok',
+          title: 'Scénáře „co kdyby“',
+          desc: 'Jak předem otestovat vždy jedno rozhodnutí v porovnání s výchozím stavem.',
+        },
+        'income-replacement-ratio': {
+          kicker: 'Kolik vybírat',
+          title: 'Míra náhrady příjmu',
+          desc: 'Jaký podíl pracovního příjmu budete pravděpodobně potřebovat, až pracovat přestanete.',
+        },
+        'understanding-risk': {
+          kicker: 'Základy',
+          title: 'Riziko srozumitelně',
+          desc: 'Co kolísání znamená pro vaše peníze a proč záleží na pořadí výnosů.',
+        },
+        diversification: {
+          kicker: 'Základy',
+          title: 'Diverzifikace',
+          desc: 'Proč světové portfolio kolísá méně než portfolio kterékoli jednotlivé země.',
+        },
+      },
+    },
+  },
+  island: {
+    currencies: currenciesCs,
+    formLabel: 'Váš plán',
+    fields: {
+      currency: 'Měna',
+      start: 'Investováno dnes',
+      startHint: 'V dnešních penězích',
+      monthly: 'Vklad každý měsíc',
+      saveYears: 'Počet let spoření',
+      saveYearsHint: '0 až 60',
+      mixBefore: 'Poměr: ',
+      mixStocks: '{pct} % akcií',
+      mixMiddle: ', ',
+      mixBonds: '{pct} % dluhopisů',
+      mixHint: 'Jednou ročně se rebalancuje zpět na tento poměr.',
+      crossLink: {
+        before: 'Peníze ve více měnách? Nejdřív je sečtěte v ',
+        link: 'kalkulačce čistého jmění',
+        after: ' a sem zadejte celkovou částku.',
+      },
+    },
+    returns: {
+      cautious: 'Opatrný',
+      historical: 'Historický',
+      optimistic: 'Optimistický',
+    },
+    returnTips: {
+      cautious:
+        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+      historical:
+        'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
+      optimistic:
+        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+    },
+    settings: {
+      toggle: 'Výnosy, poplatky a trajektorie',
+      summary: '{returns} · poplatky {fees} % · trajektorie: {paths}',
+      legend: 'Odhad výnosu',
+      feeLabel: 'Roční poplatky, %',
+      feeHint: 'Poplatky fondu a platformy, odečtené od výnosu každého roku. 0 až {maxFeePct}.',
+      pathsLabel: 'Simulované trajektorie',
+      pathsHint:
+        'Více trajektorií dává stabilnější čísla; nad 10 000 se mění nanejvýš o pár procent.',
+    },
+    withdraw: {
+      toggle: 'Potom z toho žít',
+      off: 'Zapněte a uvidíte, jak dlouho peníze vydrží, až z nich začnete vybírat.',
+      amountLabel: 'Výběr každý rok',
+      amountHint: 'V dnešních penězích, vybíráno měsíčně',
+      yearsLabel: 'Na kolik let',
+      yearsHint: '1 až 60',
+    },
+    actions: {
+      copy: 'Kopírovat odkaz na tento plán',
+      copied: 'Odkaz zkopírován',
+      copyPrompt: 'Zkopírujte tento odkaz:',
+      reset: 'Obnovit výchozí',
+      fix: 'Opravte zvýrazněná pole a výsledky se aktualizují.',
+      running: 'Probíhá simulace, počet trajektorií: {paths}…',
+    },
+    quick: {
+      medianOne: 'Medián po 1 roce',
+      medianOther: 'Medián po {years} letech',
+      range: '8 z 10 trajektorií mezi {low} a {high}',
+      lasted: 'Peníze vydržely po celou dobu (počet let: {years}) v {inTen} trajektorií.',
+    },
+    inTen: '{n} z 10',
+    results: {
+      headingOne: 'Po 1 roce spoření',
+      headingOther: 'Po {years} letech spoření',
+      headingToday: 'Od dneška',
+      lowLabel: 'Nízký',
+      lowMore: ' (10. percentil): 1 z 10 trajektorií skončila níž',
+      medianLabel: 'Medián',
+      medianMore: ': polovina trajektorií skončila výš, polovina níž',
+      highLabel: 'Vysoký',
+      highMore: ' (90. percentil): 1 z 10 trajektorií skončila výš',
+      cardsKey:
+        'Nízký a vysoký: 1 z 10 trajektorií skončila níž, nebo výš (10. a 90. percentil). Medián: polovina skončila výš, polovina níž.',
+      noteBefore: 'Kalkulačka s jedním pevným výnosem by nakreslila jedinou čáru až k',
+      noteAfter: '. {share} simulovaných trajektorií skončilo pod ní.',
+      empty: 'Přidejte nějaké roky spoření nebo zapněte výběry a uvidíte rozpětí výsledků.',
+      lastedHeadBefore: 'Při výběru {amount} ročně vydržely peníze po celou dobu (počet let: {years}) v',
+      lastedHeadAfter: ' simulovaných trajektorií ({share}).',
+      runOut:
+        'U trajektorií, kde peníze došly, to v mediánu nastalo v roce {year} z {years}.',
+      caveat:
+        'Jde o podíly v simulaci s tímto počtem trajektorií: {paths}. Nejde o pravděpodobnost, že se vám něco stane. Model je zjednodušení; co vynechává, najdete níže.',
+      caveatFew:
+        ' Při takto malém počtu trajektorií ({paths}) mohou být výsledky o několik procent jinde než u tisíců trajektorií.',
+      tableSummary: 'Zobrazit čísla jako tabulku',
+      tableCaption: 'Hodnota na konci každého roku, v dnešních penězích',
+      tableYear: 'Rok',
+      tableLow: 'Nízký (10.)',
+      tableMedian: 'Medián',
+      tableHigh: 'Vysoký (90.)',
+      tableStraight: 'Jedna čára',
+    },
+    chart: {
+      swipe: 'Přejeďte prstem a uvidíte celý graf →',
+      groupLabel: 'Graf. Hodnoty pro jednotlivé roky přečtete šipkami doleva a doprava.',
+      title: 'Rozpětí simulovaných výsledků',
+      desc: 'Vějířový graf simulovaných trajektorií (počet: {paths}, počet let: {years}). Na konci je 10. percentil {low}, medián {median} a 90. percentil {high}. Jedna čára s pevným výnosem končí na {straight}.',
+      livingOff: 'Život z úspor',
+      axisYears: 'Roky od dneška',
+      endHigh: 'Vysoký',
+      endMedian: 'Medián',
+      endLow: 'Nízký',
+      readoutYear: 'Rok {year}',
+      readoutHigh: 'Vysoký (90.)',
+      readoutMiddle: 'Prostřední polovina',
+      readoutMiddleRange: '{low} až {high}',
+      readoutMedian: 'Medián',
+      readoutLow: 'Nízký (10.)',
+      readoutStraight: 'Jedna čára',
+      announce:
+        'Rok {year}{phase}. Vysoký {high}, prostřední polovina {middleLow} až {middleHigh}, medián {median}, nízký {low}, jedna čára {straight}.',
+      phaseStart: 'Začátek',
+      phaseSaving: 'Spoření',
+      phaseWithdrawing: 'Výběry, rok {year}',
+      legendPaths: '8 z 10 trajektorií',
+      legendMiddle: 'Prostřední polovina',
+      legendMedian: 'Medián hodnoty',
+      legendStraight: 'Jedna čára s pevným výnosem',
+      legendHint: 'Ukažte na graf, klepněte na něj nebo použijte šipky a přečtete kterýkoli rok.',
+      clippedLabels:
+        ' Nejsvětlejší pás přesahuje horní okraj grafu; popisek „Vysoký“ vpravo ukazuje, kde končí.',
+      clippedPhone:
+        ' Nejsvětlejší pás přesahuje horní okraj grafu; klepnutím na kterýkoli rok přečtete jeho vysokou hodnotu.',
     },
   },
 };

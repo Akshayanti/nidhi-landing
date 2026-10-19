@@ -16,10 +16,10 @@
  * English one so none can drift in shape. English first,
  * because `en` is the source of truth the other languages are measured against.
  */
-import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from './loanComparison.ts';
-import { multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi } from './multiCurrencyNetWorth.ts';
-import { monteCarloEn, monteCarloEs, monteCarloHi } from './monteCarlo.ts';
-import { inflationEn, inflationEs, inflationHi } from './inflation.ts';
+import { loanComparisonCs, loanComparisonEn, loanComparisonEs, loanComparisonHi } from './loanComparison.ts';
+import { multiCurrencyNetWorthCs, multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi } from './multiCurrencyNetWorth.ts';
+import { monteCarloCs, monteCarloEn, monteCarloEs, monteCarloHi } from './monteCarlo.ts';
+import { inflationCs, inflationEn, inflationEs, inflationHi } from './inflation.ts';
 
 export const toolsEn = {
   loanComparison: loanComparisonEn,
@@ -40,4 +40,11 @@ export const toolsEs = {
   multiCurrencyNetWorth: multiCurrencyNetWorthEs,
   monteCarlo: monteCarloEs,
   inflation: inflationEs,
+};
+
+export const toolsCs = {
+  loanComparison: loanComparisonCs,
+  multiCurrencyNetWorth: multiCurrencyNetWorthCs,
+  monteCarlo: monteCarloCs,
+  inflation: inflationCs,
 };

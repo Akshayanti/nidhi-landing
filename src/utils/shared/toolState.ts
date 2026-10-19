@@ -25,6 +25,7 @@ export const TOOL_DEFAULT_CURRENCY: Record<Locale, string> = {
   en: 'EUR',
   hi: 'INR',
   es: 'EUR',
+  cs: 'CZK',
 };
 
 /**
@@ -33,13 +34,15 @@ export const TOOL_DEFAULT_CURRENCY: Record<Locale, string> = {
  * "1 058 721 Kč"), which is what an English or Hindi reader is shown. A Spanish
  * reader reads "€1,058,721" as one thousand and a fraction, so on a Spanish
  * page every amount, in every currency, is written the Spanish way:
- * "1.058.721 €", "1.058.721 £", "1500 $". The page reads it and hands it to the
+ * "1.058.721 €", "1.058.721 £", "1500 $". A Czech page does the same in Czech
+ * style: "1 058 721 Kč", "1 058 721 €". The page reads it and hands it to the
  * island as a prop, like the starting currency.
  */
 export const TOOL_AMOUNT_LOCALE: Record<Locale, string | null> = {
   en: null,
   hi: null,
   es: 'es',
+  cs: 'cs',
 };
 
 /**

@@ -25,8 +25,11 @@ export function formatAmount(value: number, code: string, compact = false, amoun
   if (!compact) {
     return new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, maximumFractionDigits: 0 }).format(v);
   }
-  if (locale.startsWith('en-')) {
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
+  // English locales abbreviate in English (and en-IN in lakh and crore), and
+  // Czech in Czech: "150 tis. Kč", "1,5 mil. Kč", "2,3 mld. Kč", never "B",
+  // since Czech *bilion* is a million millions.
+  if (locale.startsWith('en-') || locale === 'cs') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
   }
   const abs = Math.abs(v);
   // A Spanish reader takes "B" for billón, a million millions: "2,5 mil M €".
@@ -69,7 +72,8 @@ export function formatPercent(pct: number, code: string, digits = 1, amountLocal
  *
  * Lessons are English in every edition and keep English figures. The site's
  * own copy follows its edition's reader instead (`PROSE_NUMBER_LOCALE`): an
- * English or Hindi page writes `€10,000`, a Spanish page `10.000 €`. The
+ * English or Hindi page writes `€10,000`, a Spanish page `10.000 €`, a Czech
+ * page `10 000 Kč`. The
  * catalog strings that quote an amount literally are written to agree.
  */
 export function formatProseAmount(

@@ -32,7 +32,7 @@
  * name, "World Bank", and the English lesson title, which read the same in
  * every language and so live in the component.
  */
-import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const inflationEn = {
   meta: {
@@ -182,9 +182,10 @@ export const inflationEn = {
     },
   },
   /**
-   * What the tool itself says while you use it. A plural pair is `one` and
-   * `other`, filled by the component, because Hindi does not pluralise a noun
-   * the way English adds an "s".
+   * What the tool itself says while you use it. A counted string is `one`,
+   * `few` and `other`, picked by `plural()` in the component, because Hindi
+   * does not pluralise a noun the way English adds an "s" and Czech has a
+   * third form for 2 to 4.
    */
   island: {
     /** The 38 currency names, shared by every tool: see `./currencies.ts`. */
@@ -264,7 +265,7 @@ export const inflationEn = {
     },
     results: {
       heading: 'The answer',
-      years: { one: '1 year', other: '{n} years' },
+      years: { one: '1 year', few: '{n} years', other: '{n} years' },
       /** `{result}` arrives with its own "about", "more than" or "less than". */
       buy: 'If inflation averages {rate} a year, {amount} in {years} buys what {result} buys today.',
       cost: 'If prices rise {rate} a year on average, something that costs {amount} today costs {result} in {years}.',
@@ -528,7 +529,7 @@ export const inflationHi: typeof inflationEn = {
     },
     results: {
       heading: 'जवाब',
-      years: { one: '1 साल', other: '{n} साल' },
+      years: { one: '1 साल', few: '{n} साल', other: '{n} साल' },
       buy: 'अगर महँगाई औसतन {rate} सालाना रहे, तो {years} बाद {amount} से उतना ही ख़रीदा जा सकता है जितना आज {result} से।',
       cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
       past: 'अगर महँगाई औसतन {rate} सालाना रही, तो {years} पहले के {amount} से उतना ख़रीदा जा सकता था जितना आज {result} से।',
@@ -785,7 +786,7 @@ export const inflationEs: typeof inflationEn = {
     },
     results: {
       heading: 'La respuesta',
-      years: { one: '1 año', other: '{n} años' },
+      years: { one: '1 año', few: '{n} años', other: '{n} años' },
       buy: 'Si la inflación media fuera del {rate} anual, {amount} dentro de {years} comprarían lo que hoy compran {result}.',
       cost: 'Si los precios subieran de media un {rate} anual, algo que hoy cuesta {amount} costaría {result} dentro de {years}.',
       past: 'Si la inflación media fue del {rate} anual, {amount} de hace {years} compran lo que hoy compran {result}.',
@@ -833,6 +834,266 @@ export const inflationEs: typeof inflationEn = {
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
       reset: 'Restablecer',
+    },
+  },
+};
+
+/**
+ * The Czech edition. Vykání, „...“ quotes, per `docs/i18n/cs-glossary.md`:
+ * inflace, kupní síla, reálný výnos, zhruba for an approximate figure. Added
+ * for this tool: inflační kalkulačka, zvýšení platu, reálná sazba, geometrický
+ * průměr, procentní bod, scénář and prognóza, and spotřební koš for the basket,
+ * the Czech Statistical Office's own term.
+ *
+ * `results.years` is in the accusative (1 rok, 3 roky, 5 let), and every
+ * sentence that takes it is built around a preposition that wants that case
+ * (*za*, *o ... dříve*), so the three forms fit each one.
+ */
+export const inflationCs: typeof inflationEn = {
+  meta: {
+    title: 'Inflační kalkulačka: co si za peníze koupíte později | nidhi',
+    description:
+      'Inflační kalkulačka zdarma: co si za peníze koupíte po letech inflace, kolik může něco stát později a historie podle zemí. Běží ve vašem prohlížeči.',
+  },
+  schema: {
+    name: 'Inflační kalkulačka nidhi',
+    alternateNames: ['Kalkulačka kupní síly nidhi', 'Kalkulačka reálného výnosu nidhi'],
+    operatingSystem: 'Libovolný operační systém (webový prohlížeč)',
+    browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
+    featureList: [
+      'Co si za částku koupíte po letech inflace, v dnešních penězích',
+      'Kolik bude cena stát po letech inflace',
+      'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě nebo při skutečné roční inflaci dané země',
+      'Zda zvýšení platu nebo výnos z úspor drží krok s inflací, s přesnou reálnou sazbou',
+      'Každý výsledek je uveden také pro sazbu o jeden procentní bod nižší a vyšší',
+      'Roční historie inflace pro každou zahrnutou zemi a eurozónu, od Světové banky; počet zemí: {countries}',
+      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
+      'Výsledky v 38 měnách',
+      'Odkaz ke sdílení libovolného výpočtu',
+    ],
+  },
+  page: {
+    breadcrumb: {
+      home: 'Domů',
+      freeTools: 'Nástroje zdarma',
+      this: 'Inflační kalkulačka',
+    },
+    eyebrow: 'Nástroje zdarma',
+    title: 'Inflační kalkulačka: co si za peníze koupíte v průběhu času',
+    lead: {
+      before: 'Podívejte se, co inflace s částkou udělá v průběhu let',
+      wide: ', dopředu i dozadu, při vámi zvolené sazbě nebo podle skutečné historie dané země. Každá odpověď obsahuje také výpočet se sazbou o bod nižší a vyšší, protože jde o scénář, ne o prognózu',
+      after: '. Vše běží ve vašem prohlížeči; nic, co zadáte, se nikam neposílá.',
+    },
+    notes: {
+      heading: 'Jak číst odpověď',
+      items: {
+        steady: {
+          lead: 'Jedna sazba, každý rok.',
+          rest: ' Nástroj uplatní zadanou sazbu jednou ročně, každý rok stejnou. Skutečné ceny rostou nerovnoměrně: některé roky vyskočí, pár jich klesne a průměr za desetiletí obojí skryje.',
+        },
+        personal: {
+          lead: 'Celostátní inflace je průměr.',
+          rest: ' Měří se na spotřebním koši zboží a služeb, který statistický úřad sestavuje tak, aby představoval typickou domácnost. Pokud vaše nájemné, školné nebo léky zdražují rychleji než tento koš, je vaše vlastní inflace vyšší; pokud většina vašich výdajů šla na věci, které zlevnily, je nižší.',
+        },
+        history: {
+          lead: 'Historie není prognóza.',
+          rest: ' Posledních deset let dané země o příštích deseti letech mnoho neříká. Inflace se už mnohokrát během pár let prudce změnila, oběma směry.',
+        },
+      },
+      lesson: {
+        before: 'Princip tohoto nástroje s propočítanými příklady: ',
+        after: '.',
+      },
+    },
+    source: {
+      heading: 'Odkud historie pochází',
+      before: 'Roční inflace spotřebitelských cen podle zemí, od ',
+      link: 'Světové banky',
+      after:
+        ' (ukazatel FP.CPI.TOTL.ZG, „Inflation, consumer prices (annual %)“), s licencí CC BY 4.0. Světová banka tato čísla naposledy aktualizovala {updated}. nidhi uchovává jejich kopii a každý měsíc kontroluje nová čísla, takže váš prohlížeč načítá historii z nidhi.today a nikdy nekontaktuje Světovou banku. Číslo za eurozónu platí pro eurozónu jako celek. Čísla mohou být revidována a u několika zemí chybějí některé roky nebo záznam začíná pozdě.',
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      items: [
+        {
+          q: 'Co odpověď znamená?',
+          a: 'Počítá jeden scénář: pokud ceny rostou zadanou sazbou, každý rok, po zvolený počet let, čemu částka odpovídá? „Kupní síla později“ ukazuje, co by si za částku šlo koupit v budoucnu, v dnešních penězích. „Cena později“ posouvá cenu dopředu. „Z minulosti do dneška“ převádí starou částku na dnešní hodnotu. „Drží krok?“ porovnává zvýšení platu nebo výnos z úspor s inflací. Odpovědi jsou zaokrouhlené a říkají „zhruba“, protože sazba je předpoklad, ne měření.',
+        },
+        {
+          q: 'Proč ke každé odpovědi patří další dvě?',
+          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
+        },
+        {
+          q: 'Je celostátní inflace totéž co moje inflace?',
+          a: 'Ne nutně. Celostátní inflace měří cenu spotřebního koše zboží a služeb, který má představovat typickou domácnost. Vaše vlastní výdaje se liší: zda bydlíte v nájmu, nebo ve vlastním, kde žijete, váš věk, zda platíte školné nebo náklady na péči. Mnoho statistických úřadů zveřejňuje inflaci podle kategorií (potraviny, bydlení, doprava, zdraví), z čehož lze vyčíst, zda vaše největší výdaje rostly rychleji, nebo pomaleji než celkový údaj. Někteří lidé zkoušejí sazbu o jeden nebo dva body nad celostátní sazbou nebo pod ní, aby viděli, kolik to dělá.',
+        },
+        {
+          q: 'Odkud historie pochází a jak je aktuální?',
+          a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku.',
+        },
+        {
+          q: 'Proč může sazba jít až do {maxRate} %?',
+          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
+        },
+        {
+          q: 'Proč reálná sazba není jen míra zvýšení minus míra inflace?',
+          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
+        },
+        {
+          q: 'Posílají se moje data někam?',
+          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nám ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
+        },
+        {
+          q: 'Je to finanční poradenství?',
+          a: 'Ne. Ukazuje, co zvolená sazba udělá s částkou v průběhu času. Nedokáže říct, jaká inflace bude, ani co s penězi dělat.',
+        },
+      ],
+    },
+    related: {
+      heading: 'Čtěte dál',
+      cards: {
+        'purchasing-power': {
+          kicker: 'Princip tohoto nástroje',
+          title: 'Kupní síla',
+          desc: 'Proč si za stejné peníze koupíte méně, když ceny rostou, a jak spočítat reálný výnos.',
+        },
+        'saving-vs-investing': {
+          kicker: 'Další krok',
+          title: 'Spoření versus investování',
+          desc: 'Kam patří hotovost, kam investování a co s obojím dělá inflace.',
+        },
+        'why-your-euro-buys-more-in-some-countries': {
+          kicker: 'Přes hranice',
+          title: 'Co si za peníze koupíte v zahraničí',
+          desc: 'Směnné kurzy a kupní síla: proč si za stejnou částku v některých zemích koupíte víc.',
+        },
+      },
+    },
+  },
+  island: {
+    currencies: currenciesCs,
+    formLabel: 'Inflační kalkulačka',
+    tabsLabel: 'Vyberte otázku',
+    tabs: {
+      buy: 'Kupní síla později',
+      cost: 'Cena později',
+      past: 'Z minulosti do dneška',
+      keep: 'Drží krok?',
+    },
+    questions: {
+      buy: 'Co by si za částku šlo koupit po několika letech inflace, v dnešních penězích?',
+      cost: 'Kolik by mohlo později stát něco, co dnes stojí tolik, pokud ceny porostou dál?',
+      past: 'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě?',
+      pastCountry: 'Jakou hodnotu má dnes částka z minulosti v zemi {country} podle její skutečné roční inflace?',
+      keep: 'Drží zvýšení platu nebo výnos z úspor krok s inflací?',
+    },
+    fields: {
+      currency: 'Měna',
+      amount: {
+        buy: 'Částka',
+        cost: 'Kolik to stojí dnes',
+        past: 'Částka tehdy',
+        keep: 'Částka dnes',
+      },
+      amountError: 'Zadejte částku od 0 do {max}.',
+      rate: 'Inflace, % ročně',
+      rateHint: '{min} až {max}, nejvýše dvě desetinná místa',
+      rateError: 'Zadejte sazbu od {min} do {max}, nejvýše se dvěma desetinnými místy.',
+      years: {
+        buy: 'Počet let od dneška',
+        cost: 'Počet let od dneška',
+        past: 'Před kolika lety',
+        keep: 'Počet let',
+      },
+      yearsHint: '{min} až {max}',
+      yearsError: 'Zadejte celý počet let od {min} do {max}.',
+      growth: 'Zvýšení nebo výnos, % ročně',
+      growthHint: 'Může být záporné, při snížení platu nebo ztrátě',
+      growthError: 'Zadejte sazbu od {min} do {max}, nejvýše se dvěma desetinnými místy.',
+      from: 'Počáteční rok',
+      fromHint: 'Nejvýše {last}, poslední rok s číslem.',
+    },
+    history: {
+      label: 'Historie inflace, pro souvislosti',
+      hint: 'Volitelné. Ukazuje minulou inflaci dané země; odpověď ji používá jen v záložce „Z minulosti do dneška“, nebo pokud použijete její průměr.',
+      none: 'Žádná země',
+      euroArea: 'Eurozóna',
+      loading: 'Načítání historie…',
+      error: 'Historii se nepodařilo načíst. Kalkulačka dál funguje se zadanou sazbou.',
+      chartLabel: 'Roční inflace, {country}, {first} až {last}. Nejvyšší {high} v roce {highYear}, nejnižší {low} v roce {lowYear}.',
+      average: '{country}, {first} až {last}: v průměru zhruba {average} ročně.',
+      averageGaps: '{country}, nejnovější roky s dostupným číslem (počet: {count}, období: {first} až {last}): v průměru zhruba {average} ročně.',
+      averageNote:
+        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne předpověď.',
+      coverage: 'Čísla pokrývají roky {first} až {last}.',
+      gaps: 'Bez čísla: {years}.',
+      gapStart: '„Z minulosti do dneška“ nezačíná dřív než v roce {start}, aby se žádný rok nepřeskočil.',
+      use: 'Použít tento průměr jako sazbu',
+      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
+      currencyOther:
+        'Částky zůstávají v měně {currency}: vlastní měna země {country} mezi měnami tohoto nástroje není. Historie je vyjádřena v procentech, takže nezávisí na zvolené měně.',
+      capped: 'Sloupce nad {cap} jsou nahoře oříznuté.',
+      legendRecent: 'Roky v průměru',
+      legendOlder: 'Dřívější roky',
+      tableSummary: 'Zobrazit roční čísla',
+      tableCaption: 'Roční inflace, {country}',
+      tableYear: 'Rok',
+      tableRate: 'Inflace',
+      tableNone: 'Bez čísla',
+      rangeJoin: ', ',
+      range: '{first} až {last}',
+    },
+    results: {
+      heading: 'Odpověď',
+      years: { one: '1 rok', few: '{n} roky', other: '{n} let' },
+      buy: 'Pokud bude inflace v průměru {rate} ročně, bude mít {amount} za {years} stejnou kupní sílu jako dnes {result}.',
+      cost: 'Pokud budou ceny růst v průměru o {rate} ročně, bude něco, co dnes stojí {amount}, za {years} stát {result}.',
+      past: 'Pokud byla inflace v průměru {rate} ročně, odpovídá {amount} z doby o {years} dříve dnešní částce {result}.',
+      pastCountry: 'V zemi {country} měla částka {amount} v roce {from} stejnou kupní sílu jako {result} v roce {to}.',
+      pastCountryRise: 'Za {years} vzrostly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
+      keepMore: 'Při roční míře zvýšení platu nebo výnosu z úspor {growth} a průměrné inflaci {rate} roste kupní síla zhruba o {real} ročně.',
+      keepLess: 'Při roční míře zvýšení platu nebo výnosu z úspor {growth} a průměrné inflaci {rate} klesá kupní síla zhruba o {real} ročně.',
+      keepSame: 'Při roční míře zvýšení platu nebo výnosu z úspor {growth} a průměrné inflaci {rate} zůstává kupní síla zhruba stejná.',
+      keepAfter: 'Za {years} bude mít částka {amount}, která roste o {growth} ročně, stejnou kupní sílu jako dnes {result}.',
+      keepExact:
+        'Přesný výpočet: (1 + {growth}) ÷ (1 + {rate}) − 1. Odečíst jednu sazbu od druhé ({shortcut}) je běžná zkratka, která je při nízkých sazbách blízko přesnému výsledku, ale při vysokých sazbách se výrazně rozchází.',
+      keepHeadline: '{real} ročně',
+      about: 'zhruba {amount}',
+      moreThan: 'více než {amount}',
+      lessThan: 'méně než {amount}',
+      bandLabel: 'O bod níž a výš:',
+      bandItem: 'Při {rate}: {result}',
+      bandKeep: 'Při inflaci {rate}: {real} ročně',
+      method: 'Počítáno složeně jednou ročně, každý rok stejnou sazbou. Scénář, ne prognóza.',
+      methodHistory: 'Počítáno rok po roku se skutečnou hodnotou za každý rok. Historie, ne prognóza.',
+      fix: 'Opravte zvýrazněná pole a uvidíte odpověď.',
+      stale: 'Tato odpověď je zastaralá: opravte zvýrazněná pole a odpověď se aktualizuje.',
+      announce: 'Aktualizovaná odpověď: {headline}. {sentence}',
+    },
+    chart: {
+      title: {
+        buy: 'Co si za {amount} koupíte v každém roce, v dnešních penězích',
+        cost: 'Kolik bude z {amount} v každém roce',
+        past: 'Jakou hodnotu má {amount} v každém dalším roce',
+        keep: 'Co si za {amount} koupíte v každém roce, v dnešních penězích',
+      },
+      axis: {
+        buy: 'Roky od dneška',
+        cost: 'Roky od dneška',
+        past: 'Roky od té doby',
+        keep: 'Roky od dneška',
+        pastCountry: 'Rok',
+      },
+      desc: 'Spojnicový graf. Začíná na {start} ({from}) a končí na {end} ({to}).',
+      yearsFrom: 'rok {n}',
+      tooLarge: 'Při této sazbě jsou částky příliš velké na vykreslení.',
+    },
+    actions: {
+      copy: 'Kopírovat odkaz na tento výpočet',
+      copied: 'Odkaz zkopírován',
+      copyPrompt: 'Zkopírujte tento odkaz:',
+      reset: 'Obnovit výchozí',
     },
   },
 };

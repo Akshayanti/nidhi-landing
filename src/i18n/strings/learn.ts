@@ -318,6 +318,7 @@ export const learnEn = {
       inclusiveSummary: 'When the standard plan does not fit: couples, shared homes, moving countries, disability and more',
       guideOne: 'guide',
       guideMany: 'guides',
+      guideFew: 'guides',
       findHeading: 'Find a lesson',
       browseByTopic: 'Browse by topic',
       searchLabel: 'Search lessons',
@@ -325,6 +326,7 @@ export const learnEn = {
       noMatches: 'No lessons match. A broader word, or the topic list, may help.',
       lessonOne: 'lesson',
       lessonMany: 'lessons',
+      lessonFew: 'lessons',
       inclusivePill: 'Inclusive',
       showAll: 'Show all {count}',
       /** The ideas the helper's first question asks about (src/utils/levelHelper.ts). */
@@ -391,8 +393,10 @@ export const learnEn = {
     summary: {
       lessonsOne: '{count} lesson in {levels}',
       lessonsMany: '{count} lessons in {levels}',
+      lessonsFew: '{count} lessons in {levels}',
       guidesOne: '{count} Inclusive Finances guide',
       guidesMany: '{count} Inclusive Finances guides',
+      guidesFew: '{count} Inclusive Finances guides',
       join: ', plus ',
       levelList: '{list} and {last}',
     },
@@ -420,6 +424,7 @@ export const learnEn = {
     fallbackCard: 'Articles tagged "{tag}".',
     countOne: '{count} lesson',
     countMany: '{count} lessons',
+    countFew: '{count} lessons',
   },
 
   /** The Inclusive Finances hub, at `/blog/inclusive-finances/`. */
@@ -697,6 +702,7 @@ export const learnHi: typeof learnEn = {
       inclusiveSummary: 'जब मानक योजना फ़िट नहीं बैठती: जोड़े, साझा घर, देश बदलना, विकलांगता और बहुत कुछ',
       guideOne: 'मार्गदर्शिका',
       guideMany: 'मार्गदर्शिकाएँ',
+      guideFew: 'मार्गदर्शिकाएँ',
       findHeading: 'पाठ खोजें',
       browseByTopic: 'विषय से देखें',
       searchLabel: 'पाठ खोजें',
@@ -704,6 +710,7 @@ export const learnHi: typeof learnEn = {
       noMatches: 'कोई पाठ नहीं मिला। खोज पाठों के अंग्रेज़ी शीर्षकों और विवरणों में होती है; कोई व्यापक अंग्रेज़ी शब्द, या विषय सूची, मदद कर सकती है।',
       lessonOne: 'पाठ',
       lessonMany: 'पाठ',
+      lessonFew: 'पाठ',
       inclusivePill: 'सबके लिए वित्त',
       showAll: 'सभी {count} दिखाएँ',
       concepts: {
@@ -764,8 +771,10 @@ export const learnHi: typeof learnEn = {
     summary: {
       lessonsOne: '{levels} में {count} पाठ',
       lessonsMany: '{levels} में {count} पाठ',
+      lessonsFew: '{levels} में {count} पाठ',
       guidesOne: 'सबके लिए वित्त की {count} मार्गदर्शिका',
       guidesMany: 'सबके लिए वित्त की {count} मार्गदर्शिकाएँ',
+      guidesFew: 'सबके लिए वित्त की {count} मार्गदर्शिकाएँ',
       join: ', साथ ही ',
       levelList: '{list} और {last}',
     },
@@ -790,6 +799,7 @@ export const learnHi: typeof learnEn = {
     fallbackCard: '"{tag}" टैग वाले पाठ।',
     countOne: '{count} पाठ',
     countMany: '{count} पाठ',
+    countFew: '{count} पाठ',
   },
 
   inclusiveFinances: {
@@ -1062,6 +1072,7 @@ export const learnEs: typeof learnEn = {
       inclusiveSummary: 'Cuando el plan estándar no encaja: parejas, hogares compartidos, mudarse de país, discapacidad y más',
       guideOne: 'guía',
       guideMany: 'guías',
+      guideFew: 'guías',
       findHeading: 'Encuentra una lección',
       browseByTopic: 'Explorar por tema',
       searchLabel: 'Buscar lecciones',
@@ -1070,6 +1081,7 @@ export const learnEs: typeof learnEn = {
       noMatches: 'Ninguna lección coincide. La búsqueda mira los títulos y descripciones en inglés; una palabra más amplia en inglés, o la lista de temas, puede ayudar.',
       lessonOne: 'lección',
       lessonMany: 'lecciones',
+      lessonFew: 'lecciones',
       /** The glossary never shortens the name to "inclusivas" alone. */
       inclusivePill: 'Finanzas inclusivas',
       showAll: 'Mostrar las {count}',
@@ -1131,8 +1143,10 @@ export const learnEs: typeof learnEn = {
     summary: {
       lessonsOne: '{count} lección en {levels}',
       lessonsMany: '{count} lecciones en {levels}',
+      lessonsFew: '{count} lecciones en {levels}',
       guidesOne: '{count} guía de Finanzas inclusivas',
       guidesMany: '{count} guías de Finanzas inclusivas',
+      guidesFew: '{count} guías de Finanzas inclusivas',
       join: ', además de ',
       levelList: '{list} y {last}',
     },
@@ -1157,6 +1171,7 @@ export const learnEs: typeof learnEn = {
     fallbackCard: 'Artículos con la etiqueta «{tag}».',
     countOne: '{count} lección',
     countMany: '{count} lecciones',
+    countFew: '{count} lecciones',
   },
 
   inclusiveFinances: {
@@ -1174,5 +1189,386 @@ export const learnEs: typeof learnEn = {
     },
     empty: 'Las primeras guías de esta colección están en camino.',
     emptyLink: 'Mientras tanto, explora la ruta de aprendizaje',
+  },
+};
+
+/**
+ * Czech. Vykání, lowercase *vy*; counts that the code does not pick a form for
+ * are written so the noun does not follow the number (*počet lekcí: {count}*),
+ * because Czech has three plural forms (docs/i18n/cs-glossary.md).
+ */
+export const learnCs: typeof learnEn = {
+  learn: {
+    levels: {
+      discovery: 'Objevování',
+      building: 'Budování',
+      psychology: 'Psychologie',
+      optimizing: 'Optimalizace',
+      mastery: 'Mistrovství',
+      'inclusive-finances': 'Inkluzivní finance',
+    } as Record<string, string>,
+
+    summaries: {
+      discovery: 'Základní jazyk peněz',
+      building: 'Rozpočty, riziko a první investice',
+      psychology: 'Jak zvyky a zkreslení utvářejí rozhodnutí',
+      optimizing: 'Revize a vylepšování plánu',
+      mastery: 'Plánování pozůstalosti a dlouhá hra',
+    } as Record<string, string>,
+
+    levelMeta: {
+      discovery: {
+        description: 'Základy. Pokud s osobními financemi začínáte, tady je běžný výchozí bod.',
+        covered: 'Čisté jmění, aktiva, závazky, peněžní tok, dluh, složené úročení, likvidita, finanční rezerva, kupní síla, časová hodnota peněz, spoření a investování, úvěr, pojištění',
+      },
+      building: {
+        description: 'Skládání dílků dohromady. Rozpočty, systémy spoření a první investice.',
+        covered: 'Rozpočet, riziko, třídy aktiv, investiční účty, diverzifikace, úvod do finanční nezávislosti, více měn, nemovitosti, podmínky úvěrů, pasivní příjem, cíle, přehled, ukazatele finančního zdraví, daně',
+      },
+      psychology: {
+        description: 'Jak vám vlastní mysl s penězi pomáhá i škodí. Behaviorální zkreslení, mentální modely a budování lepších návyků.',
+        covered: 'Averze ke ztrátě, mentální účetnictví, upřednostňování přítomnosti, přehnaná sebedůvěra, rámování a ukotvení, stádní chování, narativní ekonomie, finanční přesvědčení (money scripts), systémy proti zkreslením',
+      },
+      optimizing: {
+        description: 'Doladění toho, co funguje. Daňová efektivita, rebalancování portfolia a pokročilé strategie.',
+        covered: 'Daňové využití ztrát (tax-loss harvesting), rebalancování portfolia, rozložení investic mezi účty, diverzifikace',
+      },
+      mastery: {
+        description: 'Dlouhá hra. Mezigenerační bohatství, plánování pozůstalosti a finanční nezávislost.',
+        covered: 'Plánování pozůstalosti, FIRE, mezigenerační bohatství, strategie čerpání',
+      },
+      'inclusive-finances': {
+        description: 'Pro domácnosti, pro které běžné rady nebyly psány. Každý průvodce vezme jeden výchozí předpoklad, ukáže, co se rozbije, když neplatí, a záměrně ho postaví znovu.',
+        covered: 'Nesezdané a spolu žijící páry, sdílené domácnosti, příležitostná práce na zakázku, bezúročné financování, domácnosti přes hranice, stárnutí bez rodiny, rozvod, péče o blízké, zdravotní postižení, rodina z volby, rodiny s dětmi z předchozích vztahů, ovdovění',
+      },
+    } as Record<string, { description: string; covered: string }>,
+
+    tags: {
+      'discovery': {
+        name: 'Objevování',
+        title: 'Série Objevování: základy osobních financí | nidhi',
+        description: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní průvodci určení ke čtení v pořadí.',
+        card: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní průvodci určení ke čtení v pořadí.',
+      },
+      'building': {
+        name: 'Budování',
+        title: 'Série Budování: investování, daně a plánování | nidhi',
+        description: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Průvodci, jak základy uvést do praxe.',
+        card: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Průvodci, jak základy uvést do praxe.',
+      },
+      'psychology': {
+        name: 'Psychologie',
+        title: 'Psychologie peněz: základy behaviorálních financí | nidhi',
+        description: 'Proč vědět, co s penězi udělat, není totéž jako to udělat: averze ke ztrátě, mentální účetnictví, upřednostňování přítomnosti, stádní chování. Behaviorální finance srozumitelně.',
+        card: 'Proč vědět, co s penězi udělat, není totéž jako to udělat: averze ke ztrátě, mentální účetnictví, upřednostňování přítomnosti, stádní chování. Behaviorální finance srozumitelně.',
+      },
+      'optimizing': {
+        name: 'Optimalizace',
+        title: 'Série Optimalizace: projekce, poplatky a daně | nidhi',
+        description: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Průvodci pro doladění plánu, který už funguje.',
+        card: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Průvodci pro doladění plánu, který už funguje.',
+      },
+      'inclusive-finances': {
+        name: 'Inkluzivní finance',
+        title: 'Inkluzivní finance: když výchozí plán nesedí | nidhi',
+        description: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
+        card: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
+      },
+      'relationships': {
+        name: 'Vztahy',
+        title: 'Peníze a vztahy: páry, rodiny, domácnosti | nidhi',
+        description: 'Jak mohou páry, rodiny s dětmi z předchozích vztahů, rodiny z volby a sdílené domácnosti plánovat peníze, když zákon a výchozí nastavení neodpovídají tomu, jak žijí.',
+        card: 'Jak mohou páry, rodiny s dětmi z předchozích vztahů, rodiny z volby a sdílené domácnosti plánovat peníze, když zákon a výchozí nastavení neodpovídají tomu, jak žijí.',
+      },
+      'disability': {
+        name: 'Zdravotní postižení',
+        title: 'Finanční plánování se zdravotním postižením | nidhi',
+        description: 'Spoření a plánování s dávkami závislými na příjmu a majetku, náklady na péči a příjmy, které nemusí odpovídat běžnému průběhu kariéry. Rámce, ne právní rady pro konkrétní zemi.',
+        card: 'Spoření a plánování s dávkami závislými na příjmu a majetku, náklady na péči a příjmy, které nemusí odpovídat běžnému průběhu kariéry. Rámce, ne právní rady pro konkrétní zemi.',
+      },
+      'immigration': {
+        name: 'Migrace',
+        title: 'Peníze přes hranice: přistěhovalci a expati | nidhi',
+        description: 'Úvěrová historie, bankovnictví, důchody a problémy s uznáváním dokladů a kvalifikace, když vaše domácnost překračuje hranice. Rámce plánování pro přistěhovalce a rodiny přes hranice.',
+        card: 'Úvěrová historie, bankovnictví, důchody a problémy s uznáváním dokladů a kvalifikace, když vaše domácnost překračuje hranice. Rámce plánování pro přistěhovalce a rodiny přes hranice.',
+      },
+      'fundamentals': {
+        name: 'Základy',
+        title: 'Finanční základy: gramotnost v osobních financích | nidhi',
+        description: 'Základní pojmy osobních financí, které se hodí znát každému dospělému: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
+        card: 'Základní pojmy osobních financí, které se hodí znát každému dospělému: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
+      },
+      'debt': {
+        name: 'Dluh',
+        title: 'Jak funguje dluh a jak ho zvládat: finanční gramotnost | nidhi',
+        description: 'Jak dluh funguje, proč záleží na úrokových sazbách a jaké osvědčené postupy lidé při splácení dluhů používají. Praktická finanční gramotnost na webu nidhi.',
+        card: 'Jak dluh funguje, proč záleží na úrokových sazbách a jaké osvědčené postupy lidé při splácení dluhů používají. Praktická finanční gramotnost na webu nidhi.',
+      },
+      'saving': {
+        name: 'Spoření',
+        title: 'Spoření: základy osobních financí | nidhi',
+        description: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Průvodci finanční gramotností na webu nidhi.',
+        card: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Průvodci finanční gramotností na webu nidhi.',
+      },
+      'investing': {
+        name: 'Investování',
+        title: 'Základy investování: finanční gramotnost | nidhi',
+        description: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní průvodci investováním pro rozvoj finanční gramotnosti.',
+        card: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní průvodci investováním pro rozvoj finanční gramotnosti.',
+      },
+      'risk': {
+        name: 'Riziko',
+        title: 'Finanční riziko srozumitelně: investiční gramotnost | nidhi',
+        description: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a jak čas mění riziko. Finanční gramotnost na webu nidhi.',
+        card: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a jak čas mění riziko.',
+      },
+      'planning': {
+        name: 'Plánování',
+        title: 'Finanční plánování: účty, daně a sledování | nidhi',
+        description: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktičtí průvodci finančním plánováním na webu nidhi.',
+        card: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktičtí průvodci finančním plánováním na webu nidhi.',
+      },
+      'goals': {
+        name: 'Cíle',
+        title: 'Finanční cíle a sledování pokroku | nidhi',
+        description: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Průvodci plánováním na webu nidhi.',
+        card: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Průvodci plánováním na webu nidhi.',
+      },
+      'fire': {
+        name: 'FIRE',
+        title: 'Finanční nezávislost (FIRE): základy | nidhi',
+        description: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Průvodci bez příkras na webu nidhi.',
+        card: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Průvodci bez příkras na webu nidhi.',
+      },
+      'taxes': {
+        name: 'Daně',
+        title: 'Daně a investování: finanční gramotnost | nidhi',
+        description: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací průvodci s přehledovou tabulkou podle zemí.',
+        card: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací průvodci s přehledovou tabulkou podle zemí.',
+      },
+      'currency': {
+        name: 'Měna',
+        title: 'Peníze ve více měnách: kurzy a riziko | nidhi',
+        description: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Průvodci pro život přes hranice.',
+        card: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Průvodci pro život přes hranice.',
+      },
+      'real-estate': {
+        name: 'Nemovitosti',
+        title: 'Nemovitosti jako investice: základy | nidhi',
+        description: 'Nemovitosti nad rámec vlastního bydlení: výnosy, finanční páka, nízká likvidita a výpočet, zda se vyplatí nájem, nebo koupě. Finanční gramotnost na webu nidhi.',
+        card: 'Nemovitosti nad rámec vlastního bydlení: výnosy, finanční páka, nízká likvidita a výpočet, zda se vyplatí nájem, nebo koupě. Finanční gramotnost na webu nidhi.',
+      },
+    } as Record<string, { name: string; title: string; description: string; card: string }>,
+
+    crumb: {
+      learn: 'Lekce',
+      topics: 'Témata',
+      inclusive: 'Inkluzivní finance',
+    },
+
+    levelFallback: 'Inkluzivní finance',
+
+    lessonsInEnglish: 'Lekce jsou v angličtině. Prohlížeč je umí přeložit přímo při čtení.',
+
+    island: {
+      minRead: 'min čtení',
+      startHere: 'Začít tady',
+      new: 'Nové',
+      markRead: 'Označit jako přečtené',
+      markUnread: 'Označit jako nepřečtené',
+      step: 'Krok {step} z {count}',
+      companionOptionalLabel: 'Volitelné · {label}',
+      companionOptionalFollows: 'Volitelně navazuje na lekci {host}',
+      companionFollows: 'Navazuje na lekci {host}',
+      readCount: 'Na tomto zařízení přečteno {read} z {total}',
+      markLevelRead: 'Označit úroveň jako přečtenou',
+      markLevelUnread: 'Označit úroveň jako nepřečtenou',
+      orderHint: 'Čtěte zleva doprava, pak dolů.',
+      allLessons: 'Všechny lekce úrovně {level}',
+      allGuides: 'Všichni průvodci úrovně {level}',
+    },
+  },
+
+  blogIndex: {
+    meta: {
+      title: 'Osobní finance srozumitelně | nidhi',
+      description: 'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem s praktickými průvodci.',
+    },
+    schema: {
+      breadcrumbLearn: 'Lekce',
+      itemListName: 'Úrovně vzdělávací cesty',
+      itemListDescription: 'Strukturovaná vzdělávací cesta osobními financemi, po úrovních od základů po revizi plánu.',
+    },
+    header: {
+      h1: 'Porozumějte svým penězům',
+      subtitle: 'Krátké lekce pro každý typ domácnosti, v jakékoli zemi. Kde záleží na místních pravidlech, lekce řeknou, co si ověřit.',
+      link: 'Jak lekce vznikají',
+    },
+    island: {
+      minRead: 'min čtení',
+      finishedEyebrow: 'Vše přečteno',
+      finishedHeading: 'Všechny dosavadní lekce na cestě máte přečtené ({count})',
+      finishedSub: 'Nové lekce se tu objeví, jakmile vyjdou. Inkluzivní finance a seznam témat jsou další cesty zpět.',
+      returningEyebrow: 'Pokračujte tam, kde to máte rozečtené',
+      returningSub: '{level}, lekce {index} z {total}',
+      returningNote: 'Počet přečtených lekcí úrovně {level} na tomto zařízení: {read} z {total}',
+      newEyebrow: 'Jste tu poprvé?',
+      newHeading: 'Běžným výchozím bodem je úroveň {level}, základní jazyk peněz',
+      newSub: 'Lekce 1: {title}',
+      continueReading: 'Pokračovat ve čtení',
+      readLesson1: 'Přečíst lekci 1',
+      exploreInclusive: 'Prozkoumat Inkluzivní finance',
+      helperClose: 'Zavřít pomocníka s výběrem úrovně',
+      helperOpen: 'Pomozte mi vybrat úroveň',
+      q1Note: 'Otázka 1 ze 2',
+      q1Text: 'Co z toho umíte vysvětlit někomu z přátel?',
+      q1Hint: 'Zaškrtněte vše, co platí. Nechat vše prázdné je také v pořádku.',
+      next: 'Další',
+      q2Note: 'Otázka 2 ze 2',
+      q2Text: 'Co by vám teď pomohlo nejvíc?',
+      back: 'Zpět',
+      answersNote: 'Vaše odpovědi se neukládají a žádná analytika nezaznamenává, které vyberete.',
+      resultHeading: 'Úroveň {level} může být užitečným místem, kde začít',
+      resultSuffix: 'Je to jen návrh ke čtení: každá úroveň zůstává otevřená.',
+      resultReasonFoundation: 'Počet zaškrtnutých myšlenek úrovně {level}: {ticked} z {total}. Následující úrovně na nich stavějí.',
+      resultReasonGoalPsych: 'Najdete tu lekce na téma {topic} a fungují vedle kterékoli úrovně.',
+      resultReasonGoal: 'Najdete tu lekce na téma {topic} a myšlenek, na kterých staví, je zaškrtnuto dost.',
+      resultReasonGoalKnown: 'Najdete tu lekce na téma {topic}. Počet zaškrtnutých myšlenek této úrovně: {ticked} z {total}, takže něco může působit povědomě.',
+      resultReasonAllKnownPsych: 'Zaškrtnuta je většina myšlenek ze všech dosavadních úrovní. Psychologie se dívá na mezeru mezi tím, co dělat víme, a tím, co opravdu děláme.',
+      resultReasonAllKnown: 'Zaškrtnuta je většina myšlenek ze všech dosavadních úrovní.',
+      gapsNote: 'Lekce o myšlenkách, které zaškrtnuté nejsou:',
+      firstLessonNote: 'Její první lekce:',
+      alsoLead: 'Potom, nebo souběžně: ',
+      alsoEnd: '.',
+      seeAll: 'Zobrazit všechny lekce úrovně {level}',
+      startOver: 'Začít znovu',
+      pathHeading: 'Vzdělávací cesta',
+      pathProgress: 'Na tomto zařízení přečteno {read} z {total}',
+      pathHint: 'Čtěte popořadě, nebo otevřete kteroukoli úroveň',
+      beingWritten: 'Připravuje se',
+      youAreHere: 'Jste tady',
+      srRead: 'přečteno',
+      lessonsCount: 'počet lekcí: {count}',
+      alongside: 'Souběžně s každou úrovní',
+      inclusiveName: 'Inkluzivní finance',
+      inclusiveSr: ', souběžně s každou úrovní',
+      inclusiveSummary: 'Když standardní plán nesedí: páry, sdílené bydlení, stěhování do jiné země, zdravotní postižení a další',
+      guideOne: 'průvodce',
+      guideMany: 'průvodců',
+      guideFew: 'průvodci',
+      findHeading: 'Najít lekci',
+      browseByTopic: 'Procházet podle tématu',
+      searchLabel: 'Hledat v lekcích',
+      searchPlaceholder: 'Hledat ve všech lekcích, například dluh, nájem, páry',
+      noMatches: 'Žádná lekce neodpovídá. Pomoci může obecnější slovo nebo seznam témat.',
+      lessonOne: 'lekce',
+      lessonMany: 'lekcí',
+      lessonFew: 'lekce',
+      inclusivePill: 'Inkluzivní finance',
+      showAll: 'Zobrazit vše ({count})',
+      concepts: {
+        'net-worth': 'Co je čisté jmění a jak ho spočítat',
+        'interest': 'Proč záleží na úrokové sazbě dluhu',
+        'emergency-fund': 'K čemu slouží finanční rezerva',
+        'inflation': 'Jak inflace zmenšuje, co si za peníze koupíte',
+        'asset-classes': 'Jak se liší akcie, dluhopisy a hotovost',
+        'diversification': 'Co diverzifikace dělá a co ne',
+        'tax-accounts': 'Co je daňově zvýhodněný účet',
+        'rebalancing': 'Proč se portfolio odchyluje a rebalancuje',
+        'fees': 'Kolik dělá roční poplatek 1 % za desítky let',
+        'real-returns': 'Co je reálný výnos po inflaci a nákladech',
+        'tax-loss': 'Daňové využití ztrát a rozložení investic mezi účty',
+        'glide-path': 'Co je postupné snižování rizika portfolia (glide path)',
+      } as Record<string, string>,
+      goals: {
+        picture: { label: 'Mít jasný přehled, jak na tom s penězi jsem', topic: 'čisté jmění, peněžní tok a rozpočet' },
+        safety: { label: 'Vytvořit si finanční polštář nebo dostat dluhy pod kontrolu', topic: 'finanční rezerva a dluhy' },
+        invest: { label: 'Začít investovat nebo si stanovit cíle', topic: 'investování, účty a cíle' },
+        habits: { label: 'Dotáhnout to, co už vím', topic: 'zvyky, zkreslení a dotahování věcí' },
+        refine: { label: 'Vylepšit plán, který už mám', topic: 'poplatky, daně a ladění plánu' },
+        unsure: { label: 'Zatím nevím' },
+      } as Record<string, { label: string; topic?: string }>,
+    },
+  },
+
+  level: {
+    meta: {
+      title: '{label}: {summary} | nidhi',
+      descriptionWithCount: '{description} Lekce zdarma v pořadí čtení, celkem {count}.',
+    },
+    schema: {
+      itemListName: 'Lekce úrovně {label}',
+    },
+    eyebrow: 'Úroveň {index} z {total}',
+    coveredSummary: 'Co tato úroveň zahrnuje',
+    scope: 'Psáno pro kteroukoli zemi: kde lekce závisí na místních pravidlech pro daně, účty nebo dávky, řekne, co si ověřit tam, kde žijete.',
+    scopeLink: 'Jak lekce vznikají',
+    empty: 'Lekce této úrovně se připravují. Nové se tu objeví, jakmile vyjdou.',
+    nav: {
+      label: 'Úrovně',
+      allLevels: 'Všechny úrovně',
+      next: 'Další úroveň: {label}',
+      inclusive: 'Inkluzivní finance',
+    },
+  },
+
+  topic: {
+    meta: {
+      titleFallback: '{tag}: finanční gramotnost | nidhi',
+      descriptionFallback: 'Články na téma {tag}: praktická finanční gramotnost a vzdělávání v osobních financích na webu nidhi.',
+    },
+    schema: {
+      itemListName: 'Lekce na téma {tag}',
+    },
+    eyebrow: 'Téma',
+    summary: {
+      lessonsOne: '{count} lekce (úroveň {levels})',
+      lessonsMany: '{count} lekcí (úrovně {levels})',
+      lessonsFew: '{count} lekce (úrovně {levels})',
+      guidesOne: '{count} průvodce z kolekce Inkluzivní finance',
+      guidesMany: '{count} průvodců z kolekce Inkluzivní finance',
+      guidesFew: '{count} průvodci z kolekce Inkluzivní finance',
+      join: ' a k tomu ',
+      levelList: '{list} a {last}',
+    },
+    nav: {
+      label: 'Další způsoby, jak najít lekce',
+      allTopics: 'Všechna témata',
+      searchAll: 'Hledat ve všech lekcích',
+    },
+  },
+
+  topics: {
+    meta: {
+      title: 'Procházet podle tématu | nidhi',
+      description: 'Všechna témata blogu nidhi: čisté jmění, rozpočet, dluh, investování, riziko a další. Vyberte téma a čtěte všechny články z dané oblasti.',
+    },
+    schema: {
+      collectionName: 'Témata lekcí',
+    },
+    h1: 'Procházet podle tématu',
+    subtitle: 'Všechna témata vzdělávací cesty s počtem lekcí u každého. Vyberte jedno a čtěte všechny lekce z dané oblasti.',
+    empty: 'Zatím žádná témata.',
+    fallbackCard: 'Články se štítkem „{tag}“.',
+    countOne: '{count} lekce',
+    countMany: '{count} lekcí',
+    countFew: '{count} lekce',
+  },
+
+  inclusiveFinances: {
+    eyebrow: 'Bez předchozích znalostí, užitečné v jakékoli fázi',
+    h1: 'Když vám výchozí plán nesedí',
+    lede1: 'Většina finančních rad mlčky předpokládá jeden typ domácnosti: manželský pár nebo jednoho dospělého, stálé zaměstnání, rodinu, kterou uznává zákon, a život v jedné zemi. Dávky pro pozůstalé, společné zdanění, dědické právo i zaměstnanecké penzijní programy jsou postavené kolem tohoto uspořádání.',
+    lede2: 'Tito průvodci jsou pro všechny ostatní. Každý vezme jeden výchozí předpoklad, ukáže, co se rozbije, když pro vás neplatí, a projde záměrné volby, které ho nahradí. Nic jiného na tomto webu není třeba číst předem.',
+    scope: 'Tito průvodci učí, co si ověřit a na co se ptát. Právní podrobnosti se liší podle země, takže nikdy neříkají, co stanoví zákon tam, kde žijete. K tomu se obraťte na místního odborníka.',
+    situations: {
+      heading: 'Procházet podle situace',
+      note: 'Každý odkaz ukazuje odpovídající průvodce z celého webu, nejen z této kolekce.',
+      relationships: 'Páry, rodiny a sdílené domácnosti',
+      immigration: 'Život přes hranice',
+      disability: 'Zdravotní postižení a dávky závislé na příjmu a majetku',
+    },
+    empty: 'První průvodci této kolekce se připravují.',
+    emptyLink: 'Mezitím si projděte vzdělávací cestu',
   },
 };

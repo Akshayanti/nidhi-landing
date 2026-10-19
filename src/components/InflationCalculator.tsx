@@ -38,6 +38,7 @@ import {
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/inflation/url.ts';
 import { format } from '../i18n/format.ts';
+import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
 // ===========================================================================
@@ -148,8 +149,9 @@ function aboutText(v: number, code: string, strings: Strings, amountLocale: stri
   return t(strings.results.about, { amount: formatAmount(roundAbout(v), code, false, amountLocale) });
 }
 
-function yearsPhrase(n: number, strings: Strings): string {
-  return n === 1 ? strings.results.years.one : t(strings.results.years.other, { n });
+function yearsPhrase(n: number, strings: Strings, numberLocale: string): string {
+  const { one, few, other } = strings.results.years;
+  return t(plural(numberLocale, n, one, few, other), { n });
 }
 
 // ===========================================================================
@@ -908,7 +910,7 @@ function computeAnswer(
       headline: aboutText(value, code, strings, amountLocale),
       sentences: [
         t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
-        t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings), average: pct(average, numberLocale, 1) }),
+        t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }),
       ],
       band: [],
       method: r.methodHistory,
@@ -921,7 +923,7 @@ function computeAnswer(
 
   const n = s.years;
   const i = s.rate;
-  const years = yearsPhrase(n, strings);
+  const years = yearsPhrase(n, strings, numberLocale);
   const { lower, higher } = bandRates(i);
   const sides = [lower, higher].filter((v): v is number => v !== null);
 

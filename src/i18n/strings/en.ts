@@ -843,10 +843,12 @@ export const en = {
       second:
         'We don’t push “we updated our privacy policy” emails. If you want to keep an eye on it, bookmark this page or read the log below when you’re curious. If a change ever makes you uncomfortable, unsubscribing from the newsletter is a one-click link in every email, and clearing your browser’s site data wipes everything stored locally.',
       earlier: 'Earlier changes',
-      // Two forms rather than a plural rule: Hindi's word for "change" does not
-      // inflect for number, and `format()` has no plural machinery to lean on.
+      // Three forms, picked by `plural()`: Hindi's word for "change" does not
+      // inflect for number, and Czech has a third form for 2 to 4. English's
+      // `Few` is its plural, like every English `Few`.
       countOne: '{count} change',
       countOther: '{count} changes',
+      countFew: '{count} changes',
       materialTag: 'material',
       materialLabel: 'Material change',
       /**
@@ -1033,6 +1035,7 @@ export const en = {
       doorPath: 'Keep going on the learning path',
       inclusiveTitle: 'The standard plan doesn’t fit my life.',
       inclusiveMeta: 'Inclusive Finances · {count} guides, any stage',
+      inclusiveMetaFew: 'Inclusive Finances · {count} guides, any stage',
       inclusiveMetaOne: 'Inclusive Finances · 1 guide, any stage',
       inclusiveGo: 'Explore',
     },

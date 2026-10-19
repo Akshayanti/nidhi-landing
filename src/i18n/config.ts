@@ -3,7 +3,7 @@
  *
  * English is the default locale and stays where it is: the site root, with no
  * prefix, no redirect and no query parameter. Every other locale lives under
- * its own single-segment prefix: Hindi at /hi/, Spanish at /es/.
+ * its own single-segment prefix: Hindi at /hi/, Spanish at /es/, Czech at /cs/.
  *
  * The path is the only place a locale is recorded. Nothing is written to
  * localStorage for it, and there is no automatic redirect from Accept-Language
@@ -18,7 +18,7 @@
  */
 export const DEFAULT_LOCALE = 'en' as const;
 
-export const LOCALES = ['en', 'hi', 'es'] as const;
+export const LOCALES = ['en', 'hi', 'es', 'cs'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -33,6 +33,7 @@ export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLo
   en: { label: 'English', htmlLang: 'en', ogLocale: 'en_US' },
   hi: { label: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
   es: { label: 'Español', htmlLang: 'es', ogLocale: 'es_ES' },
+  cs: { label: 'Čeština', htmlLang: 'cs', ogLocale: 'cs_CZ' },
 };
 
 /**
@@ -50,6 +51,7 @@ export const DATE_LOCALE: Record<Locale, string> = {
   // every Spanish-speaking country, and the dates it prints read the same in
   // all of them.
   es: 'es',
+  cs: 'cs-CZ',
 };
 
 /**
@@ -59,6 +61,8 @@ export const DATE_LOCALE: Record<Locale, string> = {
  * is in rupees, see `EXAMPLE_CURRENCY`). A Spanish reader reads
  * `10,000` as ten with three decimals, so the Spanish edition writes
  * `10.000 €`, as the RAE and every euro country that speaks Spanish do.
+ * Czech groups with a no-break space and writes the symbol after the number,
+ * `10 000 Kč` (the Czech example is in koruna, see `EXAMPLE_CURRENCY`).
  *
  * Lessons are not affected: they are English and keep English figures. The
  * free tools format an amount by the currency the reader chose, except on a
@@ -70,6 +74,7 @@ export const PROSE_NUMBER_LOCALE: Record<Locale, string> = {
   // abbreviated on a chart, ₹1.5L and ₹2.3Cr, as Indian readers write them.
   hi: 'en-IN',
   es: 'es',
+  cs: 'cs',
 };
 
 export function isLocale(value: string | undefined): value is Locale {

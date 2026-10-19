@@ -58,7 +58,7 @@ export type Starter = typeof STARTER;
 /**
  * One worked example per example currency. Each edition shows its readers an
  * example in a currency they live with: English and Spanish in euros, Hindi in
- * rupees. The rupee figures are chosen at Indian scale, not converted at an
+ * rupees, Czech in koruna. The rupee figures are chosen at Indian scale, not converted at an
  * exchange rate (a converted used car would read ₹3,77,000), and keep the
  * euro example's shape: the invested balance again starts at the vehicle's
  * value, the higher saving is again double the lower, and the two people
@@ -86,6 +86,26 @@ export const EXAMPLES = {
     sameIncome: 50_000,
     people: { alex: { owns: 4_40_000, owes: 6_20_000 }, sam: { owns: 3_30_000, owes: 80_000 } },
   },
+  /**
+   * Czech koruna, chosen at Czech scale against a net income of 35,000 Kč a
+   * month (the euro example's figures scaled by income, not by exchange rate):
+   * an older car, savings, a supplementary pension and a consumer loan.
+   */
+  CZK: {
+    starter: {
+      owns: [
+        { name: 'Savings account', amount: 50_000 },
+        { name: 'Car, if sold today', amount: 40_000 },
+        { name: 'Supplementary pension savings', amount: 12_000 },
+      ],
+      owes: [{ name: 'Consumer loan', amount: 62_000 }],
+      monthly: 2_000,
+      years: 10,
+    } satisfies Starter,
+    higherMonthly: 4_000,
+    sameIncome: 35_000,
+    people: { alex: { owns: 255_000, owes: 360_000 }, sam: { owns: 195_000, owes: 45_000 } },
+  },
 };
 
 export type ExampleCurrency = keyof typeof EXAMPLES;
@@ -95,6 +115,7 @@ export const EXAMPLE_CURRENCY: Record<Locale, ExampleCurrency> = {
   en: 'EUR',
   hi: 'INR',
   es: 'EUR',
+  cs: 'CZK',
 };
 
 export function starterExample(starter: Starter = STARTER) {

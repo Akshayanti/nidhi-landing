@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import {
   aggregate,
@@ -24,6 +24,7 @@ import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolS
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
+import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
 // ---------------------------------------------------------------------------
@@ -488,7 +489,7 @@ export default function MultiCurrencyNetWorth({
         <div className="mcnw-tableHeader">
           <h2 className="mcnw-sectionTitle">{strings.table.heading}</h2>
           <span className="mcnw-rowCount">
-            {format(filledCount === 1 ? strings.table.itemsOne : strings.table.itemsMany, { count: filledCount })}
+            {format(plural(numberLocale, filledCount, strings.table.itemsOne, strings.table.itemsFew, strings.table.itemsMany), { count: filledCount })}
           </span>
         </div>
 
@@ -583,7 +584,7 @@ export default function MultiCurrencyNetWorth({
         {csvErrors.length > 0 && (
           <div className="mcnw-csvErrors" role="alert">
             <p className="mcnw-csvErrorsTitle">
-              {format(csvErrors.length === 1 ? strings.table.errorTitleOne : strings.table.errorTitleMany, { count: csvErrors.length })}
+              {format(plural(numberLocale, csvErrors.length, strings.table.errorTitleOne, strings.table.errorTitleFew, strings.table.errorTitleMany), { count: csvErrors.length })}
             </p>
             <ul>
               {csvErrors.map((e) => (
@@ -999,6 +1000,7 @@ function ShareModal({
   onClose,
   strings,
 }: ShareModalProps) {
+  const numberLocale = useContext(NumberLocaleContext);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const modalTitleId = useId();
@@ -1127,7 +1129,7 @@ function ShareModal({
               {strings.shareModal.previewHeading}
               {isFull && (
                 <span className="mcnw-modalPreviewBadge">
-                  {format(nonEmpty.length === 1 ? strings.table.itemsOne : strings.table.itemsMany, { count: nonEmpty.length })}
+                  {format(plural(numberLocale, nonEmpty.length, strings.table.itemsOne, strings.table.itemsFew, strings.table.itemsMany), { count: nonEmpty.length })}
                 </span>
               )}
             </h3>
@@ -1184,6 +1186,7 @@ interface ConcentrationChartProps {
 }
 
 function ConcentrationChart({ positions: allPositions, functionalCurrency, strings }: ConcentrationChartProps) {
+  const numberLocale = useContext(NumberLocaleContext);
   const { formatAmount, formatPercent } = useMoney();
   const [active, setActive] = useState<string | null>(null);
   const legendId = useId();
@@ -1319,7 +1322,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
             <>
               <text x={cx} y={cy + 2} textAnchor="middle" className="mcnw-chartCenterLabel">{positions.length}</text>
               <text x={cx} y={cy + 24} textAnchor="middle" className="mcnw-chartCenterSub">
-                {positions.length === 1 ? strings.chart.currencyOne : strings.chart.currencyMany}
+                {plural(numberLocale, positions.length, strings.chart.currencyOne, strings.chart.currencyFew, strings.chart.currencyMany)}
               </text>
             </>
           )}
@@ -1394,6 +1397,7 @@ interface CSVConfirmDialogProps {
 }
 
 function CSVConfirmDialog({ currentCount, pendingCount, strings, onConfirm, onCancel }: CSVConfirmDialogProps) {
+  const numberLocale = useContext(NumberLocaleContext);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const headingId = useId();
@@ -1446,7 +1450,7 @@ function CSVConfirmDialog({ currentCount, pendingCount, strings, onConfirm, onCa
       aria-labelledby={headingId}
     >
       <p id={headingId}>
-        {format(currentCount === 1 ? strings.csv.confirmOne : strings.csv.confirmMany, {
+        {format(plural(numberLocale, currentCount, strings.csv.confirmOne, strings.csv.confirmFew, strings.csv.confirmMany), {
           current: currentCount,
           pending: pendingCount,
         })}
