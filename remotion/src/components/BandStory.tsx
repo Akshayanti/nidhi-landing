@@ -104,11 +104,14 @@ function WeightedBands({ bands, top, hook = false, cover = false, emphasisId, op
 }
 
 function EqualBands({ bands, top, cover = false, opacity = 1 }: { bands: BandDatum[]; top: number; cover?: boolean; opacity?: number }) {
-  const gap = cover ? 18 : 24;
-  const height = cover ? 270 : 285;
+  // Up to four equal bands; a fourth (for example the four steps of a
+  // process) shrinks every panel so the stack still fits above the disclosure.
+  const four = bands.length >= 4;
+  const gap = four ? 16 : cover ? 18 : 24;
+  const height = four ? (cover ? 196 : 212) : cover ? 270 : 285;
   return (
     <div style={{ opacity }}>
-      {bands.slice(0, 3).map((band, index) => (
+      {bands.slice(0, 4).map((band, index) => (
         <BandPanel key={band.id} band={band} left={64} top={top + index * (height + gap)} width={952} height={height} />
       ))}
     </div>

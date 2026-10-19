@@ -10,7 +10,7 @@ takeaways:
   - "What a one-page household agreement should cover"
 order: 47.5
 companionOf: "account-consolidation-and-financial-data-hygiene"
-pubDate: 2099-01-08
+pubDate: 2026-10-28
 localRules: [tenancy, benefits]
 level: "inclusive-finances"
 primaryPersona: "eva"

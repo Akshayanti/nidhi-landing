@@ -7,6 +7,7 @@ import { MonthStoryCover } from "./components/MonthStory";
 import { ColumnStoryCover } from "./components/ColumnStory";
 import { RouteStoryCover } from "./components/RouteStory";
 import { BandStoryCover } from "./components/BandStory";
+import { LineRaceCover } from "./components/LineRaceStory";
 import { BRAND, TYPE, type ReelPlan } from "./data";
 
 interface Props {
@@ -88,6 +89,14 @@ export function Thumbnail({ plan, hookVariantIdx }: Props) {
     return (
       <BrandBackground variant="paper">
         <BandStoryCover plan={{ ...plan, useHookVariant: idx }} />
+      </BrandBackground>
+    );
+  }
+
+  if (plan.lineRace && hook?.anchor?.type === "race") {
+    return (
+      <BrandBackground variant="paper">
+        <LineRaceCover plan={{ ...plan, useHookVariant: idx }} />
       </BrandBackground>
     );
   }

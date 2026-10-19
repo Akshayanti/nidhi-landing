@@ -413,7 +413,7 @@ async function renderOne({ post, opts, variantIdx }) {
   let hookcutInputPath = null;
   // Persistent-story plans (chartStory, barStory, ...) only render on the full
   // cut; the hookcut path would fall back to per-beat scenes without the chart.
-  const isStoryPlan = ["chartStory", "barStory", "monthStory", "columnStory", "routeStory", "bandStory"].some((k) => plan[k]);
+  const isStoryPlan = ["chartStory", "barStory", "monthStory", "columnStory", "routeStory", "bandStory", "lineRace"].some((k) => plan[k]);
   if (opts.hookcut && isStoryPlan) {
     console.warn("│  ! --hookcut is not supported for persistent-story plans: skipping the hook cut");
   }

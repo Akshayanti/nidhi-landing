@@ -1,0 +1,139 @@
+{
+  "slug": "growing-your-income",
+  "postTitle": "Growing Your Income: Negotiation and Career Capital",
+  "postLevel": "optimizing",
+  "episode": 6,
+  "seriesTotal": 0,
+  "blogPath": "blog/growing-your-income",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Switching jobs and staying pay you in different ways",
+  "topicChip": "SWITCH OR STAY",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "No figures; a qualitative comparison. Vesting, pension and promotion rules vary by employer, field and country."
+  },
+  "columnStory": {
+    "left": {
+      "id": "switch",
+      "title": "Switching",
+      "rule": "Pays through the market",
+      "items": [
+        "Pay repriced to today",
+        "A step in scope"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "stay",
+      "title": "Staying",
+      "rule": "Pays through tenure",
+      "items": [
+        "Shares that vest",
+        "Pension service",
+        "Internal promotion"
+      ],
+      "tone": "ink"
+    },
+    "disclosure": "Illustrative. Rules vary by employer, field and country."
+  },
+  "hookVariants": [
+    {
+      "id": "switch-or-stay",
+      "layout": "columns-gap",
+      "narration": "Would switching jobs pay you more, or staying? They pay in different ways.",
+      "onscreenLines": [
+        "Switch or stay?",
+        "They pay differently",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "differently"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "list",
+      "narration": "A move reprices you to today's market.",
+      "onscreenText": "Switching",
+      "subtext": "Pay repriced to today",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left-rule"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Staying builds what a move resets: shares that vest, pension service, promotion.",
+      "onscreenText": "Staying",
+      "subtext": "What a move resets",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "Which weighs more depends on your field and your life. A common starting point: pay against the market, what you would leave, and what changes outside work.",
+      "onscreenText": "The move test",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The move test",
+        "rows": [
+          {
+            "label": "Pay",
+            "value": "Against the market",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Left behind",
+            "value": "Vesting, pension",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Outside work",
+            "value": "Visa, family, health",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "A pattern, not a law."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this before your next move.",
+    "onscreenText": "Save the move test",
+    "subtext": "Pay, what you leave, life",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Would switching jobs pay you more, or staying? They pay in different ways.",
+    "tiktok": "Switch or stay? They pay differently. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "jobchange",
+    "careeradvice",
+    "workabroad"
+  ]
+}
