@@ -68,3 +68,18 @@ The introduction-to-financial-independence lesson is the model: it presents the 
 - No superlatives the evidence cannot carry ("the single most", "always", "never").
 - Numbers come with their source and scope. Figures must agree across lessons.
 - Imperatives are fine for neutral, low-stakes actions (list your accounts, check your statement), not for allocation, product, debt or tax decisions.
+
+## Decisions Go Through the Three-Model Council
+
+Every decision is approved by all three members of the council before it is accepted:
+
+- **Claude** (Opus).
+- **DeepSeek** via Ollama: `ollama run deepseek-v4.1-flash:cloud --hidethinking < brief.md > out.md` (strip ANSI codes from the output).
+- **Codex**, with the model most relevant to the decision: `codex exec --sandbox read-only --skip-git-repo-check -o out.md "<prompt>" </dev/null` (without `</dev/null` it hangs waiting on stdin).
+
+**Rules:**
+1. **A decision is accepted only when all three agree.** A 2-to-1 is not agreement, and a change of position without a reason does not count.
+2. **Agreement is reached by argument.** Write a shared brief, give each member every other member's position in each round, and end with a sign-off round where each member answers SIGN OFF or OBJECT, with a new argument for any objection.
+3. **When the council does not agree, the council decides the way forward**: another round with new evidence, splitting the decision into parts that can be agreed separately, a smaller or reversible step, or taking the open question to the user. No single member settles it alone.
+4. **Keep both runs alive.** Run Codex and DeepSeek in the background and check on them every 20 to 30 seconds; a stalled run is restarted, not waited out.
+5. The council does not override the rest of this file: a decision that conflicts with the privacy policy, or that is the user's to make, still goes to the user.

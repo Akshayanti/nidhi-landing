@@ -57,10 +57,10 @@
     {
       "id": "free-protection",
       "layout": "bands-gap",
-      "narration": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.",
+      "narration": "Is anything missing from your household's paperwork? Many of the fixes cost nothing.",
       "onscreenLines": [
+        "Anything missing?",
         "Many fixes are free",
-        "Many skip them",
         ""
       ],
       "anchor": {
@@ -240,8 +240,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.\n\nFixes come in three bands. Free, in an evening: beneficiaries named on pensions and policies where allowed, who owns what written down, every account listed where someone you trust can find it. Modest, worth doing properly: a will, powers of attorney, a written agreement about what you own together. Hard: gaps no document closes, where possible workarounds include insurance and a bigger buffer, checked under local law.\n\nThe one hour audit: every account that pays out, what you own jointly, who inherits with no will, who could act for you, and what you would lose with your job.\n\n→ Save this for your one hour audit\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Not legal advice; rules vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Many of the fixes for a household cost nothing. People skip them because they do not know anything is missing.\n\nOne hour, five lists. Not legal advice.",
+    "instagram": "Is anything missing from your household's paperwork? Many of the fixes cost nothing.\n\nFixes come in three bands. Free, in an evening: beneficiaries named on pensions and policies where allowed, who owns what written down, every account listed where someone you trust can find it. Modest, worth doing properly: a will, powers of attorney, a written agreement about what you own together. Hard: gaps no document closes, where possible workarounds include insurance and a bigger buffer, checked under local law.\n\nThe one hour audit: every account that pays out, what you own jointly, who inherits with no will, who could act for you, and what you would lose with your job.\n\n→ Save this for your one hour audit\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Not legal advice; rules vary by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Is anything missing from your household's paperwork? Many of the fixes cost nothing.\n\nOne hour, five lists. Not legal advice.",
     "instagramKeywords": [
       "life admin",
       "financial checklist",
