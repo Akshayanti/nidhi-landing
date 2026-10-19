@@ -38,6 +38,10 @@ import {
   BandStoryCTA,
   BandStoryView,
 } from "./components/BandStory";
+import {
+  LineRaceCTA,
+  LineRaceStory,
+} from "./components/LineRaceStory";
 import { Thumbnail, makeDefaultThumbnailPlan } from "./Thumbnail";
 import {
   FPS, WIDTH, HEIGHT, MUSIC_DUCK_GAIN, MUSIC_FULL_GAIN,
@@ -62,6 +66,7 @@ const PERSISTENT_STORIES: Array<{ key: keyof ReelPlan; Story: StoryView; CTA: St
   { key: "columnStory", Story: ColumnStory, CTA: ColumnStoryCTA },
   { key: "routeStory", Story: RouteStoryView, CTA: RouteStoryCTA },
   { key: "bandStory", Story: BandStoryView, CTA: BandStoryCTA },
+  { key: "lineRace", Story: LineRaceStory, CTA: LineRaceCTA },
 ];
 
 function findPersistentStory(plan: ReelPlan) {

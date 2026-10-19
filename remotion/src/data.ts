@@ -114,6 +114,38 @@ export interface ColumnGroup {
   tone: BarTone;
 }
 
+/**
+ * Stages for the line race. The race itself runs on its own clock from the
+ * first frame; beats only pick the heading, and the "finish" beat's start
+ * marks when the last point lands.
+ */
+export type RaceStage = "race" | "finish";
+
+export type RaceTone = "teal" | "ink" | "amber";
+
+/**
+ * Line race: two or three series plotted together on one clock, one period at
+ * a time, with live value labels at each line head and an optional running
+ * total of the gap between two of them.
+ */
+export interface LineRaceStory {
+  /** Period name for the ticker, e.g. "Year". */
+  periodLabel: string;
+  /** Value plotted at period 1, 2, ... All series have the same length. */
+  series: Array<{ id: string; label: string; tone: RaceTone; values: number[] }>;
+  /** Top of the value axis (the axis always starts at 0). */
+  ceiling: number;
+  /** Gridline values, e.g. [50000, 100000]. */
+  gridlines: number[];
+  /** Seconds per period while racing. */
+  secondsPerPeriod: number;
+  /** Running total of (upper - lower) across the periods plotted so far. */
+  gap?: { upper: string; lower: string; label: string; finalLabel: string };
+  /** Short scope line shown under the chart for the whole story. */
+  scope: string;
+  disclosure: string;
+}
+
 export interface ColumnStory {
   left: ColumnGroup;
   right: ColumnGroup;
@@ -329,6 +361,7 @@ export type BeatAnchor =
   | { type: "columns"; stage: ColumnStage }
   | { type: "routes"; stage: RouteStage }
   | { type: "bands"; stage: BandStage }
+  | { type: "race"; stage: RaceStage }
   | ({ type: "card"; stage: "tool" } & ToolCardData)
   | {
       type: "multiplier";
@@ -502,6 +535,8 @@ export interface ReelPlan {
   routeStory?: RouteStory;
   /** Optional persistent weighted-band visual for tiers or cost bands. */
   bandStory?: BandStory;
+  /** Optional persistent line race: series plotted live, one period at a time. */
+  lineRace?: LineRaceStory;
   mood: Mood;
   /** 3 hook candidates. Index 0 is the LLM's preferred pick. */
   hookVariants: HookVariant[];

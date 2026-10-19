@@ -19,7 +19,7 @@ const W = 1080;
 const H = 1350;
 const SH = 1920;
 const MAX_SLIDES = 8;
-const MULTI_KEYS = new Set(['input', 'row', 'calc', 'case', 'bar', 'item', 'month', 'more', 'left_item', 'right_item', 'route', 'tier']);
+const MULTI_KEYS = new Set(['offer', 'input', 'row', 'calc', 'case', 'bar', 'item', 'month', 'more', 'left_item', 'right_item', 'route', 'tier']);
 const BANNED_TAGS = new Set([
   '#personalfinance', '#financialliteracy', '#moneytips', '#wealthbuilding',
   '#financialfreedom', '#desifinance', '#indiansineurope', '#indianfinance',
@@ -128,6 +128,16 @@ const deckKeywords = (kit, day) => (kit.frontmatter[`keywords_day${day.n}`] || '
 
 const DASH = /[—–]|--|\s-\s|[A-Za-z]-[A-Za-z]/;
 
+// Send format (council, Oct 2026): each carousel is built for one friend at one moment, so a reader
+// DMs it to them. A day is send format when its angle has "send_to:"; optimizing kits from post 48 on
+// must be. The closer then asks for a send instead of a save, and the caption opens on the same moment.
+const SEND_FROM_POST = 48;
+const SEND_WHY = new Set(['checklist', 'number', 'myth', 'household', 'recognition']);
+const SEND_BAIT = /\btag\b|share (this )?with \d|send (them )?slide|send this to everyone|share if/i;
+// Instagram's own send glyph, a paper plane, so the ask reads as "DM this" at a glance.
+const SEND_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M22 3 9.2 10.1M22 3l-7.1 18-3.6-7.3L3.6 10 22 3Z"/></svg>';
+const needsSendFormat = kit => kit.relPath.startsWith('4. optimizing/') && Number(basename(kit.relPath).match(/^(\d+)-/)?.[1]) >= SEND_FROM_POST;
+
 export function lintKit(kit) {
   const errors = [];
   const err = (where, msg) => errors.push(`${where}: ${msg}`);
@@ -146,6 +156,12 @@ export function lintKit(kit) {
     const D = `Day ${day.n}`;
     for (const key of ['angle', 'number', 'takeaway', 'tool']) {
       if (!day.angle?.[key]) err(`${D} angle`, `missing "${key}"`);
+    }
+    const sendFormat = Boolean(day.angle?.send_to) || needsSendFormat(kit);
+    if (sendFormat) {
+      if (!day.angle?.send_to) err(`${D} angle`, 'missing "send_to:" naming one friend at one moment');
+      if (!SEND_WHY.has(day.angle?.send_why)) err(`${D} angle`, `"send_why:" must be one of ${[...SEND_WHY].join(', ')}`);
+      if (day.angle?.send_why === 'recognition') err(`${D} angle`, 'recognition is never the reason to send; pick checklist, number, myth or household');
     }
 
     if (!day.reel?.plan) err(`${D} reel`, 'missing "plan:" naming the reel plan JSON');
@@ -178,6 +194,11 @@ export function lintKit(kit) {
     const C = `${D} carousel`;
     if (!deck.caption) err(C, 'missing caption');
     noDash(`${C} caption`, deck.caption);
+    if (SEND_BAIT.test(deck.caption)) err(`${C} caption`, 'generic share bait; name the one moment instead');
+    if (sendFormat) {
+      if (!/^Know someone\b/.test(deck.caption)) err(`${C} caption`, 'send format caption opens "Know someone ...?" naming the send_to moment');
+      if (/→\s*Save/i.test(deck.caption)) err(`${C} caption`, 'send format caption has no save arrow; the arrow line is the send line');
+    }
     if (deck.slides.length > MAX_SLIDES) err(C, `${deck.slides.length} slides, max ${MAX_SLIDES}`);
     if (deck.slides[0]?.layout !== 'hook') err(C, 'first slide must be a hook');
     if (deck.slides.at(-1)?.layout !== 'closer') err(C, 'last slide must be a closer');
@@ -189,7 +210,12 @@ export function lintKit(kit) {
       for (const text of [...slide.body, ...Object.values(slide.fields).flat()]) noDash(at, text);
       if (!slide.fields.alt) err(at, 'missing "alt:" text (BRAND-RULES: every image gets alt text)');
       if (slide.layout === 'closer') {
-        if (slide.fields.send || slide.fields.share || slide.fields.follow) err(at, 'closer takes one ask only: "save:"');
+        if (slide.fields.share || slide.fields.follow) err(at, 'closer takes one ask only');
+        if (sendFormat && !slide.fields.send) err(at, 'send format closer needs a "send:" line naming the moment');
+        if (sendFormat && slide.fields.save) err(at, 'send format closer takes one ask: "send:", not "save:"');
+        if (!sendFormat && slide.fields.send) err(at, '"send:" needs "send_to:" in the angle');
+        if (!sendFormat && !slide.fields.save) err(at, 'closer needs a "save:" line');
+        if (slide.fields.send && SEND_BAIT.test(slide.fields.send)) err(at, 'generic share bait in "send:"');
         if (day.n === 1 && !slide.fields.read) err(at, 'day 1 closer needs a "read:" line naming what the blog holds');
         if (day.n === 1 && slide.fields.more) err(at, 'day 1 closer keeps the single "read:" line; the "more:" list belongs on day 2');
         if (day.n === 2 && !slide.fields.more) err(at, 'day 2 closer needs 2 or 3 "more:" lines naming ideas from the post that neither day showed');
@@ -516,6 +542,29 @@ function bandsHtml(s) {
   </div><div class="swipe">SWIPE <span>→</span></div>`;
 }
 
+// Two offers side by side, then the one answer they lead to (council, post 48): the question names
+// the moment, the cards show it, and the answer stays on slide 1 because it is what a reader forwards.
+//   offer: label | amount | muted|teal     answer: big figure | small line
+function offersHtml(s) {
+  const [answer, line] = cells(s.fields.answer || '');
+  const [, prefix = '', figure = answer] = answer.match(/^(About|Around|Roughly)\s+(.+)$/i) || [];
+  return `
+    <div class="offers-hook">
+      ${stripShowsIllustrative(s.fields) ? '' : '<div class="hook-disclosure">ILLUSTRATIVE</div>'}
+      <h1 data-fit>${rich(s.body.join(' '))}</h1>
+      <div class="offers">
+        ${(s.fields.offer || []).map(o => {
+          const [label, amount, tone] = cells(o);
+          return `<div class="offer ${tone === 'teal' ? 'teal' : 'muted'}"><div class="offer-label">${rich(label)}</div><div class="offer-amount">${rich(amount)}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="offer-link"></div>
+      <div class="answer">${prefix ? `<div class="answer-prefix">${rich(prefix)}</div>` : ''}<div class="answer-figure">${rich(figure)}</div>${line ? `<div class="answer-line">${rich(line)}</div>` : ''}</div>
+      ${s.fields.premise ? `<p class="premise">${rich(s.fields.premise)}</p>` : ''}
+    </div>
+    <div class="swipe">SWIPE <span>→</span></div>`;
+}
+
 const LAYOUTS = {
   sheet: s => {
     const rows = (s.fields.row || []).map((line, index) => {
@@ -554,7 +603,7 @@ const LAYOUTS = {
       </div>`;
   },
 
-  hook: s => s.fields.route ? routesHtml(s) : s.fields.tier ? bandsHtml(s) : s.fields.left && s.fields.right ? columnsHtml(s) : `
+  hook: s => s.fields.offer ? offersHtml(s) : s.fields.route ? routesHtml(s) : s.fields.tier ? bandsHtml(s) : s.fields.left && s.fields.right ? columnsHtml(s) : `
       ${slideCarriesProminentNumber(s) && !stripShowsIllustrative(s.fields) ? '<div class="hook-disclosure">ILLUSTRATIVE</div>' : ''}
       ${s.fields.bar
         ? `${strip(s.fields)}${barsHtml(s.fields.bar)}`
@@ -568,6 +617,8 @@ const LAYOUTS = {
       <div class="swipe">SWIPE <span>→</span></div>`,
 
   columns: s => columnsHtml(s),
+
+  offers: s => offersHtml(s),
 
   routes: s => routesHtml(s),
 
@@ -676,7 +727,9 @@ const LAYOUTS = {
       <div class="keep${s.fields.more ? ' has-more' : ''}">
         <div class="mini"><div class="mini-inner layout-tool">${toolHtml(tool)}</div></div>
         <div class="keep-side">
-          <div class="bookmark">${rich(s.fields.save).toUpperCase()}</div>
+          ${s.fields.send
+            ? `<div class="send">${SEND_ICON}<span>${rich(s.fields.send)}</span></div>`
+            : `<div class="bookmark">${rich(s.fields.save).toUpperCase()}</div>`}
           ${s.fields.more
             ? `<div class="read-label">ALSO IN THE FULL POST</div><ul class="more">${s.fields.more.map(m => `<li>${rich(m)}</li>`).join('')}</ul>`
             : `<div class="read-label">ON THE BLOG</div>
@@ -716,6 +769,22 @@ const CSS = `
   .layout-hook { padding-top:70px; }
   .layout-hook .content { justify-content:flex-start; gap:26px; }
   .layout-hook .bars { margin:60px 0 40px; }
+  .offers-hook { display:flex; flex-direction:column; flex:1; justify-content:center; padding-bottom:70px; }
+  .offers-hook h1 { font-size:80px; line-height:1.03; max-width:900px; }
+  .offers { display:flex; gap:28px; margin-top:60px; }
+  .offer { flex:1; border-radius:18px; padding:30px 34px 34px; background:#fff; border:3px solid var(--rule); border-top-width:14px; box-shadow:0 10px 28px rgba(0,33,113,.07); }
+  .offer.muted { border-top-color:#9AA3B5; }
+  .offer.teal { border-top-color:var(--accent); }
+  .offer-label { font:800 24px 'Inter',sans-serif; letter-spacing:4px; color:var(--faint); text-transform:uppercase; }
+  .offer-amount { font:800 84px/1 'Inter',sans-serif; letter-spacing:-3px; margin-top:16px; color:var(--ink); }
+  .offer.teal .offer-amount { color:var(--accent); }
+  .offer-link { width:4px; height:56px; background:var(--accent); margin:0 auto; opacity:.5; }
+  .answer { text-align:center; }
+  .answer-prefix { font:700 44px 'Inter',sans-serif; color:var(--accent); margin-bottom:6px; }
+  .answer-figure { font:800 176px/1 'Inter',sans-serif; letter-spacing:-7px; color:var(--accent); white-space:nowrap; }
+  .answer-line { font:600 40px/1.2 'Inter',sans-serif; color:var(--ink); margin-top:14px; }
+  .offers-hook .premise { margin-top:52px; text-align:center; }
+  .offers-hook .hook-disclosure { top:30px; }
   .hook-disclosure { position:absolute; top:30px; left:84px; font:800 22px 'Inter',sans-serif; letter-spacing:4px; color:var(--accent); }
 
   .layout-columns { padding-top:70px; }
@@ -909,6 +978,9 @@ const CSS = `
   .mini { flex:none; width:346px; height:432px; border-radius:14px; overflow:hidden; border:3px solid var(--ink); box-shadow:12px 12px 0 rgba(0,33,113,.12); background:var(--paper); }
   .mini-inner { width:${W}px; height:${H}px; transform:scale(.32); transform-origin:top left; display:flex; flex-direction:column; }
   .bookmark { display:inline-block; background:var(--accent); color:#fff; font:800 30px 'Inter',sans-serif; letter-spacing:4px; padding:16px 26px; border-radius:10px; margin-bottom:44px; }
+  .send { display:flex; gap:16px; align-items:flex-start; background:var(--accent); color:#fff; font:700 32px/1.2 'Inter',sans-serif; letter-spacing:-.4px; padding:20px 26px; border-radius:12px; margin-bottom:40px; }
+  .send svg { flex:none; width:34px; height:34px; margin-top:2px; }
+  .keep.has-more .send { margin-bottom:30px; }
   .read-label { font:800 20px 'Inter',sans-serif; letter-spacing:5px; color:var(--faint); margin-bottom:10px; }
   .read-text { font:600 36px/1.2 'Inter',sans-serif; letter-spacing:-.6px; }
   .read-url { font:600 25px 'Inter',sans-serif; color:var(--accent); margin-top:12px; }

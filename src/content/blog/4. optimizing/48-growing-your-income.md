@@ -9,7 +9,7 @@ takeaways:
   - "Why offer stage is where you have the most negotiating leverage"
   - "Why career capital is an asset that pays out through your salary"
 order: 48
-pubDate: 2099-01-09
+pubDate: 2026-10-30
 updatedDate: 2026-08-05
 localRules: [tax, benefits]
 level: "optimizing"

@@ -68,6 +68,23 @@
   },
   "hookVariants": [
     {
+      "id": "flat-question",
+      "layout": "bar-gap",
+      "narration": "Your flat splits the bills equally. What share of your pay is that? It is one division.",
+      "onscreenLines": [
+        "Splitting bills equally?",
+        "What share of your pay?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "your"
+      ]
+    },
+    {
       "id": "equal-not-equal",
       "layout": "bar-gap",
       "narration": "Four flatmates split the bills equally. For one, that is sixteen percent of her pay. For another, eighty.",
@@ -250,7 +267,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Four flatmates split the bills equally. For one, that is 16% of her pay. For another, 80%.\n\nFour adults share a flat, with net incomes from €1,000 to €5,000 and €3,200 of shared costs a month. An equal split is €800 each: 16% of Alma's income, 80% of Dana's, a five to one gap in how heavy the same bill feels. A split by income has everyone pay 29% of their own, and asks each person to share what they earn. Room based, hybrid and capped splits sit in between. None of them is the right answer.\n\nThe split check: for each method on the table, each share divided by each net income.\n\n→ Save this before your household next splits a bill\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Net monthly incomes, rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "Splitting the flat bills equally? What share of your pay is that? It is one division.\n\nFour adults share a flat, with net incomes from €1,000 to €5,000 and €3,200 of shared costs a month. An equal split is €800 each: 16% of Alma's income, 80% of Dana's, a five to one gap in how heavy the same bill feels. A split by income has everyone pay 29% of their own, and asks each person to share what they earn. Room based, hybrid and capped splits sit in between. None of them is the right answer.\n\nThe split check: for each method on the table, each share divided by each net income.\n\n→ Save this before your household next splits a bill\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Net monthly incomes, rounded.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
     "tiktok": "Four flatmates split the bills equally. For one, that is 16% of her pay. For another, 80%.\n\nEach share against each income shows what a split really asks. Illustrative.",
     "instagramKeywords": [
       "splitting rent",

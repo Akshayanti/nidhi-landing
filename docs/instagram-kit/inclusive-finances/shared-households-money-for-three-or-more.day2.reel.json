@@ -52,6 +52,23 @@
   },
   "hookVariants": [
     {
+      "id": "moved-out-question",
+      "layout": "bar-gap",
+      "narration": "If one flatmate moved out, what would the same bills take from the rest of you? It is one test.",
+      "onscreenLines": [
+        "Now, all four: 29%",
+        "If one moved out?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "rest"
+      ]
+    },
+    {
       "id": "one-leaves",
       "layout": "bar-gap",
       "narration": "Four flatmates: the bills take twenty nine percent of income. One moves out: fifty one percent.",
@@ -230,7 +247,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Four flatmates: the bills take 29% of income. One moves out: 51%.\n\nFour adults share €3,200 of costs a month, split by income. Alma, the top earner, pays €1,455. If she leaves and her room stays empty, rent and utilities stay at €2,700 and food falls to about €375: €3,075 on €6,000 of income. The three who stay save €125 on food and have to find €1,330 a month until someone new moves in. In many places a shared lease makes each tenant liable for the whole rent, so the gap is theirs either way.\n\nThe exit test, for each person: what they pay now, what would fall if they left, the monthly gap, and how many months the shared buffer covers it.\n\n→ Save this for your household's exit test\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Tenancy rules differ by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "If one flatmate moved out, what would the same bills take from the rest of you?\n\nFour adults share €3,200 of costs a month, split by income. Alma, the top earner, pays €1,455. If she leaves and her room stays empty, rent and utilities stay at €2,700 and food falls to about €375: €3,075 on €6,000 of income. The three who stay save €125 on food and have to find €1,330 a month until someone new moves in. In many places a shared lease makes each tenant liable for the whole rent, so the gap is theirs either way.\n\nThe exit test, for each person: what they pay now, what would fall if they left, the monthly gap, and how many months the shared buffer covers it.\n\n→ Save this for your household's exit test\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Tenancy rules differ by country. Not legal advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
     "tiktok": "Four flatmates: the bills take 29% of income. One moves out: 51%.\n\nThe exit test shows what one empty room costs everyone else. Illustrative.",
     "instagramKeywords": [
       "exit test",

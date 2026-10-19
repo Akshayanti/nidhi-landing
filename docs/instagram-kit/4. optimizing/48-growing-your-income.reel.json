@@ -1,0 +1,221 @@
+{
+  "slug": "growing-your-income",
+  "postTitle": "Growing Your Income: Negotiation and Career Capital",
+  "postLevel": "optimizing",
+  "episode": 6,
+  "seriesTotal": 0,
+  "blogPath": "blog/growing-your-income",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A higher starting salary compounds through every percentage raise",
+  "topicChip": "INCOME GROWTH",
+  "assumptions": {
+    "currency": "EUR",
+    "horizonYears": 30,
+    "notes": "Two salaries start at €55,000 and €50,000 and both rise 3% a year for 30 years (year 1 = starting salary). Gap in year t = 5,000 x 1.03^(t-1). Cumulative gap = 5,000 x (1.03^30 - 1) / 0.03 = €237,877, shown as about €238,000. End salaries €129,614 and €117,831. Before tax and inflation; no promotions or job changes. Illustrative."
+  },
+  "lineRace": {
+    "periodLabel": "Year",
+    "series": [
+      {
+        "id": "high",
+        "label": "€55,000 start",
+        "tone": "teal",
+        "values": [
+          55000,
+          56650,
+          58349.5,
+          60099.99,
+          61902.98,
+          63760.07,
+          65672.88,
+          67643.06,
+          69672.35,
+          71762.53,
+          73915.4,
+          76132.86,
+          78416.85,
+          80769.35,
+          83192.43,
+          85688.21,
+          88258.85,
+          90906.62,
+          93633.82,
+          96442.83,
+          99336.12,
+          102316.2,
+          105385.69,
+          108547.26,
+          111803.68,
+          115157.79,
+          118612.52,
+          122170.9,
+          125836.02,
+          129611.1
+        ]
+      },
+      {
+        "id": "low",
+        "label": "€50,000 start",
+        "tone": "ink",
+        "values": [
+          50000,
+          51500,
+          53045,
+          54636.35,
+          56275.44,
+          57963.7,
+          59702.61,
+          61493.69,
+          63338.5,
+          65238.66,
+          67195.82,
+          69211.69,
+          71288.04,
+          73426.69,
+          75629.49,
+          77898.37,
+          80235.32,
+          82642.38,
+          85121.65,
+          87675.3,
+          90305.56,
+          93014.73,
+          95805.17,
+          98679.33,
+          101639.71,
+          104688.9,
+          107829.56,
+          111064.45,
+          114396.38,
+          117828.28
+        ]
+      }
+    ],
+    "ceiling": 140000,
+    "gridlines": [
+      50000,
+      100000
+    ],
+    "secondsPerPeriod": 0.4,
+    "gap": {
+      "upper": "high",
+      "lower": "low",
+      "label": "Extra salary earned so far",
+      "finalLabel": "Extra salary over 30 years"
+    },
+    "scope": "Illustrative. 3% annual raises. No promotions or job changes. Before tax and inflation.",
+    "disclosure": "Illustrative. 3% raises a year for 30 years, no promotions or job changes. Before tax and inflation."
+  },
+  "hookVariants": [
+    {
+      "id": "what-if",
+      "layout": "chart-gap",
+      "narration": "What if one negotiation started you five thousand euros higher? Same raises, for thirty years.",
+      "onscreenLines": [
+        "What if you started €5,000 higher?",
+        "Same 3% raises. 30 years.",
+        ""
+      ],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      },
+      "emphasis": [
+        "higher"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "Each raise is a percentage. The gap grows.",
+      "onscreenText": "The gap grows",
+      "subtext": "Raises are a percent of a bigger salary",
+      "emphasis": [
+        "grows"
+      ],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "comparison",
+      "narration": "Over thirty years, the gap adds up to about two hundred and thirty eight thousand euros, before tax.",
+      "onscreenText": "About €238,000",
+      "subtext": "Extra salary over 30 years, before tax",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "finish"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "It assumes a raise every year and no job changes. Asking does not always move an offer.",
+      "onscreenText": "Where it breaks",
+      "subtext": "Promotions, job changes, offers that don't move",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "finish"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "A shortcut: at three percent for thirty years, the yearly gaps add up to about forty seven times the starting gap.",
+      "onscreenText": "€5,000 × 47.6 = €238,000",
+      "subtext": "Yearly gaps added up, 3% for 30 years",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The 30-year salary gap",
+        "rows": [
+          {
+            "label": "Starting gap",
+            "value": "€5,000",
+            "tone": "ink"
+          },
+          {
+            "label": "3%, 30 years",
+            "value": "× 47.6",
+            "tone": "ink"
+          },
+          {
+            "label": "Extra salary",
+            "value": "€238,000",
+            "tone": "amber",
+            "total": true
+          }
+        ],
+        "footnote": "Illustrative. Same raises for both, no promotions or job changes."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "save",
+    "narration": "Save this for your next offer.",
+    "onscreenText": "Save the salary gap sum",
+    "subtext": "Starting gap × 47.6 at 3% for 30 years",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "What if one negotiation started you €5,000 higher? Same raises, for thirty years.\n\nTwo people start the same job, one at €50,000 and one at €55,000. Both get 3% raises every year. Because each raise is a percentage, the €5,000 gap grows: about €7,600 a year apart by year 15, and about €238,000 of extra salary over 30 years, before tax.\n\nIt assumes no promotions, no job changes and a raise every year. Real careers vary, and asking does not always move an offer.\n\n→ Save this before your next offer\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Before tax and inflation.",
+    "tiktok": "What if one negotiation started you €5,000 higher? Same raises, for thirty years. Illustrative, before tax."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "salarynegotiation",
+    "careergrowth",
+    "expatfinance"
+  ]
+}
