@@ -826,8 +826,8 @@ export const es: Dict = {
     },
     lessons: {
       heading: 'Lecciones gratuitas, para siempre.',
-      body: 'Lecciones breves para cualquier hogar, en cualquier país; cuando importan las normas locales, te indican qué comprobar. Sin muro de pago y sin cuenta.',
-      helperQuestion: '¿No sabes cuál te encaja?',
+      body: 'Lecciones breves para cualquier hogar, en cualquier país; cuando haya que tener en cuenta la normativa local, te indican qué comprobar. Sin muro de pago y sin crear una cuenta.',
+      helperQuestion: '¿No sabes cuál es para ti?',
       helperLink: 'Dos preguntas te sugieren por dónde empezar',
       foot: 'Ver toda la ruta de aprendizaje',
       comingSoon: '{level} · lecciones próximamente',

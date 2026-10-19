@@ -28,6 +28,21 @@ export const TOOL_DEFAULT_CURRENCY: Record<Locale, string> = {
 };
 
 /**
+ * The number style a free tool writes its amounts in, by page language.
+ * `null` keeps each currency's own conventions ("€1,058,721", "₹10,58,721",
+ * "1 058 721 Kč"), which is what an English or Hindi reader is shown. A Spanish
+ * reader reads "€1,058,721" as one thousand and a fraction, so on a Spanish
+ * page every amount, in every currency, is written the Spanish way:
+ * "1.058.721 €", "1.058.721 £", "1500 $". The page reads it and hands it to the
+ * island as a prop, like the starting currency.
+ */
+export const TOOL_AMOUNT_LOCALE: Record<Locale, string | null> = {
+  en: null,
+  hi: null,
+  es: 'es',
+};
+
+/**
  * Store the tool's current encoded state ('' for "nothing to carry").
  *
  * A tool still in its untouched starting state publishes '' (see each tool's

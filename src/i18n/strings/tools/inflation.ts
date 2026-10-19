@@ -14,7 +14,8 @@
  * and the component fills it: the rate limits from the constants in
  * `src/utils/inflation/math.ts`, the World Bank's update date from the data
  * file, the amounts and rates from what the reader typed, written by
- * `formatAmount` in the chosen currency's own conventions.
+ * `formatAmount` in the chosen currency's own conventions, or the page's own
+ * style where it has one (Spanish, see `TOOL_AMOUNT_LOCALE`).
  *
  * Every result sentence says "if inflation averages", never "will": the tool
  * shows a scenario at a rate the reader chose, and the line under each result

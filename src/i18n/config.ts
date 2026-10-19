@@ -60,8 +60,9 @@ export const DATE_LOCALE: Record<Locale, string> = {
  * `10,000` as ten with three decimals, so the Spanish edition writes
  * `10.000 €`, as the RAE and every euro country that speaks Spanish do.
  *
- * Lessons are not affected: they are English and keep English figures. Nor are
- * the free tools, which format an amount by the currency the reader chose.
+ * Lessons are not affected: they are English and keep English figures. The
+ * free tools format an amount by the currency the reader chose, except on a
+ * page with its own amount style (`TOOL_AMOUNT_LOCALE`), which agrees with this.
  */
 export const PROSE_NUMBER_LOCALE: Record<Locale, string> = {
   en: 'en',
