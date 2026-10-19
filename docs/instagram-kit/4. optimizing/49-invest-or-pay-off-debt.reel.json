@@ -1,0 +1,167 @@
+{
+  "slug": "invest-or-pay-off-debt",
+  "postTitle": "Invest or Pay Off Debt? The Math and the Sequence",
+  "postLevel": "optimizing",
+  "episode": 7,
+  "seriesTotal": 0,
+  "blogPath": "blog/invest-or-pay-off-debt",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The size of a debt does not set its cost; the rate does",
+  "topicChip": "MORTGAGE OR CARD",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "€500 extra for one year. Mortgage 3.4%: 500 x 0.034 = €17. Card 22%: 500 x 0.22 = €110. Ratio 110 / 17 = 6.5. First year interest avoided, simple interest; a card balance may clear sooner. Balances €280,000 mortgage and €4,000 card from the blog's worked example. Rate bands: low inflation economies, after tax, from the blog."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "Extra this month",
+      "display": "€500",
+      "note": "Mortgage at 3.4% or card at 22%",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "Interest avoided in the first year on €500, illustrative",
+    "bars": [
+      {
+        "id": "mortgage",
+        "label": "Mortgage",
+        "sublabel": "€280,000 at 3.4%",
+        "value": 17,
+        "display": "€17",
+        "tone": "muted"
+      },
+      {
+        "id": "card",
+        "label": "Card",
+        "sublabel": "€4,000 at 22%",
+        "value": 110,
+        "display": "€110",
+        "tone": "teal"
+      }
+    ],
+    "ratio": {
+      "display": "6.5×",
+      "from": "mortgage",
+      "to": "card"
+    },
+    "disclosure": "Illustrative. First year interest on €500; a card may clear sooner."
+  },
+  "hookVariants": [
+    {
+      "id": "big-or-small",
+      "layout": "bar-gap",
+      "narration": "Your extra five hundred euros: the big mortgage, or the small card?",
+      "onscreenLines": [
+        "Your extra €500 to the mortgage?",
+        "Or to the card?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "small"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "At three point four percent, it avoids about seventeen euros of interest in a year.",
+      "onscreenText": "Mortgage: about €17",
+      "subtext": "€500 at 3.4%, first year",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "At twenty two percent, about a hundred and ten.",
+      "onscreenText": "Card: about €110",
+      "subtext": "€500 at 22%, first year",
+      "emphasis": [
+        "hundred"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "comparison",
+      "narration": "The mortgage feels bigger. The rate decides.",
+      "onscreenText": "The rate decides",
+      "subtext": "Not the size of the balance",
+      "emphasis": [
+        "rate"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Compare rates after tax. Above eight to ten percent, debt often comes first. Below four, investing often leads. Between, it's a judgement call.",
+      "onscreenText": "The rate check",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The rate check",
+        "rows": [
+          {
+            "label": "Above 8 to 10%",
+            "value": "Debt often first",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "4 to 8%",
+            "value": "Judgement call",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "Below about 4%",
+            "value": "Investing often",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Rates after tax, low inflation."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone overpaying a mortgage? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before their next overpayment",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Where does your extra €500 do more: the big mortgage, or the small card?\n\nOn a 3.4% mortgage, €500 avoids about €17 of interest in a year. On a 22% card, about €110. The mortgage feels bigger; the rate decides what each euro saves.\n\n→ Know someone overpaying their mortgage while a card balance revolves? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, first year interest on €500. Rate bands are for low inflation economies, after tax.",
+    "tiktok": "Extra €500: the big mortgage or the small card? About €17 against about €110 a year. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "creditcarddebt",
+    "mortgagetips",
+    "debtfree"
+  ]
+}

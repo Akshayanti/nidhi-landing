@@ -555,7 +555,7 @@ function RunwayVisual({ input, story, now }: { input: ReelInput; story: RunwaySt
 
       {stage === "drain" && (
         <>
-          <div style={{ position: "absolute", left: 76, top: 515, fontFamily: TYPE.ui, fontSize: 28, fontWeight: 760, color: BRAND.inkMuted }}>CASH LEFT</div>
+          <div style={{ position: "absolute", left: 76, top: 515, fontFamily: TYPE.ui, fontSize: 28, fontWeight: 760, color: BRAND.inkMuted }}>{(story.drainLabel ?? "Cash left").toUpperCase()}</div>
           <div style={{ position: "absolute", left: 76, top: 555, fontFamily: TYPE.ui, fontSize: 88, fontWeight: 850, letterSpacing: "-0.055em", color: BRAND.teal }}>{formatEuro(Math.max(0, story.start - story.monthlyCost * drainedMonths))}</div>
           <RunwayScale slots={story.slots ?? 12} months={drainedMonths} markerLabel={drainedMonths >= Math.round(runway) ? `${runway.toFixed(1)} months` : undefined} top={710} height={560} />
         </>

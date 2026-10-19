@@ -1,0 +1,180 @@
+{
+  "slug": "fee-optimization",
+  "postTitle": "Fee Optimization: The Silent Drag on Your Returns",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/fee-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "One statement fee can sit on top of several layers of cost",
+  "topicChip": "FEE LAYERS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Illustrative layers from the blog's ranges: active fund expense ratio 1.0% (blog: 0.5 to 1.5%), platform 0.3% (0.15 to 0.45%), adviser 1.0% (0.5 to 1.5%), in fund trading and tax drag about 0.3% (blog: 0.3 to 0.6% trading). Total 2.6%, inside the blog's 'could easily total 2 to 3%'. Low cost passive about 0.1% (blog: 0.1 to 0.3%)."
+  },
+  "barStory": {
+    "mode": "segmented",
+    "unit": "%",
+    "basis": "Total cost a year",
+    "bars": [
+      {
+        "id": "passive",
+        "label": "Low cost passive",
+        "sublabel": "fund and platform",
+        "value": 0.1,
+        "display": "about 0.1%",
+        "tone": "teal"
+      },
+      {
+        "id": "layered",
+        "label": "Layered",
+        "sublabel": "what one fee can hide",
+        "value": 2.6,
+        "display": "about 2.6%",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Fund",
+            "value": 1.0,
+            "display": "1.0%",
+            "tone": "amber"
+          },
+          {
+            "label": "Platform",
+            "value": 0.3,
+            "display": "0.3%",
+            "tone": "ink"
+          },
+          {
+            "label": "Adviser",
+            "value": 1.0,
+            "display": "1.0%",
+            "tone": "amber"
+          },
+          {
+            "label": "Trading, tax",
+            "value": 0.3,
+            "display": "0.3%",
+            "tone": "muted"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative layers. Totals vary by product, platform and country.",
+    "revealInHook": true
+  },
+  "hookVariants": [
+    {
+      "id": "one-fee",
+      "layout": "bar-gap",
+      "narration": "Your statement may show one fee. How many layers sit underneath?",
+      "onscreenLines": [
+        "Your statement shows one fee",
+        "How many layers under it?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "layers"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "stat",
+      "narration": "Low cost passive: about 0.1 percent a year.",
+      "onscreenText": "About 0.1%",
+      "subtext": "Low cost passive",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Layered: an active fund at one percent, a platform at 0.3.",
+      "onscreenText": "Fund and platform",
+      "subtext": "1.0% + 0.3%",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "Then an adviser at one, and trading and tax around 0.3. About 2.6 percent.",
+      "onscreenText": "About 2.6% a year",
+      "subtext": "Adviser, trading and tax added",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 3
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "The fee audit: fund, platform, then adviser and trading costs, in writing.",
+      "onscreenText": "The fee audit",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The fee audit",
+        "rows": [
+          {
+            "label": "Fund",
+            "value": "Expense ratio",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "Platform",
+            "value": "Annual charge",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "The rest",
+            "value": "Adviser, trading",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone with one fee on their statement? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before their next review",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your statement may show one fee. How many cost layers sit underneath it?\n\nIllustrative layers: an active fund at 1.0%, a platform at 0.3%, an adviser at 1.0%, trading and tax drag around 0.3%. Together about 2.6% a year, against about 0.1% for a low cost passive setup.\n\n→ Know someone whose statement shows one fee but who also pays a platform and an adviser? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Layers and totals vary by product, platform and country.",
+    "tiktok": "One fee on the statement, several layers underneath. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "feeaudit",
+    "wealthmanagement",
+    "investingtips"
+  ]
+}

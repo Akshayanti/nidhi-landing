@@ -1,0 +1,148 @@
+{
+  "slug": "windfall-management",
+  "postTitle": "Windfalls: Bonuses, Inheritances, and Sale Proceeds",
+  "postLevel": "optimizing",
+  "episode": 9,
+  "seriesTotal": 0,
+  "blogPath": "blog/windfall-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm",
+  "topic": "A regular bonus gets a short parking period too",
+  "topicChip": "BONUS WEEK",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "€5,000 bonus parked 30 days at an illustrative 4%: 5,000 x 0.04 x 30/365 = €16.44, about €16, before tax. The 30 day period for regular windfalls is from the blog."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "park",
+        "label": "Park it",
+        "cost": "Days 1 to 30",
+        "items": [
+          "A named account"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "write",
+        "label": "Write it",
+        "cost": "Meanwhile",
+        "items": [
+          "Where each euro goes"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "move",
+        "label": "Move it",
+        "cost": "Day 30",
+        "items": [
+          "As written"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "park",
+    "disclosure": "Illustrative. A common practice, not a rule."
+  },
+  "hookVariants": [
+    {
+      "id": "bonus-week",
+      "layout": "bands-gap",
+      "narration": "Your bonus lands this week. Where does it usually go by Friday?",
+      "onscreenLines": [
+        "Bonus this week?",
+        "Where is it by Friday?",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "Friday"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "A common practice for a regular bonus: thirty days in a separate, named account.",
+      "onscreenText": "Park it: 30 days",
+      "subtext": "A named account",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "park"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "Five thousand at four percent earns about sixteen euros. The point is not the interest. It is the thirty days.",
+      "onscreenText": "About €16",
+      "subtext": "The point is the 30 days",
+      "emphasis": [
+        "days"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "definition",
+      "narration": "Meanwhile, write where each euro goes. On day thirty, move it as written.",
+      "onscreenText": "The 30 day bonus check",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The 30 day bonus check",
+        "rows": [
+          {
+            "label": "Days 1 to 30",
+            "value": "Park it",
+            "tone": "teal"
+          },
+          {
+            "label": "Meanwhile",
+            "value": "Write it",
+            "tone": "ink"
+          },
+          {
+            "label": "Day 30",
+            "value": "Move it",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. A common practice, not a rule."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone with a bonus coming? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before payday",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your bonus lands this week. Where does it usually go by Friday?\n\nA common practice for a regular bonus: 30 days in a separate, named account, while you write where each euro goes. €5,000 at 4% earns about €16. The point is the 30 days.\n\n→ Know someone getting a year end bonus who usually spends it the same week? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax.",
+    "tiktok": "Bonus this week? A 30 day pause is a common practice. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "yearendbonus",
+    "bonusplan",
+    "savingshabits"
+  ]
+}

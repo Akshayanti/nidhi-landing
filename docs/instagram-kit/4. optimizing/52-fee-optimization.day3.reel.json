@@ -1,0 +1,145 @@
+{
+  "slug": "fee-optimization",
+  "postTitle": "Fee Optimization: The Silent Drag on Your Returns",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/fee-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "An adviser's percentage fee grows in euros as the pot grows",
+  "topicChip": "ADVISER FEES",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Blog: a 1% AUM fee on a €500,000 portfolio is €5,000 per year; on €2 million, €20,000. Advisers can add value through behavioural coaching, tax and estate planning, coordination; flat fee or hourly models can serve larger portfolios at lower total cost."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "Adviser fee",
+      "display": "1% a year",
+      "note": "Of the pot, every year",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "A 1% adviser fee in euros a year, illustrative",
+    "bars": [
+      {
+        "id": "half",
+        "label": "€500,000 pot",
+        "sublabel": "1%, each year",
+        "value": 5000,
+        "display": "€5,000",
+        "tone": "ink"
+      },
+      {
+        "id": "two",
+        "label": "€2 million pot",
+        "sublabel": "1%, each year",
+        "value": 20000,
+        "display": "€20,000",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Advice can be worth its fee; fee models vary by country."
+  },
+  "hookVariants": [
+    {
+      "id": "in-euros",
+      "layout": "bar-gap",
+      "narration": "Your adviser charges one percent. What is that in euros?",
+      "onscreenLines": [
+        "Your €500,000 at 1%?",
+        "At €2 million?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "euros"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "On five hundred thousand, one percent is five thousand euros a year.",
+      "onscreenText": "€5,000 a year",
+      "subtext": "1% of €500,000",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "On two million, twenty thousand. The percent stays the same; the euros grow with the pot.",
+      "onscreenText": "€20,000 a year",
+      "subtext": "Same 1%, bigger pot",
+      "emphasis": [
+        "grow"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "definition",
+      "narration": "Advice can be worth it, like coaching through a crash. The check: the fee in euros, what it buys, and flat or hourly options.",
+      "onscreenText": "The adviser check",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The adviser check",
+        "rows": [
+          {
+            "label": "In euros",
+            "value": "€5,000",
+            "tone": "ink"
+          },
+          {
+            "label": "What it buys",
+            "value": "Advice",
+            "tone": "teal"
+          },
+          {
+            "label": "Other ways",
+            "value": "Flat fee",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. 1% of €500,000 a year."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone paying an adviser one percent? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before their next review",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your adviser charges 1%. What is that in euros?\n\nOn €500,000, 1% is €5,000 a year; on €2 million, €20,000. The percent stays the same; the euros grow with the pot. Advice can be worth it. The check is the fee in euros against what it buys.\n\n→ Know someone paying an adviser 1% who has never seen it in euros? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Fee models and adviser rules vary by country.",
+    "tiktok": "1% to an adviser: €5,000 a year on €500,000. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "adviserfees",
+    "flatfeeadvice",
+    "portfolioreview"
+  ]
+}

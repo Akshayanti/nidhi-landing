@@ -1,7 +1,7 @@
 ---
 slug: "fee-optimization"
 title: "Fee Optimization: The Silent Drag on Your Returns"
-description: "A 1% annual fee sounds like nothing. Over 40 years it takes roughly a quarter of your total returns. Which investment fees matter and how to spot them."
+description: "A 1% annual fee sounds like nothing. Over 40 years it can take roughly a quarter of your final pot. Which investment fees matter and how to spot them."
 tldr: "Fees are among the most predictable drags on long-term returns and among the most controllable. Investment costs come in layers: expense ratios on funds, platform or brokerage fees, transaction costs, financial-advisor fees, tax drag on high-turnover funds, currency-conversion spreads. A 0.5 to 1 percentage point difference sounds negligible per year but compounds into 15 to 30% of terminal wealth over a career. The framing that reveals the cost: not '1% fee' but 'roughly €X of your projected retirement pot lost to fees over 40 years.' Low-cost index funds have tended to come out ahead not because active management never adds value but because the fee gap is large enough that most active funds trail their benchmark after fees over long periods (SPIVA). A common comparison workflow: identify total cost (fund expense ratio plus platform fee plus transaction costs plus any advisory layer), compare with alternatives at the same risk profile, and weigh the saving against any tax or exit cost of switching. Whether a higher fee is worth it depends on what it buys you."
 takeaways:
   - "Why a small yearly fee compounds into a large share of your wealth"
@@ -18,7 +18,7 @@ personas: ["eva", "petra", "marcus", "jiri"]
 tags: ["optimizing", "investing", "fundamentals"]
 faq:
   - question: "How much does a 1% annual fee actually cost over a career?"
-    answer: "Consider two portfolios both starting at €10,000, contributing €500 per month for 40 years, and earning a nominal 7% before fees. The zero-fee portfolio ends at approximately €1.31 million. The 1%-fee portfolio (which effectively earns 6%) ends at approximately €996,000. The difference of €314,000 is the fee drag, and it is roughly 24% of what the zero-fee portfolio would have been. The point is not that 1% is enormous per year but that the compounding effect over decades is large. Cutting the fee from 1% to 0.1% recovers most of the lost terminal wealth. In tax-advantaged accounts the switch is often free; in taxable accounts it can trigger tax on gains, which is part of the comparison."
+    answer: "Consider two portfolios both starting at €10,000, contributing €500 per month for 40 years, and earning a nominal 7% before fees, compounded monthly. The zero-fee portfolio ends at approximately €1.48 million. The 1%-fee portfolio (which effectively earns 6%) ends at approximately €1.11 million. The difference of about €370,000 is the fee drag, and it is roughly 25% of what the zero-fee portfolio would have been. The point is not that 1% is enormous per year but that the compounding effect over decades is large. Cutting the fee from 1% to 0.1% recovers most of the lost terminal wealth. In tax-advantaged accounts the switch is often free; in taxable accounts it can trigger tax on gains, which is part of the comparison."
   - question: "What is an expense ratio and where do I find it?"
     answer: "An expense ratio is the annual percentage of fund assets deducted to pay the fund's operating costs (management, administration, marketing, custody). It is stated in the fund's key information document or prospectus and expressed as a decimal such as 0.03%, 0.75%, or 1.20%. Passive index funds typically run 0.03 to 0.25%. Actively managed funds typically run 0.5 to 1.5%, sometimes higher. The expense ratio comes off the fund's returns before they are reported to you, so you never see a bill; the fee is invisible in the sense that you never write a cheque for it. Every prospectus you receive lists the expense ratio; every fund search tool displays it prominently once you know to look. The number labelled OCF (Ongoing Charge Figure) in Europe and TER (Total Expense Ratio) elsewhere is the same concept in slightly different accounting conventions."
   - question: "Are active funds ever worth their fees?"
@@ -60,21 +60,21 @@ The compounding math is what makes this arithmetic decisive. Small differences i
 <figure>
 <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-fees-title fig-fees-desc">
   <title id="fig-fees-title">Terminal wealth under three fee scenarios</title>
-  <desc id="fig-fees-desc">Three rising curves over 40 years starting at €10,000 with €500 per month contributions. The 0.05% fee curve reaches approximately €1.37M. The 0.50% fee curve reaches approximately €1.21M. The 1.5% fee curve reaches approximately €925k. The gap between the highest and lowest curves grows dramatically over time, illustrated with shading.</desc>
+  <desc id="fig-fees-desc">Three rising curves over 40 years starting at €10,000 with €500 per month contributions. The 0.05% fee curve reaches approximately €1.45M. The 0.50% fee curve reaches approximately €1.28M. The 1.5% fee curve reaches approximately €960k. The gap between the highest and lowest curves grows dramatically over time, illustrated with shading.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">Fees compound too</text>
-  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">€10,000 initial, €500/month, 7% nominal before fees. Illustrative.</text>
+  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">€10,000 initial, €500/month, 7% nominal before fees, compounded monthly. Illustrative.</text>
   <line x1="80" y1="340" x2="560" y2="340" class="fig-stroke-muted" />
   <line x1="80" y1="90" x2="80" y2="340" class="fig-stroke-muted" />
-  <path d="M 80 338.3 L 92 337.1 L 104 335.8 L 116 334.5 L 128 333.1 L 140 331.5 L 152 329.9 L 164 328.1 L 176 326.2 L 188 324.2 L 200 322 L 212 319.7 L 224 317.2 L 236 314.6 L 248 311.8 L 260 308.7 L 272 305.5 L 284 302.1 L 296 298.4 L 308 294.4 L 320 290.2 L 332 285.6 L 344 280.8 L 356 275.6 L 368 270.1 L 380 264.2 L 392 257.8 L 404 251.1 L 416 243.8 L 428 236.1 L 440 227.8 L 452 219 L 464 209.5 L 476 199.3 L 488 188.5 L 500 176.9 L 512 164.5 L 524 151.3 L 536 137.1 L 548 121.9 L 560 105.7" fill="none" class="fig-stroke-teal" stroke-width="3" />
-  <text class="fig-quote-small" x="570" y="109.7" text-anchor="start">0.05% fee: ~€1.37M</text>
-  <path d="M 80 338.3 L 92 337.1 L 104 335.9 L 116 334.5 L 128 333.1 L 140 331.6 L 152 330 L 164 328.3 L 176 326.5 L 188 324.6 L 200 322.5 L 212 320.3 L 224 318 L 236 315.5 L 248 312.8 L 260 310 L 272 307 L 284 303.8 L 296 300.4 L 308 296.7 L 320 292.8 L 332 288.7 L 344 284.3 L 356 279.7 L 368 274.7 L 380 269.4 L 392 263.7 L 404 257.7 L 416 251.3 L 428 244.5 L 440 237.2 L 452 229.5 L 464 221.2 L 476 212.4 L 488 203.1 L 500 193.1 L 512 182.5 L 524 171.2 L 536 159.2 L 548 146.4 L 560 132.7" fill="none" class="fig-stroke-blue" stroke-width="3" />
-  <text class="fig-quote-small" x="570" y="136.7" text-anchor="start">0.50% fee: ~€1.21M</text>
-  <path d="M 80 338.3 L 92 337.1 L 104 335.9 L 116 334.6 L 128 333.3 L 140 331.9 L 152 330.4 L 164 328.8 L 176 327.1 L 188 325.4 L 200 323.5 L 212 321.5 L 224 319.5 L 236 317.3 L 248 315 L 260 312.5 L 272 310 L 284 307.3 L 296 304.4 L 308 301.4 L 320 298.2 L 332 294.9 L 344 291.4 L 356 287.6 L 368 283.7 L 380 279.5 L 392 275.2 L 404 270.5 L 416 265.7 L 428 260.5 L 440 255.1 L 452 249.4 L 464 243.3 L 476 237 L 488 230.2 L 500 223.1 L 512 215.7 L 524 207.8 L 536 199.4 L 548 190.7 L 560 181.4" fill="none" class="fig-stroke-warn" stroke-width="3" />
-  <text class="fig-quote-small" x="570" y="185.4" text-anchor="start">1.5% fee: ~€925k</text>
+  <path d="M 80 338.4 L 92 337.3 L 104 336.1 L 116 334.8 L 128 333.5 L 140 332.0 L 152 330.5 L 164 328.8 L 176 327.0 L 188 325.1 L 200 323.0 L 212 320.8 L 224 318.4 L 236 315.9 L 248 313.1 L 260 310.2 L 272 307.1 L 284 303.7 L 296 300.2 L 308 296.3 L 320 292.2 L 332 287.8 L 344 283.0 L 356 277.9 L 368 272.5 L 380 266.7 L 392 260.4 L 404 253.7 L 416 246.5 L 428 238.8 L 440 230.6 L 452 221.7 L 464 212.2 L 476 202.1 L 488 191.2 L 500 179.5 L 512 167.0 L 524 153.6 L 536 139.3 L 548 123.9 L 560 107.4" fill="none" class="fig-stroke-teal" stroke-width="3" />
+  <text class="fig-quote-small" x="570" y="111.4" text-anchor="start">0.05% fee: ~€1.45M</text>
+  <path d="M 80 338.4 L 92 337.3 L 104 336.1 L 116 334.9 L 128 333.6 L 140 332.1 L 152 330.6 L 164 329.0 L 176 327.3 L 188 325.4 L 200 323.5 L 212 321.4 L 224 319.1 L 236 316.7 L 248 314.2 L 260 311.5 L 272 308.6 L 284 305.5 L 296 302.2 L 308 298.7 L 320 294.9 L 332 290.9 L 344 286.6 L 356 282.1 L 368 277.2 L 380 272.0 L 392 266.5 L 404 260.5 L 416 254.2 L 428 247.5 L 440 240.3 L 452 232.7 L 464 224.5 L 476 215.7 L 488 206.4 L 500 196.5 L 512 185.9 L 524 174.6 L 536 162.5 L 548 149.7 L 560 135.9" fill="none" class="fig-stroke-blue" stroke-width="3" />
+  <text class="fig-quote-small" x="570" y="139.9" text-anchor="start">0.50% fee: ~€1.28M</text>
+  <path d="M 80 338.4 L 92 337.3 L 104 336.2 L 116 335.0 L 128 333.7 L 140 332.4 L 152 331.0 L 164 329.5 L 176 327.9 L 188 326.2 L 200 324.5 L 212 322.6 L 224 320.6 L 236 318.6 L 248 316.4 L 260 314.1 L 272 311.6 L 284 309.0 L 296 306.3 L 308 303.4 L 320 300.4 L 332 297.1 L 344 293.7 L 356 290.1 L 368 286.3 L 380 282.3 L 392 278.1 L 404 273.6 L 416 268.9 L 428 263.9 L 440 258.6 L 452 253.0 L 464 247.1 L 476 240.9 L 488 234.4 L 500 227.4 L 512 220.1 L 524 212.3 L 536 204.1 L 548 195.5 L 560 186.3" fill="none" class="fig-stroke-warn" stroke-width="3" />
+  <text class="fig-quote-small" x="570" y="190.3" text-anchor="start">1.5% fee: ~€960k</text>
   <text class="fig-quote-small" x="80" y="365" text-anchor="start">Year 0</text>
   <text class="fig-quote-small" x="560" y="365" text-anchor="end">Year 40</text>
 </svg>
-<figcaption>Illustrative terminal wealth after 40 years under three fee scenarios. The gap between 0.05% and 1.5% is roughly €440,000: nearly a third of the low-fee ending value, produced by nothing but fee difference.</figcaption>
+<figcaption>Illustrative terminal wealth after 40 years under three fee scenarios. The gap between 0.05% and 1.5% is roughly €494,000: about a third of the low-fee ending value, produced by nothing but fee difference.</figcaption>
 </figure>
 
 ## The layers of investment cost
@@ -105,7 +105,7 @@ The [framing and anchoring post](/blog/framing-anchoring-and-price-psychology/) 
 
 **"1% per year" reads as small.** A single-digit percentage feels manageable. It sits below the noise of monthly market movement, which routinely swings by more than 1% in a single day. The framing hides the compounding.
 
-**"€315,000 over 40 years" reads as large.** The same 1% fee, reframed as a cumulative euro amount at the end of a career, changes the reaction entirely. The reaction is now proportional to the actual cost.
+**"€370,000 over 40 years" reads as large.** The same 1% fee, reframed as a cumulative euro amount at the end of a career, changes the reaction entirely. The reaction is now proportional to the actual cost.
 
 **"Roughly a quarter of your projected retirement pot" reads as decisive.** The same 1% fee, reframed as a fraction of terminal wealth, invites the switch that the percentage framing never quite motivates.
 

@@ -1,0 +1,161 @@
+{
+  "slug": "fee-optimization",
+  "postTitle": "Fee Optimization: The Silent Drag on Your Returns",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/fee-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A 1% fee takes about a quarter of a 40 year pot",
+  "topicChip": "THE 1% FEE",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "€10,000 start, €500 a month, 40 years, 7% nominal before fees, compounded monthly (blog model, corrected Oct 2026). Final pots: 0.05% fee €1,454,027; 0.5% €1,275,505; 1% €1,105,320; 1.5% €960,317. 1% vs 0.05%: €348,707 less, 24.0%. 1.5% vs 0.05%: €493,709, 34.0%. Before tax; returns not guaranteed."
+  },
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "Same savings",
+      "display": "€500 a month",
+      "note": "40 years, 7% before fees",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "Final pot after 40 years, illustrative",
+    "bars": [
+      {
+        "id": "low",
+        "label": "Fee 0.05%",
+        "sublabel": "low cost index fund",
+        "value": 1454,
+        "display": "€1.45M",
+        "tone": "teal"
+      },
+      {
+        "id": "half",
+        "label": "Fee 0.5%",
+        "value": 1276,
+        "display": "€1.28M",
+        "tone": "ink"
+      },
+      {
+        "id": "one",
+        "label": "Fee 1%",
+        "value": 1105,
+        "display": "€1.11M",
+        "tone": "amber"
+      },
+      {
+        "id": "onehalf",
+        "label": "Fee 1.5%",
+        "value": 960,
+        "display": "€960k",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. €10,000 start, compounded monthly, before tax."
+  },
+  "hookVariants": [
+    {
+      "id": "one-percent",
+      "layout": "bar-gap",
+      "narration": "What does a one percent fee take from your final pot?",
+      "onscreenLines": [
+        "What does 1% take from your pot?",
+        "About a quarter, against 0.05%",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "quarter"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Five hundred a month for forty years, at seven percent before fees. At 0.05 percent, about 1.45 million.",
+      "onscreenText": "0.05%: about €1.45M",
+      "subtext": "€500 a month, 40 years, 7%",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "At one percent, about 1.11 million. Three hundred and forty nine thousand less.",
+      "onscreenText": "1%: about €1.11M",
+      "subtext": "€349,000 less, 24%",
+      "emphasis": [
+        "less"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "definition",
+      "narration": "The fee check: same inputs, change only the fee, read the gap in euros.",
+      "onscreenText": "The fee check",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The fee check",
+        "rows": [
+          {
+            "label": "Keep",
+            "value": "Same inputs",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "Change",
+            "value": "Only the fee",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Read",
+            "value": "The euro gap",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone paying about one percent? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before their next statement",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "What does a 1% fee take from your final pot? About a quarter.\n\n€500 a month for 40 years at 7% before fees: about €1.45M at a 0.05% fee, about €1.11M at 1%. That is about €349,000, or 24%, less.\n\n→ Know someone paying about 1% a year who has never seen it in euros? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. €10,000 start, compounded monthly, before tax. Returns are not guaranteed.",
+    "tiktok": "A 1% fee over 40 years: about €349,000 less than 0.05%. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "feedrag",
+    "retirementpot",
+    "compoundinterest"
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "slug": "windfall-management",
+  "postTitle": "Windfalls: Bonuses, Inheritances, and Sale Proceeds",
+  "postLevel": "optimizing",
+  "episode": 9,
+  "seriesTotal": 0,
+  "blogPath": "blog/windfall-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm",
+  "topic": "Many people park a windfall before deciding anything",
+  "topicChip": "PARK IT FIRST",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Blog: if savings pay 4% a year, €50,000 parked for 90 days earns about €500 of interest (50,000 x 0.04 x 90/365 = €493). Before tax. Parking periods from the blog: regular windfall about 30 days; larger irregular 60 to 90; emotionally loaded 90 minimum. Within deposit insurance limits."
+  },
+  "bandStory": {
+    "layout": "equal",
+    "bands": [
+      {
+        "id": "park",
+        "label": "Park",
+        "cost": "30 to 90 days",
+        "items": [
+          "A named savings account",
+          "Earns while you decide"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "plan",
+        "label": "Plan",
+        "cost": "On paper",
+        "items": [
+          "Where each euro goes"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "deploy",
+        "label": "Deploy",
+        "cost": "As written",
+        "items": [
+          "All at once or in steps"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "monitor",
+        "label": "Monitor",
+        "cost": "6 to 12 months",
+        "items": [
+          "Spending and allocation"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "emphasis": "park",
+    "disclosure": "Illustrative. 4% before tax; rates and deposit protection vary by country."
+  },
+  "hookVariants": [
+    {
+      "id": "just-landed",
+      "layout": "bands-gap",
+      "narration": "Fifty thousand euros just landed. What do many people do first? They park it, often ninety days or more for an inheritance.",
+      "onscreenLines": [
+        "€50,000 just landed?",
+        "Many park it first",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "Nothing"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Many people park it in a named savings account. At four percent, it earns about five hundred in ninety days.",
+      "onscreenText": "Park: about €500",
+      "subtext": "€50,000, 90 days, 4% before tax",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "park"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "That buys time to plan, deploy, and check spending after.",
+      "onscreenText": "Then plan, deploy, monitor",
+      "subtext": "The decision comes after the emotion",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "definition",
+      "narration": "A common practice: thirty days for a bonus, sixty to ninety for a sale, ninety or more for an inheritance.",
+      "onscreenText": "The parking period",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The parking period",
+        "rows": [
+          {
+            "label": "Bonus",
+            "value": "30 days",
+            "tone": "teal"
+          },
+          {
+            "label": "Sale proceeds",
+            "value": "60 to 90",
+            "tone": "ink"
+          },
+          {
+            "label": "Inheritance",
+            "value": "90 or more",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "A common practice, not a rule."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone who just inherited money? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they decide",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "€50,000 just landed in your account. What do many people do first? They park it before deciding, often 90 days or more after an inheritance.\n\nThey park it in a separate, named savings account. At 4%, €50,000 earns about €500 in 90 days while they plan.\n\n→ Know someone who has just inherited money and feels they must decide now? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax. Rates and deposit protection vary by country.",
+    "tiktok": "€50,000 just landed? Many people park it before deciding. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "inheritancemoney",
+    "lumpsum",
+    "financialcalm"
+  ]
+}

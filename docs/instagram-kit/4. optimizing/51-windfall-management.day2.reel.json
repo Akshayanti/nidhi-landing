@@ -1,0 +1,165 @@
+{
+  "slug": "windfall-management",
+  "postTitle": "Windfalls: Bonuses, Inheritances, and Sale Proceeds",
+  "postLevel": "optimizing",
+  "episode": 9,
+  "seriesTotal": 0,
+  "blogPath": "blog/windfall-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm",
+  "topic": "A one off windfall can turn into a permanent monthly cost",
+  "topicChip": "THE RATCHET",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "€400 a month = €4,800 a year. €50,000 / 4,800 = 10.4 years (about 10 years 5 months). Windfall line held flat at €50,000; upgrade line = total paid so far. Before growth, tax or inflation. Illustrative."
+  },
+  "lineRace": {
+    "periodLabel": "Year",
+    "series": [
+      {
+        "id": "windfall",
+        "label": "The windfall",
+        "tone": "ink",
+        "values": [
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000,
+          50000
+        ]
+      },
+      {
+        "id": "upgrade",
+        "label": "Paid for the upgrade",
+        "tone": "teal",
+        "values": [
+          4800,
+          9600,
+          14400,
+          19200,
+          24000,
+          28800,
+          33600,
+          38400,
+          43200,
+          48000,
+          52800,
+          57600
+        ]
+      }
+    ],
+    "ceiling": 60000,
+    "gridlines": [
+      25000,
+      50000
+    ],
+    "secondsPerPeriod": 0.5,
+    "scope": "Before growth, tax or inflation.",
+    "disclosure": "Illustrative. €400 a month, before growth, tax or inflation."
+  },
+  "hookVariants": [
+    {
+      "id": "how-long",
+      "layout": "chart-gap",
+      "narration": "How long can a one off windfall pay for a four hundred euro a month upgrade?",
+      "onscreenLines": [
+        "A €50,000 windfall",
+        "A €400 a month upgrade",
+        ""
+      ],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      },
+      "emphasis": [
+        "month"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "Four hundred a month is four thousand eight hundred a year.",
+      "onscreenText": "€4,800 a year",
+      "subtext": "€400 a month, every month",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "comparison",
+      "narration": "After about ten years and five months, the upgrade has used up the whole windfall. And the monthly cost keeps going.",
+      "onscreenText": "About 10 years 5 months",
+      "subtext": "Before growth, tax or inflation",
+      "emphasis": [
+        "keeps"
+      ],
+      "anchor": {
+        "type": "race",
+        "stage": "finish"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "The ratchet check: compare six months of spending before and after the money lands.",
+      "onscreenText": "The ratchet check",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The ratchet check",
+        "rows": [
+          {
+            "label": "Before",
+            "value": "6 months",
+            "tone": "ink"
+          },
+          {
+            "label": "After",
+            "value": "6 months",
+            "tone": "amber"
+          },
+          {
+            "label": "Each rise",
+            "value": "Planned?",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. A check, not a budget."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone upgrading with a windfall? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they sign",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "How long can a one off windfall pay for a €400 a month upgrade?\n\n€400 a month is €4,800 a year. After about 10 years and 5 months it has used up a €50,000 windfall, and the monthly cost keeps going.\n\n→ Know someone about to upgrade their car or flat with a bonus or inheritance? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Before growth, tax or inflation.",
+    "tiktok": "A €50,000 windfall against a €400 a month upgrade: used up after about 10 years and 5 months. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "lifestylecreep",
+    "carlease",
+    "moneyhabits"
+  ]
+}
