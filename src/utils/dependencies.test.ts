@@ -68,7 +68,7 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   puppeteer: '^25.13.0',
   // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
   // errors on its own.
-  typescript: '5.6.3',
+  typescript: '7.0.2',
 };
 
 const EXPECTED_NODE_ENGINE = '>=22.12.0';

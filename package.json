@@ -43,6 +43,6 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "puppeteer": "^25.13.0",
-    "typescript": "5.6.3"
+    "typescript": "7.0.2"
   }
 }
