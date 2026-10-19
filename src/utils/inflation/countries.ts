@@ -1,5 +1,5 @@
 /**
- * Which of the tools' 29 currencies a country's prices are in, for the
+ * Which of the tools' 38 currencies a country's prices are in, for the
  * countries in the World Bank data whose currency is one of them.
  *
  * Picking a country's history switches the calculator to that country's
@@ -76,10 +76,29 @@ export const COUNTRY_CURRENCY: Record<string, string> = {
   DNK: 'DKK',
   FRO: 'DKK',
   GRL: 'DKK',
+  // West African CFA franc (the UEMOA members).
+  BEN: 'XOF',
+  BFA: 'XOF',
+  CIV: 'XOF',
+  GNB: 'XOF',
+  MLI: 'XOF',
+  NER: 'XOF',
+  SEN: 'XOF',
+  TGO: 'XOF',
+  // Central African CFA franc (the CEMAC members).
+  CMR: 'XAF',
+  CAF: 'XAF',
+  TCD: 'XAF',
+  COG: 'XAF',
+  GNQ: 'XAF',
+  GAB: 'XAF',
   // One country each.
+  AGO: 'AOA',
+  BGD: 'BDT',
   BRA: 'BRL',
   CAN: 'CAD',
   CHN: 'CNY',
+  COD: 'CDF',
   CZE: 'CZK',
   GBR: 'GBP',
   HKG: 'HKD',
@@ -88,9 +107,11 @@ export const COUNTRY_CURRENCY: Record<string, string> = {
   IND: 'INR',
   ISL: 'ISK',
   JPN: 'JPY',
+  KEN: 'KES',
   KOR: 'KRW',
   MEX: 'MXN',
   MYS: 'MYR',
+  MOZ: 'MZN',
   NOR: 'NOK',
   NZL: 'NZD',
   PHL: 'PHP',
@@ -100,5 +121,7 @@ export const COUNTRY_CURRENCY: Record<string, string> = {
   SGP: 'SGD',
   THA: 'THB',
   TUR: 'TRY',
+  TZA: 'TZS',
+  UGA: 'UGX',
   ZAF: 'ZAR',
 };

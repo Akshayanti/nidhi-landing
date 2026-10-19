@@ -62,7 +62,7 @@ export const loanComparisonEn = {
       'Compare 2 to 5 loan offers side by side',
       'APR (Annual Percentage Rate) for each offer, folding fees into a single comparable rate',
       'Interest vs. principal split chart for each loan, showing where each payment goes across the life of the loan',
-      'Multi-currency support across 29 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
+      'Multi-currency support across 38 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
       'Model origination fees and extra monthly principal',
       'Advanced mode: hybrid (ARM) loans with payment recast at the transition, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
@@ -217,7 +217,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'Which currencies are supported?',
-              a: 'Twenty-nine currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), and the Nordic, Central European, Latin American, and South-East Asian majors. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
+              a: 'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
             },
             {
               q: 'What does "multi-currency" mean here?',
@@ -263,7 +263,7 @@ export const loanComparisonEn = {
     },
   },
   island: {
-    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
     /** The bar above the cards: currency, share and reset. */
     toolbar: {
@@ -681,7 +681,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'दो से पाँच लोन ऑफ़र की साथ-साथ तुलना',
       'हर ऑफ़र का APR (सालाना प्रतिशत दर), जो शुल्क को भी एक ही तुलनीय दर में जोड़ देता है',
       'हर लोन के लिए ब्याज और मूलधन के बँटवारे का चार्ट, जो दिखाता है कि पूरी अवधि में हर किस्त कहाँ जाती है',
-      '29 मुद्राओं का सपोर्ट, जिनमें USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD शामिल हैं',
+      '38 मुद्राओं का सपोर्ट, जिनमें USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD शामिल हैं',
       'तय अवधि देकर मासिक किस्त निकालें, या तय किस्त देकर चुकाने का समय निकालें',
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
       'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले हाइब्रिड (ARM) लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
@@ -833,7 +833,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कौन-सी मुद्राएँ शामिल हैं?',
-              a: '29 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
+              a: '38 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
             },
             {
               q: 'यहाँ "कई मुद्राओं" का क्या मतलब है?',
@@ -1232,7 +1232,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       'Compara de 2 a 5 ofertas de préstamo lado a lado',
       'APR (tasa de porcentaje anual) de cada oferta, que incorpora las comisiones en una sola tasa comparable',
       'Gráfico del reparto entre intereses y capital de cada préstamo, que muestra adónde va cada cuota durante toda la vida del préstamo',
-      'Compatible con 29 monedas, entre ellas USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
+      'Compatible con 38 monedas, entre ellas USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Calcula la cuota mensual a partir de un plazo fijo, o el tiempo hasta liquidar el préstamo a partir de una cuota fija',
       'Incluye la comisión de apertura y los pagos extra al capital cada mes',
       'Modo avanzado: préstamos híbridos (ARM) con la cuota recalculada en la transición, punto de equilibrio de los puntos de descuento, pagos extraordinarios y penalización por pago anticipado',
@@ -1384,7 +1384,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué monedas se admiten?',
-              a: 'Se admiten veintinueve monedas, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, centroeuropeas, latinoamericanas y del sudeste asiático. Todas las cantidades se escriben como se escriben las cifras en español, con el símbolo o el código detrás (1.234.567,80 €, 1.234.567,80 ₹), y cada moneda conserva sus decimales: el JPY, por ejemplo, no usa decimales.',
+              a: 'Se admiten treinta y ocho monedas, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD), el taka bangladesí (BDT), el chelín keniano (KES), los francos CFA de África Occidental y Central (XOF, XAF) y las principales monedas nórdicas, centroeuropeas, latinoamericanas, del sur y el sudeste de Asia y africanas. Todas las cantidades se escriben como se escriben las cifras en español, con el símbolo o el código detrás (1.234.567,80 €, 1.234.567,80 ₹), y cada moneda conserva sus decimales: el JPY, por ejemplo, no usa decimales.',
             },
             {
               q: '¿Qué significa aquí «varias monedas»?',

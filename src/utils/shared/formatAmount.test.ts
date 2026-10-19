@@ -32,7 +32,7 @@ describe('formatAmount', () => {
 
   it('keeps the currency\'s decimal separator in short forms', () => {
     for (const c of CURRENCIES) {
-      if (c.code === 'INR') continue; // lakh and crore, checked below
+      if (c.code === 'INR' || c.code === 'BDT') continue; // lakh and crore, checked below
       const short = formatAmount(2_163_515, c.code, true);
       assert.ok(short.includes(`2${decimalSeparator(c.locale)}16`), `${c.code}: ${short}`);
     }
@@ -45,9 +45,11 @@ describe('formatAmount', () => {
     assert.equal(formatAmount(0, 'EUR', true), '€0');
   });
 
-  it('keeps lakh and crore for rupees', () => {
+  it('keeps lakh and crore for rupees and taka', () => {
     assert.equal(formatAmount(2_163_515, 'INR', true), '₹21.6L');
     assert.equal(formatAmount(11_400_000, 'INR', true), '₹1.14Cr');
+    assert.equal(formatAmount(1_058_721, 'BDT'), 'BDT\u00a010,58,721');
+    assert.equal(formatAmount(2_163_515, 'BDT', true), 'BDT\u00a021.6L');
   });
 });
 

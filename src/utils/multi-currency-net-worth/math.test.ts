@@ -28,9 +28,9 @@ import {
 // ---------------------------------------------------------------------------
 
 describe('isSupportedCurrency', () => {
-  it('returns true for all 29 supported currencies', () => {
-    const supported = ['AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'IDR', 'INR', 'ISK', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR'];
-    assert.equal(supported.length, 29, 'sanity check on the test fixture itself');
+  it('returns true for all 38 supported currencies', () => {
+    const supported = ['AOA', 'AUD', 'BDT', 'BRL', 'CAD', 'CDF', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'IDR', 'INR', 'ISK', 'JPY', 'KES', 'KRW', 'MXN', 'MYR', 'MZN', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'SEK', 'SGD', 'THB', 'TRY', 'TZS', 'UGX', 'USD', 'XAF', 'XOF', 'ZAR'];
+    assert.equal(supported.length, 38, 'sanity check on the test fixture itself');
     for (const code of supported) {
       assert.ok(isSupportedCurrency(code), `${code} should be supported`);
     }

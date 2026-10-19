@@ -64,7 +64,11 @@ function track(event: string, properties?: Record<string, unknown>) {
 // Constants
 // ---------------------------------------------------------------------------
 
-const FRANKFURTER_BASE = 'https://api.frankfurter.dev/v1/latest';
+// Frankfurter v2 blends the day's rates from central banks and other official
+// sources, which covers every currency the tools offer (v1 served only the
+// ECB's set). The request names the spending currency and nothing else.
+const FRANKFURTER_RATES = 'https://api.frankfurter.dev/v2/rates';
+const SUPPORTED_CODES = new Set(CURRENCIES.map((c) => c.code));
 
 // Chart series and risk colors come from src/styles/palette.ts (single
 // source of truth shared with global.css).
@@ -169,15 +173,22 @@ export default function MultiCurrencyNetWorth({
     setRatesLoading(true);
     setRatesError(false);
 
-    fetch(`${FRANKFURTER_BASE}?from=${functionalCurrency}`)
+    fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data) => {
+      .then((data: unknown) => {
         if (cancelled) return;
-        // Include the base currency itself (rate = 1).
-        const fetched: Record<string, number> = { ...data.rates, [functionalCurrency]: 1 };
+        if (!Array.isArray(data)) throw new Error('unexpected response');
+        // One row per quote; keep the tools' own currencies, plus the base
+        // currency itself (rate = 1), which v2 does not list.
+        const fetched: Record<string, number> = { [functionalCurrency]: 1 };
+        for (const row of data as { quote?: unknown; rate?: unknown }[]) {
+          if (typeof row?.quote === 'string' && typeof row.rate === 'number' && row.rate > 0 && SUPPORTED_CODES.has(row.quote)) {
+            fetched[row.quote] = row.rate;
+          }
+        }
         setRates(fetched);
         setRatesLoading(false);
       })

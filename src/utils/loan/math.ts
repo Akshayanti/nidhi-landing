@@ -33,9 +33,12 @@ export interface CurrencyInfo {
 }
 
 const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [
+  { code: 'AOA', label: 'Angolan Kwanza (AOA)', locale: 'pt-AO' },
   { code: 'AUD', label: 'Australian Dollar (AUD)', locale: 'en-AU' },
+  { code: 'BDT', label: 'Bangladeshi Taka (BDT)', locale: 'en-IN' },
   { code: 'BRL', label: 'Brazilian Real (BRL)', locale: 'pt-BR' },
   { code: 'CAD', label: 'Canadian Dollar (CAD)', locale: 'en-CA' },
+  { code: 'CDF', label: 'Congolese Franc (CDF)', locale: 'fr-CD' },
   { code: 'CHF', label: 'Swiss Franc (CHF)', locale: 'de-CH' },
   { code: 'CNY', label: 'Chinese Yuan (CNY)', locale: 'zh-CN' },
   { code: 'CZK', label: 'Czech Koruna (CZK)', locale: 'cs-CZ' },
@@ -57,9 +60,11 @@ const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [
   { code: 'INR', label: 'Indian Rupee (INR)', locale: 'en-IN' },
   { code: 'ISK', label: 'Icelandic Króna (ISK)', locale: 'is-IS' },
   { code: 'JPY', label: 'Japanese Yen (JPY)', locale: 'ja-JP' },
+  { code: 'KES', label: 'Kenyan Shilling (KES)', locale: 'en-KE' },
   { code: 'KRW', label: 'South Korean Won (KRW)', locale: 'ko-KR' },
   { code: 'MXN', label: 'Mexican Peso (MXN)', locale: 'es-MX' },
   { code: 'MYR', label: 'Malaysian Ringgit (MYR)', locale: 'ms-MY' },
+  { code: 'MZN', label: 'Mozambican Metical (MZN)', locale: 'pt-MZ' },
   { code: 'NOK', label: 'Norwegian Krone (NOK)', locale: 'nb-NO' },
   { code: 'NZD', label: 'New Zealand Dollar (NZD)', locale: 'en-NZ' },
   { code: 'PHP', label: 'Philippine Peso (PHP)', locale: 'fil-PH' },
@@ -69,7 +74,11 @@ const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [
   { code: 'SGD', label: 'Singapore Dollar (SGD)', locale: 'en-SG' },
   { code: 'THB', label: 'Thai Baht (THB)', locale: 'th-TH' },
   { code: 'TRY', label: 'Turkish Lira (TRY)', locale: 'tr-TR' },
+  { code: 'TZS', label: 'Tanzanian Shilling (TZS)', locale: 'sw-TZ' },
+  { code: 'UGX', label: 'Ugandan Shilling (UGX)', locale: 'en-UG' },
   { code: 'USD', label: 'US Dollar (USD)', locale: 'en-US' },
+  { code: 'XAF', label: 'Central African CFA Franc (XAF)', locale: 'fr-CM' },
+  { code: 'XOF', label: 'West African CFA Franc (XOF)', locale: 'fr-SN' },
   { code: 'ZAR', label: 'South African Rand (ZAR)', locale: 'en-ZA' },
 ];
 
