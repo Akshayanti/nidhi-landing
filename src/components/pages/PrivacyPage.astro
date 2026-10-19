@@ -143,6 +143,18 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 19, 2026',
+    iso: '2026-10-19',
+    material: true,
+    summary: 'The net worth calculator now gets its exchange rates from Frankfurter\'s newer service, which combines rates from central banks and other official sources rather than the European Central Bank alone. The request still names only the currency you chose. Also: the free tools offer nine more currencies.',
+    details: [
+      'Net worth calculator: the request your browser makes to api.frankfurter.dev now goes to its newer rates address (/v2/rates?base=EUR, for example) instead of the older one (/v1/latest?from=EUR). It still names only your spending currency, never your amounts or anything you typed, and it still goes straight from your browser to Frankfurter, so we never see it. The reply is a table of rates for many currencies, and the calculator keeps only the ones it offers.',
+      'Where the rates come from: the older service published the European Central Bank\'s reference rates only. The newer one combines the rates published by central banks and other official sources, which is what lets the calculator convert the new currencies below. Rates for a currency the European Central Bank also publishes can differ slightly from before.',
+      'This notice\'s description of Frankfurter, under "Where it lives", now says this in every language, as do the free tools\' own pages, which no longer say the rates are the European Central Bank\'s.',
+      'Nine more currencies in every free tool (the loan comparison, the net worth calculator, the Monte Carlo simulator and the inflation calculator): the Kenyan, Tanzanian and Ugandan shillings (KES, TZS, UGX), the Bangladeshi taka (BDT), the West and Central African CFA francs (XOF, XAF), the Congolese franc (CDF), the Angolan kwanza (AOA) and the Mozambican metical (MZN). There are no new events or properties: the events that already record which currency you pick, and the rates-error event that records the spending currency, can now carry these nine codes too. The inflation calculator can now show its history for the countries that use them in that currency.',
+    ],
+  },
+  {
     date: 'Oct 13, 2026',
     iso: '2026-10-13',
     material: true,

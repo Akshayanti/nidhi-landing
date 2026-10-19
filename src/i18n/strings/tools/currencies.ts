@@ -1,5 +1,5 @@
 /**
- * The 29 currencies the three free tools offer, named in each language.
+ * The 38 currencies the free tools offer, named in each language.
  *
  * One list for three tools. `RAW_CURRENCIES` in `src/utils/loan/math.ts` is the
  * engine's own table (code, `Intl` locale, fraction digits) and every dropdown
@@ -31,9 +31,12 @@
  * the test against `RAW_CURRENCIES` catches a missing or unknown code anyway.
  */
 export const currenciesEn: Record<string, string> = {
+  AOA: 'Angolan Kwanza (AOA)',
   AUD: 'Australian Dollar (AUD)',
+  BDT: 'Bangladeshi Taka (BDT)',
   BRL: 'Brazilian Real (BRL)',
   CAD: 'Canadian Dollar (CAD)',
+  CDF: 'Congolese Franc (CDF)',
   CHF: 'Swiss Franc (CHF)',
   CNY: 'Chinese Yuan (CNY)',
   CZK: 'Czech Koruna (CZK)',
@@ -46,9 +49,11 @@ export const currenciesEn: Record<string, string> = {
   INR: 'Indian Rupee (INR)',
   ISK: 'Icelandic Króna (ISK)',
   JPY: 'Japanese Yen (JPY)',
+  KES: 'Kenyan Shilling (KES)',
   KRW: 'South Korean Won (KRW)',
   MXN: 'Mexican Peso (MXN)',
   MYR: 'Malaysian Ringgit (MYR)',
+  MZN: 'Mozambican Metical (MZN)',
   NOK: 'Norwegian Krone (NOK)',
   NZD: 'New Zealand Dollar (NZD)',
   PHP: 'Philippine Peso (PHP)',
@@ -58,14 +63,21 @@ export const currenciesEn: Record<string, string> = {
   SGD: 'Singapore Dollar (SGD)',
   THB: 'Thai Baht (THB)',
   TRY: 'Turkish Lira (TRY)',
+  TZS: 'Tanzanian Shilling (TZS)',
+  UGX: 'Ugandan Shilling (UGX)',
   USD: 'US Dollar (USD)',
+  XAF: 'Central African CFA Franc (XAF)',
+  XOF: 'West African CFA Franc (XOF)',
   ZAR: 'South African Rand (ZAR)',
 };
 
 export const currenciesHi: Record<string, string> = {
+  AOA: 'अंगोलाई क्वांज़ा (AOA)',
   AUD: 'ऑस्ट्रेलियाई डॉलर (AUD)',
+  BDT: 'बांग्लादेशी टका (BDT)',
   BRL: 'ब्राज़ीली रियाल (BRL)',
   CAD: 'कनाडाई डॉलर (CAD)',
+  CDF: 'कांगोलीज़ फ़्रैंक (CDF)',
   CHF: 'स्विस फ़्रैंक (CHF)',
   CNY: 'चीनी युआन (CNY)',
   CZK: 'चेक गणराज्य का कोरुना (CZK)',
@@ -78,9 +90,11 @@ export const currenciesHi: Record<string, string> = {
   INR: 'भारतीय रुपया (INR)',
   ISK: 'आइसलैंडिक क्रोना (ISK)',
   JPY: 'जापानी येन (JPY)',
+  KES: 'केन्याई शिलिंग (KES)',
   KRW: 'दक्षिण कोरियाई वॉन (KRW)',
   MXN: 'मैक्सिकन पेसो (MXN)',
   MYR: 'मलेशियाई रिंगिट (MYR)',
+  MZN: 'मोज़ाम्बिकी मेटिकल (MZN)',
   NOK: 'नॉर्वेजियन क्रोन (NOK)',
   NZD: 'न्यूज़ीलैंड डॉलर (NZD)',
   PHP: 'फ़िलिपीनी पेसो (PHP)',
@@ -90,7 +104,11 @@ export const currenciesHi: Record<string, string> = {
   SGD: 'सिंगापुर डॉलर (SGD)',
   THB: 'थाई बाट (THB)',
   TRY: 'तुर्की लीरा (TRY)',
+  TZS: 'तंज़ानियाई शिलिंग (TZS)',
+  UGX: 'युगांडाई शिलिंग (UGX)',
   USD: 'अमेरिकी डॉलर (USD)',
+  XAF: 'मध्य अफ़्रीकी CFA फ़्रैंक (XAF)',
+  XOF: 'पश्चिम अफ़्रीकी CFA फ़्रैंक (XOF)',
   ZAR: 'दक्षिण अफ़्रीकी रैंड (ZAR)',
 };
 
@@ -99,9 +117,12 @@ export const currenciesHi: Record<string, string> = {
  * except the capital the sorted dropdown needs at the start of each row.
  */
 export const currenciesEs: Record<string, string> = {
+  AOA: 'Kwanza angoleño (AOA)',
   AUD: 'Dólar australiano (AUD)',
+  BDT: 'Taka bangladesí (BDT)',
   BRL: 'Real brasileño (BRL)',
   CAD: 'Dólar canadiense (CAD)',
+  CDF: 'Franco congoleño (CDF)',
   CHF: 'Franco suizo (CHF)',
   CNY: 'Yuan chino (CNY)',
   CZK: 'Corona checa (CZK)',
@@ -114,9 +135,11 @@ export const currenciesEs: Record<string, string> = {
   INR: 'Rupia india (INR)',
   ISK: 'Corona islandesa (ISK)',
   JPY: 'Yen japonés (JPY)',
+  KES: 'Chelín keniano (KES)',
   KRW: 'Won surcoreano (KRW)',
   MXN: 'Peso mexicano (MXN)',
   MYR: 'Ringgit malayo (MYR)',
+  MZN: 'Metical mozambiqueño (MZN)',
   NOK: 'Corona noruega (NOK)',
   NZD: 'Dólar neozelandés (NZD)',
   PHP: 'Peso filipino (PHP)',
@@ -126,6 +149,10 @@ export const currenciesEs: Record<string, string> = {
   SGD: 'Dólar de Singapur (SGD)',
   THB: 'Baht tailandés (THB)',
   TRY: 'Lira turca (TRY)',
+  TZS: 'Chelín tanzano (TZS)',
+  UGX: 'Chelín ugandés (UGX)',
   USD: 'Dólar estadounidense (USD)',
+  XAF: 'Franco CFA de África Central (XAF)',
+  XOF: 'Franco CFA de África Occidental (XOF)',
   ZAR: 'Rand sudafricano (ZAR)',
 };

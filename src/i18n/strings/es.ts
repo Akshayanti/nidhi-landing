@@ -327,7 +327,7 @@ export const es: Dict = {
       anyCountry:
         'Las lecciones están escritas para quien lea desde cualquier lugar, no para un solo país. Las ideas que enseñan, como el patrimonio neto, la diversificación o cómo la inflación reduce el valor de los ahorros, funcionan igual en todas partes. Las reglas en torno a esas ideas no: los impuestos, la jubilación y las cuentas con ventajas fiscales, las pensiones y ayudas públicas, la puntuación de crédito, la protección de los depósitos y la legislación de protección al consumidor cambian de un país a otro, y a veces dentro de un mismo país. Las lecciones explican la idea general a propósito. Cuando una lección depende de reglas como estas, lo dice, y una nota «Where to check locally» (dónde consultarlo en tu país) al final de la lección indica los lugares habituales para comprobarlas allí donde vives, como tu autoridad fiscal, tu regulador financiero o un asesor local acreditado. Los ejemplos suelen estar en euros; es una elección de moneda, no una señal de que una regla sea europea. Cuando la evidencia viene de los datos de un solo país, como el historial de la bolsa de EE. UU., la lección también lo dice, junto con lo que quizá no te diga sobre otros mercados.',
       sourcesAndFigures:
-        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «referential reading» (lecturas de referencia), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Cada cifra indica de dónde sale y qué abarca, y la misma cifra coincide en todas las lecciones. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son los tipos de referencia del Banco Central Europeo, con su fecha en pantalla.',
+        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «referential reading» (lecturas de referencia), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Cada cifra indica de dónde sale y qué abarca, y la misma cifra coincide en todas las lecciones. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
       aiUsed1:
         'nidhi usa herramientas de IA en su trabajo, entre ellas Claude, de Anthropic, y otros agentes de IA. Ayudan a investigar, redactar y editar las lecciones; a revisar las lecciones frente a esta página; a cuestionar el razonamiento financiero de una lección o de una herramienta desde el punto de vista de un asesor con experiencia; y a construir el sitio y sus herramientas gratuitas. Distintos agentes de IA se enfrentan a propósito al trabajo de los demás, para detectar lo que a uno se le escapa.',
       aiUsed2: {
@@ -382,12 +382,12 @@ export const es: Dict = {
     },
     eyebrow: 'Herramientas gratuitas',
     title: 'Herramientas gratuitas de finanzas personales que funcionan en tu navegador.',
-    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio actuales del BCE cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
+    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio oficiales actualizados cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'Una moneda o varias',
         title: 'Calculadora de patrimonio neto',
-        desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 29, con tipos actuales del BCE, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
+        desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 38, con tipos de cambio oficiales actualizados, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
         itemName: 'Calculadora de patrimonio neto y analizador de riesgo cambiario',
       },
       loanComparison: {
@@ -418,9 +418,9 @@ export const es: Dict = {
       // The link between `before` and `after` is a product name held by the
       // component; the spaces live at the ends of the two fragments.
       rates: {
-        strong: 'Tipos de cambio actuales del BCE cuando hacen falta.',
+        strong: 'Tipos de cambio oficiales actualizados cuando hacen falta.',
         before: ' Cuando una herramienta necesita convertir monedas, tu navegador obtiene los tipos de referencia de la API de ',
-        after: ' (una réplica gratuita y abierta de los tipos de referencia del Banco Central Europeo). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
+        after: ' (un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
       },
       noSignup: {
         strong: 'Sin registro, sin cuenta y sin correo electrónico.',
@@ -613,7 +613,7 @@ export const es: Dict = {
         'Esa es la lista completa de servicios que tratan datos por nosotros. No hay un cuarto encargado del tratamiento escondido en una nota al pie.',
       frankfurter: {
         lead: 'Un servicio al que tu navegador se conecta directamente: Frankfurter',
-        rest: ', un servicio gratuito y abierto que publica los tipos de cambio del Banco Central Europeo. Tu navegador le pide los tipos del día cuando abres la calculadora de patrimonio neto (y otra vez si cambias allí la moneda de tus gastos). La solicitud solo incluye códigos de moneda, nunca tus cantidades ni nada que hayas escrito. Como cualquier solicitud que hace tu navegador, le muestra a Frankfurter tu dirección IP y el tipo de navegador. Va directamente de tu navegador a Frankfurter, así que nosotros nunca la vemos, y Frankfurter es independiente de nosotros: lo que conserve depende de ellos.',
+        rest: ', un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales. Tu navegador le pide los tipos más recientes cuando abres la calculadora de patrimonio neto (y otra vez si cambias allí la moneda de tus gastos). La solicitud solo incluye códigos de moneda, nunca tus cantidades ni nada que hayas escrito, y la respuesta es una tabla con los tipos de muchas monedas, de la que la calculadora conserva las que ofrece. Como cualquier solicitud que hace tu navegador, le muestra a Frankfurter tu dirección IP y el tipo de navegador. Va directamente de tu navegador a Frankfurter, así que nosotros nunca la vemos, y Frankfurter es independiente de nosotros: lo que conserve depende de ellos.',
       },
     },
 

@@ -401,7 +401,7 @@ export const en = {
       anyCountry:
         'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a "Where to check locally" note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
       sourcesAndFigures:
-        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "referential reading," so you can follow the trail rather than take our word for it. Every figure comes with where it is from and what it covers, and the same figure agrees across lessons. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are the European Central Bank\'s reference rates, dated on screen.',
+        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "referential reading," so you can follow the trail rather than take our word for it. Every figure comes with where it is from and what it covers, and the same figure agrees across lessons. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
       aiUsed1:
         "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
       aiUsed2: {
@@ -471,12 +471,12 @@ export const en = {
     },
     eyebrow: 'Free tools',
     title: 'Free personal finance tools that run in your browser.',
-    lead: 'No signup, no account, no data sent to a server. Every calculator below runs entirely in your browser, with live ECB exchange rates where currency conversion is needed. Built for expats, cross-border savers, and anyone who has outgrown a spreadsheet.',
+    lead: 'No signup, no account, no data sent to a server. Every calculator below runs entirely in your browser, with the latest official exchange rates where currency conversion is needed. Built for expats, cross-border savers, and anyone who has outgrown a spreadsheet.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'One currency or several',
         title: 'Net Worth Calculator',
-        desc: 'Add what you own and what you owe to see your net worth. Works in one currency or across 29, at live ECB rates, and if you hold several it shows how much sits in currencies you do not spend in.',
+        desc: 'Add what you own and what you owe to see your net worth. Works in one currency or across 38, at the latest official exchange rates, and if you hold several it shows how much sits in currencies you do not spend in.',
         itemName: 'Net Worth Calculator and Currency Risk Analyzer',
       },
       loanComparison: {
@@ -508,9 +508,9 @@ export const en = {
       // and is the same string in every language, as the privacy notice does with
       // the services it lists. The spaces live at the ends of the two fragments.
       rates: {
-        strong: 'Live ECB exchange rates where needed.',
+        strong: 'Official exchange rates where needed.',
         before: ' When a tool needs a currency conversion, your browser fetches reference rates from the ',
-        after: ' API (a free, open mirror of European Central Bank reference rates). The request includes only your selected functional currency, not your asset data.',
+        after: ' API (a free, open service that combines the exchange rates published by central banks and other official sources). The request includes only your selected functional currency, not your asset data.',
       },
       noSignup: {
         strong: 'No signup, no account, no email needed.',
@@ -755,7 +755,7 @@ export const en = {
       // parentheses after it, and `rest` carries the comma that follows them.
       frankfurter: {
         lead: 'One service your browser contacts directly: Frankfurter',
-        rest: ', a free, open service that publishes European Central Bank exchange rates. Your browser asks it for the day’s rates when you open the net worth calculator (and again if you change your spending currency there). The request names only currency codes, never your amounts or anything you typed. Like any request your browser makes, it shows Frankfurter your IP address and browser type. It goes straight from your browser to Frankfurter, so we never see it, and Frankfurter is independent of us: what it keeps is up to them.',
+        rest: ', a free, open service that combines the exchange rates published by central banks and other official sources. Your browser asks it for the latest rates when you open the net worth calculator (and again if you change your spending currency there). The request names only currency codes, never your amounts or anything you typed, and the reply is a table of rates for many currencies, of which the calculator keeps the ones it offers. Like any request your browser makes, it shows Frankfurter your IP address and browser type. It goes straight from your browser to Frankfurter, so we never see it, and Frankfurter is independent of us: what it keeps is up to them.',
       },
     },
 

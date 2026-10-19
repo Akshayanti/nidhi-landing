@@ -74,7 +74,7 @@ export const monteCarloEn = {
       'Yearly fees',
       'Saving phase and optional withdrawal phase',
       'Stock and bond mix, rebalanced yearly',
-      "Results in today's money, in 29 currencies",
+      "Results in today's money, in 38 currencies",
       'Shareable link to any plan',
     ],
   },
@@ -255,7 +255,7 @@ export const monteCarloEn = {
    * Hindi does not pluralise a noun the way English adds an "s".
    */
   island: {
-    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
     formLabel: 'Your plan',
     fields: {
@@ -442,7 +442,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       'सालाना शुल्क',
       'बचत का दौर, और उसके बाद वैकल्पिक निकासी का दौर',
       'पोर्टफ़ोलियो का मिश्रण (शेयर और बॉन्ड), हर साल पुनर्संतुलित',
-      'नतीजे आज के पैसे में, 29 मुद्राओं में',
+      'नतीजे आज के पैसे में, 38 मुद्राओं में',
       'किसी भी योजना का शेयर करने योग्य लिंक',
     ],
   },
@@ -738,7 +738,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       'Comisiones anuales',
       'Fase de ahorro y fase de retiros opcional',
       'Combinación de acciones y bonos, con reequilibrio anual',
-      'Resultados en dinero de hoy, en 29 monedas',
+      'Resultados en dinero de hoy, en 38 monedas',
       'Enlace para compartir cualquier plan',
     ],
   },

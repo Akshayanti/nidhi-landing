@@ -58,7 +58,7 @@ export const inflationEn = {
       'Every result also shown one percentage point lower and higher',
       'Yearly inflation history for {countries} countries and the euro area, from the World Bank',
       'Rates from {minRate} to {maxRate}% a year, so hyperinflation can be shown',
-      'Results in 29 currencies',
+      'Results in 38 currencies',
       'Shareable link to any calculation',
     ],
   },
@@ -187,7 +187,7 @@ export const inflationEn = {
    * the way English adds an "s".
    */
   island: {
-    /** The 29 currency names, shared by every tool: see `./currencies.ts`. */
+    /** The 38 currency names, shared by every tool: see `./currencies.ts`. */
     currencies: currenciesEn,
     formLabel: 'Inflation calculator',
     tabsLabel: 'Choose a question',
@@ -350,7 +350,7 @@ export const inflationHi: typeof inflationEn = {
       'हर नतीजा एक प्रतिशत अंक कम और ज़्यादा पर भी',
       'World Bank से {countries} देशों और यूरो क्षेत्र की सालाना महँगाई का इतिहास',
       '{minRate} से {maxRate}% सालाना तक की दरें, ताकि हाइपरइन्फ़्लेशन भी दिखाया जा सके',
-      '29 मुद्राओं में नतीजे',
+      '38 मुद्राओं में नतीजे',
       'किसी भी हिसाब का शेयर लिंक',
     ],
   },
@@ -607,7 +607,7 @@ export const inflationEs: typeof inflationEn = {
       'Cada resultado, también un punto porcentual por debajo y por encima',
       'Historia de la inflación anual de {countries} países y la zona del euro, del Banco Mundial',
       'Tasas de {minRate} a {maxRate} % anual, para poder mostrar la hiperinflación',
-      'Resultados en 29 monedas',
+      'Resultados en 38 monedas',
       'Enlace para compartir cualquier cálculo',
     ],
   },

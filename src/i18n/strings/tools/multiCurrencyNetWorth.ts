@@ -27,7 +27,7 @@
  *     and the island classifies them by matching on their English wording to
  *     pick an analytics reason, so translating them in place would change what
  *     the tool reports.
- *   - `nidhi`, `Frankfurter`, `ECB`, `CSV`, and the currency codes and names.
+ *   - `nidhi`, `Frankfurter`, `CSV`, and the currency codes and names.
  *     The catalog test allows a value that reads the same in both languages only
  *     when it holds no word at all, and these are names.
  *
@@ -56,7 +56,7 @@ export const multiCurrencyNetWorthEn = {
   meta: {
     title: 'Net Worth Calculator, in One Currency or Several | nidhi',
     description:
-      'Free net worth calculator for one currency or several: 29 currencies at live ECB rates, plus a currency risk check. Runs in your browser; nothing is sent.',
+      'Free net worth calculator for one currency or several: 38 currencies at the latest official exchange rates, plus a currency risk check. Runs in your browser; nothing is sent.',
   },
   schema: {
     name: 'nidhi Net Worth Calculator',
@@ -72,9 +72,9 @@ export const multiCurrencyNetWorthEn = {
     operatingSystem: 'Any (web browser)',
     browserRequirements: 'Requires JavaScript. Modern browser.',
     featureList: [
-      'Calculate total net worth across 29 currencies in your chosen functional currency',
+      'Calculate total net worth across 38 currencies in your chosen functional currency',
       'Add unlimited assets and liabilities in any supported currency',
-      'Live ECB reference exchange rates via Frankfurter API',
+      'Latest official exchange rates via the Frankfurter API',
       'Currency concentration donut chart',
       'Per-currency risk assessment (low, moderate, elevated)',
       'Asset/liability toggle for net position calculation',
@@ -99,7 +99,7 @@ export const multiCurrencyNetWorthEn = {
      * the browser would collapse them in the markup.
      */
     lead:
-      'Add what you own and what you owe, in one currency or several. See your net worth in your chosen currency with live ECB rates. If you hold more than one currency, check how much of it sits in currencies you don’t actually spend in. Everything runs in your browser. Nothing is sent to a server. Supports USD, EUR, GBP, INR, JPY, and 24 more.',
+      'Add what you own and what you owe, in one currency or several. See your net worth in your chosen currency at the latest official exchange rates. If you hold more than one currency, check how much of it sits in currencies you don’t actually spend in. Everything runs in your browser. Nothing is sent to a server. Supports USD, EUR, GBP, INR, JPY, and 33 more.',
     accessCta: {
       eyebrow: 'Full planner',
       title: 'Want this connected to retirement timing and future expenses?',
@@ -122,7 +122,7 @@ export const multiCurrencyNetWorthEn = {
         {
           strong: 'Rate to functional',
           rest:
-            ' is the multiplier that converts one unit of currency X into your functional currency, sourced live from the European Central Bank via the Frankfurter API and fetched directly by your browser. Rates update daily on business days. ECB reference rates are benchmarks and may differ from the rates your bank or broker actually offers.',
+            ' is the multiplier that converts one unit of currency X into your functional currency, taken from the Frankfurter API, which combines the rates published by central banks and other official sources, and fetched directly by your browser. Rates are updated as those sources publish them, usually each business day. They are reference rates: benchmarks that may differ from the rates your bank or broker actually offers.',
         },
         {
           strong: 'Concentration bands',
@@ -148,7 +148,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'How does the net worth calculator work?',
           a:
-            'You add your assets and liabilities with their currency and current value. The tool fetches live ECB reference exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any non-functional currency where you have elevated exposure.',
+            'You add your assets and liabilities with their currency and current value. The tool fetches the latest official exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any non-functional currency where you have elevated exposure.',
         },
         {
           q: 'What is currency concentration risk?',
@@ -163,7 +163,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'Which currencies are supported?',
           a:
-            'Twenty-nine currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), and the Nordic, Central European, Latin American, and South-East Asian majors. Exchange rates are fetched from the ECB via Frankfurter, which are reference rates and may differ from the rates available to retail customers at their bank.',
+            'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Exchange rates come from central banks and other official sources via Frankfurter, and are reference rates and may differ from the rates available to retail customers at their bank.',
         },
         {
           q: 'What\'s the difference between the "Full" and "Redacted" share modes?',
@@ -173,7 +173,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'How are exchange rates sourced?',
           a:
-            'Rates come from the European Central Bank via the free Frankfurter API (api.frankfurter.dev). They are reference rates updated daily on ECB business days, intended as benchmarks rather than transactable quotes. The rates you actually receive at your bank or broker include a spread and may be materially different, especially for smaller currencies. No API key is required, and the request is made directly from your browser.',
+            'Rates come from the free Frankfurter API (api.frankfurter.dev), which combines the exchange rates published by central banks and other official sources. They are reference rates, updated as those sources publish them (usually each business day), intended as benchmarks rather than transactable quotes. The rates you actually receive at your bank or broker include a spread and may be materially different, especially for smaller currencies. No API key is required, and the request is made directly from your browser.',
         },
         {
           q: 'What does "functional currency" mean?',
@@ -261,13 +261,13 @@ export const multiCurrencyNetWorthEn = {
     },
   },
   island: {
-    /** The 29 currency names, shared by the three tools: see `./currencies.ts`. */
+    /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
     toolbar: {
       aria: 'Net worth calculator actions',
       currencyLabel: 'Your currency (the one you spend in)',
       currencyHelp:
-        'Your net worth is shown in this currency. Anything in another currency is converted at today’s ECB rates.',
+        'Your net worth is shown in this currency. Anything in another currency is converted at the latest official exchange rates.',
       share: 'Share',
       shareTitle: 'Share your net worth',
       reset: 'Reset',
@@ -361,7 +361,7 @@ export const multiCurrencyNetWorthEn = {
       labelModerate: 'Moderate exposure',
       labelLow: 'Low exposure',
       disclaimer:
-        'This calculator shows mathematical concentrations of your net positions across currencies, using ECB reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial advisor.',
+        'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial advisor.',
     },
     /**
      * The descriptive line under each currency.
@@ -377,7 +377,7 @@ export const multiCurrencyNetWorthEn = {
     rec: {
       /** Shown when the rate feed did not return this currency at all. */
       noRate:
-        'Live rate for {code} against {currency} was not returned by the ECB feed, so this position is excluded from the concentration math. The original-currency net amount is still shown above.',
+        'Live rate for {code} against {currency} was not returned by the exchange-rate service, so this position is excluded from the concentration math. The original-currency net amount is still shown above.',
       /** The spending currency, when the share carries no percentage. */
       functionalHidden:
         'This is your spending currency. The concentration percentage is not included in this share.',
@@ -455,7 +455,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा में या कई में | nidhi',
     description:
-      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा के लिए या कई के लिए: ECB की ताज़ा दरों पर 29 मुद्राएँ, और साथ में मुद्रा जोखिम की जाँच। सारी गणना आपके ब्राउज़र में; कुछ भी नहीं भेजा जाता।',
+      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा के लिए या कई के लिए: ताज़ा आधिकारिक दरों पर 38 मुद्राएँ, और साथ में मुद्रा जोखिम की जाँच। सारी गणना आपके ब्राउज़र में; कुछ भी नहीं भेजा जाता।',
   },
   schema: {
     name: 'nidhi शुद्ध संपत्ति कैलकुलेटर',
@@ -471,9 +471,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     operatingSystem: 'कोई भी (वेब ब्राउज़र)',
     browserRequirements: 'JavaScript ज़रूरी है। आधुनिक ब्राउज़र।',
     featureList: [
-      'अपनी चुनी हुई मुद्रा में 29 मुद्राओं तक फैली कुल शुद्ध संपत्ति निकालें',
+      'अपनी चुनी हुई मुद्रा में 38 मुद्राओं तक फैली कुल शुद्ध संपत्ति निकालें',
       'किसी भी समर्थित मुद्रा में जितनी चाहें संपत्तियाँ और देनदारियाँ जोड़ें',
-      'Frankfurter API से ECB की ताज़ा संदर्भ विनिमय दरें',
+      'Frankfurter API से ताज़ा आधिकारिक विनिमय दरें',
       'मुद्रा मिश्रण का डोनट चार्ट',
       'हर मुद्रा के लिए जोखिम का आकलन (कम, मध्यम, ज़्यादा)',
       'शुद्ध स्थिति निकालने के लिए संपत्ति/देनदारी का टॉगल',
@@ -492,7 +492,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'मुफ़्त टूल',
     title: 'शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा में या कई में',
     lead:
-      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति (नेट वर्थ) देखें, ECB की ताज़ा दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है। किसी सर्वर पर कुछ नहीं भेजा जाता। USD, EUR, GBP, INR, JPY और 24 अन्य मुद्राएँ समर्थित हैं।',
+      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति (नेट वर्थ) देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है। किसी सर्वर पर कुछ नहीं भेजा जाता। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
     accessCta: {
       eyebrow: 'पूरा प्लानर',
       title: 'इसे रिटायरमेंट के समय और आगे के खर्चों से जोड़कर देखना चाहेंगे?',
@@ -514,7 +514,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'खर्च की मुद्रा में दर',
           rest:
-            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें यूरोपीय केंद्रीय बैंक से Frankfurter API के ज़रिए सीधे आपके ब्राउज़र में आती हैं। दरें कारोबारी दिनों में रोज़ अपडेट होती हैं। ECB की संदर्भ दरें मानक हैं, और आपके बैंक या ब्रोकर की असल दरों से अलग हो सकती हैं।',
+            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें Frankfurter API से सीधे आपके ब्राउज़र में आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। दरें तब अपडेट होती हैं जब ये स्रोत उन्हें प्रकाशित करते हैं, आम तौर पर हर कारोबारी दिन। ये संदर्भ दरें मानक हैं, और आपके बैंक या ब्रोकर की असल दरों से अलग हो सकती हैं।',
         },
         {
           strong: 'जमाव के स्तर',
@@ -540,7 +540,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'शुद्ध संपत्ति कैलकुलेटर कैसे काम करता है?',
           a:
-            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ECB की ताज़ा संदर्भ विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र "ज़्यादा" स्तर पर है।',
+            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ताज़ा आधिकारिक विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र "ज़्यादा" स्तर पर है।',
         },
         {
           q: 'मुद्रा जमाव का जोखिम क्या है?',
@@ -555,7 +555,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'कौन सी मुद्राएँ समर्थित हैं?',
           a:
-            '29 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी तथा दक्षिण-पूर्व एशियाई प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें ECB से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
+            '38 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
         },
         {
           q: 'शेयर करने के "पूरा हिसाब" और "रकम और नाम छिपाकर" वाले तरीक़ों में क्या फ़र्क़ है?',
@@ -565,7 +565,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'विनिमय दरें कहाँ से आती हैं?',
           a:
-            'दरें यूरोपीय केंद्रीय बैंक से, मुफ़्त Frankfurter API (api.frankfurter.dev) के ज़रिए आती हैं। ये संदर्भ दरें हैं, ECB के कारोबारी दिनों में रोज़ अपडेट होती हैं, और इन्हें लेन-देन का भाव नहीं बल्कि मानक माना जाना चाहिए। आपके बैंक या ब्रोकर पर असल में जो दर मिलती है उसमें स्प्रेड जुड़ा होता है और वह काफ़ी अलग हो सकती है, ख़ासकर छोटी मुद्राओं में। किसी API कुंजी की ज़रूरत नहीं है, और अनुरोध सीधे आपके ब्राउज़र से जाता है।',
+            'दरें मुफ़्त Frankfurter API (api.frankfurter.dev) से आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। ये संदर्भ दरें हैं, जो इन स्रोतों के प्रकाशित करने पर अपडेट होती हैं (आम तौर पर हर कारोबारी दिन), और इन्हें लेन-देन का भाव नहीं बल्कि मानक माना जाना चाहिए। आपके बैंक या ब्रोकर पर असल में जो दर मिलती है उसमें स्प्रेड जुड़ा होता है और वह काफ़ी अलग हो सकती है, ख़ासकर छोटी मुद्राओं में। किसी API कुंजी की ज़रूरत नहीं है, और अनुरोध सीधे आपके ब्राउज़र से जाता है।',
         },
         {
           q: '"खर्च की मुद्रा" (functional currency) का क्या मतलब है?',
@@ -652,7 +652,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       aria: 'शुद्ध संपत्ति कैलकुलेटर के बटन',
       currencyLabel: 'आपकी मुद्रा (जिसमें आप खर्च करते हैं)',
       currencyHelp:
-        'आपकी शुद्ध संपत्ति इसी मुद्रा में दिखाई जाती है। किसी और मुद्रा में जो कुछ है, उसे आज की ECB दरों पर इसी मुद्रा में बदलकर दिखाया जाता है।',
+        'आपकी शुद्ध संपत्ति इसी मुद्रा में दिखाई जाती है। किसी और मुद्रा में जो कुछ है, उसे ताज़ा आधिकारिक दरों पर इसी मुद्रा में बदलकर दिखाया जाता है।',
       share: 'शेयर करें',
       shareTitle: 'अपनी शुद्ध संपत्ति शेयर करें',
       reset: 'रीसेट करें',
@@ -731,11 +731,11 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       labelModerate: 'मध्यम एक्सपोज़र',
       labelLow: 'कम एक्सपोज़र',
       disclaimer:
-        'यह कैलकुलेटर ECB की संदर्भ दरों पर, आपकी हर मुद्रा में शुद्ध स्थिति का गणितीय जमाव दिखाता है; ये दरें आपके बैंक या ब्रोकर पर मिलने वाली दरों से अलग हो सकती हैं। इसमें आपकी आगे की खर्च योजना, कर निवास, हेजिंग की रणनीति या जोखिम लेने की क्षमता शामिल नहीं है, और यह वित्तीय सलाह नहीं है। अपने हालात के लिए सलाह चाहिए तो किसी लाइसेंस प्राप्त वित्तीय सलाहकार से बात कीजिए।',
+        'यह कैलकुलेटर आधिकारिक संदर्भ दरों पर, आपकी हर मुद्रा में शुद्ध स्थिति का गणितीय जमाव दिखाता है; ये दरें आपके बैंक या ब्रोकर पर मिलने वाली दरों से अलग हो सकती हैं। इसमें आपकी आगे की खर्च योजना, कर निवास, हेजिंग की रणनीति या जोखिम लेने की क्षमता शामिल नहीं है, और यह वित्तीय सलाह नहीं है। अपने हालात के लिए सलाह चाहिए तो किसी लाइसेंस प्राप्त वित्तीय सलाहकार से बात कीजिए।',
     },
     rec: {
       noRate:
-        '{code} की {currency} के मुक़ाबले ताज़ा दर ECB के फ़ीड से नहीं मिली, इसलिए यह स्थिति जमाव के हिसाब से बाहर रखी गई है। मूल मुद्रा वाली शुद्ध रकम ऊपर अब भी दिखाई गई है।',
+        '{code} की {currency} के मुक़ाबले ताज़ा दर विनिमय दर सेवा से नहीं मिली, इसलिए यह स्थिति जमाव के हिसाब से बाहर रखी गई है। मूल मुद्रा वाली शुद्ध रकम ऊपर अब भी दिखाई गई है।',
       functionalHidden:
         'यह आपकी खर्च की मुद्रा है। इस शेयर किए गए हिसाब में जमाव का प्रतिशत शामिल नहीं है।',
       functionalMost:
@@ -809,7 +809,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Calculadora de patrimonio neto: una o varias monedas | nidhi',
     description:
-      'Calculadora gratuita de patrimonio neto en 29 monedas, con tipos diarios del BCE y riesgo cambiario. Se calcula en tu navegador, sin que salgan tus datos.',
+      'Calculadora gratuita de patrimonio neto en 38 monedas, con tipos de cambio oficiales y riesgo cambiario. Se calcula en tu navegador, sin que salgan tus datos.',
   },
   schema: {
     name: 'Calculadora de patrimonio neto de nidhi',
@@ -825,9 +825,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     operatingSystem: 'Cualquiera (navegador web)',
     browserRequirements: 'Requiere JavaScript. Navegador actualizado.',
     featureList: [
-      'Calcula tu patrimonio neto total en 29 monedas, expresado en la moneda de referencia que elijas',
+      'Calcula tu patrimonio neto total en 38 monedas, expresado en la moneda de referencia que elijas',
       'Añade todos los activos y pasivos que quieras, en cualquier moneda disponible',
-      'Tipos de cambio de referencia del BCE al día, a través de la API de Frankfurter',
+      'Tipos de cambio oficiales actualizados, a través de la API de Frankfurter',
       'Gráfico de anillo de la concentración por moneda',
       'Evaluación del riesgo por moneda (bajo, moderado, elevado)',
       'Selector de activo o pasivo para calcular la posición neta',
@@ -846,7 +846,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'Herramientas gratuitas',
     title: 'Calculadora de patrimonio neto, en una moneda o en varias',
     lead:
-      'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio del BCE al día. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Todo funciona en tu navegador. No se envía nada a ningún servidor. Admite USD, EUR, GBP, INR, JPY y 24 más.',
+      'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio oficiales actualizados. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Todo funciona en tu navegador. No se envía nada a ningún servidor. Admite USD, EUR, GBP, INR, JPY y 33 más.',
     accessCta: {
       eyebrow: 'Planificador completo',
       title: '¿Quieres conectar esto con el momento de tu jubilación y tus gastos futuros?',
@@ -869,7 +869,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Tipo de cambio a la moneda de referencia',
           rest:
-            ' es el multiplicador que convierte una unidad de la moneda X en tu moneda de referencia. Procede del Banco Central Europeo a través de la API de Frankfurter y tu navegador lo obtiene directamente. Los tipos se actualizan cada día hábil. Los tipos de referencia del BCE son valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
+            ' es el multiplicador que convierte una unidad de la moneda X en tu moneda de referencia. Procede de la API de Frankfurter, que reúne los tipos que publican bancos centrales y otras fuentes oficiales, y tu navegador lo obtiene directamente. Los tipos se actualizan cuando esas fuentes los publican, normalmente cada día hábil. Son tipos de referencia, valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
         },
         {
           strong: 'Niveles de concentración',
@@ -895,7 +895,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Cómo funciona la calculadora de patrimonio neto?',
           a:
-            'Añades tus activos y pasivos con su moneda y su valor actual. La herramienta obtiene los tipos de cambio de referencia del BCE al día (a través de la API gratuita de Frankfurter), lo convierte todo a la moneda de referencia que elijas y muestra tu patrimonio neto total como una sola cifra. Debajo, muestra tu concentración por moneda en un gráfico de anillo y señala cualquier moneda distinta de la de referencia en la que tu exposición sea elevada.',
+            'Añades tus activos y pasivos con su moneda y su valor actual. La herramienta obtiene los tipos de cambio oficiales más recientes (a través de la API gratuita de Frankfurter), lo convierte todo a la moneda de referencia que elijas y muestra tu patrimonio neto total como una sola cifra. Debajo, muestra tu concentración por moneda en un gráfico de anillo y señala cualquier moneda distinta de la de referencia en la que tu exposición sea elevada.',
         },
         {
           q: '¿Qué es el riesgo de concentración en una moneda?',
@@ -910,7 +910,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Qué monedas están disponibles?',
           a:
-            'Hay veintinueve monedas disponibles, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD) y las principales monedas nórdicas, de Europa central, de América Latina y del sudeste asiático. Los tipos de cambio proceden del BCE a través de Frankfurter; son tipos de referencia y pueden diferir de los que los bancos ofrecen a sus clientes particulares.',
+            'Hay treinta y ocho monedas disponibles, entre ellas el euro (EUR), el dólar estadounidense (USD), la libra esterlina (GBP), el franco suizo (CHF), el yen japonés (JPY), la rupia india (INR), el yuan chino (CNY), el dólar canadiense (CAD), el dólar australiano (AUD), el dólar de Singapur (SGD), el taka bangladesí (BDT), el chelín keniano (KES), los francos CFA de África Occidental y Central (XOF, XAF) y las principales monedas nórdicas, de Europa central, de América Latina, del sur y el sudeste de Asia y de África. Los tipos de cambio proceden de bancos centrales y otras fuentes oficiales a través de Frankfurter; son tipos de referencia y pueden diferir de los que los bancos ofrecen a sus clientes particulares.',
         },
         {
           q: '¿Qué diferencia hay entre las formas de compartir «Versión completa» y «Versión con datos ocultos»?',
@@ -920,7 +920,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿De dónde salen los tipos de cambio?',
           a:
-            'Los tipos proceden del Banco Central Europeo a través de la API gratuita de Frankfurter (api.frankfurter.dev). Son tipos de referencia que se actualizan cada día hábil del BCE y sirven como valores orientativos, no como cotizaciones a las que se pueda operar. Los tipos que obtienes de verdad en tu banco o tu bróker incluyen un margen y pueden ser bastante distintos, sobre todo en monedas menos negociadas. No hace falta clave de API, y la petición sale directamente de tu navegador.',
+            'Los tipos proceden de la API gratuita de Frankfurter (api.frankfurter.dev), que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales. Son tipos de referencia que se actualizan cuando esas fuentes los publican, normalmente cada día hábil, y sirven como valores orientativos, no como cotizaciones a las que se pueda operar. Los tipos que obtienes de verdad en tu banco o tu bróker incluyen un margen y pueden ser bastante distintos, sobre todo en monedas menos negociadas. No hace falta clave de API, y la petición sale directamente de tu navegador.',
         },
         {
           q: '¿Qué significa «moneda de referencia»?',
@@ -1008,7 +1008,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       aria: 'Acciones de la calculadora de patrimonio neto',
       currencyLabel: 'Tu moneda (en la que gastas)',
       currencyHelp:
-        'Tu patrimonio neto se muestra en esta moneda. Lo que esté en otra moneda se convierte con los tipos del BCE de hoy.',
+        'Tu patrimonio neto se muestra en esta moneda. Lo que esté en otra moneda se convierte con los tipos de cambio oficiales más recientes.',
       share: 'Compartir',
       shareTitle: 'Comparte tu patrimonio neto',
       reset: 'Restablecer',
@@ -1090,11 +1090,11 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       labelModerate: 'Exposición moderada',
       labelLow: 'Exposición baja',
       disclaimer:
-        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia del BCE que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
+        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
     },
     rec: {
       noRate:
-        'El BCE no devolvió el tipo de cambio actual de {code} frente a {currency}, así que esta posición queda fuera del cálculo de concentración. La cantidad neta en la moneda original se sigue mostrando arriba.',
+        'El servicio de tipos de cambio no devolvió el tipo actual de {code} frente a {currency}, así que esta posición queda fuera del cálculo de concentración. La cantidad neta en la moneda original se sigue mostrando arriba.',
       functionalHidden:
         'Esta es la moneda en la que gastas. El porcentaje de concentración no se incluye en lo que se ha compartido.',
       functionalMost:
