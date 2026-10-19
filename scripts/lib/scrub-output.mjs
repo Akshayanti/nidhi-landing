@@ -170,7 +170,7 @@ function usOnlySuggestion(match) {
 const APPROVED_CTA_HINTS = {
   save: ["save this", "save it", "bookmark"],
   tag: ["tag", "send this to"],
-  share: ["share this", "send this"],
+  share: ["share this", "send this", "send them this"],
   poll: ["poll", "what's your"],
 };
 

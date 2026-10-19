@@ -82,7 +82,8 @@ export function parseKit(content, relPath) {
       closeBlock();
       deck = null;
       const day = h2[1].match(/^Day (\d+)\s*\((\w+)\)/);
-      if (day && day[2] === 'carousel') {
+      // "Day 3 (story)" holds the one tool card a reels only day 3 shows in Stories; parsed like a deck.
+      if (day && (day[2] === 'carousel' || day[2] === 'story')) {
         deck = { day: Number(day[1]), slides: [], caption: '' };
         dayOf(deck.day).deck = deck;
       } else if (day) {
@@ -148,7 +149,9 @@ export function lintKit(kit) {
     if (!kit.sections.brief?.[key]) err('Brief', `missing "${key}"`);
   }
   for (const [key, value] of Object.entries(kit.sections.stories || {})) noDash(`Stories ${key}`, value);
-  if (kit.days.length !== 2) err('Kit', `${kit.days.length} day(s) found, expected 2`);
+  // Day 3 runs only in the reels only version (council, Oct 2026): a reel plus the tool card story, no
+  // carousel. Its "carousel" section holds the one tool slide the story renders from, never a feed post.
+  if (kit.days.length !== 2 && kit.days.length !== 3) err('Kit', `${kit.days.length} day(s) found, expected 2, or 3 with a reels only day 3`);
 
   // Pieces in posting order; consecutive pieces must not share a hashtag except #nidhi.
   let previous = null;
@@ -158,6 +161,9 @@ export function lintKit(kit) {
       if (!day.angle?.[key]) err(`${D} angle`, `missing "${key}"`);
     }
     const sendFormat = Boolean(day.angle?.send_to) || needsSendFormat(kit);
+    const extraDay = day.n === 3;
+    // Written before day 1 publishes, so it sits in the brief: no premise, no day 3.
+    if (extraDay && !kit.sections.brief?.day3) err('Brief', 'a day 3 needs "day3:", one sentence naming the friend, the moment and the numbers');
     if (sendFormat) {
       if (!day.angle?.send_to) err(`${D} angle`, 'missing "send_to:" naming one friend at one moment');
       if (!SEND_WHY.has(day.angle?.send_why)) err(`${D} angle`, `"send_why:" must be one of ${[...SEND_WHY].join(', ')}`);
@@ -167,7 +173,7 @@ export function lintKit(kit) {
     if (!day.reel?.plan) err(`${D} reel`, 'missing "plan:" naming the reel plan JSON');
     else if (!existsSync(join(SOURCE_DIR, dirname(kit.relPath), day.reel.plan))) err(`${D} reel`, `plan file ${day.reel.plan} not found`);
 
-    const pieces = [[`${D} reel`, tagList(day.reel?.hashtags)], [`${D} carousel`, tagList(deckTags(kit, day))]];
+    const pieces = [[`${D} reel`, tagList(day.reel?.hashtags)], ...(extraDay ? [] : [[`${D} carousel`, tagList(deckTags(kit, day))]])];
     for (const [where, tags] of pieces) {
       if (tags.length > 5) err(where, `${tags.length} hashtags, max 5`);
       if (!tags.includes('#nidhi')) err(where, 'hashtags must include #nidhi');
@@ -176,6 +182,14 @@ export function lintKit(kit) {
         if (previous && tag !== '#nidhi' && previous.tags.includes(tag)) err(where, `hashtag ${tag} repeats from ${previous.where}`);
       }
       previous = { where, tags };
+    }
+
+    if (extraDay) {
+      const tools = day.deck?.slides || [];
+      if (tools.length !== 1 || tools[0].layout !== 'tool') err(`${D} story`, 'day 3 holds exactly one "tool" slide, for the story only');
+      if (day.deck?.caption) err(`${D} story`, 'day 3 has no feed carousel, so no caption');
+      for (const slide of tools) if (!slide.fields.alt) err(`${D} tool`, 'missing "alt:" text');
+      continue;
     }
 
     const keywords = deckKeywords(kit, day);
@@ -408,7 +422,7 @@ function runwaySvg(fields, { height = 560 } = {}) {
     const left = start - cost * i;
     const x = i * slot + (slot - barW) / 2;
     const body = left > 0
-      ? `<rect x="${x}" y="${y(left)}" width="${barW}" height="${bottom - y(left)}" rx="6" fill="${i === 0 ? TONES.teal : TONES.ink}" opacity="${1 - i * 0.12}" />`
+      ? `<rect x="${x}" y="${y(left)}" width="${barW}" height="${bottom - y(left)}" rx="6" fill="${i === 0 ? TONES.teal : TONES.ink}" opacity="${1 - i * (0.7 / Math.max(1, slots - 1))}" />`
       : `<rect x="${x + 2}" y="${top + 2}" width="${barW - 4}" height="${bottom - top - 4}" rx="6" fill="none" stroke="#D9D2C3" stroke-width="3" stroke-dasharray="8 8" />`;
     const value = i === 0 ? `<text class="month-tag" x="${x + barW / 2}" y="${y(left) - 14}" text-anchor="middle" fill="${TONES.teal}">€${start.toLocaleString("en")}</text>` : '';
     return `${body}${value}<text class="tick" x="${x + barW / 2}" y="${height - 14}" text-anchor="middle">${i + 1}</text>`;
@@ -510,23 +524,26 @@ function routesHtml(s) {
 // With a detail on every tier the three cards are peers of equal weight (46 cash buckets);
 // without it the first tier is the hero and item: lines list its contents (inc-1).
 function equalBandsHtml(s) {
-  const bands = (s.fields.tier || []).slice(0, 3).map((line, index) => {
+  const tiers = (s.fields.tier || []).slice(0, 4);
+  const bands = tiers.map((line, index) => {
     const [label, cost, tone, detail] = cells(line);
     const colour = TONES[tone] || [TONES.ink, TONES.teal, TONES.warn][index] || TONES.ink;
     return `<div class="band-hook-card equal" style="--band-colour:${colour}">
       <div class="band-hook-head"><div class="band-hook-label">${rich(label)}</div><div class="band-hook-cost">${rich(cost)}</div></div>
-      <div class="band-hook-detail"><i></i><span>${rich(detail)}</span></div>
+      ${detail ? `<div class="band-hook-detail"><i></i><span>${rich(detail)}</span></div>` : ''}
     </div>`;
   }).join('');
   return `<div class="bands-hook">
-    <div class="band-hook-grid equal">${bands}</div>
+    <div class="band-hook-grid equal${tiers.length > 3 ? ' four' : ''}">${bands}</div>
     <h1 data-fit>${rich(s.body.join(' '))}</h1>
+    ${s.fields.premise ? `<p class="premise">${rich(s.fields.premise)}</p>` : ''}
   </div><div class="swipe">SWIPE <span>→</span></div>`;
 }
 
 function bandsHtml(s) {
   const tiers = (s.fields.tier || []).slice(0, 3);
-  if (tiers.length && tiers.every(line => (cells(line)[3] || '').trim())) return equalBandsHtml(s);
+  // Four steps always sit as equal rows (a sequence has no hero band).
+  if ((s.fields.tier || []).length > 3 || (tiers.length && tiers.every(line => (cells(line)[3] || '').trim()))) return equalBandsHtml(s);
   const primaryItems = (s.fields.item || []).slice(0, 3);
   const bands = (s.fields.tier || []).slice(0, 3).map((line, index) => {
     const [label, cost, tone] = cells(line);
@@ -544,12 +561,12 @@ function bandsHtml(s) {
 
 // Two offers side by side, then the one answer they lead to (council, post 48): the question names
 // the moment, the cards show it, and the answer stays on slide 1 because it is what a reader forwards.
-//   offer: label | amount | muted|teal     answer: big figure | small line
+//   offer: label | amount | muted|teal     answer: big figure | small line (optional: the cards can be the answer)
 function offersHtml(s) {
   const [answer, line] = cells(s.fields.answer || '');
   const [, prefix = '', figure = answer] = answer.match(/^(About|Around|Roughly)\s+(.+)$/i) || [];
   return `
-    <div class="offers-hook">
+    <div class="offers-hook${answer ? '' : ' cards-answer'}">
       ${stripShowsIllustrative(s.fields) ? '' : '<div class="hook-disclosure">ILLUSTRATIVE</div>'}
       <h1 data-fit>${rich(s.body.join(' '))}</h1>
       <div class="offers">
@@ -558,8 +575,8 @@ function offersHtml(s) {
           return `<div class="offer ${tone === 'teal' ? 'teal' : 'muted'}"><div class="offer-label">${rich(label)}</div><div class="offer-amount">${rich(amount)}</div></div>`;
         }).join('')}
       </div>
-      <div class="offer-link"></div>
-      <div class="answer">${prefix ? `<div class="answer-prefix">${rich(prefix)}</div>` : ''}<div class="answer-figure">${rich(figure)}</div>${line ? `<div class="answer-line">${rich(line)}</div>` : ''}</div>
+      ${answer ? `<div class="offer-link"></div>
+      <div class="answer">${prefix ? `<div class="answer-prefix">${rich(prefix)}</div>` : ''}<div class="answer-figure${figure.length > 9 ? ' long' : ''}">${rich(figure)}</div>${line ? `<div class="answer-line">${rich(line)}</div>` : ''}</div>` : ''}
       ${s.fields.premise ? `<p class="premise">${rich(s.fields.premise)}</p>` : ''}
     </div>
     <div class="swipe">SWIPE <span>→</span></div>`;
@@ -782,9 +799,14 @@ const CSS = `
   .answer { text-align:center; }
   .answer-prefix { font:700 44px 'Inter',sans-serif; color:var(--accent); margin-bottom:6px; }
   .answer-figure { font:800 176px/1 'Inter',sans-serif; letter-spacing:-7px; color:var(--accent); white-space:nowrap; }
+  .answer-figure.long { font-size:100px; letter-spacing:-3px; }
   .answer-line { font:600 40px/1.2 'Inter',sans-serif; color:var(--ink); margin-top:14px; }
   .offers-hook .premise { margin-top:52px; text-align:center; }
   .offers-hook .hook-disclosure { top:30px; }
+  .cards-answer .offers { margin-top:80px; }
+  .cards-answer .offer { padding:40px 40px 48px; }
+  .cards-answer .offer-amount { font-size:150px; letter-spacing:-6px; margin-top:24px; }
+  .cards-answer .offer-label { font-size:28px; }
   .hook-disclosure { position:absolute; top:30px; left:84px; font:800 22px 'Inter',sans-serif; letter-spacing:4px; color:var(--accent); }
 
   .layout-columns { padding-top:70px; }
@@ -846,10 +868,13 @@ const CSS = `
   .band-hook-card.equal { min-height:0; padding:30px 38px 32px; border-width:4px; }
   .band-hook-head { display:flex; align-items:center; justify-content:space-between; gap:24px; }
   .band-hook-card.equal .band-hook-label { font-size:58px; }
+  .band-hook-grid.equal.four { gap:20px; }
+  .band-hook-grid.equal.four .band-hook-card { padding:26px 36px; }
   .band-hook-card.equal .band-hook-cost { margin-top:0; font-size:29px; padding:11px 19px; white-space:nowrap; }
   .band-hook-detail { margin-top:22px; padding-top:20px; border-top:2px solid var(--rule); display:grid; grid-template-columns:15px 1fr; gap:18px; align-items:center; font:730 34px/1.15 'Inter',sans-serif; color:var(--ink); }
   .band-hook-detail i { width:13px; height:13px; border-radius:50%; background:var(--band-colour); }
   .bands-hook h1 { max-width:920px; margin-top:32px; font-size:74px; line-height:1.02; }
+  .bands-hook .premise { margin-top:22px; }
 
   .layout-sheet { padding:150px 72px 112px; }
   .layout-sheet .content { justify-content:flex-start; gap:0; }
@@ -1053,7 +1078,7 @@ function postingSheet(kit, frames) {
     const reel = day.reel;
     if (reel) {
       lines.push(
-        `DAY ${day.n}: ${day.angle.angle}`,
+        day.n === 3 ? `DAY 3 (reels only version; skip it in the reel plus carousel version): ${day.angle.angle}` : `DAY ${day.n}: ${day.angle.angle}`,
         `  Tool to keep: ${day.angle.tool}`,
         '',
         '  REEL',
@@ -1067,7 +1092,8 @@ function postingSheet(kit, frames) {
     } else {
       lines.push(`POST: ${kit.frontmatter.when || 'standalone feed post'}`, '');
     }
-    lines.push(
+    if (day.n === 3) lines.push('  TOOL CARD: story only, no feed carousel', `    Image: stories frame for day 3`, '', '  STORIES');
+    else lines.push(
       day.deck.slides.length === 1 ? '  IMAGE' : '  CAROUSEL',
       day.deck.slides.length === 1 ? `    Image: day${day.n}/carousel/slide-01.png` : `    Slides: day${day.n}/carousel/slide-01.png to slide-${String(day.deck.slides.length).padStart(2, '0')}.png`,
       `    Caption: day${day.n}/carousel/caption.txt`,
@@ -1088,21 +1114,21 @@ function postingSheet(kit, frames) {
       if (f.sticker) lines.push(`      Sticker: ${f.sticker}`);
       if (f.caption) lines.push(`      Caption field: ${f.caption}`);
     }
-    lines.push('', ...firstHour(Boolean(day.reel)), '');
+    lines.push('', ...firstHour(Boolean(day.reel), day.n < 3), '');
   }
   return lines.join('\n');
 }
 
 // Early signals Instagram reads are rates among real viewers (watch time,
 // sends, saves), so the first hour leans on real people, never own accounts.
-function firstHour(hasReel) {
+function firstHour(hasReel, hasCarousel = true) {
   const first = hasReel ? 'the reel' : 'the post';
   return [
     '  FIRST HOUR',
     `    [ ] Story frame 1 goes up the moment ${first} is live.`,
     `    [ ] Send ${first} to 3 to 5 real people it would help (friends, colleagues, an expat group you are in); ask them to watch it through, and save or send it if it is useful.`,
     '    [ ] Reply to every comment within the hour.',
-    ...(hasReel ? ['    [ ] When the carousel goes up later in the day: same story share and comment replies.'] : []),
+    ...(hasReel && hasCarousel ? ['    [ ] When the carousel goes up later in the day: same story share and comment replies.'] : []),
     '    [ ] No likes, saves or shares from your own other accounts. If any happen, note them here for the metrics log:',
     '        Own-account activity: ',
   ];
@@ -1221,7 +1247,7 @@ async function main() {
           for (const p of await chromeOverlaps(browserPage)) layoutErrors.push(`${kit.relPath} day ${day.n} slide ${slide.number}: ${p}`);
           await browserPage.screenshot({ path });
         }
-        await writeFile(join(deckDir, 'caption.txt'), captionText(kit, day), 'utf8');
+        if (day.n < 3) await writeFile(join(deckDir, 'caption.txt'), captionText(kit, day), 'utf8');
       }
 
       const frames = storyFrames(kit);

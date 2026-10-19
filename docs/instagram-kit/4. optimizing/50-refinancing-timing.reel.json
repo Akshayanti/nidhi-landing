@@ -1,0 +1,138 @@
+{
+  "slug": "refinancing-timing",
+  "postTitle": "Refinancing: When to Refinance and When to Wait",
+  "postLevel": "optimizing",
+  "episode": 8,
+  "seriesTotal": 0,
+  "blogPath": "blog/refinancing-timing",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A refinance pays only after its break even month",
+  "topicChip": "BREAK EVEN",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Blog example: closing costs €4,000, monthly saving €200, break even 4,000 / 200 = month 20. Held 60 months: (60 - 20) x 200 = €8,000 ahead; held 24 months: €800. Ignores rate, tax and term changes and the opportunity cost of the costs. Common guideline from the blog: hold period often 2x the break even or more."
+  },
+  "monthStory": {
+    "mode": "runway",
+    "unit": "EUR",
+    "start": 4000,
+    "cashLabel": "Refinance costs, fees included",
+    "drainLabel": "Left to win back",
+    "monthlyCost": 200,
+    "slots": 24,
+    "card": {
+      "title": "THE BREAK EVEN CHECK",
+      "rows": [
+        {
+          "label": "Costs, fees included",
+          "value": "€4,000",
+          "tone": "ink"
+        },
+        {
+          "label": "Monthly saving",
+          "value": "÷ €200",
+          "tone": "amber"
+        },
+        {
+          "label": "Break even",
+          "value": "Month 20",
+          "tone": "teal"
+        }
+      ],
+      "footnote": "Many people look for keeping the loan about twice that long. Illustrative."
+    },
+    "disclosure": "Illustrative. Ignores rate, tax and term changes."
+  },
+  "hookVariants": [
+    {
+      "id": "when-paid-off",
+      "layout": "month-gap",
+      "narration": "If a refinance saves you two hundred euros a month, when has it actually paid off? It is one division.",
+      "onscreenLines": [
+        "Your refinance saves €200 a month",
+        "When has it paid off?",
+        ""
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "paid"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Say it costs four thousand euros, fees included.",
+      "onscreenText": "€4,000 of costs",
+      "subtext": "Fees and any repayment charges",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "cash"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "It saves two hundred a month.",
+      "onscreenText": "€200 a month saved",
+      "subtext": "The lower payment",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "cost"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "Four thousand divided by two hundred: month twenty, before it is ahead.",
+      "onscreenText": "Month 20",
+      "subtext": "€4,000 ÷ €200",
+      "emphasis": [
+        "twenty"
+      ],
+      "anchor": {
+        "type": "months",
+        "stage": "drain"
+      }
+    },
+    {
+      "id": "b7",
+      "kind": "definition",
+      "narration": "Many people look for keeping the loan about twice that long, because plans to stay are often hopeful.",
+      "onscreenText": "The break even check",
+      "subtext": "Costs ÷ monthly saving",
+      "emphasis": [],
+      "anchor": {
+        "type": "months",
+        "stage": "rule"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone refinancing before a move? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they refinance",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "If a refinance saves you €200 a month, when has it actually paid off?\n\nWith €4,000 of costs, the answer is month 20. Keep it 5 years and it is about €8,000 ahead. Sell at 2 years and it is €800.\n\n→ Know someone refinancing before a move? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Ignores rate, tax and term changes; costs and early repayment charges vary by country.",
+    "tiktok": "A refinance saves €200 a month. When has it paid off? Month 20 on €4,000 of costs. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "refinancing",
+    "mortgagerates",
+    "homeloan"
+  ]
+}

@@ -245,6 +245,8 @@ export type MonthStory =
       unit: string;
       start: number;
       cashLabel?: string;
+      /** Label over the falling amount in the "drain" stage; a break even story counts costs left to win back. */
+      drainLabel?: string;
       monthlyCost: number;
       budgetCost?: number;
       altCost?: number;
@@ -525,6 +527,8 @@ export interface ReelPlan {
     callout?: { display: string; from: string; to: string; label?: string };
     /** Backward compatible alias used by the first comparison plan. */
     ratio?: { display: string; from: string; to: string; label?: string };
+    /** Segmented hook: show the second bar's total instead of "?" (when the answer is the hook). */
+    revealInHook?: boolean;
     disclosure: string;
   };
   /** Optional persistent month visual for calendar bars or runway depletion. */

@@ -442,7 +442,9 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.barStory;
   if (!card || !story) return null;
-  const hasFourRows = card.rows.length >= 4;
+  // A compact card is 410 px tall at two rows and 560 at three or four, so anything past two rows
+  // moves up and drops the disclosure line to keep clear of the CTA headline.
+  const hasFourRows = card.rows.length > 2;
   return (
     <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
       <div style={{ position: "absolute", left: 145, top: hasFourRows ? 180 : 235, opacity: enter, transform: `translateY(${(1 - enter) * 20}px) rotate(-1deg)` }} data-reel-reveal><ToolCard card={card} compact /></div>
@@ -607,10 +609,11 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
         <div>{hook.onscreenLines[0]}</div>
         <div style={{ color: BRAND.amber }}>{hook.onscreenLines[1]}</div>
       </div>
-      {[{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: "?" }].map(({ bar, x, height, color, value }, index) => bar && (
+      {[{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
         <div key={bar.id} style={{ position: "absolute", left: x, top: baseline - height, width: barWidth, height }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", background: color }} />
-          <div style={{ position: "absolute", left: 18, right: 18, top: 28, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 47 : 55, fontWeight: 850, color: BRAND.paper }}>{value}</div>
+          {/* A bar too short to hold its value carries it just above, in the bar's colour. */}
+          <div style={{ position: "absolute", left: -20, right: -20, top: height < 110 ? -78 : 28, textAlign: "center", fontFamily: TYPE.ui, fontSize: (value ?? "").length > 6 ? (cover ? 40 : 46) : cover ? 47 : 55, fontWeight: 850, color: height < 110 ? color : BRAND.paper }}>{value}</div>
           <div style={{ position: "absolute", left: -10, right: -10, top: height + 20, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 27 : 31, lineHeight: 1.12, fontWeight: 770, color: index === 0 ? BRAND.inkSoft : BRAND.amber }}>{bar.label}</div>
         </div>
       ))}

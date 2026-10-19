@@ -182,7 +182,8 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
         const color = toneColor(series.tone);
         const x = xAt(pos, count);
         const y = yAt(valueAt(series.values, pos), story.ceiling);
-        const dir = headLabelOffset(rank);
+        // A label below its head would sit on the year axis near the floor, so flip it above there.
+        const dir = headLabelOffset(rank) > 0 && y + 100 > PLOT.bottom ? -1 : headLabelOffset(rank);
         return (
           <g key={series.id}>
             <circle cx={x} cy={y} r={14} fill={BRAND.paper} stroke={color} strokeWidth={7} />

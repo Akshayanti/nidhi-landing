@@ -42,7 +42,7 @@ Eva's offer is €50,000. Say one negotiation makes it €55,000, and both caree
 
 → Send this to them before they sign
 
-The blog covers the four step negotiation script → link in bio
+The full post covers the four step negotiation script.
 
 Illustrative, before tax. Asking does not always move an offer.
 
@@ -128,7 +128,7 @@ They pay in different ways. A move reprices you to today's market. Staying build
 
 → Send this to them before they answer
 
-The blog covers why career capital compounds → link in bio
+The full post covers why career capital compounds.
 
 Illustrative. Rules vary by employer, field and country.
 
