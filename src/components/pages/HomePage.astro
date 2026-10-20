@@ -886,7 +886,7 @@ const faqSchema = {
 
   /* Devanagari reads smaller than Latin at the same size, and the uppercase
      and tracking that make this label a label do nothing for it. */
-  :global(html[lang='hi']) .journey-label {
+  :global(html:is([lang='hi'], [lang='mr'])) .journey-label {
     font-size: 0.8rem;
     letter-spacing: normal;
   }
