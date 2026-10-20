@@ -64,7 +64,7 @@ from pathlib import Path
 from typing import Iterable
 
 try:
-    from bs4 import BeautifulSoup  # type: ignore
+    from bs4 import BeautifulSoup, NavigableString  # type: ignore
     from jinja2 import Environment, FileSystemLoader, select_autoescape
 except ImportError as err:
     print(f"[send_newsletter] Missing dependency: {err}. "
@@ -351,6 +351,7 @@ def extract_post(
     if content_node is None:
         raise RuntimeError(f"No #post-content / .prose found in {candidate}")
     absolutize_urls(content_node, site_url, utm_query=utm_query)
+    flatten_details(content_node, soup)
     style_inline(content_node)
     # Run figure replacement AFTER style_inline so the replacement table /
     # img markup we emit isn't mutated by the brand-style passes (e.g. the
@@ -364,12 +365,15 @@ def extract_post(
     tldr_node = soup.select_one(".post-tldr p")
     tldr = tldr_node.get_text(strip=True) if tldr_node else ""
 
+    # The page shows the main path ("5 min read"); the email opens every
+    # expander, so it shows the whole lesson's time from data-total-minutes.
     reading_time = None
     rt_node = soup.select_one(".post-reading-time")
     if rt_node:
-        m = re.search(r"(\d+)", rt_node.get_text())
+        total = rt_node.get("data-total-minutes", "")
+        m = re.fullmatch(r"\d+", total) or re.search(r"(\d+)", rt_node.get_text())
         if m:
-            reading_time = int(m.group(1))
+            reading_time = int(m.group(0))
 
     level_node = soup.select_one(".level-badge, .post-meta .level")
     level = level_node.get_text(strip=True) if level_node else ""
@@ -380,9 +384,13 @@ def extract_post(
     # First paragraph: used as the hook in the teaser-template fallback.
     # Skip over any lingering figure/aside/hr/heading — find the first
     # meaningful <p>. Strip inline styles in the teaser context since the
-    # teaser template restyles from scratch.
+    # teaser template restyles from scratch. Paragraphs from an opened-up
+    # expander are skipped: a quick-check answer or an evidence note makes
+    # no sense as the opening hook.
     first_p = None
     for p in content_node.find_all("p"):
+        if p.find_parent("div", class_=FLATTENED_DETAILS_CLASS) is not None:
+            continue
         txt = p.get_text(strip=True)
         if len(txt) >= 40:       # skip tiny captions/leftovers
             first_p = p
@@ -642,6 +650,73 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
         new_table = fragment.find("table")
         if new_table is not None:
             fig.replace_with(new_table)
+
+
+# Lessons fold their deep layer (`details.lesson-depth`) and their quick
+# checks (`details.quick-check`) into <details> expanders. Email clients
+# disagree on <details>: Gmail drops the element and runs the contents on
+# with no label, Apple Mail collapses it behind a control readers may miss.
+# So every expander is opened up before sending: a <div> that keeps the
+# class, with the summary as a bold lead line and the contents below it.
+# Same email-safe shapes as the TL;DR box in post.html.j2: a tinted card
+# for a quick check, a quiet left rule for the deep layer. Bottom padding
+# is 0 because the last paragraph inside already carries a 14px margin.
+_FLATTENED_DETAILS_STYLES: dict[str, str] = {
+    "quick-check": "background-color:#e6f2f0;border-radius:6px;padding:12px 16px 0;margin:0 0 14px;",
+}
+_FLATTENED_DETAILS_DEFAULT_STYLE = "border-left:2px solid #cbd5e1;padding:2px 0 0 14px;margin:0 0 14px;"
+# Appended after the brand <p> style by style_inline, so it wins: keeps the
+# lead line close to the text it introduces.
+_FLATTENED_LEAD_STYLE = "margin:0 0 6px;"
+FLATTENED_DETAILS_CLASS = "email-expander"
+
+
+def flatten_details(node, soup) -> None:
+    """
+    Replace every <details> in `node` with an always-open <div>. Innermost
+    first, so an expander nested in another one is flattened too. Runs
+    before style_inline, so the lead line's <p>/<strong> pick up the brand
+    styles like any other paragraph.
+    """
+    for details in reversed(node.find_all("details")):
+        classes = details.get("class") or []
+        style = next(
+            (_FLATTENED_DETAILS_STYLES[c] for c in classes if c in _FLATTENED_DETAILS_STYLES),
+            _FLATTENED_DETAILS_DEFAULT_STYLE,
+        )
+        wrapper = soup.new_tag("div")
+        wrapper["class"] = [*classes, FLATTENED_DETAILS_CLASS]
+        wrapper["style"] = style
+        summary = details.find("summary", recursive=False)
+        if summary is not None:
+            summary.extract()
+            wrapper.append(_summary_lead(summary, soup))
+        for child in list(details.contents):
+            wrapper.append(child.extract())
+        details.replace_with(wrapper)
+        # Line breaks around the block, so the plaintext version keeps it a
+        # paragraph of its own even when the HTML has no whitespace there.
+        wrapper.insert_before("\n")
+        wrapper.insert_after("\n")
+    # A <summary> outside any <details> is malformed, but keep its text.
+    for summary in node.find_all("summary"):
+        summary.replace_with(_summary_lead(summary, soup))
+
+
+def _summary_lead(summary, soup):
+    """The summary's own children (links, emphasis) inside <p><strong>."""
+    lead = soup.new_tag("p")
+    lead["style"] = _FLATTENED_LEAD_STYLE
+    strong = soup.new_tag("strong")
+    for child in list(summary.contents):
+        strong.append(child.extract())
+    # Trim whitespace at the edges so the plaintext line starts with words.
+    if strong.contents and isinstance(strong.contents[0], NavigableString):
+        strong.contents[0].replace_with(strong.contents[0].lstrip())
+    if strong.contents and isinstance(strong.contents[-1], NavigableString):
+        strong.contents[-1].replace_with(strong.contents[-1].rstrip())
+    lead.append(strong)
+    return lead
 
 
 def style_inline(node) -> None:

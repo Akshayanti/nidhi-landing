@@ -1,7 +1,7 @@
 ---
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
-import { getReadingTime } from '../../utils/readingTime';
+import { getLayeredReadingTime } from '../../utils/readingTime';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -131,7 +131,7 @@ const relatedTool = toolUrl === MONTE_CARLO_URL && !(await isMonteCarloReleased(
   ? undefined
   : post.data.relatedTool;
 
-const readingTime = getReadingTime(post.body || '');
+const readingTime = getLayeredReadingTime(post.body || '');
 ---
 
 <BlogPost

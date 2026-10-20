@@ -5,6 +5,7 @@ import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
+import type { LayeredReadingTime } from '../utils/readingTime';
 import { DEFAULT_LOCALE, dict } from '../i18n';
 
 interface Props {
@@ -16,7 +17,8 @@ interface Props {
   updatedDate?: Date;
   level: string;
   tags: string[];
-  readingTime?: number;
+  /** Main path, optional detail and their sum, from getLayeredReadingTime. */
+  readingTime?: LayeredReadingTime;
   regulatoryNote?: string;
   referentialReading?: Array<{
     title: string;
@@ -44,7 +46,7 @@ interface Props {
   relatedPosts?: Array<{ slug: string; title: string; description: string }>;
   /** Paired free tool from the post's `relatedTool` frontmatter. */
   relatedTool?: { url: string; label: string; cta: string; idea?: string };
-  /** "What you now understand" statements from the post's `takeaways`. */
+  /** Topic phrases from the post's `takeaways`, listed under the TL;DR. */
   takeaways?: string[];
   /** Rule areas the lesson depends on; shows "Where to check locally". */
   localRules?: LocalRuleArea[];
@@ -178,7 +180,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             </a>
           )}
           <span class="post-byline">By <a href="/about/" rel="author">nidhi</a></span>
-          {readingTime && <span class="post-reading-time">{readingTime} min read</span>}
+          {readingTime && (
+            <span class="post-reading-time" data-total-minutes={readingTime.total}>
+              {readingTime.main} min read
+              {readingTime.depth > 0 && <span class="post-reading-depth"> · +{readingTime.depth} min of optional detail</span>}
+            </span>
+          )}
           <time datetime={pubDate.toISOString()} class="post-date">{dateStr}</time>
           {showUpdated && updatedDate && (
             <span class="post-updated">
@@ -191,6 +198,19 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           <span class="tldr-label">TL;DR</span>
           <p>{tldr}</p>
         </div>
+        {/*
+          What the lesson covers, before the reader commits to it. Plain text
+          under a small label, so it reads as a preview and not as a box to
+          tick. Outside #post-content, so the TOC and the newsletter skip it.
+        */}
+        {takeaways.length > 0 && (
+          <section class="post-covers" aria-labelledby="post-covers-h">
+            <h2 id="post-covers-h" class="post-covers-title">In this lesson</h2>
+            <ul class="post-covers-list">
+              {takeaways.map((t) => <li>{t}</li>)}
+            </ul>
+          </section>
+        )}
         {tags.length > 0 && (
           <div class="post-tags">
             {tags.map((tag) => (
@@ -250,15 +270,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
     <div class="post-bottom-wrapper">
       <div class="post-bottom-content">
-        {takeaways.length > 0 && (
-          <section class="post-recap" aria-labelledby="post-recap-h">
-            <h2 id="post-recap-h" class="post-recap-title">What you now understand</h2>
-            <ul class="post-recap-list">
-              {takeaways.map((t) => <li>{t}</li>)}
-            </ul>
-          </section>
-        )}
-
         <LocalRules areas={localRules} />
 
         {/*
@@ -389,7 +400,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     var tocList = document.getElementById('toc-list');
     if (!content || !tocList) return;
 
-    var headings = content.querySelectorAll('h2, h3');
+    // A heading inside an expander is hidden until opened, so it stays out
+    // of the contents list and the scroll tracking.
+    var headings = Array.prototype.filter.call(
+      content.querySelectorAll('h2, h3'),
+      function(h) { return !h.closest('details'); }
+    );
     if (headings.length === 0) return;
 
     function slugify(text) {
@@ -428,6 +444,22 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
 
     headings.forEach(function(h) { observer.observe(h); });
+  })();
+
+  // A printed lesson shows every expander open; after printing, each one
+  // goes back to how the reader left it.
+  (function() {
+    var closed = [];
+    window.addEventListener('beforeprint', function() {
+      closed = Array.prototype.filter.call(
+        document.querySelectorAll('#post-content details:not([open])'),
+        function(d) { d.open = true; return true; }
+      );
+    });
+    window.addEventListener('afterprint', function() {
+      closed.forEach(function(d) { d.open = false; });
+      closed = [];
+    });
   })();
 
   // Auto-mark this post as read
@@ -569,6 +601,50 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     color: var(--color-text-secondary);
     line-height: 1.5;
     margin: 0;
+  }
+
+  /* "In this lesson": a preview, not a card. The label matches the TL;DR
+     label; the topics are plain body-size lines with a small teal dot. */
+  .post-covers {
+    margin: 0 0 var(--space-5);
+    padding: 0 var(--space-5);
+  }
+
+  .post-covers-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-2);
+  }
+
+  .post-covers-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .post-covers-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .post-covers-list li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.6em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-teal);
   }
 
   .post-tags {
@@ -731,69 +807,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-radius: var(--radius-md);
   }
 
-  /* Bookends the TL;DR at the top of the post: the same tinted surface,
-     with a teal accent so it reads as the lesson's close, not an extra. */
-  .post-recap {
-    margin-top: var(--space-10);
-    padding: var(--space-5) var(--space-6) var(--space-6);
-    background: color-mix(in srgb, var(--color-teal) 7%, var(--color-bg-white));
-    /* A callout: a tint and an accent bar, no box edge that reads as a button. */
-    border-left: 3px solid var(--color-teal);
-    border-radius: var(--radius-md);
-  }
-
-  .post-recap-title {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-deep-blue);
-    margin: 0 0 var(--space-4);
-  }
-
-  .post-recap-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-3);
-  }
-
-  .post-recap-list li {
-    position: relative;
-    padding-left: 2rem;
-    font-size: 0.98rem;
-    line-height: 1.5;
-    color: var(--color-text-secondary);
-  }
-
-  /* A filled teal disc with a drawn check, so it renders the same in
-     every font and theme. */
-  .post-recap-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.1em;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 50%;
-    background: var(--color-teal);
-  }
-
-  .post-recap-list li::after {
-    content: '';
-    position: absolute;
-    left: 0.45rem;
-    top: 0.32em;
-    width: 0.3rem;
-    height: 0.6rem;
-    border: solid var(--color-bg-white);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-
-  .post-recap + .post-tool { margin-top: var(--space-4); }
 
   .post-tool-title {
     font-size: 1.1rem;

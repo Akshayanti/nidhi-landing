@@ -257,6 +257,18 @@ jobs:
       - name: Run tests
         run: npm test
 
+      # The newsletter script is Python, so npm test does not reach it. Same
+      # dependency pins as the newsletter.yml send step.
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Run newsletter tests
+        run: |
+          pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
+          python -m unittest scripts/test_send_newsletter.py
+
   # ---------------------------------------------------------------------------
   # Vulnerability audit. Lets a freshly-introduced known-vulnerable
   # transitive dep block the merge.
