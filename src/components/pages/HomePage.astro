@@ -376,7 +376,7 @@ const faqSchema = {
             const key = p.tool.href.split('/').filter(Boolean).pop();
             return (
               <li>
-                <a href={href(p.tool.href)} class="an-card" data-attr={`home-cta-${key}`}>
+                <a href={href(p.tool.href)} class="an-card link-card" data-attr={`home-cta-${key}`}>
                   <span class="an-preview" aria-hidden="true">
                     {p.tool.preview === 'donut' && (
                       <svg viewBox="0 0 80 48"><g transform="translate(24,24)"><path d="M 0 -18 A 18 18 0 1 1 -12.3 13.1 L 0 0 Z" fill="var(--chart-eur)" /><path d="M -12.3 13.1 A 18 18 0 0 1 -10.6 -14.6 L 0 0 Z" fill="var(--chart-usd)" /><path d="M -10.6 -14.6 A 18 18 0 0 1 0 -18 L 0 0 Z" fill="var(--chart-inr)" /><circle r="9" fill="var(--color-bg-white)" /></g><rect x="50" y="14" width="22" height="5" rx="2" fill="var(--chart-eur)" /><rect x="50" y="23" width="16" height="5" rx="2" fill="var(--chart-usd)" /><rect x="50" y="32" width="9" height="5" rx="2" fill="var(--chart-inr)" /></svg>
@@ -424,7 +424,7 @@ const faqSchema = {
             <HeroChart id="hero-starter" class="starter-chart--wide" locale={locale} currency={currency} {...starterChart} />
             <HeroChart id="hero-starter-sm" class="starter-chart--narrow" width={300} height={160} locale={locale} currency={currency} {...starterChart} />
             <details class="fold" data-phone-fold>
-              <summary class="fold-label">{home.example.fold}</summary>
+              <summary class="fold-label disclosure">{home.example.fold}</summary>
               <p class="hc-foot">{starterFootnote}</p>
             </details>
           </div>
@@ -446,7 +446,7 @@ const faqSchema = {
       <div class="faq-list">
         {faqs.map((f, i) => (
           <details class="faq-item" data-attr={`home-faq-${i + 1}`}>
-            <summary><h3>{f.q}</h3></summary>
+            <summary class="disclosure"><h3>{f.q}</h3></summary>
             <p>{f.a}</p>
           </details>
         ))}
@@ -680,7 +680,7 @@ const faqSchema = {
 
   .lp-eyebrow {
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -756,15 +756,20 @@ const faqSchema = {
     border: 1px solid var(--color-cta-bg);
   }
 
-  .lp-btn--primary:hover { background: var(--color-cta-bg-hover); }
+  /* The hover fill is darker; in dark mode it sits closer to the page, so the
+     teal edge keeps the button's outline at 3:1 or more. */
+  .lp-btn--primary:hover,
+  .lp-btn--primary:active { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
 
+  /* An outline, not a white box: a faint-edged white box read as a text field. */
   .lp-btn--secondary {
-    background: var(--color-bg-white);
+    background: transparent;
     color: var(--color-deep-blue);
-    border: 1px solid var(--color-border);
+    border: 1.5px solid var(--color-deep-blue);
   }
 
-  .lp-btn--secondary:hover { border-color: var(--color-teal); }
+  .lp-btn--secondary:hover,
+  .lp-btn--secondary:active { background: var(--color-bg-subtle); }
 
   .lp-btn:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -805,25 +810,11 @@ const faqSchema = {
   }
 
   @media (max-width: 640px) {
-    .fold > summary { position: relative; padding-right: 32px; }
-
-    .fold > summary::after {
-      content: '+' / '';
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: var(--font-heading);
-      font-size: 1.3rem;
-      line-height: 1;
-      color: var(--color-teal);
-    }
-
-    .fold[open] > summary::after { content: '\2212' / ''; }
-
+    /* The chevron comes from .disclosure. */
     .fold-label {
       display: block;
-      padding: 10px 32px 10px 0;
+      min-height: 44px;
+      padding: 10px 36px 10px 0;
       font-family: var(--font-heading);
       font-size: 0.9rem;
       font-weight: 600;
@@ -873,13 +864,12 @@ const faqSchema = {
   .hero-trio { font-size: clamp(1.1rem, 0.8vw + 0.9rem, 1.35rem); color: var(--color-text-primary); }
   .hero-trio span { white-space: nowrap; }
 
+  /* Drawn on the page like a printed figure, not raised like a card: nothing
+     in it can be tapped. */
   .journey {
     margin-top: 40px;
-    padding: 22px 24px 18px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 18px;
-    background: var(--color-bg-white);
-    box-shadow: 0 12px 40px color-mix(in srgb, var(--color-deep-blue) 10%, transparent);
+    padding: 22px 0 18px;
+    border-block: 1px solid var(--color-border);
   }
 
   @media (min-width: 960px) { .journey { margin-top: 0; } }
@@ -887,14 +877,14 @@ const faqSchema = {
   /* Devanagari reads smaller than Latin at the same size, and the uppercase
      and tracking that make this label a label do nothing for it. */
   :global(html:is([lang='hi'], [lang='mr'])) .journey-label {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     letter-spacing: normal;
   }
 
   .journey-label {
     margin: 0 0 6px;
     font-family: var(--font-heading);
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -928,7 +918,7 @@ const faqSchema = {
 
   .journey-step {
     font-family: var(--font-heading);
-    font-size: 0.78rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: var(--color-text-secondary);
   }
@@ -942,7 +932,7 @@ const faqSchema = {
     font-variant-numeric: tabular-nums;
   }
 
-  .journey-small { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.4; }
+  .journey-small { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.4; }
 
   /* The little chart sits at the right of the plan step's big line, so that
      line keeps clear of it rather than running underneath. */
@@ -988,18 +978,17 @@ const faqSchema = {
   .starter {
     /* Contains the absolutely positioned screen-reader text, which would otherwise widen the page. */
     position: relative;
-    padding: 20px 22px;
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border-light);
-    border-radius: 16px;
+    padding: 20px 0;
+    /* Flat, like a printed figure: the tool cards beside it are the only raised,
+       tappable surfaces in the section. */
+    border-block: 1px solid var(--color-border);
     overflow: hidden;
-    box-shadow: 0 8px 32px color-mix(in srgb, var(--color-deep-blue) 8%, transparent);
   }
 
   .starter-label {
     margin: 0 0 10px;
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1025,7 +1014,7 @@ const faqSchema = {
      note on the number above it rather than as another claim. */
   .starter-currency {
     margin: 0 0 14px;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     line-height: 1.5;
     color: var(--color-text-muted);
   }
@@ -1079,7 +1068,7 @@ const faqSchema = {
     background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
     color: var(--start-level);
     font-family: var(--font-heading);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: 700;
   }
 
@@ -1092,7 +1081,7 @@ const faqSchema = {
 
   .route-meta {
     grid-column: 2;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
   }
 
@@ -1171,18 +1160,21 @@ const faqSchema = {
   }
 
 
-  .compare-note { margin: 4px 0 12px; font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.4; }
+  .compare-note { margin: 4px 0 12px; font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.4; }
 
-  .compare-rows { margin: 0; display: grid; gap: 6px; }
-  .compare-rows div { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 8px; }
-  .compare-rows dt { font-size: 0.8rem; color: var(--color-text-secondary); }
+  /* The label column fits its longest word (Czech "Vlastní", Marathi
+     "मालमत्ता") rather than a fixed 44px, at any text size; each row shares
+     the column through subgrid, so the bars still line up. */
+  .compare-rows { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 8px; }
+  .compare-rows div { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; }
+  .compare-rows dt { font-size: 0.8125rem; color: var(--color-text-secondary); }
   .compare-rows dd {
     margin: 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 8px;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
     color: var(--color-text-primary);
   }
@@ -1200,10 +1192,20 @@ const faqSchema = {
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
     color: var(--color-text-primary);
+    /* The sign stays with its number (Marathi wrapped "−" onto a line of its own). */
+    white-space: nowrap;
   }
 
   .compare-net.is-negative { color: var(--color-danger); }
-  .compare-net span { display: block; font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); }
+
+  /* Side by side, the two totals (Czech "−105 000 Kč") do not fit a narrow
+     phone. Below 22em (352px at the default text size) the two people stack.
+     The breakpoint is in em on purpose, so it also stacks when a reader's
+     larger text size makes the same screen hold fewer characters. */
+  @media (max-width: 22em) {
+    .compare-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  .compare-net span { white-space: normal; display: block; font-size: 0.8125rem; font-weight: 600; color: var(--color-text-secondary); }
 
   .compare-caption {
     margin-top: 18px;
@@ -1228,13 +1230,12 @@ const faqSchema = {
     grid-template-columns: 80px minmax(0, 1fr);
     column-gap: 16px;
     row-gap: 2px;
-    padding: 16px 18px;
-    border: 1px solid var(--color-border);
+    padding: 16px 40px 16px 18px;
+    border: 1px solid var(--color-link-edge);
     border-radius: 12px;
     background: var(--color-bg-white);
     color: var(--color-text-primary);
     text-decoration: none;
-    box-shadow: var(--shadow-sm);
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
@@ -1265,8 +1266,6 @@ const faqSchema = {
     font-size: 1.05rem;
     color: var(--color-deep-blue);
   }
-
-  .an-title::after { content: ' \2192' / ''; }
 
   .an-desc {
     color: var(--color-text-secondary);
@@ -1321,27 +1320,13 @@ const faqSchema = {
     border-bottom: 1px solid var(--color-border);
   }
 
+  /* The chevron comes from .disclosure. */
   .faq-item summary {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding: 16px 4px;
-    cursor: pointer;
-    list-style: none;
+    min-height: 44px;
+    padding: 16px 40px 16px 4px;
   }
-
-  .faq-item summary::-webkit-details-marker { display: none; }
-
-  .faq-item summary::after {
-    content: '+';
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    color: var(--color-teal);
-    flex-shrink: 0;
-  }
-
-  .faq-item[open] summary::after { content: '\2212'; }
 
   .faq-item summary:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -1375,17 +1360,18 @@ const faqSchema = {
     .lp-section { padding: 44px 16px; }
     #hero { padding-top: 28px; }
     .section-head { margin-bottom: 24px; }
-    .starter { box-shadow: none; padding: 16px; }
+    .starter { padding: 16px 0; }
     .starter :global(.starter-chart--narrow) { margin-top: 6px; }
     .hero-actions .lp-btn { flex: 1 1 auto; }
-    .journey { margin-top: 28px; padding: 16px 18px 10px; box-shadow: none; }
+    .journey { margin-top: 28px; padding: 16px 0 10px; }
     .journey-list li { padding: 10px 0 10px 18px; }
     .journey-list li::before { top: 14px; }
     .journey-big { font-size: 1.2rem; }
     .journey-spark { top: 32px; width: 72px; height: 24px; }
     .compare-grid { gap: 16px; }
     .compare-note { display: none; }
-    .compare-rows div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .compare-rows { grid-template-columns: minmax(0, 1fr); }
+    .compare-rows div { gap: 2px; }
 
     /* Routes: the start link drops under the title, so long titles keep room. */
     .route {
@@ -1394,7 +1380,7 @@ const faqSchema = {
       align-items: start;
       padding: 14px 2px;
     }
-    .route-badge { grid-row: 1; width: 28px; height: 28px; font-size: 0.78rem; }
+    .route-badge { grid-row: 1; width: 28px; height: 28px; font-size: 0.8125rem; }
     .route-title { font-size: 1rem; }
     .route-go { grid-column: 2; grid-row: auto; max-width: none; text-align: left; margin-top: 4px; }
 
@@ -1406,7 +1392,7 @@ const faqSchema = {
       grid-template-columns: 48px minmax(0, 1fr);
       column-gap: 12px;
       align-items: center;
-      padding: 12px 14px;
+      padding: 12px 40px 12px 14px;
       box-shadow: none;
     }
     .an-card:hover { box-shadow: none; }

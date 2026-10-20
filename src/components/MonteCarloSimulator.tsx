@@ -419,7 +419,7 @@ export default function MonteCarloSimulator({
         <div className="mcs-settingsRow">
           <button
             type="button"
-            className="mcs-settingsToggle"
+            className="mcs-settingsToggle disclosure"
             aria-expanded={settingsOpen || errors.feePct}
             aria-controls={ids.settings}
             onClick={() => setSettingsOpen((o) => !o)}
@@ -697,7 +697,7 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
       {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
 
       {result.years > 0 && <details className="mcs-tableWrap" onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) track('free_monte_carlo_table_opened'); }}>
-        <summary className="mcs-tableSummary">{strings.results.tableSummary}</summary>
+        <summary className="mcs-tableSummary disclosure">{strings.results.tableSummary}</summary>
         <div className="mcs-tableScroll">
           <table className="mcs-table" aria-describedby={tableId}>
             <caption id={tableId}>{strings.results.tableCaption}</caption>

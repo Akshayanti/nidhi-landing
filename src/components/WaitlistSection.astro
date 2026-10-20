@@ -368,7 +368,7 @@ const inputId = `${idPrefix}-email`;
     padding: var(--space-3) var(--space-5);
     background: var(--color-cta-bg);
     color: var(--color-cta-fg);
-    border: none;
+    border: 1px solid var(--color-cta-bg);
     border-radius: var(--radius-md);
     font-weight: 600;
     font-size: 0.95rem;
@@ -377,12 +377,12 @@ const inputId = `${idPrefix}-email`;
     white-space: nowrap;
   }
 
-  .waitlist-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); }
+  .waitlist-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
   .waitlist-button:active:not(:disabled) { transform: translateY(1px); }
   .waitlist-button:disabled { opacity: 0.6; cursor: wait; }
   /* On the blue card a teal button nearly vanishes on a dim screen; white
      with the card's navy as text stands apart in both themes. */
-  .waitlist--default .waitlist-button { background: #fff; color: var(--color-callout-bg); }
+  .waitlist--default .waitlist-button { background: #fff; color: var(--color-callout-bg); border-color: #fff; }
   .waitlist--default .waitlist-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); }
   .waitlist--default .waitlist-button:focus-visible { outline-color: #fff; }
 
@@ -416,7 +416,7 @@ const inputId = `${idPrefix}-email`;
   .waitlist--default .waitlist-confirm-actions { justify-content: center; }
 
   .waitlist-status {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     margin: var(--space-2) 0 0;
     min-height: 1.2em;
     color: rgba(255, 255, 255, 0.85);
@@ -427,7 +427,7 @@ const inputId = `${idPrefix}-email`;
   .waitlist-status--idle { color: rgba(255, 255, 255, 0.7); }
 
   .waitlist-privacy {
-    font-size: 0.78rem;
+    font-size: 0.8125rem;
     color: rgba(255, 255, 255, 0.65);
     margin: var(--space-3) 0 0;
   }
@@ -482,7 +482,7 @@ const inputId = `${idPrefix}-email`;
     border: 1px solid var(--warning-light-border);
     border-radius: var(--radius-sm);
     color: var(--warning-light-text);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     line-height: 1.4;
     text-align: left;
   }
@@ -497,7 +497,7 @@ const inputId = `${idPrefix}-email`;
   @media (max-width: 480px) {
     .waitlist-box { padding: var(--space-4); }
     .waitlist-title { font-size: 1.05rem; }
-    .waitlist-text { font-size: 0.85rem; }
+    .waitlist-text { font-size: 0.875rem; }
     .waitlist-success-title { font-size: 1.15rem; }
   }
 

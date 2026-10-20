@@ -105,7 +105,7 @@ const itemListSchema = {
         <h1>{label}</h1>
         <p class="level-page-desc">{meta.description}</p>
         <details class="level-page-covered">
-          <summary data-attr={`level-page-covered-${level}`}>{levelStrings.coveredSummary}</summary>
+          <summary class="disclosure" data-attr={`level-page-covered-${level}`}>{levelStrings.coveredSummary}</summary>
           <p>{meta.covered}{strings.fullStop}</p>
         </details>
         <p class="level-page-scope">
@@ -176,7 +176,7 @@ const itemListSchema = {
   .level-page-eyebrow {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -221,10 +221,16 @@ const itemListSchema = {
     color: var(--color-text-muted);
   }
 
+  /* Underlined, and tall enough to tap (about 25px): a link set in a sentence
+     shows itself by its underline, not by colour alone. */
   .level-page-scope a {
+    display: inline-block;
+    padding-block: 4px;
     color: var(--color-deep-blue);
     font-weight: 600;
     white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .level-page-empty {

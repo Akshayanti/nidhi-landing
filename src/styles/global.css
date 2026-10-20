@@ -145,6 +145,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --neutral-surface-dark:     #1E1E1E;  /* dark mode card / bg-white */
   --neutral-surface-2-dark:   #2A2A2A;  /* dark mode code bg + light borders */
   --neutral-border-dark:      #333333;  /* dark mode default border */
+  --neutral-control-edge:     #858585;  /* light: a control's edge, 3.5:1 or more on white and off-white */
+  --neutral-control-edge-dark: #7A7A7A; /* dark: a control's edge, 3.3:1 or more on every dark surface */
 
   /* Code-block neutrals (used in <pre> blocks; not page surfaces). */
   --neutral-pre-bg-light:     #1e293b;  /* slate-800 */
@@ -166,8 +168,11 @@ html:is([lang="hi"], [lang="mr"]) {
   /* CTA backgrounds: solid teal-family fills that must hold white text. */
   --semantic-cta-bg-light:        #00796B;
   --semantic-cta-bg-hover-light:  var(--palette-teal);
-  --semantic-cta-bg-dark:         #00695C;
-  --semantic-cta-bg-hover-dark:   #00897B;
+  /* Dark: the fill stands 3.4:1 or more off the dark page and card, with white
+     text at 4.86:1; hover goes darker (white text 6.61:1), as the old lighter
+     hover failed white text. */
+  --semantic-cta-bg-dark:         #00806F;
+  --semantic-cta-bg-hover-dark:   #00695C;
 
   /* Destructive CTA: solid red-family fill that must hold white text.
      Maps to palette red (8.6:1 with white) and palette deep-orange for hover. */
@@ -253,6 +258,12 @@ html:is([lang="hi"], [lang="mr"]) {
   --color-card-bg:          var(--neutral-white);
   --color-border:           var(--neutral-200);
   --color-border-light:     var(--neutral-50);
+  /* What you can tap has an edge or fill of 3:1 or more against its surface;
+     what is static has a faint edge (--color-border) or none. Controls (tool
+     buttons, selects, inputs, tabs) take the neutral edge, link cards the
+     blue one. */
+  --color-control-edge:     var(--neutral-control-edge);
+  --color-link-edge:        color-mix(in srgb, var(--color-deep-blue) 60%, var(--color-border));
 
   /* Typography */
   --font-heading: 'Inter', sans-serif;
@@ -357,6 +368,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --color-card-bg:          var(--neutral-surface-dark);
   --color-border:           var(--neutral-border-dark);
   --color-border-light:     var(--neutral-surface-2-dark);
+  --color-control-edge:     var(--neutral-control-edge-dark);
+  --color-link-edge:        color-mix(in srgb, var(--color-deep-blue) 60%, var(--color-border));
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
@@ -398,8 +411,13 @@ html:is([lang="hi"], [lang="mr"]) {
   box-sizing: border-box;
 }
 
+/* 100%, not 16px: the same 16px by default, and larger when a reader has
+   raised their browser or phone text size. Every other size is in rem, so it
+   follows. Breakpoints are in px, so they stay put, except a few em queries
+   (home comparison figure, Monte Carlo result cards, level list) that are
+   meant to move with it. */
 html {
-  font-size: 16px;
+  font-size: 100%;
   scroll-behavior: smooth;
 }
 
@@ -423,6 +441,11 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.25;
+  /* A word longer than the screen (Czech "Porozumějte", Marathi titles at a
+     larger text size) is hyphenated in the page's language, and only breaks
+     bare as a last resort, instead of widening the page. */
+  overflow-wrap: break-word;
+  hyphens: auto;
   color: var(--color-text-primary);
 }
 
@@ -528,6 +551,77 @@ strong {
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   text-decoration: none;
   transition: top 0.15s ease;
+}
+
+/* ============================================================================
+ * What you can tap, and what you cannot.
+ *
+ * Phones have no hover, so a control has to look tappable at rest: anything a
+ * reader can tap has an edge or fill of 3:1 or more against its surface
+ * (--color-control-edge, --color-link-edge, the CTA fill), and anything static
+ * has a faint edge or none, and no hover effect. A link card (a whole card that
+ * is one link) also carries the same chevron at its right edge on every page,
+ * a shape rather than a colour. Each card keeps its own layout and leaves 40px
+ * on its right for the chevron.
+ * ========================================================================= */
+.link-card {
+  position: relative;
+}
+
+.link-card::after {
+  content: '\203A';
+  content: '\203A' / '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-deep-blue);
+}
+
+.link-card:active {
+  background: var(--color-bg-subtle);
+}
+
+/* A disclosure (a summary, or a button that shows and hides a block) carries
+ * the same chevron at its right edge, turned to point down while closed and
+ * up while open: a shape that turns, so it reads at rest, without hover and
+ * without colour. Each disclosure keeps its own layout and leaves 36px on its
+ * right for the chevron; a disclosure drawn as a box takes the control edge. */
+.disclosure {
+  position: relative;
+  padding-right: 36px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.disclosure::-webkit-details-marker { display: none; }
+
+.disclosure::after {
+  content: '\203A';
+  content: '\203A' / '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-deep-blue);
+  transition: transform 0.15s ease;
+}
+
+details[open] > .disclosure::after,
+.disclosure[aria-expanded="true"]::after {
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disclosure::after { transition: none; }
 }
 
 .skip-link:focus {
@@ -669,7 +763,7 @@ strong {
   text-align: left;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-text-secondary);
@@ -731,7 +825,7 @@ strong {
 
 /* Figcaption (SVG diagrams): italic narrative context */
 .prose figcaption {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin: var(--space-3) auto 0;
   line-height: 1.55;
@@ -803,12 +897,12 @@ strong {
     left: 0;
     display: block;
     margin-bottom: var(--space-2);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--color-text-muted);
     text-align: left;
   }
-  .prose figcaption { font-size: 0.8rem; }
+  .prose figcaption { font-size: 0.875rem; }
   .prose figure:has(> svg) figcaption {
     position: sticky;
     left: 0;
@@ -842,7 +936,7 @@ strong {
   border-radius: var(--radius-md);
   padding: var(--space-4) var(--space-5);
   margin: var(--space-8) 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   line-height: 1.5;
 }
@@ -880,13 +974,14 @@ strong {
 
 .lp-levelAction {
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  min-height: 32px;
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-white);
-  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-deep-blue);
+  background: transparent;
+  color: var(--color-deep-blue);
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease;
 }
@@ -915,7 +1010,7 @@ strong {
   gap: 6px;
   margin: 0 0 var(--space-1);
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 
@@ -1002,9 +1097,15 @@ strong {
   gap: 6px;
 }
 
+/* Room under the badge, in em so it grows with the badge's text when a reader
+   raises their text size, instead of the badge landing on the step number. */
+.lp-nodeCard:has(.lp-cardBadges) {
+  padding-top: calc(0.25rem + 1.5em);
+}
+
 .lp-startHereLabel {
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1016,7 +1117,7 @@ strong {
 
 .lp-newLabel {
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1040,14 +1141,14 @@ strong {
 }
 
 .lp-cardReadingTime {
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
   font-family: var(--font-heading);
   font-weight: 500;
 }
 
 .lp-cardDate {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
@@ -1070,7 +1171,7 @@ strong {
 }
 
 .lp-cardDesc {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0 0 var(--space-2) 0;
@@ -1091,7 +1192,7 @@ strong {
      plus the anchor-specific resets (no underline, inherited
      display) so crawlers see a real link without UI regressions. */
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   background: var(--color-border-light);
@@ -1114,7 +1215,7 @@ strong {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-control-edge);
   background: transparent;
   cursor: pointer;
   display: flex;
@@ -1131,10 +1232,13 @@ strong {
   background: var(--color-border-light);
 }
 
+/* The tick takes the surface colour, which flips with the theme: white on
+   the light theme's green, dark on the dark theme's lighter green, where a
+   white tick was 2:1. */
 .lp-readToggleActive {
   border-color: var(--color-success);
   background: var(--color-success);
-  color: white;
+  color: var(--color-bg-white);
 }
 
 .lp-readToggleActive:hover {
@@ -1200,8 +1304,10 @@ strong {
 
   .lp-levelPage .lp-nodeCard:hover { transform: none; }
 
+  /* Room for the badge in em, so it grows with the badge's text when a reader
+     raises their text size, instead of landing on the step number. */
   .lp-levelPage .lp-nodeCardStartHere,
-  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: 18px; }
+  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: calc(0.5rem + 1em); }
 
   .lp-levelPage .lp-cardTop,
   .lp-levelPage .lp-cardMeta { display: contents; }
@@ -1350,6 +1456,11 @@ strong {
   background: var(--semantic-destructive-bg);
 }
 
+/* The destructive fill sits close to the dark page; the danger edge keeps it 3:1 or more. */
+[data-theme="dark"] .transactional-cta--destructive {
+  border: 1.5px solid var(--color-danger);
+}
+
 .transactional-cta--destructive:hover:not(:disabled) {
   background: var(--semantic-destructive-bg-hover);
 }
@@ -1390,7 +1501,7 @@ strong {
 
 .transactional-secondary {
   margin: var(--space-6) 0 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   line-height: 1.6;
 }
@@ -1412,7 +1523,7 @@ strong {
   border: 1px solid var(--warning-light-border);
   border-radius: var(--radius-sm);
   color: var(--warning-light-text);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   line-height: 1.5;
   text-align: left;
 }
@@ -1481,7 +1592,7 @@ strong {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg-white);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -1519,7 +1630,7 @@ strong {
    per-vendor or FX. Margin-top:4px matches the field gap above. */
 .lc-fieldHelp {
   margin: 4px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-text-muted);
   line-height: 1.4;
@@ -1532,7 +1643,7 @@ strong {
    separator, decimal count) before the comparison cards reflect it. */
 .lc-fieldPreview {
   margin: 6px 0 0;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
   color: var(--color-text-secondary);
   display: flex;
@@ -1563,7 +1674,7 @@ strong {
 .lc-resetBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-md);
@@ -1610,7 +1721,7 @@ strong {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   margin-top: var(--space-2);
 }
 
@@ -1627,7 +1738,7 @@ strong {
   min-width: 0;
   border: none;
   background: transparent;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   padding: 2px 4px;
@@ -1731,7 +1842,7 @@ strong {
   justify-content: center;
   gap: 6px;
   background: var(--color-bg);
-  border: 2px dashed var(--color-border);
+  border: 2px dashed var(--color-control-edge);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   min-height: 200px;
@@ -1771,7 +1882,7 @@ strong {
 .lc-cardAddHint {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 
@@ -1791,7 +1902,7 @@ strong {
 .lc-fieldLabel {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
@@ -1801,7 +1912,7 @@ strong {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -1850,7 +1961,7 @@ strong {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   background: var(--color-bg-white);
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
@@ -1914,7 +2025,7 @@ strong {
 
 .lc-fieldGroupTitle {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -1924,7 +2035,7 @@ strong {
 
 .lc-fieldGroupHint {
   margin: 2px 0 0;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   line-height: 1.4;
 }
@@ -2015,17 +2126,17 @@ strong {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
-  padding: 0;
+  padding: 3px;
   margin: 0 0 var(--space-3);
-  border-bottom: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
+  border-radius: var(--radius-md);
 }
 
 .lc-tab {
   appearance: none;
   background: transparent;
-  border: 1px solid transparent;
-  border-bottom: none;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 0;
+  border-radius: calc(var(--radius-md) - 2px);
   /* WCAG 2.5.5 (AAA) and 2.5.8 (AA in 2.2): 44x44 minimum target. */
   min-height: 44px;
   padding: 10px 18px;
@@ -2036,7 +2147,6 @@ strong {
   font-weight: 500;
   color: var(--color-text-muted);
   cursor: pointer;
-  margin-bottom: -1px;
   transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
@@ -2050,17 +2160,12 @@ strong {
   outline-offset: -2px;
 }
 
-.lc-tabActive {
-  color: var(--color-deep-blue);
-  background: var(--color-bg);
-  border-color: var(--color-border);
-  border-bottom-color: var(--color-bg);
-  font-weight: 600;
-}
-
-[data-theme="dark"] .lc-tabActive {
-  background: var(--color-bg);
-  border-bottom-color: var(--color-bg);
+/* Filled, like the inflation calculator's selected tab. */
+.lc-tabActive,
+.lc-tabActive:hover {
+  color: var(--color-bg-white);
+  background: var(--color-deep-blue);
+  font-weight: 700;
 }
 
 .lc-tabPanel {
@@ -2137,7 +2242,7 @@ strong {
 
 .lc-disclaimerWrap {
   margin-top: var(--space-5);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .lc-disclaimerSummary {
@@ -2145,24 +2250,12 @@ strong {
   color: var(--color-text-muted);
   font-family: var(--font-heading);
   font-weight: 500;
-  padding: 6px 0;
-  list-style: none;
+  /* The chevron comes from .disclosure. */
+  padding: 6px 36px 6px 0;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-}
-
-.lc-disclaimerSummary::-webkit-details-marker { display: none; }
-
-.lc-disclaimerSummary::before {
-  content: '+';
-  display: inline-block;
-  width: 1em;
-  font-weight: 700;
-}
-
-.lc-disclaimerWrap[open] .lc-disclaimerSummary::before {
-  content: '−';
 }
 
 .lc-disclaimerWrap .lc-disclaimer {
@@ -2194,14 +2287,14 @@ strong {
   flex-direction: column;
   align-items: stretch;
   gap: 2px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   background: var(--color-surface);
   border-radius: var(--radius-sm);
   padding: 8px 10px;
 }
 
 .lc-resultListPrimary .lc-resultLabel {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -2219,7 +2312,7 @@ strong {
 }
 
 .lc-resultListPrimary .lc-resultHint {
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-text-muted);
 }
@@ -2230,29 +2323,15 @@ strong {
 
 .lc-resultDetailsSummary {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-deep-blue);
-  cursor: pointer;
-  list-style: none;
+  /* The chevron comes from .disclosure. */
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 0;
-}
-
-.lc-resultDetailsSummary::-webkit-details-marker { display: none; }
-
-.lc-resultDetailsSummary::before {
-  content: '+';
-  display: inline-block;
-  width: 1em;
-  text-align: center;
-  font-weight: 700;
-}
-
-.lc-resultDetails[open] > .lc-resultDetailsSummary::before {
-  content: '−';
+  min-height: 44px;
+  padding: 4px 36px 4px 0;
 }
 
 .lc-resultDetails .lc-resultList {
@@ -2336,13 +2415,13 @@ strong {
   display: block;
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.72rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-top: 2px;
 }
 
 .lc-error {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-danger);
   background: color-mix(in srgb, var(--color-danger) 10%, transparent);
   border-left: 3px solid var(--color-danger);
@@ -2352,7 +2431,7 @@ strong {
 }
 
 .lc-warning {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-warning);
   margin: 0;
 }
@@ -2364,7 +2443,6 @@ strong {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
 }
 
 .lc-sectionTitle {
@@ -2417,7 +2495,7 @@ strong {
   font-weight: 700;
   color: var(--color-deep-blue);
   text-align: right;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .lc-deltaTable tbody th[scope="row"] {
@@ -2440,7 +2518,7 @@ strong {
 .lc-deltaSavingsRow th,
 .lc-deltaSavingsRow td {
   border-bottom: none;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 /* Baseline row (the "lowest" vendor) renders an em-dash instead of a
@@ -2461,7 +2539,7 @@ strong {
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-bottom: var(--space-3);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 
@@ -2609,7 +2687,7 @@ strong {
 .lc-splitCaption {
   margin: var(--space-3) 0 0;
   color: var(--color-text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.55;
   text-wrap: pretty;
 }
@@ -2619,7 +2697,7 @@ strong {
 }
 
 .lc-disclaimer {
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
   line-height: 1.55;
   max-width: 70ch;
@@ -2757,7 +2835,7 @@ strong {
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-control-edge);
     background: var(--color-bg-white);
     color: var(--color-text-primary);
     text-align: left;
@@ -2778,7 +2856,7 @@ strong {
     border-radius: 50%;
     color: var(--lc-color);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 700;
   }
 
@@ -2786,11 +2864,12 @@ strong {
     font-family: var(--font-heading);
     font-size: 0.9rem;
     font-weight: 600;
-    white-space: nowrap;
+    /* Wraps rather than clips: Czech "Poskytovatel A" is wider than the tab at 320px. */
+    overflow-wrap: anywhere;
   }
 
   .lc-vendorTabAdd {
-    border: 1px dashed var(--color-border);
+    border: 2px dashed var(--color-control-edge);
     background: transparent;
     color: var(--color-deep-blue);
     font-family: var(--font-heading);
@@ -2842,31 +2921,13 @@ strong {
   /* Optional fields folded behind one row saying what is set. */
   .lc-optional { border-top: 1px dashed var(--color-border); }
 
+  /* The chevron comes from .disclosure. */
   .lc-optionalSummary {
-    position: relative;
     display: grid;
     gap: 2px;
     min-height: 44px;
-    padding: 10px 32px 10px 0;
-    list-style: none;
-    cursor: pointer;
+    padding: 10px 36px 10px 0;
   }
-
-  .lc-optionalSummary::-webkit-details-marker { display: none; }
-
-  .lc-optionalSummary::after {
-    content: '+' / '';
-    position: absolute;
-    right: 4px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    line-height: 1;
-    color: var(--color-teal);
-  }
-
-  .lc-optional[open] > .lc-optionalSummary::after { content: '\2212' / ''; }
 
   .lc-optionalSummary:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -2882,7 +2943,7 @@ strong {
   }
 
   .lc-optionalStatus {
-    font-size: 0.78rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
   }
 
@@ -2921,7 +2982,7 @@ strong {
     grid-column: 1 / -1;
     padding: 0 0 2px;
     border: 0;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
   }
 
   .lc-deltaTable td {
@@ -2937,20 +2998,25 @@ strong {
   .lc-deltaTable td::before {
     content: attr(data-slot);
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: var(--lc-color, var(--color-text-muted));
   }
 
-  /* Analysis tabs: four on one row. */
+  /* Analysis tabs: four on one row where they fit; on the narrowest phones,
+     two rows of two, so a long word (Czech "Refinancování") or a Hindi label
+     is never cut or run into its neighbour. */
   .lc-tabList { flex-wrap: nowrap; }
+  @media (max-width: 420px) {
+    .lc-tabList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   .lc-tab {
     flex: 1 1 0;
     min-width: 0;
     justify-content: center;
     padding: 6px 4px;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     line-height: 1.2;
     text-align: center;
   }
@@ -3005,7 +3071,7 @@ strong {
 .mcnw-fieldLabel {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
@@ -3015,7 +3081,7 @@ strong {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg-white);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -3043,7 +3109,7 @@ strong {
 
 .mcnw-fieldHelp {
   margin: 4px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-text-secondary);
   line-height: 1.4;
@@ -3060,7 +3126,7 @@ strong {
 .mcnw-shareBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   padding: 10px 16px;
   min-height: 44px;
   cursor: pointer;
@@ -3095,7 +3161,7 @@ strong {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
 }
 
 .mcnw-shareUrlLabel {
@@ -3111,7 +3177,7 @@ strong {
   min-width: 0;
   border: none;
   background: transparent;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   padding: 2px 4px;
@@ -3122,7 +3188,7 @@ strong {
 .mcnw-resetBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-md);
@@ -3257,7 +3323,7 @@ strong {
 }
 
 .mcnw-modalCheck span small {
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   line-height: 1.4;
 }
@@ -3284,7 +3350,7 @@ strong {
 }
 
 .mcnw-modalPreviewBadge {
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   background: var(--color-deep-blue);
   color: var(--neutral-white);
@@ -3320,7 +3386,7 @@ strong {
 
 .mcnw-modalAssetTable {
   width: 100%;
-  font-size: 0.76rem;
+  font-size: 0.8125rem;
   border-collapse: collapse;
   margin-top: 8px;
 }
@@ -3335,7 +3401,7 @@ strong {
 .mcnw-modalAssetTable th {
   font-weight: 600;
   color: var(--color-text-secondary);
-  font-size: 0.72rem;
+  font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -3349,7 +3415,7 @@ strong {
 }
 
 .mcnw-modalPreviewEmpty {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   text-align: center;
   padding: 16px;
@@ -3368,7 +3434,7 @@ strong {
 .mcnw-modalCancelBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 18px;
   min-height: 44px;
   border-radius: var(--radius-md);
@@ -3388,7 +3454,7 @@ strong {
 .mcnw-modalCopyBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 18px;
   min-height: 44px;
   border-radius: var(--radius-md);
@@ -3499,7 +3565,7 @@ strong {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -3535,7 +3601,7 @@ strong {
 }
 
 .mcnw-rowCount {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
@@ -3555,7 +3621,7 @@ strong {
 .mcnw-tableRowHead {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-muted);
@@ -3572,12 +3638,12 @@ strong {
 .mcnw-addBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  border: 2px dashed var(--color-border);
+  border: 2px dashed var(--color-control-edge);
   background: transparent;
   color: var(--color-deep-blue);
   transition: border-color 0.15s ease, background 0.15s ease;
@@ -3593,12 +3659,12 @@ strong {
 .mcnw-csvBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-secondary);
   transition: border-color 0.15s ease, color 0.15s ease;
@@ -3614,16 +3680,20 @@ strong {
 .mcnw-downloadBtn {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-secondary);
   transition: border-color 0.15s ease, color 0.15s ease;
   margin-left: auto;
+  /* Wraps at 320px with a larger text size instead of widening the page. */
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .mcnw-downloadBtn:hover:not(:disabled),
@@ -3646,7 +3716,7 @@ strong {
   height: 32px;
   padding: 0;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: 1px solid var(--color-control-edge);
   background: transparent;
   color: var(--color-text-muted);
   font-size: 1.25rem;
@@ -3686,7 +3756,7 @@ strong {
 .mcnw-csvConfirmYes {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   padding: 8px 16px;
   border: none;
   border-radius: var(--radius-md);
@@ -3703,7 +3773,7 @@ strong {
 .mcnw-csvConfirmNo {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   padding: 8px 16px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -3724,7 +3794,7 @@ strong {
   background: var(--warning-light-bg);
   border: 1px solid var(--warning-light-border-strong);
   border-radius: var(--radius-md);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--warning-light-text-strong);
 }
 
@@ -3750,7 +3820,6 @@ strong {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
 }
 
 .mcnw-emptyState {
@@ -3769,7 +3838,7 @@ strong {
   display: block;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
@@ -3782,13 +3851,13 @@ strong {
 
 .mcnw-totalValue--hidden {
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 
 .mcnw-riskHidden {
   font-style: italic;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
@@ -3803,7 +3872,7 @@ strong {
 
 .mcnw-totalHint {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-top: 2px;
 }
@@ -3827,7 +3896,7 @@ strong {
 
 .mcnw-split dt {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-text-secondary);
 }
@@ -3885,7 +3954,7 @@ strong {
 
 .mcnw-chartCenterSub {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   fill: var(--color-text-muted);
 }
 
@@ -3904,7 +3973,7 @@ strong {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 
@@ -3977,7 +4046,7 @@ strong {
   display: inline-block;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.62rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--neutral-white);
@@ -4001,7 +4070,7 @@ strong {
 }
 
 .mcnw-riskLabel {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin: 0 0 var(--space-1);
 }
@@ -4015,7 +4084,7 @@ strong {
 
 /* Disclaimer */
 .mcnw-disclaimer {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
   line-height: 1.5;
   margin: 0;
@@ -4050,7 +4119,7 @@ strong {
     justify-content: flex-end;
   }
   .mcnw-shareBtn {
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
     padding: 10px 8px;
   }
   .mcnw-chartWrap {
@@ -4114,11 +4183,17 @@ body[data-page="landing"] .site-footer {
   margin-top: 0;
 }
 
-/* ── Phone legibility and tap-target floor (Oct 3, 2026) ──
-   Checked by scripts/audit-mobile.mjs at 375px. On phones:
-   - no visible text under 12px (small labels, badges, kickers);
-   - reading text (post summary, FAQ answers, About copy) at 16px, and
-     learning-path card descriptions at 15px;
+/* ── Phone legibility and tap-target floor (Oct 3, 2026; text sizes raised Oct 20) ──
+   Checked by scripts/audit-mobile.mjs at 375px. Written for older readers.
+   At every width, no text is under 13px (0.8125rem: short labels, badges,
+   kickers, the copyright line) and hints, captions and help text are at least
+   14px (0.875rem). On phones, in addition:
+   - running text at 16px (1rem): any block of a sentence or more, counting the
+     bold or linked words inside it, which take the block's size;
+   - card descriptions at 15px (0.9375rem): scanned to pick a card, under a
+     larger title; the one exception to the 16px rule;
+   Every size here is in rem, so a reader who raises their browser or phone
+   text size still gets larger text; do not write these in px.
    - every link and button at least 24px tall (WCAG 2.2 target size,
      minimum), by adding vertical padding so nothing moves visually.
    Several of these classes are styled inside scoped component styles, which
@@ -4126,17 +4201,38 @@ body[data-page="landing"] .site-footer {
    place that sets the phone floor. */
 @media (max-width: 640px) {
   .nav-dropdownCaret, .trust-strip-title, .changelog-tag, .ft-kicker,
-  .lc-fieldHint, .lc-resultHint, .lc-relatedKicker, .mcnw-shareBtn,
+  .lc-relatedKicker, .mcnw-shareBtn,
   .mcnw-relatedKicker, .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
   .lp-newLabel, .level-badge, .ref-type, .post-nav-direction, .post-tool-stepLabel {
-    font-size: 0.75rem !important;
+    font-size: 0.8125rem !important;
   }
-  .prose code { font-size: 0.8125rem !important; }
+  .lc-fieldHint, .lc-resultHint { font-size: 0.875rem !important; }
+  .prose code { font-size: 0.875rem !important; }
   .post-tldr, .post-tldr p, .post-faq-a, .post-faq-a p,
-  .about-intro, .about-body, .about-body p {
+  .about-intro, .about-body, .about-body p,
+  .belief-body p, .beliefs-intro, .disclaimer, .lc-disclaimer, .mcnw-disclaimer,
+  .lc-faqQ, .lc-faqA, .ifcp-faqQ, .ifcp-faqA, .mcsp-faqQ, .mcsp-faqA,
+  .mcnw-faqQ, .mcnw-faqA, .faq-item p, .faq-item summary,
+  .privacy-container p, .privacy-container li, .privacy-intro,
+  .changelog-intro, .changelog-summary, .changelog-details li,
+  .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
+  .ifcp-notes li, .ifcp-source, .mcnw-explainer p, .mcnw-explainerList li,
+  .mcnw-accessCtaCopy p, .lc-pageLead, .mcnw-pageLead, .mcsp-planner,
+  .lc-chartLead, .lc-splitCaption, .mcs-caveat, .hc-foot, .starter-currency,
+  .compare-caption, .journey-small, .if-scope, .level-page-covered p,
+  .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;
   }
-  .lp-cardDesc { font-size: 0.9375rem !important; }
+  /* Emphasis inside running text keeps its weight and takes the block's size. */
+  .belief-body strong, .belief-body a, .disclaimer strong, .privacy-container strong,
+  .privacy-container code {
+    font-size: inherit !important;
+  }
+  .lp-cardDesc, .an-desc, .ft-desc, .post-related-card-desc, .tagHub-cardDesc,
+  .learn-levelSummary, .route-meta, .lc-relatedDesc, .mcnw-relatedDesc,
+  .ifcp-relatedDesc, .mcsp-relatedDesc {
+    font-size: 0.9375rem !important;
+  }
 
   .nav-link, .footer-col a, .footer-cookieSettings, .footer-social, .subscribe-rss,
   .subscribe-dismiss-link, .lp-cardTag, .lp-cardTitle,
@@ -4204,14 +4300,14 @@ body[data-page="landing"] .site-footer {
 .mcs-label {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 .mcs-label strong {
   color: var(--color-text-primary);
 }
 .mcs-hint {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 .mcs-input {
@@ -4219,7 +4315,7 @@ body[data-page="landing"] .site-footer {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -4287,6 +4383,7 @@ body[data-page="landing"] .site-footer {
 .mcs-btn:hover,
 .mcs-btn:focus-visible {
   background: var(--color-cta-bg-hover);
+  border-color: var(--color-teal);
 }
 .mcs-btn--ghost {
   background: transparent;
@@ -4323,7 +4420,7 @@ body[data-page="landing"] .site-footer {
   border-color: var(--color-deep-blue);
 }
 .mcs-cardLabel {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
 }
 .mcs-cardValue {
@@ -4331,7 +4428,9 @@ body[data-page="landing"] .site-footer {
   font-weight: 700;
   font-size: 1.35rem;
   color: var(--color-text-primary);
-  overflow-wrap: anywhere;
+  /* An amount is read whole: it never splits across lines. Where three
+     cards side by side cannot hold it, they stack (see the phone rules). */
+  white-space: nowrap;
 }
 .mcs-note,
 .mcs-lastedHead,
@@ -4355,7 +4454,7 @@ body[data-page="landing"] .site-footer {
   border-radius: var(--radius-sm);
 }
 .mcs-caveat {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 .mcs-figure {
@@ -4365,7 +4464,7 @@ body[data-page="landing"] .site-footer {
 .chart-swipe {
   display: none;
   margin: 0 0 var(--space-1);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 .mcs-chartScroll {
@@ -4397,7 +4496,7 @@ body[data-page="landing"] .site-footer {
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
   margin-top: var(--space-2);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 .mcs-legend span {
@@ -4420,12 +4519,12 @@ body[data-page="landing"] .site-footer {
   border-top: 3px dashed var(--color-teal);
 }
 .mcs-tableSummary {
-  cursor: pointer;
+  /* The chevron comes from .disclosure, just after the label. */
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-deep-blue);
   min-height: 44px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 .mcs-tableScroll {
@@ -4440,7 +4539,7 @@ body[data-page="landing"] .site-footer {
 .mcs-table caption {
   text-align: left;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding-bottom: var(--space-2);
 }
 .mcs-table th,
@@ -4519,7 +4618,7 @@ body[data-page="landing"] .site-footer {
     opacity: 0.55;
   }
   .mcs-quickTitle {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-secondary);
   }
   .mcs-quickValue {
@@ -4531,7 +4630,7 @@ body[data-page="landing"] .site-footer {
     overflow-wrap: anywhere;
   }
   .mcs-quickRange {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     line-height: 1.45;
     color: var(--color-text-secondary);
   }
@@ -4544,7 +4643,7 @@ body[data-page="landing"] .site-footer {
     width: 100%;
     min-height: 44px;
     padding: var(--space-3) 44px var(--space-3) var(--space-3);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-control-edge);
     border-radius: var(--radius-md);
     background: var(--color-bg);
     color: inherit;
@@ -4552,19 +4651,9 @@ body[data-page="landing"] .site-footer {
     text-align: left;
     cursor: pointer;
   }
+  /* The chevron comes from .disclosure, set in from the box's edge. */
   .mcs-settingsToggle::after {
-    content: '+' / '';
-    position: absolute;
     right: var(--space-4);
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    line-height: 1;
-    color: var(--color-teal);
-  }
-  .mcs-settingsToggle[aria-expanded="true"]::after {
-    content: '\2212' / '';
   }
   .mcs-settingsToggle:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -4576,21 +4665,38 @@ body[data-page="landing"] .site-footer {
     font-size: 0.95rem;
     color: var(--color-text-primary);
   }
+  /* The row is the box and the values line sits in the flow under the name,
+     so a name or values line that wraps (Spanish, Czech, a larger text size)
+     makes the box taller instead of drawing one line over the other. The
+     button's ::before stretches over the whole row, so all of it is tappable. */
   .mcs-settingsRow {
     display: block;
     position: relative;
+    border: 1px solid var(--color-control-edge);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
   }
-  /* Room under the name for the values line drawn over the button. */
+  .mcs-settingsRow:has(.mcs-settingsToggle:focus-visible) {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
   .mcs-settingsRow .mcs-settingsToggle {
-    padding-bottom: calc(var(--space-3) + 1.3em);
+    position: static;
+    padding-bottom: 2px;
+    border: 0;
+    background: transparent;
+  }
+  .mcs-settingsRow .mcs-settingsToggle:focus-visible { outline: none; }
+  .mcs-settingsRow .mcs-settingsToggle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
   .mcs-settingsValue {
-    position: absolute;
-    left: var(--space-3);
-    right: 44px;
-    bottom: var(--space-3);
-    margin: 0;
-    font-size: 0.82rem;
+    position: static;
+    margin: 0 44px 0 0;
+    padding: 0 0 var(--space-3) var(--space-3);
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
     pointer-events: none;
   }
@@ -4611,17 +4717,32 @@ body[data-page="landing"] .site-footer {
   .mcs-cardLabel {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
   .mcs-cardValue {
     font-size: 0.98rem;
   }
+  /* Three amounts side by side need about 30em; below that (any phone at a
+     larger text size, and narrow phones at the default) the cards stack, one
+     row each, label on the left and amount on the right. In em so it follows
+     the reader's text size. */
+  @media (max-width: 30em) {
+    .mcs-cards { grid-template-columns: minmax(0, 1fr); }
+    .mcs-card {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      column-gap: var(--space-3);
+    }
+    .mcs-cardValue { font-size: 1.1rem; }
+  }
   .mcs-cardsKey {
     display: block;
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     line-height: 1.5;
     color: var(--color-text-muted);
   }
@@ -4714,7 +4835,7 @@ body[data-page="landing"] .site-footer {
   color: var(--color-bg-white);
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.45;
   text-align: left;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
@@ -4908,7 +5029,7 @@ body[data-page="landing"] .site-footer {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   z-index: 5;
 }
@@ -4925,7 +5046,7 @@ body[data-page="landing"] .site-footer {
 }
 .chart-readoutTag {
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-teal);
 }
 .chart-readout dl {
@@ -4958,7 +5079,7 @@ body[data-page="landing"] .site-footer {
 .mcs-legendHint {
   flex-basis: 100%;
   color: var(--color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 .mcs-srOnly,
 .chart-srOnly {
@@ -5060,7 +5181,7 @@ body[data-page="landing"] .site-footer {
 .lc-legendNote {
   font-weight: 400;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 .lc-chartScroll {
   overflow-x: auto;
@@ -5113,7 +5234,7 @@ body[data-page="landing"] .site-footer {
 }
 .lc-chartHint {
   margin: var(--space-2) 0 0;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 @media (max-width: 640px) {
@@ -5175,19 +5296,19 @@ body[data-page="landing"] .hero-chart svg {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   pointer-events: none;
   z-index: 3;
 }
 .hero-chart .hc-readout.is-on { display: flex; }
 .hero-chart .hc-readout.is-left { transform: translateX(calc(-100% - 12px)); }
-.hero-chart .hc-readout strong { color: var(--color-text-primary); font-size: 0.85rem; }
+.hero-chart .hc-readout strong { color: var(--color-text-primary); font-size: 0.875rem; }
 .hero-chart .hc-readout span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .hero-chart .hc-readout i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .hc-foot {
   margin: 6px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
   color: var(--color-text-muted);
 }
@@ -5200,7 +5321,7 @@ body[data-page="landing"] .hero-mc {
 }
 body[data-page="landing"] .hero-summaryLabel {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -5228,7 +5349,7 @@ body[data-page="landing"] .hero-splitBar span {
 }
 body[data-page="landing"] .hero-splitText {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
 }
 body[data-page="landing"] .hero-mcList {
@@ -5347,7 +5468,7 @@ body[data-page="landing"] .hero-mcAmount {
   border-radius: 999px;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   background: var(--color-bg-white);
 }
@@ -5355,7 +5476,7 @@ body[data-page="landing"] .hero-mcAmount {
 .lp-orderHint {
   display: none;
   margin: 0 0 var(--space-3);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 @media (min-width: 1024px) {
@@ -5394,7 +5515,7 @@ body[data-page="landing"] .hero-mcAmount {
 .learn-eyebrow {
   margin: 0 0 var(--space-1);
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -5413,7 +5534,7 @@ body[data-page="landing"] .hero-mcAmount {
 
 .learn-note {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 
@@ -5454,24 +5575,28 @@ body[data-page="landing"] .hero-mcAmount {
 }
 
 .learn-btnPrimary {
-  border: 0;
+  border: 1px solid var(--color-cta-bg);
   background: var(--color-cta-bg);
   color: var(--color-cta-fg);
 }
 
-.learn-btnPrimary:hover {
+.learn-btnPrimary:hover,
+.learn-btnPrimary:active {
   background: var(--color-cta-bg-hover);
+  border-color: var(--color-teal);
   color: var(--color-cta-fg);
 }
 
+/* An outline, as every secondary button on the site (see "What you can tap"). */
 .learn-btnSecondary {
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-white);
-  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-deep-blue);
+  background: transparent;
+  color: var(--color-deep-blue);
 }
 
-.learn-btnSecondary:hover {
-  border-color: var(--color-text-secondary);
+.learn-btnSecondary:hover,
+.learn-btnSecondary:active {
+  background: var(--color-bg-subtle);
 }
 
 .learn-btnText {
@@ -5655,7 +5780,7 @@ body[data-page="landing"] .hero-mcAmount {
   gap: 14px;
   min-height: 64px;
   padding: 10px var(--space-4);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-link-edge);
   border-radius: 12px;
   background: var(--color-bg-white);
   color: var(--color-text-primary);
@@ -5705,37 +5830,64 @@ a.learn-level:hover {
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--lc);
+  /* Spanish "Descubrimiento" is wider than the column at 320px with a larger
+     text size: hyphenate, and break bare only as a last resort. */
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .learn-levelName em {
   margin-left: 6px;
   font-style: normal;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-text-muted);
 }
 
 .learn-levelSummary {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.4;
   color: var(--color-text-secondary);
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .learn-levelCount {
   flex: none;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-secondary);
 }
 
+/* The level list draws its chevron in the row (it predates .link-card); it
+   takes the same deep blue as the link cards' one. */
 .learn-chevron {
   flex: none;
-  color: var(--color-text-muted);
+  color: var(--color-deep-blue);
+}
+
+/* On a narrow screen, or at a larger text size, the count beside the name
+   squeezed the name and summary into a column a word wide. Below 30em the
+   count moves under the summary, so the text gets the row's full width. In
+   em so it follows the reader's text size. */
+@media (max-width: 30em) {
+  .learn-level {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    row-gap: 2px;
+  }
+  .learn-level > .learn-num { grid-column: 1; grid-row: 1 / span 2; }
+  .learn-level > .learn-levelText { grid-column: 2; grid-row: 1; }
+  .learn-level > .learn-levelCount { grid-column: 2; grid-row: 2; }
+  .learn-level > .learn-chevron { grid-column: 3; grid-row: 1 / span 2; }
 }
 
 .learn-levelSoon {
-  border-style: dashed;
+  /* A level still being written is not a link: no edge, no chevron, muted.
+     Not dashed either, since a dashed edge means "add" on the tools. */
+  border-color: transparent;
   background: none;
   color: var(--color-text-muted);
 }
@@ -5744,7 +5896,9 @@ a.learn-level:hover {
   width: 28px;
   height: 28px;
   background: none;
-  border: 2px dashed var(--color-text-muted);
+  /* Muted like its text, so the circle reads in both themes; solid, not
+     dashed, since dashed means "add". */
+  border: 2px solid var(--color-text-muted);
   color: var(--color-text-muted);
 }
 
@@ -5758,7 +5912,7 @@ a.learn-level:hover {
   gap: 10px;
   margin: var(--space-4) 0 var(--space-2);
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -5784,7 +5938,7 @@ a.learn-level:hover {
   width: 100%;
   min-height: 48px;
   padding: 0 var(--space-4);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   border-radius: 10px;
   background: var(--color-bg-white);
   color: var(--color-text-primary);
@@ -5831,7 +5985,7 @@ a.learn-level:hover {
   border: 1px solid var(--lc);
   border-radius: 999px;
   color: var(--lc);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 
@@ -5841,6 +5995,12 @@ a.learn-level:hover {
 
 [data-theme="dark"] .learn-num:not(.learn-numRoute) {
   color: var(--color-bg);
+}
+
+/* A level still being written has no fill, so its number takes the muted
+   text colour in dark too (the rule above would make it page-coloured). */
+[data-theme="dark"] .learn-levelSoon .learn-num {
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 640px) {
@@ -5888,7 +6048,7 @@ a.learn-level:hover {
   fill: var(--color-text-secondary);
 }
 .mcnw-chart .mcnw-chartCenterSub {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 .mcnw-legend {
   list-style: none;
@@ -5944,7 +6104,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .mcnw-chartNote {
   margin: var(--space-3) 0 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 
@@ -5965,7 +6125,6 @@ button.mcnw-legendItem:focus-visible {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -5977,7 +6136,7 @@ button.mcnw-legendItem:focus-visible {
   gap: 4px;
   padding: 4px;
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   border-radius: var(--radius-md);
 }
 .ifc-tab {
@@ -5998,10 +6157,13 @@ button.mcnw-legendItem:focus-visible {
 .ifc-tab:hover {
   color: var(--color-deep-blue);
 }
+/* The selected tab is filled (and bolder), so the choice shows by more than
+   colour; --color-bg-white is the surface colour in either theme, so the text
+   stays 9:1 or more on the fill in light and dark. */
 .ifc-tab[aria-selected="true"] {
-  background: var(--color-bg-white);
-  color: var(--color-deep-blue);
-  box-shadow: inset 0 0 0 1px var(--color-deep-blue);
+  background: var(--color-deep-blue);
+  color: var(--color-bg-white);
+  font-weight: 700;
 }
 .ifc-tab:focus-visible {
   outline: 2px solid var(--color-teal);
@@ -6061,16 +6223,16 @@ button.mcnw-legendItem:focus-visible {
 .ifc-label {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 .ifc-hint {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   line-height: 1.45;
   color: var(--color-text-muted);
 }
 .ifc-error {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   line-height: 1.4;
   color: var(--color-danger);
 }
@@ -6084,7 +6246,7 @@ button.mcnw-legendItem:focus-visible {
   font-size: 1rem;
   padding: 10px 12px;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-edge);
   background: var(--color-bg);
   color: var(--color-text-primary);
   border-radius: var(--radius-md);
@@ -6214,7 +6376,7 @@ button.mcnw-legendItem:focus-visible {
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-4);
   margin-top: var(--space-1);
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 .ifc-legend span {
@@ -6238,13 +6400,13 @@ button.mcnw-legendItem:focus-visible {
   margin-top: var(--space-1);
 }
 .ifc-tableSummary {
-  cursor: pointer;
+  /* The chevron comes from .disclosure, just after the label. */
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--color-deep-blue);
   min-height: 44px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 .ifc-tableScroll {
@@ -6261,7 +6423,7 @@ button.mcnw-legendItem:focus-visible {
 .ifc-table caption {
   text-align: left;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   padding-bottom: var(--space-2);
 }
 .ifc-table th,
@@ -6295,6 +6457,7 @@ button.mcnw-legendItem:focus-visible {
 .ifc-btn:hover,
 .ifc-btn:focus-visible {
   background: var(--color-cta-bg-hover);
+  border-color: var(--color-teal);
 }
 .ifc-btn:focus-visible {
   outline: 2px solid var(--color-teal);
@@ -6396,7 +6559,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-method {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 .ifc-figure {

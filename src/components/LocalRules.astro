@@ -35,9 +35,10 @@ const rows = areas.map((area) => LOCAL_RULE_SOURCES[area]);
   .local-rules {
     margin: var(--space-8) 0;
     padding: var(--space-5);
-    border: 1px solid var(--color-border);
+    /* A callout: a tint and an accent bar, no box edge that reads as a button. */
+    border-left: 3px solid var(--color-deep-blue);
     border-radius: var(--radius-md);
-    background: var(--color-bg-white);
+    background: var(--color-bg-subtle);
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--color-text-secondary);

@@ -871,7 +871,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   }
 
   .privacy-updated {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
@@ -963,7 +963,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   .changelog-eyebrow {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-text-muted);
@@ -1052,7 +1052,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
 
   .changelog-date {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
     color: var(--color-deep-blue);
     font-weight: 600;
@@ -1063,7 +1063,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     display: inline-block;
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     padding: 2px 7px;
@@ -1090,7 +1090,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     margin: var(--space-2) 0 0;
     padding-left: var(--space-4);
     list-style: disc;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
   }
@@ -1117,6 +1117,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     gap: var(--space-2);
     cursor: pointer;
     list-style: none;
+    min-height: 44px;
     padding: 4px 0;
   }
 
@@ -1133,7 +1134,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   .changelog-collapseSummary::before {
     content: '▸';
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--color-deep-blue);
     transition: transform 0.15s ease;
     width: 14px;
@@ -1142,6 +1143,10 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
 
   details[open] > .changelog-collapseSummary::before {
     transform: rotate(90deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .changelog-collapseSummary::before { transition: none; }
   }
 
   .changelog-collapseSummary .changelog-head {
@@ -1159,12 +1164,12 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   .changelog-groupLabel {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-deep-blue);
   }
 
   .changelog-groupCount {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     font-family: var(--font-heading);
   }
@@ -1182,7 +1187,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   .changelog-monthLabel {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-text-secondary);
@@ -1222,6 +1227,6 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     }
     .changelog-section h2 { font-size: 1rem; }
     .changelog-entry { padding-left: var(--space-4); }
-    .changelog-details { font-size: 0.8rem; }
+    .changelog-details { font-size: 0.8125rem; }
   }
 </style>
