@@ -47,7 +47,7 @@ referentialReading:
 
 Two couples have identical finances: the same flat in one partner's name, the same savings, the same pensions, fifteen years together. In each, the partner who owns the flat dies suddenly at 44.
 
-The first couple was married. In many countries the flat passes to the surviving spouse, the pension pays a survivor benefit, and the bank talks to the surviving spouse the same week.
+The first couple was married. In many countries the flat passes to the surviving spouse and the pension pays a survivor benefit.
 
 The second couple never married. In many countries the flat now passes by law to the dead partner's parents or siblings, the pension may pay nothing because its rules say "spouse", and anything that does reach the surviving partner may be taxed as a gift between strangers.
 
@@ -162,7 +162,7 @@ Take one workplace pension worth €80,000 and run the audit for three people.
 
 **An employee with a long-term unmarried partner.** The assumption fails. Many schemes pay a spouse or, failing that, the estate, and inheritance rules may leave the partner out entirely. Where the scheme accepts nominations, a form naming the partner may decide or influence who is paid; the scheme's rules say whether it is binding. Where it does not, a common workaround is life cover owned by the partner, plus a will where local rules leave room for one.
 
-**A freelancer with no workplace pension.** There is no scheme to audit, so the default is that nothing is contributed or paid.
+**A freelancer with no workplace pension.** There is no scheme to audit, so by default nothing is paid in for them and nothing is paid out to their family.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: is a missing default safer than a wrong one?</summary>
@@ -176,8 +176,8 @@ Not necessarily. With no scheme, there is no employer contribution and no surviv
 A list of defaults that fail you can look like a list of expensive problems. Mostly it is not. Deliberate designations fall into three cost bands:
 
 - **Free, in an evening:** beneficiary forms, a written record of who owns what, a list of every account.
-- **Modest:** a will, powers of attorney, a written agreement between partners.
-- **Hard:** gaps no document closes, where the tools are workarounds.
+- **Modest cost:** a will, powers of attorney, a written agreement between partners.
+- **Hard:** gaps no document closes, such as a marriage another country ignores, where the tools are workarounds.
 
 <details class="lesson-depth">
 <summary class="disclosure">What each cost band involves</summary>
