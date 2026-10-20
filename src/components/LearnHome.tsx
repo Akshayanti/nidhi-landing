@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { conceptsFor, goalsFor, suggestLevel, type Suggestion } from '../utils/levelHelper';
 import { format } from '../i18n/format.ts';
+import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
 /**
@@ -61,6 +62,8 @@ interface LearnHomeProps {
   inclusiveHref: string;
   /** The topic hub, locale-aware. */
   topicsHref: string;
+  /** The page's language tag, which picks a count's form (`plural`). */
+  lang: string;
 }
 
 const STORAGE_KEY = 'nidhi-reading-progress';
@@ -173,7 +176,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
   );
 }
 
-export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strings, inclusiveHref, topicsHref }: LearnHomeProps) {
+export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strings, inclusiveHref, topicsHref, lang }: LearnHomeProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -467,7 +470,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
                 <span className="learn-levelName">{strings.inclusiveName} <span className="lp-srOnly">{strings.inclusiveSr}</span></span>
                 <span className="learn-levelSummary">{strings.inclusiveSummary}</span>
               </span>
-              <span className="learn-levelCount">{inclusiveCount} {inclusiveCount === 1 ? strings.guideOne : strings.guideMany}</span>
+              <span className="learn-levelCount">{inclusiveCount} {plural(lang, inclusiveCount, strings.guideOne, strings.guideFew, strings.guideMany)}</span>
               <Chevron />
             </a>
           </>
@@ -494,7 +497,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
             <p className="learn-note">
               {matches.length === 0
                 ? strings.noMatches
-                : `${matches.length} ${matches.length === 1 ? strings.lessonOne : strings.lessonMany}`}
+                : `${matches.length} ${plural(lang, matches.length, strings.lessonOne, strings.lessonFew, strings.lessonMany)}`}
             </p>
           )}
           {shown.map((l) => {

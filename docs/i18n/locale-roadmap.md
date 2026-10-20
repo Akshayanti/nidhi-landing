@@ -1,10 +1,10 @@
 # Locale roadmap
 
-The site is published in English, Hindi and Spanish. The languages below come
-next, in this order, one at a time. The order is the owner's decision
+The site is published in English, Hindi, Spanish and Czech. The languages below
+come next, in this order, one at a time. The order is the owner's decision
 (October 2026).
 
-1. **Czech** (`cs`)
+1. **Czech** (`cs`): published at /cs/ (glossary `cs-glossary.md`).
 2. **Marathi** (`mr`)
 3. **Swahili** (`sw`)
 4. **French** (`fr`)
@@ -41,8 +41,9 @@ Before a locale is published:
 
 ## Notes per language
 
-- **Czech:** three plural forms (1, 2 to 4, 5 and more), the first locale with
-  more than two. Currency: CZK, already supported; written `1 058 721 Kč`.
+- **Czech:** published. Three plural forms (1, 2 to 4, 5 and more), the first
+  locale with more than two: every counted string has a `Few` form and the code
+  picks one with `plural()` (`src/i18n/plural.ts`). Currency: CZK, already supported; written `1 058 721 Kč`.
   Chart short forms: Czech *bilion* is a million millions, so `B` needs the
   same care as in Spanish (*mld.* for a thousand million).
 - **Marathi:** Devanagari, like Hindi, so the fonts are already in place.

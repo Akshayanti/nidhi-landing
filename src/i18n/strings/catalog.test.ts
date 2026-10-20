@@ -17,10 +17,11 @@ import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
 import { CURRENCIES } from '../../utils/loan/math.ts';
-import { currenciesEn, currenciesEs, currenciesHi } from './tools/currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
 import { es } from './es.ts';
+import { cs } from './cs.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -43,8 +44,9 @@ function leaves(node: unknown, prefix = ''): Leaf[] {
 const EN = leaves(en);
 const HI = leaves(hi);
 const ES = leaves(es);
+const CS = leaves(cs);
 /** Every translated catalog, by language, for the checks that apply to all of them. */
-const TRANSLATED: Array<[string, Leaf[]]> = [['Hindi', HI], ['Spanish', ES]];
+const TRANSLATED: Array<[string, Leaf[]]> = [['Hindi', HI], ['Spanish', ES], ['Czech', CS]];
 const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
 
 /**
@@ -113,7 +115,7 @@ describe('catalog structure', () => {
   });
 
   it('resolves every key in every catalog, so nothing is blank', () => {
-    for (const { path, value } of [...EN, ...HI, ...ES]) {
+    for (const { path, value } of [...EN, ...HI, ...ES, ...CS]) {
       assert.ok(value.trim().length > 0, `${path} is blank`);
     }
   });
@@ -204,6 +206,70 @@ describe('the Spanish catalog is translated, not copied', () => {
 });
 
 /**
+ * Czech, like Spanish, shares some spellings with English (`Euro`), so a value
+ * identical to English is allowed here only with a reason.
+ */
+const IDENTICAL_OK_CS = new Set<string>([
+  // "Euro" is the currency's name in Czech too, and the code is the same.
+  'tools.loanComparison.island.currencies.EUR',
+  'tools.multiCurrencyNetWorth.island.currencies.EUR',
+  'tools.monteCarlo.island.currencies.EUR',
+  'tools.inflation.island.currencies.EUR',
+  // "Newsletter" is the everyday Czech word (docs/i18n/cs-glossary.md).
+  'privacy.why.newsletter.lead',
+  // FIRE is kept as the English acronym and glossed where it is introduced.
+  'tools.multiCurrencyNetWorth.page.related.items.6.kicker',
+  // The publisher's name and the year, which read the same in every language.
+  'tools.monteCarlo.page.how.source.after',
+]);
+
+describe('the Czech catalog is translated, not copied', () => {
+  it('leaves no English word untranslated', () => {
+    const copied = CS.filter(({ path, value }) => {
+      if (IDENTICAL_OK.has(path) || IDENTICAL_OK_CS.has(path)) return false;
+      if (value !== EN_BY_PATH.get(path)) return false;
+      return !isLanguageNeutral(value);
+    }).map(({ path, value }) => `${path}: ${value}`);
+
+    assert.deepEqual(
+      copied,
+      [],
+      `Czech values still identical to English:\n  ${copied.join('\n  ')}\n\n` +
+        'Translate them, or add the path to IDENTICAL_OK_CS in this file with a reason.',
+    );
+  });
+
+  it('writes amounts the Czech way, never as €10,000 or 10.000', () => {
+    // docs/i18n/cs-glossary.md rule 6: Czech groups thousands with a space
+    // and puts the symbol after the number, "10 000 Kč", "1 000 €".
+    const foreign = CS.filter(({ value }) => /[€$£₹]\s?\d|\d[,.]\d{3}\b/.test(value)).map((l) => `${l.path}: ${l.value}`);
+    assert.deepEqual(foreign, []);
+  });
+
+  it('quotes with „…“, never with straight double quotes', () => {
+    // Rule 10. A straight quote inside a string is either a mistake or an
+    // English quotation left standing.
+    const straight = CS.filter(({ value }) => /"/.test(value)).map((l) => `${l.path}: ${l.value}`);
+    assert.deepEqual(straight, []);
+  });
+
+  it('keeps every one-letter preposition and conjunction on the line of the word after it', () => {
+    // Rule 14: Czech typography never leaves "v", "k", "s", "z", "o", "u",
+    // "a" or "i" at the end of a line, so they are joined to the next word with
+    // a no-break space (U+00A0) in every Czech value.
+    const loose = CS.filter(({ value }) => /(^|[^\p{L}])[vkszouai] (?=\S)/iu.test(value)).map((l) => `${l.path}: ${l.value}`);
+    assert.deepEqual(loose, []);
+  });
+
+  it('uses no en dash as punctuation', () => {
+    // Rule 1: Czech would use the pomlčka for asides and ranges; the site uses
+    // a colon, a comma, parentheses or "až" instead.
+    const dashed = CS.filter(({ value }) => /–/.test(value)).map((l) => l.path);
+    assert.deepEqual(dashed, []);
+  });
+});
+
+/**
  * The three free tools name their currencies from `./tools/currencies.ts`, and
  * the codes they offer come from the engine's own table in
  * `src/utils/loan/math.ts`. The two are written by hand in different files, so
@@ -218,6 +284,7 @@ describe('the tools name every currency they offer', () => {
     assert.deepEqual(Object.keys(currenciesEn).sort(), CODES);
     assert.deepEqual(Object.keys(currenciesHi).sort(), CODES);
     assert.deepEqual(Object.keys(currenciesEs).sort(), CODES);
+    assert.deepEqual(Object.keys(currenciesCs).sort(), CODES);
   });
 
   it('keeps the English name the engine\'s own label, so the two cannot drift', () => {
@@ -238,19 +305,23 @@ describe('the tools name every currency they offer', () => {
         currenciesEs[c.code].endsWith(`(${c.code})`),
         `${c.code} in Spanish does not end with its own code`,
       );
+      assert.ok(
+        currenciesCs[c.code].endsWith(`(${c.code})`),
+        `${c.code} in Czech does not end with its own code`,
+      );
     }
   });
 });
 
 describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses no em dash, in either its character or entity form', () => {
-    const offenders = [...EN, ...HI, ...ES].filter(({ value }) =>
+    const offenders = [...EN, ...HI, ...ES, ...CS].filter(({ value }) =>
       /—|&mdash;|&#8212;|&#x2014;/i.test(value),
     );
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 
   it('uses no double dash', () => {
-    const offenders = [...EN, ...HI, ...ES].filter(({ value }) => /--/.test(value));
+    const offenders = [...EN, ...HI, ...ES, ...CS].filter(({ value }) => /--/.test(value));
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 });

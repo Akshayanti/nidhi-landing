@@ -52,8 +52,8 @@ describe('publishToolState', () => {
 });
 
 describe('TOOL_DEFAULT_CURRENCY', () => {
-  it('opens the tools in rupees on Hindi pages and in euros on English and Spanish ones', () => {
-    assert.deepEqual(TOOL_DEFAULT_CURRENCY, { en: 'EUR', hi: 'INR', es: 'EUR' });
+  it('opens the tools in rupees on Hindi pages, koruna on Czech ones and euros on English and Spanish ones', () => {
+    assert.deepEqual(TOOL_DEFAULT_CURRENCY, { en: 'EUR', hi: 'INR', es: 'EUR', cs: 'CZK' });
   });
 
   it('names a currency the tools offer, for every locale the site serves', () => {

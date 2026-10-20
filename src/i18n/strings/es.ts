@@ -697,6 +697,7 @@ export const es: Dict = {
       earlier: 'Cambios anteriores',
       countOne: '{count} cambio',
       countOther: '{count} cambios',
+      countFew: '{count} cambios',
       materialTag: 'relevante',
       materialLabel: 'Cambio relevante',
       entriesInEnglish:
@@ -841,6 +842,7 @@ export const es: Dict = {
       doorPath: 'Sigue en la ruta de aprendizaje',
       inclusiveTitle: 'El plan estándar no encaja con mi vida.',
       inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
+      inclusiveMetaFew: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
       inclusiveMetaOne: 'Finanzas inclusivas · 1 guía, para cualquier etapa',
       inclusiveGo: 'Explorar',
     },

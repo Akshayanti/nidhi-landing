@@ -50,7 +50,7 @@ export interface NetWorthExplainerItem {
   after?: string;
 }
 
-import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const multiCurrencyNetWorthEn = {
   meta: {
@@ -291,6 +291,7 @@ export const multiCurrencyNetWorthEn = {
       /** `{count}` is how many rows carry a value. */
       itemsOne: '{count} item',
       itemsMany: '{count} items',
+      itemsFew: '{count} items',
       aria: 'Assets and liabilities',
       colName: 'Name',
       colValue: 'Value',
@@ -305,6 +306,7 @@ export const multiCurrencyNetWorthEn = {
       /** `{count}` is how many rows the file carried. */
       errorTitleOne: '{count} row could not be imported:',
       errorTitleMany: '{count} rows could not be imported:',
+      errorTitleFew: '{count} rows could not be imported:',
       /** `{line}` is the file's line number; `{message}` is the parser's own reason. */
       errorLine: 'Line {line}: {message}',
       /**
@@ -411,6 +413,7 @@ export const multiCurrencyNetWorthEn = {
       /** The word the donut's centre carries under the number of currencies. */
       currencyOne: 'currency',
       currencyMany: 'currencies',
+      currencyFew: 'currencies',
       legendAria: 'Currencies',
       /** `{list}` is every slice, "US Dollar: 40.0%. Euro: 60.0%". */
       aria: 'Currency concentration donut chart. {list}',
@@ -432,6 +435,8 @@ export const multiCurrencyNetWorthEn = {
       confirmOne:
         'Uploading a CSV will replace your current {current} item with {pending} from the file. Continue?',
       confirmMany:
+        'Uploading a CSV will replace your current {current} items with {pending} from the file. Continue?',
+      confirmFew:
         'Uploading a CSV will replace your current {current} items with {pending} from the file. Continue?',
       replace: 'Replace',
       cancel: 'Cancel',
@@ -675,6 +680,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       heading: 'आपकी संपत्तियाँ और देनदारियाँ',
       itemsOne: '{count} आइटम',
       itemsMany: '{count} आइटम',
+      itemsFew: '{count} आइटम',
       aria: 'संपत्तियाँ और देनदारियाँ',
       colName: 'नाम',
       colValue: 'रकम',
@@ -688,6 +694,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       downloadTitle: 'अपनी संपत्तियाँ CSV में डाउनलोड करें',
       errorTitleOne: '{count} पंक्ति आयात नहीं हो सकी:',
       errorTitleMany: '{count} पंक्तियाँ आयात नहीं हो सकीं:',
+      errorTitleFew: '{count} पंक्तियाँ आयात नहीं हो सकीं:',
       errorLine: 'लाइन {line}: {message}',
       csvErrors: {
         empty: 'CSV फ़ाइल खाली है।',
@@ -766,6 +773,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       emptyNoValues: 'चार्ट देखने के लिए ऊपर रकमें भरिए।',
       currencyOne: 'मुद्रा',
       currencyMany: 'मुद्राएँ',
+      currencyFew: 'मुद्राएँ',
       legendAria: 'मुद्राएँ',
       aria: 'मुद्रा मिश्रण का डोनट चार्ट। {list}',
       listSeparator: '। ',
@@ -782,6 +790,8 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       confirmOne:
         'CSV अपलोड करने पर आपकी मौजूदा सूची ({current} आइटम) की जगह फ़ाइल की सूची ({pending} आइटम) आ जाएगी। आगे बढ़ें?',
       confirmMany:
+        'CSV अपलोड करने पर आपकी मौजूदा सूची ({current} आइटम) की जगह फ़ाइल की सूची ({pending} आइटम) आ जाएगी। आगे बढ़ें?',
+      confirmFew:
         'CSV अपलोड करने पर आपकी मौजूदा सूची ({current} आइटम) की जगह फ़ाइल की सूची ({pending} आइटम) आ जाएगी। आगे बढ़ें?',
       replace: 'बदल दें',
       cancel: 'रद्द करें',
@@ -1031,6 +1041,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       heading: 'Tus activos y pasivos',
       itemsOne: '{count} elemento',
       itemsMany: '{count} elementos',
+      itemsFew: '{count} elementos',
       aria: 'Activos y pasivos',
       colName: 'Nombre',
       colValue: 'Valor',
@@ -1044,6 +1055,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       downloadTitle: 'Descarga tus activos en CSV',
       errorTitleOne: 'No se pudo importar {count} fila:',
       errorTitleMany: 'No se pudieron importar {count} filas:',
+      errorTitleFew: 'No se pudieron importar {count} filas:',
       errorLine: 'Línea {line}: {message}',
       // `value` and `currency` stay Latin: they are the column names the parser reads.
       csvErrors: {
@@ -1125,6 +1137,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       emptyNoValues: 'Escribe valores arriba para ver un gráfico de concentración.',
       currencyOne: 'moneda',
       currencyMany: 'monedas',
+      currencyFew: 'monedas',
       legendAria: 'Monedas',
       aria: 'Gráfico de anillo de la concentración por moneda. {list}',
       listSeparator: '. ',
@@ -1142,6 +1155,8 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         'Al subir un CSV, lo que tienes ahora ({current} elemento) se sustituirá por el contenido del archivo ({pending}). ¿Quieres continuar?',
       confirmMany:
         'Al subir un CSV, lo que tienes ahora ({current} elementos) se sustituirá por el contenido del archivo ({pending}). ¿Quieres continuar?',
+      confirmFew:
+        'Al subir un CSV, lo que tienes ahora ({current} elementos) se sustituirá por el contenido del archivo ({pending}). ¿Quieres continuar?',
       replace: 'Sustituir',
       cancel: 'Cancelar',
     },
@@ -1156,6 +1171,376 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       copy: 'Copiar enlace',
       copied: '¡Copiado!',
       previewHeading: 'Lo que verá quien lo reciba',
+    },
+  },
+};
+
+/**
+ * The Czech edition. Vykání and „...“ quotes, per `docs/i18n/cs-glossary.md`:
+ * čisté jmění, aktiva, závazky, měna vašich výdajů (the tool's "functional"
+ * or "spending" currency), expozice, koncentrace, kurzové rozpětí, verze se
+ * skrytými údaji (never *anonymní*, which would promise more than hiding the
+ * amounts and names). The bands are adjectives agreeing with *expozice*:
+ * nízká, střední, zvýšená.
+ *
+ * The CSV column names and the words `asset` and `liability` in the file stay
+ * English, as the note at the top of this module explains; the CSV answer says
+ * so rather than translating them.
+ */
+export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
+  meta: {
+    title: 'Kalkulačka čistého jmění, v jedné měně i ve více | nidhi',
+    description:
+      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží ve vašem prohlížeči, nic se neodesílá.',
+  },
+  schema: {
+    name: 'Kalkulačka čistého jmění nidhi',
+    alternateName: [
+      'Kalkulačka čistého jmění ve více měnách nidhi',
+      'Kalkulačka čistého jmění ve více měnách a analýza měnového rizika nidhi',
+      'Kalkulačka čistého jmění pro život v zahraničí nidhi',
+      'Analýza měnového rizika nidhi',
+      'Kalkulačka měnové expozice nidhi',
+      'Nástroj pro měnové riziko nidhi',
+      'Kontrola měnové koncentrace nidhi',
+    ],
+    operatingSystem: 'Libovolný operační systém (webový prohlížeč)',
+    browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
+    featureList: [
+      'Výpočet celkového čistého jmění napříč 38 měnami ve zvolené měně výdajů',
+      'Neomezený počet aktiv a závazků v jakékoli podporované měně',
+      'Nejnovější oficiální směnné kurzy přes API Frankfurter',
+      'Prstencový graf měnové koncentrace',
+      'Posouzení rizika pro každou měnu (nízká, střední, zvýšená expozice)',
+      'Přepínač aktivum/závazek pro výpočet čisté pozice',
+      'Hromadné nahrání CSV',
+      'Dva režimy sdílení: úplná data a verze se skrytými údaji',
+      'Vše běží ve vašem prohlížeči; žádná data se neposílají na server',
+    ],
+    breadcrumbHome: 'Domů',
+    breadcrumbThis: 'Kalkulačka čistého jmění',
+  },
+  page: {
+    breadcrumb: {
+      home: 'Domů',
+      this: 'Kalkulačka čistého jmění',
+    },
+    eyebrow: 'Nástroje zdarma',
+    title: 'Kalkulačka čistého jmění, v jedné měně i ve více',
+    lead:
+      'Zadejte, co vlastníte a co dlužíte, v jedné měně i ve více. Uvidíte své čisté jmění ve zvolené měně při nejnovějších oficiálních kurzech. Pokud držíte víc než jednu měnu, zjistěte, kolik z toho máte v měnách, ve kterých ve skutečnosti neutrácíte. Vše běží ve vašem prohlížeči. Nic se neposílá na server. Podporuje USD, EUR, GBP, INR, JPY a 33 dalších.',
+    accessCta: {
+      eyebrow: 'Celý plánovač',
+      title: 'Chcete to propojit s termínem odchodu do důchodu a budoucími výdaji?',
+      body:
+        'Celý plánovač nidhi promění čisté jmění ve více měnách v dlouhodobý plán, takže uvidíte, jak místo pobytu, měna výdajů a velká rozhodnutí mění cestu.',
+      cta: 'Chci přednostní přístup',
+    },
+    explainer: {
+      heading: 'Jak výpočet funguje',
+      intro:
+        'U každé měny odečteme vaše závazky od aktiv a výsledek převedeme do měny vašich výdajů podle aktuálních kurzů. Součet převedených pozic je vaše celkové čisté jmění v jedné měně. Podíl každé měny na tomto celku je vaše koncentrace:',
+      formula:
+        'Koncentrace v % = (Čistá pozice v měně X × Kurz k měně výdajů) / Celkové čisté jmění × 100',
+      items: [
+        {
+          strong: 'Čistá pozice',
+          rest:
+            ' pro každou měnu = součet aktiv minus součet závazků v této měně. Záporná čistá pozice znamená, že v této měně dlužíte víc, než máte.',
+        },
+        {
+          strong: 'Kurz k měně výdajů',
+          rest:
+            ' je násobitel, který převede jednu jednotku měny X do měny vašich výdajů. Pochází z API Frankfurter, které spojuje kurzy zveřejňované centrálními bankami a dalšími oficiálními zdroji, a stahuje ho přímo váš prohlížeč. Kurzy se aktualizují tak, jak je tyto zdroje zveřejňují, obvykle každý pracovní den. Jsou to referenční kurzy: měřítka, která se mohou lišit od kurzů, jaké skutečně nabízí vaše banka nebo broker.',
+        },
+        {
+          strong: 'Pásma koncentrace',
+          rest:
+            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
+        },
+        {
+          strong: 'Čistá a hrubá expozice.',
+          rest:
+            ' Koncentrace se počítá z čistých pozic. Pokud máte velký dluh v cizí měně, který vyrovnává aktivum v téže měně (například hypotéku v USD a spořicí účet v USD), je čistá pozice malá, ale hrubá kurzová expozice na každé straně je mnohem větší. Tento nástroj měří čistou pozici; při odhadu skutečného kurzového rizika se hodí podívat se zvlášť i na hrubá čísla.',
+        },
+        {
+          strong: 'Veškeré výpočty probíhají u vás.',
+          rest:
+            ' Názvy aktiv, hodnoty a součty nikdy neopustí váš prohlížeč. Jediný síťový požadavek je jednorázové stažení kurzů ze služby Frankfurter, které nese kód měny vašich výdajů (např. ',
+          after: ') a nic o vašem majetku.',
+        },
+      ] as NetWorthExplainerItem[],
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      items: [
+        {
+          q: 'Jak kalkulačka čistého jmění funguje?',
+          a:
+            'Zadáte svá aktiva a závazky s jejich měnou a současnou hodnotou. Nástroj stáhne nejnovější oficiální směnné kurzy (přes bezplatné API Frankfurter), převede vše do zvolené měny výdajů a ukáže celkové čisté jmění jako jedno číslo. Pod ním ukáže měnovou koncentraci v prstencovém grafu a označí každou měnu jinou než měnu výdajů, ve které máte zvýšenou expozici.',
+        },
+        {
+          q: 'Co je riziko měnové koncentrace?',
+          a:
+            'Pokud je velká část vašeho čistého jmění v měně, ve které neutrácíte, změna kurzu mění vaši skutečnou kupní sílu. Pokud například plánujete odejít do důchodu v Evropě, ale 70 % majetku držíte v USD, pohyb kurzu USD/EUR o 10 % (rozsah, ve kterém se EUR/USD změnil během mnoha kalendářních let) by hodnotu vašich prostředků na důchod měřenou v eurech změnil zhruba o 7 %.',
+        },
+        {
+          q: 'Posílá tato kalkulačka moje finanční data někam?',
+          a:
+            'Ne. Vše běží ve vašem prohlížeči. Názvy aktiv, hodnoty a měny se nikdy neposílají na žádný server. Jediný vnější požadavek míří na API Frankfurter kvůli kurzům a obsahuje jen kód měny vašich výdajů, ne údaje o majetku. Při používání nástroje se do adresy stránky nic nezapisuje. Když zkopírujete odkaz ke sdílení, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Zda sdílet, rozhodujete vy.',
+        },
+        {
+          q: 'Které měny jsou podporované?',
+          a:
+            'Podporovaných měn je třicet osm, mezi nimi euro (EUR), americký dolar (USD), britská libra (GBP), švýcarský frank (CHF), japonský jen (JPY), indická rupie (INR), čínský jüan (CNY), kanadský dolar (CAD), australský dolar (AUD), singapurský dolar (SGD), bangladéšská taka (BDT), keňský šilink (KES), západoafrický a středoafrický frank CFA (XOF, XAF) a hlavní severské, středoevropské, latinskoamerické, jihoasijské, jihovýchodoasijské a africké měny. Směnné kurzy pocházejí od centrálních bank a dalších oficiálních zdrojů přes službu Frankfurter; jsou to referenční kurzy a mohou se lišit od kurzů, které banka nabízí běžným klientům.',
+        },
+        {
+          q: 'Jaký je rozdíl mezi režimy sdílení „Úplná verze“ a „Verze se skrytými údaji“?',
+          a:
+            'Úplná verze vloží do adresy všechny názvy aktiv, hodnoty, měny a typy: kdokoli s odkazem uvidí celý rozpis a může si výpočet ověřit. Verze se skrytými údaji obsahuje jen procenta koncentrace podle měn a označení pásem: žádné částky, žádné názvy aktiv. V obou případech se do schránky zkopíruje jediný odkaz a vy si vyberete, který odešlete.',
+        },
+        {
+          q: 'Odkud pocházejí směnné kurzy?',
+          a:
+            'Kurzy pocházejí z bezplatného API Frankfurter (api.frankfurter.dev), které spojuje směnné kurzy zveřejňované centrálními bankami a dalšími oficiálními zdroji. Jsou to referenční kurzy, aktualizované tak, jak je tyto zdroje zveřejňují (obvykle každý pracovní den), a slouží jako měřítko, nikoli jako kurzy, za které lze skutečně směňovat. Kurzy, které skutečně dostanete v bance nebo u brokera, obsahují kurzové rozpětí a mohou se podstatně lišit, zvlášť u menších měn. Není potřeba žádný klíč API a požadavek se odesílá přímo z vašeho prohlížeče.',
+        },
+        {
+          q: 'Co znamená „měna vašich výdajů“?',
+          a:
+            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Z označení rizika ji vynecháváme, protože pohyby kurzů nemění, co si za peníze v měně svých výdajů koupíte.',
+        },
+        {
+          q: 'Co znamenají „Nízká“, „Střední“ a „Zvýšená“?',
+          a:
+            'Jsou to popisná pásma pro měny jiné než měna výdajů: pod 20 % čistého jmění je expozice „Nízká“, 20 až 40 % „Střední“ a nad 40 % „Zvýšená“. Popisují velikost koncentrace, ne to, co s ní dělat. Zda daná úroveň odpovídá vaší situaci, závisí na budoucích výdajích, na tom, kde chcete žít v důchodu, a na tom, jak vyvažujete měnové riziko s jinými cíli.',
+        },
+        {
+          q: 'Můžu zahrnout dluhy a závazky?',
+          a:
+            'Ano. Každý řádek má přepínač „Aktivum“/„Závazek“. Částky závazků se odečtou od čisté pozice dané měny. Pokud máte hypotéku v USD a vedle ní úspory v USD, ukáže nástroj vaši čistou expozici v USD. Měna, ve které dlužíte víc, než máte, se označí jako „Čistý dluh“.',
+        },
+        {
+          q: 'Jak funguje nahrání CSV?',
+          a:
+            'Vytvořte soubor CSV se sloupci (názvy sloupců i hodnoty typu zůstávají anglicky): name (volitelný), value (povinný), currency (povinný, třípísmenný kód), type (volitelný, „asset“ pro aktivum nebo „liability“ pro závazek, výchozí je asset). Klikněte na „Nahrát CSV“, vyberte soubor a řádky se vyplní automaticky. Neplatné řádky se vypíšou s čísly řádků, aby šly opravit. Nahrání nahradí stávající data až po potvrzení.',
+        },
+      ],
+    },
+    related: {
+      heading: 'Porozumějte svému čistému jmění',
+      lead: 'Od toho, co čisté jmění je, po správu peněz ve více měnách.',
+      items: [
+        {
+          kicker: 'Základy',
+          title: 'Co je čisté jmění a proč na něm záleží',
+          desc:
+            'Rozdíl mezi aktivy a závazky je nejjednodušším měřítkem finančního zdraví. Tento nástroj tento výpočet rozšiřuje na majetek ve více měnách.',
+        },
+        {
+          kicker: 'Čisté jmění',
+          title: 'Jak za 10 minut spočítat čisté jmění',
+          desc:
+            'Metoda dvou sloupců, kterou tato kalkulačka používá: sepište, co vlastníte, sepište, co dlužíte, a spočítejte rozdíl.',
+        },
+        {
+          kicker: 'Správa měn',
+          title: 'Správa peněz ve více měnách',
+          desc:
+            'Praktické postupy, jak vydělávat, spořit a utrácet ve více měnách, aniž by peníze mizely na kurzových poplatcích.',
+        },
+        {
+          kicker: 'Dluh',
+          title: 'Závazky: co dlužíte a proč záleží na úrokové sazbě',
+          desc:
+            'Úvěr v cizí měně nese dvě rizika najednou: náklady na úrok a pohyb kurzu. Kalkulačka započítá obojí.',
+        },
+        {
+          kicker: 'Kupní síla',
+          title: 'Proč si za euro v některých zemích koupíte víc než jinde',
+          desc:
+            'Směnné kurzy jsou jen polovina příběhu. Místní cenová hladina je při porovnávání majetku mezi zeměmi stejně důležitá jako kurz.',
+        },
+        {
+          kicker: 'Inflace',
+          title: 'Kupní síla: proč 1 000 € dnes není 1 000 € zítra',
+          desc:
+            'Měna je jedním pohledem na reálné bohatství, inflace druhým. Nominální zůstatek nezachycuje ani jedno.',
+        },
+        {
+          kicker: 'FIRE',
+          title: 'Úvod do finanční nezávislosti',
+          desc:
+            'Základy FIRE a proč záleží na měnové diverzifikaci, když důchod trávíte ve více zemích.',
+        },
+        {
+          kicker: 'Plánování',
+          title: 'Stanovení finančních cílů',
+          desc:
+            'Jak cíle často utvářejí alokaci aktiv, včetně toho, které měny lidé drží.',
+        },
+      ],
+      footerTag: 'Další články o správě měn',
+      footerAll: 'Nebo procházejte všechny články',
+    },
+  },
+  island: {
+    currencies: currenciesCs,
+    toolbar: {
+      aria: 'Akce kalkulačky čistého jmění',
+      currencyLabel: 'Vaše měna (ta, ve které utrácíte)',
+      currencyHelp:
+        'Vaše čisté jmění se zobrazuje v této měně. Vše v jiné měně se převede podle nejnovějších oficiálních kurzů.',
+      share: 'Sdílet',
+      shareTitle: 'Sdílet čisté jmění',
+      reset: 'Začít znovu',
+      resetTitle: 'Smazat všechna data a začít znovu',
+      copiedLabel: 'Odkaz zkopírován do schránky',
+      shareUrlAria: 'Adresa odkazu ke sdílení',
+    },
+    rates: {
+      errorBefore: 'Směnné kurzy nejsou k dispozici, částky se zobrazují bez převodu.',
+      retry: 'Zkusit znovu',
+      loading: 'Načítání směnných kurzů…',
+      partial:
+        'U jedné nebo více měn chybí aktuální kurz, proto nejsou zahrnuté do součtu níže. Jejich částky v původní měně jsou na kartách jednotlivých měn.',
+    },
+    shared: {
+      readOnly:
+        'Prohlížíte sdílené čisté jmění. Zobrazená data jsou to, co se odesílatel rozhodl zahrnout. Ve formuláři níže můžete začít znovu.',
+    },
+    table: {
+      heading: 'Vaše aktiva a závazky',
+      itemsOne: '{count} položka',
+      itemsMany: '{count} položek',
+      itemsFew: '{count} položky',
+      aria: 'Aktiva a závazky',
+      colName: 'Název',
+      colValue: 'Hodnota',
+      colCurrency: 'Měna',
+      colType: 'Typ',
+      colActions: 'Akce',
+      addAsset: '+ Přidat aktivum',
+      uploadCsv: 'Nahrát CSV',
+      uploadCsvAria: 'Nahrát soubor CSV',
+      downloadCsv: 'Stáhnout CSV',
+      downloadTitle: 'Stáhnout aktiva jako CSV',
+      errorTitleOne: '{count} řádek se nepodařilo importovat:',
+      errorTitleMany: '{count} řádků se nepodařilo importovat:',
+      errorTitleFew: '{count} řádky se nepodařilo importovat:',
+      errorLine: 'Řádek {line}: {message}',
+      csvErrors: {
+        empty: 'Soubor CSV je prázdný.',
+        columns: 'Očekávají se alespoň sloupce value a currency.',
+        invalidValue: '„{value}“ není platné kladné číslo.',
+        emptyCurrency: 'Kód měny je prázdný.',
+        unsupportedCurrency: '„{value}“ není podporovaná měna. Podporované měny: {supported}.',
+      },
+    },
+    row: {
+      nameAria: 'Název aktiva (řádek {index} z {total})',
+      valueAria: 'Hodnota (řádek {index})',
+      currencyAria: 'Měna (řádek {index})',
+      typeAria: 'Typ (řádek {index})',
+      namePlaceholder: 'Název aktiva nebo závazku',
+      asset: 'Aktivum',
+      liability: 'Závazek',
+      removeTitle: 'Odebrat',
+      removeAria: 'Odebrat řádek {index}',
+    },
+    results: {
+      empty: 'Přidejte alespoň jedno aktivum a uvidíte své čisté jmění.',
+      totalLabel: 'Celkové čisté jmění',
+      hidden: 'Skryto',
+      whatYouOwn: 'Co vlastníte',
+      whatYouOwe: 'Co dlužíte',
+      singleNote:
+        'Vše je tu v měně {currency}, takže to směnné kurzy neovlivňují. Pokud přidáte něco v jiné měně, ukáže se tu také, jak velká část čistého jmění závisí na kurzech.',
+      partialHint:
+        'U alespoň jedné měny chyběl aktuální kurz, a proto není zahrnutá do tohoto součtu.',
+      rateUnavailable: 'Kurz chybí',
+      noRateAvailable:
+        'Pro měnový pár {code}/{currency} není aktuální kurz k dispozici; zobrazeno bez převodu',
+      badgeFunctional: 'Měna výdajů',
+      badgeNetDebt: 'Čistý dluh',
+      badgeElevated: 'Zvýšená',
+      badgeModerate: 'Střední',
+      badgeLow: 'Nízká',
+      riskHeading: 'Posouzení rizika podle měn',
+      labelFunctional: 'Měna vašich výdajů',
+      labelNetDebt: 'Čistý dluh v této měně',
+      labelElevated: 'Zvýšená expozice',
+      labelModerate: 'Střední expozice',
+      labelLow: 'Nízká expozice',
+      disclaimer:
+        'Tato kalkulačka ukazuje matematickou koncentraci vašich čistých pozic napříč měnami podle oficiálních referenčních kurzů, které se mohou lišit od kurzů vaší banky nebo brokera. Nezohledňuje vaše budoucí výdaje, daňovou rezidenci, zajištění ani toleranci k riziku a není finančním poradenstvím. Pro osobní radu se obraťte na finančního poradce s příslušným oprávněním.',
+    },
+    rec: {
+      noRate:
+        'Služba směnných kurzů nevrátila aktuální kurz {code} vůči {currency}, proto tato pozice není zahrnutá do výpočtu koncentrace. Čistá částka v původní měně je dál zobrazená výše.',
+      functionalHidden:
+        'Toto je měna vašich výdajů. V této sdílené verzi není procento koncentrace uvedeno.',
+      functionalMost:
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je v jiných měnách a pohybuje se s jejich kurzy.',
+      functionalMuch:
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
+      functionalLittle:
+        'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
+      netDebt:
+        'V {code} dlužíte víc, než máte (pozice „čistý dluh“). Když máte v nějaké měně víc závazků než aktiv, funguje to obráceně: pokud {code} posílí vůči {currency}, váš dluh roste a čisté jmění klesá; pokud {code} oslabí, čisté jmění roste.',
+      elevatedHidden:
+        'Vaše pozice v {code} tvoří v tomto sdílení velký podíl čistého jmění. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním znatelně zvýší nebo sníží.',
+      elevatedShown:
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+      moderateHidden:
+        'Střední podíl vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o desetinu podílu drženého v {code}.',
+      moderateShown:
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+      lowHidden:
+        'Malý podíl vašeho čistého jmění je v {code}. Kurz {code}/{currency} má na celkové čisté jmění jen omezený vliv.',
+      lowShown:
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+    },
+    chart: {
+      heading: 'Měnová koncentrace',
+      emptyNoRates:
+        'Směnné kurzy teď nejsou k dispozici, takže měny nejde porovnat v grafu.',
+      emptyNoValues: 'Zadejte hodnoty výše a uvidíte graf koncentrace.',
+      currencyOne: 'měna',
+      currencyMany: 'měn',
+      currencyFew: 'měny',
+      legendAria: 'Měny',
+      aria: 'Prstencový graf měnové koncentrace. {list}',
+      listSeparator: '. ',
+      announce: '{name}: {pct} vašeho čistého jmění.',
+      announceWithAmount: '{name}: {pct} vašeho čistého jmění, {amount}.',
+      note:
+        'Mimo graf: {codes}, protože teď není k dispozici kurz vůči {currency}.',
+      tableCaption: 'Měnová koncentrace podle čisté pozice',
+      tableColCurrency: 'Měna',
+      tableColConcentration: 'Koncentrace',
+      tableColRisk: 'Úroveň rizika',
+    },
+    csv: {
+      confirmOne:
+        'Nahrání CSV nahradí vaši současnou {current} položku obsahem souboru (počet nových položek: {pending}). Pokračovat?',
+      confirmMany:
+        'Nahrání CSV nahradí vašich současných {current} položek obsahem souboru (počet nových položek: {pending}). Pokračovat?',
+      confirmFew:
+        'Nahrání CSV nahradí vaše současné {current} položky obsahem souboru (počet nových položek: {pending}). Pokračovat?',
+      replace: 'Nahradit',
+      cancel: 'Zrušit',
+    },
+    shareModal: {
+      title: 'Sdílet analýzu',
+      legend: 'Vyberte, co sdílet:',
+      fullName: 'Úplná verze',
+      fullDesc: 'Všechny podrobnosti o aktivech, hodnoty a čisté jmění',
+      redactedName: 'Verze se skrytými údaji',
+      redactedDesc: 'Jen rozdělení podle měn v % a úrovně rizika. Žádné částky ani názvy.',
+      cancel: 'Zrušit',
+      copy: 'Kopírovat odkaz',
+      copied: 'Zkopírováno!',
+      previewHeading: 'Náhled pro příjemce',
     },
   },
 };

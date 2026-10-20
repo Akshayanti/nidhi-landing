@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   CURRENCIES,
   DEFAULT_CURRENCY,
@@ -42,6 +42,7 @@ import {
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
 import { format } from '../i18n/format.ts';
+import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
 /**
@@ -1210,6 +1211,7 @@ function VendorCard({
   onRemove,
 }: VendorCardProps) {
   const { formatMoney, amountLocale } = useMoney();
+  const numberLocale = useContext(NumberLocaleContext);
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
@@ -1684,7 +1686,7 @@ function VendorCard({
                   label={strings.results.timeToPayoff}
                   value={months(result.months, strings.months)}
                   hint={format(
-                    result.months === 1 ? strings.results.paymentsOne : strings.results.paymentsMany,
+                    plural(numberLocale, result.months, strings.results.paymentsOne, strings.results.paymentsFew, strings.results.paymentsMany),
                     { n: result.months },
                   )}
                 />

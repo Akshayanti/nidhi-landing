@@ -34,7 +34,7 @@
  * cannot be priced; neither knows about languages. The first is reassembled
  * here (`island.months`), and the second is matched and replaced (`island.engine`).
  */
-import { currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './currencies.ts';
 
 export const loanComparisonEn = {
   meta: {
@@ -387,6 +387,7 @@ export const loanComparisonEn = {
       timeToPayoff: 'Time to payoff',
       paymentsOne: '1 payment',
       paymentsMany: '{n} payments',
+      paymentsFew: '{n} payments',
       totalInterest: 'Total interest',
       fees: 'Fees',
       penalty: 'Prepayment penalty',
@@ -985,6 +986,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       timeToPayoff: 'चुकाने का समय',
       paymentsOne: '1 किस्त',
       paymentsMany: '{n} किस्तें',
+      paymentsFew: '{n} किस्तें',
       totalInterest: 'कुल ब्याज',
       fees: 'शुल्क',
       penalty: 'समय से पहले भुगतान पर जुर्माना',
@@ -1536,6 +1538,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       timeToPayoff: 'Tiempo hasta liquidarlo',
       paymentsOne: '1 cuota',
       paymentsMany: '{n} cuotas',
+      paymentsFew: '{n} cuotas',
       totalInterest: 'Intereses totales',
       fees: 'Comisiones',
       penalty: 'Penalización por pago anticipado',
@@ -1740,6 +1743,556 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avísanos, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
+      },
+    },
+  },
+};
+
+/**
+ * The Czech edition. Same shape and the same figures; vykání and „...“ quotes,
+ * per `docs/i18n/cs-glossary.md`: úvěr, měsíční splátka, jistina, splátkový
+ * kalendář, poskytovatel (the tool's "vendor"), mimořádná splátka, poplatek za
+ * předčasné splacení, doba návratnosti, refinancování, marže.
+ *
+ * APR stays APR and is never called RPSN: the tool's figure is the US nominal
+ * rate with the fee folded in, which agrees with the Czech and EU RPSN in
+ * direction but not in method, and the answers say so. Month counts are
+ * abbreviated (*3 r. 2 měs.*), which keeps them free of plural forms. Like the
+ * Spanish page, a Czech page writes every amount the Czech way, in every
+ * currency (`TOOL_AMOUNT_LOCALE`), and the two currency answers describe that.
+ *
+ * Register: the lessons'. The tool never names a winner among real offers, and
+ * the Czech keeps that care: *rozpětí*, *výchozí hodnota*, never *nejlepší*.
+ */
+export const loanComparisonCs: typeof loanComparisonEn = {
+  meta: {
+    title: 'Srovnání úvěrů: nabídky vedle sebe, ve více měnách | nidhi',
+    description:
+      'Kalkulačka pro srovnání úvěrů zdarma. Porovnejte dvě až pět nabídek vedle sebe: měsíční splátka, doba splácení, úroky celkem, APR a celkové náklady. Více měn.',
+  },
+  schema: {
+    name: 'Kalkulačka pro srovnání úvěrů nidhi',
+    alternateNames: [
+      'Srovnávač úvěrů nidhi',
+      'Úvěrová kalkulačka nidhi',
+      'Srovnávač úvěrů ve více měnách nidhi',
+      'Úvěrová kalkulačka ve více měnách nidhi',
+      'Srovnání úvěrů vedle sebe nidhi',
+    ],
+    operatingSystem: 'Libovolný operační systém (webový prohlížeč)',
+    browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
+    featureList: [
+      'Porovnání 2 až 5 nabídek úvěru vedle sebe',
+      'APR (roční procentní sazba) pro každou nabídku, zahrnující poplatky do jedné srovnatelné sazby',
+      'Graf rozdělení splátky na úrok a jistinu u každého úvěru: kam jde každá splátka po celou dobu úvěru',
+      'Podpora 38 měn, včetně USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
+      'Výpočet měsíční splátky při pevné době splatnosti, nebo doby splácení při pevné splátce',
+      'Modelování poplatku za sjednání a mimořádné měsíční splátky jistiny',
+      'Pokročilý režim: hybridní úvěry (ARM) s přepočtem splátky při změně sazby, doba návratnosti bodů na snížení sazby, jednorázové mimořádné splátky, modelování poplatku za předčasné splacení',
+      'Analýza horizontu („pokud prodám v měsíci N“): splacená jistina, zaplacené úroky, zbývající jistina a celkem vydané peníze u každého poskytovatele',
+      'Scénář refinancování, který porovná „ponechat“ a „refinancovat“ včetně nákladů na uzavření a doby návratnosti',
+      'Splátkový kalendář přesný na haléře, počítaný v celých číslech',
+      'Odkaz ke sdílení na jakékoli srovnání, včetně všech pokročilých polí',
+    ],
+  },
+  page: {
+    breadcrumb: {
+      home: 'Domů',
+      this: 'Srovnání úvěrů',
+    },
+    eyebrow: 'Nástroje zdarma',
+    title: {
+      lead: 'Srovnání úvěrů',
+      wide: ': porovnejte nabídky úvěrů vedle sebe',
+    },
+    lead: {
+      before:
+        'Zadejte dva až pět poskytovatelů. Uvidíte měsíční splátku, dobu splácení, celkem zaplacenou částku a APR, tedy jedno číslo nákladů, které zahrnuje poplatek do sazby.',
+      wide: 'Podívejte se, jak se každá splátka dělí mezi úrok a jistinu. Podpora více měn: USD, EUR, GBP, INR, JPY a další.',
+      after: 'Vše běží ve vašem prohlížeči; nic se neposílá na server.',
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      groups: [
+        {
+          title: 'Začínáme',
+          items: [
+            {
+              q: 'Jak tato kalkulačka pro srovnání úvěrů funguje?',
+              a: 'U každého poskytovatele, kterého chcete porovnat, zadejte výši úvěru, roční úrokovou sazbu a buď dobu splatnosti v měsících, nebo měsíční splátku. Vedle sebe můžete porovnat dvě až pět nabídek. Kalkulačka pro každý úvěr sestaví celý splátkový kalendář a ukáže měsíční splátku, počet měsíců do splacení, úroky celkem, APR (které zahrnuje poplatek do sazby) a celkem zaplacenou částku.',
+            },
+            {
+              q: 'Jaké úvěry můžu porovnat?',
+              a: 'Hypotéky, úvěry na auto, spotřebitelské úvěry a studentské půjčky se standardním splácením. Kalkulačka zvládá úvěry s pevnou sazbou i hybridní úvěry (typu ARM), kde po počáteční pevné sazbě následuje jiná sazba. Období, kdy se splácí jen úrok, a velká závěrečná splátka (balónová) se nemodelují.',
+            },
+            {
+              q: 'Kolik úvěrů můžu porovnat najednou?',
+              a: 'Dva až pět. Stránka začíná dvěma kartami vedle sebe a jasně viditelnou dlaždicí „Přidat poskytovatele“, kterou můžete srovnání rozšířit až na pět nabídek. Každá karta má tlačítko pro odebrání, takže poskytovatele, který už nesedí, můžete vyřadit.',
+            },
+            {
+              q: 'Můžu porovnat úvěry s různou dobou splatnosti nebo sazbou?',
+              a: 'Ano. U všech porovnávaných úvěrů můžete libovolně kombinovat doby splatnosti, sazby, poplatky i měsíční splátky. Na každé kartě poskytovatele si zvolíte, zda se počítá měsíční splátka (pevná doba splatnosti), nebo doba splácení (pevná měsíční splátka).',
+            },
+            {
+              q: 'Která pole jsou povinná?',
+              a: 'Výše úvěru, roční úroková sazba a buď doba splatnosti v měsících, nebo měsíční splátka (podle toho, co chcete spočítat). Jsou označené červenou hvězdičkou. Všechna ostatní pole na kartě (poplatek za sjednání, mimořádná splátka jistiny, body, jednorázové splátky, poplatek za předčasné splacení, nastavení hybridní sazby) jsou volitelná a mohou zůstat na výchozí hodnotě.',
+            },
+            {
+              q: 'Posílají se moje data někam?',
+              a: 'Ne. Vše běží ve vašem prohlížeči; žádné údaje se neposílají na server. Při používání nástroje se do adresy stránky nic nezapisuje. Když zkopírujete odkaz ke sdílení, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
+            },
+          ],
+        },
+        {
+          title: 'APR a poplatky',
+          items: [
+            {
+              q: 'Co je APR a jak se tady počítá?',
+              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. APR se uvádí jako nominální roční sazba (měsíční sazba × 12), což odpovídá zvyklosti v amerických informacích o úvěrech a směrem se shoduje s RPSN v EU, není však s ní totožné. Když je poplatek nulový, rovná se APR nominální sazbě.',
+            },
+            {
+              q: 'Proč je APR obvykle vyšší než nabízená sazba?',
+              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže efektivní sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. Podrobněji to rozebírá článek o podmínkách úvěrů.',
+            },
+            {
+              q: 'Zahrnuje APR mimořádnou splátku jistiny, kterou plánuji platit každý měsíc?',
+              a: 'Ne. APR měří smluvní náklady, které účtuje poskytovatel, ne dobrovolné kroky, které uděláte vy. Mimořádné splátky jistiny jsou volitelné a jejich zahrnutí by uváděné APR podhodnotilo. Graf „Kam jde každá splátka“ i řádek APR používají smluvní kalendář (bez mimořádných splátek); měsíční splátka, doba do splacení a celkem zaplacená částka odrážejí kalendář včetně vašich mimořádných splátek.',
+            },
+            {
+              q: 'Mám do poplatku zahrnout povinné pojištění nebo produkty v balíčku?',
+              a: 'Pokud poskytovatel k úvěru vyžaduje koupi dalšího produktu (životní pojištění, účet, investiční produkt), jsou náklady na tento produkt součástí skutečných nákladů úvěru. Pravidla pro to, zda se takové produkty musí započítat do oficiálně uváděné sazby, se liší podle země. Pro poctivé srovnání přičtěte celkové náklady povinného produktu v balíčku do pole poplatku. Zobrazené APR pak odráží náklady se vším všudy.',
+            },
+            {
+              q: 'Zvládá kalkulačka poplatek za sjednání a náklady na uzavření?',
+              a: 'Ano. Zadejte je do pole „Poplatek za sjednání a uzavření“ ve skupině „Náklady a poplatky“ na každé kartě poskytovatele. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží skutečné náklady úvěru, a jsou zahrnuty do zobrazeného APR.',
+            },
+          ],
+        },
+        {
+          title: 'Mimořádné splátky, body a poplatky za předčasné splacení',
+          items: [
+            {
+              q: 'Můžu modelovat mimořádnou splátku jistiny každý měsíc?',
+              a: 'Ano. Zadejte částku do pole „Mimořádná splátka jistiny měsíčně“ ve skupině „Mimořádné splátky“ na každé kartě poskytovatele. Kalkulačka ji každý měsíc použije přímo na jistinu, čímž zkrátí dobu splácení a sníží úroky celkem.',
+            },
+            {
+              q: 'Jak se zadávají jednorázové mimořádné splátky?',
+              a: 'Formát je měsíc:částka, položky oddělujte středníky. Například 12:5000;36:3000;60:10000 znamená mimořádnou splátku 5 000 v 12. měsíci, 3 000 v 36. měsíci a 10 000 v 60. měsíci. Každá jednorázová splátka se použije na jistinu AŽ PO běžné měsíční splátce za daný měsíc, takže ve stejném měsíci nenese úrok. Úvěr se obvykle splatí dřív než za smluvní dobu a úroky celkem odpovídajícím způsobem klesnou.',
+            },
+            {
+              q: 'Jak funguje doba návratnosti bodů?',
+              a: 'Body na snížení sazby (discount points) představují platbu předem, za kterou získáte nižší úrokovou sazbu. Zda se vyplatí, závisí na tom, jak dlouho úvěr ponecháte. Zadejte cenu bodů a snížení sazby, které za ně dostanete, a kalkulačka sestaví srovnávací variantu „bez bodů“ (stejný úvěr, poplatek bez ceny bodů, sazba vyšší o snížení) a obě porovná. Řádek „Doba návratnosti bodů“ ukazuje, kolik měsíců nižších splátek je potřeba, aby se platba předem vrátila. Pokud nová měsíční splátka ve skutečnosti nižší není, je doba návratnosti uvedena jako „nikdy“.',
+            },
+            {
+              q: 'Jak funguje poplatek za předčasné splacení?',
+              a: 'Některé úvěry účtují poplatek, pokud je splatíte předčasně. Zadejte poplatek jako procento ze zbývající jistiny a poslední měsíc, kdy platí. Poplatek se účtuje jen tehdy, když je úvěr celý splacen (jednorázovými splátkami, mimořádnými splátkami jistiny nebo refinancováním) v daném měsíci nebo dřív. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží skutečné náklady předčasného splacení s poplatkem.',
+            },
+          ],
+        },
+        {
+          title: 'Hybridní úvěry (ARM)',
+          items: [
+            {
+              q: 'Jak kalkulačka zvládá hybridní úvěry (ARM 5/1, 7/1, 10/1)?',
+              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Hybridní (ARM)“ a zadejte počáteční období fixace (například 60 měsíců u ARM 5/1) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. Zobrazené APR používá tento kalendář tak, jak by byl uveden, což odpovídá tomu, jak poskytovatelé uvádějí APR u skutečných produktů ARM.',
+            },
+            {
+              q: 'Proč je hybridní možnost nedostupná, když je zvoleno „Měsíce do splacení“?',
+              a: 'Hybridní úvěry potřebují pevnou smluvní dobu, aby kalkulačka mohla při změně sazby splátku přepočítat. Při výpočtu „Měsíce do splacení“ smluvní dobu nezadáváte (zadáváte místo ní pevnou měsíční splátku), takže přepočet není definovaný. Přepněte „Počítat“ na „Měsíční splátka“ a hybridní volba bude dostupná.',
+            },
+          ],
+        },
+        {
+          title: 'Záložky analýzy',
+          items: [
+            {
+              q: 'Co ukazuje graf „Kam jde každá splátka“?',
+              a: 'Rozdělí typickou měsíční splátku z každého roku úvěru na úrokovou část a část jistiny, naskládané do jednoho sloupce. Každý sloupec má stejnou celkovou výšku (stejnou měsíční splátku), ale poměr se výrazně posouvá: v prvních letech tvoří skoro celou splátku úrok, v posledních letech skoro celou jistina. Proto mají mimořádné splátky v prvních letech dlouhého úvěru nepoměrně velký účinek; každé euro, o které jistinu snížíte brzy, nenese úrok po celou zbývající dobu.',
+            },
+            {
+              q: 'Co je analýza horizontu („pokud prodám nebo refinancuji v...“)?',
+              a: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Záložka „Horizont“ se ptá: ve zvoleném měsíci, kolik jistiny je skutečně splaceno, kolik úroků zaplaceno, jaká je zbývající jistina a kolik peněz celkem už odešlo (splátky plus poplatky za sjednání)? To je správný pohled, pokud čekáte, že prodáte, přestěhujete se nebo budete refinancovat dlouho před smluvním koncem úvěru, protože poskytovatel s nejnižšími celkovými náklady za 360 měsíců nemusí být nejlevnější, pokud úvěr ukončíte v 60. měsíci.',
+            },
+            {
+              q: 'Jak funguje scénář refinancování?',
+              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se náklady na uzavření refinancování vrátí. Pokud nová měsíční splátka nižší není, je doba návratnosti „nikdy“.',
+            },
+          ],
+        },
+        {
+          title: 'Sdílení a přesnost',
+          items: [
+            {
+              q: 'Obsahují odkazy ke sdílení vše potřebné?',
+              a: 'Ano. Odkaz ke sdílení obsahuje každý údaj, který příjemce potřebuje: každé pole u každého poskytovatele (typ sazby, hybridní kalendář, body, jednorázové splátky, poplatek za předčasné splacení), měnu, aktivní záložku analýzy a údaje pro horizont a scénář refinancování. Příjemce uvidí stejný pohled jako vy, se všemi vašimi údaji. Adresa obsahuje jen hodnoty, které se liší od výchozích, takže nové srovnání dá krátký odkaz.',
+            },
+            {
+              q: 'Jak přesné jsou výpočty?',
+              a: 'Celý splátkový kalendář se počítá v celých haléřích (centech), aby nevznikaly chyby zaokrouhlování v plovoucí čárce. Vzorec pro měsíční splátku se zaokrouhlí na nejbližší haléř a poslední splátka každého kalendáře se dorovná tak, aby součet splátek jistiny přesně odpovídal původní výši úvěru. APR se hledá metodou půlení intervalu v rovnici současné hodnoty nad stejným kalendářem v celých haléřích, s přesností výrazně vyšší, než vyžadují skutečně uváděné údaje poskytovatelů.',
+            },
+          ],
+        },
+        {
+          title: 'Podpora více měn',
+          items: [
+            {
+              q: 'Které měny jsou podporované?',
+              a: 'Podporovaných měn je třicet osm, mezi nimi euro (EUR), americký dolar (USD), britská libra (GBP), švýcarský frank (CHF), japonský jen (JPY), indická rupie (INR), čínský jüan (CNY), kanadský dolar (CAD), australský dolar (AUD), singapurský dolar (SGD), bangladéšská taka (BDT), keňský šilink (KES), západoafrický a středoafrický frank CFA (XOF, XAF) a hlavní severské, středoevropské, latinskoamerické, jihoasijské, jihovýchodoasijské a africké měny. Všechny částky se píšou tak, jak se v češtině píšou čísla, se symbolem nebo kódem za číslem (1 234 567,80 €, 1 234 567,80 ₹), a každá měna si ponechává svá desetinná místa: JPY například desetinná místa nepoužívá.',
+            },
+            {
+              q: 'Co tu znamená „více měn“?',
+              a: 'Znamená to, že kalkulačka pracuje ve zvolené měně: výsledky nesou její symbol a desetinná místa, zapsané tak, jak se v češtině píšou čísla. Výpočty jsou totožné: anuitní úvěr s pevnou sazbou se chová stejně, ať jednotkám říkáte dolary, rupie, nebo jeny. Všechny úvěry v jednom srovnání sdílejí jednu měnu, protože porovnávat nominální splátky v různých měnách (bez aktuálního kurzu) by bylo zavádějící.',
+            },
+          ],
+        },
+      ],
+    },
+    related: {
+      heading: 'Než cokoli podepíšete',
+      lead: 'Volba, která bude dávat smysl i za pět let.',
+      items: [
+        {
+          kicker: 'Jak porovnávat',
+          title: 'Podmínky úvěrů srozumitelně',
+          desc: 'APR, splácení, pevná a pohyblivá sazba, poplatky za předčasné splacení: drobné písmo, které rozhoduje o tom, která nabídka má nejnižší celkové náklady.',
+        },
+        {
+          kicker: 'Než si půjčíte',
+          title: 'Nejdřív finanční rezerva',
+          desc: 'Pokud by vás jeden špatný měsíc donutil vynechat splátku, je úvěr příliš velký. Mnoho lidí si proto před půjčkou vytváří rezervu.',
+        },
+        {
+          kicker: 'Myšlenkový model',
+          title: 'Zhodnocení a znehodnocení',
+          desc: 'Dům může během splácení získat na hodnotě. Auto ji obvykle ztrácí. Stejná měsíční splátka neznamená stejný obchod.',
+        },
+        {
+          kicker: 'Po podpisu',
+          title: 'Jak se dostat z dluhů',
+          desc: 'Praktický postup, jak splácet, co dlužíte, bez vyhoření v polovině cesty.',
+        },
+        {
+          kicker: 'Základy',
+          title: 'Co se počítá jako závazek',
+          desc: 'Rozdíl mezi dluhem, který něco buduje, a dluhem, který domácnost jen vysává.',
+        },
+      ],
+      footerTag: 'Další články o dluzích a úvěrech',
+      footerAll: 'Nebo procházejte všechny články',
+    },
+  },
+  island: {
+    currencies: currenciesCs,
+    toolbar: {
+      aria: 'Akce srovnání úvěrů',
+      currencyLabel: 'Měna zobrazení',
+      currencyHelp: 'Všechny úvěry v tomto srovnání používají tento formát.',
+      sample: 'Ukázka:',
+      share: 'Kopírovat odkaz ke sdílení',
+      shareCopied: 'Odkaz zkopírován',
+      shareTitle: 'Zkopírovat odkaz, který obsahuje všechny údaje o úvěrech',
+      reset: 'Obnovit výchozí hodnoty',
+      resetTitle: 'Smazat všechna data a začít znovu',
+      copiedBar: 'Odkaz zkopírován do schránky',
+      shareUrlAria: 'Adresa odkazu ke sdílení',
+      shareStatus: 'Odkaz ke sdílení zkopírován do schránky.',
+      copyPrompt: 'Zkopírujte tento odkaz:',
+    },
+    phoneTabs: {
+      groupAria: 'Zobrazený poskytovatel',
+      tabName: 'Poskytovatel {label}',
+      add: 'Přidat',
+      addAria: 'Přidat dalšího poskytovatele ke srovnání ({n} z {max})',
+      addCard: 'Přidat poskytovatele',
+      addCardHint: 'Porovnejte nabídky (max. {max})',
+    },
+    card: {
+      badge: 'Poskytovatel {label}',
+      removeAria: 'Odebrat poskytovatele {label} ze srovnání',
+      removeTitle: 'Odebrat ze srovnání',
+      name: 'Název poskytovatele',
+      principal: 'Výše úvěru',
+      rate: 'Roční úroková sazba (%)',
+      solveFor: 'Počítat',
+      modeTerm: 'Měsíční splátka',
+      modePayment: 'Měsíce do splacení',
+      term: 'Doba splatnosti (měsíce)',
+      monthly: 'Měsíční splátka',
+      requiredTitle: 'Povinné',
+      optionalTitle: 'Volitelné podrobnosti úvěru',
+      optionalSingle: '{status}, bez poplatků a mimořádných splátek',
+      optionalMulti: '{status}: {rest}',
+      statusHybrid: 'Hybridní (ARM)',
+      statusFixed: 'Pevná sazba',
+      statusFees: 'poplatky',
+      statusPrepayments: 'mimořádné splátky',
+      statusPenalty: 'poplatek za předčasné splacení',
+      rateStructure: {
+        title: 'Struktura sazby',
+        hint: 'Pevná, nebo nejdřív pevná a pak pohyblivá (ARM)',
+      },
+      rateTypeAria: 'Typ sazby',
+      fixed: 'Pevná',
+      hybrid: 'Hybridní (ARM)',
+      hybridHint: {
+        before: 'Hybridní úvěry (ARM) potřebují pevnou dobu splatnosti. Přepněte výše volbu ',
+        solveFor: 'Počítat',
+        mid: ' na hodnotu ',
+        modeTerm: 'Měsíční splátka',
+        after: ' a pole ARM budou dostupná.',
+      },
+      initialFixed: 'Počáteční období fixace (měsíce)',
+      initialFixedHelp: 'Obvykle: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
+      subsequentRate: 'Následná sazba (%)',
+      subsequentRateHelp:
+        'Sazba po skončení fixace. Skutečné úvěry ARM sledují referenční sazbu; tohle je váš odhad pro zátěžový test.',
+      costs: {
+        title: 'Náklady a poplatky',
+        hint: 'Sjednání, uzavření a body na snížení sazby',
+      },
+      fee: 'Poplatek za sjednání a uzavření',
+      pointsCost: 'Cena bodů na snížení sazby',
+      pointsCostHelp:
+        'Už započítaná v poplatku výše. Když ji zadáte ještě sem, kalkulačka ukáže dobu návratnosti bodů.',
+      pointsReduction: 'Snížení sazby díky bodům (p. b.)',
+      pointsReductionHelp: 'Např. 0,25 znamená, že body sníží sazbu o 0,25 procentního bodu.',
+      prepayments: {
+        title: 'Mimořádné splátky',
+        hint: 'Splácet navíc každý měsíc nebo jednorázově',
+      },
+      extra: 'Mimořádná splátka jistiny měsíčně',
+      lumps: 'Jednorázové mimořádné splátky',
+      lumpsHelp: {
+        before: 'Formát: ',
+        format: 'měsíc:částka',
+        mid: ', oddělené středníkem. Např. ',
+        after: ' znamená 5 000 ve 12. měsíci a 3 000 ve 36. měsíci.',
+      },
+      penalty: {
+        title: 'Poplatek za předčasné splacení',
+        hint: 'Některé úvěry účtují poplatek za splacení před koncem',
+      },
+      penaltyPct: 'Poplatek (% ze zbývající jistiny)',
+      penaltyUntil: 'Poplatek platí do (měsíce)',
+      penaltyUntilHelp:
+        'Pokud poplatek není, nechte 0. Účtuje se jen tehdy, když je úvěr splacen v tomto měsíci nebo dřív.',
+    },
+    results: {
+      monthly: 'Měsíčně',
+      monthlyExtra: '{base} + {extra} navíc',
+      apr: 'APR',
+      aprNa: 'není k dispozici',
+      aprFees: 'Včetně poplatků',
+      aprNoFees: 'Bez poplatků',
+      totalPaid: 'Zaplaceno celkem',
+      showDetails: 'Zobrazit podrobnosti',
+      timeToPayoff: 'Doba do splacení',
+      paymentsOne: '1 splátka',
+      paymentsMany: '{n} splátek',
+      paymentsFew: '{n} splátky',
+      totalInterest: 'Úroky celkem',
+      fees: 'Poplatky',
+      penalty: 'Poplatek za předčasné splacení',
+      penaltyHint: 'Účtováno, protože úvěr byl splacen předčasně v době, kdy poplatek platí',
+      breakEven: 'Doba návratnosti bodů',
+      never: 'nikdy',
+      breakEvenSaves: 'Za celou dobu ušetří {amount}',
+      breakEvenNever: 'Body nesníží měsíční splátku natolik, aby se vrátily',
+    },
+    delta: {
+      heading: 'Vedle sebe',
+      empty: 'Zadejte platné údaje alespoň u dvou poskytovatelů a uvidíte, jak si stojí.',
+      sameBefore: 'Všichni poskytovatelé vycházejí na stejné celkové náklady ',
+      sameAfter: '.',
+      rangeBefore: 'Celkové náklady se u poskytovatelů níže pohybují od ',
+      rangeTo: ' do ',
+      rangeAcross: ': rozpětí ',
+      rangeAfter: '.',
+      metricAria: 'Ukazatel',
+      monthlyPayment: 'Měsíční splátka',
+      monthsToPayoff: 'Měsíce do splacení',
+      aprInclFees: 'APR (vč. poplatků)',
+      totalInterest: 'Úroky celkem',
+      totalPaid: 'Zaplaceno celkem',
+      diffRow: 'Rozdíl oproti nejnižším celkovým nákladům',
+      baseline: 'výchozí',
+      baselineAria: 'výchozí hodnota (nejnižší celkové náklady)',
+    },
+    tabs: {
+      aria: 'Analýza',
+      listAria: 'Pohledy analýzy',
+      charts: {
+        label: 'Grafy',
+        hint: 'Zbývající jistina v čase a rozdělení každé splátky',
+      },
+      horizon: {
+        label: 'Horizont',
+        hint: 'Kde stojíte, pokud prodáte nebo refinancujete dřív',
+      },
+      refi: {
+        label: 'Refinancování',
+        hint: 'Porovnání ponechání a refinancování s dobou návratnosti',
+      },
+      how: {
+        label: 'Jak to funguje',
+        hint: 'Vzorec a metodika',
+      },
+    },
+    charts: {
+      balanceHeading: 'Zbývající jistina v čase',
+      balanceLead:
+        'Každá čára je zbývající jistina jednoho poskytovatele, měsíc po měsíci. Tečka na ose označuje, kdy je úvěr splacen.',
+      splitHeading: 'Kam jde každá splátka',
+      splitLead:
+        'Každý měsíc stejná splátka. Na začátku tvoří skoro celou splátku úrok; ke konci skoro celou splátku jistina.',
+      vendorLabel: 'Poskytovatel',
+      autoOption: 'Automaticky (nejnižší celkové náklady)',
+      incomplete: ' (neúplná data)',
+      splitEmpty:
+        'Zadejte výše platné údaje a uvidíte, jak se každá splátka dělí mezi úrok a jistinu.',
+      caption: {
+        before: 'Zobrazeno: ',
+        afterName: ', smluvní splátkový kalendář',
+        noExtras: ' (bez volitelných mimořádných splátek jistiny; pohled odpovídající APR)',
+        extraBefore: '. Mimořádná splátka v ',
+        yearEarly: '1. roce',
+        extraMid: ' ušetří úroky z této částky na 25 let; stejná splátka ve ',
+        yearLate: '24. roce',
+        extraAfter: ' neušetří skoro nic.',
+      },
+    },
+    balance: {
+      empty: 'Zadejte výše platné údaje a uvidíte graf splácení.',
+      ariaPrefix: 'Zbývající jistina úvěru v čase. ',
+      seriesLine: '{name}: začíná na {amount}, splaceno za {months}.',
+      start: 'Začátek',
+      year: 'Rok {y}',
+      month: 'Měsíc {m}',
+      yearMonth: 'Rok {y}, měsíc {m}',
+      paidOff: 'Splaceno, úroky {interest}',
+      left: 'Zbývá {balance}, úroky {interest}',
+      legendNote: 'splaceno za {months}',
+      swipe: 'Přejeďte prstem a uvidíte celý graf →',
+      groupAria:
+        'Graf zbývající jistiny. Jednotlivé roky přečtete šipkami doleva a doprava, s klávesou Shift po měsících.',
+      title: 'Zbývající jistina úvěru v čase',
+      axisYears: 'Roky',
+      hint: 'Ukažte na graf, klepněte na něj nebo použijte šipky a přečtěte zbývající jistinu v kterémkoli roce.',
+      tableCaption: 'Zbývající jistina úvěru v čase, vybrané měsíce',
+    },
+    split: {
+      ariaPrefix: 'Kam jde každá měsíční splátka, poskytovatel {vendor}. ',
+      ariaRow: '{when}: úrok {interest} ({pct} %), jistina {principal}.',
+      title: 'Kam jde každá splátka',
+      eyebrowInterest: 'ÚROK',
+      eyebrowPrincipal: 'JISTINA',
+      footnote: 'Každý měsíc stejná splátka, mění se poměr',
+      tableCaption: 'Rozdělení na úrok a jistinu pro poskytovatele {vendor}, vybrané okamžiky během splácení úvěru',
+    },
+    words: {
+      month: 'Měsíc',
+      payment: 'Splátka',
+      interest: 'Úrok',
+      principal: 'Jistina',
+    },
+    how: {
+      heading: 'Jak srovnání funguje',
+      intro:
+        'Pro každého poskytovatele kalkulačka sestaví celý splátkový kalendář podle standardního anuitního vzorce:',
+      symbols: {
+        p: ' je jistina úvěru, ',
+        r: ' je měsíční úroková sazba (roční sazba ÷ 12) a ',
+        n: ' je počet měsíčních splátek.',
+      },
+      monthly:
+        'Úrok každého měsíce se počítá ze zbývající jistiny, splátka se rozdělí mezi úrok a jistinu a jistina se sníží. Výpočet běží na haléře přesně.',
+      apr: {
+        strong: 'APR',
+        rest: ' zahrnuje poplatek za sjednání a uzavření do sazby tak, že ho bere jako srážku předem z toho, co skutečně dostanete, a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Uvádí se jako nominální roční sazba (měsíční sazba × 12), podle zvyklosti amerických informací o úvěrech.',
+      },
+      hybrid: {
+        strong: 'Hybridní úvěry (ARM)',
+        rest: ' používají po dobu fixace počáteční sazbu a v měsíci změny splátku přepočítají, aby se úvěr při následné sazbě i tak splatil v původní době.',
+      },
+      lumps: {
+        strong: 'Jednorázové mimořádné splátky',
+        rest: ' se použijí na jistinu AŽ PO běžné měsíční splátce, takže ve stejném měsíci nenesou úrok.',
+      },
+      penalties: {
+        strong: 'Poplatky za předčasné splacení',
+        rest: ' se uplatní jen tehdy, když je úvěr celý splacen v posledním měsíci platnosti poplatku nebo dřív.',
+      },
+      note: 'Vše běží ve vašem prohlížeči. Nic se neposílá na server. Tlačítkem „Kopírovat odkaz ke sdílení“ uložíte všechny údaje do adresy, kterou můžete předat někomu dalšímu.',
+    },
+    horizon: {
+      heading: 'Pokud prodám nebo refinancuji v...',
+      lead: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Každý řádek ukazuje, kde dlužník k tomuto datu skutečně stojí.',
+      label: 'Horizont: ',
+      inputAria: 'Horizont v měsících (text)',
+      empty: 'Zadejte platné údaje a uvidíte stav k danému horizontu.',
+      principalRepaid: 'Splacená jistina',
+      interestPaid: 'Zaplacené úroky',
+      balanceRemaining: 'Zbývající jistina',
+      totalCashOut: 'Celkem vydáno',
+    },
+    refi: {
+      heading: 'Scénář refinancování',
+      lead: 'Porovnejte ponechání úvěru s jeho refinancováním v budoucím měsíci. Hodí se, když sazby klesnou nebo zvažujete splacení úvěru ARM před změnou sazby.',
+      whichLoan: 'Který úvěr refinancovat?',
+      atMonth: 'Refinancovat v měsíci',
+      newRate: 'Nová sazba (%)',
+      newTerm: 'Nová doba splatnosti (měsíce)',
+      newFee: 'Nové náklady na uzavření',
+      rollFee: 'Přičíst náklady na uzavření k nové jistině',
+      empty: 'Vyberte platného poskytovatele a zadejte měsíc refinancování, sazbu a dobu splatnosti a uvidíte úsporu.',
+      keepTotal: 'Ponechat současný úvěr: celkem',
+      refiTotal: 'Refinancovat: celkem (obě části)',
+      saves: 'Refinancování ušetří',
+      costsMore: 'Refinancování stojí víc',
+      breakEven: 'Doba návratnosti (měsíce po refinancování)',
+      breakEvenHint: 'Jak dlouho musí nový úvěr běžet, aby se náklady na uzavření vrátily',
+      breakEvenNever: 'Nová měsíční splátka není nižší; náklady na uzavření se nevrátí',
+    },
+    disclaimer: {
+      summary: 'Předpoklady a upozornění',
+      body: 'Výpočty předpokládají měsíční úročení a včasné splátky. APR se zobrazuje jako nominální roční sazba (měsíční sazba × 12), počítaná ze smluvního kalendáře (bez dobrovolných splátek navíc), a zahrnuje poplatek za sjednání a uzavření do efektivních nákladů úvěru; země se liší v tom, které další náklady (povinné pojištění, účty, daně) se musí započítat do oficiálně uváděné sazby (v EU RPSN), takže pokud je chcete zohlednit, přičtěte je do pole poplatku. Kanadské hypotéky na bydlení se ze zákona úročí pololetně a brazilské a některé britské produkty používají jiné zvyklosti úročení; u takových produktů budou zdejší čísla s měsíčním úročením mírně odlišná. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu plus marži a mohou mít stropy sazby, které tato kalkulačka neuplatňuje; zadaná následná sazba je váš nejlepší odhad pro zátěžový test. Daň z nemovitostí, poplatky za správu domu, pojištění nemovitosti a daňové zacházení s úroky z úvěru ve vaší zemi se nemodelují. Jen vzdělávací srovnání; nejde o finanční poradenství. Pro závazné srovnání úvěrů nebo osobní radu se obraťte na hypotečního zprostředkovatele s příslušným oprávněním nebo finančního poradce s příslušným oprávněním.',
+    },
+    months: {
+      na: 'není k dispozici',
+      one: '1 měs.',
+      some: '{m} měs.',
+      years: '{y} r.',
+      yearsOne: '{y} r. 1 měs.',
+      yearsSome: '{y} r. {m} měs.',
+    },
+    engine: {
+      errors: {
+        principal: 'Jistina musí být větší než nula.',
+        payment: 'Měsíční splátka musí být větší než nula.',
+        belowInterest:
+          'Měsíční splátka je příliš nízká na to, aby úvěr kdy splatila; nepokryje ani úrok za první měsíc.',
+        notAmortizing: 'Úvěr se během {months} měs. nesplatí. Zvyšte měsíční splátku.',
+        term: 'Doba splatnosti musí být alespoň jeden měsíc.',
+        amount: 'Zadejte výši úvěru větší než nula.',
+        rate: 'Zadejte nezápornou úrokovou sazbu.',
+        initialFixed: 'Počáteční období fixace musí být kladný počet měsíců.',
+        termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
+        termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
+        paymentEnter: 'Zadejte měsíční splátku větší než nula.',
+        hybridMode: 'Úvěry s hybridní sazbou se musí zadávat v režimu doby splatnosti (měsíční splátka se dopočítá).',
+        refiOriginal: 'Původní úvěr je neplatný; refinancování nelze spočítat.',
+        refiMonth: 'Měsíc refinancování musí být alespoň 1.',
+        refiMonthEnd: 'Měsíc refinancování musí být před koncem původního úvěru.',
+        refiRate: 'Nová sazba nesmí být záporná.',
+        refiTerm: 'Nová doba splatnosti musí být alespoň 1 měsíc.',
+        refiBalance: 'Původní úvěr nemá v měsíci refinancování žádnou zbývající jistinu.',
+        newLoan: 'Nový úvěr není platný.',
+      },
+      warnings: {
+        precision:
+          'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste nám to prosím.',
+        subsequentRate:
+          'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
       },
     },
   },
