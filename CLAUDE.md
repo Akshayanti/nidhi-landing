@@ -14,7 +14,7 @@ Every change that affects privacy must come with an entry in the privacy policy 
      - New forms or server-side events. Changes to retention, deletion, vendors or hosting.
      - A new tool or page that collects or sends anything.
    - **Entry, `material: false`**: edits to the privacy notice's own text (clarifications, corrections, restructuring).
-   - **No entry**: publishing or scheduling lessons, editorial and figure changes, layout, styling, accessibility, SEO metadata, sitemap, robots.txt and llms.txt, copy elsewhere on the site, refactors, tests and docs.
+   - **No entry**: publishing or scheduling lessons, editorial and figure changes, layout, styling, accessibility, SEO metadata, sitemap, robots.txt and llms.txt, copy elsewhere on the site, refactors, tests and docs. Also a wording fix in a translated edition of the notice that leaves the English text and what it promises unchanged (a synonym swapped to match a glossary change, say).
    - **Unsure? Ask** before adding an entry or leaving one out.
 3. If a proposed change conflicts with what the privacy policy states, **pause and ask** whether to proceed. Do not silently implement something that contradicts the policy. This applies to every change, whether or not it needs an entry.
 4. Existing entries stay as written, even ones this rule would not require today: the changelog is a record of what the notice said and when.
