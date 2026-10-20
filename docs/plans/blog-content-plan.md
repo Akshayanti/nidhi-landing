@@ -193,6 +193,80 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 - [ ] No named instrument, ticker, brokerage, or product anywhere in figure or caption.
 - [ ] Caption is one short italic line of context, not a re-explanation.
 
+### 10. Layered lessons: pilot specification for three reading depths (Oct 2026; not yet a house rule)
+
+**Why.** Readers said the lessons are text heavy ("you need to be a scholar to read them"). The depth is not the problem: it is what makes the lessons trustworthy, and Rule 5 and the CLAUDE.md editorial voice depend on it. The problem was that every reader had to read everything, in order, at the same weight. Layering keeps the depth and lets each reader stop at the depth they came for:
+
+| Depth | Reader | What they get |
+|---|---|---|
+| 30 seconds | Arrived from a reel | TL;DR plus "In this lesson" at the top |
+| 3 to 5 minutes | Skimmer | Headings that state the point, figures, the main path |
+| Full | Scholar | Evidence, country notes, edge cases, one tap away in expanders |
+
+The CLAUDE.md order (concept, why people use it, evidence, where it breaks, what depends on you) maps onto it: concept and why stay visible; evidence and edge cases may fold away, but a one-line limit stays visible wherever a skimmer would otherwise take away an unqualified rule.
+
+This pilot tests whether layering can keep the lesson's reasoning while helping readers reach a useful stopping point sooner. Until the reader test is complete, the timings and components below are hypotheses, not house-wide requirements.
+
+**Evidence informing the pilot (context, not proof).** NN/g describes the "layer cake" scanning pattern, in which readers scan headings and stop at a relevant section ([NN/g](https://www.nngroup.com/articles/layer-cake-pattern-scanning/)); this supports testing headings that carry the point. Our World in Data's topic-page redesign is an example of key insights first, details on demand ([OWID](https://ourworldindata.org/owid-entry-redesign)). Retrieval-practice studies (Roediger and Karpicke 2006; Karpicke and Roediger 2007) found that attempting to recall beats rereading for retention a week later; a quick check only uses that mechanism if the reader tries to answer before opening it, and the studies do not show that every web lesson needs one. Rossetti et al. found mixed results for plain-language versions of financial text ([Rossetti et al. 2020](https://doras.dcu.ie/24532)), which cautions against relying on reading-level scores alone. Medium's 2013 analysis found peak reading time around seven minutes (~1,600 words) on its own platform; it measured time spent, a decade ago, and does not set a target for these lessons. Together these sources justify the pilot; they do not validate its exact timings or components.
+
+**Pilot pattern (what a layered lesson currently has).**
+1. **TL;DR as an answer:** two or three short sentences, not a summary paragraph.
+2. **Takeaways** in frontmatter, shown as "In this lesson" below the TL;DR (#193). Phrase them as concrete reader questions or outcomes; "Why", "How" and "What" are useful forms, not mandatory templates. There is no separate bottom recap.
+3. **Headings that state the point** ("A default is a guess about your household", not "What is a default?" or "Why it matters"). Test: someone reading only the headings gets the lesson.
+4. **A concise main path.** Aim for roughly 3 to 5 minutes, but keep a necessary teaching unit rather than cutting to meet the number: the pilot stopped at about 6 because cutting further meant removing whole teaching units (council, #194). If a lesson stays substantially longer, consider whether it holds two concepts that should be separate lessons; do not split it only to satisfy the timer.
+5. **Optional depth in expanders.** Evidence, country examples and edge cases may fold away when the visible text still supports the lesson's conclusion. Never hide a qualification needed to prevent a materially wrong takeaway; an expander adds depth and is never the only explanation of a section's claim:
+
+   ```html
+   <details class="lesson-depth">
+   <summary class="disclosure">Why a will does less in some countries</summary>
+
+   Markdown here: paragraphs, lists, tables, figures.
+
+   </details>
+   ```
+
+6. **Quick checks where they help learning:** up to two questions a reader can answer from the section above, inviting them to try before opening the answer. Quick checks are for recall, never for hiding a caveat, and are not added just to satisfy the format:
+
+   ```html
+   <details class="quick-check">
+   <summary class="disclosure">Quick check: is a missing default safer than a wrong one?</summary>
+
+   One or two sentences.
+
+   </details>
+   ```
+
+7. **A closing that hands the judgment back** (a question about the reader's own situation), not a to-do list.
+
+**Markup rules.** A blank line after `<summary>` and before `</details>`, so the markdown inside renders (the opposite of the `<figure>` rule in Rule 9, which needs no blank lines). No `##`/`###` inside an expander: the summary is the label, and the TOC skips headings inside `<details>` anyway. Summary labels are specific, never "More" or "Details". The template adds the "Optional detail" tag and card styling (#193).
+
+**What the template does with it (#193).** Reading time splits into the main path and the depth ("6 min read · +2 min of optional detail"); cards, learn home and the learning path show the main path; quick checks count as main path. The newsletter opens every expander before sending (#191) and shows the total. The 14-minute reading-time cap (see "Reading-time cap, Oct 3, 2026" in this file) applies to the total.
+
+**Checks when converting a lesson.**
+- [ ] Everything the lesson's Instagram kit promises is still on the page; expander labels reuse the kit's "more" wording where one exists.
+- [ ] FAQ, glossary, takeaways and body say the same thing (the pilot council caught three contradictions between body and FAQ).
+- [ ] Nothing a skimmer needs to avoid a wrong takeaway sits only inside an expander.
+- [ ] Teach, don't prescribe (CLAUDE.md), no dashes (Rule 6).
+- [ ] Rendered on phone and laptop, light and dark, expanders closed and open.
+- [ ] The normal council process required by `CLAUDE.md`.
+- [ ] If the conversion changes only lesson text or lesson frontmatter, no privacy entry or translation is required. Reassess both if the work also changes analytics, browser behaviour, shared interface copy or other site functionality.
+
+**Suggestions not yet applied** (from the Oct 20, 2026 review; try them on the next conversions):
+- **Key figure near the top**, when one figure carries the lesson's argument (emergency fund: "€3,000 shock, €3,000 vs €3,600").
+- **Open with a person:** the personas (`primaryPersona`) appear in the text of only 2 of 78 lessons. A short scene beats a definition; spread the stories beyond Eva (63 of 78 lessons).
+- **Figures that replace prose:** use a figure when shape, comparison or sequence communicates the idea more clearly than prose (Wait But Why's rule: if a drawing can do the work of the next paragraph, draw it). The reading-time count strips `<svg>`, so treat the displayed estimate as an approximation, not evidence that a figure costs the reader no time. 29 of 78 lessons have no figure.
+- **"Try it with your numbers"**: link the matching free tool where it fits; only 14 of 78 lessons set `relatedTool`.
+- **Reels land on the matching section**: link stickers and story links to `/blog/<slug>/#<heading-id>`, and reuse the reel's first line in that section.
+- **Jargon** explained in brackets on first use (already Rule 1); questions as turns in the argument.
+
+**Rollout and measurement (not started).**
+1. **Reader test:** five readers from the group that called the blog text heavy read the old and new inc-1 on a phone (the old version is in git before #192) for three minutes, then explain the idea back. This, not analytics, is the main signal: blog traffic is small.
+2. **Control lesson:** convert one long-live lesson (emergency fund, live since May 2026) to compare before and after.
+3. **PostHog:** check whether the page-leave events already carry scroll depth. Do not add any capture without a privacy changelog entry; the privacy notice says no continuous scroll stream is recorded.
+4. Then the remaining inclusive drafts (inc-2 onward), then older lessons. Each conversion re-checks its Instagram kit.
+
+**Status:** implemented in the inc-1 pilot (#192, #194), with supporting template (#193) and newsletter (#191) behaviour. The markup and rendering rules describe how the pilot works today. The editorial timings, components and rollout criteria stay provisional until the reader test and the control-lesson review are complete.
+
 ---
 
 ## Strategic Context
@@ -1452,7 +1526,7 @@ The footer is unconditional — it appears on every post, no frontmatter flag re
 
 **Why this is the highest-leverage rule:** it carries the residual regulatory risk in one structural place and lets body prose stay direct, punchy, and Eva-readable. Almost every "soften this sentence" reflex in finance writing is a workaround for the absence of a standing disclaimer; this disclaimer makes those workarounds unnecessary.
 
-**Complementary inline notices** (already in the layout, separate from D-4): for posts flagged `regulatoryNote: "caution"` (projections-heavy posts) and `regulatoryNote: "danger"` (tax-touching posts), `BlogPost.astro` renders an additional notice block at the *top* of the post body. That covers the higher-risk subset; D-4 covers everything universally.
+**Complementary inline notices** (already in the layout, separate from D-4): for posts flagged `regulatoryNote: "caution"` (projections-heavy or legal and planning topics; 7 lessons) and `regulatoryNote: "danger"` (tax-touching posts; 11 lessons), `BlogPost.astro` renders an additional notice block at the *top* of the post body. That covers the higher-risk subset; D-4 covers everything universally. The caution notice was shortened on Oct 21, 2026 to one line, "Heads up: This lesson explains general principles. It is not personal advice for your situation.", because the top of a layered lesson (Rule 10) should reach the answer quickly and the full D-4 note still closes every post.
 
 **Status:** SHIPPED (May 2026). Audit-flagged inline caveats (#25 4% rule, #28 transaction costs, etc.) remain in body prose where they add reader value — they're now reinforcement, not the primary regulatory anchor.
 
