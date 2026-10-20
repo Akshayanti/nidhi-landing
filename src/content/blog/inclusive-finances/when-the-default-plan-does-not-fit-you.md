@@ -2,12 +2,12 @@
 slug: "when-the-default-plan-does-not-fit-you"
 title: "When the Default Plan Doesn't Fit You"
 description: "Financial defaults assume a particular household. How to spot the assumption behind each one and replace it on purpose when it does not match your life."
-tldr: "Most of what happens to your money in a crisis is decided by defaults: who inherits if there is no will, who a pension pays when you die, who can speak to your bank or your doctor if you cannot, what your employer counts as family, whose credit history counts. Those defaults were designed around one household shape: two legally married adults, a stable local employer, a life lived in one country. If that is you, the defaults quietly do a reasonable job. If it is not, they quietly do the wrong thing, and you usually find out at the worst moment. This post gives you a three-question audit you can apply to any financial decision: what is this default assuming, does that assumption hold for me, and if not, what do I put in its place on purpose. It introduces three terms the rest of this series uses: the default assumption, the deliberate designation (a choice you write down so the default never applies), and the recognition gap (where the law or an institution does not recognise a relationship or a status that your household treats as central). It ends with a one-hour audit you can run this week."
+tldr: "When you make no choice, defaults decide who inherits, who a pension pays and who can act for you, and most were written for a married couple with a local employer in one country. If your household looks different, three questions show which defaults are guessing wrong. Many of the fixes are free."
 takeaways:
   - "Why financial defaults quietly assume one kind of household"
   - "How to use the three-question audit on any account or rule"
   - "What deliberate designations and recognition gaps are"
-  - "That most fixes are free or cheap once you know the default exists"
+  - "That many useful fixes are free or inexpensive once you know the default exists"
 order: 45.5
 companionOf: "life-events"
 pubDate: 2026-10-21
@@ -23,11 +23,11 @@ faq:
   - question: "Who do financial defaults usually fail?"
     answer: "Anyone whose household does not match the shape the rules were written for. Common examples: couples who live together without marrying, couples whose marriage is not recognised where they live, people whose closest relationships are friends or chosen family and not blood relatives, blended families, people living alone, freelancers and informal workers with no employer benefits, people who moved countries and left their credit history behind, and people whose faith rules out interest. None of these situations is rare. Together they describe a large share of households."
   - question: "What is a deliberate designation?"
-    answer: "It is a written choice that replaces a default. A will is a deliberate designation of who inherits. A beneficiary form on a pension or an insurance policy is a deliberate designation of who is paid. A power of attorney is a deliberate designation of who can act for you. The common feature is that you decide in advance, in the form the relevant institution recognises, so the default rule never gets to apply."
+    answer: "It is a written choice, in a form the institution recognises, meant to replace or influence a default. A will is a deliberate designation of who inherits. A beneficiary form on a pension or an insurance policy may decide who is paid or only guide the scheme's decision, depending on the scheme and local law. A power of attorney is a deliberate designation of who can act for you. The common feature is that you decide in advance."
   - question: "What is a recognition gap?"
-    answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognises. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap, but you can almost always plan around it once you know it is there."
+    answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognises. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap. Naming it can show where a designation, a workaround or local advice could help, though some gaps cannot be fully closed."
   - question: "Does this mean I need a lawyer for everything?"
-    answer: "No. Many deliberate designations cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home, keeping a list of accounts where someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
+    answer: "No. Many deliberate designations cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home and checking that the title or registry says the same, keeping a list of accounts where someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
   - question: "Is this post legal advice?"
     answer: "No. The rules on inheritance, relationship recognition, tax, and decision-making authority differ from country to country and sometimes from region to region. This post teaches a way of asking the right questions. The answers for your own situation come from the rules where you live, and for anything with real money or real consequences attached, from a qualified local professional."
 reelPromise: "The three question audit and the one hour checklist for finding which financial defaults are quietly deciding things for you"
@@ -45,40 +45,25 @@ referentialReading:
     type: "tool"
 ---
 
-Two households have identical finances. The same flat, the same savings, the same pension balances, the same insurance policies. In each, one partner dies unexpectedly at 44.
+Two couples have identical finances: the same flat in one partner's name, the same savings, the same pensions. Both have been together for fifteen years. In each, the partner who owns the flat dies suddenly at 44.
 
-In the first household the couple was married. The flat passes to the surviving spouse. The pension scheme pays a survivor benefit. The bank talks to the widow the same week. There is tax to think about, but the spouse allowance is generous.
+The first couple was married. In many countries the flat passes to the surviving spouse, the pension pays a survivor benefit, and the bank talks to the surviving spouse the same week.
 
-In the second household the couple had lived together for fifteen years and never married. In many countries the flat now belongs, by law, to the dead partner's parents or siblings. The pension scheme pays nothing, because its rules say "spouse". The bank will not discuss the account. If anything does pass to the surviving partner, it may be taxed as a gift between strangers.
+The second couple never married. In many countries the flat now passes by law to the dead partner's parents or siblings. The pension may pay nothing, because its rules say "spouse". The bank may refuse to discuss the account. Anything that does pass to the surviving partner may be taxed as a gift between strangers.
 
-Nothing about the money was different. The only difference was which household the rules had been written for.
+Nothing about the money was different. The only difference was which household the rules were written for.
 
-This post is about that difference, and about what to do when the rules were not written for you.
+## A default is a guess about your household
 
-## Defaults decide more than you think
+A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's beneficiary form blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
 
-A **default** is what happens when you make no choice. Financial life is full of them, and most of the time they are invisible.
+Defaults are useful: many people never write a will, and something sensible happening beats nothing happening. The [life events](/blog/life-events/) post made a related point: the costly mistake is treating a foreseeable event as a surprise.
 
-If you die without a will, you die **intestate** (the legal word for having left no valid will), and a fixed set of rules decides who gets what. If you never filled in the beneficiary form on a pension, the scheme's rulebook decides who is paid. If an accident leaves you unable to make decisions and you appointed nobody, a court or a statutory list decides who speaks for you.
+But each default is a guess about what you would have wanted, and the guess was made with one household in mind.
 
-Defaults are useful. Most people never write a will, and it is better that something sensible happens than nothing at all. The earlier post on [life events](/blog/life-events/) made a related point: the costly mistake is treating a foreseeable event as a surprise.
+## Five defaults built for one kind of household
 
-But a default is a guess about what you would have wanted, and the guess was made with a specific household in mind.
-
-## The household the rules imagine
-
-Read enough pension rulebooks, tax codes, and inheritance statutes and the same picture appears. The imagined household has:
-
-- Two adults who are legally married to each other
-- Children who are the biological or adopted children of both
-- One or two salaried jobs with a stable local employer
-- A working life spent in one country
-- Conventional, interest-bearing banking and borrowing
-- Family nearby who will step in when someone is ill
-
-If that describes you, the defaults mostly work. If any line does not, at least one default is quietly pointing the wrong way.
-
-Here are five defaults that carry that picture inside them.
+The rules mostly imagine two married adults, their shared children, a steady local employer and a life in one country. Each of these defaults carries that picture inside it.
 
 | Default | What it assumes | Who it misses |
 |---|---|---|
@@ -88,34 +73,54 @@ Here are five defaults that carry that picture inside them.
 | Benefits through work | You have an employer who withholds tax and funds a pension | Freelancers, gig workers, informal workers |
 | Credit and banking history | Your financial record was built here and is continuous | Anyone who moved countries or works in cash |
 
-None of these groups is unusual. The International Labour Organization estimates that about 58% of the world's workers, more than two billion people, were in informal employment in 2023. Cohabiting without marrying is common among younger couples in much of Europe. Hundreds of millions of people live outside the country they were born in. The "default household" is one shape among many. It just happens to be the one the paperwork was drafted for.
+If that household is yours, the defaults mostly do a reasonable job. If any part of it is not, one or more defaults may not match your household, and people often find out at the worst moment.
 
-## Three terms this series uses
+<details class="lesson-depth">
+<summary class="disclosure">The household the rules imagine, and how many people it leaves out</summary>
 
-The posts in this series share a small vocabulary. It is worth learning now because every later post leans on it.
+Read enough pension rulebooks, tax codes and inheritance statutes and the same picture appears. The imagined household has:
 
-**Default assumption.** The guess built into a rule or a product about who you are. "The beneficiary is the spouse" is a default assumption. So is "the borrower has a local credit file".
+- Two adults who are legally married to each other
+- Children who are the biological or adopted children of both
+- One or two salaried jobs with a stable local employer
+- A working life spent in one country
+- Conventional, interest-bearing banking and borrowing
+- Family nearby who will step in when someone is ill
 
-**Deliberate designation.** A written choice, in a form the institution accepts, that replaces the default. A will is one. A **beneficiary designation** (the form where you name who receives a pension or an insurance payout) is another. So is a power of attorney, a document naming who may act for you.
+None of the groups the table lists is unusual. The International Labour Organization estimates that about 58% of the world's workers, more than two billion people, were in informal employment in 2023. Cohabiting without marrying is common among younger couples in much of Europe. Hundreds of millions of people live outside the country they were born in. The "default household" is one shape among many. It just happens to be the one the paperwork was drafted for.
 
-**Recognition gap.** The distance between how your household works and what the law or an institution recognises. A partner who is family in every practical sense but a stranger on paper is a recognition gap. So is a marriage that is valid in one country and ignored in the next, or a twenty-year payment record that a new lender cannot see.
+</details>
 
-You cannot always close a recognition gap. You can nearly always plan around it, once you have named it.
+## Three words this series uses
 
-## The three-question audit
+Every later post in this series leans on these three terms.
 
-For any financial decision, account, or product, ask three questions in order.
+**Default assumption.** The guess a rule or product makes about who you are. "The beneficiary is the spouse" is one. So is "the borrower has a local credit file".
 
-**1. What is this assuming about me?**
-Read the rule, not the brochure. Who does the pension pay if you die? Who inherits under the intestacy rules where you live? What does your employer's benefits policy define as a dependant? What does a lender need to see before it will price a loan?
+**Deliberate designation.** A written choice, in a form the institution accepts, that is meant to replace or influence the default. A will is one. A **beneficiary designation** (the form naming who receives a pension or insurance payout) is another. So is a power of attorney, a document naming who may act for you.
 
-**2. Does that assumption hold for my household?**
-Answer this for your actual life, not the tidy version. Are you married in the eyes of the country you live in? Would the person you rely on be recognised by this institution? Is your income the kind this product expects?
+**Recognition gap.** The distance between how your household works and what the law or an institution recognises. A partner who is family in every practical sense but a stranger on paper is a recognition gap. So is a marriage valid in one country and ignored in the next, or a twenty-year payment record a new lender cannot see.
 
-**3. If not, what do I put in its place on purpose?**
-This is where a deliberate designation goes. Sometimes it is a form that takes five minutes. Sometimes it is a document that needs a professional. Sometimes there is no clean fix and the answer is a workaround: extra insurance, a larger cash buffer, a record you keep yourself.
+You cannot always close a recognition gap. Naming it shows where a designation, a workaround or local advice could help, though some gaps cannot be fully closed.
 
-The audit does not tell you what to decide. It tells you which decisions are currently being made for you.
+<details class="quick-check">
+<summary class="disclosure">Quick check: you never filled in the beneficiary form on your pension. Who decides who is paid?</summary>
+
+The scheme's own rules: that is the default. A beneficiary form may decide who is paid or only guide the scheme's decision, depending on the scheme and local law.
+
+</details>
+
+## Three questions find the defaults that do not fit
+
+For every account that pays out, and for any rule or product, the audit asks three questions in order.
+
+**1. What is this assuming about me?** Read the rule, not the brochure. Who does the pension pay if you die? Who inherits under the rules where you live? What does your employer count as a dependant?
+
+**2. Does that assumption hold for my household?** For your actual life, not the tidy version. Are you married in the eyes of the country you live in? Would the person you rely on be recognised here?
+
+**3. If not, what goes in its place on purpose?** Sometimes a five-minute form. Sometimes a document that needs a professional. Sometimes there is no clean fix, and the answer is a workaround: extra insurance, a larger cash buffer, a record you keep yourself.
+
+The audit does not tell you what to decide. It shows which decisions are currently being made for you.
 
 <figure>
 <svg viewBox="0 0 600 360" role="img" aria-labelledby="fig-audit-title fig-audit-desc" xmlns="http://www.w3.org/2000/svg">
@@ -151,66 +156,85 @@ The audit does not tell you what to decide. It tells you which decisions are cur
 <figcaption>The first two questions find the defaults that do not fit. The third identifies the designation, structure, or workaround that could replace them. Every post in this series applies this audit to one default.</figcaption>
 </figure>
 
-## The audit at work: one account, three households
+## One €80,000 pension, three different answers
 
-Take a single workplace pension worth €80,000 and run the audit for three different people.
+Take one workplace pension worth €80,000 and run the audit for three people.
 
-**A married employee.** The scheme rules pay a survivor benefit to the legal spouse. The assumption holds. A beneficiary form is still worth completing, because rules change and marriages end, but the default would do roughly the right thing.
+**A married employee.** Many schemes pay a survivor benefit to the legal spouse. The assumption holds. Many people still fill in the beneficiary form, because rules change and marriages end.
 
-**An employee with a long-term unmarried partner.** The assumption fails. Many schemes pay to a spouse or, failing that, to the estate. The estate then follows the inheritance rules, which may exclude the partner entirely. The fix is often a single form naming the partner, where the scheme allows it. Where it does not, the workaround is a will plus life cover that the partner owns.
+**An employee with a long-term unmarried partner.** The assumption fails. Many schemes pay a spouse or, failing that, the estate, and the estate follows inheritance rules that may leave the partner out entirely. Where the scheme accepts nominations, one form naming the partner may decide or influence who is paid; the scheme's rules say whether it is binding. Where it does not, a common workaround is life cover owned by the partner, plus a will where local inheritance rules leave room for one.
 
-**A freelancer with no workplace pension at all.** The question changes. There is no scheme to audit, which means there is no employer contribution and no survivor benefit either. The default here is "nothing happens", and the deliberate designation is a retirement account the freelancer opens and funds alone, with a named beneficiary from day one.
+**A freelancer with no workplace pension.** There is no scheme to audit, so there is no employer contribution and no survivor benefit either. The default is "nothing happens". If they want one, the deliberate designation is a retirement account they open and fund alone, with a named beneficiary where the account allows it.
 
-Same question, three different answers. That is the point of asking it.
+Same question, three different answers. That is why it is worth asking.
 
-## Why the cheap fixes are usually enough
+<details class="quick-check">
+<summary class="disclosure">Quick check: the freelancer has no workplace scheme to check. Does that mean no default applies?</summary>
 
-Reading a list of defaults that fail you can feel like a list of expensive problems. It mostly is not.
+No. "Nothing happens" is the default: no employer contribution and no survivor benefit. A missing default can leave a bigger gap than a wrong one.
 
-Deliberate designations fall into three cost bands.
+</details>
 
-**Free and fast.** Naming beneficiaries on pensions, insurance, and investment accounts. Writing down who owns what share of a shared home or car. Keeping a list of every account and where the documents are, somewhere a trusted person can find it. Most households can do all of this in an evening.
+## Many of the fixes are free
+
+A list of defaults that fail you can look like a list of expensive problems. Mostly it is not. Deliberate designations fall into three cost bands.
+
+**Free, in an evening.** Naming beneficiaries on pensions, insurance and investment accounts. Writing down who owns what share of a shared home or car, and checking that the title or registry says the same. Keeping a list of every account, somewhere a trusted person can find it.
 
 **Modest, and worth doing properly.** A will. Powers of attorney for money and for health decisions. A written agreement between partners about shared property. These need the form your jurisdiction requires, and many people find a local professional worth the cost.
 
-**Genuinely hard.** Recognition gaps that no document closes: a marriage that is not recognised, a status that blocks access to banking, a tax system that treats a partner as a stranger. Here the tools are workarounds. Insurance can replace a benefit you are excluded from. A bigger emergency fund can replace a safety net you do not have. Holding assets in the right name from the start can avoid a transfer that would be taxed.
+**Hard: gaps no document closes.** A marriage that is not recognised, a status that blocks access to banking, a tax system that treats a partner as a stranger. Here the tools are workarounds. Insurance can stand in for a benefit you are excluded from. A bigger emergency fund can stand in for a missing safety net. In some places, whose name an asset is held in from the start affects later tax and inheritance, though changing it has its own consequences and needs local advice.
 
-Most of the protection comes from the first band. The common failure is not that the fix was expensive. It is that nobody knew the default existed.
+Many useful changes sit in the first band, though which protection matters most depends on the household and local law. The common failure is not cost. It is not knowing the default exists.
 
-## The one-hour default audit
+## The one-hour audit: five lists
 
-You can do a first pass in an hour with a notebook. Work through five lists.
+A first pass takes about an hour with a notebook.
 
-1. **Every account with a payout.** Pensions, life insurance, investment accounts. For each one: who is named as beneficiary today? If the answer is "nobody" or "an ex", that is the first thing to fix.
-2. **What you own jointly.** Home, car, accounts. For each: whose name is on it, and what happens to your share if you die? If you do not know, find out.
-3. **Who inherits with no will.** Look up the intestacy rules for where you live. Compare that list with the people you would actually choose.
-4. **Who can act for you.** If you were unconscious tomorrow, who could pay your rent, and who would a hospital listen to? If the honest answer is "a relative I have not spoken to in years", that is a recognition gap.
-5. **What you would lose with your job.** Health cover, pension contributions, income protection, residency status in some countries. Anything that arrives through an employer disappears with the employer.
+1. **Every account that pays out.** Pensions, life insurance, investment accounts. Who is named as beneficiary today? "Nobody" or "an ex" are the answers people most often want to change.
+2. **What you own jointly.** Home, car, accounts. Whose name is on each, and what happens to your share if you die?
+3. **Who inherits with no will.** Look up the rules where you live and compare that list with the people you would actually choose.
+4. **Who could act for you.** If you were unconscious tomorrow, who could pay your rent, and who would a hospital listen to? If the honest answer is "a relative I have not spoken to in years", that is a recognition gap.
+5. **What you would lose with your job.** Health cover, pension contributions, income protection, in some countries residency status. Many benefits that arrive through an employer end with the job, though pension balances and some rights can continue.
 
-You will finish with a short list of mismatches. Most of them will have a free fix.
+The output is a short list of mismatches, not a plan. Many cost nothing to fix, though a beneficiary choice still deserves thought.
 
-## Cross-continent notes
+## The rules change at the border
 
-The shape of the problem is universal. The details are not.
+The shape of the problem is the same everywhere. The details are not. What a will can do, when living together counts, how couples are taxed and how many workers have an employer at all: each varies by country. Treat every specific in this series as an example of a category. The category travels. The specific does not.
 
-**Inheritance freedom differs.** In England and Wales, much of the United States, and other common-law systems, a will can leave almost everything to almost anyone. In much of continental Europe and Latin America, **forced heirship** rules (a share of the estate reserved by law for children, and sometimes a spouse) limit what a will can do. A will still matters there, but it works inside tighter limits.
+<details class="lesson-depth">
+<summary class="disclosure">Why a will does less in some countries</summary>
 
-**Relationship recognition differs.** Some countries give long-term cohabiting couples rights close to those of spouses after a set number of years. Others give them none, however long they have lived together. Registered partnerships sit in between, and the rights they carry vary widely.
+In England and Wales, much of the United States and other common-law systems, a will can leave almost everything to almost anyone. In much of continental Europe and Latin America, **forced heirship** rules (a share of the estate reserved by law for children, and sometimes a spouse) limit what a will can do. A will still matters there, but it works inside tighter limits.
 
-**The tax unit differs.** Some systems tax individuals, some tax couples jointly, and several give married couples large exemptions on gifts and inheritance that unmarried partners do not get.
+</details>
 
-**Employment norms differ.** In some economies most workers have formal contracts and social insurance. In others the majority do not, and "benefits through work" describes a minority.
+<details class="lesson-depth">
+<summary class="disclosure">When living together starts to count</summary>
 
-Treat every specific in this series as an example of a category. The category travels. The specific does not.
+Some countries give long-term cohabiting couples rights close to those of spouses after a set number of years. Others give them none, however long they have lived together. Registered partnerships sit in between, and the rights they carry vary widely.
 
-## Getting started
+</details>
 
-Do not try to fix everything at once. Three steps, in order:
+<details class="lesson-depth">
+<summary class="disclosure">How countries tax couples differently</summary>
 
-- **Run the one-hour audit above.** The output is a list, not a plan.
-- **Fix the free things this week.** Beneficiary forms, a list of accounts, a note of who owns what.
-- **Pick the one paid item that matters most.** For many households it is a will or a power of attorney, in whatever form local law requires.
+Some systems tax individuals, some tax couples jointly, and several give married couples large exemptions on gifts and inheritance that unmarried partners do not get.
 
-The later posts in this series take the audit into specific situations: working without an employer, borrowing and investing without interest, moving countries, relying on one income, and sharing a life without a marriage certificate. Each one starts from the same three questions.
+</details>
 
-The defaults were never neutral. They were someone's best guess about a household that may not be yours. The work is to replace the guess with a choice.
+<details class="lesson-depth">
+<summary class="disclosure">Where benefits through work are the exception</summary>
+
+In some economies most workers have formal contracts and social insurance. In others the majority do not, and "benefits through work" describes a minority.
+
+</details>
+
+## Where this series goes next
+
+A common order is the one-hour audit first, then the free fixes, then the one paid item that matters most for that household, often a will or a power of attorney in the form local law requires. Which item that is depends on your country, your relationships and what you would lose with your job.
+
+The later posts take the audit into specific situations: working without an employer, borrowing and investing without interest, moving countries, relying on one income, and sharing a life without a marriage certificate. Each starts from the same three questions.
+
+The defaults were never neutral. They were someone's best guess about a household that may not be yours. Which of the five is guessing about yours?
