@@ -1191,7 +1191,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Kalkulačka čistého jmění, v jedné měně i ve více | nidhi',
     description:
-      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží ve vašem prohlížeči, nic se neodesílá.',
+      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží v prohlížeči, nic se neodesílá.',
   },
   schema: {
     name: 'Kalkulačka čistého jmění nidhi',
