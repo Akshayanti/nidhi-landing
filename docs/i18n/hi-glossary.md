@@ -50,12 +50,25 @@ breach as a defect.
 5. **The brand stays Latin.** `nidhi` is never transliterated. Product names
    (PostHog, Frankfurter) and source names (the cited papers, institutions and
    data sets) stay as they are.
-6. **English in parentheses on first use.** The first time a Hindi string uses a
-   translated term, the English term follows it in parentheses, which is
-   standard practice in Indian financial writing. Later uses drop it. On the
-   learning path this applies to the level "covered" lists and the level
-   helper's concepts, not to tag descriptions and cards, where it would crowd a
-   two-line summary.
+6. **English in parentheses on first use.** Settled by the council on
+   2026-10-20, after the owner found that terms such as शुद्ध संपत्ति read
+   oddly on their own. The English sits in the bracket in Latin letters,
+   `शुद्ध संपत्ति (net worth)`, because it is the word the reader meets next:
+   in the English lessons, on a bank statement, in a search box. It goes:
+   - **once per page**, at the term's first use in visible prose, including a
+     tooltip or an FAQ answer that explains the term, and the learning path's
+     level "covered" lists and helper concepts. Later uses on that page drop it.
+   - **in a tool's H1 and `<title>`**, for that tool's own term only:
+     `शुद्ध संपत्ति (Net Worth) कैलकुलेटर`, like `महँगाई कैलकुलेटर (Inflation
+     Calculator)`.
+   - **never** in meta descriptions, other headings (an FAQ question is a
+     heading), nav labels, buttons, form labels, chart legends, cards, tag
+     descriptions, or a tool's result lines, which change with the input. In a
+     tool the bracket sits in the page's prose (lead, intro, FAQ, notes).
+   - **only on a term marked "bracket" below**: one that is bookish, opaque, or
+     better known in English. Everyday Hindi (ब्याज, बचत, कर्ज़, महँगाई, मूलधन,
+     किस्त) and loanwords (रिटर्न, एसेट क्लास) never get one.
+   The privacy notice stays exempt; see its section.
 7. **No new browser storage and no keys renamed.** The keys are the same in
    every language, and `nidhi-reading-progress` is deliberately shared, so a
    lesson opened from either language counts once.
@@ -81,13 +94,13 @@ why this one won, so it is not re-argued in a later lesson.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| net worth | शुद्ध संपत्ति | Decided against कुल संपत्ति, which reads as total assets and would let a reader add up what they own without subtracting what they owe. शुद्ध is the word for net. नेट वर्थ was the other candidate and is common in Hindi business writing; शुद्ध संपत्ति won because the term a reader meets first should teach the subtraction rather than hide it behind a loanword, and rule 6 puts नेट वर्थ in parentheses on first use anyway. |
+| net worth | शुद्ध संपत्ति | **Bracket** (net worth). Decided against कुल संपत्ति, which reads as total assets and would let a reader add up what they own without subtracting what they owe. शुद्ध is the word for net. नेट वर्थ was the other candidate; शुद्ध संपत्ति won because the term should teach the subtraction rather than hide it behind a loanword. The owner found it odd on its own, so on 2026-10-20 the council kept it and gave it the bracket rather than switching. |
 | assets | संपत्तियाँ | Singular संपत्ति where the sentence needs it. |
 | what you owe | जो आप पर बकाया है | Never the bare जो आप पर है, which is "what is on you" and reads as unfinished. In a list (what you own, owe, earn and spend) use nouns instead: आपकी संपत्ति, आपका कर्ज़, आपकी कमाई और आपका खर्च. |
-| liabilities | देनदारियाँ | Not ऋण: देनदारियाँ covers mortgages, card balances and informal debt alike. |
+| liabilities | देनदारियाँ | **Bracket** (liabilities). Not ऋण: देनदारियाँ covers mortgages, card balances and informal debt alike. |
 | debt | कर्ज़ | The everyday word. ऋण is formal and is avoided outside quoted material. |
 | loan | लोन | ऋण avoided for readability, see above. |
-| principal | मूलधन | |
+| principal | मूलधन | No bracket: every Indian loan statement prints it. |
 | interest | ब्याज | |
 | interest rate | ब्याज दर | |
 | EMI | EMI | Latin, as borrowers say it. Spelled out as मासिक किस्त only where the lesson defines the term. |
@@ -97,8 +110,8 @@ why this one won, so it is not re-argued in a later lesson.
 | expenses | खर्च | |
 | savings | बचत | The act and the stock. "Savings rate" is बचत दर. |
 | budget | बजट | |
-| emergency fund | आपातकालीन कोष | Decided against इमरजेंसी फंड, which reads as a product rather than a purpose. |
-| net income | शुद्ध आय | |
+| emergency fund | आपातकालीन कोष | **Bracket** (emergency fund). Decided against इमरजेंसी फंड, which reads as a product rather than a purpose; the council kept that on 2026-10-20 and added the bracket instead. |
+| net income | शुद्ध आय | **Bracket** (net income), in step with net worth. |
 
 ### Growing money
 
@@ -107,14 +120,14 @@ why this one won, so it is not re-argued in a later lesson.
 | investing | निवेश | |
 | investment | निवेश | Same word; the sentence carries the difference. |
 | return | रिटर्न | प्रतिफल is accurate but rare in the writing a general reader meets. |
-| compounding | चक्रवृद्धि | चक्रवृद्धि ब्याज for compound interest. |
+| compounding | चक्रवृद्धि | **Bracket** (compounding). चक्रवृद्धि ब्याज for compound interest. |
 | inflation | महँगाई | Decided: महँगाई is what a reader actually uses; मुद्रास्फीति is the official term and appears only beside a cited figure that names it. |
-| purchasing power | क्रय शक्ति | |
+| purchasing power | क्रय शक्ति | **Bracket** (purchasing power). Kept because Hindi inflation reporting uses it. |
 | risk | जोखिम | |
-| volatility | अस्थिरता | |
-| diversification | विविधीकरण | |
-| asset allocation | परिसंपत्ति आवंटन | |
-| rebalancing | पुनर्संतुलन | |
+| volatility | उतार-चढ़ाव | **Bracket** (volatility). Council, 2026-10-20: replaces अस्थिरता, which reads as political instability; Hindi business news describes markets with उतार-चढ़ाव. |
+| diversification | विविधीकरण | **Bracket** (diversification). |
+| asset allocation | एसेट एलोकेशन | Council, 2026-10-20: replaces परिसंपत्ति आवंटन, which no reader uses. A loanword, so no bracket. |
+| rebalancing | रीबैलेंसिंग | Council, 2026-10-20: replaces पुनर्संतुलन. The verbs are रीबैलेंस करना and, intransitive, रीबैलेंस होना; `re-` is spelled री as in रीफ़ाइनेंस. A loanword, so no bracket. |
 | portfolio | पोर्टफ़ोलियो | |
 | index fund | इंडेक्स फंड | |
 | mutual fund | म्यूचुअल फंड | |
@@ -122,7 +135,7 @@ why this one won, so it is not re-argued in a later lesson.
 | share, stock | शेयर | |
 | bond | बॉन्ड | |
 | fixed income | फिक्स्ड इनकम | |
-| expense ratio | व्यय अनुपात | |
+| expense ratio | एक्सपेंस रेशियो | Council, 2026-10-20: replaces व्यय अनुपात: it is the label on the fund page a reader checks. A loanword, so no bracket. |
 | tax | कर | आयकर for income tax. |
 | tax-advantaged account | कर-बचत खाता | |
 | fees, charges | शुल्क | |
@@ -131,9 +144,9 @@ why this one won, so it is not re-argued in a later lesson.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| financial independence | वित्तीय स्वतंत्रता | Reversed after the about page: it was आर्थिक स्वतंत्रता, which is the commoner phrase. वित्तीय wins on the rule that one English term gets one Hindi rendering: this list already has वित्तीय साक्षरता for financial literacy and वित्तीय सलाह for financial advice, and आर्थिक means economic, which is a different word. |
+| financial independence | वित्तीय स्वतंत्रता | **Bracket** (financial independence). Reversed after the about page: it was आर्थिक स्वतंत्रता, which is the commoner phrase. वित्तीय wins on the rule that one English term gets one Hindi rendering: this list already has वित्तीय साक्षरता for financial literacy and वित्तीय सलाह for financial advice, and आर्थिक means economic, which is a different word. |
 | retirement | रिटायरमेंट | सेवानिवृत्ति is the official word and reads as a form. |
-| withdrawal rate | निकासी दर | |
+| withdrawal rate | निकासी दर | **Bracket** (withdrawal rate). The loanword reads awkwardly in Devanagari. |
 | safe withdrawal rate | सुरक्षित निकासी दर | |
 | horizon | अवधि | The time the money is invested for, spelled out where अवधि alone is ambiguous. |
 | goal | लक्ष्य | |
@@ -142,19 +155,19 @@ why this one won, so it is not re-argued in a later lesson.
 | insurance | बीमा | |
 | premium | प्रीमियम | |
 | cover, sum insured | बीमा राशि | |
-| deductible | कटौती योग्य राशि | |
-| liquidity | तरलता | |
+| deductible | कटौती योग्य राशि | **Bracket** (deductible). |
+| liquidity | तरलता | **Bracket** (liquidity): alone it reads as fluidity. |
 | risk tolerance | जोखिम लेने की क्षमता | Not जोखिम उठाने की क्षमता: उठाना is what a person does with loss, and the phrase is about capacity, which is what लेने की क्षमता names. Reused by the about page. |
-| tax residency | कर निवास | The noun: कर निवासी is the person. कर निवास स्थिति is the same thing with a word bolted on. |
-| opportunity cost | अवसर लागत | |
-| rule of thumb | अंगूठे का नियम | The Hindi calque is what Indian financial writing uses, and it is the term a reader meets hardest (the 4% rule is the first one). Decided against सामान्य नियम, which loses that the rule is a shortcut rather than a fact. |
-| sunk cost | डूबी लागत | |
+| tax residency | कर निवास | **Bracket** (tax residency). The noun: कर निवासी is the person. कर निवास स्थिति is the same thing with a word bolted on. |
+| opportunity cost | अवसर लागत | **Bracket** (opportunity cost). |
+| rule of thumb | मोटा-मोटा नियम | **Bracket** (rule of thumb). Council, 2026-10-20: replaces the calque अंगूठे का नियम, which reads literally. मोटा-मोटा says "a rough rule", which is the meaning; a heading uses the plural मोटे-मोटे नियम. Still not सामान्य नियम, which loses that the rule is a shortcut. |
+| sunk cost | डूबी हुई लागत | **Bracket** (sunk cost). Council, 2026-10-20: डूबी लागत was ungrammatical. |
 | loss aversion | हानि से बचने की प्रवृत्ति | Not हानि से बचाव, which reads as protection from loss and turns a bias into a strategy. |
-| bias | पूर्वाग्रह | Not पक्षपात, which is favouritism. Present bias is वर्तमान पूर्वाग्रह. |
-| behavioural (finance, biases) | व्यवहारगत | Not व्यवहारिक, one matra from व्यावहारिक (practical), which many readers take it for. |
+| bias | पूर्वाग्रह | **Bracket** (bias): alone it reads as social prejudice. Not पक्षपात, which is favouritism. Present bias is वर्तमान पूर्वाग्रह. |
+| behavioural (finance, biases) | व्यवहारगत | **Bracket** (behavioural). Not व्यवहारिक, one matra from व्यावहारिक (practical), which many readers take it for. |
 | mental models | मानसिक मॉडल | Not मानसिक नमूने: नमूना is a sample. |
 | default (assumption, plan, setting) | आम धारणा, आम योजना; plural आम धारणाएँ | Not डिफ़ॉल्ट, which on a finance site reads as a loan default. A tool's default setting is पहले से तय, its default values शुरुआती मान, and a vendor's default retention its "अपनी तय की हुई" period. |
-| asset classes | परिसंपत्ति वर्ग | |
+| asset classes | एसेट क्लास | Council, 2026-10-20: replaces परिसंपत्ति वर्ग. A loanword, so no bracket. |
 | asset location | एसेट लोकेशन (कौन-सा निवेश किस खाते में) | The gloss on first use; the literal परिसंपत्ति स्थान is opaque. |
 | leverage | लीवरेज (उधार से निवेश) | Not उत्तोलन, a physics word Indian financial writing does not use. |
 | real return | असली रिटर्न | Elsewhere the tools say महँगाई के बाद, which is the same thing. |
@@ -168,7 +181,7 @@ why this one won, so it is not re-argued in a later lesson.
 | follow-up (a companion lesson) | के आगे का पाठ | Not अनुवर्ती. |
 | tracking (progress) | नज़र रखना, प्रगति पर नज़र | Not ट्रैक करना or निगरानी, which were mixed in one tag. |
 | Inclusive Finances (the search pill) | सबके लिए वित्त | Never सबके लिए alone, which on a search result says the other lessons are not for everyone. |
-| mental accounting | मानसिक लेखांकन | |
+| mental accounting | मानसिक लेखांकन | **Bracket** (mental accounting). |
 | overconfidence | अति आत्मविश्वास | |
 | anchors, anchoring | एंकर, एंकरिंग | |
 | herd behaviour | भेड़चाल | |
@@ -182,7 +195,7 @@ use the same words.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| financial literacy | वित्तीय साक्षरता | |
+| financial literacy | वित्तीय साक्षरता | **Bracket** (financial literacy). |
 | personal finance | पर्सनल फाइनेंस | Matches the RSS feed title already in `src/i18n/strings/hi.ts`. वैयक्तिक वित्त is the official phrasing and reads as a form. |
 | money management | पैसे का प्रबंधन | |
 | multi-currency | एक से ज़्यादा मुद्राओं में | Spelled out rather than बहुमुद्रा, which a general reader meets far less often. कई मुद्राओं में is shorter and just as good in flow, so the about page's `knowsAbout` label uses it; the lesson prose keeps एक से ज़्यादा, which is the precise one, since two currencies qualify. |
@@ -280,11 +293,11 @@ and do translate.
 | term (months) | अवधि (महीने) | अवधि is the glossary's horizon word; the parenthesis is what tells a reader the field counts months, which the label has to do because the field is a number box. |
 | payoff months | चुकाने के महीने | The count of months until the loan is paid off. |
 | amortisation | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortisation schedule` is किस्तों का शेड्यूल. |
-| principal | मूलधन | |
+| principal | मूलधन | No bracket: every Indian loan statement prints it. |
 | interest | ब्याज | |
 | balance (of a loan) | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |
 | balance (of a portfolio) | पोर्टफ़ोलियो की रकम | Not बकाया, which reads as money owed and made an investment look like a debt, and not जमा रकम, which can read as the amount originally put in rather than what it is worth now. A chart legend shortens it to रकम. |
-| lender, vendor | ऋणदाता | Decided against विक्रेता, which means seller: beside the horizon question ("अगर मैं बेच दूँ") it read as the person selling the house. ऋणदाता is the word Indian banking writing uses for a lender, so it is the exception to the debt entry's avoidance of ऋण. The English says vendor in the interface and lender in prose; the Hindi uses one word for both. |
+| lender, vendor | लोन देने वाला; in the loan tool, लोन ऑफ़र | Council, 2026-10-20: replaces ऋणदाता, which was out of the site's everyday register (the debt entry avoids ऋण). Prose about the one who lends says लोन देने वाला, which covers banks and informal lenders alike, where लोन देने वाली संस्था would leave the second out. The loan tool's per-card unit is the offer, लोन ऑफ़र: the cards, tabs, the add button (लोन ऑफ़र जोड़ें) and the chart's picker; the name field is लोन देने वाले का नाम. The privacy notice follows. Still never विक्रेता, which means seller and, beside the horizon question ("अगर मैं बेच दूँ"), read as the person selling the house. |
 | recast (the payment) | किस्त नए सिरे से निकालना | What a hybrid loan does when its fixed period ends. Not दोबारा जोड़ना, which says re-add. |
 | apply to principal | मूलधन घटाना | A prepayment or lump sum reduces the principal. Never मूलधन में जोड़ना, which says the debt grows; that phrase is right only for a fee rolled into a new loan. |
 | total cost | कुल लागत | |
@@ -299,11 +312,11 @@ and do translate.
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
 | functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. In prose the short form is खर्च की मुद्रा; मुख्य मुद्रा is kept for the badge alone, because मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
 | currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. Prose and the table caption say जमाव; the chart itself (its heading, aria label, legend and the feature list naming it) keeps मुद्रा मिश्रण. |
-| exchange rate | विनिमय दर | The privacy notice's rendering, reused. |
+| exchange rate | विनिमय दर | **Bracket** (exchange rate; plural exchange rates), except in the privacy notice. Standard in Hindi news. |
 | ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |
 | low, moderate, elevated | कम, मध्यम, ज़्यादा | The band labels. ज़्यादा rather than उच्च, which reads as a grade. |
 | share link, share | शेयर लिंक, शेयर करें | |
-| net debt (a currency position) | शुद्ध देनदारी | Pairs with देनदारी on the row toggle, so not शुद्ध कर्ज़. |
+| net debt (a currency position) | शुद्ध देनदारी | **Bracket** (net debt). Pairs with देनदारी on the row toggle, so not शुद्ध कर्ज़. |
 | subsequent rate | बाद की दर | The field label; not अगली दर. |
 | cent-precise | मुद्रा की सबसे छोटी इकाई तक सटीक | Not पैसे तक, which reads as "to the money". |
 | stress-test guess | दर बढ़ने की स्थिति का अनुमान | |
@@ -321,15 +334,15 @@ and do translate.
 | after inflation | महँगाई के बाद | The simulator's returns are real returns, so the phrase recurs on every result. |
 | median | बीच का | Never औसत: the tool is careful that the middle of a spread is not an average, and the Hindi has to keep that. |
 | portfolio mix | पोर्टफ़ोलियो का मिश्रण | The stock and bond split. |
-| rebalanced yearly | हर साल पुनर्संतुलित | Glossary: rebalancing is पुनर्संतुलन. |
+| rebalanced yearly | हर साल रीबैलेंस होता है | Glossary: rebalancing is रीबैलेंसिंग. |
 | run the simulation | सिम्युलेशन चलाएँ | |
 | inflation calculator | महँगाई कैलकुलेटर | The page title adds (Inflation Calculator) in Latin, rule 6, because that is what a reader searches for. |
 | raise (in pay) | वेतन वृद्धि | Not इंक्रीमेंट, which is the word for a fixed annual step rather than any raise. |
 | real rate (after inflation) | असली दर | Follows the glossary's असली रिटर्न. |
-| geometric average | ज्यामितीय औसत | Explained in the same sentence as "the steady rate with the same total effect". |
-| percentage point | प्रतिशत अंक | A short label may say अंक alone. |
-| scenario | परिदृश्य | |
-| forecast | पूर्वानुमान | |
+| geometric average | ज्यामितीय औसत | **Bracket** (geometric average). Explained in the same sentence as "the steady rate with the same total effect". |
+| percentage point | प्रतिशत अंक | **Bracket** (percentage point), because it is easily confused with percent change. A short label may say अंक alone. |
+| scenario | परिदृश्य | **Bracket** (scenario). Not स्थिति, which loses the what-if sense, and paired with पूर्वानुमान: "यह एक परिदृश्य है, पूर्वानुमान नहीं". |
+| forecast | पूर्वानुमान | No bracket. Never अनुमान, which means estimate and would turn "a scenario, not a forecast" around. |
 | basket (of goods and services, for CPI) | वस्तुओं और सेवाओं की टोकरी | How Indian CPI reporting says it. |
 | hyperinflation | हाइपरइन्फ़्लेशन | The loanword Indian news uses; अति-मुद्रास्फीति would break the महँगाई rule. |
 | statistics office | सांख्यिकी विभाग | |
