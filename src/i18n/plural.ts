@@ -6,12 +6,13 @@
  * need only two, so their `Few` is the same text as their `Many`. Czech needs
  * all three: 1 lekce, 2 to 4 lekce, 0 and 5 or more lekcí.
  *
- * `one` is exactly 1 in every language, as it was before this helper: Hindi's
- * plural rule also puts 0 in `one`, and the Hindi edition has always written 0
- * with its plural form. `few` comes from `Intl.PluralRules`, which returns it
- * only for languages that have it (Czech: 2, 3 and 4). Anything else, including
- * Czech's `many` (decimals, "1,5 roku"), takes the `other` form; no counted
- * string on the site is ever given a decimal (docs/i18n/cs-glossary.md, rule 8).
+ * The form is the language's own plural rule, from `Intl.PluralRules`: `one`
+ * is exactly 1 in English, Spanish and Czech, and 0 or 1 in Hindi ("0 पाठ",
+ * like "1 पाठ"), so a Hindi `One` string carries the count rather than a
+ * written 1. `few` exists only where the language has it (Czech: 2, 3 and 4).
+ * Anything else, including Czech's `many` (decimals, "1,5 roku"), takes the
+ * `other` form; no counted string on the site is ever given a decimal
+ * (docs/i18n/cs-glossary.md, rule 8).
  *
  * `tag` is a BCP-47 tag: an island's `numberLocale`, or `PROSE_NUMBER_LOCALE`
  * on a page.
@@ -19,13 +20,13 @@
 const rulesCache = new Map<string, Intl.PluralRules>();
 
 export function pluralForm(tag: string, n: number): 'one' | 'few' | 'other' {
-  if (n === 1) return 'one';
   let rules = rulesCache.get(tag);
   if (!rules) {
     rules = new Intl.PluralRules(tag);
     rulesCache.set(tag, rules);
   }
-  return Number.isInteger(n) && rules.select(n) === 'few' ? 'few' : 'other';
+  const form = rules.select(n);
+  return form === 'one' || form === 'few' ? form : 'other';
 }
 
 /** The form of a counted string for `n`: `plural(tag, n, s.xOne, s.xFew, s.xMany)`. */

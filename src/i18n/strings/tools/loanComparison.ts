@@ -984,7 +984,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       totalPaid: 'कुल चुकाया',
       showDetails: 'पूरा हिसाब देखें',
       timeToPayoff: 'चुकाने का समय',
-      paymentsOne: '1 किस्त',
+      paymentsOne: '{n} किस्त',
       paymentsMany: '{n} किस्तें',
       paymentsFew: '{n} किस्तें',
       totalInterest: 'कुल ब्याज',
