@@ -334,6 +334,16 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-dropdownMenu { right: -40px; min-width: 200px; }
   }
 
+  /* The smallest phones: the logo, the language pill, the theme toggle and
+     the menu button share 320 to 360px, so the gaps close in. */
+  @media (max-width: 360px) {
+    .nav-right { gap: 6px; }
+  }
+
+  @media (max-width: 340px) {
+    .nav-right { gap: 4px; }
+  }
+
   /* Phone menu: hidden on wider screens, where the two dropdowns
      and the footer columns do the job. */
   .nav-menuToggle,
