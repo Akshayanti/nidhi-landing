@@ -259,7 +259,7 @@ note records why this one won.
 
 | English | Marathi | Notes |
 | --- | --- | --- |
-| Understand your money (the home page headline) | तुमचे व्यवहार समजून घ्या | Owner's decision, Oct 20 2026, on a native speaker's suggestion: व्यवहार (your dealings with money) reads more naturally as a headline than पैसे. |
+| Understand your money (the home page headline, and its title, description and share-image text) | तुमचे व्यवहार समजून घ्या | Owner's decision, Oct 20 2026, on a native speaker's suggestion: व्यवहार (your dealings with money) reads more naturally than पैसे. |
 | lesson | धडा | Plural धडे. |
 | learning path | शिकण्याचा मार्ग | |
 | level | पातळी | Contested (टप्पा, स्तर). |
@@ -293,7 +293,7 @@ note records why this one won.
 | breadcrumb (landmark label) | पानाचा मार्ग | |
 | FAQ | वारंवार विचारले जाणारे प्रश्न | Contested. वारंवार is "frequently". |
 | paywall | पेवॉल | |
-| illustrative amounts | उदाहरणादाखल रकमा | |
+| illustrative amounts | उदाहरणादाखल रक्कम | Owner's decision, Oct 20 2026, on a native speaker's suggestion: रकमा read oddly; the singular रक्कम is used as a collective. |
 | dashboard | डॅशबोर्ड | |
 
 ### The privacy notice
