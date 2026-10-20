@@ -2536,6 +2536,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       shareStatus: 'शेअर करण्याची लिंक क्लिपबोर्डवर कॉपी झाली.',
       copyPrompt: 'ही लिंक कॉपी करा:',
     },
+    cardsHeading: 'कर्जाच्या ऑफर',
     phoneTabs: {
       groupAria: 'दाखवायचा कर्जदाता',
       tabName: 'कर्जदाता {label}',
