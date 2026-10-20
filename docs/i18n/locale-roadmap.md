@@ -9,13 +9,24 @@ The site is published in five languages:
 - **Marathi** (`mr`), at /mr/ since October 20, 2026 (glossary `mr-glossary.md`).
 
 The languages below come next, in this order, one at a time. The order is the
-owner's decision (October 2026).
+owner's decision (October 20, 2026): by the number of people who read the
+language, as a first, second or third language, so that each edition reaches
+as many readers as possible. Estimates from speaker counts and national
+literacy rates, rounded:
 
-1. **Swahili** (`sw`)
-2. **French** (`fr`)
-3. **Portuguese** (`pt`, Brazilian)
-4. **Bengali** (`bn`)
-5. **Indonesian** (`id`)
+1. **French** (`fr`): about 270 to 290 million readers. Most second-language
+   speakers in West and Central Africa learned it at school, where it is the
+   language of teaching and paperwork.
+2. **Portuguese** (`pt`, Brazilian): about 235 to 245 million.
+3. **Indonesian** (`id`): about 230 to 240 million; mostly a second language,
+   but the language of school and government, with literacy near 96%.
+   Portuguese and Indonesian are within a few million of each other.
+4. **Bengali** (`bn`): about 200 to 220 million. More speakers than
+   Portuguese or Indonesian, but literacy near 75% in Bangladesh and West
+   Bengal puts it fourth by readers.
+5. **Swahili** (`sw`): well below the others. Five to 18 million native
+   speakers; most second-language speakers use it spoken, and schools in
+   Kenya and Uganda teach mostly in English.
 
 ## Checks before a locale is published
 
@@ -107,28 +118,28 @@ Each locale added a case the next ones reuse:
 
 ## Notes per upcoming language
 
-- **Swahili:** Latin script, standardised. Currencies: Kenyan shilling (KES),
-  Tanzanian shilling (TZS) and Ugandan shilling (UGX), none supported yet.
-  The tools open in KES. The everyday money of
-  many readers (mobile money, savings groups, high inflation) is not what the
-  lessons and tools describe; translation does not change that.
 - **French:** narrow no-break space before `:`, `;`, `?` and `!`, and as the
-  thousands separator. Currencies: EUR, CHF and CAD are supported; the West and
-  Central African CFA francs (XOF, XAF) and the Congolese franc (CDF) are not.
-  Chart short forms: French *billion* is a million millions (*Md* for a
-  thousand million).
+  thousands separator. Currencies: EUR, CHF, CAD, the West and Central
+  African CFA francs (XOF, XAF) and the Congolese franc (CDF) are all
+  supported. Chart short forms: French *billion* is a million millions (*Md*
+  for a thousand million).
 - **Portuguese:** Brazilian Portuguese. Close to the Spanish catalog in
   structure, but translated from English, not from Spanish. Currency: BRL,
-  already supported; written `R$ 1.058.721`. The Angolan kwanza (AOA) and the
-  Mozambican metical (MZN) are not supported.
-- **Bengali:** a new script and font, and Bengali digits as a formatting choice
-  to settle in its glossary. Currencies: INR (West Bengal) is supported; the
-  Bangladeshi taka (BDT), the currency of most Bengali speakers, is not. Both
-  use lakh and crore grouping. The tools open in BDT.
+  written `R$ 1.058.721`; the Angolan kwanza (AOA) and the Mozambican metical
+  (MZN) are supported too.
 - **Indonesian:** Latin script, no grammatical plural forms. Currency: IDR,
   already supported; written `Rp 1.058.721`. Chart short forms: Indonesian
   writes *rb*, *jt*, *M* and *T* (thousand, million, *miliar*, trillion), so
   an `M` meaning million would be read as a thousand times too large.
+- **Bengali:** a new script and font, and Bengali digits as a formatting choice
+  to settle in its glossary. Currencies: INR (West Bengal) and the Bangladeshi
+  taka (BDT), the currency of most Bengali speakers, are both supported. Both
+  use lakh and crore grouping. The tools open in BDT.
+- **Swahili:** Latin script, standardised. Currencies: Kenyan shilling (KES),
+  Tanzanian shilling (TZS) and Ugandan shilling (UGX), all supported. The
+  tools open in KES. The everyday money of many readers (mobile money,
+  savings groups, high inflation) is not what the lessons and tools describe;
+  translation does not change that.
 
 Not on the list for now: Arabic and Urdu, which need the layout to support
 right-to-left first.
