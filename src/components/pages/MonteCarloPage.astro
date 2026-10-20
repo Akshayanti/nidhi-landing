@@ -29,6 +29,7 @@
  * value byte-identical to its English one fails `catalog.test.ts` unless it is
  * on that file's `IDENTICAL_OK` list, and a title has no translation to offer.)
  */
+import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
@@ -159,7 +160,7 @@ const faqSchema = {
 
     <header class="mcsp-header">
       <p class="mcsp-eyebrow">{strings.eyebrow}</p>
-      <h1 class="mcsp-title">{strings.title}</h1>
+      <h1 class="mcsp-title"><LangRuns text={strings.title} locale={locale} /></h1>
       {/* Phones keep the first and last sentences: what it does, and that
           nothing leaves the browser. */}
       <p class="mcsp-lead">

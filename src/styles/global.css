@@ -441,12 +441,17 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.25;
-  /* A word longer than the screen (Czech "Porozumějte", Marathi titles at a
-     larger text size) is hyphenated in the page's language, and only breaks
-     bare as a last resort, instead of widening the page. */
+  /* A word longer than the line breaks instead of widening the page. */
   overflow-wrap: break-word;
-  hyphens: auto;
   color: var(--color-text-primary);
+}
+
+/* Czech heading words can be wider than a narrow phone's line at a larger text
+   size ("Porozumějte"): there, and only there, they hyphenate rather than
+   break bare. Other languages' headings break between words at every size, so
+   no heading that would fit gets a hyphen. */
+@media (max-width: 17em) {
+  :is(h1, h2, h3, h4, h5, h6):lang(cs) { hyphens: auto; }
 }
 
 h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
@@ -2968,9 +2973,13 @@ details[open] > .disclosure::after,
     white-space: nowrap;
   }
 
+  /* Values pair up two to a line when they fit, and a row whose amounts do not
+     fit side by side (a 7-digit total, Czech koruna, a larger text size) puts
+     one per line: each value is at least as wide as its own content, so it
+     never spills its cell, at any loan size, width or text size. */
   .lc-deltaTable tbody tr {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 4px 16px;
     padding: 10px 0;
     border-bottom: 1px solid var(--color-border-light);
@@ -2979,7 +2988,7 @@ details[open] > .disclosure::after,
   .lc-deltaTable tbody tr:last-child { border-bottom: 0; }
 
   .lc-deltaTable tbody th[scope="row"] {
-    grid-column: 1 / -1;
+    flex: 0 0 100%;
     padding: 0 0 2px;
     border: 0;
     font-size: 0.875rem;
@@ -2987,10 +2996,12 @@ details[open] > .disclosure::after,
 
   .lc-deltaTable td {
     display: flex;
+    flex: 1 1 calc(50% - 8px);
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
-    min-width: 0;
+    min-width: max-content;
+    white-space: nowrap;
     padding: 0;
     border: 0;
   }
