@@ -365,12 +365,15 @@ def extract_post(
     tldr_node = soup.select_one(".post-tldr p")
     tldr = tldr_node.get_text(strip=True) if tldr_node else ""
 
+    # The page shows the main path ("5 min read"); the email opens every
+    # expander, so it shows the whole lesson's time from data-total-minutes.
     reading_time = None
     rt_node = soup.select_one(".post-reading-time")
     if rt_node:
-        m = re.search(r"(\d+)", rt_node.get_text())
+        total = rt_node.get("data-total-minutes", "")
+        m = re.fullmatch(r"\d+", total) or re.search(r"(\d+)", rt_node.get_text())
         if m:
-            reading_time = int(m.group(1))
+            reading_time = int(m.group(0))
 
     level_node = soup.select_one(".level-badge, .post-meta .level")
     level = level_node.get_text(strip=True) if level_node else ""

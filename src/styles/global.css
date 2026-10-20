@@ -683,6 +683,132 @@ details[open] > .disclosure::after,
   margin-bottom: var(--space-2);
 }
 
+/* Lesson expanders, written as raw <details> in the markdown.
+ * - .lesson-depth: the deep layer (evidence, country notes, edge cases). A
+ *   quiet bounded block on the page's own neutral surface, so it reads as
+ *   "more here", never as a warning (those are amber and red).
+ * - .quick-check: one question in the summary, its answer inside. A small
+ *   teal card, the brand's friendly colour.
+ * The summary is the whole tappable row, at least 48px tall, and carries
+ * the shared .disclosure chevron. Sizes are in rem, so they grow with the
+ * reader's text size. */
+.prose details.lesson-depth,
+.prose details.quick-check {
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+}
+
+/* The edge uses the token tappable controls use, so the card's start and
+ * end stay visible against the page even when it is long and open. */
+.prose details.lesson-depth {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-link-edge);
+}
+
+.prose details.quick-check {
+  background: color-mix(in srgb, var(--color-teal) 7%, var(--color-bg-white));
+  border: 1px solid color-mix(in srgb, var(--color-teal) 25%, var(--color-border));
+  border-left: 3px solid var(--color-teal);
+}
+
+.prose details.lesson-depth > summary,
+.prose details.quick-check > summary {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: var(--space-3) 44px var(--space-3) var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--color-deep-blue);
+  border-radius: var(--radius-md);
+}
+
+.prose details.lesson-depth > summary::after,
+.prose details.quick-check > summary::after {
+  right: 14px;
+}
+
+/* A small label over each depth summary, so a closed card says it is
+ * optional before anyone opens it. Lessons are English only. */
+.prose details.lesson-depth > summary {
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.prose details.lesson-depth > summary::before {
+  content: 'Optional detail';
+  flex-basis: 100%;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.prose details.lesson-depth > summary:focus-visible,
+.prose details.quick-check > summary:focus-visible {
+  /* Inset, so the ring follows the card's own rounded edge. */
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: -2px;
+}
+
+.prose details.lesson-depth[open] > summary,
+.prose details.quick-check[open] > summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.prose details.lesson-depth[open] > summary {
+  border-bottom: 1px solid var(--color-link-edge);
+}
+
+/* The opened content lines up with the summary text. */
+.prose details.lesson-depth > :not(summary),
+.prose details.quick-check > :not(summary) {
+  margin-left: var(--space-4);
+  margin-right: var(--space-4);
+}
+
+.prose details.lesson-depth > summary + * {
+  margin-top: var(--space-4);
+}
+
+/* The answer sits right under its question, no rule between them. */
+.prose details.quick-check > summary + * {
+  margin-top: 0;
+}
+
+.prose details.lesson-depth > :last-child,
+.prose details.quick-check > :last-child {
+  margin-bottom: var(--space-4);
+}
+
+/* Lists keep their own indent inside the block. */
+.prose details.lesson-depth > ul,
+.prose details.lesson-depth > ol,
+.prose details.quick-check > ul,
+.prose details.quick-check > ol {
+  padding-left: var(--space-6);
+}
+
+/* Forced colours (Windows high contrast) drop backgrounds: keep the edge. */
+@media (forced-colors: active) {
+  .prose details.lesson-depth,
+  .prose details.quick-check {
+    border: 1px solid CanvasText;
+  }
+}
+
+@media print {
+  .prose details.lesson-depth,
+  .prose details.quick-check {
+    break-inside: avoid;
+  }
+
+  .prose details > summary::after { display: none; }
+}
+
 /* Inline links inside long-form prose: underline so they are
    distinguishable without relying on color alone (WCAG 1.4.1). */
 .prose p a,
