@@ -259,6 +259,7 @@ note records why this one won.
 
 | English | Marathi | Notes |
 | --- | --- | --- |
+| Understand your money (the home page headline) | तुमचे व्यवहार समजून घ्या | Owner's decision, Oct 20 2026, on a native speaker's suggestion: व्यवहार (your dealings with money) reads more naturally as a headline than पैसे. |
 | lesson | धडा | Plural धडे. |
 | learning path | शिकण्याचा मार्ग | |
 | level | पातळी | Contested (टप्पा, स्तर). |
