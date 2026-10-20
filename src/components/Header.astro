@@ -251,8 +251,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     transition: transform 0.15s ease;
   }
 
-  .nav-dropdown:hover .nav-dropdownCaret,
-  .nav-dropdown:focus-within .nav-dropdownCaret {
+  .nav-dropdown--open .nav-dropdownCaret {
     transform: rotate(180deg);
   }
 
@@ -270,11 +269,6 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     padding: var(--space-1) 0;
     min-width: 220px;
     z-index: 200;
-  }
-
-  .nav-dropdown:hover .nav-dropdownMenu,
-  .nav-dropdown:focus-within .nav-dropdownMenu {
-    display: block;
   }
 
   .nav-dropdownMenu a {
@@ -567,7 +561,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     }
   }
 
-  /* JS-managed open state: ensures keyboard toggles also show the menu */
+  /* A dropdown opens on a click (or Enter, Space or an arrow key) and nothing
+     else, like the language picker: hover-opening made the menu vanish in the
+     gap above it, and showed it while aria-expanded said it was closed. The
+     open state lives in the script below, so what is shown and what a screen
+     reader is told always agree. Without scripts every page is still in the
+     footer's columns. */
   .nav-dropdown--open .nav-dropdownMenu {
     display: block;
   }
