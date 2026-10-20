@@ -36,9 +36,17 @@
  * assistive technology pronounce each destination correctly.
  *
  * The globe is not only on the wider screens. Below 640px the same control
- * stays in the header as the globe alone, square and the size of the theme
- * buttons beside it, rather than being reachable only through the menu button,
- * which is itself a control a stranded reader has to recognise first. The
+ * stays in the header as the globe, the current language's tag ("EN") and a
+ * caret, rather than being reachable only through the menu button, which is
+ * itself a control a stranded reader has to recognise first. A globe alone did
+ * not say "language" clearly enough (owner, October 2026), so the trigger is a
+ * teal accent pill at every width and the tag sits beside it on a phone; the
+ * council kept the globe over a translate glyph, which promises machine
+ * translation the site does not do.
+ *
+ * Each row shows the language's tag, then its own name ("HI हिन्दी"), as the
+ * owner asked: Latin tags in a fixed column let a reader scan a long list in
+ * any script. The tag is hidden from screen readers, which say the name. The
  * sheet still carries the names, because a list reads better than a popup on a
  * phone, but it is no longer the only way to the list.
  *
@@ -70,7 +78,8 @@ interface Props {
   alternates?: readonly Locale[];
   /**
    * `header` is the disclosure beside the theme toggle, at every width: a
-   * globe and the current name on a wider screen, the globe alone on a phone.
+   * globe and the current name on a wider screen, the globe and the current
+   * tag on a phone, with a caret on both.
    * `sheet` is the same choice as a list in the phone menu, where a list reads
    * better than a popup. The sheet's heading is the nav group heading in
    * Header.astro, so the sheet variant renders the list alone.
@@ -84,7 +93,9 @@ const { languagePicker } = strings;
 
 // A language's own name, in its own script, is the same string on every page
 // and in every locale, so it is read from the registry and never translated.
-const rows = alternates.map((to) => ({
+// Sorted by tag (CS, EN, ES, HI), as the owner asked: a reader scanning the
+// tag column finds theirs in alphabetical order, whichever page they are on.
+const rows = [...alternates].sort((a, b) => LOCALE_META[a].tag.localeCompare(LOCALE_META[b].tag)).map((to) => ({
   to,
   ...LOCALE_META[to],
   // The href a visitor with no scripts follows: the same page under the other
@@ -101,7 +112,7 @@ const rows = alternates.map((to) => ({
     <details class="lang-picker lang-picker--header">
       <summary class="lang-picker__toggle">
         <span class="lang-picker__globe" aria-hidden="true">
-          <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6">
             <circle cx="10" cy="10" r="7.5" />
             <ellipse cx="10" cy="10" rx="3.5" ry="7.5" />
             <path d="M2.5 10h15" />
@@ -111,6 +122,7 @@ const rows = alternates.map((to) => ({
         <span class="lang-picker__name" lang={LOCALE_META[locale].htmlLang}>
           {LOCALE_META[locale].label}
         </span>
+        <span class="lang-picker__toggleTag" aria-hidden="true">{LOCALE_META[locale].tag}</span>
         <span class="lang-picker__caret" aria-hidden="true">
           &#9662;
         </span>
@@ -120,6 +132,7 @@ const rows = alternates.map((to) => ({
           <li>
             {row.to === locale ? (
               <span class="lang-picker__row lang-picker__row--current" aria-current="true">
+                <span class="lang-picker__tag" aria-hidden="true">{row.tag}</span>
                 <span lang={row.htmlLang}>{row.label}</span>
                 <span class="lang-picker__srOnly">, {languagePicker.current}</span>
               </span>
@@ -131,6 +144,7 @@ const rows = alternates.map((to) => ({
                 data-attr={`lang-switch-${row.to}`}
                 data-lang-switch={row.to}
               >
+                <span class="lang-picker__tag" aria-hidden="true">{row.tag}</span>
                 <span lang={row.htmlLang}>{row.label}</span>
               </a>
             )}
@@ -144,6 +158,7 @@ const rows = alternates.map((to) => ({
         <li>
           {row.to === locale ? (
             <span class="lang-picker__sheetRow lang-picker__row--current" aria-current="true">
+              <span class="lang-picker__tag" aria-hidden="true">{row.tag}</span>
               <span lang={row.htmlLang}>{row.label}</span>
               <span class="lang-picker__srOnly">, {languagePicker.current}</span>
             </span>
@@ -155,6 +170,7 @@ const rows = alternates.map((to) => ({
               data-attr={`lang-switch-${row.to}`}
               data-lang-switch={row.to}
             >
+              <span class="lang-picker__tag" aria-hidden="true">{row.tag}</span>
               <span lang={row.htmlLang}>{row.label}</span>
             </a>
           )}
@@ -173,23 +189,29 @@ const rows = alternates.map((to) => ({
     position: relative;
   }
 
-  /* A pill the size of the theme toggle beside it, so the two read as one row
-     of controls. It sizes to its text: "Čeština" is wider than "हिन्दी", and the
-     header shifts by the difference when a page switches language. */
+  /* An accent pill, the only coloured control in the header besides the logo.
+     A quiet grey button beside the grey theme toggle read as one more theme
+     button, and a globe alone did not say "language" (owner, Oct 2026; the
+     council kept the globe and changed the treatment): the teal tint and
+     border, the caret at every width and the current tag on a phone make it
+     read as a menu of languages. It sizes to its text: "Čeština" is wider than
+     "हिन्दी", and the header shifts by the difference. */
   .lang-picker__toggle {
     box-sizing: border-box;
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    min-height: 30px;
-    padding: 5px 10px;
+    gap: 0.4rem;
+    min-height: 34px;
+    padding: 6px 12px;
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 650;
     line-height: 1.2;
     white-space: nowrap;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-teal) 10%, transparent);
+    border: 1.5px solid var(--color-teal);
+    border-radius: 999px;
     cursor: pointer;
     /* The native triangle, replaced by the caret below so it matches the nav
        dropdowns two centimetres to the left. */
@@ -214,6 +236,14 @@ const rows = alternates.map((to) => ({
 
   .lang-picker__toggle:hover {
     color: var(--color-deep-blue);
+    background: color-mix(in srgb, var(--color-teal) 18%, transparent);
+  }
+
+  /* The current tag is the phone's label; a wider screen shows the name. */
+  .lang-picker__toggleTag {
+    display: none;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
   }
 
   .lang-picker__toggle:focus-visible {
@@ -223,6 +253,7 @@ const rows = alternates.map((to) => ({
 
   .lang-picker__caret {
     font-size: 0.65rem;
+    color: var(--color-teal);
     transition: transform 0.15s ease;
   }
 
@@ -252,7 +283,11 @@ const rows = alternates.map((to) => ({
   .lang-picker__row,
   .lang-picker__sheetRow {
     box-sizing: border-box;
-    display: block;
+    /* Three columns: the current row's check, the tag, the name. A grid
+       rather than margins, so the tags line up whether a row has a check. */
+    display: grid;
+    grid-template-columns: 1.25rem 2.8em auto;
+    align-items: baseline;
     width: 100%;
     /* 44px: a comfortable touch target, and this list is reached by thumb on
        the sheet. */
@@ -285,9 +320,24 @@ const rows = alternates.map((to) => ({
 
   .lang-picker__row--current::before {
     content: '\2713';
-    display: inline-block;
-    width: 1.25rem;
+    grid-column: 1;
     color: var(--color-teal);
+  }
+
+  /* Code first, as the owner asked ("HI हिन्दी"): small, muted and in a fixed
+     column, so the eye can run down the tags or the names. Hidden from screen
+     readers, which say only the name, in its own language. */
+  .lang-picker__tag {
+    grid-column: 2;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  .lang-picker__tag + span {
+    grid-column: 3;
   }
 
   .lang-picker__sheetList {
@@ -328,8 +378,8 @@ const rows = alternates.map((to) => ({
     white-space: nowrap;
   }
 
-  /* Phones: the globe stays in the header, the name goes. The trigger is a
-     square the size of a theme button, and the popup hangs off `.nav-right`
+  /* Phones: the globe stays in the header, the name gives way to the tag. The
+     popup hangs off `.nav-right`
      instead of the pill, so that a 220px list anchored to its inline end still
      lands on a 320px screen rather than off the left of it. */
   @media (max-width: 640px) {
@@ -346,13 +396,48 @@ const rows = alternates.map((to) => ({
       position: static;
     }
 
+    /* Globe, tag and caret: about 36px tall to sit with the theme toggle,
+       with the touch target stretched to 44px by the pseudo element below. */
     .lang-picker__toggle {
-      justify-content: center;
-      gap: 0;
-      width: 30px;
-      height: 30px;
-      min-height: 30px;
-      padding: 0;
+      gap: 0.3rem;
+      min-height: 36px;
+      padding: 6px 10px;
+    }
+
+    .lang-picker__toggle::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+    }
+
+    .lang-picker__toggleTag {
+      display: inline;
+    }
+
+    /* The smallest phones (320 to 360px): the logo, this pill, the theme
+       toggle and the menu button only fit if the pill keeps its globe and
+       caret and lets the tag go; the open list still shows every tag, and
+       the accent still sets it apart. */
+    @media (max-width: 360px) {
+      .lang-picker__toggle {
+        gap: 0.2rem;
+        padding: 6px 8px;
+      }
+
+      .lang-picker__toggleTag {
+        display: none;
+      }
+    }
+
+    /* 320px: the globe alone, still in its accent pill. */
+    @media (max-width: 340px) {
+      .lang-picker__toggle {
+        padding: 6px 9px;
+      }
+
+      .lang-picker__caret {
+        display: none;
+      }
     }
 
     /* The name the wider screen shows beside the globe. Kept in the document,
@@ -367,8 +452,5 @@ const rows = alternates.map((to) => ({
       white-space: nowrap;
     }
 
-    .lang-picker__caret {
-      display: none;
-    }
   }
 </style>

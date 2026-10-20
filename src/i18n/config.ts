@@ -28,12 +28,17 @@ export type Locale = (typeof LOCALES)[number];
  * page and in every catalog, which is why it is here rather than in the string
  * files: the language picker reads it, and adding a locale adds a row here and
  * no translated strings.
+ *
+ * `tag` is the short language tag the picker shows before each name ("HI
+ * हिन्दी") and beside the globe on a phone: Latin and short in every script,
+ * so a reader scanning a long list finds theirs. Uppercase, and with its
+ * region where the edition is regional (a Brazilian edition would be PT-BR).
  */
-export const LOCALE_META: Record<Locale, { label: string; htmlLang: string; ogLocale: string }> = {
-  en: { label: 'English', htmlLang: 'en', ogLocale: 'en_US' },
-  hi: { label: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
-  es: { label: 'Español', htmlLang: 'es', ogLocale: 'es_ES' },
-  cs: { label: 'Čeština', htmlLang: 'cs', ogLocale: 'cs_CZ' },
+export const LOCALE_META: Record<Locale, { label: string; tag: string; htmlLang: string; ogLocale: string }> = {
+  en: { label: 'English', tag: 'EN', htmlLang: 'en', ogLocale: 'en_US' },
+  hi: { label: 'हिन्दी', tag: 'HI', htmlLang: 'hi', ogLocale: 'hi_IN' },
+  es: { label: 'Español', tag: 'ES', htmlLang: 'es', ogLocale: 'es_ES' },
+  cs: { label: 'Čeština', tag: 'CS', htmlLang: 'cs', ogLocale: 'cs_CZ' },
 };
 
 /**
