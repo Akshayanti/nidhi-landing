@@ -79,6 +79,15 @@ jobs:
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
           PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
           PUBLIC_WAITLIST_ENDPOINT: ${{ secrets.PUBLIC_WAITLIST_ENDPOINT }}
+          # A test build runs analytics with a dummy key (Analytics.astro).
+          PUBLIC_ANALYTICS_TEST: ''
+
+      - name: Refuse a test analytics build
+        run: |
+          if grep -rq "phc_local_test_build_not_a_real_key" dist; then
+            echo "::error::dist was built with PUBLIC_ANALYTICS_TEST=1, which carries a dummy PostHog key."
+            exit 1
+          fi
 
       - name: Compute IndexNow URL hash manifest
         # SHA-256 the rendered HTML for every URL in dist/sitemap-index.xml

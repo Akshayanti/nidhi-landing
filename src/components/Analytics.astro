@@ -21,9 +21,15 @@ import { LOCALES, localePrefix } from '../i18n';
 // The known locale prefixes (`['/hi']`), built from the locale registry rather
 // than spelled out, so the URL backstop below cannot drift from the routes.
 const localePrefixes = LOCALES.map(localePrefix).filter(Boolean);
+
+// A test build (PUBLIC_ANALYTICS_TEST=1) runs analytics on any host, so the
+// CLAUDE.md browser check can read PostHog payloads on localhost, but it never
+// carries the real project key: PostHog rejects anything sent with this one.
+const analyticsTest = import.meta.env.PUBLIC_ANALYTICS_TEST === '1';
+const posthogKey = analyticsTest ? 'phc_local_test_build_not_a_real_key' : import.meta.env.PUBLIC_POSTHOG_KEY;
 ---
 
-<script is:inline define:vars={{ posthogKey: import.meta.env.PUBLIC_POSTHOG_KEY, localePrefixes }}>
+<script is:inline define:vars={{ posthogKey, localePrefixes, analyticsTest }}>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 
   var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
@@ -109,10 +115,17 @@ const localePrefixes = LOCALES.map(localePrefix).filter(Boolean);
     isInternal = localStorage.getItem('nidhi-internal') === '1';
   } catch (e) {}
 
+  // Analytics run only on the live site, matched by its whole origin. A build
+  // served anywhere else (localhost, a preview, a saved copy, or a local server
+  // a test maps to the nidhi.today name over plain http) never starts PostHog,
+  // whatever key it was built with, so a local test cannot add visits to the
+  // real numbers, as one built with the real key did in Oct 2026.
+  var onLiveSite = window.location.origin === 'https://nidhi.today';
+
   // The snippet's stub only gains its methods inside init(), so whenever
   // PostHog doesn't start the page gets silent no-ops for every call the site
   // makes.
-  var analyticsOn = Date.now() >= ANALYTICS_START && !isInternal;
+  var analyticsOn = Date.now() >= ANALYTICS_START && !isInternal && (onLiveSite || analyticsTest);
   if (!analyticsOn) {
     var noop = function () {};
     window.posthog = { capture: noop, identify: noop };
