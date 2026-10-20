@@ -184,7 +184,7 @@ const faqSchema = {
           <li><strong>{item.lead}</strong><span class="mcsp-phoneHide">{item.rest}</span></li>
         ))}
       </ul>
-      <button type="button" class="mcsp-more" aria-expanded="false" aria-controls="mcsp-limits-list">
+      <button type="button" class="mcsp-more disclosure" aria-expanded="false" aria-controls="mcsp-limits-list">
         {strings.limits.more}
       </button>
       <p class="mcsp-planner">
@@ -195,7 +195,7 @@ const faqSchema = {
 
     <section class="mcsp-panel" aria-labelledby="mcsp-how-h" data-phone-more>
       <h2 id="mcsp-how-h" class="mcsp-sectionTitle">{strings.how.heading}</h2>
-      <button type="button" class="mcsp-more" aria-expanded="false" aria-controls="mcsp-how-body">
+      <button type="button" class="mcsp-more disclosure" aria-expanded="false" aria-controls="mcsp-how-body">
         {strings.how.more}
       </button>
       <div id="mcsp-how-body" class="mcsp-phoneHide">
@@ -214,10 +214,10 @@ const faqSchema = {
     </section>
 
     <details class="mcsp-panel mcsp-faq">
-      <summary class="mcsp-sectionTitle">{strings.faq.heading}</summary>
+      <summary class="mcsp-sectionTitle disclosure">{strings.faq.heading}</summary>
       {faqs.map((f) => (
         <details class="mcsp-faqItem">
-          <summary class="mcsp-faqQ">{f.q}</summary>
+          <summary class="mcsp-faqQ disclosure">{f.q}</summary>
           <p class="mcsp-faqA">{f.a}</p>
         </details>
       ))}
@@ -229,7 +229,7 @@ const faqSchema = {
         <LessonsInEnglish locale={locale} />
         <div class="mcsp-relatedGrid">
           {related.map((post) => (
-            <a href={post.url} hreflang="en" class="mcsp-relatedCard" data-attr={post.dataAttr}>
+            <a href={post.url} hreflang="en" class="mcsp-relatedCard link-card" data-attr={post.dataAttr}>
               <span class="mcsp-relatedKicker">{post.kicker}</span>
               <span class="mcsp-relatedTitle">{post.title}</span>
               <span class="mcsp-relatedDesc">{post.desc}</span>
@@ -265,7 +265,7 @@ const faqSchema = {
   }
   .mcsp-breadcrumbs {
     margin-bottom: var(--space-3);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
   }
   .mcsp-breadcrumbs ol {
@@ -299,7 +299,7 @@ const faqSchema = {
   .mcsp-eyebrow {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -368,7 +368,7 @@ const faqSchema = {
   }
   .mcsp-source {
     margin: var(--space-4) 0 0;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     line-height: 1.55;
   }
@@ -377,22 +377,32 @@ const faqSchema = {
     /* A link inside a line of text is underlined, so it is not told apart by colour alone. */
     text-decoration: underline;
   }
+  /* The chevrons come from .disclosure. */
   .mcsp-faq > summary {
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     margin: 0;
   }
+  /* A box that opens, so its edge is a control's edge. */
   .mcsp-faqItem {
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-control-edge);
     border-radius: var(--radius-md);
     padding: var(--space-3);
     background: var(--color-bg);
     margin-top: var(--space-2);
   }
+  /* The question fills the box's padding, so the whole closed box is the
+     target, and the box keeps the size it had. */
   .mcsp-faqQ {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    margin: calc(-1 * var(--space-3));
+    padding: var(--space-3) 40px var(--space-3) var(--space-3);
     font-family: var(--font-heading);
     font-weight: 600;
     color: var(--color-text-primary);
-    cursor: pointer;
     font-size: 0.95rem;
   }
   .mcsp-faqA {
@@ -410,9 +420,9 @@ const faqSchema = {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: var(--space-4);
+    padding: var(--space-4) 40px var(--space-4) var(--space-4);
     background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-link-edge);
     border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
@@ -424,7 +434,7 @@ const faqSchema = {
   .mcsp-relatedKicker {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-teal);
@@ -488,7 +498,7 @@ const faqSchema = {
       width: 100%;
       min-height: 44px;
       margin-top: var(--space-2);
-      padding: 0;
+      padding: 0 36px 0 0;
       border: 0;
       background: none;
       color: var(--color-deep-blue);
@@ -497,15 +507,6 @@ const faqSchema = {
       font-size: 0.92rem;
       text-align: left;
       cursor: pointer;
-    }
-    [data-phone-more][data-ready] .mcsp-more::after {
-      content: '+' / '';
-      font-size: 1.3rem;
-      line-height: 1;
-      color: var(--color-teal);
-    }
-    [data-phone-more].is-open .mcsp-more::after {
-      content: '\2212' / '';
     }
     .mcsp-more:focus-visible {
       outline: 2px solid var(--color-teal);
@@ -521,7 +522,7 @@ const faqSchema = {
       display: none;
     }
     .mcsp-relatedCard {
-      padding: var(--space-3);
+      padding: var(--space-3) 40px var(--space-3) var(--space-3);
     }
   }
 </style>

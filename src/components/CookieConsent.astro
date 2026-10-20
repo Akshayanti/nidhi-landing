@@ -140,7 +140,7 @@ const strings = dict(locale);
 
   .cookie-sub {
     margin: 0 0 1.25rem;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     line-height: 1.4;
   }
 
@@ -163,7 +163,7 @@ const strings = dict(locale);
   .cookie-btn {
     padding: 0.6rem 1.5rem;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -185,11 +185,13 @@ const strings = dict(locale);
   }
   .cookie-btn--accept:hover { background: var(--color-cta-bg-hover); }
 
+  /* An outline as clear as the other choice: declining is as easy to see as accepting. */
   .cookie-btn--decline {
     background: transparent;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border-light);
+    color: var(--color-deep-blue);
+    border: 1.5px solid var(--color-deep-blue);
   }
+  .cookie-btn--decline:hover { background: var(--color-bg-subtle); }
 
   @media (max-width: 640px) {
     .cookie-modal {

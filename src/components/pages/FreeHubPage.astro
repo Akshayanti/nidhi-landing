@@ -151,7 +151,7 @@ const collectionPageSchema = {
     <ul class="ft-toolsGrid" role="list">
       {tools.map((tool) => (
         <li class="ft-toolItem">
-          <a href={tool.url} class="ft-toolCard" data-attr={tool.dataAttr}>
+          <a href={tool.url} class="ft-toolCard link-card" data-attr={tool.dataAttr}>
             <div class="ft-toolPreview" aria-hidden="true">
               {tool.preview === 'donut' && (
                 <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
@@ -214,7 +214,7 @@ const collectionPageSchema = {
             <span class="ft-kicker">{tool.kicker}</span>
             <span class="ft-title">{tool.title}</span>
             <span class="ft-desc">{tool.desc}</span>
-            <span class="ft-cta" aria-hidden="true">{hub.cta} &rarr;</span>
+            <span class="ft-cta" aria-hidden="true">{hub.cta}</span>
           </a>
         </li>
       ))}
@@ -260,7 +260,7 @@ const collectionPageSchema = {
   }
 
   .ft-breadcrumbs {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
@@ -297,7 +297,7 @@ const collectionPageSchema = {
 
   .ft-eyebrow {
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -353,11 +353,10 @@ const collectionPageSchema = {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    padding: var(--space-5);
+    padding: var(--space-5) 40px var(--space-5) var(--space-5);
     background: var(--color-bg-white);
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-link-edge);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
     text-decoration: none;
     color: inherit;
     transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
@@ -387,7 +386,7 @@ const collectionPageSchema = {
 
   .ft-kicker {
     font-family: var(--font-heading);
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-teal);
@@ -412,7 +411,7 @@ const collectionPageSchema = {
     margin-top: auto;
     padding-top: var(--space-3);
     font-family: var(--font-heading);
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-deep-blue);
     transition: transform 0.15s ease;
@@ -500,6 +499,6 @@ const collectionPageSchema = {
   @media (max-width: 480px) {
     .ft-page { padding: var(--space-5) var(--space-3) var(--space-10); }
     .ft-howItWorks { padding: var(--space-5) var(--space-4); }
-    .ft-toolCard { padding: var(--space-4); }
+    .ft-toolCard { padding: var(--space-4) 40px var(--space-4) var(--space-4); }
   }
 </style>

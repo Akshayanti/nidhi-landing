@@ -746,7 +746,7 @@ function HistoryPanel({
               <p className="ifc-hint">{t(h.useOutside, { min: MIN_RATE.toLocaleString(numberLocale), max: MAX_RATE.toLocaleString(numberLocale) })}</p>
             ))}
           <details className="ifc-tableWrap">
-            <summary className="ifc-tableSummary">{h.tableSummary}</summary>
+            <summary className="ifc-tableSummary disclosure">{h.tableSummary}</summary>
             <div className="ifc-tableScroll">
               <table className="ifc-table">
                 <caption>{t(h.tableCaption, { country: country.name })}</caption>

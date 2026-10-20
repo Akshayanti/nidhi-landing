@@ -188,7 +188,7 @@ const faqSchema = {
     {/* Collapsed by default, like the FAQ below: the method is there for
         anyone who wants it, without pushing the FAQ and lessons down. */}
     <details class="mcnw-explainer">
-      <summary class="mcnw-faqHeading">
+      <summary class="mcnw-faqHeading disclosure">
         <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">{tool.page.explainer.heading}</h2>
       </summary>
       <p>
@@ -213,14 +213,14 @@ const faqSchema = {
     </details>
 
     <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
-      <summary id="mcnw-faq-h" class="mcnw-faqHeading">
+      <summary id="mcnw-faq-h" class="mcnw-faqHeading disclosure">
         <span class="mcnw-sectionTitle">{tool.page.faq.heading}</span>
         <span class="mcnw-faqHeadingCount" aria-hidden="true">{tool.page.faq.items.length}</span>
       </summary>
       <div class="mcnw-faqList">
         {tool.page.faq.items.map((f) => (
           <details class="mcnw-faqItem">
-            <summary class="mcnw-faqQ">{f.q}</summary>
+            <summary class="mcnw-faqQ disclosure">{f.q}</summary>
             <p class="mcnw-faqA">{f.a}</p>
           </details>
         ))}
@@ -239,7 +239,7 @@ const faqSchema = {
 
       <div class="mcnw-relatedGrid">
         {RELATED.map((post) => (
-          <a href={lessonPath(post.slug)} hreflang="en" class="mcnw-relatedCard" data-attr={post.dataAttr}>
+          <a href={lessonPath(post.slug)} hreflang="en" class="mcnw-relatedCard link-card" data-attr={post.dataAttr}>
             <span class="mcnw-relatedKicker">{post.kicker}</span>
             <span class="mcnw-relatedTitle">{post.title}</span>
             <span class="mcnw-relatedDesc">{post.desc}</span>
@@ -269,7 +269,7 @@ const faqSchema = {
 
   .mcnw-breadcrumbs {
     margin-bottom: var(--space-3);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
   }
   .mcnw-breadcrumbs ol {
@@ -306,7 +306,7 @@ const faqSchema = {
   .mcnw-eyebrow {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -430,37 +430,14 @@ const faqSchema = {
   /* FAQ: entire section is collapsible. The summary doubles as the
      section heading; we keep the visual weight of an h2 and add a tiny
      count badge so the user knows how many questions are hidden. */
+  /* The chevron comes from .disclosure. */
   .mcnw-faqHeading {
-    cursor: pointer;
-    list-style: none;
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-3) 0;
+    min-height: 44px;
+    padding: var(--space-3) 36px var(--space-3) 0;
     user-select: none;
-  }
-
-  .mcnw-faqHeading::-webkit-details-marker { display: none; }
-
-  .mcnw-faqHeading::before {
-    content: '+';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
-    color: var(--color-deep-blue);
-    font-weight: 700;
-    font-size: 0.9rem;
-    flex: 0 0 auto;
-    transition: transform 0.15s ease;
-  }
-
-  .mcnw-explainer[open] > .mcnw-faqHeading::before,
-  .mcnw-faq[open] > .mcnw-faqHeading::before {
-    content: '−';
   }
 
   .mcnw-faqHeading:focus-visible {
@@ -472,7 +449,7 @@ const faqSchema = {
   .mcnw-faqHeadingCount {
     margin-left: auto;
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--color-text-muted);
     background: var(--color-surface);
@@ -487,8 +464,9 @@ const faqSchema = {
     gap: var(--space-2);
   }
 
+  /* A box that opens, so its edge is a control's edge, open or closed. */
   .mcnw-faqItem {
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-control-edge);
     border-radius: var(--radius-md);
     padding: var(--space-3);
     background: var(--color-bg);
@@ -496,34 +474,22 @@ const faqSchema = {
 
   .mcnw-faqItem[open] {
     background: var(--color-bg-white);
-    border-color: var(--color-border);
   }
 
+  /* The question fills the box's padding, so the whole closed box is the
+     target, and the box keeps the size it had. The chevron comes from
+     .disclosure. */
   .mcnw-faqQ {
     font-family: var(--font-heading);
     font-weight: 600;
     color: var(--color-text-primary);
-    cursor: pointer;
-    list-style: none;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-height: 44px;
+    margin: calc(-1 * var(--space-3));
+    padding: var(--space-3) 40px var(--space-3) var(--space-3);
     font-size: 0.95rem;
-  }
-
-  .mcnw-faqQ::-webkit-details-marker { display: none; }
-
-  .mcnw-faqQ::before {
-    content: '+';
-    font-weight: 700;
-    color: var(--color-deep-blue);
-    width: 1em;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
-  .mcnw-faqItem[open] .mcnw-faqQ::before {
-    content: '\2212';
   }
 
   .mcnw-faqQ:focus-visible {
@@ -566,9 +532,9 @@ const faqSchema = {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: var(--space-4);
+    padding: var(--space-4) 40px var(--space-4) var(--space-4);
     background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-link-edge);
     border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
@@ -592,7 +558,7 @@ const faqSchema = {
   .mcnw-relatedKicker {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -642,7 +608,7 @@ const faqSchema = {
   }
 
   .mcnw-relatedAllSecondary {
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     text-decoration: underline dotted;
     text-decoration-color: var(--color-text-muted);
@@ -741,7 +707,7 @@ const faqSchema = {
   .mcnw-fieldLabel {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.78rem;
+    font-size: 0.8125rem;
     color: var(--color-text-secondary);
     letter-spacing: 0.02em;
   }
@@ -751,7 +717,7 @@ const faqSchema = {
     font-size: 1rem;
     padding: 10px 12px;
     min-height: 44px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-control-edge);
     background: var(--color-bg-white);
     color: var(--color-text-primary);
     border-radius: var(--radius-md);
@@ -779,7 +745,7 @@ const faqSchema = {
 
   .mcnw-fieldHelp {
     margin: 4px 0 0;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 400;
     color: var(--color-text-muted);
     line-height: 1.4;
@@ -805,7 +771,7 @@ const faqSchema = {
   .mcnw-shareBtnOutline {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     padding: 10px 14px;
     min-height: 44px;
     cursor: pointer;
@@ -843,7 +809,7 @@ const faqSchema = {
   .mcnw-resetBtn {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     padding: 10px 16px;
     min-height: 44px;
     border-radius: var(--radius-md);
@@ -915,7 +881,7 @@ const faqSchema = {
     font-size: 1rem;
     padding: 10px 12px;
     min-height: 44px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-control-edge);
     background: var(--color-bg);
     color: var(--color-text-primary);
     border-radius: var(--radius-md);
@@ -951,7 +917,7 @@ const faqSchema = {
   }
 
   .mcnw-rowCount {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
   }
 
@@ -971,7 +937,7 @@ const faqSchema = {
   .mcnw-tableRowHead {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-muted);
@@ -1004,12 +970,12 @@ const faqSchema = {
   .mcnw-addBtn {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     padding: 10px 16px;
     min-height: 44px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    border: 2px dashed var(--color-border);
+    border: 2px dashed var(--color-control-edge);
     background: transparent;
     color: var(--color-deep-blue);
     transition: border-color 0.15s ease, background 0.15s ease;
@@ -1025,12 +991,12 @@ const faqSchema = {
   .mcnw-csvBtn {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     padding: 10px 16px;
     min-height: 44px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-control-edge);
     background: var(--color-bg);
     color: var(--color-text-secondary);
     transition: border-color 0.15s ease, color 0.15s ease;
@@ -1051,7 +1017,7 @@ const faqSchema = {
     height: 32px;
     padding: 0;
     border-radius: var(--radius-sm);
-    border: 1px solid transparent;
+    border: 1px solid var(--color-control-edge);
     background: transparent;
     color: var(--color-text-muted);
     font-size: 1.25rem;
@@ -1091,7 +1057,7 @@ const faqSchema = {
   .mcnw-csvConfirmYes {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     padding: 8px 16px;
     border: none;
     border-radius: var(--radius-md);
@@ -1103,7 +1069,7 @@ const faqSchema = {
   .mcnw-csvConfirmNo {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     padding: 8px 16px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -1119,7 +1085,7 @@ const faqSchema = {
     background: var(--warning-light-bg);
     border: 1px solid var(--warning-light-border-strong);
     border-radius: var(--radius-md);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--warning-light-text-strong);
   }
 
@@ -1164,7 +1130,7 @@ const faqSchema = {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-text-muted);
@@ -1182,7 +1148,7 @@ const faqSchema = {
 
   .mcnw-totalHint {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-top: 2px;
   }
@@ -1222,7 +1188,7 @@ const faqSchema = {
 
   .mcnw-chartCenterSub {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     fill: var(--color-text-muted);
   }
 
@@ -1241,7 +1207,7 @@ const faqSchema = {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
   }
 
@@ -1314,7 +1280,7 @@ const faqSchema = {
     display: inline-block;
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.62rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--neutral-white);
@@ -1330,7 +1296,7 @@ const faqSchema = {
   }
 
   .mcnw-riskLabel {
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     margin: 0 0 var(--space-1);
   }
@@ -1344,7 +1310,7 @@ const faqSchema = {
 
   /* Disclaimer */
   .mcnw-disclaimer {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     line-height: 1.5;
     margin: 0;
@@ -1369,7 +1335,7 @@ const faqSchema = {
     .mcnw-shareBtnOutline {
       flex: 1;
       text-align: center;
-      font-size: 0.72rem;
+      font-size: 0.8125rem;
       padding: 10px 8px;
     }
     .mcnw-chartWrap {

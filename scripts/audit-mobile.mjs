@@ -157,7 +157,7 @@ for (const path of pages) {
       const fs = parseFloat(getComputedStyle(p).fontSize);
       if (fs < 16) out.smallBody.push(`${p.className || p.parentElement.className} ${fs}px`);
     });
-    // Any visible text under 12px, outside charts.
+    // Any visible text under 13px, outside charts.
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const seen = new Set();
     for (let n = walker.nextNode(); n; n = walker.nextNode()) {
@@ -167,7 +167,7 @@ for (const path of pages) {
       seen.add(el);
       const s = getComputedStyle(el);
       if (s.display === 'none' || s.visibility === 'hidden' || el.getClientRects().length === 0) continue;
-      if (parseFloat(s.fontSize) < 12) out.tinyText.push(`${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]} "${n.textContent.trim().slice(0, 30)}" ${parseFloat(s.fontSize)}px`);
+      if (parseFloat(s.fontSize) < 13) out.tinyText.push(`${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]} "${n.textContent.trim().slice(0, 30)}" ${parseFloat(s.fontSize)}px`);
     }
 
     // Tap targets.
@@ -204,7 +204,7 @@ for (const p of results) {
   }
   for (const t of p.tables || []) if (!t.scroller) lines.push(`TABLE ${t.index} ${t.width}px wide, no sideways scroll`);
   if ((p.smallBody || []).length) lines.push(`SMALL READING TEXT ${p.smallBody.length}: ${[...new Set(p.smallBody)].slice(0, 4).join('; ')}`);
-  if ((p.tinyText || []).length) lines.push(`TEXT UNDER 12PX ${p.tinyText.length}: ${p.tinyText.slice(0, 5).join('; ')}`);
+  if ((p.tinyText || []).length) lines.push(`TEXT UNDER 13PX ${p.tinyText.length}: ${p.tinyText.slice(0, 5).join('; ')}`);
   if ((p.smallTargets || []).length) lines.push(`SMALL TARGETS ${p.smallTargets.length}: ${p.smallTargets.slice(0, 4).join('; ')}`);
   if (p.error || p.overflow || (p.figures || []).some((f) => f.minPx < MIN_FIGURE_PX || f.overlaps.length || f.spill.length) || (p.tables || []).some((t) => !t.scroller) || (p.smallBody || []).length || (p.tinyText || []).length || (p.smallTargets || []).length) blocking++;
   if (lines.length) console.log(`\n${p.path}\n  ${lines.join('\n  ')}`);

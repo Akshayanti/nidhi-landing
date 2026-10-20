@@ -156,10 +156,16 @@ const blogItemListSchema = {
     line-height: 1.6;
   }
 
+  /* Underlined, and tall enough to tap (about 25px): a link set in a sentence
+     shows itself by its underline, not by colour alone. */
   .blog-index-subtitle a {
+    display: inline-block;
+    padding-block: 4px;
     color: var(--color-deep-blue);
     font-weight: 600;
     white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .blog-index-subscribe {

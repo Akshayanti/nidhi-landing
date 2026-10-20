@@ -202,7 +202,7 @@ const faqSchema = {
     />
 
     <details class="lc-faq" aria-labelledby="lc-faq-h">
-      <summary id="lc-faq-h" class="lc-faqHeading">
+      <summary id="lc-faq-h" class="lc-faqHeading disclosure">
         <span class="lc-sectionTitle">{tool.page.faq.heading}</span>
         <span class="lc-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
       </summary>
@@ -212,7 +212,7 @@ const faqSchema = {
           <div class="lc-faqList">
             {section.items.map((f) => (
               <details class="lc-faqItem">
-                <summary class="lc-faqQ">{f.q}</summary>
+                <summary class="lc-faqQ disclosure">{f.q}</summary>
                 <p class="lc-faqA">{f.a}</p>
               </details>
             ))}
@@ -234,7 +234,7 @@ const faqSchema = {
 
         <div class="lc-relatedGrid">
           {RELATED.map((post) => (
-            <a href={lessonPath(post.slug)} hreflang="en" class="lc-relatedCard" data-attr={post.dataAttr}>
+            <a href={lessonPath(post.slug)} hreflang="en" class="lc-relatedCard link-card" data-attr={post.dataAttr}>
               <span class="lc-relatedKicker">{post.kicker}</span>
               <span class="lc-relatedTitle">{post.title}</span>
               <span class="lc-relatedDesc">{post.desc}</span>
@@ -265,7 +265,7 @@ const faqSchema = {
 
   .lc-breadcrumbs {
     margin-bottom: var(--space-3);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
   }
   .lc-breadcrumbs ol {
@@ -302,7 +302,7 @@ const faqSchema = {
   .lc-eyebrow {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -408,36 +408,14 @@ const faqSchema = {
     /* details elements default to display:block; nothing else needed. */
   }
 
+  /* The chevron comes from .disclosure. */
   .lc-faqHeading {
-    cursor: pointer;
-    list-style: none;
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-3) 0;
+    min-height: 44px;
+    padding: var(--space-3) 36px var(--space-3) 0;
     user-select: none;
-  }
-
-  .lc-faqHeading::-webkit-details-marker { display: none; }
-
-  .lc-faqHeading::before {
-    content: '+';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
-    color: var(--color-deep-blue);
-    font-weight: 700;
-    font-size: 0.9rem;
-    flex: 0 0 auto;
-    transition: transform 0.15s ease;
-  }
-
-  .lc-faq[open] > .lc-faqHeading::before {
-    content: '−';
   }
 
   .lc-faqHeading:focus-visible {
@@ -449,7 +427,7 @@ const faqSchema = {
   .lc-faqHeadingCount {
     margin-left: auto;
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--color-text-muted);
     background: var(--color-surface);
@@ -484,8 +462,9 @@ const faqSchema = {
     gap: var(--space-2);
   }
 
+  /* A box that opens, so its edge is a control's edge, open or closed. */
   .lc-faqItem {
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-control-edge);
     border-radius: var(--radius-md);
     padding: var(--space-3);
     background: var(--color-bg);
@@ -493,34 +472,22 @@ const faqSchema = {
 
   .lc-faqItem[open] {
     background: var(--color-bg-white);
-    border-color: var(--color-border);
   }
 
+  /* The question fills the box's padding, so the whole closed box is the
+     target, and the box keeps the size it had. The chevron comes from
+     .disclosure. */
   .lc-faqQ {
     font-family: var(--font-heading);
     font-weight: 600;
     color: var(--color-text-primary);
-    cursor: pointer;
-    list-style: none;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-height: 44px;
+    margin: calc(-1 * var(--space-3));
+    padding: var(--space-3) 40px var(--space-3) var(--space-3);
     font-size: 0.95rem;
-  }
-
-  .lc-faqQ::-webkit-details-marker { display: none; }
-
-  .lc-faqQ::before {
-    content: '+';
-    font-weight: 700;
-    color: var(--color-deep-blue);
-    width: 1em;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
-  .lc-faqItem[open] .lc-faqQ::before {
-    content: '−';
   }
 
   .lc-faqQ:focus-visible {
@@ -567,9 +534,9 @@ const faqSchema = {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: var(--space-4);
+    padding: var(--space-4) 40px var(--space-4) var(--space-4);
     background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-link-edge);
     border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
@@ -593,7 +560,7 @@ const faqSchema = {
   .lc-relatedKicker {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-teal);
@@ -644,7 +611,7 @@ const faqSchema = {
   }
 
   .lc-relatedAllSecondary {
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     text-decoration: underline dotted;
     text-decoration-color: var(--color-text-muted);
@@ -676,7 +643,7 @@ const faqSchema = {
     .lc-relatedDesc { display: none; }
     .lc-pageHeader { margin-bottom: var(--space-5); }
     .lc-relatedGrid { gap: var(--space-2); }
-    .lc-relatedCard { padding: var(--space-3); }
+    .lc-relatedCard { padding: var(--space-3) 40px var(--space-3) var(--space-3); }
   }
 
   @media (prefers-reduced-motion: reduce) {

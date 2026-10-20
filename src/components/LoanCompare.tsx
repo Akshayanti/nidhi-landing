@@ -1158,7 +1158,7 @@ export default function LoanCompare({
 
       {/* Open on wider screens, folded on phones (useFoldOnPhone). */}
       <details className="lc-disclaimerWrap" open ref={disclaimerRef}>
-        <summary className="lc-disclaimerSummary">{strings.disclaimer.summary}</summary>
+        <summary className="lc-disclaimerSummary disclosure">{strings.disclaimer.summary}</summary>
         <p className="lc-disclaimer">
           {strings.disclaimer.body}
         </p>
@@ -1410,7 +1410,7 @@ function VendorCard({
       {/* ------------------------------------------------------------ */}
 
       <details className="lc-optional" ref={optionalRef}>
-      <summary className="lc-optionalSummary">
+      <summary className="lc-optionalSummary disclosure">
         <span className="lc-optionalTitle">{strings.card.optionalTitle}</span>
         <span className="lc-optionalStatus">{optionalSummary}</span>
       </summary>
@@ -1681,7 +1681,7 @@ function VendorCard({
                 }
               }}
             >
-              <summary className="lc-resultDetailsSummary">{strings.results.showDetails}</summary>
+              <summary className="lc-resultDetailsSummary disclosure">{strings.results.showDetails}</summary>
               <dl className="lc-resultList">
                 <ResultRow
                   label={strings.results.timeToPayoff}

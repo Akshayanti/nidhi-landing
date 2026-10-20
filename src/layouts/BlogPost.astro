@@ -365,7 +365,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             <div class="post-related-grid">
               {relatedPosts.map((rp) => (
                 <a
-                  class="post-related-card"
+                  class="post-related-card link-card"
                   href={`/blog/${rp.slug}/`}
                   data-attr={`related-${rp.slug}`}
                 >
@@ -470,7 +470,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     display: inline-flex;
     align-items: center;
     min-height: 24px;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-family: var(--font-heading);
     font-weight: 500;
     color: var(--color-text-secondary);
@@ -493,14 +493,14 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   .post-series-foot + .post-nav { margin-top: var(--space-4); }
 
   .post-reading-time {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
   }
 
   .post-byline {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
@@ -517,7 +517,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   .post-date {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
   }
 
@@ -526,7 +526,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
      evergreen finance content; we use the same muted treatment as the
      pubDate so it reads as metadata, not an alert. */
   .post-updated {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
   }
 
@@ -556,7 +556,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   .tldr-label {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-deep-blue);
@@ -581,11 +581,11 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     background: var(--color-border-light);
     padding: 3px 10px;
     border-radius: var(--radius-sm);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--color-text-secondary);
     text-decoration: none;
     cursor: pointer;
-    border: 1px solid transparent;
+    border: 1px solid var(--color-control-edge);
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
@@ -623,7 +623,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   .toc-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-text-muted);
@@ -646,7 +646,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
   .toc-item a {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     text-decoration: none;
     padding: 3px 0;
@@ -668,7 +668,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   .toc-item--h3 a {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 400;
     color: var(--color-text-muted);
   }
@@ -737,14 +737,15 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     margin-top: var(--space-10);
     padding: var(--space-5) var(--space-6) var(--space-6);
     background: color-mix(in srgb, var(--color-teal) 7%, var(--color-bg-white));
-    border: 1px solid color-mix(in srgb, var(--color-teal) 22%, transparent);
+    /* A callout: a tint and an accent bar, no box edge that reads as a button. */
+    border-left: 3px solid var(--color-teal);
     border-radius: var(--radius-md);
   }
 
   .post-recap-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-deep-blue);
@@ -841,7 +842,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
   .post-tool-stepLabel {
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -858,7 +859,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   .post-tool-check,
   .post-tool-note {
     color: var(--color-text-muted);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
   }
 
   .post-tool-note {
@@ -948,12 +949,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
   .ref-author {
     color: var(--color-text-secondary);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
   }
 
   .ref-type {
     font-family: var(--font-heading);
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     background: var(--color-border-light);
@@ -988,7 +989,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
   .post-nav-direction {
     font-family: var(--font-heading);
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-muted);
@@ -1044,9 +1045,9 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: var(--space-4);
+    padding: var(--space-4) 40px var(--space-4) var(--space-4);
     background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-link-edge);
     border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
