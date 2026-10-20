@@ -20,7 +20,7 @@ import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import { getHelperLevels, getPathPosts } from '../utils/learnPosts';
-import { DEFAULT_LOCALE, LOCALES, dict, localizedPath, type Locale } from '../i18n';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
@@ -119,6 +119,7 @@ const blogItemListSchema = {
         strings={blogIndex.island}
         inclusiveHref={localizedPath(locale, '/blog/inclusive-finances/')}
         topicsHref={localizedPath(locale, '/blog/tag/')}
+        lang={LOCALE_META[locale].htmlLang}
       />
       <div class="blog-index-subscribe">
         <SubscribeSection variant="compact" locale={locale} />

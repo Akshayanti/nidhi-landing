@@ -20,7 +20,7 @@ import { TopicLessons, type TopicGroup } from '../LearningPath';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { formatTag, tagChipLabel } from '../../utils/tags';
 import type { TopicSection } from '../../utils/learnPosts';
-import { DEFAULT_LOCALE, LOCALES, DATE_LOCALE, blogTagPath, dict, format, localizedPath, type Locale } from '../../i18n';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, DATE_LOCALE, blogTagPath, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -63,10 +63,10 @@ const levelList = levelNames.length <= 1
   : format(topicStrings.summary.levelList, { list: levelNames.slice(0, -1).join(', '), last: levelNames[levelNames.length - 1] });
 const summaryParts = [
   ladderCount > 0
-    ? format(ladderCount === 1 ? topicStrings.summary.lessonsOne : topicStrings.summary.lessonsMany, { count: ladderCount, levels: levelList })
+    ? format(plural(LOCALE_META[locale].htmlLang, ladderCount, topicStrings.summary.lessonsOne, topicStrings.summary.lessonsFew, topicStrings.summary.lessonsMany), { count: ladderCount, levels: levelList })
     : '',
   guideGroup
-    ? format(guideGroup.posts.length === 1 ? topicStrings.summary.guidesOne : topicStrings.summary.guidesMany, { count: guideGroup.posts.length })
+    ? format(plural(LOCALE_META[locale].htmlLang, guideGroup.posts.length, topicStrings.summary.guidesOne, topicStrings.summary.guidesFew, topicStrings.summary.guidesMany), { count: guideGroup.posts.length })
     : '',
 ].filter(Boolean);
 const summary = summaryParts.join(topicStrings.summary.join);

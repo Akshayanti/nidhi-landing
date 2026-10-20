@@ -23,7 +23,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import HeroChart from '../HeroChart.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
-import { LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
+import { LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 import { EXAMPLES, EXAMPLE_CURRENCY, EXAMPLE_RETURN, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
@@ -77,7 +77,7 @@ const inclusive = liveInclusive(allPosts, now);
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
 // table sits in Step 2 and the ten-year chart in Step 3.
 // Each edition's example is in a currency its readers live with: euros in
-// English and Spanish, rupees in Hindi (EXAMPLE_CURRENCY). `eur` keeps its
+// English and Spanish, rupees in Hindi, koruna in Czech (EXAMPLE_CURRENCY). `eur` keeps its
 // name from when every edition used euros; it formats the example currency.
 const currency = EXAMPLE_CURRENCY[locale];
 const example = EXAMPLES[currency];
@@ -327,7 +327,7 @@ const faqSchema = {
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
               </span>
               <span class="route-title">{home.lessons.inclusiveTitle}</span>
-              <span class="route-meta">{inclusive.count === 1 ? home.lessons.inclusiveMetaOne : t(home.lessons.inclusiveMeta, { count: inclusive.count })}</span>
+              <span class="route-meta">{t(plural(LOCALE_META[locale].htmlLang, inclusive.count, home.lessons.inclusiveMetaOne, home.lessons.inclusiveMetaFew, home.lessons.inclusiveMeta), { count: inclusive.count })}</span>
               <span class="route-go">{home.lessons.inclusiveGo} <span aria-hidden="true">&rarr;</span></span>
             </a>
           </li>

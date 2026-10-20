@@ -44,8 +44,9 @@ describe('hero example', () => {
 });
 
 describe('the example each edition shows', () => {
-  it('is in rupees for Hindi readers and in euros elsewhere', () => {
+  it('is in rupees for Hindi readers, koruna for Czech readers and euros elsewhere', () => {
     assert.equal(EXAMPLE_CURRENCY.hi, 'INR');
+    assert.equal(EXAMPLE_CURRENCY.cs, 'CZK');
     assert.equal(EXAMPLE_CURRENCY.en, 'EUR');
     assert.equal(EXAMPLE_CURRENCY.es, 'EUR');
   });

@@ -754,6 +754,7 @@ export const hi: Dict = {
       earlier: 'पहले के बदलाव',
       countOne: '{count} बदलाव',
       countOther: '{count} बदलाव',
+      countFew: '{count} बदलाव',
       materialTag: 'महत्वपूर्ण',
       materialLabel: 'महत्वपूर्ण बदलाव',
       entriesInEnglish:
@@ -909,7 +910,8 @@ export const hi: Dict = {
       doorPath: 'सीखने के रास्ते पर आगे बढ़ते रहें',
       inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
       inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
-      inclusiveMetaOne: 'सबके लिए वित्त · 1 गाइड, किसी भी पड़ाव पर',
+      inclusiveMetaFew: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
+      inclusiveMetaOne: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveGo: 'देखें',
     },
     /** Step 2: what the free tools are for. */

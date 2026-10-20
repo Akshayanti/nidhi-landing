@@ -76,6 +76,20 @@ describe('Spanish pages: point groups, comma is the decimal', () => {
   });
 });
 
+describe('Czech pages: space groups, comma is the decimal', () => {
+  it('reads plain, grouped and decimal numbers', () => {
+    assert.equal(parseLocaleNumber('10000', 'cs'), 10_000);
+    assert.equal(parseLocaleNumber('10 000', 'cs'), 10_000);
+    assert.equal(parseLocaleNumber('10\u00a0000,50', 'cs'), 10_000.5);
+    assert.equal(parseLocaleNumber('2,5', 'cs'), 2.5);
+  });
+
+  it('reads a point as many Czech readers type it', () => {
+    assert.equal(parseLocaleNumber('2.5', 'cs'), 2.5, 'a point before one digit can only be a decimal');
+    assert.equal(parseLocaleNumber('10.000', 'cs'), 10_000, 'three digits after a point is grouping, as on a Spanish page');
+  });
+});
+
 describe('spaces as grouping, in every locale', () => {
   it('accepts spaces, no-break spaces and thin spaces between groups', () => {
     assert.equal(parseLocaleNumber('10 000', EN), 10_000);
