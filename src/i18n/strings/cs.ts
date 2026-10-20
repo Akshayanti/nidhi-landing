@@ -782,7 +782,7 @@ export const cs: Dict = {
       mark: 'Krok {n}: ',
     },
     lessons: {
-      heading: 'Lekce zdarma, natrvalo.',
+      heading: 'Lekce zdarma, navždy.',
       body: 'Krátké lekce pro jakoukoli domácnost v jakékoli zemi, a kde záleží na místních pravidlech, řeknou, co si ověřit. Bez placeného přístupu, bez účtu.',
       helperQuestion: 'Nevíte, co se pro vás hodí?',
       helperLink: 'Dvě otázky navrhnou, kde začít',

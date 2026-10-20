@@ -1017,7 +1017,7 @@ export const en = {
     },
     /** Step 1: the ways in, one line each. */
     lessons: {
-      heading: 'Free lessons, for good.',
+      heading: 'Free lessons, forever.',
       body: 'Short lessons for any household, in any country, and where local rules matter, they say what to check. No paywall, no account.',
       helperQuestion: 'Not sure which fits?',
       helperLink: 'Two questions suggest where to start',
