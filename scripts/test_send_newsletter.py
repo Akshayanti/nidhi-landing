@@ -44,6 +44,20 @@ def _extract(page: str) -> dict:
         return nl.extract_post(Path(tmp), "/blog/a-lesson/", SITE_URL)
 
 
+class ReadingTimeTest(unittest.TestCase):
+    def test_email_shows_total_minutes(self) -> None:
+        page = PAGE.replace(
+            '<h1 class="post-title">',
+            '<span class="post-reading-time" data-total-minutes="9">5 min read'
+            '<span class="post-reading-depth"> · +4 min of optional detail</span></span><h1 class="post-title">',
+        )
+        self.assertEqual(_extract(page)["reading_time"], 9)
+
+    def test_falls_back_to_the_visible_number(self) -> None:
+        page = PAGE.replace('<h1 class="post-title">', '<span class="post-reading-time">7 min read</span><h1 class="post-title">')
+        self.assertEqual(_extract(page)["reading_time"], 7)
+
+
 class FlattenDetailsTest(unittest.TestCase):
     def setUp(self) -> None:
         self.post = _extract(PAGE)

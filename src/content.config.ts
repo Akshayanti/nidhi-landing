@@ -18,9 +18,9 @@ const blog = defineCollection({
     description: z.string(),
     tldr: z.string(),
     /**
-     * Two to four short statements of what a reader now understands, shown
-     * after the article as "What you now understand". Each one restates
-     * something the lesson itself explains; no new claims.
+     * Two to four short topic phrases ("Why ...", "How to ..."), listed under
+     * the TL;DR as "In this lesson". Each one names something the lesson
+     * itself explains; no new claims.
      */
     takeaways: z.array(z.string()).min(2).max(4).optional(),
     order: z.number().default(99),

@@ -11,7 +11,7 @@
  * business, not this module's: nothing here returns a sentence.
  */
 import { getCollection } from 'astro:content';
-import { getReadingTime } from './readingTime';
+import { getLayeredReadingTime } from './readingTime';
 import { assertCompanionHosts, placeOnPath } from './companions';
 import { LADDER_LEVELS } from './home/startingPoints';
 import { assertConceptSlugs } from './levelHelper';
@@ -69,7 +69,8 @@ export async function getPathPosts(): Promise<PathPost[]> {
       description: post.data.description,
       pubDate: post.data.pubDate.toISOString(),
       level: post.data.level,
-      readingTime: getReadingTime(post.body || ''),
+      // The main path: what a reader commits to by opening the lesson.
+      readingTime: getLayeredReadingTime(post.body || '').main,
       tags: post.data.tags,
       ...placements.get(post.data.slug),
       // Last, so the key order of the object a page hydrates an island with is
