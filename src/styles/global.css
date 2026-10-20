@@ -61,13 +61,14 @@
   unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
 }
 
-/* The Devanagari face is added to both stacks on Hindi pages only. Appending
+/* The Devanagari face is added to both stacks on Hindi and Marathi pages only
+   (the one file carries both languages' letters). Appending
    it to the tokens above instead would put a 120 KB download on every English
    page, because the switcher's "हिन्दी" label is a Devanagari codepoint: three
    glyphs, drawn from the system face, at the cost of a whole font. Scoping it
-   to `html[lang="hi"]` also means the English tokens are untouched, so no
+   to those two languages also means the English tokens are untouched, so no
    English page's rendering depends on this rule at all. */
-html[lang="hi"] {
+html:is([lang="hi"], [lang="mr"]) {
   --font-heading: 'Inter', 'Noto Sans Devanagari', sans-serif;
   --font-body: 'Roboto', 'Noto Sans Devanagari', sans-serif;
 }
@@ -449,25 +450,25 @@ h4 { font-size: 1rem; font-weight: 600; }
 
    Figures inside lessons are a separate job. Their labels are positioned by hand
    against Latin widths, and re-tuning them is part of translating each lesson. */
-html[lang="hi"] body {
+html:is([lang="hi"], [lang="mr"]) body {
   line-height: 1.75; /* Latin rule: 1.6 */
 }
 
-html[lang="hi"] h1,
-html[lang="hi"] h2,
-html[lang="hi"] h3,
-html[lang="hi"] h4,
-html[lang="hi"] h5,
-html[lang="hi"] h6 {
+html:is([lang="hi"], [lang="mr"]) h1,
+html:is([lang="hi"], [lang="mr"]) h2,
+html:is([lang="hi"], [lang="mr"]) h3,
+html:is([lang="hi"], [lang="mr"]) h4,
+html:is([lang="hi"], [lang="mr"]) h5,
+html:is([lang="hi"], [lang="mr"]) h6 {
   line-height: 1.4; /* Latin rule: 1.25 */
   letter-spacing: normal;
 }
 
-html[lang="hi"] .prose {
+html:is([lang="hi"], [lang="mr"]) .prose {
   line-height: 1.9; /* Latin rule: 1.75 */
 }
 
-html[lang="hi"] .prose figcaption {
+html:is([lang="hi"], [lang="mr"]) .prose figcaption {
   line-height: 1.7; /* Latin rule: 1.55 */
 }
 
@@ -476,8 +477,8 @@ html[lang="hi"] .prose figcaption {
    came out as "NIDHI". The tracking that goes with it is a Latin correction
    too. The extra ancestor outweighs the components' scoped rules, which
    carry Astro's scope attribute. */
-html[lang="hi"] .site-footer .footer-col-heading,
-html[lang="hi"] .site-header .nav-sheetHeading {
+html:is([lang="hi"], [lang="mr"]) .site-footer .footer-col-heading,
+html:is([lang="hi"], [lang="mr"]) .site-header .nav-sheetHeading {
   text-transform: none;
   letter-spacing: normal;
 }
@@ -485,7 +486,7 @@ html[lang="hi"] .site-header .nav-sheetHeading {
 /* The figure titles are set in the heading face at a size where the same
    negative tracking applies. The rest of a figure's typography is tuned per
    figure alongside its translation. */
-html[lang="hi"] .prose figure svg .fig-title {
+html:is([lang="hi"], [lang="mr"]) .prose figure svg .fig-title {
   letter-spacing: normal;
 }
 

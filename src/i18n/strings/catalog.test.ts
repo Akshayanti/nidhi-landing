@@ -17,11 +17,12 @@ import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
 import { CURRENCIES } from '../../utils/loan/math.ts';
-import { currenciesCs, currenciesEn, currenciesEs, currenciesHi } from './tools/currencies.ts';
+import { currenciesCs, currenciesEn, currenciesEs, currenciesHi, currenciesMr } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
 import { es } from './es.ts';
 import { cs } from './cs.ts';
+import { mr } from './mr.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -45,8 +46,9 @@ const EN = leaves(en);
 const HI = leaves(hi);
 const ES = leaves(es);
 const CS = leaves(cs);
+const MR = leaves(mr);
 /** Every translated catalog, by language, for the checks that apply to all of them. */
-const TRANSLATED: Array<[string, Leaf[]]> = [['Hindi', HI], ['Spanish', ES], ['Czech', CS]];
+const TRANSLATED: Array<[string, Leaf[]]> = [['Hindi', HI], ['Spanish', ES], ['Czech', CS], ['Marathi', MR]];
 const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
 
 /**
@@ -277,6 +279,108 @@ describe('the Czech catalog is translated, not copied', () => {
  * engine without a name fails here, a name for a currency the engine does not
  * have fails here, and so does a Hindi name that quotes the wrong code.
  */
+/**
+ * Marathi is written in Devanagari, so a value identical to English is nearly
+ * always a copy; the few allowed here each have a reason.
+ */
+const IDENTICAL_OK_MR = new Set<string>([
+  // FIRE is kept as the English acronym (docs/i18n/mr-glossary.md).
+  'tools.multiCurrencyNetWorth.page.related.items.6.kicker',
+  // The publisher's name and the year, which read the same in every language.
+  'tools.monteCarlo.page.how.source.after',
+  // A source's name stays as it is (docs/i18n/mr-glossary.md rule 9).
+  'tools.inflation.page.source.link',
+]);
+
+/** A meta description: a page's own, a tool page's, or a topic page's. */
+const isMetaDescription = (path: string) =>
+  /(^|\.)meta\.description(WithoutSimulator|WithCount|Fallback)?$/.test(path) || /^learn\.tags\.[^.]+\.description$/.test(path);
+
+describe('the Marathi catalog is translated, not copied', () => {
+  it('leaves no English word untranslated', () => {
+    const copied = MR.filter(({ path, value }) => {
+      if (IDENTICAL_OK.has(path) || IDENTICAL_OK_MR.has(path)) return false;
+      if (value !== EN_BY_PATH.get(path)) return false;
+      return !isLanguageNeutral(value);
+    }).map(({ path, value }) => `${path}: ${value}`);
+
+    assert.deepEqual(
+      copied,
+      [],
+      `Marathi values still identical to English:\n  ${copied.join('\n  ')}\n\n` +
+        'Translate them, or add the path to IDENTICAL_OK_MR in this file with a reason.',
+    );
+  });
+
+  it('writes the Marathi catalog in Devanagari', () => {
+    const prose = MR.filter(({ path, value }) => !IDENTICAL_OK_MR.has(path) && !isLanguageNeutral(value));
+    const devanagari = prose.filter(({ value }) => /[ऀ-ॿ]/.test(value));
+    assert.ok(devanagari.length >= prose.length * 0.9, `only ${devanagari.length} of ${prose.length} Marathi values contain Devanagari`);
+  });
+
+  it('ends sentences with a full stop, never the Hindi danda', () => {
+    // docs/i18n/mr-glossary.md rule 2.
+    assert.deepEqual(MR.filter(({ value }) => /[।॥]/.test(value)).map((l) => l.path), []);
+  });
+
+  it('writes digits in Latin, never as Devanagari numerals', () => {
+    // docs/i18n/mr-glossary.md rule 7.
+    assert.deepEqual(MR.filter(({ value }) => /[०-९]/.test(value)).map((l) => l.path), []);
+  });
+
+  it('quotes with typographic marks, never with straight double quotes', () => {
+    assert.deepEqual(MR.filter(({ value }) => /"/.test(value)).map((l) => l.path), []);
+  });
+
+  it('keeps a case word on the line of the Latin word, number or placeholder before it', () => {
+    // docs/i18n/mr-glossary.md rule 15: a postposition written apart (nidhi चे,
+    // ₹5,000 पासून, {gap} चा) is joined to what precedes it with U+00A0, so a
+    // line never starts with one. A string that starts with one follows a link
+    // or a bold label, so its leading space is a no-break space too.
+    const words = ['चा', 'ची', 'चे', 'च्या', 'ला', 'ना', 'ने', 'मध्ये', 'मधील', 'मधून', 'पासून', 'पर्यंत', 'कडून', 'कडे', 'वर', 'वरील', 'वरून', 'साठी', 'विषयी', 'बद्दल', 'प्रमाणे', 'शी', 'तून', 'नंतर', 'पेक्षा', 'पैकी', 'सारखे', 'आधीच्या', 'आधी', 'उलटल्यावर', 'इतकी', 'इतका', 'इतके'];
+    const breakable = new RegExp(`(?:(?<=[A-Za-z0-9}%)\\]])|^) (?=(?:${words.join('|')})(?=[\\s.,:;!?)“”‘’]|$))`, 'u');
+    assert.deepEqual(MR.filter(({ value }) => breakable.test(value)).map((l) => l.path), []);
+  });
+
+  it('puts an English bracket after a whole word, never inside one', () => {
+    // A bracket followed straight by a Devanagari letter has split a word.
+    assert.deepEqual(MR.filter(({ value }) => /\([A-Za-z][^)]*\)[\u0900-\u097f]/u.test(value)).map((l) => l.path), []);
+  });
+
+  it('keeps every meta description short enough for search results to show whole', () => {
+    // docs/i18n/mr-glossary.md rule 13. Placeholders are filled in before the
+    // page is built, so this caps the catalog text; the built pages are
+    // checked as well before a change ships.
+    const long = MR.filter(({ path, value }) => isMetaDescription(path) && [...value].length > 160).map(
+      ({ path, value }) => `${path} (${[...value].length})`,
+    );
+    assert.deepEqual(long, []);
+  });
+
+  it('keeps a level page description short once its lesson count is added', () => {
+    // A level page's description is the level's own text followed by
+    // `level.meta.descriptionWithCount`, so the two together must fit, with a
+    // two-digit count. Inclusive Finances is not one of them: its hub page
+    // takes its description from `learn.tags.inclusive-finances.description`.
+    const long = Object.entries(mr.learn.levelMeta)
+      .filter(([level]) => level !== 'inclusive-finances')
+      .map(([level, meta]) => [level, mr.level.meta.descriptionWithCount.replace('{description}', meta.description).replace('{count}', '99')])
+      .filter(([, text]) => [...text].length > 160);
+    assert.deepEqual(long, []);
+  });
+});
+
+describe('an English bracket in Hindi or Marathi copy never splits across lines', () => {
+  // docs/i18n/hi-glossary.md rule 6 and mr-glossary.md rule 10: the words of a
+  // short English gloss, "(net worth)", are joined with U+00A0.
+  it('joins the words of every short English bracket with a no-break space', () => {
+    const split = [...HI, ...MR]
+      .filter(({ value }) => /\((?:[A-Za-z][A-Za-z-]*)(?: [A-Za-z][A-Za-z-]*){1,3}\)/.test(value))
+      .map((l) => `${l.path}: ${l.value.match(/\([^)]*\)/)?.[0]}`);
+    assert.deepEqual(split, []);
+  });
+});
+
 describe('the tools name every currency they offer', () => {
   const CODES = CURRENCIES.map((c) => c.code).sort();
 
@@ -285,6 +389,7 @@ describe('the tools name every currency they offer', () => {
     assert.deepEqual(Object.keys(currenciesHi).sort(), CODES);
     assert.deepEqual(Object.keys(currenciesEs).sort(), CODES);
     assert.deepEqual(Object.keys(currenciesCs).sort(), CODES);
+    assert.deepEqual(Object.keys(currenciesMr).sort(), CODES);
   });
 
   it('keeps the English name the engine\'s own label, so the two cannot drift', () => {
@@ -309,19 +414,23 @@ describe('the tools name every currency they offer', () => {
         currenciesCs[c.code].endsWith(`(${c.code})`),
         `${c.code} in Czech does not end with its own code`,
       );
+      assert.ok(
+        currenciesMr[c.code].endsWith(`(${c.code})`),
+        `${c.code} in Marathi does not end with its own code`,
+      );
     }
   });
 });
 
 describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses no em dash, in either its character or entity form', () => {
-    const offenders = [...EN, ...HI, ...ES, ...CS].filter(({ value }) =>
+    const offenders = [...EN, ...HI, ...ES, ...CS, ...MR].filter(({ value }) =>
       /—|&mdash;|&#8212;|&#x2014;/i.test(value),
     );
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 
   it('uses no double dash', () => {
-    const offenders = [...EN, ...HI, ...ES, ...CS].filter(({ value }) => /--/.test(value));
+    const offenders = [...EN, ...HI, ...ES, ...CS, ...MR].filter(({ value }) => /--/.test(value));
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 });

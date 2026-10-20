@@ -86,14 +86,15 @@ const feedTitle = dict(DEFAULT_LOCALE).rss.linkTitle;
 // tagline, so it is read from the catalog rather than written into this file.
 const imageAlt = Astro.props.imageAlt ?? strings.meta.defaultImageAlt;
 
-// A Hindi page's first paint is set in Devanagari: the nav, the headings and the
-// body are Devanagari before Inter sees a Latin word, so that face is worth
-// preloading beside it. Inter stays preloaded on every page, because the Latin
-// words and every amount are set in it. Only a Hindi page gets the second
+// A Hindi or Marathi page's first paint is set in Devanagari: the nav, the
+// headings and the body are Devanagari before Inter sees a Latin word, so that
+// face is worth preloading beside it (the file carries Marathi's own letters
+// and letter forms too). Inter stays preloaded on every page, because the Latin
+// words and every amount are set in it. Only those two editions get the second
 // preload. A Czech page's headings and body carry diacritics (č, ř, ě) from
 // the first word, so it preloads Inter's extended-Latin file instead. Both are
 // the same origin, so neither adds a third-party request.
-const preloadDevanagari = locale === 'hi';
+const preloadDevanagari = locale === 'hi' || locale === 'mr';
 const preloadLatinExt = locale === 'cs';
 const noindex = !!robots && /noindex/i.test(robots);
 ---

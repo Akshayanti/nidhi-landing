@@ -48,11 +48,11 @@ interface Props {
 }
 
 /**
- * The country whose history the page starts with: India on the Hindi page,
- * Czechia on the Czech page, none elsewhere. A page's language is the only thing this reads; the tool
+ * The country whose history the page starts with: India on the Hindi and
+ * Marathi pages, Czechia on the Czech page, none elsewhere. A page's language is the only thing this reads; the tool
  * never detects a reader's location.
  */
-const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '', cs: 'CZE' };
+const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '', cs: 'CZE', mr: 'IND' };
 
 const { locale } = Astro.props;
 const { inflation } = dict(locale).tools;
@@ -204,7 +204,7 @@ const faqSchema = {
       </ul>
       {lessonPublished && (
         <p class="ifcp-lesson">
-          {strings.notes.lesson.before}<a href={lessonPath(LESSON.slug)} hreflang="en" data-attr="free-inflation-lesson-link">{LESSON.title}</a>{strings.notes.lesson.after}
+          {strings.notes.lesson.before}<a href={lessonPath(LESSON.slug)} hreflang="en" lang="en" data-attr="free-inflation-lesson-link">{LESSON.title}</a>{strings.notes.lesson.after}
         </p>
       )}
     </aside>

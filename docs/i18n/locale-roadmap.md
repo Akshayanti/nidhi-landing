@@ -1,21 +1,21 @@
 # Locale roadmap
 
-The site is published in four languages:
+The site is published in five languages:
 
 - **English** (`en`), at the root.
 - **Hindi** (`hi`), at /hi/ (glossary `hi-glossary.md`).
 - **Spanish** (`es`), at /es/ (glossary `es-glossary.md`).
 - **Czech** (`cs`), at /cs/ since October 20, 2026 (glossary `cs-glossary.md`).
+- **Marathi** (`mr`), at /mr/ since October 20, 2026 (glossary `mr-glossary.md`).
 
 The languages below come next, in this order, one at a time. The order is the
 owner's decision (October 2026).
 
-1. **Marathi** (`mr`)
-2. **Swahili** (`sw`)
-3. **French** (`fr`)
-4. **Portuguese** (`pt`, Brazilian)
-5. **Bengali** (`bn`)
-6. **Indonesian** (`id`)
+1. **Swahili** (`sw`)
+2. **French** (`fr`)
+3. **Portuguese** (`pt`, Brazilian)
+4. **Bengali** (`bn`)
+5. **Indonesian** (`id`)
 
 ## Checks before a locale is published
 
@@ -58,13 +58,17 @@ Each locale added a case the next ones reuse:
   its `Many` text. Currency CZK, written `1 058 721 Kč`. Chart short forms in
   Czech (`tis.`, `mil.`, `mld.`), never `B`, since Czech *bilion* is also a
   million millions.
+- **Marathi:** Devanagari, sharing the Hindi edition's font file, which also
+  carries Marathi's own letters (ळ, ऱ) and its letter forms. Its vocabulary and
+  grammar are its own: the Hindi glossary was a reference, not a source. A
+  sentence ends with a full stop, never the danda. Digits stay Latin, so dates
+  use `mr-IN-u-nu-latn` (plain `mr` writes Devanagari digits). The tools open
+  in INR with lakh and crore grouping, and the home page reuses the Hindi
+  edition's rupee example. The reader is तुम्ही. One plural form for 1 and
+  another for everything else, 0 included.
 
 ## Notes per upcoming language
 
-- **Marathi:** Devanagari, like Hindi, so the fonts are already in place.
-  Marathi has its own vocabulary and grammar: the Hindi glossary is a
-  reference, not a source. Currency: INR, already supported, with lakh and
-  crore grouping as on the Hindi edition.
 - **Swahili:** Latin script, standardised. Currencies: Kenyan shilling (KES),
   Tanzanian shilling (TZS) and Ugandan shilling (UGX), none supported yet.
   The tools open in KES. The everyday money of
