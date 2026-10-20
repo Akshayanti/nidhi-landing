@@ -413,7 +413,9 @@ html:is([lang="hi"], [lang="mr"]) {
 
 /* 100%, not 16px: the same 16px by default, and larger when a reader has
    raised their browser or phone text size. Every other size is in rem, so it
-   follows. No media query uses rem or em, so no breakpoint moves with it. */
+   follows. Breakpoints are in px, so they stay put, except a few em queries
+   (home comparison figure, Monte Carlo result cards, level list) that are
+   meant to move with it. */
 html {
   font-size: 100%;
   scroll-behavior: smooth;
@@ -439,6 +441,11 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.25;
+  /* A word longer than the screen (Czech "Porozumějte", Marathi titles at a
+     larger text size) is hyphenated in the page's language, and only breaks
+     bare as a last resort, instead of widening the page. */
+  overflow-wrap: break-word;
+  hyphens: auto;
   color: var(--color-text-primary);
 }
 
@@ -1090,6 +1097,12 @@ details[open] > .disclosure::after,
   gap: 6px;
 }
 
+/* Room under the badge, in em so it grows with the badge's text when a reader
+   raises their text size, instead of the badge landing on the step number. */
+.lp-nodeCard:has(.lp-cardBadges) {
+  padding-top: calc(0.25rem + 1.5em);
+}
+
 .lp-startHereLabel {
   font-family: var(--font-heading);
   font-size: 0.8125rem;
@@ -1291,8 +1304,10 @@ details[open] > .disclosure::after,
 
   .lp-levelPage .lp-nodeCard:hover { transform: none; }
 
+  /* Room for the badge in em, so it grows with the badge's text when a reader
+     raises their text size, instead of landing on the step number. */
   .lp-levelPage .lp-nodeCardStartHere,
-  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: 18px; }
+  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: calc(0.5rem + 1em); }
 
   .lp-levelPage .lp-cardTop,
   .lp-levelPage .lp-cardMeta { display: contents; }
@@ -3675,6 +3690,10 @@ details[open] > .disclosure::after,
   color: var(--color-text-secondary);
   transition: border-color 0.15s ease, color 0.15s ease;
   margin-left: auto;
+  /* Wraps at 320px with a larger text size instead of widening the page. */
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .mcnw-downloadBtn:hover:not(:disabled),
@@ -4205,7 +4224,8 @@ body[data-page="landing"] .site-footer {
     font-size: 1rem !important;
   }
   /* Emphasis inside running text keeps its weight and takes the block's size. */
-  .belief-body strong, .belief-body a, .disclaimer strong, .privacy-container strong {
+  .belief-body strong, .belief-body a, .disclaimer strong, .privacy-container strong,
+  .privacy-container code {
     font-size: inherit !important;
   }
   .lp-cardDesc, .an-desc, .ft-desc, .post-related-card-desc, .tagHub-cardDesc,
@@ -4408,7 +4428,9 @@ body[data-page="landing"] .site-footer {
   font-weight: 700;
   font-size: 1.35rem;
   color: var(--color-text-primary);
-  overflow-wrap: anywhere;
+  /* An amount is read whole: it never splits across lines. Where three
+     cards side by side cannot hold it, they stack (see the phone rules). */
+  white-space: nowrap;
 }
 .mcs-note,
 .mcs-lastedHead,
@@ -4643,20 +4665,37 @@ body[data-page="landing"] .site-footer {
     font-size: 0.95rem;
     color: var(--color-text-primary);
   }
+  /* The row is the box and the values line sits in the flow under the name,
+     so a name or values line that wraps (Spanish, Czech, a larger text size)
+     makes the box taller instead of drawing one line over the other. The
+     button's ::before stretches over the whole row, so all of it is tappable. */
   .mcs-settingsRow {
     display: block;
     position: relative;
+    border: 1px solid var(--color-control-edge);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
   }
-  /* Room under the name for the values line drawn over the button. */
+  .mcs-settingsRow:has(.mcs-settingsToggle:focus-visible) {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
   .mcs-settingsRow .mcs-settingsToggle {
-    padding-bottom: calc(var(--space-3) + 1.3em);
+    position: static;
+    padding-bottom: 2px;
+    border: 0;
+    background: transparent;
+  }
+  .mcs-settingsRow .mcs-settingsToggle:focus-visible { outline: none; }
+  .mcs-settingsRow .mcs-settingsToggle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
   .mcs-settingsValue {
-    position: absolute;
-    left: var(--space-3);
-    right: 44px;
-    bottom: var(--space-3);
-    margin: 0;
+    position: static;
+    margin: 0 44px 0 0;
+    padding: 0 0 var(--space-3) var(--space-3);
     font-size: 0.875rem;
     color: var(--color-text-secondary);
     pointer-events: none;
@@ -4684,6 +4723,21 @@ body[data-page="landing"] .site-footer {
   }
   .mcs-cardValue {
     font-size: 0.98rem;
+  }
+  /* Three amounts side by side need about 30em; below that (any phone at a
+     larger text size, and narrow phones at the default) the cards stack, one
+     row each, label on the left and amount on the right. In em so it follows
+     the reader's text size. */
+  @media (max-width: 30em) {
+    .mcs-cards { grid-template-columns: minmax(0, 1fr); }
+    .mcs-card {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      column-gap: var(--space-3);
+    }
+    .mcs-cardValue { font-size: 1.1rem; }
   }
   .mcs-cardsKey {
     display: block;
@@ -5776,6 +5830,10 @@ a.learn-level:hover {
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--lc);
+  /* Spanish "Descubrimiento" is wider than the column at 320px with a larger
+     text size: hyphenate, and break bare only as a last resort. */
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .learn-levelName em {
@@ -5790,6 +5848,8 @@ a.learn-level:hover {
   font-size: 0.875rem;
   line-height: 1.4;
   color: var(--color-text-secondary);
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .learn-levelCount {
@@ -5805,6 +5865,23 @@ a.learn-level:hover {
 .learn-chevron {
   flex: none;
   color: var(--color-deep-blue);
+}
+
+/* On a narrow screen, or at a larger text size, the count beside the name
+   squeezed the name and summary into a column a word wide. Below 30em the
+   count moves under the summary, so the text gets the row's full width. In
+   em so it follows the reader's text size. */
+@media (max-width: 30em) {
+  .learn-level {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    row-gap: 2px;
+  }
+  .learn-level > .learn-num { grid-column: 1; grid-row: 1 / span 2; }
+  .learn-level > .learn-levelText { grid-column: 2; grid-row: 1; }
+  .learn-level > .learn-levelCount { grid-column: 2; grid-row: 2; }
+  .learn-level > .learn-chevron { grid-column: 3; grid-row: 1 / span 2; }
 }
 
 .learn-levelSoon {

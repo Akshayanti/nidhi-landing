@@ -1162,8 +1162,11 @@ const faqSchema = {
 
   .compare-note { margin: 4px 0 12px; font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.4; }
 
-  .compare-rows { margin: 0; display: grid; gap: 6px; }
-  .compare-rows div { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 8px; }
+  /* The label column fits its longest word (Czech "Vlastní", Marathi
+     "मालमत्ता") rather than a fixed 44px, at any text size; each row shares
+     the column through subgrid, so the bars still line up. */
+  .compare-rows { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 8px; }
+  .compare-rows div { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; }
   .compare-rows dt { font-size: 0.8125rem; color: var(--color-text-secondary); }
   .compare-rows dd {
     margin: 0;
@@ -1189,10 +1192,20 @@ const faqSchema = {
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
     color: var(--color-text-primary);
+    /* The sign stays with its number (Marathi wrapped "−" onto a line of its own). */
+    white-space: nowrap;
   }
 
   .compare-net.is-negative { color: var(--color-danger); }
-  .compare-net span { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--color-text-secondary); }
+
+  /* Side by side, the two totals (Czech "−105 000 Kč") do not fit a narrow
+     phone. Below 22em (352px at the default text size) the two people stack.
+     The breakpoint is in em on purpose, so it also stacks when a reader's
+     larger text size makes the same screen hold fewer characters. */
+  @media (max-width: 22em) {
+    .compare-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  .compare-net span { white-space: normal; display: block; font-size: 0.8125rem; font-weight: 600; color: var(--color-text-secondary); }
 
   .compare-caption {
     margin-top: 18px;
@@ -1357,7 +1370,8 @@ const faqSchema = {
     .journey-spark { top: 32px; width: 72px; height: 24px; }
     .compare-grid { gap: 16px; }
     .compare-note { display: none; }
-    .compare-rows div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .compare-rows { grid-template-columns: minmax(0, 1fr); }
+    .compare-rows div { gap: 2px; }
 
     /* Routes: the start link drops under the title, so long titles keep room. */
     .route {
