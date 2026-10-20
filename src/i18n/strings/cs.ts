@@ -253,7 +253,7 @@ export const cs: Dict = {
     meta: {
       title: 'Redakční zásady: jak nidhi píše své lekce | nidhi',
       description:
-        'Jak lekce nidhi vznikají a ověřují se, odkud jsou jejich čísla, proč jsou psané pro kteroukoli zemi, jak se používá AI a kde je hranice mezi vzděláváním a poradenstvím.',
+        'Jak nidhi tvoří a ověřuje lekce, jak vybírá zdroje, proč píše pro kteroukoli zemi, jak používá AI, odděluje vzdělávání od poradenství a opravuje chyby.',
     },
     schema: {
       name: 'Redakční zásady',
@@ -336,7 +336,7 @@ export const cs: Dict = {
     meta: {
       title: 'Nástroje a kalkulačky pro osobní finance zdarma | nidhi',
       description:
-        'Kalkulačky osobních financí zdarma: čisté jmění v jedné i více měnách, srovnání úvěrů, inflace a důchodový simulátor Monte Carlo. Bez registrace a sledování, vše v prohlížeči.',
+        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, srovnání úvěrů, inflace a důchodový simulátor Monte Carlo. Bez registrace a sledování, vše v prohlížeči.',
       descriptionWithoutSimulator:
         'Kalkulačky osobních financí zdarma: čisté jmění (v jedné i více měnách), srovnání úvěrů a inflace. Bez registrace, bez sledování, vše v prohlížeči.',
     },
