@@ -1828,7 +1828,7 @@ export const learnMr: typeof learnEn = {
       findHeading: 'धडा शोधा',
       browseByTopic: 'विषयानुसार पाहा',
       searchLabel: 'धडे शोधा',
-      searchPlaceholder: 'धडे इंग्रजीत आहेत, म्हणून इंग्रजीत शोधा, उदा. debt, renting, couples',
+      searchPlaceholder: 'इंग्रजीत शोधा, उदा. debt, renting',
       noMatches: 'कोणताही धडा जुळत नाही. अधिक व्यापक शब्द, किंवा विषयांची यादी, उपयोगी पडू शकेल.',
       lessonOne: 'धडा',
       lessonMany: 'धडे',
