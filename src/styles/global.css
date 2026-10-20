@@ -4642,6 +4642,8 @@ body[data-page="landing"] .site-footer {
 }
 .mcs-crossLink a {
   color: var(--color-deep-blue);
+  /* A link inside a sentence is underlined, so it is not told apart by colour alone. */
+  text-decoration: underline;
 }
 .mcs-grid--assumptions {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);

@@ -287,6 +287,8 @@ export const loanComparisonEn = {
      * slot letters only ("A", "Vendor A"), so nothing typed can reach
      * click capture through a button's text.
      */
+    /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
+    cardsHeading: 'Loan offers',
     phoneTabs: {
       groupAria: 'Vendor to show',
       tabName: 'Vendor {label}',
@@ -895,6 +897,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       shareStatus: 'शेयर करने योग्य लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       copyPrompt: 'यह लिंक कॉपी करें:',
     },
+    cardsHeading: 'लोन ऑफ़र',
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -1447,6 +1450,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       shareStatus: 'Enlace para compartir copiado al portapapeles.',
       copyPrompt: 'Copia este enlace:',
     },
+    cardsHeading: 'Ofertas de préstamo',
     phoneTabs: {
       groupAria: 'Entidad que se muestra',
       tabName: 'Entidad {label}',
@@ -1998,6 +2002,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       shareStatus: 'Odkaz ke sdílení zkopírován do schránky.',
       copyPrompt: 'Zkopírujte tento odkaz:',
     },
+    cardsHeading: 'Nabídky úvěrů',
     phoneTabs: {
       groupAria: 'Zobrazený poskytovatel',
       tabName: 'Poskytovatel {label}',
@@ -2531,6 +2536,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       shareStatus: 'शेअर करण्याची लिंक क्लिपबोर्डवर कॉपी झाली.',
       copyPrompt: 'ही लिंक कॉपी करा:',
     },
+    cardsHeading: 'कर्जाच्या ऑफर',
     phoneTabs: {
       groupAria: 'दाखवायचा कर्जदाता',
       tabName: 'कर्जदाता {label}',

@@ -365,7 +365,6 @@ const faqSchema = {
     font-family: var(--font-heading);
     font-weight: 600;
     color: var(--color-deep-blue);
-    white-space: nowrap;
   }
   .mcsp-source {
     margin: var(--space-4) 0 0;
@@ -375,6 +374,8 @@ const faqSchema = {
   }
   .mcsp-source a {
     color: var(--color-text-secondary);
+    /* A link inside a line of text is underlined, so it is not told apart by colour alone. */
+    text-decoration: underline;
   }
   .mcsp-faq > summary {
     cursor: pointer;
