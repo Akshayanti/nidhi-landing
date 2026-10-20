@@ -8,25 +8,51 @@ The site is published in five languages:
 - **Czech** (`cs`), at /cs/ since October 20, 2026 (glossary `cs-glossary.md`).
 - **Marathi** (`mr`), at /mr/ since October 20, 2026 (glossary `mr-glossary.md`).
 
-The languages below come next, in this order, one at a time. The order is the
-owner's decision (October 20, 2026): by the number of people who read the
-language, as a first, second or third language, so that each edition reaches
-as many readers as possible. Estimates from speaker counts and national
-literacy rates, rounded:
+The languages below come next, in this order, one at a time. The rule is the
+owner's decision (October 20, 2026): **rank by the number of people who read
+the language** (as a first, second or third language), **with at most two
+editions per region**, so the editions reach as many readers as possible
+while covering different parts of the world. A language counts towards the
+region where most of its readers live (Spanish: Latin America; English is
+global and counts nowhere). A language is left out where the site's channels
+are blocked or the law conflicts with the privacy notice. Reader figures are
+rounded estimates from speaker counts (Ethnologue-based tables) and national
+literacy rates:
 
-1. **French** (`fr`): about 270 to 290 million readers. Most second-language
-   speakers in West and Central Africa learned it at school, where it is the
-   language of teaching and paperwork.
-2. **Portuguese** (`pt`, Brazilian): about 235 to 245 million.
-3. **Indonesian** (`id`): about 230 to 240 million; mostly a second language,
-   but the language of school and government, with literacy near 96%.
-   Portuguese and Indonesian are within a few million of each other.
-4. **Bengali** (`bn`): about 200 to 220 million. More speakers than
-   Portuguese or Indonesian, but literacy near 75% in Bangladesh and West
-   Bengal puts it fourth by readers.
-5. **Swahili** (`sw`): well below the others. Five to 18 million native
-   speakers; most second-language speakers use it spoken, and schools in
-   Kenya and Uganda teach mostly in English.
+1. **French** (`fr`), Africa: about 270 to 290 million readers. Most
+   second-language speakers in West and Central Africa learned it at school,
+   where it is the language of teaching and paperwork.
+2. **Portuguese** (`pt`, Brazilian), Latin America, the second edition there
+   after Spanish: about 235 to 245 million.
+3. **Indonesian** (`id`), Southeast Asia: about 230 to 240 million; mostly a
+   second language, but the language of school and government, with
+   literacy near 96%.
+4. **German** (`de`), Europe, the second edition there after Czech: about
+   135 million.
+5. **Japanese** (`ja`), East Asia: about 125 million.
+6. **Vietnamese** (`vi`), Southeast Asia, the second there: about 97
+   million.
+7. **Turkish** (`tr`), West Asia: about 94 million.
+8. **Korean** (`ko`), East Asia, the second there: about 82 million.
+
+**Later, once the layout supports right-to-left:** Arabic, for the Middle
+East and North Africa.
+
+**Not planned, and why:**
+
+- **Bengali** (about 200 to 220 million readers) and **Urdu**: South Asia
+  already has two editions (Hindi, Marathi).
+- **Swahili**: far fewer readers than the languages above. About 5 to 18
+  million native speakers; most second-language speakers use it spoken, and
+  in Kenya and Uganda money is mostly read about in English.
+- **Russian**: Instagram is blocked in Russia, and its data-localisation law
+  conflicts with how the site stores and processes data.
+- **Chinese (mainland, Simplified)**: Instagram, Google and likely the
+  analytics and hosting are blocked or unreliable behind the Great Firewall,
+  and deliberately serving mainland readers would bring in China's data
+  protection law (PIPL), which the privacy notice does not cover.
+  Traditional Chinese (Taiwan, Hong Kong; about 30 million readers) has
+  neither problem and is the alternative for East Asia if wanted.
 
 ## Checks before a locale is published
 
@@ -131,15 +157,26 @@ Each locale added a case the next ones reuse:
   already supported; written `Rp 1.058.721`. Chart short forms: Indonesian
   writes *rb*, *jt*, *M* and *T* (thousand, million, *miliar*, trillion), so
   an `M` meaning million would be read as a thousand times too large.
-- **Bengali:** a new script and font, and Bengali digits as a formatting choice
-  to settle in its glossary. Currencies: INR (West Bengal) and the Bangladeshi
-  taka (BDT), the currency of most Bengali speakers, are both supported. Both
-  use lakh and crore grouping. The tools open in BDT.
-- **Swahili:** Latin script, standardised. Currencies: Kenyan shilling (KES),
-  Tanzanian shilling (TZS) and Ugandan shilling (UGX), all supported. The
-  tools open in KES. The everyday money of many readers (mobile money,
-  savings groups, high inflation) is not what the lessons and tools describe;
-  translation does not change that.
+- **German:** formal *Sie* or informal *du* is the first glossary decision.
+  Long compound words (*Vermögensaufstellung*) are the 320 px risk: headings
+  and buttons need hyphenation or room. Currencies EUR and CHF are
+  supported; amounts are written `1.058.721 €`.
+- **Japanese:** a Japanese font is far larger than a Latin or Devanagari one,
+  so it is subset or loaded only on Japanese pages; line breaking follows
+  Japanese rules, not spaces. No plural forms. Large numbers group by ten
+  thousand (*man*, *oku*), which the chart short forms must follow. JPY is
+  supported and has no decimals.
+- **Vietnamese:** Latin script with stacked diacritics, which needs the
+  Vietnamese ranges of the site's fonts. The Vietnamese dong (VND) is not
+  supported yet and has to be added to the tools first; it has no decimals.
+- **Turkish:** the dotted and dotless i: uppercasing must follow Turkish
+  rules (`i` to `İ`), so any `text-transform: uppercase` on Turkish pages is
+  checked. TRY is supported; high inflation makes the inflation calculator's
+  wide rate range matter. Instagram was blocked in Turkey for nine days in
+  2024, so it is a less dependable channel than elsewhere.
+- **Korean:** Hangul needs its own font, smaller than Japanese but still
+  loaded only on Korean pages. Large numbers also group by ten thousand
+  (*man*, *eok*). KRW is supported and has no decimals.
 
-Not on the list for now: Arabic and Urdu, which need the layout to support
-right-to-left first.
+Arabic follows the list above once the layout supports right-to-left; see
+"Not planned" for the languages left out and why.
