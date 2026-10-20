@@ -1,16 +1,21 @@
 # Locale roadmap
 
-The site is published in English, Hindi, Spanish and Czech. The languages below
-come next, in this order, one at a time. The order is the owner's decision
-(October 2026).
+The site is published in four languages:
 
-1. **Czech** (`cs`): published at /cs/ (glossary `cs-glossary.md`).
-2. **Marathi** (`mr`)
-3. **Swahili** (`sw`)
-4. **French** (`fr`)
-5. **Portuguese** (`pt`, Brazilian)
-6. **Bengali** (`bn`)
-7. **Indonesian** (`id`)
+- **English** (`en`), at the root.
+- **Hindi** (`hi`), at /hi/ (glossary `hi-glossary.md`).
+- **Spanish** (`es`), at /es/ (glossary `es-glossary.md`).
+- **Czech** (`cs`), at /cs/ since October 20, 2026 (glossary `cs-glossary.md`).
+
+The languages below come next, in this order, one at a time. The order is the
+owner's decision (October 2026).
+
+1. **Marathi** (`mr`)
+2. **Swahili** (`sw`)
+3. **French** (`fr`)
+4. **Portuguese** (`pt`, Brazilian)
+5. **Bengali** (`bn`)
+6. **Indonesian** (`id`)
 
 ## Checks before a locale is published
 
@@ -39,13 +44,23 @@ Before a locale is published:
    English (`K`, `M`, `B`), which a Spanish reader took for the wrong scale, so
    Spanish has its own billion. Each new locale is checked the same way.
 
-## Notes per language
+## What the published locales settled
 
-- **Czech:** published. Three plural forms (1, 2 to 4, 5 and more), the first
-  locale with more than two: every counted string has a `Few` form and the code
-  picks one with `plural()` (`src/i18n/plural.ts`). Currency: CZK, already supported; written `1 058 721 Kč`.
-  Chart short forms: Czech *bilion* is a million millions, so `B` needs the
-  same care as in Spanish (*mld.* for a thousand million).
+Each locale added a case the next ones reuse:
+
+- **Hindi:** lakh and crore grouping, Devanagari fonts, and a plural rule where
+  0 takes the singular.
+- **Spanish:** its own word for a thousand million on charts (`mil M`), since
+  a Spanish reader takes `B` for *billón*, a million millions.
+- **Czech:** three plural forms (1, 2 to 4, 5 and more), the first locale with
+  more than two: every counted string has a `Few` form and the code picks one
+  with `plural()` (`src/i18n/plural.ts`); a language with fewer forms repeats
+  its `Many` text. Currency CZK, written `1 058 721 Kč`. Chart short forms in
+  Czech (`tis.`, `mil.`, `mld.`), never `B`, since Czech *bilion* is also a
+  million millions.
+
+## Notes per upcoming language
+
 - **Marathi:** Devanagari, like Hindi, so the fonts are already in place.
   Marathi has its own vocabulary and grammar: the Hindi glossary is a
   reference, not a source. Currency: INR, already supported, with lakh and
