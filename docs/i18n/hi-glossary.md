@@ -68,6 +68,11 @@ breach as a defect.
    - **only on a term marked "bracket" below**: one that is bookish, opaque, or
      better known in English. Everyday Hindi (ब्याज, बचत, कर्ज़, महँगाई, मूलधन,
      किस्त) and loanwords (रिटर्न, एसेट क्लास) never get one.
+   - **as one unit**: the words inside an English bracket are joined with a
+     non-breaking space, written ` ` in the catalog
+     (`(Net Worth)`), so a bracket never splits across lines while the
+     Hindi around it wraps normally. The English keeps its own spelling: net
+     worth is two words, never "Networth". Council, 2026-10-20.
    The privacy notice stays exempt; see its section.
 7. **No new browser storage and no keys renamed.** The keys are the same in
    every language, and `nidhi-reading-progress` is deliberately shared, so a

@@ -466,15 +466,15 @@ export const learnHi: typeof learnEn = {
     levelMeta: {
       discovery: {
         description: 'बुनियादी बातें। अगर आप पर्सनल फाइनेंस में नए हैं, तो शुरुआत अक्सर यहीं से होती है।',
-        covered: 'शुद्ध संपत्ति (net worth), संपत्तियाँ (assets), देनदारियाँ (liabilities), कैश फ़्लो, कर्ज़ (debt), चक्रवृद्धि ब्याज (compound interest), तरलता (liquidity), आपातकालीन कोष (emergency funds), क्रय शक्ति (purchasing power), पैसे का समय मूल्य (time value of money), बचत बनाम निवेश (saving vs investing), क्रेडिट, बीमा (insurance)',
+        covered: 'शुद्ध संपत्ति (net\u00A0worth), संपत्तियाँ (assets), देनदारियाँ (liabilities), कैश फ़्लो, कर्ज़ (debt), चक्रवृद्धि ब्याज (compound\u00A0interest), तरलता (liquidity), आपातकालीन कोष (emergency\u00A0funds), क्रय शक्ति (purchasing\u00A0power), पैसे का समय मूल्य (time\u00A0value\u00A0of\u00A0money), बचत बनाम निवेश (saving\u00A0vs\u00A0investing), क्रेडिट, बीमा (insurance)',
       },
       building: {
         description: 'टुकड़ों को जोड़ना। बजट, बचत के तरीक़े, और पहला निवेश।',
-        covered: 'बजट, जोखिम (risk), एसेट क्लास, निवेश खाते (investment accounts), विविधीकरण (diversification), वित्तीय स्वतंत्रता (financial independence) का परिचय, एक से ज़्यादा मुद्राओं में पैसा (multi-currency), रियल एस्टेट, लोन की शर्तें (loan terms), निष्क्रिय आय (passive income), लक्ष्य (goals), डैशबोर्ड, वित्तीय सेहत के पैमाने (health metrics), कर (taxes)',
+        covered: 'बजट, जोखिम (risk), एसेट क्लास, निवेश खाते (investment\u00A0accounts), विविधीकरण (diversification), वित्तीय स्वतंत्रता (financial\u00A0independence) का परिचय, एक से ज़्यादा मुद्राओं में पैसा (multi-currency), रियल एस्टेट, लोन की शर्तें (loan\u00A0terms), निष्क्रिय आय (passive\u00A0income), लक्ष्य (goals), डैशबोर्ड, वित्तीय सेहत के पैमाने (health\u00A0metrics), कर (taxes)',
       },
       psychology: {
         description: 'आपका मन पैसों के मामले में कैसे मदद भी करता है और नुकसान भी। व्यवहारगत पूर्वाग्रह, मानसिक मॉडल, और पैसे की बेहतर आदतें बनाना।',
-        covered: 'हानि से बचने की प्रवृत्ति (loss aversion), मानसिक लेखांकन (mental accounting), वर्तमान पूर्वाग्रह (present bias), अति आत्मविश्वास (overconfidence), फ़्रेमिंग और एंकरिंग, भेड़चाल (herd behaviour), कथा अर्थशास्त्र (narrative economics), मनी स्क्रिप्ट, पूर्वाग्रह-रोधी तंत्र (anti-bias systems)',
+        covered: 'हानि से बचने की प्रवृत्ति (loss\u00A0aversion), मानसिक लेखांकन (mental\u00A0accounting), वर्तमान पूर्वाग्रह (present\u00A0bias), अति आत्मविश्वास (overconfidence), फ़्रेमिंग और एंकरिंग, भेड़चाल (herd\u00A0behaviour), कथा अर्थशास्त्र (narrative\u00A0economics), मनी स्क्रिप्ट, पूर्वाग्रह-रोधी तंत्र (anti-bias\u00A0systems)',
       },
       optimizing: {
         description: 'जो चल रहा है उसे निखारना। कर दक्षता, पोर्टफ़ोलियो रीबैलेंसिंग, और उन्नत रणनीतियाँ।',
@@ -482,11 +482,11 @@ export const learnHi: typeof learnEn = {
       },
       mastery: {
         description: 'लंबी अवधि की सोच। पीढ़ियों की संपत्ति, एस्टेट योजना (वसीयत और उत्तराधिकार), और वित्तीय स्वतंत्रता।',
-        covered: 'एस्टेट योजना (estate planning), FIRE (वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट), पीढ़ियों की संपत्ति (generational wealth), निकासी रणनीतियाँ (withdrawal strategies)',
+        covered: 'एस्टेट योजना (estate\u00A0planning), FIRE (वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट), पीढ़ियों की संपत्ति (generational\u00A0wealth), निकासी रणनीतियाँ (withdrawal\u00A0strategies)',
       },
       'inclusive-finances': {
         description: 'उन घरों के लिए जिनके लिए मानक सलाह नहीं लिखी गई। हर मार्गदर्शिका एक आम धारणा लेती है, दिखाती है कि वह लागू न हो तो क्या टूटता है, और उसे सोच-समझकर नए सिरे से बनाती है।',
-        covered: 'अविवाहित और लिव-इन जोड़े (unmarried and cohabiting couples), साझा घर (shared households), गिग काम, ब्याज-रहित वित्त (interest-free finance), सीमा-पार परिवार (cross-border households), अकेले बुढ़ापा जीने वाले (solo agers), तलाक (divorce), देखभाल (caregiving), विकलांगता (disability), चुना हुआ परिवार (chosen family), मिले-जुले परिवार (blended families), जीवनसाथी को खोना (widowhood)',
+        covered: 'अविवाहित और लिव-इन जोड़े (unmarried\u00A0and\u00A0cohabiting\u00A0couples), साझा घर (shared\u00A0households), गिग काम, ब्याज-रहित वित्त (interest-free\u00A0finance), सीमा-पार परिवार (cross-border\u00A0households), अकेले बुढ़ापा जीने वाले (solo\u00A0agers), तलाक (divorce), देखभाल (caregiving), विकलांगता (disability), चुना हुआ परिवार (chosen\u00A0family), मिले-जुले परिवार (blended\u00A0families), जीवनसाथी को खोना (widowhood)',
       },
     },
     tags: {
@@ -714,16 +714,16 @@ export const learnHi: typeof learnEn = {
       inclusivePill: 'सबके लिए वित्त',
       showAll: 'सभी {count} दिखाएँ',
       concepts: {
-        'net-worth': 'शुद्ध संपत्ति (net worth) क्या है, और वह कैसे निकाली जाती है',
-        'interest': 'किसी कर्ज़ पर ब्याज दर (interest rate) क्यों मायने रखती है',
-        'emergency-fund': 'आपातकालीन कोष (emergency fund) किस काम आता है',
-        'inflation': 'महँगाई (inflation) पैसे की क्रय शक्ति (purchasing power) को कैसे घटाती है',
+        'net-worth': 'शुद्ध संपत्ति (net\u00A0worth) क्या है, और वह कैसे निकाली जाती है',
+        'interest': 'किसी कर्ज़ पर ब्याज दर (interest\u00A0rate) क्यों मायने रखती है',
+        'emergency-fund': 'आपातकालीन कोष (emergency\u00A0fund) किस काम आता है',
+        'inflation': 'महँगाई (inflation) पैसे की क्रय शक्ति (purchasing\u00A0power) को कैसे घटाती है',
         'asset-classes': 'शेयर, बॉन्ड और नकद (cash) कैसे अलग हैं',
         'diversification': 'विविधीकरण (diversification) क्या करता है, और क्या नहीं',
-        'tax-accounts': 'कर-बचत खाता (tax-advantaged account) क्या होता है',
+        'tax-accounts': 'कर-बचत खाता (tax-advantaged\u00A0account) क्या होता है',
         'rebalancing': 'पोर्टफ़ोलियो अपने तय अनुपात से क्यों खिसकता है, और उसे रीबैलेंस क्यों किया जाता है',
         'fees': '1% सालाना शुल्क (fee) दशकों में कितना बड़ा हो जाता है',
-        'real-returns': 'असली रिटर्न (real return) क्या है, महँगाई और लागत के बाद',
+        'real-returns': 'असली रिटर्न (real\u00A0return) क्या है, महँगाई और लागत के बाद',
         'tax-loss': 'टैक्स-लॉस हार्वेस्टिंग और एसेट लोकेशन',
         'glide-path': 'ग्लाइड पाथ क्या है',
       },
