@@ -1,0 +1,28 @@
+---
+/**
+ * Renders a heading with its bracketed English terms marked lang="en" on
+ * Hindi and Marathi pages (see src/utils/shared/langRuns.ts), each as one
+ * inline block. The catalogs join a gloss's words with no-break spaces so
+ * "(Net Worth)" never splits (hi-glossary rule 6, mr-glossary rule 10). The
+ * block keeps that promise whenever the gloss fits on a line, since it moves
+ * down whole; with ordinary spaces inside, a gloss wider than the whole line
+ * (a narrow phone at a larger text size) wraps between its words instead of
+ * breaking one in the middle.
+ */
+import { langRuns } from '../utils/shared/langRuns.ts';
+
+interface Props {
+  text: string;
+  locale: string;
+}
+
+const { text, locale } = Astro.props;
+const runs = langRuns(text, locale);
+---
+{runs.map((r) => (r.lang ? <span class="lang-run" lang={r.lang}>{r.text.replaceAll('\u00A0', ' ')}</span> : r.text))}
+
+<style>
+  .lang-run {
+    display: inline-block;
+  }
+</style>

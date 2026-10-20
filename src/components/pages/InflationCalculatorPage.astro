@@ -28,6 +28,7 @@
  * English title of the lesson the notes link to, since lessons are English
  * in every edition.
  */
+import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import InflationCalculator, { type CountryOption } from '../InflationCalculator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
@@ -177,7 +178,7 @@ const faqSchema = {
 
     <header class="ifcp-header">
       <p class="ifcp-eyebrow">{strings.eyebrow}</p>
-      <h1 class="ifcp-title">{strings.title}</h1>
+      <h1 class="ifcp-title"><LangRuns text={strings.title} locale={locale} /></h1>
       <p class="ifcp-lead">
         {strings.lead.before}<span class="ifcp-wideOnly">{strings.lead.wide}</span>{strings.lead.after}
       </p>

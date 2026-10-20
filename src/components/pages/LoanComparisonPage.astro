@@ -25,6 +25,7 @@
  * the hydration payload carries one language's strings and not the whole
  * catalog. See the `strings` prop in `LoanCompare.tsx`.
  */
+import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoanCompare from '../../components/LoanCompare.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
@@ -189,7 +190,7 @@ const faqSchema = {
       {/* Phones hide the secondary phrases (.lc-wideOnly); the privacy
           sentence always shows. */}
       <h1 class="lc-pageTitle">
-        {tool.page.title.lead}<span class="lc-wideOnly">{tool.page.title.wide}</span>
+        <LangRuns text={tool.page.title.lead} locale={locale} /><span class="lc-wideOnly"><LangRuns text={tool.page.title.wide} locale={locale} /></span>
       </h1>
       <p class="lc-pageLead">
         {tool.page.lead.before}{' '}<span class="lc-wideOnly">{tool.page.lead.wide}{' '}</span>{tool.page.lead.after}

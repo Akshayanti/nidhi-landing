@@ -19,6 +19,7 @@
  * the hydration payload carries one language's strings and not the whole
  * catalog. See the `strings` prop in `MultiCurrencyNetWorth.tsx`.
  */
+import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
@@ -160,7 +161,7 @@ const faqSchema = {
     <header class="mcnw-pageHeader">
       <p class="mcnw-eyebrow">{tool.page.eyebrow}</p>
       <h1 class="mcnw-pageTitle">
-        {tool.page.title}
+        <LangRuns text={tool.page.title} locale={locale} />
       </h1>
       <p class="mcnw-pageLead">
         {tool.page.lead}
