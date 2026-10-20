@@ -116,6 +116,8 @@ export const EXAMPLE_CURRENCY: Record<Locale, ExampleCurrency> = {
   hi: 'INR',
   es: 'EUR',
   cs: 'CZK',
+  // Owner's decision: the Marathi edition reuses the Hindi edition's rupees.
+  mr: 'INR',
 };
 
 export function starterExample(starter: Starter = STARTER) {

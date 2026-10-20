@@ -22,7 +22,7 @@ Every change that affects privacy must come with an entry in the privacy policy 
 
 ## Free Tools Keep Inputs Out of URLs
 
-Every page sends an anonymous pageview and page-leave event, and every PostHog event carries the page address. Anything a free tool puts in the address reaches analytics. The privacy policy promises that the values people type are never sent, so every tool under `/free/`, in every language (`/free/...`, `/hi/free/...`, `/es/free/...` and `/cs/free/...` today; all of them render one page component in `src/components/pages/`), must meet all of these. Today that is the loan comparison, the net worth calculator, the Monte Carlo simulator and the inflation calculator:
+Every page sends an anonymous pageview and page-leave event, and every PostHog event carries the page address. Anything a free tool puts in the address reaches analytics. The privacy policy promises that the values people type are never sent, so every tool under `/free/`, in every language (`/free/...`, `/hi/free/...`, `/es/free/...`, `/cs/free/...` and `/mr/free/...` today; all of them render one page component in `src/components/pages/`), must meet all of these. Today that is the loan comparison, the net worth calculator, the Monte Carlo simulator and the inflation calculator:
 
 1. **Never write inputs into the address while someone types.** No `history.replaceState`/`pushState` with form state, no query-string sync for reload or bookmarking.
 2. **Share links carry state after the `#`**, never in the query string: `/free/<tool>/?utm_source=share&...#<state>`. Browsers never send the fragment to a server.
@@ -35,10 +35,10 @@ A new tool that cannot meet these is a privacy-policy conflict: pause and ask (r
 
 ## Copy Changes Reach Every Language
 
-The site serves more than one language, so a copy change is not finished when English reads well: it is finished when every language the site supports at that moment carries it. The site's words live in the catalogs under `src/i18n/strings/` (`en.ts`, `hi.ts`, `es.ts`, `cs.ts`, `learn.ts`, `tools/*.ts`), and they change together. This is mandatory, in the same way the privacy changelog is, and it applies to new strings, reworded strings and deleted strings alike.
+The site serves more than one language, so a copy change is not finished when English reads well: it is finished when every language the site supports at that moment carries it. The site's words live in the catalogs under `src/i18n/strings/` (`en.ts`, `hi.ts`, `es.ts`, `cs.ts`, `mr.ts`, `learn.ts`, `tools/*.ts`), and they change together. This is mandatory, in the same way the privacy changelog is, and it applies to new strings, reworded strings and deleted strings alike.
 
 **Rules:**
-1. **Add or edit the key in every catalog in the same change.** A new English string gets its Hindi, Spanish and Czech values before the commit, not in a follow-up. Each language follows its glossary in `docs/i18n/` (`hi-glossary.md`, `es-glossary.md`, `cs-glossary.md`). A reworded string is reworded in every language. A key that is no longer used is deleted from every catalog at once.
+1. **Add or edit the key in every catalog in the same change.** A new English string gets its Hindi, Spanish, Czech and Marathi values before the commit, not in a follow-up. Each language follows its glossary in `docs/i18n/` (`hi-glossary.md`, `es-glossary.md`, `cs-glossary.md`, `mr-glossary.md`). A reworded string is reworded in every language. A key that is no longer used is deleted from every catalog at once.
 2. **The catalogs are one shape.** `Dict` is `typeof en`, and `src/i18n/strings/catalog.test.ts` fails on a key present in one catalog only, on a blank value, and on a value left identical to its English source. Those checks are the floor, not the goal: passing them with a stiff literal translation is still an unfinished change.
 3. **Translation happens once per change, not per language later.** A language whose catalog drifts behind is a half-translated site, which is the failure this rule exists to prevent: the reader sees one page in their language and the next one in English.
 4. **A locale added later starts complete.** Its catalog is written before its routes are published, because the parity test will not let a partial catalog through.
@@ -46,7 +46,7 @@ The site serves more than one language, so a copy change is not finished when En
 6. **Copy in the catalogs means the site's own words**: chrome, page prose, tool labels, headings, meta descriptions, structured data that a reader can see. Two things are deliberately outside it, and neither is an exception to this rule:
    - **Lessons are content, not copy.** They are written once, in English, and are not translated. A page in another language lists the English lessons, links to them at their one address, and says in its own language that the lessons are English (`LessonsInEnglish.astro`).
    - **Names stay in their own script**: a language's own name (`LOCALE_META`), the brand, company and product names, and a person's name. Those are the same string in every language and do not belong in a catalog at all.
-7. **The privacy changelog is the one deliberate exception**, and the reason is recorded there: it is kept in English in every edition, so Hindi, Spanish, Czech and English readers are all reading the same record of what changed.
+7. **The privacy changelog is the one deliberate exception**, and the reason is recorded there: it is kept in English in every edition, so Hindi, Spanish, Czech, Marathi and English readers are all reading the same record of what changed.
 
 ## Style Rules
 

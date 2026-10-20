@@ -37,6 +37,11 @@ describe('choosing a counted string', () => {
     }
   });
 
+  it('gives Marathi one form for 1 and another for everything else', () => {
+    assert.equal(plural('mr', 1, 'धडा', 'धडे', 'धडे'), 'धडा');
+    for (const n of [0, 2, 5, 21]) assert.equal(pluralForm('mr', n), 'other', `mr ${n}`);
+  });
+
   it('gives Hindi 0 and 1 the one form, as its plural rule does', () => {
     assert.equal(plural('hi', 0, 'पाठ (1)', 'पाठ (few)', 'पाठ (other)'), 'पाठ (1)');
     assert.equal(pluralForm('hi', 1), 'one');

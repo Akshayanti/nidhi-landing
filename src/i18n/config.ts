@@ -18,7 +18,7 @@
  */
 export const DEFAULT_LOCALE = 'en' as const;
 
-export const LOCALES = ['en', 'hi', 'es', 'cs'] as const;
+export const LOCALES = ['en', 'hi', 'es', 'cs', 'mr'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -39,6 +39,7 @@ export const LOCALE_META: Record<Locale, { label: string; tag: string; htmlLang:
   hi: { label: 'हिन्दी', tag: 'HI', htmlLang: 'hi', ogLocale: 'hi_IN' },
   es: { label: 'Español', tag: 'ES', htmlLang: 'es', ogLocale: 'es_ES' },
   cs: { label: 'Čeština', tag: 'CS', htmlLang: 'cs', ogLocale: 'cs_CZ' },
+  mr: { label: 'मराठी', tag: 'MR', htmlLang: 'mr', ogLocale: 'mr_IN' },
 };
 
 /**
@@ -57,6 +58,9 @@ export const DATE_LOCALE: Record<Locale, string> = {
   // all of them.
   es: 'es',
   cs: 'cs-CZ',
+  // Marathi month names with Latin digits: plain 'mr' writes Devanagari
+  // digits, and the Marathi edition writes Latin ones, as the Hindi one does.
+  mr: 'mr-IN-u-nu-latn',
 };
 
 /**
@@ -80,6 +84,7 @@ export const PROSE_NUMBER_LOCALE: Record<Locale, string> = {
   hi: 'en-IN',
   es: 'es',
   cs: 'cs',
+  mr: 'en-IN',
 };
 
 export function isLocale(value: string | undefined): value is Locale {

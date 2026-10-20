@@ -26,6 +26,7 @@ export const TOOL_DEFAULT_CURRENCY: Record<Locale, string> = {
   hi: 'INR',
   es: 'EUR',
   cs: 'CZK',
+  mr: 'INR',
 };
 
 /**
@@ -43,6 +44,7 @@ export const TOOL_AMOUNT_LOCALE: Record<Locale, string | null> = {
   hi: null,
   es: 'es',
   cs: 'cs',
+  mr: null,
 };
 
 /**
