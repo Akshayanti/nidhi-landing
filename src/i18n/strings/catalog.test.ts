@@ -325,3 +325,27 @@ describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses n
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });
 });
+
+/**
+ * Hindi's plural rule puts 0 in `one`, so a Hindi `One` string is shown for a
+ * count of 0 as well as 1, and must carry the count rather than a written 1.
+ * The keys listed here are chosen by comparing a count with 1 directly, never
+ * through `plural()`, so they are only ever shown for exactly 1.
+ */
+const HI_DIRECT_ONE = new Set<string>([
+  'tools.monteCarlo.island.quick.medianOne',
+  'tools.monteCarlo.island.results.headingOne',
+]);
+
+describe('Hindi counted strings carry their count', () => {
+  it('puts the placeholder of the plural form in every One form', () => {
+    const byPath = new Map(HI.map((leaf) => [leaf.path, leaf.value]));
+    const offenders = HI.filter(({ path }) => path.endsWith('One') && !HI_DIRECT_ONE.has(path)).flatMap(({ path, value }) => {
+      const base = path.slice(0, -'One'.length);
+      const plural = [base, `${base}Many`, `${base}Other`].map((p) => byPath.get(p)).find((v) => v !== undefined);
+      const placeholders = plural?.match(/\{\w+\}/g) ?? [];
+      return placeholders.some((p) => !value.includes(p)) ? [path] : [];
+    });
+    assert.deepEqual(offenders, []);
+  });
+});
