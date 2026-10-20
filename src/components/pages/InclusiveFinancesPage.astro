@@ -235,6 +235,11 @@ const breadcrumbSchema = {
     color: var(--color-text-secondary);
   }
 
+  /* A link inside a sentence is underlined, so it is not told apart by colour alone. */
+  .if-empty a {
+    text-decoration: underline;
+  }
+
   @media (max-width: 600px) {
     .if-header h1 { font-size: 1.75rem; }
   }

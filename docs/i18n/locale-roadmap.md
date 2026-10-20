@@ -44,6 +44,44 @@ Before a locale is published:
    English (`K`, `M`, `B`), which a Spanish reader took for the wrong scale, so
    Spanish has its own billion. Each new locale is checked the same way.
 
+**A language counts as added only when every check below has passed** on a
+build of the branch, for the new language and for every language already
+published (a shared component can break the others). The results go in the
+pull request.
+
+1. **Tests, lint, typecheck and build** pass, including the catalog tests for
+   the new language (no untranslated copy, the script and punctuation its
+   glossary sets, meta descriptions within 160 characters).
+2. **SEO.** Every page of the new edition declares its `lang`, a canonical
+   address in the edition, `og:locale` and `inLanguage`. Every indexed page
+   carries hreflang for every edition plus `x-default`, and every other
+   edition's twin points back. The sitemap lists the new edition's indexed
+   pages with the same hreflang entries as the others. Every indexed meta
+   description is at most 160 characters as built, titles are distinct, the
+   404 page has a block in the language, and `public/llms.txt` lists it.
+3. **Rendering.** Every page at 320, 390 and 1366 pixels wide: no horizontal
+   overflow, no element wider than the screen, the language's typeface loaded
+   (no fallback boxes), no line that starts with a word the glossary keeps
+   on the line before, and the language picker readable with every entry.
+   Every placeholder, button and label fits inside its own control at 320
+   pixels (its text width measured against the box; a clipped placeholder is
+   not a page overflow, so the other checks miss it), and no text runs under
+   positioned decoration such as the home page's step-3 sparkline.
+   Screenshots of the home page, the learning path, the free tools and the
+   privacy notice at phone and laptop sizes are reviewed by the council.
+4. **Accessibility.** An automated audit (axe-core in a headless browser,
+   WCAG 2.1 A and AA plus best practices) of every page at phone and laptop
+   sizes reports no violations. Every accessible name, label, alt text and
+   screen-reader-only text on the new edition's pages is in the language
+   (English only where the glossary allows it, marked `lang="en"`, such as
+   lesson titles), and the language picker names each language in its own
+   script with its `lang`.
+5. **Privacy.** The `CLAUDE.md` browser check of every free tool, on a
+   `PUBLIC_ANALYTICS_TEST=1` build, in every language at phone and laptop
+   sizes, finds no typed value in any PostHog payload.
+6. **The council signs off** on the glossary, every catalog section, the
+   screenshots and the results of the checks above.
+
 ## What the published locales settled
 
 Each locale added a case the next ones reuse:

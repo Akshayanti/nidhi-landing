@@ -688,6 +688,7 @@ const inputId = `subscribe-email-${variant}`;
   /* Email field and button on one row, like the homepage signup. */
   .subscribe-form--compact {
     display: flex;
+    flex-wrap: wrap; /* on a 320px phone the button drops below the input */
     gap: var(--space-2);
     align-items: center;
   }

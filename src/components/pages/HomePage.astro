@@ -259,7 +259,7 @@ const faqSchema = {
               <span class="journey-big">{t(home.journey.stockBig, { one: signedEur(people[0].owns - people[0].owes), two: signedEur(people[1].owns - people[1].owes) })}</span>
               <span class="journey-small">{t(home.journey.stockSmall, { amount: eur(SAME_INCOME) })}</span>
             </li>
-            <li>
+            <li class="journey-plan">
               <span class="journey-step">{home.journey.planStep}</span>
               <span class="journey-big">{t(home.journey.planBig, { gap: eur(gap), years: STARTER.years })}</span>
               <span class="journey-small">{t(home.journey.planSmall, { extra: eur(HIGHER_MONTHLY - STARTER.monthly) })}</span>
@@ -943,6 +943,12 @@ const faqSchema = {
   }
 
   .journey-small { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.4; }
+
+  /* The little chart sits at the right of the plan step's big line, so that
+     line keeps clear of it rather than running underneath. */
+  .journey-plan .journey-big {
+    padding-right: 104px;
+  }
 
   .journey-spark {
     position: absolute;

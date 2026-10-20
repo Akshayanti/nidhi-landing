@@ -361,6 +361,8 @@ const faqSchema = {
   }
   .ifcp-source a {
     color: var(--color-deep-blue);
+    /* A link inside a sentence is underlined, so it is not told apart by colour alone. */
+    text-decoration: underline;
   }
   .ifcp-faq > summary {
     cursor: pointer;

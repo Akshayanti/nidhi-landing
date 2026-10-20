@@ -1099,6 +1099,7 @@ export default function LoanCompare({
         )}
       </div>
 
+      <h2 className="lc-srOnly">{strings.cardsHeading}</h2>
       <div className="lc-grid">
         {vendors.map((v, i) => (
           <VendorCard
