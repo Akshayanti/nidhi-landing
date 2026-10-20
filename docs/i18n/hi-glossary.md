@@ -127,7 +127,7 @@ why this one won, so it is not re-argued in a later lesson.
 | volatility | उतार-चढ़ाव | **Bracket** (volatility). Council, 2026-10-20: replaces अस्थिरता, which reads as political instability; Hindi business news describes markets with उतार-चढ़ाव. |
 | diversification | विविधीकरण | **Bracket** (diversification). |
 | asset allocation | एसेट एलोकेशन | Council, 2026-10-20: replaces परिसंपत्ति आवंटन, which no reader uses. A loanword, so no bracket. |
-| rebalancing | रीबैलेंसिंग | Council, 2026-10-20: replaces पुनर्संतुलन. The verb is रीबैलेंस करना; `re-` is spelled री as in रीफ़ाइनेंस. A loanword, so no bracket. |
+| rebalancing | रीबैलेंसिंग | Council, 2026-10-20: replaces पुनर्संतुलन. The verbs are रीबैलेंस करना and, intransitive, रीबैलेंस होना; `re-` is spelled री as in रीफ़ाइनेंस. A loanword, so no bracket. |
 | portfolio | पोर्टफ़ोलियो | |
 | index fund | इंडेक्स फंड | |
 | mutual fund | म्यूचुअल फंड | |
@@ -334,7 +334,7 @@ and do translate.
 | after inflation | महँगाई के बाद | The simulator's returns are real returns, so the phrase recurs on every result. |
 | median | बीच का | Never औसत: the tool is careful that the middle of a spread is not an average, and the Hindi has to keep that. |
 | portfolio mix | पोर्टफ़ोलियो का मिश्रण | The stock and bond split. |
-| rebalanced yearly | हर साल रीबैलेंस किया गया | Glossary: rebalancing is रीबैलेंसिंग. |
+| rebalanced yearly | हर साल रीबैलेंस होता है | Glossary: rebalancing is रीबैलेंसिंग. |
 | run the simulation | सिम्युलेशन चलाएँ | |
 | inflation calculator | महँगाई कैलकुलेटर | The page title adds (Inflation Calculator) in Latin, rule 6, because that is what a reader searches for. |
 | raise (in pay) | वेतन वृद्धि | Not इंक्रीमेंट, which is the word for a fixed annual step rather than any raise. |
