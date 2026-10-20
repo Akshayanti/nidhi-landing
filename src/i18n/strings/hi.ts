@@ -911,7 +911,7 @@ export const hi: Dict = {
       inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
       inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveMetaFew: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
-      inclusiveMetaOne: 'सबके लिए वित्त · 1 गाइड, किसी भी पड़ाव पर',
+      inclusiveMetaOne: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveGo: 'देखें',
     },
     /** Step 2: what the free tools are for. */

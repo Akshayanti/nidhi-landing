@@ -27,13 +27,20 @@ describe('choosing a counted string', () => {
   it('gives a decimal the other form, since no counted string carries one', () => {
     assert.equal(pluralForm('cs', 1.5), 'other');
     assert.equal(pluralForm('cs', 2.5), 'other');
+    assert.equal(pluralForm('cs', 0), 'other');
   });
 
-  it('keeps English, Hindi and Spanish on one and other, with 0 plural as before', () => {
+  it('keeps English and Spanish on one and other, with 0 plural', () => {
     for (const tag of ['en', 'en-IN', 'es']) {
       assert.equal(pluralForm(tag, 1), 'one', tag);
       for (const n of [0, 2, 3, 4, 5, 21]) assert.equal(pluralForm(tag, n), 'other', `${tag} ${n}`);
     }
+  });
+
+  it('gives Hindi 0 and 1 the one form, as its plural rule does', () => {
+    assert.equal(plural('hi', 0, 'पाठ (1)', 'पाठ (few)', 'पाठ (other)'), 'पाठ (1)');
+    assert.equal(pluralForm('hi', 1), 'one');
+    for (const n of [2, 3, 5, 21]) assert.equal(pluralForm('hi', n), 'other', `hi ${n}`);
   });
 });
 
