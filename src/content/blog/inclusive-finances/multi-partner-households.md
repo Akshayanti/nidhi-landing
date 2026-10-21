@@ -1,15 +1,31 @@
 ---
 slug: "multi-partner-households"
 title: "More Than Two Partners: Protecting Everyone"
-description: "Where the law recognises one spouse at most, the other partners get no automatic protection. How to decide who holds that role and cover everyone else."
-tldr: "A household of three or more partners faces everything an unmarried couple does, with one extra constraint. In most countries the law recognises at most one partner as a spouse, so the automatic protections of marriage (inheritance, survivor pensions, medical decision rights, tax treatment, a partner visa) are available to one person in the household and to nobody else. That raises two questions a couple never has to ask. Who, if anyone, holds the one legal slot, and why? And how do the others get equivalent cover? The answer to the second is the same set of documents unmarried couples use, written for more than two: wills naming every partner, beneficiary forms with percentages, healthcare proxies naming alternates in an agreed order, powers of attorney, and a written agreement among the partners. Some things cannot be extended by any document. Joint tax treatment, tax-free transfers between spouses, and immigration rights generally stay with one pair, and the plan has to work around them with insurance, with how assets are held, and with each partner keeping a status of their own. Children add a further limit, since most legal systems allow two legal parents at most."
+seoTitle: "Polyamorous Households: Wills, Pensions and Legal Rights"
+description: "Where the law recognises one spouse at most, other partners get no automatic protection. Who marries whom, and how wills, beneficiary forms and proxies cover everyone else."
+tldr: "In most countries the law recognises one spouse at a time, so in a household of three or more partners the automatic protections of marriage reach one married pair at most. That raises two questions a couple never asks: who holds the one legal slot, and how the others get equivalent cover. Wills naming every partner, beneficiary forms with percentages, healthcare proxies with alternates in order, powers of attorney and a written agreement do most of it. Joint tax, partner visas and legal parentage generally stay with one pair and need workarounds."
 takeaways:
-  - "Why the law offers one spouse slot, and what that means for the rest"
-  - "How to adapt wills, forms and proxies for more than two partners"
-  - "What no document extends: joint tax, partner visas and parentage"
+  - text: "Why the law offers one spouse slot, and what that means for the rest"
+    href: "#the-law-offers-one-spouse-slot"
+  - text: "How to adapt wills, forms and proxies for more than two partners"
+    href: "#wills-forms-and-proxies-for-more-than-two-partners"
+  - text: "What no document extends: joint tax, partner visas and parentage"
+    href: "#what-no-document-extends-joint-tax-partner-visas-and-parentage"
+glossary:
+  - term: "Recognition gap"
+    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+  - term: "Forced heirship"
+    definition: "Rules reserving part of an estate for children or other relatives, whatever a will says."
+  - term: "Beneficiary form"
+    definition: "The form naming who receives a pension or insurance payout. Depending on the scheme, it is binding or only a guide. Some schemes call it a nomination or a designation."
+  - term: "Power of attorney"
+    definition: "A document naming who may act for you, for money or for health decisions, if you cannot make decisions yourself."
+  - term: "Trust"
+    definition: "A legal arrangement in which a trustee holds assets for named beneficiaries, on terms set when it is created."
 order: 58.7
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-26
+updatedDate: 2026-10-22
 localRules: [family-law, inheritance, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -20,11 +36,11 @@ faq:
   - question: "Can a group of partners marry or register together?"
     answer: "In most countries, no. Marriage and registered partnerships are generally limited to two people at a time, and in many places a second legal marriage while already married is a criminal offence. A private commitment ceremony is a personal matter but carries no legal effect. There are two kinds of exception. A number of countries, mainly in parts of Africa, the Middle East and Asia, allow a man to have more than one wife under civil, religious or customary law, with their own rules on property and inheritance, and those marriages are often not recognised in other countries. Separately, a few places have experimented at a small scale: some cities in Massachusetts in the United States register domestic partnerships for more than two people, mostly covering things like hospital visits and local benefits. For everyone else, contracts, wills and designations do the work that a legal status would."
   - question: "Should two of us marry, and which two?"
-    answer: "That is a personal decision, and it helps to make it knowing what it changes. The married pair gains inheritance rights, survivor pensions, tax treatment and, where relevant, immigration rights. The other partners gain nothing from it and may lose ground, because a spouse takes priority over them by default in inheritance and in medical decisions. Households weigh which partner most needs the protection: the one with the least savings, the one without residency, the one with no pension of their own. Whatever is chosen, the partners outside the marriage need their cover written down."
+    answer: "That is a personal decision, and it helps to make it knowing what it changes. The married pair may gain inheritance, survivor-pension, tax and, where relevant, immigration rights. Partners outside the marriage cannot assume those protections: local law may give them some rights, while pension schemes and institutions apply their own rules. Households weigh which partner most needs the protection: the one with the least savings, the one without residency, or the one with no pension of their own. Whatever is chosen, each protection for partners outside the marriage needs checking and any gap needs covering in writing."
   - question: "Can I name more than one partner on a pension or an insurance policy?"
-    answer: "Usually, yes. Most pension, insurance and investment forms let you name several beneficiaries with a percentage for each. Three things need checking. Some pension schemes pay the ongoing survivor pension only to a legal spouse, even where a lump sum can go to anyone named. Some treat the form as a guide for their trustees rather than a binding instruction. And in some systems a spouse has a legal right to a share whatever the form says."
+    answer: "Usually, yes. Many insurance and investment forms, and some pension forms, let you name several beneficiaries with a percentage for each. Three things need checking. Some pension schemes pay the ongoing survivor pension only to a legal spouse, even where a lump sum can go to anyone named. Some treat the form as a guide for their trustees rather than a binding instruction. And in some systems a spouse has a legal right to a share whatever the form says."
   - question: "Who makes medical decisions if I have several partners?"
-    answer: "Without documents, the legal spouse if there is one, and otherwise blood relatives, in the order the law sets. A healthcare power of attorney lets you choose. Most forms name one person at a time with alternates in sequence, so a household can name each other in an order everyone has agreed. A separate visitation and information form, where hospitals use one, lets all your partners be admitted and told what is happening."
+    answer: "Without documents, local law decides who may act, and a legal spouse or blood relative may take priority over an unrecognised partner. A healthcare power of attorney lets you choose where local law recognises one. Depending on the form, it may name one decision-maker, joint decision-makers or alternates in sequence. Separate consent, visitation or information forms may let several partners receive information or visit."
   - question: "Can a child have more than two legal parents?"
     answer: "In most countries, no. The law generally recognises two legal parents at most, however many adults are raising the child. A small number of jurisdictions allow three or more in specific circumstances. A partner who parents without legal status may be unable to consent to treatment, deal with a school, or keep the child in their care if a legal parent dies. Wills naming a guardian, written authorisations, and where available a parental responsibility order are the tools."
   - question: "How are we taxed as a household of three or more?"
@@ -42,114 +58,95 @@ referentialReading:
     type: "paper"
 ---
 
-The post on [unmarried couples](/blog/unmarried-and-cohabiting-couples/) set out what marriage switches on automatically, and how two people who are not married can rebuild each piece with documents.
+Three adults share a home and a life as partners. The law where they live recognises a marriage between two people, so at most one pair of them can marry. The married pair may get reciprocal legal protections; any partner outside it depends on the rights local law gives unmarried partners and on what is written down.
 
-It was written for two. Some households have three partners, or four. For them the same analysis applies, with one extra constraint that changes the planning: there is one legal slot, and more than one person who might need it.
+The [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) set out what marriage switches on and how two people can rebuild each piece with documents. This companion is for households of three or four partners. It assumes everyday money works as in the [shared households](/blog/shared-households-money-for-three-or-more/) post and any home is owned as in [owning with more than two people](/blog/owning-a-home-with-more-than-two-people/). What is left is what comes from being partners: inheritance, decisions, pensions, children and tax. Family law differs in every country; this teaches what to check, and it is not legal advice.
 
-This piece is a companion to that post. It assumes the everyday money is handled as in the post on [shared households](/blog/shared-households-money-for-three-or-more/), and that any home is owned as described in the piece on [owning with more than two people](/blog/owning-a-home-with-more-than-two-people/). What is left is the part that comes from being partners: inheritance, decisions, pensions, children and tax.
+## The law offers one spouse slot
 
-Family law differs in every country. This piece teaches what to check and which documents exist as categories. It is not legal advice, and for the documents themselves a local professional is needed.
-
-## One slot
-
-Marriage is limited to two people in most legal systems. Where a country does allow a man more than one wife, under civil, religious or customary law, it has its own rules for property and inheritance, and those marriages frequently stop being recognised when a family moves abroad.
-
-Everywhere else, a set of automatic protections is available for one partner and for no one else in the household. In the terms this series uses, every partner outside the marriage lives in a **recognition gap** (the distance between how a household works and what the law can see), and the gap is permanent.
-
-So a multi-partner household has two questions where a couple has one. Not only "what do we need to replace?" but "who holds the one slot that exists, and how do the others get equivalent cover?"
+Marriage is limited to two people in most legal systems. Where a country allows a man more than one wife, under civil, religious or customary law, it has its own property and inheritance rules, and those marriages are often not recognised after a family moves abroad. Elsewhere, marriage-based protections reach the two people in the married pair. Partners outside it may have some cohabitation rights, but often face a [recognition gap](#term-recognition-gap) that varies by country and institution.
 
 | Default | Who gets it by law | What extends it to others |
 |---|---|---|
-| Inheritance with no will | The spouse and blood relatives | A will naming each partner |
+| Inheritance with no will | A spouse, children or other relatives, in the order local law sets | A will naming each partner, within any protected shares |
 | Pension survivor benefits | Often the spouse only | Check whether the scheme allows a nominee; otherwise cover with insurance or savings |
-| Medical decisions | The spouse, then relatives | Healthcare proxies, with named alternates in order |
-| Hospital access and information | Legal family | A written designation, kept where staff can find it |
+| Medical decisions | The person or people local law ranks first | A healthcare proxy or equivalent, where recognised |
+| Hospital access and information | Rules vary by law, consent and hospital policy | Consent or visitation forms where available, kept where staff can find them |
 | Joint tax treatment | One pair at most | Not extendable; plan around it |
 | Tax-free transfers between partners | Often spouses only | Lifetime gifts within allowances; insurance for expected tax |
 | A partner visa for a move abroad | Usually one partner | Not extendable; each partner needs their own route |
 
-### Who is the legal spouse
+So a multi-partner household has three questions where a couple has one: **who holds the slot, and why; how is each other partner covered; and what needs a workaround?**
 
-Some households have a married pair plus other partners. Some have no marriage at all. Some have a married pair who did it for tax or immigration reasons. Whichever it is, the spouse role carries real rights and real exposure, and it is worth deciding who holds it and why.
+Holding the slot has two consequences. Partners outside the married pair cannot assume the spouse's protections: local law may give them some cohabitation, inheritance or medical-decision rights, while pension schemes and institutions apply their own rules, so each protection needs checking and any gap needs covering in writing. And the legal owners or borrowers may be able to sell, borrow or change arrangements the other partners assumed were settled, which is one reason to record agreements in writing. Households that think this through often ask who most needs the protection: the partner with the least savings, the one without secure residency, the one with no pension of their own. There is no right answer, but there is a difference between a choice and an accident.
 
-Two consequences follow from one partner holding it.
+## Wills, forms and proxies for more than two partners
 
-**The others depend entirely on documents.** The spouse is, by default, the next of kin. In a hospital, in an inheritance, and with a pension scheme, the spouse comes first unless something in writing says otherwise.
+The five documents from the unmarried couples post all apply, adapted for more than two:
 
-**A pair inside the group can override the rest.** Two spouses acting together can sell, borrow, or change arrangements that the other partners assumed were settled. That is one reason to record agreements in writing and not in memory.
+- **Wills.** Each partner's will names each other partner by full legal name, with the share intended. A spouse may have a legal right to part of the estate whatever the will says, and where [forced heirship](#term-forced-heirship) applies, a will directs only what is left.
+- **A [beneficiary form](#term-beneficiary-form).** Many insurance and investment forms, and some pension forms, allow several names with percentages; the scheme's rules decide whether several names are allowed and whether the form is binding. Some schemes treat the form only as a guide for their trustees, and some pay the ongoing survivor pension only to a spouse even when a lump sum can go to anyone named.
+- **A healthcare [power of attorney](#term-power-of-attorney).** Depending on local law, it may name one decision-maker, joint decision-makers or alternates in order, so partners can name each other in an agreed sequence and agree that the named person consults the others. **Hospital visitation and information forms,** where hospitals use them, can usually list several people.
+- **Financial powers of attorney,** for who manages money if you cannot; naming a different person from the healthcare attorney is common.
+- **An agreement among the partners:** who owns what, who contributes what, and what happens if someone leaves or the relationship changes. Two partners separating inside a group of three is a situation no family law was written for.
 
-Households that think this through often ask who most needs the protection the slot gives: the partner with the least savings, the one without secure residency, the one with no pension of their own. There is no right answer. There is a difference between a choice and an accident.
+For each form, three checks do most of the work: can it hold several names; if not, what is the order; and what does the pension pay a survivor, and to whom?
 
-## The documents, for more than two
+<details class="quick-check">
+<summary class="disclosure">Quick check: a pension lets you name three beneficiaries with percentages. Is every partner then covered?</summary>
 
-The five documents from the unmarried couples post all apply. Each needs adapting.
+Not necessarily. Some schemes pay the ongoing survivor pension only to a legal spouse, even when a lump sum can go to anyone named, and some treat the form only as a guide.
 
-- **Wills.** Each partner's will names each other partner by their full legal name, with the share intended. A spouse may have a legal right to part of the estate whatever the will says, and where **forced heirship** applies (a share reserved by law for children or other relatives) a will can direct only what is left. Know the limit before dividing the rest.
-- **Beneficiary designations.** Most pension, insurance and investment forms allow several beneficiaries with percentages. For each one, check whether the pension scheme treats the form as binding or only as a guide for its trustees, and whether it pays its ongoing survivor pension only to a spouse.
-- **Healthcare powers of attorney.** Usually one person at a time, plus alternates in order. A household of several partners can name each other in a sequence that matches how they would want it, and agree that the named person consults the others.
-- **Hospital visitation and information forms.** These can usually list several people. They are what gets every partner through the door.
-- **Financial powers of attorney.** They name who manages your money if you cannot. Naming a different person from your healthcare attorney is common and can be sensible.
-- **An agreement among the partners.** Who owns what, who contributes what, and what happens if one person leaves the household or the relationship changes. Two partners separating inside a group of three is a situation no family law was written for.
+</details>
 
-A **trust** (a legal arrangement in which a trustee holds assets for named beneficiaries) can hold a shared home or investment and spell out who receives what and when. Trusts are complex and tax-sensitive, so this is a topic for a lawyer where you live.
+<details class="lesson-depth">
+<summary class="disclosure">Covering the partner with no survivor pension, and trusts</summary>
 
-### Covering the partner with no survivor pension
+Where a pension pays a survivor benefit only to a spouse, the other partners have a gap no form closes. Households commonly fill it in three ways, depending on what they can afford and what local rules allow: **life insurance** on the pension holder, owned by or payable to the partner who would be left out; **savings in that partner's own name,** built deliberately; and **the lump-sum part of the pension,** where a scheme lets a lump sum go to anyone named even though the ongoing pension cannot.
 
-Where a pension pays a survivor benefit only to a spouse, the other partners have a gap that no form closes. Households commonly fill it in three ways, depending on what they can afford and what local rules allow:
+A [trust](#term-trust) can hold a shared home or investments and spell out who receives what and when. Trusts are complex and tax-sensitive, a topic for a lawyer where you live.
 
-- **Life insurance** on the pension holder, owned by or payable to the partner who would be left out.
-- **Savings in that partner's own name,** built deliberately during the relationship.
-- **The lump-sum part of the pension,** where a scheme lets a lump sum go to any named person even though the ongoing pension cannot.
+</details>
 
-## What no document extends
+## What no document extends: joint tax, partner visas and parentage
 
-Three things stay with one pair at most.
+Three things stay with one pair at most. Tax systems assess individuals and, in some countries, one married or registered pair; there is no group filing. A partner visa normally covers one partner. And the law of most countries recognises two legal parents at most, however many adults raise a child.
 
-### Tax
+<details class="lesson-depth">
+<summary class="disclosure">Why tax and partner visas stay with one pair</summary>
 
-Tax systems assess individuals and, in some countries, married or registered pairs. There is generally no group filing. Each adult is taxed on their own income, and allowances that a couple can share are available to one pair. A dependant can usually be claimed only once, so the household needs to agree who claims and keep records.
+**Tax.** Each adult is taxed on their own income, and allowances a couple can share are available to one pair. A dependant can usually be claimed only once, so the household agrees who claims and keeps records. Transfers between partners not married to each other can count as taxable gifts, and an inheritance between them may be taxed at the rate for unrelated people. The tools are the ones unmarried couples use: life insurance sized to the expected bill, lifetime gifts within allowances, and holding assets in the right names from the start. Rates and allowances are a question for your tax authority or adviser.
 
-Transfers between partners who are not married to each other can count as taxable gifts, and an inheritance from one to another may be taxed at the rate for unrelated people. The tools are the ones unmarried couples use: life insurance sized to the expected bill, lifetime gifts within allowances, and holding assets in the right names from the start. What your rates and allowances are is a question for your own tax authority or adviser.
+**Immigration.** If the household moves abroad, each partner beyond the one covered needs a route of their own, through work, study or independent means, and their right to stay depends on it. A later post in this series covers what happens to a marriage and a household when it crosses a border.
 
-### Immigration
+</details>
 
-A partner visa normally covers one partner. If the household moves abroad, each of the others needs a route of their own, through work, study or independent means, and their right to stay depends on it. A later post in this series covers what happens to a marriage and to a household when it crosses a border.
+<details class="lesson-depth">
+<summary class="disclosure">Children, and the two parent limit</summary>
 
-### Children
+Parentage is a legal question separate from love or care. A small number of jurisdictions in Canada and the US allow a child more than two legal parents in specific cases; most do not. A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. Three protections are common: each legal parent's will names a guardian; the legal parents sign an authorisation for the other adults covering school and medical matters; and every partner's will and beneficiary forms name the children explicitly. A later post in this series covers non-biological co-parents and stepchildren in detail.
 
-Parentage is a legal question separate from love or care. The law of most countries names two legal parents at most, and a small number allow more in specific cases.
+</details>
 
-A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. A later post in this series covers non-biological co-parents and stepchildren in detail. For now, three protections are worth having: each legal parent's will names a guardian, the legal parents sign an authorisation for the other adults covering school and medical matters, and every partner's will and beneficiary forms name the children explicitly.
+<details class="lesson-depth">
+<summary class="disclosure">When the carer needs care</summary>
 
-## Growing older together
+A household that plans to age together carries an untested assumption: that the partners will look after each other, until the person expected to help is the one who needs care. Survivor pensions and spousal benefits run through a legal spouse and stop there. Unpaid care can reduce earnings and pension saving; some countries give carers pension credits or benefits, but eligibility may depend on the recognised relationship, the hours of care or benefits claimed. A shared home may need a plan for a member who needs different housing or care. Households that grow older together often write down who takes which role, and what happens if someone can no longer contribute. The [solo agers post](/blog/solo-agers-and-single-income-households/) covers later life when a spouse is not the backstop; its documents apply to each partner here.
 
-A household that plans to age together carries an assumption that nobody has tested. If you expect to look after each other in old age, the question is what the arrangement covers, and what happens when the person expected to help is the one who needs care.
+</details>
 
-- Survivor pensions and spousal benefits run through a legal spouse and stop there.
-- Care that a household provides informally has no pay and no pension credit.
-- A shared home may need a plan for a member who needs different housing or care.
-- Households that grow older together often benefit from writing down who takes which role, and what the group does if someone can no longer contribute.
+## Recognition and legal risk differ by country
 
-The post on [one-income households](/blog/solo-agers-and-single-income-households/) covers planning for later life when a spouse is not the backstop. Its list of documents applies to each partner here.
+<details class="lesson-depth">
+<summary class="disclosure">How countries differ</summary>
 
-## Cross-continent notes
+- **Most of Europe, the Americas and Australasia.** Marriage is limited to two. Multi-partner households rely on contracts, wills and designations. Forced heirship in much of continental Europe and Latin America limits what a will can leave to partners.
+- **Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia, under rules that differ by country and by religious or customary law. Such marriages are often not recognised elsewhere, which can leave later spouses with no legal status after a move.
+- **United States.** A few cities, such as some in Massachusetts, register domestic partnerships for more than two people, usually covering local matters such as hospital visits and city employee benefits; they do not change state or federal law.
+- **Criminal law.** In some countries, living as a multi-partner household carries legal risk beyond the financial, and a financial plan is not the right tool for that decision.
 
-**Most of Europe, the Americas, and Australasia.** Marriage is limited to two. Multi-partner households rely on contracts, wills and designations. Forced heirship in much of continental Europe and Latin America limits what a will can leave to partners.
+</details>
 
-**Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia do, under rules that differ by country and by religious or customary law. Each wife's property and inheritance rights are set by that system. Such marriages are often not recognised elsewhere, which can leave later spouses with no legal status after a move.
+The law offers one slot. A household with more people than that builds the rest by hand: the same work an unmarried couple does, once for every person.
 
-**United States.** A few cities have created domestic partnership registrations for more than two people, which usually cover local matters such as hospital visits and city employee benefits. They do not change state or federal law.
-
-**Parentage.** A small number of jurisdictions in Canada and the United States allow a child to have more than two legal parents.
-
-**Criminal law.** In some countries, living as a multi-partner household carries legal risk beyond the financial. A financial plan is not the right tool for that decision.
-
-## Getting started
-
-- **Tonight, for free:** check the beneficiary on every pension, policy and account, and whether each allows several names.
-- **This month:** find out what each pension pays a survivor, and to whom.
-- **This quarter:** find out what wills, healthcare and financial powers of attorney, and hospital forms require where you live, for every partner, each naming the others.
-- **This quarter:** a written agreement among the partners.
-- **Once:** decide on purpose who, if anyone, holds the legal spouse role, and make sure the others' cover does not depend on it.
-
-The law offers one slot. A household with more people than that has to build the rest by hand. It is the same work an unmarried couple does, done once for every person in the household.
+If your household's married pair was decided by accident, which two partners would you choose today, and why?
