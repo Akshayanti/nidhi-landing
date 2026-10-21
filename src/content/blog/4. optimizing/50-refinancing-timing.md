@@ -38,8 +38,8 @@ referentialReading:
   - title: "Mortgage Refinancing Basics"
     url: "https://www.investopedia.com/mortgage/refinance/"
     type: "blog"
-  - title: "The Complete Guide to Refinancing Your Mortgage"
-    url: "https://www.nerdwallet.com/article/mortgages/refinance-mortgage"
+  - title: "How to Refinance a Mortgage: A Beginner's Guide"
+    url: "https://www.nerdwallet.com/mortgages/learn/how-to-refinance-your-mortgage"
     type: "blog"
 ---
 

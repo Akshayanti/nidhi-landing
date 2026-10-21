@@ -37,7 +37,7 @@ relatedSlugs: ["assets", "financial-dashboard", "getting-started-investing", "ca
 referentialReading:
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/860131.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
   - title: "How to Roll Over a 401(k)"
     url: "https://www.investopedia.com/articles/personal-finance/092214/guide-401k-rollovers.asp"

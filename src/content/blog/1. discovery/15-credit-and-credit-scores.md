@@ -24,7 +24,7 @@ referentialReading:
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
-    url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
   - title: "The Total Money Makeover"
     author: "Dave Ramsey"

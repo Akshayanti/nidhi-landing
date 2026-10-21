@@ -30,8 +30,8 @@ faq:
 reelPromise: "The four-step windfall framework, why lump-sum beats DCA two-thirds of the time historically, and the lifestyle-inflation ratchet that turns a one-time gain into permanent higher expenses"
 relatedSlugs: ["invest-or-pay-off-debt", "mental-accounting", "present-bias-and-your-future-self", "getting-started-investing", "emergency-fund"]
 referentialReading:
-  - title: "Dollar-Cost Averaging Just Means Taking Risk Later"
-    url: "https://corporate.vanguard.com/content/dam/corp/research/pdf/dollar-cost_averaging_just_means_taking_risk_later.pdf"
+  - title: "Cost Averaging: Invest Now or Temporarily Hold Your Cash?"
+    url: "https://corporate.vanguard.com/content/dam/corp/research/pdf/cost_averaging_invest_now_or_temporarily_hold_your_cash.pdf"
     type: "blog"
   - title: "The Psychology of Money"
     author: "Morgan Housel"

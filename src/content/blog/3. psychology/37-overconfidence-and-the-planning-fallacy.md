@@ -33,7 +33,7 @@ referentialReading:
     type: "book"
   - title: "Trading Is Hazardous to Your Wealth"
     author: "Brad Barber and Terrance Odean"
-    url: "https://faculty.haas.berkeley.edu/odean/papers/returns/individualinvestorperformancefinal.pdf"
+    url: "https://faculty.haas.berkeley.edu/odean/Papers%20current%20versions/Individual_Investor_Performance_Final.pdf"
     type: "paper"
   - title: "The Psychology of Money"
     author: "Morgan Housel"

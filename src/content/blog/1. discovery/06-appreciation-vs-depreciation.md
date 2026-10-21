@@ -26,7 +26,7 @@ referentialReading:
     type: "blog"
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"
-    url: "https://www.goodreads.com/book/show/900892.A_Random_Walk_Down_Wall_Street"
+    url: "https://www.goodreads.com/book/show/40242274-a-random-walk-down-wall-street"
     type: "book"
 relatedSlugs: ["assets", "liabilities", "how-to-get-out-of-debt", "what-is-net-worth"]
 faq:

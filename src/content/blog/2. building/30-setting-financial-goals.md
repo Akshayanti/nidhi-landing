@@ -40,7 +40,7 @@ referentialReading:
     type: "book"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
-    url: "https://www.goodreads.com/book/show/37590422-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
 ---
 "I want to buy a house someday." "I want to retire comfortably." "I'd like to be debt-free." Every adult has some version of these sentences in their head. Almost none of them, as stated, are goals. They're wishes: directions without a destination, ambitions without a finish line.

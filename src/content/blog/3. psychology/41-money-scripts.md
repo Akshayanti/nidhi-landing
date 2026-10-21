@@ -29,7 +29,7 @@ relatedSlugs: ["narrative-economics-and-bubbles", "why-smart-people-make-dumb-mo
 referentialReading:
   - title: "Mind Over Money"
     author: "Brad Klontz and Ted Klontz"
-    url: "https://www.goodreads.com/book/show/6976215-mind-over-money"
+    url: "https://www.goodreads.com/book/show/6985666-mind-over-money"
     type: "book"
   - title: "The Psychology of Money"
     author: "Morgan Housel"
@@ -37,7 +37,7 @@ referentialReading:
     type: "book"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
-    url: "https://www.goodreads.com/book/show/37590422-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
 ---
 

@@ -34,11 +34,11 @@ referentialReading:
     url: "https://www.investopedia.com/terms/r/rebalancing.asp"
     type: "blog"
   - title: "Industry research on rebalancing frequency (citation, not endorsement)"
-    url: "https://corporate.vanguard.com/content/dam/corp/research/pdf/Getting_back_on_track_A_guide_to_smart_rebalancing.pdf"
+    url: "https://www.vanguardsouthamerica.com/content/dam/intl/americas/documents/latam/en/sa-2123766-getting-back-on-track.pdf"
     type: "paper"
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/962887.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
 ---
 

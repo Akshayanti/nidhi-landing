@@ -34,7 +34,7 @@ referentialReading:
     type: "blog"
   - title: "The Millionaire Real Estate Investor"
     author: "Gary Keller"
-    url: "https://www.goodreads.com/book/show/117629.The_Millionaire_Real_Estate_Investor"
+    url: "https://www.goodreads.com/book/show/136205.The_Millionaire_Real_Estate_Investor"
     type: "book"
   - title: "New York Times Rent vs. Buy Calculator (US-tuned; UK's MoneyHelper, India's Magicbricks/NoBroker, and major local portals offer regional equivalents with appropriate transaction cost assumptions)"
     url: "https://www.nytimes.com/interactive/2014/upshot/buy-rent-calculator.html"

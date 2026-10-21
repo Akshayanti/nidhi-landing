@@ -36,10 +36,10 @@ referentialReading:
     type: "book"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
-    url: "https://www.goodreads.com/book/show/1088691.Your_Money_or_Your_Life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
-  - title: "The Trinity Study Update (Cooley, Hubbard, Walz)"
-    url: "https://afcpe.org/wp-content/uploads/2018/10/vol1119.pdf"
+  - title: "Sustainable Withdrawal Rates From Your Retirement Portfolio (Cooley, Hubbard, Walz, 1999)"
+    url: "https://www.afcpe.org/news-and-publications/journal-of-financial-counseling-and-planning/volume-10-1/sustainable-withdrawal-rates-from-your-retirement-portfolio/"
     type: "blog"
 ---
 

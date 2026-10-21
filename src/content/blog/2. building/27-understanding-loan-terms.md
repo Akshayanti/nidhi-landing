@@ -44,7 +44,7 @@ referentialReading:
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
-    url: "https://www.goodreads.com/book/show/37590422-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
 ---
 

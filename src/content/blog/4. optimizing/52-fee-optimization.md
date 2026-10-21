@@ -32,14 +32,14 @@ relatedSlugs: ["investing-101-asset-classes", "financial-projections", "framing-
 referentialReading:
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/860131.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
   - title: "SPIVA Scorecard"
     url: "https://www.spglobal.com/spdji/en/research-insights/spiva/"
     type: "blog"
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"
-    url: "https://www.goodreads.com/book/show/900.A_Random_Walk_Down_Wall_Street"
+    url: "https://www.goodreads.com/book/show/40242274-a-random-walk-down-wall-street"
     type: "book"
 ---
 

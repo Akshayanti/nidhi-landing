@@ -34,11 +34,11 @@ referentialReading:
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
-    url: "https://www.goodreads.com/book/show/294699.Your_Money_or_Your_Life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
   - title: "The Behavioral Investor"
     author: "Daniel Crosby"
-    url: "https://www.goodreads.com/book/show/40611711-the-behavioral-investor"
+    url: "https://www.goodreads.com/book/show/36960014-the-behavioral-investor"
     type: "book"
 ---
 

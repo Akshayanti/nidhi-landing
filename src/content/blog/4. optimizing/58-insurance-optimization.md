@@ -32,7 +32,7 @@ relatedSlugs: ["insurance-basics", "emergency-fund", "financial-projections", "l
 referentialReading:
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/860131.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
   - title: "Term vs Whole Life Insurance"
     url: "https://www.investopedia.com/insurance/term-vs-whole-life/"

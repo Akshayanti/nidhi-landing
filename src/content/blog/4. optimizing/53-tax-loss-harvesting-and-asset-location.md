@@ -32,7 +32,7 @@ relatedSlugs: ["taxes-and-your-financial-plan", "tax-advantaged-accounts", "reba
 referentialReading:
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/860131.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
   - title: "Tax-Loss Harvesting"
     url: "https://www.bogleheads.org/wiki/Tax_loss_harvesting"

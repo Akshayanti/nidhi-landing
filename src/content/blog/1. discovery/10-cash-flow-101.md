@@ -18,7 +18,7 @@ reelPromise: "The step-by-step way to find your own cash-flow number, the saving
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
-    url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
   - title: "Cash Flow"
     url: "https://www.investopedia.com/terms/c/cashflow.asp"
