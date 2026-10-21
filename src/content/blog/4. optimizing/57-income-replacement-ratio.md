@@ -1,16 +1,30 @@
 ---
 slug: "income-replacement-ratio"
 title: "Income Replacement Ratio: What You Need to Retire"
-description: "The 70 to 80% income replacement rule is a starting point, not an answer. How to build your own retirement income number from your actual expenses."
-tldr: "Income replacement ratio is the percentage of pre-retirement income you need in retirement to maintain your lifestyle. The 70 to 80% rule of thumb assumes commuting costs disappear, retirement contributions end, and taxes fall as income does. It is a defensible starting point. It is a bad ending point. Real ratios span from below 50% for households that paid off the mortgage and downshifted lifestyle to above 100% for households facing rising healthcare costs, dependants still supported, or a planned retirement upgrade (travel, second home, hobby). A bottom-up estimate from actual expected expenses usually says more than the rule. The ratio matters because it drives the FIRE (Financial Independence, Retire Early) target: at a 4% withdrawal rate, a US-derived rule of thumb that many treat as optimistic for long or non-US retirements, the target is 25x annual expenses. A 10-percentage-point difference in the replacement ratio can shift the required portfolio by hundreds of thousands. Multiple income streams (pension, portfolio, part-time work, social benefits) combine to replace the salary; the ratio is the total, not just what the portfolio must cover."
+seoTitle: "How Much Income Will You Need in Retirement?"
+description: "Is 70 to 80% of your income enough in retirement? Where the rule comes from, how to build your own number from your expenses, and how pensions shrink your portfolio target."
+tldr: "The income replacement ratio is the share of pre-retirement income needed to keep the same life in retirement. The common 70 to 80% figure assumes saving, work costs and some tax stop; real households range from 40% to over 100%. A category-by-category estimate from your own spending usually says more. Because the portfolio target is about 25 times spending, ten points of ratio can move it by hundreds of thousands, and pensions and other income shrink what the portfolio must cover."
 takeaways:
-  - "Where the 70 to 80% rule of thumb comes from and where it breaks"
-  - "How to build your own ratio from expected retirement expenses"
-  - "Why a small change in the ratio moves your portfolio target a lot"
-  - "Why pensions and other income shrink what the portfolio must cover"
+  - text: "Where the 70 to 80% rule of thumb comes from and where it breaks"
+    href: "#where-the-70-to-80-rule-comes-from-and-where-it-breaks"
+  - text: "How to build your own ratio from expected retirement expenses"
+    href: "#building-your-own-ratio-from-expected-expenses"
+  - text: "Why a small change in the ratio moves your portfolio target a lot"
+    href: "#a-small-change-in-the-ratio-moves-the-target-a-lot"
+  - text: "Why pensions and other income shrink what the portfolio must cover"
+    href: "#pensions-and-other-income-shrink-what-the-portfolio-must-cover"
+glossary:
+  - term: "Income replacement ratio"
+    definition: "The share of your pre-retirement income you need in retirement to keep the same standard of living."
+  - term: "Withdrawal rate"
+    definition: "The share of a portfolio taken out in the first year of retirement, then usually raised with inflation. At 4%, the portfolio needs to be about 25 times yearly spending."
+  - term: "Defined-benefit pension"
+    definition: "A pension that promises an income under the scheme's rules, usually based on salary and years of service, rather than giving the member a pot of savings."
+  - term: "Sequence-of-returns risk"
+    definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 57
 pubDate: 2099-01-21
-updatedDate: 2026-08-26
+updatedDate: "2026-10-22"
 localRules: [pensions, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -20,11 +34,11 @@ faq:
   - question: "What is the income replacement ratio and where does the 70 to 80% number come from?"
     answer: "The income replacement ratio is the percentage of pre-retirement gross income needed after retirement to maintain your lifestyle. The 70 to 80% benchmark comes from three observations about typical households: (1) you stop contributing to retirement accounts, which was often 10 to 15% of pre-retirement income; (2) you stop paying employment-linked expenses (commuting, workplace attire, workplace meals) which is another 5 to 10%; (3) your marginal tax rate typically drops because your income drops, saving another 5 to 10%. The net is often that maintaining the same standard of living requires roughly 70 to 80% of pre-retirement gross income. This is an average, not a rule. Your actual number depends on your specific situation, not the benchmark."
   - question: "When is the 70 to 80% rule wrong for me?"
-    answer: "Several common cases. Lower than 70%: mortgage paid off before retirement (removes housing cost that was 20 to 30% of expenses), children now financially independent, planned downshift to lower-cost location or simpler lifestyle. Some households retire on 40 to 50% of pre-retirement income and live well. Higher than 80%: planned lifestyle upgrade (travel, second home, expensive hobbies), dependants still supported (adult children with special needs, ageing parents), rising healthcare costs (particularly in the US where private insurance and out-of-pocket costs can accelerate), pre-retirement lifestyle already frugal (little room to compress further). Some households need 100% or more. The check is to project your actual expected retirement expenses category by category rather than apply a percentage."
+    answer: "Several common cases. Lower than 70%: mortgage paid off before retirement (removes the mortgage payment, though property tax, insurance and maintenance continue), children now financially independent, planned downshift to lower-cost location or simpler lifestyle. Some households retire on 40 to 50% of pre-retirement income and live well. Higher than 80%: planned lifestyle upgrade (travel, second home, expensive hobbies), dependants still supported (adult children with special needs, ageing parents), rising healthcare costs (particularly in the US where private insurance and out-of-pocket costs can accelerate), pre-retirement lifestyle already frugal (little room to compress further). Some households need 100% or more. The check is to project your actual expected retirement expenses category by category rather than apply a percentage."
   - question: "How do I actually build my own number?"
     answer: "Start with your current monthly expenses (from the cash flow post) and project each category into retirement. For each category, ask: does this stop, continue, drop, or rise? Housing: mortgage payment often stops (if paid off); property tax, insurance, maintenance continue. Transportation: often drops (no commuting) but may not disappear. Food: continues, often slightly higher (more meals at home). Healthcare: typically rises significantly, particularly late retirement. Insurance: life insurance often can be dropped; disability insurance ends. Retirement contributions: end. Employment-linked expenses: end. Travel and leisure: often rises in early retirement. Then add any planned new expenses (extended travel, second home, philanthropy, family support). Sum the projected monthly expenses and compare to current income to get your personal replacement ratio."
   - question: "Why does the ratio matter so much for my FIRE target?"
-    answer: "Because it directly determines the multiple of expenses your portfolio must sustain. At a 4% withdrawal rate, the FIRE target is 25x annual expenses (at 3.5%, about 29x). If your annual expenses are €40,000 (a 60% replacement of a €67k income), your target is €1 million. If they are €55,000 (an 80% replacement), your target is €1.375 million. That is a €375,000 difference in portfolio target from a 20-percentage-point change in the replacement ratio. Small changes in the ratio compound into large changes in the FIRE number. Using the wrong ratio (too high or too low) can either delay your retirement unnecessarily or leave you underfunded. The FIRE post covered the SWR concept generically; the ratio is the input that determines your specific target."
+    answer: "Because it directly determines the multiple of expenses your portfolio must sustain. At a 4% withdrawal rate, the FIRE target is 25x annual expenses (at 3.5%, about 29x). If your annual expenses are €40,000 (a 60% replacement of a €67,000 income), your target is €1 million. If they are €53,600 (an 80% replacement of the same €67,000 income), your target is €1.34 million. That is a €340,000 difference in portfolio target from a 20-percentage-point change in the replacement ratio. Small changes in the ratio compound into large changes in the FIRE number. Using the wrong ratio (too high or too low) can either delay your retirement unnecessarily or leave you underfunded. The FIRE post covered the SWR concept generically; the ratio is the input that determines your specific target."
   - question: "How do pension and social benefit income change the calculation?"
     answer: "They change it fundamentally. The FIRE math (25x annual expenses) assumes your portfolio covers your entire expenses. If a state pension or employer pension covers €20,000 of your €50,000 retirement expenses, your portfolio only needs to cover €30,000, so the target is 25x €30,000 = €750,000, not 25x €50,000 = €1.25 million. Each euro a year of inflation-linked lifetime income reduces the portfolio target by about 25 euros (at a 4% withdrawal rate); pensions that are not inflation-linked, or that start years after an early retirement, reduce it by less. This is one of the largest reasons FI timelines vary so much between households with similar incomes and expenses: households with generous employer pensions or robust social benefit systems can reach FI on much smaller portfolios. A calculation built around net-of-pension expenses reflects this; one built on gross expenses overstates the target. Details on pension income are in later Mastery posts; the takeaway here is that the ratio and the portfolio target are downstream of your total retirement-income mix."
 reelPromise: "Why the 70 to 80% rule is a starting point not an answer, the four categories that swing your personal number, and why every euro of pension income drops your FIRE target by 25 euros"
@@ -39,95 +53,28 @@ referentialReading:
     type: "blog"
 ---
 
-Retirement planning rests on one deceptively simple number: how much money you will need each year once you stop earning. Get this number wrong by 20% and the entire plan is off by hundreds of thousands. Get it wrong by 50% and either you retire too early and run out, or you retire too late having overprepared.
+Eva earns €80,000 a year before tax. Suppose her retirement budget, including any tax on withdrawals, is €60,000 a year: 75% of her gross income. If a portfolio had to cover all of it, 25 times that is €1.5 million. A €48,000 budget, or 60%, gives €1.2 million. The €300,000 gap can mean years more saving, depending on how much is saved each year and what it earns.
 
-The most widely quoted benchmark is that you will need 70 to 80% of your pre-retirement gross income to maintain your lifestyle. The figure comes mainly from US financial-planning literature, and typical replacement rates differ widely by country (the OECD's Pensions at a Glance compares them). This is a defensible starting point. It is a bad ending point, because your actual retirement expenses depend on your specific situation, not on an average. Some households retire comfortably on 40% of pre-retirement income; others need 100% or more.
+That percentage is the [income replacement ratio](#term-income-replacement-ratio): the share of pre-retirement income needed to keep the same life once work stops. The most quoted figure is 70 to 80%. This post covers where that figure comes from, how to build your own number instead, and why pensions and other income change what the portfolio has to cover.
 
-This post is about building the honest number from the ground up: which of your current expenses continue into retirement, which stop, which drop, which rise, and which entirely new categories appear. The result is your personal income replacement ratio, and it determines almost everything else about your retirement plan.
+## Where the 70 to 80% rule comes from, and where it breaks
 
-## Where the 70 to 80% benchmark comes from
+The figure comes mainly from US financial-planning literature (typical replacement rates differ widely by country; the OECD's Pensions at a Glance compares them). It rests on three observations about typical working households. **Retirement saving stops:** the 10 to 15% of gross income a saving household puts aside no longer needs to be found. **Work costs stop:** commuting, work clothes and meals, sometimes childcare, often another 5 to 10%. **Tax often falls:** with lower income, many progressive systems take less, perhaps another 5 to 10%. Together, these often remove roughly 20 to 30% of gross income without any change in how someone lives.
 
-The rule of thumb is not arbitrary. It reflects three observations about typical working households.
+Each assumption can be wrong for a specific household. Someone who saved little privately (common where state pensions are generous), worked remotely with no commute, or will be taxed on retirement income much as on wages, has less to drop. Real households can sit 20 points either side of the benchmark: some live well on 40 to 50% of their old income, others need 100% or more. It is a reasonable first estimate and a poor final answer.
 
-**Retirement contributions stop.** During working years, a savings-oriented household might contribute 10 to 20% of gross income to retirement accounts. In retirement, they are drawing rather than contributing. That 10 to 20% is removed from expenses.
+## Building your own ratio from expected expenses
 
-**Employment-linked expenses stop.** Commuting (fuel, transit passes, parking, vehicle wear), workplace attire, workplace meals, sometimes childcare that was necessitated by the two-earner arrangement. These typically total another 5 to 10% of gross income.
+The alternative is a bottom-up estimate: take current monthly spending (the [cash flow post](/blog/cash-flow-101/) covered tracking it) and ask of each category whether it stops, continues, falls or rises in retirement, then add anything new. The yearly total divided by current gross income is your own ratio. For most people it takes about an hour.
 
-**Marginal tax rate drops.** In most progressive-tax jurisdictions, retirement income is taxed at lower marginal rates than working income because gross income drops. This saves another 5 to 10% depending on jurisdiction and specific income structure.
-
-Sum: roughly 20 to 30% of pre-retirement gross income can disappear at the moment of retirement without any change in lifestyle, giving the 70 to 80% benchmark. It is a real observation about typical households, and it is not a bad first estimate.
-
-**Where the benchmark breaks down.** Every one of the three assumptions above can be wrong for a specific household. Retirement contributions may have been minimal (some jurisdictions with generous state pensions have lower private-savings norms). Employment-linked expenses may have been small (already remote work, no dress code, no commute). Tax rate change may be small if retirement income sources trigger similar tax treatment as working income. The benchmark can be off by 20 percentage points in either direction for real households.
-
-## The category-by-category build
-
-The alternative to the benchmark is a bottom-up projection of your actual expected retirement expenses. This takes an hour and produces a number specific to your situation.
-
-**Housing.** For most households, the largest single expense category and the largest source of variation across retirees.
-
-- Mortgage payment: if paid off by retirement (a common goal), this drops to zero. If not, continues at current level for the remaining term. If planning to downsize, the entire calculation changes.
-- Property tax: continues, often rising with property value or reassessment cycles.
-- Home insurance: continues, may rise.
-- Utilities: continue, roughly constant.
-- Maintenance: continues, often rises as the home ages.
-- Rent (if renting): continues, subject to local rent-control dynamics or free-market inflation.
-
-The mortgage question is the single largest housing variable. A household paying €1,500 monthly on a mortgage that ends before retirement immediately saves €18,000 per year of retirement expenses, dropping the FIRE target (at 25x) by €450,000.
-
-**Transportation.** Typically drops meaningfully.
-
-- Commuting costs (fuel, transit, parking) end.
-- Vehicle wear from commuting slows.
-- Household vehicle count often drops (two-car household becomes one-car).
-- Retirees drive fewer total miles, though the reduction is smaller than intuition suggests for many.
-
-A typical household saves 30 to 50% on transportation in retirement, though households who plan to travel extensively may save less overall.
-
-**Food.** Continues, often slightly higher.
-
-- Workplace meals stop.
-- More meals at home.
-- Sometimes more dining out (leisure), sometimes less (budget).
-- Grocery costs relatively constant.
-
-Net change is usually small, often slightly rising due to more meals prepared at home.
-
-**Healthcare.** The largest single wildcard across countries, and often within countries.
-
-- In jurisdictions with universal public healthcare (most of Europe, UK, Canada, Australia, Japan, and others), the change from working-age to retirement-age coverage is small.
-- In the US, the transition from employer-sponsored insurance to Medicare at age 65 changes the cost structure substantially, but pre-65 retirees face full private-market premiums and can experience the largest healthcare cost jump in retirement planning.
-- Late retirement (75+) typically sees rising costs due to more medical needs and eventually potentially long-term care.
-- Out-of-pocket costs (deductibles, co-payments, dental, vision, prescriptions) rise with age in almost every system.
-
-For most European retirees, healthcare in retirement is a small line item; for US retirees, it can be the largest post-housing expense.
-
-**Insurance (other than health).**
-
-- Life insurance: often can be dropped once dependants are grown and portfolio can self-fund what life insurance would have provided.
-- Disability insurance: automatically ends at retirement.
-- Property and auto insurance: continue.
-- Umbrella liability insurance: often continues, sometimes rises.
-
-Net effect: usually a drop as life and disability insurance end.
-
-**Retirement contributions.** End entirely.
-
-**Employment-linked expenses.** End.
-
-**Taxes.** Change substantially, often downward. Specific mechanics vary by jurisdiction: some retirement income (state pensions, tax-deferred account withdrawals, tax-free account withdrawals) has different treatment. The [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the concepts; retirement-phase tax planning is covered in Mastery posts.
-
-**Travel and leisure.** Often rises materially in early retirement, then declines. The three-phase pattern below shows how to model it.
-
-**Dependants.**
-
-- Adult children may or may not need support. Some households support grandchildren's education, adult children with special needs, or aging parents.
-- Legally-obligated support (alimony, child support) ends at defined times but may continue into retirement in some cases.
-
-**Gifting and philanthropy.** For many households a new or expanded category in retirement, when there is less need for the money and more time to think about it.
-
-**New retirement-only expenses.** Second home, extended travel arrangements, part-time private education for grandchildren, expensive hobbies that were deferred during working years.
-
-Sum the projected monthly expenses across all categories, multiply by 12, and compare to your current gross income. That percentage is your personal income replacement ratio.
+- **Housing,** usually the largest line and the largest difference between retirees. A mortgage that ends before retirement removes its payment; property tax, insurance, utilities and maintenance continue, maintenance often rising as a home ages. Rent continues. A €1,500 monthly mortgage that ends before retirement removes €18,000 a year, and at 25 times, €450,000 from the target.
+- **Transport** may fall when commuting stops or a household needs fewer cars, though travel or accessibility needs can move it the other way.
+- **Food** changes little: workplace meals stop, more meals at home.
+- **Healthcare** is the biggest wildcard between countries. Where public or compulsory healthcare covers much of the cost, retirement may change this line less than in a private-insurance system, though contributions, co-payments and medicines can still rise; in the US, retiring before Medicare at 65 can mean full private premiums. Out-of-pocket costs rise with age almost everywhere, and long-term care can arrive late in life.
+- **Insurance:** the need for life cover may fall when nobody depends on the income; disability cover usually ends; property and car cover continue.
+- **Retirement contributions and work costs** end.
+- **Travel and leisure** often rise early in retirement, then fall.
+- **Dependants, gifts and new costs:** support for adult children, grandchildren or ageing parents; giving; and anything planned only for retirement, such as a second home or long trips.
 
 <figure>
 <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-irr-title fig-irr-desc">
@@ -162,99 +109,70 @@ Sum the projected monthly expenses across all categories, multiply by 12, and co
 <figcaption>Illustrative decomposition of a "typical" household's income replacement math. Actual numbers vary widely; the shape of the drop is common.</figcaption>
 </figure>
 
-## Households that need less than 70%
+<details class="quick-check">
+<summary class="disclosure">Quick check: a mortgage of €1,000 a month ends the year before retirement. Roughly how much does that take off a 25-times portfolio target?</summary>
 
-Several household patterns produce replacement ratios well below the benchmark.
+About €300,000: €12,000 a year less spending, times 25.
 
-**Mortgage paid off before retirement.** The housing section above showed the size of this effect; it is the most common reason a ratio lands well below 70%.
+</details>
 
-**Downsizing at retirement.** Selling a family-sized home in a high-cost area, buying a smaller home in a lower-cost area. Reduces housing costs (property tax, maintenance, utilities) and may free up capital. Some households structure this as part of the retirement plan.
+<details class="lesson-depth">
+<summary class="disclosure">Households that tend to need less than 70%, and more than 80%</summary>
 
-**Geographic arbitrage in retirement.** Moving to a lower-cost country or region for retirement (per the [geographic arbitrage post](/blog/geographic-arbitrage/) immediately preceding this one). Expense base can drop by 30 to 60% depending on destination.
+**Often below 70%:** a mortgage paid off before retirement (the most common reason); downsizing from a family home in an expensive area; moving somewhere cheaper (the [geographic arbitrage post](/blog/geographic-arbitrage/) covered it), which can cut costs by 30 to 60%; a deliberately simpler life; children fully independent. Ratios of 40 to 60% are not unusual here.
 
-**Simplified retirement lifestyle.** Some households deliberately downshift in retirement. Less driving, fewer purchases, more time-intensive but lower-cost activities. Not everyone wants this, but for those who do, the required income drops substantially.
+**Often above 80%:** a planned upgrade (long travel, a second home, expensive hobbies); dependants still supported, such as an adult child with a disability or a parent who needs care; rising healthcare costs, especially where care is mostly private; and a life already frugal before retirement, which leaves nothing to compress. Some need 100% or more.
 
-**Empty nest with fully-launched children.** Post-child expenses are often noticeably lower than mid-child expenses. If children are independent by retirement, the pre-retirement expense baseline is already lower.
+</details>
 
-Households in these categories may target replacement ratios of 40 to 60%. FI is more accessible on a smaller portfolio.
+## A small change in the ratio moves the target a lot
 
-## Households that need more than 80%
+The [financial independence post](/blog/introduction-to-financial-independence/) set the target as about 25 times yearly spending at a 4% [withdrawal rate](#term-withdrawal-rate), a US-derived rule of thumb that many treat as optimistic for long or non-US retirements; at 3.5% the multiple is about 29. Because the ratio sets the spending, it sets the target. On Eva's €80,000, 65% instead of 75% is €8,000 a year less spending and €200,000 less portfolio, about 13% of a €1.5 million target. A ratio that is too high delays retirement unnecessarily; one that is too low can leave someone underfunded.
 
-Several patterns produce replacement ratios above the benchmark.
+## Pensions and other income shrink what the portfolio must cover
 
-**Planned lifestyle upgrade.** Some households explicitly plan a more expensive retirement: extended travel, second home, expensive hobbies (boating, aviation, high-end golf, wine collecting), grandchildren support. If retirement is a lifestyle expansion, income needs may exceed working-age.
+The 25-times rule assumes the portfolio pays for everything. Most households have other income in retirement, and the portfolio only covers the gap:
 
-**Dependants still supported.** Adult children with disabilities, parents needing support, blended-family obligations. These continue into retirement and may grow.
+**Illustrative portfolio target ≈ yearly spending gap × 25**
 
-**Rising healthcare costs.** In private-healthcare-heavy jurisdictions (US especially), healthcare costs in later retirement can consume a large share of retiree income. In systems where long-term care is not universal-public, this compounds, and the final 5 to 10 years of life often see rising care costs regardless of jurisdiction.
+The gap is spending, including tax, minus income received in the same years; the multiple changes with the withdrawal rate assumed.
 
-**Pre-retirement lifestyle already frugal.** If your current spending is already at a minimum, there is no room to compress further; the replacement ratio must be high.
+If pensions pay €25,000 of €55,000 yearly spending, the portfolio covers €30,000: a target of €750,000 instead of €1.375 million. In this simplified 4% illustration, each euro a year of lifelong, inflation-linked income received from the first year cuts the gap by a euro, about €25 of target. Income that is not inflation-linked takes off less, and so does income that starts later: a state pension from 67 does nothing for someone who stops at 50, so the gap years come from the portfolio. This is one reason households with similar incomes reach financial independence at such different times.
 
-Households in these categories may target 100% or higher replacement ratios and correspondingly larger portfolios.
+<details class="quick-check">
+<summary class="disclosure">Quick check: spending of €40,000 a year, a pension of €16,000 a year from the first day of retirement. What portfolio does the 25-times rule suggest?</summary>
 
-## Why the ratio directly determines the FIRE target
+About €600,000: the portfolio covers the €24,000 gap, times 25.
 
-The [introduction to financial independence post](/blog/introduction-to-financial-independence/) set the target: a portfolio of about 25 times annual expenses at a 4% withdrawal rate, more at lower rates.
+</details>
 
-The annual expenses number is downstream of the replacement ratio. If your pre-retirement gross income is €80,000 and you target a 75% replacement ratio, your annual expenses target is €60,000, and your FIRE portfolio target is €1.5 million (at 4% SWR). If your ratio is 60% instead, the annual expenses drop to €48,000 and the FIRE target drops to €1.2 million. That is €300,000 of portfolio, or roughly 3 to 5 fewer years of accumulation for many households.
+<details class="lesson-depth">
+<summary class="disclosure">The kinds of retirement income, and how each counts</summary>
 
-This is why refining the replacement-ratio estimate carries so much weight in retirement planning. A rule-of-thumb estimate that is 10 percentage points off (65% instead of 75%) moves the portfolio target by about 13%, which on a €1.5 million target is around €200,000 of over- or underpreparation.
+**State pensions** exist in nearly every developed country, but their size varies: in some they cover much of retirement spending; US Social Security replaces around 40% of pre-retirement income for average earners, less for higher ones. **Employer pensions:** a [defined-benefit pension](#term-defined-benefit-pension) pays guaranteed lifelong income and cuts the portfolio target most; a defined-contribution pension is itself a portfolio balance to add to the rest. **Part-time work,** even €10,000 to €20,000 a year, can reduce withdrawals in the early years, when bad markets do the most damage ([sequence-of-returns risk](#term-sequence-of-returns-risk)). **Rental income** is predictable but not truly passive. **Annuities** turn part of a portfolio into lifelong income. **Home equity release,** where available, can turn part of a home's value into cash, usually by selling a share or borrowing against it, with costs and inheritance trade-offs.
 
-## Multiple income streams: pension, portfolio, social benefits, part-time work
+</details>
 
-The FIRE math assumes the portfolio covers all retirement expenses. In reality, most households have multiple retirement income streams.
+## Spending is rarely flat across thirty years
 
-**Portfolio drawdown.** The largest source for most FI-focused households. Covered by the 25x or similar formula.
+Research on retiree spending, such as David Blanchett's work on the "retirement spending smile" using US data, finds that real spending tends to fall through much of retirement and can rise late with healthcare. Planners often describe three phases: **go-go years** (roughly 60 to 75) with more travel and activity; **slow-go years** (75 to 85), closer to baseline; and **no-go years** (85 and over), when discretionary spending falls but healthcare and care can rise. Someone averaging €55,000 a year might spend €65,000 early, €50,000 in the middle and €55,000 late. The average is similar, but the order matters for how fast the portfolio is drawn down.
 
-**State pension / social security.** Nearly universal in developed countries, though the size, structure, and reliability vary. In some jurisdictions the state pension covers a substantial fraction of retirement expenses (UK State Pension, similar continental European systems); in others it is a modest supplement (US Social Security replaces around 40% of pre-retirement income for average earners; less for higher earners).
+## Pensions and healthcare where you live
 
-**Employer pension.** Where available (still common in public sector and some large employers; less common in modern private sector), can cover a substantial fraction of retirement expenses. Defined-benefit pensions (guaranteed lifetime income) provide the strongest reduction to portfolio target; defined-contribution pensions are essentially portfolio balances that combine with other portfolio assets.
+<details class="lesson-depth">
+<summary class="disclosure">Retirement income and healthcare in the US, UK, eurozone, India, Australia and Canada</summary>
 
-**Part-time work.** Many "retirees" continue some form of income-generating work in early retirement, sometimes for the money and sometimes for the engagement. Even modest part-time income (€10,000 to €20,000 per year) can substantially reduce portfolio-drawdown requirements in the sequence-risk-heavy early retirement years.
+- **US.** Social Security replaces around 40% for average earners; private-sector employer pensions are now rare; healthcare is expensive before 65 and Medicare covers less than many expect, so portfolios often need to be larger than European equivalents.
+- **UK.** The State Pension covers a modest baseline; auto-enrolment workplace pensions are now near-universal; the NHS removes one of the largest US-style retirement costs.
+- **Eurozone.** Wide variation: some countries, such as France and the Netherlands, have relatively generous public or quasi-mandatory pensions; healthcare is public in most.
+- **India.** Private-sector state pension coverage has historically been low; EPF (Employees' Provident Fund) and NPS (National Pension System) provide employer and self-directed savings; family support has mattered, and is changing with urbanisation; private healthcare costs are rising.
+- **Australia.** Compulsory superannuation is itself a portfolio; the means-tested Age Pension can reduce what it must cover; Medicare covers essential healthcare.
+- **Canada.** CPP (Canada Pension Plan), OAS (Old Age Security) and employer or personal savings combine; public healthcare covers essentials.
 
-**Rental income.** For households with rental properties, provides another stream. Not truly passive (management overhead is real) but predictable.
+The arithmetic is the same everywhere: retirement spending, minus income from outside the portfolio, times the multiple for the chosen withdrawal rate.
 
-**Annuities.** Some households convert a portion of the portfolio to a lifetime-income annuity to eliminate longevity risk on that portion.
+</details>
 
-**Reverse mortgages / home equity monetization.** In some jurisdictions, converting home equity to income in later retirement can supplement other streams.
+A later post covers insurance: how cover can change as net worth grows and circumstances shift.
 
-**The combined framing.** Total retirement income need equals the sum of all these streams. The FIRE portfolio target is only the portion that is not covered by pensions, part-time work, and other streams. If pensions cover €25,000 and total retirement expenses are €55,000, the portfolio only needs to cover €30,000, so the target at 4% SWR is €750,000, not €1.375 million.
-
-This is one reason FI timelines vary so widely between households with similar incomes. Someone with a strong employer pension may reach FI on a portfolio that would be inadequate for someone without one. The FIRE math then becomes: portfolio target equals (annual expenses minus non-portfolio retirement income) divided by the withdrawal rate. Timing matters too: a state pension that starts at 67 does not help an early retiree at 50, so the gap years need covering from the portfolio.
-
-## The three-phase retirement expense pattern
-
-Retirement expenses are rarely flat over 30 years. Research on retiree spending, such as David Blanchett's work on the "retirement spending smile" using US data, finds that real spending tends to fall through much of retirement and can rise late with healthcare. Planners often describe it in three phases:
-
-**Go-go years (approximately 60 to 75).** Often higher spending than baseline. Travel, hobbies, active leisure. Physical energy is still high. Bucket-list items happen here.
-
-**Slow-go years (approximately 75 to 85).** Baseline or slightly below. Less travel, more time at home. Physical activity reduced. Home-based leisure, family time, less discretionary spending. Roughly the average retirement spending baseline.
-
-**No-go years (85+).** Discretionary spending drops materially as physical energy declines. Healthcare spending typically rises to compensate, sometimes dramatically. Long-term care may become a factor. Net expenses often stay near baseline or rise.
-
-Planning for a flat annual expense in retirement misses this pattern. A more accurate model plans for higher early expenses, moderate mid expenses, and rising-healthcare late expenses. This affects the withdrawal-rate calculation and the required portfolio size.
-
-**Practical implication.** Someone planning to spend €55,000 per year on average in retirement might actually spend €65,000 in early retirement, €50,000 in mid, and €55,000 in late (with a different composition). The average is similar; the sequence matters for portfolio drawdown, and this interacts with sequence-of-returns risk (covered in Mastery posts).
-
-## Cross-continent notes
-
-The framework is universal; the specific pension mix and healthcare cost profile vary substantially.
-
-- **US.** Social Security replaces around 40% of pre-retirement income for average earners, less for higher earners. Employer pensions rare in modern private sector. Healthcare costs high pre-65 (private market) and high late-retirement (Medicare covers less than people expect; supplemental plans and out-of-pocket significant). Retirement often requires larger portfolios than European equivalents.
-- **UK.** State Pension covers a modest baseline. Auto-enrolment workplace pensions now near-universal. NHS covers most healthcare essentially free at point of use, which lowers one of the largest US-style retirement costs. How total non-portfolio income compares with the US depends heavily on earnings and workplace pension.
-- **EU / eurozone.** Wide variation. Some countries (France, the Netherlands and others) have relatively generous public or quasi-mandatory pension systems; others are less generous. The OECD's Pensions at a Glance publishes replacement rates by country. Public healthcare universal in most.
-- **India.** Historically low state-pension coverage in private sector; EPF (Employees' Provident Fund, India) and NPS (National Pension System, India) provide employer and self-directed retirement savings. Family-based support historically important; changing with urbanisation. Healthcare mix of public and private with rising private cost.
-- **Australia.** Superannuation (Australian employer-sponsored retirement account) mandatory and generous; Age Pension provides means-tested backstop. Medicare covers essential healthcare. Super is itself a portfolio; the means-tested Age Pension can reduce what that portfolio must cover for many retirees.
-- **Canada.** CPP (Canada Pension Plan), OAS (Old Age Security), and employer or personal savings combine. Public healthcare covers essentials. Total retirement income mix similar in structure to UK/Australia.
-
-In each case, the framework applies: sum retirement expenses, subtract non-portfolio income, apply SWR to the remainder for the portfolio target.
-
-## Getting started
-
-Three concrete steps for building your own number.
-
-- Pull your current monthly expenses (from the cash flow work you did earlier in the series). List each category. Estimate what each category will look like in retirement: continue, drop, rise, or stop. Sum the projected annual retirement expenses.
-- Divide by your current gross annual income to get your personal replacement ratio. Compare to the 70 to 80% benchmark. If materially different, understand why (mortgage paid off, planned upgrade, geographic move, healthcare specifics).
-- Estimate your non-portfolio retirement income (state pension, employer pension if any, planned part-time work, other streams). Subtract from projected retirement expenses to get the portfolio-covered portion. Multiply by 25 (or the multiple for whatever withdrawal rate you use; a lower rate means a higher multiple) to get a rough FIRE portfolio target.
-
-The next post in this series covers insurance optimisation, which is the mirror image of the healthcare-cost variable here: insurance changes as net worth grows, and right-sizing coverage as your circumstances change is a substantial optimisation over time.
+If your mortgage or rent disappeared tomorrow, what share of your current income would you still need?
