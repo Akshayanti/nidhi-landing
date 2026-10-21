@@ -1,16 +1,38 @@
 ---
 slug: "account-consolidation-and-financial-data-hygiene"
 title: "Account Consolidation: Cleaning Up Financial Sprawl"
-description: "Old retirement plans, forgotten brokerages, unused cards: account sprawl leaks fees and hides balances. How to consolidate accounts and clean up."
-tldr: "Many mid-career households end up with well over a dozen financial accounts across old employer plans, cards, brokerages, and rate-chasing savings accounts. Much of the sprawl made sense at the time and no longer does. The cost is real: dormant-account fees, forgotten balances, credit-monitoring blind spots, and planning noise that makes every downstream decision harder. A common clean-up runs in four steps: inventory (list every account), categorise (essential, optimising, dormant), migrate (roll over, transfer, close, or keep), systematise (many aim for two or three institutions for most activity, spread within deposit-insurance limits). The wrinkles: closing old credit cards can affect your score in countries that use utilisation-based scoring, moving an old pension through your own bank account can turn it into a taxable withdrawal, and some employer plans hold low-cost funds or protections worth keeping. Data hygiene is the enabler for every downstream Optimizing post: you cannot rebalance a portfolio you cannot see."
+seoTitle: "How to Consolidate Old Pensions and Bank Accounts"
+description: "Old pensions, forgotten savings accounts, unused cards: how to consolidate accounts, move an old pension without a tax bill, and what closing a card does to a credit score."
+tldr: "Forgotten accounts leak money through fees, idle cash and pricier funds, and they hide part of your picture. A common clean-up lists every account, sorts each into keep or close, moves the rest, and settles on two or three institutions. A direct, provider-to-provider pension transfer commonly avoids the withholding, deadlines and tax surprises a payment made to you can bring."
 takeaways:
-  - "Why account sprawl builds up and what it quietly costs"
-  - "How to inventory, categorise, migrate and systematise accounts"
-  - "Why old pensions usually move provider to provider, not via you"
-  - "How closing old credit cards really affects your credit score"
+  - text: "Why account sprawl builds up and what it quietly costs"
+    href: "#forgotten-accounts-leak-money-every-year"
+  - text: "How to inventory, sort, move and settle accounts"
+    href: "#the-clean-up-inventory-sort-move-settle"
+  - text: "Why old pensions usually move provider to provider, not via you"
+    href: "#an-old-pension-usually-moves-provider-to-provider-not-through-your-account"
+  - text: "How closing old credit cards really affects your credit score"
+    href: "#how-closing-a-credit-card-really-affects-a-credit-score"
+  - text: "Which old accounts are worth keeping"
+    href: "#which-old-accounts-to-keep-and-why"
+glossary:
+  - term: "Account sprawl"
+    definition: "Accounts that piled up over years of jobs, offers and life events, many of them no longer doing a job."
+  - term: "Direct transfer"
+    definition: "Moving pension or investment money straight from one provider to another, so it never passes through your own bank account and keeps its tax status."
+  - term: "In-kind transfer"
+    definition: "Moving investments themselves from one broker to another, instead of selling them and moving cash."
+  - term: "Expense ratio"
+    definition: "A fund's yearly running cost, as a percentage of the money invested: 0.75% costs €75 a year on €10,000."
+  - term: "Credit utilisation"
+    definition: "Your card balances divided by your total credit limits. Many credit scores weigh it heavily."
+  - term: "Dormant account"
+    definition: "An account that still exists but no longer has a job, sometimes charging a fee for being inactive."
+  - term: "Account aggregation"
+    definition: "Seeing balances from many institutions in one place, through an app or a regular manual list."
 order: 47
 pubDate: 2026-10-26
-updatedDate: 2026-08-03
+updatedDate: 2026-10-21
 localRules: [pensions, credit]
 level: "optimizing"
 primaryPersona: "eva"
@@ -22,9 +44,9 @@ faq:
   - question: "Is it better to keep an old employer retirement account with my former employer, or roll it over?"
     answer: "It depends on the specific account. Reasons to leave it: institutional-class fund options with lower expense ratios than retail versions, employer-negotiated stable-value funds not available elsewhere, jurisdictional creditor protections stronger than the rollover destination. Reasons to roll it over: high plan-level administrative fees, poor fund choice, difficulty accessing information, sprawl operational cost, and the ability to consolidate with existing holdings for cleaner rebalancing. In practice, many private-sector plans come out in favour of rollover, while some institutional-class or government plans come out in favour of staying. The useful comparison is the actual fund expenses, plan-level fees and protections on each side, not a default answer. Rules on transfers and their tax treatment differ by country, so check the local mechanism first."
   - question: "Will closing old credit cards hurt my credit score?"
-    answer: "In countries that use utilisation-based scores (the US, UK, Canada, India and others), it can, in two specific ways, but the damage is often overstated. Many European systems work differently. First, closing a card reduces your total available credit, which raises your credit-utilisation ratio (balances divided by available credit). If you carry any balance on any card, the increase in utilisation ratio can pull your score down. Second, credit-history length is calculated in some scoring models as the average age of open accounts; closing an old account eventually shortens that average once the closed account drops off the file (around six years later in the UK, up to ten in the US). Common practice: close newer cards first, keep the oldest cards open with a small recurring charge so they stay active, and avoid closures just before a mortgage or major loan application. For someone not applying for credit soon, the effect of closing is usually small."
+    answer: "In countries that use utilisation-based scores (the US, UK, Canada, India and others), it can, in two specific ways, but the damage is often overstated. Many European systems work differently. First, closing a card reduces your total available credit, which raises your credit-utilisation ratio (balances divided by available credit). If you carry any balance on any card, the increase in utilisation ratio can pull your score down. Second, credit-history length is calculated in some scoring models as the average age of accounts, open and closed; closing an old account may eventually shorten that average once the closed account drops off the file (around six years later in the UK, up to ten in the US), and models differ. Common practice: close newer cards first, keep the oldest cards open with a small recurring charge so they stay active, and avoid closures just before a mortgage or major loan application. For someone not applying for credit soon, the effect of closing is usually small."
   - question: "What is the safest way to move an old workplace pension?"
-    answer: "Usually provider to provider, not through your own hands. Most countries with tax-advantaged pensions offer a direct transfer: the old provider sends the money straight to the new one, and it never stops being pension money. If the money is paid out to you instead, many systems treat it as a withdrawal: it can be taxed as income, penalised if you are below pension age, and lose its tax-advantaged status for good, and some systems only let you undo that within a short deadline. In the United States, for example, a payout must be redeposited within 60 days, and the old plan usually withholds 20% for tax, which you have to make up from your own savings. Ask the new provider to request the transfer for you, and if the paperwork mentions a payment to you, stop and ask for a direct transfer instead."
+    answer: "Usually provider to provider, not through your own hands. Most countries with tax-advantaged pensions offer a direct transfer: the old provider sends the money straight to the new one, and it never stops being pension money. If the money is paid out to you instead, many systems treat it as a withdrawal: it can be taxed as income, penalised if you are below pension age, and lose its tax-advantaged status for good, and some systems only let you undo that within a short deadline. In the United States, for example, an eligible distribution paid to you from an old employer plan generally must be rolled into an eligible retirement account within 60 days to avoid current tax, and the plan generally withholds 20% of the taxable amount; rolling over the full amount may require replacing the withheld amount from other savings, and the amount withheld is credited on the tax return. A common route is asking the new provider to request the transfer; if the paperwork mentions a payment to you, many people stop and ask for a direct transfer instead."
   - question: "How many accounts is the right number?"
     answer: "There is no fixed answer. One illustrative shape for a single-earner or dual-earner household is roughly: one to two current accounts (payroll and joint spending), one to two savings vehicles (safety buffer plus opportunity cash), one taxable brokerage, one primary retirement account per person, and up to two credit cards active for rewards and credit-building. That is 6 to 10 accounts total. Add specialty accounts (education savings, health savings, business) as genuine needs arise. Anything much beyond this range is often residual sprawl rather than intentional structure, though cross-border households and business owners can have good reasons for more. Households above deposit-insurance limits in any one institution have a legitimate reason to spread cash across two or three institutions defensively."
 relatedTool:
@@ -41,43 +63,19 @@ referentialReading:
     type: "blog"
 ---
 
-Ask any mid-career professional to list every financial account they own, from memory, and watch the process take longer than expected. Two current accounts at the bank they have used since university. A joint account opened when they married. An old retirement plan from the job they left in 2019. Another from the job before that, which they meant to consolidate and never did. A brokerage opened to buy one ETF someone recommended, still holding exactly one ETF. Three credit cards, one of which they cannot remember the last time they used. Two savings accounts at online banks that offered the best rate at some point, at least one of which now yields less than a standard checking account. Somewhere, a stock plan from an employer they left, which may or may not have vested shares still sitting there.
+Jiri is 38. Ten years of jobs and offers have left him with 13 accounts at 7 institutions. Among them: a €30,000 pension from a job he left, in funds with an [expense ratio](#term-expense-ratio) of 0.75% a year where his current plan charges 0.05%; €6,000 in two old savings accounts paying almost nothing; and three [dormant accounts](#term-dormant-account) charging €5 a month each. None of it was a mistake when he opened it. Together it is a leak, and a picture of his money he cannot see in one place.
 
-This is not unusual. It is the normal outcome of a decade of rational-at-the-time decisions. And it gets in the way of the rest of the Optimizing series, because every downstream decision (fee optimisation, tax-loss harvesting, rebalancing, refinancing timing, insurance right-sizing) depends on being able to see the full financial picture accurately.
+## Forgotten accounts leak money every year
 
-This post is about cleaning up. Not because tidiness is virtue, but because a clean surface is the precondition for optimisation.
+For Jiri the leak is about €570 a year, illustratively:
 
-## Why account sprawl accumulates
+| Leak | How it adds up | A year |
+|---|---|---|
+| Dormant-account fees | 3 accounts × €5 a month | €180 |
+| Higher pension fund fees | 0.70 points more on €30,000 | €210 |
+| Idle cash | €6,000 earning nothing instead of about 3% | €180 |
 
-Nothing about account sprawl is a failure of discipline. It is a natural consequence of how careers and financial products interact.
-
-**Each life event opens accounts and rarely closes them.** Starting a first job opens a payroll account, a retirement plan, and often a first credit card. Changing jobs opens a new payroll account and a new retirement plan, but the old ones stay behind because rollover paperwork feels like effort. Getting married opens a joint account. Buying a house opens a mortgage account, sometimes at a lender the household never otherwise uses. Having a child opens an education savings vehicle, sometimes at a third institution. Ten years in, five to eight new accounts have opened, and roughly one has closed.
-
-**Rate-chasing creates transient accounts.** When one online bank offers a 4.5% high-yield savings rate, opening an account seems free. Six months later, the promotional rate ends and the account yields 2%. Meanwhile a different bank now offers 4.5%. If discipline held, the balance would migrate every six months and the old account would be closed. In practice, small balances stay behind, monitoring falls off, and after three cycles the household holds four savings accounts at four institutions, three of which are earning near the lowest rate in the market.
-
-**Signup bonuses create card accounts.** A card offering €200 for a €3,000 spend in three months is a real €200 in exchange for a specific effort. Signing up is rational. Closing the card the day after the bonus posts is also rational but rarely done, because closing feels vaguely bad and the card sitting unused feels benign. The next promotional offer arrives six months later. Ten years in, a committed bonus collector can easily hold half a dozen cards or more, most of them inactive.
-
-**Institutional inertia keeps old employer plans in place.** The paperwork to roll over an old employer retirement plan is not difficult, but it requires actively engaging with the former employer's plan administrator, choosing a rollover destination, deciding on fund selection at the destination, and executing the transfer. Each step is a small friction. The default (leave it where it is) requires no action. So the plan stays, and over a career the household accumulates one dormant employer plan per job change.
-
-**Fear of the credit-score hit paralyses card closures.** Closing a credit card affects credit utilisation and eventually credit history length. Many households learn about these effects, read that closures can hurt scores, and take the message as "never close a card." The more accurate version is that closures have a usually modest effect that can be timed around upcoming credit needs. But the loud version of the message ("closing hurts your score") wins by inertia.
-
-None of these processes is individually a mistake. Together they produce the account sprawl that every household above a certain age discovers when they try to list everything they own.
-
-## The real cost of sprawl
-
-Sprawl is not just cosmetic. It has quantifiable costs and less-quantifiable costs, and both are real.
-
-**Dormant-account fees.** Many institutions charge a small monthly fee on accounts below a minimum balance, on accounts with no activity for a period, or on brokerage accounts holding only a tiny position. Five dormant accounts at €5 per month is €300 per year of pure leakage.
-
-**Fund-expense-ratio drag on old plans.** An old employer plan holding a fund with a 0.75% expense ratio versus a current plan holding an equivalent fund at 0.05% is a 0.70% annual drag on the old plan's balance. On €50,000 that is €350 per year, and it compounds. Rollover often but not always fixes this, depending on the destination institution's offerings.
-
-**Uninvested cash at low yields.** Small cash balances sitting in old brokerage accounts, old savings accounts, and unused card credit lines earn near-zero interest in aggregate. €10,000 spread across five accounts at 0% yields nothing; the same €10,000 in a single high-yield account at 4% yields €400 per year. The [cash management post](/blog/cash-management/) covered where cash should sit; sprawl is what keeps it from sitting there.
-
-**Credit-monitoring blind spots.** Every open credit account is one more surface for fraud. If a card you rarely use is compromised, you may not notice until an annual statement arrives. Fewer accounts means fewer surfaces to monitor, and a higher chance of catching problems fast.
-
-**Planning noise.** Every downstream optimisation decision starts with an accurate picture of current holdings. If three old employer plans sit unaccounted for, asset allocation percentages are wrong, rebalancing targets are wrong, projection assumptions are wrong. The Optimizing series relies on the input data being clean; sprawl makes it dirty.
-
-**Cognitive load.** Every additional account is a login, a password, a two-factor setup, a statement, an email address on file. The total mental overhead of tracking a large surface area is real, and it competes with the attention available for actual financial decisions.
+The [cash management post](/blog/cash-management/) covered where cash fits; [account sprawl](#term-account-sprawl) is what keeps it from sitting there. The other costs do not show up as a number. Every open card is one more place for fraud to go unnoticed until a statement arrives. Every forgotten account makes the picture wrong: if an old pension is missing from the list, the allocation, the rebalancing targets and the projections built on them are wrong too.
 
 <figure>
 <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-sprawl-title fig-sprawl-desc">
@@ -103,109 +101,127 @@ Sprawl is not just cosmetic. It has quantifiable costs and less-quantifiable cos
 <figcaption>Illustrative sprawl reduction. Exact counts vary by household; the shape is typical.</figcaption>
 </figure>
 
-## The four-step consolidation framework
+<details class="lesson-depth">
+<summary class="disclosure">Why accounts pile up</summary>
 
-The clean-up process is not complicated, but it takes a weekend of concentrated work and then a series of shorter follow-ups over a month or two while rollovers and transfers settle.
+**Each life event opens accounts and rarely closes them.** A first job brings a payroll account, a pension and often a first card. A new job brings another payroll account and another pension, and the old ones stay behind because moving them feels like effort. Marriage, a mortgage and a child each tend to add an account, sometimes at a new institution.
 
-**Step 1: Inventory.** List every financial account, from every institution, in one place. If they are in more than one currency, the free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> adds them up in the currency of your choice. Include current accounts, savings accounts, credit cards (open or dormant), brokerage accounts, retirement accounts (current and old employer), education savings, health savings, business accounts if you have any, and any other institutional relationship (mortgage, auto loan, personal line of credit). Note the current balance, current interest rate or expense ratio, monthly cost if any, and when you last logged in.
+**Rate-chasing leaves small balances behind.** A savings account opened for a promotional rate keeps a small balance after the rate ends and the next offer appears elsewhere. After a few cycles, a household can hold several savings accounts, most paying close to the lowest rate on offer.
 
-Most households find one to three accounts they had forgotten. The most common surprises: an old employer retirement plan from a job two employers back, a small credit card balance on a card the household thought was closed, a savings account with a promotional rate that expired years ago.
+**Sign-up bonuses add cards.** Taking a bonus is rational; closing the card afterwards is also rational but rarely done, so unused cards pile up.
 
-**Step 2: Categorise.** Sort every account into one of three groups.
+**Old employer plans stay by default.** Moving one takes a few small steps; leaving it takes none.
 
-- **Essential.** The account has a clear job you cannot easily replace: primary current account for payroll, primary joint spending account, main taxable brokerage, current employer retirement plan, primary credit card for daily use, mortgage.
-- **Optimising.** The account offers something specifically better than the essential set: a higher-yield savings account holding the safety buffer, a rewards card actively used for a specific category, an education savings account for a specific child.
-- **Dormant.** The account exists but does not have a job. Old employer plans, small-balance signup-bonus cards, savings accounts at rate-of-the-month banks, brokerages holding one ETF that could sit at the primary broker instead.
+**Fear of the credit-score hit keeps cards open.** The loud version of the message, "closing a card hurts your score", wins over the accurate one, covered below.
 
-The sort is often obvious once you start. Anything you have to argue with yourself about is probably dormant.
+</details>
 
-**Step 3: Migrate.** For each dormant account, decide: move to essential, move to optimising, or close.
+## The clean-up: inventory, sort, move, settle
 
-Old employer retirement plans: the usual options are rolling into the current employer's plan, moving to a personal retirement account, or staying put, and the comparison is fees, fund choice and protections. Whichever way it goes, the safer mechanism in most systems is a direct transfer from one provider to the other rather than a payout to your own account (the next section explains why).
+A first pass is about a weekend of work, then a few short follow-ups over a month or two while transfers settle.
 
-Small brokerage positions: an in-kind transfer, where available, moves the shares without selling, which in many countries avoids triggering tax. Many brokerages support ACATS (US) or an equivalent in-kind protocol.
+**Step 1: Inventory.** List every account at every institution in one place: current and savings accounts, cards (open or dormant), brokerages, current and old pensions, education or health savings, loans. Note the balance, the rate or fund fee, any monthly cost and when you last logged in. The free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> adds them up if they are in more than one currency. Most households find one to three accounts they had forgotten.
 
-Unused credit cards: people who close cards often do it one at a time, newest first, keeping the oldest open with a small recurring charge (a €5 streaming subscription) so it stays active, and holding off on closures in the year before a mortgage or major loan application.
+**Step 2: Sort.** Each account is essential (a job nothing else does: the payroll account, the main brokerage, the current pension), optimising (does something better: the buffer's savings account, a card used for its rewards) or dormant (no job left). An account you have to argue with yourself about is usually dormant.
 
-Old savings accounts: these usually fold into the main savings account. Accounts can be closed as they empty, respecting any minimum-balance-to-close requirements.
+**Step 3: Move.** Each dormant account either joins one you keep or closes. For an old pension, the comparison is fees, fund choice and protections on each side, and the route matters more than the destination (next section).
 
-**Step 4: Systematise.** Once the migration settles (typically 2 to 6 weeks depending on institutional speed), set up the going-forward structure.
+**Step 4: Settle.** Once transfers clear, a common target is two or three institutions for most activity: one bank, one brokerage, and perhaps one specialty provider. An account beyond that has a specific job. Many people then put one review a year in the calendar: yields, dormant fees, beneficiaries and two-factor settings.
 
-A common target: two or three institutions for most activity. One primary bank (current, main savings). One primary brokerage (taxable, retirement, education if applicable). Optionally one specialty institution (rewards credit card, workplace retirement, health savings if that requires a specific provider). Any account beyond this needs a specific job.
+<details class="lesson-depth">
+<summary class="disclosure">How investments move without selling</summary>
 
-Set up account aggregation or manual monthly review so you actually see everything in one view. Set calendar reminders for once-annual maintenance: review yields, check for dormant fees, verify beneficiaries, refresh two-factor authentication.
+An [in-kind transfer](#term-in-kind-transfer) moves the holdings themselves from one broker to another, instead of selling them and moving cash. In many countries that avoids a sale that would trigger tax, and the money is never out of the market. Many brokers support it, under names such as ACATS in the US. Where a fund cannot be held at the new broker, it may have to be sold, so it is worth asking before starting.
 
-## The credit-score wrinkle in detail
+</details>
 
-Because so many households paralyse on this, some numeric detail is worth spending.
+<details class="lesson-depth">
+<summary class="disclosure">The clean up for every other account</summary>
 
-**Credit utilisation.** In countries with credit scores of this kind (the UK, the US, Canada, India and others; many European countries work differently), utilisation (total balances divided by total available credit) is one of the largest single factors. Closing a card reduces total available credit, which raises utilisation if you carry any balance. If you have €10,000 total balances across €50,000 of available credit (20% utilisation), closing a card with a €10,000 limit changes the picture to €10,000 balance on €40,000 available (25% utilisation). A single-digit-percentage utilisation increase typically moves a score by a few points, not tens of points. If you carry no balance, utilisation is 0% before and after; no impact.
+**Unused cards.** People who close cards often do it one at a time, newest first, keep the oldest open with a small recurring charge so it stays active, and hold off in the year before a mortgage or other big loan application.
 
-**Credit history length.** Some scoring models weight the average age of open accounts. In systems that use it, closing an old account does not immediately change the average, because closed accounts stay on your file for years (how long varies by country: around six years in the UK, up to ten in the US) and keep counting. When the closed account eventually drops off, the average length recalculates. If you are 20 years into building credit history and drop the oldest account, the eventual recalculation could shave a few points.
+**Old savings accounts.** These usually fold into the main savings account and close once empty, after checking any minimum-balance rule for closing.
 
-**Mixed effects for mixed users.** For someone who never carries a balance and has plenty of credit history from other accounts, closing an old card has minimal effect. For someone with high utilisation and few accounts, closing a card can meaningfully hurt.
+**Accounts with something in flight.** A deposit still clearing, a settlement in progress or a scheduled investment that has not run yet is usually left to finish before the account moves.
 
-**Practical timing.** People planning a mortgage, auto loan, or other significant credit application in the next 12 months often defer card closures until after it. Otherwise, closing one or two cards at a time (not all at once), keeping the oldest cards open, and having low utilisation on the remaining cards keeps the score effect small.
+**Going forward.** An app for [account aggregation](#term-account-aggregation), or a monthly look at one list, keeps everything in view.
 
-The scary version of the message is "never close cards." The accurate version is "closures have a modest effect that depends on your utilisation and history, and timing matters around credit applications."
+</details>
 
-## The transfer trap
+## An old pension usually moves provider to provider, not through your account
 
 One of the most expensive mistakes in consolidation is moving an old pension the wrong way.
 
-**How it happens.** You contact the old pension provider to move the balance to your new pension. Instead of transferring it, the provider pays it out to you, or offers to, and you accept because it sounds like the same thing. The money lands in your bank account. You plan to pay it into the new pension soon.
+**How it happens.** You ask the old provider to move the balance to your new pension. Instead, it pays the balance to you, or offers to, and it sounds like the same thing. The money lands in your bank account, and you plan to pay it into the new pension soon.
 
-**Where it breaks.** In many systems, pension money that is paid out to you has stopped being pension money. The tax authority sees a withdrawal: it can be taxed as income in that year, penalised if you are below pension age, and it loses its tax-advantaged status for good. Some systems allow a short window to put it back; many allow none at all. A few rules make it worse. Providers can be required to withhold tax from the payout, so the amount you receive is smaller than the amount you need to put back.
+**Where it breaks.** In many systems, a payment made to you is treated as a withdrawal unless a local rollover or redeposit rule applies: it can be taxed as income that year, penalised below pension age, and lose its tax-advantaged status for good. Some systems allow a short window to put it back; many allow none. Paid out to Jiri, his €30,000 could count as income: at an illustrative 30%, €9,000 in tax, with a penalty on top in some countries.
 
-**The United States is the clearest example.** A payout from an old employer plan must be redeposited within 60 days. The plan usually withholds 20% for tax, so a €50,000 balance arrives as a €40,000 payment, and the full €50,000 has to go back in within the deadline, with the missing €10,000 coming from your own savings. Deposit only the €40,000 and the other €10,000 becomes a taxable withdrawal. Let the 60 days pass and all of it does. The withholding comes back only when you file your tax return.
+**The usual safer route is a [direct transfer](#term-direct-transfer).** The old provider sends the money straight to the new one, and it never stops being pension money. In most countries the new provider can start the request once it has the old plan's details. When a form offers to pay the balance to you, a common response is to stop and ask for a direct transfer instead.
 
-**The fix.** A direct transfer: the old provider sends the money straight to the new one, and it never passes through your hands. Most major pension systems have a mechanism for this, under different names. In most countries the new provider can start the request for you if you give them the old plan's details. If any form offers to pay the balance to you, stop and ask for a direct transfer instead.
+**Unsolicited offers** to "unlock" or move an old pension are a common scam in several countries. A transfer people start themselves, with a provider they chose, is the safer pattern.
 
-**If a payout has already happened,** find out at once whether your system allows the money to be put back and by when, and put back the full original balance, not just what arrived. Keep the paperwork for your tax return.
+<details class="lesson-depth">
+<summary class="disclosure">The US 60-day rule, and what to do if a payout already happened</summary>
 
-**One more check.** Unsolicited offers to "unlock" or move an old pension are a common scam in several countries. Start a transfer yourself, with a provider you chose, and never because someone contacted you about it.
+In the US, an eligible distribution paid to you from an old employer plan generally has to go into an eligible retirement account within 60 days to avoid tax, and the plan generally withholds 20% of the taxable amount. So a $50,000 distribution may arrive as $40,000, and rolling over the full $50,000 means replacing the withheld $10,000 from other money. Roll over only $40,000 and the other $10,000 is generally taxable; miss the 60 days and all of it generally is. The amount withheld counts as tax paid and is settled on the tax return; whether it comes back as a refund depends on the person's total tax.
 
-## When not to consolidate
+If a payout has already happened anywhere, the urgent questions are whether the money can still go back, by when, and how much: usually the full original balance, not just what arrived. The paperwork matters for the tax return.
 
-Not every old account should be closed. The following are legitimate reasons to keep something.
+</details>
 
-**Institutional-class or government-plan fund options.** Some large employer plans and government or military retirement plans offer institutional-class funds with expense ratios well below what retail investors can access. If an old employer plan holds such a fund and rollover would force a switch to a higher-expense equivalent, staying may be worth the sprawl cost. Do the math: annual expense difference multiplied by remaining working years, compared to the operational cost of holding the extra account.
+<details class="quick-check">
+<summary class="disclosure">Quick check: the old provider's form says "pay the balance to me, then I will deposit it with my new pension". Is that the same as a transfer?</summary>
 
-**Unique stable-value funds.** Some employer plans include stable-value funds (a bond-like vehicle with equity-like stability, found mainly in US 401(k) plans) that are not available in personal retirement accounts. If this is a meaningful part of the allocation, it may argue for staying.
+No. In many systems the money stops being pension money the moment it is paid to you, and tax, penalties or a short deadline can follow. A direct transfer, provider to provider, avoids that.
 
-**Creditor protection differences.** In some jurisdictions, employer retirement plans have stronger creditor protection than personal retirement accounts. For someone in a profession with high liability exposure (medical, legal, executive), this can matter.
+</details>
 
-**Active tax-lot considerations.** If you have a taxable brokerage position with specific tax lots you plan to donate, gift, or harvest, moving those lots to a different broker complicates the tracking. Wait until the specific tax plan resolves before transferring.
+## How closing a credit card really affects a credit score
 
-**Employer stock plans with vesting or holding requirements.** Employer stock accounts often have specific vesting, transfer, or holding rules that make consolidation impossible or disadvantageous until certain dates.
+In countries with scores that weigh how much of your credit you use (the US, UK, Canada, India and others; many European systems work differently), closing a card can lower a score in two ways, and the effect is usually smaller than the warnings suggest.
 
-**Active pending transactions.** Do not consolidate an account with pending transactions (a large deposit clearing, a settlement in progress, a scheduled auto-invest that has not fired). Wait for the settlement, then move.
+**[Credit utilisation](#term-credit-utilisation)** is the card balances reported to the credit bureau divided by the reported limits. Closing a card lowers the limits, so if balances are reported, utilisation rises: €10,000 against €50,000 of limits is 20%; close a card with a €10,000 limit and it becomes 25%. A rise of a few points usually moves a score by a few points, not tens. Paying in full avoids interest but does not always make reported utilisation zero, because issuers often report the statement balance.
 
-In each case, note the exception in your inventory and re-evaluate annually.
+**History length** is handled differently by each scoring model. In common US models, a closed account in good standing can stay on the report and keep counting towards account age for up to ten years. UK lenders use their own models, and closed accounts usually stay on credit files for about six years, so an immediate effect should not be assumed.
 
-## Cross-continent notes on consolidation mechanics
+So for someone with no balance and plenty of other history, closing an old card has little effect; for someone with high balances and few accounts, it can matter. People planning a mortgage or other big loan within a year often wait until after it.
 
-The concept is universal; the mechanics vary.
+<details class="quick-check">
+<summary class="disclosure">Quick check: every card reports a zero balance. Does closing an unused card raise your utilisation?</summary>
 
-- **US.** Rollover options include employer 401(k) plans (US employer-sponsored retirement account), Traditional and Roth IRAs (Individual Retirement Accounts), and brokerage in-kind transfers via ACATS. Credit-scoring effects primarily through FICO (US credit-scoring system) and VantageScore. Health savings accounts (HSA) portable between administrators.
-- **UK.** SIPP (Self-Invested Personal Pension) consolidation for old workplace pension pots. Cash ISAs and Stocks & Shares ISAs (Individual Savings Accounts, UK) can be transferred between providers preserving tax-advantaged status. Credit-scoring through Experian, Equifax, and TransUnion.
-- **EU / eurozone.** Retirement-account portability varies by country; many countries have national portable retirement schemes. Investment platforms typically support in-kind transfers. Cross-border complexity if accounts sit in different EU jurisdictions; consult local rules before transferring.
-- **India.** EPF (Employees' Provident Fund, India) transfer between employers via UAN (Universal Account Number) portability. NPS (National Pension System, India) is a single account portable across employers by design. Demat account consolidation supported by both CDSL and NSDL depositories. Credit-scoring through CIBIL (Indian credit-scoring system), Experian, Equifax, CRIF High Mark.
-- **Australia.** Superannuation (Australian employer-sponsored retirement account) consolidation via the ATO portal or SuperStream, often a meaningful win because each extra fund can charge its own fees and insurance premiums (check what insurance cover you would lose before merging).
-- **Canada.** RRSP (Registered Retirement Savings Plan, Canada) consolidation between institutions. TFSA (Tax-Free Savings Account, Canada) also portable. Credit-scoring through Equifax and TransUnion Canada.
+No. If every reported balance is zero, utilisation stays 0% before and after. Paying every bill in full does not by itself guarantee that zero is what gets reported. Other effects depend on the scoring model and the rest of the credit file.
 
-In each case, the four-step framework applies. The specific paperwork changes; the process does not.
+</details>
 
-## Getting started
+## Which old accounts to keep, and why
 
-Consolidation feels like an intimidating project until you sit down and start. The full first pass for most households takes:
+Not every old account should go. Common reasons to keep one:
 
-- 2 to 4 hours: inventory (list every account, gather statements).
-- 1 to 2 hours: categorise (essential, optimising, dormant).
-- 2 to 4 hours across a week: initiate migrations (rollover forms, transfer requests, closure calls).
-- 4 to 8 weeks of passive waiting: transfers and rollovers settle.
-- 1 hour: final review and cleanup.
+- **Cheaper funds than you can buy elsewhere.** Some large employer and government plans hold institutional funds with fees well below retail ones. A rough test: the yearly fee difference times the years left, against the bother of one more account.
+- **A fund you cannot get elsewhere,** such as the stable-value funds found mainly in US workplace plans.
+- **Stronger protection from creditors** in some countries for employer plans, which can matter in professions with high liability.
+- **Rules that block a move for now:** employer share plans with vesting or holding periods, or taxable holdings you plan to donate, gift or sell for a tax loss.
 
-That is one weekend of work plus a handful of follow-up emails. The result is a financial picture that fits in one view, an ongoing operational cost measured in minutes per month rather than hours, and a clean input dataset for every downstream optimisation.
+Many people note the exception in the inventory and look at it again each year.
 
-The next post in this series covers growing your income, which for many people is one of the largest levers during accumulation. With sprawl cleaned up, income growth compounds through a cleaner allocation surface rather than getting absorbed by fragmentation.
+## What the transfer routes are called where you live
+
+The steps are the same everywhere; the names and paperwork are local.
+
+<details class="lesson-depth">
+<summary class="disclosure">Transfer routes in the US, UK, eurozone, India, Australia and Canada</summary>
+
+- **US.** Old 401(k) employer plans roll into a new employer plan or an IRA (individual retirement account); brokerage holdings move in kind through ACATS; health savings accounts can move between administrators. Scores mainly through FICO and VantageScore.
+- **UK.** Old workplace pension pots often consolidate into a SIPP (self-invested personal pension); Cash and Stocks & Shares ISAs transfer between providers keeping their tax status. Scores through Experian, Equifax and TransUnion.
+- **Eurozone.** How portable pensions are varies by country; platforms usually support in-kind transfers; accounts in different countries add complexity and local rules come first.
+- **India.** EPF balances move between employers through the UAN; NPS is one account across employers by design; demat holdings consolidate through CDSL and NSDL. Scores through CIBIL, Experian, Equifax and CRIF High Mark.
+- **Australia.** Super funds consolidate through the ATO or SuperStream, often a real saving because each fund can charge its own fees and insurance premiums; the insurance you would lose is worth checking first.
+- **Canada.** RRSPs and TFSAs transfer between institutions. Scores through Equifax and TransUnion Canada.
+
+</details>
+
+## A weekend of work, then a yearly look
+
+For most households the first pass is two to four hours of inventory, an hour or two of sorting, a few hours over a week starting transfers and closures, then four to eight weeks of waiting while they settle. The result is a picture that fits in one view, upkeep measured in minutes a month, and cleaner inputs for every decision later in this series. The next post covers growing your income, one of the largest levers while you are building wealth.
+
+Which of your accounts would you struggle to remember if you had to list them from memory today?

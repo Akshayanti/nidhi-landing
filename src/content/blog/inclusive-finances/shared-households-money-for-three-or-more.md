@@ -1,13 +1,31 @@
 ---
 slug: "shared-households-money-for-three-or-more"
 title: "Shared Households: Money for Three or More Adults"
-description: "Flatmates, co-ops and group homes share costs without any legal unit. How to split them on purpose, and what it costs the rest when one person leaves."
-tldr: "Most financial tools picture a household as one adult or a legal pair. Plenty of real households are neither: friends sharing a rented flat, a housing co-operative, a cohousing community, a large shared house, or three or more partners building a life together. What they have in common is that several adults have their money tied together and the law treats them as separate strangers. That creates risks a couple never meets. A lease can make each person liable for the whole rent. A shared account can be emptied by any holder. Two habits handle most of it. First, choose a cost-splitting method on purpose and run the numbers, because an equal split and an income-based split can differ by a factor of five in how heavy the cost feels. Second, run an exit test: what does the household cost the people who remain if any one person leaves next month and the room stays empty? The answer sets the size of the buffer the household needs and shows whose plans matter most to everyone else. Then write down what was agreed. Two companion pieces go further, into owning a home as a group and into households with more than two partners."
+seoTitle: "How to Split Rent and Bills Fairly With Flatmates"
+description: "How to split rent and bills fairly between flatmates on different incomes, what a shared lease makes each tenant liable for, and what one departure costs the rest."
+tldr: "Flatmates, co-ops and other households of three or more share costs, while tenancy, partnership and co-operative law may give them very different rights from a married couple, depending on the arrangement and the country. An equal split can weigh five times more on one income than another, so many households choose a method on purpose. The exit test shows what one departure costs the rest, and a one-page agreement covers what the lease does not."
 takeaways:
-  - "Why an equal split and an income split weigh so differently"
-  - "How the exit test shows what one departure costs the rest"
-  - "Why a shared lease can make each tenant liable for all the rent"
-  - "What a one-page household agreement should cover"
+  - text: "Why an equal split and an income split weigh so differently"
+    href: "#an-equal-split-weighs-very-differently-on-each-income"
+  - text: "How the exit test shows what one departure costs the rest"
+    href: "#what-one-departure-costs-the-rest-the-exit-test"
+  - text: "Why a shared lease can make each tenant liable for all the rent"
+    href: "#a-shared-lease-can-make-each-tenant-liable-for-all-the-rent"
+  - text: "What a one-page household agreement covers"
+    href: "#the-one-page-household-agreement"
+glossary:
+  - term: "Default assumption"
+    definition: "The guess a rule or product makes about who you are when you make no choice, such as “the beneficiary is the spouse”."
+  - term: "Income-based split"
+    definition: "Everyone pays the same percentage of their own income towards shared costs, so higher earners pay more in euros and the weight is level."
+  - term: "Exit test"
+    definition: "Working out what the household would cost the people who remain if one person left next month and their room stayed empty."
+  - term: "Joint and several liability"
+    definition: "A lease term, common in shared tenancies, under which the landlord can ask any one tenant for the whole rent, not just their share."
+  - term: "Household agreement"
+    definition: "A short written agreement among the people who live together: how costs are split, notice for leaving, the deposit, and what happens if someone cannot pay."
+  - term: "Standing order"
+    definition: "An instruction to your bank to pay a fixed amount to the same account on a set day, such as each person's monthly share into the bills account."
 order: 47.5
 companionOf: "account-consolidation-and-financial-data-hygiene"
 pubDate: 2026-10-28
@@ -21,9 +39,9 @@ faq:
   - question: "How do we split rent fairly when we earn different amounts?"
     answer: "There is no single fair method, only methods with different trade-offs. An equal split is simple and asks the most of the lowest earner. An income-based split, where each person pays the same percentage of income, keeps everyone's burden level but requires people to share their income. A room-based split weights the rent by room size and quality. Many households combine two: the rent by room, the shared bills by income. The useful step is to calculate each option as a percentage of each person's income and decide with the numbers in front of you."
   - question: "If a housemate stops paying, am I responsible for their share?"
-    answer: "Often, yes. In many places a shared lease makes every tenant liable for the whole rent, not just their own part. This is called joint and several liability. The landlord can ask any one tenant for the full amount and leave those tenants to recover it from the person who left. Whether that applies to you depends on how the lease is written and on local law, so read the lease for the phrase before signing it, and check whether individual leases are available."
+    answer: "Often, yes. In many places a shared lease makes every tenant liable for the whole rent, not just their own part. This is called joint and several liability. The landlord can ask any one tenant for the full amount and leave those tenants to recover it from the person who left. Whether that applies to you depends on how the lease is written and on local law, so the lease is worth reading for the phrase before signing, and it is worth asking whether individual leases are available."
   - question: "Can more than two people share one bank account?"
-    answer: "It depends on the bank. Some banks limit joint accounts to two holders, and others allow more. Where an account has several holders, any one of them can usually withdraw the entire balance, and each may be liable for an overdraft. Many households avoid the risk by keeping separate personal accounts and funding a shared bills account by standing order, with the holders' names and limits agreed in writing."
+    answer: "It depends on the bank. Some banks limit joint accounts to two holders, and others allow more. Where an account has several holders, depending on the account's rules, one holder may be able to withdraw the whole balance, and holders may share liability for an overdraft. Many households avoid the risk by keeping separate personal accounts and funding a shared bills account by standing order, with the holders' names and limits agreed in writing."
   - question: "What is the exit test?"
     answer: "It is a calculation of what the household would cost the people who remain if one person left and their room stayed empty. Rent and most utilities do not fall when someone goes, so their share lands on everyone else until a replacement arrives. Running the test for each member shows whose departure would hurt most, how large a cash buffer the household needs, and whether the lease allows a replacement. It is worth repeating whenever incomes or membership change."
   - question: "Do we have to tell each other what we earn?"
@@ -43,43 +61,24 @@ referentialReading:
     type: "book"
 ---
 
-The post on [account consolidation](/blog/account-consolidation-and-financial-data-hygiene/) treated a household's accounts as one system. List them, tidy them, keep two or three institutions for almost everything. It assumed something so ordinary that it never needed saying: the household's money has one owner, or two who are legally a pair.
+Alma, Ben, Chidi and Dana share a flat. Their monthly net incomes are €5,000, €3,000, €2,000 and €1,000, and their shared costs are €3,200 a month: €2,400 rent, €300 utilities and €500 food. They split everything equally, because that was the number someone suggested in the first week.
 
-A great many households have more owners than that.
+The [account consolidation post](/blog/account-consolidation-and-financial-data-hygiene/) treated a household's money as having one owner, or two who are legally a pair. Many households have more: flatmates, a housing co-operative, a cohousing community, a long-running shared house, three or more partners. Their money is tied together, while tenancy, partnership and co-operative law may give them very different rights from a married couple, depending on the arrangement and the country. In the language of the [first post in this series](/blog/when-the-default-plan-does-not-fit-you/), that is a [default assumption](#term-default-assumption) that does not fit.
 
-Friends sharing a rented flat. A housing co-operative. A cohousing community with private homes and shared spaces. A large shared house that has lasted decades. Three or more partners, whether or not they all live together. Some of these households have romantic ties between members and many have none. The everyday money problems are close to identical.
+This post covers the money that moves every month: the split, the shared account, the lease, and what happens when someone leaves. Two companion pieces go further, into owning a home as a group and households with more than two partners. Tenancy law differs in every country, so this post teaches the categories to check.
 
-The first post in this series, [When the Default Plan Doesn't Fit You](/blog/when-the-default-plan-does-not-fit-you/), asked one question of every financial rule: what is this assuming about me? Most rules assume a household of one adult or two. This post is for households of three or more, where several people's money is tied together and the law sees a set of unrelated individuals.
+## An equal split weighs very differently on each income
 
-It covers the money that moves every month: splitting costs, the shared account, the lease, and what happens when someone leaves. Two companion pieces go further. One covers owning a home as a group. The other covers households with more than two partners. Leases and tenancy law differ in every country, so this post teaches the categories to check.
+Each way of splitting has consequences, so it is worth calculating them. An [income-based split](#term-income-based-split) has everyone pay the same share of their income: the €3,200 is 29.1% of the household's €11,000.
 
-## Part one: splitting costs on purpose
-
-Shared households often start with a number picked in the first week and never revisited. Each method has consequences, so it is worth calculating them.
-
-Take a household of four adults with these monthly net incomes:
-
-| Person | Net income |
-|---|---|
-| Alma | €5,000 |
-| Ben | €3,000 |
-| Chidi | €2,000 |
-| Dana | €1,000 |
-
-Shared costs are €3,200 a month: €2,400 rent, €300 utilities, €500 food.
-
-**Method A: equal split.** Everyone pays €800.
-
-**Method B: income-based split.** Everyone pays the same share of their income. Total income is €11,000, so the shared costs take 29.1% of it. Each person pays 29.1% of their own income.
-
-| Person | Method A: equal | As % of income | Method B: income-based | As % of income |
+| Person | Equal split | As % of income | Income-based | As % of income |
 |---|---|---|---|---|
 | Alma | €800 | 16% | €1,455 | 29% |
 | Ben | €800 | 27% | €873 | 29% |
 | Chidi | €800 | 40% | €582 | 29% |
 | Dana | €800 | 80% | €291 | 29% |
 
-The equal split feels simple and fair. In this household it takes 16% of Alma's income and 80% of Dana's. The gap in how heavy the cost feels is five to one. The income-based split levels the burden, and it asks each person to share their income with the group, which some households will not accept.
+The equal split takes 16% of Alma's income and 80% of Dana's, a five-to-one gap in how heavy the cost feels. The income-based split levels the weight, and asks each person to share their income with the group, which some households will not accept.
 
 <figure>
 <svg viewBox="0 0 600 345" role="img" aria-labelledby="fig-split-title fig-split-desc" xmlns="http://www.w3.org/2000/svg">
@@ -115,84 +114,80 @@ The equal split feels simple and fair. In this household it takes 16% of Alma's 
 <figcaption>The equal split is equal in euros and very unequal in weight. The income-based split flips that. Neither is the right answer; the figure shows what each one asks of whom.</figcaption>
 </figure>
 
-Other methods sit between these:
+Other methods sit in between: rent weighted by room size or a private bathroom, with bills split equally; rent by room and everything else by income; or equal shares up to a ceiling, with higher earners covering the rest. There is no correct answer, and a household may reasonably choose any of them. What tends to go wrong is a method nobody chose, which surfaces later as resentment about who bought what.
 
-- **Room-based.** The rent is weighted by room size, light, or a private bathroom. Utilities and food are split equally or by use.
-- **Hybrid.** Rent by room, everything else by income. Or an equal base amount with an income-based top-up for larger shared goals.
-- **Capped.** Everyone pays an equal share up to a ceiling, and the higher earners cover whatever is left.
+<details class="quick-check">
+<summary class="disclosure">Quick check: under the equal split, how much heavier do the shared costs weigh on Dana's income than on Alma's?</summary>
 
-There is no correct answer here, and a household may reasonably choose any of them. What tends to go wrong is a method that nobody chose, which surfaces as resentment about who bought what.
+Five times: €800 is 80% of Dana's €1,000 and 16% of Alma's €5,000.
 
-### What to write down
+</details>
 
-- **The method and the date to revisit it.** Incomes change. Yearly, or after anyone changes jobs, is a common rhythm.
-- **What counts as a shared cost.** Rent, utilities and internet usually do. Food, cleaning supplies, a shared car and the repair fund depend on the household.
-- **A threshold for shared decisions.** A new sofa and a new roof are not the same kind of decision. Many households set an amount above which everyone must agree, and an emergency exception below which anyone can act.
-- **How you handle surprises.** A broken boiler, a sudden rent rise, someone's job loss.
+<details class="lesson-depth">
+<summary class="disclosure">What households usually write down about the split</summary>
 
-### Keeping the money separate
+- **The method, and when to look at it again.** Incomes change; once a year, or after anyone changes jobs, is a common rhythm.
+- **What counts as a shared cost.** Rent, utilities and internet usually do. Food, cleaning supplies, a shared car and a repair fund depend on the household.
+- **A threshold for shared decisions.** A new sofa and a new roof are different decisions. Many households set an amount above which everyone must agree, and allow anyone to act below it in an emergency.
+- **How surprises are handled:** a broken boiler, a rent rise, someone losing their job.
 
-A common structure is separate personal accounts plus one shared account for the bills. Each person sets up a standing order to the shared account on payday, and the rent and bills come out of it.
+</details>
 
-The risk sits in the shared account itself. Any holder can usually withdraw the entire balance, and each holder can be liable for an overdraft. Keeping only the month's expected bills in it, with a small buffer, limits what one person could do or lose. Some banks limit the number of holders on a joint account, so check before assuming it will work for four.
+## A shared bills account, kept small
 
-The consolidation post argued that fewer accounts are easier to track. A shared bills account is a case where one more is worth having, because it keeps the household's money visibly apart from anyone's own.
+A common structure is separate personal accounts plus one shared account for the bills, which each person tops up by [standing order](#term-standing-order) on payday. The risk sits in the shared account itself: depending on the account's rules, one holder may be able to withdraw the whole balance, and holders may share liability for an overdraft. Many households keep only the month's expected bills in it, with a small buffer, which limits what one person could do or lose. Some banks allow only two holders on a joint account, so it is worth asking before assuming it will work for four.
 
-### The conversation underneath
+The consolidation post argued that fewer accounts are easier to track. A shared bills account is one many households choose, because it keeps the household's money visibly apart from anyone's own.
 
-Two people's money habits already clash. Add a third, a fourth and a fifth, and the [money scripts](/blog/money-scripts/) (the unconscious beliefs about money that people carry from childhood) multiply. One housemate thinks an unpaid bill is an emergency. Another thinks it is a suggestion.
+<details class="lesson-depth">
+<summary class="disclosure">When money habits clash in a group</summary>
 
-Agreeing how open you will be helps. Some households share full incomes. Others share only what is needed to calculate a split. Both work when everyone knows which one it is.
+Two people's money habits already clash; with four or five, the [money scripts](/blog/money-scripts/) (the beliefs about money people carry from childhood) multiply. One person treats an unpaid bill as an emergency, another as a suggestion. Agreeing how open the household will be helps. Some share full incomes, some only what a split needs, some use bands. Any of these works when everyone knows which one applies; trouble comes when one person assumes openness and another assumes privacy.
 
-## Part two: the exit test
+</details>
 
-A household of four is more stable than a household of two, because more people share the fixed costs. It is also more exposed to change, because there are more people who might leave, and each departure can hit the rest.
+## What one departure costs the rest: the exit test
 
-The **exit test** is a calculation. For each person, ask: if this person left next month and the room stayed empty, what would the household cost the people remaining?
+A household of four shares fixed costs well, and is exposed to more people leaving. The [exit test](#term-exit-test) asks, for each person: if they left next month and the room stayed empty, what would the household cost the people remaining?
 
-Using the same household:
+With all four, the €3,200 is 29% of their income. If Alma leaves, the other three earn €6,000. Rent and utilities stay at €2,700; food falls by about a quarter, to €375. Shared costs become €3,075, which is 51% of their income. Under the income-based split Alma was paying €1,455, so the others save €125 on food and have to find €1,330 a month for as long as the room is empty.
 
-- With all four, the €3,200 in shared costs is 29% of total income.
-- If Alma leaves, the remaining three earn €6,000. Rent and utilities stay at €2,700. Food falls by about a quarter, to €375. Shared costs are now €3,075, which is 51% of their income.
-- Under the income-based method Alma was paying €1,455. The household saves €125 on food and has to find the other €1,330 every month for as long as the room is empty.
+That gives the [emergency fund](/blog/emergency-fund/) a second job in a shared household: it covers your own loss of income, and the months after someone else leaves. It is the cash runway question from the [cash flow forecasting post](/blog/cash-flow-forecasting/), asked of the group.
 
-Now set that beside the post on the [emergency fund](/blog/emergency-fund/). In a shared household, the fund has a second job. It covers your own loss of income, and it also covers the months after someone else leaves.
+Running the test usually shows whose departure hurts most (often the person paying the largest share, whose plans matter most to everyone else), how long a replacement takes to find, whether the lease allows one, and what notice period would give the others time to adjust.
 
-A few things follow from running the test:
+<details class="quick-check">
+<summary class="disclosure">Quick check: if Alma leaves, why do the shared costs not fall by her €1,455?</summary>
 
-- **Whose departure hurts most.** Usually the person paying the largest share. That person is the one whose plans matter most to everyone else.
-- **How long finding a replacement takes.** Even a few weeks of an empty room adds up.
-- **Whether the lease lets you replace a tenant.** Some leases need the landlord's approval. Others let tenants find their own replacement.
-- **Notice periods.** A shared agreement can set one, so that leaving takes a fixed number of weeks and gives the others time to adjust.
+Because rent and utilities stay the same with an empty room. Only food falls, by about €125, so the remaining three have to find about €1,330 a month.
 
-Written down, the results are a plain summary of the household's shared risk. It is the cash runway question from the post on [cash flow forecasting](/blog/cash-flow-forecasting/), how long could you cover your costs if income stopped, asked of the group instead of an individual.
+</details>
 
-## The lease
+## A shared lease can make each tenant liable for all the rent
 
-In many places, a shared tenancy makes each tenant liable for the whole rent. The landlord can pursue any one of you for the full amount. This is **joint and several liability**. If one housemate leaves, or stops paying, the rest carry their share, and recover it from them afterwards if they can.
+In many places, a shared tenancy makes each tenant liable for the whole rent: [joint and several liability](#term-joint-and-several-liability). The landlord can pursue any one tenant for the full amount; if one housemate leaves or stops paying, the others carry it and recover it from them afterwards if they can. The lease treats the tenants as one unit for the landlord's benefit and as strangers for everything else.
 
-This is a **default assumption** in the sense this series uses: the lease treats the tenants as a single unit for the landlord's benefit and as strangers for everything else.
+The usual things to check are how the lease describes the tenants (and whether separate agreements per room are available), whose name the utilities are in (that person is liable to the supplier; the others' payments to them are a private arrangement), and how the deposit is returned, including whether a leaving tenant is repaid on departure or when the next one arrives.
 
-Three things to check:
+## The one-page household agreement
 
-- **How the lease describes the tenants.** Ask whether individual tenancy agreements per room are available.
-- **Whose name the utilities are in.** That person is liable to the supplier. The others' payments to them are only a private arrangement.
-- **The deposit.** Who paid, how it is returned, and whether a leaving tenant is repaid on departure or when the next one arrives.
+A written [household agreement](#term-household-agreement) covers what the lease does not. The parts that matter most are short:
 
-## The household agreement
-
-A written agreement covers what the lease does not. It is a contract among the residents, and the parts that matter most are short:
-
-- The cost-splitting method and when it is reviewed
-- What counts as a shared cost, and the threshold for shared decisions
-- The notice period for leaving, and who finds a replacement
-- What happens to the deposit and to anything bought jointly
-- What happens if someone cannot pay for a month
-- How disagreements are settled before they become disputes
+- the split, and when it is reviewed;
+- what counts as a shared cost, and the threshold for shared decisions;
+- the notice period for leaving, and who finds a replacement;
+- what happens to the deposit and to anything bought jointly;
+- what happens if someone cannot pay for a month;
+- how disagreements are settled before they become disputes.
 
 One page is enough for most rented households. It does not change what the landlord can demand. It changes whether the household is still on speaking terms afterwards.
 
-## Cross-continent notes
+## How shared renting works where you live
+
+The names on the lease and the utility contracts decide who is liable; a private agreement decides what is fair. The details are local.
+
+<details class="lesson-depth">
+<summary class="disclosure">Shared renting, country by country</summary>
 
 **England and Wales.** Shared rentals commonly use one joint tenancy agreement, which makes each tenant liable for the whole rent.
 
@@ -200,18 +195,14 @@ One page is enough for most rented households. It does not change what the landl
 
 **Czechia and much of central Europe.** Room-by-room subletting from an owner or main tenant is common, so it matters who holds the contract with the landlord.
 
-**Denmark and the Netherlands.** Cohousing began in Denmark and is well established in northern Europe. Shared costs are usually set by the community's own rules.
+**Denmark and the Netherlands.** Cohousing began in Denmark and is well established in northern Europe. Shared and co-operative housing there can work differently from an ordinary joint tenancy: who holds the contract, whether each resident has their own right to live there, and what the community's rules say about payments and notice all matter.
 
 **United States.** Rules differ by state and city. Joint leases are standard, and some cities cap how many unrelated adults may share a home.
 
-**Everywhere.** The names on the lease and on the utility contracts decide who is liable. A private agreement decides who is fair.
+</details>
 
-## Getting started
+## Where households start, and when to look again
 
-- **Tonight, for free:** write down the current cost-split method and who agreed to it. Read your lease for the words "jointly and severally".
-- **This week:** calculate each person's share as a percentage of their income. Decide whether the method still suits the household.
-- **This month:** run the exit test for each person and compare the worst result with the household's buffer.
-- **This quarter:** a one-page household agreement.
-- **Yearly:** revisit the split, the shared-decision threshold and the exit test.
+A common order: write down the current split and who agreed to it, and look in the lease for the words "jointly and severally"; then calculate each person's share as a percentage of their income; then run the exit test and compare the worst result with the household's buffer; then a one-page agreement. Many households revisit the split, the threshold and the exit test once a year.
 
-A shared household is a real household. It shares the costs, the risks and the refrigerator. The plan for it takes the same steps as any other, done for more than two people and written down.
+If one person in your household left next month, how long could the rest of you cover the gap?
