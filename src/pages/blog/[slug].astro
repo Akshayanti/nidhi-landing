@@ -3,7 +3,7 @@ import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 import { getLayeredReadingTime } from '../../utils/readingTime';
 import { GLOSSARY_CARD_ID, termId } from '../../utils/glossary.mjs';
-import { LAYERED_LEVELS, NOT_YET_LAYERED, layeredLessonProblems } from '../../utils/layeredLessons';
+import { LAYERED_LEVELS, layeredLessonProblems } from '../../utils/layeredLessons';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -142,15 +142,11 @@ const targets = new Set([
   ...(termIds.length ? [GLOSSARY_CARD_ID, ...termIds] : []),
 ]);
 // Optimizing and Inclusive Finances lessons follow the layered-lesson rule
-// (src/utils/layeredLessons.ts), past and future, unless still in the backlog.
+// (src/utils/layeredLessons.ts), past and future.
 if ((LAYERED_LEVELS as readonly string[]).includes(post.data.level)) {
   const problems = layeredLessonProblems(post.data, headings.filter((h) => h.depth === 2).map((h) => h.text));
-  const listed = NOT_YET_LAYERED.has(post.data.slug);
-  if (!listed && problems.length) {
+  if (problems.length) {
     throw new Error(`${post.id}: layered-lesson rule (PLAYBOOK "Blog lessons"): ${problems.join('; ')}`);
-  }
-  if (listed && !problems.length) {
-    throw new Error(`${post.id}: meets the layered-lesson rule; remove "${post.data.slug}" from NOT_YET_LAYERED in src/utils/layeredLessons.ts`);
   }
 }
 

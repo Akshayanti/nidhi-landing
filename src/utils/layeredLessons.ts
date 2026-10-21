@@ -1,22 +1,11 @@
 // The layered-lesson rule for Optimizing and Inclusive Finances (PLAYBOOK
 // "Blog lessons", blog-content-plan.md Rule 10), checked at build time so a
 // lesson cannot quietly ship without it. It covers past and future lessons:
-// every lesson at these levels must meet it unless it is still listed in
-// NOT_YET_LAYERED, the conversion backlog. Converting a lesson means removing
-// it from that list in the same change; the build fails if a listed lesson
-// already passes, so completed entries cannot linger. A new lesson at these
-// levels must pass from the start, never join the list.
+// every lesson at these levels must meet it. The last lessons were
+// converted on Oct 22, 2026, so there is no backlog; a new lesson at these
+// levels must pass from the start.
 
 export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
-
-/** Lessons at those levels not yet converted. Delete a slug when its lesson is. */
-export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
-  // Optimizing
-  // Inclusive Finances
-  'blended-and-non-traditional-families',
-  'widowhood-and-sudden-single-income',
-  'building-your-own-default',
-]);
 
 // Headings that count instead of naming their point, and the closing
 // skeleton every unconverted lesson shares.

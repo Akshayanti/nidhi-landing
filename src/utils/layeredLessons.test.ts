@@ -1,8 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { NOT_YET_LAYERED, layeredLessonProblems } from './layeredLessons.ts';
+import { layeredLessonProblems } from './layeredLessons.ts';
 
 const ok = {
   seoTitle: 'Searchable title',
@@ -57,17 +55,5 @@ describe('layered-lesson rule', () => {
       'shared closing heading, name the section\'s point instead: "Cross-continent notes on consolidation mechanics"',
       'shared closing heading, name the section\'s point instead: "Getting started"',
     ]);
-  });
-
-  it('lists only lessons that exist at the layered levels', () => {
-    const slugs = new Set<string>();
-    for (const dir of ['4. optimizing', 'inclusive-finances']) {
-      const base = join('src/content/blog', dir);
-      for (const f of readdirSync(base)) {
-        const m = readFileSync(join(base, f), 'utf8').match(/^slug:\s*"([^"]+)"/m);
-        if (m) slugs.add(m[1]);
-      }
-    }
-    assert.deepEqual([...NOT_YET_LAYERED].filter((s) => !slugs.has(s)), []);
   });
 });
