@@ -873,11 +873,11 @@ export const hi: Dict = {
     journey: {
       label: 'सीखें, हिसाब लगाएँ, योजना बनाएँ · राशियाँ उदाहरण के लिए',
       learnStep: '1 · सीखें',
-      learnBig: 'शुद्ध संपत्ति क्या है?',
+      learnBig: 'शुद्ध संपत्ति (net\u00A0worth) क्या है?',
       learnSmall: 'जो आपके पास है, घटा जो आप पर बकाया है।',
       stockStep: '2 · हिसाब लगाएँ',
       stockBig: '{one} या {two}',
-      stockSmall: 'दो लोगों की शुद्ध संपत्ति (net\u00A0worth), जिनकी आय एक जैसी है: हर महीने {amount}।',
+      stockSmall: 'दो लोगों की शुद्ध संपत्ति, जिनकी आय एक जैसी है: हर महीने {amount}।',
       planStep: '3 · योजना बनाएँ',
       planBig: '{years} साल बाद {gap} ज़्यादा',
       planSmall: 'हर महीने {extra} ज़्यादा बचाकर निवेश करने से।',
