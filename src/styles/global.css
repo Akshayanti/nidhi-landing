@@ -806,7 +806,10 @@ details[open] > .disclosure::after,
     break-inside: avoid;
   }
 
-  .prose details > summary::after { display: none; }
+  .prose details > summary::after,
+  .post-faq details > summary::after { display: none; }
+
+  .post-faq details { break-inside: avoid; }
 }
 
 /* Inline links inside long-form prose: underline so they are
