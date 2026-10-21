@@ -18,15 +18,13 @@ personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "fundamentals"]
 referentialReading:
   - title: "Commodity"
-    url: "https://www.investopedia.com/terms/c/commodity.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Commodity"
     type: "blog"
   - title: "Cryptocurrency"
-    url: "https://www.investopedia.com/terms/c/cryptocurrency.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Cryptocurrency"
     type: "blog"
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
 relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "purchasing-power", "emergency-fund", "how-to-get-out-of-debt"]
 faq:
   - question: "What is a satellite asset?"

@@ -17,17 +17,10 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "saving", "fundamentals"]
 reelPromise: "All three budgeting methods compared (50/30/20, zero-based, pay-yourself-first) and how to automate the one you pick so it runs without willpower"
 referentialReading:
-  - title: "What Is Budgeting?"
-    url: "https://www.investopedia.com/terms/b/budget.asp"
+  - title: "Personal Budget"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Personal_budget"
     type: "blog"
-  - title: "I Will Teach You to Be Rich"
-    author: "Ramit Sethi"
-    url: "https://www.goodreads.com/book/show/40591670-i-will-teach-you-to-be-rich"
-    type: "book"
-  - title: "The Total Money Makeover"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
-    type: "book"
 relatedSlugs: ["cash-flow-101", "saving-vs-investing", "income-vs-wealth", "what-is-net-worth", "emergency-fund"]
 faq:
   - question: "What is the 50/30/20 budgeting rule?"

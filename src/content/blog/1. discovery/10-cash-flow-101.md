@@ -21,12 +21,9 @@ referentialReading:
     url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
   - title: "Cash Flow"
-    url: "https://www.investopedia.com/terms/c/cashflow.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Cash_flow"
     type: "blog"
-  - title: "I Will Teach You to Be Rich"
-    author: "Ramit Sethi"
-    url: "https://www.goodreads.com/book/show/40591670-i-will-teach-you-to-be-rich"
-    type: "book"
 relatedSlugs: ["income-vs-wealth", "what-is-net-worth", "emergency-fund", "how-to-get-out-of-debt", "liabilities"]
 faq:
   - question: "What is cash flow in personal finance?"

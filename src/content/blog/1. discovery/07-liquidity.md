@@ -18,12 +18,9 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
 reelPromise: "The full liquidity spectrum table, the asset-rich-cash-poor worked example, and how to size the liquid cushion before you invest the rest"
 referentialReading:
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
   - title: "Liquidity"
-    url: "https://www.investopedia.com/terms/l/liquidity.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Market_liquidity"
     type: "blog"
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"

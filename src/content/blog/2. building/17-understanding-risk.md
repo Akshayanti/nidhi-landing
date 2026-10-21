@@ -16,8 +16,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "risk", "investing"]
 referentialReading:
-  - title: "Risk (Financial)"
-    url: "https://www.investopedia.com/terms/r/risk.asp"
+  - title: "Financial Risk"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Financial_risk"
     type: "blog"
   - title: "The Psychology of Money"
     author: "Morgan Housel"

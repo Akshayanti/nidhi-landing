@@ -38,10 +38,6 @@ referentialReading:
     author: "Chris Voss"
     url: "https://www.goodreads.com/book/show/26156469-never-split-the-difference"
     type: "book"
-  - title: "The Salary Negotiation Guide"
-    author: "Patrick McKenzie"
-    url: "https://www.kalzumeus.com/2012/01/23/salary-negotiation/"
-    type: "blog"
 ---
 
 The savings-rate math is simple: percentage of income saved determines years to financial independence. Most personal-finance writing treats this equation from one side only, working on the expense denominator. Cut the daily coffee, downsize the car, question every subscription. The advice is not wrong. It is incomplete.

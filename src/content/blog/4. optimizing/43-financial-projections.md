@@ -38,8 +38,9 @@ relatedTool:
   cta: "See the spread of outcomes for your own plan"
   idea: "One smooth line hides the spread of outcomes; many uneven return sequences show the real range."
 referentialReading:
-  - title: "Compound Interest Formula"
-    url: "https://www.investopedia.com/terms/c/compoundinterest.asp"
+  - title: "Compound Interest"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Compound_interest"
     type: "blog"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"

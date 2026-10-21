@@ -34,16 +34,14 @@ faq:
   - question: "How often should I review my currency exposure?"
     answer: "Annually, not daily. Currency markets are pure noise over days and months, so making decisions off short-term moves is a mistake. Real deviations from fair value can persist for years, which is where multi-currency people occasionally feel genuine pain or gain, and over decades currencies of higher-inflation countries tend to weaken against lower-inflation ones. The practical approach is a once-a-year audit alongside other rebalancing checks: map your currency flows across income, expenses, family support, savings, investments, and planned retirement spending, then check the big mismatches. You do not need to trade currencies. You need to notice mismatches and decide whether each is fine, tolerable, or worth reducing."
 referentialReading:
-  - title: "Currency Risk"
-    url: "https://www.investopedia.com/terms/c/currencyrisk.asp"
+  - title: "Foreign Exchange Risk"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Foreign_exchange_risk"
     type: "blog"
-  - title: "Purchasing Power Parity (PPP)"
-    url: "https://www.investopedia.com/terms/p/ppp.asp"
+  - title: "Purchasing Power Parity"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Purchasing_power_parity"
     type: "blog"
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
 ---
 
 You live in Berlin. You earn in euros. But your parents are in Bangalore and you send money home in rupees. Your company pays a bonus in dollars because the parent is in San Francisco. The apartment you might buy someday is in Lisbon. The pension plan from your first job is in pounds, because you started your career in London.

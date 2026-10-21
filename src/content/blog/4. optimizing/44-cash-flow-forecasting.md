@@ -29,8 +29,9 @@ faq:
 reelPromise: "Why some months look fine on average and still leave you short of cash, and how a 12 month forecast catches problems that annual budgets miss"
 relatedSlugs: ["cash-flow-101", "financial-projections", "financial-health-metrics", "emergency-fund", "liquidity"]
 referentialReading:
-  - title: "Cash Flow Statement Basics"
-    url: "https://www.investopedia.com/terms/c/cashflowstatement.asp"
+  - title: "Cash Flow Statement"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Cash_flow_statement"
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"

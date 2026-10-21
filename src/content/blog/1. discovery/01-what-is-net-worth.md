@@ -15,12 +15,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
 referentialReading:
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
   - title: "Net Worth"
-    url: "https://www.investopedia.com/terms/n/networth.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Net_worth"
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"

@@ -17,12 +17,9 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "debt"]
 reelPromise: "Snowball vs avalanche timing chart on €25,700 across 4 debts and the four common mistakes that stall payoff"
 referentialReading:
-  - title: "The Total Money Makeover"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
-    type: "book"
-  - title: "Debt Avalanche"
-    url: "https://www.investopedia.com/terms/d/debt-avalanche.asp"
+  - title: "Debt Snowball Method (and the Avalanche Method)"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Debt_snowball_method"
     type: "blog"
   - title: "The Psychology of Money"
     author: "Morgan Housel"

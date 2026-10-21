@@ -31,10 +31,10 @@ faq:
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
-  - title: "Setting SMART Financial Goals"
-    author: "SDSU Extension"
-    url: "https://extension.sdstate.edu/sites/default/files/2021-06/MC-02198.pdf"
-    type: "paper"
+  - title: "SMART Criteria"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/SMART_criteria"
+    type: "blog"
   - title: "Atomic Habits"
     author: "James Clear"
     url: "https://www.goodreads.com/book/show/40121378-atomic-habits"

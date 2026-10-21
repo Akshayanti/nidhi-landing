@@ -37,10 +37,6 @@ referentialReading:
     author: "Kath Weston"
     url: "https://www.goodreads.com/book/show/298610.Families_We_Choose"
     type: "book"
-  - title: "Essential Retirement Planning for Solo Agers"
-    author: "Sara Zeff Geber"
-    url: "https://www.goodreads.com/book/show/39693429-essential-retirement-planning-for-solo-agers"
-    type: "book"
 ---
 
 The Mastery post on estate planning explains what happens to your money and your decisions if you make no plan: a set of default rules steps in. It describes those rules as a safety net, which for most readers they are.

@@ -18,17 +18,10 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals", "debt"]
 reelPromise: "The three-question debt evaluation framework with worked examples for mortgage, student loan, and credit card"
 referentialReading:
-  - title: "The Total Money Makeover"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
-    type: "book"
-  - title: "Good Debt vs. Bad Debt"
-    url: "https://www.investopedia.com/articles/pf/12/good-debt-bad-debt.asp"
+  - title: "Debt"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Debt"
     type: "blog"
-  - title: "Debt-Free Degree"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/51278821-debt-free-degree"
-    type: "book"
 relatedSlugs: ["what-is-net-worth", "assets", "how-to-calculate-net-worth"]
 faq:
   - question: "What is a liability?"

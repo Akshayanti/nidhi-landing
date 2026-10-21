@@ -17,19 +17,13 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "saving", "investing"]
 reelPromise: "The side-by-side of 1% savings versus a blended portfolio over time, and the simple test for which money belongs in which bucket"
 referentialReading:
-  - title: "Saving vs. Investing"
-    url: "https://www.investopedia.com/articles/investing/022516/saving-vs-investing-understanding-key-differences.asp"
+  - title: "Saving"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Saving"
     type: "blog"
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
-  - title: "I Will Teach You to Be Rich"
-    author: "Ramit Sethi"
-    url: "https://www.goodreads.com/book/show/40591670-i-will-teach-you-to-be-rich"
-    type: "book"
   - title: "Time Value of Money"
-    url: "https://www.investopedia.com/terms/t/timevalueofmoney.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Time_value_of_money"
     type: "blog"
 relatedSlugs: ["emergency-fund", "purchasing-power", "how-to-get-out-of-debt", "liquidity", "appreciation-vs-depreciation"]
 faq:

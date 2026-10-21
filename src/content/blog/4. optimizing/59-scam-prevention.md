@@ -30,11 +30,9 @@ faq:
 reelPromise: "The six universal signs of a financial scam, the structural defenses that prevent most attacks, and the four-step recovery playbook when defenses fail"
 relatedSlugs: ["assets", "investing-101-asset-classes", "herd-behavior-and-fomo", "credit-and-credit-scores", "cash-management"]
 referentialReading:
-  - title: "The Con Artist's Playbook: The Psychology Behind ID Theft, Fraud and Scams"
-    url: "https://www.aarp.org/content/dam/aarp/money/scams_fraud/2013-10/The-Con-Artists-Playbook-AARP.pdf"
-    type: "blog"
-  - title: "FTC Consumer Alerts"
-    url: "https://consumer.ftc.gov/consumer-alerts"
+  - title: "Scam"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Scam"
     type: "blog"
   - title: "The Confidence Game"
     author: "Maria Konnikova"

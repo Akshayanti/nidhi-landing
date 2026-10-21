@@ -35,12 +35,9 @@ relatedTool:
 reelPromise: "Why many people take an employer match early, a seven-step default order for several debts, and the mental-accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
-  - title: "The Simple Path to Wealth"
-    author: "JL Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
-  - title: "Pay Down Debt vs. Invest"
-    url: "https://www.bogleheads.org/wiki/Paying_down_loans_versus_investing"
+  - title: "Opportunity Cost"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Opportunity_cost"
     type: "blog"
 ---
 

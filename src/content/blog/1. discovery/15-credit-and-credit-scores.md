@@ -20,15 +20,12 @@ tags: ["discovery", "debt", "fundamentals"]
 reelPromise: "What each scoring factor means, how the systems differ by country (FICO, SCHUFA, Experian, CIBIL), and the interest-rate gap a good score saves you"
 referentialReading:
   - title: "Credit Score"
-    url: "https://www.investopedia.com/terms/c/credit_score.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Credit_score"
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
     url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
-    type: "book"
-  - title: "The Total Money Makeover"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "cash-flow-101", "assets", "what-is-net-worth"]
 faq:

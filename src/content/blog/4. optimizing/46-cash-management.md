@@ -34,16 +34,14 @@ relatedTool:
   cta: "See what a cash balance could buy in a few years if prices keep rising, and what return would keep up"
   idea: "Cash at 0% against 2% inflation loses about 2% of what it can buy each year: on a €30,000 emergency fund, about €600 in the first year."
 referentialReading:
-  - title: "Money Market Funds Explained"
-    url: "https://www.investopedia.com/terms/m/money-marketfund.asp"
+  - title: "Money Market Fund"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Money_market_fund"
     type: "blog"
-  - title: "Understanding Treasury Bills"
-    url: "https://www.investopedia.com/terms/t/treasurybill.asp"
+  - title: "Money Market (including Treasury Bills)"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Money_market"
     type: "blog"
-  - title: "The Only Investment Guide You'll Ever Need"
-    author: "Andrew Tobias"
-    url: "https://www.goodreads.com/book/show/110672.The_Only_Investment_Guide_You_ll_Ever_Need"
-    type: "book"
 ---
 
 A common pattern is keeping the emergency fund in a 0% checking account. Often not because people do not know that other options exist. Because the mental cost of choosing seems higher than the yearly loss, and the loss never shows up on a statement.

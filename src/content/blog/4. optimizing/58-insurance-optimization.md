@@ -30,15 +30,13 @@ faq:
 reelPromise: "A framework for thinking about what insurance you need, why whole life rarely beats term-and-invest for pure protection, and the cheap liability cover that protects your net worth"
 relatedSlugs: ["insurance-basics", "emergency-fund", "financial-projections", "life-events", "cash-flow-101"]
 referentialReading:
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
-  - title: "Term vs Whole Life Insurance"
-    url: "https://www.investopedia.com/term-life-vs-whole-life-5075430"
+  - title: "Term Life Insurance"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Term_life_insurance"
     type: "blog"
-  - title: "Umbrella Insurance Explained"
-    url: "https://www.investopedia.com/terms/u/umbrella-insurance-policy.asp"
+  - title: "Umbrella Insurance"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Umbrella_insurance"
     type: "blog"
 ---
 

@@ -31,15 +31,13 @@ faq:
 relatedSlugs: ["getting-started-investing", "investing-101-asset-classes", "saving-vs-investing", "diversification", "emergency-fund"]
 referentialReading:
   - title: "Capital Gains Tax"
-    url: "https://www.investopedia.com/terms/c/capital_gains_tax.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Capital_gains_tax"
     type: "blog"
-  - title: "Tax-Advantaged Accounts"
-    url: "https://www.investopedia.com/terms/t/tax-advantaged.asp"
+  - title: "Tax Advantage"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Tax_advantage"
     type: "blog"
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
 ---
 
 You earn €60,000 gross. You see €42,000 hit your account. You invest €10,000 and watch it grow to €20,000. You sell it, and only €18,500 ends up back in your account. You spend €40,000 in retirement, but have to withdraw €50,000 to do it.
