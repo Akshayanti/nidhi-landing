@@ -1,16 +1,34 @@
 ---
 slug: "geographic-arbitrage"
 title: "Geographic Arbitrage: How Location Shapes Your Plan"
-description: "Geographic arbitrage: earn where salaries are high, live where costs are low. The math, the visa mechanics, and the parts nobody puts in the spreadsheet."
-tldr: "Geographic arbitrage is the deliberate mismatch between where income is earned and where expenses are incurred. Remote work, retirement relocation, and cross-border employment all enable it. The core math: same nominal income, different expense base equals dramatically different savings rate and FIRE timeline. A household with €80,000 net income and €4,000 monthly expenses saves €32k a year (40%); the same household with €2,000 monthly expenses (same income, cheaper location) saves €56k a year (70%) and, with a smaller FI (financial independence) target as well, gets there in well under half the time on an illustrative 5% real return. Practical considerations that shape the actual outcome: visa and tax residency (rules vary enormously; getting this wrong can be expensive), currency risk (income in one currency, expenses in another), healthcare access (often the largest variable across countries), social network and family ties (the biggest non-financial cost), quality-of-life factors that are hard to price in advance. Cross-continent examples matter here: the eurozone default alone does not carry the freight, because geographic arbitrage is inherently about jurisdictional differences."
+seoTitle: "Living Abroad to Save More: Geographic Arbitrage"
+description: "Earning where pay is high and living where costs are low: how it changes your savings rate and FI target, and the visa, tax residency, healthcare and currency risks to check first."
+tldr: "Geographic arbitrage means earning where pay is high and living where costs are low. It raises the savings rate and lowers the financial independence target at once, which can cut the time to financial independence by more than half. Visas, tax residency, healthcare, currency moves and distance from family decide whether it works in practice."
 takeaways:
-  - "Why a lower cost base raises savings and lowers your FI target"
-  - "Why visa and tax residency rules can make or break the plan"
-  - "What healthcare, family and language cost beyond the spreadsheet"
-  - "How currency moves change your income when you live abroad"
+  - text: "Why a lower cost base raises savings and lowers your FI target"
+    href: "#a-lower-cost-base-moves-both-the-savings-rate-and-the-finish-line"
+  - text: "Why visa and tax residency rules can make or break the plan"
+    href: "#tax-residency-can-decide-whether-it-works"
+  - text: "What healthcare, family and language cost beyond the spreadsheet"
+    href: "#what-the-spreadsheet-leaves-out"
+  - text: "How currency moves change your income when you live abroad"
+    href: "#currency-moves-change-your-income"
+glossary:
+  - term: "Geographic arbitrage"
+    definition: "Earning where pay is high and spending where costs are low, through remote work, retiring abroad or a cross-border job."
+  - term: "Savings rate"
+    definition: "The share of income you save. It rises when income grows while spending stays the same."
+  - term: "FI target"
+    definition: "The invested amount at which a portfolio could cover yearly spending, commonly 25 times that spending for a 4% withdrawal rate."
+  - term: "Tax residency"
+    definition: "The country that treats you as resident for tax, decided by tests on days spent, ties such as a home or family, and where your life is centred."
+  - term: "Double taxation treaty"
+    definition: "An agreement between two countries that stops most income being fully taxed by both, if it is claimed correctly."
+  - term: "Exit tax"
+    definition: "Tax some countries charge on unrealised gains when you stop being resident there."
 order: 56
 pubDate: 2099-01-19
-updatedDate: 2026-08-24
+updatedDate: "2026-10-22"
 localRules: [tax, pensions, benefits]
 level: "optimizing"
 primaryPersona: "eva"
@@ -22,7 +40,7 @@ faq:
   - question: "What are the biggest costs people forget?"
     answer: "Healthcare, tax residency, and social costs. Healthcare varies enormously by country: in some it is publicly funded and near-free at point of use for legal residents; in others it is private-insurance-based and can be a major expense. Some digital-nomad-friendly countries have decent public healthcare for residents but exclude short-term visa holders, forcing expensive private insurance. Tax residency is often more complex than expected: some countries claim you as a tax resident after 183 days per year, others use domicile and center-of-life tests, others deem you resident based on housing or income sources. Double-taxation treaties help but do not always eliminate the problem. Social costs are the largest and least quantifiable: distance from family, difficulty rebuilding a social network, language and cultural friction, professional network effects. Households that focus only on the cost-of-living spreadsheet often find the non-financial costs dwarf the financial gains within a year or two."
   - question: "Do I need a special visa or residency status?"
-    answer: "Usually yes, and the requirements have shifted rapidly since 2020. Several categories exist: (1) digital-nomad visas explicitly designed for remote workers earning income from foreign employers (Portugal, Spain, Croatia, Estonia, Georgia, Costa Rica, Dubai, Malaysia, and many others have launched these); (2) freelancer or self-employment visas (Germany's Freiberufler, Netherlands' DAFT for US nationals, Czech Republic's zivnostensky list); (3) retirement or passive-income visas requiring proof of income above a threshold (Portugal's D7, Malaysia's MM2H, various Caribbean and Latin American versions); (4) family or ancestry visas for those with eligible heritage; (5) investment or golden visas (Portugal's now-closed golden visa, Malta's, Greece's, various others); (6) student visas as a temporary transitional path. Each has requirements, costs, and tax implications. The right visa for your situation depends on your citizenship, income structure, family, and target country. Many people find advice from an immigration lawyer or specialised tax advisor in the target country worth the cost, because a visa mistake can be far more expensive. Programs open, close and change terms often, so current official sources matter more than any list."
+    answer: "Usually yes, and the requirements have shifted rapidly since 2020. Several categories exist: (1) digital-nomad visas explicitly designed for remote workers earning income from foreign employers (Portugal, Spain, Croatia, Estonia, Georgia, Costa Rica, Dubai, Malaysia, and many others have launched these); (2) freelancer or self-employment visas (Germany's Freiberufler, Netherlands' DAFT for US nationals, Czech Republic's zivnostensky list); (3) retirement or passive-income visas requiring proof of income above a threshold (Portugal's D7, Malaysia's MM2H, various Caribbean and Latin American versions); (4) family or ancestry visas for those with eligible heritage; (5) investment or golden visas (Portugal's golden visa, whose qualifying investments have changed substantially, Malta's, Greece's, various others); (6) student visas as a temporary transitional path. Each has requirements, costs, and tax implications. The right visa for your situation depends on your citizenship, income structure, family, and target country. Many people find advice from an immigration lawyer or specialised tax advisor in the target country worth the cost, because a visa mistake can be far more expensive. Programs open, close and change terms often, so current official sources matter more than any list."
   - question: "Isn't remote work required for this to work?"
     answer: "For active earners, yes, usually. Some employers explicitly support remote work from any country; others allow it only within the country of employment or in a defined list of countries; others do not allow it at all. If your income is not portable, geographic arbitrage in the accumulation phase is limited to relocation within your current employer's tolerance (which sometimes means changing employers). In the drawdown or retirement phase, geographic arbitrage is easier because passive income (investment portfolio, pension, rental income) is inherently more portable than active income. Many households first sample geographic arbitrage in retirement, when the income question is settled and the residency question is the main constraint. A middle path: partial-year geographic arbitrage, spending several months per year in a lower-cost country while maintaining residency in the higher-cost country."
   - question: "Is there a downside I should think about?"
@@ -47,29 +65,21 @@ referentialReading:
     type: "blog"
 ---
 
-Earn where salaries are high. Live where costs are low. The oldest financial arbitrage remains one of the most powerful, because it operates on both sides of the savings-rate equation at once. Doubling savings rate is not achievable through expense cutting alone (there is a floor) or income growth alone (that takes time). Combining a static or slightly-reduced high-market income with a materially lower expense base can compress a decade off a financial-independence timeline.
+Two households earn the same €80,000 a year after tax. One spends €4,000 a month in an expensive city and saves 40%. The other does the same work remotely from a place where the same life costs €2,000 a month, and saves 70%. On an illustrative 5% real return, the first reaches financial independence in about 22 years; the second in about 9.
 
-Remote work, since 2020, has made geographic arbitrage accessible to a much wider set of households than the small pre-pandemic subset who could consider it. Fully-remote knowledge workers can now legitimately consider living in one country while employed by companies headquartered in another. Retirees can consider relocating to lower-cost countries with residency programs designed for them. Digital-nomad visas have proliferated in the last five years; dozens of countries now offer some version.
+That gap is [geographic arbitrage](#term-geographic-arbitrage): earning where pay is high and spending where costs are low. Remote work since 2020, retirement abroad and cross-border jobs have made it possible for far more households than before. This post covers the arithmetic, the visa and tax mechanics that turn it into a real plan, and the costs no spreadsheet shows.
 
-This post covers the arithmetic, the mechanics that turn the arithmetic into a real plan, and the parts that do not appear in the spreadsheet but matter more than most of what does.
+## A lower cost base moves both the savings rate and the finish line
 
-## The core arithmetic
+Financial independence in this framing depends on two numbers: the [savings rate](#term-savings-rate) and the [FI target](#term-fi-target), commonly 25 times yearly spending for a 4% withdrawal rate, or more for caution (the [financial independence post](/blog/introduction-to-financial-independence/) treats both as starting points, not answers).
 
-Financial independence in savings-rate terms is a function of two numbers: your savings rate (percentage of income saved) and your target multiple of annual expenses (typically 25x for a 4% withdrawal rate, higher for more conservative assumptions per the [introduction to financial independence post](/blog/introduction-to-financial-independence/)).
+Lower costs move both at once. €80,000 of income with €48,000 of spending is a 40% savings rate; with €24,000 of spending it is 70%. And 25 times €48,000 is €1.2 million, while 25 times €24,000 is €600,000. Starting from zero, at 5% a year after inflation and a 25-times target:
 
-Geographic arbitrage affects both numbers simultaneously.
-
-**Effect on savings rate.** Same income, lower expenses means a higher savings rate. A household with €80,000 net income and €48,000 annual expenses has a 40% savings rate. The same household in a location with €24,000 annual expenses (same income, half the expense base) has a 70% savings rate. This is not incremental; it is a step change.
-
-**Effect on the FI target.** If your FI target is 25x annual expenses, a lower expense base directly lowers the target. €48,000 in annual expenses requires €1.2 million in invested assets; €24,000 requires €600,000. The finish line moves closer even without changing the running speed.
-
-**Combined effect on timeline.** Higher savings rate plus lower target means dramatically shorter time to FI. A rough table, assuming investments earn 5% a year after inflation and a target of 25 times annual expenses:
-
-- 40% savings rate: FI in roughly 22 years starting from zero.
-- 55% savings rate: FI in roughly 15 years.
-- 70% savings rate: FI in roughly 9 years.
-
-This savings-rate table, well known in the financial independence community, shows why the compressing effect is so dramatic. It rests on a steady 5% real return and a 25x target, both of which the financial independence post treats as starting points rather than answers. Every additional percentage point of savings rate matters more than the last, because you are simultaneously saving more of income and needing less of it in retirement.
+| Savings rate | Years to financial independence |
+|---|---|
+| 40% | about 22 |
+| 55% | about 15 |
+| 70% | about 9 |
 
 <figure>
 <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-geoarb-title fig-geoarb-desc">
@@ -95,136 +105,93 @@ This savings-rate table, well known in the financial independence community, sho
 <figcaption>Illustrative arithmetic. Same income; different expense base. Savings rate and FI target both improve, compressing the timeline substantially.</figcaption>
 </figure>
 
-## The four modes of geographic arbitrage
+Each extra point of savings rate matters more than the last, because you save more of your income and need less of it later. Real outcomes depend on tax in both countries, honest cost estimates (not a fantasy of island life on a European salary) and whether the arrangement lasts.
 
-Different life stages enable different versions of the arbitrage.
+<details class="quick-check">
+<summary class="disclosure">Quick check: why does halving spending more than halve the time to financial independence?</summary>
 
-**Working-age remote arbitrage.** A knowledge worker with a fully-remote position or a portable freelance business relocates to a lower-cost country while maintaining employment or clients in a higher-income country. The employer may or may not know or care about the location, depending on jurisdiction and employer policy. This mode is the most powerful because it compresses the entire FI timeline. It is also the most complex because it involves tax, visa, and employment-law considerations across multiple jurisdictions.
+Because it works twice: the savings rate rises (more saved each year) and the FI target falls (25 times a smaller number), so you run faster toward a closer finish line.
 
-**Retirement or drawdown arbitrage.** A retiree (or someone approaching retirement) moves from a higher-cost country to a lower-cost one, drawing from an accumulated portfolio built in the higher-cost currency. The income question is settled (passive income is portable); the residency question is the main constraint. It is often the simpler mode, though not a simple one. Portugal, Spain, Panama, Malaysia, Thailand, Ecuador, and various others have specific retirement-residency programs.
+</details>
 
-**Partial-year arbitrage.** Spending several months per year in a lower-cost country while maintaining residency in the higher-cost country. This avoids many tax-residency complications (staying below day-count thresholds such as 183 days, though ties-based tests can still apply) and preserves the higher-cost home base. The financial gain is smaller (only the months spent abroad are at lower cost) but the practical setup is much easier.
+## Ways people do it at different life stages
 
-**Cross-border employment arbitrage.** A worker takes employment in a country with a specific labour-market imbalance (skills in demand, wages elevated) for a period of years, then returns to a lower-cost country. This is common for professions with international mobility (medicine, engineering, some technology fields, some finance).
+- **Working remotely from a cheaper country** while employed or paid by clients in a higher-income one. The most powerful version, because it shortens the whole accumulation, and the most complex: tax, visas and employment law in more than one country.
+- **Retiring abroad,** drawing on a portfolio built in a higher-cost currency. Investment and pension income travels; residency is the main hurdle. Portugal, Spain, Panama, Malaysia, Thailand and Ecuador, among others, run retirement residency programmes.
+- **Part of the year abroad** while keeping residency at home. The saving is smaller. Staying below a day-count threshold such as 183 days may avoid one route to tax residency, but home, work, family and other ties can still make someone resident.
+- **A few years' work in a high-wage country,** then a return somewhere cheaper, common in internationally mobile professions such as medicine, engineering and some technology and finance roles.
 
-Each mode has different arithmetic and different practical constraints. The rest of this post applies to all four, with the specific complexity varying.
+## Visas: what lets you live there
 
-## Visa and residency mechanics
+Most moves need a residence permit, and the options have changed fast since 2020. **Digital-nomad visas** suit some remote workers paid from abroad and commonly ask for proof of income, health insurance and a clean record; the income threshold and permitted work differ by programme. **Freelancer visas** suit portable independent income. **Retirement or passive-income visas** require proof of income above a threshold. **Ancestry routes** can be the cheapest and most permanent for those eligible. **Investment visas** require large sums. For a move involving work rights, dependants or several possible routes, some people use an immigration lawyer or recognised adviser in the destination. Processing time varies by country and route. Programmes open, close and change terms often, so current official sources matter more than any list.
 
-Getting the visa question right is the first practical requirement. There are more options than most people realise, and the landscape has shifted rapidly since 2020.
+<details class="lesson-depth">
+<summary class="disclosure">Visa types in more detail</summary>
 
-**Digital-nomad visas.** Explicitly designed for remote workers earning income from foreign employers. Portugal (D8), Spain, Croatia, Estonia, Georgia, Costa Rica, Dubai, Malaysia (De Rantau), and dozens of others offer versions. Requirements typically include: proof of remote income above a threshold (often €2,500 to €4,000 monthly), health insurance, clean criminal record, sometimes a lease or accommodation proof. Duration typically 1 to 2 years, renewable. Tax residency may or may not be triggered depending on the specific program and duration.
+- **Digital-nomad visas:** Portugal (D8), Spain, Croatia, Estonia, Georgia, Costa Rica, Dubai, Malaysia (DE Rantau) and many others; usually one to two years, renewable; whether they make you tax resident depends on the programme and how long you stay.
+- **Freelancer and self-employment visas:** Germany's Freiberufler visa, the Dutch-American Friendship Treaty route for US nationals, the Czech trade licence (živnostenský list); usually requiring proof of business activity and income.
+- **Retirement and passive-income visas:** Portugal's D7, Malaysia's MM2H and various Latin American and Caribbean programmes, often requiring €1,000 to €3,000 a month of passive income.
+- **Investment ("golden") visas:** Malta, Greece and various Caribbean citizenship-by-investment schemes, typically €250,000 to €2 million or more; Portugal's has been largely closed to property investment since 2023.
+- **Ancestry and family routes:** Italian, Irish and German citizenship by descent, and Portuguese, Spanish and Israeli programmes for descendants of specific communities.
+- **Working-holiday and student visas:** working-holiday schemes (Australia, New Zealand, Canada, Japan and several European countries) usually cap age at 30 or 35; study can be a stepping stone to a longer status.
 
-**Freelancer or self-employment visas.** For those with portable independent income. Germany's Freiberufler visa is well-known; Netherlands' DAFT (Dutch American Friendship Treaty) for US nationals is a specific case; Czech Republic's zivnostensky list is another. Requirements typically include proof of business activity, income, and sometimes local demand for the profession.
+</details>
 
-**Retirement / passive-income visas.** Portugal's D7, Malaysia's MM2H, various Latin American and Caribbean programs. Proof of passive income above a threshold (often €1,000 to €3,000 monthly for retirees, higher for some programs). Often preferred by pre-retirees and retirees, though some are available at younger ages if the income threshold is met.
+## Tax residency can decide whether it works
 
-**Investment or golden visas.** Portugal's golden visa (largely closed to real-estate investors since 2023), Malta's, Greece's, various Caribbean citizenship-by-investment programs. Typically require substantial financial investment (real estate, business, or government bonds ranging from €250,000 to €2 million+ depending on program). High cost, but sometimes the only path for specific citizens.
+[Tax residency](#term-tax-residency) is often more complex than expected, and mistakes range from annoying to very expensive. Spending more than 183 days in a country is a common starting test, but many countries add others: ties to a home, work or family, where your life is centred, or day counts averaged over several years. A few months somewhere does not necessarily change residency; a long lease, local registration and 200 days often does. [Double taxation treaties](#term-double-taxation-treaty) stop most income being fully taxed twice, but only when claimed correctly, and some countries charge an [exit tax](#term-exit-tax) on unrealised gains when you leave. Tax can materially reduce or remove the saving, depending on the two countries, the type of income and the treaty between them. Generic guides, this one included, are directional; a licensed tax adviser in each country is what catches expensive mistakes.
 
-**Ancestry or family visas.** Italian, Irish, German, and other citizenship-by-descent paths. For those with eligible heritage, this is often the cheapest and most permanent option. Portuguese, Spanish, and Israeli programs for descendants of specific historical communities.
+<details class="lesson-depth">
+<summary class="disclosure">How residency is tested, and other tax traps</summary>
 
-**Working-holiday and youth visas.** Australia, New Zealand, Canada, Japan, various European countries offer working-holiday visas typically capped at 30 or 35 years old. Limited duration but easy access for those who qualify.
+**Ties and statutory tests:** the UK's Statutory Residence Test combines days with ties such as a home, work or family; its old domicile-based rules were replaced by a residence-based regime from April 2025. **Centre-of-life tests:** where your family, main home and economic interests are, regardless of days. **Substantial-presence tests:** the US averages days over several years, so repeated visits can add up to residency. **Deemed residency:** some countries treat you as resident because of specific ties (Australia, some Canadian provinces). **Exit taxes:** the US expatriation tax for some wealthy individuals, Canada's departure tax and some EU exit charges can tax unrealised gains on leaving. **Filing wherever you live:** US citizens file US returns from anywhere, with FATCA reporting on foreign accounts. **How you are paid matters:** an employer-of-record service in the destination can simplify local tax; being paid directly leaves more room for mistakes.
 
-**Student visas.** A temporary transitional path; useful for building local connections and residency history before switching to a longer-term status.
+</details>
 
-The right visa depends on citizenship, income structure, family, target country, and time horizon. Two lessons people commonly report: advice from an immigration lawyer in the target country is often worth its cost next to the cost of getting it wrong, and the process takes longer than expected (processing times of 6 to 12 months are not unusual).
+<details class="quick-check">
+<summary class="disclosure">Quick check: if you spend fewer than 183 days in a country, are you safe from becoming tax resident there?</summary>
 
-## Tax residency: the complexity that sinks unprepared plans
+Not necessarily. Many countries also look at ties: a home, work, family or where your life is centred. The 183-day rule is a starting point, not the whole test.
 
-Tax residency is often more complex than expected, and the cost of getting it wrong ranges from annoying to catastrophic.
+</details>
 
-**How tax residency is determined.** A common starting rule in many countries is a 183-day physical presence test: spend more than half the year in a country and you become tax resident. But this is only the starting point. Many countries add:
+## Healthcare is often the largest difference
 
-- **Statutory or ties tests.** The UK uses a Statutory Residence Test that combines days with ties such as a home, work or family; its old domicile-based rules were replaced by a residence-based regime from April 2025.
-- **Center-of-life tests.** Where is your family, your primary residence, your professional interests, your economic ties? Some countries deem you resident based on these regardless of days.
-- **Substantial presence tests.** US substantial-presence test averages days over multiple years, so occasional visits can accumulate to residency.
-- **Deemed residency.** Some countries deem you resident if you have specific ties (Australian tax law, some Canadian provincial rules).
+Many countries provide residents with public or compulsory healthcare, but eligibility can depend on immigration status, work, contributions, registration or a waiting period, and charges and exclusions differ even within broadly public systems. Private cover can be a major cost, especially at older ages, with premiums, subsidies and rules on pre-existing conditions varying sharply by country; the US is the extreme case. Digital-nomad and temporary-residence visas often require private insurance, and a quote for the applicant's age, health, destination and required cover says more than any general price range. Healthcare may be a modest line for one person and the deciding constraint for another: age, existing conditions, medicines and access to specialists can matter as much as the premium. Some countries let legal retiree residents join the public system, sometimes after a wait or through a paid scheme (Portugal, France, Spain, Italy and Costa Rica, each with conditions), though many retirement visas still require private cover at first.
 
-**Double taxation and treaties.** Most countries have double-taxation treaties that prevent the same income being fully taxed twice, but the treaties are complex, they do not eliminate all double taxation, and they require correct filing to invoke. Missing a treaty election can mean paying tax twice on the same income.
+## What the spreadsheet leaves out
 
-**Exit taxes.** Some countries impose an exit tax when you cease to be a tax resident (US expatriation tax for certain high-net-worth individuals, Canada's departure tax, some EU exit charges). If you have substantial unrealised gains, moving out of a country can trigger a taxable event on those gains.
+Cost-of-living sites capture rent, food, transport and utilities. What usually decides whether a move lasts is elsewhere. **Family:** distance from ageing parents, siblings and old friends, made harder by time zones; some households reverse the move within a few years. **A social life:** rebuilding a network can take time, especially without an existing workplace, family or community connection; places with established newcomer networks may be easier to arrive in. **Language:** workable for a while without it, wearing over longer stays, and limiting friendships and work. **Career:** some fields work well remotely; others depend on being near the professional network, and lost options can cost more than the savings.
 
-**Ongoing filing obligations.** US citizens must file tax returns wherever they live in the world; the FATCA regime creates additional reporting on foreign accounts. Some other countries have similar or lesser requirements.
+<details class="lesson-depth">
+<summary class="disclosure">Other things that are hard to price in advance</summary>
 
-**Practical implications for geographic arbitrage.** Things people commonly check before moving:
+**Specialised services:** particular medical care, schooling for children with specific needs, or professional services for complex situations can narrow the options a lot. **Climate and daily life:** weather, air quality, how a city works day to day; hard to judge from a distance, which is why several months there before committing is often worth the cost. **Political stability:** visa categories, tax treatment and healthcare access can change within a decade; past stability is a rough guide, not a guarantee.
 
-- The tax residency rules of both the home country and the target country.
-- What triggers a change in tax residency and what does not. Simply spending a few months does not necessarily change residency; renting a long-term apartment plus registering with authorities plus spending 200 days often does.
-- How income is paid. Some remote-work arrangements pay through employer-of-record services in the target country to simplify local tax; others pay directly and leave the worker to handle local tax, with more room for double-taxation mistakes.
-- Professional advice specific to the situation. Generic online guides, this one included, are directional; a licensed tax advisor in each country is what catches expensive mistakes.
+</details>
 
-The tax question can consume half the visible financial gain of geographic arbitrage if not handled carefully. Handled correctly, it usually leaves most of the gain intact.
+## Currency moves change your income
 
-## Healthcare: the biggest variable across countries
+The [currencies post](/blog/managing-money-across-currencies/) covered the general risk: earning in one currency and spending in another means every exchange-rate move changes your effective income. Here it sits at the centre of the plan. Major currencies can move 20 to 30% over a few years without any crisis; a euro earner living somewhere whose currency rises 25% in three years loses a fifth of their spending power with no change in pay. Two common habits are converting savings as needed rather than in bulk, and, in retirement, matching currencies: a destination whose currency matches much of the portfolio, or a portfolio holding more of the spending currency, each with trade-offs. The free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> shows savings in several currencies in the one you spend.
 
-Healthcare cost and access varies enormously across countries, and it is often one of the largest variables in geographic-arbitrage math.
+## Common routes, region by region
 
-**Publicly-funded systems.** Most European countries, Canada, Australia, New Zealand, the UK, Japan, South Korea, Taiwan, and others provide public healthcare that is either free at point of use or has small co-payments for legal residents. Access typically requires legal residency, sometimes with a waiting period. Quality varies; access to specialists may involve queues in some systems.
+<details class="lesson-depth">
+<summary class="disclosure">Routes from Europe, the US, India, Australia and Canada</summary>
 
-**Public-private mixed systems.** Countries like the Netherlands, France, Germany, Australia, and various others have public baseline plus private supplemental. Total cost is often several percent of income through payroll contributions or premiums, with generally good access.
+- **Northern Europe or the US to Southern Europe:** Portugal, Spain, southern France, southern Italy, Greece; costs often 30 to 50% lower. Portugal's NHR regime changed substantially in 2024; Spain has its Beckham regime and a digital-nomad visa.
+- **The UK to Central and Eastern Europe:** Poland, Czechia, Hungary, Slovakia; costs often 40 to 60% lower; EU citizens move freely, others use national visas.
+- **The US to Latin America:** Mexico, Costa Rica, Colombia, Uruguay, Panama, Chile; costs often 50 to 70% lower; similar time zones; healthcare quality varies widely.
+- **North America or Europe to Southeast Asia:** Thailand, Malaysia, Vietnam, Indonesia, the Philippines; costs often 70 to 80% lower for a similar life; long flights home; Malaysia's MM2H rules have shifted.
+- **Within India:** an IT salary from Bangalore spent in Coimbatore, Kochi or Chandigarh can mean 30 to 50% lower costs, with no visa or currency issues.
+- **Australia or New Zealand to Southeast Asia or the Pacific:** good time zones; strict home residency rules, so leaving cleanly needs checking.
+- **Within Canada, or to Mexico:** Ontario or British Columbia to Atlantic provinces or the Prairies, or retirement visas in Mexico.
+- **Cross-border commuting:** living in a cheaper country and working across the border, as between Belgium and Luxembourg, Germany or France and Switzerland, Malaysia and Singapore, or the US and Mexico.
 
-**Private-insurance-based systems.** The US is the extreme case; individual premiums for older adults or those with pre-existing conditions can exceed €1,000 per month, and out-of-pocket costs can add substantially. Some Latin American countries have private-insurance markets with lower absolute costs but variable coverage quality.
+</details>
 
-**Digital-nomad and expat considerations.** Some countries provide public healthcare to short-term visa holders; others explicitly exclude them, requiring private insurance. Digital-nomad visas often mandate private insurance as a condition. Costs range from €50 to €200 monthly for young healthy applicants, higher for older or higher-risk applicants.
+## Trying it before committing
 
-**Age and health effects.** Healthcare cost differences matter more as you age and as pre-existing conditions accumulate. A 30-year-old healthy remote worker faces small healthcare cost differences across most countries. A 65-year-old with chronic conditions faces potentially large differences, both in cost and in access to specific specialists and medications.
+A common sequence: an honest estimate for one specific place, with healthcare, tax and the housing you would actually want; the visa and tax-residency rules for your citizenship in both countries; and at least a month living there, working and running errands as you would day to day, which tells you more than any spreadsheet. The next post covers how much income retirement really needs, which depends heavily on where you plan to retire.
 
-**Practical implications.** For younger workers, healthcare rarely determines the arbitrage; other factors dominate. For retirees, healthcare is often the largest cost variable and a primary consideration in country selection. Countries where legal retiree residents can join a public system, sometimes after a waiting period or through a paid scheme (Portugal, France, Spain, Italy and Costa Rica, each with conditions), have advantages that show up here; many retirement visas still require private insurance at first. Countries with expensive private-only systems (US, some others) have disadvantages that can offset a lower cost-of-living headline.
-
-## The costs that do not appear in the spreadsheet
-
-Cost-of-living spreadsheets capture housing, food, transportation, utilities, and sometimes healthcare. They rarely capture what actually determines whether geographic arbitrage works long-term.
-
-**Distance from family.** For most people, family relationships shape day-to-day quality of life. Moving away from ageing parents, from siblings and their children, from friends of decades is a real cost that is not on any spreadsheet. Time-zone difference compounds this: an 8-hour offset makes casual contact difficult. Some households who underweight this cost reverse the move within a few years.
-
-**Social network friction.** Building a new social network in a new country takes time (often years to reach a comparable depth), and is much harder for people past their 30s or without children (children's activities are a common vector for adult friendships). Language barriers make it slower. Some cities are more welcoming to newcomers than others; global-hub cities (Amsterdam, Lisbon, Barcelona, Berlin, Singapore, Dubai) have easier onboarding than more insular cities.
-
-**Language and cultural friction.** Living in a country where you do not speak the language competently is workable for a few years but grinds after longer. Getting proficient enough for professional and social depth often takes several years of active effort. Not learning the language limits access to friendships, professional opportunities, and much of what makes a place interesting.
-
-**Professional network effects.** Career progression often depends on proximity to the professional network. Some fields (technology, finance, some sciences) tolerate remote well; others (medicine, law, some management) are much more location-dependent. If future income depends on maintaining a professional network in the higher-income country, geographic arbitrage during accumulation may cost more in career optionality than it saves in expenses.
-
-**Access to specific services.** Specialised medical care, education for children with specific needs, professional services for complex situations. If your household needs any of these, they narrow the geographic-arbitrage options substantially.
-
-**Weather, climate, and daily quality.** Underrated. A location that seemed appealing on paper can become unpleasant if the climate, air quality, urban design, or daily rhythm are wrong for you. These are hard to evaluate remotely; spending several months in a candidate location before committing is often worth the cost.
-
-**Political stability and rule of law.** Countries change. Programs that exist today (visa categories, tax treatments, healthcare access) may not exist in 10 years. Historical stability is a rough proxy but not a guarantee. Places with rapid political change should be evaluated with a specific view on your specific risk tolerance.
-
-The households who successfully use geographic arbitrage tend to plan for these non-spreadsheet factors explicitly. The households who fail tend to underweight them and reverse the move within a few years.
-
-## Currency risk
-
-The [managing money across currencies post](/blog/managing-money-across-currencies/) covered currency risk in general: when you earn in one currency and spend in another, every exchange-rate move changes your effective income. Geographic arbitrage puts that risk at the centre of the plan, and the moves are large. Major currency pairs can shift 20 to 30% over a few years without any crisis; a euro earner living somewhere whose currency rises 25% over three years loses a fifth of their effective income without any change in pay.
-
-Two habits are common among people who live abroad on purpose. One is converting savings as needed rather than in bulk, which spreads the exchange-rate risk over time. The other, for retirees, is matching currencies: either a destination whose currency matches a large share of the portfolio, or a portfolio that holds more of the spending currency. Each has trade-offs (the spending currency may be more volatile or carry higher inflation), and the right mix depends on your income sources, horizon and how settled the move is. To see what savings held in several currencies add up to in the one you spend, the free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> does the conversion for you.
-
-## Cross-continent examples
-
-Because geographic arbitrage is inherently jurisdictional, cross-continent examples matter more here than in most posts.
-
-**High-earner from Northern Europe or the US to Southern Europe.** Common pattern: knowledge worker earning US or Northern-European wages, relocating to Portugal, Spain, southern France, southern Italy, or Greece. Cost differential typically 30 to 50%. Portugal's digital-nomad and D7 visas made this route especially popular through the mid-2020s, though tax rules have tightened (NHR non-habitual-resident regime substantially changed 2024). Spain's Beckham law and digital-nomad visa offer similar structures with different specifics.
-
-**UK earner to eastern EU.** Poland, Czech Republic, Hungary, Slovakia. Cost differential typically 40 to 60%. EU citizenship (for those with it) makes residency straightforward; non-EU citizens use national visas. English widely spoken in the professional class in capitals.
-
-**US earner to Latin America.** Mexico, Costa Rica, Colombia, Uruguay, Panama, Chile. Cost differential typically 50 to 70% depending on lifestyle. Digital-nomad and retirement visa programs in most. US-adjacent time zones simplify remote work. Healthcare quality highly variable.
-
-**North American or European to Southeast Asia.** Thailand, Malaysia, Vietnam, Indonesia, Philippines. Cost differential often 70 to 80% for equivalent lifestyle. Longer flights back to home country. Multiple visa options; Malaysia's MM2H is a leading retirement program though rules have shifted.
-
-**Indian earner to lower-cost Indian cities.** Domestic geographic arbitrage within India. A software engineer earning IT-sector salaries in Bangalore can relocate to smaller cities (Coimbatore, Kochi, Chandigarh, Pune second-tier areas) with 30 to 50% expense reduction. No visa or currency issues; family and social network implications remain.
-
-**Australian or New Zealand earner to Southeast Asia or the Pacific.** Bali, Thailand, Malaysia commonly considered. Time zones work well. Australian and NZ tax residency rules are strict; consult before assuming exit is clean.
-
-**Canadian earner to lower-cost Canadian provinces or to Mexico.** Domestic arbitrage within Canada (Ontario or BC to Atlantic provinces, Manitoba, Saskatchewan) or international to Mexico under retiree visa programs. US-adjacency simplifies logistics.
-
-**Cross-border commuters.** Not full arbitrage, but a partial version: living in a lower-cost country while working across a border in a higher-cost one. Common in EU border regions (Belgium/Luxembourg, Germany/Switzerland, France/Switzerland), US/Mexico border regions, Malaysia/Singapore.
-
-Each of these has specific tax, visa, and practical considerations that go beyond the scope of a single post. The general principles apply universally; the specific implementations require local research.
-
-## Getting started
-
-Three concrete steps for exploring geographic arbitrage seriously.
-
-- Estimate the arithmetic honestly for a specific candidate location. Not a fantasy version; a realistic version including healthcare, tax, and appropriate housing at your expected quality level. Compare to your current baseline savings rate and FI timeline.
-- Research the visa and tax residency mechanics for that specific location and your specific citizenship. Determine what visa you would use, what triggers tax residency, and what your obligations would be in both the origin and destination countries.
-- Consider spending at least a full month in the candidate location before committing. Not a two-week holiday. A month, with routines that resemble how you would actually live: work from a co-working space or a rented apartment, use local services, socialise where you would socialise, deal with the daily friction. The information from a month of real living is worth more than any amount of spreadsheet research.
-
-The next post in this series covers income replacement ratio, which is the retirement-planning framing that geographic arbitrage indirectly reshapes: how much income you actually need in retirement depends heavily on where you plan to retire. The two topics are natural neighbours.
+If you could earn the same from anywhere, which place would you want to test for a month, and what would you miss most?

@@ -1,16 +1,39 @@
 ---
 slug: "solo-agers-and-single-income-households"
 title: "One Income, No Backup: Planning for a Household of One"
-description: "Most financial rules of thumb assume a second earner and a family fallback. Which ones to adjust on one income, and how to name your own backup person."
-tldr: "Most financial rules of thumb carry a hidden second adult. A three to six month emergency fund assumes another income keeps arriving. Retirement benchmarks assume two people sharing one set of bills. Planning for illness and old age assumes a partner or a child who will step in. If you live on one income, or expect to grow old without a partner or family nearby, the math is the same and the inputs change. Four adjustments are common: a larger emergency fund, because losing your only income means losing all of it; stronger income protection, because your earning power is the single engine of the plan; a retirement number built from your own expenses, because on a widely used equivalence scale one person needs about 70% of what a couple needs to live at the same standard, not 50%; and fixed costs set for one income with nobody to share the rent. How far to move each depends on income stability, local safety nets and whether anyone depends on you. The second half of the plan is not about money. It is about naming, in writing, the person who would act for you if you could not, and planning for care you may have to pay for. This is not a 'you need more money' post. It is a list of which assumptions to change and by how much."
+seoTitle: "Single Income? Emergency Fund and Retirement for One"
+description: "Living on one income, or growing older alone? Which rules of thumb assume a second earner, how much to adjust them, and the five documents that name who acts for you."
+tldr: "Many rules of thumb hide a second adult. Six months of savings gives a couple nearly 20 months of runway when one job goes, and a single earner 6. Common adjustments on one income: a larger emergency fund, stronger income protection, fixed costs set for one income, and a retirement number built for one person, about 70% of a couple's budget rather than 50%. The other half is naming, in writing, who acts for you if you cannot, and planning for care you may have to pay for."
 takeaways:
-  - "Why common rules of thumb quietly assume a second income"
-  - "Why one income calls for a larger emergency fund"
-  - "Why one person needs about 70% of a couple's budget, not 50%"
-  - "How to name, in writing, who acts for you if you cannot"
+  - text: "Why common rules of thumb quietly assume a second income"
+    href: "#common-rules-of-thumb-quietly-assume-a-second-income"
+  - text: "How one income changes how long an emergency fund lasts"
+    href: "#one-income-changes-how-long-an-emergency-fund-lasts"
+  - text: "Why one person needs about 70% of a couple's budget, not 50%"
+    href: "#one-person-needs-about-70-of-a-couples-budget-not-50"
+  - text: "How to name, in writing, who acts for you if you cannot"
+    href: "#naming-in-writing-who-acts-for-you-if-you-cannot"
+glossary:
+  - term: "Solo ager"
+    definition: "Someone growing older without a partner or children to rely on, by choice or by circumstance, including people whose family is far away or estranged."
+  - term: "Default assumption"
+    definition: "The guess a rule or product makes about who you are when you make no choice, such as “the beneficiary is the spouse”."
+  - term: "Equivalence scale"
+    definition: "A way of comparing what households of different sizes need for the same standard of living. On a widely used version, one person needs about 70% of a couple's budget."
+  - term: "Withdrawal rate"
+    definition: "The share of a portfolio taken out in the first year of retirement, then usually raised with inflation. At 4%, the portfolio needs to be about 25 times yearly spending."
+  - term: "Power of attorney"
+    definition: "A document naming who may act for you, for money or for health decisions, if you cannot make decisions yourself."
+  - term: "Advance directive"
+    definition: "A document stating, in your own words, which medical treatment you would and would not want if you cannot say so yourself."
+  - term: "Long-term care"
+    definition: "Ongoing help with daily life, such as washing, dressing, eating and moving about, at home or in a care setting."
+  - term: "Means-testing"
+    definition: "Public support that depends on your income and savings, so your own money is used first."
 order: 57.5
 companionOf: "income-replacement-ratio"
 pubDate: 2099-01-22
+updatedDate: 2026-10-22
 localRules: [inheritance, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "petra"
@@ -25,9 +48,9 @@ faq:
   - question: "Does a single person need half of what a couple needs in retirement?"
     answer: "No, noticeably more than half. Housing, heating, internet, a car, and insurance cost nearly the same for one person as for two. A widely used statistical adjustment puts a single person's needs at roughly 70% of a couple's for the same standard of living. A retirement plan that simply halves a couple's benchmark will come up short."
   - question: "Do I still need life insurance if nobody depends on me?"
-    answer: "Often not. Life insurance replaces income for people who depend on it. With no dependants and no shared debts, there may be nobody to protect, and the premium can do more good elsewhere. Income protection is the opposite case. Insurance that pays if illness or injury stops you working protects the one income the whole plan rests on, and it usually matters more for a single earner than for a couple."
+    answer: "Often not. Life insurance replaces income for people who depend on it. With no dependants and no shared debts, the case for cover is weaker, though final expenses, guarantees and other obligations still need checking. Income protection is the opposite case. Insurance that pays if illness or injury stops you working protects the one income the whole plan rests on, and it usually matters more for a single earner than for a couple."
   - question: "Who makes decisions for me if I cannot and I have no family?"
-    answer: "Without a document, the answer is set by local law and may be a distant relative, a court-appointed guardian, or a public official. To choose for yourself you need powers of attorney: one covering money and one covering health decisions. The person named can be a friend, a relative you trust, or in many countries a professional such as a solicitor or a licensed fiduciary. It helps to name a substitute too, and to pick people younger than you where you can."
+    answer: "Without a document, the answer is set by local law and may be a distant relative, a court-appointed guardian, or a public official. To choose for yourself, many people use powers of attorney: one covering money and one covering health decisions. The person named can be a friend, a relative you trust, or in many countries a professional such as a solicitor or a licensed fiduciary. It helps to name a substitute too, and to pick people younger than you where you can."
   - question: "How do I plan for long-term care without a family caregiver?"
     answer: "Start by assuming that help will be paid for, because most long-term care worldwide is provided unpaid by relatives. Then find out what your country's public system covers and whether support is means-tested, meaning it depends on your income and savings. The remaining gap can be met from savings set aside for the purpose, from insurance where a market exists, or from housing choices that reduce the need, such as accessible homes, supported housing, or living near friends."
 reelPromise: "A side-by-side table of which dual-income rules of thumb to change on one income, and the five documents that stand in for a family fallback"
@@ -39,131 +62,101 @@ referentialReading:
     type: "paper"
 ---
 
-The post on the [income replacement ratio](/blog/income-replacement-ratio/) built a retirement number from a household's expected spending. Like most retirement writing, it spoke about households in the plural: a mortgage paid off together, children becoming independent, dependants still being supported.
+Two households follow the same rule: six months of spending saved as an emergency fund. A couple each earn €2,500 a month after tax and spend €3,600; a single earner takes home €3,000 and spends €2,400. One job is lost in each household.
 
-Some people live alone by choice, some after a separation or a death, and some are raising children on a single income. One-person households are common, and their plans cannot rely on a second adult stepping in.
+The couple's income falls to €2,500, so they are €1,100 a month short, and their €21,600 fund lasts nearly **20 months**. The single earner is short the full €2,400, and her €14,400 fund lasts **6 months**. Same rule, more than three times the runway.
 
-For those readers, standard advice is not wrong so much as calibrated for someone else. The formulas still work. The numbers that go into them need changing, and one part of the plan that couples get for free has to be built by hand.
+The [income replacement ratio post](/blog/income-replacement-ratio/), like most retirement writing, spoke of households in the plural. Some people live alone by choice, some after a separation or a death, some raise children on one income, and many grow older without a partner or family nearby (a [solo ager](#term-solo-ager)). For them the formulas still work; the inputs change, and one part of the plan couples get for free has to be built by hand.
 
-This post does both. The first half adjusts the money assumptions. The second half covers the question that has no formula: who acts for you when you cannot.
+## Common rules of thumb quietly assume a second income
 
-## Part one: the second adult hidden in the rules
-
-Here is how a second income changes a routine shock.
-
-**A couple.** Each earns €2,500 a month after tax. Together they spend €3,600. One of them loses a job. Income falls to €2,500 and the shortfall is **€1,100 a month**. A six-month emergency fund of €21,600 lasts nearly **20 months**.
-
-**A single earner.** She earns €3,000 a month after tax and spends €2,400. She loses her job. The shortfall is the full **€2,400 a month**. Her six-month fund of €14,400 lasts exactly **6 months**.
-
-Both households followed the same rule. One has more than three times the runway.
-
-The rule was never really "six months of expenses". It was "six months of expenses, with another income still coming in". That second income is the **default assumption** (the unstated guess about who you are that a rule or product carries, as described in [When the Default Plan Doesn't Fit You](/blog/when-the-default-plan-does-not-fit-you/)).
-
-The same assumption sits inside several other rules.
+The same six months can mean very different runway: for the couple, another income keeps covering part of the spending; for the single earner, the fund covers all of it. That second income is a [default assumption](#term-default-assumption), the unstated guess about who you are that [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) described, and it sits inside several other rules:
 
 | Rule of thumb | What it quietly assumes | The single-income adjustment |
 |---|---|---|
 | Emergency fund of 3 to 6 months | A second income covers part of the gap | Many aim for the upper end or beyond, often 6 to 12 months |
-| Income protection matters less as savings grow | A partner's income is a fallback | Often kept longer; your income is the only engine |
-| Housing at around a third of income | Two incomes, or one as a cushion | Set fixed costs against one income with no cushion |
+| Income protection matters less as savings grow | A partner's income is a fallback | Many keep it longer; your income is the only engine |
+| Housing at around a third of income | Two incomes, or one as a cushion | Fixed costs set against one income, with margin |
 | Retirement needs scale with the household | Two people share one set of bills | One person needs about 70% of a couple's spending, not 50% |
 | A survivor benefit protects the partner | There is a partner | No survivor to protect, and no survivor pension to receive |
-| Someone will handle things if you are ill | A spouse or adult child | Name that person in writing |
+| Someone will handle things if you are ill | A spouse or adult child | That person named in writing |
 
-Taking these in turn.
+How far to move each depends on how stable the income is, the local safety net, and whether anyone depends on you.
 
-### The emergency fund
+## One income changes how long an emergency fund lasts
 
-The post on the [emergency fund](/blog/emergency-fund/) gave three to six months as a common guideline. On one income, the reasoning that produced that range points higher. How much higher depends on two things: how stable your income is, and how long it would realistically take to replace it. A civil servant in a secure post and a contractor in a volatile industry are both single earners with very different answers.
+The [emergency fund post](/blog/emergency-fund/) gave three to six months as a common guideline. On one income the shortfall is all of your spending, so the same reasoning points higher. How much higher depends on two things: how stable the income is, and how long it would realistically take to replace it. A civil servant in a secure post and a contractor in a volatile industry are both single earners with very different answers.
 
-### Income protection
+<details class="quick-check">
+<summary class="disclosure">Quick check: a single earner spends €2,000 a month and has €9,000 saved. How long does it last if the job goes?</summary>
 
-The post on [insurance basics](/blog/insurance-basics/) called cover that replaces your income when you cannot work one of the most overlooked kinds of insurance. For a single earner, that income is everything.
+About four and a half months, because the shortfall is the whole €2,000. A couple with the same fund and only part of their spending uncovered would last much longer.
 
-Two consequences follow, and they point in opposite directions.
+</details>
 
-- **Life insurance may be unnecessary.** It exists to protect people who depend on your income. With no dependants and no shared debts, there may be nobody to insure for. If you are a single parent, it is the reverse: you are the only income a child has, and cover matters more.
-- **Income protection matters more.** Insurance that pays a monthly amount if illness or injury stops you working is protecting the one thing the plan cannot do without. Advice to reduce this cover as savings grow assumes a partner could carry the household for a while.
+**Insurance points two ways.** Life insurance exists to protect people who depend on your income; with no dependants and no shared debts, there may be nobody to insure for. For a single parent it is the reverse: the only income a child has. Income protection, which pays monthly if illness or injury stops you working (the [insurance basics post](/blog/insurance-basics/) called it one of the most overlooked kinds of cover), protects the one engine the plan rests on, and its value depends on the benefit, exclusions, waiting period, savings already available and whether any other income could carry the household. **Fixed costs** follow the same logic: a couple can lose one income and still pay the rent, a single earner cannot, so a common response is to set housing, loans and hard-to-cancel contracts at a level one income covers with margin, and to count that margin as part of the safety plan.
 
-### Fixed costs
+## One person needs about 70% of a couple's budget, not 50%
 
-A couple on two incomes can lose one and still pay the rent. A single earner cannot. A common response is to set fixed costs (housing, loan payments, contracts you cannot cancel quickly) at a level one income covers comfortably, with margin, and to treat that margin as part of the safety plan.
+Two people do not spend twice what one does: rent, heating, internet, a car and home insurance cost about the same for one person as for two. Statisticians adjust for this with an [equivalence scale](#term-equivalence-scale). A widely used version, described by the OECD, says needs grow with the square root of household size: a couple needs about 1.4 times what one person needs, so one person needs about **70%** of a couple's budget for the same standard of living. If a couple's comfortable retirement costs €3,000 a month, the single equivalent is about €2,100, not €1,500. None of this means a single person needs to be richer; it means running the plan on its own numbers.
 
-### The retirement number
+<details class="lesson-depth">
+<summary class="disclosure">No survivor pension, in either direction</summary>
 
-This is where halving goes wrong.
+A couple's plan often relies on a pension continuing to whichever partner survives. A single person has no survivor to protect and no survivor pension to receive: their pension income simply is what it is. A couple also typically has two state pensions in the household; a single person has one.
 
-Two people do not spend twice what one person spends. Rent, heating, internet, a car, and home insurance cost about the same whether one person or two live in the flat. Statisticians adjust for this with an **equivalence scale**. A widely used version says a household's needs grow with the square root of its size. By that measure, a couple needs about 1.4 times what a single person needs, which means a single person needs about **70%** of a couple's budget to live at the same standard.
+</details>
 
-So if a couple's comfortable retirement costs €3,000 a month, the single equivalent is about €2,100, not €1,500.
+<details class="lesson-depth">
+<summary class="disclosure">Lifetime income, where that exists</summary>
 
-Three further things change in retirement:
+A single person cannot rely on a partner's income if they live longer than expected. State pensions, defined-benefit pensions and some annuities pool longevity risk across many people; portfolio withdrawals do not. A [withdrawal rate](#term-withdrawal-rate) of around 4% is a common US-derived reference point, not a guarantee. What matters is how much dependable lifetime income exists, when it starts, whether it rises with inflation, and how much spending is left for the portfolio.
 
-- **No survivor pension in either direction.** A couple's plan often relies on a pension continuing to the survivor. A single person's pension income simply is what it is.
-- **No second state pension in the household.** A couple typically has two.
-- **Longevity is carried alone.** A **safe withdrawal rate** is the share of a portfolio you can take out each year with a low risk of running out; a commonly cited reference point is around 4%, drawn from United States history, with lower figures often suggested for other markets. A single person living to 95 has nobody to pool that risk with, which is an argument for the cautious end of whatever range you use, or for turning part of the savings into a guaranteed lifetime income where that option exists.
+</details>
 
-None of this means a single person needs to be richer. It means the plan has to be run on its own numbers.
+## Naming, in writing, who acts for you if you cannot
 
-## Part two: the backup-person problem
+A partner is often the first person contacted in an emergency, though marriage does not automatically give authority over every bank account, contract or medical decision; the rules vary by country and institution. Someone living alone is less likely to have even that informal first contact. If nothing is arranged, the law supplies one: a relative by blood, however distant, or a guardian appointed by a court, who may not be the person you would have picked. Five documents stand in for the family fallback:
 
-Couples have a default for almost every emergency. If one is in hospital, the other deals with the landlord, the bank, and the doctors. Institutions frequently accept a spouse without asking for paperwork.
+1. **A financial [power of attorney](#term-power-of-attorney):** who can manage your money, pay bills and deal with your bank if you cannot. Depending on local law, it may work at once, continue after loss of capacity, or begin only after a finding of incapacity.
+2. **A healthcare power of attorney** (also called a healthcare proxy): who makes medical decisions for you.
+3. **An [advance directive](#term-advance-directive):** what treatment you would and would not want, in your own words.
+4. **A will.** Without one, inheritance rules choose your heirs, and for someone with no spouse or children those rules can reach relatives you have never met.
+5. **A where-everything-is list:** accounts, policies, the password manager, the landlord's details, who to call. It has no legal force, and it is the one the named person will use first.
 
-A person living alone has no such default. If nothing has been arranged, the law supplies one: a relative by blood, however distant, or a guardian appointed by a court. That may not be the person you would have picked.
+Beneficiary or nomination forms on pensions and insurance belong on the same list; whether they override a will, and whether the provider must follow them, depends on the product and local law.
 
-The fix is a small set of **deliberate designations**, written choices that replace the default.
+The person can be a friend who knows your wishes, a relative you trust, or in many countries a professional such as a solicitor, notary or licensed fiduciary, for a fee. Many people also name a substitute in case the first cannot act, and choose someone younger than themselves where they can. A later post in this series goes further into friends and chosen family where the law expects relatives.
 
-### The five documents
+<details class="quick-check">
+<summary class="disclosure">Quick check: which of the five documents has no legal force, and why does it matter anyway?</summary>
 
-1. **A financial power of attorney.** Names who can manage your money, pay your bills, and deal with your bank if you cannot. It can be written to take effect only if you lose capacity.
-2. **A healthcare power of attorney.** Names who makes medical decisions for you. Also called a healthcare proxy.
-3. **An advance directive.** States in your own words what treatment you would and would not want. It guides the person you named and the doctors.
-4. **A will.** Without one, inheritance rules choose your heirs. For a person with no spouse or children, those rules can reach relatives you have never met.
-5. **A where-everything-is document.** A plain list of accounts, policies, passwords kept in a password manager, the landlord's details, and who to call. It has no legal force and it is the one the named person will use first.
+The where-everything-is list. It is what the person you named will reach for first, to find the accounts, policies and contacts they need to act.
 
-Beneficiary forms on pensions and insurance belong on the same list. They often pass money outside the will altogether.
+</details>
 
-### Choosing the person
+## Care you may have to pay for
 
-Without a spouse or child, the choice is wider than it first seems.
+[Long-term care](#term-long-term-care), ongoing help with washing, dressing, eating and moving about, is mostly provided unpaid by partners and adult children around the world, which is why plans rarely show it: a family caregiver sends no invoice. Someone without an expected family caregiver may need to budget for more paid help, while checking what public services, community support and friends could provide. Three things shape the cost: what the public system covers (some countries run compulsory care insurance, others help only once savings fall below a threshold, known as [means-testing](#term-means-testing)); how the gap is funded (savings set aside for it, insurance where a market exists, or the value of a home); and where you live (an accessible home near friends and services, or shared or supported housing, delays the point at which paid care is needed). It is the hardest number in the plan to estimate, and still more useful as a line with a rough figure than as a blank.
 
-- **A friend.** Often the person who knows your wishes best. Ask them directly, and give them a copy.
-- **A relative you trust.** A sibling, niece, or nephew.
-- **A professional.** In many countries a solicitor, notary, or licensed fiduciary can be appointed, for a fee.
-- **A substitute.** A second named person covers the case where the first cannot act.
+## Local rules that change the plan
 
-Where you can, choose someone younger than you. A later post in this series goes further into relying on friends and chosen family where the law expects relatives.
+<details class="lesson-depth">
+<summary class="disclosure">How some tax systems treat single people</summary>
 
-### Care you may have to pay for
+Some systems tax single people more heavily than couples on the same household income, through joint filing or allowances only couples can share. It is a cost to plan for, not something to fix.
 
-**Long-term care** means ongoing help with daily life: washing, dressing, eating, moving about. Around the world, most of it is provided unpaid by partners and adult children. Financial plans rarely show this, because a family caregiver has no invoice.
+</details>
 
-Planning alone means assuming that care will be bought.
+<details class="lesson-depth">
+<summary class="disclosure">Care, documents and inheritance by region</summary>
 
-Three things shape the cost:
+- **Long-term care.** Germany, the Netherlands and Japan fund care through compulsory insurance. In the UK, care funding and thresholds differ across England, Scotland, Wales and Northern Ireland. In the US, Medicare generally covers little long-term custodial care, and Medicaid support depends on state rules and financial eligibility. Many other systems combine family care, public support and private payment in different proportions.
+- **Powers of attorney.** Names and formalities differ; some countries require registration or a notary, and a document made in one country is not always recognised in another, which matters for assets abroad.
+- **Inheritance.** In common-law countries a will can usually leave everything to a friend or a charity. Where forced heirship applies, relatives may be entitled to a share regardless.
 
-- **What your public system covers.** Some countries run compulsory long-term care insurance. Others provide support only after your own savings fall below a threshold, which is known as **means-testing**.
-- **How you fund the gap.** Savings earmarked for the purpose, insurance where a market exists, or the value of a home.
-- **Where you live.** An accessible home close to friends and services delays the point at which paid care is needed. Shared or supported housing does the same.
+</details>
 
-This is the hardest number in the plan to estimate. It is still better as a line with a rough figure than as a blank.
+A household of one is not a smaller version of a couple. It carries the same risks with fewer places to put them, and most of the difference is closed by changing a handful of numbers and writing down one name.
 
-## Cross-continent notes
-
-**Long-term care systems.** Germany, the Netherlands, and Japan fund care through compulsory insurance. The United Kingdom and the United States rely largely on means-tested support, so personal savings are used first. In much of southern Europe, Asia, and Latin America, the system assumes family care, and formal services are thinner.
-
-**Powers of attorney.** The names and formalities differ. Some countries require registration or a notary. A document made in one country is not always recognised in another, which matters if you hold assets abroad.
-
-**Inheritance.** In common-law countries a will can usually leave everything to a friend or a charity. In countries with forced heirship, relatives may be entitled to a share regardless.
-
-**Tax.** Some systems tax single people more heavily than couples at the same household income. That is a cost to plan for, not something to fix.
-
-## Getting started
-
-- **Rerun your emergency fund on your own shortfall.** Months of full expenses, with no second income.
-- **Check what happens to your income if you are ill for a year.** Employer sick pay, state support, and any insurance.
-- **Rebuild your retirement number from your own budget.** Halving a couple's figure usually understates it.
-- **Name your person.** Ask them, then put it in writing in the form your country requires.
-- **Write the where-everything-is document.** One evening.
-
-A household of one is not a smaller version of a couple. It carries the same risks with fewer places to put them. Most of the difference is closed by changing a handful of numbers and writing down one name.
+If you could not act for yourself next week, who would you want to call your bank, and do they know?
