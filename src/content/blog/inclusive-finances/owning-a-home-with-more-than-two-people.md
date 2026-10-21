@@ -1,16 +1,35 @@
 ---
 slug: "owning-a-home-with-more-than-two-people"
 title: "Owning a Home With More Than Two People"
-description: "When three or more people buy together, the title decides who ends up with the house. Ownership forms, the mortgage, and the agreement a group needs."
-tldr: "Buying a home as a group of friends or partners is increasingly common and the paperwork is built for couples. Three things decide whether it works. The first is how the title is held. Under a joint tenancy with right of survivorship, each death passes the share to the remaining owners, so in a group the last survivor ends up with the whole house and nobody's will can change that. Under ownership in stated shares, each person's share is theirs to leave. For a group, stated shares are often the better fit. The second is the mortgage, which is a separate question from the title: lenders limit how many people can be named, everyone named is liable for the whole debt, and a person who pays without being on the title or the loan has the weakest position of all. The third is a co-ownership agreement that records what each person put in and sets a buy-out formula for the day someone wants to leave, because a departure usually means refinancing. Co-operatives, land trusts and cohousing change what you own altogether, and their founding documents answer the same questions."
+seoTitle: "Buying a House With Friends or Partners: Title and Loan"
+description: "Buying a home with three or more people? How joint tenancy can hand the house to the last survivor, why title and mortgage are separate, and what a co-ownership agreement records."
+tldr: "When three or more people buy a home, three things decide whether it works. The title: under joint tenancy each death passes the share to the remaining owners, so the last survivor ends up with everything; stated shares let each person choose where theirs goes. The mortgage, a separate question: everyone named owes the whole debt, and someone who pays without being on the title or the loan has the weakest position. And a co-ownership agreement recording contributions and a buy-out formula, because a departure usually means refinancing."
 takeaways:
-  - "Why joint tenancy turns a group home into a last-survivor contest"
-  - "Why being on the title and being on the mortgage are separate"
-  - "What a co-ownership agreement records, and why buy-outs matter"
-  - "How co-ops, land trusts and cohousing change what you own"
+  - text: "Why joint tenancy turns a group home into a last-survivor contest"
+    href: "#joint-tenancy-turns-a-group-home-into-a-last-survivor-contest"
+  - text: "Why being on the title and being on the mortgage are separate"
+    href: "#being-on-the-title-and-being-on-the-mortgage-are-separate"
+  - text: "What a co-ownership agreement records, and why buy-outs matter"
+    href: "#what-a-co-ownership-agreement-records-and-why-buy-outs-matter"
+  - text: "How co-ops, land trusts and cohousing change what you own"
+    href: "#how-co-ops-land-trusts-and-cohousing-change-what-you-own"
+glossary:
+  - term: "Joint tenancy"
+    definition: "Owning a property together so that, when one owner dies, the others automatically own it all, whatever a will says."
+  - term: "Tenancy in common"
+    definition: "Owning a property in separate shares, which can be unequal, each passing under its owner's will or the inheritance rules."
+  - term: "Joint and several liability"
+    definition: "Each borrower owes the whole of a joint debt, so the lender can pursue any one of them for all of it."
+  - term: "Co-ownership agreement"
+    definition: "A contract among the owners of a property recording contributions, how a share is bought out, and what happens on non-payment, sale, death or dispute."
+  - term: "Housing co-operative"
+    definition: "An organisation that owns a building for its members, who hold a share or membership right entitling them to a home rather than owning it directly."
+  - term: "Community land trust"
+    definition: "A non-profit that owns the land while residents own or lease the homes, usually with resale limits that keep them affordable."
 order: 58.6
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-25
+updatedDate: 2026-10-22
 localRules: [property, inheritance, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -29,7 +48,7 @@ faq:
   - question: "What is a housing co-operative?"
     answer: "It is an organisation that owns a building on behalf of its members. A member does not own a flat directly. They hold a share or a membership right that entitles them to live in one. The co-operative's rules decide what that right can be sold for, who can buy it, and what happens when a member dies or leaves. In some co-operatives the share tracks the market value of the home, and in others it is fixed or capped to keep housing affordable."
   - question: "How do I count a shared home in my own net worth?"
-    answer: "A common approach is to count your own share only. If you own 40% of a house, count 40% of its value and 40% of any mortgage secured on it. If you have contributed to a home you are not on the title of, what you hold is a claim and not an asset, and it is worth only what you could enforce. That is a strong reason to get contributions recorded in writing."
+    answer: "A common approach is to count your own share: if you own 40% of a house, 40% of its value and the share of the debt the owners have agreed among themselves. On a joint mortgage, the lender can still pursue any borrower for the whole balance. If you have contributed to a home you are not on the title of, what you hold is a claim and not an asset, and it is worth only what you could enforce. That is a strong reason to get contributions recorded in writing."
 reelPromise: "Why joint ownership in a group hands the whole house to the last survivor, and the six clauses a co-ownership agreement needs"
 relatedSlugs: ["unmarried-and-cohabiting-couples", "shared-households-money-for-three-or-more", "real-estate-as-investment", "understanding-loan-terms"]
 referentialReading:
@@ -43,114 +62,100 @@ referentialReading:
     type: "book"
 ---
 
-The post on [unmarried couples](/blog/unmarried-and-cohabiting-couples/) explained that how two people hold the title to a home decides what happens when one of them dies. It described two forms of ownership and said neither is better.
+Mira and Tobias are married, and Kai has been their partner for six years. The three of them bought a house together. The mortgage broker offered the couple joint ownership, so the title names Mira and Tobias as joint tenants. Kai put in €60,000 of the deposit and pays a third of every mortgage payment. None of it is written down.
 
-That holds for two people. For three or more, the same choice has a consequence that surprises almost everyone who meets it.
+Mira dies suddenly. Under a [joint tenancy](#term-joint-tenancy), Tobias now owns the whole house automatically. Kai is not on the title. Depending on local law, Kai may be able to claim a share or repayment from the contributions, but proving it with nothing in writing is hard and expensive; the payments might be treated as rent, household costs, a loan or a gift. If Tobias then dies without a will, the house goes to his relatives. Nobody planned that; it is what the defaults produce when the paperwork sees two owners and the household has three.
 
-Mira and Tobias are married. Kai has been their partner for six years. The three of them bought a house together. The mortgage broker offered the couple joint ownership, so the title names Mira and Tobias as joint tenants. Kai put in €60,000 of the deposit and has paid a third of every mortgage payment since. None of it is written down.
+The same happens to friends, siblings and any group pooling money for a home. This companion to the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [shared households](/blog/shared-households-money-for-three-or-more/) posts covers the title, the mortgage, the agreement and the structures that hold property for a group. Property law differs in every country, so it teaches the questions; for the documents, a local professional is the usual route.
 
-Mira dies suddenly.
+## Joint tenancy turns a group home into a last-survivor contest
 
-Under a joint tenancy, Tobias now owns the entire house automatically. Kai has no automatic right to any of it. At best there is a claim to argue in court, with nothing in writing to support it. The €60,000 and the payments look, on paper, like a gift. If Tobias then dies without a will, the house goes to Tobias's relatives.
+For a couple, joint tenancy is a simple way to protect the survivor. In a group, it means the survivors take each dead owner's share in turn. Three friends buy as joint tenants. The first dies, and the other two own the house. The second dies, and the third owns all of it. The families of the first two receive nothing, whatever anyone intended, and no will can change it.
 
-Nobody planned that outcome. It is what the defaults produce when the paperwork can see two owners and the household has three.
+[Tenancy in common](#term-tenancy-in-common) is more often the fit for a group, because it does two things joint tenancy cannot. **It records who put in what:** shares of 50%, 30% and 20% can match contributions of 50%, 30% and 20%. **It lets each person direct their share through a will:** to a partner, a child or another owner, subject to forced heirship, spouses' rights, the mortgage and other local rules. It also means each owner needs a will; without one, a share passes to that owner's relatives, who then co-own a house with the rest of the group.
 
-The same thing happens to friends who buy together, to siblings, and to any group pooling money for a home. This piece is a companion to the unmarried couples post and to the one on [shared households](/blog/shared-households-money-for-three-or-more/). It covers the title, the mortgage, the agreement, and the structures that hold property for a group. Property law differs in every country, so it teaches the questions. For the documents, a local professional is the usual route.
+Civil-law countries use other concepts, such as co-ownership in defined shares, often with rules on first refusal when a share is sold, or on forced heirship. Three questions apply everywhere: who owns what fraction, where does a share go on a death, and what happens if someone wants out?
 
-## The title: who ends up with the house
+<details class="quick-check">
+<summary class="disclosure">Quick check: four friends own a flat as joint tenants. Two die. Who owns the flat?</summary>
 
-The unmarried couples post described the two common-law forms: under a **joint tenancy** the survivors automatically take a dead owner's share, and under a **tenancy in common** each stated share passes under its owner's will.
+The two survivors, between them. The first two owners' shares passed to the others automatically, and their wills could not change that.
 
-For a couple, joint tenancy is a simple way to protect the survivor. In a group it turns ownership into a last-survivor contest. Three friends buy as joint tenants. The first dies, and the other two own the house between them. The second dies, and the third owns all of it. The families of the first two receive nothing, whatever was intended.
+</details>
 
-Tenancy in common is more often the fit for a group, because it does two things joint tenancy cannot:
+## Being on the title and being on the mortgage are separate
 
-- **It records who put in what.** Shares of 50%, 30% and 20% can match contributions of 50%, 30% and 20%.
-- **It lets each person choose who receives their share.** A partner, a child, the other owners, anyone.
-
-It also means each owner needs a will. Without one, a share passes to that owner's relatives, who then co-own a house with the rest of the group.
-
-Civil-law countries use other concepts, such as co-ownership by defined shares, and often add rules on pre-emption (whether the other owners get first refusal on a sale) or forced heirship. The questions are the same everywhere: who owns what fraction, what happens to a share on a death, and what happens if someone wants out.
-
-## The mortgage: a separate question
-
-The title says who owns the house. The loan says who owes the money. They do not have to match, and the mismatches are where people get hurt.
-
-- **Lenders limit how many people can be named.** Often somewhere between two and four, depending on the lender and the country. Some count only the two highest incomes when deciding how much to lend.
-- **Everyone named is liable for the whole debt.** Not a share of it. The post on [loan terms](/blog/understanding-loan-terms/) covers how a mortgage works. For a group, the point to add is that if one borrower stops paying, the lender can pursue any of the others for everything.
-- **Paying is not owning.** Someone who contributes to a mortgage without being on the loan or the title, as Kai did, carries the cost without the ownership.
-
-Four combinations are possible, and it helps to know which one you are in.
+The title says who owns the house. The loan says who owes the money. They do not have to match, and the mismatches are where people get hurt. Lenders often limit borrowers to between two and four, and some count only the two highest incomes. Everyone named on the loan owes the whole debt, not a share of it ([joint and several liability](#term-joint-and-several-liability)): if one stops paying, the lender can pursue any of the others for all of it (the [loan terms post](/blog/understanding-loan-terms/) covers how mortgages work). And paying is not owning: someone who contributes without being on the loan or the title, as Kai did, carries the cost without the ownership.
 
 | On the title | On the loan | Position |
 |---|---|---|
 | Yes | Yes | Owns a share and owes the debt. The standard case. |
 | Yes | No | Owns a share without owing the lender. Rare, and lenders often refuse it. |
 | No | Yes | Owes the whole debt and owns nothing. The worst formal position. |
-| No | No | Pays informally. Owns nothing unless an agreement says otherwise. |
+| No | No | Pays informally. Not a registered owner; an agreement may create a repayment, contractual or ownership claim, depending on local law. |
 
-If a member of the group cannot go on the title or the loan, a written agreement recording their contributions and what they are entitled to is the minimum protection.
+If someone contributes without being on the title or the loan, a written agreement can record whether each payment buys a share, repays a loan, pays rent or covers household costs; whether it creates an enforceable property interest depends on local law.
 
-## The agreement: what the law does not supply
+## What a co-ownership agreement records, and why buy-outs matter
 
-Married couples who separate have a legal framework for dividing a home. A group of owners has only what it writes down. A **co-ownership agreement** is a contract among the owners. Six parts matter most.
+Married couples who separate have a legal framework for dividing a home. A group of owners has much less of a default framework, so what it writes down matters more. A [co-ownership agreement](#term-co-ownership-agreement) is a contract among the owners, and six clauses do most of the work: contributions, a buy-out formula, non-payment, sale, death and incapacity, and disputes.
 
-- **Contributions.** What each person put in, as a deposit, as improvements, and as continuing payments. Kai's €60,000 belongs here.
-- **The buy-out formula.** How a leaving owner's share is valued and paid, and how fast. Options include an independent valuation, an agreed formula, or a right for the others to buy first.
-- **Non-payment.** What happens if someone stops paying their share. Who covers it, and how it is repaid.
+<details class="lesson-depth">
+<summary class="disclosure">Six clauses for an owners' agreement</summary>
+
+- **Contributions.** What each person put in, as deposit, improvements and continuing payments. Kai's €60,000 belongs here.
+- **The buy-out formula.** How a leaving owner's share is valued and paid, and how fast: an independent valuation paid for jointly, the average of two valuations, or a formula based on the purchase price and an agreed index, with first refusal for the others before an outsider.
+- **Non-payment.** What happens if someone stops paying their share, who covers it, and how it is repaid.
 - **Sale.** Whether one owner can force a sale, and the notice needed.
 - **Death and incapacity.** How a share passes, and who acts for someone who cannot.
-- **Disputes.** A route to resolve disagreement before a court, such as mediation.
+- **Disputes.** A route to resolve disagreement before court, such as mediation.
 
-### Why the buy-out clause matters most
+Agreements are more likely to hold when each person has had independent advice; enforceability differs by country.
 
-People leave. They take jobs elsewhere, form new relationships, or fall out. When an owner leaves, the others usually have to do two things at once: pay the leaver for their share, and take the leaver's name off the mortgage. The second means a new loan in the remaining owners' names, assessed on their incomes alone.
+</details>
 
-So a departure is a refinancing, at whatever interest rates apply that day. The remaining owners need to qualify for a bigger loan between fewer people. If they cannot, the house may have to be sold.
+The buy-out clause matters most because people leave: a job elsewhere, a new relationship, a falling-out. When an owner leaves, the others usually have to pay the leaver and take the leaver's name off the mortgage, which means a new loan assessed on fewer incomes, at whatever rates apply that day. If they cannot qualify, the house may have to be sold. An agreement that sets the valuation method, a period of months to raise the money and a fallback if it cannot be raised turns a crisis into a process.
 
-An agreement that sets the valuation method, a period of months to raise the money, and a fallback if the money cannot be raised turns a crisis into a process. Agreements like this are more likely to hold when each person has had independent advice. Enforceability differs by country.
+<details class="quick-check">
+<summary class="disclosure">Quick check: one of three owners wants to leave. Why is that usually a refinancing?</summary>
 
-## Structures that own the home for you
+Because the leaver's name has to come off the mortgage, so the remaining owners need a new loan in their names alone, assessed on their incomes and at that day's rates.
 
-Some communal households do not hold property personally. They use a structure that holds it for the group.
+</details>
 
-- **A housing co-operative.** The building is owned by a co-operative and members hold shares or membership rights that entitle them to a home. (Known as a *bytové družstvo* in Czechia, a *Genossenschaft* in Germany, and a housing co-op in the United Kingdom and the United States.)
-- **A community land trust.** A non-profit owns the land, and residents own or lease the buildings, usually with limits on resale price so that homes stay affordable.
-- **Cohousing.** Households have private homes and share facilities such as a kitchen or garden. The legal form varies, from co-operative to condominium to company.
-- **A company or association holding the property.** Members hold shares in an entity that owns the building.
+## How co-ops, land trusts and cohousing change what you own
 
-Each of these changes the answers to the same questions. What do you actually own: a share, a membership right, or a lease? Can you sell it, to whom, and at what price? What happens on a death or a departure? Read the founding documents for the answers, because the label alone will not tell you.
+Some communal households do not hold property personally: a structure holds it for the group. A [housing co-operative](#term-housing-co-operative) owns the building, and members hold shares or membership rights that entitle them to a home (a *bytové družstvo* in Czechia, a *Genossenschaft* in Germany). A [community land trust](#term-community-land-trust) owns the land, and residents own or lease the buildings, usually with resale limits that keep homes affordable. Cohousing gives households private homes with shared facilities, under forms ranging from co-operative to condominium to company. Some groups hold a building through a company or association.
 
-Two things differ from owning directly. A membership right may not rise with the housing market, which matters if you were counting on the home as an investment; the post on [property as an investment](/blog/real-estate-as-investment/) covers that distinction. And lenders treat co-operative shares differently from ordinary property, so financing can be harder to find.
+<details class="lesson-depth">
+<summary class="disclosure">Cooperatives, land trusts, cohousing</summary>
 
-## Counting a shared home in your own plan
+Each structure changes the answers to the same questions. What do you actually own: a share, a membership right or a lease? Can you sell it, to whom, and at what price? What happens on a death or a departure? The founding documents answer them; the label alone does not.
 
-One practical question comes up for every group. What do you put in your own net worth?
+Two things differ from owning directly. A membership right may not rise with the housing market, which matters for anyone counting on the home as an investment (the [property as an investment post](/blog/real-estate-as-investment/) covers the distinction). And lenders treat co-operative shares differently from ordinary property, so financing can be harder to find.
 
-A common approach is to count your own share only. If you own 40% of a house, count 40% of its value and 40% of any mortgage attached to it. If you contributed €60,000 to a home you are not on the title of, that is a claim and not an asset, and it is worth only what you can enforce. That is one more reason to write it down.
+</details>
 
-A membership right in a co-operative is counted at what you could actually sell it for under the rules, which may be well below the market value of the flat.
+<details class="lesson-depth">
+<summary class="disclosure">How to count your share of a shared home</summary>
 
-## Cross-continent notes
+A common approach is to count your own share: if you own 40% of a house, 40% of its value and the share of the debt the owners have agreed among themselves, noting that on a joint mortgage the lender can pursue any borrower for the whole balance if the others do not pay. If you contributed €60,000 to a home you are not on the title of, that is a claim, not an asset, worth only what you can enforce, which is one more reason to write it down. A co-operative membership right counts at what you could actually sell it for under the rules, which may be well below the market value of the flat.
 
-**England and Wales.** No more than four people can be named on the legal title to a property. Owners in a group typically hold as tenants in common and record their shares in a declaration of trust. A larger group holds through a trust or a company.
+</details>
 
-**Germany.** Housing co-operatives are long established, and the *Mietshäuser Syndikat* model takes buildings out of the market and into collective ownership.
+## Ownership structures differ by country
 
-**Czechia.** Housing co-operatives (*bytové družstvo*) are a long-standing form, and co-ownership by defined shares (*podílové spoluvlastnictví*) lets several people own a property in stated fractions.
+<details class="lesson-depth">
+<summary class="disclosure">Ownership forms in England, Germany, Czechia, France, Spain, Italy and the US</summary>
 
-**France, Spain, Italy.** Co-ownership in undivided shares is the usual form. Forced heirship means a share may have to pass to children or other relatives, whatever the owners agreed among themselves.
+- **England and Wales.** No more than four people can be named on the legal title. Groups usually hold as tenants in common and record their shares in a declaration of trust; larger groups hold through a trust or a company.
+- **Germany.** Housing co-operatives are long established, and the *Mietshäuser Syndikat* model takes buildings out of the market into collective ownership.
+- **Czechia.** Housing co-operatives (*bytové družstvo*) are a long-standing form, and co-ownership in defined shares (*podílové spoluvlastnictví*) lets several people own a property in stated fractions.
+- **France, Spain, Italy.** Co-ownership in undivided shares is the usual form. Forced heirship means a share may have to pass to children or other relatives, whatever the owners agreed.
+- **United States.** Tenancy in common, limited liability companies holding a property, housing co-operatives and community land trusts. Rules differ by state.
 
-**United States.** Options include tenancy in common, limited liability companies holding a property, housing co-operatives and community land trusts. Rules differ by state.
+</details>
 
-**Everywhere.** The title and the loan documents decide what happens by default. An agreement between the owners is the only place the group's actual intentions are recorded.
+For Mira, Tobias and Kai, stated ownership shares, a written record of what the €60,000 bought, suitable wills and a workable mortgage arrangement could have made Kai's position far clearer. The cost, and whether Kai could keep the house, would depend on the lender and local property, inheritance and tax rules.
 
-## Getting started
-
-- **If you already own together:** find out how the title is held. If it is a joint tenancy and you are more than two, ask a professional about changing it.
-- **Write down every contribution so far.** Deposit, improvements, payments, with dates.
-- **If anyone pays without being on the title:** an agreement recording it, this month.
-- **Before buying:** decide the shares, the buy-out formula and the notice period first, and the house second.
-- **Each owner:** a will that says where their share goes.
-
-Go back to Mira, Tobias and Kai. A tenancy in common with stated shares, a one-page record of the €60,000, and three wills would have cost a small fee and an afternoon. That is what separates a house Kai can stay in from one Kai has to leave.
+If someone in your household pays toward a home they are not named on, where is that written down?

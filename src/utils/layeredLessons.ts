@@ -12,13 +12,9 @@ export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 /** Lessons at those levels not yet converted. Delete a slug when its lesson is. */
 export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   // Optimizing
-  'insurance-optimization',
   'recognizing-and-avoiding-financial-scams-and-fraud',
   'advanced-rebalancing',
   // Inclusive Finances
-  'unmarried-and-cohabiting-couples',
-  'owning-a-home-with-more-than-two-people',
-  'multi-partner-households',
   'divorce-and-separation-finances',
   'caregiving-and-the-career-break-wealth-gap',
   'financial-planning-with-a-disability',
