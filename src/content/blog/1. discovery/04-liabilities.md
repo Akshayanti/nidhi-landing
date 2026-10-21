@@ -23,7 +23,7 @@ referentialReading:
     url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
     type: "book"
   - title: "Good Debt vs. Bad Debt"
-    url: "https://www.investopedia.com/articles/personal-finance/081715/good-debt-vs-bad-debt.asp"
+    url: "https://www.investopedia.com/articles/pf/12/good-debt-bad-debt.asp"
     type: "blog"
   - title: "Debt-Free Degree"
     author: "Dave Ramsey"

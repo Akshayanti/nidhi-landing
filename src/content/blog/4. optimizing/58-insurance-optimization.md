@@ -35,7 +35,7 @@ referentialReading:
     url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
   - title: "Term vs Whole Life Insurance"
-    url: "https://www.investopedia.com/insurance/term-vs-whole-life/"
+    url: "https://www.investopedia.com/term-life-vs-whole-life-5075430"
     type: "blog"
   - title: "Umbrella Insurance Explained"
     url: "https://www.investopedia.com/terms/u/umbrella-insurance-policy.asp"

@@ -29,9 +29,10 @@ faq:
     answer: "Start with four numbers monthly: net worth, income, expenses, and savings rate. If you can do just these, you already have most of the dashboard's value. The format matters less than the discipline, so a notebook or a simple spreadsheet with columns for date, total assets, total liabilities, net worth, monthly income, monthly expenses, monthly savings, savings rate, and notes is plenty. The notes column is underrated: writing why net worth dropped this month, a vacation or a car repair, prevents misinterpretation later. Add quarterly depth such as asset allocation and goal progress gradually, and schedule the annual review as a half-day appointment. A dashboard maintained imperfectly beats one you abandon."
 relatedSlugs: ["financial-health-metrics", "setting-financial-goals", "introduction-to-financial-independence", "cash-flow-101", "passive-income-streams"]
 referentialReading:
-  - title: "Personal Finance Dashboards"
-    url: "https://www.investopedia.com/personal-financial-statement-5206617"
-    type: "blog"
+  - title: "Your Financial Health: Interpreting Statements and Using Ratios"
+    author: "Travis P. Mountain and William P. Jones (Virginia Tech Extension)"
+    url: "https://aaec.vt.edu/content/dam/pubs_ext_vt_edu/AAEC/aaec-184/AAEC-184NP.pdf"
+    type: "paper"
   - title: "The Millionaire Next Door"
     author: "Thomas J. Stanley"
     url: "https://www.goodreads.com/book/show/998.The_Millionaire_Next_Door"
