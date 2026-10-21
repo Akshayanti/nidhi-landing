@@ -1,16 +1,28 @@
 ---
 slug: "advanced-rebalancing"
 title: "Advanced Rebalancing: Glide Paths and Bond Tents"
-description: "Basic rebalancing holds a static target. Advanced rebalancing moves the target over time: glide paths and bond tents for when bad returns hurt most."
-tldr: "The rebalancing post in Building covered calendar-based, threshold-based, and contribution-based rebalancing to a static target. This post covers what changes as you approach and enter retirement. Glide paths gradually shift allocation from higher-risk to lower-risk over time; the classic 100-minus-age formula is one version, target-date-fund shapes are another, and each has trade-offs. Bond-tent strategies temporarily raise bond allocation in the 5 years before and 5 years after retirement to buffer against sequence-of-returns risk (the specific danger of bad early-retirement returns). Rebalancing frequency and threshold tightening often makes sense near retirement because the cost of drift is asymmetric (bad drift hurts more than good drift helps at drawdown). Tax-aware rebalancing across taxable and tax-advantaged accounts uses new contributions and withdrawals to shift allocation without triggering unnecessary tax events. Common mistakes: over-aggressive de-risking that leaves you exposed to inflation over 30+ years of retirement, and letting loss aversion drive rebalancing decisions (rebalancing that feels safer often sacrifices real return without meaningful risk reduction). The Mastery-level posts on sequence risk and withdrawal sequencing go deeper; this post positions the accumulation-to-drawdown transition."
+seoTitle: "Glide Paths and Bond Tents: Rebalancing Near Retirement"
+description: "How rebalancing changes near retirement: what the 100 minus age rule gets right, how a bond tent cushions the first years of withdrawals, and why too many bonds can backfire."
+tldr: "Near retirement the target mix often starts to move, and drift costs more once withdrawals begin. Glide paths, from 100 minus age to target-date funds, shift toward bonds over time. A bond tent raises bonds for about five years either side of retirement, when bad returns do the most damage, then lets shares rise again. Too many bonds can leave a 30-year retirement exposed to inflation, loss aversion can stall rebalancing, and a guaranteed pension can justify holding more in shares."
 takeaways:
-  - "What the 100 minus age rule captures and where it falls short"
-  - "How a bond tent cushions the years right around retirement"
-  - "Why too many bonds can leave a long retirement exposed to inflation"
-  - "Why guaranteed income like a pension can justify more equity"
+  - text: "What the 100 minus age rule captures and where it falls short"
+    href: "#what-the-100-minus-age-rule-captures-and-where-it-falls-short"
+  - text: "How a bond tent cushions the years right around retirement"
+    href: "#a-bond-tent-cushions-the-years-right-around-retirement"
+  - text: "Why too many bonds can leave a long retirement exposed to inflation"
+    href: "#too-many-bonds-can-leave-a-long-retirement-exposed-to-inflation"
+  - text: "Why guaranteed income like a pension can justify more equity"
+    href: "#guaranteed-income-like-a-pension-can-justify-more-equity"
+glossary:
+  - term: "Glide path"
+    definition: "A planned shift in a portfolio's mix over time, usually from shares toward bonds as retirement approaches."
+  - term: "Bond tent"
+    definition: "A glide path that raises the bond share in the years either side of retirement, then lowers it again once the riskiest years have passed."
+  - term: "Sequence-of-returns risk"
+    definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 60
 pubDate: 2099-01-29
-updatedDate: 2026-09-02
+updatedDate: "2026-10-22"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -24,9 +36,9 @@ faq:
   - question: "How does rebalancing change when I approach retirement?"
     answer: "Three things typically shift. First, frequency and threshold: many households tighten rebalancing bands as they approach retirement because the cost of drift is asymmetric. Being over-allocated to equity right before a crash matters more than being over-allocated to bonds right before a rally. Second, tax-awareness increases: in accumulation, using new contributions to rebalance is often the tax-cheapest approach; near retirement and in drawdown, contributions may have stopped, and rebalancing must happen through selling, which triggers tax in taxable accounts. Coordinating rebalancing across account types (rebalance first in tax-advantaged accounts where there is no tax consequence) becomes more important. Third, the target itself may shift under the glide path or bond tent; the rebalancing is not to a fixed 60/40 but to a moving target that reduces equity gradually or non-monotonically."
   - question: "Should I use a target-date fund for automatic glide-path rebalancing?"
-    answer: "Many households use one as a default. Target-date funds implement a pre-designed glide path automatically, rebalance internally, and at the leading US providers typically have low expense ratios (0.05% to 0.20%); availability and costs vary by country. For households who do not want to manage allocation actively, that simplicity is the main appeal. The trade-offs: the specific glide-path shape is designed for an average investor, which may not match your specific situation (your specific pension coverage, risk tolerance, retirement age target); the fund's tax efficiency in a taxable account is generally lower than a portfolio of separate stock and bond index funds because internal rebalancing generates capital-gains distributions in the US and some other systems; where funds do not distribute gains, or tax them differently, this may not apply. Target-date funds work best in tax-advantaged accounts where the internal rebalancing has no tax consequence. In taxable accounts, a portfolio of separate index funds with periodic manual rebalancing is often more efficient. For households who prefer full control or have unusual circumstances, custom glide paths can be constructed but require ongoing attention."
+    answer: "Many households use one as a default. Target-date funds implement a pre-designed glide path automatically, rebalance internally, and at the leading US providers typically have low expense ratios (0.05% to 0.20%); availability and costs vary by country. For households who do not want to manage allocation actively, that simplicity is the main appeal. The trade-offs: the specific glide-path shape is designed for an average investor, which may not match your specific situation (your specific pension coverage, risk tolerance, retirement age target); the fund's tax efficiency in a taxable account is generally lower than a portfolio of separate stock and bond index funds because internal rebalancing generates capital-gains distributions in the US and some other systems; where funds do not distribute gains, or tax them differently, this may not apply. Target-date funds are often used in tax-advantaged accounts, where the internal rebalancing has no tax consequence. In taxable accounts, some households use separate index funds with periodic manual rebalancing, because it can be more tax-efficient. For households who prefer full control or have unusual circumstances, custom glide paths can be constructed but require ongoing attention."
   - question: "What common rebalancing mistakes should I avoid near retirement?"
-    answer: "Two big ones. First, over-aggressive de-risking. A common intuition is that retirees should hold mostly bonds because bonds are 'safe.' But retirement often lasts 25 to 35 years, and over that time inflation is the primary long-run risk. A portfolio that is 80% bonds and 20% equity has meaningfully lower long-run expected return, and if inflation runs above expectations, the real value of the portfolio may not sustain lifestyle over 30 years. Many retirement planners work with equity allocations somewhere around 40 to 70% in retirement rather than 20%, though the right level depends on pensions, spending flexibility and how much volatility someone can live with. Second, loss aversion driving rebalancing decisions. If equity has risen and your allocation drifts to over-target, rebalancing means selling equity to buy bonds. Loss aversion (see the loss aversion post) makes selling winners painful; many households delay rebalancing when it would sell winners and rush to rebalance when it would sell losers. The usual remedy is mechanical: explicit thresholds set in advance, followed when triggered, which takes the emotional decision out of the moment."
+    answer: "Two big ones. First, over-aggressive de-risking. A common intuition is that retirees should hold mostly bonds because bonds are 'safe.' But retirement often lasts 25 to 35 years, and over that time inflation is the primary long-run risk. A portfolio that is 80% bonds and 20% equity has meaningfully lower long-run expected return, and if inflation runs above expectations, the real value of the portfolio may not sustain lifestyle over 30 years. Many retirement planners work with equity allocations somewhere around 40 to 70% in retirement rather than 20%, though the right level depends on pensions, spending flexibility and how much volatility someone can live with. Second, loss aversion driving rebalancing decisions. If equity has risen and your allocation drifts to over-target, rebalancing means selling equity to buy bonds. Loss aversion (see the loss aversion post) makes selling winners painful; many households delay rebalancing when it would sell winners and rush to rebalance when it would sell losers. A common remedy is mechanical: explicit thresholds set in advance, followed when triggered, which takes the emotional decision out of the moment."
 reelPromise: "Why the classic '100-minus-age' formula still teaches the right shape, what a bond tent buys you around the retirement transition, and the loss-aversion trap that quietly wrecks rebalancing near retirement"
 relatedSlugs: ["rebalancing-your-portfolio", "introduction-to-financial-independence", "financial-projections", "loss-aversion-and-the-disposition-effect"]
 referentialReading:
@@ -39,27 +51,15 @@ referentialReading:
     type: "blog"
 ---
 
-The [rebalancing post in Building](/blog/rebalancing-your-portfolio/) established the core mechanics: pick a target asset allocation, and periodically bring the portfolio back to that target as market movements pull it away. Calendar-based, threshold-based, or contribution-based methods all achieve the same goal. Research on rebalancing, such as Vanguard's, largely on US data, has generally found that annual or band-based rebalancing captures most of the risk-control benefit, and that rebalancing much more often adds cost without a clear gain.
+At 32, Eva held 80% shares and 20% bonds and rebalanced back to that mix once a year. A bad market then was almost welcome: her monthly contributions bought shares cheaply. At 62, about to start drawing on the portfolio, the same fall would mean selling shares at low prices to pay for groceries, locking in losses the portfolio may not recover from.
 
-This post is about what changes as you approach the end of accumulation and the beginning of drawdown. Two things shift: the target itself often starts to move (many people do not hold the same 80/20 allocation at 62 that they held at 32), and the cost of getting rebalancing wrong becomes asymmetric (in accumulation, over-allocation to equity in a downturn is an opportunity to buy more shares cheaply; in drawdown, it locks in losses that funded expenses).
+The [rebalancing post](/blog/rebalancing-your-portfolio/) covered the mechanics of bringing a portfolio back to a fixed target; research such as Vanguard's, largely on US data, has found that annual or band-based rebalancing captures most of the benefit. This post covers what changes near retirement: the target itself often starts to move, and getting rebalancing wrong costs more on the way out than on the way in.
 
-Advanced rebalancing addresses both. Glide paths shift the target over time. Bond tents shift it non-monotonically around the retirement transition. Tighter thresholds and tax-aware coordination reduce the cost of drift. The final Mastery-level posts on sequence risk and withdrawal sequencing go deeper into the drawdown mechanics; this post is about positioning the transition.
+## What the 100 minus age rule captures, and where it falls short
 
-## Glide paths: the target that moves
+A [glide path](#term-glide-path) is a planned shift from shares toward bonds over time. Early in a career, a bad market is offset by decades of contributions and time to recover; near retirement, with the portfolio at its largest and few working years left, a badly timed loss does more lasting damage.
 
-A glide path is a pre-planned reduction in equity allocation over time. The theoretical justification: earlier in a career, when the portfolio is small and working years ahead are many, higher equity allocation is easier to carry because the cost of a bad market is offset by decades of subsequent contributions and time to recover. Nearer retirement, when the portfolio is at its largest and working years are few, the cost of a bad market is much higher, and lower equity allocation reduces the risk of a badly-timed loss doing lasting damage.
-
-**The simple heuristic.** "100 minus age in stocks" is the classic version. A 30-year-old holds 70% stocks, 30% bonds. A 40-year-old holds 60% stocks. A 60-year-old holds 40% stocks. Straightforward, easy to apply, and captures the direction of change most planners favour, though it ignores everything about the individual except age.
-
-**The modern update.** Life expectancies have risen; retirement periods are longer; portfolios need to sustain 25 to 35 years of drawdown. Many modern versions use "110 minus age" or "120 minus age" to keep more equity later in life, recognising the long-run need for growth. A 60-year-old under "120 minus age" holds 60% stocks rather than 40%; the extra equity aims to keep ahead of inflation over a longer retirement, at the cost of larger swings.
-
-**Target-date funds.** Commercial funds named after retirement years (Target Retirement 2050, Target Retirement 2030, etc.) implement glide paths automatically. Each fund holds a diversified allocation that gradually shifts toward more bonds as the target date approaches. The specific glide-path shape varies by provider, but the common features: high equity in the first decades, gradual shift toward bonds, arrival at some retirement-appropriate allocation at or near the target date, and often a continued gentle shift after the target date.
-
-**What glide paths get right.** They embed the direction most planners favour (more bonds over time) into an automatic mechanism. They protect against the specific failure mode of setting an allocation at 30 and never revisiting it (a common enough pattern that target-date funds solve a real problem). They reduce the emotional weight of individual rebalancing decisions.
-
-**What glide paths get wrong.** The specific glide-path shape is designed for an average investor. Your specific situation (pension coverage, risk tolerance, planned retirement age, health, other income streams, dependants) may not match. A household with a strong employer pension, for example, may be under-invested on a standard glide path (the pensions section below explains why).
-
-**The custom-glide-path option.** For households who prefer more control, a custom glide path can be constructed: a target allocation set for each of several ages, with each annual review rebalancing to that changing target. This gives you control over the specific shape at the cost of requiring more attention.
+The classic rule, **"100 minus age in shares"**, gives 70% at 30, 60% at 40 and 40% at 60. It captures the direction most planners favour and ignores everything about the person except age. Because retirements now often last 25 to 35 years, many versions use 110 or 120 minus age: a 60-year-old on "120 minus age" holds 60% shares rather than 40%, aiming to keep ahead of inflation over a longer retirement at the cost of bigger swings. Target-date funds, named after a retirement year, build a glide path in automatically and solve a real problem: an allocation set at 30 and never revisited. But their shape is designed for an average investor, and pensions, health, retirement age and temperament can all point elsewhere. Some people instead set their own target for each of several ages and rebalance to it at each yearly review.
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-glide-title fig-glide-desc">
@@ -86,105 +86,72 @@ A glide path is a pre-planned reduction in equity allocation over time. The theo
 <figcaption>Illustrative glide-path shapes. Straight-line rules capture the direction of the right change; bond-tent shapes specifically address the sequence-risk window around retirement.</figcaption>
 </figure>
 
-## The bond tent: a shape designed for sequence risk
+## A bond tent cushions the years right around retirement
 
-Sequence-of-returns risk (introduced in the [projections post](/blog/financial-projections/), and covered more deeply in Mastery-level posts) is the danger of getting bad returns in the specific window when you are drawing income from the portfolio. Bad returns in year 1 of retirement, when you must sell shares to fund expenses, do more damage than the same-magnitude bad returns in year 25.
+[Sequence-of-returns risk](#term-sequence-of-returns-risk), introduced in the [projections post](/blog/financial-projections/), is the danger of bad returns just as withdrawals begin: a fall in year one of retirement, when shares must be sold to pay for living, does more damage than the same fall in year 25. A [bond tent](#term-bond-tent) is a glide path shaped for that window:
 
-The bond tent is a glide-path shape designed specifically to reduce sequence-risk exposure. Its shape has three phases.
+1. **About five years before retirement,** bonds rise from wherever they were (say 30%) to a higher level (say 50 to 60%).
+2. **For about five years after retirement,** the planned bond share stays high or begins to decline, and withdrawals and rebalancing follow the written strategy, which may draw on bonds during a fall in shares rather than forcing share sales.
+3. **From roughly year five onward,** bonds fall back and shares rise toward a moderate level (say 50 to 60%), because the portfolio has moved past the early-withdrawal years that most affect whether the plan survives, and 20 or more years of retirement still need growth to outpace inflation, which shares have done over long periods, though not in every decade.
 
-**Phase 1: pre-retirement (approximately 5 years before retirement).** The bond allocation rises gradually from wherever it was in accumulation (say, 30% bonds) to a higher level (say, 50 to 60% bonds). The rise happens in the years immediately before retirement so that the portfolio entering drawdown has lower equity exposure.
+Plotted against age, the bond share rises to a peak around retirement and falls again: the tent. Research by Wade Pfau, Michael Kitces and others from about 2013 found that this shape produced better outcomes in many simulated retirements than steadily cutting shares throughout, though the simulations rest largely on US return history and withdrawal assumptions, so they show a tendency rather than a guarantee. The tent matters most when the portfolio covers much of retirement spending, for example withdrawals of 3.5 to 4.5% a year, and less for households with a large margin above their target or the flexibility to spend less in bad early years.
 
-**Phase 2: early retirement (approximately 5 years after retirement).** The higher bond allocation is held. This is the peak sequence-risk window; the portfolio is at its largest and drawdowns are just beginning. Withdrawing from bonds preserves equity through a possible bad market.
+<details class="quick-check">
+<summary class="disclosure">Quick check: why does a bond tent go back down after the first years of retirement, instead of staying high?</summary>
 
-**Phase 3: mid-and-late retirement (approximately year 5 to year 25+ of retirement).** The bond allocation gradually falls and equity rises back toward a moderate level (say, 50 to 60% equity). The rationale: sequence risk has largely passed, and 20+ years of remaining retirement still benefit from long-run equity growth. Inflation is one of the main risks in a long retirement, and equities have historically outpaced it over long periods, though not in every decade.
+Because the riskiest window for bad returns is the first years of withdrawals. After it, decades of retirement remain, and holding mostly bonds for all of them would leave the portfolio exposed to inflation.
 
-**The "tent" name.** Plotted against age, the bond allocation rises to a peak around retirement (the "tent pole") and then declines back down. The shape is asymmetric to the sequence-risk exposure it addresses.
+</details>
 
-**Where the tent came from.** Research by Wade Pfau, Michael Kitces, and others (from roughly 2013 onwards) formalised what many advisors had been suggesting informally: reducing sequence-risk exposure specifically around the transition, rather than reducing equity monotonically through retirement, produced better outcomes in many simulated retirement paths. The simulations rest largely on US return history and on assumptions about withdrawals, so they show a tendency rather than a guarantee.
+<details class="lesson-depth">
+<summary class="disclosure">Rebalancing frequency, thresholds and taxes near retirement</summary>
 
-**When the tent matters most.** For households where the portfolio must cover a substantial fraction of retirement expenses. Households withdrawing 3.5% to 4.5% of the portfolio annually see the largest tent benefit.
+**Review frequency and bands.** Near retirement, the allocation and withdrawal plan are worth checking at least as often as before, because contributions may no longer correct drift. That does not make narrower bands automatically better: more trading can add costs and tax. Many households keep a yearly review or preset bands, and revisit the rule when withdrawals begin or circumstances change materially.
 
-**When the tent matters less.** For households with substantial buffer wealth beyond the FIRE target, or flexible enough to reduce spending in bad early years. Heavy pension income has the same effect, covered in its own section below. The tent is a specific tool for a specific problem; it is not universally required.
+**Taxes.** The rebalancing post set the order: new contributions first, then trades inside tax-advantaged accounts, then sales in taxable accounts starting with losses or small gains (the [tax-loss harvesting post](/blog/tax-loss-harvesting-and-asset-location/) covered the mechanics). Near retirement contributions shrink, so more of the work falls on sales and withdrawals. Once income is being drawn, every withdrawal is a chance to rebalance: taking it from whichever asset is over target moves the mix back without extra trades. Which account type to withdraw from first is a separate question, covered later in the series.
 
-## Rebalancing frequency and thresholds near retirement
+</details>
 
-The Building-level rebalancing post described annual rebalancing with 5%-absolute or 20%-relative bands, based on research showing that more frequent rebalancing does not improve returns. That guidance is a reasonable default for accumulation.
+## Too many bonds can leave a long retirement exposed to inflation
 
-Near retirement, some households tighten these thresholds. The reasoning: the cost of drift is asymmetric near the retirement transition. In accumulation, being over-allocated to equity when the market falls is offset by contributions buying more shares at lower prices; the drift eventually self-corrects. In drawdown, being over-allocated to equity when the market falls means selling equity at low prices to fund withdrawals, locking in losses that then reduce the portfolio's ability to recover.
+A common intuition is that retirees should hold mostly bonds because bonds are "safe". But retirement often lasts 25 to 35 years, and inflation is one of the main risks over that span. Cash and short-term bonds have tended to only just keep pace with inflation, sometimes falling behind; bonds overall have returned a little under 2% a year after inflation since 1900 (Dimson, Marsh and Staunton), with long stretches below that. Shares have been the main long-run inflation hedge historically, though they can lag it for a decade or more. A portfolio of 20% shares and 80% bonds has a noticeably lower expected long-run return than one of 40% shares, and if inflation runs high it may not sustain spending for the whole retirement. Many retirement planners work with 40 to 70% in shares through retirement rather than 10 to 20%, adjusted for pensions, spending flexibility and temperament.
 
-**Tighter thresholds.** Some households move from 5% bands to 3% bands, or from annual reviews to semi-annual reviews, in the 5 years before and after retirement. The additional attention is more costly in terms of time but less costly than the alternative of being far off target at a bad moment.
+The other common mistake is letting [loss aversion](/blog/loss-aversion-and-the-disposition-effect/) steer rebalancing. When shares have risen, rebalancing means selling winners, which many people delay in the hope the run continues. When shares have fallen, it means buying more of what is losing, which many find reasons to avoid. Either way the mix drifts, and the household reaches retirement with an allocation it never chose. A common remedy is mechanical: thresholds set in advance and followed when triggered, sometimes automated or handled by a fee-only adviser.
 
-**Trigger events for off-cycle rebalancing.** A market move of 15% or more (in either direction) is an event that often warrants an off-cycle allocation check. Similarly, a large withdrawal or a specific life event (job change, inheritance, major purchase) is worth re-evaluating allocation around.
+<details class="quick-check">
+<summary class="disclosure">Quick check: shares rose 25% last year and are now 8 points above target. What does loss aversion tend to make people do, and what does a preset rule do?</summary>
 
-**The over-tightening trap.** Tightening thresholds indefinitely (rebalancing weekly, monthly, quarterly) provides no additional benefit and generates transaction costs and tax events in taxable accounts. There is a sweet spot; annual to semi-annual with 3 to 5% bands is a defensible upper bound on frequency.
+People tend to hold on to the winners and delay selling. A preset threshold, say 5 points, triggers the sale anyway, bringing the mix back to the target that was chosen in calmer times.
 
-## Tax-aware rebalancing across account types
+</details>
 
-The [rebalancing post](/blog/rebalancing-your-portfolio/) set the order for tax-aware rebalancing: use new contributions where you can, rebalance inside tax-advantaged accounts first, and sell in taxable accounts only when that cannot close the gap, starting with positions that carry losses or the smallest gains (the [tax-loss harvesting post](/blog/tax-loss-harvesting-and-asset-location/) covers the mechanics). Near retirement, contributions shrink or stop, so more of the work falls on sales and on withdrawals.
+## Guaranteed income like a pension can justify more equity
 
-**Rebalancing through withdrawals in drawdown.** Once drawing income, every withdrawal is a rebalancing opportunity. When equity has run up, taking the withdrawal from equity reduces the over-target allocation; when bonds have run up, taking it from bonds does the same. This coordination lets you rebalance without incremental trades.
+Everything above assumes the portfolio covers much of retirement spending. When a guaranteed, inflation-linked pension covers, say, 70% of spending, the portfolio covers only 30%, and its exposure to bad early returns is far smaller: a fall hits a small withdrawal, and the pension keeps paying. Such a household may be able to tolerate more in shares than one relying almost entirely on its portfolio, and a bond tent adds less; another may still prefer less volatility. Guaranteed income changes the capacity for risk; it does not choose an allocation by itself. In general, how elaborate the rebalancing needs to be tracks how exposed the household really is to sequence risk.
 
-**The withdrawal-order question.** In retirement, which type of account (taxable, tax-deferred, tax-free) to withdraw from first is a separate optimisation covered in Mastery posts on withdrawal sequencing. Rebalancing coordinates with, but is distinct from, withdrawal sequencing.
+<details class="lesson-depth">
+<summary class="disclosure">One illustration of a bond-tent plan across the transition</summary>
 
-## The two common mistakes near retirement
+- **Five to ten years before retirement:** the shift toward bonds begins; new contributions go to whatever is under target, reducing taxable sales.
+- **At retirement:** the peak bond share is held, with yearly rebalancing on tighter bands, and allocation moves are timed with large cash events such as a lump sum, a first pension payment or downsizing.
+- **Years one to five:** withdrawals come mainly from bonds; losses in taxable accounts may allow tax-loss harvesting.
+- **Years five to fifteen:** bonds roll back down, partly through withdrawals taken from them.
+- **Year fifteen onward:** a stable moderate mix, often 40 to 60% shares depending on the household, with attention to care costs and estate plans.
 
-**Over-aggressive de-risking.** A common late-career rebalancing mistake is holding too much in bonds. Intuition says retirees should hold mostly bonds because bonds are "safe." But retirement often lasts 25 to 35 years, and over that time inflation is one of the main long-run risks. Over long periods, cash and short-term bonds have tended to only just keep pace with inflation, and sometimes fall behind it; bonds overall have returned a little under 2% a year after inflation since 1900 (Dimson, Marsh and Staunton), with long stretches below that. Equities have been the main long-run hedge against inflation historically, though they can lag it for a decade or more.
+</details>
 
-A portfolio that is 80% bonds and 20% equity has substantially lower long-run expected return than a 60% bond, 40% equity portfolio; over 25 years the compounded difference is meaningful. If inflation runs above expectations, the 80/20 portfolio may not sustain lifestyle over the full retirement.
+<details class="lesson-depth">
+<summary class="disclosure">Glide paths and retirement accounts where you live</summary>
 
-Many retirement planners work with equity allocations somewhere in the 40 to 70% range through retirement rather than 10 to 20%, adjusted for pensions, spending flexibility and temperament. The bond tent temporarily peaks at higher bond allocation around the sequence-risk window and then reduces bond allocation again as the risk passes.
+- **US.** Target-date funds are widely available at low cost. Roth conversions in early retirement, before required minimum distributions begin, generally at 73 or 75 depending on date of birth under current rules, create rebalancing opportunities across account types. A Health Savings Account can hold investments long-term.
+- **UK.** Lifestyle funds, the UK equivalent of target-date funds, come with some workplace pensions. Drawdown often runs through a SIPP; the tax-free lump sum (usually 25% of the pension, up to a cap) is a rebalancing moment at retirement.
+- **Eurozone.** Lifecycle funds are available through many national retirement schemes, and national pension structures change how much a glide path matters.
+- **India.** The NPS (National Pension System) has default lifecycle funds (LC-25, LC-50, LC-75) with age-based glide paths; the rule that part of the pot must buy an annuity at retirement affects the calculation.
+- **Australia.** Superannuation funds often offer age-based options; transition-to-retirement rules allow specific strategies in the late working years.
+- **Canada.** Converting an RRSP to a RRIF, which must happen by a statutory deadline rather than necessarily at retirement, can be a rebalancing moment; a TFSA has different tax effects when rebalancing.
 
-**Loss aversion driving rebalancing decisions.** The [loss aversion post](/blog/loss-aversion-and-the-disposition-effect/) covered how selling positions at a loss is disproportionately painful and how selling positions at a gain triggers different feelings than the math suggests. In rebalancing, this shows up predictably:
+</details>
 
-- When equity has risen (creating over-allocation), rebalancing requires selling equity to buy bonds. This means selling winners. Loss aversion makes this painful; many households delay the sale, hoping the winners continue to run.
-- When equity has fallen (creating under-allocation), rebalancing requires buying more equity. This means adding to losers. Loss aversion makes this uncomfortable; many households find reasons not to add to the falling asset.
-- Both patterns produce the same result: allocation drifts further and further from target, and the household reaches retirement with an allocation quite different from what they intended.
+This is the last post at the Optimizing level. The Mastery level covers the drawdown itself: withdrawal rates, sequence risk in depth, longevity, pensions, withdrawal order and estate planning.
 
-The usual remedy is mechanical execution: thresholds set explicitly in advance and followed when triggered. Some people automate this or use a fee-only advisor to take the emotional decision out of the individual moment.
-
-## The role of pensions and other guaranteed income
-
-Everything above assumes the portfolio must cover a substantial portion of retirement expenses. When pensions, social security, or other guaranteed income sources cover much of expenses, the analysis changes.
-
-**More equity is often defensible.** If a guaranteed, inflation-linked pension covers 70% of retirement expenses, the portfolio only needs to cover 30%. The portfolio's sequence-risk exposure is much smaller. A higher equity allocation (say, 70 to 80%) throughout retirement is defensible for some such households because bad early returns hit a smaller drawdown and the pension keeps paying. Whether it suits a particular person still depends on how they would feel watching the portfolio fall.
-
-**Bond tents may not be needed.** The tent addresses portfolio sequence risk. Without meaningful portfolio drawdown pressure, the tent's specific value is smaller. A more monotonic glide path may work as well.
-
-**Rebalancing frequency can stay looser.** Without acute sequence-risk sensitivity, annual rebalancing with wider bands (5% or more) remains adequate.
-
-The general principle: the sophistication of the rebalancing tends to track the household's actual sequence-risk exposure. Households with heavy pension coverage often need less complex rebalancing structures.
-
-## Putting the pieces together
-
-What a typical bond-tent plan looks like across the transition, as one illustration rather than a template:
-
-- **In late accumulation (5 to 10 years before retirement):** The glide path or bond tent shift begins. New contributions go to under-target assets to reduce the need for taxable sales.
-- **At the retirement transition:** The tent-peak allocation is held, with annual rebalancing on tighter bands. Allocation moves are coordinated with large cash-flow events (retirement lump-sum, first pension payment, sale of a home if downsizing).
-- **In early retirement (year 1 to 5):** The higher-bond allocation is maintained, and withdrawals come mainly from bonds to preserve equity through the sequence-risk window. Losses in taxable accounts can offer tax-loss harvesting opportunities.
-- **In mid retirement (year 5 to 15):** The bond allocation rolls back down, with equity drifting slightly higher each year through withdrawals from bonds. Annual rebalancing continues.
-- **In late retirement (year 15+):** A stable moderate allocation (often 40 to 60% equity depending on household). Rebalancing continues annually. Attention to any specific late-retirement needs (long-term-care planning, estate planning coordination, gifting).
-
-The Mastery-level posts pick up the specific mechanics of sequence risk, withdrawal sequencing, longevity risk, and estate planning. This post positions the transition; the Mastery-level treatment covers the drawdown period in more depth.
-
-## Cross-continent notes
-
-The framework is universal; the specific vehicles and constraints vary.
-
-- **US.** Target-date funds widely available at low cost through the major providers. Roth conversions in early retirement (before Required Minimum Distributions begin at 73 in current rules) create rebalancing opportunities across account types. HSA (Health Savings Account) can hold portfolio assets long-term with unique triple-tax-advantage treatment.
-- **UK.** Lifestyle funds (UK equivalent of target-date funds) available through some workplace pensions. Drawdown mechanics through SIPP (Self-Invested Personal Pension). Tax-free lump-sum (usually 25% of the pension, up to a cap) creates a specific rebalancing event at retirement.
-- **EU / eurozone.** Lifecycle funds available through many national retirement schemes. Country-specific pension structures affect the relative importance of glide paths.
-- **India.** NPS (National Pension System, India) has default lifecycle funds (LC-25, LC-50, LC-75) that implement age-based glide paths. Withdrawal rules at retirement (mandatory annuitisation of a portion) affect the rebalancing calculation.
-- **Australia.** Super (Superannuation) accounts often offer age-based investment options that implement glide paths. Transition-to-retirement rules allow specific tax-advantaged strategies during the late-accumulation phase.
-- **Canada.** RRSP (Registered Retirement Savings Plan, Canada) to RRIF (Registered Retirement Income Fund) conversion at retirement age creates a specific rebalancing event. TFSA (Tax-Free Savings Account, Canada) can hold portfolio assets with different rebalancing tax dynamics.
-
-In each case, the framework applies. The specific vehicles are local; the arithmetic of glide paths, bond tents, and sequence risk is universal.
-
-## Getting started
-
-Three concrete steps for the next few years.
-
-- If you are within 10 years of planned retirement, write down which glide-path approach your portfolio is actually following, if any. The common options are (a) a target-date fund, (b) a custom glide path with defined equity percentages at each age, or (c) a bond tent with specific pre- and post-retirement adjustments. Which fits depends on pensions, other income and how you handle volatility.
-- Write down your rebalancing thresholds and review calendar. Some people tighten bands (to 3%) near retirement; annual review is a common default.
-- List which accounts hold which assets. Rebalancing sales usually happen first in tax-advantaged accounts, where they have no tax consequence, with taxable sales used when needed and combined with tax-loss harvesting where local rules allow.
-
-This is the last post in the Optimizing level. The Mastery level, beginning immediately after this, covers advanced FIRE strategies, safe withdrawal rate, sequence risk in depth, longevity risk, pension income and payout options, tax-aware investing in drawdown, withdrawal sequencing, international retirement, estate planning, charitable giving, teaching children about money, financial vehicles for children, generational wealth, and a capstone. Optimising the accumulation is done; the drawdown mechanics get their own treatment ahead.
+Which glide path is your retirement money following today: a target-date fund, a plan of your own, or none written down?
