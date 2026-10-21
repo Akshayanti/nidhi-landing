@@ -20,7 +20,7 @@ referentialReading:
     url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
     type: "paper"
   - title: "Asset Class"
-    url: "https://www.investopedia.com/terms/a/assetclass.asp"
+    url: "https://www.investopedia.com/terms/a/assetclasses.asp"
     type: "blog"
   - title: "The Little Book of Common Sense Investing"
     author: "John C. Bogle"

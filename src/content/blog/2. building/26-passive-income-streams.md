@@ -31,7 +31,8 @@ faq:
     answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income does, even if you keep working. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. These concrete thresholds motivate far better than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
 referentialReading:
   - title: "Passive Income"
-    url: "https://www.investopedia.com/terms/p/passiveincome.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Passive_income"
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"

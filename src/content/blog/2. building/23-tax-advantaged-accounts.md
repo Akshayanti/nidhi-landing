@@ -36,8 +36,9 @@ referentialReading:
     author: "Taylor Larimore et al."
     url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
-  - title: "Retirement Account Types (Investopedia overview)"
-    url: "https://www.investopedia.com/retirement-accounts-4689716"
+  - title: "Retirement Savings: Tax-Advantaged Account Types (United States)"
+    author: "U.S. Securities and Exchange Commission (Investor.gov)"
+    url: "https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts/retirement-savings"
     type: "blog"
 ---
 
