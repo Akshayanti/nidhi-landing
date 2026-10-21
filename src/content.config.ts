@@ -18,11 +18,27 @@ const blog = defineCollection({
     description: z.string(),
     tldr: z.string(),
     /**
-     * Two to four short topic phrases ("Why ...", "How to ..."), listed under
+     * Two to five short topic phrases ("Why ...", "How to ..."), listed under
      * the TL;DR as "In this lesson". Each one names something the lesson
-     * itself explains; no new claims.
+     * itself explains; no new claims. A phrase can carry `href`, a `#` link to
+     * the heading, glossary card (`#glossary`) or term (`#term-...`) that
+     * delivers it, so the list doubles as the lesson's index on every screen.
+     * The build fails if the target is not on the page.
      */
-    takeaways: z.array(z.string()).min(2).max(4).optional(),
+    takeaways: z.array(z.union([
+      z.string(),
+      z.object({ text: z.string(), href: z.string().regex(/^#[a-z0-9-]+$/) }),
+    ])).min(2).max(5).optional(),
+    /**
+     * Terms this lesson defines. Rendered as the glossary card wherever the
+     * body has `<div data-lesson-glossary></div>` (src/utils/lessonGlossaryPlugin.mjs),
+     * each term with the anchor `#term-<slug>`, and collected across published
+     * lessons on /blog/glossary/. Plain text definitions, one or two sentences.
+     */
+    glossary: z.array(z.object({
+      term: z.string(),
+      definition: z.string(),
+    })).optional(),
     order: z.number().default(99),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),

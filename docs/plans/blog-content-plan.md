@@ -237,6 +237,10 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
    ```
 
 7. **A closing that hands the judgment back** (a question about the reader's own situation), not a to-do list.
+8. **"In this lesson" as the index.** Each takeaway can carry `href`, a `#` link to the heading, the glossary card (`#glossary`) or a term (`#term-...`) that delivers it. On screens under 1200px there is no "On this page" sidebar, so this list is the only index a phone reader gets. The build fails if a link's target is not on the page.
+9. **A glossary card for the lesson's terms.** Terms go in frontmatter (`glossary: [{ term, definition }]`) and render as a card wherever the body has `<div data-lesson-glossary></div>` (`src/utils/lessonGlossaryPlugin.mjs`), each term with the anchor `#term-<slug>` (the build fails on an empty or duplicate anchor). The same entries feed `/blog/glossary/`, which lists every published lesson's terms and links each back to its lesson; lessons that share a term spell it the same way. Define each term in the card and link its first use in the body as `[term](#term-slug)`. The body may explain a term in context where the lesson depends on it, but does not add a separate glossary section or repeat the card's definition word for word.
+10. **Headings that name the point.** Avoid repeated counting formulas ("Three questions...", "Five defaults...", "Part one", "Part two") and the same closing skeleton on every lesson ("Cross-continent notes", "Getting started") when they make sections sound alike. A heading names its section's distinct idea; a useful count can live in the sentence below it.
+11. **Search words.** The visible title can stay a hook, but `seoTitle` (57 characters or fewer) and `description` use the words a reader would type for their situation ("Not married? Who gets your pension..."). At least one heading, and a few FAQ questions, are phrased as that search question ("Is a pension beneficiary form binding?"). Never change a published `slug`: Instagram and email links point at it.
 
 **Markup rules.** A blank line after `<summary>` and before `</details>`, so the markdown inside renders (the opposite of the `<figure>` rule in Rule 9, which needs no blank lines). No `##`/`###` inside an expander: the summary is the label, and the TOC skips headings inside `<details>` anyway. Summary labels are specific, never "More" or "Details". The template adds the "Optional detail" tag and card styling (#193).
 
@@ -246,7 +250,9 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
 - [ ] Everything the lesson's Instagram kit promises is still on the page; expander labels reuse the kit's "more" wording where one exists.
 - [ ] FAQ, glossary, takeaways and body say the same thing (the pilot council caught three contradictions between body and FAQ).
 - [ ] Nothing a skimmer needs to avoid a wrong takeaway sits only inside an expander.
-- [ ] Teach, don't prescribe (CLAUDE.md), no dashes (Rule 6).
+- [ ] Teach, don't prescribe (CLAUDE.md), and no em dashes or double dashes (Rule 6).
+- [ ] Every `href` in takeaways lands on the page (the build checks), terms in the body link to the card on first use, and no term has a separate glossary section outside the card.
+- [ ] `seoTitle`, `description`, one heading and some FAQ questions use the reader's search words.
 - [ ] Rendered on phone and laptop, light and dark, expanders closed and open.
 - [ ] The normal council process required by `CLAUDE.md`.
 - [ ] If the conversion changes only lesson text or lesson frontmatter, no privacy entry or translation is required. Reassess both if the work also changes analytics, browser behaviour, shared interface copy or other site functionality.
@@ -258,6 +264,14 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
 - **"Try it with your numbers"**: link the matching free tool where it fits; only 14 of 78 lessons set `relatedTool`.
 - **Reels land on the matching section**: link stickers and story links to `/blog/<slug>/#<heading-id>`, and reuse the reel's first line in that section.
 - **Jargon** explained in brackets on first use (already Rule 1); questions as turns in the argument.
+
+**Audit of Optimizing and Inclusive lessons (Oct 21, 2026), against the inc-1 feedback.** No other lesson has a `seoTitle`, a glossary card, linked takeaways or expanders yet.
+- **Counted, repeated headings.** 15 of the 17 other Inclusive lessons are built as "Part one: ... / Part two: ... / Cross-continent notes / Getting started". Optimizing leans on counted frameworks ("The four-step framework", "Adjustment one" to "four", "Category one" to "four", "Modifier one/two") and ends almost every lesson with "Cross-continent notes" and "Getting started".
+- **Beneficiary forms presented as a sure fix.** `blended-and-non-traditional-families`, `building-your-own-default`, `chosen-family-and-next-of-kin`, `divorce-and-separation-finances` and `multi-partner-households` treat naming a beneficiary as settling who is paid, without the binding-or-guide caveat or the difference between a lump sum and a survivor pension; their own wording needs revising, with a link to inc-1's "Is a pension beneficiary form binding?" section.
+- **Glossary candidates.** Many lessons define terms in bold paragraphs; the heaviest are `geographic-arbitrage` (35 bold-term paragraphs), `income-replacement-ratio` (34) and `scam-prevention` (32). The series terms appear in 8 Inclusive lessons that do not link to their definitions.
+- **Glossary page reach.** `/blog/glossary/` is linked only from glossary cards until it gets a link from `/blog/` or the Inclusive hub (both translated pages, so that link needs catalog strings in every language).
+- **Search words.** Weakest titles for search: "Building Your Own Default", "Interest-Free Finance: A Different Toolkit", "More Than Two Partners: Protecting Everyone", "Chosen Family: Planning When the Law Picks Your Relatives".
+- **Not audited automatically:** sections that repeat each other (as inc-1's "Five defaults" and its expander did) need a read of each lesson.
 
 **Rollout and measurement (not started).**
 1. **Reader test:** five readers from the group that called the blog text heavy read the old and new inc-1 on a phone (the old version is in git before #192) for three minutes, then explain the idea back. This, not analytics, is the main signal: blog traffic is small.

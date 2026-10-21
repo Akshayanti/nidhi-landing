@@ -46,8 +46,9 @@ interface Props {
   relatedPosts?: Array<{ slug: string; title: string; description: string }>;
   /** Paired free tool from the post's `relatedTool` frontmatter. */
   relatedTool?: { url: string; label: string; cta: string; idea?: string };
-  /** Topic phrases from the post's `takeaways`, listed under the TL;DR. */
-  takeaways?: string[];
+  /** Topic phrases from the post's `takeaways`, listed under the TL;DR;
+   *  one with `href` links to the part of the lesson that delivers it. */
+  takeaways?: (string | { text: string; href: string })[];
   /** Rule areas the lesson depends on; shows "Where to check locally". */
   localRules?: LocalRuleArea[];
   /** Place within the level among published lessons; null outside the ladder. */
@@ -207,7 +208,9 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           <section class="post-covers" aria-labelledby="post-covers-h">
             <h2 id="post-covers-h" class="post-covers-title">In this lesson</h2>
             <ul class="post-covers-list">
-              {takeaways.map((t) => <li>{t}</li>)}
+              {takeaways.map((t) => typeof t === 'string'
+                ? <li>{t}</li>
+                : <li><a href={t.href}>{t.text}</a></li>)}
             </ul>
           </section>
         )}
@@ -644,6 +647,21 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     height: 0.4rem;
     border-radius: 50%;
     background: var(--color-teal);
+  }
+
+  /* A topic that links to its section: the list doubles as the lesson's
+     index, including on phones where the "On this page" sidebar is hidden. */
+  .post-covers-list a {
+    display: inline-block;
+    padding: 0.2rem 0;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-decoration-color: var(--color-link-edge);
+    text-underline-offset: 0.2em;
+  }
+
+  .post-covers-list a:hover {
+    text-decoration-color: currentColor;
   }
 
   .post-tags {

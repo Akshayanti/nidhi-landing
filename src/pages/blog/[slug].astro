@@ -2,6 +2,7 @@
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 import { getLayeredReadingTime } from '../../utils/readingTime';
+import { GLOSSARY_CARD_ID, termId } from '../../utils/glossary.mjs';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -122,7 +123,20 @@ export async function getStaticPaths() {
 }
 
 const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts, seriesPosition } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// "In this lesson" links must land on something: a heading, the glossary card
+// or one of its terms. A renamed heading fails the build instead of leaving a
+// dead link.
+const targets = new Set([
+  ...headings.map((h) => h.slug),
+  ...(post.data.glossary?.length ? [GLOSSARY_CARD_ID, ...post.data.glossary.map((g) => termId(g.term))] : []),
+]);
+for (const t of post.data.takeaways ?? []) {
+  if (typeof t !== 'string' && !targets.has(t.href.slice(1))) {
+    throw new Error(`${post.id}: takeaway "${t.text}" links to ${t.href}, which is not on the page`);
+  }
+}
 
 // A lesson can name the Monte Carlo simulator before it launches; the
 // callout appears once the tool does.
