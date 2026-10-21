@@ -35,9 +35,11 @@ relatedSlugs: ["life-events", "divorce-and-separation-finances", "unmarried-and-
 referentialReading:
   - title: "Intestacy and Family Provision Claims on Death"
     author: "Law Commission of England and Wales"
+    url: "https://assets.publishing.service.gov.uk/media/5a7ce6a440f0b65b3de0bd63/1674.pdf"
     type: "paper"
   - title: "Stepfamilies: Love, Marriage, and Parenting in the First Decade"
     author: "James H. Bray and John Kelly"
+    url: "https://www.goodreads.com/book/show/1096592.Stepfamilies"
     type: "book"
 ---
 

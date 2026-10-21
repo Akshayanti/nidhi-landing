@@ -35,9 +35,11 @@ relatedSlugs: ["account-consolidation-and-financial-data-hygiene", "cash-flow-fo
 referentialReading:
   - title: "Creating Cohousing: Building Sustainable Communities"
     author: "Kathryn McCamant and Charles Durrett"
+    url: "https://www.goodreads.com/book/show/8533733-creating-cohousing"
     type: "book"
   - title: "Mind Over Money: Overcoming the Money Disorders That Threaten Our Financial Health"
     author: "Brad Klontz and Ted Klontz"
+    url: "https://www.goodreads.com/book/show/6985666-mind-over-money"
     type: "book"
 ---
 

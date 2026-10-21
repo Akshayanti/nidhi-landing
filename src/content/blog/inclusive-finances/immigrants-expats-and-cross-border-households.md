@@ -43,6 +43,7 @@ referentialReading:
     type: "tool"
   - title: "Portfolios of the Poor: How the World's Poor Live on $2 a Day"
     author: "Daryl Collins, Jonathan Morduch, Stuart Rutherford, and Orlanda Ruthven"
+    url: "https://www.goodreads.com/book/show/6410378-portfolios-of-the-poor"
     type: "book"
 ---
 

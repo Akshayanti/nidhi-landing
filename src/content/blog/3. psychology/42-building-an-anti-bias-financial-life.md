@@ -28,9 +28,11 @@ relatedSlugs: ["money-scripts", "why-smart-people-make-dumb-money-decisions", "f
 referentialReading:
   - title: "The Power of Suggestion: Inertia in 401(k) Participation and Savings Behavior"
     author: "Brigitte Madrian and Dennis Shea (Quarterly Journal of Economics, 2001)"
+    url: "https://doi.org/10.1162/003355301753265543"
     type: "paper"
   - title: "Save More Tomorrow: Using Behavioral Economics to Increase Employee Saving"
     author: "Richard Thaler and Shlomo Benartzi (Journal of Political Economy, 2004)"
+    url: "https://doi.org/10.1086/380085"
     type: "paper"
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
     author: "Richard Thaler and Cass Sunstein"

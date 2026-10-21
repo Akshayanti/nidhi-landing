@@ -34,12 +34,15 @@ relatedSlugs: ["life-events", "growing-your-income", "money-scripts", "tax-advan
 referentialReading:
   - title: "Care Work and Care Jobs for the Future of Decent Work"
     author: "International Labour Organization"
+    url: "https://www.ilo.org/publications/major-publications/care-work-and-care-jobs-future-decent-work"
     type: "paper"
   - title: "Invisible Women: Exposing Data Bias in a World Designed for Men"
     author: "Caroline Criado Perez"
+    url: "https://www.goodreads.com/book/show/41104077-invisible-women"
     type: "book"
-  - title: "Gender Pension Gap Statistics"
+  - title: "Living Conditions in Europe: Monetary Poverty Among the Elderly"
     author: "Eurostat"
+    url: "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Living_conditions_in_Europe_-_monetary_poverty_among_the_elderly"
     type: "paper"
 ---
 

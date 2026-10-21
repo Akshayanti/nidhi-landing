@@ -35,9 +35,11 @@ relatedSlugs: ["insurance-basics", "solo-agers-and-single-income-households", "t
 referentialReading:
   - title: "Global Report on Health Equity for Persons with Disabilities"
     author: "World Health Organization"
+    url: "https://www.who.int/publications/i/item/9789240063600"
     type: "paper"
   - title: "Convention on the Rights of Persons with Disabilities, Article 12: Equal Recognition Before the Law"
     author: "United Nations"
+    url: "https://social.desa.un.org/issues/disability/crpd/article-12-equal-recognition-before-the-law"
     type: "paper"
 ---
 

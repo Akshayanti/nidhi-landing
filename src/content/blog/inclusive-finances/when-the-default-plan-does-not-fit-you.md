@@ -35,9 +35,11 @@ relatedSlugs: ["life-events", "insurance-basics", "setting-financial-goals", "fi
 referentialReading:
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
     author: "Richard H. Thaler and Cass R. Sunstein"
+    url: "https://www.goodreads.com/book/show/2527900.Nudge"
     type: "book"
-  - title: "Women and Men in the Informal Economy: A Statistical Picture"
+  - title: "Women and Men in the Informal Economy: A Statistical Picture (Third Edition)"
     author: "International Labour Organization"
+    url: "https://www.ilo.org/publications/women-and-men-informal-economy-statistical-picture-third-edition"
     type: "paper"
   - title: "Remittance Prices Worldwide"
     author: "World Bank"

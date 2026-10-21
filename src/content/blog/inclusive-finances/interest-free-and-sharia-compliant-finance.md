@@ -35,6 +35,7 @@ relatedSlugs: ["understanding-loan-terms", "refinancing-timing", "investing-101-
 referentialReading:
   - title: "An Introduction to Islamic Finance"
     author: "Muhammad Taqi Usmani"
+    url: "https://www.goodreads.com/book/show/755733.An_Introduction_to_Islamic_Finance"
     type: "book"
   - title: "Shariah Standards"
     author: "Accounting and Auditing Organization for Islamic Financial Institutions (AAOIFI)"

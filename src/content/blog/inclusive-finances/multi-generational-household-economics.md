@@ -35,9 +35,11 @@ relatedSlugs: ["cash-flow-101", "setting-financial-goals", "immigrants-expats-an
 referentialReading:
   - title: "Portfolios of the Poor: How the World's Poor Live on $2 a Day"
     author: "Daryl Collins, Jonathan Morduch, Stuart Rutherford, and Orlanda Ruthven"
+    url: "https://www.goodreads.com/book/show/6410378-portfolios-of-the-poor"
     type: "book"
-  - title: "Living Arrangements of Older Persons: World Population Ageing Report"
+  - title: "World Population Ageing 2020 Highlights: Living Arrangements of Older Persons"
     author: "United Nations Department of Economic and Social Affairs"
+    url: "https://www.un.org/development/desa/pd/content/world-population-ageing-2020-highlights"
     type: "paper"
 ---
 

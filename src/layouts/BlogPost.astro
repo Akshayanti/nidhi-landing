@@ -23,7 +23,7 @@ interface Props {
   referentialReading?: Array<{
     title: string;
     author?: string;
-    url?: string;
+    url: string;
     type: string;
   }>;
   prevSlug?: string | null;
@@ -331,11 +331,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             <ul class="suggested-reading-list">
               {referentialReading.map((ref) => (
                 <li>
-                  {ref.url ? (
-                    <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
-                  ) : (
-                    <span>{ref.title}</span>
-                  )}
+                  {/* The word joiner keeps the arrow on the title's last line. */}
+                  <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}&#x2060;<span class="ref-external" aria-hidden="true">↗</span><span class="ref-new-tab"> (opens in a new tab)</span></a>
                   {ref.author && <span class="ref-author"> by {ref.author}</span>}
                   <span class="ref-type">{ref.type}</span>
                 </li>
@@ -972,9 +969,33 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     flex-wrap: wrap;
   }
 
+  /* Every suggested read links out (the schema requires a url), underlined
+     like links in the lesson text. The arrow is decoration; screen readers
+     hear the new-tab note; neither ends up in a copied title. */
   .suggested-reading-list a {
     color: var(--color-deep-blue);
     font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Inline, so with the word joiner before it the arrow never wraps onto
+     a line of its own. */
+  .ref-external {
+    margin-left: 0.2em;
+    font-size: 0.85em;
+    user-select: none;
+  }
+
+  .ref-new-tab {
+    user-select: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .ref-author {
