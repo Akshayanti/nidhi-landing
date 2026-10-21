@@ -1,16 +1,36 @@
 ---
 slug: "tax-loss-harvesting-and-asset-location"
 title: "Tax-Loss Harvesting and Asset Location Explained"
-description: "Tax-loss harvesting and asset location do not generate returns. They reduce the tax drag on returns, which compounds to the same thing over decades."
-tldr: "Tax-loss harvesting is realising unrealised losses in taxable accounts to offset gains or ordinary income (up to jurisdictional caps), then reinvesting in a similar but not-substantially-identical position to maintain market exposure. It does not create investment return; it defers tax, which compounds. Wash-sale rules exist in many jurisdictions to prevent gaming; the specific timing rules, and whether any rule exists, are local. Asset location (distinct from asset allocation) is the same overall stock/bond mix, held in different accounts based on tax efficiency. The usual heuristic puts tax-inefficient assets (bonds, REITs, high-turnover funds, high-yield equity) in tax-advantaged accounts and tax-efficient assets (broad equity index funds, buy-and-hold individual stocks) in taxable ones. Estimates of the benefit are usually a few tenths of a percent a year, sometimes less, without changing the risk profile. Both techniques matter more at high marginal tax rates and with large taxable portfolios. Most planners treat them as refinements after allocation and fees, not as drivers. Tax rules change often, so a licensed tax professional is the place to confirm the local details."
+seoTitle: "Tax-Loss Harvesting and Asset Location, Explained Simply"
+description: "How tax-loss harvesting defers tax without adding return, how wash-sale rules work, and how asset location places the same portfolio across accounts to cut tax drag."
+tldr: "Tax-loss harvesting sells an investment at a loss to offset gains, then buys something similar to stay invested; it defers tax rather than adding return, and wash-sale rules limit it. Asset location keeps the same mix but places tax-heavy assets in sheltered accounts. Each can be worth a few tenths of a percent a year in after-tax return, after allocation and fees."
 takeaways:
-  - "Why tax-loss harvesting defers tax rather than adding return"
-  - "How wash-sale rules work and how a similar fund keeps exposure"
-  - "How asset location puts each asset in its most tax-efficient account"
-  - "Why allocation and fees matter more than either tax technique"
+  - text: "Why tax-loss harvesting defers tax rather than adding return"
+    href: "#tax-loss-harvesting-defers-tax-it-does-not-add-return"
+  - text: "How wash-sale rules work and how a similar fund keeps exposure"
+    href: "#wash-sale-rules-and-keeping-your-market-exposure"
+  - text: "How asset location puts each asset in its most tax-efficient account"
+    href: "#asset-location-the-same-portfolio-placed-differently"
+  - text: "Why allocation and fees matter more than either tax technique"
+    href: "#allocation-and-fees-come-before-either-technique"
+glossary:
+  - term: "Tax-loss harvesting"
+    definition: "Selling an investment below its purchase price to book a loss that offsets gains, then buying something similar to stay invested."
+  - term: "Unrealised loss"
+    definition: "A fall in value on paper that has not yet been sold, so it has not yet been booked for tax."
+  - term: "Cost basis"
+    definition: "What you paid for an investment, used to work out the taxable gain or loss when you sell."
+  - term: "Wash-sale rule"
+    definition: "A US rule that disallows a loss if you buy a substantially identical investment within 30 days before or after selling; other countries have similar rules under other names."
+  - term: "Asset allocation"
+    definition: "The mix of shares, bonds, cash and other assets you hold."
+  - term: "Asset location"
+    definition: "Which account type holds each part of your portfolio, chosen to reduce yearly tax without changing the overall mix."
+  - term: "REIT"
+    definition: "Real estate investment trust: a company owning property that pays out most of its income, often taxed at ordinary rates."
 order: 53
 pubDate: 2099-01-16
-updatedDate: 2026-08-17
+updatedDate: "2026-10-21"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -20,11 +40,11 @@ faq:
   - question: "What is tax-loss harvesting in one sentence?"
     answer: "Selling an investment that is currently at a loss (in a taxable account), booking the loss for tax purposes to offset gains or ordinary income, and immediately reinvesting the proceeds in a similar-but-not-identical position so your market exposure is preserved. The gain is time value: the tax you would have owed on your gains this year is deferred (possibly for decades), and the deferred amount stays invested."
   - question: "Doesn't harvesting a loss mean I lose money?"
-    answer: "No. Harvesting a loss means realising a loss that already exists on paper. The loss happened when the market dropped; harvesting it just tells the tax authority about it, so they can credit it against your gains elsewhere or against your ordinary income (up to a jurisdictional cap). You immediately reinvest in a similar position, so your market exposure and future upside are preserved. The only thing that changes is the tax basis (which is lower after the reinvestment, meaning future gains will be larger, but by the time you realise them, you have benefited from years of tax deferral). It is not a magic trick; it is deferring a tax obligation using paper losses that would otherwise be wasted."
+    answer: "Selling crystallises a loss that already existed on paper; it does not cause the preceding fall in value. Whether the realised loss can offset gains, income or only future gains depends on local rules. You immediately reinvest in a similar position, so your market exposure and future upside are preserved. The only thing that changes is the tax basis (which is lower after the reinvestment, meaning future gains will be larger, but by the time you realise them, you have benefited from years of tax deferral). It is not a magic trick: it may defer tax, but the lower replacement basis can create a larger taxable gain later."
   - question: "What is a wash sale and why does it matter?"
     answer: "A wash-sale rule (US terminology; similar rules exist in several jurisdictions under different names, and some countries have none) says that if you sell an investment at a loss and buy back a substantially identical investment within a specific window (usually 30 days before or after the sale), the tax authority disallows the loss for tax purposes. The rule exists to prevent investors from harvesting losses cosmetically without actually giving up the investment. The usual approach is to reinvest in a similar but not substantially identical alternative. A common example: sell a broad US equity index fund, buy a total US equity market fund from a different provider tracking a different but highly correlated index. Both are broad US equity exposure but not the same fund tracking the same index. What counts as substantially identical varies by jurisdiction and is not always clear-cut, so local rules, or a tax professional, decide."
   - question: "What is asset location and how does it differ from asset allocation?"
-    answer: "Asset allocation is what you hold: the mix of stocks, bonds, cash, and other asset classes in your portfolio. Asset location is where you hold each piece: which account type (taxable, tax-deferred retirement, tax-free retirement, health savings) each asset sits in. The same overall allocation can produce different after-tax returns depending on location, because different assets generate different types of taxable events. High-yield bonds generate ordinary-income coupons, which are taxed annually at high rates; placing them in a tax-advantaged retirement account defers or eliminates the tax. Broad equity index funds generate mostly qualified dividends and long-term capital gains at lower rates, and generate them only when sold; placing them in a taxable account preserves the tax efficiency. Estimates of the gain from location are usually in the range of 0.1 to 0.3% a year of after-tax return, depending on tax rates and the size of the taxable account, without changing what you hold. The examples here use US-style rules; the categories and rates differ by country."
+    answer: "Asset allocation is what you hold: the mix of stocks, bonds, cash, and other asset classes in your portfolio. Asset location is where you hold each piece: which account type (taxable, tax-deferred retirement, tax-free retirement, health savings) each asset sits in. The same overall allocation can produce different after-tax returns depending on location, because different assets generate different types of taxable events. High-yield bonds generate ordinary-income coupons, which are taxed annually at high rates; placing them in a tax-advantaged retirement account defers or eliminates the tax. Broad equity index funds generate mostly qualified dividends, taxed at lower rates, and long-term capital gains only when sold; placing them in a taxable account preserves the tax efficiency. Estimates of the gain from location are usually in the range of 0.1 to 0.3% a year of after-tax return, depending on tax rates and the size of the taxable account, without changing what you hold. The examples here use US-style rules; the categories and rates differ by country."
   - question: "How much does this actually matter?"
     answer: "For someone in a low-tax bracket with a small taxable portfolio, both techniques matter less than getting the asset allocation and fee structure right first. For someone in a high-tax bracket with a large taxable portfolio, both techniques compound to meaningful money over decades. Estimates for each technique usually run to a few tenths of a percent a year of after-tax return, depending on tax bracket, portfolio size, market conditions, and asset mix, and can be close to zero for small taxable portfolios. On a €500,000 portfolio over 20 years at 7% a year before inflation, each 0.1 percentage point a year is worth roughly €35,000. This is usually not the largest optimisation available (fees and asset allocation typically matter more), but it can be a meaningful refinement that needs only annual attention once set up."
 reelPromise: "The one-paragraph tax-loss harvesting idea, the wash-sale trap that nullifies careless harvesting, and the asset-location math that can add a few tenths of a percent to after-tax returns"
@@ -36,44 +56,19 @@ referentialReading:
     type: "blog"
 ---
 
-Every year, in most taxable investment accounts, some positions are at a paper loss. Nothing about the loss requires action: the position can be held, and if it recovers, the paper loss disappears without ever having been realised. This is the default. And for many investors with taxable accounts, the default costs some money.
+Eva has a taxable investment account. This year she sold one fund at a €10,000 gain, while two other positions are sitting below what she paid. She also holds the same mix of shares and bonds in every account she has. Neither situation demands action. Each costs a little tax every year, and over a career the little adds up.
 
-Every year, in many portfolios, the same asset mix is held across taxable and tax-advantaged accounts in roughly the same proportion in each. Nothing about this requires action either. This is also the default. And for many investors, this default also costs some money.
+## Tax-loss harvesting defers tax; it does not add return
 
-Neither default is expensive in a single year. Each costs a few tenths of a percent, sometimes less, sometimes a bit more. Over a working career of contributions and compounding, both cost meaningful multiples of that. Both are avoidable with an hour of setup once and an hour of attention per year. This post covers the two techniques.
+[Tax-loss harvesting](#term-tax-loss-harvesting) means selling an investment in a taxable account that is below its purchase price, realising what had been an [unrealised loss](#term-unrealised-loss), and at once reinvesting in something similar but not identical, so market exposure barely changes. The realised loss offsets gains, or part of ordinary income up to a local cap, or carries forward.
 
-## Tax-loss harvesting: what it is and what it is not
+It does not raise the investment's pre-tax return. Its possible value is deferral: tax that would otherwise be paid now stays invested. Using US-style rates for illustration, Eva's €10,000 gain taxed at 25% would mean €2,500 of tax now. If €10,000 of harvested losses offsets it, the €2,500 can stay invested, growing to about €9,700 at 7% a year over 20 years. That €9,700 is not the net benefit: the replacement has a lower [cost basis](#term-cost-basis), so a later sale may owe more tax. The eventual benefit depends on future tax rates, the holding period, trading costs and whether the gain is ever realised. The benefit rises with the tax rate, with how volatile the holdings are, with how often someone looks, and with the years of deferral.
 
-Tax-loss harvesting is one of the most commonly misunderstood techniques in personal investing. Both the mechanics and the point are worth stating carefully.
+## Wash-sale rules, and keeping your market exposure
 
-**What it is.** In a taxable account, you sell an investment that is currently at a loss (below its purchase price). You book the loss for tax purposes. You immediately reinvest the proceeds in a similar but not substantially identical investment, so your market exposure and future upside are preserved. The realised loss offsets gains elsewhere in your tax return, or offsets a portion of ordinary income (up to a jurisdictional cap), or carries forward to future years.
+Many countries that allow loss offsets block cosmetic harvesting: selling at a loss and buying straight back. In the US, the [wash-sale rule](#term-wash-sale-rule) disallows the loss if a "substantially identical" security is bought within 30 days before or after (the disallowed loss is added to the replacement's cost basis, so it is deferred, not lost). The UK's bed-and-breakfast rule blocks buying the same shares within 30 days after selling; Canada has a superficial-loss rule; some countries have none.
 
-**What it is not.** It is not a way to make money. It does not increase your investment return. It does not add to the value of your portfolio in any single year. Its benefit is tax deferral: you push the tax bill on your gains into the future, and the deferred amount stays invested and compounds. The value of harvesting is the value of the time delay on the tax bill, plus the value of any bracket arbitrage (if you harvest losses in a high-tax year and eventually realise gains in a lower-tax year).
-
-**Why it works arithmetically.** Suppose you have a €10,000 gain in your portfolio for the year, which will be taxed at (say) a 25% short-term capital-gains rate when realised, using US-style rates for illustration. Without harvesting, you pay €2,500 in tax. With harvesting, you realise €10,000 of losses to offset the gains: net taxable gain is zero, tax is zero. The €2,500 that would have gone to tax stays invested. In year 2 the €2,500, invested at 7%, is €2,675. In year 20, it is roughly €9,700. When you eventually realise the gains on the reinvested position (which now has a lower cost basis, so a larger unrealised gain), you owe more tax at that point. But the extra tax is not much larger than the original €2,500, while the compounded €2,500 has grown substantially. The net benefit is the compounding on the deferred tax minus the incremental tax on the eventual sale.
-
-The value scales with several factors: your marginal tax rate (higher rate = larger benefit), the volatility of your holdings (more volatility = more harvestable losses in a typical year), the frequency of your attention (annual scanning captures losses that arise during the year), and your investing horizon (more years of deferral = more compounding).
-
-## The wash-sale rule and how to work around it
-
-Many jurisdictions that allow loss offsets have some version of a rule preventing cosmetic harvesting: selling a loss position and immediately buying it back to keep the paper loss for tax purposes without actually giving up the investment. Without such a rule, you could harvest a loss on Monday and repurchase the identical position on Tuesday, capturing the tax benefit while retaining the exposure.
-
-**In the US.** The wash-sale rule disallows a loss deduction if you buy a "substantially identical" security within 30 days before or after the sale. Same fund, same stock, same option contract with similar economic characteristics. The disallowed loss is added to the cost basis of the replacement position (so it is not lost forever; it just gets deferred until the replacement is sold).
-
-**In the UK.** The "bed and breakfast" rule prevents claiming a loss if you buy the same shares within 30 days after selling. Sales are matched against subsequent purchases in a specific order.
-
-**In other jurisdictions.** Several have similar rules under different names (Canada's superficial-loss rule, for example); others have no formal rule, or treat losses differently altogether. Timing windows vary where they exist.
-
-**The usual approach.** After selling a loss position, investors who want to stay invested reinvest in a similar but not substantially identical alternative. Examples that have typically satisfied the rules:
-
-- Sell a broad global equity fund tracking one index, buy a broad global equity fund from a different provider tracking a different index. Both give broad global equity exposure; the underlying indices are different.
-- Sell a broad developed-market equity fund, buy a fund tracking a different developed-market index.
-- Sell an aggregate bond fund, buy a government bond fund of similar duration and credit quality. Different bond composition, similar risk.
-- Sell a broad emerging-markets fund tracking one index, buy a broad emerging-markets fund tracking a different index.
-
-The similarity of the two funds is close enough that your portfolio's overall market exposure and expected return are essentially unchanged. The tax authorities have historically not treated broadly-similar-but-different-index funds as substantially identical. Specific product-to-product substitutions and the exact tolerance of the rules vary by jurisdiction, and they are not always settled; checking local rules, or with a licensed tax professional, matters before doing this systematically.
-
-**One trap to avoid.** If the same investment position is held in multiple accounts (a taxable brokerage and a spouse's brokerage, or a taxable brokerage and a retirement account), the wash-sale rule can look across accounts in some jurisdictions. Selling at a loss in one account while buying the same fund in another account can trigger the rule. Coordination across household accounts matters.
+To stay invested, people commonly switch to a similar but not identical fund: a broad global fund from another provider tracking a different index, a fund tracking a different developed-market or emerging-market index, or a government bond fund of similar duration in place of an aggregate bond fund. A fund tracking a different index is a common replacement, but US guidance gives no blanket rule that two such funds are different enough; it depends on the holdings and facts, so local guidance or a licensed tax professional is worth checking before doing this systematically. The US rule can also be triggered by a spouse's purchase or one in an IRA. A taxable replacement normally takes the disallowed loss into its basis, but an IRA replacement does not, so the loss can be lost for good.
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-harvest-title fig-harvest-desc">
@@ -100,117 +95,93 @@ The similarity of the two funds is close enough that your portfolio's overall ma
 <figcaption>Illustrative three-step harvest workflow. Timing rules vary by jurisdiction; the workflow is universal.</figcaption>
 </figure>
 
-## When harvesting is worth doing
+<details class="quick-check">
+<summary class="disclosure">Quick check: Eva sells a fund at a loss and buys the same fund back a week later in the US. What happens to the loss?</summary>
 
-Harvesting is not always worth the friction. A few cases where it tends to pay and where it tends not to.
+The deduction is disallowed because she bought a substantially identical security within 30 days. If the replacement is in a taxable account, the loss normally increases its basis and is deferred; if it is in her IRA, that adjustment does not apply.
 
-**Often worth doing.**
+</details>
 
-- You are in a high marginal tax bracket and have realised gains this year or elsewhere in the portfolio to offset.
-- Volatility has produced meaningful paper losses in specific positions.
-- Your total portfolio is large enough that the tax deferral is materially valuable (typically €50,000+ in taxable investment accounts).
-- The replacement position is available at similar cost and similar market exposure.
-- The specific transaction is not going to trigger a wash-sale rule violation.
+<details class="lesson-depth">
+<summary class="disclosure">When harvesting tends to pay, and when it does not</summary>
 
-**Often not worth doing.**
+**Often worth it:** a high marginal tax rate with gains to offset; real paper losses after volatility; a taxable portfolio large enough for deferral to matter (often €50,000 or more); a replacement available at similar cost and exposure; no risk of breaking the wash-sale rule.
 
-- Small paper losses (a €200 loss produces at most €50 to €100 of tax deferral; not worth the friction).
-- Positions with large unrealised gains alongside modest losses (selective harvesting is fine; wholesale rebalancing that also realises gains defeats the purpose).
-- Positions where the replacement would trigger substantial transaction costs or FX conversion costs that exceed the tax benefit.
-- Late in life, in jurisdictions with a step-up in basis at death: gains on positions held until death may never be taxed, so harvesting adds little.
-- Cases where the marginal tax rate on the eventual sale will be higher than the current tax rate the harvest is offsetting. This is rare but possible (young worker at low bracket harvesting to offset ordinary income, expecting to be in a much higher bracket at eventual sale).
+**Often not:** small losses (a €200 loss defers perhaps €50 to €100 of tax, not worth the friction); harvesting that also realises large gains elsewhere; replacements whose trading or currency costs exceed the benefit; late in life where gains held until death are never taxed thanks to a step-up in basis; or when the eventual sale will face a higher rate than the one being offset, such as a young worker in a low bracket expecting a much higher one later.
 
-**One nuanced case.** Some jurisdictions treat short-term capital losses (positions held under a year) differently from long-term losses. In the US, short-term losses first offset short-term gains (taxed as ordinary income), then long-term gains (taxed at lower rates). The choice of which lot to harvest can matter. Specific lot identification at sale (rather than default FIFO) allows selective harvesting of specific tax lots.
+**Which lot to sell.** Some countries treat short- and long-term losses differently; in the US, short-term losses first offset short-term gains, taxed as ordinary income. Choosing specific tax lots at sale, rather than the default first-in, first-out, allows harvesting the most useful lots.
 
-## Asset location: the same portfolio, different placement
+</details>
 
-Asset location is the practice of placing each part of your portfolio in the account type that produces the best after-tax outcome for that asset, given how it generates taxable events.
+## Asset location: the same portfolio, placed differently
 
-**The starting principle.** Different assets generate different types of taxable events. Some generate ordinary-income coupons taxed annually at high rates. Others generate qualified dividends taxed at lower rates. Some generate very little annual taxable event and produce most of their return as unrealised capital appreciation that is only taxed at eventual sale. The tax efficiency of each asset differs.
+[Asset allocation](#term-asset-allocation) is what you hold; [asset location](#term-asset-location) is which account holds each piece. Assets create different kinds of tax: some pay interest taxed every year at high rates, others pay lower-taxed dividends, and some create little tax until they are sold. Accounts are taxed differently too: taxable accounts as income and gains arise, tax-deferred accounts on withdrawal, tax-free accounts not at all (the [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the categories).
 
-**The other starting principle.** Different account types are taxed differently: taxable accounts as income and gains arise, tax-deferred accounts on withdrawal, tax-free accounts not at all. The [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the categories and their local names.
+The usual heuristic puts assets that create a lot of yearly tax inside tax-advantaged accounts, and tax-efficient assets in taxable ones, keeping the overall mix the same. Under US-style rules:
 
-**The location heuristic.** Tax-inefficient assets (assets that generate large annual taxable events) tend to go in tax-advantaged accounts, where the events are deferred or eliminated. Tax-efficient assets (assets that generate small annual taxable events) tend to go in taxable accounts, where their tax efficiency is preserved. The overall asset allocation is unchanged; only the placement changes.
+- **Often in tax-deferred accounts, where room allows:** bond funds, [REITs](#term-reit) and high-turnover funds whose distributions would otherwise be taxed every year. Tax-free space may instead suit the assets with the highest expected growth; the best order depends on withdrawal tax rates and local rules.
+- **Fine in taxable accounts:** low-turnover broad index funds and individual buy-and-hold shares, which create little yearly tax.
+- **Depends:** international funds can carry a foreign tax credit usable only in taxable accounts; US municipal bonds belong in taxable accounts, because their tax exemption is wasted inside a sheltered one.
 
-**Typical placement decisions.**
+In other countries the best placement differs; in the UK, for example, the question becomes mostly what to hold inside or outside an ISA. The principle travels: the more yearly tax an asset creates, the more sheltering it is worth.
 
-- **High-yield bonds and REITs (Real Estate Investment Trusts):** high ordinary-income distributions. Better in tax-advantaged accounts.
-- **Broad taxable-bond funds:** ordinary-income coupons. Better in tax-advantaged accounts if space allows.
-- **Actively managed equity funds with high turnover:** generate short-term and long-term capital-gains distributions. Better in tax-advantaged accounts.
-- **Broad equity index funds with low turnover:** generate mostly long-term qualified dividends and rare capital-gains distributions. Fine in taxable accounts; the tax efficiency is high.
-- **International equity funds:** in some jurisdictions carry a foreign-tax credit that is only usable in taxable accounts. Some argue for taxable placement for this reason; the credit value depends on jurisdiction.
-- **Municipal bonds** (US) or their local equivalent: tax-exempt at some level; only makes sense in taxable accounts because the tax exemption is wasted in a tax-advantaged account.
-- **Individual buy-and-hold stocks:** no annual distributions beyond dividends; tax-efficient. Fine in taxable accounts.
+For a €400,000 household with a 70/25/5 mix of shares, bonds and REITs, moving the bonds and REITs out of the taxable account cuts current yearly tax by about €550 in the example below, about 0.14% of the portfolio. Kept invested at 5% real, that is roughly €18,000 after 20 years, though not a full lifetime comparison, since tax-deferred withdrawals may be taxed later.
 
-This list reflects US-style rules. The best placement varies by jurisdiction, tax bracket, and the specific assets held; in some countries, such as the UK with ISAs, the question becomes mostly what to hold inside versus outside one wrapper. The general principle travels: the more taxable events an asset generates annually, the more valuable it is to shelter it in a tax-advantaged account.
+<details class="lesson-depth">
+<summary class="disclosure">A worked asset-location example</summary>
 
-## A worked asset-location example
+**The household:** €400,000 in total, target 70% shares, 25% bonds, 5% REITs, across €150,000 tax-deferred, €50,000 tax-free and €200,000 taxable.
 
-Consider a household with the following target allocation and account types:
+**The same mix in every account:** the taxable account holds €140,000 shares, €50,000 bonds and €10,000 REITs. At a 30% marginal rate, €2,000 of bond interest and €400 of REIT distributions (4% each) cost €720 a year in tax.
 
-- Total portfolio: €400,000.
-- Target allocation: 70% equities, 25% bonds, 5% REITs.
-- Accounts: €150,000 tax-advantaged retirement, €50,000 tax-free retirement, €200,000 taxable brokerage.
+**Placed by tax efficiency:** tax-deferred holds €100,000 bonds, €20,000 REITs and €30,000 shares; tax-free holds €50,000 shares, the highest expected return in the most valuable shelter; taxable holds €200,000 of tax-efficient share index funds. The overall mix is still 70/25/5. The €720 goes; the extra €60,000 of shares in the taxable account adds back about €180 of dividend tax (2% yield at 15%), so yearly tax falls by about €550. Reinvested at 5% real for 20 years, that is about €18,000.
 
-**Naive placement (same allocation in each account).**
-- Tax-advantaged retirement (€150k): 70% equity = €105k, 25% bonds = €37.5k, 5% REITs = €7.5k.
-- Tax-free retirement (€50k): 70% equity = €35k, 25% bonds = €12.5k, 5% REITs = €2.5k.
-- Taxable brokerage (€200k): 70% equity = €140k, 25% bonds = €50k, 5% REITs = €10k.
+**The catches.** The tax-free account now holds only shares; if shares have a bad decade while the bonds do well, some of its advantage is lost, so location pays over long horizons and can go either way over short ones. Rebalancing also has to happen across accounts, selling shares in one and buying bonds in another or redirecting new money, which takes more attention.
 
-Bonds and REITs in the taxable account generate ordinary-income distributions taxed annually at the marginal rate. Assume a 30% marginal rate: on €50k of bonds yielding 4% (€2,000 of interest) plus €10k of REITs yielding 4% (€400 of distributions), the annual tax bill is €720. Over 20 years the compounded drag is meaningful.
+</details>
 
-**Location-optimised placement.**
-- Tax-advantaged retirement (€150k): bonds €100k + REITs €20k + equity €30k. Fills the bond and REIT allocation from the tax-advantaged bucket.
-- Tax-free retirement (€50k): equity €50k. Puts the highest-expected-return asset in the highest-tax-benefit account.
-- Taxable brokerage (€200k): equity €200k. All equity, tax-efficient index funds only.
+<details class="quick-check">
+<summary class="disclosure">Quick check: under the US-style assumptions here, does a bond fund or a low-turnover share index fund usually save more yearly tax in a tax-deferred account?</summary>
 
-The overall allocation is still 70/25/5 (280k equity, 100k bonds, 20k REITs); only the placement changed. The taxable account now generates only equity dividends (using US-style rates for illustration, typically at qualified-dividend rates, lower than ordinary income) and no bond or REIT ordinary-income distributions. Annual tax drag falls by about €550: the €720 on bond and REIT income goes, and the extra €60,000 of equity in the taxable account adds back roughly €180 of dividend tax (2% yield taxed at 15%). Over 20 years, with the saving reinvested at 5% real, the difference is roughly €18,000 of extra terminal wealth.
+The bond fund, because the example assumes its interest would otherwise be taxed every year at ordinary rates; the index fund creates little yearly tax. That does not mean bonds belong in every tax-free or retirement account.
 
-**One catch.** The tax-free retirement account holds only equity in the optimised version. If equities have a bad decade and the tax-free account underperforms while the tax-advantaged account (holding bonds and REITs) outperforms, the household loses some of the tax-free advantage. Location is an optimisation that pays off over long horizons; over short horizons it can go either way. Many planners consider the tradeoff worth it over long horizons, but it is worth understanding.
+</details>
 
-**Another catch.** Rebalancing across account types adds friction. If the target is 70/25/5 and equities have run up, the household needs to rebalance. In the location-optimised version, the rebalancing has to happen across account types (sell equity in tax-free retirement, buy bonds; or redirect new contributions selectively). This is more complex than rebalancing within a single account, and requires attention.
+## Allocation and fees come before either technique
 
-## The order of operations
+A rough order many planners describe:
 
-Both techniques can matter, but planners usually treat them as coming after more foundational decisions. A rough priority order often described:
+1. **[Asset allocation](/blog/investing-101-asset-classes/),** widely regarded as the largest driver of return and risk.
+2. **Low fees.** Moving from a high-cost to a low-cost fund can be worth 0.5 to 1% a year, usually more than either technique here (the [fees post](/blog/fee-optimization/) covered it).
+3. **Tax-advantaged accounts,** whose structure usually saves more than placement within them.
+4. **Asset location,** typically around 0.1 to 0.3% a year.
+5. **Tax-loss harvesting,** another 0.1 to 0.3% in typical conditions, more in volatile years.
 
-1. **Asset allocation.** The mix of stocks, bonds, and other assets suited to your risk tolerance and horizon (see the [investing 101 post](/blog/investing-101-asset-classes/)). This is widely regarded as the largest driver of portfolio returns and risk.
-2. **Low fees.** As covered in the [fee optimization post](/blog/fee-optimization/) immediately preceding this one. Moving from a high-cost to a low-cost fund can be worth 0.5 to 1% a year, which is usually larger than the location or harvesting benefit.
-3. **Tax-advantaged accounts.** The retirement, education, and health-savings vehicles available locally (see the [tax-advantaged accounts post](/blog/tax-advantaged-accounts/)). The tax benefit of the account structure itself typically exceeds the benefit of location optimisation within it.
-4. **Asset location.** The refinement covered in this post. Once the above three are handled, this typically adds around 0.1 to 0.3% per year (the worked example above comes to roughly 0.14%).
-5. **Tax-loss harvesting.** The final refinement. Adds another 0.1 to 0.3% per year in typical conditions, more in high-volatility years, less in low-volatility years.
+With an allocation that does not fit or fees of 1.5%, harvesting is rarely the first thing worth looking at. Once the basics are handled, both can be worth an hour a year, more so at higher tax rates.
 
-With an allocation that does not fit or fees of 1.5%, tax-loss harvesting is rarely the first thing worth looking at. Once the basics are handled, both harvesting and location can be worth the modest annual effort, more so at higher tax rates.
+<details class="lesson-depth">
+<summary class="disclosure">What can go wrong</summary>
 
-## What can go wrong
+**Letting tax drive the allocation.** If placement leads to holding too much of one asset because it fits the tax rules, and the overall mix drifts from target, the wrong variable has been optimised. **Forgetting a second tax layer.** Where there is federal and state or provincial tax, the combined rate is the one that matters. **Concentrating one account in one risk.** If all the shares sit in one account and it lags for a decade, the experience is harder to live with than a spread-out loss.
 
-The wash-sale window, harvests too small to beat their costs, the eventual sale at a lower cost basis, and the rebalancing friction of location are covered in the sections above. Three further ways this optimisation can backfire:
+</details>
 
-**Chasing tax benefits into worse allocations.** If asset location leads you to hold too much of one asset class in a single account because it fits the tax rules, and the overall allocation drifts away from target, you have optimised the wrong variable.
+## The rules where you live
 
-**Ignoring state or provincial tax.** In multi-tier tax jurisdictions (US federal + state, some Canadian province specifics, Australian federal + state), the marginal tax rate for calculating harvest benefit includes both layers. Use the combined rate.
+<details class="lesson-depth">
+<summary class="disclosure">Harvesting and location rules in the US, UK, eurozone, India, Australia and Canada</summary>
 
-**Overloading a single account with a single risk.** Location optimisation can lead to concentration by account type. If all equity is in one account and it underperforms for a decade, the psychological experience is worse than a distributed loss. This is a soft cost, not a hard one, but it is real.
+- **US.** Wash-sale window 30 days either side; short- and long-term gains taxed differently; foreign tax credit on international dividends in taxable accounts; municipal bonds exempt from federal and sometimes state tax; Roth contribution and conversion rules interact with harvesting.
+- **UK.** Bed-and-breakfast rule with same-day and 30-day matching; the yearly capital gains allowance gives a small automatic harvest; ISAs remove capital gains and dividend tax inside the wrapper, so location is mainly what goes in or out.
+- **Eurozone.** Wide variation: some countries tax gains at a flat rate, others at marginal income rates; cross-border dividend withholding complicates global funds; national tax-advantaged accounts differ.
+- **India.** Listed shares held under 12 months taxed at 20%, over 12 months at 12.5% above ₹1.25 lakh a year (from the 2024 budget); debt-fund indexation was removed in 2023; ELSS, PPF and other accounts have their own rules; wash-sale restrictions are less formalised.
+- **Australia.** A 50% capital gains discount for assets held over 12 months; franking credits on domestic dividends affect placement.
+- **Canada.** A 50% capital gains inclusion rate (subject to change); a 30-day superficial-loss rule; placement is mainly between TFSA, RRSP and non-registered accounts.
 
-## Cross-continent notes
+The ideas are similar everywhere; the rules change often, and a licensed tax professional is the place to confirm them.
 
-The techniques are universal; the specific rules and available vehicles vary widely.
+</details>
 
-- **US.** Wash-sale rule at 30 days before and after sale. Short-term versus long-term capital-gains distinction. Foreign tax credit on international dividends in taxable accounts. Municipal bonds tax-exempt at federal (and sometimes state) level. Roth IRA (US tax-free-growth retirement account) contribution and conversion rules interact with harvesting.
-- **UK.** Bed-and-breakfast rule; same-day and 30-day matching for share disposals. Annual capital-gains tax allowance provides a small automatic harvest each year for households below the threshold. ISA (Individual Savings Account, UK) wrapper eliminates capital-gains and dividend taxes within the wrapper; asset-location decisions primarily involve the choice of what to hold inside versus outside the ISA.
-- **EU / eurozone.** Wide variation across countries. Some jurisdictions apply a flat capital-gains rate; some integrate capital gains into ordinary income at marginal rates. Withholding taxes on cross-border dividends complicate the harvesting math for holders of pan-European or global funds. National tax-advantaged accounts vary in their treatment of gains and dividends.
-- **India.** Short-term capital gains on listed equity (held under 12 months) taxed at 20%; long-term (over 12 months) at 12.5% above ₹1.25 lakh per year, following the 2024 budget. Debt-fund taxation reformed 2023 to remove long-term capital-gains indexation benefit; asset location within ELSS, PPF, and other tax-advantaged accounts follows different rules. Wash-sale-equivalent restrictions less formalised; the general principle of not sitting out of the market during harvesting applies.
-- **Australia.** Capital gains discount of 50% for assets held over 12 months. Harvesting rules exist but framed differently. Franking credits on domestic dividends affect the after-tax picture and asset-location decisions.
-- **Canada.** Capital-gains inclusion rate of 50% (as of writing; subject to change). Superficial-loss rule at 30 days is Canada's wash-sale equivalent. TFSA (Tax-Free Savings Account, Canada) allows tax-free growth; RRSP (Registered Retirement Savings Plan, Canada) defers. Location decisions primarily between TFSA, RRSP, and non-registered accounts.
+The next post covers real returns and benchmarking: once fees, taxes and allocation are in order, how to tell whether the portfolio is doing what it should.
 
-Across jurisdictions, the ideas are similar: harvesting can pay when losses exist and the benefit exceeds the friction; placement by tax efficiency can reduce drag; neither is meant to drive the allocation. The specific rules and vehicle names are local, they change, and a licensed tax professional is the place to confirm them.
-
-## Getting started
-
-Three concrete steps for the first harvesting and location pass.
-
-- Review each taxable-account position at year end (or after a large market drop). Note positions currently at a paper loss and estimate the tax benefit of harvesting each. Many people only act when the benefit is at least a few hundred euros and a suitable replacement exists.
-- Map your current asset location: which asset class sits in which account. Note any tax-inefficient assets sitting in taxable accounts. Where moving them would trigger a large tax bill, a common alternative is redirecting new contributions and rebalancing to shift the placement over time.
-- Set a calendar reminder for an annual review. Once a year, in December (or before any tax-year cutoff in your jurisdiction), rescan for harvestable losses and verify location is still correct after any allocation drift.
-
-The next post in this series covers real returns and benchmarking, which is the measurement side of the equation: once fees are low, taxes are optimised, and asset allocation is right, the question is how to know whether the portfolio is actually performing as expected.
+Which of your holdings creates tax every year, and which account is it sitting in?
