@@ -13,10 +13,6 @@ export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   // Optimizing
   // Inclusive Finances
-  'financial-planning-with-a-disability',
-  'when-your-marriage-is-not-recognised-abroad',
-  'chosen-family-and-next-of-kin',
-  'multi-generational-household-economics',
   'blended-and-non-traditional-families',
   'widowhood-and-sudden-single-income',
   'building-your-own-default',
