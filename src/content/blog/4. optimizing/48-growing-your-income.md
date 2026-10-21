@@ -25,7 +25,7 @@ glossary:
   - term: "Offer stage"
     definition: "The point after an employer has chosen you and before you start, when there is usually the most room to negotiate."
   - term: "Vesting"
-    definition: "Shares or options from an employer becoming yours over time, often over several years; leaving before a vesting date can forfeit them."
+    definition: "Shares, options or employer pension contributions becoming yours over time; leaving before a vesting date can forfeit them."
   - term: "Savings rate"
     definition: "The share of income you save. It rises when income grows while spending stays the same."
   - term: "Side income"

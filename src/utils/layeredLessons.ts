@@ -12,8 +12,6 @@ export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 /** Lessons at those levels not yet converted. Delete a slug when its lesson is. */
 export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   // Optimizing
-  'invest-or-pay-off-debt',
-  'refinancing-timing',
   'windfall-management',
   'fee-optimization',
   'tax-loss-harvesting-and-asset-location',
@@ -24,8 +22,6 @@ export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   'recognizing-and-avoiding-financial-scams-and-fraud',
   'advanced-rebalancing',
   // Inclusive Finances
-  'gig-and-informal-economy-work',
-  'interest-free-and-sharia-compliant-finance',
   'immigrants-expats-and-cross-border-households',
   'solo-agers-and-single-income-households',
   'unmarried-and-cohabiting-couples',
