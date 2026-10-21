@@ -34,9 +34,11 @@ relatedSlugs: ["unmarried-and-cohabiting-couples", "cash-flow-forecasting", "fin
 referentialReading:
   - title: "A Guide to the Treatment of Pensions on Divorce"
     author: "Pension Advisory Group (United Kingdom)"
+    url: "https://www.judiciary.uk/related-offices-and-bodies/advisory-bodies/family-justice-council/resources-and-guidance/financial-needs/pensions-on-divorce/"
     type: "paper"
   - title: "Thinking, Fast and Slow"
     author: "Daniel Kahneman"
+    url: "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow"
     type: "book"
 ---
 

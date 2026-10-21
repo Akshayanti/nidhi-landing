@@ -33,7 +33,10 @@ const blog = defineCollection({
     referentialReading: z.array(z.object({
       title: z.string(),
       author: z.string().optional(),
-      url: z.string().optional(),
+      // Every suggested read links to the work itself, checked by hand to
+      // point at that exact work (Goodreads for books, the issuing body or
+      // a DOI for papers). A title with nowhere to go is not a suggestion.
+      url: z.string().url().startsWith('https://'),
       type: z.enum(['book', 'blog', 'paper', 'tool']),
     })).optional(),
     regulatoryNote: z.enum(['safe', 'caution', 'danger']).optional(),

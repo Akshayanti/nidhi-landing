@@ -35,9 +35,11 @@ relatedSlugs: ["unmarried-and-cohabiting-couples", "solo-agers-and-single-income
 referentialReading:
   - title: "Families We Choose: Lesbians, Gays, Kinship"
     author: "Kath Weston"
+    url: "https://www.goodreads.com/book/show/298610.Families_We_Choose"
     type: "book"
   - title: "Essential Retirement Planning for Solo Agers"
     author: "Sara Zeff Geber"
+    url: "https://www.goodreads.com/book/show/39693429-essential-retirement-planning-for-solo-agers"
     type: "book"
 ---
 

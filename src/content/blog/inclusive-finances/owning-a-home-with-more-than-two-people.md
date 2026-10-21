@@ -35,9 +35,11 @@ relatedSlugs: ["unmarried-and-cohabiting-couples", "shared-households-money-for-
 referentialReading:
   - title: "Creating Cohousing: Building Sustainable Communities"
     author: "Kathryn McCamant and Charles Durrett"
+    url: "https://www.goodreads.com/book/show/8533733-creating-cohousing"
     type: "book"
   - title: "The Sharing Solution: How to Save Money, Simplify Your Life and Build Community"
     author: "Janelle Orsi and Emily Doskow"
+    url: "https://www.goodreads.com/book/show/6504003-the-sharing-solution"
     type: "book"
 ---
 

@@ -34,9 +34,11 @@ relatedSlugs: ["unmarried-and-cohabiting-couples", "owning-a-home-with-more-than
 referentialReading:
   - title: "In Defense of Plural Marriage"
     author: "Ronald C. Den Otter"
+    url: "https://www.goodreads.com/book/show/24196044-in-defense-of-plural-marriage"
     type: "book"
   - title: "Common Law Marriage and Cohabitation"
     author: "House of Commons Library (United Kingdom)"
+    url: "https://commonslibrary.parliament.uk/research-briefings/sn03372/"
     type: "paper"
 ---
 

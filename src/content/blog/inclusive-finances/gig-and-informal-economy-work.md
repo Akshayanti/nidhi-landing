@@ -35,12 +35,15 @@ relatedSlugs: ["growing-your-income", "cash-flow-forecasting", "emergency-fund",
 referentialReading:
   - title: "The Financial Diaries: How American Families Cope in a World of Uncertainty"
     author: "Jonathan Morduch and Rachel Schneider"
+    url: "https://www.goodreads.com/book/show/31951517-the-financial-diaries"
     type: "book"
   - title: "Portfolios of the Poor: How the World's Poor Live on $2 a Day"
     author: "Daryl Collins, Jonathan Morduch, Stuart Rutherford, and Orlanda Ruthven"
+    url: "https://www.goodreads.com/book/show/6410378-portfolios-of-the-poor"
     type: "book"
-  - title: "Women and Men in the Informal Economy: A Statistical Picture"
+  - title: "Women and Men in the Informal Economy: A Statistical Picture (Third Edition)"
     author: "International Labour Organization"
+    url: "https://www.ilo.org/publications/women-and-men-informal-economy-statistical-picture-third-edition"
     type: "paper"
 ---
 

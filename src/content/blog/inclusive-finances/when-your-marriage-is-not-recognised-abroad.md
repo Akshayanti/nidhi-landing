@@ -35,9 +35,11 @@ relatedSlugs: ["unmarried-and-cohabiting-couples", "geographic-arbitrage", "immi
 referentialReading:
   - title: "Regulation (EU) No 650/2012 on Succession"
     author: "European Union"
+    url: "https://eur-lex.europa.eu/eli/reg/2012/650/oj/eng"
     type: "paper"
   - title: "Convention Abolishing the Requirement of Legalisation for Foreign Public Documents (Apostille Convention)"
     author: "Hague Conference on Private International Law"
+    url: "https://www.hcch.net/en/instruments/conventions/full-text/?cid=41"
     type: "paper"
 ---
 

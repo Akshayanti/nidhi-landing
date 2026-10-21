@@ -35,9 +35,11 @@ relatedSlugs: ["when-the-default-plan-does-not-fit-you", "financial-dashboard", 
 referentialReading:
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
     author: "Richard H. Thaler and Cass R. Sunstein"
+    url: "https://www.goodreads.com/book/show/2527900.Nudge"
     type: "book"
   - title: "The Checklist Manifesto: How to Get Things Right"
     author: "Atul Gawande"
+    url: "https://www.goodreads.com/book/show/6667514-the-checklist-manifesto"
     type: "book"
 ---
 

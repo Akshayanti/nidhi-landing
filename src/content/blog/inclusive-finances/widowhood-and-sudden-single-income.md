@@ -35,9 +35,11 @@ relatedSlugs: ["divorce-and-separation-finances", "solo-agers-and-single-income-
 referentialReading:
   - title: "The Year of Magical Thinking"
     author: "Joan Didion"
+    url: "https://www.goodreads.com/book/show/7815.The_Year_of_Magical_Thinking"
     type: "book"
   - title: "What Are Equivalence Scales?"
     author: "Organisation for Economic Co-operation and Development (OECD)"
+    url: "https://web.archive.org/web/20240606134054/https://www.oecd.org/els/soc/OECD-Note-EquivalenceScales.pdf"
     type: "paper"
 ---
 

@@ -35,9 +35,11 @@ relatedSlugs: ["insurance-optimization", "when-the-default-plan-does-not-fit-you
 referentialReading:
   - title: "Common Law Marriage and Cohabitation"
     author: "House of Commons Library (United Kingdom)"
+    url: "https://commonslibrary.parliament.uk/research-briefings/sn03372/"
     type: "paper"
   - title: "Nudge: Improving Decisions About Health, Wealth, and Happiness"
     author: "Richard H. Thaler and Cass R. Sunstein"
+    url: "https://www.goodreads.com/book/show/2527900.Nudge"
     type: "book"
 ---
 
