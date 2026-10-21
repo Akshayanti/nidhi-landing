@@ -12,10 +12,6 @@ export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 /** Lessons at those levels not yet converted. Delete a slug when its lesson is. */
 export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   // Optimizing
-  'financial-projections',
-  'what-if-scenarios',
-  'cash-flow-forecasting',
-  'life-events',
   'invest-or-pay-off-debt',
   'refinancing-timing',
   'windfall-management',

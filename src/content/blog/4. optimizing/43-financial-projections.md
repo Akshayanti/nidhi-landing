@@ -1,21 +1,45 @@
 ---
 slug: "financial-projections"
 title: "Financial Projections: Your Next 10, 20, 30 Years"
-description: "A financial projection turns today's numbers into a picture of your future. Why the assumptions matter more than the model, and why one line is not enough."
-tldr: "A projection takes your current net worth, your monthly contributions, your growth-rate assumptions, and your expected inflation, and plays them forward. It is not a prediction. It is a way of making the compound consequences of today's choices visible so you can decide whether you like where you are heading. The trap is not the math. The trap is overconfidence in the assumptions. A projection at 8% real returns and a projection at 4% real returns tell very different stories about the same starting balance (8% is above the long-run record; 4 to 6% is where developed markets have landed since 1900). That is why many planners work with ranges rather than single lines, use real returns rather than nominal, and revisit the numbers each year. Monte Carlo simulation goes one step further: thousands of uneven return sequences instead of one smooth line, which shows the spread of outcomes and why the order of returns matters once you draw money out."
+seoTitle: "How Much Will My Savings Grow? Projections Explained"
+description: "How to project your savings 10 to 30 years ahead: why one growth assumption can move the result by a million euros, how to choose it, and what a Monte Carlo result really means."
+tldr: "A projection plays today's savings forward under stated assumptions; it is a conditional picture, not a prediction. The growth rate moves the result enormously, so many planners use a range of real returns anchored on long-run history. A Monte Carlo simulation shows the spread, and \"in 90% of runs\" is the model's estimate, not a promise."
 takeaways:
-  - "Why a projection is a conditional picture, not a prediction"
-  - "Why small changes in the growth rate move the result so much"
-  - "Why to plan with a range of real returns, not one nominal line"
-  - "How a Monte Carlo simulation shows the spread and sequence risk"
+  - text: "Why a projection is a conditional picture, not a prediction"
+    href: "#glossary"
+  - text: "Why one growth assumption can move the result by a million euros"
+    href: "#one-growth-assumption-moves-the-result-by-over-a-million-euros"
+  - text: "How to choose a growth assumption, in real terms and as a range"
+    href: "#how-to-choose-a-growth-assumption"
+  - text: "How to read a Monte Carlo result honestly"
+    href: "#in-90-of-runs-is-not-a-90-promise"
+  - text: "How to use a projection: the gap and the yearly update"
+    href: "#using-a-projection-the-gap-and-the-yearly-update"
+glossary:
+  - term: "Projection"
+    definition: "A calculation that plays today's savings, contributions and assumptions forward year by year. It shows where things lead if the inputs hold; it is not a prediction."
+  - term: "Real return"
+    definition: "A return after inflation is taken off, so it shows what the money will buy. 7% growth with 2% inflation is about a 5% real return."
+  - term: "Nominal return"
+    definition: "A return before inflation is taken off. It makes future amounts look bigger than what they will buy."
+  - term: "Expense ratio"
+    definition: "A fund's yearly running cost, as a percentage of the money invested: 0.75% costs €75 a year on €10,000."
+  - term: "Monte Carlo simulation"
+    definition: "Running a plan thousands of times, each with a different random sequence of yearly returns, to see how widely the results spread."
+  - term: "Percentile"
+    definition: "A point in a spread of results. The 10th percentile is the result that only one run in ten did worse than."
+  - term: "Sequence-of-returns risk"
+    definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 43
 pubDate: 2026-10-12
-updatedDate: 2026-10-03
+updatedDate: "2026-10-21"
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "planning", "investing"]
 faq:
+  - question: "How much will my investments be worth in 30 years?"
+    answer: "It depends heavily on the growth rate you assume, so many people look at a range. As a rough guide in today's money, €1 a month for 30 years ends up near €700, €1,000 or €1,400 at real returns of 4%, 6% or 8% a year, and €1 already saved near €3, €6 or €10. For €50,000 saved plus €1,000 a month, that is roughly €850,000 to €1.9 million. Long-run world-equity history is roughly 5% a year after inflation, so 8% is an optimistic assumption relative to that long-run average. These are illustrations, not predictions."
   - question: "What is a financial projection and how is it different from a prediction?"
     answer: "A projection is a forward calculation that starts from today's numbers (net worth, recurring contributions, expected growth rate, expected inflation) and plays them out year by year to show where you would end up if those inputs held. A prediction claims to know what will actually happen. The difference matters. A projection is honest about being conditional (if this holds, then that follows), which makes it a decision tool. A prediction pretends the future is knowable, which turns it into a bet. The projection at 7% growth and the projection at 5% growth are both correct arithmetic given their inputs. Which one is closer to what happens depends on decades of unknowable market behaviour, so the useful move is to look at both."
   - question: "What are the inputs to a good projection?"
@@ -58,55 +82,45 @@ referentialReading:
     type: "book"
 ---
 
-You know what you have today. You have some sense of what you save each month. But if someone asked you to point at where your net worth will actually be in ten years, twenty years, thirty years, you would probably shrug and offer a vague direction rather than a number.
+Eva, 32, has €50,000 invested and adds €1,000 a month. One online calculator gave her a single number for age 62. A simulation told her "90%". Neither told her what the number depends on, or what 90% of what.
 
-That shrug is what a projection replaces. A projection takes today's numbers, plus your growth-rate assumptions, plus your contribution plan, and plays them forward year by year. The output is a picture of your financial future conditional on those inputs holding. It is not a prediction. It is a way of making the compound consequences of today's choices visible so you can decide whether you like where you are heading.
+A [projection](#term-projection) takes today's numbers, a growth assumption and a contribution plan, and plays them forward year by year. It is not a prediction. It shows where today's choices lead if the inputs hold, so you can decide whether you like the direction. Gut feeling is bad at this: people think in straight lines about something that compounds, and badly underestimate both the end result and the cost of starting late.
 
-Most people never do this. They save what they can, invest in something reasonable, and hope the trajectory is fine. A projection replaces hope with arithmetic. The arithmetic is not perfect (nothing is, over 30 years) but it is honest, and honest is enough to make better decisions.
+<details class="lesson-depth">
+<summary class="disclosure">What a projection makes visible that gut feeling misses</summary>
 
-## Why projections beat gut feeling
+**The scale of the end result.** €500 a month at a 5% [real return](#term-real-return) is worth about €408,000 in today's money after 30 years, far more than most people guess.
 
-Gut feeling about long-horizon financial outcomes is systematically wrong, in one direction. Humans linearize things they should exponentialise. Ask someone what €500 a month invested at 5% real returns is worth in 30 years, and the typical answer will be far lower than the actual figure of about €408,000 (in today's purchasing power). We evolved to plan for tomorrow's meal, not for the geometric growth of capital compounding over decades.
+**The cost of a delay.** Starting five years later does not cost five thirtieths of the result; it costs closer to 30%, because the lost early years would have been multiplying the largest balance at the end.
 
-Three specific things a projection makes visible that gut feeling misses:
+**When returns take over from contributions.** Early on, most growth is what you put in; later, most of it is returns on what is already there. The crossover, often somewhere between years 15 and 25, puts a windfall or a temporary dip in savings in context.
 
-**The scale of the endgame.** A 25-year-old saving €300 a month at a 6% real return retires with substantial wealth. A 45-year-old with the same €300 a month has meaningfully less, not because compounding failed but because it had less time. The projection shows the difference in a single glance; the gut always underestimates it.
+</details>
 
-**The cost of small delays.** Waiting five years to start contributing is not a 5-out-of-30 penalty. It is closer to a 30% haircut on the ending balance, because you lost the five years when compounding was operating on the smallest base (so absolute gains were small) but which were multiplying the largest base in your final years. The projection makes the geometry visible; the gut treats it linearly.
+<details class="lesson-depth">
+<summary class="disclosure">What goes into a projection</summary>
 
-**The leverage of contributions vs returns.** In the early years of accumulation, most of your growth is contributions. In the late years, most of it is compound returns. This crossover point (usually somewhere between years 15 and 25 for a middle-income accumulator) is worth seeing on a chart, because it puts a windfall or a temporary savings dip in context.
+- **Starting balance by type of asset.** Cash, shares, bonds and property grow at different long-run rates, so lumping them together is wrong from the start.
+- **Contributions.** How much goes in, to which asset, whether it rises with salary, and when it stops.
+- **A growth rate for each asset,** as a range rather than one number (below).
+- **Inflation,** so the result can be shown in today's money.
+- **The horizon and scheduled events:** a house purchase, a career break, a mortgage paid off, an inheritance.
 
-None of this is complicated math. It is just math your brain does not run natively.
+Get these right and a simple model is close enough; get them wrong and no model rescues the output.
 
-## The five inputs
+</details>
 
-A projection takes five inputs and turns them into a curve. Get these five right and the model is close enough. Get them wrong and the model is fiction.
+## One growth assumption moves the result by over a million euros
 
-**Starting balance, broken down by asset type.** Not just "€120,000 net worth." Different asset types grow at different long-run rates, and lumping them together makes the projection wrong by construction. Cash grows at roughly the deposit rate. Broad equity indices across developed markets have returned about 4 to 6% a year after inflation since 1900 (with meaningful variation by country and era). Bonds sit lower. Real estate sits somewhere in the middle, with the caveat that it also throws off rent and requires maintenance. Split your starting balance by asset type before the projection touches it.
+The output is extremely sensitive to the growth rate. For Eva's €50,000 plus €1,000 a month over 30 years, in today's money:
 
-**Recurring contributions.** How much are you adding each month or year, and to which asset type? If you contribute €1,000 a month split as €700 to a broad equity fund and €300 to a bond fund, the projection needs to know that split. If your contribution grows with salary (a common pattern), model that too. If it is planned to stop at retirement, make sure the projection stops it.
+| Real return a year | After 30 years |
+|---|---|
+| 4% | about €847,000 |
+| 6% | about €1,260,000 |
+| 8% | about €1,910,000 |
 
-**Per-asset growth-rate assumptions.** This is where the overconfidence lives. The [Psychology post on overconfidence](/blog/overconfidence-and-the-planning-fallacy/) covers why we systematically over-set this number. Practical answer: use a range, not a single value. A conservative, a central, and an optimistic assumption produce three projections, and the truth is somewhere in the fan.
-
-**Expected inflation.** Inflation is the silent tax on nominal returns. A projection that shows a €1,200,000 outcome at 7% nominal growth is telling you a much smaller story once you subtract 2% inflation across 30 years. Modelling inflation lets you see the real (purchasing-power-adjusted) outcome, which is the number that actually matters for what you can buy.
-
-**Time horizon and scheduled events.** How many years does the projection run? Are there planned events (a house purchase, a career break, a mortgage payoff, an inheritance received) that change the trajectory at specific years? The projection should be able to accept these as scheduled disturbances rather than blending them into a smooth curve.
-
-Everything else is decoration. If these five are right, the projection tells you something useful. If any of them are off, no amount of model sophistication will rescue the output.
-
-## Why assumptions matter more than the model
-
-The most surprising thing about projections is how sensitive the output is to the growth-rate input. Not intuitively sensitive: violently, exponentially sensitive.
-
-Consider a €50,000 starting balance with €1,000 a month in contributions, over 30 years:
-
-- At 4% real returns: roughly €847,000 ending balance
-- At 6% real returns: roughly €1,260,000
-- At 8% real returns: roughly €1,910,000
-
-The difference between the 4% and 8% assumptions is more than a factor of two on the final number. And that gap is 4 percentage points, which sounds small when you say it out loud but is very large in the underlying arithmetic.
-
-This is why single-line projections mislead. The line implies precision that the underlying math cannot deliver. A number pulled from thin air (say, 7% because you saw it in a US article about S&P 500 returns) produces a chart that looks precise but is anchored to a single guess about an unknowable future.
+The gap between 4% and 8% is about €1,060,000, more than a factor of two, from an input many people type without thinking.
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-fan-title fig-fan-desc">
@@ -133,35 +147,46 @@ This is why single-line projections mislead. The line implies precision that the
 <figcaption>Illustrative projection at three growth-rate assumptions. The fan widens dramatically after year 15, which is why a single-line projection overstates its own precision.</figcaption>
 </figure>
 
-The fan is the honest picture. Any one line inside it is defensible. Which one turns out to match the future is not knowable in advance. Rather than picking the middle and committing to it, many planners test their plan against the conservative line, so the plan does not depend on luck, and treat the optimistic line as upside. How cautious to be depends on how much flexibility you have if the low line turns out right. It helps to know where the lines sit against history: developed markets have returned about 4 to 6% a year after inflation since 1900, so 4% is the low end of that record, 6% the high end, and 8% is above it.
+That is why a single line misleads: it implies a precision the arithmetic cannot deliver. The fan is the honest picture. Many planners test the plan against the low line, so it does not depend on luck, and treat the high line as upside. How cautious to be depends on how much room you would have to adjust if the low line turned out right.
 
-## Real returns, not nominal
+A quick way to sketch the fan for any plan, 30 years out, in today's money: multiply the monthly amount by about 700, 1,000 and 1,400, and existing savings by about 3, 6 and 10, for 4%, 6% and 8% a year. For Eva: about €850,000, €1.3 million and €1.9 million. It is a rough guide for comparing assumptions, not a substitute for a proper calculation.
 
-The [Purchasing Power post](/blog/purchasing-power/) explained real returns: what is left of a return after inflation. For projections, most planners work in real terms, with inflation already subtracted, so the numbers show what future money will actually buy. Over five years the difference is small; over the decades projections exist for, a nominal projection overstates what you will be able to afford by a wide margin. Running both is common, with the real numbers as the ones to reason from. The catch is that the inflation figure is itself an assumption, and it differs a lot by country.
+## How to choose a growth assumption
 
-## The overconfidence trap
+A common approach has four parts:
 
-Most projection failures sit on the input side, not the model side. And the most common one is overconfidence in the growth-rate assumption.
+- **Use a range, not one number:** a cautious, a central and an optimistic rate.
+- **Anchor on long-run history across many markets.** Developed stock markets have returned about 4 to 6% a year after inflation since 1900, and the Global Investment Returns Yearbook puts world equities at 5.2% from 1900 to 2024. So 4% sits at the low end of that range, 6% at the high end, and 8% is optimistic against the long-run average, though some markets and periods did better. Bonds sit lower; cash lower still.
+- **Work in real returns,** with inflation already taken off, so the numbers show what the money will buy. The [purchasing power post](/blog/purchasing-power/) covered why. A projection using [nominal returns](#term-nominal-return) over decades overstates what you can afford by a wide margin; the inflation figure is itself an assumption that differs by country.
+- **Take off the fees you pay.** A 7% market return is 6.5% after a 0.5% [expense ratio](#term-expense-ratio) and 6% after 1%.
 
-The Psychology series post on [overconfidence and the planning fallacy](/blog/overconfidence-and-the-planning-fallacy/) explains the underlying bias. In a projection context, it shows up in three specific ways.
+<details class="lesson-depth">
+<summary class="disclosure">Why growth rates get set too high</summary>
 
-**Anchoring to the best recent decade.** US equity returns from 2010 to 2020 were exceptional by long-run standards. Using them as your baseline for the next 30 years is not analysis, it is extrapolation from a favorable sample. The Global Investment Returns Yearbook puts world equities at 5.2% a year after inflation from 1900 to 2024, and single countries have typically landed between 4 and 6%. Some decades are much better; some are much worse.
+The [overconfidence post](/blog/overconfidence-and-the-planning-fallacy/) explains the bias; in projections it shows up three ways.
 
-**Confusing your target with your assumption.** "I need 8% to hit my goal, so I will model 8%." This is one of the more expensive mistakes in personal finance. The market does not care what return you need. Modelling the return you need rather than the return you can plausibly expect turns the projection into a wish list.
+**Anchoring on the best recent decade.** US shares from 2010 to 2020 did exceptionally well by long-run standards. Using that decade as the baseline for the next 30 years extrapolates from a lucky sample; some decades are much better and some much worse.
 
-**Ignoring the fees you actually pay.** Nominal 7% before fees is 6.5% after a 0.5% expense ratio, and 6% after a 1% expense ratio. A later post in this series covers fee optimization in detail; for now, subtract your total fee load from any market-return assumption before it enters the projection.
+**Confusing the return you need with the return you can expect.** "I need 8% to hit my goal, so I will model 8%" turns the projection into a wish list. The market does not care what return you need.
 
-The counter to all three is the same: use a range, use long-run averages that span multiple market environments, and revisit the projection annually rather than defending an old one.
+**Forgetting fees,** which come straight off the return every year.
 
-## From one line to many: Monte Carlo
+The counter to all three is the same: a range, long-run averages that span many market conditions, and a yearly update rather than defending an old projection.
 
-A projection is not a prediction. It says: given these inputs, this is where you end up. Every input is uncertain, and if the inputs change, the projection changes.
+</details>
 
-There is a second, quieter limit. Even the fan above assumes the market delivers its rate smoothly: 6% in year one, 6% in year two, 6% in year thirty. Markets never do that. A long-run average of 6% arrives as three good years, one terrible one, two average ones, and so on. That unevenness changes the outcome, not just the path.
+<details class="quick-check">
+<summary class="disclosure">Quick check: Eva needs 8% a year to reach her goal, so she models 8%. What is the problem?</summary>
 
-**The Monte Carlo idea.** Instead of running the projection once with a fixed return, you run it thousands of times. Each run draws a different sequence of yearly returns from a realistic range, built from historical market behaviour or a forward-looking estimate. The result is not one ending number but thousands, and you look at how they spread out. The name comes from the casino: the technique was developed in the 1940s for physics problems that could only be solved by random sampling, and it has been standard in retirement-planning software since the 1990s.
+The return she needs is not the return she can expect. 8% is well above the long-run world-equity average, so the plan would depend on a particularly strong outcome. Testing it against 4% and 6% shows how big the gap could be.
 
-Here is Eva's plan from the fan above, simulated 10,000 times. Each year's return is drawn at random from real history: the yearly returns, after inflation, of a portfolio split equally across up to 16 developed stock markets from 1900 to 2020. Those years averaged 6.7%; each is lowered by the same 0.7 points so they average the 6% used for the middle line. The year-to-year spread is kept, while the level is set to the 6% assumption. The calculation is in the source note below the figure, so anyone can rerun it.
+</details>
+
+## "In 90% of runs" is not a 90% promise
+
+Even the fan assumes returns arrive smoothly: 6% every single year. Markets deliver an average as a mix of good, terrible and ordinary years, and that unevenness changes the outcome, not just the path. A [Monte Carlo simulation](#term-monte-carlo-simulation) runs the plan thousands of times, each with a different sequence of yearly returns, and shows how the results spread out.
+
+Here is Eva's plan run 10,000 times. Each year's return is drawn at random from real history: the yearly returns, after inflation, of a portfolio spread equally across up to 16 developed stock markets from 1900 to 2020, lowered by 0.7 points so they average the 6% of the middle line while keeping their year-to-year swings.
 
 <figure>
 <svg viewBox="0 0 720 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-mc-title fig-mc-desc">
@@ -190,42 +215,41 @@ Here is Eva's plan from the fan above, simulated 10,000 times. Each year's retur
 <figcaption>Monte Carlo of the same plan, using the spread of historical yearly returns. About three in five simulated paths finish below the single 6% line, because years of losses do more damage to compounding than equal years of gains repair. The single line hides both the spread and that drag. Source: Jordà-Schularick-Taylor Macrohistory Database, release 6; reproduce with <code>scripts/simulate-projection-paths.mjs</code> (seed 43).</figcaption>
 </figure>
 
-**Reading percentiles.** The 10th percentile is the bad-luck path: only one simulation in ten did worse. The 50th, the median, is the middle. The 90th is the good-luck path: only one in ten did better. In this example they land at about €510,000, €1.08 million and €2.2 million.
+**Reading the [percentiles](#term-percentile).** The 10th percentile is the bad-luck path: only one run in ten did worse. The 50th is the middle; the 90th the good-luck path. For Eva they land at about €510,000, €1.08 million and €2.2 million. So in 90% of runs her pot passed about €510,000.
 
-**Why the middle sits below the single line.** About three in five paths (61%) finish below the €1.26 million that a steady 6% produces. A 20% loss followed by a 20% gain leaves you 4% down, not back where you started, so the same average return compounds to less when it arrives unevenly. The historical years in this simulation average 6% but compound at about 4.9%. The single line hides that drag as well as the spread.
+**Why the middle sits below the single line.** About three in five runs (61%) finish below the €1.26 million a steady 6% produces. A 20% loss followed by a 20% gain leaves you 4% down, so the same average return compounds to less when it arrives unevenly: these historical years average 6% but compound at about 4.9%.
 
-**Which line people plan against.** While still saving, many planners look at the median with an eye on the 10th percentile. Once money is coming out, many shift attention to the 5th or 10th percentile, because running out of money is much worse than ending with more than you needed. Where you put your attention depends on how much you could cut spending, or keep earning, if markets disappoint.
+**Saying it honestly.** "In 90% of runs the pot passed €510,000" is what the model says. "A 90% chance" drops the assumptions and turns an estimate into a promise about the future, which it cannot be: inflation, growth and how markets move together can all differ from the past. A common way to read it: look at the 10th percentile and ask whether you could live with it.
 
-### Sequence of returns: why order matters once you draw down
+<details class="lesson-depth">
+<summary class="disclosure">How the simulation was built and what it leaves out</summary>
 
-While you are contributing, the order of good and bad years matters little. Bad years let your contributions buy more cheaply; over decades the sequence averages out.
+The yearly returns come from the Jordà-Schularick-Taylor Macrohistory Database (release 6): an equal-weighted mix of up to 16 developed markets, 1900 to 2020, after inflation. Those years averaged 6.7%; each is lowered by the same 0.7 points so they average 6%, keeping their spread. The calculation can be rerun with `scripts/simulate-projection-paths.mjs` (seed 43). Monte Carlo methods were developed in the 1940s for physics problems that could only be solved by random sampling, and have been standard in retirement software since the 1990s.
 
-Once you are withdrawing, order matters a great deal. Take someone drawing €40,000 a year from €1 million. If the market falls 30% in the first year, they still need €40,000, but now they are selling from €700,000, so they have to sell a larger share of what they own, at low prices. Those shares are gone when the market recovers. Two retirees with the same starting balance, the same withdrawals and the same average return over 30 years can end up very differently: the one who meets the bad years early can run out of money long before the one who meets them late.
+What it leaves out: drawing from history includes the crashes that happened, but not worse ones that have not happened yet. It draws each year independently, so it understates how bad years clustered, as in the 1930s or the 1970s. Real investors sell in panics and chase what just went up; the model does not. And personal shocks, a job loss, an illness, a divorce, are not market events at all; they belong to the emergency fund and insurance.
 
-A single-line projection cannot show this at all, because it has no sequence. A simulation can, which is why it becomes far more useful near retirement. The ways to buffer sequence risk, from cash reserves and flexible spending to a temporarily higher bond allocation, belong to the drawdown years and are covered later.
+</details>
 
-### Saying it honestly
+<details class="lesson-depth">
+<summary class="disclosure">Why order matters in retirement</summary>
 
-A simulation result is easy to overstate. "In 90% of simulations the money lasted" is what the model actually says. "You have a 90% chance of success" drops the assumptions and turns the model's estimate into a promise about your future, which it cannot be: the future can differ from the past in inflation, growth and how markets move together. Use the first phrasing, and decide for yourself how much weight the model deserves.
+While you are saving, the order of returns still affects the final balance, because contributions go in at different times: early falls let later contributions buy more cheaply, while late falls hit a larger pot. Once money is coming out, [sequence-of-returns risk](#term-sequence-of-returns-risk) matters a great deal. Someone drawing €40,000 a year from €1 million who meets a 30% fall in the first year still needs €40,000, but now sells from €700,000, so a larger share of what they own goes at low prices and is not there for the recovery. Two retirees with the same balance, withdrawals and average return can end very differently if one meets the bad years early. A single line cannot show this, because it has no order; a simulation can, which is why it matters more near retirement. Ways of buffering it belong to the drawdown years and are covered later.
 
-The model also leaves things out. Resampling history includes the crashes that happened, but not worse ones that have not happened yet, and it draws each year independently, so it understates how bad years clustered in history, as in the 1930s or the 1970s. Real investors sell in panics and chase what just went up, which the model does not do. And the personal shocks, a job loss, an illness, a divorce, are not market events at all; they belong to the emergency fund and insurance.
+</details>
 
-**Using it well.** Look at the shape, not the decimals: whether the 10th percentile is €500,000 or €520,000 does not matter; whether it falls short of what you need does. Run a cautious, a central and an optimistic set of assumptions. A rerun that moves a few points is noise; a change in your situation is information. And if the 10th-percentile outcome would not cover your minimum needs, that is a signal worth taking seriously: the usual levers are the savings rate, the retirement date and the target lifestyle, and which one fits depends on you.
+<details class="quick-check">
+<summary class="disclosure">Quick check: in 90% of runs Eva's pot passed €510,000. Does she have a 90% chance of reaching it?</summary>
 
-## How to actually use a projection
+No. That is what the model produced from its assumptions, built on past returns. The future can differ, so "in 90% of runs" is the honest reading, not a promise.
 
-Two practical uses that beat "run once and forget."
+</details>
 
-**Gap analysis against a goal.** You have a target (a specific ending balance, a FIRE number, a house down payment by a specific year). The projection shows whether your current trajectory hits the target. If yes, at what level of confidence (across the fan)? If no, by how much? A projection turns "will I be OK?" into "at 4% real returns I am short by €80,000; at 6% I am ahead by €40,000; what would I have to change to hit the target under the 4% case?"
+## Using a projection: the gap and the yearly update
 
-**Annual revisit and update.** A projection built at age 30 with assumptions from 2020 stops being useful by 2030 if you never update it. Revisit annually. Update the starting balance to what it actually became. Adjust the growth-rate assumption if you have material new information (rarely). Add or remove scheduled events. Track how the projection has drifted from what actually happened, and use that gap as feedback on how tight your assumptions were.
+**The gap against a goal.** A projection turns "will I be OK?" into something specific: "at 4% I am €80,000 short; at 6% I am €40,000 ahead; what would close the gap at 4%?" The usual levers are the savings rate, the date and the target itself, and which one fits depends on the person.
 
-The third use, testing a decision before you make it by changing one input and comparing the result, is big enough for its own post, and it is the next one in this series.
+**A yearly update.** A projection built at 30 with assumptions from one year stops being useful a decade later if it is never touched. Many people update it once a year: the real starting balance, any scheduled events, and how far the last projection drifted from what happened, which shows how tight the assumptions were. A rerun that moves a few points is noise; a change in your situation is information.
 
-## Putting it together
+Testing a decision before you make it, by changing one input and comparing, is the subject of the next post.
 
-The pieces are an honest baseline, shown as a fan rather than a line and as a simulated range once the stakes are high; a check of whether the plan survives the lower lines, so it is not counting on luck; and a revisit each year.
-
-The projection is scaffolding for decisions. It is not a promise about the future. Used well, it turns "will I be OK?" into a specific gap you can close. That is a very different conversation than the shrug most people offer when asked where they will be in 30 years.
-
-Later posts in this series build on this foundation. What-if scenarios use it to test decisions. Cash flow forecasting adds the month-by-month picture. Life-events planning uses it for foreseeable disruptions. Later posts on fees and taxes make the projection more accurate. But the underlying discipline is what you have here: honest inputs, ranges not lines, real returns, annual updates.
+If your plan only works on the highest of the three lines, which of the levers would you reach for first?
