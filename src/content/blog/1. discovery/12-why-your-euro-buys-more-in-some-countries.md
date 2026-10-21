@@ -22,9 +22,9 @@ referentialReading:
   - title: "The Economist: Big Mac Index"
     url: "https://www.economist.com/big-mac-index"
     type: "blog"
-  - title: "International Economics"
-    author: "Paul Krugman"
-    url: "https://www.goodreads.com/book/show/516577.International_Economics"
+  - title: "International Economics: Theory and Policy"
+    author: "Paul Krugman and Maurice Obstfeld"
+    url: "https://www.goodreads.com/book/show/231984.International_Economics"
     type: "book"
 relatedSlugs: ["purchasing-power", "income-vs-wealth", "cash-flow-101"]
 faq:

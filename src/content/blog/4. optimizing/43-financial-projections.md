@@ -41,8 +41,8 @@ referentialReading:
   - title: "Compound Interest Formula"
     url: "https://www.investopedia.com/terms/c/compoundinterest.asp"
     type: "blog"
-  - title: "Historical Real Equity Returns Across Countries (Credit Suisse Global Investment Returns Yearbook)"
-    url: "https://www.ubs.com/global/en/investment-bank/in-focus/2023/global-investment-returns-yearbook.html"
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
   - title: "The Rate of Return on Everything, 1870 to 2015 (Jordà, Knoll, Kuvshinov, Schularick and Taylor), data from the Macrohistory Database"
     url: "https://www.macrohistory.net/database/"
@@ -53,7 +53,7 @@ referentialReading:
     type: "book"
   - title: "The Physics of Wall Street"
     author: "James Owen Weatherall"
-    url: "https://www.goodreads.com/book/show/13158695-the-physics-of-wall-street"
+    url: "https://www.goodreads.com/book/show/13356644-the-physics-of-wall-street"
     type: "book"
 ---
 

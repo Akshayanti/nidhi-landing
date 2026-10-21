@@ -41,14 +41,14 @@ referentialReading:
     type: "blog"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
-    url: "https://www.goodreads.com/book/show/37590422-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
   - title: "The Simple Path to Wealth"
     author: "J.L. Collins"
     url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
     type: "book"
-  - title: "Retirement Spending: Choosing a Sustainable Withdrawal Rate (Trinity Study)"
-    url: "https://en.wikipedia.org/wiki/Trinity_study"
+  - title: "Retirement Savings: Choosing a Withdrawal Rate That Is Sustainable (Trinity Study)"
+    url: "https://www.aaii.com/journal/article/retirement-savings-choosing-a-withdrawal-rate-that-is-sustainable"
     type: "paper"
 ---
 

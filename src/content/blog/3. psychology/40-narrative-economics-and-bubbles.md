@@ -28,15 +28,15 @@ relatedSlugs: ["herd-behavior-and-fomo", "why-smart-people-make-dumb-money-decis
 referentialReading:
   - title: "Narrative Economics: How Stories Go Viral and Drive Major Economic Events"
     author: "Robert J. Shiller"
-    url: "https://www.goodreads.com/book/show/42771946-narrative-economics"
+    url: "https://www.goodreads.com/book/show/44526017-narrative-economics"
     type: "book"
   - title: "Irrational Exuberance"
     author: "Robert J. Shiller"
-    url: "https://www.goodreads.com/book/show/277903.Irrational_Exuberance"
+    url: "https://www.goodreads.com/book/show/100132.Irrational_Exuberance"
     type: "book"
   - title: "Manias, Panics, and Crashes"
     author: "Charles Kindleberger"
-    url: "https://www.goodreads.com/book/show/1031341.Manias_Panics_and_Crashes"
+    url: "https://www.goodreads.com/book/show/367596.Manias_Panics_and_Crashes"
     type: "book"
 ---
 

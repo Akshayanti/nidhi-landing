@@ -32,14 +32,14 @@ relatedSlugs: ["rebalancing-your-portfolio", "introduction-to-financial-independ
 referentialReading:
   - title: "The Ages of the Investor"
     author: "William Bernstein"
-    url: "https://www.goodreads.com/book/show/13715796-the-ages-of-the-investor"
+    url: "https://www.goodreads.com/book/show/15775307-the-ages-of-the-investor"
     type: "book"
-  - title: "Reducing Retirement Risk with a Rising Equity Glide Path (Kitces / Pfau)"
+  - title: "Should Equity Exposure Decrease in Retirement, or Is a Rising Equity Glidepath Actually Better? (on Pfau and Kitces's research)"
     url: "https://www.kitces.com/blog/should-equity-exposure-decrease-in-retirement-or-is-a-rising-equity-glidepath-actually-better/"
     type: "blog"
   - title: "The Bogleheads' Guide to the Three-Fund Portfolio"
     author: "Taylor Larimore"
-    url: "https://www.goodreads.com/book/show/40611856-the-bogleheads-guide-to-the-three-fund-portfolio"
+    url: "https://www.goodreads.com/book/show/40374828-the-bogleheads-guide-to-the-three-fund-portfolio"
     type: "book"
 ---
 

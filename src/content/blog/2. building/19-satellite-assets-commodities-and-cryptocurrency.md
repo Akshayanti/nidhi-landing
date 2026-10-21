@@ -25,7 +25,7 @@ referentialReading:
     type: "blog"
   - title: "The Bogleheads' Guide to Investing"
     author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/962887.The_Bogleheads_Guide_to_Investing"
+    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
     type: "book"
 relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "purchasing-power", "emergency-fund", "how-to-get-out-of-debt"]
 faq:

@@ -42,7 +42,7 @@ referentialReading:
     type: "blog"
   - title: "The Only Investment Guide You'll Ever Need"
     author: "Andrew Tobias"
-    url: "https://www.goodreads.com/book/show/22450.The_Only_Investment_Guide_You_ll_Ever_Need"
+    url: "https://www.goodreads.com/book/show/110672.The_Only_Investment_Guide_You_ll_Ever_Need"
     type: "book"
 ---
 

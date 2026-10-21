@@ -31,9 +31,9 @@ relatedSlugs: ["purchasing-power", "investing-101-asset-classes", "financial-pro
 referentialReading:
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"
-    url: "https://www.goodreads.com/book/show/900.A_Random_Walk_Down_Wall_Street"
+    url: "https://www.goodreads.com/book/show/40242274-a-random-walk-down-wall-street"
     type: "book"
-  - title: "SPIVA Persistence Scorecard"
+  - title: "SPIVA Scorecards, including the Persistence Scorecard"
     url: "https://www.spglobal.com/spdji/en/research-insights/spiva/"
     type: "blog"
   - title: "The Simple Path to Wealth"

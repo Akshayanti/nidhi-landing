@@ -37,7 +37,7 @@ referentialReading:
     type: "book"
   - title: "The Little Book of Common Sense Investing"
     author: "John C. Bogle"
-    url: "https://www.goodreads.com/book/show/35567527-the-little-book-of-common-sense-investing"
+    url: "https://www.goodreads.com/book/show/34003072-the-little-book-of-common-sense-investing"
     type: "book"
 ---
 

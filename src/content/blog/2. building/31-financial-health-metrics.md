@@ -34,7 +34,7 @@ referentialReading:
     type: "blog"
   - title: "Personal Finance for Dummies"
     author: "Eric Tyson"
-    url: "https://www.goodreads.com/book/show/1267395.Personal_Finance_for_Dummies"
+    url: "https://www.goodreads.com/book/show/3604.Personal_Finance_for_Dummies"
     type: "book"
   - title: "The Richest Man in Babylon"
     author: "George S. Clason"

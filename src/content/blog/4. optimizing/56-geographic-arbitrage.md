@@ -39,11 +39,11 @@ referentialReading:
     author: "Tim Ferriss"
     url: "https://www.goodreads.com/book/show/368593.The_4_Hour_Workweek"
     type: "book"
-  - title: "Nomad List: Cost of Living Comparisons"
-    url: "https://nomadlist.com"
+  - title: "Nomads.com (formerly Nomad List): Cost of Living Comparisons"
+    url: "https://nomads.com/"
     type: "blog"
   - title: "Numbeo: Cost of Living Index"
-    url: "https://www.numbeo.com/cost-of-living/"
+    url: "https://www.numbeo.com/cost-of-living/rankings_current.jsp"
     type: "blog"
 ---
 

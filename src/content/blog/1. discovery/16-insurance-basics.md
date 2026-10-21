@@ -22,11 +22,11 @@ referentialReading:
     type: "blog"
   - title: "The Index Card"
     author: "Helaine Olen & Harold Pollack"
-    url: "https://www.goodreads.com/book/show/23731926-the-index-card"
+    url: "https://www.goodreads.com/book/show/25361911-the-index-card"
     type: "book"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
-    url: "https://www.goodreads.com/book/show/11679376-your-money-or-your-life"
+    url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"
     type: "book"
 relatedSlugs: ["emergency-fund", "budgeting", "cash-flow-101", "assets", "liabilities"]
 faq:
