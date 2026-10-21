@@ -193,7 +193,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 - [ ] No named instrument, ticker, brokerage, or product anywhere in figure or caption.
 - [ ] Caption is one short italic line of context, not a re-explanation.
 
-### 10. Layered lessons: pilot specification for three reading depths (Oct 2026; not yet a house rule)
+### 10. Layered lessons: three reading depths (the rule for Optimizing and Inclusive Finances from Oct 21, 2026; a pilot elsewhere)
 
 **Why.** Readers said the lessons are text heavy ("you need to be a scholar to read them"). The depth is not the problem: it is what makes the lessons trustworthy, and Rule 5 and the CLAUDE.md editorial voice depend on it. The problem was that every reader had to read everything, in order, at the same weight. Layering keeps the depth and lets each reader stop at the depth they came for:
 
@@ -205,11 +205,11 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 
 The CLAUDE.md order (concept, why people use it, evidence, where it breaks, what depends on you) maps onto it: concept and why stay visible; evidence and edge cases may fold away, but a one-line limit stays visible wherever a skimmer would otherwise take away an unqualified rule.
 
-This pilot tests whether layering can keep the lesson's reasoning while helping readers reach a useful stopping point sooner. Until the reader test is complete, the timings and components below are hypotheses, not house-wide requirements.
+Layering aims to keep the lesson's reasoning while helping readers reach a useful stopping point sooner. For Optimizing and Inclusive Finances the pattern below is the rule (owner's decision, Oct 21, 2026); the 3 to 5 minute target stays a target, not a cap. For the other levels the timings and components remain hypotheses until the reader test is complete.
 
-**Evidence informing the pilot (context, not proof).** NN/g describes the "layer cake" scanning pattern, in which readers scan headings and stop at a relevant section ([NN/g](https://www.nngroup.com/articles/layer-cake-pattern-scanning/)); this supports testing headings that carry the point. Our World in Data's topic-page redesign is an example of key insights first, details on demand ([OWID](https://ourworldindata.org/owid-entry-redesign)). Retrieval-practice studies (Roediger and Karpicke 2006; Karpicke and Roediger 2007) found that attempting to recall beats rereading for retention a week later; a quick check only uses that mechanism if the reader tries to answer before opening it, and the studies do not show that every web lesson needs one. Rossetti et al. found mixed results for plain-language versions of financial text ([Rossetti et al. 2020](https://doras.dcu.ie/24532)), which cautions against relying on reading-level scores alone. Medium's 2013 analysis found peak reading time around seven minutes (~1,600 words) on its own platform; it measured time spent, a decade ago, and does not set a target for these lessons. Together these sources justify the pilot; they do not validate its exact timings or components.
+**Evidence informing the pattern (context, not proof).** NN/g describes the "layer cake" scanning pattern, in which readers scan headings and stop at a relevant section ([NN/g](https://www.nngroup.com/articles/layer-cake-pattern-scanning/)); this supports testing headings that carry the point. Our World in Data's topic-page redesign is an example of key insights first, details on demand ([OWID](https://ourworldindata.org/owid-entry-redesign)). Retrieval-practice studies (Roediger and Karpicke 2006; Karpicke and Roediger 2007) found that attempting to recall beats rereading for retention a week later; a quick check only uses that mechanism if the reader tries to answer before opening it, and the studies do not show that every web lesson needs one. Rossetti et al. found mixed results for plain-language versions of financial text ([Rossetti et al. 2020](https://doras.dcu.ie/24532)), which cautions against relying on reading-level scores alone. Medium's 2013 analysis found peak reading time around seven minutes (~1,600 words) on its own platform; it measured time spent, a decade ago, and does not set a target for these lessons. Together these sources justify testing the pattern; they do not validate its exact timings or components.
 
-**Pilot pattern (what a layered lesson currently has).**
+**The pattern (what a layered lesson has).**
 1. **TL;DR as an answer:** two or three short sentences, not a summary paragraph.
 2. **Takeaways** in frontmatter, shown as "In this lesson" below the TL;DR (#193). Phrase them as concrete reader questions or outcomes; "Why", "How" and "What" are useful forms, not mandatory templates. There is no separate bottom recap.
 3. **Headings that state the point** ("A default is a guess about your household", not "What is a default?" or "Why it matters"). Test: someone reading only the headings gets the lesson.
@@ -237,6 +237,10 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
    ```
 
 7. **A closing that hands the judgment back** (a question about the reader's own situation), not a to-do list.
+8. **"In this lesson" as the index.** Each takeaway can carry `href`, a `#` link to the heading, the glossary card (`#glossary`) or a term (`#term-...`) that delivers it. On screens under 1200px there is no "On this page" sidebar, so this list is the only index a phone reader gets. The build fails if a link's target is not on the page.
+9. **A glossary card for the lesson's terms.** Terms go in frontmatter (`glossary: [{ term, definition }]`). The template shows a "Glossary" card under "In this lesson" (`#glossary`, first in the "On this page" sidebar): a bordered card with an icon, the terms as always-visible pills, an "All terms" link to `/blog/glossary/`, and the definitions folded under "Show all definitions". It deliberately looks nothing like "In this lesson", so readers do not skip it as more of the same. Each term has the anchor `#term-<slug>`; the build fails on an empty or duplicate anchor; a pill or a link to a term opens the definitions at it. `/blog/glossary/` exists in every language (translated chrome, English terms, like the topic pages), is linked from the Learn menu, the footer and the learning path, and lists every published lesson's terms with a link back to each; lessons that share a term spell it the same way. In the body, link a term's first use as `[term](#term-slug)` instead of defining it again in bold; the body may still explain a term in context where the lesson depends on it. The card sits outside the article, so the newsletter leaves it out and points term links at the web page.
+10. **Headings that name the point.** Avoid repeated counting formulas ("Three questions...", "Five defaults...", "Part one", "Part two") and the same closing skeleton on every lesson ("Cross-continent notes", "Getting started") when they make sections sound alike. A heading names its section's distinct idea; a useful count can live in the sentence below it.
+11. **Search words.** The visible title can stay a hook, but `seoTitle` (57 characters or fewer) and `description` use the words a reader would type for their situation ("Not married? Who gets your pension..."). At least one heading, and a few FAQ questions, are phrased as that search question ("Is a pension beneficiary form binding?"). Never change a published `slug`: Instagram and email links point at it.
 
 **Markup rules.** A blank line after `<summary>` and before `</details>`, so the markdown inside renders (the opposite of the `<figure>` rule in Rule 9, which needs no blank lines). No `##`/`###` inside an expander: the summary is the label, and the TOC skips headings inside `<details>` anyway. Summary labels are specific, never "More" or "Details". The template adds the "Optional detail" tag and card styling (#193).
 
@@ -246,7 +250,9 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
 - [ ] Everything the lesson's Instagram kit promises is still on the page; expander labels reuse the kit's "more" wording where one exists.
 - [ ] FAQ, glossary, takeaways and body say the same thing (the pilot council caught three contradictions between body and FAQ).
 - [ ] Nothing a skimmer needs to avoid a wrong takeaway sits only inside an expander.
-- [ ] Teach, don't prescribe (CLAUDE.md), no dashes (Rule 6).
+- [ ] Teach, don't prescribe (CLAUDE.md), and no em dashes or double dashes (Rule 6).
+- [ ] Every `href` in takeaways lands on the page (the build checks), terms in the body link to the card on first use, and no term has a separate glossary section outside the card.
+- [ ] `seoTitle`, `description`, one heading and some FAQ questions use the reader's search words.
 - [ ] Rendered on phone and laptop, light and dark, expanders closed and open.
 - [ ] The normal council process required by `CLAUDE.md`.
 - [ ] If the conversion changes only lesson text or lesson frontmatter, no privacy entry or translation is required. Reassess both if the work also changes analytics, browser behaviour, shared interface copy or other site functionality.
@@ -259,13 +265,21 @@ This pilot tests whether layering can keep the lesson's reasoning while helping 
 - **Reels land on the matching section**: link stickers and story links to `/blog/<slug>/#<heading-id>`, and reuse the reel's first line in that section.
 - **Jargon** explained in brackets on first use (already Rule 1); questions as turns in the argument.
 
+**Audit of Optimizing and Inclusive lessons (Oct 21, 2026), against the inc-1 feedback.** No other lesson has a `seoTitle`, a glossary card, linked takeaways or expanders yet.
+- **Counted, repeated headings.** 15 of the 17 other Inclusive lessons are built as "Part one: ... / Part two: ... / Cross-continent notes / Getting started". Optimizing leans on counted frameworks ("The four-step framework", "Adjustment one" to "four", "Category one" to "four", "Modifier one/two") and ends almost every lesson with "Cross-continent notes" and "Getting started".
+- **Beneficiary forms presented as a sure fix.** `blended-and-non-traditional-families`, `building-your-own-default`, `chosen-family-and-next-of-kin`, `divorce-and-separation-finances` and `multi-partner-households` treat naming a beneficiary as settling who is paid, without the binding-or-guide caveat or the difference between a lump sum and a survivor pension; their own wording needs revising, with a link to inc-1's "Is a pension beneficiary form binding?" section.
+- **Glossary candidates.** Many lessons define terms in bold paragraphs; the heaviest are `geographic-arbitrage` (35 bold-term paragraphs), `income-replacement-ratio` (34) and `scam-prevention` (32). The series terms appear in 8 Inclusive lessons that do not link to their definitions.
+- **Glossary page reach.** `/blog/glossary/` is linked only from glossary cards until it gets a link from `/blog/` or the Inclusive hub (both translated pages, so that link needs catalog strings in every language).
+- **Search words.** Weakest titles for search: "Building Your Own Default", "Interest-Free Finance: A Different Toolkit", "More Than Two Partners: Protecting Everyone", "Chosen Family: Planning When the Law Picks Your Relatives".
+- **Not audited automatically:** sections that repeat each other (as inc-1's "Five defaults" and its expander did) need a read of each lesson.
+
 **Rollout and measurement (not started).**
 1. **Reader test:** five readers from the group that called the blog text heavy read the old and new inc-1 on a phone (the old version is in git before #192) for three minutes, then explain the idea back. This, not analytics, is the main signal: blog traffic is small.
 2. **Control lesson:** convert one long-live lesson (emergency fund, live since May 2026) to compare before and after.
 3. **PostHog:** check whether the page-leave events already carry scroll depth. Do not add any capture without a privacy changelog entry; the privacy notice says no continuous scroll stream is recorded.
 4. Then the remaining inclusive drafts (inc-2 onward), then older lessons. Each conversion re-checks its Instagram kit.
 
-**Status:** implemented in the inc-1 pilot (#192, #194), with supporting template (#193) and newsletter (#191) behaviour. The markup and rendering rules describe how the pilot works today. The editorial timings, components and rollout criteria stay provisional until the reader test and the control-lesson review are complete.
+**Status:** the rule for every Optimizing and Inclusive Finances lesson, published or future, from Oct 21, 2026 (owner's decision; PLAYBOOK "Blog lessons" and Decision #44 hold the agreed list). The build enforces the checkable parts through `src/utils/layeredLessons.ts`, whose backlog list names the lessons still to convert; conversions land as stacked PRs in publish order. For Discovery, Building and Psychology it stays a pilot: the timings and components there wait on the reader test and the control-lesson review.
 
 ---
 

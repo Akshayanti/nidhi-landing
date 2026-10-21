@@ -1,0 +1,16 @@
+---
+/**
+ * `/<locale>/blog/glossary/`, in every language but the default one.
+ * English is served from `src/pages/blog/glossary.astro`.
+ */
+import GlossaryPage from '../../../components/pages/GlossaryPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<GlossaryPage locale={locale} />

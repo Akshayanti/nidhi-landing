@@ -63,7 +63,7 @@ A **legal parent** is one the law recognises, through birth, adoption, or a cour
 
 A stepchild is not the legal child of a step-parent unless adopted. So a step-parent who dies without a will leaves a stepchild nothing, in most jurisdictions, however long they were a family. In some countries a stepchild who is named in a will is then taxed on the inheritance at the rate for unrelated people.
 
-The usual remedy for the first problem is simple: naming them, in the will and on every beneficiary form, within whatever limits local inheritance law sets.
+The usual remedy for the first problem is simple: naming them, in the will and on every beneficiary form, within whatever limits local inheritance law sets. A pension scheme may be bound by the form or treat it only as a guide for its trustees, and a survivor pension may still be limited to a spouse or dependants; [whether a beneficiary form is binding](/blog/when-the-default-plan-does-not-fit-you/#is-a-pension-beneficiary-form-binding) is worth checking scheme by scheme.
 
 ### The accidental disinheritance
 
@@ -134,7 +134,7 @@ The aim is for a spouse to be secure for life and for your children to inherit i
 
 **1. A life interest.** The surviving spouse has the right to live in the home, or to receive the income from assets, for the rest of their life. On their death, the assets pass to your children. The spouse is looked after and cannot redirect the capital. This is usually done through a trust or a life-interest provision in the will, and different legal systems have different names for it.
 
-**2. Separate pots.** Some assets go directly to your children on your death and others to your spouse. Beneficiary forms make this easy: a pension to the spouse, a life policy to the children, for example. Each pot is final, and nobody waits on anyone else.
+**2. Separate pots.** Some assets go directly to your children on your death and others to your spouse. Beneficiary forms are the usual tool: a pension to the spouse, a life policy to the children, for example. Some pension schemes follow the form and others treat it as a guide for their trustees, so the scheme's rules say how firm each pot is. Where the forms are followed, each pot is final, and nobody waits on anyone else.
 
 **3. Life insurance to even things out.** If most of the wealth is tied up in a home the spouse needs, a life policy payable to the children gives them their inheritance at once and leaves the home alone.
 

@@ -158,7 +158,7 @@ The names differ. The principle is the same: pensions are divided through the me
 
 A settlement divides assets. It does not update forms. Three kinds of paperwork stay exactly as they were unless someone changes them.
 
-**Beneficiary designations.** The form on a pension or a life insurance policy often overrides a will, and in many systems a divorce does not cancel it. People die with a former spouse still named, and the money goes to them. Most people update every beneficiary form as soon as they are legally free to; some courts restrict changes while proceedings are open, so the timing is worth checking with a lawyer.
+**Beneficiary designations.** The form on a pension or a life insurance policy often overrides a will, and in many systems a divorce does not cancel it. People die with a former spouse still named, and the money can go to them; even where a pension scheme treats the form only as a guide, an old form points its trustees to the wrong person. A survivor pension may follow separate scheme rules rather than the form used for a lump sum. Most people update every beneficiary form as soon as they are legally free to; some courts restrict changes while proceedings are open, so the timing is worth checking with a lawyer.
 
 **Wills and powers of attorney.** A former partner may still be your executor, your heir, and the person authorised to make medical decisions for you. Rules on whether divorce revokes these differ by country, which is why many people replace them rather than rely on the rule.
 

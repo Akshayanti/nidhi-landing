@@ -7,6 +7,7 @@ import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
 import type { LayeredReadingTime } from '../utils/readingTime';
 import { DEFAULT_LOCALE, dict } from '../i18n';
+import { GLOSSARY_CARD_ID, termId } from '../utils/glossary.mjs';
 
 interface Props {
   title: string;
@@ -46,15 +47,18 @@ interface Props {
   relatedPosts?: Array<{ slug: string; title: string; description: string }>;
   /** Paired free tool from the post's `relatedTool` frontmatter. */
   relatedTool?: { url: string; label: string; cta: string; idea?: string };
-  /** Topic phrases from the post's `takeaways`, listed under the TL;DR. */
-  takeaways?: string[];
+  /** Topic phrases from the post's `takeaways`, listed under the TL;DR;
+   *  one with `href` links to the part of the lesson that delivers it. */
+  takeaways?: (string | { text: string; href: string })[];
+  /** Terms from the post's `glossary`, shown collapsed under "In this lesson". */
+  glossary?: { term: string; definition: string }[];
   /** Rule areas the lesson depends on; shows "Where to check locally". */
   localRules?: LocalRuleArea[];
   /** Place within the level among published lessons; null outside the ladder. */
   seriesPosition?: { index: number; total: number } | null;
 }
 
-const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], localRules = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [] } = Astro.props;
 // A lesson is English in every edition, so its chrome reads the English names.
 // Ladder levels only: an Inclusive Finances guide is not a step in a series.
 const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
@@ -207,8 +211,46 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           <section class="post-covers" aria-labelledby="post-covers-h">
             <h2 id="post-covers-h" class="post-covers-title">In this lesson</h2>
             <ul class="post-covers-list">
-              {takeaways.map((t) => <li>{t}</li>)}
+              {takeaways.map((t) => typeof t === 'string'
+                ? <li>{t}</li>
+                : <li><a href={t.href}>{t.text}</a></li>)}
             </ul>
+          </section>
+        )}
+        {/*
+          The lesson's glossary. Not another list like "In this lesson": a
+          bordered card with an icon, the terms as tappable pills that are
+          always visible, and the definitions folded underneath. A pill, a
+          body link to #term-... or #glossary opens the definitions (script
+          below). Outside #post-content like "In this lesson", so the
+          newsletter skips it and points term links at the web page.
+        */}
+        {glossary.length > 0 && (
+          <section class="post-glossary" id={GLOSSARY_CARD_ID} data-glossary-card aria-labelledby="post-glossary-h">
+            <div class="post-glossary-head">
+              <span class="post-glossary-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M8 7h7M8 11h5" /></svg>
+              </span>
+              <span class="post-glossary-titles">
+                <h2 id="post-glossary-h" class="post-glossary-heading">Glossary</h2>
+                <span class="post-glossary-count">{glossary.length === 1 ? '1 term' : `${glossary.length} terms`} in this lesson</span>
+              </span>
+              <a class="post-glossary-all" href="/blog/glossary/">All terms</a>
+            </div>
+            <ul class="post-glossary-chips">
+              {glossary.map((g) => <li><a class="post-glossary-chip" href={`#${termId(g.term)}`}>{g.term}</a></li>)}
+            </ul>
+            <details class="post-glossary-defs">
+              <summary class="disclosure post-glossary-summary"><span class="post-glossary-show">Show all definitions</span><span class="post-glossary-hide">Hide definitions</span></summary>
+              <dl class="post-glossary-list">
+                {glossary.map((g) => (
+                  <div class="post-glossary-item" id={termId(g.term)}>
+                    <dt>{g.term}</dt>
+                    <dd>{g.definition}</dd>
+                  </div>
+                ))}
+              </dl>
+            </details>
           </section>
         )}
         {tags.length > 0 && (
@@ -394,6 +436,34 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 </BaseLayout>
 
 <script is:inline>
+  // The glossary card is a closed <details>, and a browser cannot scroll to
+  // something inside a closed one. Open it before following a link to the
+  // card or one of its terms, and when the page loads on such an address.
+  (function() {
+    function openFor(hash) {
+      if (!hash || hash.length < 2) return null;
+      var id;
+      try { id = decodeURIComponent(hash.slice(1)); } catch (e) { return null; }
+      var target = document.getElementById(id);
+      if (!target || !target.closest) return null;
+      // A term opens the definitions at itself; the card's own address
+      // (#glossary) opens them too, since that link promises the definitions.
+      var defs = target.closest('[data-glossary-card] details')
+        || (target.hasAttribute('data-glossary-card') ? target.querySelector('details') : null);
+      if (defs && !defs.open) defs.open = true;
+      return defs ? target : null;
+    }
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (a) openFor(a.getAttribute('href'));
+    });
+    window.addEventListener('hashchange', function() { openFor(location.hash); });
+    var initial = openFor(location.hash);
+    if (initial) initial.scrollIntoView();
+  })();
+</script>
+
+<script is:inline>
   (function() {
     var content = document.getElementById('post-content');
     var tocList = document.getElementById('toc-list');
@@ -406,6 +476,18 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       function(h) { return !h.closest('details'); }
     );
     if (headings.length === 0) return;
+
+    // The glossary card sits above the article, so it leads the list.
+    var glossaryCard = document.querySelector('[data-glossary-card]');
+    if (glossaryCard) {
+      var gli = document.createElement('li');
+      gli.className = 'toc-item toc-item--h2';
+      var ga = document.createElement('a');
+      ga.href = '#' + glossaryCard.id;
+      ga.textContent = 'Glossary';
+      gli.appendChild(ga);
+      tocList.appendChild(gli);
+    }
 
     function slugify(text) {
       return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
@@ -445,13 +527,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     headings.forEach(function(h) { observer.observe(h); });
   })();
 
-  // A printed lesson shows every expander and FAQ answer open; after
+  // A printed lesson shows every expander, the glossary and FAQ answer open; after
   // printing, each one goes back to how the reader left it.
   (function() {
     var closed = [];
     window.addEventListener('beforeprint', function() {
       closed = Array.prototype.filter.call(
-        document.querySelectorAll('#post-content details:not([open]), .post-faq details:not([open])'),
+        document.querySelectorAll('#post-content details:not([open]), .post-faq details:not([open]), .post-glossary details:not([open])'),
         function(d) { d.open = true; return true; }
       );
     });
@@ -644,6 +726,169 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     height: 0.4rem;
     border-radius: 50%;
     background: var(--color-teal);
+  }
+
+  /* A topic that links to its section: the list doubles as the lesson's
+     index, including on phones where the "On this page" sidebar is hidden. */
+  .post-covers-list a {
+    display: inline-block;
+    padding: 0.2rem 0;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    text-decoration-color: var(--color-link-edge);
+    text-underline-offset: 0.2em;
+  }
+
+  .post-covers-list a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* The glossary card. It must not read as a second "In this lesson" (a
+     small uppercase label over a list), so it is a bordered card with an
+     icon tile, a sentence-case heading, and the terms as pills: a shape
+     nothing else at the top of a lesson uses. */
+  .post-glossary {
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4) var(--space-4) var(--space-3);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-link-edge);
+    border-left: 4px solid var(--color-deep-blue);
+    border-radius: var(--radius-md);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-deep-blue) 12%, transparent);
+    scroll-margin-top: 80px;
+  }
+
+  .post-glossary-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .post-glossary-titles {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .post-glossary-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-deep-blue);
+    color: var(--color-bg-white);
+    flex: none;
+  }
+
+  .post-glossary-heading {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .post-glossary-count {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .post-glossary-all {
+    margin-left: auto;
+    flex: none;
+    font-size: 0.9375rem;
+    padding: 0.6rem 0;
+  }
+
+  .post-glossary-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+  }
+
+  .post-glossary-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--color-link-edge);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-deep-blue) 7%, var(--color-bg-white));
+    color: var(--color-deep-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-glossary-chip:hover {
+    border-color: var(--color-deep-blue);
+  }
+
+  .post-glossary-defs {
+    margin-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post-glossary-summary {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--space-2) 44px var(--space-2) 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
+  }
+
+  .post-glossary-hide,
+  .post-glossary-defs[open] .post-glossary-show {
+    display: none;
+  }
+
+  .post-glossary-defs[open] .post-glossary-hide {
+    display: inline;
+  }
+
+  .post-glossary-summary:focus-visible,
+  .post-glossary-chip:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .post-glossary-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-1) 0 0;
+  }
+
+  .post-glossary-item {
+    scroll-margin-top: 80px;
+    border-radius: var(--radius-sm);
+  }
+
+  .post-glossary-item:target {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+  }
+
+  .post-glossary-item dt {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-deep-blue);
+  }
+
+  .post-glossary-item dd {
+    margin: var(--space-1) 0 0;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  @media print {
+    .post-glossary { break-inside: avoid; box-shadow: none; }
   }
 
   .post-tags {

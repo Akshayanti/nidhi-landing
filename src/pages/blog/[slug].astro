@@ -2,6 +2,8 @@
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 import { getLayeredReadingTime } from '../../utils/readingTime';
+import { GLOSSARY_CARD_ID, termId } from '../../utils/glossary.mjs';
+import { LAYERED_LEVELS, NOT_YET_LAYERED, layeredLessonProblems } from '../../utils/layeredLessons';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -122,7 +124,41 @@ export async function getStaticPaths() {
 }
 
 const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts, seriesPosition } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// Each glossary term is a link target (#term-...), so its anchor must exist
+// and be unique on the page.
+const termIds = (post.data.glossary ?? []).map((g) => termId(g.term));
+for (const [i, id] of termIds.entries()) {
+  if (id === 'term-') throw new Error(`${post.id}: glossary term "${post.data.glossary![i].term}" has no usable anchor`);
+  if (termIds.indexOf(id) !== i) throw new Error(`${post.id}: two glossary terms share the anchor #${id}`);
+}
+
+// "In this lesson" links must land on something: a heading, the glossary card
+// or one of its terms. A renamed heading fails the build instead of leaving a
+// dead link.
+const targets = new Set([
+  ...headings.map((h) => h.slug),
+  ...(termIds.length ? [GLOSSARY_CARD_ID, ...termIds] : []),
+]);
+// Optimizing and Inclusive Finances lessons follow the layered-lesson rule
+// (src/utils/layeredLessons.ts), past and future, unless still in the backlog.
+if ((LAYERED_LEVELS as readonly string[]).includes(post.data.level)) {
+  const problems = layeredLessonProblems(post.data, headings.filter((h) => h.depth === 2).map((h) => h.text));
+  const listed = NOT_YET_LAYERED.has(post.data.slug);
+  if (!listed && problems.length) {
+    throw new Error(`${post.id}: layered-lesson rule (PLAYBOOK "Blog lessons"): ${problems.join('; ')}`);
+  }
+  if (listed && !problems.length) {
+    throw new Error(`${post.id}: meets the layered-lesson rule; remove "${post.data.slug}" from NOT_YET_LAYERED in src/utils/layeredLessons.ts`);
+  }
+}
+
+for (const t of post.data.takeaways ?? []) {
+  if (typeof t !== 'string' && !targets.has(t.href.slice(1))) {
+    throw new Error(`${post.id}: takeaway "${t.text}" links to ${t.href}, which is not on the page`);
+  }
+}
 
 // A lesson can name the Monte Carlo simulator before it launches; the
 // callout appears once the tool does.
@@ -145,6 +181,7 @@ const readingTime = getLayeredReadingTime(post.body || '');
   tags={post.data.tags}
   readingTime={readingTime}
   takeaways={post.data.takeaways}
+  glossary={post.data.glossary}
   localRules={post.data.localRules}
   regulatoryNote={post.data.regulatoryNote}
   referentialReading={post.data.referentialReading}

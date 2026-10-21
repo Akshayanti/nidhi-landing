@@ -683,6 +683,13 @@ details[open] > .disclosure::after,
   margin-bottom: var(--space-2);
 }
 
+/* A term link in the body (to the lesson's glossary card): dotted, so it
+ * reads as "defined on this page" rather than as a link out of the lesson. */
+.prose a[href^="#term-"] {
+  text-decoration-style: dotted;
+  text-underline-offset: 0.2em;
+}
+
 /* Lesson expanders, written as raw <details> in the markdown.
  * - .lesson-depth: the deep layer (evidence, country notes, edge cases). A
  *   quiet bounded block on the page's own neutral surface, so it reads as
@@ -5895,6 +5902,12 @@ body[data-page="landing"] .hero-mcAmount {
   justify-content: space-between;
   gap: 4px var(--space-3);
   margin-bottom: var(--space-3);
+}
+
+.learn-headLinks {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-4);
 }
 
 .learn-head h2 {

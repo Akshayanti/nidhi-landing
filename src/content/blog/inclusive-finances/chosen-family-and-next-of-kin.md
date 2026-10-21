@@ -25,7 +25,7 @@ faq:
   - question: "What is a patient advocate or hospital visitation designation?"
     answer: "It is a document, sometimes a standard hospital form, naming the people you want to be allowed to visit you and to receive information about your condition. In some places visiting and information are limited to legally recognised family unless you have said otherwise. It is different from a healthcare power of attorney, which names who makes decisions. The two are often completed together, and it is worth giving a copy to your doctor and to any hospital you use regularly."
   - question: "Can I leave everything to friends and nothing to my relatives?"
-    answer: "In many common-law countries, largely yes, although some allow certain relatives or dependants to ask a court for a share. In countries with forced heirship, children and sometimes other relatives are entitled by law to a fixed portion, and only the rest is yours to leave as you wish. Pensions and life insurance with a named beneficiary usually pass outside the estate, which makes them useful where a will is restricted."
+    answer: "In many common-law countries, largely yes, although some allow certain relatives or dependants to ask a court for a share. In countries with forced heirship, children and sometimes other relatives are entitled by law to a fixed portion, and only the rest is yours to leave as you wish. Pension lump sums and life insurance with a named beneficiary usually pass outside the estate, which can make them useful where a will is restricted, but a pension form may be only a guide for trustees and a survivor pension may follow separate rules."
   - question: "Who decides about my funeral?"
     answer: "In many places, the next of kin, or whoever is appointed to handle your estate. Instructions in a will are often not binding, and the will may not even be read until after the funeral. Some jurisdictions let you appoint a specific person to control funeral arrangements. Where that is not possible, written and signed wishes, a prepaid plan, and an executor who knows what you want are the practical protections."
   - question: "Should one friend hold every role?"
@@ -130,7 +130,7 @@ Three habits help this hold:
 
 **A will** names who inherits and who carries it out. Without one, the law's order applies in full, and in many jurisdictions an estranged parent or sibling can take everything.
 
-**Beneficiary designations** on pensions and insurance name who is paid. These usually pass outside the will, which matters in the next section.
+**Beneficiary designations** on pensions and insurance name who should be paid. Some schemes must follow the form; others, including many pension schemes, treat it as a guide for their trustees ([when a beneficiary form is binding](/blog/when-the-default-plan-does-not-fit-you/#is-a-pension-beneficiary-form-binding)). A pension's lump sum may follow the form while its survivor pension follows separate rules. These payments usually pass outside the will, which matters in the next section.
 
 **An emergency card.** A card in your wallet and a note on your phone's lock screen naming who to call and stating that a healthcare power of attorney exists. It is what gets your friend telephoned in the first hour.
 
@@ -154,7 +154,7 @@ Where a relative might contest your choices, a few habits strengthen the plan.
 - **Use the correct local formalities.** Homemade documents are the ones that most often fail, which is why many people in this position use a lawyer.
 - **Say in the will that the omission is deliberate.** A sentence stating that you have intentionally made no provision for named relatives removes the argument that you forgot them.
 - **Update regularly.** A will reviewed every few years is harder to challenge than one signed once, long ago.
-- **Know your limits.** Where **forced heirship** reserves a share of an estate for children or other relatives, a will cannot give everything to friends. Pensions and life insurance with a named beneficiary usually fall outside the estate, as do assets held jointly with a right of survivorship. In those countries, they are the main route for providing for chosen family.
+- **Know your limits.** Where **forced heirship** reserves a share of an estate for children or other relatives, a will cannot give everything to friends. Pensions and life insurance with a named beneficiary usually fall outside the estate, as do assets held jointly with a right of survivorship. In those countries, they are the main route for providing for chosen family, so whether a pension scheme treats its form as binding matters more there.
 - **Expect tax.** Inheritance and gift taxes are usually set by relationship, and a friend is often in the highest band with the smallest allowance. A life policy written for the friend's benefit can cover the bill.
 
 ### Fund what you are asking for

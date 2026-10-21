@@ -76,6 +76,7 @@ export const en = {
     items: {
       blog: 'Learning path',
       blogTopics: 'Browse topics',
+      glossary: 'Glossary',
       learnEditorial: 'How lessons are written',
       multiCurrencyNetWorth: 'Net worth calculator',
       loanComparison: 'Loan comparison',
@@ -115,6 +116,7 @@ export const en = {
     links: {
       blog: 'Learning path',
       blogTopics: 'Browse topics',
+      glossary: 'Glossary',
       multiCurrencyNetWorth: 'Net worth calculator',
       loanComparison: 'Loan comparison',
       monteCarloSimulator: 'Monte Carlo simulator',

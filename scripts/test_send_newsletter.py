@@ -155,5 +155,21 @@ class FlattenDetailsTest(unittest.TestCase):
         self.assertEqual(flattened, untouched)
 
 
+class InPageLinkTest(unittest.TestCase):
+    def test_term_link_points_at_the_web_page(self) -> None:
+        page = PAGE.replace(
+            "<p>This opening paragraph",
+            '<p>A <a href="#term-recognition-gap">recognition gap</a> matters. This opening paragraph',
+        )
+        html = _extract(page)["content_html"]
+        self.assertIn('href="https://nidhi.today/blog/a-lesson/#term-recognition-gap"', html)
+        self.assertNotIn('href="#term-recognition-gap"', html)
+
+    def test_utm_goes_before_the_fragment(self) -> None:
+        soup = nl.BeautifulSoup('<div><a href="#term-x">x</a></div>', "html.parser")
+        nl.absolutize_urls(soup.div, SITE_URL, utm_query="utm_source=newsletter", page_path="/blog/a-lesson/")
+        self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson?utm_source=newsletter#term-x")
+
+
 if __name__ == "__main__":
     unittest.main()

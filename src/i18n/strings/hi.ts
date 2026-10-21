@@ -49,6 +49,7 @@ export const hi: Dict = {
     items: {
       blog: 'सीखने का रास्ता',
       blogTopics: 'विषय देखें',
+      glossary: 'शब्दावली',
       learnEditorial: 'पाठ कैसे लिखे जाते हैं',
       multiCurrencyNetWorth: 'शुद्ध संपत्ति कैलकुलेटर',
       loanComparison: 'लोन की तुलना',
@@ -86,6 +87,7 @@ export const hi: Dict = {
     links: {
       blog: 'सीखने का रास्ता',
       blogTopics: 'विषय देखें',
+      glossary: 'शब्दावली',
       multiCurrencyNetWorth: 'शुद्ध संपत्ति कैलकुलेटर',
       loanComparison: 'लोन की तुलना',
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
