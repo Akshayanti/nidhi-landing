@@ -921,6 +921,19 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     padding: var(--space-3) 40px var(--space-3) 4px;
   }
 
+  /* Mouse users see the row respond (only where hover exists, so a tapped
+     question on a phone does not stay blue); an open answer gets room
+     before the next question, so the two do not run together. */
+  @media (hover: hover) {
+    .post-faq-item > summary:hover .post-faq-q {
+      color: var(--color-deep-blue);
+    }
+  }
+
+  .post-faq-item[open] {
+    padding-bottom: var(--space-2);
+  }
+
   .post-faq-item > summary:focus-visible {
     outline: 2px solid var(--color-deep-blue);
     outline-offset: -2px;
@@ -977,6 +990,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     font-weight: 500;
     text-decoration: underline;
     text-underline-offset: 3px;
+    /* A little taller to tap, without moving the text. */
+    padding-block: 2px;
   }
 
   /* Inline, so with the word joiner before it the arrow never wraps onto
