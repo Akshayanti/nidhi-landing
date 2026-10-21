@@ -1,16 +1,37 @@
 ---
 slug: "gig-and-informal-economy-work"
 title: "Gig and Informal Work: Planning Without an Employer"
-description: "No payroll, no pension match, no paid leave. How freelancers, gig and cash workers rebuild the benefits an employer provides and smooth uneven income."
-tldr: "Most financial advice assumes an employer stands behind you: tax is withheld before you are paid, a pension contribution arrives without you asking, health cover and sick pay exist, and income lands on the same day each month. Freelancers, platform workers, and people paid in cash get none of that automatically. Two things follow. First, the rate you charge has to fund everything an employer would have paid for, which is why a common rule of thumb puts a freelance day rate at roughly one and a half to two times the salaried equivalent just to break even. Second, uneven income is a variance problem, not a discipline problem, and a common mechanical fix is to have all income land in one holding account, move a fixed share aside for tax the day it arrives, and pay a steady, modest 'salary' every month from what is left. A buffer of a few weeks absorbs the swings. This post walks through the employer bundle item by item, a worked example of the salary method across twelve uneven months, and what changes when income is informal and leaves no paper trail."
+seoTitle: "How to Set a Freelance Rate and Pay Yourself a Salary"
+description: "Going freelance or paid in cash: what an employer was quietly paying for, how to price a freelance day rate, and how to pay yourself a steady salary from uneven income."
+tldr: "Without an employer, your rate has to fund what one used to pay for, so a freelance day rate often needs to be 1.5 to 2 times the salaried one. Uneven income is a variance problem, not a discipline problem: one holding account, tax set aside the day money arrives, and a fixed monthly salary. Cash workers also need a record of what they earn."
 takeaways:
-  - "Why a freelance rate must fund what an employer used to pay for"
-  - "How a holding account and a fixed salary smooth uneven income"
-  - "Why variable income calls for a bigger emergency fund"
-  - "How to build an income record when you are paid in cash"
+  - text: "Why a freelance rate must fund what an employer used to pay for"
+    href: "#going-freelance-at-your-old-day-rate-is-a-pay-cut"
+  - text: "How a holding account and a fixed salary smooth uneven income"
+    href: "#uneven-income-is-a-variance-problem-not-a-discipline-problem"
+  - text: "A twelve-month worked example of a steady salary"
+    href: "#a-twelve-month-worked-example-of-a-steady-salary"
+  - text: "How to build an income record when you are paid in cash"
+    href: "#when-income-is-informal-proof-and-protection"
+  - text: "Why variable income calls for a bigger emergency fund"
+    href: "#why-variable-income-needs-a-bigger-emergency-fund"
+glossary:
+  - term: "Billable day"
+    definition: "A working day a freelancer can actually charge a client for, after holidays, sickness and time spent finding work and doing admin."
+  - term: "Variance"
+    definition: "How far income swings around its average from month to month."
+  - term: "Income smoothing"
+    definition: "Separating when money arrives from when it is spent, so the household runs on a steady amount."
+  - term: "Holding account"
+    definition: "The account every payment lands in, from which tax is set aside and a fixed monthly salary is paid."
+  - term: "Social insurance"
+    definition: "Public schemes funded by contributions, such as state pensions, sick pay and unemployment benefit, that employees usually join through work."
+  - term: "Rotating savings group"
+    definition: "A group in which each member pays a fixed amount regularly and each takes the whole pot in turn, known as a tontine, susu, tanda, chit fund or hui."
 order: 48.5
 companionOf: "growing-your-income"
 pubDate: 2099-01-10
+updatedDate: 2026-10-21
 localRules: [tax, benefits, pensions]
 level: "inclusive-finances"
 primaryPersona: "petra"
@@ -18,6 +39,8 @@ personas: ["petra", "eva", "jiri", "marcus"]
 tags: ["inclusive-finances", "planning", "saving"]
 regulatoryNote: "danger"
 faq:
+  - question: "How do I calculate my freelance day rate?"
+    answer: "A common way is to start from the salary you want to match, add the pension contribution and insurance an employer would have paid, and divide by your billable days: working days minus holidays, public holidays, sick days and the unbilled time spent finding work and doing admin. For a €40,000 salary that is about €44,000 over about 176 billable days, roughly €250 a day, against about €154 a paid day for the employee. Local social contributions and your own mix of billable time change the result."
   - question: "How much more does a freelancer need to charge than an employee earns?"
     answer: "A common rule of thumb is one and a half to two times the salaried equivalent per day, and the arithmetic supports it. An employee is paid for every working day including holidays, public holidays, and sick days, and the employer adds pension contributions and often insurance on top. A freelancer is paid only for days actually billed, and typically a fifth or more of working time goes on finding work, invoicing, and admin. Fewer paid days plus self-funded benefits means each billed day has to carry more. The exact multiple depends on your country's social contributions and your own mix of billable and unbillable time."
   - question: "What is income smoothing?"
@@ -27,9 +50,9 @@ faq:
   - question: "How big should the emergency fund be with irregular income?"
     answer: "A common guideline for salaried households is three to six months of expenses. With variable income the same logic points to the upper end or beyond, often six to twelve months, because a quiet period and an emergency can arrive together and there is no sick pay or notice period to bridge the gap. The smoothing buffer and the emergency fund do different jobs: the buffer handles ordinary month-to-month swings, the emergency fund handles a real interruption."
   - question: "What if I am paid in cash and have no payslips?"
-    answer: "Then the missing piece is evidence. Landlords, lenders, and visa offices all ask for proof of income, and cash leaves none unless you create it. Keep a simple dated log of what you were paid and by whom, deposit income into an account where that is possible so there is a bank record, and keep any receipts or messages confirming payment. A consistent twelve-month record you made yourself is far more useful than no record."
+    answer: "Then the missing piece is evidence. Landlords, lenders, and visa offices all ask for proof of income, and cash leaves none unless you create it. A common approach is a simple dated log of what you were paid and by whom, deposits into an account where that is possible so there is a bank record, and any receipts or messages confirming payment. A consistent twelve-month record you made yourself is far more useful than no record."
   - question: "Do I have to pay tax during the year if nobody withholds it?"
-    answer: "In most countries, yes. Where an employer would have withheld tax from each payslip, a self-employed person usually pays in instalments during the year or in a lump after it ends. The schedule and the amounts are set by local rules. The planning point is universal: the tax is owed from the day you earn the money, so set it aside that day. Treating gross income as spendable is a common way freelancers end up with a bill they cannot pay."
+    answer: "In most countries, yes. Where an employer would have withheld tax from each payslip, a self-employed person usually pays in instalments during the year or in a lump after it ends. The schedule and the amounts are set by local rules. The planning point travels better than the legal timing: part of each payment may eventually be due in tax, so many self-employed people set aside an estimated share as soon as the money arrives. Treating gross income as spendable is a common way freelancers end up with a bill they cannot pay."
 reelPromise: "A twelve-month worked example of paying yourself a steady salary from uneven income, and the full list of what an employer was quietly paying for"
 relatedSlugs: ["growing-your-income", "cash-flow-forecasting", "emergency-fund", "tax-advantaged-accounts"]
 referentialReading:
@@ -47,79 +70,47 @@ referentialReading:
     type: "paper"
 ---
 
-The post on [growing your income](/blog/growing-your-income/) was about negotiating: researching the market rate, anchoring a range, asking at the right moment. All of it assumed there was an employer on the other side of the table.
+A salaried designer earning €40,000 a year goes freelance and wants the same standard of living. The obvious move is to charge what the old job paid per day. That turns out to be a pay cut of more than a third.
 
-For a large share of working people there is not. Freelancers invoice clients. Platform workers are paid per delivery or per ride. Domestic workers, market traders, and day labourers are often paid in cash with no contract at all. As [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) noted, informal work alone covers most of the world's workers, so "no employer" is the majority experience, not the exception.
+The [growing your income post](/blog/growing-your-income/) assumed an employer on the other side of the table. For a large share of working people there is none: freelancers invoice clients, platform workers are paid per job, and domestic workers, traders and day labourers are often paid in cash with no contract. As [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) noted, informal work alone covers most of the world's workers. This post covers what an employer was quietly paying for, and how to turn uneven income into steady pay. Self-employment tax and worker classification differ sharply between countries, and none of this is tax filing advice.
 
-If that is you, most financial advice has a hole in it. It tells you to capture the employer match when there is no employer, and to budget a salary when there is no salary. This post fills the hole in two parts: what an employer was quietly paying for, and how to turn uneven income into a steady one.
+## Going freelance at your old day rate is a pay cut
 
-This is a post about cash flow and planning. How self-employment income is taxed and how workers are classified differ sharply between countries, and none of what follows is tax filing advice.
+A salary comes wrapped in things an employee rarely sees priced:
 
-## Part one: the bundle you have to rebuild
+| What an employee gets | The self-funded version |
+|---|---|
+| Tax taken before pay arrives | A separate tax account funded from every payment |
+| An employer pension contribution | A retirement account you open and fund yourself |
+| Health cover, where it runs through work | A policy in your own name, or public cover paid directly |
+| Sick pay and disability cover | Income protection insurance and a larger cash reserve |
+| Paid holidays | A leave fund saved during working months |
+| Unemployment insurance | Usually nothing, so a bigger emergency fund |
 
-A salary is not just money. It comes wrapped in a bundle of things an employee rarely sees priced.
+For an employee each row is a default. Without an employer, each one becomes a deliberate choice: something arranged on purpose because no default applies.
 
-| What an employee gets | What it is | The self-funded version |
-|---|---|---|
-| Tax withholding | Tax taken before pay arrives | A separate tax account you fund from every payment |
-| Pension contribution | Employer money added to your retirement savings | A retirement account you open and fund yourself |
-| Health cover | Employer-paid or subsidised insurance, in countries where cover runs through work | A policy in your own name, or public cover you pay into directly |
-| Sick pay and disability cover | Income continues when you cannot work | Income protection insurance, plus a larger cash reserve |
-| Paid leave | Holidays and public holidays on full pay | A leave fund you save into during working months |
-| Unemployment insurance | A payment if the job ends | Usually nothing, so the emergency fund has to be bigger |
+To price your bundle, many people start by listing what the employer paid for; pricing a freelance day against a salaried one then shows what it is worth. The employee on €40,000 is paid for about 260 working days, about **€154 a paid day**, plus, say, a 5% pension contribution and sick pay and insurance. The freelancer starts from the same 260 days, loses 25 days of holiday, 10 public holidays and 5 sick days, and spends around a fifth of the rest finding clients, quoting and chasing invoices. That leaves about 176 [billable days](#term-billable-day). To match the salary, replace the €2,000 pension contribution and buy about €2,000 of insurance, they need €44,000: about **€250 a billable day**, 1.6 times the employee's figure.
 
-Each row is a default the employee never had to think about. For you, each one is a **deliberate designation** (a choice you make on purpose because no default applies, the series' term for it).
+That is where the common rule of thumb comes from: a freelance rate often needs to be one and a half to two times the salaried day rate just to stand still. The numbers are illustrative, and the multiple depends on local social contributions and how much time is billable.
 
-### The rate that funds the bundle
+Retirement works differently too. The [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the accounts most countries offer; employees often have one opened for them, and the self-employed open their own. There is no employer match, and many self-employed people contribute a percentage of each payment rather than a fixed monthly amount that a bad month could not cover.
 
-The quickest way to see what the bundle is worth is to price a freelance day against a salaried one.
+## Uneven income is a variance problem, not a discipline problem
 
-Take a salaried job paying €40,000 a year.
+A freelancer who earns €34,200 a year has not earned €2,850 each month. She may have earned €600 one month and €5,100 another. People in that position are often told they need more discipline; the difficulty is [variance](#term-variance), how far income swings around its average, and the common fix is mechanical. [Income smoothing](#term-income-smoothing) with the salary method:
 
-- A year has about 260 working days. The employee is paid for all of them, so each paid day is worth about **€154**.
-- The employer also adds, say, a 5% pension contribution (€2,000) and covers sick pay and insurance.
+1. **One [holding account](#term-holding-account).** Every payment from every client lands here; nothing is spent from it directly.
+2. **Tax leaves first.** The day a payment arrives, a fixed percentage moves to a separate tax account.
+3. **A fixed salary.** On the same date each month, a fixed amount moves to the everyday account.
+4. **The holding account absorbs the swings.** Good months raise its balance; bad months lower it.
 
-Now take a freelancer who wants the same standard of living.
+The household then budgets on the salary, as an employee would, and the [cash flow forecast](/blog/cash-flow-forecasting/) gets a stable income line.
 
-- Start with 260 working days. Remove 25 days of holiday, 10 public holidays, and 5 sick days. That leaves 220 days.
-- Around a fifth of working time goes on unbilled work: finding clients, quoting, invoicing, chasing payment. That leaves about **176 billable days**.
-- The freelancer has to earn the €40,000, replace the €2,000 pension contribution, and buy roughly €2,000 of insurance an employer would have provided. That is **€44,000**.
+## A twelve-month worked example of a steady salary
 
-€44,000 divided by 176 days is **€250 a day**, about 1.6 times the employee's €154.
+A year of freelance income, with 25% set aside for tax (illustrative; the right share depends on local rules) and a €2,000 monthly salary:
 
-This is where the common rule of thumb comes from: a freelance rate needs to be roughly one and a half to two times the salaried equivalent just to stand still. The numbers are illustrative, and the true multiple depends on local social contributions and how much of your time is billable. The direction does not change. A freelancer who charges the salaried day rate has taken a pay cut of more than a third without noticing.
-
-### Retirement without a match
-
-The post on [tax-advantaged accounts](/blog/tax-advantaged-accounts/) explained that most countries offer retirement accounts with a tax benefit. Employees often get one opened for them. You have to open your own.
-
-Two things differ when you do:
-
-- **There is no match.** An employer match is an instant return that nothing else reproduces. Without it, the whole contribution is yours to find, which is another reason the rate has to be higher.
-- **Contributions can follow income, not the calendar.** A fixed monthly contribution can be impossible in a bad month, which is why many self-employed people contribute a percentage of every payment received instead.
-
-Most countries have a retirement vehicle open to the self-employed, and several have one designed for them. The names are local. The function is the same.
-
-## Part two: uneven income is a variance problem
-
-A freelancer who earns €34,000 in a year has not earned €2,833 each month. She may have earned €600 in one month and €5,100 in another. Budgeting advice that starts with "take your monthly income" does not work when there is no such number.
-
-People in this position are often told they need more discipline. They do not. The difficulty is **variance**, the amount income swings around its average. The fix is mechanical, not moral.
-
-### The salary method
-
-1. **One holding account.** Every payment from every client lands here. Nothing is spent from it directly.
-2. **Tax leaves first.** The day a payment arrives, a fixed percentage moves to a separate tax account. That money was never yours.
-3. **Pay yourself a fixed salary.** On the same date each month, a fixed amount moves from the holding account to your everyday account.
-4. **The holding account absorbs the swings.** Good months raise its balance. Bad months lower it.
-
-Your household then budgets on the salary, exactly as an employee would. The post on [cash flow forecasting](/blog/cash-flow-forecasting/) covers how to lay the months out; the salary method gives that forecast a stable income line to work with.
-
-### A worked year
-
-Here is a year of freelance income, with 25% set aside for tax and a salary of €2,000 a month. The tax percentage is illustrative; yours depends on local rules.
-
-| Month | Income | Tax aside (25%) | Left after tax | Salary paid | Holding account change | Running balance |
+| Month | Income | Tax aside | Left after tax | Salary | Holding account change | Running balance |
 |---|---|---|---|---|---|---|
 | Jan | €1,800 | €450 | €1,350 | €2,000 | -€650 | -€650 |
 | Feb | €4,200 | €1,050 | €3,150 | €2,000 | +€1,150 | €500 |
@@ -134,15 +125,7 @@ Here is a year of freelance income, with 25% set aside for tax and a salary of �
 | Nov | €600 | €150 | €450 | €2,000 | -€1,550 | €725 |
 | Dec | €3,900 | €975 | €2,925 | €2,000 | +€925 | €1,650 |
 
-Three things are worth noticing.
-
-**The total.** Income was €34,200. Tax set aside was €8,550. What was left averaged about €2,140 a month, so a €2,000 salary was sustainable with room to spare.
-
-**The low point.** The running balance bottomed out at -€825 in March. That is the size of the starting buffer this year needed: less than half of one month's salary. A buffer of one month's salary would have covered it comfortably.
-
-**The end.** The year finished €1,650 ahead. That surplus is what funds the leave fund, the retirement contribution, or a slightly higher salary next year.
-
-Income that swung between €600 and €5,100 became a flat €2,000 every month. Nothing about the work changed. Only the plumbing did.
+Income was €34,200 and €8,550 went to tax, leaving an average of about €2,140 a month, so a €2,000 salary was sustainable. The running balance bottomed out at -€825 in March, so a starting buffer of one month's salary would have covered the year comfortably. The year ended €1,650 ahead, which can fund the leave fund, a retirement contribution or a slightly higher salary next year. Income that swung between €600 and €5,100 became a flat €2,000 a month.
 
 <figure>
 <svg viewBox="0 0 600 330" role="img" aria-labelledby="fig-salary-title fig-salary-desc" xmlns="http://www.w3.org/2000/svg">
@@ -196,45 +179,46 @@ Income that swung between €600 and €5,100 became a flat €2,000 every month
 <figcaption>Every payment lands in one account; the same salary leaves it on the same day each month. The account's balance does the swinging, so the household budget does not have to.</figcaption>
 </figure>
 
-### Setting the salary
+A common way to set the salary is below the after-tax average, not at it: around 90% of it with a year of history, or the weakest realistic month without one, raised later. Raising a salary is pleasant; cutting one after spending has grown is not.
 
-A common approach is a figure below the after-tax average, not at it. With a year of history, something around 90% of the average leaves room for a worse year. Without history, some people start at their weakest realistic month and raise it later.
+<details class="quick-check">
+<summary class="disclosure">Quick check: why does the holding account start the year with a buffer rather than at zero?</summary>
 
-Raising a salary is pleasant. Cutting one after spending has adjusted upward is not, which is why many people start low.
+Because the bad months can come first. In this year the balance fell to -€825 by March, so without about one month's salary in the account at the start, the €2,000 could not have been paid.
 
-## When income is informal
+</details>
 
-Everything above assumes invoices and a bank account. For cash and informal work, two further gaps open up.
+## When income is informal: proof and protection
 
-**The evidence gap.** A payslip is proof. Landlords, lenders, and immigration offices all ask for it. Cash income leaves no record unless you make one. A dated log of every payment, regular deposits into an account where you can get one, and saved messages or receipts together form a record that can stand in for payslips. Twelve consistent months of your own records carry real weight.
+For cash and informal work, two more gaps open. **Proof:** landlords, lenders and immigration offices ask for payslips, and cash leaves no record unless you make one. A dated log of every payment, regular deposits into an account where that is lawful and practical, and saved invoices, receipts or messages can help document the income. Whether a landlord, lender or immigration office accepts that record depends on its own rules, and some will ask for tax returns, bank statements or formal accounts. **Protection:** informal work usually sits outside [social insurance](#term-social-insurance), with no pension credits, sick pay or unemployment cover. Some countries allow voluntary contributions into the public pension or health system, which can be good value depending on the rules.
 
-**The safety-net gap.** Informal work usually sits outside social insurance altogether: no pension credits, no sick pay, no unemployment cover. Some countries allow voluntary contributions into the public pension or health system, and where that exists it can be good-value protection, depending on the rules; it is worth checking locally.
+<details class="lesson-depth">
+<summary class="disclosure">Rotating savings groups, and their risks</summary>
 
-Informal workers have also built their own smoothing tools for generations. **Rotating savings groups** (a group of people each pay in a fixed amount regularly, and each member takes the whole pot in turn) exist on every continent under different names: tontine, susu, tanda, chit fund, hui. They turn small irregular surpluses into a usable lump sum and they run on trust. That is also their weakness: if a member defaults or an organiser disappears, there is rarely any legal protection. They work best among people who know each other well, and as a supplement to savings you hold in your own name.
+Informal workers have built their own smoothing tools for generations. In a [rotating savings group](#term-rotating-savings-group), each member pays a fixed amount regularly and each takes the whole pot in turn. They exist on every continent: tontine, susu, tanda, chit fund, hui. They turn small, irregular surpluses into a usable lump sum, and they run on trust, which is also their weakness: if a member defaults or an organiser disappears, there is rarely any legal protection. They tend to work best among people who know each other well, and as a supplement to savings held in your own name.
 
-## A bigger emergency fund, for a specific reason
+</details>
 
-The post on the [emergency fund](/blog/emergency-fund/) gave three to six months of expenses as a common guideline. For variable income the same reasoning lands at the upper end or beyond, often six to twelve months.
+## Why variable income needs a bigger emergency fund
 
-The reason is not that freelancers are reckless. It is that three protections an employee has are missing at once: no sick pay if you are ill, no notice period if a client leaves, and in most places no unemployment benefit. The emergency fund has to stand in for all three.
+The [emergency fund post](/blog/emergency-fund/) gave three to six months of costs as a common guideline. With variable income the same reasoning lands at the upper end or beyond, often six to twelve months: three protections an employee has, sick pay, a notice period and unemployment benefit, are missing at once, and a quiet spell and an emergency can arrive together. Many people keep it separate from the holding account: the holding account handles ordinary swings, the emergency fund a real interruption.
 
-Many people keep it separate from the holding account. The holding account handles ordinary swings. The emergency fund is for a real interruption.
+## How the rules differ by country
 
-## Cross-continent notes
+<details class="lesson-depth">
+<summary class="disclosure">Paying tax as you go, self employed</summary>
 
-**Paying tax during the year.** Where employers withhold for employees, the self-employed usually pay in instalments. The United States and India use payments spread across the year. The United Kingdom uses two payments on account. Many European countries set advance payments based on the previous year. The rhythm differs. The need to set money aside as you earn does not.
+Where employers withhold tax for employees, the self-employed usually pay in instalments. Many self-employed people in the US and India make estimated or advance payments during the year when the relevant thresholds apply; in the UK, people in the payments-on-account system usually make two such payments. Many European countries set advance payments from the previous year's income. The rhythm, and the legal date on which tax becomes due, differ. As a habit, many people still set aside an estimated share when each payment arrives, so a later bill does not have to come from household spending money. Some countries also require the self-employed to pay into health and pension systems, sometimes as a fixed monthly charge whatever the income, which is a cost to build into the rate and the bad-month plan. Where health care is funded through general taxation, losing an employer changes little; where cover runs through work, as in the US, buying it yourself is one of the largest items in the bundle.
 
-**Social insurance for the self-employed.** Some countries require the self-employed to pay into health and pension systems, sometimes as a fixed monthly charge regardless of income. Others make it voluntary. A fixed charge is a cost to build into your rate and your bad-month planning.
+</details>
 
-**Health cover.** Where health care is funded through general taxation, losing an employer changes little. Where cover runs through employment, as in the United States, buying it yourself is one of the largest items in the bundle.
+<details class="lesson-depth">
+<summary class="disclosure">Are platform workers employees?</summary>
 
-**Platform work.** Whether a platform worker counts as an employee or as self-employed is contested and changing in many countries. The answer determines which of the rows in the first table you have to fund yourself.
+Whether a delivery rider or ride-hail driver counts as an employee or as self-employed is contested and changing in many countries, through court rulings and new laws, including the EU's platform work directive. The answer decides which rows of the table above the worker has to fund personally, so it is worth checking the current position where you work.
 
-## Getting started
+</details>
 
-- **Price your bundle.** Work out your billable days and what you need to earn, including pension and insurance. Compare the result with what you charge now.
-- **Consider the two-account setup.** A holding account and a tax account, with all income routed to the first and the tax share moved the day money arrives. Check locally what share to set aside.
-- **Work out a salary below your average,** paid on a fixed date and reviewed after six months.
-- **Start a record if you are paid in cash.** A dated log, from today.
+An employer is, among other things, a machine for turning uneven business income into steady pay with benefits attached. Working without one means building that machine yourself.
 
-An employer is, among other things, a machine for turning uneven business income into steady pay with benefits attached. Working without one does not mean going without those things. It means building the machine yourself.
+What would your current rate look like if you divided it by your real billable days?
