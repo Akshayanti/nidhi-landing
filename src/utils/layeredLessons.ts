@@ -16,9 +16,6 @@ export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   'what-if-scenarios',
   'cash-flow-forecasting',
   'life-events',
-  'cash-management',
-  'account-consolidation-and-financial-data-hygiene',
-  'growing-your-income',
   'invest-or-pay-off-debt',
   'refinancing-timing',
   'windfall-management',
@@ -31,7 +28,6 @@ export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   'recognizing-and-avoiding-financial-scams-and-fraud',
   'advanced-rebalancing',
   // Inclusive Finances
-  'shared-households-money-for-three-or-more',
   'gig-and-informal-economy-work',
   'interest-free-and-sharia-compliant-finance',
   'immigrants-expats-and-cross-border-households',

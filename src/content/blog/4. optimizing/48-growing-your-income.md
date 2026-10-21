@@ -1,30 +1,54 @@
 ---
 slug: "growing-your-income"
 title: "Growing Your Income: Negotiation and Career Capital"
-description: "Income growth is one of the largest financial levers over a career, and an easy one to neglect. The mechanics of negotiation, raises, and career capital."
-tldr: "Cutting expenses has a floor (you cannot spend less than zero on food and shelter). Raising income has far more headroom, though it is not guaranteed and depends on your field and market. A one-time 10% raise, negotiated well, carries into every future percentage-based raise, every retirement-contribution match, and every savings-rate calculation. Salary negotiation is a learnable skill with a payoff that can be large relative to the effort: the common elements are market data, an anchored range, BATNA (best alternative to a negotiated agreement) thinking, and the offer stage, where leverage tends to be highest. Career capital (specialised skills, network, credentials, reputation) is an appreciating illiquid personal asset that pays out through compensation, options, and optionality. Side income diversifies earning power. Job-hopping typically produces a wage premium versus staying, but tenure has its own compounding effects (equity vesting, pension accrual, promotion pipelines). Present bias makes us undervalue income growth versus immediate expense-cutting; overconfidence makes us under-prepare for negotiations. Both are correctable."
+seoTitle: "How to Negotiate Salary and Grow Your Income"
+description: "How to negotiate a salary offer, why a €5,000 starting gap can be worth about €238,000 over a career, and whether switching jobs or staying pays more."
+tldr: "Cutting costs has a floor; raising income has more room, though it depends on your field and market. A higher starting salary carries into every later percentage raise: €5,000 more at the start is about €238,000 more over 30 years at 3% raises. Negotiating at the offer stage, building career capital and weighing a move against staying are the main levers."
 takeaways:
-  - "Why raising income has more headroom than cutting expenses"
-  - "How one negotiated raise compounds through every later raise"
-  - "Why offer stage is where you have the most negotiating leverage"
-  - "Why career capital is an asset that pays out through your salary"
+  - text: "Why raising income has more room than cutting expenses"
+    href: "#raising-income-has-more-room-than-cutting-costs"
+  - text: "How one negotiated starting salary carries through every later raise"
+    href: "#a-5000-starting-gap-is-worth-about-238000-over-30-years"
+  - text: "What a common four-step negotiation script looks like"
+    href: "#a-negotiation-script-many-people-use"
+  - text: "Why career capital is an asset that pays out through your salary"
+    href: "#career-capital-is-the-asset-behind-the-salary"
+  - text: "How switching jobs and staying pay you in different ways"
+    href: "#switching-jobs-and-staying-pay-you-in-different-ways"
+glossary:
+  - term: "Career capital"
+    definition: "The skills, relationships, credentials and reputation that make you worth paying, in Cal Newport's framing; salary is what it pays out."
+  - term: "BATNA"
+    definition: "Best alternative to a negotiated agreement: what happens if this negotiation fails, such as staying in your current job."
+  - term: "Anchoring"
+    definition: "The pull of the first number named in a negotiation on everything that follows."
+  - term: "Offer stage"
+    definition: "The point after an employer has chosen you and before you start, when there is usually the most room to negotiate."
+  - term: "Vesting"
+    definition: "Shares or options from an employer becoming yours over time, often over several years; leaving before a vesting date can forfeit them."
+  - term: "Savings rate"
+    definition: "The share of income you save. It rises when income grows while spending stays the same."
+  - term: "Side income"
+    definition: "Earnings outside your main job, such as freelancing, consulting, teaching or a small business."
 order: 48
 pubDate: 2026-10-30
-updatedDate: 2026-08-05
+updatedDate: 2026-10-21
 localRules: [tax, benefits]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
 tags: ["optimizing", "planning", "goals"]
 faq:
+  - question: "Should I negotiate my first salary offer?"
+    answer: "Many people do, and the offer stage is usually when there is most room: the employer has chosen you and annual raises later tend to be bounded by a budget. Because every later percentage raise builds on the starting figure, a small gap at the start can add up over a career: €5,000 more at 3% raises for 30 years is about €238,000 of salary. Norms differ by country, sector and role, and some jobs, such as many public-sector posts, have fixed pay scales."
   - question: "Is it really more important to focus on growing income than cutting expenses?"
     answer: "It depends on where you are. If your expenses are far above your income and you are running a monthly deficit, cutting expenses is the first-order problem. But once basic cash-flow discipline is in place and the savings rate is positive, income growth typically dominates for two reasons. First, expenses have a floor (a certain minimum spend is required to live) while income does not have a comparable ceiling. Second, income growth compounds: a 10% raise this year becomes the base for next year's percentage raise, contributes more to any percentage-based retirement match, and permanently raises the savings rate at the same expense level. Over a 30-year career, a household that lifts income growth by even a small increment each year, and saves part of it, can end up much wealthier than one that focuses only on expense discipline. Many people work on both, often getting expenses under control first and then turning to income. How much room there is on the income side depends on your field, location, health and caring responsibilities."
   - question: "How much does salary negotiation actually matter over a career?"
-    answer: "A lot. Consider two workers starting at €50,000 with identical career trajectories except one negotiates the starting offer up to €55,000 and one accepts the initial offer. If both receive percentage-based raises of 3% per year for 30 years, the one who negotiated the €5,000 increase earns roughly €240,000 more cumulatively over the career (before any compounding through savings), and their retirement contributions, employer match, and pension accrual all scale up proportionally. If part of the extra pay is saved and invested, the wealth difference at retirement grows further, by an amount that depends heavily on the savings rate and returns assumed. Negotiation is often a few hours of effort at offer stage with a payoff that lasts as long as the higher base carries forward. The example assumes both careers otherwise move in lockstep, which real careers rarely do."
+    answer: "A lot. Consider two workers starting at €50,000 with identical career trajectories except one negotiates the starting offer up to €55,000 and one accepts the initial offer. If both receive percentage-based raises of 3% per year for 30 years, the one who negotiated the €5,000 increase earns about €238,000 more over the career (before any compounding through savings), and their retirement contributions, employer match, and pension accrual all scale up proportionally. If part of the extra pay is saved and invested, the wealth difference at retirement grows further, by an amount that depends heavily on the savings rate and returns assumed. Negotiation is often a few hours of effort at offer stage with a payoff that lasts as long as the higher base carries forward. The example assumes both careers otherwise move in lockstep, which real careers rarely do."
   - question: "Should I job-hop for higher salary or stay for tenure benefits?"
     answer: "There is no universal answer. Wage data in several countries shows that people who switch jobs tend to get larger pay rises than people who stay, especially when the job market is tight, because external offers re-price you to the current market while internal raises are budget-bound. However, staying has its own compounding: equity or option grants that vest over 4-year schedules, pension accrual with higher benefit multipliers after 10 or 20 years, promotion pipelines that require internal reputation, and reduced job-search stress and settling-in cost. One commonly described pattern is moving deliberately every few years early in a career, each move aiming for a step up in pay and scope, then staying longer once internal advancement is realistic and pay is competitive. Moves made from a position of strength tend to go better than reactive ones. Which way the balance tips depends on your field, country and life stage."
   - question: "What is career capital and how do I build it?"
-    answer: "Career capital, in Cal Newport's framing, is the accumulated set of skills, relationships, credentials, and reputation that make you valuable to employers or clients. It is an appreciating personal asset: unlike money in a savings account, it typically grows in value over time as you refine and demonstrate it. Building it deliberately means: identifying skills that are both scarce and valuable in your market (not just interesting to you), practising them at the difficulty level where you are consistently just outside your comfort zone (deliberate practice), building a network by giving value first (introductions, useful information, honest feedback), and putting evidence of your work in public where employers or clients can see it. Career capital compounds slowly for the first 5 to 10 years, then rapidly. It is why mid-career professionals often see step-change increases in earning power that were not available to their earlier selves."
+    answer: "Career capital, in Cal Newport's framing, is the accumulated set of skills, relationships, credentials, and reputation that make you valuable to employers or clients. It is an appreciating personal asset: unlike money in a savings account, it typically grows in value over time as you refine and demonstrate it. Building it deliberately means: identifying skills that are both scarce and valuable in your market (not just interesting to you), practising them at the difficulty level where you are consistently just outside your comfort zone (deliberate practice), building a network by giving value first (introductions, useful information, honest feedback), and putting evidence of your work in public where employers or clients can see it. The payoff can be slow and uneven: some skills and relationships create a later step change in pay or options, while others remain valuable without producing a clear salary jump."
   - question: "What about side income?"
     answer: "Side income (freelance work, consulting, small business, content royalties, small-scale rental income) is worth considering for three reasons: it diversifies earning power (a job loss does not zero out all income), it lets you test career pivots at low risk (build side capability before making it the main thing), and it often has different tax treatment (in some jurisdictions, business income allows deductions unavailable to salaried income). The catch: side work has real setup cost (finding clients, learning to invoice, tracking business expenses, filing separately) and often pays less per hour than the primary job in the early stages. Side income tends to work best when the primary job is stable and there is surplus time and energy, or when it is deliberately building toward a career pivot. It tends to backfire when it displaces primary-job performance or rest. Tax and registration rules for side work vary a lot by country."
 reelPromise: "Why income growth beats expense cutting after a certain point, the four-step salary negotiation script, and the career-capital math that quietly pays out for decades"
@@ -40,60 +64,22 @@ referentialReading:
     type: "book"
 ---
 
-The savings-rate math is simple: percentage of income saved determines years to financial independence. Most personal-finance writing treats this equation from one side only, working on the expense denominator. Cut the daily coffee, downsize the car, question every subscription. The advice is not wrong. It is incomplete.
+Eva, 31, has a job offer of €50,000. She thinks she could ask for €55,000, and she is not sure the awkward conversation is worth €5,000. A few years from now she will face a related question: whether moving to another employer would pay more than staying where her shares vest and her pension builds.
 
-Income is the numerator, and the numerator has more headroom than the denominator. A household living on €40,000 per year cannot get expenses to €20,000 without dropping standard of living to a place most people will not accept. But that same household can plausibly get income to €80,000 over a decade with focused effort. The mathematics of savings rate care equally about both moves, but the ceiling is different.
+## Raising income has more room than cutting costs
 
-This post is about the numerator. Not lifestyle-hustle grinding, not the "12 side hustles for extra cash" listicle, but the actual mechanics of raising primary-job income deliberately, building career capital that compounds, negotiating compensation at leverage points, and why income growth is one of the largest levers available during accumulation.
+The [savings rate](#term-savings-rate) depends on two numbers, and most money writing works on only one of them: spending. The [cash flow lesson](/blog/cash-flow-101/) covers both. Cutting costs matters, but it has a floor. A household living on €40,000 a year cannot get to €20,000 without a standard of living most people will not accept. The same household can plausibly raise its income over a decade, though that depends on the field, the job market, health and caring responsibilities.
 
-## Why income growth compounds harder than expense cutting
+Income growth also works through several channels at once. Percentage raises are calculated on a bigger base. An employer match that is a share of salary grows with it. And if spending stays where it is while income rises, the savings rate rises too: if €50,000 and €55,000 are after-tax incomes and spending stays at €30,000, the savings rate rises from 40% to about 45%. With gross salaries, tax comes off first. After a first pass at spending, many households find more room in a raise than in another €400 a month of cuts.
 
-Expense cutting is a one-time reduction. If you cut €200 per month from spending, that is €2,400 per year saved, forever. The next year, cutting expenses further requires finding another €200 in a smaller remaining base. The floor comes into view fast.
+## A €5,000 starting gap is worth about €238,000 over 30 years
 
-Income growth compounds through several channels simultaneously.
-
-**Percentage-based raises stack.** If you earn €50,000 and a 3% cost-of-living raise adds €1,500, the raise next year (also 3%) is a percentage of €51,500, adding €1,545. Every later raise is a percentage of a bigger base, so a higher starting salary keeps paying for the rest of the career. The chart below puts a number on it.
-
-**Retirement matching scales with salary.** If your employer matches, say, 5% of salary into a retirement account, a higher base salary means a higher match. Over 30 years the difference in employer contributions alone from a starting salary that is 10% higher is meaningful in absolute currency.
-
-**Savings rate rises at constant expenses.** If expenses stay at €30,000 and income rises from €50,000 to €55,000, the savings rate rises from 40% to 45% (before tax adjustments), which shifts the years-to-financial-independence calculation noticeably. If income continues to rise while lifestyle stays flat, the savings rate rises further and the FI (financial independence) timeline shortens dramatically.
-
-**Career-lifetime tax treatment.** Higher earnings often unlock access to workplace-only retirement vehicles (higher contribution ceilings on percentage-based schemes, employer-provided disability and life insurance that grow with salary, health-savings accounts in jurisdictions that link them to employer plans).
-
-Meanwhile, expense cutting has a floor. You cannot spend less than zero on housing, food, healthcare, and basic transport. The available savings from expense discipline max out. Income growth does not have the same ceiling.
-
-The upshot: after the first pass of expense discipline is in place, many households find more room in a €5,000 salary increase than in another €400 per month to cut. That depends on whether a raise is realistically within reach where you work.
-
-## Negotiation as a small-effort, large-payoff skill
-
-Salary negotiation is one of the highest-return skills in personal finance. It takes two to four hours of preparation, produces a one-time increase, and compounds through every future raise, match, and benefit calculation for the rest of the tenure at that employer. In currency terms those can be among the best-paid hours of a career.
-
-Many people undernegotiate. The reasons are structural, not individual: negotiation feels adversarial, information asymmetry favours the employer (they know the salary band, you do not), and there is a specific present-bias trap where the anxiety of the ask feels concrete and immediate while the compounding gain feels abstract.
-
-A common framework has a few parts. None of it guarantees a higher offer, and norms differ by country and sector.
-
-**Anchor with market data.** Before any conversation, know the market range for the role in your geography with your years of experience. Salary databases (Glassdoor, Levels.fyi for tech, Payscale, LinkedIn Salary, plus role-specific niche sources) give a range. In the same market, the top of the range is often 30 to 60% above the bottom. The employer knows this. Knowing it too levels the field.
-
-**Decide who names the first number.** Negotiation research finds that a first offer tends to anchor the whole conversation, so going first can work in your favour, but only if you know the market range. If you have done the research, you can open at the top of the realistic range. If you have not, let the employer go first: when asked "what are your salary expectations?", a variant of "I would like to understand the role and the whole package first; what range are you targeting?" gets you their number to negotiate up from.
-
-**Negotiate at offer stage, not annual review.** Leverage is highest when the employer has decided they want you and has not yet reached the point where finding someone else is easier than raising the offer. Offer stage is that moment. Once you are an employee, the leverage curve resets: annual raises are typically bounded by a company-wide budget percentage, and the friction of switching employees is now sunk cost from the employer's perspective. For many roles, the biggest compensation negotiation happens at offer stage.
-
-**Negotiate the package, not just the base.** The offer is base salary plus signing bonus plus performance bonus plus equity or options plus benefits (retirement match, health, PTO, remote-work flexibility, learning budget, relocation, education support). Every one of these is negotiable, and different levers have different tax treatment. Sometimes an employer cannot raise base pay because it would compress salary bands but can add a signing bonus, equity, or a specific benefit. Ask for improvement across the whole package.
-
-**BATNA thinking.** BATNA (best alternative to a negotiated agreement) is the outcome you get if this negotiation fails. If your BATNA is "stay in current job which I like fine," you negotiate from strength: worst case, you continue existing. If your BATNA is "unemployed with no runway," you negotiate from weakness. Build BATNA before you need it: cultivate other options actively, maintain a healthy emergency fund (per the [emergency fund post](/blog/emergency-fund/)), keep your network warm even when you are not job-hunting. BATNA is a background asset with immediate visible payoff in negotiation moments.
-
-**Use silence.** After you counter, be silent. The employer will often fill the silence with movement toward your number. Untrained negotiators fill their own silence, weakening their position. Ten seconds of quiet feels long to the person who made the ask; it feels much longer to the person facing it.
-
-**Get everything in writing.** Verbal agreements on side items (signing bonus, equity, remote flexibility, promotion timeline) evaporate if not documented in the written offer. Everything you negotiated goes into the offer letter or a supplemental email that acknowledges it.
-
-Two to four hours of preparation, a one-hour conversation, and a written follow-up. That is the workload for what is often a €5,000 to €20,000 one-time gain that compounds for years.
-
-## The math of a small starting-salary difference
+Every later percentage raise is calculated on the starting salary, so a higher start keeps paying. If Eva starts at €55,000 instead of €50,000 and both paths get 3% a year for 30 years, the €5,000 gap grows to about €11,800 a year by the end and adds up to about €238,000 of extra salary, before tax.
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-negotiate-title fig-negotiate-desc">
   <title id="fig-negotiate-title">Compounded difference from a €5,000 negotiation win</title>
-  <desc id="fig-negotiate-desc">Two rising curves over 30 years. Both start at a base salary and rise at 3% per year, but the higher curve starts at €55,000 versus €50,000 for the lower curve. The gap between them widens each year, reaching about €12,000 at year 30. The area between the two curves represents cumulative extra earnings, shaded and labelled at approximately €240,000 total.</desc>
+  <desc id="fig-negotiate-desc">Two rising curves over 30 years. Both start at a base salary and rise at 3% per year, but the higher curve starts at €55,000 versus €50,000 for the lower curve. The gap between them widens each year, reaching about €12,000 at year 30. The area between the two curves represents cumulative extra earnings, shaded and labelled at approximately €238,000 total.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">One negotiation, compounded across a career</text>
   <text class="fig-subtitle" x="360" y="68" text-anchor="middle">3% annual raises for 30 years. Illustrative, before compounding through savings.</text>
   <line x1="80" y1="320" x2="600" y2="320" class="fig-stroke-muted" />
@@ -112,93 +98,87 @@ Two to four hours of preparation, a one-hour conversation, and a written follow-
 <figcaption>Illustrative compounding of a one-time €5,000 negotiation win at offer stage. Assumes identical 3% annual raises in both scenarios. Not including savings-rate or match-scaling effects, which multiply the total wealth difference further.</figcaption>
 </figure>
 
-The bare arithmetic shows why a two-hour negotiation can outweigh many other financial optimisations. And that ignores the second-order effects: higher retirement-account contributions, higher employer match, higher percentage of income available to save while expenses stay flat, and the tax-advantaged growth that all of that compounds through.
+A quick way to size any starting gap: multiply it by about 47.6, the sum of 30 years of 3% raises. That leaves out what the extra pay does through savings and an employer match, which can make the difference larger, and it assumes both careers otherwise move in step, which real careers rarely do.
 
-## Career capital as an appreciating personal asset
+## A negotiation script many people use
 
-Salary at any moment is the market's estimate of your value to the current employer for the current role. But that valuation is derived from something else: the accumulated set of skills, relationships, credentials, and reputation that Cal Newport calls career capital. Career capital is the underlying asset; salary is the periodic distribution.
+Many people negotiate less than they could. The ask feels uncomfortable now, the gain feels abstract, and the employer knows the salary band while the candidate usually does not. A common script has four steps. None of it guarantees a higher offer, and norms differ a lot by country and sector.
 
-Treating career capital as an asset shifts the accumulation strategy in several ways.
+**1. Knowing the market range.** Salary surveys, pay-transparency data and people in the same role give a range for the job, level and place. Several sources give a floor and a ceiling rather than one number.
 
-**Skills are the primary category.** Not skills in the abstract, but skills that are both scarce (few people have them) and valuable (many people would pay for them). The market rate for a skill is set at that intersection. Skills that are common (using a spreadsheet at basic level) or valuable-but-not-scarce (widely-taught certifications) rarely command premium compensation. Skills that are scarce-and-valuable (deep domain expertise combined with a rare technical capability, or the ability to translate between engineering and business audiences at senior level) do.
+**2. Deciding who names the first number.** Research on negotiation finds the first number tends to [anchor](#term-anchoring) the conversation, so going first can help, but only with the market range in hand. Without it, many candidates ask for the employer's range first.
 
-Building skills at the scarce-and-valuable intersection requires deliberate practice: working at the edge of your current capability, receiving feedback, iterating. Not doing the same thing you already know how to do, and not vaguely wishing to improve. Concrete practice with concrete evaluation. This is why 10 years of experience at doing the same thing sometimes produces less capability than 3 years of deliberate progression.
+**3. Negotiating the whole package at the [offer stage](#term-offer-stage).** Leverage tends to be highest once the employer has chosen you and before you start, because annual raises later are usually bounded by a company-wide budget. The offer is more than the base: bonus, shares, pension match, leave, remote work, training budget. When a salary band blocks a higher base, a signing bonus or a benefit sometimes moves instead.
 
-**Network is compounding capital.** Career-shifting opportunities do not come from job boards; they come from people. Building a network deliberately (making introductions, sharing useful information, giving honest feedback, staying in touch even when there is no immediate ask) generates optionality that pays out over decades. The mid-career professional whose next three roles came through people they had known for years is not lucky; they built the asset.
+**4. Getting it in writing.** Anything agreed beyond the base goes into the offer letter or a confirming email; verbal promises tend to fade.
 
-**Credentials matter selectively.** Formal credentials (degrees, licences, industry certifications) matter enormously in some fields (medicine, law, accounting, some engineering disciplines) and much less in others. Where they matter, they are gate-keepers, and the return on getting the credential is high. Where they do not, the return on additional credentials past the minimum is often close to zero. Match the credential investment to the actual credentialing structure of the field.
+Underneath all four sits the **[BATNA](#term-batna)**: what happens if this negotiation fails. Someone happy to stay in their current job negotiates from strength; someone with no income and no savings does not. An [emergency fund](/blog/emergency-fund/) and other options in play quietly strengthen every negotiation.
 
-**Reputation is the multiplier.** Everything else equal, the person with a reputation for competence, reliability, and honest dealing commands better opportunities and higher compensation than the person with equivalent skills but no such reputation. Reputation is built slowly, through many small consistent actions, and damaged fast through few visible failures. It is worth protecting deliberately.
+<details class="lesson-depth">
+<summary class="disclosure">How to research a market rate</summary>
 
-Career capital compounds slowly at first. The first 5 to 10 years of professional life are mostly building; the payoff curve is close to flat. Then a step change occurs: mid-career professionals often see compensation, opportunities, and optionality expand rapidly in ways that were structurally unavailable earlier. This is the compounding paying off. It is not accidental, and it is not fair. The workers who built career capital deliberately in the early years reach the mid-career step change with more to offer, and are rewarded accordingly.
+Salary sites (Glassdoor, Payscale, LinkedIn Salary, and field-specific ones such as Levels.fyi for tech) give ranges by role, level and city. Some US states require pay ranges in job ads. EU pay-transparency rules require applicants to be told the starting pay or range early enough to negotiate, though how each country applies them, and whether the range appears in the ad, varies. Recruiters and people one step ahead in the same field often know the real numbers. Collective agreements set the pay scale in some sectors and countries. The useful output is a range with its sources, for this role, this level and this place, rather than one figure from one site.
 
-## Job-hopping versus tenure: the actual tradeoff
+</details>
 
-Wage data in several countries shows that people who switch jobs tend to get larger pay rises than people who stay, especially when the job market is tight. That is directionally useful but incomplete.
+<details class="quick-check">
+<summary class="disclosure">Quick check: why does the offer stage usually carry more leverage than an annual review?</summary>
 
-**The reason job-hoppers earn more.** External-market compensation resets based on current market rates for the role. Internal raises are typically bounded by company-wide budget percentages (often 2 to 4% for cost-of-living, occasional 8 to 15% for promotions). If the market rate for your role has moved 15% during your 3-year tenure, the internal raise probably has not tracked it fully. Changing jobs re-prices you to the current market.
+At the offer stage the employer has chosen you and has not yet hired anyone else, so improving the offer can be easier than starting again. Once you work there, raises are usually bounded by a company-wide budget.
 
-**What job-hopping costs.** Every change carries setup cost: ramp-up time at the new organisation (often 3 to 6 months to reach full productivity), rebuilding trust and reputation, learning new systems and politics. Equity or option grants often vest over 4-year schedules with cliffs; leaving before the cliff forfeits everything. Pension accrual with higher benefit multipliers after 10 or 20 years also compounds within a single employer. Internal promotion pipelines require internal reputation, which resets.
+</details>
 
-**A commonly described pattern.** Deliberate moves every few years early in a career, each aiming for a step change in compensation and scope rather than a lateral. Then, once internal advancement is realistic and the package is competitive with the market, longer stays to compound the tenure benefits. Moves made from strength tend to go better than reactive ones. This is a pattern, not a law: health, family, visas and local labour markets all change the calculation.
+## Career capital is the asset behind the salary
 
-**The exception.** In fast-moving fields with rapidly-inflating market rates (some tech disciplines, certain finance roles during boom cycles), staying longer than 2 to 3 years often means falling meaningfully behind the market. In slower-moving fields (medicine, law at established firms, regulated industries, government), tenure often has explicit multiplier effects that make staying more valuable.
+Salary is the market's current price for your work. Behind it sits [career capital](#term-career-capital): the skills, relationships, credentials and reputation that make you worth paying, in Cal Newport's framing. Like other assets, it can grow, and the salary is what it pays out.
 
-The right answer is field-specific and situation-specific. The wrong answer is either extreme without thinking about it.
+<details class="lesson-depth">
+<summary class="disclosure">Why career capital compounds</summary>
 
-## Side income: when it makes sense
+**Skills that are both scarce and valued** set the price: deep expertise combined with a rare capability, or translating between technical and business people at a senior level. Common skills rarely command a premium. Building scarce ones usually takes deliberate practice: working at the edge of current ability, with feedback, rather than repeating what is already comfortable. That is why ten years of the same work can build less than three years of steady progression.
 
-Side income (freelance work, consulting, small business, teaching, content, small-scale rentals) is a distinct optimisation with a different logic than the primary job. It is worth pursuing under specific conditions.
+**Relationships** bring most career-changing opportunities, often years after they started: introductions made, information shared, honest feedback given, contact kept when nothing is needed.
 
-**When it makes sense.**
-- The primary job is stable and has predictable time boundaries.
-- The side capability has genuine market demand at a rate that respects your hourly cost.
-- The side work builds skills or credibility relevant to a future career pivot you actually want.
-- The tax treatment in your jurisdiction meaningfully differs from salaried income (some jurisdictions allow business-expense deductions unavailable to employees).
-- You have the surplus time and energy without displacing rest or primary-job performance.
+**Credentials** matter a great deal in fields that gate on them (medicine, law, accounting, some engineering) and much less elsewhere, where extra certificates past the minimum often add little.
 
-**When it does not.**
-- The primary job requires energy at unpredictable times.
-- The side rate is far below the primary hourly rate (implicit hourly wage tells you whether this is investment or leakage).
-- The setup cost (registering a business, learning invoicing, tracking expenses, filing separately) exceeds one to two years of side revenue.
-- The side work is displacing recovery time you actually need.
+**Reputation** multiplies the rest: it builds slowly through many consistent actions and can be damaged quickly.
 
-**The tax angle worth understanding.** In many jurisdictions, self-employment or small-business income is treated differently from salaried income. You may be able to deduct legitimate business expenses (equipment, home-office allocation, professional development, travel for business purposes) that reduce taxable income. You may also owe additional self-employment or contributions to pension schemes that a salaried employee has withheld automatically. The net tax effect varies; local specifics matter. Kept generic per the tax-treatment guardrails from the [taxes post](/blog/taxes-and-your-financial-plan/).
+The payoff can be slow and uneven: some skills bring a later step change in pay or options, while others stay valuable without a clear jump in salary.
 
-**The scaling ceiling.** Most side income has a ceiling: the number of hours you can put in outside a primary job is bounded. Side work as a permanent secondary revenue stream, at a rate materially below the primary job, rarely becomes financially significant. Side work as a test bed for a future career pivot (build capability, prove market demand, transition when the side revenue can support the household with some margin) is more strategically interesting.
+</details>
 
-## The behavioural traps
+## Switching jobs and staying pay you in different ways
 
-Four behavioural traps work systematically against income growth, two of them from the Psychology level.
+Wage data in several countries shows that people who switch jobs tend to get larger raises than people who stay, especially when the job market is tight. A move re-prices your pay to today's market, while internal raises are usually bounded by budget. Staying pays differently: shares that [vest](#term-vesting) over several years (leaving before a vesting date can forfeit them), pension benefits that grow with years of service in some schemes, internal promotion built on a reputation that would reset elsewhere, and the cost of settling into a new job.
 
-**Present bias makes negotiations feel expensive.** The [present bias post](/blog/present-bias-and-your-future-self/) covered how we heavily overvalue immediate rewards versus future ones. In negotiation, the immediate cost (anxiety, discomfort, the small chance of losing the offer) is vivid; the future benefit (30 years of compounding on €5,000) is abstract. The trap: undernegotiating because the immediate cost dominates the mental math. The correction: make the future benefit concrete before the conversation, in specific numbers (see the earlier chart), so both sides of the decision are equally vivid.
+A commonly described pattern is moving deliberately every few years early in a career, each move aiming for a step up in pay and scope, then staying longer once internal advancement is realistic and pay keeps up with the market. In fast-moving fields, staying too long can mean falling behind the market; in fields with strong tenure rewards, such as government or established professional firms, staying is often worth more. Health, family, visas and local job markets change the balance.
 
-**Overconfidence causes under-preparation.** The [overconfidence post](/blog/overconfidence-and-the-planning-fallacy/) covered how most people rate themselves above average at things they are not particularly practised at. In negotiation, this shows up as walking into the conversation without market data, without a prepared range, without a rehearsed opening. The correction: assume you will underperform your improvised self, and do the work.
+## When side income helps, and when it costs more than it pays
 
-**Anchoring on the salary you already earn.** When considering a job change, the temptation is to anchor the new offer on the current salary plus some modest premium (typically 10 to 20%). This misses the market-rate reset: if the market has moved substantially, the correct anchor is the market rate, not your current salary. Use the market-data research to anchor, and be willing to name a range that reflects it.
+[Side income](#term-side-income) (freelancing, consulting, teaching, a small business) can spread earning risk, test a career change cheaply, and in some countries allow business deductions a salary does not. It tends to help when the main job is stable, the side rate respects your time, and the work builds toward something you want. It tends to backfire when it eats into rest or main-job performance, pays far below your main hourly rate, or costs more to set up than it earns in a year or two. Self-employment can also bring its own taxes and contributions that an employer would otherwise handle; the [taxes post](/blog/taxes-and-your-financial-plan/) covers how to think about that without the local detail.
 
-**The comfort of "enough."** Once income comfortably exceeds expenses, further income growth stops feeling urgent. This is psychologically healthy but financially expensive. At higher savings rates, each additional percentage point shortens the FI timeline noticeably. The optimisation does not stop being valuable just because it stops feeling urgent.
+## The habits that keep people from asking
 
-## Cross-continent notes
+[Present bias](/blog/present-bias-and-your-future-self/) makes the discomfort of the ask feel bigger than 30 years of a higher base; putting the long-run number on paper before the conversation makes both sides equally vivid. [Overconfidence](/blog/overconfidence-and-the-planning-fallacy/) shows up as walking in without market data or a prepared range. Anchoring on your current salary, rather than the market rate, undercuts a move when the market has shifted. And once income comfortably covers spending, further growth stops feeling urgent, even though each extra point of savings rate still shortens the road to financial independence.
 
-The mechanics of income growth are universal; the specific market structures vary.
+## How pay and negotiation differ by country
 
-- **US.** High compensation variance across metro areas, especially in tech, finance, medicine, and law. Equity compensation (RSUs, options) is common in tech and startups and often negotiable at offer stage. Salary bands often visible through state-mandated pay-range disclosure in some states.
-- **UK.** Base salary typically dominates over variable compensation in most industries. Public-sector pay is banded and structurally non-negotiable; private-sector negotiation is more common than sometimes assumed. Salary sacrifice arrangements (pension top-up, cycle-to-work, EV lease) affect the effective compensation calculation.
-- **EU / eurozone.** Compensation structures vary widely by country. Collective bargaining agreements set floors in some sectors and countries (Germany, Scandinavia). Multi-country moves within the EU can trigger significant compensation resets.
-- **India.** Public and private-sector compensation differ substantially. IT and financial-services roles often see sizeable jumps on job change. Variable pay (bonus, ESOPs, RSUs) is a large component in senior tech and management roles. How the package is split into components such as LTA (leave travel allowance) can matter for tax, depending on which income-tax regime you are in.
-- **Australia.** Superannuation (Australian employer-sponsored retirement account) contributions are legally mandated at a percentage of salary; a higher base salary means proportionally higher retirement contributions. Salary sacrifice arrangements are widely used.
-- **Canada.** RRSP (Registered Retirement Savings Plan, Canada) matching and pension arrangements scale with salary. Provincial variation in compensation norms.
+The principles travel; the pay structures do not.
 
-In every jurisdiction, the principles are the same: research the market, negotiate at offer stage, treat the package as negotiable, build career capital as the underlying asset, and correct for the biases that pull toward under-negotiation.
+<details class="lesson-depth">
+<summary class="disclosure">Pay and negotiation in the US, UK, eurozone, India, Australia and Canada</summary>
 
-## Getting started
+- **US.** Pay varies widely by city and field. Equity (RSUs, options) is common in tech and often negotiable at the offer. Some states require pay ranges in job ads.
+- **UK.** Base salary dominates in most industries. Public-sector pay is banded and largely fixed; private-sector negotiation is more common than often assumed. Salary sacrifice (pension top-ups, cycle-to-work, car leases) changes the effective package.
+- **Eurozone.** Structures vary by country. Collective agreements set floors in some sectors and countries, such as Germany and the Nordics. Moving between EU countries can reset pay significantly.
+- **India.** Public and private pay differ substantially; IT and financial-services roles often see large jumps on a move; variable pay (bonus, ESOPs, RSUs) is a big part of senior packages. How the package is split into components can matter for tax, depending on the income-tax regime.
+- **Australia.** Employers must pay superannuation as a percentage of salary, so a higher base means higher retirement contributions. Salary sacrifice is common.
+- **Canada.** RRSP matching and pension arrangements scale with salary; norms vary by province.
 
-The next salary conversation is where the compounding either starts or does not. Between now and then, four things are worth doing.
+</details>
 
-- Research the current market rate for your role and level in your geography. Aim for a range with a floor and a ceiling from at least three sources.
-- Write down the compensation package you would counter with if the offer or annual review came tomorrow. All components, not just base.
-- Deliberately practice the negotiation script once, with a partner or a mirror. The first hearing of yourself saying "I would like to counter at ..." should not be in the actual conversation.
-- Identify one specific skill worth practising over the next year that would materially raise your market value, and build a deliberate-practice plan for it.
+## Before the next salary conversation
 
-The next post in this series covers the invest-versus-pay-off-debt decision, which becomes materially easier when income is growing than when it is stagnant. Income growth is the reason the mathematics of "invest or pay off debt" often has a comfortable both-and answer rather than a scarce either-or.
+A common preparation is a market range from several sources, a counter-offer written out for the whole package, one practice run of saying the number out loud, and one skill chosen to work on deliberately over the next year. The next post covers whether to invest or pay off debt, a decision that is usually easier when income is growing.
+
+What would Eva's €5,000 be worth in your field, and what would it take to ask for it?

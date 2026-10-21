@@ -1,31 +1,54 @@
 ---
 slug: "cash-management"
 title: "Cash Management: Where to Hold Your Cash"
-description: "Cash management: where to hold your cash, not just how much. Different vehicles fit different buckets, and the right choice moves with interest rates."
-tldr: "Cash sitting in a 0% checking account is a slow loss to inflation. A common structure uses three buckets: transactional cash (about one month of expenses, in a current account), a safety buffer (often three to six months of expenses, in a high-yield savings account or money-market fund), and opportunity or near-term goal cash (in a slightly higher-yielding but less liquid vehicle like a T-bill ladder or short-duration bond ETF). Rate environments matter: when rates rise, money-market funds and T-bills track quickly while bond funds dip in price; when rates fall, the reverse. The idea is to match the vehicle to the bucket's job rather than to the highest advertised yield. Deposit insurance has per-institution limits, which is why people with large balances often spread them. The concept travels; the vehicles, limits and tax treatment vary by country."
+seoTitle: "Where to Keep Your Emergency Fund and Savings Cash"
+description: "Where to keep cash, not just how much: the three jobs cash does, the kinds of account that fit each, and what rising or falling rates do to each one."
+tldr: "Cash at 0% quietly loses value to inflation. A common approach gives cash three jobs, this month's spending, an emergency buffer and money for a goal a few years away, and keeps each where that job fits. Which accounts exist, how they are protected and how they are taxed depends on your country."
 takeaways:
-  - "Why cash in a 0% account quietly loses value to inflation"
-  - "How each cash bucket maps to vehicles that fit its job"
-  - "How rising and falling rates affect each cash vehicle differently"
+  - text: "Why cash in a 0% account quietly loses value to inflation"
+    href: "#cash-at-0-loses-value-you-never-see"
+  - text: "How each of cash's three jobs maps to accounts that fit it"
+    href: "#each-pile-of-cash-has-one-job"
+  - text: "Why chasing a little extra yield on an emergency fund rarely pays"
+    href: "#chasing-yield-on-an-emergency-fund-rarely-pays"
+  - text: "How rising and falling rates affect each kind of cash account"
+    href: "#what-a-rate-change-does-to-each-account"
+glossary:
+  - term: "High-yield savings account"
+    definition: "A bank savings account paying a variable rate close to the central bank's short-term rate, with instant or next-day access and deposit protection up to the local limit."
+  - term: "Money-market fund"
+    definition: "A fund that lends money for very short periods to governments, banks and large companies. Its yield follows short-term interest rates closely; it is regulated for safety but not covered by deposit protection."
+  - term: "Treasury bill"
+    definition: "A short-term loan to a government, usually for one month to a year. You pay slightly less than its face value and receive the full amount when it comes due; the difference is the interest."
+  - term: "Term deposit"
+    definition: "A bank deposit locked for a fixed period at a fixed rate, usually with a penalty for taking the money out early."
+  - term: "Short-duration bond fund"
+    definition: "A fund holding bonds that come due within a few years. It usually pays a little more than cash, and its price moves slightly when interest rates change."
+  - term: "Deposit protection"
+    definition: "A national scheme that repays savers up to a limit per person per bank if the bank fails: €100,000 in the EU, for example."
+  - term: "Purchasing power"
+    definition: "What an amount of money can buy. When prices rise faster than a balance grows, the balance buys less even though the number on the statement stays the same."
 order: 46
 pubDate: 2026-10-23
-updatedDate: 2026-07-31
+updatedDate: 2026-10-21
 localRules: [deposit-protection, tax]
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "saving", "risk"]
 faq:
+  - question: "Where should I keep my emergency fund?"
+    answer: "A common choice is a high-yield savings account or a money-market fund: both usually pay close to the short-term interest rate and let you reach the money within a day or so. Many people keep only about one month of costs in their current account for everyday spending. Which accounts are available, how they are protected and how their interest is taxed depends on your country."
   - question: "What is wrong with holding my emergency fund in a checking account?"
-    answer: "Two problems. First, most checking accounts pay 0% or near-0% interest, so the balance loses purchasing power to inflation every year. In a 2% inflation environment, that is a 2% real loss annually on the entire cash cushion. On a €30,000 emergency fund, that is €600 per year of lost value. Second, the choice to keep money in a checking account often reflects the assumption that any other vehicle is illiquid, which is not true: high-yield savings accounts and money-market funds are typically same-day or next-day accessible. A common structure separates transactional cash (which suits checking) from the safety buffer (which can often earn more elsewhere without giving up much access). Whether the difference is worth the effort depends on the balance and the rates available where you live."
-  - question: "What is the difference between a HYSA, a money-market fund, and a T-bill?"
-    answer: "A high-yield savings account (HYSA) is a bank deposit that pays a variable interest rate, typically higher than a checking account, with instant access. It is covered by deposit insurance up to the jurisdictional limit. A money-market fund is a mutual fund that invests in very short-term high-quality debt (T-bills, commercial paper, bank deposits); it typically yields close to the short-term interest rate, with same-day or next-day access, and is not deposit-insured but is regulated for liquidity and safety. A T-bill is short-term government debt (usually 4 to 52 weeks) purchased directly or through a broker; it yields the current short-term risk-free rate, is backed by the issuing government, and pays out at maturity. All three are cash-like; they differ in yield, tax treatment, and access speed."
-  - question: "How should I decide between them?"
-    answer: "The usual approach is to match the vehicle to the bucket. Transactional cash (about one month of expenses, for bills and daily spending) typically sits in a current or checking account. The safety buffer (often three to six months of expenses, for emergencies and unexpected costs) is commonly held in a HYSA or money-market fund, depending on which offers better yield with adequate access locally. Opportunity or near-term goal cash (a house down payment in two years, a car in three, tuition in five) is where people use T-bill ladders, term deposits or short-duration bond ETFs, trading slightly slower access for slightly higher yield. The trap is reaching for yield with longer-duration bond funds for money needed within a few years: an interest-rate rise can create capital losses that eat the yield advantage. What fits also depends on tax treatment and what is available in your country."
+    answer: "Most checking accounts pay 0% or close to it, so the balance loses purchasing power to inflation every year: at 2% inflation, about €600 a year on €30,000. Savings accounts and money-market funds are usually reachable the same or next day, so moving the buffer rarely costs much access. Whether the difference is worth the effort depends on the balance and the rates available where you live."
+  - question: "Is a money-market fund safer than a savings account?"
+    answer: "They are safe in different ways. A savings account is covered by deposit protection up to the local limit (€100,000 per person per bank in the EU, for example). A money-market fund is not covered by that scheme, but it holds very short, high-quality loans and is regulated for liquidity and diversification and is usually easy to sell, although its value is not guaranteed and some funds have a value that varies a little. For amounts above the deposit-protection limit at one bank, some people use a money-market fund or government bills for the excess."
+  - question: "What is the difference between a savings account, a money-market fund and a Treasury bill?"
+    answer: "A savings account is a bank deposit with a variable rate and deposit protection. A money-market fund is a fund of very short-term loans whose yield follows interest rates closely, with same-day or next-day access and no deposit protection. A Treasury bill is a short-term loan to a government that pays out on a set date. All three are cash-like; they differ in yield, protection, tax treatment and how quickly you can reach the money."
   - question: "Why does the rate environment matter?"
-    answer: "Because different cash vehicles respond to interest rate changes at different speeds and magnitudes. When central banks raise rates, money-market funds and newly-issued T-bills track the higher rate almost immediately, while HYSA rates typically lag by weeks to months (bank funding decisions), and bond ETFs experience an immediate price drop (the existing bonds now yield less than newly-issued ones). When rates fall, the reverse: money-market and T-bill yields drop quickly, HYSA lags, longer-duration bond ETFs enjoy price appreciation. For money that might be needed within a year, the price drop on a bond fund arrives at once and can coincide with the moment you need to sell, so many people keep that money where the price does not move. If your holding period spans multiple rate cycles, the vehicle choice matters more."
+    answer: "Different cash accounts react to interest-rate changes at different speeds. When central banks raise rates, money-market funds and new Treasury bills follow almost at once, savings rates usually lag by weeks or months, and bond funds fall slightly in price. When rates fall, the reverse happens. For money that might be needed within a year, a price fall can arrive just when you need to sell, which is why many people keep that money where the price does not move."
   - question: "How much cash is too much cash?"
-    answer: "There is a diminishing-returns point past which additional cash stops adding safety and starts costing real returns. A common rule of thumb: transactional bucket around one month of expenses, safety buffer around three to six months (people with volatile income often hold more, stable dual-earner households often less), and near-term-goal cash sized to actual near-term goals rather than to comfort. Cash beyond that tends to earn less than it might invested over long periods, though invested money can fall in value too. A large expense scheduled within a couple of years is usually treated as goal cash, not excess. Where the line sits also depends on job security, debts and how you would cope with a market fall."
+    answer: "A common rule of thumb is about one month of costs for spending, three to six months as a safety buffer (people with uneven income often hold more), and goal money sized to real goals a few years away. Past that, extra cash adds little safety and tends to earn less over long periods than invested money, though invested money can fall in value too. Where the line sits depends on job security, debts and how you would cope with a market fall."
 reelPromise: "The three cash buckets many households use, why chasing yield with a bond fund can cost more than it earns, and what actually happens to your savings account when rates change"
 relatedSlugs: ["emergency-fund", "cash-flow-forecasting", "liquidity", "purchasing-power"]
 relatedTool:
@@ -44,93 +67,135 @@ referentialReading:
     type: "blog"
 ---
 
-A common pattern is keeping the emergency fund in a 0% checking account. Often not because people do not know that other options exist. Because the mental cost of choosing seems higher than the yearly loss, and the loss never shows up on a statement.
+Eva, 32, lives in Lisbon and keeps all €30,000 of her cash in her current account, at 0%. Her costs are about €2,500 a month, and €15,000 of the cash is for a flat deposit she expects to need in about three years. She knows other accounts exist. Choosing one feels like more work than the loss is worth, and the loss never shows up on a statement.
 
-It is still real. On a €30,000 emergency fund in a 2% inflation environment, keeping the cash at 0% costs €600 of purchasing power every year. Over five years that is €3,000, and over a forty-year working life about €24,000, before counting what that money could have earned. Savings accounts do not always beat inflation either, but they usually narrow the gap.
+## Cash at 0% loses value you never see
 
-This post is about that specific problem and the trade-offs in solving it. The [Emergency Fund post](/blog/emergency-fund/) discussed how much cash people hold. The [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) showed how the amount interacts with your actual month-by-month obligations. This post covers the vehicle question: where the cash can sit, and what each option trades off.
+The loss is still real. At 2% inflation, €30,000 at 0% loses about €600 of [purchasing power](#term-purchasing-power) a year: about €3,000 over five years, before counting what the money could have earned. Savings accounts do not always beat inflation either, but they usually narrow the gap.
 
-## Why cash management is a distinct optimization
+The [Emergency Fund post](/blog/emergency-fund/) covered how much cash people hold, and the [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) how that amount meets month-by-month bills. This post is about where the cash sits, and what each choice trades off.
 
-The [Liquidity post](/blog/liquidity/) established a spectrum: some assets are instantly accessible, others take days or weeks, others take months. It is tempting to treat all of the "instantly accessible" end of the spectrum as one thing. It is not.
+## Each pile of cash has one job
 
-Within cash and cash-like instruments, three real differences matter:
+The [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) sorted cash by when you might need it. A common structure gives each of those piles one job, and keeps each where that job fits:
 
-**Yield.** Different vehicles pay different rates. Checking accounts pay near zero. High-yield savings accounts pay close to the short-term risk-free rate. Money-market funds pay similar. T-bills pay the risk-free rate directly. Short-duration bond ETFs pay slightly more, at the cost of some price volatility. Depending on where interest rates are, the gap between a 0% account and the best of these can be several percentage points, which compounds meaningfully across a career.
+| Job | How much | Often kept in |
+|---|---|---|
+| Spending this month | About one month of costs | A current account |
+| Safety buffer | Often three to six months of costs | A [high-yield savings account](#term-high-yield-savings-account) or a [money-market fund](#term-money-market-fund) |
+| A goal two to five years away | Sized to the goal | [Treasury bills](#term-treasury-bill), [term deposits](#term-term-deposit) or a [short-duration bond fund](#term-short-duration-bond-fund) |
 
-**Access speed.** Checking is instant. HYSA and money-market are usually same-day or next-day. T-bill maturity dates matter (a 4-week bill returns cash in 4 weeks; if you need it sooner you can sell in the secondary market at possibly a small loss). Short-duration bond ETFs can be sold on any trading day but settle in 1 to 2 business days at the current price.
+Split this way, only Eva's €2,500 spending money needs to sit at 0%: about €50 a year at 2% inflation, instead of €600, if the rest roughly keeps pace. Her €12,500 buffer and her €15,000 deposit fund each go where their job fits.
 
-**Risk.** Not all cash is equally safe. Deposit-insured savings have very low nominal-loss risk up to the insured limit; money-market funds are not insured but are regulated to keep that risk low. Direct T-bills are backed by the issuing government. Short-duration bond ETFs have small but real price volatility. All are "cash-like" in the sense that they will not halve overnight, but the least-risky and most-risky in this group are not the same.
+Many people treat spending money as not meant to earn much; moving it every month is often not worth the effort. The buffer is touched once or twice a decade, so a day's delay in reaching it is acceptable to most people, though some keep part of it instantly available. For goal money with a firm date, some people match bills or term deposits to that date so they do not have to sell after a price fall. A short-duration bond fund adds price risk and fits only when the amount or date can move.
 
-The right question is not "which is best?" It is "which fits which bucket?" Different money has different jobs.
+<details class="quick-check">
+<summary class="disclosure">Quick check: Eva plans to buy a car in three years. Which job does that money do?</summary>
 
-## The three-bucket structure
+The third: goal money. Because she knows roughly when she needs it, it can sit somewhere slightly less liquid, such as a term deposit or a bill that comes due before then.
 
-The [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) sorted cash into three tiers by when you might need it: money for this month, a safety buffer for emergencies, and money set aside for a known expense within the next few years. Cash management is the same three buckets, each matched to the vehicle that does its job best.
+</details>
 
-**Bucket one: transactional cash.** About one month of expenses, in the current or checking account your salary lands in. It is not supposed to earn returns; optimising its yield is not worth the friction of moving money every month.
+## Where each kind of cash account fits
 
-**Bucket two: safety buffer.** The emergency-fund core, three to six months of expenses per the [Emergency Fund post](/blog/emergency-fund/). Many people hold it in a high-yield savings account or a money-market fund, whichever offers the better net yield where they live. A one or two day delay in reaching it is acceptable to most people for money touched once or twice a decade, though some prefer part of it instantly available.
+These accounts differ in access, protection and price risk; which pays most changes over time:
 
-**Bucket three: opportunity or near-term goal cash.** Money earmarked for a known expense within a few years (a deposit, a car, tuition), plus any cash you are deliberately holding above the buffer, such as a windfall you are still deciding how to use. It can sit in a T-bill ladder (several short-term government loans that come due one after another, explained below), a short-duration bond ETF, or a ladder of fixed-term deposits. Some price movement is acceptable because the holding period is measured in years, not weeks.
+| Account | Reach the money | Protection | Fits |
+|---|---|---|---|
+| Current account | Instantly | [Deposit protection](#term-deposit-protection) | Spending |
+| High-yield savings account | Instantly or next day | Deposit protection | Buffer |
+| Money-market fund | Same or next day | Regulated fund, not deposit protection | Buffer |
+| Treasury bills | On the date each comes due | Backed by the government | Goal money |
+| Short-duration bond fund | Any trading day, at the day's price | A fund; its price moves a little | Goal money |
+| Term deposit | On the date it ends, or early with a penalty | Deposit protection | Goal money |
 
-The available vehicles vary by jurisdiction, but the structure travels well. Once the three buckets are separate, many cash management decisions become much simpler.
+The concept travels; the names, limits and tax treatment do not.
 
-## The vehicle tier stack
+<details class="lesson-depth">
+<summary class="disclosure">How a Treasury bill ladder works</summary>
 
-Working from lowest yield and most liquid to highest yield and slightly less liquid.
+A ladder splits cash across several bills that come due at different times. For example, €12,000 split into four bills of €3,000, coming due in three, six, nine and twelve months. Every three months one bill pays out: you either spend that money or buy a new twelve-month bill with it, so the ladder keeps rolling. Some of the cash is always a few weeks from being available, and nothing has to be sold early. Term deposits can be laddered the same way where buying bills is awkward. In some countries interest on government bills is exempt from some taxes (state income tax in the US, for example).
 
-**Checking / current account.** Everyday operational account. Near-zero interest in most jurisdictions. Instant access. Deposit-insured. Typically used for transactional cash.
+</details>
 
-**High-yield savings account (HYSA).** Bank deposit paying a variable rate close to the short-term risk-free rate. Instant to next-day access in most jurisdictions. Deposit-insured up to the local limit (see common mistakes below). Rate typically lags central bank rate changes by weeks. Good fit for the safety buffer.
+<details class="lesson-depth">
+<summary class="disclosure">Each account in more detail</summary>
 
-**Money-market fund.** A mutual fund invested in very short-term high-quality debt. Not deposit-insured but heavily regulated for liquidity and safety. Yield tracks short-term interest rates almost immediately. Same-day or next-day access. In some jurisdictions the yield is meaningfully higher than a HYSA; in others (especially where HYSA competition is fierce) the two are close. Good alternative to HYSA for the safety buffer, or supplement to it.
+**Current account.** The everyday account salary lands in. Near-zero interest in most countries, instant access, covered by deposit protection.
 
-**T-bill ladder.** A T-bill (Treasury bill) is a short-term loan to a government, usually for between one month and one year. You buy it for slightly less than its face value and get the full face value back on the date it comes due; the difference is your interest. A ladder splits your cash across several bills that come due at different times. For example, €12,000 split into four bills of €3,000, coming due in three, six, nine and twelve months. Every three months one bill pays out: you either spend that money or buy a new twelve-month bill with it, so the ladder keeps rolling. Some of your cash is always a few weeks from being available, and you never have to sell a bill early. Backed by the government issuing the bill, so credit risk is minimal. Interest may be exempt from some jurisdictional taxes (state-level in the US, for example). Fits bucket three well.
+**High-yield savings account.** A bank deposit paying a variable rate close to the central bank's short-term rate. Its rate usually follows central-bank changes weeks or months later, because banks set it on their own timeline.
 
-**Short-duration bond ETF.** An exchange-traded fund holding bonds with short average duration (typically 1 to 3 years). Yield slightly above T-bills. Price fluctuates with interest rates (an interest-rate rise causes a small price drop; a fall causes a small rise). Can be sold on any trading day at the current market price. Fits bucket three when you value simplicity over the marginal T-bill yield.
+**Money-market fund.** Its yield follows short-term rates almost at once. In some countries it pays noticeably more than savings accounts; where banks compete hard for savings, the two are close.
 
-**Brokered CDs / term deposits.** Fixed-term deposits at a locked rate, purchasable through a broker across many institutions. Deposit-insured. Higher yield than same-tenor savings accounts, at the cost of an early-withdrawal penalty. Can be laddered like T-bills. Reasonable alternative for bucket three, especially in jurisdictions where T-bill access is complex.
+**Short-duration bond fund.** Holds bonds that come due within one to three years on average. It can be sold on any trading day and usually settles within one or two business days, but its yield may be above or below comparable bills, and its price moves with interest rates and credit conditions.
 
-## Rate-environment sensitivity
+**Term deposit.** A locked rate for a fixed term, usually higher than an instant-access account. Some brokers sell deposits from many banks, which can be laddered like bills.
 
-The vehicle that looks best in one rate environment is not always the best in another. Three specific dynamics to know.
+</details>
 
-**When central banks raise rates.** Money-market funds and newly issued T-bills track the higher rate almost immediately. HYSA rates typically lag by weeks to a few months, because banks make funding decisions on their own timeline. Short-duration bond ETFs experience an immediate price drop (existing bonds now yield less than newly-issued ones); the drop is small for very short duration but real. If you moved a large HYSA balance into a short-duration bond ETF right before a rate hike, you would take a small capital loss even though the fund is "cash-like." The loss reverses over time as the bonds roll into higher-yielding replacements, but the timing matters.
+## Chasing yield on an emergency fund rarely pays
 
-**When central banks cut rates.** Money-market and T-bill yields drop quickly. HYSA rates lag on the way down too, so a HYSA can briefly out-yield a money-market fund. Bond ETFs enjoy price appreciation, especially longer-duration ones. If you had been holding a short-duration bond ETF, the price rise is a bonus.
+The tempting move is to put the buffer wherever the advertised yield is highest. Suppose a short-duration bond fund pays 0.2 points more than a money-market fund. On Eva's €12,500 buffer, that is €25 a year.
 
-**When rates are stable.** The differences shrink. The vehicle that yields best on the day you buy tends to yield best across a stable period. Optimisation matters less.
+Now rates rise by one point. A fund holding bonds of about two years can lose about 2% of its price: €250, ten years of the extra yield, possibly in the year Eva needs the money. The higher income from the fund's newer bonds can offset that loss over time, but recovery is not guaranteed by any particular date and may not come before Eva has to sell.
 
-The practical pattern: for short holding periods (under one year), the cash vehicles behave similarly because rate changes have little time to build up. For holding periods measured in years, people often prefer vehicles that are either yield-stable (HYSA, accepting the lag) or maturity-matched (a T-bill or deposit ladder, where each holding runs to maturity and rate changes affect only new purchases). Intermediate-term bond funds (5+ year duration) are generally not treated as cash, because their prices can move several percent in a year.
+A common test is one question: might you need this money within a year? If yes, many people keep it where the price does not swing. If it is for a goal two to five years away, small price swings may be acceptable, especially when the holding runs to a known date.
 
-## Common mistakes
+## What a rate change does to each account
 
-**Chasing yield with the wrong vehicle.** A 4% short-duration bond ETF yield looks better than a 3.8% money-market fund yield, so you move the safety buffer. Then rates rise 1%, the bond ETF drops 2% in price, and you have lost more than the yield spread you were chasing. For cash that might be needed within a year, taking on price volatility for 0.2% of extra yield is a trade that rarely pays.
+**When central banks raise rates,** money-market funds and newly issued Treasury bills follow almost at once. Savings rates usually lag by weeks to a few months. Short-duration bond funds usually dip in price. Higher yields can offset that loss over time as the fund rolls into newer bonds, but the price need not recover on any set schedule.
 
-**Splitting cash across too many institutions.** Having six banks each holding €10,000 is operationally complex, hard to keep track of, and gains nothing over one or two accounts holding the same total. Many households find one or two institutions enough. The main exception is cash above the deposit-insurance limit at one institution, where spreading it keeps each balance within the insured amount.
+For money held under a year, these differences have little time to build up. For money held for years, many people prefer accounts whose value does not move (savings, accepting the lag) or holdings that run to a set date (a bill or deposit ladder, where a rate change only affects new purchases). Bond funds with longer durations, five years or more, are generally not treated as cash, because their prices can move several percent in a year.
 
-**Forgetting the deposit-insurance limit.** In most jurisdictions there is a per-depositor per-institution limit on deposit insurance. In the EU, €100,000; in the UK, £120,000 (raised from £85,000 in December 2025); in the US, $250,000 at each insured bank. Money-market funds are outside this scheme (regulated differently). Direct T-bills are backed by the government directly, so the insurance concept does not apply. When combined savings at one institution exceed the limit, the common responses are spreading across institutions or holding the excess in a money-market fund or government bills. Limits change and some schemes have special rules (joint accounts, temporary high balances), so check your local scheme.
+<details class="lesson-depth">
+<summary class="disclosure">What each account does when rates fall</summary>
 
-**Treating cash held in a taxable brokerage as tax-free.** Interest and dividends from cash-like investments in a taxable brokerage account are typically taxed as income in many jurisdictions, sometimes above a tax-free allowance. That is a real drag on the effective yield. Cash held inside a tax-advantaged account (retirement, ISA, etc.) does not have this drag but usually cannot be spent from the account without a taxable event. A later post in this series on tax-loss harvesting and asset location covers this asymmetry in more detail: some cash-like holdings are better placed in the taxable side, others in the tax-advantaged side.
+Money-market and bill yields drop quickly. Savings rates lag on the way down too, so a savings account can briefly pay more than a money-market fund. Bond funds rise in price, longer-duration ones most; a short-duration fund gets a small bonus. When rates are stable, the differences shrink, and the account that pays most on the day you choose tends to keep paying most.
 
-**Chasing signup bonuses instead of consistent yield.** A €200 signup bonus for opening a new savings account is real money, but the underlying account rate often reverts to something mediocre after a few months. For people willing to shuffle accounts continuously, signup bonuses add up. For everyone else, a couple of solid accounts and staying put is the lower-effort path.
+</details>
 
-## Cross-continent notes on named vehicles
+<details class="quick-check">
+<summary class="disclosure">Quick check: rates rise by a point. Which one falls in price, a money-market fund or a short-duration bond fund?</summary>
 
-The concept is universal; the vehicle names are not.
+The short-duration bond fund usually falls more. A money-market fund's yield adjusts within days and its value is designed to be fairly stable, though some funds have a value that varies a little, and no money-market fund has deposit protection.
 
-- **US.** High-yield savings accounts, mostly at online banks. Money-market funds through brokerages. T-bills bought directly from the Treasury or through a brokerage. Short-duration bond ETFs. All operate largely as described.
-- **UK.** Instant-access savings accounts and Cash ISAs (tax-advantaged) for the safety buffer. Money-market funds through investment platforms. UK Treasury bills and short-dated gilts as the T-bill equivalent. Deposit protection under FSCS at £120,000 per depositor per authorised institution.
-- **EU / eurozone.** High-interest savings accounts vary by country and often by bank; the yield differential across the EU is larger than in the US. Money-market funds are widely available. Short-term government bills, such as Germany's Bubills and France's BTFs, operate as T-bill equivalents. Deposit protection under national schemes, harmonised at €100,000 per depositor per bank.
-- **India.** High-interest savings accounts at a number of banks. Liquid mutual funds as the money-market equivalent. Short-term government T-bills through the RBI Retail Direct scheme or brokers. Deposit protection through DICGC at ₹5 lakh per depositor per bank.
-- **Australia.** High-interest savings accounts widely available. Cash management accounts through brokers. Short-term Treasury bonds through the AOFM or brokers. Financial Claims Scheme covers deposits to A$250,000 per account holder per bank.
-- **Canada.** High-interest savings accounts (mostly through digital banks). High-interest savings ETFs have become popular cash proxies. Government bonds and bills through brokers. CDIC covers up to CAD$100,000 per depositor per member institution.
+</details>
 
-In each case: same three-bucket structure, same vehicle categories mapped to local names, same rate-environment dynamics.
+## Where cash plans often go wrong
 
-## Putting it in place
+**Spreading cash across too many banks.** Six banks each holding €10,000 are hard to keep track of and gain nothing over one or two holding the same total, except where one bank would hold more than the deposit-protection limit.
 
-For many households the review is a weekend of work, once. List every account and its current yield. That list usually shows whether any of the emergency-fund core is sitting at 0%, and what the high-yield options in your jurisdiction pay instead. Cash held for an expense in the next few years may sit in a taxable account or a tax-preferred one where it exists; the trade-off is tax drag against accessibility, and it depends on local rules. Many people check yields once a year and only move when the gap to better options has grown to a percentage point or more, since switching has its own costs.
+**Forgetting the deposit-protection limit.** Protection has a limit per person per bank. Above it, common responses are spreading cash across banks or holding the excess in a money-market fund or government bills.
 
-The next post in this series covers account consolidation, which is often the operational precondition for cash management: once you can see all your accounts in one place, deciding what stays where becomes much easier. Together, cash management and consolidation set up the rest of the series by making sure the inputs to every downstream decision are clean.
+<details class="lesson-depth">
+<summary class="disclosure">The limit on deposit protection</summary>
+
+In the EU, €100,000 per person per bank under national schemes. In the UK, £120,000 per person per authorised institution under the FSCS (raised from £85,000 in December 2025). In the US, $250,000 per depositor per insured bank. In India, ₹5 lakh per depositor per bank under the DICGC. In Australia, A$250,000 per account holder per bank under the Financial Claims Scheme. In Canada, CAD$100,000 per depositor, per insured category, per member institution under the CDIC. Money-market funds sit outside these schemes; government bills are backed by the government directly. Limits change, and joint accounts or temporary high balances can have special rules, so the local scheme's own pages are the place to check.
+
+</details>
+
+**Treating interest as tax-free.** Interest from cash held outside a tax-advantaged account is usually taxed as income in many countries, sometimes above an allowance, which lowers the real yield. A tax-advantaged account may shelter the interest, but its contribution, withdrawal and access rules vary widely by account and country. The later post on tax-loss harvesting and asset location covers which holdings sit better on which side.
+
+**Chasing sign-up bonuses.** A bonus for opening an account is real money, but the rate often drops back after a few months. For people willing to keep switching, bonuses add up; for everyone else, a couple of solid accounts and staying put is the lower-effort path.
+
+## What the accounts are called where you live
+
+The three jobs and the kinds of account are the same almost everywhere; the local names differ.
+
+<details class="lesson-depth">
+<summary class="disclosure">Names in the US, UK, eurozone, India, Australia and Canada</summary>
+
+- **US.** High-yield savings accounts, mostly at online banks; money-market funds through brokerages; Treasury bills bought from the Treasury directly or through a broker; short-duration bond ETFs.
+- **UK.** Instant-access savings and Cash ISAs (tax-advantaged) for the buffer; money-market funds through investment platforms; UK Treasury bills and short-dated gilts.
+- **Eurozone.** Savings rates vary widely by country and bank, more than in the US. Money-market funds are widely available. Short-term government bills, such as Germany's Bubills and France's BTFs, work like Treasury bills.
+- **India.** High-interest savings accounts at many banks; liquid mutual funds as the money-market equivalent; Treasury bills through RBI Retail Direct or brokers.
+- **Australia.** High-interest savings accounts and broker cash management accounts are common. Retail investors can buy exchange-traded Australian Government Bonds through an ASX broker; there is no simple retail equivalent of buying short-term Treasury bills directly.
+- **Canada.** High-interest savings accounts, mostly at digital banks; high-interest savings ETFs as a common cash stand-in; government bonds and bills through brokers.
+
+</details>
+
+## A one-off review, then a yearly check
+
+For many households this is a weekend of work, once: a list of every account and what it pays, and a check of whether any of the buffer sits at 0%. Many people then check once a year and move money only when the gap to a better option has grown to about a percentage point, since switching has its own costs. The next post, on account consolidation, is often what makes that review easy: once every account is in one list, deciding what stays where is simpler.
+
+Which of your piles of cash is sitting somewhere that does not fit its job?
