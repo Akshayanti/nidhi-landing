@@ -29,7 +29,7 @@ faq:
   - question: "What if a default fails me and there is no fix?"
     answer: "Then the line in the register says so, and names the workaround. Some gaps cannot be closed with a document: a marriage that is not recognised, a tax system that treats a partner as a stranger, a benefit you are excluded from. The tools in those cases are insurance to replace what you cannot receive, a larger cash reserve to replace a safety net you do not have, and care over whose name assets are held in. Knowing that a gap exists and is covered another way is a complete answer."
   - question: "Where should I start if I have read the whole series?"
-    answer: "With the free things, because they do the most for the least. Check the beneficiary on every pension and policy. Write the list of accounts and tell someone where it is. Put an emergency contact on your phone. After that, many people arrange the one paid item that matters most in their situation, often a will or a power of attorney. The register shows which, and local rules decide what form it takes."
+    answer: "With the free things, because they do the most for the least. Check the beneficiary on every pension and policy, whether the provider must follow that choice, and whether any survivor pension follows separate rules. Write the list of accounts and tell someone where it is. Put an emergency contact on your phone. After that, many people arrange the one paid item that matters most in their situation, often a will or a power of attorney. The register shows which, and local rules decide what form it takes."
 reelPromise: "The six families of assumption every plan rests on, and a one-page assumption register with worked lines you can copy"
 relatedSlugs: ["when-the-default-plan-does-not-fit-you", "financial-dashboard", "setting-financial-goals", "building-an-anti-bias-financial-life"]
 referentialReading:
@@ -78,7 +78,7 @@ Two things stand out.
 
 Read across the posts and the repairs come in only three kinds.
 
-**A designation.** A document that replaces the default with a choice: a will, a beneficiary form, a power of attorney, an agreement. Most are cheap. Several are free.
+**A designation.** A document meant to replace the default with a choice, or to influence how it is applied: a will, a beneficiary form, a power of attorney, an agreement. A pension scheme may treat its beneficiary form as binding or only as a guide for its trustees, and its survivor pension may follow different rules from any lump sum. Most designations are cheap. Several are free.
 
 **A structure.** A different way of holding money so that a rule does not bite: joint ownership, a trust, a protected account, a pension in the carer's own name, a holding account that turns uneven income into a salary.
 
@@ -97,7 +97,7 @@ An **assumption register** is one page. Each line has five parts.
 | Assumption | True today? | How I know | If it fails | Last checked |
 |---|---|---|---|---|
 | My partner inherits my share of the home | No: we are not married and have no wills | Looked up the inheritance rules | Will, plus owning the home jointly | This month |
-| My pension pays my partner if I die | Unknown | Have not read the scheme rules | Beneficiary form; life cover if the scheme refuses | Never |
+| My pension pays my partner if I die | Unknown | Have not read the scheme rules | Beneficiary form, and whether the scheme treats it as binding; life cover if it refuses or only treats the form as a guide | Never |
 | My employer provides my health cover | Yes | Contract | Cost of a policy in my own name is €210 a month | January |
 | Someone could pay my bills if I were in hospital | No | Nobody has authority | Financial power of attorney, naming my sister | Never |
 | My credit history is visible to lenders here | Partly: two years | Requested my credit file | One card, paid in full monthly | March |
