@@ -1,15 +1,32 @@
 ---
 slug: "life-events"
 title: "Life Events and Your Finances: How to Plan Ahead"
-description: "Children, career breaks, relocations: the big financial life events are largely predictable. How to plan for the foreseeable and buffer for the rest."
-tldr: "Four categories cover most of the disruptive events in a typical financial life: having children, taking a career break, buying or selling a home, and relocating. Each one is highly foreseeable (you usually know months or years in advance), each one has a well-understood cash-flow shape, and each one is dramatically easier to absorb when modelled ahead of time. The rest of what happens (illness, redundancy, family emergencies, macro shocks) is genuinely unforeseeable, and the response is not planning but buffering: emergency fund, insurance, flexible plan. A common mistake is treating foreseeable events like surprises. Modelling them into the projection, placing them in the cash flow forecast and running the downside case means the decision is made from a picture rather than a hope."
+seoTitle: "Planning Your Finances for a Baby, a Home or a Move"
+description: "Children, career breaks, buying a home and moving abroad can often be planned for, though their timing may change. How to put them in the plan, and buffer for the rest."
+tldr: "Many big life events, children, a career break, a home, a move abroad, can be seen coming and planned for, though their timing can change. When a parent cuts back, the pay given up can outweigh a child's direct costs. What nobody can foresee gets a buffer instead: an emergency fund, insurance and room in the plan."
 takeaways:
-  - "Why most big life events are foreseeable and belong in your plan"
-  - "Why the income shift after a child can match or exceed its costs"
-  - "How an emergency fund, insurance and slack absorb the unforeseeable"
+  - text: "Why many big life events can be planned for, not just buffered"
+    href: "#many-big-life-events-can-be-seen-coming"
+  - text: "Why the income shift after a child can match or exceed its costs"
+    href: "#when-a-parent-cuts-back-the-pay-given-up-can-outweigh-the-costs"
+  - text: "What a career break costs beyond the gap in pay"
+    href: "#what-a-career-break-costs-beyond-the-gap"
+  - text: "How an emergency fund, insurance and slack absorb the unforeseeable"
+    href: "#a-buffer-for-what-nobody-can-see-coming"
+glossary:
+  - term: "Life event"
+    definition: "Anything that changes income, costs or who is in the household for a long stretch: a child, a career break, a home, a move, a separation, caring for a parent."
+  - term: "Career break"
+    definition: "A period of reduced or no income, such as parental leave, a sabbatical, study or caring, as opposed to swapping one job for another."
+  - term: "Income shift"
+    definition: "The pay a household gives up when someone reduces paid work, including lower pay afterwards and the pension contributions that would have come with it."
+  - term: "Buffer"
+    definition: "Money, insurance or room in a plan kept for events nobody can date in advance, such as an illness or a redundancy."
+  - term: "Opportunity cost"
+    definition: "What money could have earned elsewhere. Cash used for a house deposit stops earning market returns."
 order: 45
 pubDate: 2026-10-19
-updatedDate: 2026-07-29
+updatedDate: "2026-10-21"
 localRules: [benefits, pensions, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -19,7 +36,7 @@ faq:
   - question: "What counts as a life event in a financial planning sense?"
     answer: "A life event, in this context, is anything that changes your income, your expenses, or your household composition materially and for a durable period. That includes: having a child, adopting, marrying or partnering, separating or divorcing, a career break (parental leave, sabbatical, extended education), a job change, a relocation, a home purchase or sale, the death or serious illness of a family member, and taking on care responsibility for an aging parent. Some are joyful, some are painful. Financially, they share a structure: a shift in one or more of the projection's inputs that lasts long enough to reshape the trajectory."
   - question: "Which life events are foreseeable and which are not?"
-    answer: "Most are foreseeable, in that you know about them months to years in advance. Having a child is typically foreseeable at least nine months out, often longer given the way most people decide. Buying a home is foreseeable from the moment you start looking. Relocating is usually foreseeable at least three to six months before the move. Retirement is foreseeable in principle for the entire working career. What is not foreseeable: an accident, a serious illness, a job loss, a family emergency, a macro shock. The plan should have foreseeable events modelled into it and buffers in place for the unforeseeable ones."
+    answer: "Many planned events become visible months or years ahead: trying for a child, looking for a home, arranging a career break or preparing a voluntary move. Their timing can still change. Accidents, sudden illness, redundancy, forced moves and family emergencies may arrive with little or no warning. A common approach is to model events that can be roughly dated and use buffers for events that cannot."
   - question: "How much does having a child actually cost?"
     answer: "The honest answer is: it depends enormously on where you live, what childcare you use, and what your expectations are around housing, education, and activities. One reference point: Germany's statistics office and a 2024 Save the Children study for Spain both put average spending at about €760 a month, roughly €165,000 over eighteen years, and other countries and households land well above or below that. Housing costs (a bigger home, a particular school area) can add a lot on top. Three drivers tend to dominate: whether one parent reduces income, the cost of childcare during working years, and whether education is state-provided or private. Looking at these three separately usually says more than a single lump-sum number."
   - question: "What is the difference between a career break and a job change?"
@@ -45,118 +62,103 @@ referentialReading:
     type: "book"
 ---
 
-Most of the big financial events in a typical life are things you knew were coming. Not exactly when, not exactly how big, but you knew. Having a child. Buying a home. Changing careers. Moving cities. Retirement itself.
+Petra earns €60,000 a year. After their first child, she plans to take a €20,000 role for five years and then go back to full time. Over the next few years, she and her partner also expect a bigger home and possibly a move abroad. And like anyone, they could face an illness or a redundancy.
 
-The households that hit trouble at these transitions are almost never surprised by the event. They are surprised by the shape of it: the cash-flow gap that lasts longer than expected, the mortgage that eats more of monthly income than the calculator promised, the childcare bill that arrives before the parental leave payments start, the second income that never fully recovers after the career break. All of these are visible in advance if someone runs the numbers. Most people do not.
+Even an expected [life event](#term-life-event) can strain a household when its financial shape is missed: a break lasts longer than planned, childcare starts before leave payments arrive, or earnings recover more slowly than assumed. A scenario cannot predict the outcome, but it can make those possibilities visible.
 
-This post is about running the numbers. Four categories cover the majority of what happens: children, career breaks, home moves, and relocations. Each one has a well-understood cash-flow shape. Each one is dramatically easier to absorb when modelled ahead of time. And each one is often mishandled precisely because it is emotionally loaded, which makes people avoid the arithmetic.
+## Many big life events can be seen coming
 
-## The unifying idea
+Children, a [career break](#term-career-break), a home purchase and a move abroad can often be seen months or years ahead, though their timing can shift. Sudden illness, redundancy, family emergencies and market shocks may arrive with little or no warning. A useful sorting question: can you name roughly when it will happen? If so, it can go in the plan: modelled in the [projection](/blog/financial-projections/), placed in the month it lands in the [cash flow forecast](/blog/cash-flow-forecasting/), tested with a [what-if scenario](/blog/what-if-scenarios/). If not, it usually gets a [buffer](#term-buffer) instead.
 
-The [Financial Projections post](/blog/financial-projections/) built the baseline, and the [what-if scenarios post](/blog/what-if-scenarios/) established the tool: change one variable in your baseline projection and see how the trajectory shifts. Life events are the largest-magnitude scenarios most people ever run. They combine changes to income, expenses, timing, and often location. The [Cash Flow 101 post](/blog/cash-flow-101/) covered the underlying arithmetic; the [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) added the month-by-month dimension. Life events are where those three come together.
+The common mistake runs both ways: treating foreseeable events as surprises, or trying to predict specific bad ones.
 
-The trick with life-event planning is separating the *foreseeable* from the *unforeseeable*. Foreseeable events (a planned child, a planned house purchase, a planned career transition) belong in the projection: modelled, scheduled, stress-tested. Unforeseeable events (accidents, illnesses, job loss, macro shocks) belong in the buffer: emergency fund, insurance, flexibility. Confusing the two leads either to over-modelling (trying to predict specific bad outcomes) or under-planning (treating foreseeable events as surprises).
+## When a parent cuts back, the pay given up can outweigh the costs
 
-## Category one: children
+The number people quote for a child is a single lump sum. It hides the line that is often bigger: the [income shift](#term-income-shift) when a parent reduces paid work. For Petra, illustratively and in today's money:
 
-Children are the most-modelled and worst-understood life event in personal finance. The reason is that the number people quote (a study said €200,000 per child, or €250,000, or €400,000) is a single lump sum that hides three very different dynamics.
+| | Over the years | In today's money |
+|---|---|---|
+| Direct costs to age 18 | about €763 a month | about €165,000 |
+| Five years at €20,000 instead of €60,000 | €200,000 before tax | about €120,000 at an assumed 40% tax on that slice |
+| Pay 10% lower for 20 more years after returning | €120,000 before tax | about €72,000 |
+| **Income shift in total** | | **about €192,000** |
+| With the lost pension contributions (10% of pay) | | **about €224,000** |
 
-**The income shift.** Whether one parent reduces income (going part-time, taking an extended break, changing to a more flexible but lower-paying role) is often the biggest financial driver of having a child. The direct spending is easier to see, so it gets the attention.
+The direct-cost figure follows Germany's statistics office (about €763 a month in its 2018 survey, higher in today's prices) and Save the Children's 2024 figure for Spain (€758 a month). Pay given up comes off the top of income, so it is taxed at the highest rate, not the average one. At a lower tax rate the income side is bigger; near 50% the two come out about even. If neither parent cuts back, the picture is very different. Parental benefits, tax rules and pay penalties differ widely between countries and people; the pattern is the useful part, because a projection that models only the spending misses the larger line.
 
-A worked example makes the comparison concrete. Petra earns €60,000 a year. After the birth she moves to a role paying €20,000 for five years, while her partner's pay is unaffected. When she returns to full time, her pay settles 10% below where it would otherwise have been, inside the 5 to 15% range discussed under career breaks below.
+Families also often move to a bigger home or a particular school area. A €300,000 upgrade adds interest, maintenance and property tax for decades. Whether that counts as a child cost or a lifestyle choice, it belongs in the projection.
 
-- **Direct costs to age 18:** about €165,000. Germany's statistics office puts average spending on a child in a couple household at about €763 a month (from its 2018 household survey, so higher in today's prices), and Save the Children's 2024 figure for Spain is almost the same, €758 a month. Over 18 years, €763 a month is about €165,000.
-- **Five years of reduced pay:** €200,000 before tax. Pay you give up comes off the top of your income, so it is taxed at your highest rate, not your average one. At an assumed 40% of tax and social contributions on that slice, it is about €120,000 take-home.
-- **Lower pay after returning:** 10% of €60,000 is €6,000 a year. Over 20 more working years that is €120,000 before tax, about €72,000 take-home.
-- **The income shift in total:** about €192,000 take-home, slightly more than the direct costs. Counting the pension contributions that would have come with the lost pay (at 10% of pay, another €32,000 or so, plus whatever it would have grown to), it is clearly the larger of the two.
+<details class="lesson-depth">
+<summary class="disclosure">How childcare costs differ by country</summary>
 
-The exact balance depends on where you live and what you earn: at a lower tax rate the income side is bigger, at a rate near 50% the two come out about even. Across that range of tax rates, in this example, the income shift is at least as large as everything the child costs. If neither parent reduces income, the picture is very different.
+Early years are dominated by childcare, roughly €6,000 to €20,000 a year depending on country and format if both parents work; the national averages above already include a typical level, so your own number can sit well above or below them. Middle years are activities, clothing, food and school costs; later years education, transport and possibly university. Nordic countries heavily subsidise childcare and university, which lowers the direct-cost line but not the income-shift line. The US and UK have expensive childcare and mixed university costs. India has low-cost state schooling but often significant private-school costs for middle-class households, and university costs are meaningful. Australia and New Zealand sit somewhere in between. Your own country's figures say more than a headline number from a US study.
 
-All figures are illustrative and in today's money; parental benefits, tax rules and pay penalties differ widely between countries and between people. The pattern is the useful part: when a parent cuts back, the expense line is the visible one, but the income line can be as big or bigger once pensions are counted. A projection that models only the expense line misses it.
+</details>
 
-**Direct expenses over the first eighteen years.** These are lumpy and phase-shaped. Early years are dominated by childcare (€6,000 to €20,000 per year depending on jurisdiction and format) if both parents work. The national averages above already include childcare at a typical level, so your own number can sit well above or below them. Middle years are dominated by activities, clothing, food, school-related costs. Later years are dominated by education (mostly state-covered in Europe, mixed in the US, heavily private in some Asian systems), transport (a car for a teenager), and possibly university.
+<details class="quick-check">
+<summary class="disclosure">Quick check: in Petra's example, which line is bigger, the child's direct costs or the pay given up?</summary>
 
-**The housing implicit cost.** Families often move to bigger homes and better school districts. The cost is not usually recorded as "child cost" but it is. A €300,000 house upgrade adds interest, maintenance, and property tax that persist for decades. Whether this counts as a child cost or a lifestyle upgrade is a definitional question; either way, it should be in the projection.
+The pay given up: about €192,000 take-home against about €165,000 of direct costs, and about €224,000 once lost pension contributions are counted.
 
-Cross-continent notes: state childcare provision, family benefits, and education costs vary enormously. Nordic countries have heavily subsidised childcare and free university, materially lowering the direct cost line but not the income-shift line. The US and UK have expensive childcare and mixed university costs. India has low state-subsidised education but often significant private-school costs for middle-class households; university costs are meaningful. Australia and New Zealand sit somewhere in the middle. Model your own jurisdiction rather than the headline number from a US study.
+</details>
 
-## Category two: career breaks
+## What a career break costs beyond the gap
 
-A career break is different from a job change. A job change substitutes one income for another. A career break is a period of zero or reduced income with a defined or open-ended duration. Parental leave, sabbaticals, extended education, caring for an aging parent, extended travel, recovery from illness, redundancy without immediate re-employment. All career breaks in the financial sense.
+A job change swaps one income for another; a career break is a stretch of reduced or no income: parental leave, a sabbatical, study, caring for a parent, recovery from illness, redundancy before the next job. Four costs are worth modelling first:
 
-Four financial dimensions to model.
+1. **The gap itself.** Income drops; costs drop by less. The monthly deficit comes from savings, cuts or a partner's income, and the length matters: six months on a six-month buffer is a stress test, two years needs its own plan.
+2. **Pension contributions.** They usually stop, and with them any employer match; time-based pensions may pay less later. Many planners treat this as a permanent loss, because missed contributions are rarely caught up, though some state pensions credit years spent raising children or caring, and some accounts allow catch-up contributions.
+3. **Benefits and insurance.** Employer-provided benefits may change or end during a break. Health cover may continue through a public system or a partner's cover, while employer life or disability cover may stop; the result depends on the country and the employment terms.
+4. **Re-entry.** Skills date and networks fade, and pay on return is often lower; studies of parental leave in particular find wage penalties that vary by country, field and length. A 5 to 15% lower salary after a multi-year break is an assumption some planners use, not a measured constant.
 
-**The gap itself.** Income drops (to zero, or to a fraction). Expenses often do not, or drop by less than the income gap. The math produces a monthly deficit that has to be covered from savings, reduced spending, or a partner's income. The length of the gap matters enormously: a six-month break funded from a six-month emergency fund is a stress test; a two-year break requires a different plan.
+None of this argues against a career break, which is often right on its own merits. It is a better decision when the numbers are visible before the break, not during it.
 
-**Retirement contribution disruption.** During the break, retirement contributions typically stop. In systems where the employer matches contributions (401(k), pension schemes, Superannuation), you also lose the match. In systems where accrual is time-based (defined-benefit pensions, some state pensions), the break may reduce the eventual benefit. Many planners model this as a permanent reduction in the contribution stream, not a temporary one, because missed contributions are often not caught up later. Some systems soften it: several state pensions credit years spent raising children or caring, and some accounts allow catch-up contributions, so it is worth checking local rules.
+## A home purchase or a move abroad changes many inputs at once
 
-**Benefit and insurance gaps.** Employer-provided health insurance ends in most jurisdictions where such things exist. Life and disability coverage often ends. Group rates on other benefits (dental, mental health, professional indemnity) disappear. Some of this can be replaced privately; some cannot; almost all of it costs more when purchased individually. The forecast should include the replacement costs during the break.
+A home moves three lines together: a large asset appears, a large loan appears, and the monthly mortgage, maintenance, tax and insurance replace rent. The [real estate post](/blog/real-estate-as-investment/) covered rent against buy in general. A move abroad changes even more at once, which makes it the event where intuition is least reliable. For both, many people run the scenario each way over the real holding period or horizon rather than assuming the answer.
 
-**Re-entry friction.** Skills go out of date. Networks fade. Salary at re-entry is often lower than it would have been without the break. Research on parental leave in particular often finds measurable wage penalties, with the size varying by country, field and length of break. A projection can model a lower income at re-entry (a 5 to 15% haircut for a multi-year break is an assumption some planners use, not a measured constant) or, alternatively, model a skill-refresh plan and assume a smaller penalty.
+<details class="lesson-depth">
+<summary class="disclosure">The six inputs for a home purchase</summary>
 
-None of this is an argument against career breaks. Career breaks are often the right decision on their own merits. But they are much better decisions when the financial picture is visible before the break rather than surfacing during it.
+1. **Price and deposit:** the cash that leaves on day one, including closing costs and taxes: 2 to 4% of the price in some countries, 5 to 15% in others (parts of continental Europe, India, some UK cases).
+2. **Mortgage terms:** rate, length and type of repayment; in some systems, tax and insurance collected with the payment add noticeably.
+3. **Running costs:** property tax, insurance, maintenance (a common rule of thumb is 1% of the price a year, more for older homes), utility differences, building fees.
+4. **The deposit's [opportunity cost](#term-opportunity-cost):** the cash stops earning market returns, which adds up over 20 to 30 years.
+5. **Expected price growth:** long-run real house-price growth has usually been in the low single digits, often around 1 to 3% a year after inflation, below share returns, and some markets have gone decades with none.
+6. **Selling costs, if you might sell within about ten years:** agent fees and transfer taxes, on top of years of interest and maintenance, can make buying worse than renting.
 
-## Category three: home purchase or sale
+</details>
 
-Home moves shift three lines at once: the asset side of the balance sheet (a large real-estate asset appears), the liability side (a large mortgage appears), and the cash flow (monthly mortgage replaces monthly rent, plus maintenance, plus property tax, plus insurance).
+<details class="lesson-depth">
+<summary class="disclosure">The five dimensions of a move abroad</summary>
 
-The [Real Estate as Investment post](/blog/real-estate-as-investment/) covered the general framing (a home is both an asset and a lifestyle expense; rent-vs-buy is a real calculation, not a moral question). The scenario for a specific home purchase is more concrete.
+1. **Cost of living:** rent, food, transport, healthcare, childcare. Comparison sites such as Numbeo or Expatistan beat guessing, and the headline-cheap city is often less cheap for your own way of living.
+2. **Income:** the realistic offer or range for you, not the city's median.
+3. **Tax:** effective rates on the same pay vary widely; treaties, double taxation and special regimes for new residents (Italy's inbound-worker regime, Portugal's winding-down NHR scheme, various expat schemes) all change take-home pay.
+4. **Retirement accounts:** cross-border rules differ by account and circumstance. Leaving can end employer contributions, impose restrictions on new deposits into accounts such as a US 401(k), UK ISA, Indian PPF, Australian super or Canadian RRSP, change tax relief, or leave the account open but treated differently by the new country. Both countries' rules for the specific account matter, and the new country's accounts may or may not be open to you.
+5. **Currency:** savings in one currency and spending in another expose the plan to exchange-rate moves; the [currencies post](/blog/managing-money-across-currencies/) covers this, and a range of rates says more than one.
 
-Model these six inputs:
+</details>
 
-1. **Purchase price and down payment.** How much cash comes out on day one, including closing costs, taxes, and fees. In some jurisdictions this is 2 to 4% of the price; in others (parts of continental Europe, India, some UK cases) it is 5 to 15%.
-2. **Mortgage terms.** Rate, tenure, amortisation type. The monthly payment is not just principal and interest; escrow for taxes and insurance in some systems adds meaningfully to the number.
-3. **Ongoing costs.** Property tax, insurance, maintenance (a rule of thumb is 1% of purchase price per year, more for older properties), utility differences from renting, HOA or building fees.
-4. **Opportunity cost of the down payment.** The cash used for the down payment stops earning market returns. Over a 20 to 30 year hold, this is a real number.
-5. **Expected appreciation.** Real estate has tended to appreciate over long horizons in many markets, but the rate varies dramatically by market and era. Long-run real price growth has usually been in the low single digits, often around 1 to 3% a year after inflation, well below equity returns, and some markets have gone decades with none.
-6. **Exit costs, when relevant.** If the plan involves selling within 10 years, transaction costs on the sale (agent fees, transfer taxes) plus the years of maintenance and interest can make the total return worse than renting.
+## When events overlap
 
-Run the scenario both ways: buy vs continue renting, over the actual expected holding period. Households often assume buying is obviously better without checking. Sometimes it is; sometimes it is not. The projection tells you which.
+Life stacks events: a promotion, a house and a first child within eighteen months. Two or three together can interact rather than simply add up: they may amplify one another, overlap in time or partly offset. A common approach is to run each as its own scenario before combining them, which often shows one dominates and the others are almost incidental, and to move what you can control: a career break can often wait a year, a purchase six months, a move can fit around a partner's work.
 
-## Category four: relocation
+## A buffer for what nobody can see coming
 
-Relocation combines multiple variable changes: cost of living, income (usually), tax treatment, currency exposure, sometimes benefit access, sometimes retirement account access. It is the highest-variable-count life event, which makes it the one where intuition is least trustworthy.
+For the unforeseeable, planning works by category. Three buffers do most of the work:
 
-Model these five dimensions:
+- **An [emergency fund](/blog/emergency-fund/):** a common guideline is three to six months of costs in liquid savings, sized to job stability, family and one or two incomes.
+- **[Insurance](/blog/insurance-basics/):** health, life, disability, property and liability, which move rare but ruinous risks off the household.
+- **Room in the plan:** a savings rate that can drop for a while, spending that can be cut, a timeline that can stretch a year or two. That is what turns a shock from a crisis into an inconvenience.
 
-**Cost of living.** Rent, groceries, transport, healthcare, childcare, entertainment. Pull actual data (Numbeo, Expatistan, cost-of-living comparison tools) rather than guessing. Direct comparisons between similarly-lived lives in different cities are often surprising; often the cheap city on the headline is not as cheap as expected for your specific consumption pattern.
+None of the three covers everything, and the right size of each depends on the household.
 
-**Income.** Same job title, different cities, different pay. Sometimes dramatically different. Model the actual expected offer or realistic range, not the median for the destination city.
+<details class="quick-check">
+<summary class="disclosure">Quick check: your employer announces a reorganisation. Does a possible redundancy go in the plan or get a buffer?</summary>
 
-**Tax treatment.** Effective tax rates for the same gross income vary widely by jurisdiction. Some countries have tax treaties that reduce double taxation for cross-border workers; others do not. Some have special regimes for new residents (Portugal's NHR wind-down, Italy's inbound-worker regime, various expat schemes). Model the actual net-of-tax income, not the gross.
+Usually a buffer: you cannot name when, or whether, it will happen. A planned career break or a house purchase, which you can roughly date, goes in the plan.
 
-**Retirement account access.** Existing tax-advantaged vehicles (US 401(k), UK ISA, Indian PPF, Australian Superannuation, Canadian RRSP) usually cannot be contributed to once you leave the jurisdiction. The destination country's vehicles may or may not be accessible. Model the retirement contribution line honestly.
+</details>
 
-**Currency exposure.** If you have savings in one currency and will earn and spend in another, an exchange-rate move can materially help or hurt the plan. The [Multi-Currency post](/blog/managing-money-across-currencies/) covers the concept; the scenario should account for at least a range of exchange-rate outcomes rather than a single point estimate.
-
-## Sequencing when events overlap
-
-Real life often stacks life events. A promotion and a house purchase and a first child within eighteen months. A relocation and a career break and a home sale in one year. Each event individually is manageable; two or three together stress a plan much more than the sum of their individual stresses.
-
-Two practical habits.
-
-**Give each event its own scenario before combining.** The [what-if scenarios post](/blog/what-if-scenarios/) covered this: run the events separately first to see the individual impact, then combined. It is common to find that one of the events dominates the combined outcome, and the others are almost incidental.
-
-**Sequence what you control.** You often have some choice about timing. If the child arrives at the same time as the mortgage completion, that is not usually deliberate; but a career break can often wait a year, a home purchase can often wait six months, a relocation can often be scheduled around a partner's work. Where you have optionality on timing, use the scenario to see which sequence lands the household in a better cash-flow position.
-
-## Buffering for the unforeseeable
-
-The events above are foreseeable. Real life also includes the unforeseeable: a serious illness, a redundancy, a family emergency, a macro shock. Planning specifically for each of these is impossible. Planning for the *category* is not.
-
-Three buffers do most of the work.
-
-**Emergency fund.** A common guideline is three to six months of expenses in liquid savings, as the [Emergency Fund post](/blog/emergency-fund/) discusses. Covers short-duration income disruption and unexpected large expenses. The exact size depends on your job stability, family situation, and single vs dual income.
-
-**Insurance.** Health, life, disability, property, liability, per the [Insurance Basics post](/blog/insurance-basics/). Transfers the low-probability high-impact risks that would otherwise wreck a plan. Right-sizing insurance is itself an Optimizing topic, covered later in the series.
-
-**Plan flexibility.** A plan that requires everything to go right is a fragile plan. Building in flexibility (a savings rate that can be temporarily reduced, discretionary spending that can be cut, a timeline that can be extended by a year or two without disaster) is what turns an unforeseeable event from a crisis into an inconvenience.
-
-A household with these three in place has less need to model every specific bad outcome, because the response is general enough to cover many of them. None of the three covers everything, and the right size of each depends on the household.
-
-## Bringing it together
-
-Life events are the concrete tests of every other financial plan you build. A good projection is only useful if it survives the events you can foresee. A good cash flow forecast is only useful if it accommodates the lumpy costs of children, home moves, or career transitions. A good savings rate is only useful if it holds up during a career break or a relocation.
-
-The discipline is the same across all four categories. Model the event as a specific scenario before making the decision. Model the individual variables (income change, expense change, timing) separately before combining them. Run the downside case. Compare against the baseline projection. Then decide.
-
-The rest of this series treats specific event types and adjacent topics in depth. Upcoming posts on cash management, account consolidation, and growing your income all connect to life-event planning: cash management sets you up to fund an event without disrupting the investment plan; account consolidation makes the plan legible to itself; income growth expands the buffer for future events.
+Of the events you can already see coming, which one is not yet in your numbers?
