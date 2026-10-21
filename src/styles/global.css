@@ -4312,6 +4312,18 @@ html:has(body[data-page="landing"]) {
   scroll-padding-top: 60px;       /* matches sticky header height */
 }
 
+/* On a lesson, a jump from "In this lesson", the glossary or a term link
+   lands with the heading clear of the sticky header and a little space
+   above it, so nobody has to scroll back up to start reading. The header is
+   the same height at every text size; if it changes, update this value. */
+:root {
+  --site-header-block-size: 61px;
+}
+
+html:has(article.blog-post) {
+  scroll-padding-top: calc(var(--site-header-block-size) + 1rem);
+}
+
 /* Header treatment for the landing page: transparent + backdrop-blur so
    it floats above the page without a visible chrome edge. The
    default sticky positioning is preserved (no layout shift between pages
