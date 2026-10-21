@@ -110,9 +110,7 @@ None of the groups in the table's "Who it misses" column is unusual. The Interna
 
 </details>
 
-Every later post in this series uses the words below. They are also collected in the [glossary](/blog/glossary/), so you can come back to them from any lesson.
-
-<div data-lesson-glossary></div>
+Every later post in this series leans on a few terms: a [default assumption](#term-default-assumption), a [deliberate designation](#term-deliberate-designation) and a [recognition gap](#term-recognition-gap). Each is defined in this lesson's [glossary card](#glossary), and in the site-wide [glossary](/blog/glossary/).
 
 ## Ask what each rule assumes about you
 

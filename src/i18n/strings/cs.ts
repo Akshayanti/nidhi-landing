@@ -44,6 +44,7 @@ export const cs: Dict = {
     items: {
       blog: 'Vzdělávací cesta',
       blogTopics: 'Procházet témata',
+      glossary: 'Slovníček pojmů',
       learnEditorial: 'Jak lekce vznikají',
       multiCurrencyNetWorth: 'Kalkulačka čistého jmění',
       loanComparison: 'Srovnání úvěrů',
@@ -80,6 +81,7 @@ export const cs: Dict = {
     links: {
       blog: 'Vzdělávací cesta',
       blogTopics: 'Procházet témata',
+      glossary: 'Slovníček pojmů',
       multiCurrencyNetWorth: 'Kalkulačka čistého jmění',
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',

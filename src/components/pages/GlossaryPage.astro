@@ -1,0 +1,186 @@
+---
+/**
+ * Every term the published lessons define, in one place (/blog/glossary/),
+ * in whichever language it was asked for. Built from each lesson's `glossary`
+ * frontmatter, the same list that renders the lesson's own "Glossary" card,
+ * so a definition is written once. Each entry links back to the
+ * term in its lesson. A term defined by more than one lesson lists each
+ * definition with its lesson, and two lessons that spell a term differently
+ * but share its anchor fail the build.
+ *
+ * Like the topic pages and the hubs, the page's chrome is translated and the
+ * terms are not: they come from the lessons, which are written once, in
+ * English, and keep their one English address. A page outside English says so.
+ *
+ * English is served from `src/pages/blog/glossary.astro`, the other languages
+ * through `src/pages/[locale]/blog/glossary.astro`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { termId } from '../../utils/glossary.mjs';
+import { DEFAULT_LOCALE, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const t = strings.glossaryPage;
+
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const posts = (await getCollection('blog'))
+  .filter((p) => (isDev || p.data.pubDate <= now) && p.data.glossary?.length)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+type Source = { definition: string; title: string; href: string };
+const byTerm = new Map<string, { term: string; id: string; sources: Source[] }>();
+for (const post of posts) {
+  for (const { term, definition } of post.data.glossary ?? []) {
+    const id = termId(term);
+    const entry = byTerm.get(id) ?? { term, id, sources: [] };
+    // One anchor, one spelling: lessons that define the same term must name
+    // it the same way, or the page would merge two different words.
+    if (entry.term !== term) {
+      throw new Error(`Glossary: "${term}" (${post.data.slug}) and "${entry.term}" share the anchor #${id}; use one spelling`);
+    }
+    entry.sources.push({ definition, title: post.data.title, href: `${lessonPath(post.data.slug)}#${id}` });
+    byTerm.set(id, entry);
+  }
+}
+const terms = [...byTerm.values()].sort((a, b) => a.term.localeCompare(b.term, 'en'));
+const letters = [...new Set(terms.map((x) => x.term[0].toUpperCase()))];
+
+const siteUrl = 'https://nidhi.today';
+const pageUrl = new URL(localizedPath(locale, '/blog/glossary/'), siteUrl).href;
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  name: t.title,
+  url: pageUrl,
+  hasDefinedTerm: terms.map((x) => ({
+    '@type': 'DefinedTerm',
+    name: x.term,
+    description: x.sources[0].definition,
+    url: `${pageUrl}#${x.id}`,
+  })),
+}];
+---
+
+
+<BaseLayout locale={locale} alternates={LOCALES} title={`${t.title} | nidhi`} description={t.description} jsonLd={jsonLd}>
+  <div class="container glossary-page">
+    <nav class="glossary-crumb" aria-label={strings.a11y.breadcrumb}><a href={localizedPath(locale, '/blog/')}>{strings.nav.items.blog}</a></nav>
+    <h1>{t.h1}</h1>
+    <p class="glossary-intro">{t.intro}</p>
+    {locale !== DEFAULT_LOCALE && <p class="glossary-note" role="note">{t.inEnglish}</p>}
+
+    {letters.length > 1 && (
+      <nav class="glossary-letters" aria-label={t.jumpToLetter}>
+        {letters.map((l) => <a href={`#letter-${l.toLowerCase()}`}>{l}</a>)}
+      </nav>
+    )}
+
+    {terms.length === 0 && <p>{t.empty}</p>}
+
+    {letters.map((l) => (
+      <section class="glossary-group" aria-labelledby={`letter-${l.toLowerCase()}`}>
+        <h2 id={`letter-${l.toLowerCase()}`}>{l}</h2>
+        <dl>
+          {terms.filter((x) => x.term[0].toUpperCase() === l).map((x) => (
+            <div class="glossary-entry" id={x.id}>
+              <dt lang="en">{x.term}</dt>
+              {x.sources.map((s) => (
+                <dd>
+                  <span lang="en">{s.definition}</span>
+                  <a class="glossary-source" href={s.href}>{t.inContext} <span lang="en">{s.title}</span></a>
+                </dd>
+              ))}
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .glossary-page {
+    max-width: 46rem;
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-8);
+  }
+
+  .glossary-crumb { margin-bottom: var(--space-3); font-size: 0.9375rem; }
+
+  .glossary-note {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+  }
+
+  .glossary-intro {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-5);
+  }
+
+  .glossary-letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .glossary-letters a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--color-link-edge);
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-deep-blue);
+    text-decoration: none;
+  }
+
+  .glossary-group h2 {
+    font-size: 1.25rem;
+    color: var(--color-deep-blue);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+    margin: var(--space-6) 0 var(--space-4);
+    scroll-margin-top: 80px;
+  }
+
+  .glossary-group dl { margin: 0; display: grid; gap: var(--space-5); }
+
+  .glossary-entry { scroll-margin-top: 80px; }
+
+  .glossary-entry:target {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .glossary-entry dt {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-deep-blue);
+  }
+
+  .glossary-entry dd {
+    margin: var(--space-1) 0 0;
+    line-height: 1.6;
+  }
+
+  .glossary-source {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 0.9375rem;
+  }
+</style>

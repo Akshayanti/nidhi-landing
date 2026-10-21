@@ -321,6 +321,7 @@ export const learnEn = {
       guideFew: 'guides',
       findHeading: 'Find a lesson',
       browseByTopic: 'Browse by topic',
+      glossary: 'Glossary',
       searchLabel: 'Search lessons',
       searchPlaceholder: 'Search lessons, e.g. debt, renting',
       noMatches: 'No lessons match. A broader word, or the topic list, may help.',
@@ -443,6 +444,18 @@ export const learnEn = {
     },
     empty: 'The first guides in this collection are on their way.',
     emptyLink: 'Browse the learning path in the meantime',
+  },
+
+  /** The glossary, at `/blog/glossary/`: every term the published lessons define. */
+  glossaryPage: {
+    title: 'Glossary: the terms the lessons use',
+    description: 'Plain definitions of the terms used across the nidhi lessons, each linked to the lesson that explains it.',
+    h1: 'Glossary',
+    intro: 'The terms the lessons use, in plain words. Each one links to the lesson that explains it in context.',
+    inEnglish: 'The terms and their definitions are in English, like the lessons.',
+    jumpToLetter: 'Jump to a letter',
+    inContext: 'In context:',
+    empty: 'No terms yet.',
   },
 };
 
@@ -705,6 +718,7 @@ export const learnHi: typeof learnEn = {
       guideFew: 'मार्गदर्शिकाएँ',
       findHeading: 'पाठ खोजें',
       browseByTopic: 'विषय से देखें',
+      glossary: 'शब्दावली',
       searchLabel: 'पाठ खोजें',
       searchPlaceholder: 'अंग्रेज़ी में खोजें, जैसे debt, renting',
       noMatches: 'कोई पाठ नहीं मिला। खोज पाठों के अंग्रेज़ी शीर्षकों और विवरणों में होती है; कोई व्यापक अंग्रेज़ी शब्द, या विषय सूची, मदद कर सकती है।',
@@ -817,6 +831,17 @@ export const learnHi: typeof learnEn = {
     },
     empty: 'इस संग्रह की पहली मार्गदर्शिकाएँ जल्द आ रही हैं।',
     emptyLink: 'तब तक सीखने का रास्ता देखें',
+  },
+
+  glossaryPage: {
+    title: 'शब्दावली: पाठों में आने वाले शब्द',
+    description: 'nidhi के पाठों में आने वाले शब्दों की आसान परिभाषाएँ, और हर शब्द उस पाठ से जुड़ा है जो उसे समझाता है।',
+    h1: 'शब्दावली',
+    intro: 'पाठों में आने वाले शब्द, आसान भाषा में। हर शब्द उस पाठ से जुड़ा है जो उसे संदर्भ के साथ समझाता है।',
+    inEnglish: 'शब्द और उनकी परिभाषाएँ अंग्रेज़ी में हैं, पाठों की तरह।',
+    jumpToLetter: 'किसी अक्षर पर जाएँ',
+    inContext: 'संदर्भ में:',
+    empty: 'अभी कोई शब्द नहीं है।',
   },
 };
 
@@ -1075,6 +1100,7 @@ export const learnEs: typeof learnEn = {
       guideFew: 'guías',
       findHeading: 'Encuentra una lección',
       browseByTopic: 'Explorar por tema',
+      glossary: 'Glosario',
       searchLabel: 'Buscar lecciones',
       /** The search runs over the English titles and descriptions, so it says so. */
       searchPlaceholder: 'Busca en inglés, p. ej. debt, renting',
@@ -1189,6 +1215,17 @@ export const learnEs: typeof learnEn = {
     },
     empty: 'Las primeras guías de esta colección están en camino.',
     emptyLink: 'Mientras tanto, explora la ruta de aprendizaje',
+  },
+
+  glossaryPage: {
+    title: 'Glosario: los términos de las lecciones',
+    description: 'Definiciones sencillas de los términos que usan las lecciones de nidhi, cada término con un enlace a la lección que lo explica.',
+    h1: 'Glosario',
+    intro: 'Los términos que usan las lecciones, en palabras sencillas. Cada uno enlaza con la lección que lo explica en contexto.',
+    inEnglish: 'Los términos y sus definiciones están en inglés, como las lecciones.',
+    jumpToLetter: 'Ir a una letra',
+    inContext: 'En contexto:',
+    empty: 'Todavía no hay términos.',
   },
 };
 
@@ -1458,6 +1495,7 @@ export const learnCs: typeof learnEn = {
       guideFew: 'průvodci',
       findHeading: 'Najít lekci',
       browseByTopic: 'Procházet podle tématu',
+      glossary: 'Slovníček pojmů',
       searchLabel: 'Hledat v lekcích',
       searchPlaceholder: 'Hledejte anglicky: debt, renting',
       noMatches: 'Žádná lekce neodpovídá. Pomoci může obecnější slovo nebo seznam témat.',
@@ -1570,6 +1608,17 @@ export const learnCs: typeof learnEn = {
     },
     empty: 'První průvodci této kolekce se připravují.',
     emptyLink: 'Mezitím si projděte vzdělávací cestu',
+  },
+
+  glossaryPage: {
+    title: 'Slovníček pojmů z lekcí',
+    description: 'Jednoduchá vysvětlení pojmů, které používají lekce nidhi, u každého s odkazem na lekci, která ho vysvětluje.',
+    h1: 'Slovníček pojmů',
+    intro: 'Pojmy, které lekce používají, vysvětlené jednoduše. Každý odkazuje na lekci, která ho vysvětluje v souvislostech.',
+    inEnglish: 'Pojmy i jejich vysvětlení jsou v angličtině, stejně jako lekce.',
+    jumpToLetter: 'Přejít na písmeno',
+    inContext: 'V lekci:',
+    empty: 'Zatím tu nejsou žádné pojmy.',
   },
 };
 
@@ -1827,6 +1876,7 @@ export const learnMr: typeof learnEn = {
       guideFew: 'मार्गदर्शिका',
       findHeading: 'धडा शोधा',
       browseByTopic: 'विषयानुसार पाहा',
+      glossary: 'शब्दसूची',
       searchLabel: 'धडे शोधा',
       searchPlaceholder: 'इंग्रजीत शोधा, उदा. debt, renting',
       noMatches: 'कोणताही धडा जुळत नाही. अधिक व्यापक शब्द, किंवा विषयांची यादी, उपयोगी पडू शकेल.',
@@ -1952,5 +2002,16 @@ export const learnMr: typeof learnEn = {
     },
     empty: 'या संग्रहातील पहिल्या मार्गदर्शिका लवकरच येत आहेत.',
     emptyLink: 'तोपर्यंत शिकण्याचा मार्ग पाहा',
+  },
+
+  glossaryPage: {
+    title: 'शब्दसूची: धड्यांमधील शब्द',
+    description: 'nidhi च्या धड्यांमधील शब्दांच्या सोप्या व्याख्या, आणि प्रत्येक शब्द तो समजावणाऱ्या धड्याशी जोडलेला आहे.',
+    h1: 'शब्दसूची',
+    intro: 'धड्यांमध्ये येणारे शब्द, सोप्या भाषेत. प्रत्येक शब्द तो संदर्भासह समजावणाऱ्या धड्याशी जोडलेला आहे.',
+    inEnglish: 'शब्द आणि त्यांच्या व्याख्या इंग्रजीत आहेत, धड्यांप्रमाणेच.',
+    jumpToLetter: 'एखाद्या अक्षरावर जा',
+    inContext: 'संदर्भात:',
+    empty: 'अजून कोणतेही शब्द नाहीत.',
   },
 };

@@ -30,14 +30,15 @@ const blog = defineCollection({
       z.object({ text: z.string(), href: z.string().regex(/^#[a-z0-9-]+$/) }),
     ])).min(2).max(5).optional(),
     /**
-     * Terms this lesson defines. Rendered as the glossary card wherever the
-     * body has `<div data-lesson-glossary></div>` (src/utils/lessonGlossaryPlugin.mjs),
-     * each term with the anchor `#term-<slug>`, and collected across published
-     * lessons on /blog/glossary/. Plain text definitions, one or two sentences.
+     * Terms this lesson defines. The lesson page shows them in a "Glossary"
+     * card under "In this lesson" (`#glossary`), as pills, with the
+     * definitions folded under a summary; each term has the anchor
+     * `#term-<slug>`, and /blog/glossary/ collects them across published
+     * lessons. Plain text, one or two sentences each.
      */
     glossary: z.array(z.object({
-      term: z.string(),
-      definition: z.string(),
+      term: z.string().min(1),
+      definition: z.string().min(1),
     })).optional(),
     order: z.number().default(99),
     pubDate: z.coerce.date(),

@@ -1,5 +1,5 @@
-// Lesson glossary helpers, shared by the markdown pipeline (markdown plugin,
-// loaded from astro.config.mjs, so plain .mjs) and the /blog/glossary/ page.
+// Lesson glossary helpers, shared by the lesson page (its glossary card and
+// link checks) and the /blog/glossary/ page.
 
 /** Anchor id for a term: "Recognition gap" -> "term-recognition-gap". */
 export function termId(term) {

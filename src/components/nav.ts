@@ -75,6 +75,7 @@ export function navGroups({ showMonteCarlo }: { showMonteCarlo: boolean }): NavG
       entries: [
         { key: 'blog', href: '/blog/', attr: 'blog' },
         { key: 'blogTopics', href: '/blog/tag/', attr: 'blog-topics', activePrefix: '/blog/tag' },
+        { key: 'glossary', href: '/blog/glossary/', attr: 'blog-glossary', activePrefix: '/blog/glossary' },
         { key: 'learnEditorial', href: '/editorial-policy/', attr: 'learn-editorial', dividerBefore: true },
       ],
     },

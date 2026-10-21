@@ -350,7 +350,7 @@ def extract_post(
     content_node = soup.select_one("#post-content") or soup.select_one(".prose")
     if content_node is None:
         raise RuntimeError(f"No #post-content / .prose found in {candidate}")
-    absolutize_urls(content_node, site_url, utm_query=utm_query)
+    absolutize_urls(content_node, site_url, utm_query=utm_query, page_path=relative)
     flatten_details(content_node, soup)
     style_inline(content_node)
     # Run figure replacement AFTER style_inline so the replacement table /
@@ -413,9 +413,14 @@ def extract_post(
     }
 
 
-def absolutize_urls(node, site_url: str, utm_query: str | None = None) -> None:
+def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path: str | None = None) -> None:
     """
     Rewrite href/src starting with '/' to absolute URLs under site_url.
+
+    When `page_path` is given, an in-page link (`#term-...`, `#glossary`,
+    `#some-heading`) becomes a link to that place on the web page: the
+    glossary card sits outside the article, so it is not in the email, and
+    an email client cannot follow an in-page anchor reliably anyway.
 
     When `utm_query` is provided, also appends newsletter UTM params to
     every in-body <a> that points to the site. Rules:
@@ -431,7 +436,10 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None) -> None:
     site_host = urllib.parse.urlparse(site_url).netloc
     for a in node.find_all("a"):
         href = a.get("href") or ""
-        if href.startswith("/") and not href.startswith("//"):
+        if page_path and href.startswith("#") and len(href) > 1:
+            href = site_url + page_path + href
+            a["href"] = href
+        elif href.startswith("/") and not href.startswith("//"):
             href = site_url + href
             a["href"] = href
 

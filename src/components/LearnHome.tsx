@@ -62,6 +62,7 @@ interface LearnHomeProps {
   inclusiveHref: string;
   /** The topic hub, locale-aware. */
   topicsHref: string;
+  glossaryHref: string;
   /** The page's language tag, which picks a count's form (`plural`). */
   lang: string;
 }
@@ -176,7 +177,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
   );
 }
 
-export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strings, inclusiveHref, topicsHref, lang }: LearnHomeProps) {
+export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -480,7 +481,10 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
       <section className="learn-find" aria-labelledby="learn-find-h">
         <div className="learn-head">
           <h2 id="learn-find-h">{strings.findHeading}</h2>
-          <a className="learn-topics" href={topicsHref} data-attr="blog-index-browse-topics">{strings.browseByTopic}</a>
+          <span className="learn-headLinks">
+            <a className="learn-topics" href={topicsHref} data-attr="blog-index-browse-topics">{strings.browseByTopic}</a>
+            <a className="learn-topics" href={glossaryHref} data-attr="blog-index-glossary">{strings.glossary}</a>
+          </span>
         </div>
         <label className="lp-srOnly" htmlFor="learn-search">{strings.searchLabel}</label>
         <input

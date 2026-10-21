@@ -29,7 +29,6 @@
   "description": "",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
-    "@astrojs/markdown-satteri": "^0.4.4",
     "@astrojs/react": "^7.1.0",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.4",

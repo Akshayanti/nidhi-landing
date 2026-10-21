@@ -5,8 +5,6 @@ import { execSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from './src/i18n/config.ts';
-import { satteri } from '@astrojs/markdown-satteri';
-import lessonGlossaryPlugin from './src/utils/lessonGlossaryPlugin.mjs';
 
 /**
  * Read frontmatter dates and tags from every markdown file under a locale's
@@ -358,11 +356,6 @@ export default defineConfig({
     '/mr/dsc/': '/mr/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
   },
   output: 'static',
-  markdown: {
-    // Astro's default processor, plus the lesson glossary card built from
-    // frontmatter: see src/utils/lessonGlossaryPlugin.mjs.
-    processor: satteri({ mdastPlugins: [lessonGlossaryPlugin] }),
-  },
   // GitHub Pages serves directory URLs with a trailing slash and
   // 301-redirects no-slash variants. Match that here so canonicals,
   // og:url, sitemap entries and internal links agree with the URLs

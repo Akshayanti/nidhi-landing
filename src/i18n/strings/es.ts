@@ -43,6 +43,7 @@ export const es: Dict = {
     items: {
       blog: 'Ruta de aprendizaje',
       blogTopics: 'Explorar temas',
+      glossary: 'Glosario',
       learnEditorial: 'Cómo se escriben las lecciones',
       multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
       loanComparison: 'Comparador de préstamos',
@@ -79,6 +80,7 @@ export const es: Dict = {
     links: {
       blog: 'Ruta de aprendizaje',
       blogTopics: 'Explorar temas',
+      glossary: 'Glosario',
       multiCurrencyNetWorth: 'Calculadora de patrimonio neto',
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',

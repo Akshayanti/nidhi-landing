@@ -143,6 +143,17 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 21, 2026',
+    iso: '2026-10-21',
+    material: true,
+    summary: 'A glossary page, at /blog/glossary/ in every language, collects the terms the lessons define. It is linked from the Learn menu, the footer and the learning path, and those three links carry new click labels. The page collects nothing new.',
+    details: [
+      'The glossary page, at /blog/glossary/ and, with translated page text, at /hi/blog/glossary/, /es/blog/glossary/, /cs/blog/glossary/ and /mr/blog/glossary/, lists the terms the lessons define, each linked to the lesson that explains it. It sends the same anonymous pageview and page-leave events every page sends, under the same consent choice. It stores nothing in your browser, makes no third-party requests and has nothing to type into.',
+      'Click labels, recorded only if you accept the cookie banner, as before: the Learn menu\'s Glossary entry carries nav-blog-glossary on a wide screen and nav-menu-blog-glossary in the phone menu, the footer link carries footer-blog-glossary, and the learning path\'s Glossary link carries blog-index-glossary.',
+      'Lesson pages can now show a "Glossary" card with the lesson\'s terms as pills and their definitions folded under "Show all definitions", and the "In this lesson" list links to the parts of the lesson. Opening the definitions or following those links happens in your browser and records nothing beyond the clicks the cookie banner already covers; they carry no click labels of their own.',
+    ],
+  },
+  {
     date: 'Oct 20, 2026',
     iso: '2026-10-20',
     material: true,

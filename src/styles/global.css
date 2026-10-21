@@ -683,72 +683,11 @@ details[open] > .disclosure::after,
   margin-bottom: var(--space-2);
 }
 
-/* Lesson glossary card, built from frontmatter by lessonGlossaryPlugin.mjs.
- * A reference block, not another section: a blue-tinted card with a top
- * rule, terms in bold blue, definitions in body text, so a reader scrolling
- * back for a word finds it by shape. Terms are link targets (#term-...); the
- * one a reader jumped to is marked. */
-.prose .lesson-glossary {
-  margin: var(--space-6) 0;
-  padding: var(--space-4) var(--space-5) var(--space-3);
-  background: color-mix(in srgb, var(--color-deep-blue) 6%, var(--color-bg-white));
-  border: 1px solid var(--color-link-edge);
-  border-top: 4px solid var(--color-deep-blue);
-  border-radius: var(--radius-md);
-  scroll-margin-top: 80px;
-}
-
-.prose .lesson-glossary-label {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-heading);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-deep-blue);
-}
-
-.prose .lesson-glossary-list {
-  margin: 0;
-  display: grid;
-  gap: var(--space-3);
-}
-
-.prose .lesson-glossary-item {
-  scroll-margin-top: 80px;
-  border-radius: var(--radius-sm);
-}
-
-.prose .lesson-glossary-item:target {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 4px;
-}
-
-.prose .lesson-glossary-item dt {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  color: var(--color-deep-blue);
-}
-
-.prose .lesson-glossary-item dd {
-  margin: var(--space-1) 0 0;
-  line-height: 1.55;
-}
-
-.prose .lesson-glossary-more {
-  margin: var(--space-3) 0 0;
-  font-size: 0.9375rem;
-}
-
-/* A term link in the body: dotted, so it reads as "defined nearby" rather
- * than as a link out of the lesson. */
+/* A term link in the body (to the lesson's glossary card): dotted, so it
+ * reads as "defined on this page" rather than as a link out of the lesson. */
 .prose a[href^="#term-"] {
   text-decoration-style: dotted;
   text-underline-offset: 0.2em;
-}
-
-@media print {
-  .prose .lesson-glossary { break-inside: avoid; }
 }
 
 /* Lesson expanders, written as raw <details> in the markdown.
@@ -5963,6 +5902,12 @@ body[data-page="landing"] .hero-mcAmount {
   justify-content: space-between;
   gap: 4px var(--space-3);
   margin-bottom: var(--space-3);
+}
+
+.learn-headLinks {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-4);
 }
 
 .learn-head h2 {
