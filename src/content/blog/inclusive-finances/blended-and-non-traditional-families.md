@@ -1,16 +1,35 @@
 ---
 slug: "blended-and-non-traditional-families"
 title: "Blended Families: When the Rules Expect Two Parents"
-description: "Stepchildren usually inherit nothing by default, and leaving it all to a spouse can cut out your own children. How blended families plan for both."
-tldr: "Financial rules about children assume a simple family: two legal parents, one household, one line of inheritance. Blended families, with stepchildren, children from earlier relationships, co-parents who are not legal parents, or care shared across two homes, break that assumption in ways that stay hidden until something goes wrong. Two problems matter most. The first is inheritance. Stepchildren generally inherit nothing unless they are named, and the most natural will in the world, 'everything to my spouse', can disinherit your own children by accident: your spouse inherits, later leaves everything to their own children, and yours receive nothing. The fixes are structures that provide for a spouse during their lifetime and for your children afterwards, plus assets that pass directly by beneficiary form. The second is running money across households: who pays for which child, who controls an account opened for a child when the adult who funded it has no legal standing, who claims a child for tax and benefits, and what fairness between children means when they arrive with different resources. None of it needs a complicated arrangement. It needs the decisions made out loud and written down."
+seoTitle: "Blended Families: Wills, Stepchildren and Inheritance"
+description: "Stepchildren usually inherit nothing by default, and leaving everything to a spouse can cut out your own children. How blended families provide for both, and share costs across homes."
+tldr: "Rules about children assume two legal parents and one household. In a blended family, stepchildren usually inherit nothing unless named, and the most natural will, everything to my spouse, can disinherit your own children by accident when the surviving spouse's estate passes to their own heirs. Depending on local law and providers' rules, families may use a life interest, separately directed assets or life insurance to balance a survivor's needs with provision for children. Across homes, who pays for which child, who controls a child's account and who claims which allowance are questions many families agree out loud and write down."
 takeaways:
-  - "Why stepchildren usually inherit nothing unless you name them"
-  - "How 'everything to my spouse' can leave your own children out"
-  - "How a life interest, separate pots or insurance provide for both"
-  - "Why costs, accounts and claims across homes need agreeing out loud"
+  - text: "Why stepchildren usually inherit nothing unless you name them"
+    href: "#stepchildren-usually-inherit-nothing-unless-you-name-them"
+  - text: "How 'everything to my spouse' can leave your own children out"
+    href: "#how-everything-to-my-spouse-can-leave-your-own-children-out"
+  - text: "How a life interest, separate pots or insurance provide for both"
+    href: "#how-a-life-interest-separate-pots-or-insurance-provide-for-both"
+  - text: "How families agree costs, accounts and claims across homes"
+    href: "#how-families-agree-costs-accounts-and-claims-across-homes"
+glossary:
+  - term: "Legal parent"
+    definition: "A parent recognised by law through birth, adoption or a court order, with rights and duties toward the child."
+  - term: "De facto parent"
+    definition: "An adult who does the parenting without legal status, such as a step-parent or a parent's partner. A description, not a legal status, in most places."
+  - term: "Beneficiary form"
+    definition: "The form naming who receives a pension or insurance payout. Depending on the scheme, it is binding or only a guide. Some schemes call it a nomination or a designation."
+  - term: "Life interest"
+    definition: "A right for someone, often a surviving spouse, to live in a home or receive income from assets for life, after which the assets pass to others."
+  - term: "Forced heirship"
+    definition: "Rules reserving part of an estate for children or other relatives, whatever a will says."
+  - term: "Dependent claim coordination"
+    definition: "Agreeing which adult claims a child's tax allowances, benefits or care credits when the child lives across two homes."
 order: 73.5
 companionOf: "financial-vehicles-for-children"
 pubDate: 2099-02-04
+updatedDate: 2026-10-22
 localRules: [inheritance, family-law, tax]
 level: "inclusive-finances"
 primaryPersona: "jiri"
@@ -27,7 +46,7 @@ faq:
   - question: "Who controls money saved in a child's name?"
     answer: "The adult named as custodian or account holder, until the child reaches the age at which it becomes theirs. If that adult dies or a relationship ends, control passes according to the account rules and the law, usually to a legal parent. A step-parent or grandparent who has paid into an account held by someone else has no say over it. Where control matters, the usual options are opening the account yourself where rules allow, naming a successor custodian, or using a trust. Which exist depends on the country and account type."
   - question: "What does dependent claim coordination mean?"
-    answer: "Many tax and benefit systems give something of value to the adult a child is attached to: an allowance, a credit, a benefit payment, or a pension credit. Where a child moves between two homes, usually only one adult can claim in a given period. Coordinating means agreeing which household claims what, so the family as a whole does not lose out and so that two people do not claim the same thing. It belongs in the written agreement between separated parents."
+    answer: "Many tax and benefit systems give something of value to the adult a child is attached to: an allowance, a credit, a benefit payment, or a pension credit. Where a child moves between two homes, usually only one adult can claim in a given period. Coordinating means agreeing which household claims what, so the family as a whole does not lose out and so that two people do not claim the same thing. Many separated parents put it in their written agreement."
   - question: "Should children in a blended family be treated equally?"
     answer: "Equal and fair are not always the same. Children can come with very different resources: one may stand to inherit from another parent or grandparents and another may not, one may be an adult and another still at school. Some families divide everything equally for simplicity and to avoid resentment. Others aim for each child to end up in a similar position. Neither is wrong. What causes lasting damage is a division that nobody explained, discovered after a death."
 reelPromise: "A step-by-step scenario showing how an ordinary will disinherits children by accident, and the three structures that prevent it"
@@ -43,35 +62,7 @@ referentialReading:
     type: "book"
 ---
 
-The Mastery posts on children and money cover how to teach a child about money and where to put savings on a child's behalf. They speak of "the parents" and "the child's account" as though each child has exactly two parents, living together, who decide things jointly.
-
-The post on [life events](/blog/life-events/) did the same when it modelled the cost of a child: two parents, one home, one income reduced.
-
-A large share of children do not live that way. They have a parent and a step-parent. They move between two homes each week. They have half-siblings with a different surname. They are being raised by a parent's partner who has no legal tie to them, or by two women, only one of whom is on the birth certificate, or by three adults who share the work.
-
-For these families the default rules do not fail loudly. They fail quietly, years later, at a death or a separation. This post covers the two places where it happens most: inheritance, and money shared across households.
-
-Custody, adoption, and the legal standing of step-parents are decided by family law, which differs everywhere. This post shows which financial gaps to check. It does not explain custody law.
-
-## Part one: inheritance in a blended family
-
-### Stepchildren are not on the list
-
-The post on [defaults](/blog/when-the-default-plan-does-not-fit-you/) explained that when someone dies without a will, fixed rules decide who inherits. Those rules follow legal parentage.
-
-A **legal parent** is one the law recognises, through birth, adoption, or a court order. A **de facto parent** is an adult who does the parenting without that status. The term is a description, not a legal category in most places.
-
-A stepchild is not the legal child of a step-parent unless adopted. So a step-parent who dies without a will leaves a stepchild nothing, in most jurisdictions, however long they were a family. In some countries a stepchild who is named in a will is then taxed on the inheritance at the rate for unrelated people.
-
-The usual remedy for the first problem is simple: naming them, in the will and on every beneficiary form, within whatever limits local inheritance law sets. A pension scheme may be bound by the form or treat it only as a guide for its trustees, and a survivor pension may still be limited to a spouse or dependants; [whether a beneficiary form is binding](/blog/when-the-default-plan-does-not-fit-you/#is-a-pension-beneficiary-form-binding) is worth checking scheme by scheme.
-
-### The accidental disinheritance
-
-The second problem is less obvious, and it catches careful people.
-
-Thomas has two children, Nora and Max, from his first marriage. He marries Claire, who has a daughter, Sophie. Thomas and Claire are together for twenty years. Each writes the most natural will there is: everything to my spouse.
-
-Thomas dies first. This is what follows.
+Thomas has two children, Nora and Max, from his first marriage. He marries Claire, who has a daughter, Sophie. They are together for twenty years, and each writes the most natural will there is: everything to my spouse.
 
 | Step | What happens | Who holds the wealth |
 |---|---|---|
@@ -80,7 +71,17 @@ Thomas dies first. This is what follows.
 | 3 | Claire dies. Her will, written years ago, leaves everything to Thomas or, if he has died, to "my children". | Sophie |
 | 4 | Nora and Max are not Claire's legal children. | Nora and Max receive nothing |
 
-Everything Thomas built, including what he brought from before the marriage, has passed to his stepdaughter. His own children are left out.
+Everything Thomas built, including what he brought from before the marriage, has passed to his stepdaughter. Nobody acted badly: Claire did not change her will to exclude them; she simply did not change it at all.
+
+Rules about children assume two legal parents, one household and one line of inheritance. Many children live otherwise: with a parent and a step-parent, across two homes each week, with half-siblings, or raised by a parent's partner with no legal tie to them. For these families the default rules fail quietly, years later, at a death or a separation. This post covers the two places it happens most: inheritance, and money shared across households. Custody, adoption and step-parents' legal standing are family law, which differs everywhere; this post shows which financial gaps to check.
+
+## Stepchildren usually inherit nothing unless you name them
+
+When someone dies without a will, fixed rules decide who inherits (the [first post in this series](/blog/when-the-default-plan-does-not-fit-you/) covered them), and those rules follow legal parentage. Those rules follow whether someone is a [legal parent](#term-legal-parent): a stepchild is not a step-parent's legal child unless adopted, even when the step-parent has been a [de facto parent](#term-de-facto-parent) for years. So in many jurisdictions a step-parent who dies without a will leaves a stepchild nothing by default, however long they were a family, and in some countries a stepchild named in a will is taxed at the rate for unrelated people. A common remedy is naming them, in the will and on every [beneficiary form](#term-beneficiary-form), within local inheritance limits; whether a form is binding varies scheme by scheme ([when a beneficiary form is binding](/blog/when-the-default-plan-does-not-fit-you/#is-a-pension-beneficiary-form-binding)), and a survivor pension may still be limited to a spouse or dependants.
+
+## How 'everything to my spouse' can leave your own children out
+
+Once a spouse inherits, the money is theirs to leave as they choose, and if their will names "my children" or they have none, it follows their legal heirs. Thomas and Claire's case is one route. Others lead to the same place: Claire remarries, Claire needs the money for care, Claire and the stepchildren drift apart after the funeral. The opposite mistake happens too: leaving everything directly to your own children can leave a surviving spouse without a home.
 
 <figure>
 <svg viewBox="0 0 600 320" role="img" aria-labelledby="fig-disinherit-title fig-disinherit-desc" xmlns="http://www.w3.org/2000/svg">
@@ -124,129 +125,82 @@ Everything Thomas built, including what he brought from before the marriage, has
 <figcaption>In this scenario, nobody changed a will or meant harm. The wealth followed the legal meaning of "my children", not what Thomas and Claire assumed would happen.</figcaption>
 </figure>
 
-Nobody acted badly. Claire did not change her will to exclude them. She simply did not change it at all, and the default took over. Other routes to the same result: Claire remarries, Claire needs the money for care, Claire and the stepchildren drift apart after the funeral.
+<details class="quick-check">
+<summary class="disclosure">Quick check: Thomas's will left everything to Claire. What single change by Claire would have changed the outcome?</summary>
 
-The opposite mistake also happens. A parent who leaves everything directly to their own children can leave a surviving spouse without a home.
+A new will naming Nora and Max. Nothing in Thomas's plan required her to write one, which is why many blended families use structures that do not depend on the survivor acting.
 
-### Three ways to provide for both
+</details>
 
-The aim is for a spouse to be secure for life and for your children to inherit in the end. Three approaches do that, and they can be combined.
+## How a life interest, separate pots or insurance provide for both
 
-**1. A life interest.** The surviving spouse has the right to live in the home, or to receive the income from assets, for the rest of their life. On their death, the assets pass to your children. The spouse is looked after and cannot redirect the capital. This is usually done through a trust or a life-interest provision in the will, and different legal systems have different names for it.
+The aim is a spouse who is secure for life and children who inherit in the end. Three approaches are commonly considered, sometimes in combination:
 
-**2. Separate pots.** Some assets go directly to your children on your death and others to your spouse. Beneficiary forms are the usual tool: a pension to the spouse, a life policy to the children, for example. Some pension schemes follow the form and others treat it as a guide for their trustees, so the scheme's rules say how firm each pot is. Where the forms are followed, each pot is final, and nobody waits on anyone else.
+1. **A [life interest](#term-life-interest).** The surviving spouse may live in the home, or receive the income from assets, for life; on their death the assets pass to your children. The spouse is provided for and, depending on the terms, cannot redirect the capital. It is usually done through a trust or a provision in the will, under different names in different legal systems.
+2. **Separate pots.** Some assets go to your children on your death and others to your spouse, often through beneficiary forms: a pension to the spouse, a life policy to the children. A form may direct the payment or only guide the provider or trustees, and survivor benefits can follow separate rules; the scheme documents decide who decides, who may qualify and whether the payment sits outside the estate.
+3. **Life insurance to even things out.** Where most wealth is a home the spouse needs, some families consider insurance intended for the children, subject to underwriting, affordability, policy terms and the rules on its beneficiary.
 
-**3. Life insurance to even things out.** If most of the wealth is tied up in a home the spouse needs, a life policy payable to the children gives them their inheritance at once and leaves the home alone.
+Two local checks matter. Where [forced heirship](#term-forced-heirship) applies, children are entitled to a share by law, which protects Nora and Max automatically and can limit what goes to a spouse or stepchild. And in many systems a home owned with a right of survivorship passes to the surviving owner regardless of the will, though forced heirship or local property rules can limit that, which is why some couples in blended families own in separate shares.
 
-Two things to check where you live:
+<details class="lesson-depth">
+<summary class="disclosure">Former spouses on old forms, young children, and children's accounts</summary>
 
-- **Forced heirship.** In many civil-law countries, children are entitled by law to a share of a parent's estate. That protects Nora and Max automatically. It can also restrict what can be left to a spouse or a stepchild.
-- **Home ownership.** If the home is owned with a right of survivorship, it passes to the surviving owner whatever the will says. Couples in blended families often choose to own in separate shares so each can leave their share as they wish.
+The [divorce post](/blog/divorce-and-separation-finances/) warned that a former partner can stay named on a pension or policy for decades. In a second family that is a live risk: a form from a first marriage, never updated, can send a pension to a former spouse over the current spouse and every child. Many people check every form after each marriage, separation, birth and adoption.
 
-### Beneficiary forms and the former spouse
+For young children, two more questions need written answers. **Who would look after them?** A will can usually name a guardian, but a surviving legal parent often takes over, which may mean a child leaving the step-parent they live with, who has no automatic claim. **Who would manage their money?** Without instructions, local law and the asset's terms decide who manages a child's inheritance, possibly the surviving legal parent, who could be a former spouse; where the law allows, a properly established trust can let a trustee you choose manage it under written terms.
 
-The post on [divorce and separation](/blog/divorce-and-separation-finances/) warned that a former partner can remain named on a pension or policy for decades. In a second family that is a live risk. A form completed during a first marriage and never updated can send a pension to a former spouse over the heads of the current spouse and every child.
+**Accounts in a child's name.** Three traps: a step-parent pays into an account the other parent controls and loses any say if the relationship ends; the custodian dies and control passes under the account's rules, often to the other legal parent, unless a successor is named where allowed; and grandparents fund one grandchild's account only, leaving children in the same house with very different futures.
 
-Check every form after each marriage, separation, birth, and adoption.
+</details>
 
-### If the children are young
+## How families agree costs, accounts and claims across homes
 
-Inheritance is only part of it. For minor children, two more questions need answers in writing:
-
-- **Who would look after them?** A will can usually name a guardian. If the other legal parent is alive, they will generally take over, which may mean a child leaving the home and the step-parent they live with. A step-parent has no automatic claim.
-- **Who would manage their money?** Without instructions, a child's inheritance may be managed by the surviving legal parent, who could be your former spouse. A trust with a trustee you choose keeps that in hands you trust.
-
-## Part two: money across households
-
-### Who pays for which child
-
-In a first family, children's costs come out of one budget and nobody keeps count. In a blended family that does not settle itself.
-
-Couples usually end up with one of three arrangements.
+In a first family, children's costs come out of one budget and nobody keeps count. In a blended family, couples usually settle on one of three arrangements:
 
 | Arrangement | How it works | Where it fits |
 |---|---|---|
 | One pot | All income pooled, all children's costs paid from it | Long relationships, similar resources, children young when the family formed |
-| Yours, mine, and ours | Each parent pays for their own children; shared costs come from a joint account | The most common middle path |
+| Yours, mine and ours | Each parent pays for their own children; shared costs come from a joint account | A common middle path |
 | Proportional | Shared costs split in proportion to income | Incomes that differ widely |
 
-Any of them can work. What fails is leaving it unsaid. One partner quietly resents subsidising, or one child visibly has less than another in the same house.
+Any can work; what fails is leaving it unsaid, so that one partner quietly resents subsidising or one child visibly has less than another in the same house. Many families put child maintenance in the budget and the [cash flow forecast](/blog/cash-flow-forecasting/) as a fixed line: maintenance received can stop when a former partner loses a job, and maintenance paid does not stop because the new household has a bad month.
 
-**Child maintenance is a fixed line.** Payments to or from a former partner should appear in the budget and in the [cash flow forecast](/blog/cash-flow-forecasting/). Maintenance received can stop when a former partner loses a job. Maintenance paid does not stop because the new household has a bad month.
+**Accounts in a child's name** have an adult in charge, the custodian, until the child comes of age, which creates traps when families blend (see below). **Some tax allowances, child benefits and care pension credits** can be claimed by only one person or household for a given period, while others can be divided or depend on residence and care, so separated parents often check and record who claims each ([dependent claim coordination](#term-dependent-claim-coordination)); the better claimant is not always obvious, since a credit can be worth more to the lower earner and a pension credit matters most to the parent with gaps (the [caregiving post](/blog/caregiving-and-the-career-break-wealth-gap/) covered why).
 
-### Accounts in a child's name
+<details class="quick-check">
+<summary class="disclosure">Quick check: a step-parent has paid €100 a month for ten years into an account the child's other parent opened. The relationship ends. Who controls the money?</summary>
 
-The Mastery post on financial vehicles for children explains the account types. In a blended family the question is who controls them.
+The custodian, usually the parent who opened the account. The step-parent's contributions give them no say, which is why some people open accounts in their own name where rules allow, or use a trust.
 
-An account opened for a minor has an adult in charge, usually called the custodian. That adult decides how the money is invested and, within the rules, how it is used, until the child reaches the age at which it becomes theirs.
+</details>
 
-Three traps:
+<details class="lesson-depth">
+<summary class="disclosure">The parenting adult with no legal standing</summary>
 
-- **A step-parent pays into an account the other parent controls.** If the relationship ends, the step-parent has no say over the money.
-- **The custodian dies.** Control passes according to the account's rules, often to the other legal parent. Where an account allows it, name a successor.
-- **Grandparents contribute to one grandchild's account only.** Reasonable from their point of view, and it produces children in the same house with very different futures.
+A co-parent who is not a legal parent can find years of parenting count for nothing on paper. Depending on the country, they may be unable to consent to medical treatment, deal with a school or travel alone with the child, add the child to their health insurance, claim allowances for the child, keep the child in their care if the legal parent dies, or pass on wealth without tax at the rate for strangers. Tools that help, where available: adoption by a step-parent or second parent, which creates full legal parentage; a parental responsibility agreement or court order, which gives decision-making authority without adoption; a signed authorisation from the legal parent for medical and school matters, limited but much better than nothing; naming the child in the will and on beneficiary forms; and naming the co-parent as guardian in the legal parent's will. Families with more than two parenting adults face this more sharply, because most legal systems allow two legal parents at most.
 
-Where control matters, people often open the account themselves if the rules permit, or use a trust.
+</details>
 
-### The adult with no legal standing
+<details class="lesson-depth">
+<summary class="disclosure">Fair is not always equal</summary>
 
-A co-parent who is not a legal parent can find that years of parenting count for nothing on paper. Depending on the country, they may be unable to:
+Children in a blended family often start from different places: one may expect an inheritance from another parent and wealthy grandparents, another may have only you; one is thirty and settled, one is nine. Families tend to follow one of two principles: **equal shares,** simple and defensible, or **equal outcomes,** more to the child with less elsewhere or still to be raised. Both are legitimate. What does lasting harm is a division nobody explained, discovered after a death; a letter kept with the will, or a conversation while it can still be had, explains unequal shares.
 
-- Consent to medical treatment for the child
-- Deal with a school or travel alone with the child
-- Add the child to their health insurance
-- Claim tax allowances or benefits for the child
-- Keep the child in their care if the legal parent dies
-- Pass wealth to the child without tax at the rate for strangers
+</details>
 
-Tools that help, where available:
+## Inheritance and parental rules differ by country
 
-- **Adoption by a step-parent or second parent,** which creates full legal parentage.
-- **A parental responsibility agreement or court order,** which gives decision-making authority without adoption.
-- **A signed authorisation** from the legal parent for medical and school matters. It is limited, and much better than nothing.
-- **Naming the child** in the will and on beneficiary forms.
-- **Naming the co-parent as guardian** in the legal parent's will.
+<details class="lesson-depth">
+<summary class="disclosure">Inheritance, tax and parental responsibility across countries</summary>
 
-Families with more than two parenting adults face this more sharply, because most legal systems allow a child two legal parents at most.
+- **Forced heirship countries.** Children from every relationship are protected by a reserved share; the question becomes how to provide for a spouse and stepchildren inside that limit.
+- **Common-law countries.** Wide freedom to leave assets as you wish, so the accidental disinheritance is a real risk; some let children or dependants ask a court for provision.
+- **Inheritance tax.** Stepchildren are treated like children in some countries and like strangers in others.
+- **Stepchild adoption and parental responsibility.** Available in many countries on differing conditions, usually needing the other legal parent's consent.
+- **Polygamous and customary marriages.** Where recognised, inheritance follows that system's rules; after a move to a country that does not recognise them, later spouses and their children can be in a very weak position (the [marriages not recognised post](/blog/when-your-marriage-is-not-recognised-abroad/) covers the general problem).
 
-### Who claims the child
+</details>
 
-Tax allowances, child benefits, and pension credits for caring usually go to one adult per child. **Dependent claim coordination** means agreeing who that is.
+A first family gets its financial plan almost for free from the defaults. A blended family has to write its own, which takes more work and means the plan reflects the family that exists.
 
-- Two homes cannot normally both claim in the same period.
-- The better claimant is not always obvious. A credit may be worth more to the lower earner. A pension credit may matter most to the parent with gaps in their record, as the post on [caregiving](/blog/caregiving-and-the-career-break-wealth-gap/) explains.
-- Many separated parents write it into their agreement, sometimes with a rule for alternating years. Whether alternating is allowed depends on local tax and benefit rules.
-
-### Fair is not always equal
-
-Children in a blended family often start from different places. One may expect an inheritance from another parent and wealthy grandparents. Another may have only you. One is thirty and settled. One is nine.
-
-Families tend to follow one of two principles:
-
-- **Equal shares.** Simple, defensible, and it avoids comparisons.
-- **Equal outcomes.** More to the child with less elsewhere, or to the one who still needs to be raised.
-
-Both are legitimate. What does lasting harm is a division nobody explained, discovered after a death. If the shares are unequal, say why, in a letter kept with the will or in a conversation while you can have it.
-
-## Cross-continent notes
-
-**Forced heirship countries.** Children from every relationship are protected by a reserved share. The planning question becomes how to provide for a spouse and stepchildren inside that limit.
-
-**Common-law countries.** Wide freedom to leave assets as you wish, so the accidental disinheritance is a real risk. Some allow children or dependants to ask a court for provision.
-
-**Inheritance tax.** Stepchildren are treated like children in some countries and like strangers in others.
-
-**Stepchild adoption and parental responsibility.** Available in many countries on differing conditions. Usually needs the consent of the other legal parent.
-
-**Polygamous and customary marriages.** Where recognised, inheritance follows rules specific to that system. Where a family moves to a country that does not recognise them, the position of second and later spouses and their children can be very weak. The post on [marriages that are not recognised](/blog/when-your-marriage-is-not-recognised-abroad/) covers the general problem.
-
-## Getting started
-
-- **List every child and every adult** who acts as a parent, and mark which adults are legal parents.
-- **Trace your own estate.** If you died tomorrow, and your partner fifteen years later, where would everything end up?
-- **Check every beneficiary form** for a former partner.
-- **Decide how children's costs are shared,** and say it out loud.
-- **Name guardians and trustees** for young children.
-- **Find out what local law allows.** The structures in part one are routine for lawyers who work with blended families, and they vary by country.
-
-A first family gets its financial plan almost for free from the defaults. A blended family has to write its own. That takes more work, and it also means the plan reflects the family that exists.
+If you died tomorrow and your partner fifteen years later, where would everything you own end up?

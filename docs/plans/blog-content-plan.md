@@ -279,7 +279,7 @@ Layering aims to keep the lesson's reasoning while helping readers reach a usefu
 3. **PostHog:** check whether the page-leave events already carry scroll depth. Do not add any capture without a privacy changelog entry; the privacy notice says no continuous scroll stream is recorded.
 4. Then the remaining inclusive drafts (inc-2 onward), then older lessons. Each conversion re-checks its Instagram kit.
 
-**Status:** the rule for every Optimizing and Inclusive Finances lesson, published or future, from Oct 21, 2026 (owner's decision; PLAYBOOK "Blog lessons" and Decision #44 hold the agreed list). The build enforces the checkable parts through `src/utils/layeredLessons.ts`, whose backlog list names the lessons still to convert; conversions land as stacked PRs in publish order. For Discovery, Building and Psychology it stays a pilot: the timings and components there wait on the reader test and the control-lesson review.
+**Status:** the rule for every Optimizing and Inclusive Finances lesson, published or future, from Oct 21, 2026 (owner's decision; PLAYBOOK "Blog lessons" and Decision #44 hold the agreed list). The build enforces the checkable parts through `src/utils/layeredLessons.ts`. Every lesson at both levels was converted by Oct 22, 2026, through stacked PRs in publish order, and the backlog list was retired; a new lesson must pass from the start. For Discovery, Building and Psychology it stays a pilot: the timings and components there wait on the reader test and the control-lesson review.
 
 ---
 
