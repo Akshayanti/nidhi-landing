@@ -214,6 +214,9 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               {takeaways.map((t) => typeof t === 'string'
                 ? <li>{t}</li>
                 : <li><a href={t.href}>{t.text}</a></li>)}
+              {faq && faq.length > 0 && (
+                <li><a href="#post-faq-h">{faq.length === 1 ? 'Answer to 1 common question' : `Answers to ${faq.length} common questions`}</a></li>
+              )}
             </ul>
           </section>
         )}
@@ -276,12 +279,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     </div>
 
     <div class="post-body-wrapper">
-      <nav class="toc" id="toc" aria-label="Table of Contents">
-        <div class="toc-inner">
-          <strong class="toc-title">On this page</strong>
-          <ul class="toc-list" id="toc-list"></ul>
-        </div>
-      </nav>
       <div class="prose" id="post-content">
         <slot />
       </div>
@@ -464,69 +461,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 </script>
 
 <script is:inline>
-  (function() {
-    var content = document.getElementById('post-content');
-    var tocList = document.getElementById('toc-list');
-    if (!content || !tocList) return;
-
-    // A heading inside an expander is hidden until opened, so it stays out
-    // of the contents list and the scroll tracking.
-    var headings = Array.prototype.filter.call(
-      content.querySelectorAll('h2, h3'),
-      function(h) { return !h.closest('details'); }
-    );
-    if (headings.length === 0) return;
-
-    // The glossary card sits above the article, so it leads the list.
-    var glossaryCard = document.querySelector('[data-glossary-card]');
-    if (glossaryCard) {
-      var gli = document.createElement('li');
-      gli.className = 'toc-item toc-item--h2';
-      var ga = document.createElement('a');
-      ga.href = '#' + glossaryCard.id;
-      ga.textContent = 'Glossary';
-      gli.appendChild(ga);
-      tocList.appendChild(gli);
-    }
-
-    function slugify(text) {
-      return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
-    }
-
-    var usedIds = {};
-    headings.forEach(function(h) {
-      var base = slugify(h.textContent);
-      var id = base;
-      var counter = 1;
-      while (usedIds[id]) { id = base + '-' + counter; counter++; }
-      usedIds[id] = true;
-      h.id = id;
-      var li = document.createElement('li');
-      li.className = 'toc-item toc-item--' + h.tagName.toLowerCase();
-      var a = document.createElement('a');
-      a.href = '#' + id;
-      a.textContent = h.textContent;
-      li.appendChild(a);
-      tocList.appendChild(li);
-    });
-
-    // Highlight active section on scroll
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        var id = entry.target.id;
-        var link = tocList.querySelector('a[href="#' + id + '"]');
-        if (link) {
-          if (entry.isIntersecting) {
-            tocList.querySelectorAll('a').forEach(function(a) { a.classList.remove('toc-active'); });
-            link.classList.add('toc-active');
-          }
-        }
-      });
-    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
-
-    headings.forEach(function(h) { observer.observe(h); });
-  })();
-
   // A printed lesson shows every expander, the glossary and FAQ answer open; after
   // printing, each one goes back to how the reader left it.
   (function() {
@@ -729,7 +663,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   /* A topic that links to its section: the list doubles as the lesson's
-     index, including on phones where the "On this page" sidebar is hidden. */
+     index on every screen; the lesson's FAQ is its last line. */
   .post-covers-list a {
     display: inline-block;
     padding: 0.2rem 0;
@@ -755,7 +689,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-left: 4px solid var(--color-deep-blue);
     border-radius: var(--radius-md);
     box-shadow: 0 1px 3px color-mix(in srgb, var(--color-deep-blue) 12%, transparent);
-    scroll-margin-top: 80px;
   }
 
   .post-glossary-head {
@@ -866,7 +799,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   .post-glossary-item {
-    scroll-margin-top: 80px;
     border-radius: var(--radius-sm);
   }
 
@@ -915,130 +847,15 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-color: var(--color-deep-blue);
   }
 
-  /* Post body: wide grid — left gutter | TOC | content | right gutter */
-  .post-body-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 400px minmax(0, 720px) 1fr;
-    column-gap: var(--space-6);
-    align-items: flex-start;
-  }
-
-  .toc {
-    grid-column: 2;
-    position: sticky;
-    top: 80px;
-    display: none;
-    overflow: hidden;
-  }
-
-  .toc-inner {
-    border-left: 2px solid var(--color-border-light);
-    padding-left: var(--space-4);
-  }
-
-  .prose {
-    grid-column: 3;
-  }
-
-  .toc-title {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-3);
-  }
-
-  .toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .toc-item {
-    margin-bottom: var(--space-1);
-  }
-
-  .toc-item + .toc-item:not(.toc-item--h3) {
-    margin-top: var(--space-2);
-  }
-
-  .toc-item a {
-    display: block;
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    padding: 3px 0;
-    transition: color 0.15s ease;
-    line-height: 1.4;
-  }
-
-  .toc-item a:hover {
-    color: var(--color-text-primary);
-  }
-
-  .toc-item a.toc-active {
-    color: var(--color-deep-blue);
-    font-weight: 600;
-  }
-
-  .toc-item--h3 {
-    padding-left: var(--space-4);
-  }
-
-  .toc-item--h3 a {
-    font-size: 0.8125rem;
-    font-weight: 400;
-    color: var(--color-text-muted);
-  }
-
-  .toc-item--h3 a.toc-active {
-    font-weight: 500;
-  }
-
-  @media (min-width: 1200px) {
-    .toc {
-      display: block;
-    }
-  }
-
-  @media (max-width: 1199px) {
-    .post-body-wrapper {
-      display: block;
-    }
-    .toc {
-      display: none;
-    }
-    /* Same gutter as the header's .container, so text does not touch the
-       screen edge on phones and lines up with the title at every width. */
-    .prose {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 var(--space-4);
-    }
-  }
-
-  /* Post bottom: same grid as body so content aligns with prose */
-  .post-bottom-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 400px minmax(0, 720px) 1fr;
-    column-gap: var(--space-6);
-  }
-
+  /* Post body and bottom: one centred column, with the same width and gutter
+     as the header's .container, so the text lines up with the title at every
+     width. "In this lesson" under the title is the lesson's only index; there
+     is no sidebar. */
+  .prose,
   .post-bottom-content {
-    grid-column: 3;
-  }
-
-  @media (max-width: 1199px) {
-    .post-bottom-wrapper {
-      display: block;
-    }
-    .post-bottom-content {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 var(--space-4);
-    }
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-4);
   }
 
   /* Paired free tool: one card, teal rule, same spacing as the sections below. */
