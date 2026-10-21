@@ -12,10 +12,6 @@ export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 /** Lessons at those levels not yet converted. Delete a slug when its lesson is. */
 export const NOT_YET_LAYERED: ReadonlySet<string> = new Set([
   // Optimizing
-  'windfall-management',
-  'fee-optimization',
-  'tax-loss-harvesting-and-asset-location',
-  'real-returns-and-benchmarking',
   'geographic-arbitrage',
   'income-replacement-ratio',
   'insurance-optimization',
