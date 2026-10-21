@@ -30,10 +30,6 @@ faq:
 reelPromise: "Why the 70 to 80% rule is a starting point not an answer, the four categories that swing your personal number, and why every euro of pension income drops your FIRE target by 25 euros"
 relatedSlugs: ["cash-flow-101", "setting-financial-goals", "financial-projections", "introduction-to-financial-independence", "financial-health-metrics"]
 referentialReading:
-  - title: "The Simple Path to Wealth"
-    author: "JL Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
   - title: "Your Money or Your Life"
     author: "Vicki Robin"
     url: "https://www.goodreads.com/book/show/78428.Your_Money_or_Your_Life"

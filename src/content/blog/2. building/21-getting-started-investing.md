@@ -32,15 +32,12 @@ reelPromise: "The three account types side by side, a worked dollar-cost-averagi
 relatedSlugs: ["investing-101-asset-classes", "diversification", "understanding-risk", "emergency-fund", "budgeting"]
 referentialReading:
   - title: "Dollar-Cost Averaging"
-    url: "https://www.investopedia.com/terms/d/dollarcostaveraging.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Dollar_cost_averaging"
     type: "blog"
   - title: "The Little Book of Common Sense Investing"
     author: "John C. Bogle"
     url: "https://www.goodreads.com/book/show/171127.The_Little_Book_of_Common_Sense_Investing"
-    type: "book"
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
     type: "book"
 ---
 

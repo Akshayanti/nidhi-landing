@@ -35,12 +35,9 @@ relatedTool:
 reelPromise: "The four step consolidation process, why an old pension usually moves provider to provider rather than through your own account, and how many accounts a household tends to need"
 relatedSlugs: ["assets", "financial-dashboard", "getting-started-investing", "cash-management", "credit-and-credit-scores"]
 referentialReading:
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
-  - title: "How to Roll Over a 401(k)"
-    url: "https://www.investopedia.com/articles/personal-finance/092214/guide-401k-and-ira-rollovers.asp"
+  - title: "Account Aggregation"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Account_aggregation"
     type: "blog"
 ---
 

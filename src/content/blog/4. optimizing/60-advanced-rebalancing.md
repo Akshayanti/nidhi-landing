@@ -37,10 +37,6 @@ referentialReading:
   - title: "Should Equity Exposure Decrease in Retirement, or Is a Rising Equity Glidepath Actually Better? (on Pfau and Kitces's research)"
     url: "https://www.kitces.com/blog/should-equity-exposure-decrease-in-retirement-or-is-a-rising-equity-glidepath-actually-better/"
     type: "blog"
-  - title: "The Bogleheads' Guide to the Three-Fund Portfolio"
-    author: "Taylor Larimore"
-    url: "https://www.goodreads.com/book/show/40374828-the-bogleheads-guide-to-the-three-fund-portfolio"
-    type: "book"
 ---
 
 The [rebalancing post in Building](/blog/rebalancing-your-portfolio/) established the core mechanics: pick a target asset allocation, and periodically bring the portfolio back to that target as market movements pull it away. Calendar-based, threshold-based, or contribution-based methods all achieve the same goal. Research on rebalancing, such as Vanguard's, largely on US data, has generally found that annual or band-based rebalancing captures most of the risk-control benefit, and that rebalancing much more often adds cost without a clear gain.

@@ -29,14 +29,10 @@ faq:
     answer: "No. The goal is not to be in the ideal zone on all six simultaneously, which is rare for real people at any stage of life. It is to know where you are, which direction each metric is trending, and to catch drift early while the fix is still small. Read the metrics together, not in isolation: a healthy savings rate with low liquid percentage suggests money locked into illiquid assets; strong metrics across the board with low income replacement means you are set up well but early in the journey. The metrics tell you where to look; the combination tells the real story. Chasing a perfect ratio often creates distortion elsewhere."
 relatedSlugs: ["setting-financial-goals", "introduction-to-financial-independence", "passive-income-streams", "emergency-fund", "cash-flow-101"]
 referentialReading:
-  - title: "Your Financial Health: Interpreting Statements and Using Ratios"
-    author: "Travis P. Mountain and William P. Jones (Virginia Tech Extension)"
-    url: "https://aaec.vt.edu/content/dam/pubs_ext_vt_edu/AAEC/aaec-184/AAEC-184NP.pdf"
+  - title: "G20 Policy Note on Financial Well-Being"
+    author: "OECD"
+    url: "https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/11/g20-policy-note-on-financial-well-being_5eade0bc/7332c99d-en.pdf"
     type: "paper"
-  - title: "Personal Finance for Dummies"
-    author: "Eric Tyson"
-    url: "https://www.goodreads.com/book/show/3604.Personal_Finance_for_Dummies"
-    type: "book"
   - title: "The Richest Man in Babylon"
     author: "George S. Clason"
     url: "https://www.goodreads.com/book/show/1052.The_Richest_Man_in_Babylon"

@@ -18,7 +18,8 @@ tags: ["discovery", "risk", "fundamentals"]
 reelPromise: "The five types of insurance, how coverage and your emergency fund trade off, and the test for when a policy is worth it versus self-insuring"
 referentialReading:
   - title: "Insurance"
-    url: "https://www.investopedia.com/terms/i/insurance.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Insurance"
     type: "blog"
   - title: "The Index Card"
     author: "Helaine Olen & Harold Pollack"

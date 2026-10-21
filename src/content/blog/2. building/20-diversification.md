@@ -31,7 +31,8 @@ faq:
 relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "satellite-assets-commodities-and-cryptocurrency", "emergency-fund", "saving-vs-investing"]
 referentialReading:
   - title: "Diversification"
-    url: "https://www.investopedia.com/terms/d/diversification.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Diversification_(finance)"
     type: "blog"
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"

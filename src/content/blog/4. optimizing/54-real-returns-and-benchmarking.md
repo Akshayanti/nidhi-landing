@@ -36,10 +36,6 @@ referentialReading:
   - title: "SPIVA Scorecards, including the Persistence Scorecard"
     url: "https://www.spglobal.com/spdji/en/research-insights/spiva/"
     type: "blog"
-  - title: "The Simple Path to Wealth"
-    author: "JL Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
 ---
 
 A portfolio grew from €200,000 to €250,000 over the past year. The account statement labels this as "25% return." The household reads it and feels good. This feels like a strong performance year.

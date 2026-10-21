@@ -18,17 +18,10 @@ personas: ["eva", "petra"]
 tags: ["discovery", "saving", "fundamentals"]
 reelPromise: "How to size your fund from one month to six, where to keep it so it stays accessible but separate, and the small-steps plan to build it"
 referentialReading:
-  - title: "The Total Money Makeover"
-    author: "Dave Ramsey"
-    url: "https://www.goodreads.com/book/show/78427.The_Total_Money_Makeover"
-    type: "book"
   - title: "Emergency Fund"
-    url: "https://www.bogleheads.org/wiki/Emergency_fund"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Emergency_fund"
     type: "blog"
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
 relatedSlugs: ["liquidity", "how-to-get-out-of-debt", "liabilities", "what-is-net-worth"]
 faq:
   - question: "What is an emergency fund?"

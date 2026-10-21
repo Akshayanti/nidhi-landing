@@ -30,10 +30,6 @@ faq:
 reelPromise: "The compounded cost of a 1% fee over 40 years, why active funds mostly lose to passive after fees, and the hidden fees that never appear on any statement"
 relatedSlugs: ["investing-101-asset-classes", "financial-projections", "framing-anchoring-and-price-psychology", "tax-advantaged-accounts", "getting-started-investing"]
 referentialReading:
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
   - title: "SPIVA Scorecard"
     url: "https://www.spglobal.com/spdji/en/research-insights/spiva/"
     type: "blog"

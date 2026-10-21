@@ -29,17 +29,14 @@ faq:
     answer: "An employer match is typically a 50% to 100% immediate uplift on your own contribution. If your employer matches 100% of the first 5% of salary you contribute, that doubles every euro up to that threshold, subject to vesting and continued employment. Few moves available to a retail investor produce a comparable bump, and no diversified portfolio reliably matches an instant guaranteed doubling. Once a starter emergency fund is in place and very-high-interest debt is being addressed, capturing the full match is typically the next investing move. Leaving it on the table for any extended period is one of the most expensive common omissions in personal finance."
 relatedSlugs: ["taxes-and-your-financial-plan", "getting-started-investing", "saving-vs-investing", "emergency-fund", "how-to-get-out-of-debt"]
 referentialReading:
-  - title: "Tax-Advantaged Accounts"
-    url: "https://www.investopedia.com/terms/t/tax-advantaged.asp"
+  - title: "Tax Advantage"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Tax_advantage"
     type: "blog"
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
-  - title: "Retirement Savings: Tax-Advantaged Account Types (United States)"
-    author: "U.S. Securities and Exchange Commission (Investor.gov)"
-    url: "https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts/retirement-savings"
-    type: "blog"
+  - title: "The Tax Treatment of Retirement Savings in Private Pension Plans"
+    author: "OECD"
+    url: "https://www.oecd.org/content/dam/oecd/en/publications/reports/2018/12/tax-treatment-of-retirement-savings-in-private-pension-plans-across-oecd-countries_57edd21a/5dc39bb7-en.pdf"
+    type: "paper"
 ---
 
 The previous post treated taxes as a concept: four points of contact, three functional patterns, the long-term cost of ignoring them. This post gets concrete about the *vehicles* those patterns live in. Your country almost certainly has several purpose-built accounts that give you tax breaks in exchange for playing by specific rules. Knowing which ones exist, which order to fill them in, and which trade-offs each involves is often one of the highest-leverage decisions a new investor makes.

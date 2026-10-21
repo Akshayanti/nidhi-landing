@@ -30,16 +30,13 @@ faq:
 reelPromise: "All three rebalancing methods compared, a worked €100k example showing the exact trades, and where to rebalance first to avoid tax"
 relatedSlugs: ["tax-advantaged-accounts", "diversification", "understanding-risk", "getting-started-investing", "taxes-and-your-financial-plan"]
 referentialReading:
-  - title: "Rebalancing a Portfolio"
-    url: "https://www.investopedia.com/terms/r/rebalancing.asp"
+  - title: "Rebalancing Investments"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Rebalancing_investments"
     type: "blog"
   - title: "Industry research on rebalancing frequency (citation, not endorsement)"
     url: "https://www.vanguardsouthamerica.com/content/dam/intl/americas/documents/latam/en/sa-2123766-getting-back-on-track.pdf"
     type: "paper"
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore et al."
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
 ---
 
 You set your portfolio at 70% stocks and 30% bonds. A year goes by. Stocks have had a great run, bonds have been flat. You check the balance: you're now at 78% stocks and 22% bonds. Your account value is up, so it feels like a win. But your *risk profile* has quietly changed. You're now holding a more aggressive portfolio than the one you chose, without ever deciding to.

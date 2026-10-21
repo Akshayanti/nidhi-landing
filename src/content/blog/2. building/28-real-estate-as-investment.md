@@ -30,15 +30,9 @@ faq:
     answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is why owners commonly keep a larger cash buffer than a pure-paper portfolio would need, and why it helps to make that trade deliberately."
 referentialReading:
   - title: "Real Estate Investing"
-    url: "https://www.investopedia.com/terms/r/realestate.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Real_estate_investing"
     type: "blog"
-  - title: "The Millionaire Real Estate Investor"
-    author: "Gary Keller"
-    url: "https://www.goodreads.com/book/show/136205.The_Millionaire_Real_Estate_Investor"
-    type: "book"
-  - title: "New York Times Rent vs. Buy Calculator (US-tuned; UK's MoneyHelper, India's Magicbricks/NoBroker, and major local portals offer regional equivalents with appropriate transaction cost assumptions)"
-    url: "https://www.nytimes.com/interactive/2014/upshot/buy-rent-calculator.html"
-    type: "tool"
 ---
 
 "Real estate always goes up." "Rent is throwing money away." "Buying is an investment, renting isn't." These are the stories most people carry into the biggest financial decision of their lives, and most of them are wrong or incomplete.

@@ -35,11 +35,9 @@ relatedTool:
 reelPromise: "The break-even calculation that beats rules of thumb, why waiting for lower rates is a bet against the market, and the student-loan refi trap that trades protection for a small rate cut"
 relatedSlugs: ["understanding-loan-terms", "invest-or-pay-off-debt", "how-to-get-out-of-debt", "liabilities", "cash-flow-forecasting"]
 referentialReading:
-  - title: "Mortgage Refinancing Basics"
-    url: "https://www.investopedia.com/mortgage/refinance/"
-    type: "blog"
-  - title: "How to Refinance a Mortgage: A Beginner's Guide"
-    url: "https://www.nerdwallet.com/mortgages/learn/how-to-refinance-your-mortgage"
+  - title: "Refinancing"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Refinancing"
     type: "blog"
 ---
 

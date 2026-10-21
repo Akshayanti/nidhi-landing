@@ -30,12 +30,9 @@ faq:
 reelPromise: "The one-paragraph tax-loss harvesting idea, the wash-sale trap that nullifies careless harvesting, and the asset-location math that can add a few tenths of a percent to after-tax returns"
 relatedSlugs: ["taxes-and-your-financial-plan", "tax-advantaged-accounts", "rebalancing-your-portfolio", "investing-101-asset-classes", "fee-optimization"]
 referentialReading:
-  - title: "The Bogleheads' Guide to Investing"
-    author: "Taylor Larimore, Mel Lindauer, Michael LeBoeuf"
-    url: "https://www.goodreads.com/book/show/381355.The_Bogleheads_Guide_to_Investing"
-    type: "book"
-  - title: "Tax-Loss Harvesting"
-    url: "https://www.bogleheads.org/wiki/Tax_loss_harvesting"
+  - title: "Asset Location"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Asset_location"
     type: "blog"
 ---
 

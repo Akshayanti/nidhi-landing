@@ -33,10 +33,6 @@ faq:
 reelPromise: "A side-by-side table of which dual-income rules of thumb to change on one income, and the five documents that stand in for a family fallback"
 relatedSlugs: ["income-replacement-ratio", "emergency-fund", "introduction-to-financial-independence", "insurance-basics"]
 referentialReading:
-  - title: "Essential Retirement Planning for Solo Agers"
-    author: "Sara Zeff Geber"
-    url: "https://www.goodreads.com/book/show/39693429-essential-retirement-planning-for-solo-agers"
-    type: "book"
   - title: "What Are Equivalence Scales?"
     author: "Organisation for Economic Co-operation and Development (OECD)"
     url: "https://web.archive.org/web/20240606134054/https://www.oecd.org/els/soc/OECD-Note-EquivalenceScales.pdf"

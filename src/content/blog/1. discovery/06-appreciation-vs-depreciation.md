@@ -17,12 +17,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals", "investing"]
 referentialReading:
-  - title: "The Simple Path to Wealth"
-    author: "J.L. Collins"
-    url: "https://www.goodreads.com/book/show/30646587-the-simple-path-to-wealth"
-    type: "book"
   - title: "Compound Interest"
-    url: "https://www.investopedia.com/terms/c/compoundinterest.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Compound_interest"
     type: "blog"
   - title: "A Random Walk Down Wall Street"
     author: "Burton Malkiel"

@@ -17,7 +17,8 @@ tags: ["discovery", "currency", "fundamentals"]
 reelPromise: "How exchange rates and purchasing power parity differ, the cappuccino price table across cities, and the two currency risks a move exposes you to"
 referentialReading:
   - title: "Purchasing Power Parity"
-    url: "https://www.investopedia.com/terms/p/ppp.asp"
+    author: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Purchasing_power_parity"
     type: "blog"
   - title: "The Big Mac Index: Data and Methodology"
     author: "The Economist"
