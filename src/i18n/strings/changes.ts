@@ -25,6 +25,16 @@ export const CHANGES: ChangeEntry[] = [
   {
     date: '2026-10-22',
     text: {
+      en: 'The home page now gives one lesson count, at the top and in the FAQ alike. The two had disagreed by one.',
+      hi: 'होम पेज पर अब पाठों की एक ही गिनती है, ऊपर भी और अक्सर पूछे जाने वाले सवालों में भी। पहले दोनों जगह एक का फ़र्क था।',
+      es: 'La página de inicio da ahora un solo número de lecciones, arriba y en las preguntas frecuentes. Antes los dos diferían en una.',
+      cs: 'Úvodní stránka teď uvádí jeden počet lekcí, nahoře i v častých otázkách. Předtím se ta dvě čísla lišila o jednu.',
+      mr: 'मुख्यपृष्ठावर आता धड्यांची एकच संख्या आहे, वरच्या भागात आणि नेहमीच्या प्रश्नांमध्येही. आधी या दोन्हींमध्ये एकाचा फरक होता.',
+    },
+  },
+  {
+    date: '2026-10-22',
+    text: {
       en: 'Every line on this page now shows its date.',
       hi: 'इस पेज की हर पंक्ति पर अब उसकी तारीख़ दिखती है।',
       es: 'Cada línea de esta página muestra ahora su fecha.',

@@ -907,7 +907,7 @@ export const es: Dict = {
       items: [
         {
           q: '¿nidhi es para quien empieza de cero?',
-          a: 'Sí. La ruta de aprendizaje empieza por explicar qué es el patrimonio neto y no da nada por sabido. Cada lección explica sus términos sobre la marcha, y las {total} lecciones publicadas hasta ahora están en orden de lectura, así que puedes empezar por la primera y seguir adelante.',
+          a: 'Sí. La ruta de aprendizaje empieza por explicar qué es el patrimonio neto y no da nada por sabido. Cada lección explica sus términos sobre la marcha. Hay {total} lecciones publicadas hasta ahora, y la ruta principal está en orden de lectura, así que puedes empezar por la primera y seguir adelante.',
         },
         {
           q: '¿Necesito tener dinero en más de una moneda para usar nidhi?',
