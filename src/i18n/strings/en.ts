@@ -231,6 +231,17 @@ export const en = {
       /** Counted at build (src/utils/sourceCounts.ts); says what it does not count. */
       sourcesCount:
         "Across {lessons} published lessons, the further-reading lists point to {sources} distinct books, papers and reference pages. Sources cited only inside a lesson's text are not counted here.",
+      /**
+       * After the sources sentence, once a correction is published: how many, each
+       * shown in its lesson and listed on the editorial policy page. Absent at zero.
+       */
+      correctionsCount: {
+        one: "I've also published 1 correction to a lesson, shown in the lesson itself and listed in ",
+        few: "I've also published {count} corrections to lessons, each shown in the lesson itself and listed in ",
+        other: "I've also published {count} corrections to lessons, each shown in the lesson itself and listed in ",
+        link: 'the editorial policy',
+        after: '.',
+      },
       whyYouCanTrustIt2:
         'What this is not: licensed financial advice. nidhi explains how money works so you can make your own decisions. It does not tell you which fund to buy, and it never will. For decisions that turn on your specific tax residency, legal situation, or risk tolerance, a qualified professional is the right call. That boundary is deliberate, and it is the same one stated in the footer of every page.',
       /**
