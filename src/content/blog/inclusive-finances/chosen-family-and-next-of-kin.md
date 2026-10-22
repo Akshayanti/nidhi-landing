@@ -1,14 +1,13 @@
 ---
 slug: "chosen-family-and-next-of-kin"
-title: "Chosen Family: Planning When the Law Picks Your Relatives"
-seoTitle: "Next of Kin Without Family: Naming Friends to Act for You"
+title: "Chosen Family: Naming Friends to Act for You"
 description: "If your closest people are friends, legal defaults may give relatives roles or rights that friends do not have. How the next-of-kin order works, why spoken wishes fail, and how to put your chosen family in charge."
 tldr: "When you cannot speak for yourself, and when you die, local rules decide who is consulted, who may decide, who administers the estate and who inherits. Relatives often have priority in some of those rules, while friends may have no automatic role, however close. For people whose real family is chosen, the list can name the wrong people for every role that matters, and telling people your wishes may not change the legal default; appropriately prepared local documents can change or influence some of those roles. A plan for chosen family splits the roles among several people, names a substitute for each, funds what it asks, and puts the funeral in writing."
 takeaways:
   - text: "Why next of kin follows blood and marriage, not closeness"
     href: "#next-of-kin-follows-blood-and-marriage-not-closeness"
-  - text: "Why telling people your wishes does not give them authority"
-    href: "#telling-people-your-wishes-does-not-give-them-authority"
+  - text: "How to give the people you choose authority, in writing"
+    href: "#giving-the-people-you-choose-authority-in-writing"
   - text: "How to split roles among friends, with a substitute for each"
     href: "#splitting-roles-among-friends-with-a-substitute-for-each"
   - text: "Why the funeral often needs its own written plan"
@@ -78,7 +77,7 @@ In many countries, when nobody has been appointed, the law's defaults point at r
 
 The phrase **chosen family** comes from LGBTQ+ communities, where rejection by the family people were born into has been common enough that they built their own. It describes many others too: people estranged from relatives for any reason, single and childless adults whose closest ties are friendships, widowed people whose remaining relatives are distant, migrants whose legal family is on another continent. It is a [recognition gap](#term-recognition-gap) in its purest form: relationships that are real, long and load-bearing, which the law has no category for.
 
-## Telling people your wishes does not give them authority
+## Giving the people you choose authority, in writing
 
 Many people in this position have told their friends what they want, and it feels settled. It is not. A hospital, a bank, a funeral director and a court each need to know who has authority, and they look in two places: a document, or the list. A friend who says "she told me she would not want this" has nothing to show; a brother who arrives after twenty years may have standing that the friend lacks. Hospital visiting is the sharpest example: in some places access and information are limited to legally recognised family unless the patient has named someone, so the friend who came every day can be asked to wait outside while a relative the patient had cut off is briefed. Spoken wishes still matter, because they tell the person you appoint what to do; they work only once that person has been appointed.
 

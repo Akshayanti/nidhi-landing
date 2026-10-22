@@ -865,6 +865,7 @@ export const hi: Dict = {
       subhead: ['मुफ़्त पाठ।', 'निजी टूल।', 'प्लानर आ रहा है।'],
       startLearning: 'सीखना शुरू करें',
       tryTool: 'कोई मुफ़्त टूल आज़माएँ',
+      promise: '{lessons} मुफ़्त पाठ। {tools} निजी टूल। न अकाउंट, न विज्ञापन। टूल में आप जो लिखते हैं, वह आपके ही डिवाइस पर रहता है।',
       /** Shown only to a reader this browser knows has started the path. */
       welcomeBack: 'फिर से स्वागत है। जहाँ छोड़ा था, वहीं से आगे बढ़ें:',
     },

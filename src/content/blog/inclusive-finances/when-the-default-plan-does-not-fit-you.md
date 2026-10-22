@@ -1,7 +1,6 @@
 ---
 slug: "when-the-default-plan-does-not-fit-you"
-title: "When the Default Plan Doesn't Fit You"
-seoTitle: "Not Married? Who Gets Your Pension and Home if You Die"
+title: "Financial Planning That Fits Every Kind of Household"
 description: "Not married to your partner? Your pension and home may not go to them by default. How to check which financial defaults fit your household."
 tldr: "When you make no choice, defaults decide who inherits, who a pension pays and who can act for you, and most were written for a married couple with a local employer in one country. If your household looks different, a short audit shows which defaults are guessing wrong. Many of the fixes are free."
 takeaways:

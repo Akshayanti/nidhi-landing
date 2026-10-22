@@ -763,6 +763,7 @@ export const cs: Dict = {
       subhead: ['Lekce zdarma.', 'Soukromé nástroje.', 'Plánovač na cestě.'],
       startLearning: 'Začít s lekcemi',
       tryTool: 'Vyzkoušet nástroj zdarma',
+      promise: 'Lekce zdarma: {lessons}. Soukromé nástroje: {tools}. Bez účtu, bez reklam. Co do nástrojů zadáte, zůstává ve vašem zařízení.',
       welcomeBack: 'Vítejte zpět. Navažte tam, kde to máte rozečtené:',
     },
     journey: {

@@ -805,6 +805,7 @@ export const es: Dict = {
       subhead: ['Lecciones gratuitas.', 'Herramientas privadas.', 'Un planificador en camino.'],
       startLearning: 'Empieza a aprender',
       tryTool: 'Prueba una herramienta gratuita',
+      promise: '{lessons} lecciones gratuitas. {tools} herramientas privadas. Sin cuenta y sin anuncios. Lo que escribes en las herramientas se queda en tu dispositivo.',
       welcomeBack: 'Hola de nuevo. Sigue donde lo dejaste:',
     },
     journey: {
