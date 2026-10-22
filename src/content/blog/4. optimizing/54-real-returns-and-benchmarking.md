@@ -1,6 +1,6 @@
 ---
 slug: "real-returns-and-benchmarking"
-title: "Real Returns: Is Your Portfolio Actually Performing?"
+title: "Real Returns: How to Tell if Your Portfolio Is Really Performing"
 seoTitle: "How to Tell if Your Portfolio Is Really Performing"
 description: "Is your portfolio really doing well? How to find your real return, separate your savings from market growth, pick a fair benchmark and tell noise from a real problem."
 tldr: "The growth on a statement mixes your own contributions with the market, and leaves inflation out. Four adjustments give an honest picture: the real return after inflation, what came from saving versus investing, how you did against a benchmark that matches your mix, and whether any gap is normal noise or a structural problem. Chasing last year's winners has tended to lose."

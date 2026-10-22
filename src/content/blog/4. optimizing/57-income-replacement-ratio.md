@@ -1,7 +1,7 @@
 ---
 slug: "income-replacement-ratio"
-title: "Income Replacement Ratio: What You Need to Retire"
-seoTitle: "How Much Income Will You Need in Retirement?"
+title: "Income Replacement Ratio: How Much Income You Need in Retirement"
+seoTitle: "How Much Income You Need in Retirement"
 description: "Is 70 to 80% of your income enough in retirement? Where the rule comes from, how to build your own number from your expenses, and how pensions shrink your portfolio target."
 tldr: "The income replacement ratio is the share of pre-retirement income needed to keep the same life in retirement. The common 70 to 80% figure assumes saving, work costs and some tax stop; real households range from 40% to over 100%. A category-by-category estimate from your own spending usually says more. Because the portfolio target is about 25 times spending, ten points of ratio can move it by hundreds of thousands, and pensions and other income shrink what the portfolio must cover."
 takeaways:

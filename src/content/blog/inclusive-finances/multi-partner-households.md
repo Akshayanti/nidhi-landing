@@ -1,7 +1,7 @@
 ---
 slug: "multi-partner-households"
-title: "More Than Two Partners: Protecting Everyone"
-seoTitle: "Polyamorous Households: Wills, Pensions and Legal Rights"
+title: "Polyamorous and Multi-Partner Households: Protecting Everyone"
+seoTitle: "Polyamorous Households: Protecting Everyone"
 description: "Where the law recognises one spouse at most, other partners get no automatic protection. Who marries whom, and how wills, beneficiary forms and proxies cover everyone else."
 tldr: "In most countries the law recognises one spouse at a time, so in a household of three or more partners the automatic protections of marriage reach one married pair at most. That raises two questions a couple never asks: who holds the one legal slot, and how the others get equivalent cover. Wills naming every partner, beneficiary forms with percentages, healthcare proxies with alternates in order, powers of attorney and a written agreement do most of it. Joint tax, partner visas and legal parentage generally stay with one pair and need workarounds."
 takeaways:
@@ -9,8 +9,8 @@ takeaways:
     href: "#the-law-offers-one-spouse-slot"
   - text: "How to adapt wills, forms and proxies for more than two partners"
     href: "#wills-forms-and-proxies-for-more-than-two-partners"
-  - text: "What no document extends: joint tax, partner visas and parentage"
-    href: "#what-no-document-extends-joint-tax-partner-visas-and-parentage"
+  - text: "How to plan for limits on joint tax, partner visas and parentage"
+    href: "#planning-for-limits-on-joint-tax-partner-visas-and-parentage"
 glossary:
   - term: "Recognition gap"
     definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
@@ -108,7 +108,7 @@ A [trust](#term-trust) can hold a shared home or investments and spell out who r
 
 </details>
 
-## What no document extends: joint tax, partner visas and parentage
+## Planning for limits on joint tax, partner visas and parentage
 
 Three things stay with one pair at most. Tax systems assess individuals and, in some countries, one married or registered pair; there is no group filing. A partner visa normally covers one partner. And the law of most countries recognises two legal parents at most, however many adults raise a child.
 

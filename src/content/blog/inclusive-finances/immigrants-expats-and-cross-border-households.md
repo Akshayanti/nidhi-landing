@@ -1,12 +1,12 @@
 ---
 slug: "immigrants-expats-and-cross-border-households"
-title: "Moving Countries: Rebuilding Your Financial Identity"
-seoTitle: "Moving Abroad: Building Credit and Banking From Zero"
+title: "Moving Abroad: Building Credit and Banking in a New Country"
+seoTitle: "Moving Abroad: Building Credit and Banking"
 description: "Moved countries? Your credit history stays behind. The order that rebuilds a bank account, address and credit file, and how to cut what sending money home costs."
 tldr: "Crossing a border resets your credit file, bank relationship and paper trail. Rebuilding follows an order, because each step produces the document the next asks for: identification and a tax number, a basic bank account, proof of address, income on the record, then small reported credit where the local system works that way. For money sent home, compare what the recipient actually receives: on €300 a month, a 6.5% cost against 2% is €1,620 over ten years."
 takeaways:
-  - text: "Why a border resets your credit history and banking"
-    href: "#a-border-resets-your-credit-history-and-banking"
+  - text: "What credit history and banking carry across a border"
+    href: "#checking-what-credit-history-and-banking-carry-across-a-border"
   - text: "What order rebuilds a financial identity from zero"
     href: "#rebuilding-follows-an-order"
   - text: "How to compare remittances by the amount actually received"
@@ -73,7 +73,7 @@ Someone has just moved countries. Back home they had twenty years of on-time rep
 
 The [geographic arbitrage post](/blog/geographic-arbitrage/) treated moving as a planned strategy. Most people who cross a border are not running that play: they move for a job they need, to join a partner, to study, or because staying was not possible. Whatever the reason, the financial infrastructure built over years stays behind. This post covers rebuilding it and the cost of sending money home. It is not immigration advice: where status or the right to work is in question, a qualified adviser or a recognised support organisation is the right source.
 
-## A border resets your credit history and banking
+## Checking what credit history and banking carry across a border
 
 A settled adult has things they rarely notice: a credit file, a bank that knows them, a tax number, a pension record, a landlord reference. Each piece helped unlock the next. A border breaks the chain.
 

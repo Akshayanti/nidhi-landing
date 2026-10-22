@@ -1,7 +1,6 @@
 ---
 slug: "what-if-scenarios"
-title: "What-If Scenarios: Test a Decision Before You Make It"
-seoTitle: "What-If Scenarios: Test a Money Decision First"
+title: "What-If Scenarios: Test a Money Decision Before Making It"
 description: "Test a money decision before you make it: change one input in your projection, look at the gap from your baseline, and see why a monthly cost outweighs a one-off purchase."
 tldr: "A what-if scenario is your projection with one input changed, and the useful number is the gap from your baseline. Costs that repeat outweigh one-off purchases: €150 a month more rent is about €146,000 over 30 years at 6% real, a €4,000 holiday about €23,000. Change one thing at a time, and run the bad case first."
 takeaways:
