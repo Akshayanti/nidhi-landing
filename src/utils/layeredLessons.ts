@@ -5,6 +5,8 @@
 // converted on Oct 22, 2026, so there is no backlog; a new lesson at these
 // levels must pass from the start.
 
+import { SEARCH_TITLE_MAX } from './searchTitle';
+
 export const LAYERED_LEVELS = ['optimizing', 'inclusive-finances'] as const;
 
 // Headings that count instead of naming their point, and the closing
@@ -19,6 +21,7 @@ const COUNTED_HEADING = new RegExp(
 const SKELETON_HEADING = /^cross-continent (notes|examples)\b.*$|^getting started$/i;
 
 interface LessonShape {
+  title?: string;
   seoTitle?: string;
   glossary?: { term: string }[];
   takeaways?: (string | { text: string; href: string })[];
@@ -27,7 +30,11 @@ interface LessonShape {
 /** What a lesson at a layered level is missing; empty when it meets the rule. */
 export function layeredLessonProblems(data: LessonShape, h2s: string[]): string[] {
   const problems: string[] = [];
-  if (!data.seoTitle) problems.push('no seoTitle in the reader\'s search words');
+  // The title itself carries the search words (Rule 11); a seoTitle, which
+  // only shortens it, is needed once the title is too long for a result.
+  if (!data.seoTitle && (data.title?.length ?? 0) > SEARCH_TITLE_MAX) {
+    problems.push(`title is over ${SEARCH_TITLE_MAX} characters, so it needs a seoTitle that shortens it`);
+  }
   if (!data.glossary?.length) problems.push('no glossary terms');
   const takeaways = data.takeaways ?? [];
   if (takeaways.length < 2 || takeaways.some((t) => typeof t === 'string' || !t.href)) {

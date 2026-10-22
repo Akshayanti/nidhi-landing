@@ -1,12 +1,11 @@
 ---
 slug: "financial-planning-with-a-disability"
-title: "Disability and Money: Planning Around the Benefit Cliff"
-seoTitle: "Working and Saving Without Losing Disability Benefits"
+title: "Disabled People: Working and Saving Around Benefit Limits"
 description: "Earning or saving more can cost a disabled person more in lost benefits than it brings in. How the benefit cliff works, what to check first, and the accounts and trusts that may help protect support."
 tldr: "For a disabled person on means-tested support, standard advice to earn more and save more can backfire. Benefits are withdrawn as income or savings rise, sometimes all at once: in this post's invented example, €100 more pay costs €800 a month. Three questions before any change help: what counts as income, what counts as savings, and what happens at the limit. Depending on local rules, a protected account or suitably drafted trust may let someone save without all of it counting in a means test, and families considering an inheritance can check whether leaving money to such a structure would protect support better than a direct gift."
 takeaways:
-  - text: "How a benefit cliff can leave you worse off after a raise or gift"
-    href: "#how-a-benefit-cliff-can-leave-you-worse-off-after-a-raise-or-gift"
+  - text: "What to check about benefit limits before earnings or savings change"
+    href: "#checking-benefit-limits-before-earnings-or-savings-change"
   - text: "What to check before any change: income, savings and the limit"
     href: "#what-to-check-before-any-change-income-savings-and-the-limit"
   - text: "When protected accounts or trusts may keep savings outside a means test"
@@ -81,7 +80,7 @@ He earned €100 more and is **€800 a month worse off**. To get back to €1,4
 
 Standard advice says earn more, save more, build a cushion. For a disabled person on means-tested support, following it blindly can backfire, and the World Health Organization estimates about one in six people worldwide lives with a significant disability. This post covers how the cliff works, what to check before any change, and the structures that let a disabled person build security anyway. It gives no thresholds: they differ by country, region and benefit, and they change often.
 
-## How a benefit cliff can leave you worse off after a raise or gift
+## Checking benefit limits before earnings or savings change
 
 Disability support usually comes in three kinds: **contribution-based** (you paid into a system while working), **needs-based** (assessed on the effect of your condition, with income and savings usually ignored) and **means-tested** (only if your income, savings or both are below set limits). A person may receive more than one kind, and the label alone is not enough: the question is whether that particular benefit tests income, savings or both.
 

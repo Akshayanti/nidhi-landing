@@ -1,7 +1,7 @@
 ---
 slug: "building-your-own-default"
-title: "Building Your Own Default"
-seoTitle: "Checking the Assumptions Behind Your Financial Plan"
+title: "Building Your Own Default: Check Your Financial Plan's Assumptions"
+seoTitle: "Check Your Financial Plan's Assumptions"
 description: "Every financial plan leans on assumptions nobody checked. Six families of them, the three kinds of response, and a one-page register with a yearly review that keeps the plan holding when life changes."
 tldr: "Most financial plans rest on six families of assumption: about your relationship, family, income, country, health and beliefs. The responses used throughout this series fall into three groups: designations (a will, a beneficiary form, a power of attorney), structures (joint ownership, a trust, a protected account) and workarounds (insurance, a larger reserve). An assumption register, one page listing what your plan takes for granted, whether it is true, and what would replace it, reviewed yearly and after life events, keeps the plan checked. Defaults drift, so it matters even when they fit today."
 takeaways:

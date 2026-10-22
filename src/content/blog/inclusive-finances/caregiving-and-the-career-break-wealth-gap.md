@@ -1,12 +1,11 @@
 ---
 slug: "caregiving-and-the-career-break-wealth-gap"
-title: "Caregiving: The Real Cost of a Career Break"
-seoTitle: "The Pension Cost of a Career Break for Caregiving"
+title: "Caregivers: Protecting Your Pension During a Career Break"
 description: "A five-year caregiving break can leave a pension gap three times the contributions it skipped. Where it comes from, why the wealth gap outgrows the pay gap, and how carers catch up."
 tldr: "A caregiving break costs more than the salary given up. In this post's example, a five-year break at 35 skips €20,000 of pension contributions during the break and, with a 10% lower salary afterwards, another €10,000 over the following 25 years, leaving about €94,000 less in the pension at 65, on top of €300,000 of pay. That is one reason women's average pension income in the EU is about twice as far below men's as their hourly pay. Caregiver credits, contributions to the carer's own pension during the break, a negotiated return and catch-up contributions put part of the cost back with the household."
 takeaways:
-  - text: "Why a career break's pension cost keeps growing until retirement"
-    href: "#a-career-breaks-pension-cost-keeps-growing-until-retirement"
+  - text: "How a career break's pension cost grows until retirement"
+    href: "#seeing-how-a-career-breaks-pension-cost-grows-until-retirement"
   - text: "Why the wealth gap is wider than the pay gap"
     href: "#the-wealth-gap-is-wider-than-the-pay-gap"
   - text: "How credits, contributions and a re-entry plan protect the carer"
@@ -66,7 +65,7 @@ The [life events post](/blog/life-events/) counted the pay: €200,000 not earne
 
 Pensions are mostly fed by paid work, and a great deal of necessary work is unpaid: someone looks after the baby, the parent with dementia, the brother who cannot live alone. The International Labour Organization estimates that women do about three quarters of unpaid care work worldwide. Nothing here argues against caring for someone; it argues for knowing the price, so a household can decide how to share it.
 
-## A career break's pension cost keeps growing until retirement
+## Seeing how a career break's pension cost grows until retirement
 
 Two pension lines sit under the pay a household sees.
 
