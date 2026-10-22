@@ -1566,7 +1566,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     // still counts.
     function onReaderActed() {
       readerActed = true;
-      if (covers.getBoundingClientRect().bottom > (header ? header.getBoundingClientRect().bottom : 0)) sawList = true;
+      var box = covers.getBoundingClientRect();
+      if (box.bottom > (header ? header.getBoundingClientRect().bottom : 0) && box.top < window.innerHeight) sawList = true;
     }
     ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function(type) {
       window.addEventListener(type, onReaderActed, { passive: true, once: true });
@@ -1621,7 +1622,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     function update() {
       var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
       var coversBottom = covers.getBoundingClientRect().bottom;
-      if (coversBottom > headerBottom && readerActed) sawList = true;
+      if (coversBottom > headerBottom && covers.getBoundingClientRect().top < window.innerHeight && readerActed) sawList = true;
       var inRange = coversBottom <= headerBottom && end.getBoundingClientRect().bottom > window.innerHeight / 2;
       if (inRange !== shown) {
         shown = inRange;
