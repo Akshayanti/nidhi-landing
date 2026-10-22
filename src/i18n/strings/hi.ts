@@ -95,6 +95,7 @@ export const hi: Dict = {
       about: 'nidhi के बारे में',
       beliefs: 'मेरे सिद्धांत',
       editorialPolicy: 'संपादकीय नीति',
+      changes: 'क्या बदला',
       privacy: 'प्राइवेसी',
       cookieSettings: 'कुकी सेटिंग',
     },
@@ -386,6 +387,17 @@ export const hi: Dict = {
       },
     },
   },
+  changes: {
+    meta: {
+      title: 'क्या बदला: nidhi में छोटे बदलाव | nidhi',
+      description:
+        'nidhi पर क्या बदला और कब: नए पेज, सुधार और छोटे बदलाव, सबसे नया सबसे ऊपर, हर भाषा में।',
+    },
+    title: 'क्या बदला',
+    intro:
+      'इस साइट में होने वाले छोटे बदलाव, जैसे-जैसे वे आते हैं, सबसे नया सबसे ऊपर। न कोई रोडमैप, न कोई काउंटडाउन, बस वही जो सच में बदला। नए पाठ सीखने के रास्ते पर मिलते हैं; यह पेज उनके आसपास की हर चीज़ के लिए है।',
+  },
+
   /**
    * The free tools hub at `/free/`. Shorter than the other prose namespaces
    * because the page is: a card per tool, one explainer block, one line of footer.

@@ -88,6 +88,7 @@ export const es: Dict = {
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
       editorialPolicy: 'Política editorial',
+      changes: 'Qué ha cambiado',
       privacy: 'Privacidad',
       cookieSettings: 'Configuración de cookies',
     },
@@ -356,6 +357,17 @@ export const es: Dict = {
         after: '.',
       },
     },
+  },
+
+  changes: {
+    meta: {
+      title: 'Qué ha cambiado: pequeñas novedades de nidhi | nidhi',
+      description:
+        'Qué ha cambiado en nidhi y cuándo: páginas nuevas, correcciones y pequeñas mejoras, lo más reciente primero, en todos los idiomas.',
+    },
+    title: 'Qué ha cambiado',
+    intro:
+      'Los pequeños cambios que hago en este sitio, a medida que salen, lo más reciente primero. Sin hoja de ruta ni cuenta atrás: solo lo que ha cambiado de verdad. Las lecciones nuevas están en la ruta de aprendizaje; esta página es para todo lo demás.',
   },
 
   /**

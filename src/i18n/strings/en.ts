@@ -124,6 +124,7 @@ export const en = {
       about: 'About nidhi',
       beliefs: 'What I believe',
       editorialPolicy: 'Editorial policy',
+      changes: "What's changed",
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
     },
@@ -438,6 +439,21 @@ export const en = {
         after: '.',
       },
     },
+  },
+
+  /**
+   * The "What's changed" page. Its entries live in changes.ts, one line per
+   * visible change, in every language.
+   */
+  changes: {
+    meta: {
+      title: "What's Changed: Small Updates to nidhi | nidhi",
+      description:
+        'What changed on nidhi and when: new pages, fixes and small improvements, newest first, written as they ship, in every language.',
+    },
+    title: "What's changed",
+    intro:
+      'The small changes I make to this site, as they ship, newest first. No roadmap and no countdown, just what actually changed. New lessons are on the learning path; this page is for everything around them.',
   },
 
   /**
