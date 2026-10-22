@@ -25,6 +25,16 @@ export const CHANGES: ChangeEntry[] = [
   {
     date: '2026-10-22',
     text: {
+      en: 'The About page now says how many distinct sources the lessons point to, counted from the lessons themselves.',
+      hi: '"nidhi के बारे में" पेज पर अब लिखा है कि पाठ कितने अलग-अलग स्रोतों की ओर ले जाते हैं, और यह गिनती सीधे पाठों से होती है।',
+      es: 'La página Sobre nidhi indica ahora a cuántas fuentes distintas remiten las lecciones, contadas a partir de las propias lecciones.',
+      cs: 'Stránka O nidhi teď uvádí, na kolik různých zdrojů lekce odkazují, spočítáno přímo z lekcí.',
+      mr: '“nidhi विषयी” पानावर आता लिहिले आहे की धडे किती वेगवेगळ्या स्रोतांकडे नेतात, आणि ही संख्या थेट धड्यांमधून मोजली जाते.',
+    },
+  },
+  {
+    date: '2026-10-22',
+    text: {
       en: 'The Mastery level now says "Not yet available", which is more honest than "In progress".',
       hi: 'निपुणता वाले स्तर पर अब "अभी उपलब्ध नहीं" लिखा है, जो "जारी है" से ज़्यादा सच्चा है।',
       es: 'El nivel Dominio dice ahora «Aún no disponible», que es más honesto que «En curso».',
