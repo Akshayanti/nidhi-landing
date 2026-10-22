@@ -1,0 +1,53 @@
+---
+/**
+ * The planner waitlist on a free tool's page: one sentence on why the planner
+ * matters for this tool, then the same box every tool and the home page use.
+ *
+ * Every tool asks the same way, with the same heading and button, so the only
+ * thing that differs from page to page is the reason (`tools.<tool>.page.
+ * plannerLine`). The box is the default WaitlistSection: its form, events and
+ * click labels are described in the privacy notice.
+ */
+import WaitlistSection from './WaitlistSection.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Why the planner matters for this tool, in one sentence. */
+  line: string;
+}
+
+const { locale, line } = Astro.props;
+---
+
+<div class="tool-waitlist">
+  <p class="tool-waitlist__line">{line}</p>
+  <WaitlistSection locale={locale} />
+</div>
+
+<style>
+  .tool-waitlist {
+    margin-top: var(--space-8);
+  }
+
+  .tool-waitlist :global(.waitlist) {
+    margin: 0;
+  }
+
+  /* As wide as the box beneath it, so the two read as one block. */
+  .tool-waitlist__line {
+    max-width: 460px;
+    margin: 0 auto var(--space-3);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 640px) {
+    .tool-waitlist {
+      margin-top: var(--space-5);
+    }
+  }
+</style>

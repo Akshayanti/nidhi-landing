@@ -63,6 +63,9 @@ export const inflationEn = {
     ],
   },
   page: {
+    /** Above the planner waitlist box: why the planner matters for this tool. */
+    plannerLine:
+      'The nidhi planner projects your whole picture forward with its assumptions on screen, inflation included, in one currency or several.',
     breadcrumb: {
       home: 'Home',
       freeTools: 'Free tools',
@@ -356,6 +359,8 @@ export const inflationHi: typeof inflationEn = {
     ],
   },
   page: {
+    plannerLine:
+      'nidhi प्लानर आपकी पूरी तस्वीर को आगे के सालों तक ले जाकर दिखाता है, सारी मान्यताएँ स्क्रीन पर रखकर, महँगाई समेत, एक मुद्रा में या कई में।',
     breadcrumb: {
       home: 'होम',
       freeTools: 'मुफ़्त टूल',
@@ -613,6 +618,8 @@ export const inflationEs: typeof inflationEn = {
     ],
   },
   page: {
+    plannerLine:
+      'El planificador de nidhi proyecta tu situación completa hacia adelante con sus supuestos a la vista, inflación incluida, en una moneda o en varias.',
     breadcrumb: {
       home: 'Inicio',
       freeTools: 'Herramientas gratuitas',
@@ -873,6 +880,8 @@ export const inflationCs: typeof inflationEn = {
     ],
   },
   page: {
+    plannerLine:
+      'Plánovač nidhi promítá celý obraz vašich financí do budoucna s předpoklady na obrazovce, včetně inflace, v jedné měně i ve více měnách.',
     breadcrumb: {
       home: 'Domů',
       freeTools: 'Nástroje zdarma',
@@ -1125,6 +1134,8 @@ export const inflationMr: typeof inflationEn = {
     ],
   },
   page: {
+    plannerLine:
+      'nidhi प्लॅनर तुमचे संपूर्ण आर्थिक चित्र पुढच्या वर्षांपर्यंत मांडून दाखवतो, सगळी गृहीतके पडद्यावर ठेवून, महागाईसह, एका चलनात किंवा अनेक चलनांमध्ये.',
     breadcrumb: {
       home: 'मुख्यपृष्ठ',
       freeTools: 'मोफत साधने',

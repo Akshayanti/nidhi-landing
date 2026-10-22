@@ -6,54 +6,35 @@
 // Uses PUBLIC_WAITLIST_ENDPOINT (separate Apps Script deployment from the
 // blog newsletter). See scripts/waitlist.gs for setup instructions.
 //
-// Variants:
-//   default  Box-chrome card with heading + body, used in section 6 of the
-//            home page and other top-level conversion spots.
-//   hero     Stripped to just input + button + privacy note. Used in the
-//            home page hero where the surrounding copy already does the
-//            framing job.
-//
-// Both variants share the same submission logic, same localStorage key,
-// and both hide their containers post-submit. Because the same key is
-// shared, submitting one variant on a page that renders both will also
-// hide the other, which is the intended outcome.
+// One box, the same everywhere it appears: the home page and every free
+// tool (through ToolWaitlist.astro). Once someone signs up, the shared
+// localStorage key hides it on every page.
 
 import { dict, localizedPath, type Locale } from '../i18n';
 
 interface Props {
   /** The language of the page the box sits on. */
   locale: Locale;
-  variant?: 'default' | 'hero';
-  /**
-   * Overrides the button's label. Left undefined everywhere today, so the
-   * catalog's own word is used; kept because the prop predates the catalog and
-   * a caller may still want a shorter label for a narrow slot.
-   */
-  cta?: string;
 }
 
-const { locale, variant = 'default', cta } = Astro.props;
+const { locale } = Astro.props;
 const { waitlist } = dict(locale);
-const ctaLabel = cta ?? waitlist.cta;
+const ctaLabel = waitlist.cta;
 
 const endpoint = import.meta.env.PUBLIC_WAITLIST_ENDPOINT || '';
 const isDev = import.meta.env.DEV;
 
-const idPrefix = variant === 'hero' ? 'waitlist-hero' : 'waitlist';
+const idPrefix = 'waitlist';
 const formId = `${idPrefix}-form`;
 const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
 ---
 
-<section class:list={['waitlist', `waitlist--${variant}`]} aria-label={waitlist.region}>
+<section class="waitlist" aria-label={waitlist.region}>
   <div class="waitlist-box">
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
-      {variant === 'default' && (
-        <>
-          <h3 class="waitlist-title">{waitlist.heading}</h3>
-        </>
-      )}
+      <h3 class="waitlist-title">{waitlist.heading}</h3>
 
       <form
         id={formId}
@@ -382,9 +363,9 @@ const inputId = `${idPrefix}-email`;
   .waitlist-button:disabled { opacity: 0.6; cursor: wait; }
   /* On the blue card a teal button nearly vanishes on a dim screen; white
      with the card's navy as text stands apart in both themes. */
-  .waitlist--default .waitlist-button { background: #fff; color: var(--color-callout-bg); border-color: #fff; }
-  .waitlist--default .waitlist-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); }
-  .waitlist--default .waitlist-button:focus-visible { outline-color: #fff; }
+  .waitlist .waitlist-button { background: #fff; color: var(--color-callout-bg); border-color: #fff; }
+  .waitlist .waitlist-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); }
+  .waitlist .waitlist-button:focus-visible { outline-color: #fff; }
 
   .waitlist-button:focus-visible {
     outline: 2px solid var(--color-teal);
@@ -413,7 +394,7 @@ const inputId = `${idPrefix}-email`;
   .waitlist-confirm-change:hover:not(:disabled) { color: white; }
   .waitlist-confirm-change:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .waitlist-button[hidden] { display: none; }
-  .waitlist--default .waitlist-confirm-actions { justify-content: center; }
+  .waitlist .waitlist-confirm-actions { justify-content: center; }
 
   .waitlist-status {
     font-size: 0.875rem;
@@ -500,78 +481,4 @@ const inputId = `${idPrefix}-email`;
     .waitlist-text { font-size: 0.875rem; }
     .waitlist-success-title { font-size: 1.15rem; }
   }
-
-  /* ----------------------------------------------------------------
-     Hero variant: drops the deep-blue card chrome so the form sits
-     directly on the page background. The hero copy already does the
-     framing work, so heading + body text are not rendered. Form
-     controls switch to light-bg styling so the input matches the rest
-     of the surrounding hero (no color contrast clash with white card
-     on a light bg, no white-on-white in dark mode).
-     ---------------------------------------------------------------- */
-  .waitlist--hero {
-    margin: 0;
-  }
-
-  .waitlist--hero .waitlist-box {
-    background: transparent;
-    padding: 0;
-    text-align: left;
-    max-width: 540px;
-    margin: 0;
-  }
-
-  .waitlist--hero .waitlist-form { max-width: none; margin: 0; }
-
-  .waitlist--hero .waitlist-input {
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-white);
-    color: var(--color-text-primary);
-  }
-
-  .waitlist--hero .waitlist-input:focus-visible {
-    outline: none;
-    border-color: var(--color-deep-blue);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-deep-blue) 22%, transparent);
-  }
-
-  .waitlist--hero .waitlist-status {
-    color: var(--color-text-secondary);
-  }
-  .waitlist--hero .waitlist-status--success { color: var(--color-success); }
-  .waitlist--hero .waitlist-status--error   { color: var(--status-error-light); }
-
-  [data-theme="dark"] .waitlist--hero .waitlist-status--error {
-    color: var(--palette-deep-orange-dark);
-  }
-
-  .waitlist--hero .waitlist-confirm-text { color: var(--color-text-primary); }
-  .waitlist--hero .waitlist-confirm-change { color: var(--color-deep-blue); }
-  .waitlist--hero .waitlist-confirm-change:focus-visible { outline-color: var(--color-teal); }
-
-  .waitlist--hero .waitlist-privacy {
-    color: var(--color-text-muted);
-  }
-  .waitlist--hero .waitlist-privacy a {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  /* Hero variant post-submit success: keep it inline, theme-correct, no
-     dark-card foreground colors from the default variant. */
-  .waitlist--hero .waitlist-success-icon {
-    background: color-mix(in srgb, var(--color-teal) 16%, transparent);
-    color: var(--color-teal);
-    margin: 0 0 var(--space-3);
-  }
-  .waitlist--hero .waitlist-success-title {
-    color: var(--color-deep-blue);
-    text-align: left;
-  }
-  .waitlist--hero .waitlist-success-body {
-    color: var(--color-text-secondary);
-    text-align: left;
-  }
-  .waitlist--hero .waitlist-post { text-align: left; }
 </style>
