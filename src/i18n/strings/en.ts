@@ -109,7 +109,6 @@ export const en = {
     columns: {
       learn: 'Learn',
       tools: 'Free Tools',
-      product: 'Product',
       about: 'About',
       connect: 'Connect',
     },
@@ -122,7 +121,6 @@ export const en = {
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
       allTools: 'View all',
-      home: 'Home',
       about: 'About nidhi',
       beliefs: 'Our Beliefs',
       editorialPolicy: 'Editorial policy',
