@@ -75,8 +75,9 @@ const levelLabel = (level: string | null) => (level ? (home.levels as Record<str
 assertInclusiveGroups(allPosts);
 const inclusive = liveInclusive(allPosts, now);
 
-// The hero's counts. Inclusive Finances guides are lessons too, though they sit
-// outside the ladder `counts.total` covers. A tool counts once it is live.
+// The page's counts, one number wherever it appears (the hero and the FAQ).
+// Inclusive Finances guides are lessons too, though they sit outside the
+// ladder `counts.total` covers. A tool counts once it is live.
 const lessonTotal = counts.total + inclusive.count;
 const toolTotal = Object.keys(TOOLS).filter(isToolLive).length;
 
@@ -161,7 +162,7 @@ const starterFootnote = t(home.example.footnote, {
 });
 
 // Shown on the page and, word for word, in the FAQPage data below.
-const faqs = home.faq.items.map((f) => ({ q: f.q, a: t(f.a, { total: counts.total }) }));
+const faqs = home.faq.items.map((f) => ({ q: f.q, a: t(f.a, { total: lessonTotal }) }));
 
 const description = home.meta.description;
 

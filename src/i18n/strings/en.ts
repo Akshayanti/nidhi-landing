@@ -1132,7 +1132,7 @@ export const en = {
       items: [
         {
           q: 'Is nidhi for beginners?',
-          a: 'Yes. The learning path starts with what net worth is and assumes no prior knowledge. Each lesson explains its terms as it goes, and the {total} lessons so far are in reading order, so you can start at the top and keep going.',
+          a: 'Yes. The learning path starts with what net worth is and assumes no prior knowledge. Each lesson explains its terms as it goes. There are {total} lessons so far, and the main path is in reading order, so you can start at the top and keep going.',
         },
         {
           q: 'Do I need money in more than one currency to use nidhi?',

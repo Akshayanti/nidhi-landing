@@ -861,7 +861,7 @@ export const cs: Dict = {
       items: [
         {
           q: 'Je nidhi pro ty, kdo začínají?',
-          a: 'Ano. Vzdělávací cesta začíná tím, co je čisté jmění, a nepředpokládá žádné předchozí znalosti. Každá lekce vysvětluje své pojmy průběžně a lekce (zatím jich je {total}) jdou po sobě v pořadí čtení, takže stačí začít nahoře a pokračovat.',
+          a: 'Ano. Vzdělávací cesta začíná tím, co je čisté jmění, a nepředpokládá žádné předchozí znalosti. Každá lekce vysvětluje své pojmy průběžně. Počet lekcí je zatím {total} a lekce v hlavní cestě jdou po sobě v pořadí čtení, takže stačí začít nahoře a pokračovat.',
         },
         {
           q: 'Potřebuji k používání nidhi peníze ve více než jedné měně?',
