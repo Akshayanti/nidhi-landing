@@ -1,7 +1,7 @@
 ---
 slug: "divorce-and-separation-finances"
-title: "Divorce and Separation: Untangling Shared Finances"
-seoTitle: "Divorce Finances: Splitting Assets, Pensions and Debts"
+title: "Divorce and Separation: Splitting Assets, Pensions and Debts Fairly"
+seoTitle: "Divorce: Splitting Assets, Pensions and Debts Fairly"
 description: "Separating? Why the inventory comes first, why €200,000 in cash, home equity and a pension are not equal, how to split a pension without tax, and the paperwork a settlement leaves behind."
 tldr: "A separation turns one set of assets, debts and plans into two. An inventory of every asset and debt comes before any negotiation. Equal values are not equal assets: €200,000 in cash, home equity and a pension are worth about €200,000, €176,000 and €160,000 after illustrative costs and tax, and become usable at different times. Pensions are split through the formal legal route, not by withdrawal. And beneficiary forms, wills and joint debts need checking after a settlement, because it does not update them on its own."
 takeaways:

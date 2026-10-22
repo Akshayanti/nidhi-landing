@@ -1,7 +1,6 @@
 ---
 slug: "tax-loss-harvesting-and-asset-location"
 title: "Tax-Loss Harvesting and Asset Location Explained"
-seoTitle: "Tax-Loss Harvesting and Asset Location, Explained Simply"
 description: "How tax-loss harvesting defers tax without adding return, how wash-sale rules work, and how asset location places the same portfolio across accounts to cut tax drag."
 tldr: "Tax-loss harvesting sells an investment at a loss to offset gains, then buys something similar to stay invested; it defers tax rather than adding return, and wash-sale rules limit it. Asset location keeps the same mix but places tax-heavy assets in sheltered accounts. Each can be worth a few tenths of a percent a year in after-tax return, after allocation and fees."
 takeaways:

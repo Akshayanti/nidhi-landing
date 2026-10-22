@@ -1,7 +1,7 @@
 ---
 slug: "windfall-management"
-title: "Windfalls: Bonuses, Inheritances, and Sale Proceeds"
-seoTitle: "What to Do With an Inheritance, Bonus or Windfall"
+title: "Windfalls: What to Do With an Inheritance, Bonus or Sale Proceeds"
+seoTitle: "What to Do With an Inheritance, Bonus or Sale Proceeds"
 description: "What to do with an inheritance, bonus or sale proceeds: why many people park a windfall first, lump sum against spreading it out, and how a one-off sum becomes a permanent cost."
 tldr: "A windfall brings its own traps: urgency, concentration in one asset, and one-off money funding permanent costs. Many people park it in a labelled account for 30 to 90 days, longer after a loss, then follow their usual priority order at its scale. Historically, investing at once has beaten spreading it out about two-thirds of the time, but spreading is a reasonable behavioural choice."
 takeaways:

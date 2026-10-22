@@ -23,7 +23,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import HeroChart from '../HeroChart.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
-import { LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 import { EXAMPLES, EXAMPLE_CURRENCY, EXAMPLE_RETURN, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
@@ -32,6 +32,7 @@ import {
   levelCounts,
   readingOrder,
   resolveStartingPoints,
+  TOOLS,
 } from '../../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../../utils/inclusiveGuides.ts';
 import { formatProseAmount, formatProsePercent } from '../../utils/shared/formatAmount.ts';
@@ -73,6 +74,11 @@ const levelLabel = (level: string | null) => (level ? (home.levels as Record<str
 // Inclusive Finances joins the starting points once a guide in it is live.
 assertInclusiveGroups(allPosts);
 const inclusive = liveInclusive(allPosts, now);
+
+// The hero's counts. Inclusive Finances guides are lessons too, though they sit
+// outside the ladder `counts.total` covers. A tool counts once it is live.
+const lessonTotal = counts.total + inclusive.count;
+const toolTotal = Object.keys(TOOLS).filter(isToolLive).length;
 
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
 // table sits in Step 2 and the ten-year chart in Step 3.
@@ -233,6 +239,13 @@ const faqSchema = {
             <a href={href('/blog/')} class="lp-btn lp-btn--primary" data-attr="home-hero-start-learning">{home.hero.startLearning}</a>
             <a href={href('/free/')} class="lp-btn lp-btn--secondary" data-attr="home-hero-tools">{home.hero.tryTool}</a>
           </div>
+
+          {/* What "free" and "private" mean, said where the choice is made. Plain
+              text, not a link, so it does not read as a third button. */}
+          <p class="hero-promise">{t(home.hero.promise, { lessons: lessonTotal, tools: toolTotal })}</p>
+          {/* Outside English, said here too and not only in Step 1: the first
+              button opens English lessons. */}
+          {locale !== DEFAULT_LOCALE && <div class="hero-lang"><LessonsInEnglish locale={locale} /></div>}
 
           {firstLesson && (
             <div class="hero-next" data-continue={JSON.stringify(order)} hidden>
@@ -958,6 +971,17 @@ const faqSchema = {
     flex-wrap: wrap;
     gap: 12px;
   }
+
+  .hero-promise {
+    margin: 16px 0 0;
+    max-width: 54ch;
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .hero-lang { margin-top: 12px; max-width: 54ch; }
+  .hero-lang :global(.lessons-note) { margin: 0; }
 
   .hero-next {
     margin-top: 20px;

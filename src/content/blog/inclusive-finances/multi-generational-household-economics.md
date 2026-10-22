@@ -1,7 +1,6 @@
 ---
 slug: "multi-generational-household-economics"
-title: "Supporting Parents While Saving for Yourself"
-seoTitle: "Supporting Your Parents While Saving for Retirement"
+title: "Supporting Your Parents While Saving for Your Retirement"
 description: "When three generations share money, a one-household budget misleads. How to plan support for parents as a fixed cost, count what a shared household gives back, and protect your own future."
 tldr: "For much of the world a household spans three generations, and support parents rely on can behave like a fixed cost: it recurs and may be hard to reduce quickly. Budgeted as a fixed cost at the top, rather than from leftovers, it stops crowding out saving by accident. A shared household also gives back in housing, childcare and pooled risk. But support now trades off against your own retirement: €500 a month for 20 years is €120,000 given and about €205,500 not saved at an illustrative 5%. A floor, a ceiling and a sibling agreement keep it sustainable."
 takeaways:

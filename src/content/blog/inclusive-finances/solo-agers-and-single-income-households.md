@@ -1,12 +1,12 @@
 ---
 slug: "solo-agers-and-single-income-households"
-title: "One Income, No Backup: Planning for a Household of One"
-seoTitle: "Single Income? Emergency Fund and Retirement for One"
+title: "Living Solo: An Emergency Fund and Retirement on One Income"
+seoTitle: "Living Solo: Emergency Fund and Retirement on One Income"
 description: "Living on one income, or growing older alone? Which rules of thumb assume a second earner, how much to adjust them, and the five documents that name who acts for you."
 tldr: "Many rules of thumb hide a second adult. Six months of savings gives a couple nearly 20 months of runway when one job goes, and a single earner 6. Common adjustments on one income: a larger emergency fund, stronger income protection, fixed costs set for one income, and a retirement number built for one person, about 70% of a couple's budget rather than 50%. The other half is naming, in writing, who acts for you if you cannot, and planning for care you may have to pay for."
 takeaways:
-  - text: "Why common rules of thumb quietly assume a second income"
-    href: "#common-rules-of-thumb-quietly-assume-a-second-income"
+  - text: "How to adjust common rules of thumb for one income"
+    href: "#adjusting-common-rules-of-thumb-for-one-income"
   - text: "How one income changes how long an emergency fund lasts"
     href: "#one-income-changes-how-long-an-emergency-fund-lasts"
   - text: "Why one person needs about 70% of a couple's budget, not 50%"
@@ -68,7 +68,7 @@ The couple's income falls to €2,500, so they are €1,100 a month short, and t
 
 The [income replacement ratio post](/blog/income-replacement-ratio/), like most retirement writing, spoke of households in the plural. Some people live alone by choice, some after a separation or a death, some raise children on one income, and many grow older without a partner or family nearby (a [solo ager](#term-solo-ager)). For them the formulas still work; the inputs change, and one part of the plan couples get for free has to be built by hand.
 
-## Common rules of thumb quietly assume a second income
+## Adjusting common rules of thumb for one income
 
 The same six months can mean very different runway: for the couple, another income keeps covering part of the spending; for the single earner, the fund covers all of it. That second income is a [default assumption](#term-default-assumption), the unstated guess about who you are that [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) described, and it sits inside several other rules:
 
@@ -135,7 +135,7 @@ The where-everything-is list. It is what the person you named will reach for fir
 
 </details>
 
-## Care you may have to pay for
+## Planning for care when you live solo
 
 [Long-term care](#term-long-term-care), ongoing help with washing, dressing, eating and moving about, is mostly provided unpaid by partners and adult children around the world, which is why plans rarely show it: a family caregiver sends no invoice. Someone without an expected family caregiver may need to budget for more paid help, while checking what public services, community support and friends could provide. Three things shape the cost: what the public system covers (some countries run compulsory care insurance, others help only once savings fall below a threshold, known as [means-testing](#term-means-testing)); how the gap is funded (savings set aside for it, insurance where a market exists, or the value of a home); and where you live (an accessible home near friends and services, or shared or supported housing, delays the point at which paid care is needed). It is the hardest number in the plan to estimate, and still more useful as a line with a rough figure than as a blank.
 

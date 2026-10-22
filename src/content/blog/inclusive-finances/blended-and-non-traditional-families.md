@@ -1,14 +1,14 @@
 ---
 slug: "blended-and-non-traditional-families"
-title: "Blended Families: When the Rules Expect Two Parents"
-seoTitle: "Blended Families: Wills, Stepchildren and Inheritance"
+title: "Blended Families: Wills That Provide for Stepchildren and Partners"
+seoTitle: "Blended Families: Wills for Stepchildren and Partners"
 description: "Stepchildren usually inherit nothing by default, and leaving everything to a spouse can cut out your own children. How blended families provide for both, and share costs across homes."
 tldr: "Rules about children assume two legal parents and one household. In a blended family, stepchildren usually inherit nothing unless named, and the most natural will, everything to my spouse, can disinherit your own children by accident when the surviving spouse's estate passes to their own heirs. Depending on local law and providers' rules, families may use a life interest, separately directed assets or life insurance to balance a survivor's needs with provision for children. Across homes, who pays for which child, who controls a child's account and who claims which allowance are questions many families agree out loud and write down."
 takeaways:
-  - text: "Why stepchildren usually inherit nothing unless you name them"
-    href: "#stepchildren-usually-inherit-nothing-unless-you-name-them"
-  - text: "How 'everything to my spouse' can leave your own children out"
-    href: "#how-everything-to-my-spouse-can-leave-your-own-children-out"
+  - text: "How naming stepchildren brings them into your inheritance plan"
+    href: "#naming-stepchildren-in-your-inheritance-plan"
+  - text: "How to provide for your children when everything goes to your spouse"
+    href: "#providing-for-your-children-when-everything-goes-to-your-spouse"
   - text: "How a life interest, separate pots or insurance provide for both"
     href: "#how-a-life-interest-separate-pots-or-insurance-provide-for-both"
   - text: "How families agree costs, accounts and claims across homes"
@@ -75,11 +75,11 @@ Everything Thomas built, including what he brought from before the marriage, has
 
 Rules about children assume two legal parents, one household and one line of inheritance. Many children live otherwise: with a parent and a step-parent, across two homes each week, with half-siblings, or raised by a parent's partner with no legal tie to them. For these families the default rules fail quietly, years later, at a death or a separation. This post covers the two places it happens most: inheritance, and money shared across households. Custody, adoption and step-parents' legal standing are family law, which differs everywhere; this post shows which financial gaps to check.
 
-## Stepchildren usually inherit nothing unless you name them
+## Naming stepchildren in your inheritance plan
 
 When someone dies without a will, fixed rules decide who inherits (the [first post in this series](/blog/when-the-default-plan-does-not-fit-you/) covered them), and those rules follow legal parentage. Those rules follow whether someone is a [legal parent](#term-legal-parent): a stepchild is not a step-parent's legal child unless adopted, even when the step-parent has been a [de facto parent](#term-de-facto-parent) for years. So in many jurisdictions a step-parent who dies without a will leaves a stepchild nothing by default, however long they were a family, and in some countries a stepchild named in a will is taxed at the rate for unrelated people. A common remedy is naming them, in the will and on every [beneficiary form](#term-beneficiary-form), within local inheritance limits; whether a form is binding varies scheme by scheme ([when a beneficiary form is binding](/blog/when-the-default-plan-does-not-fit-you/#is-a-pension-beneficiary-form-binding)), and a survivor pension may still be limited to a spouse or dependants.
 
-## How 'everything to my spouse' can leave your own children out
+## Providing for your children when everything goes to your spouse
 
 Once a spouse inherits, the money is theirs to leave as they choose, and if their will names "my children" or they have none, it follows their legal heirs. Thomas and Claire's case is one route. Others lead to the same place: Claire remarries, Claire needs the money for care, Claire and the stepchildren drift apart after the funeral. The opposite mistake happens too: leaving everything directly to your own children can leave a surviving spouse without a home.
 

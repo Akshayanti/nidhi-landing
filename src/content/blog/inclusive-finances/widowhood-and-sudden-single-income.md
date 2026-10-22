@@ -1,7 +1,6 @@
 ---
 slug: "widowhood-and-sudden-single-income"
-title: "After a Partner Dies: What Has a Deadline and What Can Wait"
-seoTitle: "What to Do Financially When Your Partner Dies"
+title: "After a Partner's Death: Money Steps and What Can Wait"
 description: "After a partner dies: the short list with deadlines, the long list that can wait six to twelve months, why income falls further than costs, and the scams that target the bereaved."
 tldr: "After a partner dies, registration, access to day-to-day cash, notifications and time-limited claims such as survivor benefits may need early attention; exact deadlines and account rules are local. Large, hard-to-reverse decisions, from selling the home to investing a payout, often do not share those deadlines, and many bereavement guides suggest allowing six to twelve months before making them. Statistical equivalence scales put one adult's needs at roughly two-thirds to 70% of a couple's, while income can fall much further, especially without a survivor pension. Scams aimed at the bereaved are common."
 takeaways:
@@ -11,8 +10,8 @@ takeaways:
     href: "#why-many-advisers-suggest-waiting-six-to-twelve-months-for-major-decisions"
   - text: "Why income often falls further than costs after a partner dies"
     href: "#why-income-often-falls-further-than-costs-after-a-partner-dies"
-  - text: "How to make yourself hard to reach for scams aimed at the bereaved"
-    href: "#how-to-make-yourself-hard-to-reach-for-scams-aimed-at-the-bereaved"
+  - text: "How to protect yourself from scams aimed at the bereaved"
+    href: "#protecting-yourself-from-scams-aimed-at-the-bereaved"
 glossary:
   - term: "Survivor benefit"
     definition: "Income or a lump sum paid because a partner has died, from the state, a workplace pension or social insurance. Some must be claimed within a set period."
@@ -104,7 +103,7 @@ The figures are illustrative; survivor pensions range from nothing to the full a
 
 </details>
 
-## How to make yourself hard to reach for scams aimed at the bereaved
+## Protecting yourself from scams aimed at the bereaved
 
 Deaths are published, a payout may be on the way, and the survivor is exhausted and often handling money alone for the first time. The [scams post](/blog/recognizing-and-avoiding-financial-scams-and-fraud/) covers the general warning signs; the expander below lists approaches common after a bereavement.
 
