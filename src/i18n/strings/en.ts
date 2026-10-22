@@ -84,7 +84,7 @@ export const en = {
       inflationCalculator: 'Inflation calculator',
       allTools: 'All free tools',
       about: 'About nidhi',
-      beliefs: 'Our beliefs',
+      beliefs: 'What I believe',
       editorialPolicy: 'Editorial policy',
       contact: 'Contact us',
       email: 'Email',
@@ -122,7 +122,7 @@ export const en = {
       inflationCalculator: 'Inflation calculator',
       allTools: 'View all',
       about: 'About nidhi',
-      beliefs: 'Our Beliefs',
+      beliefs: 'What I believe',
       editorialPolicy: 'Editorial policy',
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
@@ -215,7 +215,7 @@ export const en = {
     },
     title: 'About nidhi',
     intro:
-      'nidhi is the name on this writing, and the project it belongs to. One person started it, the name stuck, and it is who you are reading when you read the lessons.',
+      "nidhi is the name on this writing and the project it belongs to. I started it, the name stuck, and when you read the lessons, you're reading me.",
     sections: {
       whoIsWriting: 'Who is writing',
       whyYouCanTrustIt: 'Why you can trust it',
@@ -224,7 +224,7 @@ export const en = {
     },
     body: {
       whoIsWriting:
-        'Every post on this site is written and edited under one name: nidhi. The project began because one person could not find a finance tool that handled an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The writing comes from that same place: the questions a real person actually has to answer, explained the way they wished someone had explained them.',
+        "Every post on this site goes out under one name: nidhi. I started it because I couldn't find a finance tool for an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The lessons come from the same place: real questions I have had to answer, explained the way I wish someone had explained them to me.",
       whyYouCanTrustIt1:
         'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post makes a claim, it points to the source: the books, reference pages, and primary material listed on each article under "referential reading."',
       whyYouCanTrustIt2:
@@ -249,7 +249,7 @@ export const en = {
       whatNidhiKnowsAbout: {
         before:
           'The writing concentrates on net worth and how to measure it, managing money across currencies, cash flow and saving, debt, and the path to financial independence. If you want the worldview behind all of it, read ',
-        link: 'our beliefs',
+        link: 'my beliefs',
         after: '.',
       },
     },
@@ -268,14 +268,14 @@ export const en = {
    */
   beliefs: {
     meta: {
-      title: 'What We Believe: Honest Personal Finance Tools | nidhi',
+      title: 'What I Believe: Honest Personal Finance Tools | nidhi',
       description:
-        'What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and lessons that are free forever.',
+        'What I believe, building nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and lessons that are free forever.',
     },
     schema: {
-      name: 'Our Beliefs',
+      name: 'What I Believe',
       description:
-        'What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling.',
+        'What I believe, building nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling.',
       organization: 'Personal finance tools and financial literacy education.',
       foundingLocation: 'Prague',
       knowsAbout: {
@@ -285,15 +285,15 @@ export const en = {
         multiCurrencyFinance: 'Multi-Currency Finance',
       },
       breadcrumbHome: 'Home',
-      breadcrumbAbout: 'Our Beliefs',
+      breadcrumbAbout: 'What I Believe',
     },
-    title: 'What We Believe',
+    title: 'What I Believe',
     intro:
-      "nidhi started because one person couldn't find a decent finance tool, and got annoyed enough to build one",
+      "I started nidhi because I couldn't find a decent finance tool, so I got annoyed enough to build one",
     items: {
       frustration: {
         heading: 'This whole thing started out of frustration',
-        body: "We wanted something that could help a regular person plan their money, see where it's going, and make better decisions about it. Nothing like that existed. So here we are, building it ourselves.",
+        body: "I wanted something that could help a regular person plan their money, see where it's going, and make better decisions about it. Nothing like that existed. So here I am, building it myself.",
       },
       noPlanner: {
         heading: "Financial planning shouldn't require a financial planner",
@@ -301,30 +301,30 @@ export const en = {
       },
       accessibility: {
         heading: 'Built for everyone tech keeps forgetting',
-        body: "A lot of apps conveniently forget that money tools should work whether you're colour blind, use a screen reader, or take in information differently, for example through ADHD or dyslexia. Being queer, neurodivergent, and a person of colour, we never had that luxury. Leaving anyone out of their own money just feels cheap.",
+        body: "A lot of apps conveniently forget that money tools should work whether you're colour blind, use a screen reader, or take in information differently, for example through ADHD or dyslexia. I'm queer, neurodivergent, and a person of colour, so I never had that luxury. Leaving anyone out of their own money just feels cheap.",
       },
       freeForever: {
         heading: 'The lessons are free, forever',
-        body: 'No paywalls, no "subscribe for the good stuff" nonsense. If something we wrote helped you make a better decision, even if you never touch our product, that\'s the whole point. Tell us about it. We run on that kind of fuel.',
+        body: 'No paywalls, no "subscribe for the good stuff" nonsense. If something I wrote helped you make a better decision, even if you never touch my product, that\'s the whole point. Tell me about it. That kind of thing keeps me going.',
       },
       rulesOfThumb: {
         heading: 'Not just the rules of thumb',
-        body: 'A rule of thumb is a starting point, not an answer. Where a lesson gives one, it also explains why it exists, where it breaks, and what depends on you: your country, your income, your debts, how far ahead you are planning. We would rather you understand the reasoning than follow a rule that was never written for your life.',
+        body: 'A rule of thumb is a starting point, not an answer. Where a lesson gives one, it also explains why it exists, where it breaks, and what depends on you: your country, your income, your debts, how far ahead you are planning. I would rather you understand the reasoning than follow a rule that was never written for your life.',
       },
       noAds: {
         heading: 'No ads, no data selling, no asterisks',
-        body: 'We don\'t run ads. We don\'t sell your data. We don\'t do that creepy thing where you search "term insurance" and then see ads for it everywhere for a week. Your finances are your business. Literally.',
+        body: 'I don\'t run ads. I don\'t sell your data. I don\'t do that creepy thing where you search "term insurance" and then see ads for it everywhere for a week. Your finances are your business. Literally.',
       },
       madeInPrague: {
         heading: 'Made in Prague, powered by word of mouth',
-        body: "No VC money. No growth team. No billboard on the highway. If you think nidhi is useful, tell someone. That's our primary marketing strategy.",
+        body: "No VC money. No growth team. No billboard on the highway. If you think nidhi is useful, tell someone. That's my main marketing strategy.",
       },
     },
     cta: {
-      text: "Convinced? Or think we're full of it?",
-      sub: "Either way, we'd love to hear from you",
-      email: 'Drop us a love letter',
-      instagram: 'Slide into our DMs',
+      text: "Convinced? Or think I'm full of it?",
+      sub: "Either way, I'd love to hear from you",
+      email: 'Drop me a love letter',
+      instagram: 'Slide into my DMs',
     },
   },
 
@@ -430,8 +430,8 @@ export const en = {
       whoIsBehind: {
         before: 'For who writes nidhi and the experience behind the writing, see the ',
         aboutLink: 'about page',
-        middle: '. For the worldview that shapes what we choose to build and publish, read ',
-        beliefsLink: 'our beliefs',
+        middle: '. For the worldview that shapes what I choose to build and publish, read ',
+        beliefsLink: 'my beliefs',
         after: '.',
       },
     },
@@ -524,7 +524,7 @@ export const en = {
     footer: {
       before: 'Want the longer reasoning behind these tools? Read the ',
       blogLink: 'nidhi learning path',
-      middle: ', the curriculum that informs them, or learn what we ',
+      middle: ', the curriculum that informs them, or learn what I ',
       beliefsLink: 'believe about money and planning',
       after: '.',
     },
@@ -1066,7 +1066,7 @@ export const en = {
     /** Step 3: the planner, and the one decision compared. */
     planner: {
       heading: 'See where it could go.',
-      body: 'We are building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.',
+      body: "I'm building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.",
     },
     /**
      * The worked example. Its numbers are computed (src/utils/home/), so the
@@ -1136,9 +1136,9 @@ export const en = {
           a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
         },
       ],
-      why: 'nidhi started because one person couldn’t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So we are building it, and explaining what we learn along the way.',
+      why: 'nidhi started because I couldn’t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So I’m building it, and explaining what I learn along the way.',
       trustLine: 'Made in Prague. No ads, no data selling. Lessons cite their sources.',
-      trustBeliefs: 'What we believe',
+      trustBeliefs: 'What I believe',
       trustEditorial: 'How we write',
       trustPrivacy: 'Privacy policy',
     },
