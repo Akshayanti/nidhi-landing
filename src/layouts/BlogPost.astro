@@ -186,7 +186,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
   {/*
     The lesson index button: once "In this lesson" has scrolled away, a
-    button bottom right (a labelled pill in the margin on wide screens) opens
+    button bottom right (a pill in the margin on wide screens) opens
     the same list in a dialog, with the part being read marked. Shown from
     the end of the list to the end of the FAQ (script below); hidden without
     JavaScript and in print, where the list under the title is still there.
@@ -1292,8 +1292,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     outline-offset: 3px;
   }
 
-  /* The label shows on narrow screens only the first time the button
-     appears, so the icon is learnt once; it then shrinks to the icon. */
+  /* On narrow screens the button reads "In this lesson" for six seconds
+     after it arrives, then shrinks to the icon so it covers less text. */
   .lesson-index-button-text,
   .lesson-index-sr {
     position: absolute;
@@ -1314,6 +1314,24 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     height: auto;
     clip-path: none;
   }
+
+  /* The hand-off: as "In this lesson" goes under the header, a copy of it
+     shrinks into the button's corner, so the eye follows the list to where
+     it now lives. Motion only; skipped for reduced motion. */
+  :global(.lesson-index-ghost) {
+    position: fixed;
+    z-index: 89;
+    margin: 0;
+    padding: var(--space-3) var(--space-5);
+    overflow: hidden;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-control-edge);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+
 
   @media (min-width: 1200px) {
     .lesson-index-button {
@@ -1535,20 +1553,69 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     button.hidden = false;
 
     var shown = false;
-    var labelled = false;
     var current = null;
+    // The hand-off plays once a page view, and only if the reader saw the
+    // list before it went: not on a reload or a link that lands mid-lesson.
+    var sawList = false;
+    var handedOff = false;
+    var flying = false;
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // The first arrival shows the words for six seconds, then the icon.
+    var labelledOnce = false;
+    function arrive() {
+      button.setAttribute('data-shown', '');
+      if (labelledOnce) return;
+      labelledOnce = true;
+      button.setAttribute('data-labelled', '');
+      setTimeout(function() { button.removeAttribute('data-labelled'); }, 6000);
+    }
+
+    function handOff(headerBottom) {
+      var from = covers.getBoundingClientRect();
+      var to = button.getBoundingClientRect();
+      var ghost = covers.cloneNode(true);
+      ghost.removeAttribute('id');
+      ghost.removeAttribute('aria-labelledby');
+      Array.prototype.forEach.call(ghost.querySelectorAll('[id]'), function(el) { el.removeAttribute('id'); });
+      ghost.setAttribute('aria-hidden', 'true');
+      ghost.inert = true;
+      Array.prototype.forEach.call(ghost.querySelectorAll('a'), function(a) { a.setAttribute('tabindex', '-1'); });
+      ghost.classList.add('lesson-index-ghost');
+      var height = Math.min(from.height + 24, 160);
+      ghost.style.left = from.left + 'px';
+      ghost.style.top = headerBottom + 'px';
+      ghost.style.width = from.width + 'px';
+      ghost.style.height = height + 'px';
+      document.body.appendChild(ghost);
+      flying = true;
+      var dx = to.left - from.left;
+      var dy = to.top - headerBottom;
+      var anim = ghost.animate([
+        { transform: 'none', opacity: 1, borderRadius: '8px' },
+        { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + (to.width / from.width) + ', ' + (to.height / height) + ')', opacity: 0.3, borderRadius: '999px' }
+      ], { duration: 700, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' });
+      anim.onfinish = anim.oncancel = function() {
+        ghost.remove();
+        flying = false;
+        if (shown) arrive();
+      };
+    }
 
     function update() {
-      var inRange = covers.getBoundingClientRect().bottom <= 0 && end.getBoundingClientRect().bottom > window.innerHeight / 2;
+      var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+      var coversBottom = covers.getBoundingClientRect().bottom;
+      if (coversBottom > headerBottom) sawList = true;
+      var inRange = coversBottom <= headerBottom && end.getBoundingClientRect().bottom > window.innerHeight / 2;
       if (inRange !== shown) {
         shown = inRange;
         if (shown) {
-          button.setAttribute('data-shown', '');
-          // The first time only: show the words, then shrink to the icon.
-          if (!labelled) {
-            labelled = true;
-            button.setAttribute('data-labelled', '');
-            setTimeout(function() { button.removeAttribute('data-labelled'); }, 4000);
+          if (!handedOff && sawList && !calm.matches && typeof covers.animate === 'function') {
+            handedOff = true;
+            handOff(headerBottom);
+          } else if (!flying) {
+            handedOff = true;
+            arrive();
           }
         } else {
           button.removeAttribute('data-shown');
@@ -1557,7 +1624,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
       // The part being read: the last linked heading above the line under
       // the header. A heading with no line of its own belongs to the part
       // above it.
-      var line = (header ? header.getBoundingClientRect().bottom : 0) + 24;
+      var line = headerBottom + 24;
       var idx = -1;
       var best = -Infinity;
       targets.forEach(function(t, i) {
@@ -1573,6 +1640,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     }
 
     button.addEventListener('click', function() {
+      button.removeAttribute('data-labelled');
       dialog.showModal();
       var mark = dialog.querySelector('a[aria-current]');
       if (mark) { mark.focus(); mark.scrollIntoView({ block: 'nearest' }); }
