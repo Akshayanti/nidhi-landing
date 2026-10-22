@@ -32,6 +32,7 @@ import ToolStateGuard from '../../components/ToolStateGuard.astro';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
+import WaitlistSection from '../../components/WaitlistSection.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
 import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
@@ -202,6 +203,10 @@ const faqSchema = {
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
+    {/* The planner, for anyone who wants this kept with the rest of their
+        money: the same box the home page and the net worth calculator carry. */}
+    <div class="lc-waitlist"><WaitlistSection locale={locale} /></div>
+
     <details class="lc-faq" aria-labelledby="lc-faq-h">
       <summary id="lc-faq-h" class="lc-faqHeading disclosure">
         <span class="lc-sectionTitle">{tool.page.faq.heading}</span>
@@ -332,6 +337,10 @@ const faqSchema = {
 
   /* Explainer & FAQ */
   .lc-explainer,
+  /* Spaced like the panels around it; the box draws its own background. */
+  .lc-waitlist { margin-top: var(--space-8); }
+  .lc-waitlist :global(.waitlist) { margin: 0; }
+
   .lc-faq,
   .lc-related {
     margin-top: var(--space-8);
