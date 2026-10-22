@@ -1,5 +1,5 @@
 /**
- * The waitlist's size, for the line under the box's heading ("50+ people have
+ * The waitlist's size, for the line under the box's heading ("20+ people have
  * joined my waitlist.").
  *
  * Read once per build, never in a visitor's browser: the build posts the
@@ -18,9 +18,9 @@
  */
 
 /** No line until this many people have joined. */
-export const WAITLIST_COUNT_THRESHOLD = 50;
+export const WAITLIST_COUNT_THRESHOLD = 20;
 /** The shown number is rounded down to a multiple of this. */
-export const WAITLIST_COUNT_STEP = 50;
+export const WAITLIST_COUNT_STEP = 20;
 
 /** The number the page may show, or null for no line. */
 export function shownWaitlistCount(count: number | null): number | null {

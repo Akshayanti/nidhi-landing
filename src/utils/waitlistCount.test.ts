@@ -13,14 +13,14 @@ describe('shown waitlist count', () => {
   it('shows nothing when the count is unknown or under the threshold', () => {
     assert.equal(shownWaitlistCount(null), null);
     assert.equal(shownWaitlistCount(0), null);
-    assert.equal(shownWaitlistCount(49), null);
+    assert.equal(shownWaitlistCount(19), null);
   });
 
-  it('rounds down to a multiple of 50, never up', () => {
-    assert.equal(shownWaitlistCount(50), 50);
-    assert.equal(shownWaitlistCount(99), 50);
-    assert.equal(shownWaitlistCount(100), 100);
-    assert.equal(shownWaitlistCount(149), 100);
+  it('rounds down to a multiple of 20, never up', () => {
+    assert.equal(shownWaitlistCount(20), 20);
+    assert.equal(shownWaitlistCount(39), 20);
+    assert.equal(shownWaitlistCount(40), 40);
+    assert.equal(shownWaitlistCount(137), 120);
   });
 });
 

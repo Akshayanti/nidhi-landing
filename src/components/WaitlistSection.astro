@@ -20,7 +20,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const { waitlist } = dict(locale);
-// "50+ people have joined my waitlist.": absent until there are 50 (see waitlistCount).
+// "20+ people have joined my waitlist.": absent until there are 20 (see waitlistCount).
 // The dev server shows the exact count instead, ungated, for the founder only.
 const signups = await waitlistCount();
 const joined = shownWaitlistCount(signups);
@@ -44,7 +44,7 @@ const inputId = `${idPrefix}-email`;
         <p class="waitlist-text waitlist-devCount">
           {signups === null
             ? 'Dev only: waitlist count unavailable. Set WAITLIST_COUNT_TOKEN in .env.'
-            : `Dev only: ${signups} on the waitlist. The live site shows this from 50, rounded down.`}
+            : `Dev only: ${signups} on the waitlist. The live site shows this from 20, rounded down to a multiple of 20.`}
         </p>
       ) : (
         joined !== null && <p class="waitlist-text">{format(waitlist.joined, { n: joined })}</p>

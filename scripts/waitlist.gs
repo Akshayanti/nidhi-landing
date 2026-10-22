@@ -25,10 +25,6 @@
  *        SITE_URL         https://nidhi.today
  *        POSTHOG_API_KEY  (optional) for server-side event tracking
  *        POSTHOG_HOST     (optional) https://eu.i.posthog.com
- *        COUNT_TOKEN      (optional) a long random string. Turns on the count
- *                          endpoint below; the same value goes into the
- *                          landing site's WAITLIST_COUNT_TOKEN GitHub secret.
- *                          Without it the count endpoint refuses every call.
  *
  *   2. In the spreadsheet: create a tab named "beta waitlist" (or the SHEET_NAME
  *      value) with these EXACT headers in row 1 (3 columns):
@@ -44,11 +40,12 @@
  *                            never reveals who is on the list.
  *
  *   POST action=count       form body: action, token
- *                            Returns { ok: true, count } when the token
- *                            matches COUNT_TOKEN: the number of distinct,
+ *                            Returns { ok: true, count } when the token's
+ *                            SHA-256 matches COUNT_TOKEN_SHA256_ below: the
+ *                            number of distinct,
  *                            valid addresses on the list, and nothing else.
  *                            The landing site's build reads it to show a
- *                            rounded-down total ("50+ people have joined").
+ *                            rounded-down total ("20+ people have joined").
  *                            The token travels in the body, never the URL,
  *                            so it does not end up in logs.
  *
@@ -126,10 +123,13 @@ function isValidEmail_(s) {
 // PostHog
 // ============================================================================
 
-function distinctIdForEmail_(email) {
-  var norm = normalizeEmail_(email);
-  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, norm, Utilities.Charset.UTF_8);
+function sha256Hex_(s) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, s, Utilities.Charset.UTF_8);
   return bytes.map(function (b) { var h = (b & 0xFF).toString(16); return h.length === 1 ? '0' + h : h; }).join('');
+}
+
+function distinctIdForEmail_(email) {
+  return sha256Hex_(normalizeEmail_(email));
 }
 
 function emailDomain_(email) {
@@ -220,12 +220,18 @@ function safeSiteUrl_() {
 // Count (for the landing site's build)
 // ============================================================================
 
+// The SHA-256 of the count token, in hex. The token itself lives only in the
+// landing site's WAITLIST_COUNT_TOKEN secret (and the founder's local .env); a
+// hash of a 256-bit random token says nothing about it, so it can sit in the
+// source, and deploying needs no script property. To rotate: make a new token
+// (openssl rand -hex 32), set the secret, put its SHA-256 here, redeploy.
+var COUNT_TOKEN_SHA256_ = 'a443a8d061ebe14cf7cb89e48a63d4fc2d4d59dd5124c64337b9a7e4edc444c8';
+
 // Distinct, valid addresses: duplicates kept from before dedupe and blank or
 // malformed rows do not inflate the total the site shows.
 function handleCount_(e) {
-  var expected = prop_('COUNT_TOKEN');
   var given = String((e.parameter && e.parameter.token) || '');
-  if (!expected || !sameString_(given, expected)) return jsonResponse_({ ok: false, error: 'forbidden' });
+  if (!given || !sameString_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) return jsonResponse_({ ok: false, error: 'forbidden' });
   var s = sheet_();
   var last = s.getLastRow();
   if (last < 2) return jsonResponse_({ ok: true, count: 0 });
