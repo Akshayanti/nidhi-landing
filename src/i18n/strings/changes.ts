@@ -25,6 +25,16 @@ export const CHANGES: ChangeEntry[] = [
   {
     date: '2026-10-22',
     text: {
+      en: 'The Monte Carlo simulator now has the planner waitlist box too, and all four tools ask the same way, each with one line on what the planner adds.',
+      hi: 'मोंटे कार्लो सिम्युलेटर पर भी अब प्लानर की वेटलिस्ट है, और चारों टूल एक ही तरह से पूछते हैं, हर एक के साथ एक पंक्ति कि प्लानर उसमें क्या जोड़ता है।',
+      es: 'El simulador Monte Carlo tiene ahora también la lista de espera del planificador, y las cuatro herramientas la ofrecen igual, cada una con una línea sobre lo que el planificador añade.',
+      cs: 'Simulátor Monte Carlo teď má také čekací listinu na plánovač a všechny čtyři nástroje ji nabízejí stejně, každý s jednou větou o tom, co plánovač přidá.',
+      mr: 'मॉन्टे कार्लो सिम्युलेटरवरही आता प्लॅनरची प्रतीक्षा यादी आहे, आणि चारही साधने ती एकाच पद्धतीने दाखवतात, प्रत्येकासोबत प्लॅनर काय भर घालतो याची एक ओळ.',
+    },
+  },
+  {
+    date: '2026-10-22',
+    text: {
       en: 'The home page now gives one lesson count, at the top and in the FAQ alike. The two had disagreed by one.',
       hi: 'होम पेज पर अब पाठों की एक ही गिनती है, ऊपर भी और अक्सर पूछे जाने वाले सवालों में भी। पहले दोनों जगह एक का फ़र्क था।',
       es: 'La página de inicio da ahora un solo número de lecciones, arriba y en las preguntas frecuentes. Antes los dos diferían en una.',

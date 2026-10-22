@@ -29,6 +29,7 @@
  * value byte-identical to its English one fails `catalog.test.ts` unless it is
  * on that file's `IDENTICAL_OK` list, and a title has no translation to offer.)
  */
+import ToolWaitlist from '../ToolWaitlist.astro';
 import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
@@ -188,11 +189,9 @@ const faqSchema = {
       <button type="button" class="mcsp-more disclosure" aria-expanded="false" aria-controls="mcsp-limits-list">
         {strings.limits.more}
       </button>
-      <p class="mcsp-planner">
-        {strings.planner.before}{' '}
-        <a href={`${localizedPath(locale, '/')}#signup`} data-attr="free-monte-carlo-planner-link">{strings.planner.link}</a>
-      </p>
     </aside>
+
+    <ToolWaitlist locale={locale} line={strings.plannerLine} />
 
     <section class="mcsp-panel" aria-labelledby="mcsp-how-h" data-phone-more>
       <h2 id="mcsp-how-h" class="mcsp-sectionTitle">{strings.how.heading}</h2>
@@ -355,17 +354,6 @@ const faqSchema = {
   }
   .mcsp-limits {
     border-left: 4px solid var(--color-teal);
-  }
-  .mcsp-planner {
-    margin: var(--space-4) 0 0;
-    color: var(--color-text-primary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .mcsp-planner a {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    color: var(--color-deep-blue);
   }
   .mcsp-source {
     margin: var(--space-4) 0 0;

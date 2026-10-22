@@ -100,13 +100,8 @@ export const multiCurrencyNetWorthEn = {
      */
     lead:
       'Add what you own and what you owe, in one currency or several. See your net worth in your chosen currency at the latest official exchange rates. If you hold more than one currency, check how much of it sits in currencies you don’t actually spend in. Everything runs in your browser. Nothing is sent to a server. Supports USD, EUR, GBP, INR, JPY, and 33 more.',
-    accessCta: {
-      eyebrow: 'Full planner',
-      title: 'Want this connected to retirement timing and future expenses?',
-      body:
-        'The full nidhi planner turns multi-currency net worth into a long-range plan, so you can see how location, spending currency, and major decisions change the path.',
-      cta: 'Join early access',
-    },
+    plannerLine:
+      'The full nidhi planner turns multi-currency net worth into a long-range plan, so you can see how location, spending currency, and major decisions change the path.',
     explainer: {
       heading: 'How the calculation works',
       intro:
@@ -498,13 +493,8 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में',
     lead:
       'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है। किसी सर्वर पर कुछ नहीं भेजा जाता। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
-    accessCta: {
-      eyebrow: 'पूरा प्लानर',
-      title: 'इसे रिटायरमेंट के समय और आगे के खर्चों से जोड़कर देखना चाहेंगे?',
-      body:
-        'nidhi का पूरा प्लानर कई मुद्राओं में फैली शुद्ध संपत्ति को लंबी अवधि की योजना में बदल देता है, ताकि आप देख सकें कि जगह, खर्च की मुद्रा और बड़े फ़ैसले इस रास्ते को कैसे बदलते हैं।',
-      cta: 'अर्ली एक्सेस में शामिल हों',
-    },
+    plannerLine:
+      'nidhi का पूरा प्लानर कई मुद्राओं में फैली शुद्ध संपत्ति को लंबी अवधि की योजना में बदल देता है, ताकि आप देख सकें कि जगह, खर्च की मुद्रा और बड़े फ़ैसले इस रास्ते को कैसे बदलते हैं।',
     explainer: {
       heading: 'हिसाब कैसे लगता है',
       intro:
@@ -857,13 +847,8 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     title: 'Calculadora de patrimonio neto, en una moneda o en varias',
     lead:
       'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio oficiales actualizados. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Todo funciona en tu navegador. No se envía nada a ningún servidor. Admite USD, EUR, GBP, INR, JPY y 33 más.',
-    accessCta: {
-      eyebrow: 'Planificador completo',
-      title: '¿Quieres conectar esto con el momento de tu jubilación y tus gastos futuros?',
-      body:
-        'El planificador completo de nidhi convierte tu patrimonio neto en varias monedas en un plan a largo plazo, para que veas cómo el lugar donde vives, la moneda en la que gastas y las grandes decisiones cambian el camino.',
-      cta: 'Únete al acceso anticipado',
-    },
+    plannerLine:
+      'El planificador completo de nidhi convierte tu patrimonio neto en varias monedas en un plan a largo plazo, para que veas cómo el lugar donde vives, la moneda en la que gastas y las grandes decisiones cambian el camino.',
     explainer: {
       heading: 'Cómo se hace el cálculo',
       intro:
@@ -1229,13 +1214,8 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     title: 'Kalkulačka čistého jmění, v jedné měně i ve více',
     lead:
       'Zadejte, co vlastníte a co dlužíte, v jedné měně i ve více. Uvidíte své čisté jmění ve zvolené měně při nejnovějších oficiálních kurzech. Pokud držíte víc než jednu měnu, zjistěte, kolik z toho máte v měnách, ve kterých ve skutečnosti neutrácíte. Vše běží ve vašem prohlížeči. Nic se neposílá na server. Podporuje USD, EUR, GBP, INR, JPY a 33 dalších.',
-    accessCta: {
-      eyebrow: 'Celý plánovač',
-      title: 'Chcete to propojit s termínem odchodu do důchodu a budoucími výdaji?',
-      body:
-        'Celý plánovač nidhi promění čisté jmění ve více měnách v dlouhodobý plán, takže uvidíte, jak místo pobytu, měna výdajů a velká rozhodnutí mění cestu.',
-      cta: 'Chci přednostní přístup',
-    },
+    plannerLine:
+      'Celý plánovač nidhi promění čisté jmění ve více měnách v dlouhodobý plán, takže uvidíte, jak místo pobytu, měna výdajů a velká rozhodnutí mění cestu.',
     explainer: {
       heading: 'Jak výpočet funguje',
       intro:
@@ -1586,12 +1566,8 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'मोफत साधने',
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये',
     lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते लिहा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. सगळे तुमच्या ब्राउझरमध्ये चालते. सर्व्हरकडे काहीही पाठवले जात नाही. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
-    accessCta: {
-      eyebrow: 'संपूर्ण प्लॅनर',
-      title: 'हे निवृत्तीचा काळ आणि भविष्यातील खर्चाशी जोडलेले हवे आहे?',
-      body: 'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
-      cta: 'लवकर प्रवेशासाठी नाव नोंदवा',
-    },
+    plannerLine:
+      'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
     explainer: {
       heading: 'हिशेब कसा होतो',
       intro: 'प्रत्येक चलनासाठी आम्ही तुमची मालमत्ता आणि देणी (liabilities) यांची निव्वळ रक्कम काढतो, आणि मग चालू विनिमय दरांनी (exchange rates) ती तुमच्या खर्चाच्या चलनात बदलतो. बदललेल्या या सर्व स्थितींची बेरीज म्हणजे एका चलनातील तुमची एकूण निव्वळ संपत्ती. त्या एकूण रकमेतील प्रत्येक चलनाचा हिस्सा म्हणजे त्या चलनातील एकवटलेली गुंतवणूक:',

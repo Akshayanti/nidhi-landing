@@ -27,7 +27,7 @@ import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/to
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
-import WaitlistSection from '../../components/WaitlistSection.astro';
+import ToolWaitlist from '../../components/ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
 import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
 
@@ -173,18 +173,7 @@ const faqSchema = {
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
-    <aside class="mcnw-accessCta" aria-labelledby="mcnw-access-cta-h">
-      <div class="mcnw-accessCtaCopy">
-        <p class="mcnw-eyebrow">{tool.page.accessCta.eyebrow}</p>
-        <h2 id="mcnw-access-cta-h" class="mcnw-sectionTitle">
-          {tool.page.accessCta.title}
-        </h2>
-        <p>
-          {tool.page.accessCta.body}
-        </p>
-      </div>
-      <WaitlistSection locale={locale} variant="hero" cta={tool.page.accessCta.cta} />
-    </aside>
+    <ToolWaitlist locale={locale} line={tool.page.plannerLine} />
 
     {/* Collapsed by default, like the FAQ below: the method is there for
         anyone who wants it, without pushing the FAQ and lessons down. */}
@@ -343,7 +332,6 @@ const faqSchema = {
   }
 
   /* Explainer & FAQ */
-  .mcnw-accessCta,
   .mcnw-explainer,
   .mcnw-faq,
   .mcnw-related {
@@ -353,40 +341,6 @@ const faqSchema = {
     border-radius: var(--radius-lg);
     padding: var(--space-5);
     box-shadow: var(--shadow-sm);
-  }
-
-  .mcnw-accessCta {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-    gap: var(--space-5);
-    align-items: center;
-  }
-
-  .mcnw-accessCtaCopy p:last-child {
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    max-width: 62ch;
-    margin: var(--space-2) 0 0;
-    text-wrap: pretty;
-  }
-
-  .mcnw-accessCta :global(.waitlist) {
-    margin: 0;
-  }
-
-  .mcnw-accessCta :global(.waitlist-box) {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  @media (max-width: 800px) {
-    .mcnw-accessCta {
-      grid-template-columns: 1fr;
-      align-items: stretch;
-    }
   }
 
   .mcnw-explainer p,
@@ -659,7 +613,6 @@ const faqSchema = {
       font-size: 0.95rem;
     }
     .mcnw-explainer,
-    .mcnw-accessCta,
     .mcnw-faq,
     .mcnw-related {
       padding: var(--space-4) var(--space-3);

@@ -123,15 +123,9 @@ export const monteCarloEn = {
       },
       more: 'Why each one matters',
     },
-    /**
-     * The line to the planner. Split around the link, which lands on the home
-     * page's early-access block.
-     */
-    planner: {
-      before:
-        'The nidhi planner runs this kind of simulation on your whole picture: every account in its own currency, your income and spending over time, and the events you are planning for.',
-      link: 'Join the early-access list',
-    },
+    /** Above the planner waitlist box: why the planner matters for this tool. */
+    plannerLine:
+      'The nidhi planner runs this kind of simulation on your whole picture: every account in its own currency, your income and spending over time, and the events you are planning for.',
     how: {
       heading: 'How it works',
       more: 'The method and its sources',
@@ -481,11 +475,8 @@ export const monteCarloHi: typeof monteCarloEn = {
       },
       more: 'हर एक क्यों मायने रखता है',
     },
-    planner: {
-      before:
-        'nidhi का प्लानर इस तरह का सिम्युलेशन आपकी पूरी तस्वीर पर चलाता है: हर खाता अपनी मुद्रा में, समय के साथ आपकी आय और खर्च, और वे घटनाएँ जिनकी आप योजना बना रहे हैं।',
-      link: 'अर्ली-एक्सेस लिस्ट में जुड़ें',
-    },
+    plannerLine:
+      'nidhi का प्लानर इस तरह का सिम्युलेशन आपकी पूरी तस्वीर पर चलाता है: हर खाता अपनी मुद्रा में, समय के साथ आपकी आय और खर्च, और वे घटनाएँ जिनकी आप योजना बना रहे हैं।',
     how: {
       heading: 'यह कैसे काम करता है',
       more: 'तरीक़ा और उसके स्रोत',
@@ -777,11 +768,8 @@ export const monteCarloEs: typeof monteCarloEn = {
       },
       more: 'Por qué importa cada una',
     },
-    planner: {
-      before:
-        'El planificador de nidhi hace este tipo de simulación sobre tu situación completa: cada cuenta en su propia moneda, tus ingresos y gastos a lo largo del tiempo, y los acontecimientos que estás planeando.',
-      link: 'Únete a la lista de acceso anticipado',
-    },
+    plannerLine:
+      'El planificador de nidhi hace este tipo de simulación sobre tu situación completa: cada cuenta en su propia moneda, tus ingresos y gastos a lo largo del tiempo, y los acontecimientos que estás planeando.',
     how: {
       heading: 'Cómo funciona',
       more: 'El método y sus fuentes',
@@ -1075,11 +1063,8 @@ export const monteCarloCs: typeof monteCarloEn = {
       },
       more: 'Proč na každém z nich záleží',
     },
-    planner: {
-      before:
-        'Plánovač nidhi provádí tento druh simulace pro celou vaši finanční situaci: každý účet v jeho vlastní měně, vaše příjmy a výdaje v čase a události, na které se připravujete.',
-      link: 'Zapište se na čekací listinu pro přednostní přístup',
-    },
+    plannerLine:
+      'Plánovač nidhi provádí tento druh simulace pro celou vaši finanční situaci: každý účet v jeho vlastní měně, vaše příjmy a výdaje v čase a události, na které se připravujete.',
     how: {
       heading: 'Jak to funguje',
       more: 'Metoda a její zdroje',
@@ -1365,10 +1350,8 @@ export const monteCarloMr: typeof monteCarloEn = {
       },
       more: 'प्रत्येक गोष्ट का महत्त्वाची आहे',
     },
-    planner: {
-      before: 'nidhi चा प्लॅनर अशा प्रकारचे सिम्युलेशन तुमच्या संपूर्ण चित्रावर चालवतो: प्रत्येक खाते त्याच्या स्वतःच्या चलनात, काळानुसार तुमचे उत्पन्न आणि खर्च, आणि तुम्ही नियोजन करत असलेल्या घटना.',
-      link: 'लवकर प्रवेशाच्या यादीत नाव नोंदवा',
-    },
+    plannerLine:
+      'nidhi चा प्लॅनर अशा प्रकारचे सिम्युलेशन तुमच्या संपूर्ण चित्रावर चालवतो: प्रत्येक खाते त्याच्या स्वतःच्या चलनात, काळानुसार तुमचे उत्पन्न आणि खर्च, आणि तुम्ही नियोजन करत असलेल्या घटना.',
     how: {
       heading: 'हे कसे काम करते',
       more: 'पद्धत आणि तिचे स्रोत',

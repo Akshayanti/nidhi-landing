@@ -339,7 +339,6 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 |---|---|
 | `free-monte-carlo-share` | "Copy a link to this plan" button |
 | `free-monte-carlo-reset` | Reset button |
-| `free-monte-carlo-planner-link` | "Join the early-access list" link in "What this can't see" |
 | `free-monte-carlo-net-worth-link` | Link to the multi-currency net worth calculator under the inputs |
 | `related-financial-projections`, `related-what-if-scenarios`, `related-income-replacement-ratio`, `related-understanding-risk`, `related-diversification` | Related reading cards |
 | `free-cta-monte-carlo-simulator` | Card on `/free/` |

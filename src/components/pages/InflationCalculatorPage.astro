@@ -33,7 +33,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import InflationCalculator, { type CountryOption } from '../InflationCalculator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
-import WaitlistSection from '../WaitlistSection.astro';
+import ToolWaitlist from '../ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
 import data from '../../data/inflation/worldbank.json';
 import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
@@ -211,9 +211,7 @@ const faqSchema = {
       )}
     </aside>
 
-    {/* The planner, for anyone who wants this kept with the rest of their
-        money: the same box the home page and the net worth calculator carry. */}
-    <div class="ifcp-waitlist"><WaitlistSection locale={locale} /></div>
+    <ToolWaitlist locale={locale} line={strings.plannerLine} />
 
     <section class="ifcp-panel" aria-labelledby="ifcp-source-h">
       <h2 id="ifcp-source-h" class="ifcp-sectionTitle">{strings.source.heading}</h2>
@@ -316,10 +314,6 @@ const faqSchema = {
     margin: 0 auto;
     text-wrap: balance;
   }
-  /* Spaced like the panels around it; the box draws its own background. */
-  .ifcp-waitlist { margin-top: var(--space-8); }
-  .ifcp-waitlist :global(.waitlist) { margin: 0; }
-
   .ifcp-panel {
     margin-top: var(--space-8);
     background: var(--color-bg-white);
@@ -462,7 +456,6 @@ const faqSchema = {
     .ifcp-page {
       padding: var(--space-4) var(--space-3) var(--space-8);
     }
-    .ifcp-waitlist { margin-top: var(--space-5); }
     .ifcp-panel {
       margin-top: var(--space-5);
       padding: var(--space-4) var(--space-3);
