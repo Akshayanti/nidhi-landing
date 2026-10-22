@@ -89,6 +89,7 @@ export const cs: Dict = {
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
       editorialPolicy: 'Redakční zásady',
+      changes: 'Co se změnilo',
       privacy: 'Soukromí',
       cookieSettings: 'Nastavení cookies',
     },
@@ -331,6 +332,17 @@ export const cs: Dict = {
         after: '.',
       },
     },
+  },
+
+  changes: {
+    meta: {
+      title: 'Co se změnilo: drobné novinky na nidhi | nidhi',
+      description:
+        'Co se na nidhi změnilo a kdy: nové stránky, opravy a drobná vylepšení, od nejnovějších, ve všech jazycích.',
+    },
+    title: 'Co se změnilo',
+    intro:
+      'Drobné změny, které na tomto webu dělám, tak jak vycházejí, od nejnovějších. Žádný plán ani odpočet, jen to, co se opravdu změnilo. Nové lekce najdete na vzdělávací cestě; tahle stránka je pro všechno kolem nich.',
   },
 
   freeHub: {

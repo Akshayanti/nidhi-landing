@@ -1,0 +1,12 @@
+---
+import ChangesPage from '../../components/pages/ChangesPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<ChangesPage locale={locale} />

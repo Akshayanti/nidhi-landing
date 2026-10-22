@@ -1,0 +1,163 @@
+---
+/**
+ * "What's changed", in whichever language it was asked for.
+ *
+ * One plain line per change a reader could notice, grouped by month, newest
+ * first. The lines live in src/i18n/strings/changes.ts with all five
+ * languages side by side, so a change cannot ship in one edition only; the
+ * page's own words are in the `changes` namespace of each catalog.
+ *
+ * English is served from `src/pages/changes.astro` and the other languages
+ * from `src/pages/[locale]/changes.astro`; both render this component.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { CHANGES } from '../../i18n/strings/changes.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { changes } = dict(locale);
+
+const siteUrl = 'https://nidhi.today';
+const pageUrl = new URL(localizedPath(locale, '/changes/'), siteUrl).href;
+
+// Dates are days, written in UTC so the day never shifts with the build machine.
+const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+const monthLabel = new Intl.DateTimeFormat(DATE_LOCALE[locale], { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const dayLabel = new Intl.DateTimeFormat(DATE_LOCALE[locale], { day: 'numeric', month: 'long', timeZone: 'UTC' });
+
+// CHANGES is newest first (changes.test.ts holds it to that), so months come
+// out in order as they are met.
+const months: Array<{ key: string; label: string; entries: Array<{ date: string; day: string | null; text: string }> }> = [];
+for (const c of CHANGES) {
+  const key = c.date.slice(0, 7);
+  let month = months.at(-1);
+  if (!month || month.key !== key) {
+    month = { key, label: monthLabel.format(asDate(c.date)), entries: [] };
+    months.push(month);
+  }
+  // A day is named once, on its first line; the lines under it belong to it.
+  const sameDay = month.entries.length > 0 && month.entries.at(-1)!.date === c.date;
+  month.entries.push({ date: c.date, day: sameDay ? null : dayLabel.format(asDate(c.date)), text: c.text[locale] });
+}
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
+  name: changes.title,
+  url: pageUrl,
+  description: changes.meta.description,
+  ...(CHANGES.length > 0 ? { dateModified: CHANGES[0].date } : {}),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={changes.meta.title}
+  description={changes.meta.description}
+  jsonLd={[webPageSchema]}
+>
+  <section class="changes-page">
+    <div class="changes-container">
+      <header class="changes-header">
+        <h1 class="changes-title">{changes.title}</h1>
+        <p class="changes-intro">{changes.intro}</p>
+      </header>
+
+      {months.map((m) => (
+        <section class="changes-month" aria-labelledby={`month-${m.key}`}>
+          <h2 id={`month-${m.key}`}>{m.label}</h2>
+          <ul>
+            {m.entries.map((e) => (
+              <li class:list={[{ 'changes-sameDay': !e.day }]}>
+                {e.day ? <time datetime={e.date}>{e.day}</time> : <span aria-hidden="true"></span>}
+                <span>{e.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .changes-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .changes-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .changes-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .changes-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .changes-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .changes-month h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .changes-month ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* The day sits in its own column, so a long line wraps under itself. */
+  .changes-month li {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--color-border-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Lines that share a day hang together under it, without a rule between. */
+  .changes-month li.changes-sameDay {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .changes-month time {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .changes-page { padding: var(--space-6) var(--space-4); }
+    .changes-month li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+  }
+</style>

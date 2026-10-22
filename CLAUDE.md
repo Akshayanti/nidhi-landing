@@ -48,6 +48,17 @@ The site serves more than one language, so a copy change is not finished when En
    - **Names stay in their own script**: a language's own name (`LOCALE_META`), the brand, company and product names, and a person's name. Those are the same string in every language and do not belong in a catalog at all.
 7. **The privacy changelog is the one deliberate exception**, and the reason is recorded there: it is kept in English in every edition, so Hindi, Spanish, Czech, Marathi and English readers are all reading the same record of what changed.
 
+## What's Changed Grows With Every Visible Change
+
+The site has a "What's changed" page (`/changes/` in every language). It is how readers see that the site is looked after, so it stays current without anyone having to remember a separate chore: the change carries its own line.
+
+**Rules:**
+1. **Every pull request that changes something a reader can see or notice adds one line** to `src/i18n/strings/changes.ts`, at the top, dated the day it ships, in all five languages, in the same pull request. The council reviews it with the rest of the change.
+2. **Write it for a reader, not a developer**: what is different for them ("The loan comparison now has the planner waitlist too"), never a file, a component or a pull request title.
+3. **In the founder's voice**, plain and warm, as "I" where a person is speaking. The founder is never given a gender: Hindi and Marathi use dative, ergative or impersonal sentences; Czech uses the present tense or a participle that agrees with something else; Spanish avoids gendered adjectives about the founder.
+4. **What counts**: copy, pages, tools, layout, behaviour, anything the privacy changelog records. **What does not**: refactors, tests, docs, CI, SEO metadata, and lessons published on schedule (the learning path lists those). A correction inside a lesson has its own record (the lesson's `corrections` field), so it gets no line here either.
+5. `src/i18n/strings/changes.test.ts` checks the mechanical rules (every language present, newest first, typography); it is the floor, as the catalog tests are.
+
 ## Style Rules
 
 - Never use em dashes (`&mdash;` or `—`) or double dashes (`--`) anywhere in the site. Use colons, commas, or reword instead.
