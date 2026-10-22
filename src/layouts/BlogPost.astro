@@ -1561,8 +1561,15 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     // #section link is scrolled there by the browser, past the list, with
     // the list never read.
     var readerActed = false;
+    // Checked at the moment of acting too, so a big jump (End, a link in
+    // the list, a fast flick) that clears the list before the next frame
+    // still counts.
+    function onReaderActed() {
+      readerActed = true;
+      if (covers.getBoundingClientRect().bottom > (header ? header.getBoundingClientRect().bottom : 0)) sawList = true;
+    }
     ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function(type) {
-      window.addEventListener(type, function() { readerActed = true; }, { passive: true, once: true });
+      window.addEventListener(type, onReaderActed, { passive: true, once: true });
     });
     var handedOff = false;
     var flying = false;
