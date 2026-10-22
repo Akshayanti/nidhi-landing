@@ -31,7 +31,7 @@ const dayLabel = new Intl.DateTimeFormat(DATE_LOCALE[locale], { day: 'numeric', 
 
 // CHANGES is newest first (changes.test.ts holds it to that), so months come
 // out in order as they are met.
-const months: Array<{ key: string; label: string; entries: Array<{ date: string; day: string | null; text: string }> }> = [];
+const months: Array<{ key: string; label: string; entries: Array<{ date: string; day: string; text: string }> }> = [];
 for (const c of CHANGES) {
   const key = c.date.slice(0, 7);
   let month = months.at(-1);
@@ -39,9 +39,8 @@ for (const c of CHANGES) {
     month = { key, label: monthLabel.format(asDate(c.date)), entries: [] };
     months.push(month);
   }
-  // A day is named once, on its first line; the lines under it belong to it.
-  const sameDay = month.entries.length > 0 && month.entries.at(-1)!.date === c.date;
-  month.entries.push({ date: c.date, day: sameDay ? null : dayLabel.format(asDate(c.date)), text: c.text[locale] });
+  // Every line carries its own date, so none reads as undated when a day has several.
+  month.entries.push({ date: c.date, day: dayLabel.format(asDate(c.date)), text: c.text[locale] });
 }
 
 const webPageSchema = {
@@ -74,8 +73,8 @@ const webPageSchema = {
           <h2 id={`month-${m.key}`}>{m.label}</h2>
           <ul>
             {m.entries.map((e) => (
-              <li class:list={[{ 'changes-sameDay': !e.day }]}>
-                {e.day ? <time datetime={e.date}>{e.day}</time> : <span aria-hidden="true"></span>}
+              <li>
+                <time datetime={e.date}>{e.day}</time>
                 <span>{e.text}</span>
               </li>
             ))}
@@ -140,12 +139,6 @@ const webPageSchema = {
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--color-text-secondary);
-  }
-
-  /* Lines that share a day hang together under it, without a rule between. */
-  .changes-month li.changes-sameDay {
-    border-top: 0;
-    padding-top: 0;
   }
 
   .changes-month time {
