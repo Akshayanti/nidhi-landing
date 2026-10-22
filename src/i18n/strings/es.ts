@@ -178,7 +178,7 @@ export const es: Dict = {
         'Lo que esto no es: asesoramiento financiero con licencia. nidhi explica cómo funciona el dinero para que puedas tomar tus propias decisiones. No te dice qué fondo comprar, ni lo hará nunca. Para las decisiones que dependen de tu residencia fiscal concreta, tu situación legal o tu tolerancia al riesgo, lo adecuado es acudir a un profesional acreditado. Ese límite es deliberado, y es el mismo que figura en el pie de cada página.',
       howPostsAreMade: {
         before:
-          'Cada artículo parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
+          'Cada artículo parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. Las herramientas de IA ayudan a investigar, redactar, editar y revisar las lecciones, lo que incluye cuestionar su razonamiento financiero, y a construir el sitio y sus herramientas gratuitas. Lo que produce la IA es un borrador, nunca una fuente: una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
         link: 'página de política editorial',
         after: '.',
       },
