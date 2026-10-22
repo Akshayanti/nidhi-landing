@@ -51,7 +51,7 @@ export const es: Dict = {
       inflationCalculator: 'Calculadora de inflación',
       allTools: 'Todas las herramientas gratuitas',
       about: 'Sobre nidhi',
-      beliefs: 'En qué creemos',
+      beliefs: 'En qué creo',
       editorialPolicy: 'Política editorial',
       contact: 'Contáctanos',
       email: 'Correo electrónico',
@@ -86,7 +86,7 @@ export const es: Dict = {
       inflationCalculator: 'Calculadora de inflación',
       allTools: 'Ver todas',
       about: 'Sobre nidhi',
-      beliefs: 'En qué creemos',
+      beliefs: 'En qué creo',
       editorialPolicy: 'Política editorial',
       privacy: 'Privacidad',
       cookieSettings: 'Configuración de cookies',
@@ -159,7 +159,7 @@ export const es: Dict = {
     },
     title: 'Sobre nidhi',
     intro:
-      'nidhi es el nombre que firma estos textos y el del proyecto al que pertenecen. Lo empezó una persona, el nombre se quedó, y es a quien lees cuando lees las lecciones.',
+      'nidhi es el nombre que firma estos textos y el del proyecto al que pertenecen. Lo empecé yo, el nombre se quedó, y cuando lees las lecciones, me lees a mí.',
     sections: {
       whoIsWriting: 'Quién escribe',
       whyYouCanTrustIt: 'Por qué puedes confiar en ello',
@@ -169,7 +169,7 @@ export const es: Dict = {
     body: {
       // No gendered subject for the one person behind the site, as in the English.
       whoIsWriting:
-        'Cada artículo de este sitio se escribe y se edita bajo un solo nombre: nidhi. El proyecto nació porque una persona no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Los textos salen de ese mismo lugar: las preguntas que una persona real tiene que responder, explicadas como le habría gustado que se las explicaran.',
+        'Cada artículo de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
       // "referential reading" is the lessons' own English heading, so it is
       // quoted as it appears there and glossed in Spanish.
       whyYouCanTrustIt1:
@@ -185,7 +185,7 @@ export const es: Dict = {
       whatNidhiKnowsAbout: {
         before:
           'Los textos se centran en el patrimonio neto y cómo medirlo, la gestión del dinero entre monedas, el flujo de efectivo y el ahorro, las deudas y el camino hacia la independencia financiera. Si quieres conocer la visión del mundo que hay detrás de todo esto, lee ',
-        link: 'en qué creemos',
+        link: 'en qué creo',
         after: '.',
       },
     },
@@ -205,14 +205,14 @@ export const es: Dict = {
    */
   beliefs: {
     meta: {
-      title: 'En qué creemos: herramientas financieras honestas | nidhi',
+      title: 'En qué creo: herramientas financieras honestas | nidhi',
       description:
-        'En qué creemos en nidhi: herramientas financieras honestas, educación financiera gratuita, sin anuncios ni venta de datos y lecciones gratis para siempre.',
+        'En qué creo al hacer nidhi: herramientas financieras honestas, educación financiera gratuita, sin anuncios ni venta de datos y lecciones gratis para siempre.',
     },
     schema: {
-      name: 'En qué creemos',
+      name: 'En qué creo',
       description:
-        'En qué creemos en nidhi: herramientas honestas de finanzas personales, educación financiera gratuita, sin anuncios y sin venta de datos.',
+        'En qué creo al hacer nidhi: herramientas honestas de finanzas personales, educación financiera gratuita, sin anuncios y sin venta de datos.',
       organization: 'Herramientas de finanzas personales y educación financiera.',
       foundingLocation: 'Praga',
       knowsAbout: {
@@ -222,15 +222,15 @@ export const es: Dict = {
         multiCurrencyFinance: 'Finanzas en varias monedas',
       },
       breadcrumbHome: 'Inicio',
-      breadcrumbAbout: 'En qué creemos',
+      breadcrumbAbout: 'En qué creo',
     },
-    title: 'En qué creemos',
+    title: 'En qué creo',
     intro:
-      'nidhi empezó porque una persona no encontraba una herramienta financiera decente y se hartó lo suficiente como para construir una',
+      'Empecé nidhi porque no encontraba una herramienta financiera decente y me harté lo suficiente como para construir una',
     items: {
       frustration: {
         heading: 'Todo esto empezó por pura frustración',
-        body: 'Queríamos algo que ayudara a cualquier persona a planificar su dinero, ver adónde va y tomar mejores decisiones con él. No existía nada así. Así que aquí estamos, construyéndolo por nuestra cuenta.',
+        body: 'Quería algo que ayudara a cualquier persona a planificar su dinero, ver adónde va y tomar mejores decisiones con él. No existía nada así. Así que aquí estoy, construyéndolo por mi cuenta.',
       },
       noPlanner: {
         heading: 'Planificar tus finanzas no debería exigir un planificador financiero',
@@ -238,30 +238,30 @@ export const es: Dict = {
       },
       accessibility: {
         heading: 'Hecho para todas las personas que la tecnología sigue olvidando',
-        body: 'Muchas aplicaciones olvidan, muy oportunamente, que las herramientas de dinero deberían funcionar tanto si tienes daltonismo como si usas un lector de pantalla o procesas la información de otra manera, por ejemplo por TDAH o dislexia. Como personas queer, neurodivergentes y racializadas, nunca tuvimos ese lujo. Dejar a alguien fuera de su propio dinero nos parece mezquino.',
+        body: 'Muchas aplicaciones olvidan, muy oportunamente, que las herramientas de dinero deberían funcionar tanto si tienes daltonismo como si usas un lector de pantalla o procesas la información de otra manera, por ejemplo por TDAH o dislexia. Soy una persona queer, neurodivergente y racializada, así que nunca tuve ese lujo. Dejar a alguien fuera de su propio dinero me parece mezquino.',
       },
       freeForever: {
         heading: 'Las lecciones son gratis, para siempre',
-        body: 'Sin muros de pago, sin tonterías de «suscríbete para ver lo bueno». Si algo que escribimos te ayudó a tomar una mejor decisión, aunque nunca llegues a usar nuestro producto, de eso se trata. Cuéntanoslo. Funcionamos con ese tipo de combustible.',
+        body: 'Sin muros de pago, sin tonterías de «suscríbete para ver lo bueno». Si algo que escribí te ayudó a tomar una mejor decisión, aunque nunca llegues a usar mi producto, de eso se trata. Cuéntamelo. Eso es lo que me mantiene en marcha.',
       },
       rulesOfThumb: {
         heading: 'No solo las reglas generales',
-        body: 'Una regla general es un punto de partida, no una respuesta. Cuando una lección da una, también explica por qué existe, dónde falla y qué depende de ti: tu país, tus ingresos, tus deudas, con cuánta antelación planificas. Preferimos que entiendas el razonamiento a que sigas una regla que nunca se escribió para tu vida.',
+        body: 'Una regla general es un punto de partida, no una respuesta. Cuando una lección da una, también explica por qué existe, dónde falla y qué depende de ti: tu país, tus ingresos, tus deudas, con cuánta antelación planificas. Prefiero que entiendas el razonamiento a que sigas una regla que nunca se escribió para tu vida.',
       },
       noAds: {
         heading: 'Sin anuncios, sin venta de datos, sin letra pequeña',
-        body: 'No ponemos anuncios. No vendemos tus datos. No hacemos eso tan inquietante de que busques «seguro de vida temporal» y luego te persigan anuncios de eso por todas partes durante una semana. Tus finanzas son asunto tuyo. Literalmente.',
+        body: 'No pongo anuncios. No vendo tus datos. No hago eso tan inquietante de que busques «seguro de vida temporal» y luego te persigan anuncios de eso por todas partes durante una semana. Tus finanzas son asunto tuyo. Literalmente.',
       },
       madeInPrague: {
         heading: 'Hecho en Praga, impulsado por el boca a boca',
-        body: 'Sin dinero de capital de riesgo. Sin equipo de crecimiento. Sin carteles en la autopista. Si nidhi te parece útil, cuéntaselo a alguien. Esa es nuestra principal estrategia de marketing.',
+        body: 'Sin dinero de capital de riesgo. Sin equipo de crecimiento. Sin carteles en la autopista. Si nidhi te parece útil, cuéntaselo a alguien. Esa es mi principal estrategia de marketing.',
       },
     },
     cta: {
-      text: '¿Te hemos convencido? ¿O crees que solo decimos tonterías?',
-      sub: 'Sea como sea, nos encantará saber de ti',
-      email: 'Mándanos una carta de amor',
-      instagram: 'Escríbenos por mensaje privado',
+      text: '¿Te he convencido? ¿O crees que solo digo tonterías?',
+      sub: 'Sea como sea, me encantará saber de ti',
+      email: 'Mándame una carta de amor',
+      instagram: 'Escríbeme por mensaje privado',
     },
   },
 
@@ -351,8 +351,8 @@ export const es: Dict = {
       whoIsBehind: {
         before: 'Para saber quién escribe nidhi y la experiencia que hay detrás de los textos, consulta la ',
         aboutLink: 'página Sobre nidhi',
-        middle: '. Para conocer la visión del mundo que guía lo que decidimos construir y publicar, lee ',
-        beliefsLink: 'en qué creemos',
+        middle: '. Para conocer la visión del mundo que guía lo que decido construir y publicar, lee ',
+        beliefsLink: 'en qué creo',
         after: '.',
       },
     },
@@ -437,7 +437,7 @@ export const es: Dict = {
       before: '¿Quieres el razonamiento completo detrás de estas herramientas? Lee la ',
       blogLink: 'ruta de aprendizaje de nidhi',
       middle: ', el temario en el que se basan, o descubre ',
-      beliefsLink: 'lo que creemos sobre el dinero y la planificación',
+      beliefsLink: 'lo que creo sobre el dinero y la planificación',
       after: '.',
     },
   },
@@ -868,7 +868,7 @@ export const es: Dict = {
     },
     planner: {
       heading: 'Mira adónde podría llegar.',
-      body: 'Estamos creando un planificador: lo que tienes, debes, ganas y gastas en un solo lugar, en una moneda o en varias, para que puedas comparar decisiones como esta antes de tomarlas.',
+      body: 'Estoy creando un planificador: lo que tienes, debes, ganas y gastas en un solo lugar, en una moneda o en varias, para que puedas comparar decisiones como esta antes de tomarlas.',
     },
     example: {
       label: 'Una decisión, comparada',
@@ -918,9 +918,9 @@ export const es: Dict = {
           a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Se está abriendo por etapas. Apúntate a la lista y recibirás un solo correo cuando se abra el acceso.',
         },
       ],
-      why: 'nidhi nació porque una persona no encontraba una herramienta que encajara con una vida financiera corriente: dinero en más de un país, deudas en otro, un futuro que cruza fronteras. Así que la estamos construyendo, y contando lo que aprendemos por el camino.',
+      why: 'nidhi nació porque no encontraba una herramienta que encajara con una vida financiera corriente: dinero en más de un país, deudas en otro, un futuro que cruza fronteras. Así que la estoy construyendo, y contando lo que aprendo por el camino.',
       trustLine: 'Hecho en Praga. Sin anuncios y sin venta de datos. Las lecciones citan sus fuentes.',
-      trustBeliefs: 'En qué creemos',
+      trustBeliefs: 'En qué creo',
       trustEditorial: 'Cómo escribimos',
       trustPrivacy: 'Política de privacidad',
     },
