@@ -268,7 +268,7 @@ export const en = {
    */
   beliefs: {
     meta: {
-      title: 'Our Beliefs: Honest Personal Finance Tools | nidhi',
+      title: 'What We Believe: Honest Personal Finance Tools | nidhi',
       description:
         'What we believe at nidhi: honest personal finance tools, free financial literacy education, no ads, no data selling, and lessons that are free forever.',
     },

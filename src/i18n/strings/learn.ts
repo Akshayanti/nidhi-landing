@@ -250,7 +250,7 @@ export const learnEn = {
   /** The learning path's front page, at `/blog/`. */
   blogIndex: {
     meta: {
-      title: 'Learn Personal Finance | nidhi',
+      title: 'Learn About Your Money: Free Personal Finance Lessons | nidhi',
       description: 'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides.',
     },
     schema: {
@@ -651,7 +651,7 @@ export const learnHi: typeof learnEn = {
 
   blogIndex: {
     meta: {
-      title: 'पर्सनल फाइनेंस सीखें | nidhi',
+      title: 'अपने पैसे के बारे में सीखें: पर्सनल फाइनेंस के मुफ़्त पाठ | nidhi',
       description: 'मुफ़्त पर्सनल फाइनेंस शिक्षा: शुद्ध संपत्ति, बजट, बचत, निवेश और कर्ज़ प्रबंधन। व्यावहारिक मार्गदर्शिकाओं के साथ कदम-दर-कदम वित्तीय साक्षरता बनाएँ।',
     },
     schema: {
@@ -1032,7 +1032,7 @@ export const learnEs: typeof learnEn = {
 
   blogIndex: {
     meta: {
-      title: 'Aprende finanzas personales | nidhi',
+      title: 'Aprende sobre tu dinero: finanzas personales gratis | nidhi',
       description: 'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Aprende paso a paso con guías prácticas.',
     },
     schema: {
@@ -1428,7 +1428,7 @@ export const learnCs: typeof learnEn = {
 
   blogIndex: {
     meta: {
-      title: 'Osobní finance srozumitelně | nidhi',
+      title: 'Porozumějte svým penězům: lekce osobních financí zdarma | nidhi',
       description: 'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem s praktickými průvodci.',
     },
     schema: {
@@ -1809,7 +1809,7 @@ export const learnMr: typeof learnEn = {
   },
   blogIndex: {
     meta: {
-      title: 'वैयक्तिक वित्त शिका | nidhi',
+      title: 'तुमच्या पैशांबद्दल शिका: वैयक्तिक वित्ताचे मोफत धडे | nidhi',
       description: 'वैयक्तिक वित्ताचे मोफत शिक्षण: निव्वळ संपत्ती, बजेट, बचत, गुंतवणूक आणि कर्जाचे व्यवस्थापन. व्यवहारोपयोगी मार्गदर्शिकांनी आर्थिक साक्षरता टप्प्याटप्प्याने वाढवा.',
     },
     schema: {
