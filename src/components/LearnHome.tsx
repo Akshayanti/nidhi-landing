@@ -44,7 +44,7 @@ export interface LearnLevel {
   id: string;
   label: string;
   summary: string;
-  /** Published lessons in the level; 0 means it is still being written. */
+  /** Published lessons in the level; 0 means none is out yet. */
   total: number;
   /** Locale-aware link to the level's own page, built by the page. */
   href: string;
@@ -424,7 +424,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
                       <span className="learn-levelName">{level.label}</span>
                       <span className="learn-levelSummary">{level.summary}</span>
                     </span>
-                    <span className="learn-levelCount">{strings.beingWritten}</span>
+                    <span className="learn-levelCount">{strings.inProgress}</span>
                   </div>
                 </li>
               );
