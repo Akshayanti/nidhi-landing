@@ -515,6 +515,8 @@ export const cs: Dict = {
       page: 'Stránka, ze které přihlášení proběhlo (abychom věděli, zda vás přivedl přehled blogu, nebo konkrétní článek).',
       timestamps: 'Datum a čas přihlášení, potvrzení a (pokud k tomu dojde) odhlášení.',
       status: 'Stav vašeho odběru: čekající na potvrzení, potvrzený nebo odhlášený.',
+      total:
+        'Pokud se přihlásí a odběr potvrdí dost lidí, web může ukázat celkový počet potvrzených odběratelů zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda odebírá konkrétní člověk.',
       from: {
         before: 'E-maily newsletteru chodí z adresy ',
         after: '. Přidejte si ji do kontaktů, aby upozornění na nové články došla do vaší schránky.',
@@ -715,6 +717,7 @@ export const cs: Dict = {
     title: 'Nové články přímo do vaší schránky',
     text: 'Jeden e-mail, když vyjde něco nového. Žádný spam, odhlásit se jde kdykoli.',
     inEnglish: 'Lekce i e-maily jsou v angličtině.',
+    readers: 'Nové lekce už e-mailem dostává {n}+ čtenářů.',
     emailLabel: 'E-mailová adresa',
     button: 'Odebírat',
     privacyBefore: 'Dvojí potvrzení. Odhlásit se jde kdykoli. ',

@@ -71,6 +71,12 @@
  *                                   Chunks by elapsed time to stay under
  *                                   the 6-minute execution cap.
  *
+ *   POST action=count               form body: action, token
+ *                                   Returns { ok: true, count } (distinct
+ *                                   confirmed subscribers) when the token's
+ *                                   SHA-256 matches COUNT_TOKEN_SHA256_;
+ *                                   { ok: false, error: 'forbidden' } otherwise.
+ *
  *   GET  ?action=remind_pending     Sends exactly one reminder email to each
  *         or POST                    pending subscriber whose row is older
  *                                   than 3 days and hasn't received a reminder
@@ -415,10 +421,39 @@ function doPost(e) {
     if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
+    if (action === 'count')           return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
   }
+}
+
+// The newsletter's size, for the line in the site's newsletter boxes ("20+
+// readers get new lessons by email."). The site's build asks once per build
+// with a secret token and gets back one number: distinct confirmed
+// subscribers (listConfirmedSubscribers_ reads status `confirmed` only), so
+// pending, unsubscribed and bounced rows are not counted, and nothing
+// about any one person is returned.
+//
+// The SHA-256 of the count token, in hex. The token itself lives only in the
+// landing site's NEWSLETTER_COUNT_TOKEN secret (and the founder's local .env);
+// the hash of a 256-bit random token says nothing about it, so it can sit in
+// the source. To rotate: make a new token (openssl rand -hex 32), set the
+// secret, put its SHA-256 here, redeploy.
+var COUNT_TOKEN_SHA256_ = 'cdf92fa17035c66fef3933ee54661e0bf3422fa8ead803f1818bce8a86e0e6d8';
+
+function handleCount_(e) {
+  var given = String((e.parameter && e.parameter.token) || '');
+  if (!given || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
+    return jsonResponse_({ ok: false, error: 'forbidden' });
+  }
+  var seen = {};
+  var count = 0;
+  listConfirmedSubscribers_().forEach(function (s) {
+    var email = String((s && s.email) || '').toLowerCase();
+    if (email && email.indexOf('@') > 0 && !seen[email]) { seen[email] = true; count++; }
+  });
+  return jsonResponse_({ ok: true, count: count });
 }
 
 function safeSiteUrl_() {

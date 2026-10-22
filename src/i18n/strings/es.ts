@@ -549,6 +549,8 @@ export const es: Dict = {
       page: 'La página desde la que te suscribiste (para saber si te trajo el índice del blog o una entrada concreta).',
       timestamps: 'La fecha y hora en que te suscribiste, confirmaste y (si lo haces) cancelaste la suscripción.',
       status: 'El estado de tu suscripción: pendiente, confirmada o cancelada.',
+      total:
+        'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscriptores confirmados, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
         before: 'Los correos del boletín llegan desde ',
         after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
@@ -752,6 +754,7 @@ export const es: Dict = {
     title: 'Recibe las nuevas entradas directamente en tu correo',
     text: 'Un correo cuando hay algo nuevo. Sin spam, cancela cuando quieras.',
     inEnglish: 'Las lecciones y los correos están en inglés.',
+    readers: '{n}+ lectores reciben las lecciones nuevas por correo.',
     emailLabel: 'Correo electrónico',
     button: 'Suscribirme',
     privacyBefore: 'Doble confirmación. Cancela cuando quieras. ',
