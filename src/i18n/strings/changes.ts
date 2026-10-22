@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-10-22',
     items: [
       {
+        id: 'newsletter-total',
+        text: {
+          en: 'The newsletter box now shows how many readers get new lessons by email, rounded down in steps of 20, once there are 20. It never shows anything about any one person.',
+          hi: 'न्यूज़लेटर बॉक्स अब दिखाता है कि कितने पाठक नए पाठ ईमेल से पाते हैं, 20 पाठक होने के बाद, 20-20 के अंतर पर नीचे की ओर पूर्णांकित करके। यह किसी एक व्यक्ति के बारे में कभी कुछ नहीं दिखाता।',
+          es: 'El recuadro del boletín muestra ahora cuántos lectores reciben las lecciones nuevas por correo, a partir de 20, con el total redondeado a la baja de 20 en 20. Nunca muestra nada sobre una persona concreta.',
+          cs: 'Rámeček s newsletterem teď od 20 odběratelů ukazuje, kolik čtenářů dostává nové lekce e-mailem, zaokrouhleno dolů po dvacítkách. Nikdy neukazuje nic o konkrétním člověku.',
+          mr: 'न्यूजलेटर बॉक्स आता 20 वाचक झाल्यावर किती वाचक नवे धडे ईमेलवर मिळवतात ते दाखवतो, 20-20 च्या टप्प्यांत खालच्या बाजूला पूर्णांक करून. तो कोणत्याही एका व्यक्तीबद्दल कधीच काही दाखवत नाही.',
+        },
+      },
+      {
         id: 'changes-by-day',
         aliases: ['changes-dated-lines'],
         text: {

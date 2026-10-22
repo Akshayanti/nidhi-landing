@@ -6,7 +6,8 @@
 // Configure PUBLIC_NEWSLETTER_ENDPOINT to the Apps Script Web App exec URL.
 // See docs/blog-subscription-setup.md for full setup instructions.
 
-import { DEFAULT_LOCALE, dict, localizedPath, type Locale } from '../i18n';
+import { DEFAULT_LOCALE, dict, format, localizedPath, type Locale } from '../i18n';
+import { newsletterCount, shownNewsletterCount } from '../utils/newsletterCount';
 
 export interface Props {
   /** The language of the page the box sits on. Defaults to English. */
@@ -27,6 +28,18 @@ const showInEnglish = locale !== DEFAULT_LOCALE;
 const privacyHref = localizedPath(locale, '/privacy/');
 const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || '';
 const isDev = import.meta.env.DEV;
+// "20+ readers get new lessons by email.": absent until 20 people have
+// confirmed (see newsletterCount). The dev server shows the exact count
+// instead, ungated, for the founder only.
+const subscribers = await newsletterCount();
+const readers = shownNewsletterCount(subscribers);
+const countLine = isDev
+  ? subscribers === null
+    ? 'Dev only: newsletter count unavailable. Set NEWSLETTER_COUNT_TOKEN in .env.'
+    : `Dev only: ${subscribers} confirmed subscribers. The live site shows this from 20, rounded down to a multiple of 20.`
+  : readers === null
+    ? null
+    : format(t.readers, { n: readers });
 
 // Stable per-variant IDs so the inline script can wire up the right instance
 // even if both variants somehow ended up on the same page.
@@ -42,6 +55,7 @@ const inputId = `subscribe-email-${variant}`;
       <div class="subscribe-pre" data-subscribe-state="pre">
         <h3 class="subscribe-title">{t.title}</h3>
         <p class="subscribe-text">{t.text}</p>
+        {countLine && <p class="subscribe-text subscribe-count">{countLine}</p>}
         {showInEnglish && <p class="subscribe-text" role="note">{t.inEnglish}</p>}
 
         <form
@@ -145,6 +159,7 @@ const inputId = `subscribe-email-${variant}`;
             <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
           </div>
         </div>
+        {countLine && <p class="subscribe-compact-note subscribe-count">{countLine}</p>}
         {showInEnglish && <p class="subscribe-compact-note" role="note">{t.inEnglish}</p>}
         <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
         {isDev && !endpoint && (

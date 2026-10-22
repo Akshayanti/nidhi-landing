@@ -688,6 +688,8 @@ export const en = {
       page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there).',
       timestamps: 'Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.',
       status: 'Your subscription status: pending, confirmed, or unsubscribed.',
+      total:
+        'If enough people subscribe and confirm, the site may show a rounded-down total of confirmed subscribers. It never shows any email address, or whether any particular person has subscribed.',
       // The address itself is a `<code>` in the component.
       from: {
         before: 'Newsletter emails come from ',
@@ -930,6 +932,8 @@ export const en = {
     title: 'Receive new posts directly in your inbox',
     text: 'One email when something new goes up. No spam, unsubscribe anytime.',
     inEnglish: 'The lessons and the emails are in English.',
+    /** Under the text once 20 people have confirmed, rounded down to a multiple of 20 (src/utils/newsletterCount.ts). */
+    readers: '{n}+ readers get new lessons by email.',
     emailLabel: 'Email address',
     button: 'Subscribe',
     /** Split around the link, so a translation can move it inside the sentence. */
