@@ -50,14 +50,18 @@ The site serves more than one language, so a copy change is not finished when En
 
 ## What's Changed Grows With Every Visible Change
 
-The site has a "What's changed" page (`/changes/` in every language). It is how readers see that the site is looked after, so it stays current without anyone having to remember a separate chore: the change carries its own line.
+The site has a "What's changed" page (`/changes/` in every language). It is how readers see that the site is looked after, so it stays current without anyone having to remember a separate chore: the change carries its own item. Items are grouped by day, like the privacy changelog, so the page stays readable as the site grows.
 
 **Rules:**
-1. **Every pull request that changes something a reader can see or notice adds one line** to `src/i18n/strings/changes.ts`, at the top, dated the day it ships, in all five languages, in the same pull request. Give it a short, permanent `id`: it is the line's anchor on the page and its address in the RSS feeds, so it never changes, even if the wording does. The council reviews it with the rest of the change.
+1. **One item per change a reader experiences, grouped by day.** A pull request that changes what a reader can do, find, understand or rely on updates `src/i18n/strings/changes.ts` in the same pull request, in all five languages. Items describe what readers experience, not pull requests: if that day already has an item for the same outcome, edit it instead of adding one, and on a later day add an item only when a reader would notice something new. There is at most one day per date (YYYY-MM-DD, UTC), newest first. Each item has a short, permanent `id`: its anchor on the page and its guid in the RSS feeds, never changed and never reused. When items are merged, the surviving item keeps the merged ids as `aliases`, so old links still land. The page shows the two latest months open and folds older ones; once it covers more than 12 months or about 500 items, it moves to yearly archive pages, with old links still resolving. The council reviews every new or edited item in all five languages.
 2. **Write it for a reader, not a developer**: what is different for them ("The loan comparison now has the planner waitlist too"), never a file, a component or a pull request title.
 3. **In the founder's voice**, plain and warm, as "I" where a person is speaking. The founder is never given a gender: Hindi and Marathi use dative, ergative or impersonal sentences; Czech uses the present tense or a participle that agrees with something else; Spanish avoids gendered adjectives about the founder.
-4. **What counts**: copy, pages, tools, layout, behaviour, anything the privacy changelog records. **What does not**: refactors, tests, docs, CI, SEO metadata, and lessons published on schedule (the learning path lists those). A correction inside a lesson has its own record (the lesson's `corrections` field), so it gets no line here either.
-5. `src/i18n/strings/changes.test.ts` checks the mechanical rules (every language present, newest first, typography); it is the floor, as the catalog tests are.
+4. **What counts**: copy, pages, tools, layout, behaviour, and anything the privacy changelog records, once readers can see it. **What does not**: refactors, tests, docs, CI, tooling, dependency updates, SEO metadata, performance with no visible change, spacing, alignment and contrast polish, typo fixes that do not change meaning, fixes to something shipped earlier the same day, and lessons published on schedule (the learning path lists those). A correction inside a lesson has its own record (the lesson's `corrections` field), so it gets no item here either. A pull request with nothing that counts adds nothing.
+5. `src/i18n/strings/changes.test.ts` checks the mechanical rules (one day per date, newest first, no empty day, unique ids and aliases, every language present, typography); it is the floor, as the catalog tests are.
+
+## Automated Visits Use the Internal Address
+
+Whenever the live site is opened automatically (a headless browser, the Chrome extension, a script or any other tool), start from this address: **https://nidhi.today/?internal=1**. It marks that browser as internal (the `nidhi-internal` key the privacy notice describes), so it runs no analytics and never counts as a reader. A fresh browser profile starts unmarked, so open this address first in every new browser or session before visiting any other page. Local test builds follow the rules above for analytics testing instead.
 
 ## Style Rules
 

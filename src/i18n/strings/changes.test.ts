@@ -7,29 +7,33 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { LOCALES } from '../config.ts';
-import { CHANGES } from './changes.ts';
+import { CHANGES, CHANGE_DAYS } from './changes.ts';
 
 const lines = (locale: (typeof LOCALES)[number]) => CHANGES.map((c, i) => ({ i, value: c.text[locale] }));
 
 describe("what's changed", () => {
-  it('dates every entry as a real YYYY-MM-DD day', () => {
-    const bad = CHANGES.filter((c) => !/^\d{4}-\d{2}-\d{2}$/.test(c.date) || Number.isNaN(Date.parse(c.date)));
+  it('dates every day as a real YYYY-MM-DD day', () => {
+    // Round-tripped through Date, so a day that does not exist (2026-02-30) fails.
+    const real = (iso: string) => /^\d{4}-\d{2}-\d{2}$/.test(iso) && !Number.isNaN(Date.parse(iso)) && new Date(`${iso}T00:00:00Z`).toISOString().slice(0, 10) === iso;
+    const bad = CHANGE_DAYS.filter((d) => !real(d.date));
     assert.deepEqual(bad, []);
   });
 
-  it('names every entry once, with a short permanent id', () => {
-    // The id is the entry's anchor and its address in the feeds, so it must be
-    // present, unique and safe in a URL fragment.
-    const bad = CHANGES.filter((c) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c.id ?? '')).map((c) => c.id);
-    assert.deepEqual(bad, []);
-    const seen = new Set<string>();
-    const repeated = CHANGES.map((c) => c.id).filter((id) => (seen.has(id) ? true : (seen.add(id), false)));
-    assert.deepEqual(repeated, []);
-  });
-
-  it('lists the newest first', () => {
-    const outOfOrder = CHANGES.filter((c, i) => i > 0 && c.date > CHANGES[i - 1].date).map((c) => c.date);
+  it('has one day per date, newest first, and no empty day', () => {
+    // Strictly newer to older also rules out a second day with the same date.
+    const outOfOrder = CHANGE_DAYS.filter((d, i) => i > 0 && d.date >= CHANGE_DAYS[i - 1].date).map((d) => d.date);
     assert.deepEqual(outOfOrder, []);
+    assert.deepEqual(CHANGE_DAYS.filter((d) => d.items.length === 0).map((d) => d.date), []);
+  });
+
+  it('names every item once, with a short permanent id, and never reuses a merged one', () => {
+    // An id is the item's anchor and its address in the feeds; an alias is
+    // the id of an item merged into it, still an anchor on the page. All of
+    // them must be present, unique together and safe in a URL fragment.
+    const names = CHANGES.flatMap((c) => [c.id, ...(c.aliases ?? [])]);
+    assert.deepEqual(names.filter((n) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(n ?? '')), []);
+    const seen = new Set<string>();
+    assert.deepEqual(names.filter((n) => (seen.has(n) ? true : (seen.add(n), false))), []);
   });
 
   it('says every line in every language, translated', () => {
