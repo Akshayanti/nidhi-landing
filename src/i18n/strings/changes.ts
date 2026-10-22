@@ -25,6 +25,16 @@ export const CHANGES: ChangeEntry[] = [
   {
     date: '2026-10-22',
     text: {
+      en: 'The Mastery level now says "Not yet available", which is more honest than "In progress".',
+      hi: 'निपुणता वाले स्तर पर अब "अभी उपलब्ध नहीं" लिखा है, जो "जारी है" से ज़्यादा सच्चा है।',
+      es: 'El nivel Dominio dice ahora «Aún no disponible», que es más honesto que «En curso».',
+      cs: 'Úroveň Mistrovství teď ukazuje „Zatím není k dispozici“, což je poctivější než „Probíhá“.',
+      mr: 'प्रभुत्व स्तरावर आता “अजून उपलब्ध नाही” असे लिहिले आहे, जे “सुरू आहे” पेक्षा जास्त प्रामाणिक आहे.',
+    },
+  },
+  {
+    date: '2026-10-22',
+    text: {
       en: 'The Monte Carlo simulator now has the planner waitlist box too, and all four tools ask the same way, each with one line on what the planner adds.',
       hi: 'मोंटे कार्लो सिम्युलेटर पर भी अब प्लानर की वेटलिस्ट है, और चारों टूल एक ही तरह से पूछते हैं, हर एक के साथ एक पंक्ति कि प्लानर उसमें क्या जोड़ता है।',
       es: 'El simulador Monte Carlo tiene ahora también la lista de espera del planificador, y las cuatro herramientas la ofrecen igual, cada una con una línea sobre lo que el planificador añade.',

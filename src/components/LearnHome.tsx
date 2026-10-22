@@ -424,7 +424,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
                       <span className="learn-levelName">{level.label}</span>
                       <span className="learn-levelSummary">{level.summary}</span>
                     </span>
-                    <span className="learn-levelCount">{strings.inProgress}</span>
+                    <span className="learn-levelCount">{strings.notYetAvailable}</span>
                   </div>
                 </li>
               );
