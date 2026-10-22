@@ -70,7 +70,6 @@ export const mr: Dict = {
     columns: {
       learn: 'शिका',
       tools: 'मोफत साधने',
-      product: 'उत्पादन',
       about: 'माहिती',
       connect: 'संपर्क',
     },
@@ -83,7 +82,6 @@ export const mr: Dict = {
       monteCarloSimulator: 'मॉन्टे कार्लो सिम्युलेटर',
       inflationCalculator: 'महागाई कॅल्क्युलेटर',
       allTools: 'सर्व पाहा',
-      home: 'मुख्यपृष्ठ',
       about: 'nidhi विषयी',
       beliefs: 'आमची तत्त्वे',
       editorialPolicy: 'संपादकीय धोरण',
