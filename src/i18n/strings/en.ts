@@ -426,6 +426,9 @@ export const en = {
         after:
           '. Substantive corrections are made in the lesson and reflected in its "last updated" date, so the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a date change.',
       },
+      /** Above the list of corrections, which appears once there is one. */
+      correctionsList:
+        'When I correct something that could change your understanding or decision, I note it in the lesson and list it here. Typos get fixed quietly.',
       // Two links in one sentence, so five parts rather than three.
       whoIsBehind: {
         before: 'For who writes nidhi and the experience behind the writing, see the ',

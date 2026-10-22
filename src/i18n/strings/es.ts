@@ -346,6 +346,8 @@ export const es: Dict = {
         after:
           '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «last updated» (última actualización), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
       },
+      correctionsList:
+        'Cuando corrijo algo que podría cambiar lo que entiendes o lo que decides, lo anoto en la lección y lo recojo aquí. Las erratas se corrigen sin aviso.',
       whoIsBehind: {
         before: 'Para saber quién escribe nidhi y la experiencia que hay detrás de los textos, consulta la ',
         aboutLink: 'página Sobre nidhi',

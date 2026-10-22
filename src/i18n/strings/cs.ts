@@ -321,6 +321,8 @@ export const cs: Dict = {
         after:
           '. Podstatné opravy se provádějí přímo v lekci a promítnou se do jejího data „last updated“, aby byla změna vidět, místo aby se tiše vyměnila. Drobnosti, jako jsou překlepy, se opravují bez změny data.',
       },
+      correctionsList:
+        'Když opravuji něco, co by mohlo změnit, jak věcem rozumíte nebo jak se rozhodnete, poznamenám to v lekci a uvedu to i tady. Překlepy opravuji potichu.',
       whoIsBehind: {
         before: 'Kdo nidhi píše a jaká zkušenost za texty stojí, najdete na ',
         aboutLink: 'stránce O nidhi',

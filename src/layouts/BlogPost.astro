@@ -16,6 +16,8 @@ interface Props {
   tldr: string;
   pubDate: Date;
   updatedDate?: Date;
+  /** Substantive corrections, oldest first, as the frontmatter lists them. */
+  corrections?: Array<{ date: Date; note: string }>;
   level: string;
   tags: string[];
   /** Main path, optional detail and their sum, from getLayeredReadingTime. */
@@ -58,7 +60,7 @@ interface Props {
   seriesPosition?: { index: number; total: number } | null;
 }
 
-const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, corrections = [], level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [] } = Astro.props;
 // A lesson is English in every edition, so its chrome reads the English names.
 // Ladder levels only: an Inclusive Finances guide is not a step in a series.
 const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
@@ -234,6 +236,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             </span>
           )}
         </div>
+        {/* Shown, not swapped in quietly: what was wrong and what the lesson says now. */}
+        {corrections.map((c) => (
+          <p class="post-correction">
+            <strong>Corrected on <time datetime={c.date.toISOString()}>{c.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</time>:</strong> {c.note}
+          </p>
+        ))}
         <h1 class="post-title">{title}</h1>
         <div class="post-tldr">
           <span class="tldr-label">TL;DR</span>
@@ -603,6 +611,21 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   .post-date {
     font-size: 0.875rem;
     color: var(--color-text-muted);
+  }
+
+  .post-correction {
+    margin: var(--space-3) 0 0;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    background: var(--color-bg);
+    border-inline-start: 3px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .post-correction strong {
+    color: var(--color-text-primary);
   }
 
   /* Updated label sits next to the publish date when the post has a

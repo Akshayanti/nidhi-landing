@@ -43,6 +43,16 @@ const blog = defineCollection({
     order: z.number().default(99),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
+    /**
+     * Substantive corrections: the date and one plain sentence saying what was
+     * wrong and what the lesson says now. Shown above the lesson's title and
+     * listed on the editorial policy page (src/utils/corrections.ts). Each one
+     * also moves `updatedDate`, which the build checks. Typos get no entry.
+     */
+    corrections: z.array(z.object({
+      date: z.coerce.date(),
+      note: z.string().min(1),
+    })).optional(),
     level: z.enum(['discovery', 'building', 'psychology', 'optimizing', 'mastery', 'inclusive-finances']),
     primaryPersona: z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas']),
     personas: z.array(z.enum(['eva', 'petra', 'jiri', 'marcus', 'tomas'])),

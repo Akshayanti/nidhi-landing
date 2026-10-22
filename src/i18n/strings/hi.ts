@@ -372,6 +372,8 @@ export const hi: Dict = {
         after:
           ' पर। बड़े सुधार पाठ में ही किए जाते हैं और उसकी "last updated" (आख़िरी बार अपडेट) वाली तारीख़ में दिखते हैं, ताकि बदलाव दिखे, चुपचाप बदला न जाए। टाइपिंग की ग़लतियों जैसे छोटे सुधार बिना तारीख़ बदले किए जाते हैं।',
       },
+      correctionsList:
+        'जब कोई ऐसी गलती सुधारी जाती है जो आपकी समझ या आपके फ़ैसले को बदल सकती थी, तो उसका नोट उसी पाठ में लगता है और यहाँ भी दर्ज होता है। टाइपो चुपचाप ठीक कर दिए जाते हैं।',
       // Two links in one sentence, so five parts rather than three, and the
       // Hindi puts the verb before the first link where the English puts it
       // before neither: "... देखें " + link.
