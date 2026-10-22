@@ -109,7 +109,6 @@ export const en = {
     columns: {
       learn: 'Learn',
       tools: 'Free Tools',
-      product: 'Product',
       about: 'About',
       connect: 'Connect',
     },
@@ -122,7 +121,6 @@ export const en = {
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
       allTools: 'View all',
-      home: 'Home',
       about: 'About nidhi',
       beliefs: 'Our Beliefs',
       editorialPolicy: 'Editorial policy',
@@ -985,6 +983,11 @@ export const en = {
       subhead: ['Free lessons.', 'Private tools.', 'A planner on the way.'],
       startLearning: 'Start learning',
       tryTool: 'Try a free tool',
+      /**
+       * Under the two buttons: what free and private mean, with counts filled in
+       * at build. Scoped to the tools, because the waitlist form does send an email.
+       */
+      promise: '{lessons} free lessons. {tools} private tools. No account, no ads. What you type in the tools stays on your device.',
       /** Shown only to a reader this browser knows has started the path. */
       welcomeBack: 'Welcome back. Pick up where you left off:',
     },
@@ -1035,6 +1038,8 @@ export const en = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'Route read. ',
       doorPath: 'Keep going on the learning path',
+      /** Above the routes: who the path is written for. */
+      inclusiveLead: 'Built for financial lives that don’t fit the standard plan.',
       inclusiveTitle: 'The standard plan doesn’t fit my life.',
       inclusiveMeta: 'Inclusive Finances · {count} guides, any stage',
       inclusiveMetaFew: 'Inclusive Finances · {count} guides, any stage',

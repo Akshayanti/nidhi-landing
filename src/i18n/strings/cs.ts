@@ -74,7 +74,6 @@ export const cs: Dict = {
     columns: {
       learn: 'Lekce',
       tools: 'Nástroje zdarma',
-      product: 'Produkt',
       about: 'O nás',
       connect: 'Kontakt',
     },
@@ -87,7 +86,6 @@ export const cs: Dict = {
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
       allTools: 'Zobrazit vše',
-      home: 'Domů',
       about: 'O nidhi',
       beliefs: 'Čemu věříme',
       editorialPolicy: 'Redakční zásady',
@@ -763,6 +761,7 @@ export const cs: Dict = {
       subhead: ['Lekce zdarma.', 'Soukromé nástroje.', 'Plánovač na cestě.'],
       startLearning: 'Začít s lekcemi',
       tryTool: 'Vyzkoušet nástroj zdarma',
+      promise: 'Lekce zdarma: {lessons}. Soukromé nástroje: {tools}. Bez účtu, bez reklam. Co do nástrojů zadáte, zůstává ve vašem zařízení.',
       welcomeBack: 'Vítejte zpět. Navažte tam, kde to máte rozečtené:',
     },
     journey: {
@@ -797,6 +796,7 @@ export const cs: Dict = {
       doorContinue: 'Pokračovat: ',
       doorRead: 'Trasa dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
+      inclusiveLead: 'Pro finanční životy, na které standardní plán nesedí.',
       inclusiveTitle: 'Standardní plán na můj život nesedí.',
       inclusiveMeta: 'Inkluzivní finance · {count} průvodců, pro jakoukoli fázi',
       inclusiveMetaFew: 'Inkluzivní finance · {count} průvodci, pro jakoukoli fázi',

@@ -70,7 +70,6 @@ export const mr: Dict = {
     columns: {
       learn: 'शिका',
       tools: 'मोफत साधने',
-      product: 'उत्पादन',
       about: 'माहिती',
       connect: 'संपर्क',
     },
@@ -83,7 +82,6 @@ export const mr: Dict = {
       monteCarloSimulator: 'मॉन्टे कार्लो सिम्युलेटर',
       inflationCalculator: 'महागाई कॅल्क्युलेटर',
       allTools: 'सर्व पाहा',
-      home: 'मुख्यपृष्ठ',
       about: 'nidhi विषयी',
       beliefs: 'आमची तत्त्वे',
       editorialPolicy: 'संपादकीय धोरण',
@@ -684,6 +682,7 @@ export const mr: Dict = {
       ],
       startLearning: 'शिकायला सुरुवात करा',
       tryTool: 'मोफत साधन वापरून पाहा',
+      promise: '{lessons} मोफत धडे. {tools} खासगी साधने. खाते नाही, जाहिराती नाहीत. साधनांमध्ये तुम्ही जे लिहिता ते तुमच्या डिव्हाइसवरच राहते.',
       welcomeBack: 'पुन्हा स्वागत आहे. मागच्या वेळी जिथे वाचन थांबले, तिथून पुढे सुरू करा:',
     },
     journey: {
@@ -718,6 +717,7 @@ export const mr: Dict = {
       doorContinue: 'पुढे वाचा: ',
       doorRead: 'हा मार्ग वाचून झाला. ',
       doorPath: 'शिकण्याच्या मार्गावर पुढे चला',
+      inclusiveLead: 'ज्यांच्या आर्थिक आयुष्याला सर्वसाधारण योजना बसत नाही, त्यांच्यासाठी बनवलेले.',
       inclusiveTitle: 'सर्वसाधारण योजना माझ्या आयुष्याला बसत नाही.',
       inclusiveMeta: 'सर्वसमावेशक वित्त · {count} मार्गदर्शिका, कोणत्याही टप्प्यावर',
       inclusiveMetaFew: 'सर्वसमावेशक वित्त · {count} मार्गदर्शिका, कोणत्याही टप्प्यावर',

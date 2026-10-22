@@ -80,7 +80,6 @@ export const hi: Dict = {
     columns: {
       learn: 'सीखें',
       tools: 'मुफ़्त टूल',
-      product: 'प्रोडक्ट',
       about: 'हमारे बारे में',
       connect: 'जुड़ें',
     },
@@ -93,7 +92,6 @@ export const hi: Dict = {
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
       inflationCalculator: 'महँगाई कैलकुलेटर',
       allTools: 'सभी देखें',
-      home: 'होम',
       about: 'nidhi के बारे में',
       beliefs: 'हमारे सिद्धांत',
       editorialPolicy: 'संपादकीय नीति',
@@ -865,6 +863,7 @@ export const hi: Dict = {
       subhead: ['मुफ़्त पाठ।', 'निजी टूल।', 'प्लानर आ रहा है।'],
       startLearning: 'सीखना शुरू करें',
       tryTool: 'कोई मुफ़्त टूल आज़माएँ',
+      promise: '{lessons} मुफ़्त पाठ। {tools} निजी टूल। न अकाउंट, न विज्ञापन। टूल में आप जो लिखते हैं, वह आपके ही डिवाइस पर रहता है।',
       /** Shown only to a reader this browser knows has started the path. */
       welcomeBack: 'फिर से स्वागत है। जहाँ छोड़ा था, वहीं से आगे बढ़ें:',
     },
@@ -910,6 +909,7 @@ export const hi: Dict = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'इस रास्ते के सब पाठ पढ़ लिए। ',
       doorPath: 'सीखने के रास्ते पर आगे बढ़ते रहें',
+      inclusiveLead: 'उन लोगों के लिए बना, जिनकी आर्थिक ज़िंदगी में मानक योजना नहीं बैठती।',
       inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
       inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveMetaFew: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',

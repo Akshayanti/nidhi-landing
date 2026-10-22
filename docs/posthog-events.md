@@ -234,7 +234,6 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `footer-blog` | "Learning path" link (/blog/) |
 | `footer-multi-currency-net-worth` | Net worth tool link |
 | `footer-loan-comparison` | Loan comparison tool link |
-| `footer-home` | Home link |
 | `footer-beliefs` | Beliefs page link |
 | `footer-privacy` | Privacy page link |
 | `footer-email` | Email contact link |

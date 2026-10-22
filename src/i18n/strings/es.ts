@@ -73,7 +73,6 @@ export const es: Dict = {
     columns: {
       learn: 'Aprende',
       tools: 'Herramientas gratuitas',
-      product: 'Producto',
       about: 'Acerca de',
       connect: 'Contacto',
     },
@@ -86,7 +85,6 @@ export const es: Dict = {
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
       allTools: 'Ver todas',
-      home: 'Inicio',
       about: 'Sobre nidhi',
       beliefs: 'En qué creemos',
       editorialPolicy: 'Política editorial',
@@ -805,6 +803,7 @@ export const es: Dict = {
       subhead: ['Lecciones gratuitas.', 'Herramientas privadas.', 'Un planificador en camino.'],
       startLearning: 'Empieza a aprender',
       tryTool: 'Prueba una herramienta gratuita',
+      promise: '{lessons} lecciones gratuitas. {tools} herramientas privadas. Sin cuenta y sin anuncios. Lo que escribes en las herramientas se queda en tu dispositivo.',
       welcomeBack: 'Hola de nuevo. Sigue donde lo dejaste:',
     },
     journey: {
@@ -842,6 +841,7 @@ export const es: Dict = {
       doorContinue: 'Continúa con ',
       doorRead: 'Has leído la ruta. ',
       doorPath: 'Sigue en la ruta de aprendizaje',
+      inclusiveLead: 'Pensado para vidas financieras que no encajan con el plan estándar.',
       inclusiveTitle: 'El plan estándar no encaja con mi vida.',
       inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
       inclusiveMetaFew: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
