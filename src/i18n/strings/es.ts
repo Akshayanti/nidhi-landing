@@ -73,7 +73,6 @@ export const es: Dict = {
     columns: {
       learn: 'Aprende',
       tools: 'Herramientas gratuitas',
-      product: 'Producto',
       about: 'Acerca de',
       connect: 'Contacto',
     },
@@ -86,7 +85,6 @@ export const es: Dict = {
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
       allTools: 'Ver todas',
-      home: 'Inicio',
       about: 'Sobre nidhi',
       beliefs: 'En qué creemos',
       editorialPolicy: 'Política editorial',

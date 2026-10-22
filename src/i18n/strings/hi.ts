@@ -80,7 +80,6 @@ export const hi: Dict = {
     columns: {
       learn: 'सीखें',
       tools: 'मुफ़्त टूल',
-      product: 'प्रोडक्ट',
       about: 'हमारे बारे में',
       connect: 'जुड़ें',
     },
@@ -93,7 +92,6 @@ export const hi: Dict = {
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
       inflationCalculator: 'महँगाई कैलकुलेटर',
       allTools: 'सभी देखें',
-      home: 'होम',
       about: 'nidhi के बारे में',
       beliefs: 'हमारे सिद्धांत',
       editorialPolicy: 'संपादकीय नीति',
