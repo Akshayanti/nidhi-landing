@@ -25,6 +25,16 @@ export const CHANGES: ChangeEntry[] = [
   {
     date: '2026-10-22',
     text: {
+      en: 'Every line on this page now shows its date.',
+      hi: 'इस पेज की हर पंक्ति पर अब उसकी तारीख़ दिखती है।',
+      es: 'Cada línea de esta página muestra ahora su fecha.',
+      cs: 'Každý řádek na této stránce teď ukazuje své datum.',
+      mr: 'या पानावरच्या प्रत्येक ओळीसोबत आता तिची तारीख दिसते.',
+    },
+  },
+  {
+    date: '2026-10-22',
+    text: {
       en: "There's now this page: a short list of what changed on the site, newest first.",
       hi: 'अब यह पेज है: साइट पर क्या बदला, उसकी एक छोटी सूची, सबसे नया सबसे ऊपर।',
       es: 'Ahora existe esta página: una lista breve de lo que ha cambiado en el sitio, lo más reciente primero.',
