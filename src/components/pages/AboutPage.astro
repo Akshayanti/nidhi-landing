@@ -12,9 +12,10 @@
  * the page's own address rather than at the English one.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { LOCALE_META, LOCALES, dict, format, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, format, localizedPath, plural, type Locale } from '../../i18n';
 import { getCollection } from 'astro:content';
 import { sourceCounts } from '../../utils/sourceCounts';
+import { publishedCorrections } from '../../utils/corrections';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -27,7 +28,12 @@ const strings = dict(locale);
 const { about } = strings;
 
 // Proof as a number, worked out from the lessons themselves (see sourceCounts).
-const sources = sourceCounts(await getCollection('blog'), import.meta.env.DEV ? new Date('2999-01-01') : new Date());
+const lessons = await getCollection('blog');
+const now = import.meta.env.DEV ? new Date('2999-01-01') : new Date();
+const sources = sourceCounts(lessons, now);
+// Shown from the first published correction; never a zero dressed up as accuracy.
+const correctionCount = publishedCorrections(lessons, now).length;
+const corrections = about.body.correctionsCount;
 
 const siteUrl = 'https://nidhi.today';
 // Built from the path rather than hardcoded with a locale prefix, so the
@@ -112,6 +118,12 @@ const breadcrumbSchema = {
         <h2>{about.sections.whyYouCanTrustIt}</h2>
         <p>{about.body.whyYouCanTrustIt1}</p>
         <p>{format(about.body.sourcesCount, { lessons: sources.lessons, sources: sources.distinct })}</p>
+        {correctionCount > 0 && (
+          <p>
+            {format(plural(LOCALE_META[locale].htmlLang, correctionCount, corrections.one, corrections.few, corrections.other), { count: correctionCount })}<a
+              href={`${localizedPath(locale, '/editorial-policy/')}#corrections`}>{corrections.link}</a>{corrections.after}
+          </p>
+        )}
         <p>{about.body.whyYouCanTrustIt2}</p>
 
         <h2>{about.sections.howPostsAreMade}</h2>
