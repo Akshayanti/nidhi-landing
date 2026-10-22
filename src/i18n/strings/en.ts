@@ -1038,6 +1038,8 @@ export const en = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'Route read. ',
       doorPath: 'Keep going on the learning path',
+      /** Above the routes: who the path is written for. */
+      inclusiveLead: 'Built for financial lives that don’t fit the standard plan.',
       inclusiveTitle: 'The standard plan doesn’t fit my life.',
       inclusiveMeta: 'Inclusive Finances · {count} guides, any stage',
       inclusiveMetaFew: 'Inclusive Finances · {count} guides, any stage',

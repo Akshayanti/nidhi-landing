@@ -841,6 +841,7 @@ export const es: Dict = {
       doorContinue: 'Continúa con ',
       doorRead: 'Has leído la ruta. ',
       doorPath: 'Sigue en la ruta de aprendizaje',
+      inclusiveLead: 'Pensado para vidas financieras que no encajan con el plan estándar.',
       inclusiveTitle: 'El plan estándar no encaja con mi vida.',
       inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
       inclusiveMetaFew: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
