@@ -354,6 +354,9 @@ export const cs: Dict = {
       'Drobné změny, které na tomto webu dělám, tak jak vycházejí, od nejnovějších. Žádný plán ani odpočet, jen to, co se opravdu změnilo. Nové lekce najdete na vzdělávací cestě; tahle stránka je pro všechno kolem nich.',
     feedTitle: 'Co se změnilo na nidhi',
     followRss: 'Sledujte tyto změny přes RSS',
+    countOne: '{count} změna',
+    countFew: '{count} změny',
+    countOther: '{count} změn',
   },
 
   freeHub: {

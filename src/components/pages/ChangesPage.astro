@@ -2,17 +2,20 @@
 /**
  * "What's changed", in whichever language it was asked for.
  *
- * One plain line per change a reader could notice, grouped by month, newest
- * first. The lines live in src/i18n/strings/changes.ts with all five
- * languages side by side, so a change cannot ship in one edition only; the
- * page's own words are in the `changes` namespace of each catalog.
+ * One plain item per change a reader could notice, grouped by day and month,
+ * newest first. The two latest months are open; older months fold under their
+ * name and a count, so the page stays short as it grows. The items live in
+ * src/i18n/strings/changes.ts with all five languages side by side, so a
+ * change cannot ship in one edition only; the page's own words are in the
+ * `changes` namespace of each catalog.
  *
  * English is served from `src/pages/changes.astro` and the other languages
  * from `src/pages/[locale]/changes.astro`; both render this component.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
-import { CHANGES } from '../../i18n/strings/changes.ts';
+import { DATE_LOCALE, LOCALE_META, LOCALES, dict, format, localizedPath, type Locale } from '../../i18n';
+import { plural } from '../../i18n/plural.ts';
+import { CHANGE_DAYS, type ChangeItem } from '../../i18n/strings/changes.ts';
 
 interface Props {
   locale: Locale;
@@ -31,19 +34,24 @@ const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
 const monthLabel = new Intl.DateTimeFormat(DATE_LOCALE[locale], { month: 'long', year: 'numeric', timeZone: 'UTC' });
 const dayLabel = new Intl.DateTimeFormat(DATE_LOCALE[locale], { day: 'numeric', month: 'long', timeZone: 'UTC' });
 
-// CHANGES is newest first (changes.test.ts holds it to that), so months come
-// out in order as they are met.
-const months: Array<{ key: string; label: string; entries: Array<{ id: string; date: string; day: string; text: string }> }> = [];
-for (const c of CHANGES) {
-  const key = c.date.slice(0, 7);
+// CHANGE_DAYS is newest first (changes.test.ts holds it to that), so months
+// come out in order as they are met.
+type Day = { date: string; label: string; items: ChangeItem[] };
+const months: Array<{ key: string; label: string; days: Day[]; count: number }> = [];
+for (const d of CHANGE_DAYS) {
+  const key = d.date.slice(0, 7);
   let month = months.at(-1);
   if (!month || month.key !== key) {
-    month = { key, label: monthLabel.format(asDate(c.date)), entries: [] };
+    month = { key, label: monthLabel.format(asDate(d.date)), days: [], count: 0 };
     months.push(month);
   }
-  // Every line carries its own date, so none reads as undated when a day has several.
-  month.entries.push({ id: c.id, date: c.date, day: dayLabel.format(asDate(c.date)), text: c.text[locale] });
+  month.days.push({ date: d.date, label: dayLabel.format(asDate(d.date)), items: d.items });
+  month.count += d.items.length;
 }
+// The two latest months stay open; older ones fold.
+const OPEN_MONTHS = 2;
+const countLabel = (n: number) =>
+  format(plural(LOCALE_META[locale].htmlLang, n, changes.countOne, changes.countFew, changes.countOther), { count: n });
 
 const webPageSchema = {
   '@context': 'https://schema.org',
@@ -52,7 +60,7 @@ const webPageSchema = {
   name: changes.title,
   url: pageUrl,
   description: changes.meta.description,
-  ...(CHANGES.length > 0 ? { dateModified: CHANGES[0].date } : {}),
+  ...(CHANGE_DAYS.length > 0 ? { dateModified: CHANGE_DAYS[0].date } : {}),
 };
 ---
 
@@ -72,19 +80,36 @@ const webPageSchema = {
         <p class="changes-feed"><a href={feedPath} data-attr="changes-rss">{changes.followRss}</a></p>
       </header>
 
-      {months.map((m) => (
-        <section class="changes-month" aria-labelledby={`month-${m.key}`}>
-          <h2 id={`month-${m.key}`}>{m.label}</h2>
-          <ul>
-            {m.entries.map((e) => (
-              <li id={e.id}>
-                <time datetime={e.date}>{e.day}</time>
-                <span>{e.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+      {months.map((m, i) => {
+        const days = m.days.map((d) => (
+          <section class="changes-day" aria-labelledby={`day-${d.date}`}>
+            <h3 id={`day-${d.date}`}><time datetime={d.date}>{d.label}</time></h3>
+            <ul>
+              {d.items.map((item) => (
+                <li id={item.id}>
+                  {/* A merged item's old ids stay anchors, so old links land here. */}
+                  {item.aliases?.map((a) => <span id={a} class="changes-alias" aria-hidden="true"></span>)}
+                  {item.text[locale]}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ));
+        return i < OPEN_MONTHS ? (
+          <section class="changes-month" aria-labelledby={`month-${m.key}`}>
+            <h2 id={`month-${m.key}`}>{m.label}</h2>
+            {days}
+          </section>
+        ) : (
+          <details class="changes-month changes-month-folded">
+            <summary class="disclosure">
+              {/* A summary holds one heading or phrasing only, so the count sits inside the heading. */}
+              <h2 id={`month-${m.key}`}>{m.label} <span class="changes-count">{countLabel(m.count)}</span></h2>
+            </summary>
+            {days}
+          </details>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>
@@ -132,6 +157,7 @@ const webPageSchema = {
   }
 
   .changes-month h2 {
+    display: block;
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 1.15rem;
@@ -139,34 +165,87 @@ const webPageSchema = {
     margin: var(--space-6) 0 var(--space-2);
   }
 
-  .changes-month ul {
+  .changes-day h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: var(--space-4) 0 var(--space-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .changes-day ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  /* The day sits in its own column, so a long line wraps under itself. */
-  .changes-month li {
-    display: grid;
-    grid-template-columns: 7.5em minmax(0, 1fr);
-    gap: var(--space-3);
-    padding: var(--space-2) 0;
+  .changes-day li {
+    position: relative;
+    padding: var(--space-2) 0 var(--space-2) 1.1rem;
     border-top: 1px solid var(--color-border-light);
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
 
-  .changes-month time {
+  .changes-day li::before {
+    content: '';
+    position: absolute;
+    left: 0.1rem;
+    top: calc(var(--space-2) + 0.62em);
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--color-teal);
+  }
+
+  .changes-alias {
+    position: absolute;
+    top: 0;
+  }
+
+  /* A folded month: its name and a count, opened on demand. */
+  .changes-month-folded {
+    border-top: 1px solid var(--color-border-light);
+    margin-top: var(--space-4);
+  }
+
+  .changes-month-folded > summary {
+    cursor: pointer;
+    padding: var(--space-3) 0;
+  }
+
+  .changes-month-folded > summary h2 {
+    margin: 0;
+  }
+
+  .changes-count {
+    margin-left: var(--space-2);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.9rem;
     color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
   }
 
   @media (max-width: 640px) {
     .changes-page { padding: var(--space-6) var(--space-4); }
-    .changes-month li {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0;
-    }
   }
 </style>
+
+<script is:inline>
+  // A link to an item in a folded month opens that month first, so the item
+  // is there to scroll to.
+  (function() {
+    function reveal() {
+      var id;
+      try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+      var el = id && document.getElementById(id);
+      var month = el && el.closest('details');
+      if (!month || month.open) return;
+      month.open = true;
+      el.scrollIntoView();
+    }
+    reveal();
+    window.addEventListener('hashchange', reveal);
+  })();
+</script>

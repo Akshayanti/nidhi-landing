@@ -470,6 +470,10 @@ export const en = {
       'The small changes I make to this site, as they ship, newest first. No roadmap and no countdown, just what actually changed. New lessons are on the learning path; this page is for everything around them.',
     feedTitle: "What's changed on nidhi",
     followRss: 'Follow these changes by RSS',
+    // The count beside a folded month, picked by `plural()`.
+    countOne: '{count} change',
+    countFew: '{count} changes',
+    countOther: '{count} changes',
   },
 
   /**
