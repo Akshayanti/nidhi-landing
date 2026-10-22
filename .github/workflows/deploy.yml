@@ -79,6 +79,8 @@ jobs:
           PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
           PUBLIC_NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
           PUBLIC_WAITLIST_ENDPOINT: ${{ secrets.PUBLIC_WAITLIST_ENDPOINT }}
+          # Not PUBLIC_: read at build to show the waitlist's rounded size, never sent to a browser.
+          WAITLIST_COUNT_TOKEN: ${{ secrets.WAITLIST_COUNT_TOKEN }}
           # A test build runs analytics with a dummy key (Analytics.astro).
           PUBLIC_ANALYTICS_TEST: ''
 

@@ -684,6 +684,8 @@ export const en = {
       page: 'The page you signed up from.',
       timestamp: 'Timestamp for when you signed up.',
       singleOptIn: 'No confirmation step, no status tracking. Single opt-in.',
+      total:
+        'If enough people join the waitlist, the site may show a rounded-down total of signups. It never shows any email address, or whether any particular person has joined.',
       from: {
         before: 'The launch email will come from ',
         after: '. Add it to your contacts so it doesn’t land in spam.',
@@ -955,6 +957,8 @@ export const en = {
   waitlist: {
     region: 'Early-access waitlist',
     heading: 'Want the planner when it opens?',
+    /** Under the heading once 50 people have joined, rounded down (src/utils/waitlistCount.ts). */
+    joined: '{n}+ people have joined my waitlist.',
     emailLabel: 'Email address',
     cta: 'Notify me',
     /** Split around the link, so a translation can move it inside the sentence. */
