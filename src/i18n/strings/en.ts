@@ -968,7 +968,7 @@ export const en = {
   waitlist: {
     region: 'Early-access waitlist',
     heading: 'Want the planner when it opens?',
-    /** Under the heading once 50 people have joined, rounded down (src/utils/waitlistCount.ts). */
+    /** Under the heading once 20 people have joined, rounded down to a multiple of 20 (src/utils/waitlistCount.ts). */
     joined: '{n}+ people have joined my waitlist.',
     emailLabel: 'Email address',
     cta: 'Notify me',

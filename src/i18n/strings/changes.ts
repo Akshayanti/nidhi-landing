@@ -29,6 +29,17 @@ export interface ChangeEntry {
 
 export const CHANGES: ChangeEntry[] = [
   {
+    id: 'waitlist-total-from-20',
+    date: '2026-10-22',
+    text: {
+      en: 'The waitlist total now shows from 20 signups, in steps of 20, instead of from 50.',
+      hi: 'वेटलिस्ट की कुल संख्या अब 50 की जगह 20 साइनअप से दिखती है, 20-20 के अंतर पर।',
+      es: 'El total de la lista de espera se muestra ahora desde 20 inscripciones, de 20 en 20, en vez de desde 50.',
+      cs: 'Celkový počet registrací na čekací listinu se teď ukazuje od 20, po dvacítkách, místo od 50.',
+      mr: 'प्रतीक्षा यादीची एकूण संख्या आता 50 ऐवजी 20 नोंदणींपासून, 20-20 च्या टप्प्यांत दिसते.',
+    },
+  },
+  {
     id: 'waitlist-total-notice',
     date: '2026-10-22',
     text: {
