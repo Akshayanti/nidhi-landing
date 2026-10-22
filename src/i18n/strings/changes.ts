@@ -16,6 +16,12 @@
 import type { Locale } from '../config.ts';
 
 export interface ChangeEntry {
+  /**
+   * A short, permanent name for the change: its anchor on /changes/ and the
+   * stable part of its address in the feeds. Set once when the line is written
+   * and never changed, even if the wording is.
+   */
+  id: string;
   /** The day it shipped, as YYYY-MM-DD. */
   date: string;
   text: Record<Locale, string>;
@@ -23,6 +29,18 @@ export interface ChangeEntry {
 
 export const CHANGES: ChangeEntry[] = [
   {
+    id: 'changes-rss',
+    date: '2026-10-22',
+    text: {
+      en: 'You can follow this page by RSS now, in your own language.',
+      hi: 'अब आप इस पेज को RSS से, अपनी भाषा में फ़ॉलो कर सकते हैं।',
+      es: 'Ahora puedes seguir esta página por RSS, en tu idioma.',
+      cs: 'Tuto stránku teď můžete sledovat přes RSS, ve svém jazyce.',
+      mr: 'आता तुम्ही हे पान RSS द्वारे, तुमच्या भाषेत फॉलो करू शकता.',
+    },
+  },
+  {
+    id: 'about-sources-count',
     date: '2026-10-22',
     text: {
       en: 'The About page now says how many distinct sources the lessons point to, counted from the lessons themselves.',
@@ -33,6 +51,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'mastery-not-yet-available',
     date: '2026-10-22',
     text: {
       en: 'The Mastery level now says "Not yet available", which is more honest than "In progress".',
@@ -43,6 +62,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'tools-same-waitlist',
     date: '2026-10-22',
     text: {
       en: 'The Monte Carlo simulator now has the planner waitlist box too, and all four tools ask the same way, each with one line on what the planner adds.',
@@ -53,6 +73,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'home-one-lesson-count',
     date: '2026-10-22',
     text: {
       en: 'The home page now gives one lesson count, at the top and in the FAQ alike. The two had disagreed by one.',
@@ -63,6 +84,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'changes-dated-lines',
     date: '2026-10-22',
     text: {
       en: 'Every line on this page now shows its date.',
@@ -73,6 +95,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'changes-page',
     date: '2026-10-22',
     text: {
       en: "There's now this page: a short list of what changed on the site, newest first.",
@@ -83,6 +106,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'founder-voice',
     date: '2026-10-22',
     text: {
       en: 'The beliefs page and my story are in my own voice now. They say "I", because it is one person: me.',
@@ -93,6 +117,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'corrections-shown',
     date: '2026-10-22',
     text: {
       en: 'When I correct a lesson, the fix is now shown at the top of that lesson and listed on the editorial policy page.',
@@ -103,6 +128,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'about-ai-use',
     date: '2026-10-22',
     text: {
       en: 'The About page now says how AI tools are used here: they help research, draft and check, and I read and approve every lesson before it goes out.',
@@ -113,6 +139,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'home-free-and-private',
     date: '2026-10-22',
     text: {
       en: 'The home page now says what free and private mean, right under the buttons: no account, no ads, and what you type in the tools stays on your device.',
@@ -123,6 +150,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'home-inclusive-route-first',
     date: '2026-10-22',
     text: {
       en: "The lesson routes on the home page now start with the one for lives the standard plan doesn't fit.",
@@ -133,6 +161,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'home-phone-card',
     date: '2026-10-22',
     text: {
       en: 'On phones, the card at the top of the home page is simpler now: just the three steps.',
@@ -143,6 +172,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'loan-inflation-waitlist',
     date: '2026-10-22',
     text: {
       en: 'The loan comparison and the inflation calculator now have the planner waitlist too, like the net worth calculator.',
@@ -153,6 +183,7 @@ export const CHANGES: ChangeEntry[] = [
     },
   },
   {
+    id: 'mastery-in-progress',
     date: '2026-10-22',
     text: {
       en: 'The Mastery level now says "In progress" instead of "Being written": its lessons are on the way.',
