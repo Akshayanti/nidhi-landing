@@ -290,8 +290,25 @@ const faqSchema = {
           Hindi, the lessons they open are not. */}
       <LessonsInEnglish locale={locale} />
 
+      {/* Who the path is written for, said before the routes rather than only on
+          the beliefs page. The route that answers it comes first, so the line
+          shows only while that route does. */}
+      {inclusive.count > 0 && <p class="routes-lead">{home.lessons.inclusiveLead}</p>}
+
       {/* One line per route. Each opens the first lesson this browser has not read yet. */}
       <ul class="routes" role="list">
+        {inclusive.count > 0 && (
+          <li style="--start-level: var(--level-inclusive-finances)">
+            <a class="route route--inclusive" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
+              <span class="route-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
+              </span>
+              <span class="route-title">{home.lessons.inclusiveTitle}</span>
+              <span class="route-meta">{t(plural(LOCALE_META[locale].htmlLang, inclusive.count, home.lessons.inclusiveMetaOne, home.lessons.inclusiveMetaFew, home.lessons.inclusiveMeta), { count: inclusive.count })}</span>
+              <span class="route-go">{home.lessons.inclusiveGo} <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+        )}
         {startingPoints.map((s) => s.lessons.length === 0 ? (
           <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
             {/* A level whose lessons are still scheduled: shown, not linked, until the first one goes live. */}
@@ -320,18 +337,6 @@ const faqSchema = {
             </a>
           </li>
         ))}
-        {inclusive.count > 0 && (
-          <li style="--start-level: var(--level-inclusive-finances)">
-            <a class="route route--inclusive" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
-              <span class="route-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
-              </span>
-              <span class="route-title">{home.lessons.inclusiveTitle}</span>
-              <span class="route-meta">{t(plural(LOCALE_META[locale].htmlLang, inclusive.count, home.lessons.inclusiveMetaOne, home.lessons.inclusiveMetaFew, home.lessons.inclusiveMeta), { count: inclusive.count })}</span>
-              <span class="route-go">{home.lessons.inclusiveGo} <span aria-hidden="true">&rarr;</span></span>
-            </a>
-          </li>
-        )}
       </ul>
 
       <p class="section-foot">
@@ -1109,6 +1114,14 @@ const faqSchema = {
     margin: -16px 0 20px;
     font-size: 0.95rem;
     color: var(--color-text-secondary);
+  }
+
+  .routes-lead {
+    margin: 0 0 12px;
+    max-width: 820px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-text-primary);
   }
 
   .route-help a {
