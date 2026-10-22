@@ -1557,6 +1557,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     // The hand-off plays once a page view, and only if the reader saw the
     // list before it went: not on a reload or a link that lands mid-lesson.
     var sawList = false;
+    // Seeing counts only once the reader has acted: a page opened on a
+    // #section link is scrolled there by the browser, past the list, with
+    // the list never read.
+    var readerActed = false;
+    ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function(type) {
+      window.addEventListener(type, function() { readerActed = true; }, { passive: true, once: true });
+    });
     var handedOff = false;
     var flying = false;
     var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -1573,6 +1580,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
     function handOff(headerBottom) {
       var from = covers.getBoundingClientRect();
+      // Land on the labelled pill the button arrives as, not the icon.
+      if (!labelledOnce) button.setAttribute('data-labelled', '');
       var to = button.getBoundingClientRect();
       var ghost = covers.cloneNode(true);
       ghost.removeAttribute('id');
@@ -1605,7 +1614,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     function update() {
       var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
       var coversBottom = covers.getBoundingClientRect().bottom;
-      if (coversBottom > headerBottom) sawList = true;
+      if (coversBottom > headerBottom && readerActed) sawList = true;
       var inRange = coversBottom <= headerBottom && end.getBoundingClientRect().bottom > window.innerHeight / 2;
       if (inRange !== shown) {
         shown = inRange;
