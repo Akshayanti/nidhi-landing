@@ -17,6 +17,16 @@ describe("what's changed", () => {
     assert.deepEqual(bad, []);
   });
 
+  it('names every entry once, with a short permanent id', () => {
+    // The id is the entry's anchor and its address in the feeds, so it must be
+    // present, unique and safe in a URL fragment.
+    const bad = CHANGES.filter((c) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c.id ?? '')).map((c) => c.id);
+    assert.deepEqual(bad, []);
+    const seen = new Set<string>();
+    const repeated = CHANGES.map((c) => c.id).filter((id) => (seen.has(id) ? true : (seen.add(id), false)));
+    assert.deepEqual(repeated, []);
+  });
+
   it('lists the newest first', () => {
     const outOfOrder = CHANGES.filter((c, i) => i > 0 && c.date > CHANGES[i - 1].date).map((c) => c.date);
     assert.deepEqual(outOfOrder, []);

@@ -457,6 +457,8 @@ export const en = {
     title: "What's changed",
     intro:
       'The small changes I make to this site, as they ship, newest first. No roadmap and no countdown, just what actually changed. New lessons are on the learning path; this page is for everything around them.',
+    feedTitle: "What's changed on nidhi",
+    followRss: 'Follow these changes by RSS',
   },
 
   /**

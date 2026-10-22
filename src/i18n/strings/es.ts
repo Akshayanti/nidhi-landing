@@ -370,6 +370,8 @@ export const es: Dict = {
     title: 'Qué ha cambiado',
     intro:
       'Los pequeños cambios que hago en este sitio, a medida que salen, lo más reciente primero. Sin hoja de ruta ni cuenta atrás: solo lo que ha cambiado de verdad. Las lecciones nuevas están en la ruta de aprendizaje; esta página es para todo lo demás.',
+    feedTitle: 'Qué ha cambiado en nidhi',
+    followRss: 'Sigue estos cambios por RSS',
   },
 
   /**
