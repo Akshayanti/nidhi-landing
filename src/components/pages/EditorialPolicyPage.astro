@@ -19,7 +19,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { relative } from 'node:path';
-import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { DATE_LOCALE, LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { getCollection } from 'astro:content';
+import { publishedCorrections } from '../../utils/corrections';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -57,6 +59,11 @@ function lastModified(): string {
   }
 }
 const modified = lastModified();
+
+// Every published correction, newest first. The list stays off the page until
+// there is one: an empty ledger would be a promise with nothing behind it yet.
+const corrections = publishedCorrections(await getCollection('blog'), import.meta.env.DEV ? new Date('2999-01-01') : new Date());
+const correctionDate = (d: Date) => d.toLocaleDateString(DATE_LOCALE[locale], { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
 // Built from the path rather than hardcoded with a locale prefix, so the
 // addresses here agree with the canonical link BaseHead emits for the same
@@ -143,6 +150,20 @@ const { body } = policy;
         <p>
           {body.corrections.before}<a href="mailto:hello@nidhi.today">hello@nidhi.today</a>{body.corrections.after}
         </p>
+        {corrections.length > 0 && (
+          <>
+            <p>{body.correctionsList}</p>
+            {/* Lesson titles and notes are the lesson's own words, in English. */}
+            <ul>
+              {corrections.map((c) => (
+                <li>
+                  <time datetime={c.date.toISOString()}>{correctionDate(c.date)}</time>{' · '}
+                  <a href={lessonPath(c.slug)} hreflang="en" lang="en">{c.title}</a>: <span lang="en">{c.note}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
 
         <h2>{policy.sections.whoIsBehind}</h2>
         <p>
@@ -201,7 +222,8 @@ const { body } = policy;
     margin: 0 0 var(--space-3);
   }
 
-  .policy-body ol {
+  .policy-body ol,
+  .policy-body ul {
     margin: 0 0 var(--space-3);
     padding-left: 1.4em;
     font-size: 0.95rem;

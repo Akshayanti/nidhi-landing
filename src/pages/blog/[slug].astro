@@ -5,6 +5,7 @@ import { getLayeredReadingTime } from '../../utils/readingTime';
 import { GLOSSARY_CARD_ID, termId } from '../../utils/glossary.mjs';
 import { LAYERED_LEVELS, layeredLessonProblems } from '../../utils/layeredLessons';
 import { searchTitleProblem } from '../../utils/searchTitle';
+import { assertCorrectionDates, liveCorrections } from '../../utils/corrections';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
   const now = new Date();
   const allPosts = await getCollection('blog');
+  assertCorrectionDates(allPosts);
   const posts = allPosts
     .filter(post => isDev || post.data.pubDate <= now)
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
@@ -177,6 +179,7 @@ const readingTime = getLayeredReadingTime(post.body || '');
   tldr={post.data.tldr}
   pubDate={post.data.pubDate}
   updatedDate={post.data.updatedDate}
+  corrections={liveCorrections(post.data.corrections, import.meta.env.DEV ? new Date('2999-01-01') : new Date())}
   level={post.data.level}
   tags={post.data.tags}
   readingTime={readingTime}
