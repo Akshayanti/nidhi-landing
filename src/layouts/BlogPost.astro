@@ -63,6 +63,17 @@ const { title, seoTitle, description, tldr, pubDate, updatedDate, level, tags, r
 // Ladder levels only: an Inclusive Finances guide is not a step in a series.
 const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
 const relatedToolId = relatedTool?.url.split('/').filter(Boolean).pop();
+const faqIndexLabel = faq && faq.length > 0
+  ? (faq.length === 1 ? 'Answer to 1 common question' : `Answers to ${faq.length} common questions`)
+  : null;
+// The lesson index button opens "In this lesson" again while reading. Every
+// line has to lead somewhere, so a lesson with an unlinked takeaway gets none.
+const indexItems = takeaways.length > 0 && takeaways.every((t) => typeof t !== 'string')
+  ? [
+      ...(takeaways as { text: string; href: string }[]),
+      ...(faqIndexLabel ? [{ text: faqIndexLabel, href: '#post-faq-h' }] : []),
+    ]
+  : [];
 
 const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 // Surface "Updated <date>" only when the updated date is meaningfully later
@@ -173,6 +184,32 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   jsonLd={allSchemas}
 >
   <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  {/*
+    The lesson index button: once "In this lesson" has scrolled away, a
+    button bottom right (a labelled pill in the margin on wide screens) opens
+    the same list in a dialog, with the part being read marked. Shown from
+    the end of the list to the end of the FAQ (script below); hidden without
+    JavaScript and in print, where the list under the title is still there.
+  */}
+  {indexItems.length > 0 && (
+    <>
+      <button type="button" class="lesson-index-button" id="lesson-index-button" aria-haspopup="dialog" aria-controls="lesson-index" hidden>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11" /><circle cx="4.5" cy="6" r="1" fill="currentColor" /><circle cx="4.5" cy="12" r="1" fill="currentColor" /><circle cx="4.5" cy="18" r="1" fill="currentColor" /></svg>
+        <span class="lesson-index-button-text">In this lesson</span><span class="lesson-index-sr" data-lesson-index-now></span>
+      </button>
+      <dialog class="lesson-index" id="lesson-index" aria-labelledby="lesson-index-h">
+        <div class="lesson-index-head">
+          <h2 class="lesson-index-title" id="lesson-index-h">In this lesson</h2>
+          <button type="button" class="lesson-index-close" aria-label="Close" data-lesson-index-close>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+        </div>
+        <ul class="lesson-index-list">
+          {indexItems.map((t) => <li><a href={t.href}>{t.text}</a></li>)}
+        </ul>
+      </dialog>
+    </>
+  )}
   <article class="blog-post">
     <div class="container">
       <header class="post-header">
@@ -215,7 +252,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
                 ? <li>{t}</li>
                 : <li><a href={t.href}>{t.text}</a></li>)}
               {faq && faq.length > 0 && (
-                <li><a href="#post-faq-h">{faq.length === 1 ? 'Answer to 1 common question' : `Answers to ${faq.length} common questions`}</a></li>
+                <li><a href="#post-faq-h">{faqIndexLabel}</a></li>
               )}
             </ul>
           </section>
@@ -1211,6 +1248,236 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     text-wrap: pretty;
   }
 
+  /* The lesson index button. Phones and narrow screens: a round button
+     bottom right, within thumb reach, above the safe area. Wide screens: a
+     labelled pill in the margin beside the column. Its colours swap with
+     the theme (deep blue turns light in dark mode). Below the header
+     (z-index 100), its menu sheet and the cookie prompt. */
+  .lesson-index-button {
+    position: fixed;
+    right: var(--space-4);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-4));
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: 48px;
+    height: 48px;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-deep-blue);
+    color: var(--color-bg-white);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
+  }
+
+  .lesson-index-button[data-shown] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .lesson-index-button:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+  }
+
+  /* The label shows on narrow screens only the first time the button
+     appears, so the icon is learnt once; it then shrinks to the icon. */
+  .lesson-index-button-text,
+  .lesson-index-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lesson-index-button[data-labelled] {
+    padding: 0 var(--space-4) 0 var(--space-3);
+  }
+
+  .lesson-index-button[data-labelled] .lesson-index-button-text {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  @media (min-width: 1200px) {
+    .lesson-index-button {
+      right: auto;
+      left: calc(50% + var(--max-width) / 2 + var(--space-4));
+      bottom: var(--space-8);
+      padding: 0 var(--space-4) 0 var(--space-3);
+    }
+
+    .lesson-index-button .lesson-index-button-text {
+      position: static;
+      width: auto;
+      height: auto;
+      clip-path: none;
+    }
+  }
+
+  /* The list, in a modal dialog: a sheet from the bottom on narrow screens,
+     a panel above the pill on wide ones. The page behind is dimmed and
+     inert; Escape, the close button or a tap outside closes it. */
+  .lesson-index {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 75dvh;
+    margin: 0;
+    padding: var(--space-2) var(--space-4) calc(env(safe-area-inset-bottom, 0px) + var(--space-4));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-control-edge);
+    border-bottom: 0;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 32px rgb(0 0 0 / 0.16);
+  }
+
+  .lesson-index::backdrop {
+    background: rgb(0 0 0 / 0.35);
+  }
+
+  @media (min-width: 1200px) {
+    .lesson-index {
+      inset: auto auto calc(var(--space-8) + 56px) auto;
+      left: auto;
+      right: var(--space-4);
+      width: min(24rem, calc(100vw - 2 * var(--space-4)));
+      max-height: calc(100dvh - var(--site-header-block-size) - var(--space-8) - 88px);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-control-edge);
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+    }
+
+    .lesson-index::backdrop {
+      background: rgb(0 0 0 / 0.15);
+    }
+  }
+
+  .lesson-index-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .lesson-index-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-deep-blue);
+  }
+
+  .lesson-index-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: calc(-1 * var(--space-2));
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .lesson-index-close:hover {
+    background: var(--color-border-light);
+  }
+
+  .lesson-index-close:focus-visible,
+  .lesson-index-list a:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .lesson-index-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lesson-index-list li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .lesson-index-list li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: calc(50% - 0.2rem);
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-teal);
+  }
+
+  .lesson-index-list li:has(a[aria-current])::before {
+    left: 0;
+    width: 0.65rem;
+    border-radius: 2px;
+  }
+
+  .lesson-index-list a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.35rem 0;
+    color: var(--color-deep-blue);
+    font-size: 1rem;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .lesson-index-list a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .lesson-index-list a[aria-current] {
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lesson-index-button,
+    .lesson-index-button[data-shown] {
+      transition: none;
+    }
+  }
+
+  @media print {
+    .lesson-index-button,
+    .lesson-index {
+      display: none;
+    }
+  }
+
   /* Reading progress bar */
   .reading-progress {
     position: fixed;
@@ -1244,6 +1511,89 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     window.addEventListener('scroll', function() {
       if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
     }, { passive: true });
+    update();
+  })();
+</script>
+
+<script is:inline>
+  (function() {
+    var button = document.getElementById('lesson-index-button');
+    var dialog = document.getElementById('lesson-index');
+    var covers = document.querySelector('.post-covers');
+    if (!button || !dialog || !covers || typeof dialog.showModal !== 'function') return;
+    var links = Array.prototype.slice.call(dialog.querySelectorAll('.lesson-index-list a'));
+    var targets = links.map(function(a) {
+      try { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); } catch (e) { return null; }
+    });
+    if (targets.some(function(t) { return !t; })) return;
+    var nowEl = button.querySelector('[data-lesson-index-now]');
+    var header = document.querySelector('.site-header');
+    // Shown until the FAQ (or, without one, the lesson body) has ended above
+    // the middle of the screen, so it never sits over the reading list,
+    // related lessons or footer.
+    var end = document.querySelector('.post-faq') || document.getElementById('post-content');
+    button.hidden = false;
+
+    var shown = false;
+    var labelled = false;
+    var current = null;
+
+    function update() {
+      var inRange = covers.getBoundingClientRect().bottom <= 0 && end.getBoundingClientRect().bottom > window.innerHeight / 2;
+      if (inRange !== shown) {
+        shown = inRange;
+        if (shown) {
+          button.setAttribute('data-shown', '');
+          // The first time only: show the words, then shrink to the icon.
+          if (!labelled) {
+            labelled = true;
+            button.setAttribute('data-labelled', '');
+            setTimeout(function() { button.removeAttribute('data-labelled'); }, 4000);
+          }
+        } else {
+          button.removeAttribute('data-shown');
+        }
+      }
+      // The part being read: the last linked heading above the line under
+      // the header. A heading with no line of its own belongs to the part
+      // above it.
+      var line = (header ? header.getBoundingClientRect().bottom : 0) + 24;
+      var idx = -1;
+      var best = -Infinity;
+      targets.forEach(function(t, i) {
+        var top = t.getBoundingClientRect().top;
+        if (top <= line && top > best) { best = top; idx = i; }
+      });
+      if (idx === current) return;
+      current = idx;
+      links.forEach(function(a, j) {
+        if (j === idx) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+      });
+      nowEl.textContent = idx < 0 ? '' : ', now reading: ' + links[idx].textContent;
+    }
+
+    button.addEventListener('click', function() {
+      dialog.showModal();
+      var mark = dialog.querySelector('a[aria-current]');
+      if (mark) { mark.focus(); mark.scrollIntoView({ block: 'nearest' }); }
+    });
+    dialog.querySelector('[data-lesson-index-close]').addEventListener('click', function() { dialog.close(); });
+    // A tap on the dimmed page (the dialog's own box, outside its content).
+    dialog.addEventListener('click', function(e) {
+      if (e.target !== dialog) return;
+      var r = dialog.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
+    });
+    links.forEach(function(a) {
+      a.addEventListener('click', function() { dialog.close(); });
+    });
+
+    var ticking = false;
+    function onScroll() {
+      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     update();
   })();
 </script>
