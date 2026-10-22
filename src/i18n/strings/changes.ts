@@ -29,6 +29,17 @@ export interface ChangeEntry {
 
 export const CHANGES: ChangeEntry[] = [
   {
+    id: 'waitlist-total-notice',
+    date: '2026-10-22',
+    text: {
+      en: 'The privacy notice now says the waitlist box may show a rounded-down total of signups once there are 50, never anything about any one person.',
+      hi: 'प्राइवेसी नोटिस में अब लिखा है कि 50 लोग जुड़ जाने के बाद वेटलिस्ट बॉक्स साइनअप की कुल संख्या नीचे की ओर पूर्णांकित करके दिखा सकता है, किसी एक व्यक्ति के बारे में कभी कुछ नहीं।',
+      es: 'El aviso de privacidad dice ahora que la lista de espera puede mostrar el total de inscripciones, redondeado hacia abajo, cuando haya 50, y nunca nada sobre una persona concreta.',
+      cs: 'Zásady ochrany soukromí teď uvádějí, že čekací listina může od 50 registrací ukázat jejich celkový počet zaokrouhlený dolů, nikdy nic o konkrétním člověku.',
+      mr: 'गोपनीयता सूचनेत आता लिहिले आहे की 50 लोक सामील झाल्यावर प्रतीक्षा यादीचा बॉक्स नोंदणींची एकूण संख्या खालच्या बाजूला पूर्णांक करून दाखवू शकतो, कोणत्याही एका व्यक्तीबद्दल कधीच काही नाही.',
+    },
+  },
+  {
     id: 'changes-rss',
     date: '2026-10-22',
     text: {

@@ -556,6 +556,8 @@ export const es: Dict = {
       page: 'La página desde la que te apuntaste.',
       timestamp: 'La fecha y hora en que te apuntaste.',
       singleOptIn: 'Sin paso de confirmación ni seguimiento de estado. Alta directa (single opt-in).',
+      total:
+        'Si se une suficiente gente a la lista de espera, el sitio puede mostrar el total de inscripciones, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha apuntado.',
       from: {
         before: 'El correo del lanzamiento llegará desde ',
         after: '. Añádela a tus contactos para que no acabe en spam.',
@@ -780,6 +782,7 @@ export const es: Dict = {
   waitlist: {
     region: 'Lista de espera de acceso anticipado',
     heading: '¿Quieres el planificador cuando se abra el acceso?',
+    joined: '{n}+ personas se han unido a mi lista de espera.',
     emailLabel: 'Correo electrónico',
     cta: 'Avísame',
     privacyBefore: 'Un correo cuando se abra el acceso. ',

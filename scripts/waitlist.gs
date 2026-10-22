@@ -25,6 +25,10 @@
  *        SITE_URL         https://nidhi.today
  *        POSTHOG_API_KEY  (optional) for server-side event tracking
  *        POSTHOG_HOST     (optional) https://eu.i.posthog.com
+ *        COUNT_TOKEN      (optional) a long random string. Turns on the count
+ *                          endpoint below; the same value goes into the
+ *                          landing site's WAITLIST_COUNT_TOKEN GitHub secret.
+ *                          Without it the count endpoint refuses every call.
  *
  *   2. In the spreadsheet: create a tab named "beta waitlist" (or the SHEET_NAME
  *      value) with these EXACT headers in row 1 (3 columns):
@@ -38,6 +42,15 @@
  *                            nothing is written. Responds { ok: true } on
  *                            any valid email either way, so the response
  *                            never reveals who is on the list.
+ *
+ *   POST action=count       form body: action, token
+ *                            Returns { ok: true, count } when the token
+ *                            matches COUNT_TOKEN: the number of distinct,
+ *                            valid addresses on the list, and nothing else.
+ *                            The landing site's build reads it to show a
+ *                            rounded-down total ("50+ people have joined").
+ *                            The token travels in the body, never the URL,
+ *                            so it does not end up in logs.
  *
  *   GET  ?action=health     Per-dependency ok/error JSON report.
  */
@@ -192,6 +205,7 @@ function doPost(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'waitlist') return handleWaitlist_(e);
+    if (action === 'count') return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
@@ -200,6 +214,37 @@ function doPost(e) {
 
 function safeSiteUrl_() {
   try { return config_().siteUrl; } catch (_) { return 'https://nidhi.today'; }
+}
+
+// ============================================================================
+// Count (for the landing site's build)
+// ============================================================================
+
+// Distinct, valid addresses: duplicates kept from before dedupe and blank or
+// malformed rows do not inflate the total the site shows.
+function handleCount_(e) {
+  var expected = prop_('COUNT_TOKEN');
+  var given = String((e.parameter && e.parameter.token) || '');
+  if (!expected || !sameString_(given, expected)) return jsonResponse_({ ok: false, error: 'forbidden' });
+  var s = sheet_();
+  var last = s.getLastRow();
+  if (last < 2) return jsonResponse_({ ok: true, count: 0 });
+  var seen = {};
+  var count = 0;
+  s.getRange(2, COL.email, last - 1, 1).getValues().forEach(function (row) {
+    var email = normalizeEmail_(row[0]);
+    if (isValidEmail_(email) && !seen[email]) { seen[email] = true; count++; }
+  });
+  return jsonResponse_({ ok: true, count: count });
+}
+
+// Walks the longer of the two whole, with no early return, so the time taken
+// says nothing about the token's length or how much of a guess was right.
+function sameString_(a, b) {
+  var len = Math.max(a.length, b.length);
+  var diff = a.length ^ b.length;
+  for (var i = 0; i < len; i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return diff === 0;
 }
 
 // ============================================================================

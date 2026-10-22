@@ -10,7 +10,8 @@
 // tool (through ToolWaitlist.astro). Once someone signs up, the shared
 // localStorage key hides it on every page.
 
-import { dict, localizedPath, type Locale } from '../i18n';
+import { dict, format, localizedPath, type Locale } from '../i18n';
+import { shownWaitlistCount, waitlistCount } from '../utils/waitlistCount';
 
 interface Props {
   /** The language of the page the box sits on. */
@@ -19,6 +20,10 @@ interface Props {
 
 const { locale } = Astro.props;
 const { waitlist } = dict(locale);
+// "50+ people have joined my waitlist.": absent until there are 50 (see waitlistCount).
+// The dev server shows the exact count instead, ungated, for the founder only.
+const signups = await waitlistCount();
+const joined = shownWaitlistCount(signups);
 const ctaLabel = waitlist.cta;
 
 const endpoint = import.meta.env.PUBLIC_WAITLIST_ENDPOINT || '';
@@ -35,6 +40,15 @@ const inputId = `${idPrefix}-email`;
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
       <h3 class="waitlist-title">{waitlist.heading}</h3>
+      {import.meta.env.DEV ? (
+        <p class="waitlist-text waitlist-devCount">
+          {signups === null
+            ? 'Dev only: waitlist count unavailable. Set WAITLIST_COUNT_TOKEN in .env.'
+            : `Dev only: ${signups} on the waitlist. The live site shows this from 50, rounded down.`}
+        </p>
+      ) : (
+        joined !== null && <p class="waitlist-text">{format(waitlist.joined, { n: joined })}</p>
+      )}
 
       <form
         id={formId}
@@ -313,6 +327,13 @@ const inputId = `${idPrefix}-email`;
     font-size: 0.9rem;
     margin-bottom: var(--space-5);
     line-height: 1.5;
+  }
+
+  /* A dev-server note, never on the published site: dashed so it reads as one. */
+  .waitlist-devCount {
+    border: 1px dashed rgba(255, 255, 255, 0.6);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
   }
 
   .waitlist-form {

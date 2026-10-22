@@ -522,6 +522,8 @@ export const cs: Dict = {
       page: 'Stránka, ze které zápis proběhl.',
       timestamp: 'Datum a čas zápisu.',
       singleOptIn: 'Žádný potvrzovací krok, žádné sledování stavu. Přihlášení bez potvrzení (single opt-in).',
+      total:
+        'Pokud se na čekací listinu přihlásí dost lidí, web může ukázat celkový počet registrací zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda se přihlásil konkrétní člověk.',
       from: {
         before: 'E-mail o spuštění přijde z adresy ',
         after: '. Přidejte si ji do kontaktů, aby neskončil ve spamu.',
@@ -742,6 +744,7 @@ export const cs: Dict = {
   waitlist: {
     region: 'Čekací listina na přednostní přístup',
     heading: 'Chcete plánovač, až se otevře?',
+    joined: 'Na mé čekací listině je už {n}+ lidí.',
     emailLabel: 'E-mailová adresa',
     cta: 'Dejte mi vědět',
     privacyBefore: 'Jeden e-mail, až se přístup otevře. ',
