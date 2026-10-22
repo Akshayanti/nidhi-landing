@@ -8,13 +8,13 @@ Every change that affects privacy must come with an entry in the privacy policy 
 1. Before implementing any change, review the privacy notice (`src/components/pages/PrivacyPage.astro`, with its prose in the `privacy` namespace of the catalogs) to understand current commitments.
 2. **Decide whether the change needs an entry.** Ask one question: does it change what a visitor's browser stores, sends or reveals, or what the privacy notice says?
    - **Entry, `material: true`**, with detailed bullet points following the existing style:
-     - New or changed analytics: events, event properties, data-attr labels, capture settings, consent behaviour.
+     - New or changed analytics: events, event properties, new or renamed data-attr labels, capture settings, consent behaviour.
      - New or changed browser storage (localStorage, sessionStorage, cookies), or a new use of an existing key.
      - New third-party requests (scripts, fonts, APIs, embeds), or a change to what an existing one sends.
      - New forms or server-side events. Changes to retention, deletion, vendors or hosting.
      - A new tool or page that collects or sends anything.
    - **Entry, `material: false`**: edits to the privacy notice's own text (clarifications, corrections, restructuring).
-   - **No entry**: publishing or scheduling lessons, editorial and figure changes, layout, styling, accessibility, SEO metadata, sitemap, robots.txt and llms.txt, copy elsewhere on the site, refactors, tests and docs. Also a wording fix in a translated edition of the notice that leaves the English text and what it promises unchanged (a synonym swapped to match a glossary change, say).
+   - **No entry**: publishing or scheduling lessons, editorial and figure changes, layout, styling, accessibility, SEO metadata, sitemap, robots.txt and llms.txt, copy elsewhere on the site, refactors, tests and docs. Also a wording fix in a translated edition of the notice that leaves the English text and what it promises unchanged (a synonym swapped to match a glossary change, say). Also removing a data-attr label, with or without its element: fewer events are sent, nothing new is stored, sent or revealed, and the notice text is unchanged. This does not cover consent controls: removing or changing one is a consent-behaviour change and takes an entry.
    - **Unsure? Ask** before adding an entry or leaving one out.
 3. If a proposed change conflicts with what the privacy policy states, **pause and ask** whether to proceed. Do not silently implement something that contradicts the policy. This applies to every change, whether or not it needs an entry.
 4. Existing entries stay as written, even ones this rule would not require today: the changelog is a record of what the notice said and when.
