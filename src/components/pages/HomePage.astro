@@ -1363,11 +1363,36 @@ const faqSchema = {
     .starter { padding: 16px 0; }
     .starter :global(.starter-chart--narrow) { margin-top: 6px; }
     .hero-actions .lp-btn { flex: 1 1 auto; }
-    .journey { margin-top: 28px; padding: 16px 0 10px; }
-    .journey-list li { padding: 10px 0 10px 18px; }
-    .journey-list li::before { top: 14px; }
-    .journey-big { font-size: 1.2rem; }
-    .journey-spark { top: 32px; width: 72px; height: 24px; }
+    /* On a phone the card is the three step names only, in one row. Its
+       numbers ("−€9,000 or €12,500") came before the reader had met the two
+       people they belong to; Steps 2 and 3 show them in full, with their
+       explanation, so nothing is lost by leaving them out here. */
+    .journey { margin-top: 24px; padding: 14px 0; }
+    .journey-label,
+    .journey-big,
+    .journey-small,
+    .journey-spark { display: none; }
+    .journey-list { display: flex; justify-content: space-between; gap: 8px; }
+    .journey-list li {
+      flex: 1 1 0;
+      justify-items: center;
+      padding: 22px 0 0;
+      margin-left: 0;
+      border-left: 0;
+      text-align: center;
+    }
+    /* The connecting line runs between the dots, behind them. */
+    .journey-list li:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      width: calc(100% + 8px);
+      height: 2px;
+      background: var(--color-border);
+    }
+    .journey-list li::before { top: 0; left: calc(50% - 6px); z-index: 1; }
+    .journey-step { font-size: 0.9375rem; color: var(--color-text-primary); }
     .compare-grid { gap: 16px; }
     .compare-note { display: none; }
     .compare-rows { grid-template-columns: minmax(0, 1fr); }
