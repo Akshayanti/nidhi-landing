@@ -52,7 +52,7 @@ export const cs: Dict = {
       inflationCalculator: 'Inflační kalkulačka',
       allTools: 'Všechny nástroje zdarma',
       about: 'O nidhi',
-      beliefs: 'Čemu věříme',
+      beliefs: 'Čemu věřím',
       editorialPolicy: 'Redakční zásady',
       contact: 'Kontakt',
       email: 'E-mail',
@@ -87,7 +87,7 @@ export const cs: Dict = {
       inflationCalculator: 'Inflační kalkulačka',
       allTools: 'Zobrazit vše',
       about: 'O nidhi',
-      beliefs: 'Čemu věříme',
+      beliefs: 'Čemu věřím',
       editorialPolicy: 'Redakční zásady',
       privacy: 'Soukromí',
       cookieSettings: 'Nastavení cookies',
@@ -153,7 +153,7 @@ export const cs: Dict = {
     },
     title: 'O nidhi',
     intro:
-      'nidhi je jméno pod těmito texty i projekt, ke kterému patří. Založil ho jeden člověk, jméno se ujalo a je to ten, koho čtete, když čtete lekce.',
+      'nidhi je jméno pod těmito texty i projekt, ke kterému patří. Stojím za ním já, jméno se ujalo, a když čtete lekce, čtete mě.',
     sections: {
       whoIsWriting: 'Kdo píše',
       whyYouCanTrustIt: 'Proč tomu můžete věřit',
@@ -162,7 +162,7 @@ export const cs: Dict = {
     },
     body: {
       whoIsWriting:
-        'Každý článek na tomto webu je napsaný a upravený pod jedním jménem: nidhi. Projekt vznikl, protože jeden člověk nemohl najít finanční nástroj, který by zvládl obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Texty vycházejí ze stejného místa: z otázek, na které skutečný člověk opravdu musí odpovědět, vysvětlených tak, jak by si přál, aby mu je někdo vysvětlil.',
+        'Každý článek na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
       whyYouCanTrustIt1:
         'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Kde článek něco tvrdí, odkazuje na zdroj: knihy, referenční stránky a primární materiály uvedené u každého článku v části „referential reading“.',
       whyYouCanTrustIt2:
@@ -176,7 +176,7 @@ export const cs: Dict = {
       whatNidhiKnowsAbout: {
         before:
           'Texty se soustředí na čisté jmění a jeho měření, správu peněz ve více měnách, peněžní tok a spoření, dluhy a cestu k finanční nezávislosti. Pokud vás zajímá pohled na svět, který za tím vším stojí, přečtěte si, ',
-        link: 'čemu věříme',
+        link: 'čemu věřím',
         after: '.',
       },
     },
@@ -189,14 +189,14 @@ export const cs: Dict = {
 
   beliefs: {
     meta: {
-      title: 'Čemu věříme: poctivé nástroje pro osobní finance | nidhi',
+      title: 'Čemu věřím: poctivé nástroje pro osobní finance | nidhi',
       description:
-        'Čemu v nidhi věříme: poctivé nástroje pro osobní finance, vzdělávání ve finanční gramotnosti zdarma, žádné reklamy, žádný prodej dat a lekce zdarma navždy.',
+        'Čemu při tvorbě nidhi věřím: poctivé nástroje pro osobní finance, vzdělávání ve finanční gramotnosti zdarma, žádné reklamy, žádný prodej dat a lekce zdarma navždy.',
     },
     schema: {
-      name: 'Čemu věříme',
+      name: 'Čemu věřím',
       description:
-        'Čemu v nidhi věříme: poctivé nástroje pro osobní finance, vzdělávání ve finanční gramotnosti zdarma, žádné reklamy, žádný prodej dat.',
+        'Čemu při tvorbě nidhi věřím: poctivé nástroje pro osobní finance, vzdělávání ve finanční gramotnosti zdarma, žádné reklamy, žádný prodej dat.',
       organization: 'Nástroje pro osobní finance a vzdělávání ve finanční gramotnosti.',
       foundingLocation: 'Praha',
       knowsAbout: {
@@ -206,15 +206,15 @@ export const cs: Dict = {
         multiCurrencyFinance: 'Finance ve více měnách',
       },
       breadcrumbHome: 'Domů',
-      breadcrumbAbout: 'Čemu věříme',
+      breadcrumbAbout: 'Čemu věřím',
     },
-    title: 'Čemu věříme',
+    title: 'Čemu věřím',
     intro:
-      'nidhi vzniklo, protože jeden člověk nemohl najít slušný finanční nástroj a naštvalo ho to natolik, že si ho postavil sám',
+      'nidhi vzniklo, protože žádný slušný finanční nástroj neexistoval a mě to naštvalo natolik, že ho teď stavím',
     items: {
       frustration: {
         heading: 'Celé to začalo z frustrace',
-        body: 'Chtěli jsme něco, co obyčejnému člověku pomůže naplánovat peníze, vidět, kam odcházejí, a rozhodovat se o nich lépe. Nic takového neexistovalo. Tak jsme tady a stavíme to sami.',
+        body: 'Chybělo mi něco, co obyčejnému člověku pomůže naplánovat peníze, vidět, kam odcházejí, a rozhodovat se o nich lépe. Nic takového neexistovalo. Tak to stavím.',
       },
       noPlanner: {
         heading: 'Plánování financí by nemělo vyžadovat finančního plánovače',
@@ -222,11 +222,11 @@ export const cs: Dict = {
       },
       accessibility: {
         heading: 'Pro všechny, na které technologie zapomínají',
-        body: 'Spousta aplikací pohodlně zapomíná, že nástroje na peníze by měly fungovat, ať máte poruchu barvocitu, používáte čtečku obrazovky, nebo informace vnímáte jinak, třeba kvůli ADHD nebo dyslexii. Patříme mezi queer a neurodivergentní lidi i lidi jiné barvy pleti než bílé, takže tenhle luxus jsme nikdy neměli. Bránit komukoli v porozumění vlastním penězům je prostě laciné.',
+        body: 'Spousta aplikací pohodlně zapomíná, že nástroje na peníze by měly fungovat, ať máte poruchu barvocitu, používáte čtečku obrazovky, nebo informace vnímáte jinak, třeba kvůli ADHD nebo dyslexii. Jsem queer, neurodivergentní člověk jiné barvy pleti než bílé, takže tenhle luxus mi nikdy nebyl dopřán. Bránit komukoli v porozumění vlastním penězům je prostě laciné.',
       },
       freeForever: {
         heading: 'Lekce jsou zdarma, navždy',
-        body: 'Žádný placený přístup, žádné „předplaťte si to nejlepší“. Pokud vám něco, co jsme napsali, pomohlo se lépe rozhodnout, i když náš produkt nikdy nepoužijete, přesně o to jde. Napište nám o tom. Na takové palivo jezdíme.',
+        body: 'Žádný placený přístup, žádné „předplaťte si to nejlepší“. Pokud vám něco z mých textů pomohlo se lépe rozhodnout, i když můj produkt nikdy nepoužijete, přesně o to jde. Napište mi o tom. Takové zprávy mě drží v chodu.',
       },
       rulesOfThumb: {
         heading: 'Nejen orientační pravidla',
@@ -234,18 +234,18 @@ export const cs: Dict = {
       },
       noAds: {
         heading: 'Žádné reklamy, žádný prodej dat, žádné hvězdičky',
-        body: 'Nezobrazujeme reklamy. Neprodáváme vaše data. Neděláme tu děsivou věc, kdy si vyhledáte „rizikové životní pojištění“ a pak na něj týden vidíte reklamy všude. Vaše finance jsou vaše věc. Doslova.',
+        body: 'Nezobrazuji reklamy. Neprodávám vaše data. Nedělám tu děsivou věc, kdy si vyhledáte „rizikové životní pojištění“ a pak na něj týden vidíte reklamy všude. Vaše finance jsou vaše věc. Doslova.',
       },
       madeInPrague: {
         heading: 'Vytvořeno v Praze, šířeno doporučením',
-        body: 'Žádné peníze od investorů. Žádný růstový tým. Žádný billboard u dálnice. Pokud je pro vás nidhi užitečné, řekněte o něm někomu. To je naše hlavní marketingová strategie.',
+        body: 'Žádné peníze od investorů. Žádný růstový tým. Žádný billboard u dálnice. Pokud je pro vás nidhi užitečné, řekněte o něm někomu. To je moje hlavní marketingová strategie.',
       },
     },
     cta: {
-      text: 'Přesvědčili jsme vás? Nebo si myslíte, že plácáme nesmysly?',
-      sub: 'Tak či tak, budeme rádi, když se ozvete',
-      email: 'Napište nám milostný dopis',
-      instagram: 'Napište nám do zpráv',
+      text: 'Přesvědčilo vás to? Nebo si myslíte, že plácám nesmysly?',
+      sub: 'Tak či tak se mi ozvěte, potěší mě to',
+      email: 'Napište mi milostný dopis',
+      instagram: 'Napište mi do zpráv',
     },
   },
 
@@ -324,8 +324,8 @@ export const cs: Dict = {
       whoIsBehind: {
         before: 'Kdo nidhi píše a jaká zkušenost za texty stojí, najdete na ',
         aboutLink: 'stránce O nidhi',
-        middle: '. Pohled na svět, který určuje, co se rozhodujeme stavět a zveřejňovat, popisuje stránka ',
-        beliefsLink: 'Čemu věříme',
+        middle: '. Pohled na svět, který určuje, co se rozhoduji stavět a zveřejňovat, popisuje stránka ',
+        beliefsLink: 'Čemu věřím',
         after: '.',
       },
     },
@@ -403,7 +403,7 @@ export const cs: Dict = {
       before: 'Chcete delší úvahy, ze kterých tyto nástroje vycházejí? Přečtěte si ',
       blogLink: 'vzdělávací cestu nidhi',
       middle: ', osnovu, ze které vycházejí, nebo zjistěte, ',
-      beliefsLink: 'čemu věříme v otázkách peněz a plánování',
+      beliefsLink: 'čemu věřím v otázkách peněz a plánování',
       after: '.',
     },
   },
@@ -820,7 +820,7 @@ export const cs: Dict = {
     },
     planner: {
       heading: 'Podívejte se, kam to může vést.',
-      body: 'Stavíme plánovač: co vlastníte, dlužíte, vyděláváte a utrácíte na jednom místě, v jedné měně i ve více měnách, aby šlo rozhodnutí, jako je toto, porovnat dřív, než je uděláte.',
+      body: 'Stavím plánovač: co vlastníte, dlužíte, vyděláváte a utrácíte na jednom místě, v jedné měně i ve více měnách, aby šlo rozhodnutí, jako je toto, porovnat dřív, než je uděláte.',
     },
     example: {
       label: 'Jedno rozhodnutí, dvě cesty',
@@ -870,9 +870,9 @@ export const cs: Dict = {
           a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Otevírá se postupně. Zapište se na seznam a až se otevře, dostanete jeden e-mail.',
         },
       ],
-      why: 'nidhi vzniklo, protože jeden člověk nemohl najít nástroj, který by seděl na obyčejný finanční život: peníze ve více než jedné zemi, dluhy v jiné, budoucnost přes hranice. Tak ho stavíme a cestou vysvětlujeme, co se učíme.',
+      why: 'nidhi vzniklo, protože neexistoval nástroj, který by seděl na obyčejný finanční život: peníze ve více než jedné zemi, dluhy v jiné, budoucnost přes hranice. Tak ho stavím a cestou vysvětluji, co se učím.',
       trustLine: 'Vyrobeno v Praze. Žádné reklamy, žádný prodej dat. Lekce citují své zdroje.',
-      trustBeliefs: 'Čemu věříme',
+      trustBeliefs: 'Čemu věřím',
       trustEditorial: 'Jak píšeme',
       trustPrivacy: 'Zásady ochrany soukromí',
     },
