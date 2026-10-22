@@ -1,12 +1,12 @@
 ---
 slug: "gig-and-informal-economy-work"
-title: "Gig and Informal Work: Planning Without an Employer"
-seoTitle: "How to Set a Freelance Rate and Pay Yourself a Salary"
+title: "Gig, Freelance and Informal Work: Paying Yourself a Steady Salary"
+seoTitle: "Gig and Freelance Work: Paying Yourself a Steady Salary"
 description: "Going freelance or paid in cash: what an employer was quietly paying for, how to price a freelance day rate, and how to pay yourself a steady salary from uneven income."
 tldr: "Without an employer, your rate has to fund what one used to pay for, so a freelance day rate often needs to be 1.5 to 2 times the salaried one. Uneven income is a variance problem, not a discipline problem: one holding account, tax set aside the day money arrives, and a fixed monthly salary. Cash workers also need a record of what they earn."
 takeaways:
   - text: "Why a freelance rate must fund what an employer used to pay for"
-    href: "#going-freelance-at-your-old-day-rate-is-a-pay-cut"
+    href: "#setting-a-freelance-rate-that-replaces-a-salary"
   - text: "How a holding account and a fixed salary smooth uneven income"
     href: "#uneven-income-is-a-variance-problem-not-a-discipline-problem"
   - text: "A twelve-month worked example of a steady salary"
@@ -74,7 +74,7 @@ A salaried designer earning €40,000 a year goes freelance and wants the same s
 
 The [growing your income post](/blog/growing-your-income/) assumed an employer on the other side of the table. For a large share of working people there is none: freelancers invoice clients, platform workers are paid per job, and domestic workers, traders and day labourers are often paid in cash with no contract. As [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) noted, informal work alone covers most of the world's workers. This post covers what an employer was quietly paying for, and how to turn uneven income into steady pay. Self-employment tax and worker classification differ sharply between countries, and none of this is tax filing advice.
 
-## Going freelance at your old day rate is a pay cut
+## Setting a freelance rate that replaces a salary
 
 A salary comes wrapped in things an employee rarely sees priced:
 

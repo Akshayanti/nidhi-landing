@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import { getLayeredReadingTime } from '../../utils/readingTime';
 import { GLOSSARY_CARD_ID, termId } from '../../utils/glossary.mjs';
 import { LAYERED_LEVELS, layeredLessonProblems } from '../../utils/layeredLessons';
+import { searchTitleProblem } from '../../utils/searchTitle';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 
@@ -141,6 +142,9 @@ const targets = new Set([
   ...headings.map((h) => h.slug),
   ...(termIds.length ? [GLOSSARY_CARD_ID, ...termIds] : []),
 ]);
+// The search title only shortens the page title (src/utils/searchTitle.ts).
+const titleProblem = searchTitleProblem(post.data.title, post.data.seoTitle);
+if (titleProblem) throw new Error(`${post.id}: ${titleProblem} (blog-content-plan.md Rule 11)`);
 // Optimizing and Inclusive Finances lessons follow the layered-lesson rule
 // (src/utils/layeredLessons.ts), past and future.
 if ((LAYERED_LEVELS as readonly string[]).includes(post.data.level)) {

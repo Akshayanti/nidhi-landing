@@ -1,7 +1,6 @@
 ---
 slug: "insurance-optimization"
-title: "Insurance Optimization: Right-Sizing Your Coverage"
-seoTitle: "How Much Insurance Do You Need as Your Wealth Grows?"
+title: "How Much Insurance Do You Need as Your Wealth Grows?"
 description: "Insurance set up at €20,000 of net worth is often mismatched at €500,000. Which cover to review: health, term or whole life, disability, liability and deductibles."
 tldr: "As net worth grows, more losses can be absorbed from savings, so the cover worth paying for changes. One question applies to each type: what is the largest plausible loss, and could savings absorb it? Health cover is rarely where people cut back when illness can be catastrophic. For protection, term life has usually cost far less than whole life. Liability cover is cheap per euro, so many keep limits at or above their net worth. Disability and life cover tend to fade as savings grow and dependants become independent."
 takeaways:

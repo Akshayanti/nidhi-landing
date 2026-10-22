@@ -1,12 +1,12 @@
 ---
 slug: "owning-a-home-with-more-than-two-people"
-title: "Owning a Home With More Than Two People"
-seoTitle: "Buying a House With Friends or Partners: Title and Loan"
+title: "Buying a Home With Friends or Partners: Owning It Together"
+seoTitle: "Buying a Home With Friends or Partners"
 description: "Buying a home with three or more people? How joint tenancy can hand the house to the last survivor, why title and mortgage are separate, and what a co-ownership agreement records."
 tldr: "When three or more people buy a home, three things decide whether it works. The title: under joint tenancy each death passes the share to the remaining owners, so the last survivor ends up with everything; stated shares let each person choose where theirs goes. The mortgage, a separate question: everyone named owes the whole debt, and someone who pays without being on the title or the loan has the weakest position. And a co-ownership agreement recording contributions and a buy-out formula, because a departure usually means refinancing."
 takeaways:
-  - text: "Why joint tenancy turns a group home into a last-survivor contest"
-    href: "#joint-tenancy-turns-a-group-home-into-a-last-survivor-contest"
+  - text: "Who inherits your share under joint tenancy or tenancy in common"
+    href: "#choosing-joint-tenancy-or-tenancy-in-common-who-inherits-your-share"
   - text: "Why being on the title and being on the mortgage are separate"
     href: "#being-on-the-title-and-being-on-the-mortgage-are-separate"
   - text: "What a co-ownership agreement records, and why buy-outs matter"
@@ -68,7 +68,7 @@ Mira dies suddenly. Under a [joint tenancy](#term-joint-tenancy), Tobias now own
 
 The same happens to friends, siblings and any group pooling money for a home. This companion to the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [shared households](/blog/shared-households-money-for-three-or-more/) posts covers the title, the mortgage, the agreement and the structures that hold property for a group. Property law differs in every country, so it teaches the questions; for the documents, a local professional is the usual route.
 
-## Joint tenancy turns a group home into a last-survivor contest
+## Choosing joint tenancy or tenancy in common: who inherits your share?
 
 For a couple, joint tenancy is a simple way to protect the survivor. In a group, it means the survivors take each dead owner's share in turn. Three friends buy as joint tenants. The first dies, and the other two own the house. The second dies, and the third owns all of it. The families of the first two receive nothing, whatever anyone intended, and no will can change it.
 

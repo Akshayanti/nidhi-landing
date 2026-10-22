@@ -15,9 +15,9 @@ describe('layered-lesson rule', () => {
 
   it('asks for a search title, glossary terms and linked takeaways', () => {
     assert.deepEqual(
-      layeredLessonProblems({ takeaways: ['plain text', 'another'] }, []),
+      layeredLessonProblems({ title: 'A title far too long to show whole in a search result, so it needs a shorter one', takeaways: ['plain text', 'another'] }, []),
       [
-        'no seoTitle in the reader\'s search words',
+        'title is over 57 characters, so it needs a seoTitle that shortens it',
         'no glossary terms',
         '"In this lesson" needs at least two takeaways, each with an href to its section',
       ],

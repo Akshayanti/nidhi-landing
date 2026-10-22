@@ -1,7 +1,6 @@
 ---
 slug: "invest-or-pay-off-debt"
-title: "Invest or Pay Off Debt? The Math and the Sequence"
-seoTitle: "Invest or Pay Off Debt First? How to Decide"
+title: "Invest or Pay Off Debt First? How to Decide"
 description: "Should you invest or pay off debt first? Why the rate, not the size, sets a debt's cost, why many take an employer match early, and a common order for several debts."
 tldr: "Paying off a debt earns its interest rate, for certain; investing earns more on average but not for sure. In low-inflation economies, debt above about 8 to 10% usually comes first, below about 4% investing has usually come out ahead, and 4 to 8% is a judgement call. Many take an employer match early, and follow a common default order for several debts."
 takeaways:

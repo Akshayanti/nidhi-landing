@@ -1,12 +1,12 @@
 ---
 slug: "when-your-marriage-is-not-recognised-abroad"
-title: "When Your Marriage Isn't Recognised Where You Live"
-seoTitle: "Same-Sex Marriage Not Recognised Abroad: Money and Rights"
+title: "Same-Sex Marriage Abroad: Protecting Your Rights When You Move"
+seoTitle: "Same-Sex Marriage Abroad: Protecting Your Rights"
 description: "A marriage valid at home can lose its legal effect at a border, and its financial protections with it. The six-question check before a move, and the documents to test under local law."
 tldr: "A marriage is a legal status granted country by country. A couple married in one place can move somewhere that recognises the marriage fully, only for some purposes, as another status, or not at all, affecting inheritance, survivor pensions, medical authority, tax and immigration rights. Same-sex couples meet this most often. A six-question recognition check before moving tests the destination, and protections based on ownership and contract may help where status does not, though each must be checked under the destination's law."
 takeaways:
-  - text: "Why a marriage can lose its legal effect when you cross a border"
-    href: "#a-marriage-can-lose-its-legal-effect-when-you-cross-a-border"
+  - text: "How to check that your marriage is recognised where you move"
+    href: "#checking-that-your-marriage-is-recognised-where-you-move"
   - text: "How the recognition check tests a destination before you move"
     href: "#the-recognition-check-tests-a-destination-before-you-move"
   - text: "Why ownership and contract can protect you where status does not"
@@ -68,7 +68,7 @@ Nothing happened to their relationship. But there, David is not Jonas's next of 
 
 The [geographic arbitrage post](/blog/geographic-arbitrage/) treated a move as a question of prices, taxes and visas, assuming the household that arrives is the household that left. For some couples it is not, because a marriage is a legal status and a border can change it. Same-sex couples meet this most often; it also reaches couples married only under religious or customary rites, and some couples of different nationalities. This post does not list which countries recognise which marriages, because the list changes and recognition is often partial in ways a list hides.
 
-## A marriage can lose its legal effect when you cross a border
+## Checking that your marriage is recognised where you move
 
 A destination does one of three things with a marriage made elsewhere:
 
