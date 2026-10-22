@@ -796,6 +796,7 @@ export const cs: Dict = {
       doorContinue: 'Pokračovat: ',
       doorRead: 'Trasa dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
+      inclusiveLead: 'Pro finanční životy, na které standardní plán nesedí.',
       inclusiveTitle: 'Standardní plán na můj život nesedí.',
       inclusiveMeta: 'Inkluzivní finance · {count} průvodců, pro jakoukoli fázi',
       inclusiveMetaFew: 'Inkluzivní finance · {count} průvodci, pro jakoukoli fázi',

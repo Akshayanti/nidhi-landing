@@ -909,6 +909,7 @@ export const hi: Dict = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'इस रास्ते के सब पाठ पढ़ लिए। ',
       doorPath: 'सीखने के रास्ते पर आगे बढ़ते रहें',
+      inclusiveLead: 'उन लोगों के लिए बना, जिनकी आर्थिक ज़िंदगी में मानक योजना नहीं बैठती।',
       inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
       inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveMetaFew: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
