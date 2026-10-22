@@ -166,6 +166,8 @@ export const cs: Dict = {
         'Každý článek na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
       whyYouCanTrustIt1:
         'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Kde článek něco tvrdí, odkazuje na zdroj: knihy, referenční stránky a primární materiály uvedené u každého článku v části „referential reading“.',
+      sourcesCount:
+        'Seznamy doporučené četby u zveřejněných lekcí (počet lekcí: {lessons}) odkazují na různé knihy, studie a referenční stránky. Počet různých zdrojů: {sources}. Zdroje citované jen v textu lekce tu započítané nejsou.',
       whyYouCanTrustIt2:
         'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí patička každé stránky.',
       howPostsAreMade: {

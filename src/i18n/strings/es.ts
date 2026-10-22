@@ -175,6 +175,8 @@ export const es: Dict = {
       // quoted as it appears there and glossed in Spanish.
       whyYouCanTrustIt1:
         'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo afirma algo, señala la fuente: los libros, las páginas de referencia y el material primario que aparecen en cada artículo bajo «referential reading» (lecturas de referencia).',
+      sourcesCount:
+        'En las {lessons} lecciones publicadas, las listas de lecturas recomendadas remiten a {sources} libros, artículos y páginas de referencia distintos. Las fuentes citadas solo dentro del texto de una lección no se cuentan aquí.',
       whyYouCanTrustIt2:
         'Lo que esto no es: asesoramiento financiero con licencia. nidhi explica cómo funciona el dinero para que puedas tomar tus propias decisiones. No te dice qué fondo comprar, ni lo hará nunca. Para las decisiones que dependen de tu residencia fiscal concreta, tu situación legal o tu tolerancia al riesgo, lo adecuado es acudir a un profesional acreditado. Ese límite es deliberado, y es el mismo que figura en el pie de cada página.',
       howPostsAreMade: {
