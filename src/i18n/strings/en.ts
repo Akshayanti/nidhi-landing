@@ -983,6 +983,11 @@ export const en = {
       subhead: ['Free lessons.', 'Private tools.', 'A planner on the way.'],
       startLearning: 'Start learning',
       tryTool: 'Try a free tool',
+      /**
+       * Under the two buttons: what free and private mean, with counts filled in
+       * at build. Scoped to the tools, because the waitlist form does send an email.
+       */
+      promise: '{lessons} free lessons. {tools} private tools. No account, no ads. What you type in the tools stays on your device.',
       /** Shown only to a reader this browser knows has started the path. */
       welcomeBack: 'Welcome back. Pick up where you left off:',
     },

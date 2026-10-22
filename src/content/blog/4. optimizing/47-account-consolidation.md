@@ -1,12 +1,12 @@
 ---
 slug: "account-consolidation-and-financial-data-hygiene"
-title: "Account Consolidation: Cleaning Up Financial Sprawl"
+title: "Account Consolidation: Combining Old Pensions and Bank Accounts"
 seoTitle: "How to Consolidate Old Pensions and Bank Accounts"
 description: "Old pensions, forgotten savings accounts, unused cards: how to consolidate accounts, move an old pension without a tax bill, and what closing a card does to a credit score."
 tldr: "Forgotten accounts leak money through fees, idle cash and pricier funds, and they hide part of your picture. A common clean-up lists every account, sorts each into keep or close, moves the rest, and settles on two or three institutions. A direct, provider-to-provider pension transfer commonly avoids the withholding, deadlines and tax surprises a payment made to you can bring."
 takeaways:
   - text: "Why account sprawl builds up and what it quietly costs"
-    href: "#forgotten-accounts-leak-money-every-year"
+    href: "#forgotten-accounts-can-cost-money-every-year"
   - text: "How to inventory, sort, move and settle accounts"
     href: "#the-clean-up-inventory-sort-move-settle"
   - text: "Why old pensions usually move provider to provider, not via you"
@@ -65,7 +65,7 @@ referentialReading:
 
 Jiri is 38. Ten years of jobs and offers have left him with 13 accounts at 7 institutions. Among them: a €30,000 pension from a job he left, in funds with an [expense ratio](#term-expense-ratio) of 0.75% a year where his current plan charges 0.05%; €6,000 in two old savings accounts paying almost nothing; and three [dormant accounts](#term-dormant-account) charging €5 a month each. None of it was a mistake when he opened it. Together it is a leak, and a picture of his money he cannot see in one place.
 
-## Forgotten accounts leak money every year
+## Forgotten accounts can cost money every year
 
 For Jiri the leak is about €570 a year, illustratively:
 

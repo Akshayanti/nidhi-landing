@@ -1,7 +1,6 @@
 ---
 slug: "fee-optimization"
-title: "Fee Optimization: The Silent Drag on Your Returns"
-seoTitle: "How Much Do Investment Fees Really Cost You?"
+title: "Investment Fees: How Much They Really Cost You"
 description: "A 1% investment fee can take about a quarter of a 40-year pot. The layers of fund, platform, adviser and hidden fees, why active funds mostly trail after fees, and when advice is worth it."
 tldr: "A 1% yearly fee sounds small, but over 40 years it can take about a quarter of what a low-cost portfolio would reach. Costs stack in layers, fund, platform, adviser, trading and tax drag, and most active funds trail their benchmark after fees. Whether a higher fee is worth it depends on what it buys you."
 takeaways:
