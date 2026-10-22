@@ -242,7 +242,7 @@ export const en = {
        */
       howPostsAreMade: {
         before:
-          'Each article starts from a concrete question, gets worked through with real numbers and worked examples, and is checked against cited references before it goes out. The full process, sourcing standards, and how corrections are handled live on the ',
+          'Each article starts from a concrete question, gets worked through with real numbers and worked examples, and is checked against cited references before it goes out. AI tools help research, draft, edit and check lessons, including questioning their financial reasoning, and help build the site and its free tools. AI output is a draft, never a source: a person is involved at every stage, and reads and approves every lesson before it is published. The full process, sourcing standards, and how corrections are handled live on the ',
         link: 'editorial policy page',
         after: '.',
       },

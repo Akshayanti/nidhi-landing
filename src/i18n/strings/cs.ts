@@ -169,7 +169,7 @@ export const cs: Dict = {
         'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí patička každé stránky.',
       howPostsAreMade: {
         before:
-          'Každý článek začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
+          'Každý článek začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
         link: 'redakčních zásad',
         after: '.',
       },
