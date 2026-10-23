@@ -88,6 +88,7 @@ export const cs: Dict = {
       allTools: 'Zobrazit vše',
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
+      volunteers: 'Dobrovolná pomoc',
       editorialPolicy: 'Redakční zásady',
       changes: 'Co se změnilo',
       privacy: 'Soukromí',
@@ -343,6 +344,44 @@ export const cs: Dict = {
     },
   },
 
+  /**
+   * The volunteers page (/volunteers/), the call for translators. Language names
+   * are not here: they are names, in their own script, from LOCALE_META and the
+   * page's list of upcoming editions.
+   */
+  volunteers: {
+    meta: {
+      title: 'Pomozte s překladem nidhi: dobrovolná pomoc | nidhi',
+      description:
+        'Ovládáte španělštinu, češtinu, maráthštinu nebo připravovaný jazyk jako rodný nebo skoro stejně dobře? Pomozte zpřesnit slova nidhi a přeložit lekce.',
+    },
+    title: 'Pomozte s překladem nidhi',
+    lead:
+      'nidhi si můžete přečíst v pěti jazycích a překlady vznikly s pomocí AI. Hledám lidi, kteří daný jazyk ovládají jako rodný nebo skoro stejně dobře, aby slova zněla jasně, přirozeně a přesně, a kteří pomohou s překladem lekcí, které jsou zatím jen v angličtině. Znalost financí je velké plus.',
+    nowHeading: 'Pomoc potřebuji teď',
+    nowNote: 'Pro hindštinu pomoc už mám.',
+    cta: 'Otevřít formulář',
+    note: { before: 'Formulář se otevře v Google Forms. Co sbírá a jak dlouho se to uchovává: ', link: 'zásady ochrany soukromí', after: '.' },
+    nextHeading: 'Připravované jazyky',
+    nextNote:
+      'Ovládáte některý z nich? Nechte na stejném formuláři kontakt a ozvu se, až práce na vašem jazyce začne.',
+    doHeading: 'S čím pomůžete',
+    do: {
+      review: 'Projdete stránky a nástroje webu ve svém jazyce.',
+      words: 'Upozorníte na slova, která zní neobratně, nejasně nebo nepřesně.',
+      lessons: 'Pomůžete s překladem lekcí, aby se mohly začít objevovat ve vašem jazyce.',
+    },
+    getHeading: 'Co získáte',
+    get: {
+      say: { lead: 'Vliv na slova:', rest: ' pomůžete rozhodnout, jak nidhi vysvětluje peníze ve vašem jazyce.' },
+      credit: {
+        lead: 'Uvedení na webu, pokud chcete:',
+        rest: ' vyberete si jméno, které se na webu zobrazí. Za jeden jazyk může být uvedeno více lidí a kdykoli můžete požádat o odstranění.',
+      },
+      beta: { lead: 'Pozvánka do bety plánovače, pokud chcete:', rest: ' samostatná, nepovinná volba ve formuláři.' },
+      brag: { lead: 'Důvod k hrdosti:', rest: ' někdo si díky vám může číst o penězích ve svém jazyce.' },
+    },
+  },
   changes: {
     meta: {
       title: 'Co se změnilo: drobné novinky na nidhi | nidhi',
@@ -472,6 +511,7 @@ export const cs: Dict = {
       withConsent: 'Jen pokud na cookie liště kliknete na „Ano, souhlasím“:',
       newsletter: 'Pokud se přihlásíte k odběru newsletteru blogu:',
       waitlist: 'Pokud se zapíšete na čekací listinu ke spuštění produktu:',
+      volunteers: 'Pokud nám nabídnete pomoc s překladem webu:',
       browserOnly: 'Uloženo jen ve vašem prohlížeči, nikdy se nám neposílá:',
     },
 
@@ -534,6 +574,20 @@ export const cs: Dict = {
         after: '. Přidejte si ji do kontaktů, aby neskončil ve spamu.',
       },
     },
+    volunteers: {
+      form:
+        'Stránka pro dobrovolnou pomoc na adrese nidhi.today/volunteers/ je součástí tohoto webu. Jako každá stránka odesílá anonymní událost zobrazení a opuštění stránky. Její tlačítko otevírá formulář Google, který spravuje náš účet Google Workspace; pokud přijmete lištu o cookies, kliknutí na toto tlačítko se zaznamená podle jeho štítku volunteers-form. Vaše odpovědi se ke Googlu dostanou, až když formulář odešlete. Přihlášení nepotřebujete a váš účet Google není součástí odpovědí, které dostáváme.',
+      answers:
+        'Vaše e-mailová adresa a to, co nám sdělíte: jméno pro uvedení na webu, které jazyky, zda máte finanční vzdělání nebo praxi (a poznámku k tomu, pokud ji přidáte), jak chcete pomoci, zda chcete uvedení na webu, a vaši úroveň v jednotlivých jazycích.',
+      consent:
+        'Váš souhlas s tím, že vás budeme kontaktovat e-mailem ohledně překladů, zda chcete také pozvánku do bety plánovače (samostatná, nepovinná volba), a čas odeslání formuláře.',
+      credit:
+        'Pokud o uvedení požádáte, jméno, které nám pro to sdělíte, se může objevit na webu spolu se jmény dalších lidí, kteří s daným jazykem pomáhají. Můžete ho kdykoli změnit nebo nechat odstranit.',
+      followUp:
+        'V této soukromé tabulce si také zapisujeme stav vyřízení a datum našeho posledního kontaktu s vámi, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
+      google:
+        'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
+    },
     browserStorage: {
       consent: { before: 'Vaše volba ohledně cookies (', after: ').' },
       theme: { before: 'Vaše volba motivu: světlý, tmavý nebo podle systému (', after: ').' },
@@ -579,6 +633,10 @@ export const cs: Dict = {
         lead: 'Čekací listina:',
         rest: ' abychom vám poslali přesně jeden e-mail, až se produkt nidhi spustí. Nic dalšího. Žádný newsletter, žádná série e-mailů, žádná propagace.',
       },
+      volunteers: {
+        lead: 'Dobrovolná pomoc:',
+        rest: ' k porozumění vašim jazykům, vaší úrovni a vašemu finančnímu vzdělání nebo praxi, ke kontaktování ohledně překladů, k uvedení na webu, pokud o to požádáte, a k pozvání do bety plánovače, až bude spuštěna, pokud o ni stojíte. Nic jiného.',
+      },
       localPreferences: {
         lead: 'Místní předvolby:',
         rest: ' aby se web choval konzistentně, aniž by se musel ptát serveru. Vše zůstává ve vašem zařízení.',
@@ -596,7 +654,7 @@ export const cs: Dict = {
           before: ' (regiony Google Cloud v EU): naše e-mailové adresy (',
           middle: ' pro obecný kontakt a podporu, ',
           after:
-            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech). Číst ji můžeme jen my.',
+            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Jen my můžeme číst tabulky a odpovědi v nich uložené.',
         },
         github: {
           name: 'GitHub Pages',
@@ -622,7 +680,7 @@ export const cs: Dict = {
         'Nesledujeme vás napříč weby. Žádný Facebook pixel, žádný tag Google Ads, žádný LinkedIn Insight, žádný TikTok pixel, žádný retargeting jakéhokoli druhu.',
       screen: 'Nenahráváme vaši obrazovku, stisky kláves, hodnoty formulářů ani průběžné posouvání stránky.',
       replies: 'Odpovědi na e-maily newsletteru dostane člověk na adrese hello@nidhi.today, který je čte. Nikdy je nevkládáme do žádného systému webové analytiky ani reklamního systému.',
-      imports: 'Seznam odběratelů newsletteru ani čekací listinu neimportujeme do žádného jiného nástroje ani rozesílacího systému.',
+      imports: 'Seznam odběratelů newsletteru, čekací listinu ani odpovědi z formuláře pro dobrovolnou pomoc neimportujeme do žádného jiného nástroje ani rozesílacího systému.',
     },
 
     retention: {
@@ -638,6 +696,10 @@ export const cs: Dict = {
         lead: 'Registrace na čekací listinu:',
         rest: ' dokud nepošleme e-mail o spuštění a nebudete mít čas na něj reagovat, nebo dokud nás nepožádáte o vyřazení. Napište nám kdykoli.',
       },
+      volunteers: {
+        lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
+        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění.',
+      },
       bounced: {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
         rest: ' smažeme, jakmile si jich všimneme, obvykle do týdne.',
@@ -652,7 +714,7 @@ export const cs: Dict = {
       intro:
         'Podle obecného nařízení o ochraně osobních údajů (GDPR) a podobných předpisů máte právo se nás zeptat, co o vás máme, nechat to opravit, exportovat, omezit, jak to používáme, vznést proti tomu námitku nebo to nechat smazat.',
       unsubscribe:
-        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny nám napište a vyřadíme vás. V obou případech to na požádání uděláme i ručně.',
+        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc nám napište a vyřadíme vás, i s případným uvedením na webu. Ve všech těchto případech to na požádání uděláme i ručně.',
       analytics: {
         before:
           'Události webové analytiky jsou anonymní; nemáme jak dohledat „vaše“ události, protože nevíme, kdo jste. Pokud vám to vadí, na cookie liště jednoduše odmítněte souhlas nebo použijte blokátor obsahu. Nic na webu se nerozbije. Odpověď můžete kdykoli změnit přes ',
@@ -790,6 +852,8 @@ export const cs: Dict = {
       ],
       site: 'Peníze srozumitelně. Učte se osobní finance, porozumějte vlastním penězům a plánujte budoucnost, od základů po finance rozložené mezi měny a země.',
     },
+    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
+    volunteers: { text: 'Pomozte s překladem nidhi: hledám lidi, kteří jazyk ovládají jako rodný nebo skoro stejně dobře.', link: 'Jak se zapojit' },
     hero: {
       heading: 'Porozumějte svým penězům.',
       subhead: ['Lekce zdarma.', 'Soukromé nástroje.', 'Plánovač na cestě.'],

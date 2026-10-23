@@ -35,6 +35,7 @@ const {
   collect,
   newsletter,
   waitlist: waitlistNotice,
+  volunteers: volunteersNotice,
   browserStorage,
   why,
   where,
@@ -142,6 +143,19 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
  */
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
+  {
+    date: 'Oct 23, 2026',
+    iso: '2026-10-23',
+    material: true,
+    summary: 'A volunteers page and form for translators: native or near native speakers can offer to review the site\'s translations or help translate the lessons, through a Google Form linked from the new page nidhi.today/volunteers/. The home page and the footer link to the page. This notice now says what the form collects, why, where it is kept, for how long, and how to have it removed.',
+    details: [
+      'New page nidhi.today/volunteers/, in every language, describing the call for translators and linking to the volunteer form. Like every page, it sends the anonymous pageview and page-leave events described above. New click labels, recorded only if you accept the cookie banner: volunteers-form on the page\'s two buttons that open the form, volunteers-privacy on its link to this notice, home-volunteers on a one line strip after the home page\'s opening section, and footer-volunteers on a new footer link. The form is only linked, never embedded, so the page loads nothing from Google. No new storage key or browser request.',
+      'The volunteer form is a Google Form run by our Google Workspace account (already listed under "Where it lives"). You do not need to sign in, and your Google account is not part of the answers we receive; your email address is an ordinary question. It asks for your email, which languages, whether you have a financial background (with an optional note), how you would like to help, whether you want credit on the site, and your consent to be contacted by email about translating; optionally, whether you want to be invited to the planner\'s beta (a separate choice), a name to credit and your level in each language. Google records when you sent it. Answers go to a sheet of their own that only we can read, where we also note a follow-up status and the date of our last contact with you. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
+      'If you ask for credit, the name you gave may appear on the site, listed with the others who helped with that language, until you ask us to remove it.',
+      'Retention: volunteer form answers are kept until you ask us to remove them, or two years after our last contact with you, whichever comes first. To have them removed, email us, as for the waitlist.',
+      'The form page itself is served by Google, so Google\'s own terms and privacy policy apply while you fill it in. We added no Google script, pixel or tag to nidhi.today.',
+    ],
+  },
   {
     date: 'Oct 22, 2026',
     iso: '2026-10-22',
@@ -676,6 +690,16 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         </li>
       </ul>
 
+      <p><strong>{lead.volunteers}</strong></p>
+      <ul>
+        <li>{volunteersNotice.form}</li>
+        <li>{volunteersNotice.answers}</li>
+        <li>{volunteersNotice.consent}</li>
+        <li>{volunteersNotice.credit}</li>
+        <li>{volunteersNotice.followUp}</li>
+        <li>{volunteersNotice.google}</li>
+      </ul>
+
       <p><strong>{lead.browserOnly}</strong></p>
       <ul>
         <li>{browserStorage.consent.before}<code>{KEY.cookieConsent}</code>{browserStorage.consent.after}</li>
@@ -694,6 +718,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li><strong>{why.analytics.lead}</strong>{why.analytics.rest}</li>
         <li><strong>{why.newsletter.lead}</strong>{why.newsletter.rest}</li>
         <li><strong>{why.waitlist.lead}</strong>{why.waitlist.rest}</li>
+        <li><strong>{why.volunteers.lead}</strong>{why.volunteers.rest}</li>
         <li><strong>{why.localPreferences.lead}</strong>{why.localPreferences.rest}</li>
       </ul>
 
@@ -728,6 +753,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li><strong>{retention.analytics.lead}</strong>{retention.analytics.rest}</li>
         <li><strong>{retention.newsletter.lead}</strong>{retention.newsletter.rest}</li>
         <li><strong>{retention.waitlist.lead}</strong>{retention.waitlist.rest}</li>
+        <li><strong>{retention.volunteers.lead}</strong>{retention.volunteers.rest}</li>
         <li><strong>{retention.bounced.lead}</strong>{retention.bounced.rest}</li>
         <li><strong>{retention.localStorage.lead}</strong>{retention.localStorage.rest}</li>
       </ul>

@@ -1,0 +1,214 @@
+---
+/**
+ * The volunteers page: the call for translators, in whichever language it was
+ * asked for.
+ *
+ * English is served from `src/pages/volunteers.astro`, a three line wrapper
+ * around this; the other languages come through
+ * `src/pages/[locale]/volunteers.astro`. Both render this one component.
+ *
+ * The form itself is a Google Form (scripts/volunteer-form.gs) and is only
+ * linked, never embedded: an embed would load Google on this page, which the
+ * privacy notice does not describe. Both buttons carry the same click label,
+ * `volunteers-form`, which the privacy notice names.
+ *
+ * Language names are names, in their own script, so they are not in the
+ * catalogs: the open ones come from LOCALE_META, the upcoming ones follow
+ * docs/i18n/locale-roadmap.md in its order. Hindi is covered and not asked for.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { volunteers: v } = dict(locale);
+
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdi-dQp0eylwM7TsG9KgBk2ZkiUVdh0JlWTlVmeJ8PC1q_w6w/viewform';
+
+const OPEN: Locale[] = ['es', 'cs', 'mr'];
+const UPCOMING = [
+  { name: 'Français', lang: 'fr' },
+  { name: 'Português', lang: 'pt' },
+  { name: 'Bahasa Indonesia', lang: 'id' },
+  { name: 'Deutsch', lang: 'de' },
+  { name: '日本語', lang: 'ja' },
+  { name: 'Tiếng Việt', lang: 'vi' },
+  { name: 'Türkçe', lang: 'tr' },
+  { name: '한국어', lang: 'ko' },
+  { name: 'العربية', lang: 'ar', dir: 'rtl' },
+];
+
+const pageUrl = new URL(localizedPath(locale, '/volunteers/'), 'https://nidhi.today').href;
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
+  name: v.title,
+  description: v.meta.description,
+  url: pageUrl,
+};
+---
+
+<BaseLayout locale={locale} alternates={LOCALES} title={v.meta.title} description={v.meta.description} jsonLd={[webPageSchema]}>
+  <section class="vol-page">
+    <div class="vol-container">
+      <header>
+        <h1 class="vol-title">{v.title}</h1>
+        <p class="vol-lead">{v.lead}</p>
+      </header>
+
+      <h2>{v.nowHeading}</h2>
+      <ul class="chips" role="list">
+        {OPEN.map((l) => <li class="chip chip--open" lang={LOCALE_META[l].htmlLang}>{LOCALE_META[l].label}</li>)}
+      </ul>
+      <p class="vol-note">{v.nowNote}</p>
+
+      <p class="vol-cta">
+        <a href={FORM_URL} class="vol-btn" data-attr="volunteers-form">{v.cta}</a>
+      </p>
+      <p class="vol-small">
+        {v.note.before}<a href={localizedPath(locale, '/privacy/')} data-attr="volunteers-privacy">{v.note.link}</a>{v.note.after}
+      </p>
+
+      <h2>{v.nextHeading}</h2>
+      <ul class="chips" role="list">
+        {UPCOMING.map((u) => <li class="chip" lang={u.lang} dir={u.dir}>{u.name}</li>)}
+      </ul>
+      <p class="vol-note">{v.nextNote}</p>
+
+      <h2>{v.doHeading}</h2>
+      <ul class="vol-list">
+        <li>{v.do.review}</li>
+        <li>{v.do.words}</li>
+        <li>{v.do.lessons}</li>
+      </ul>
+
+      <h2>{v.getHeading}</h2>
+      <ul class="vol-list">
+        <li><strong>{v.get.say.lead}</strong>{v.get.say.rest}</li>
+        <li><strong>{v.get.credit.lead}</strong>{v.get.credit.rest}</li>
+        <li><strong>{v.get.beta.lead}</strong>{v.get.beta.rest}</li>
+        <li><strong>{v.get.brag.lead}</strong>{v.get.brag.rest}</li>
+      </ul>
+
+      <p class="vol-cta vol-cta--end">
+        <a href={FORM_URL} class="vol-btn" data-attr="volunteers-form">{v.cta}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .vol-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .vol-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .vol-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .vol-lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .chip {
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.95rem;
+    color: var(--color-deep-blue);
+  }
+
+  .chip--open {
+    border-color: var(--color-teal);
+    font-weight: 600;
+  }
+
+  .vol-note,
+  .vol-small {
+    margin-top: var(--space-2);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .vol-small {
+    font-size: 0.9rem;
+  }
+
+  .vol-cta {
+    margin-top: var(--space-5);
+  }
+
+  /* The home page's primary button, which is scoped to that page. */
+  .vol-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+    background: var(--color-cta-bg);
+    color: var(--color-cta-fg);
+    border: 1px solid var(--color-cta-bg);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .vol-btn:hover,
+  .vol-btn:active { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
+
+  .vol-btn:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  .vol-cta--end {
+    margin-top: var(--space-6);
+  }
+
+  .vol-list {
+    padding-left: 1.2rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  .vol-list li + li {
+    margin-top: var(--space-2);
+  }
+</style>
