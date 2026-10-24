@@ -87,6 +87,7 @@ export const es: Dict = {
       allTools: 'Ver todas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
+      volunteers: 'Voluntariado',
       editorialPolicy: 'Política editorial',
       changes: 'Qué ha cambiado',
       privacy: 'Privacidad',
@@ -368,6 +369,44 @@ export const es: Dict = {
     },
   },
 
+  /**
+   * The volunteers page (/volunteers/), the call for translators. Language names
+   * are not here: they are names, in their own script, from LOCALE_META and the
+   * page's list of upcoming editions.
+   */
+  volunteers: {
+    meta: {
+      title: 'Ayuda a traducir nidhi: voluntariado | nidhi',
+      description:
+        'Si hablas español, checo, maratí o uno de los próximos idiomas de forma nativa o casi nativa, ayuda a aclarar las palabras de nidhi y a traducir las lecciones.',
+    },
+    title: 'Ayuda a traducir nidhi',
+    lead:
+      'nidhi se puede leer en cinco idiomas, con traducciones hechas con ayuda de IA. Busco personas que hablen su idioma de forma nativa o casi nativa, para que las palabras sean claras, naturales y precisas, y para ayudar a traducir las lecciones, que por ahora solo están en inglés. Si además sabes de finanzas, mejor aún.',
+    nowHeading: 'Se necesita ayuda ya',
+    nowNote: 'El hindi ya está cubierto.',
+    cta: 'Abrir el formulario de voluntariado',
+    note: { before: 'El formulario se abre en Google Forms. Qué recoge y cuánto tiempo se guarda: ', link: 'aviso de privacidad', after: '.' },
+    nextHeading: 'Próximos idiomas',
+    nextNote:
+      '¿Hablas alguno de estos? Deja tu contacto en el mismo formulario y te escribiré cuando empiece el trabajo en tu idioma.',
+    doHeading: 'Qué harías',
+    do: {
+      review: 'Revisar las páginas y herramientas del sitio en tu idioma.',
+      words: 'Señalar palabras que suenen raras, poco claras o inexactas.',
+      lessons: 'Ayudar a traducir las lecciones, para que puedan empezar a aparecer en tu idioma.',
+    },
+    getHeading: 'Qué recibes',
+    get: {
+      say: { lead: 'Voz en las palabras:', rest: ' ayuda a decidir cómo explica nidhi el dinero en tu idioma.' },
+      credit: {
+        lead: 'Crédito, si lo quieres:',
+        rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que lo quitemos en cualquier momento.',
+      },
+      beta: { lead: 'Invitación a la beta del planificador, si la quieres:', rest: ' una opción aparte y opcional en el formulario.' },
+      brag: { lead: 'Motivo de orgullo:', rest: ' alguien puede leer sobre dinero en su idioma gracias a ti.' },
+    },
+  },
   changes: {
     meta: {
       title: 'Qué ha cambiado: pequeñas novedades de nidhi | nidhi',
@@ -506,6 +545,7 @@ export const es: Dict = {
       withConsent: 'Solo si haces clic en «Sí, me parece bien» en el aviso de cookies:',
       newsletter: 'Si te suscribes al boletín del blog:',
       waitlist: 'Si te apuntas a la lista de espera para el lanzamiento del producto:',
+      volunteers: 'Si te ofreces para ayudar a traducir el sitio:',
       browserOnly: 'Guardado solo en tu navegador, nunca se nos envía:',
     },
 
@@ -568,6 +608,20 @@ export const es: Dict = {
         after: '. Añádela a tus contactos para que no acabe en spam.',
       },
     },
+    volunteers: {
+      form:
+        'La página de voluntariado en nidhi.today/volunteers/ forma parte de este sitio. Como todas las páginas, envía un evento anónimo de visita y de salida de la página. Su botón abre un formulario de Google gestionado por nuestra cuenta de Google Workspace; si aceptas el aviso de cookies, el clic en ese botón se registra por su etiqueta, volunteers-form. Tus respuestas solo llegan a Google cuando envías el formulario. No necesitas iniciar sesión, y tu cuenta de Google no forma parte de las respuestas que recibimos.',
+      answers:
+        'Tu dirección de correo electrónico y lo que decidas contarnos: el nombre para el crédito, qué idiomas, si tienes formación en finanzas (y una nota sobre ella, si la añades), cómo quieres ayudar, si quieres crédito en el sitio y tu nivel en cada idioma.',
+      consent:
+        'Tu consentimiento para que te contactemos por correo electrónico sobre la traducción, si además pediste que te invitemos a la beta del planificador (una opción aparte y opcional) y la hora a la que enviaste el formulario.',
+      credit:
+        'Si pides crédito, el nombre que nos diste puede aparecer en el sitio, junto a las demás personas que ayudaron con ese idioma. Puedes cambiarlo o pedir que lo quitemos en cualquier momento.',
+      followUp:
+        'En esa hoja privada también anotamos el estado del seguimiento y la fecha de nuestro último contacto contigo, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
+      google:
+        'La página del formulario es de Google, así que mientras lo rellenas se aplican las condiciones y la política de privacidad de Google.',
+    },
     browserStorage: {
       consent: { before: 'Tu elección sobre las cookies (', after: ').' },
       theme: { before: 'Tu preferencia de tema claro, oscuro o del sistema (', after: ').' },
@@ -613,6 +667,10 @@ export const es: Dict = {
         lead: 'Lista de espera:',
         rest: ' para enviarte exactamente un correo cuando se lance el producto nidhi. Nada más. Ni un boletín, ni una secuencia automática de correos, ni promoción cruzada.',
       },
+      volunteers: {
+        lead: 'Voluntariado:',
+        rest: ' para entender qué idiomas hablas, tu nivel y tu formación en finanzas, contactarte sobre la traducción, darte crédito en el sitio si lo pediste y, si lo pediste, invitarte a la beta del planificador cuando abra. Nada más.',
+      },
       localPreferences: {
         lead: 'Preferencias locales:',
         rest: ' para que el sitio te resulte coherente sin tener que consultar a un servidor. Todo eso se queda en tu dispositivo.',
@@ -630,7 +688,7 @@ export const es: Dict = {
           before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
           middle: ' para contacto general y soporte, ',
           after:
-            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas). Solo nosotros podemos leerla.',
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Solo nosotros podemos leer las hojas y las respuestas guardadas en ellas.',
         },
         github: {
           name: 'GitHub Pages',
@@ -656,7 +714,7 @@ export const es: Dict = {
         'No te rastreamos entre sitios. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
       screen: 'No grabamos tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento.',
       replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
-      imports: 'No importamos las listas del boletín ni de la lista de espera a ninguna otra herramienta ni sistema de envío de correos.',
+      imports: 'No importamos las listas del boletín ni de la lista de espera, ni las respuestas del formulario de voluntariado, a ninguna otra herramienta ni sistema de envío de correos.',
     },
 
     retention: {
@@ -672,6 +730,10 @@ export const es: Dict = {
         lead: 'Altas en la lista de espera:',
         rest: ' hasta que enviemos el correo del lanzamiento y hayas tenido tiempo de actuar, o hasta que nos pidas que te eliminemos. Escríbenos cuando quieras.',
       },
+      volunteers: {
+        lead: 'Respuestas del formulario de voluntariado:',
+        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. El crédito en el sitio se mantiene hasta que nos pidas quitarlo.',
+      },
       bounced: {
         lead: 'Correos rebotados o no válidos:',
         rest: ' se eliminan en cuanto los detectamos, normalmente en una semana.',
@@ -686,7 +748,7 @@ export const es: Dict = {
       intro:
         'Según el RGPD (y normativas similares), tienes derecho a preguntarnos qué datos tenemos sobre ti, a rectificarlos, a exportarlos, a limitar cómo los usamos, a oponerte a su uso o a suprimirlos.',
       unsubscribe:
-        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera, escríbenos y te eliminaremos. En cualquiera de los dos casos, lo haremos a mano si nos lo pides.',
+        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera y del formulario de voluntariado, escríbenos y te eliminaremos, junto con el crédito en el sitio si lo hay. En cualquiera de estos casos, lo haremos a mano si nos lo pides.',
       analytics: {
         before:
           'En cuanto a la analítica, los eventos son anónimos; no tenemos forma de buscar «tus» eventos porque no sabemos quién eres. Si eso te molesta, simplemente rechaza el aviso de cookies o usa un bloqueador de contenido. No se rompe nada en el sitio. Puedes cambiar tu respuesta en cualquier momento con ',
@@ -832,6 +894,8 @@ export const es: Dict = {
       ],
       site: 'El dinero, entendido. Aprende finanzas personales, entiende tu propio dinero y planifica tu futuro, desde lo básico hasta las finanzas que abarcan varias monedas y países.',
     },
+    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
+    volunteers: { text: 'Ayuda a traducir nidhi: se busca gente que hable de forma nativa o casi nativa.', link: 'Cómo participar' },
     hero: {
       heading: 'Entiende tu dinero.',
       subhead: ['Lecciones gratuitas.', 'Herramientas privadas.', 'Un planificador en camino.'],

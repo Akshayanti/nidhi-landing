@@ -285,6 +285,14 @@ const faqSchema = {
     </div>
   </section>
 
+  {/* The call for volunteer translators, one line after the hero so the hero
+       keeps the site's main message. The whole strip is one link. Remove it,
+       with its catalog strings and the privacy changelog's mention, when the
+       call closes. */}
+  <a class="vol-strip" href={href('/volunteers/')} data-attr="home-volunteers">
+    <span>{home.volunteers.text}</span> <span class="vol-strip-link">{home.volunteers.link}</span>
+  </a>
+
   {/* =============================================================
        2. Step 1, learn: free lessons, one line per route
        ============================================================= */}
@@ -651,6 +659,33 @@ const faqSchema = {
 </script>
 
 <style>
+  .vol-strip {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    text-align: center;
+    background: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .vol-strip-link {
+    color: var(--color-teal);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .vol-strip:hover .vol-strip-link { text-decoration-thickness: 2px; }
+
+  .vol-strip:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: -2px;
+  }
+
   /* ----------------------------------------------------------------
      Section frame: content-height sections with even spacing.
      ---------------------------------------------------------------- */

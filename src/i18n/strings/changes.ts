@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-10-23',
+    items: [
+      {
+        id: 'volunteer-translators',
+        text: {
+          en: 'I added a volunteers page for native or near native speakers who want to improve nidhi’s translations, help translate the lessons, or hear from me when their language opens. The home page and the footer point to it, and the privacy notice says what its form collects and how long it is kept.',
+          es: 'He añadido una página de voluntariado para quien hable un idioma de forma nativa o casi nativa y quiera mejorar las traducciones de nidhi, ayudar a traducir las lecciones o saber cuándo se abre su idioma. La página de inicio y el pie de página llevan a ella, y el aviso de privacidad explica qué recoge su formulario y cuánto tiempo se guarda.',
+          cs: 'Přibyla stránka pro dobrovolnou pomoc pro ty, kdo jazyk ovládají jako rodný nebo skoro stejně dobře a chtějí zlepšit překlady nidhi, pomoct s překladem lekcí nebo dostat zprávu, až se jejich jazyk otevře. Odkazuje na ni úvodní stránka i patička a zásady ochrany soukromí uvádějí, co její formulář sbírá a jak dlouho se to uchovává.',
+          mr: 'भाषा मातृभाषेसारखी येणाऱ्या आणि nidhi ची भाषांतरे सुधारायला, धड्यांचे भाषांतर करायला मदत करायला, किंवा आपली भाषा सुरू झाल्यावर कळवले जावे असे वाटणाऱ्या लोकांसाठी आता स्वयंसेवकांचे पान आहे. मुख्य पान आणि तळटीप त्याकडे नेतात, आणि त्याचा फॉर्म काय गोळा करतो व ते किती काळ साठवले जाते ते गोपनीयता सूचनेत लिहिले आहे.',
+          hi: 'अब उन लोगों के लिए एक वॉलंटियर पेज है जो किसी भाषा को मातृभाषा की तरह या लगभग उतनी ही अच्छी तरह जानते हैं और nidhi के अनुवाद सुधारना, पाठों के अनुवाद में मदद करना, या अपनी भाषा शुरू होने पर ख़बर पाना चाहते हैं। होम पेज और फ़ुटर उस तक ले जाते हैं, और उसका फ़ॉर्म क्या लेता है और उसे कितने समय तक रखा जाता है, यह प्राइवेसी नोटिस में लिखा है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-10-22',
     items: [
       {

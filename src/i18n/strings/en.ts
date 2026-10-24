@@ -123,6 +123,7 @@ export const en = {
       allTools: 'View all',
       about: 'About nidhi',
       beliefs: 'What I believe',
+      volunteers: 'Volunteer',
       editorialPolicy: 'Editorial policy',
       changes: "What's changed",
       privacy: 'Privacy',
@@ -459,6 +460,44 @@ export const en = {
    * The "What's changed" page. Its entries live in changes.ts, one line per
    * visible change, in every language.
    */
+  /**
+   * The volunteers page (/volunteers/), the call for translators. Language names
+   * are not here: they are names, in their own script, from LOCALE_META and the
+   * page's list of upcoming editions.
+   */
+  volunteers: {
+    meta: {
+      title: 'Help translate nidhi: volunteers wanted | nidhi',
+      description:
+        'Native or near native speakers of Spanish, Czech, Marathi or the next languages: help make nidhi’s words clear and accurate, and help translate the lessons.',
+    },
+    title: 'Help translate nidhi',
+    lead:
+      'nidhi reads in five languages, with translations drafted using AI. I’m looking for native or near native speakers to make the words clear, natural and accurate, and to help translate the lessons, which are English only for now. A financial background is more than welcome.',
+    nowHeading: 'Help needed now',
+    nowNote: 'Hindi is already covered.',
+    cta: 'Open the volunteer form',
+    note: { before: 'The form opens in Google Forms. What it collects and how long it is kept: ', link: 'privacy notice', after: '.' },
+    nextHeading: 'Coming next',
+    nextNote:
+      'Speak one of these? Leave your contact on the same form, and I’ll get in touch when work on your language begins.',
+    doHeading: 'What you’d do',
+    do: {
+      review: 'Review the site’s pages and tools in your language.',
+      words: 'Point out words that sound awkward, unclear or inaccurate.',
+      lessons: 'Help translate lessons, so they can start appearing in your language.',
+    },
+    getHeading: 'What you get',
+    get: {
+      say: { lead: 'A say in the words:', rest: ' help decide how nidhi explains money in your language.' },
+      credit: {
+        lead: 'Credit, if you want it:',
+        rest: ' choose the name shown on the site. Several people can be credited for one language, and you can ask to be removed at any time.',
+      },
+      beta: { lead: 'A planner beta invite, if you want one:', rest: ' a separate, optional choice on the form.' },
+      brag: { lead: 'Bragging rights:', rest: ' someone can read about money in their language, thanks to you.' },
+    },
+  },
   changes: {
     meta: {
       title: "What's Changed: Small Updates to nidhi | nidhi",
@@ -641,6 +680,7 @@ export const en = {
       withConsent: 'Only if you click “Sure, that’s fine” on the cookie banner:',
       newsletter: 'If you subscribe to the blog newsletter:',
       waitlist: 'If you join the product-launch waitlist:',
+      volunteers: 'If you volunteer to help translate the site:',
       browserOnly: 'Stored only in your browser, never sent to us:',
     },
 
@@ -713,6 +753,20 @@ export const en = {
      * one `<code>` storage key, which the component supplies so that the key
      * reads the same in every edition.
      */
+    volunteers: {
+      form:
+        'The volunteer page at nidhi.today/volunteers/ is part of this site. Like every page, it sends an anonymous pageview and page-leave event. Its button opens a Google Form run by our Google Workspace account; if you accept the cookie banner, a click on that button is recorded by its label, volunteers-form. Your answers go to Google only when you submit the form. You do not need to sign in, and your Google account is not part of the answers we receive.',
+      answers:
+        'Your email address, and what you choose to tell us: the name to credit, which languages, whether you have a financial background (and a note about it, if you add one), how you would like to help, whether you want credit on the site, and your level in each language.',
+      consent:
+        'Your consent to be contacted by email about translating, whether you also asked to be invited to the planner’s beta (a separate, optional choice), and the time you sent the form.',
+      credit:
+        'If you ask for credit, the name you gave may appear on the site, listed with the others who helped with that language. You can change it or have it removed at any time.',
+      followUp:
+        'In that private sheet we also note a follow-up status and the date of our last contact with you, to manage replies and apply the retention period below. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
+      google:
+        'The form page itself is Google’s, so Google’s own terms and privacy policy apply while you fill it in.',
+    },
     browserStorage: {
       consent: { before: 'Your cookie-consent choice (', after: ').' },
       theme: { before: 'Your light/dark/system theme preference (', after: ').' },
@@ -758,6 +812,10 @@ export const en = {
         lead: 'Waitlist:',
         rest: ' to send you exactly one email when the nidhi product launches. Nothing else. Not a newsletter, not a drip sequence, not cross-promotion.',
       },
+      volunteers: {
+        lead: 'Volunteers:',
+        rest: ' to understand your languages, your level and your financial background, to contact you about translating, to credit you on the site if you asked for it, and, if you asked for it, to invite you to the planner’s beta when it opens. Nothing else.',
+      },
       localPreferences: {
         lead: 'Local preferences:',
         rest: ' to make the site feel consistent for you without a server round-trip. All of that stays on your device.',
@@ -781,7 +839,7 @@ export const en = {
           before: ' (Google Cloud EU regions): our email addresses (',
           middle: ' for general contact and support, ',
           after:
-            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs). Only we can read it.',
+            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs), and the Google Form for volunteer translators with the sheet its answers go to. Only we can read the sheets and the answers stored in them.',
         },
         github: {
           name: 'GitHub Pages',
@@ -809,7 +867,7 @@ export const en = {
         'We don’t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
       screen: 'We don’t record your screen, keystrokes, form values, or continuous scroll stream.',
       replies: 'Replies to newsletter emails reach a person at hello@nidhi.today, who reads them. We never feed them into any analytics or ads system.',
-      imports: 'We don’t import the newsletter or waitlist lists into any other tool or mailing system.',
+      imports: 'We don’t import the newsletter or waitlist lists, or the volunteer form answers, into any other tool or mailing system.',
     },
 
     retention: {
@@ -825,6 +883,10 @@ export const en = {
         lead: 'Waitlist signups:',
         rest: ' until we send the launch email and you’ve had time to act on it, or until you ask us to remove you. Email us anytime.',
       },
+      volunteers: {
+        lead: 'Volunteer form answers:',
+        rest: ' until you ask us to remove them, or two years after our last contact with you, whichever comes first. A credit on the site stays until you ask us to remove it.',
+      },
       bounced: {
         lead: 'Bounced or invalid emails:',
         rest: ' removed as soon as we notice them, usually within a week.',
@@ -839,7 +901,7 @@ export const en = {
       intro:
         'Under the GDPR (and similar regulations), you have the right to ask us what we hold about you, correct it, export it, restrict how we use it, object to it, or delete it.',
       unsubscribe:
-        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist, email us and we’ll remove you. We’ll do it manually for either.',
+        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist and the volunteer form, email us and we’ll remove you, and any credit on the site. We’ll do it manually for any of these.',
       analytics: {
         before:
           'For analytics, the events are anonymous; we don’t have a way to look up “your” events because we don’t know who you are. If this bothers you, just decline the cookie banner, or use a content blocker. Nothing on the site breaks. You can change your answer any time with ',
@@ -1024,6 +1086,8 @@ export const en = {
       ],
       site: 'Money, understood. Learn personal finance, understand your own money, and plan your future, from the basics to finances that span currencies and countries.',
     },
+    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
+    volunteers: { text: 'Help translate nidhi: native or near native speakers wanted.', link: 'See how to volunteer' },
     hero: {
       heading: 'Understand your money.',
       /** Three phrases, each its own element so they can wrap independently. */
