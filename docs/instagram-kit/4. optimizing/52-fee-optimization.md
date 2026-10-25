@@ -8,11 +8,12 @@ hashtags_day2: "#hiddenfees #platformfees #financialadviser #investsmart #nidhi"
 keywords_day2: "hidden costs, platform fee, adviser fee, advisory fee, fund turnover, trading costs, tax drag, total cost of investing, fee audit, account statement, wrap fee, ongoing charge, personal finance, global expats, Depotgebühren, Beratungshonorar, frais de plateforme, frais cachés, comisión de custodia, costes ocultos"
 ---
 
+> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council, Oct 25). Still to do in step 8: the lesson's global pass, including the gloss on "fund". Remove this note once scheduled.
+
 ## Brief
 
 person: Marcus, 34
 situation: Marcus saves €500 a month for retirement in a managed account. His statement shows one fund fee; he also pays a platform and an adviser.
-day3: A friend with €500,000 invested who pays an adviser 1% a year: €5,000 a year, rising with the pot, against what the advice is buying.
 withheld: Why active funds mostly lose to passive after fees, the hidden fees that never appear on a statement, when advisers add real value, the evaluation and switching workflow, and country notes.
 
 ## Day 1 (angle)
@@ -179,37 +180,6 @@ send: Know someone with one fee on their statement? Send them this.
 more: When advisers add real value
 more: Why active funds mostly trail after fees
 
-## Day 3 (angle)
-
-angle: An adviser's percentage fee grows in euros as the pot grows
-number: 1% on €500,000 is €5,000 a year; on €2 million, €20,000
-takeaway: The percentage stays the same; the euros grow with the pot, so it is worth weighing against what the advice buys.
-tool: The adviser check. The fee in euros a year, what it buys, and other ways to pay for advice.
-send_to: A friend with a large pot who pays an adviser 1% a year and has never seen it in euros.
-send_why: number
-
-## Day 3 (reel)
-
-plan: 52-fee-optimization.day3.reel.json
-render: node scripts/render-reels.mjs fee-optimization --level optimizing --from-plan --angle day3
-video: output/videos/optimizing/52-fee-optimization-day3.mp4
-cover: output/thumbnails/optimizing/52-fee-optimization-day3.png
-caption: output/captions/optimizing/52-fee-optimization-day3.ig.txt
-hashtags: #nidhi #nidhicompounding #adviserfees #flatfeeadvice #portfolioreview
-
-## Day 3 (story)
-
-### Slide 1 (tool)
-
-alt: Tool card, the adviser check: the fee in euros a year, €5,000 on €500,000 at 1%; what it buys, such as coaching in a crash, tax and estate work; other ways to pay, such as a flat or hourly fee.
-
-band: The adviser check
-lead: When the fee is a percentage
-row: In euros | €5,000 | ink | a year, 1% of €500,000
-row: What it buys | Advice | teal | coaching, tax, estate
-row: Other ways | Flat fee | warn | or hourly, for a project
-note: Illustrative. Advice can be worth its fee.
-
 ## Stories
 
 d1_f1_share: the day 1 reel
@@ -256,12 +226,3 @@ d2_f4_body: Often free inside tax advantaged accounts. In taxable ones it can tr
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: What switching funds can cost
 
-d3_f1_share: the day 3 reel
-d3_f1_time: at posting
-d3_f1_overlay: 1% to an adviser, in euros?
-d3_f1_caption: An adviser's fee in euros
-
-d3_f2_kind: tool
-d3_f2_alt: Story version of the adviser check: the fee in euros a year, what it buys, and other ways to pay for advice.
-d3_f2_time: evening
-d3_f2_caption: The adviser check

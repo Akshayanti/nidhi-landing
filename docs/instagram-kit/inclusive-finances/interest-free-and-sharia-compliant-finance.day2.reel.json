@@ -58,7 +58,7 @@
     {
       "id": "which-companies",
       "layout": "bands-gap",
-      "narration": "Investing in shares can fit an interest free plan. The hard part is which companies.",
+      "narration": "Shares can fit an interest free plan. Which companies?",
       "onscreenLines": [
         "Shares can fit",
         "Which companies?",
@@ -71,195 +71,93 @@
       "emphasis": [
         "which"
       ]
-    },
-    {
-      "id": "not-in-step",
-      "layout": "bands-gap",
-      "narration": "A screened portfolio will not move in step with the headline index. Here is why.",
-      "onscreenLines": [
-        "A screened portfolio",
-        "Not in step with the index",
-        ""
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "step"
-      ]
-    },
-    {
-      "id": "no-bonds",
-      "layout": "bands-gap",
-      "narration": "Bonds pay interest. So what steadies a portfolio that cannot hold them?",
-      "onscreenLines": [
-        "No bonds",
-        "So what steadies it?",
-        ""
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "steadies"
-      ]
     }
   ],
   "useHookVariant": 0,
   "beats": [
     {
       "id": "b1",
-      "kind": "definition",
-      "narration": "A share is part ownership of a business, with profit and loss shared. That is why shares are generally considered permissible.",
-      "onscreenText": "Shares are ownership",
-      "subtext": "Profit and loss, shared",
-      "emphasis": [
-        "ownership"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
-      }
-    },
-    {
-      "id": "b2",
       "kind": "list",
-      "narration": "The first screen is what the company does. Conventional banking and insurance, alcohol, gambling and pork products are typically excluded.",
+      "narration": "Layer one: what it does. Conventional banks, alcohol and gambling are typically out.",
       "onscreenText": "Layer 1: what it does",
       "subtext": "Whole industries screened out",
-      "emphasis": [
-        "does"
-      ],
+      "emphasis": [],
       "anchor": {
         "type": "bands",
         "stage": "activity"
       }
     },
     {
-      "id": "b3",
+      "id": "b2",
       "kind": "list",
-      "narration": "The second is financing. Common tests cap interest bearing debt and cash at about a third, and prohibited income at about five percent.",
-      "onscreenText": "Layer 2: how it is financed",
+      "narration": "Layer two: its finances. Interest bearing debt is commonly capped at about a third.",
+      "onscreenText": "Layer 2: its finances",
       "subtext": "Ratios differ between standards",
       "emphasis": [
-        "financed"
+        "third"
       ],
       "anchor": {
         "type": "bands",
         "stage": "finance"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "The mix changes: fewer banks, sukuk in place of bonds.",
+      "onscreenText": "A different mix",
+      "subtext": "Different from the broad market",
+      "emphasis": [
+        "different"
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "portfolio"
       }
     },
     {
       "id": "b4",
-      "kind": "example",
-      "narration": "Where a permitted company earns a little prohibited income, investors commonly give that share of dividends to charity. That is purification.",
-      "onscreenText": "Purification",
-      "subtext": "That share of dividends, to charity",
-      "emphasis": [
-        "charity"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "finance"
-      }
-    },
-    {
-      "id": "b5",
-      "kind": "warning",
-      "narration": "Screening changes the portfolio. Fewer banks and insurers, more technology and healthcare, and a shorter list of companies.",
-      "onscreenText": "A different mix",
-      "subtext": "Sometimes ahead of the market, sometimes behind",
-      "emphasis": [
-        "changes"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "portfolio"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "definition",
-      "narration": "Bonds pay interest, so they are out. The closest replacement is the sukuk: a share in an asset and the income it produces.",
-      "onscreenText": "Sukuk in place of bonds",
-      "subtext": "Smaller, less liquid markets",
-      "emphasis": [
-        "sukuk"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "portfolio"
-      }
-    },
-    {
-      "id": "b7",
       "kind": "list",
-      "narration": "So the two layer screen asks: what the company does, its debt, its cash, its prohibited income, and what gets purified.",
-      "onscreenText": "The two layer screen",
-      "subtext": "What a screened fund checks",
-      "emphasis": [
-        "two"
-      ],
+      "narration": "The screen: business, debt, cash and securities, prohibited income.",
+      "onscreenText": "The screening check",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The two layer screen",
+        "title": "The screening check",
         "rows": [
           {
-            "label": "What the company does",
+            "label": "What it does",
             "value": "Layer 1",
             "valueSize": "small",
             "tone": "ink"
           },
           {
-            "label": "Interest bearing debt",
-            "value": "About ⅓",
-            "tone": "ink"
-          },
-          {
-            "label": "Cash and interest securities",
-            "value": "About ⅓",
+            "label": "Debt, cash, securities",
+            "value": "About ⅓ each",
+            "valueSize": "small",
             "tone": "ink"
           },
           {
             "label": "Prohibited income",
             "value": "About 5%",
-            "tone": "ink"
-          },
-          {
-            "label": "Purification",
-            "value": "To charity",
-            "valueSize": "small",
             "tone": "teal"
           }
         ],
-        "footnote": "Thresholds differ between standards. Not religious guidance."
-      }
-    },
-    {
-      "id": "b8",
-      "kind": "story",
-      "narration": "None of this rules out diversification. The spread across regions and sectors still needs checking.",
-      "onscreenText": "Still check the spread",
-      "subtext": "Regions and sectors, like any portfolio",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
+        "footnote": "Thresholds differ between standards. Not religious guidance or investment advice."
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for the next screened fund you read about.",
-    "onscreenText": "Save the two layer screen",
-    "subtext": "For reading any screened fund",
+    "approved": "share",
+    "narration": "Know someone choosing a screened fund? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they pick a fund",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nA share is part ownership of a business, with profit and loss shared, which is why shares are generally considered permissible. Screening has two layers. What the company does: conventional banking and insurance, alcohol, gambling and pork products are typically excluded. How it is financed: common tests cap interest bearing debt and cash at about a third each, and prohibited income at about 5%, though exact ratios differ between standards. A small prohibited share of dividends is commonly given to charity. The result tilts away from banks and insurers, and sukuk take the place of bonds, so a screened portfolio will not move in step with the headline index.\n\nThe two layer screen: what the company does, its debt, its cash, its prohibited income, and purification.\n\n→ Save this for the next screened fund you read about\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot religious guidance or investment advice. Standards differ between certifiers and countries.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "Investing in shares can fit an interest free plan. The hard part: which companies?\n\nWhat a company does: conventional banking, alcohol and gambling are typically out. How it is financed: common tests cap interest bearing debt, and cash plus interest bearing securities, at about a third each, and prohibited income at about 5%. The result holds fewer banks, with sukuk in place of bonds.\n\n→ Know someone choosing a screened fund? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nThresholds differ between standards. Not religious guidance or investment advice.",
     "tiktok": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nTwo layers of screening, and what they do to a portfolio. Not religious guidance.",
     "instagramKeywords": [
       "screened investing",

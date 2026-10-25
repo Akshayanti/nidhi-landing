@@ -8,6 +8,8 @@ hashtags_day2: "#valuesbasedinvesting #diversification #indexinvesting #expatmon
 keywords_day2: "screened investing, sharia screening, screened index, sukuk, purification, prohibited income, interest bearing debt, financial ratios screening, sector tilt, profit sharing deposit, takaful, ethical portfolio, retirement account fund choice, personal finance, global expats, money abroad, islamische Geldanlage, ethisches Investieren, investissement islamique, finance éthique, inversión islámica, investimento etico"
 ---
 
+> **Needs attention (Oct 25, 2026).** Reels rebuilt Oct 25 to the light rules (34.9 s and 35.1 s, share CTA, council signed off). Lesson global pass done (Turkey, Nigeria; consistency with 49 and 50 checked). Still open: the carousels are over the light slide limit; trim them only if the Nov 1 readout keeps the reel plus carousel format. Remove this note once scheduled.
+
 ## Brief
 
 person: A home buyer, anonymous, for whom interest is ruled out

@@ -733,7 +733,7 @@ const LAYOUTS = {
         return `<div class="case"><div class="node">${idx + 1}</div><div><div class="case-head">${rich(head)}</div><div class="case-chips">${chips}</div></div></div>`;
       }).join('')}
     </div>
-    ${s.fields.rule ? `<div class="rule"><span>RULE</span>${rich(s.fields.rule)}</div>` : ''}
+    ${s.fields.rule ? `<div class="rule"><span>${esc(s.fields.rule_label || 'RULE')}</span>${rich(s.fields.rule)}</div>` : ''}
     ${note(s.fields)}`,
 
   closer: (s, deck) => {
@@ -774,6 +774,9 @@ const CSS = `
   .dots i.on { width:40px; background:var(--accent); }
   .handle { position:absolute; bottom:60px; right:84px; font:600 26px 'Inter',sans-serif; color:var(--faint); }
   .strong-handle .handle { color:var(--ink); }
+  .text-strong .case-detail { font:600 38px/1.3 'Inter',sans-serif; color:var(--ink); }
+  .text-strong .chip { font:600 30px 'Inter',sans-serif; padding:8px 18px; }
+  .text-strong .note { font:500 28px/1.4 'Inter',sans-serif; color:var(--soft); }
   .content { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:30px; }
 
   h1 { font:800 92px/1.04 'Inter',sans-serif; letter-spacing:-3.2px; }
@@ -994,7 +997,7 @@ const CSS = `
   .chip { border:2px solid var(--ink); border-radius:999px; padding:8px 22px; font:600 28px 'Inter',sans-serif; background:#fff; }
   .case-detail { font:400 34px/1.3 'Roboto',sans-serif; color:var(--soft); }
   .rule { background:var(--ink); color:#fff; border-radius:18px; padding:30px 36px; font:700 40px/1.2 'Inter',sans-serif; display:flex; align-items:center; gap:26px; }
-  .rule span { font:800 22px 'Inter',sans-serif; letter-spacing:5px; color:#9FE9DD; }
+  .rule span { font:800 22px 'Inter',sans-serif; letter-spacing:5px; color:#9FE9DD; min-width:78px; }
 
   .kicker { font:800 78px/1.06 'Inter',sans-serif; letter-spacing:-2.6px; }
   .kicker-line { font:400 38px/1.3 'Roboto',sans-serif; color:var(--soft); margin-top:-6px; }
@@ -1045,7 +1048,9 @@ function slideHtml(kit, deck, slide) {
   const dots = deck.slides.map(s => `<i class="${s.number === slide.number ? 'on' : ''}"></i>`).join('');
   const edge = slide.layout === 'hook' || slide.layout === 'columns' || slide.layout === 'routes' || slide.layout === 'bands' || slide.layout === 'closer';
   const bare = slide.layout === 'hook' || slide.layout === 'columns' || slide.layout === 'routes' || slide.layout === 'bands' || slide.layout === 'tool';
-  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''}">
+  // text_style: "strong" in a kit's frontmatter sets detail lines, chips and notes in ink and a heavier weight,
+  // for posts whose message lives in those lines rather than in the headings.
+  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''}">
   ${bare ? '' : `<div class="eyebrow">${esc(kit.frontmatter.chip || '')}</div>`}
   <div class="content">${LAYOUTS[slide.layout](slide, deck)}</div>
   ${slide.layout === 'hook' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}

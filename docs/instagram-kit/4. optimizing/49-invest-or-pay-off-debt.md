@@ -8,11 +8,12 @@ hashtags_day2: "#workplacepension #401k #expatfinance #retirementsavings #nidhi"
 keywords_day2: "employer match, pension match, matched contributions, company pension, vesting, auto enrolment, retirement plan, free money, pay off credit card, invest or pay off debt, salary sacrifice, personal finance, global expats, Arbeitgeberzuschuss, betriebliche Altersvorsorge, abondement employeur, épargne retraite, aportación empresa, plan de pensiones"
 ---
 
+> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council). Day 1 reel re-rendered at 34.8 s (tool line trimmed, council signed off); day 2 unchanged at 35.0 s. Lesson global pass done (Japan, Brazil, Kenya). Brazil rate checked Oct 25 against the Banco Central series (444.9% a year, Aug 2026). Remove this note once scheduled.
+
 ## Brief
 
 person: Eva, 31
 situation: Eva has €500 a month spare, a €280,000 mortgage at 3.4%, a €4,000 card at 22%, and a workplace plan that matches what she puts in.
-day3: A friend with a 6.5% car loan is deciding whether to overpay it or invest: overpaying saves 6.5% on each overpaid euro for certain, diversified equities have averaged about 7% a year and are not guaranteed.
 withheld: The seven step default order for several debts, how tax relief lowers a debt's effective rate, the mental accounting traps, when behaviour beats the math, and how the bands move in high inflation countries.
 
 ## Day 1 (angle)
@@ -188,36 +189,6 @@ send: Know someone skipping a match for a card? Send them this.
 more: The seven step order for several debts
 more: How tax relief changes a debt's rate
 
-## Day 3 (angle)
-
-angle: In the 4 to 8% band, either choice is defensible
-number: Overpaying a 6.5% car loan saves 6.5% on each overpaid euro for certain; diversified equities have averaged about 7% a year, with bad years inside it
-takeaway: When the rates are this close, the tie breakers decide: certainty, tax, and what lets you sleep.
-tool: The tie breakers. Certainty against expected return, then tax, risk and peace of mind.
-send_to: A friend with a car loan around 6.5%, wondering whether to overpay it or invest.
-send_why: checklist
-
-## Day 3 (reel)
-
-plan: 49-invest-or-pay-off-debt.day3.reel.json
-render: node scripts/render-reels.mjs invest-or-pay-off-debt --level optimizing --from-plan --angle day3
-video: output/videos/optimizing/49-invest-or-pay-off-debt-day3.mp4
-cover: output/thumbnails/optimizing/49-invest-or-pay-off-debt-day3.png
-caption: output/captions/optimizing/49-invest-or-pay-off-debt-day3.ig.txt
-hashtags: #nidhi #nidhicompounding #carloan #investingforbeginners #debtorinvest
-
-## Day 3 (story)
-
-### Slide 1 (tool)
-
-alt: Tool card, the tie breakers, when the rates are close: certainty, 6.5% on each overpaid euro; expected, about 7% a year from diversified equities, not guaranteed; then tax, risk and peace of mind.
-
-band: The tie breakers
-lead: When the rates are close
-row: Certainty | 6.5% sure | teal | on each overpaid euro
-row: Expected | About 7% | ink | investing, not guaranteed
-row: Then | Your call | warn | tax, risk, peace of mind
-
 ## Stories
 
 d1_f1_share: the day 1 reel
@@ -264,12 +235,3 @@ d2_f4_body: A small buffer, high interest debt with any match alongside, a full 
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: The default order for several debts
 
-d3_f1_share: the day 3 reel
-d3_f1_time: at posting
-d3_f1_overlay: 6.5% loan: overpay or invest?
-d3_f1_caption: When the rates are close
-
-d3_f2_kind: tool
-d3_f2_alt: Story version of the tie breakers: certainty from overpaying a 6.5% loan, about 7% a year expected from investing, then tax, risk and peace of mind.
-d3_f2_time: evening
-d3_f2_caption: The tie breakers

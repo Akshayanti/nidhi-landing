@@ -74,7 +74,7 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "At three point four percent, it avoids about seventeen euros of interest in a year.",
+      "narration": "At three point four percent, it saves about seventeen euros a year.",
       "onscreenText": "Mortgage: about €17",
       "subtext": "€500 at 3.4%, first year",
       "emphasis": [],
@@ -114,7 +114,7 @@
     {
       "id": "b4",
       "kind": "definition",
-      "narration": "Compare rates after tax. Above eight to ten percent, debt often comes first. Below four, investing often leads. Between, it's a judgement call.",
+      "narration": "The rate check: above eight to ten percent, debt often first. Below four, investing often leads on expected value. Between, a judgement call.",
       "onscreenText": "The rate check",
       "subtext": "",
       "emphasis": [],

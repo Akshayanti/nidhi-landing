@@ -4,9 +4,12 @@ title: "Sunday tools 2: volunteers wanted, native speakers"
 when: "Sunday Nov 1, 2026, 14:30 CET. Free tools 2 of 5, between Beliefs 2 and 3."
 blog_url: "https://nidhi.today/free/?utm_source=instagram&utm_medium=social&utm_campaign=sunday_tools&utm_content=languages"
 chip: "Free tools"
-hashtags_day1: "#multilingual #moneytools #buildinpublic #volunteers #nidhi"
+text_style: "strong"
+hashtags_day1: "#multilingual #moneytools #FinancialLiteracyIsYourRight #volunteers #nidhi"
 keywords_day1: "personal finance in Hindi, personal finance in Spanish, personal finance in Czech, personal finance in Marathi, free finance tools, net worth calculator, loan calculator, inflation calculator, multilingual website, global expats, money abroad, finanzas personales, calculadora financiera, calculadora de préstamos, herramientas financieras gratis, वित्तीय योजना, लोन कैलकुलेटर, महँगाई कैलकुलेटर, osobní finance, finanční kalkulačka, kalkulačka půjčky, आर्थिक नियोजन, कर्ज कॅल्क्युलेटर, महागाई कॅल्क्युलेटर"
 ---
+
+> **Needs attention (Oct 25, 2026).** Rewritten Oct 25 with the owner as a 7-slide carousel, voice "I" (owner, Oct 25), council signed off. After the owner's feedback that the main text got lost, the kit uses `text_style: "strong"` (detail lines, chips and notes in ink, heavier) and slide 3 carries its meaning in the bold lines. Stories: one per slide (`scripts/slides-to-reel.sh output/instagram-kit/sundays/02-languages/day1/carousel output/instagram-kit/sundays/02-languages/day1`). Reel parked by the owner. Waiting for the owner's review before scheduling (Nov 1, 14:30 CET = 19:00 IST); remove this note once scheduled.
 
 ## Brief
 
@@ -18,9 +21,9 @@ honesty: Matches the site: LOCALES are en, hi, es, cs and mr; /hi/, /es/, /cs/ a
 
 ### Caption
 
-I'm looking for volunteers. Do you speak Spanish, Czech or Marathi natively, or nearly so? A financial background is more than welcome.
+Help me translate nidhi. Do you speak Spanish, Czech or Marathi natively, or nearly so? A financial background is more than welcome.
 
-nidhi reads in five languages, and AI drafted the translations. Would a native speaker say it the same way? That's what I'd like help checking, along with translating the lessons, which are English only for now.
+Most money help is written in English, and only about 1 in 5 people in the world speak English at all. Financial literacy should be for everyone, in their own language. That's why nidhi reads in five languages, and AI drafted the translations. Would a native speaker say it the same way? That's what I'd like help checking, along with translating the lessons, which are English only for now.
 
 What you get: a say in your language's words, credit on the site under the name you choose, an invite to the planner's beta if you'd like one, and the bragging rights: someone reads about money in their own language, thanks to you.
 
@@ -29,62 +32,92 @@ French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish, Korean or
 → Join at nidhi.today/volunteers/ (link in bio)
 
 Español: ¿El español es tu lengua materna o lo dominas casi igual de bien? Si quieres ayudar a revisar la traducción del sitio o a traducir las lecciones, entra en nidhi.today/volunteers/. Si además sabes de finanzas, mejor aún.
-Čeština: Je čeština váš mateřský jazyk, nebo ji ovládáte skoro stejně dobře? Pokud chcete pomoct s kontrolou překladu webu nebo s překladem lekcí, zapojte se na nidhi.today/volunteers/. Znalost financí je velké plus.
-मराठी: मराठी तुमची मातृभाषा आहे का किंवा तुम्हाला ती जवळजवळ तितकीच चांगली येते? साइटचे भाषांतर तपासायला किंवा धड्यांचे भाषांतर करायला मदत करायची असेल, तर nidhi.today/volunteers/ वर नाव नोंदवा. आर्थिक विषयांची जाण असेल तर आणखी उत्तम.
+Čeština: Je čeština váš mateřský jazyk, nebo ji ovládáte skoro stejně dobře? Pokud chcete pomoct s kontrolou překladu webu nebo s překladem lekcí, zapojte se na nidhi.today/volunteers/. Znalost financí je velké plus.
+मराठी: मराठी तुमची मातृभाषा आहे का किंवा तुम्हाला ती जवळजवळ तितकीच चांगली येते? साइटचे भाषांतर तपासायला किंवा धड्यांचे भाषांतर करायला मदत करायची असेल, तर nidhi.today/volunteers/ वर नाव नोंदवा. आर्थिक विषयांची जाण असेल तर आणखी उत्तम.
+
+English speakers: about 1.5 billion of 8.1 billion people (Ethnologue 2025); other estimates go up to 2 billion.
 
 Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today at nidhi.today/free/.
 
 ### Slide 1 (scenarios)
 
-alt: I'm looking for volunteers. Do you speak one of these natively or near natively? Español, Čeština, मराठी. More languages are coming too.
+alt: Help me translate nidhi. Español, Čeština and मराठी are open now. Nine more languages are coming. Link in bio.
 
-title: I'm looking for volunteers
+title: Help me translate nidhi
 case: Español | open now
 case: Čeština | open now
 case: मराठी | open now
-rule: Native or near native? More languages are coming too
+rule_label: JOIN
+rule: Nine more coming. Link in bio
 
 ### Slide 2 (scenarios)
 
-alt: “Net worth”: would you say it this way? शुद्ध संपत्ति in Hindi; patrimonio neto in Spanish; čisté jmění in Czech; निव्वळ संपत्ती in Marathi. AI drafted these. Help me check the words.
+alt: Most money help is in English. Only about 1 in 5 people in the world speak English at all: about 1.5 billion of 8.1 billion people, per Ethnologue 2025; other estimates go up to 2 billion, 1 in 4. Financial literacy should be for everyone, in their own language.
+
+title: Most money help is in English
+case: 1 in 5 | people in the world speak English at all
+case: 1.5 billion | of 8.1 billion people (Ethnologue 2025)
+rule_label: WHY
+rule: Financial literacy should be for everyone, in their own language
+note: Other estimates go up to 2 billion English speakers, about 1 in 4.
+
+### Slide 3 (scenarios)
+
+alt: nidhi is built for everyone tech keeps forgetting: whether you're colour blind, use a screen reader, take in information differently, or read about money in a language other than English. Leaving anyone out of their own money feels cheap.
+
+title: Built for everyone tech keeps forgetting
+case: Colour blindness, screen reader use, ADHD, dyslexia | money tools should still work for you
+case: Reading money in another language | language counts too
+rule_label: WHY
+rule: Leaving anyone out of their own money feels cheap
+
+### Slide 4 (scenarios)
+
+alt: For the lives default advice forgets: shared homes, single incomes, families that don't fit the template. Financial literacy is your right.
+
+title: For the lives default advice forgets
+case: Shared homes | money for three or more adults
+case: Single incomes | no second earner behind the plan
+case: Families | that don't fit the template
+rule_label: WHY
+rule: #FinancialLiteracyIsYourRight
+
+### Slide 5 (scenarios)
+
+alt: What I've done so far. हिन्दी: the site and four free tools, amounts in lakh and crore. Español: the site and four free tools, big numbers written the Spanish way. Čeština: the site and four free tools, amounts in Kč. मराठी: the site and four free tools, amounts in lakh and crore. Drafted with AI. Lessons still in English.
+
+title: What I've done so far
+case: हिन्दी | site and four free tools · lakh and crore
+case: Español | site and four free tools · numbers the Spanish way
+case: Čeština | site and four free tools · amounts in Kč
+case: मराठी | site and four free tools · lakh and crore
+note: Drafted with AI. Lessons still in English.
+
+### Slide 6 (scenarios)
+
+alt: “Net worth”: would you say it this way? शुद्ध संपत्ति in Hindi; patrimonio neto in Spanish; čisté jmění in Czech; निव्वळ संपत्ती in Marathi. I can't check these alone.
 
 title: “Net worth”: would you say it this way?
 case: शुद्ध संपत्ति | हिन्दी
 case: Patrimonio neto | Español
 case: Čisté jmění | Čeština
 case: निव्वळ संपत्ती | मराठी
-rule: AI drafted these. Help me check the words.
+rule_label: HELP
+rule: I can't check these alone
 
-### Slide 3 (scenarios)
+### Slide 7 (scenarios)
 
-alt: What I need help with: review the site, spotting words that sound awkward or unclear; translate lessons, which are English only for now; a finance background is more than welcome, not required.
+alt: Help me translate. Open now: Español, Čeština, मराठी, for native or near native speakers. Coming next: French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish, Korean, Arabic; leave your contact. You get a say in the words, credit if you want it, a beta invite if you want one. Link in bio.
 
-title: What I need help with
-case: Review the site | spot words that sound awkward or unclear
-case: Translate lessons | English only for now
-case: Finance background | more than welcome, not required
-
-### Slide 4 (scenarios)
-
-alt: What you get: a say in your language's words; credit, if you want it, under the name you choose; a beta invite, if you want one, as a separate optional choice; bragging rights: someone reads about money in their language, thanks to you.
-
-title: What you get
-case: A say | in your language's words
-case: Credit, if you want it | under the name you choose
-case: Beta invite, if you want one | a separate optional choice
-case: Bragging rights | someone reads about money in their language, thanks to you
-
-### Slide 5 (scenarios)
-
-alt: How to join. Open now: Español, Čeština, मराठी. Coming next: French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish, Korean, Arabic; leave your contact. Join at nidhi.today/volunteers/, link in bio.
-
-title: How to join
+title: Help me translate
 case: Open now | Español · Čeština · मराठी
-case: Coming next | French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish, Korean, Arabic
-case: Join at | nidhi.today/volunteers/ (link in bio)
+case: Coming next | French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish, Korean, Arabic: leave your contact
+case: You get | a say in the words, credit if you want it, a beta invite if you want one
+rule_label: JOIN
+rule: nidhi.today/volunteers/ · link in bio
 
 ## Stories
 
-d1_f1_share: each of the five carousel slides, one story per slide, in order (owner, Oct 23, 2026: no poll and no extra frame for this post)
+d1_f1_share: each of the seven carousel slides, one story per slide, in order (owner, Oct 23, 2026: no poll and no extra frame for this post)
 d1_f1_time: with the Sunday post
 d1_f1_caption: nidhi now reads in five languages

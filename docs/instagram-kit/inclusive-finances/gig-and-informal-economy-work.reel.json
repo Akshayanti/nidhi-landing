@@ -54,11 +54,11 @@
     {
       "id": "old-rate-pay-cut",
       "layout": "bar-gap",
-      "narration": "Freelancing at your old salary's day rate? For the same life, that is a pay cut.",
+      "narration": "Freelancing at your old salary's day rate? Same life, that's a pay cut.",
       "onscreenLines": [
-        "Salaried: €154 a day",
-        "Freelance, same life: €250",
-        "The old rate is a pay cut"
+        "Your old day rate?",
+        "Same life: a pay cut",
+        ""
       ],
       "anchor": {
         "type": "bars",
@@ -67,40 +67,6 @@
       "emphasis": [
         "cut"
       ]
-    },
-    {
-      "id": "what-to-charge",
-      "layout": "bar-gap",
-      "narration": "Left a forty thousand euro job? Its day rate will not fund the same life freelance.",
-      "onscreenLines": [
-        "Left a €40,000 job?",
-        "Its day rate will not cover it",
-        ""
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "not"
-      ]
-    },
-    {
-      "id": "invisible-bundle",
-      "layout": "bar-gap",
-      "narration": "An employer pays for things your payslip never shows. Freelance, you pay for all of them.",
-      "onscreenLines": [
-        "Off the payslip",
-        "Now on your invoice",
-        ""
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "all"
-      ]
     }
   ],
   "useHookVariant": 0,
@@ -108,24 +74,26 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Take a salaried job paying forty thousand euros a year, over about two hundred and sixty working days. Every one of them is paid.",
-      "onscreenText": "€40,000 a year",
-      "subtext": "About 260 days, all of them paid",
+      "narration": "A salaried job pays about a hundred and fifty four euros a day.",
+      "onscreenText": "Salaried: €154 a day",
+      "subtext": "€40,000 over about 260 paid days",
       "emphasis": [
         "paid"
       ],
       "anchor": {
         "type": "bars",
-        "stage": "blank"
+        "stage": "first"
       }
     },
     {
       "id": "b2",
-      "kind": "example",
-      "narration": "That is about one hundred and fifty four euros a paid day, with a pension contribution and sick pay on top.",
-      "onscreenText": "€154 a paid day",
-      "subtext": "Plus pension and sick pay on top",
-      "emphasis": [],
+      "kind": "warning",
+      "narration": "Freelance, only billed days pay. After leave, sick days and finding work, about a hundred and seventy six.",
+      "onscreenText": "176 days you can bill",
+      "subtext": "Out of about 260 working days",
+      "emphasis": [
+        "billed"
+      ],
       "anchor": {
         "type": "bars",
         "stage": "first"
@@ -133,38 +101,12 @@
     },
     {
       "id": "b3",
-      "kind": "warning",
-      "narration": "Freelance, you are paid only for days you bill. Minus leave, sick days and admin, about one hundred and seventy six remain.",
-      "onscreenText": "About 176 billable days",
-      "subtext": "Leave, sick days and admin come out",
-      "emphasis": [
-        "bill"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "first"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "example",
-      "narration": "Those days have to earn the salary, plus the pension and the insurance an employer covered. About forty four thousand euros.",
-      "onscreenText": "€44,000 to stand still",
-      "subtext": "Salary, pension and insurance",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "first"
-      }
-    },
-    {
-      "id": "b5",
       "kind": "comparison",
-      "narration": "Divided by one hundred and seventy six days, that is two hundred and fifty euros a day. About one point six times the salaried rate.",
-      "onscreenText": "€250 a billable day",
-      "subtext": "About 1.6 times the salaried day",
+      "narration": "Salary, pension and insurance take about two hundred and fifty a billed day.",
+      "onscreenText": "Freelance: €250 a day",
+      "subtext": "1.6 times the salaried day",
       "emphasis": [
-        "times"
+        "fifty"
       ],
       "anchor": {
         "type": "bars",
@@ -172,65 +114,49 @@
       }
     },
     {
-      "id": "b6",
-      "kind": "list",
-      "narration": "Four lines. Working days, less leave. Less time finding work. Salary plus pension and insurance. Then divide.",
-      "onscreenText": "Price your bundle",
-      "subtext": "Four lines, before setting a rate",
-      "emphasis": [
-        "four"
-      ],
+      "id": "b4",
+      "kind": "definition",
+      "narration": "The full bundle: billable days, employer costs, one division.",
+      "onscreenText": "The full bundle",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Price your bundle",
+        "title": "The full bundle",
         "rows": [
           {
-            "label": "Working days, less leave and sick days",
-            "value": "220",
-            "tone": "ink"
-          },
-          {
-            "label": "Less a fifth unbilled",
+            "label": "Billable days",
             "value": "176",
+            "valueSize": "small",
             "tone": "ink"
           },
           {
             "label": "Salary, pension, insurance",
             "value": "€44,000",
+            "valueSize": "small",
             "tone": "ink"
           },
           {
             "label": "Day rate",
             "value": "€250",
+            "valueSize": "small",
             "tone": "teal"
           }
         ],
-        "footnote": "Illustrative. The multiple depends on local contributions."
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "story",
-      "narration": "A common rule of thumb is one and a half to two times the salaried rate. The multiple varies by country.",
-      "onscreenText": "1.5 to 2 times",
-      "subtext": "A rule of thumb that varies by country",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
+        "footnote": "Illustrative. Contributions vary by country."
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this before you set your next rate.",
-    "onscreenText": "Save the bundle check",
-    "subtext": "Four lines before any rate",
+    "approved": "share",
+    "narration": "Know someone going freelance? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they set a rate",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Freelancing at your old salary's day rate? For the same life, that is a pay cut.\n\nA €40,000 salary is paid over about 260 days, about €154 each, with a pension contribution and sick pay on top. A freelancer is paid only for days billed: take out holidays, public holidays and sick days, then a fifth for finding work and invoicing, and about 176 days are left. Replacing the salary, a €2,000 pension contribution and roughly €2,000 of insurance takes €44,000, or €250 a billable day, about 1.6 times. Charging €154 is a pay cut of more than a third.\n\nPrice your bundle: working days less leave, less unbilled time; salary plus pension and insurance; divide one by the other.\n\n→ Save this before you set your next rate\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. The real multiple depends on local social contributions and billable time. Not tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "Going freelance at your old salary's day rate? For the same life, that's a pay cut.\n\nA €40,000 salary pays about €154 a day, every day paid. Freelance, only billed days pay: about 176 after leave and finding work. Covering the salary, pension and insurance takes about €250 a billable day, 1.6 times.\n\n→ Know someone going freelance? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Contributions and billable time vary by country. Not tax advice.",
     "tiktok": "Freelancing at your old salary's day rate? For the same life, that is a pay cut.\n\nFour lines price what an employer used to pay for. Illustrative.",
     "instagramKeywords": [
       "freelance day rate",
