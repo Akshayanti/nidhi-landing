@@ -1,5 +1,5 @@
 ---
-title: "Shared Households: Money for Three or More Adults"
+title: "Shared Households: Splitting Rent and Bills Fairly With Flatmates"
 blog_url: "https://nidhi.today/blog/shared-households-money-for-three-or-more/"
 chip: "Money, For You and Me"
 hashtags_day1: "#roommates #rentsplit #householdbudget #sharedexpenses #nidhi"
@@ -68,7 +68,7 @@ alt: Four flatmates, Alma, Ben, Chidi and Dana, in one shared flat: four adults,
 
 who: Alma, Ben, Chidi, Dana
 where: One shared flat
-input: 4 | adults, no legal tie between them
+input: 4 | adults, four separate incomes
 input: €1,000 to €5,000 | net incomes, a month
 input: €3,200 | shared costs a month: rent, utilities, food
 question: What is a fair split?
@@ -117,11 +117,11 @@ rule: Incomes change, so the split gets a review date
 
 ### Slide 7 (scenarios)
 
-alt: A common setup: separate personal accounts plus one shared bills account, each person paying in by standing order on payday; any holder can usually withdraw the whole balance, so many keep only the month's bills and a small buffer in it; some banks limit how many holders an account can have.
+alt: A common setup: separate personal accounts plus one shared bills account, each person paying in by standing order on payday; depending on the account's rules, one holder may be able to withdraw the whole balance, so many keep only the month's bills and a small buffer in it; some banks limit how many holders an account can have.
 
 title: One shared bills account
 case: A common setup | own accounts, plus one for shared bills
-case: Any holder | can usually withdraw the whole balance
+case: One holder | may be able to withdraw it all
 case: Keep it lean | the month's bills and a small buffer
 rule: Check how many holders the bank allows
 
@@ -292,10 +292,10 @@ d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: A four line test for a shared home
 
 d2_f4_kind: extra
-d2_f4_alt: Beyond this post: Cohousing began in Denmark. In a cohousing community, shared costs are usually set by the community's own rules.
+d2_f4_alt: Beyond this post: Cohousing began in Denmark. Who holds the contract, each resident's right to live there and the community's own rules shape how costs and notice work.
 d2_f4_time: late evening
 d2_f4_label: Beyond this post
 d2_f4_title: Cohousing began in Denmark.
-d2_f4_body: It is now well established in northern Europe. Private homes, shared spaces, and shared costs usually set by the community's own rules, not by a lease alone.
+d2_f4_body: It is now well established in northern Europe. Who holds the contract, each resident's right to live there and the community's rules shape costs and notice.
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: How cohousing communities share costs
