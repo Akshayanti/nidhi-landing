@@ -33,7 +33,7 @@ glossary:
 order: 50.5
 companionOf: "refinancing-timing"
 pubDate: 2099-01-13
-updatedDate: 2026-10-21
+updatedDate: 2026-10-25
 localRules: [investments, borrowing, deposit-protection, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -146,9 +146,13 @@ Because conventional banks and insurers, a large slice of most markets, are scre
 ## Where interest-free finance is available
 
 <details class="lesson-depth">
-<summary class="disclosure">Interest free home finance, by region</summary>
+<summary class="disclosure">Interest-free finance, by region</summary>
 
 **Malaysia, Indonesia, Pakistan and the Gulf states.** Full Islamic banking systems operate alongside conventional ones, with home finance, deposit accounts, takaful and sukuk widely available.
+
+**Turkey.** Participation banks, which work without interest, operate alongside conventional banks and held about 8 to 9% of the banking sector's assets in 2025.
+
+**Nigeria.** The central bank licenses non-interest banks, Jaiz Bank being the first to hold a national licence, and the federal government has issued sukuk to finance road building.
 
 **The United Kingdom.** Home purchase plans are a regulated product category, several banks offer them, and screened funds are available inside tax-advantaged accounts. Choice is narrower and pricing sometimes higher than in the conventional market.
 

@@ -29,7 +29,7 @@ glossary:
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
 pubDate: 2099-01-11
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-25"
 localRules: [tax, pensions, borrowing]
 level: "optimizing"
 primaryPersona: "eva"
@@ -191,7 +191,7 @@ The [mental accounting post](/blog/mental-accounting/) covered how people sort m
 ## How the rules differ by country
 
 <details class="lesson-depth">
-<summary class="disclosure">Debts and deductions in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Debts and deductions in the US, UK, eurozone, India, Australia, Canada, Japan, Brazil and Kenya</summary>
 
 - **US.** The mortgage-interest deduction is capped but real for eligible households. Federal student loans have income-driven repayment and forgiveness plans that change the case for paying them off fast. Home-equity line interest may be deductible in specific uses.
 - **UK.** Mortgage-interest relief is largely gone for homes you live in, and restricted for buy-to-let. Student loans work much like an income-based graduate tax with a write-off after a period; many borrowers never repay in full, so extra payments can go to a balance that would have been written off, depending on the plan and expected earnings.
@@ -199,6 +199,9 @@ The [mental accounting post](/blog/mental-accounting/) covered how people sort m
 - **India.** Home-loan and education-loan interest are deductible within limits under specific sections. Card rates of 30 to 42% a year are common, which is why many treat clearing them as an early priority. Home loans at 8 to 9% are normal and are judged against India's higher inflation.
 - **Australia.** Interest is not deductible on a home you live in, but is on investment property. HECS-HELP student loans are indexed rather than charged interest and repaid by income, so extra repayments are often weighed against other uses of the money.
 - **Canada.** Interest is not deductible on a primary home, but is on investment property. Structures such as the Smith Manoeuvre turn non-deductible mortgage interest into deductible investment-loan interest for those who use them.
+- **Japan.** For new energy-efficient or certified homes moved into from 2022, a mortgage tax credit of 0.7% of the year-end balance can run for up to 13 years, within a balance limit and the income tax you owe. On a low-rate loan it lowers the effective cost a long way, which weakens the case for early repayment; repaying early also shrinks the credit.
+- **Brazil.** Revolving card interest is often several hundred percent a year in Banco Central data. Since January 2024 the interest and charges on revolving card debt cannot exceed the original amount, so the total repaid can still reach twice what was borrowed, which is why many treat clearing it as an early priority.
+- **Kenya.** Mobile overdrafts such as M-Pesa's Fuliza charge a 1% access fee plus a fee for every day the balance is open: Sh5 a day on Sh101 to Sh500, rising to Sh30 a day on Sh2,501 to Sh70,000. On Sh500, a month open costs about Sh150 in daily fees, almost a third of the amount.
 
 </details>
 
