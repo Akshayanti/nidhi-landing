@@ -57,7 +57,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@astrojs/react': '^7.1.0',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
-  astro: '^7.4.0',
+  astro: '^7.4.1',
   react: '^19.3.1',
   'react-dom': '^19.3.1',
 };
@@ -65,7 +65,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
-  puppeteer: '^25.14.0',
+  puppeteer: '^25.15.0',
   // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
   // errors on its own.
   typescript: '7.0.2',
