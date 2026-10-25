@@ -1,5 +1,5 @@
 ---
-title: "Growing Your Income: Negotiation and Career Capital"
+title: "Growing Your Income: Salary Negotiation and Career Capital"
 blog_url: "https://nidhi.today/blog/growing-your-income/"
 chip: "Money, Compounding"
 hashtags_day1: "#salaryadvice #negotiation #expatfinance #careertips #nidhi"
@@ -170,11 +170,11 @@ row: Outside work | Life | ink | visas, family, health
 
 ### Slide 4 (scenarios)
 
-alt: The field changes the answer: in fast moving fields, staying two to three years can fall behind the market; in slower fields such as medicine, law and government, tenure often carries explicit rewards.
+alt: The field changes the answer: in fast moving fields, staying too long can mean falling behind the market; in fields with strong tenure rewards, such as government or established professional firms, staying is often worth more.
 
 title: The field changes it
-case: Fast fields | staying can fall behind
-case: Slower fields | tenure is often rewarded
+case: Fast moving fields | staying too long can fall behind
+case: Strong tenure rewards | staying is often worth more
 rule: A pattern, not a law
 
 ### Slide 5 (closer)
