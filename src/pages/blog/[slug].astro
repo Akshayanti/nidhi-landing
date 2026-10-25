@@ -136,6 +136,12 @@ for (const [i, id] of termIds.entries()) {
   if (id === 'term-') throw new Error(`${post.id}: glossary term "${post.data.glossary![i].term}" has no usable anchor`);
   if (termIds.indexOf(id) !== i) throw new Error(`${post.id}: two glossary terms share the anchor #${id}`);
 }
+// A term link in the body becomes the term with its definition (BlogPost.astro
+// reads it from the glossary card), so every one must name a term this lesson
+// defines.
+for (const m of (post.body ?? '').matchAll(/\]\(#(term-[^)\s]+)\)/g)) {
+  if (!termIds.includes(m[1])) throw new Error(`${post.id}: a body link points to #${m[1]}, which is not in this lesson's glossary`);
+}
 
 // "In this lesson" links must land on something: a heading, the glossary card
 // or one of its terms. A renamed heading fails the build instead of leaving a

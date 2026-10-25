@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-10-25',
+    items: [
+      {
+        id: 'glossary-terms-in-place',
+        text: {
+          en: 'Words from a lesson’s glossary now show their meaning right where you read them: hover over one or reach it with the keyboard on a computer, or tap it on a phone. A small question mark beside each one sets it apart from links to other pages.',
+          es: 'Las palabras del glosario de una lección ahora muestran su significado justo donde las lees: en el ordenador, al pasar el ratón por encima o al llegar a ellas con el teclado; en el móvil, al tocarlas. Un pequeño signo de interrogación junto a cada una las distingue de los enlaces a otras páginas.',
+          cs: 'Slova ze slovníčku pojmů lekce teď ukazují svůj význam přímo tam, kde je čtete: na počítači po najetí myší nebo když na ně přejdete klávesnicí, na telefonu klepnutím. Malý otazník u každého z nich je odlišuje od odkazů na jiné stránky.',
+          mr: 'धड्याच्या शब्दसूचीतील शब्द आता तुम्ही वाचत असलेल्या ठिकाणीच त्यांचा अर्थ दाखवतात: संगणकावर त्यांच्यावर माउस नेल्यावर किंवा कीबोर्डने तिथे पोहोचल्यावर, आणि फोनवर त्यांना स्पर्श केल्यावर. प्रत्येक शब्दाशेजारी असलेले छोटे प्रश्नचिन्ह त्याला इतर पानांच्या लिंकपेक्षा वेगळे दाखवते.',
+          hi: 'पाठ की शब्दावली के शब्द अब वहीं अपना अर्थ दिखाते हैं जहाँ आप उन्हें पढ़ रहे हैं: कंप्यूटर पर उन पर माउस ले जाने या कीबोर्ड से वहाँ पहुँचने पर, और फ़ोन पर उन्हें छूने पर। हर शब्द के पास एक छोटा प्रश्नचिह्न उसे दूसरे पेजों के लिंक से अलग पहचान देता है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-10-23',
     items: [
       {
