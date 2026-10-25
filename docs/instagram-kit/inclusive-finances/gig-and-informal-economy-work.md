@@ -8,6 +8,8 @@ hashtags_day2: "#incomesmoothing #selfemployment #moneysystems #freelancersineur
 keywords_day2: "irregular income, uneven income, pay yourself a salary, holding account, tax savings account, set aside for tax, freelance budget, budgeting with variable income, income buffer, emergency fund freelancer, cash flow, personal finance, global expats, money abroad, unregelmäßiges Einkommen, Steuerrücklage, revenus irréguliers, ingresos irregulares, reddito variabile, zelfstandige buffer"
 ---
 
+> **Needs attention (Oct 25, 2026).** Reels rebuilt Oct 25 to the light rules (34.9 s each, 4 beats plus the CTA, share CTA, council signed off; renders in `output/videos/inclusive-finances/`). The lesson's global pass is done (Indonesia, Japan, Brazil; `docs/plans/source-ledger.md`). Still open: the carousels have 9 slides a day, over the light limit of 5; trim them only if the Nov 1 readout keeps the reel plus carousel format. Remove this note once scheduled.
+
 ## Brief
 
 person: A freelancer, anonymous, illustrative

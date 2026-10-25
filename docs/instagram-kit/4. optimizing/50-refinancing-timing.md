@@ -8,11 +8,12 @@ hashtags_day2: "#ratecuts #mortgagetips #expatlife #financialplanning #nidhi"
 keywords_day2: "waiting for rates to fall, central bank cuts, interest rates, mortgage rates, refinance now or wait, timing the market, lower rate, monthly saving, cost of waiting, remortgage, fixed rate, personal finance, global expats, Zinssenkung, Bauzinsen, baisse des taux, taux immobilier, bajada de tipos, Euríbor"
 ---
 
+> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council). Reels unchanged (31.6 s, 34.7 s). Lesson global pass done (Brazil, China; council signed off). China checked Oct 25 against PBoC Announcement [2024] No. 11 (renegotiation since Nov 2024 added). Remove this note once scheduled.
+
 ## Brief
 
 person: Eva, 31
 situation: Eva could refinance: about €4,000 of costs, €200 a month lower payment. She might move in two years, and rates might fall further.
-day3: A friend whose mortgage is down to €50,000 is offered a rate one point lower: it saves about €25 to €30 a month, so €2,500 of costs takes about seven to eight years to win back.
 withheld: The rate drop rule of thumb and where it breaks, no cost, cash in and cash out refinances, the opportunity cost of closing costs, student loan protections, and how costs differ by country.
 
 ## Day 1 (angle)
@@ -177,37 +178,6 @@ send: Know someone waiting for rates to fall? Send them this.
 more: Why waiting is a bet against the market
 more: The rate drop rule of thumb, refined
 
-## Day 3 (angle)
-
-angle: On a small balance, a good rate drop can still take years to pay for itself
-number: €50,000 refinanced from 4% to 3% saves about €25 to €30 a month; €2,500 of costs takes about seven to eight years to win back
-takeaway: The break even check is the same; a small balance makes the saving small and the wait long.
-tool: The break even check, small balance. €2,500 ÷ about €25 to €30 a month = about seven to eight years.
-send_to: A friend with about €50,000 left on a mortgage, offered a rate one point lower.
-send_why: number
-
-## Day 3 (reel)
-
-plan: 50-refinancing-timing.day3.reel.json
-render: node scripts/render-reels.mjs refinancing-timing --level optimizing --from-plan --angle day3
-video: output/videos/optimizing/50-refinancing-timing-day3.mp4
-cover: output/thumbnails/optimizing/50-refinancing-timing-day3.png
-caption: output/captions/optimizing/50-refinancing-timing-day3.ig.txt
-hashtags: #nidhi #nidhicompounding #breakeven #loanrefinance #mortgagefree
-
-## Day 3 (story)
-
-### Slide 1 (tool)
-
-alt: Tool card, the break even check on a small balance: costs, €2,500; divided by the monthly saving, about €25 to €30; break even in about seven to eight years.
-
-band: Small balance, same check
-lead: When the balance is small
-row: Costs | €2,500 | ink | to refinance
-row: ÷ Saving | ÷ €25 to €30 | warn | a month, 4% to 3%
-row: = Break even | 7 to 8 years | teal | to win the costs back
-note: Illustrative. €50,000 balance.
-
 ## Stories
 
 d1_f1_share: the day 1 reel
@@ -254,12 +224,3 @@ d2_f4_body: A no cost refinance moves the costs into the rate or the balance. It
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: What a no cost refinance does
 
-d3_f1_share: the day 3 reel
-d3_f1_time: at posting
-d3_f1_overlay: Small loan, 1 point lower?
-d3_f1_caption: Refinancing a small balance
-
-d3_f2_kind: tool
-d3_f2_alt: Story version of the break even check on a small balance: €2,500 of costs, about €25 to €30 a month saved, about seven to eight years to win back.
-d3_f2_time: evening
-d3_f2_caption: Small balance, same check

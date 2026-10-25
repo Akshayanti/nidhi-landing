@@ -31,7 +31,7 @@ glossary:
 order: 48.5
 companionOf: "growing-your-income"
 pubDate: 2099-01-10
-updatedDate: 2026-10-21
+updatedDate: 2026-10-25
 localRules: [tax, benefits, pensions]
 level: "inclusive-finances"
 primaryPersona: "petra"
@@ -190,7 +190,7 @@ Because the bad months can come first. In this year the balance fell to -€825 
 
 ## When income is informal: proof and protection
 
-For cash and informal work, two more gaps open. **Proof:** landlords, lenders and immigration offices ask for payslips, and cash leaves no record unless you make one. A dated log of every payment, regular deposits into an account where that is lawful and practical, and saved invoices, receipts or messages can help document the income. Whether a landlord, lender or immigration office accepts that record depends on its own rules, and some will ask for tax returns, bank statements or formal accounts. **Protection:** informal work usually sits outside [social insurance](#term-social-insurance), with no pension credits, sick pay or unemployment cover. Some countries allow voluntary contributions into the public pension or health system, which can be good value depending on the rules.
+For cash and informal work, two more gaps open. **Proof:** landlords, lenders and immigration offices ask for payslips, and cash leaves no record unless you make one. A dated log of every payment, regular deposits into an account where that is lawful and practical, and saved invoices, receipts or messages can help document the income. Whether a landlord, lender or immigration office accepts that record depends on its own rules, and some will ask for tax returns, bank statements or formal accounts. **Protection:** informal work usually sits outside [social insurance](#term-social-insurance), with no pension credits, sick pay or unemployment cover. Some countries allow voluntary contributions into the public pension or health system, which can be good value depending on the rules: Indonesia, for example, lets informal workers join its workers' social security scheme (BPJS Ketenagakerjaan) for work accident, death and old age cover.
 
 <details class="lesson-depth">
 <summary class="disclosure">Rotating savings groups, and their risks</summary>
@@ -208,7 +208,7 @@ The [emergency fund post](/blog/emergency-fund/) gave three to six months of cos
 <details class="lesson-depth">
 <summary class="disclosure">Paying tax as you go, self employed</summary>
 
-Where employers withhold tax for employees, the self-employed usually pay in instalments. Many self-employed people in the US and India make estimated or advance payments during the year when the relevant thresholds apply; in the UK, people in the payments-on-account system usually make two such payments. Many European countries set advance payments from the previous year's income. The rhythm, and the legal date on which tax becomes due, differ. As a habit, many people still set aside an estimated share when each payment arrives, so a later bill does not have to come from household spending money. Some countries also require the self-employed to pay into health and pension systems, sometimes as a fixed monthly charge whatever the income, which is a cost to build into the rate and the bad-month plan. Where health care is funded through general taxation, losing an employer changes little; where cover runs through work, as in the US, buying it yourself is one of the largest items in the bundle.
+Where employers withhold tax for employees, the self-employed usually pay in instalments. Many self-employed people in the US and India make estimated or advance payments during the year when the relevant thresholds apply; in the UK, people in the payments-on-account system usually make two such payments. Many European countries set advance payments from the previous year's income. The rhythm, and the legal date on which tax becomes due, differ. As a habit, many people still set aside an estimated share when each payment arrives, so a later bill does not have to come from household spending money. Some countries also require the self-employed to pay into health and pension systems, sometimes as a fixed monthly charge whatever the income (Japan's national pension premium for the self-employed is ¥17,920 a month in fiscal 2026, with reductions or exemptions for low incomes), which is a cost to build into the rate and the bad-month plan. Others offer a simplified regime for small earners within a revenue limit: Brazil's MEI is one fixed monthly payment, mostly a social security contribution of 5% of the minimum wage, which counts toward sickness, maternity and retirement benefits, some only after a minimum contribution period. Where health care is funded through general taxation, losing an employer changes little; where cover runs through work, as in the US, buying it yourself is one of the largest items in the bundle.
 
 </details>
 

@@ -29,7 +29,7 @@ glossary:
     definition: "A new loan larger than the old balance, with the difference paid to you, which extracts home equity rather than saving interest."
 order: 50
 pubDate: 2099-01-12
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-25"
 localRules: [borrowing, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -162,7 +162,7 @@ Closing costs are also money that could have been invested: €5,000 at 6% a yea
 ## Refinancing where you live
 
 <details class="lesson-depth">
-<summary class="disclosure">Refinancing in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Refinancing in the US, UK, eurozone, India, Australia, Canada, Brazil and China</summary>
 
 - **US.** Closing costs typically 2 to 5% of the loan. 30-year fixed mortgages are standard, so refinancing is the main way to change the rate. Federal student loans carry substantial protections.
 - **UK.** Fixed rates usually last two to five years, then revert to a standard variable rate; remortgaging to another lender at the end of the fix is the usual route. Costs often £1,000 to £2,500, and product fees (a higher fee for a lower rate) compare directly with the break-even test.
@@ -170,6 +170,8 @@ Closing costs are also money that could have been invested: €5,000 at 6% a yea
 - **India.** A balance transfer to another lender is the usual route, with processing fees often 0.5 to 1% of the balance, so the rate gap needed is usually higher.
 - **Australia.** Refinancing is common; costs are discharge fees on the old loan and application fees on the new one. Offset accounts give a similar effect without a formal refinance.
 - **Canada.** Terms usually last five years and renew; refinancing mid-term can trigger an interest rate differential penalty that can be very large on fixed rates, so many people calculate it before deciding.
+- **Brazil.** Moving a loan, a mortgage included, to another bank (credit portability) is a right under central bank rules, and the costs of the transfer between the two banks cannot be passed to the borrower. A property valuation, registry office fees and the new bank's fee for a new customer can still apply, so the comparison is the new loan's total effective cost against the break-even month. The new loan cannot have a larger balance or a longer term.
+- **China.** In October 2024 banks lowered the rates on most existing home mortgages in one batch, with a floor of the benchmark loan prime rate minus 0.3 percentage points, without borrowers having to apply; housing provident fund loans and commercial property loans were left out. Since November 2024 borrowers can also ask their bank to renegotiate the margin over that benchmark, so cheaper borrowing usually comes through the existing bank rather than through refinancing elsewhere.
 
 </details>
 

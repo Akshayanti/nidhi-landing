@@ -56,28 +56,11 @@
   },
   "hookVariants": [
     {
-      "id": "compare-the-rate",
+      "id": "not-with-a-loan",
       "layout": "bands-gap",
-      "narration": "Most home buying advice starts with: compare the rate. For many people, interest is ruled out.",
+      "narration": "Interest ruled out, by faith or choice? You can still finance a home, not with a loan.",
       "onscreenLines": [
-        "No interest.",
-        "Still a home.",
-        ""
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "interest"
-      ]
-    },
-    {
-      "id": "how-without-interest",
-      "layout": "bands-gap",
-      "narration": "How do you finance a home when interest is off the table? Not with a loan.",
-      "onscreenLines": [
-        "A home, no interest?",
+        "Interest ruled out?",
         "Not with a loan",
         ""
       ],
@@ -88,61 +71,16 @@
       "emphasis": [
         "loan"
       ]
-    },
-    {
-      "id": "same-cost-different-contract",
-      "layout": "bands-gap",
-      "narration": "Two home finance offers can cost about the same each month and be entirely different contracts.",
-      "onscreenLines": [
-        "Same monthly cost",
-        "Different contract",
-        ""
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "contract"
-      ]
     }
   ],
   "useHookVariant": 0,
   "beats": [
     {
       "id": "b1",
-      "kind": "definition",
-      "narration": "Riba, a guaranteed increase on a loan, is prohibited in Islamic law. A return is accepted from trade, ownership or shared risk.",
-      "onscreenText": "Money is not for rent",
-      "subtext": "Returns from trade, ownership, shared risk",
-      "emphasis": [
-        "trade"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
-      }
-    },
-    {
-      "id": "b2",
       "kind": "example",
-      "narration": "Murabaha. The financier buys the flat for two hundred and fifty thousand euros and sells it to you for four hundred thousand.",
+      "narration": "A sale: the financier buys the home and sells it to you at a higher price, fixed upfront.",
       "onscreenText": "Sale: murabaha",
-      "subtext": "Bought for €250,000, sold to you for €400,000",
-      "emphasis": [
-        "sells"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "sale"
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "warning",
-      "narration": "That margin is disclosed and fixed on day one. It cannot rise with rates, or fall with them.",
-      "onscreenText": "A fixed, disclosed margin",
-      "subtext": "It cannot rise with rates, or fall",
+      "subtext": "Total price fixed on day one",
       "emphasis": [
         "fixed"
       ],
@@ -152,13 +90,13 @@
       }
     },
     {
-      "id": "b4",
+      "id": "b2",
       "kind": "example",
-      "narration": "Ijara, a lease to own. The financier owns and leases the home. Ownership commonly transfers at the end, by a separate sale or gift.",
+      "narration": "A lease: the financier owns it, you pay rent, ownership passes later.",
       "onscreenText": "Lease: ijara",
-      "subtext": "Rent now, ownership by a separate sale or gift",
+      "subtext": "Ownership by a separate sale or gift",
       "emphasis": [
-        "rents"
+        "rent"
       ],
       "anchor": {
         "type": "bands",
@@ -166,13 +104,13 @@
       }
     },
     {
-      "id": "b5",
+      "id": "b3",
       "kind": "example",
-      "narration": "A shrinking partnership. You put in fifty thousand, the financier two hundred thousand. You pay rent on their share, and buy it bit by bit.",
+      "narration": "A partnership: you buy it together, then buy out their share.",
       "onscreenText": "Partnership: musharakah",
       "subtext": "Your share grows, the rent falls",
       "emphasis": [
-        "transfers"
+        "together"
       ],
       "anchor": {
         "type": "bands",
@@ -180,84 +118,46 @@
       }
     },
     {
-      "id": "b6",
-      "kind": "warning",
-      "narration": "Monthly costs often track market rates, so they can look like a mortgage. The contract, and who carries the risk, differ.",
-      "onscreenText": "Similar cost, different contract",
-      "subtext": "Ownership and risk sit elsewhere",
-      "emphasis": [
-        "contract"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
-      }
-    },
-    {
-      "id": "b7",
+      "id": "b4",
       "kind": "list",
-      "narration": "So the questions change. Total amount payable. Early settlement. Late payment. Can the cost change? Who certified it?",
-      "onscreenText": "Five questions",
-      "subtext": "Before signing any home finance",
-      "emphasis": [
-        "five"
-      ],
+      "narration": "Many then ask: projected total, cost of settling early, and who certified it.",
+      "onscreenText": "Three questions",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Five questions",
+        "title": "Three questions",
         "rows": [
           {
-            "label": "What is the total amount payable?",
+            "label": "Total or projected",
             "value": "1",
             "tone": "ink"
           },
           {
-            "label": "What if I settle early?",
+            "label": "Settling early",
             "value": "2",
             "tone": "ink"
           },
           {
-            "label": "How is a late fee worked out?",
+            "label": "Who certified it",
             "value": "3",
-            "tone": "ink"
-          },
-          {
-            "label": "Can the cost change, and when?",
-            "value": "4",
-            "tone": "ink"
-          },
-          {
-            "label": "Who certified it, to what standard?",
-            "value": "5",
             "tone": "teal"
           }
         ],
-        "footnote": "Not religious guidance. Availability varies by country."
-      }
-    },
-    {
-      "id": "b8",
-      "kind": "story",
-      "narration": "Every structure is a sale, a lease or a partnership. Knowing which tells you what to ask.",
-      "onscreenText": "Sale, lease or partnership",
-      "subtext": "Knowing which tells you what to ask",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
+        "footnote": "Not religious guidance. Scholars differ; availability varies by country."
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for any home finance offer.",
-    "onscreenText": "Save the five questions",
-    "subtext": "For any home finance offer",
+    "approved": "share",
+    "narration": "Know someone financing a home without interest? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they sign",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Most home buying advice starts with: compare the rate. For many people, interest is ruled out.\n\nInterest free home finance reaches the same end through one of three structures. A cost plus sale (murabaha): the financier buys a €250,000 flat and sells it to you for €400,000 over 25 years, a €150,000 margin disclosed and fixed on day one. A lease to own (ijara): the financier owns the home and leases it to you, and ownership transfers through a separate sale or gift in the contract, commonly at the end. A shrinking partnership (diminishing musharakah): you put in €50,000, the financier €200,000, and you buy their share bit by bit while the rent falls. Monthly costs are often benchmarked to market rates, so they can look similar. The contract is what differs.\n\nFive questions before signing: the total amount payable, early settlement, late payment, whether the cost can change, and who certified it.\n\n→ Save this for any home finance offer\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. A financial explanation, not religious guidance. Scholars differ on details, and availability varies by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "instagram": "Interest ruled out, by faith or by choice? A home can still be financed, just not with a loan.\n\nThree structures do it: a sale (murabaha), with the total price fixed on day one; a lease to own (ijara); and a shrinking partnership (diminishing musharakah). Monthly costs can look like a mortgage. The contract, and who carries the risk, differ.\n\n→ Know someone financing a home without interest? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nA financial explanation, not religious guidance. Scholars differ on details, and availability varies by country.",
     "tiktok": "Most home buying advice starts with: compare the rate. For many people, interest is ruled out.\n\nA sale, a lease or a partnership, and five questions before signing. Not religious guidance.",
     "instagramKeywords": [
       "interest free home finance",

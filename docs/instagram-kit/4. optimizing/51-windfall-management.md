@@ -8,6 +8,8 @@ hashtags_day2: "#lifestyleinflation #spendinghabits #moneymindset #expatlife #ni
 keywords_day2: "lifestyle upgrade, lifestyle creep, spending ratchet, windfall spending, recurring costs, car upgrade, bigger home, monthly expenses, one off money, subscriptions, budget check, personal finance, global expats, Lebensstilinflation, Fixkosten, inflation du mode de vie, dépenses fixes, inflación del estilo de vida, gastos fijos"
 ---
 
+> **Needs attention (Oct 25, 2026).** Council (Oct 25, awaiting the owner): runs two days. Day 1 is the bonus reel (today's day 3, with its caption), day 2 the €400 a month upgrade reel. The €50,000 inheritance reel (today's day 1) is not posted: it teaches the same lesson as the bonus reel, and a bonus is the more common situation.
+
 ## Brief
 
 person: Petra, 38
