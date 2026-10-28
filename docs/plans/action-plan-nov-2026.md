@@ -42,6 +42,15 @@ Background:
 - **Nov 1 readout** (reminder in each session; memory `project_nov1_readout.md`): November's Instagram format (reels only recommended), Sunday format from Nov 8 (using the Beliefs 2 carousel result of Oct 25), and the safety check (proposed: Nov 2 to 8 reel median against 118, failing below 94; note that reels from post 48 are about half as long as earlier ones).
 - **Answered by the owner (Oct 25):** the PLAYBOOK §2.1 line against engagement from the owner's own accounts is kept; the Oct 26 to 31 posts were verified by the owner; the owner reviews the Instagram work later.
 
+## Safety check (owner asked, council signed off Oct 28, 2026)
+
+**Reels-only safety check (council, Oct 28, 2026)**
+1. Window: Nov 2 to 15, every organic reel posted in it, breakouts included. Pass if the median reach is 94 or more (baseline 118, the Oct 12 to 24 median); fail below 94. If fewer than 10 reels are published, extend the window until 10 are. The line does not move after interim results.
+2. Interim look after Nov 8, for information only: if the Nov 2 to 8 median is under 70, the council and the owner meet within 24 hours to look for technical or distribution problems and reconsider the coming posts. That is an escalation, not a fail.
+3. Before each reel is posted, its premise is labelled broad or narrow in its kit, with a one-line reason. Broad: a widely recognisable life situation, understood without a specific product, benefit, employer, tax, loan or refinancing condition, or sub-audience; otherwise, or when unsure, narrow. Labels are frozen once posted.
+4. Report: the overall median first; then reels above 300; broad and narrow medians with their counts (listing values when a group has fewer than 3); shares, saves and follows as counts and per 1,000 reach; each reel's length, topic day and post time; any deletion, repost or missed post.
+5. Reading: subgroup medians are diagnostic, not a second pass/fail. If the overall median misses 94 but broad reels reach 94 or more and the shortfall sits in narrow reels, the council reviews it as a topic-mix signal before calling the format unsafe; a broad-reel shortfall is not explained away.
+
 ## Log
 
 - Oct 25, 2026: plan agreed; kits marked; lesson decisions recorded in `blog-content-plan.md`.
@@ -70,3 +79,4 @@ Background:
 - Oct 28, 2026: step 10 done and council signed off; build, 787 tests and lint pass. Steps 9 and 10 go in one PR with auto-merge (owner). Next: step 11 (open), step 12 (later), Instagram batch; owner said stop after this PR.
 - Oct 28, 2026: source checks done (owner): gates on 49 and 50 closed; ledger rows that rested on secondary sources re-checked against official text (Germany EStG, Japan ISA, RBI, CONSAR, CVM 175, CMA, Japan MoJ, OJK, UAE Decree-Law 41/2024 art. 193); inc-3 gains the UAE freelancer sentence (Cabinet Decision 49 of 2023). Council signed off in 3 rounds.
 - Oct 28, 2026: owner, ahead of the Nov 1 readout: November format = NEW (reels only, 1 to 3 days); Sunday format from Nov 8 agreed. Safety check still open: owner asked whether the breakout findings were factored in (see reply in session).
+- Oct 28, 2026: owner asked for a two-week safety check; council agreed unanimously (rule above). Broad/narrow labels go into each reel kit before posting.
