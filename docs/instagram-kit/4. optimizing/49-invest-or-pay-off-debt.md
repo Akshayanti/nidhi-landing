@@ -19,6 +19,7 @@ withheld: The seven step default order for several debts, how tax relief lowers 
 ## Day 1 (angle)
 
 angle: The size of a debt does not set its cost; the rate does
+breadth: narrow | Needs a loan condition: a viewer carrying both a mortgage and a card balance
 number: €500 extra avoids about €17 of interest in a year on a 3.4% mortgage, about €110 on a 22% card
 takeaway: Each euro of payoff earns the debt's rate, so the small card can be the expensive one.
 tool: The rate check. Above about 8 to 10% after tax, debt often comes first; 4 to 8% is a judgement call; below about 4%, investing often comes out ahead on expected value.
@@ -104,6 +105,7 @@ read: The seven step order for several debts
 ## Day 2 (angle)
 
 angle: An employer match can be a 100% return on the matched euros
+breadth: narrow | Needs an employer condition: a workplace pension match
 number: A full match adds up to 100% at once, against 22% for a card, about 7% a year expected from investing, 2.6% for a mortgage after tax relief
 takeaway: Many people take the match alongside paying down a card, not after it, because a 100% match doubles each matched euro at once.
 tool: The match check. Is there a match, are you capturing all of it, when does it vest, and when can you reach the money?

@@ -51,6 +51,8 @@ Background:
 4. Report: the overall median first; then reels above 300; broad and narrow medians with their counts (listing values when a group has fewer than 3); shares, saves and follows as counts and per 1,000 reach; each reel's length, topic day and post time; any deletion, repost or missed post.
 5. Reading: subgroup medians are diagnostic, not a second pass/fail. If the overall median misses 94 but broad reels reach 94 or more and the shortfall sits in narrow reels, the council reviews it as a topic-mix signal before calling the format unsafe; a broad-reel shortfall is not explained away.
 
+6. Labels for Nov 2 to 7 (council, Oct 29): all six reels narrow (gig days 1 and 2, 49 days 1 and 2, 50 days 1 and 2). The report records broad: n=0 for week 1, says the window cannot test the topic-mix reading, and that the topic-mix exception cannot be invoked without a broad reel at 94 or more. Nothing else changes: no relabelling, no moved line, no extension for breadth.
+
 ## Log
 
 - Oct 25, 2026: plan agreed; kits marked; lesson decisions recorded in `blog-content-plan.md`.
@@ -80,3 +82,5 @@ Background:
 - Oct 28, 2026: source checks done (owner): gates on 49 and 50 closed; ledger rows that rested on secondary sources re-checked against official text (Germany EStG, Japan ISA, RBI, CONSAR, CVM 175, CMA, Japan MoJ, OJK, UAE Decree-Law 41/2024 art. 193); inc-3 gains the UAE freelancer sentence (Cabinet Decision 49 of 2023). Council signed off in 3 rounds.
 - Oct 28, 2026: owner, ahead of the Nov 1 readout: November format = NEW (reels only, 1 to 3 days); Sunday format from Nov 8 agreed. Safety check still open: owner asked whether the breakout findings were factored in (see reply in session).
 - Oct 28, 2026: owner asked for a two-week safety check; council agreed unanimously (rule above). Broad/narrow labels go into each reel kit before posting.
+- Oct 29, 2026: owner: no carousels from now on, but keep the carousel files (do not delete). Post times stay as this week's: day 1 reel 12:15 IST (07:45 CET), day 2 reel 08:45 IST, stories at their usual slots. Nov 1 volunteer post at 12:00 CET (16:30 IST), redesigned (PR #258); scheduling waits for Chrome, together with Nov 2 to 8.
+- Oct 29, 2026: broad/narrow labels added to the gig, 49 and 50 kits (`breadth:` under each day's angle); council unanimous, all narrow.

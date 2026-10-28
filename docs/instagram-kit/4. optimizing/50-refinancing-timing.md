@@ -19,6 +19,7 @@ withheld: The rate drop rule of thumb and where it breaks, no cost, cash in and 
 ## Day 1 (angle)
 
 angle: A refinance pays only after its break even month
+breadth: narrow | Needs a refinancing condition: a viewer with a loan, weighing a switch
 number: €4,000 of costs ÷ €200 a month saved = month 20; kept 5 years, about €8,000 ahead; kept 2 years, €800
 takeaway: What decides it is how long you keep the loan, measured against the break even month.
 tool: The break even check. Costs, including any early repayment charges, ÷ monthly saving = break even month; many people look for keeping the loan about twice that long.
@@ -106,6 +107,7 @@ read: The rate drop rule of thumb and where it breaks
 ## Day 2 (angle)
 
 angle: Waiting for a lower rate has a known cost
+breadth: narrow | Needs a refinancing condition: a viewer holding off a refinance for a lower rate
 number: Waiting six months on a €200 a month saving gives up €1,200 for certain; in one scenario rates then rise from 4.25% to 4.75%
 takeaway: A later, lower rate has to win back what waiting cost; markets already price the cuts they expect.
 tool: The wait test. Monthly saving × months waited = what waiting costs.
