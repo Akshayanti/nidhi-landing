@@ -72,8 +72,8 @@ const inputId = `${idPrefix}-email`;
         <div class="waitlist-confirm" data-confirm hidden>
           <p class="waitlist-confirm-text">{waitlist.confirmPrompt} <strong data-confirm-email></strong></p>
           <div class="waitlist-confirm-actions">
-            <button type="button" class="waitlist-button" data-confirm-yes data-attr={`${idPrefix}-confirm-yes`}>{waitlist.confirmYes}</button>
-            <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr={`${idPrefix}-confirm-change`}>{waitlist.confirmChange}</button>
+            <button type="button" class="waitlist-button" data-confirm-yes data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
+            <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr="waitlist-confirm-change">{waitlist.confirmChange}</button>
           </div>
         </div>
         <p id={statusId} class="waitlist-status" role="status" aria-live="polite"></p>

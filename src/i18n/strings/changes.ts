@@ -43,6 +43,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-10-28',
     items: [
       {
+        id: 'tool-results-copy',
+        text: {
+          en: 'Every free tool now has a box right under its result where you can copy a link, download a spreadsheet that opens in Excel, LibreOffice or Google Sheets, or make a short PDF report of your results. The files are made in your browser, so your figures still never reach me.',
+          es: 'Cada herramienta gratuita tiene ahora, justo debajo del resultado, un recuadro para copiar un enlace para compartir, descargar una hoja de cálculo que se abre en Excel, LibreOffice o Google Sheets, o crear un informe breve en PDF con tus resultados. Los archivos se crean en tu navegador, así que tus cifras siguen sin llegarme.',
+          cs: 'Každý nástroj zdarma má teď hned pod výsledkem rámeček, kde můžete zkopírovat odkaz ke sdílení, stáhnout tabulku, která se otevře v Excelu, LibreOffice nebo Google Sheets, nebo vytvořit krátkou zprávu v PDF s vašimi výsledky. Soubory vznikají ve vašem prohlížeči, takže se vaše čísla ke mně nikdy nedostanou.',
+          mr: 'प्रत्येक मोफत साधनात आता निकालाच्या अगदी खाली एक चौकट आहे: तिथे शेअर लिंक कॉपी करता येते, Excel, LibreOffice किंवा Google Sheets मध्ये उघडणारी स्प्रेडशीट डाउनलोड करता येते, किंवा तुमच्या निकालांचा छोटा PDF अहवाल तयार करता येतो. फाइल्स तुमच्या ब्राउझरमध्येच तयार होतात, त्यामुळे तुमचे आकडे माझ्यापर्यंत कधीच पोहोचत नाहीत.',
+          hi: 'हर मुफ़्त टूल में अब नतीजे के ठीक नीचे एक बॉक्स है: वहाँ से शेयर लिंक कॉपी कर सकते हैं, Excel, LibreOffice या Google Sheets में खुलने वाली स्प्रेडशीट डाउनलोड कर सकते हैं, या अपने नतीजों की छोटी PDF रिपोर्ट बना सकते हैं। फ़ाइलें आपके ब्राउज़र में ही बनती हैं, इसलिए आपके आँकड़े अब भी मुझ तक कभी नहीं पहुँचते।',
+        },
+      },
+      {
+        id: 'click-data-labels-only',
+        text: {
+          en: 'I found that, for visitors who had accepted the cookie banner, a click on the loan comparison could carry an offer’s name or a chart’s amounts along with it. A check of every click recorded since October 8 found none that did. Even so, it is fixed: a click is now recorded only by the label the site gives a button, and the privacy notice says what happened.',
+          es: 'Descubrí que, para quienes habían aceptado el aviso de cookies, un clic en el comparador de préstamos podía llevar consigo el nombre de una oferta o los importes de un gráfico. Revisé todos los clics registrados desde el 8 de octubre y ninguno lo hizo. Aun así, ya está corregido: ahora un clic se registra solo con la etiqueta que el sitio da a cada botón, y el aviso de privacidad explica lo que pasó.',
+          cs: 'Došlo mi, že u návštěvníků, kteří přijali lištu s cookies, se spolu s kliknutím ve srovnání úvěrů mohl odeslat název nabídky nebo částky z grafu. Kontrola všech kliknutí zaznamenaných od 8. října nenašla ani jeden takový případ. Přesto je to opraveno: kliknutí se teď zaznamenává pouze pod označením, které web přiřadil tlačítku, a zásady ochrany soukromí popisují, co se stalo.',
+          mr: 'मला आढळले की कुकी बॅनर स्वीकारलेल्या भेट देणाऱ्यांसाठी, कर्जांच्या तुलनेवर केलेल्या क्लिकसोबत एखाद्या ऑफरचे नाव किंवा आलेखातील रकमा जाऊ शकत होत्या. 8 ऑक्टोबरपासून नोंदलेले सगळे क्लिक तपासले, आणि त्यांपैकी एकाही क्लिकसोबत असे काही गेले नव्हते. तरीही हे दुरुस्त केले आहे: आता क्लिकची नोंद फक्त साइटने बटणाला दिलेल्या लेबलने होते, आणि गोपनीयता सूचनेत काय घडले ते सांगितले आहे.',
+          hi: 'मुझे पता चला कि जिन्होंने कुकी बैनर स्वीकार किया था, उनके लिए लोन तुलना पर किए गए क्लिक के साथ किसी ऑफ़र का नाम या चार्ट की रकमें जैसी जानकारी भी जा सकती थी। मैंने 8 अक्टूबर से दर्ज सभी क्लिक जाँचे, और किसी के साथ ऐसा कुछ नहीं गया था। फिर भी मैंने इसे ठीक कर दिया है: अब क्लिक सिर्फ़ उस लेबल से दर्ज होता है जो साइट किसी बटन को देती है, और प्राइवेसी नोटिस बताता है कि क्या हुआ।',
+        },
+      },
+      {
         id: 'lessons-more-countries',
         text: {
           en: 'Seven lessons already published, from financial projections to shared households, now have notes on how things work in more countries, such as Japan, Brazil, Indonesia and the Philippines.',

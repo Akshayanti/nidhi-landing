@@ -21,6 +21,10 @@ import {
 } from '../utils/multi-currency-net-worth/url.ts';
 import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
+import { downloadBlob, downloadWorkbook, guardText, isoDate, printResults } from '../utils/shared/exportFile.ts';
+import { netWorthSheets } from '../utils/multi-currency-net-worth/export.ts';
+import { netWorthReport } from '../utils/multi-currency-net-worth/report.ts';
+import { ToolExport, ToolReport } from './ToolExport.tsx';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
@@ -89,11 +93,13 @@ const RISK_COLORS: Record<string, string> = PALETTE_RISK_COLORS;
  */
 export default function MultiCurrencyNetWorth({
   strings,
+  exportStrings,
   defaultCurrency,
   numberLocale,
   amountLocale,
 }: {
   strings: Strings;
+  exportStrings: Dict['tools']['export'];
   defaultCurrency: string;
   /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
   numberLocale: string;
@@ -374,6 +380,31 @@ export default function MultiCurrencyNetWorth({
 
   const filledCount = rows.filter((r) => r.value.trim() !== '').length;
 
+  // A copy holds what the results show and no more: a shared view that hides
+  // amounts gives currencies and shares only. The event says only which kind.
+  const showAmounts = !(isReadOnlyView && sharedRedacted);
+  const exportReady = result.positions.length > 0 && (isReadOnlyView || hasData);
+  const downloadSpreadsheet = () => {
+    const sheets = netWorthSheets({
+      island: strings,
+      common: exportStrings,
+      functionalCurrency,
+      result,
+      rows: isReadOnlyView ? null : rows,
+      rates: isReadOnlyView ? null : rates,
+      showAmounts,
+      riskLabel: (level) => riskLabel(strings, level),
+      date: isoDate(),
+      page: `${window.location.origin}${window.location.pathname}`,
+    });
+    downloadWorkbook(sheets, 'net-worth');
+    track('free_multi_currency_net_worth_exported', { format: 'xlsx' });
+  };
+  const printPage = () => {
+    track('free_multi_currency_net_worth_exported', { format: 'pdf' });
+    printResults();
+  };
+
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
@@ -408,16 +439,6 @@ export default function MultiCurrencyNetWorth({
         <div className="mcnw-toolbarActions">
           <button
             type="button"
-            className="mcnw-shareBtn"
-            onClick={openShareModal}
-            disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
-            title={strings.toolbar.shareTitle}
-            data-attr="mcnw-share-open"
-          >
-            {strings.toolbar.share}
-          </button>
-          <button
-            type="button"
             className="mcnw-resetBtn"
             onClick={reset}
             title={strings.toolbar.resetTitle}
@@ -425,18 +446,6 @@ export default function MultiCurrencyNetWorth({
           >
             {strings.toolbar.reset}
           </button>
-          {copied && shareUrl && (
-            <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
-              <span className="mcnw-shareUrlLabel">{strings.toolbar.copiedLabel}</span>
-              <input
-                className="mcnw-shareUrlInput"
-                value={shareUrl}
-                readOnly
-                onFocus={(e) => e.target.select()}
-                aria-label={strings.toolbar.shareUrlAria}
-              />
-            </div>
-          )}
         </div>
       </div>
 
@@ -609,6 +618,42 @@ export default function MultiCurrencyNetWorth({
         rows={isReadOnlyView ? undefined : rows}
         hideAmounts={isReadOnlyView && sharedRedacted}
         strings={strings}
+        actions={
+          <ToolExport
+            strings={exportStrings}
+            share={
+              <>
+            <button
+              type="button"
+              className="mcnw-shareBtn"
+              onClick={openShareModal}
+              disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
+              title={strings.toolbar.shareTitle}
+              data-attr="mcnw-share-open"
+            >
+              {strings.toolbar.share}
+            </button>
+            {copied && shareUrl && (
+              <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
+                <span className="mcnw-shareUrlLabel">{strings.toolbar.copiedLabel}</span>
+                <input
+                  className="mcnw-shareUrlInput"
+                  value={shareUrl}
+                  readOnly
+                  onFocus={(e) => e.target.select()}
+                  aria-label={strings.toolbar.shareUrlAria}
+                />
+              </div>
+            )}
+              </>
+            }
+            xlsxAttr="mcnw-export-xlsx"
+            pdfAttr="mcnw-export-pdf"
+            ready={exportReady}
+            onSpreadsheet={downloadSpreadsheet}
+            onPrint={printPage}
+          />
+        }
       />
 
       {/* ---- Disclaimer ---- */}
@@ -623,6 +668,16 @@ export default function MultiCurrencyNetWorth({
       <p className="mcnw-disclaimer">
         {strings.results.disclaimer}
       </p>
+
+      <PrintedReport
+        strings={strings}
+        exportStrings={exportStrings}
+        functionalCurrency={functionalCurrency}
+        result={result}
+        rows={isReadOnlyView ? null : rows}
+        rates={isReadOnlyView ? null : rates}
+        showAmounts={showAmounts}
+      />
 
       {/* ---- Share modal ---- */}
       {shareModalOpen && (
@@ -762,9 +817,11 @@ interface ResultsPanelProps {
   hideAmounts?: boolean;
   /** The entered rows, for the owned/owed split. Absent in shared views, which only carry per-currency totals. */
   rows?: AssetRow[];
+  /** "Save or share these results", right after the total; absent in the share preview. */
+  actions?: React.ReactNode;
 }
 
-function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows }: ResultsPanelProps) {
+function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
   if (result.positions.length === 0) {
     return (
@@ -772,6 +829,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         <div className="mcnw-emptyState">
           <p>{strings.results.empty}</p>
         </div>
+        {actions}
       </section>
     );
   }
@@ -806,6 +864,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         <p className="mcnw-singleNote">
           {format(strings.results.singleNote, { currency: getCurrencyLabel(functionalCurrency, strings.currencies) })}
         </p>
+        {actions}
       </section>
     );
   }
@@ -839,6 +898,8 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
           )}
         </div>
       ) : null}
+
+      {actions}
 
       {/* Donut chart */}
       <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />
@@ -878,6 +939,46 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
       </div>
     </section>
   );
+}
+
+/**
+ * What prints: the results as the page shows them, the total as the answer.
+ * A shared view that hides amounts prints currencies and shares only.
+ * Hidden on screen (see ToolReport).
+ */
+function PrintedReport({ strings, exportStrings, functionalCurrency, result, rows, rates, showAmounts }: {
+  strings: Strings;
+  exportStrings: Dict['tools']['export'];
+  functionalCurrency: string;
+  result: ReturnType<typeof aggregate>;
+  rows: AssetRow[] | null;
+  rates: Record<string, number> | null;
+  showAmounts: boolean;
+}) {
+  const { formatMoney, amountLocale } = useMoney();
+  const r = strings.results;
+  const single = result.positions.length > 0 && isSingleCurrency(result, functionalCurrency);
+  const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency);
+  const answer: string[] = [];
+  if (result.positions.length === 0) answer.push(r.empty);
+  else if (!showAmounts) answer.push(`${r.totalLabel}: ${r.hidden}`);
+  else if (single) answer.push(`${r.totalLabel}: ${money(result.positions[0].netAmountOriginal)}`);
+  else if (result.hasRates !== 'none') {
+    answer.push(`${r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
+    if (result.hasRates === 'partial') answer.push(r.partialHint);
+  }
+  const report = netWorthReport({
+    island: strings,
+    common: exportStrings,
+    functionalCurrency,
+    result,
+    rows,
+    rates,
+    showAmounts,
+    riskLabel: (level) => riskLabel(strings, level),
+    answer,
+  });
+  return <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? 'en-US'} />;
 }
 
 /**
@@ -1584,7 +1685,10 @@ function downloadCSV(rows: AssetRow[], mode: 'full' | 'anon') {
     ? 'Name,Value,Currency,Type'
     : 'Name,Currency,Type';
   const lines = rows.map((r) => {
-    const name = r.name.includes(',') ? `"${r.name}"` : r.name;
+    // A name that would start a spreadsheet formula is led with an
+    // apostrophe; `parseCSV` takes it off again when the file comes back.
+    const guarded = guardText(r.name.replace(/[\r\n]+/g, ' '));
+    const name = /[",]/.test(guarded) ? `"${guarded.replace(/"/g, '""')}"` : guarded;
     const type = r.type === 'liability' ? 'Liability' : 'Asset';
     if (mode === 'full') {
       return `${name},${r.value},${r.currency},${type}`;
@@ -1592,13 +1696,8 @@ function downloadCSV(rows: AssetRow[], mode: 'full' | 'anon') {
     return `${name},${r.currency},${type}`;
   });
   const csv = [header, ...lines].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = mode === 'full' ? 'asset-details.csv' : 'asset-details-anonymous.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadBlob(
+    new Blob([csv], { type: 'text/csv;charset=utf-8;' }),
+    mode === 'full' ? 'asset-details.csv' : 'asset-details-anonymous.csv',
+  );
 }

@@ -266,6 +266,21 @@ export const loanComparisonEn = {
     },
   },
   island: {
+    /** The spreadsheet's own sheets and columns; the rest reuses the labels below. */
+    export: {
+      tool: 'Loan comparison',
+      /** The printed report's "What this means": interprets the answer, never advises. */
+      meaning: 'The range shows how far apart the offers’ total costs are, with fees and penalties counted. The lowest total is not always the lowest monthly payment: a longer term usually lowers the payment and raises the total. Which matters more depends on your budget, how long you expect to keep the loan, and terms this comparison leaves out.',
+      /** Under the report's comparison table: the PDF leaves the schedules out. */
+      schedulesNote: 'Each offer’s month-by-month schedule is in the spreadsheet.',
+      scheduleLabel: 'Schedules',
+      scheduleText: 'One sheet per offer, month by month, including any extra principal and lump sums: the schedule the charts and totals use.',
+      sheets: { summary: 'Summary' },
+      months: 'Months',
+      aprPct: 'APR, %',
+      computed: 'Calculated',
+      balance: 'Balance left',
+    },
     /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
     /** The bar above the cards: currency, share and reset. */
@@ -886,6 +901,18 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
   },
   island: {
+    export: {
+      tool: 'लोन तुलना कैलकुलेटर',
+      meaning: 'यह दायरा दिखाता है कि फ़ीस और पेनल्टी जोड़कर ऑफ़र की कुल लागत में कितना फ़र्क है। सबसे कम कुल रकम का मतलब हमेशा सबसे कम मासिक किस्त नहीं होता: लंबी अवधि से किस्त आम तौर पर घटती है और कुल रकम बढ़ती है। आपके लिए क्या ज़्यादा मायने रखता है, यह आपके बजट पर, आप लोन कितने समय तक रखना चाहते हैं इस पर, और उन शर्तों पर निर्भर है जो यह तुलना शामिल नहीं करती।',
+      schedulesNote: 'हर ऑफ़र का महीने-दर-महीने का शेड्यूल स्प्रेडशीट में है।',
+      scheduleLabel: 'किस्तों की सूची',
+      scheduleText: 'हर ऑफ़र के लिए एक शीट, महीने-दर-महीने, अतिरिक्त मूलधन और एकमुश्त राशि समेत: वही सूची जिससे चार्ट और कुल रकम बनती हैं।',
+      sheets: { summary: 'सारांश' },
+      months: 'महीने',
+      aprPct: 'APR, %',
+      computed: 'गणना हुई',
+      balance: 'बची हुई रकम',
+    },
     currencies: currenciesHi,
     toolbar: {
       aria: 'लोन की तुलना के काम',
@@ -1441,6 +1468,18 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
   },
   island: {
+    export: {
+      tool: 'Comparador de préstamos',
+      meaning: 'El rango muestra cuánto se separan los costes totales de las ofertas, con comisiones y penalizaciones incluidas. El total más bajo no siempre es la cuota mensual más baja: un plazo más largo suele bajar la cuota y subir el total. Qué pesa más depende de tu presupuesto, de cuánto tiempo pienses mantener el préstamo y de condiciones que esta comparación deja fuera.',
+      schedulesNote: 'El cuadro de amortización mes a mes de cada oferta está en la hoja de cálculo.',
+      scheduleLabel: 'Cuadros de amortización',
+      scheduleText: 'Una hoja por oferta, mes a mes, con el capital extra y los pagos extraordinarios que haya: el cuadro que usan los gráficos y los totales.',
+      sheets: { summary: 'Resumen' },
+      months: 'Meses',
+      aprPct: 'APR, %',
+      computed: 'Calculado',
+      balance: 'Saldo pendiente',
+    },
     currencies: currenciesEs,
     toolbar: {
       aria: 'Acciones del comparador de préstamos',
@@ -1995,6 +2034,18 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
   },
   island: {
+    export: {
+      tool: 'Srovnání úvěrů',
+      meaning: 'Rozpětí ukazuje, jak daleko od sebe jsou celkové náklady nabídek, včetně poplatků a sankcí. Nejnižší celková částka není vždy nejnižší měsíční splátka: delší doba splácení obvykle splátku sníží a celkovou částku zvýší. Co je důležitější, záleží na vašem rozpočtu, na tom, jak dlouho úvěr plánujete mít, a na podmínkách, které toto srovnání nezahrnuje.',
+      schedulesNote: 'Splátkový kalendář každé nabídky po měsících najdete v tabulce.',
+      scheduleLabel: 'Splátkové kalendáře',
+      scheduleText: 'Jeden list na každou nabídku, měsíc po měsíci, včetně mimořádných splátek jistiny a jednorázových mimořádných splátek: kalendář, ze kterého vycházejí grafy i součty.',
+      sheets: { summary: 'Souhrn' },
+      months: 'Měsíce',
+      aprPct: 'APR, %',
+      computed: 'Spočítáno',
+      balance: 'Zbývající jistina',
+    },
     currencies: currenciesCs,
     toolbar: {
       aria: 'Akce srovnání úvěrů',
@@ -2531,6 +2582,18 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
   },
   island: {
+    export: {
+      tool: 'कर्जांची तुलना',
+      meaning: 'हा पल्ला दाखवतो की शुल्क आणि दंड धरून ऑफरच्या एकूण खर्चात किती फरक आहे. सगळ्यात कमी एकूण रक्कम म्हणजे नेहमी सगळ्यात कमी मासिक हप्ता नसतो: दीर्घ मुदतीमुळे हप्ता सहसा कमी होतो आणि एकूण रक्कम वाढते. तुमच्यासाठी काय जास्त महत्त्वाचे आहे हे तुमच्या बजेटवर, कर्ज किती काळ ठेवायचे आहे यावर, आणि या तुलनेत न धरलेल्या अटींवर अवलंबून आहे.',
+      schedulesNote: 'प्रत्येक ऑफरचे महिन्यानुसार वेळापत्रक स्प्रेडशीटमध्ये आहे.',
+      scheduleLabel: 'हप्त्यांचे वेळापत्रक',
+      scheduleText: 'प्रत्येक ऑफरसाठी एक शीट, महिन्यानुसार, अतिरिक्त मुद्दल आणि एकरकमी रकमा धरून: आलेख आणि एकूण रकमा याच वेळापत्रकावरून येतात.',
+      sheets: { summary: 'सारांश' },
+      months: 'महिने',
+      aprPct: 'APR, %',
+      computed: 'गणना झाली',
+      balance: 'बाकी कर्ज',
+    },
     currencies: currenciesMr,
     toolbar: {
       aria: 'कर्जांच्या तुलनेच्या क्रिया',

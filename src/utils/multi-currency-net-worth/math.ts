@@ -4,6 +4,7 @@
  */
 
 import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
+import { unguardText } from '../shared/exportFile.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -90,7 +91,7 @@ export interface ParseError {
 // ---------------------------------------------------------------------------
 
 /** Strips cosmetic grouping characters before parsing so "1,00,000" and "100000" both work. Returns NaN on failure. */
-function parseAmount(s: string): number {
+export function parseAmount(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
   if (cleaned === '') return NaN;
   const n = Number(cleaned);
@@ -350,7 +351,9 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
       currencyStr = rawValue; // cols[1] is actually currency
       typeStr = '';
     } else {
-      name = rawName;
+      // The tool's own download leads a formula-like name with an apostrophe
+      // (src/utils/shared/exportFile.ts); reading it back takes that off.
+      name = unguardText(rawName);
       valueStr = rawValue;
       currencyStr = rawCurrency;
       typeStr = rawType;

@@ -17,6 +17,8 @@
  *   Heatmaps + autocapture: only after consent
  */
 import { LOCALES, localePrefix } from '../i18n';
+import { scanLabels } from '../utils/analyticsLabels.ts';
+import cleanElementsScript from '../utils/shared/cleanElements.js?raw';
 
 // The known locale prefixes (`['/hi']`), built from the locale registry rather
 // than spelled out, so the URL backstop below cannot drift from the routes.
@@ -27,9 +29,16 @@ const localePrefixes = LOCALES.map(localePrefix).filter(Boolean);
 // carries the real project key: PostHog rejects anything sent with this one.
 const analyticsTest = import.meta.env.PUBLIC_ANALYTICS_TEST === '1';
 const posthogKey = analyticsTest ? 'phc_local_test_build_not_a_real_key' : import.meta.env.PUBLIC_POSTHOG_KEY;
+
+// Every click label the site renders, read from the source at build time: a
+// click event keeps an element's data-attr only if it is one of these (see
+// src/utils/shared/cleanElements.js). The build runs from the repository root.
+const { exact, prefixes } = scanLabels(`${process.cwd()}/src`);
+const clickLabels = { exact, prefixes };
 ---
 
-<script is:inline define:vars={{ posthogKey, localePrefixes, analyticsTest }}>
+<script is:inline set:html={cleanElementsScript}></script>
+<script is:inline define:vars={{ posthogKey, localePrefixes, analyticsTest, clickLabels }}>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 
   var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
@@ -85,6 +94,26 @@ const posthogKey = analyticsTest ? 'phc_local_test_build_not_a_real_key' : impor
     for (var key in obj) if (Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = cleanUrl(obj[key]);
   }
 
+  // Click data (autocapture, rage clicks, dead clicks) records every attribute
+  // of the clicked element and its ancestors, and text masking does not cover
+  // attributes. Two layers keep what a reader typed, or what a tool worked out,
+  // out of it. First, PostHog is told never to read the attributes that can
+  // hold such text (a remove button's label names the loan offer, a chart's
+  // label lists its amounts). Second, before_send rebuilds every element
+  // description from a closed vocabulary (cleanElements.js), so an attribute
+  // missing from this list, now or after an SDK update, is dropped anyway.
+  // The cookie prompt applies the same settings when consent changes.
+  var IGNORED_ATTRIBUTES = ['aria-label', 'aria-valuetext', 'aria-valuenow', 'aria-description', 'aria-describedby', 'aria-labelledby', 'title', 'alt', 'placeholder', 'value', 'style', 'href', 'id', 'name', 'for', 'datetime', 'download', 'src', 'action', 'd', 'points', 'x', 'y', 'x1', 'x2', 'y1', 'y2', 'cx', 'cy', 'r', 'width', 'height', 'transform', 'viewBox'];
+  window.nidhiClickCapture = { element_attribute_ignorelist: IGNORED_ATTRIBUTES };
+  function cleanClicks(event) {
+    var props = event && event.properties;
+    if (!props || !('$elements_chain' in props || '$elements' in props)) return event;
+    // Should the cleaner be missing, a click event is not sent at all.
+    if (typeof window.nidhiCleanElements !== 'function') return null;
+    window.nidhiCleanElements(props, clickLabels);
+    return event;
+  }
+
   // Every capture feature is set explicitly here. A feature left unset falls
   // back to the PostHog project settings, which apply to every visitor and
   // ignore consent: in Oct 2026 that let web vitals and dead clicks fire for
@@ -134,9 +163,9 @@ const posthogKey = analyticsTest ? 'phc_local_test_build_not_a_real_key' : impor
     api_host: 'https://eu.i.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
-    autocapture: hasFullConsent,
+    autocapture: hasFullConsent ? window.nidhiClickCapture : false,
     enable_heatmaps: hasFullConsent,
-    capture_dead_clicks: hasFullConsent,
+    capture_dead_clicks: hasFullConsent ? window.nidhiClickCapture : false,
     capture_performance: false,
     capture_exceptions: false,
     // Clicks are told apart by their data-attr labels, never by their text:
@@ -147,13 +176,13 @@ const posthogKey = analyticsTest ? 'phc_local_test_build_not_a_real_key' : impor
     disable_session_recording: true,
     before_send: function (event) {
       if (event) { cleanProps(event.properties); cleanProps(event.$set); cleanProps(event.$set_once); }
-      return event;
+      return cleanClicks(event);
     },
     // Consent given before the SDK finished loading could not be applied by
     // the cookie prompt (the pre-load stub has no set_config), so apply it here.
     loaded: function(ph) {
       if (!hasFullConsent && localStorage.getItem('nidhi-cookie-consent') === 'accepted') {
-        ph.set_config({ autocapture: true, enable_heatmaps: true, capture_dead_clicks: true });
+        ph.set_config({ autocapture: window.nidhiClickCapture, enable_heatmaps: true, capture_dead_clicks: window.nidhiClickCapture });
       }
       // The learning path's level helper pauses heatmaps while it is open, so
       // no click position shows which answer was picked (LearnHome.tsx).

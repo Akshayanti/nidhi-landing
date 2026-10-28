@@ -258,6 +258,23 @@ export const multiCurrencyNetWorthEn = {
   island: {
     /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
+    /** The spreadsheet's own sheets and columns; the rest reuses the labels below. */
+    export: {
+      /** The printed report's "What this means": interprets the answer, never advises. */
+      meaning: 'Net worth is what you own minus what you owe. Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in. Amounts in other currencies are converted at the rates loaded on the page, which change every day.',
+      tool: 'Multi-currency net worth calculator',
+      hiddenLabel: 'Amounts',
+      hiddenText: 'Not included: this shared view carries currencies and shares only.',
+      sheets: { byCurrency: 'By currency', rates: 'Rates' },
+      code: 'Code',
+      netOwn: 'Net, in its own currency',
+      /** `{currency}` is the spending currency's code. */
+      netSpending: 'Net, in {currency}',
+      sharePct: 'Concentration, %',
+      ratesText: 'Official reference rates from Frankfurter, as loaded on this page. Your bank or broker may use different rates.',
+      /** `{currency}` is the spending currency's code. */
+      ratePer: 'Units per 1 {currency}',
+    },
     toolbar: {
       aria: 'Net worth calculator actions',
       currencyLabel: 'Your currency (the one you spend in)',
@@ -296,7 +313,7 @@ export const multiCurrencyNetWorthEn = {
       addAsset: '+ Add asset',
       uploadCsv: 'Upload CSV',
       uploadCsvAria: 'Upload CSV file',
-      downloadCsv: 'Download CSV',
+      downloadCsv: 'Save rows as CSV (to upload later)',
       downloadTitle: 'Download your assets as CSV',
       /** `{count}` is how many rows the file carried. */
       errorTitleOne: '{count} row could not be imported:',
@@ -643,6 +660,19 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   },
   island: {
     currencies: currenciesHi,
+    export: {
+      meaning: 'शुद्ध संपत्ति यानी आपके पास जो है, उसमें से आप पर जो बकाया है वह घटाकर बची रकम। हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी ख़र्च वाली मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है। दूसरी मुद्राओं की रकमें पेज पर लोड हुई दरों से रूपांतरित की गई हैं, जो रोज़ बदलती हैं।',
+      tool: 'शुद्ध संपत्ति कैलकुलेटर',
+      hiddenLabel: 'रकम',
+      hiddenText: 'शामिल नहीं: इस शेयर किए गए व्यू में सिर्फ़ मुद्राएँ और उनके हिस्से हैं।',
+      sheets: { byCurrency: 'हर मुद्रा', rates: 'विनिमय दरें' },
+      code: 'कोड',
+      netOwn: 'शुद्ध, उसी मुद्रा में',
+      netSpending: 'शुद्ध, {currency} में',
+      sharePct: 'जमाव, %',
+      ratesText: 'Frankfurter से आधिकारिक संदर्भ दरें, जैसी इस पेज पर लोड हुईं। आपका बैंक या ब्रोकर अलग दरें इस्तेमाल कर सकता है।',
+      ratePer: '1 {currency} पर इकाइयाँ',
+    },
     toolbar: {
       aria: 'शुद्ध संपत्ति कैलकुलेटर के बटन',
       currencyLabel: 'आपकी मुद्रा (जिसमें आप खर्च करते हैं)',
@@ -680,7 +710,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       addAsset: '+ संपत्ति जोड़ें',
       uploadCsv: 'CSV अपलोड करें',
       uploadCsvAria: 'CSV फ़ाइल अपलोड करें',
-      downloadCsv: 'CSV डाउनलोड करें',
+      downloadCsv: 'पंक्तियाँ CSV में सेव करें (बाद में अपलोड के लिए)',
       downloadTitle: 'अपनी संपत्तियाँ CSV में डाउनलोड करें',
       errorTitleOne: '{count} पंक्ति आयात नहीं हो सकी:',
       errorTitleMany: '{count} पंक्तियाँ आयात नहीं हो सकीं:',
@@ -999,6 +1029,19 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   },
   island: {
     currencies: currenciesEs,
+    export: {
+      meaning: 'El patrimonio neto es lo que tienes menos lo que debes. La parte de cada moneda muestra cuánto se mueve cuando esa moneda sube o baja frente a la que usas para gastar. Los importes en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
+      tool: 'Calculadora de patrimonio neto',
+      hiddenLabel: 'Importes',
+      hiddenText: 'No incluidos: esta vista compartida solo trae monedas y porcentajes.',
+      sheets: { byCurrency: 'Por moneda', rates: 'Tipos de cambio' },
+      code: 'Código',
+      netOwn: 'Neto, en su propia moneda',
+      netSpending: 'Neto, en {currency}',
+      sharePct: 'Concentración, %',
+      ratesText: 'Tipos de referencia oficiales de Frankfurter, tal como se cargaron en esta página. Tu banco o bróker puede usar otros.',
+      ratePer: 'Unidades por 1 {currency}',
+    },
     toolbar: {
       aria: 'Acciones de la calculadora de patrimonio neto',
       currencyLabel: 'Tu moneda (en la que gastas)',
@@ -1036,7 +1079,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       addAsset: '+ Añadir activo',
       uploadCsv: 'Subir CSV',
       uploadCsvAria: 'Subir archivo CSV',
-      downloadCsv: 'Descargar CSV',
+      downloadCsv: 'Guardar filas como CSV (para subirlas después)',
       downloadTitle: 'Descarga tus activos en CSV',
       errorTitleOne: 'No se pudo importar {count} fila:',
       errorTitleMany: 'No se pudieron importar {count} filas:',
@@ -1365,6 +1408,19 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   },
   island: {
     currencies: currenciesCs,
+    export: {
+      meaning: 'Čisté jmění je to, co vlastníte, minus to, co dlužíte. Podíl každé měny ukazuje, jak velká část se pohne, když tato měna posílí nebo oslabí vůči měně, ve které utrácíte. Částky v ostatních měnách jsou přepočteny pomocí kurzů načtených na stránce, které se mění každý den.',
+      tool: 'Kalkulačka čistého jmění',
+      hiddenLabel: 'Částky',
+      hiddenText: 'Nejsou zahrnuty: toto sdílené zobrazení obsahuje jen měny a podíly.',
+      sheets: { byCurrency: 'Podle měny', rates: 'Kurzy' },
+      code: 'Kód',
+      netOwn: 'Čistá pozice, ve vlastní měně',
+      netSpending: 'Čistá pozice, v {currency}',
+      sharePct: 'Koncentrace, %',
+      ratesText: 'Oficiální referenční kurzy z Frankfurter, jak se načetly na této stránce. Vaše banka nebo broker může používat jiné kurzy.',
+      ratePer: 'Jednotek za 1 {currency}',
+    },
     toolbar: {
       aria: 'Akce kalkulačky čistého jmění',
       currencyLabel: 'Vaše měna (ta, ve které utrácíte)',
@@ -1402,7 +1458,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       addAsset: '+ Přidat aktivum',
       uploadCsv: 'Nahrát CSV',
       uploadCsvAria: 'Nahrát soubor CSV',
-      downloadCsv: 'Stáhnout CSV',
+      downloadCsv: 'Uložit řádky jako CSV (k pozdějšímu nahrání)',
       downloadTitle: 'Stáhnout aktiva jako CSV',
       errorTitleOne: '{count} řádek se nepodařilo importovat:',
       errorTitleMany: '{count} řádků se nepodařilo importovat:',
@@ -1692,6 +1748,19 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   },
   island: {
     currencies: currenciesMr,
+    export: {
+      meaning: 'निव्वळ संपत्ती म्हणजे तुमच्याकडे जे आहे त्यातून तुम्ही देणे असलेले वजा करून उरलेली रक्कम. प्रत्येक चलनाचा हिस्सा दाखवतो की ते चलन तुम्ही खर्च करता त्या चलनाच्या तुलनेत वर-खाली झाल्यावर निव्वळ संपत्तीचा किती भाग बदलतो. इतर चलनांतील रकमा पेजवर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
+      tool: 'निव्वळ संपत्ती कॅल्क्युलेटर',
+      hiddenLabel: 'रक्कम',
+      hiddenText: 'समाविष्ट नाही: या शेअर केलेल्या दृश्यात फक्त चलने आणि त्यांचे हिस्से आहेत.',
+      sheets: { byCurrency: 'प्रत्येक चलन', rates: 'विनिमय दर' },
+      code: 'कोड',
+      netOwn: 'निव्वळ, त्याच चलनात',
+      netSpending: 'निव्वळ, {currency} मध्ये',
+      sharePct: 'हिस्सा, %',
+      ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पेजवर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
+      ratePer: '1 {currency} मागे एकके',
+    },
     toolbar: {
       aria: 'निव्वळ संपत्ती कॅल्क्युलेटरच्या क्रिया',
       currencyLabel: 'तुमचे चलन (ज्यात तुम्ही खर्च करता)',
@@ -1726,7 +1795,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       addAsset: '+ मालमत्ता जोडा',
       uploadCsv: 'CSV अपलोड करा',
       uploadCsvAria: 'CSV फाइल अपलोड करा',
-      downloadCsv: 'CSV डाउनलोड करा',
+      downloadCsv: 'ओळी CSV म्हणून सेव्ह करा (नंतर अपलोड करण्यासाठी)',
       downloadTitle: 'तुमची मालमत्ता CSV म्हणून डाउनलोड करा',
       errorTitleOne: '{count} ओळ आयात होऊ शकली नाही:',
       errorTitleMany: '{count} ओळी आयात होऊ शकल्या नाहीत:',

@@ -47,7 +47,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { monteCarlo: mc } = dict(locale).tools;
+const { monteCarlo: mc, export: exportStrings } = dict(locale).tools;
 const strings = mc.page;
 const island = mc.island;
 
@@ -172,6 +172,7 @@ const faqSchema = {
     <MonteCarloSimulator
       client:load
       strings={island}
+      exportStrings={exportStrings}
       netWorthHref={localizedPath(locale, '/free/multi-currency-net-worth/')}
       defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}

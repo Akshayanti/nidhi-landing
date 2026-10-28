@@ -194,6 +194,22 @@ export const inflationEn = {
     /** The 38 currency names, shared by every tool: see `./currencies.ts`. */
     currencies: currenciesEn,
     formLabel: 'Inflation calculator',
+    /** The spreadsheet's own sheets and rows; the rest reuses the labels below. */
+    export: {
+      /** The printed report's "What this means": interprets the answer, never advises. */
+      meaning: 'Inflation is the rise in prices over time. Unless a country’s actual inflation was used, the figures assume the same rate every year; real inflation changes from year to year, and the prices you pay may rise faster or slower than the average.',
+      moneyLabel: 'Amounts',
+      moneyText: "To the currency's smallest unit. The page rounds its headline; these are the exact figures behind it.",
+      sheets: { answer: 'Answer', byYear: 'By year' },
+      question: 'Question',
+      country: 'Inflation history',
+      result: 'Result',
+      realRate: 'Buying power, % a year',
+      inWords: 'In words',
+      years: 'Years used',
+      source: 'Source',
+      sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0.',
+    },
     tabsLabel: 'Choose a question',
     tabs: {
       buy: 'Buying power later',
@@ -462,6 +478,20 @@ export const inflationHi: typeof inflationEn = {
   island: {
     currencies: currenciesHi,
     formLabel: 'महँगाई कैलकुलेटर',
+    export: {
+      meaning: 'महँगाई का मतलब है समय के साथ क़ीमतों का बढ़ना। जब तक किसी देश की असल महँगाई इस्तेमाल न हुई हो, ये आँकड़े हर साल एक ही दर मानते हैं; असल महँगाई साल-दर-साल बदलती है, और आप जो क़ीमतें चुकाते हैं वे औसत से तेज़ या धीमी बढ़ सकती हैं।',
+      moneyLabel: 'रकम',
+      moneyText: 'मुद्रा की सबसे छोटी इकाई तक। पेज अपना मुख्य जवाब गोल करके दिखाता है; ये उसके पीछे के सटीक आँकड़े हैं।',
+      sheets: { answer: 'जवाब', byYear: 'हर साल' },
+      question: 'सवाल',
+      country: 'महँगाई का इतिहास',
+      result: 'नतीजा',
+      realRate: 'क्रय शक्ति, % सालाना',
+      inWords: 'शब्दों में',
+      years: 'इस्तेमाल हुए साल',
+      source: 'स्रोत',
+      sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0।',
+    },
     tabsLabel: 'सवाल चुनें',
     tabs: {
       buy: 'आगे कितना ख़रीदा जा सकता है?',
@@ -721,6 +751,20 @@ export const inflationEs: typeof inflationEn = {
   island: {
     currencies: currenciesEs,
     formLabel: 'Calculadora de inflación',
+    export: {
+      meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
+      moneyLabel: 'Importes',
+      moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea su titular; estas son las cifras exactas que hay detrás.',
+      sheets: { answer: 'Respuesta', byYear: 'Por año' },
+      question: 'Pregunta',
+      country: 'Historia de la inflación',
+      result: 'Resultado',
+      realRate: 'Poder adquisitivo, % al año',
+      inWords: 'En palabras',
+      years: 'Años usados',
+      source: 'Fuente',
+      sourceText: 'Banco Mundial, indicador FP.CPI.TOTL.ZG, «Inflation, consumer prices (annual %)», CC BY 4.0.',
+    },
     tabsLabel: 'Elige una pregunta',
     tabs: {
       buy: 'Poder de compra futuro',
@@ -983,6 +1027,20 @@ export const inflationCs: typeof inflationEn = {
   island: {
     currencies: currenciesCs,
     formLabel: 'Inflační kalkulačka',
+    export: {
+      meaning: 'Inflace je růst cen v průběhu času. Pokud nebyla použita skutečná inflace dané země, výpočet vychází ze stejné sazby v každém roce; skutečná inflace se rok od roku mění a ceny, které platíte, mohou růst rychleji i pomaleji než průměr.',
+      moneyLabel: 'Částky',
+      moneyText: 'Na nejmenší jednotku měny. Stránka hlavní odpověď zaokrouhluje; tady jsou přesná čísla, ze kterých vychází.',
+      sheets: { answer: 'Odpověď', byYear: 'Po letech' },
+      question: 'Otázka',
+      country: 'Historie inflace',
+      result: 'Výsledek',
+      realRate: 'Kupní síla, % ročně',
+      inWords: 'Slovy',
+      years: 'Použité roky',
+      source: 'Zdroj',
+      sourceText: 'Světová banka, ukazatel FP.CPI.TOTL.ZG, „Inflation, consumer prices (annual %)“, CC BY 4.0.',
+    },
     tabsLabel: 'Vyberte otázku',
     tabs: {
       buy: 'Kupní síla později',
@@ -1236,6 +1294,20 @@ export const inflationMr: typeof inflationEn = {
   island: {
     currencies: currenciesMr,
     formLabel: 'महागाई कॅल्क्युलेटर',
+    export: {
+      meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
+      moneyLabel: 'रक्कम',
+      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पेज मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
+      sheets: { answer: 'उत्तर', byYear: 'दरवर्षी' },
+      question: 'प्रश्न',
+      country: 'महागाईचा इतिहास',
+      result: 'निकाल',
+      realRate: 'क्रयशक्ती, % दरवर्षी',
+      inWords: 'शब्दांत',
+      years: 'वापरलेली वर्षे',
+      source: 'स्रोत',
+      sourceText: 'World Bank, निर्देशक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
+    },
     tabsLabel: 'प्रश्न निवडा',
     tabs: {
       buy: 'पुढे क्रयशक्ती',

@@ -15,6 +15,10 @@ import {
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
+import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
+import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
+import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 
 // ---------------------------------------------------------------------------
@@ -37,6 +41,7 @@ import type { Dict } from '../i18n/strings/types.ts';
 // ---------------------------------------------------------------------------
 
 type Strings = Dict['tools']['monteCarlo']['island'];
+type ExportStrings = Dict['tools']['export'];
 
 /** Shorthand, as on the pages: a catalog template is filled with `t(...)`. */
 const t = format;
@@ -232,11 +237,13 @@ function useSimulation(state: ToolState): Shown & { busy: boolean } {
  */
 export default function MonteCarloSimulator({
   strings,
+  exportStrings,
   netWorthHref,
   defaultCurrency,
   amountLocale,
 }: {
   strings: Strings;
+  exportStrings: ExportStrings;
   netWorthHref: string;
   defaultCurrency: string;
   /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
@@ -349,6 +356,27 @@ export default function MonteCarloSimulator({
     );
     track('free_monte_carlo_share_copied');
   }
+
+  // Both copies are of the plan the results show, never a half-typed one, and
+  // the event says only which kind was made.
+  function downloadSpreadsheet() {
+    const sheets = monteCarloSheets({
+      island: strings,
+      common: exportStrings,
+      state: shownState,
+      result,
+      date: isoDate(),
+      page: `${window.location.origin}${window.location.pathname}`,
+    });
+    downloadWorkbook(sheets, 'monte-carlo');
+    track('free_monte_carlo_exported', { format: 'xlsx' });
+  }
+
+  function printPage() {
+    track('free_monte_carlo_exported', { format: 'pdf' });
+    printResults();
+  }
+
 
   function reset() {
     const start = defaultState(defaultCurrency);
@@ -528,9 +556,6 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
-            {copied ? strings.actions.copied : strings.actions.copy}
-          </button>
           <button type="button" className="mcs-btn mcs-btn--ghost" onClick={reset} data-attr="free-monte-carlo-reset">
             {strings.actions.reset}
           </button>
@@ -544,7 +569,30 @@ export default function MonteCarloSimulator({
         </div>
       </form>
 
-      <Results result={result} state={shownState} code={shownState.currency} busy={running} strings={strings} />
+      <Results
+        result={result}
+        state={shownState}
+        code={shownState.currency}
+        busy={running}
+        strings={strings}
+        actions={
+          <ToolExport
+            strings={exportStrings}
+            share={
+              <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
+                {copied ? strings.actions.copied : strings.actions.copy}
+              </button>
+            }
+            xlsxAttr="free-monte-carlo-export-xlsx"
+            pdfAttr="free-monte-carlo-export-pdf"
+            ready={!hasErrors && !pending}
+            onSpreadsheet={downloadSpreadsheet}
+            onPrint={printPage}
+          />
+        }
+      />
+
+      <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={result} />
     </div>
     </AmountLocaleContext.Provider>
   );
@@ -621,7 +669,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   );
 }
 
-function Results({ result, state, code, busy, strings }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings }) {
+function Results({ result, state, code, busy, strings, actions }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
   const { formatAmount, amountLocale } = useMoney();
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
@@ -694,6 +742,8 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
         {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, amountLocale) })}
       </p>
 
+      {actions}
+
       {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
 
       {result.years > 0 && <details className="mcs-tableWrap" onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) track('free_monte_carlo_table_opened'); }}>
@@ -726,6 +776,25 @@ function Results({ result, state, code, busy, strings }: { result: SimulationRes
       </details>}
     </section>
   );
+}
+
+/**
+ * What prints: the plan the results show, worded as the quick result above
+ * the form words it. Hidden on screen (see ToolReport).
+ */
+function PrintedReport({ strings, exportStrings, state, result }: { strings: Strings; exportStrings: ExportStrings; state: ToolState; result: SimulationResult }) {
+  const { formatAmount, amountLocale } = useMoney();
+  const code = state.currency;
+  const r = result.atRetirement;
+  const answer: string[] = [];
+  if (state.saveYears > 0) {
+    const median = state.saveYears === 1 ? strings.quick.medianOne : t(strings.quick.medianOther, { years: state.saveYears });
+    answer.push(`${median}: ${formatAmount(r.p50, code)}`, t(strings.quick.range, { low: formatAmount(r.p10, code), high: formatAmount(r.p90, code) }));
+  }
+  if (state.withdrawal > 0 && result.lasted !== null) answer.push(t(strings.quick.lasted, { years: state.withdrawYears, inTen: inTen(result.lasted, strings) }));
+  if (answer.length === 0) answer.push(strings.results.empty);
+  const locale = amountLocale ?? 'en-US';
+  return <ToolReport report={monteCarloReport({ island: strings, common: exportStrings, state, result, answer })} strings={exportStrings} locale={locale} />;
 }
 
 /** Every fifth year, plus the last one. */

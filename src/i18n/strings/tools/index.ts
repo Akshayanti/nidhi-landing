@@ -20,12 +20,14 @@ import { loanComparisonCs, loanComparisonEn, loanComparisonEs, loanComparisonHi,
 import { multiCurrencyNetWorthCs, multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi, multiCurrencyNetWorthMr } from './multiCurrencyNetWorth.ts';
 import { monteCarloCs, monteCarloEn, monteCarloEs, monteCarloHi, monteCarloMr } from './monteCarlo.ts';
 import { inflationCs, inflationEn, inflationEs, inflationHi, inflationMr } from './inflation.ts';
+import { exportCs, exportEn, exportEs, exportHi, exportMr } from './export.ts';
 
 export const toolsEn = {
   loanComparison: loanComparisonEn,
   multiCurrencyNetWorth: multiCurrencyNetWorthEn,
   monteCarlo: monteCarloEn,
   inflation: inflationEn,
+  export: exportEn,
 };
 
 export const toolsHi = {
@@ -33,6 +35,7 @@ export const toolsHi = {
   multiCurrencyNetWorth: multiCurrencyNetWorthHi,
   monteCarlo: monteCarloHi,
   inflation: inflationHi,
+  export: exportHi,
 };
 
 export const toolsEs = {
@@ -40,6 +43,7 @@ export const toolsEs = {
   multiCurrencyNetWorth: multiCurrencyNetWorthEs,
   monteCarlo: monteCarloEs,
   inflation: inflationEs,
+  export: exportEs,
 };
 
 export const toolsCs = {
@@ -47,6 +51,7 @@ export const toolsCs = {
   multiCurrencyNetWorth: multiCurrencyNetWorthCs,
   monteCarlo: monteCarloCs,
   inflation: inflationCs,
+  export: exportCs,
 };
 
 export const toolsMr = {
@@ -54,4 +59,5 @@ export const toolsMr = {
   multiCurrencyNetWorth: multiCurrencyNetWorthMr,
   monteCarlo: monteCarloMr,
   inflation: inflationMr,
+  export: exportMr,
 };
