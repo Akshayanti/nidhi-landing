@@ -69,3 +69,4 @@ Background:
 - Oct 28, 2026: owner: steps 9 and 10, one PR with auto-merge, then stop. Step 9 lesson work done and council signed off.
 - Oct 28, 2026: step 10 done and council signed off; build, 787 tests and lint pass. Steps 9 and 10 go in one PR with auto-merge (owner). Next: step 11 (open), step 12 (later), Instagram batch; owner said stop after this PR.
 - Oct 28, 2026: source checks done (owner): gates on 49 and 50 closed; ledger rows that rested on secondary sources re-checked against official text (Germany EStG, Japan ISA, RBI, CONSAR, CVM 175, CMA, Japan MoJ, OJK, UAE Decree-Law 41/2024 art. 193); inc-3 gains the UAE freelancer sentence (Cabinet Decision 49 of 2023). Council signed off in 3 rounds.
+- Oct 28, 2026: owner, ahead of the Nov 1 readout: November format = NEW (reels only, 1 to 3 days); Sunday format from Nov 8 agreed. Safety check still open: owner asked whether the breakout findings were factored in (see reply in session).
