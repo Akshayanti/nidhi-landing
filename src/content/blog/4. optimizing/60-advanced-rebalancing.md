@@ -22,7 +22,7 @@ glossary:
     definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 60
 pubDate: 2099-01-29
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -141,7 +141,7 @@ Everything above assumes the portfolio covers much of retirement spending. When 
 </details>
 
 <details class="lesson-depth">
-<summary class="disclosure">Glide paths and retirement accounts where you live</summary>
+<summary class="disclosure">Glide paths and retirement accounts by region</summary>
 
 - **US.** Target-date funds are widely available at low cost. Roth conversions in early retirement, before required minimum distributions begin, generally at 73 or 75 depending on date of birth under current rules, create rebalancing opportunities across account types. A Health Savings Account can hold investments long-term.
 - **UK.** Lifestyle funds, the UK equivalent of target-date funds, come with some workplace pensions. Drawdown often runs through a SIPP; the tax-free lump sum (usually 25% of the pension, up to a cap) is a rebalancing moment at retirement.
@@ -149,6 +149,8 @@ Everything above assumes the portfolio covers much of retirement spending. When 
 - **India.** The NPS (National Pension System) has default lifecycle funds (LC-25, LC-50, LC-75) with age-based glide paths; the rule that part of the pot must buy an annuity at retirement affects the calculation.
 - **Australia.** Superannuation funds often offer age-based options; transition-to-retirement rules allow specific strategies in the late working years.
 - **Canada.** Converting an RRSP to a RRIF, which must happen by a statutory deadline rather than necessarily at retirement, can be a rebalancing moment; a TFSA has different tax effects when rebalancing.
+- **Mexico.** Since December 2019 the workplace pension managers (afores) invest each account in a generational fund (SIEFORE) set by year of birth, in five-year groups, which moves to less risky assets with age: a target-date fund built into the system.
+- **Chile.** Members have chosen among five pension funds, from A (the most shares) to E (the fewest), with a default that moves to safer funds with age. Under the 2025 pension reform these give way to generational funds, organised by age group like Mexico's, from April 2027.
 
 </details>
 

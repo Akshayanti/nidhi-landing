@@ -31,7 +31,7 @@ glossary:
     definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 43
 pubDate: 2026-10-12
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -165,6 +165,8 @@ A common approach has four parts:
 The [overconfidence post](/blog/overconfidence-and-the-planning-fallacy/) explains the bias; in projections it shows up three ways.
 
 **Anchoring on the best recent decade.** US shares from 2010 to 2020 did exceptionally well by long-run standards. Using that decade as the baseline for the next 30 years extrapolates from a lucky sample; some decades are much better and some much worse.
+
+**Anchoring on one home market.** Japan's Nikkei 225 did not close above its December 1989 record until February 2024, 34 years later, before counting dividends. A plan built on one country's best years carries that country's history into the forecast; long-run figures across many markets reduce that anchoring.
 
 **Confusing the return you need with the return you can expect.** "I need 8% to hit my goal, so I will model 8%" turns the projection into a wish list. The market does not care what return you need.
 

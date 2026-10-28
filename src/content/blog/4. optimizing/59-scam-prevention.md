@@ -23,7 +23,7 @@ glossary:
     definition: "A fraud that pays earlier investors with money from later ones, with no real returns behind it, until new money runs out."
 order: 59
 pubDate: 2099-01-27
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 localRules: [investments, credit]
 level: "optimizing"
 primaryPersona: "eva"
@@ -178,7 +178,7 @@ Speed matters, and the order helps:
 Full recovery of lost money is unlikely for most fraud. A transfer caught within hours has some chance; card payments may have stronger dispute or reimbursement routes than bank transfers, depending on local law and how the payment was authorised; crypto and romance-scam losses are often especially hard to recover. The playbook mainly prevents further damage. And any "recovery service" that appears afterwards offering to get the money back for a fee is very often a second scam; legitimate routes run through banks, police and regulators.
 
 <details class="lesson-depth">
-<summary class="disclosure">Registers and reporting where you live: the US, UK, EU, India, Australia and Canada</summary>
+<summary class="disclosure">Registers and reporting by region</summary>
 
 - **US.** Advisers: FINRA BrokerCheck and the SEC's Investment Adviser Public Disclosure. Reporting: ReportFraud.ftc.gov, IC3 for internet crime, the SEC and CFPB, and state attorneys general. Free credit freezes at Equifax, Experian and TransUnion.
 - **UK.** The FCA Register for firms and individuals. Action Fraud for reporting. No credit freeze; protective registration through Cifas.
@@ -186,6 +186,10 @@ Full recovery of lost money is unlikely for most fraud. A transfer caught within
 - **India.** SEBI's registered investment adviser search; cybercrime.gov.in for cyber fraud; NPCI dispute processes for UPI fraud, which is growing fast.
 - **Australia.** ASIC's Financial Advisers Register; Scamwatch for reporting.
 - **Canada.** CIRO for adviser registration; the Canadian Anti-Fraud Centre for reporting; Equifax and TransUnion for freezes.
+- **Japan.** The FSA lists licensed and registered firms and publishes the names of unregistered firms it has warned. Suspected fraud can be reported to the police consultation line #9110 or the FSA's line for fraudulent investments.
+- **Brazil.** The CVM's register shows who may offer investments. A Pix payment to a scammer can be disputed through your bank under the Banco Central's special return mechanism (MED) within 80 days, but money comes back only if it is still in the receiving account.
+- **Indonesia.** The financial services authority OJK's Indonesia Anti-Scam Centre (IASC), running since November 2024, takes reports and can block funds still in a scammer's account; it had received over 515,000 reports by March 2026.
+- **South Africa.** The FSCA's register shows whether a provider is authorised and for which products. Checking that the FSP number matches the firm's name matters, because scammers borrow real numbers.
 
 </details>
 

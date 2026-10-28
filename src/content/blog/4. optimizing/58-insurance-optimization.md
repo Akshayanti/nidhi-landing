@@ -29,7 +29,7 @@ glossary:
     definition: "The part of each claim you pay yourself before the insurer pays, also called an excess. A higher deductible lowers the premium."
 order: 58
 pubDate: 2099-01-23
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 localRules: [insurance, benefits]
 level: "optimizing"
 primaryPersona: "eva"
@@ -166,7 +166,7 @@ Each is profitable for the seller, and any can still suit a specific person; the
 A common routine takes about an hour a year: list every policy (life, disability, health, motor, home or contents, liability, any riders and extended warranties still running); for each, ask what loss it covers and whether savings could absorb it; then, for any loss that is not covered, find the cheapest way to close the gap. Sometimes one higher liability limit closes several gaps, and sometimes a higher deductible pays for it.
 
 <details class="lesson-depth">
-<summary class="disclosure">Insurance where you live: the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Insurance by region</summary>
 
 - **US.** Employer health cover is typical before 65, then Medicare. High liability exposure makes umbrella cover common among households with assets. Term life is widely available; whole life is heavily marketed; default motor and home liability limits are often low.
 - **UK.** The NHS covers essentials; private health cover is optional. Life and critical illness cover come through employers and individually. Personal liability is usually in home insurance up to £1M or £2M.
@@ -174,6 +174,10 @@ A common routine takes about an hour a year: list every policy (life, disability
 - **India.** Health insurance matters because private costs for uncovered events are significant. Term life is cheap; endowment and unit-linked (ULIP) plans are heavily marketed and often criticised for high costs compared with term cover plus separate investing. Personal accident cover is a distinct product.
 - **Australia.** Medicare covers essentials; private cover is popular. Compulsory third-party injury cover for vehicles, often with third-party property cover added. Home insurance commonly includes personal liability up to $20 million.
 - **Canada.** Provincial health insurance covers essentials, with workplace or private top-ups. Motor insurance is regulated by province; umbrella cover is available.
+- **Japan.** Public health insurance covers everyone, usually with a 30% copayment before 70, and the high-cost medical expense system caps each month's out-of-pocket cost at a level set by income, which limits what private medical cover adds. Compulsory motor insurance (jibaiseki) pays only for injury to others, with limits such as ¥30 million for a death, which is why most vehicles also carry voluntary liability cover (about 75% in 2021).
+- **South Africa.** Medical schemes must cover prescribed minimum benefits (emergencies, 25 chronic conditions and about 270 other conditions), subject to rules such as using the scheme's designated providers. In other cases specialists can charge more than a scheme pays, the shortfall that separate gap cover is sold to fill.
+- **Indonesia.** Public health insurance (JKN, run by BPJS Kesehatan) covered about 98.6% of the population in mid-2026, though not every member is an active payer.
+- **Brazil.** The SUS provides universal public healthcare, free at the point of use; about 53 million people also hold private health plans regulated by the ANS, which caps the yearly rise for individual plans (5.11% for May 2026 to April 2027).
 
 </details>
 

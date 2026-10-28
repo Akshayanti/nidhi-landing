@@ -33,7 +33,7 @@ glossary:
 order: 57.5
 companionOf: "income-replacement-ratio"
 pubDate: 2099-01-22
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [inheritance, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "petra"
@@ -151,9 +151,9 @@ Some systems tax single people more heavily than couples on the same household i
 <details class="lesson-depth">
 <summary class="disclosure">Care, documents and inheritance by region</summary>
 
-- **Long-term care.** Germany, the Netherlands and Japan fund care through compulsory insurance. In the UK, care funding and thresholds differ across England, Scotland, Wales and Northern Ireland. In the US, Medicare generally covers little long-term custodial care, and Medicaid support depends on state rules and financial eligibility. Many other systems combine family care, public support and private payment in different proportions.
+- **Long-term care.** Germany, the Netherlands, Japan and, since 2008, South Korea fund care through compulsory insurance. In the UK, care funding and thresholds differ across England, Scotland, Wales and Northern Ireland. In the US, Medicare generally covers little long-term custodial care, and Medicaid support depends on state rules and financial eligibility. Many other systems combine family care, public support and private payment in different proportions.
 - **Powers of attorney.** Names and formalities differ; some countries require registration or a notary, and a document made in one country is not always recognised in another, which matters for assets abroad.
-- **Inheritance.** In common-law countries a will can usually leave everything to a friend or a charity. Where forced heirship applies, relatives may be entitled to a share regardless.
+- **Inheritance.** In common-law countries a will can usually leave everything to a friend or a charity. Where forced heirship applies, relatives may be entitled to a share regardless: in Brazil half the estate is reserved for descendants, ascendants (parents, grandparents) and the spouse, and under Islamic inheritance rules, such as those applied to Muslims in the UAE, a will can leave at most a third to people who are not heirs without the heirs' consent.
 
 </details>
 

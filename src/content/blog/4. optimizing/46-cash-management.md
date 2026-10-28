@@ -30,7 +30,7 @@ glossary:
     definition: "What an amount of money can buy. When prices rise faster than a balance grows, the balance buys less even though the number on the statement stays the same."
 order: 46
 pubDate: 2026-10-23
-updatedDate: 2026-10-21
+updatedDate: 2026-10-28
 localRules: [deposit-protection, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -183,7 +183,7 @@ In the EU, €100,000 per person per bank under national schemes. In the UK, £1
 The three jobs and the kinds of account are the same almost everywhere; the local names differ.
 
 <details class="lesson-depth">
-<summary class="disclosure">Names in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Names by region</summary>
 
 - **US.** High-yield savings accounts, mostly at online banks; money-market funds through brokerages; Treasury bills bought from the Treasury directly or through a broker; short-duration bond ETFs.
 - **UK.** Instant-access savings and Cash ISAs (tax-advantaged) for the buffer; money-market funds through investment platforms; UK Treasury bills and short-dated gilts.
@@ -191,6 +191,9 @@ The three jobs and the kinds of account are the same almost everywhere; the loca
 - **India.** High-interest savings accounts at many banks; liquid mutual funds as the money-market equivalent; Treasury bills through RBI Retail Direct or brokers.
 - **Australia.** High-interest savings accounts and broker cash management accounts are common. Retail investors can buy exchange-traded Australian Government Bonds through an ASX broker; there is no simple retail equivalent of buying short-term Treasury bills directly.
 - **Canada.** High-interest savings accounts, mostly at digital banks; high-interest savings ETFs as a common cash stand-in; government bonds and bills through brokers.
+- **Japan.** The government's floating-rate 10-year bond for individuals (kojin-muke kokusai) has a 0.05% interest floor, pays interest twice a year and can be cashed in after the first year at face value less roughly the last two interest payments.
+- **Brazil.** Tesouro Selic, a government bond that tracks the policy rate, can be sold on any business day and is a common home for an emergency fund, though its price can move slightly before maturity. Bank CDBs with daily liquidity are covered by the FGC guarantee up to R$250,000 per person per institution or financial group, with a limit of R$1 million paid to one person in any four years.
+- **Indonesia.** The deposit insurer LPS covers up to Rp2 billion per depositor per bank, but only when the deposit rate is at or below its guarantee rate (3.75% for rupiah at commercial banks for October 2026 to January 2027), so a higher advertised rate can mean no cover.
 
 </details>
 

@@ -24,7 +24,7 @@ glossary:
     definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 57
 pubDate: 2099-01-21
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 localRules: [pensions, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -160,7 +160,7 @@ Research on retiree spending, such as David Blanchett's work on the "retirement 
 ## Pensions and healthcare where you live
 
 <details class="lesson-depth">
-<summary class="disclosure">Retirement income and healthcare in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Retirement income and healthcare by region</summary>
 
 - **US.** Social Security replaces around 40% for average earners; private-sector employer pensions are now rare; healthcare is expensive before 65 and Medicare covers less than many expect, so portfolios often need to be larger than European equivalents.
 - **UK.** The State Pension covers a modest baseline; auto-enrolment workplace pensions are now near-universal; the NHS removes one of the largest US-style retirement costs.
@@ -168,6 +168,10 @@ Research on retiree spending, such as David Blanchett's work on the "retirement 
 - **India.** Private-sector state pension coverage has historically been low; EPF (Employees' Provident Fund) and NPS (National Pension System) provide employer and self-directed savings; family support has mattered, and is changing with urbanisation; private healthcare costs are rising.
 - **Australia.** Compulsory superannuation is itself a portfolio; the means-tested Age Pension can reduce what it must cover; Medicare covers essential healthcare.
 - **Canada.** CPP (Canada Pension Plan), OAS (Old Age Security) and employer or personal savings combine; public healthcare covers essentials.
+- **Japan.** A flat National Pension covers residents from 20 to 59, with the earnings-related Employees' Pension on top for employees, and iDeCo as a voluntary third layer. Health insurance is universal; people 75 and over pay 10% of costs, or 20% to 30% on higher incomes.
+- **South Korea.** Public transfers, the National Pension among them, make up only about 29% of older households' income, against about half from work, and close to 40% of people 65 and over live on less than half the median income, the highest share in the OECD.
+- **Brazil.** INSS pensions are capped (R$8,475.55 a month in 2026), so higher earners replace a smaller share of their pay; the SUS provides universal public healthcare.
+- **South Africa.** The means-tested Older Persons Grant pays R2,400 a month from April 2026 (R2,420 from 75). Since September 2024 retirement fund contributions go one third to a savings pot that can be drawn once a tax year and two thirds to a retirement pot kept until retirement.
 
 The arithmetic is the same everywhere: retirement spending, minus income from outside the portfolio, times the multiple for the chosen withdrawal rate.
 

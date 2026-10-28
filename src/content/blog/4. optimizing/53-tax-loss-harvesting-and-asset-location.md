@@ -29,7 +29,7 @@ glossary:
     definition: "Real estate investment trust: a company owning property that pays out most of its income, often taxed at ordinary rates."
 order: 53
 pubDate: 2099-01-16
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -168,7 +168,7 @@ With an allocation that does not fit or fees of 1.5%, harvesting is rarely the f
 ## The rules where you live
 
 <details class="lesson-depth">
-<summary class="disclosure">Harvesting and location rules in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Harvesting and location rules by region</summary>
 
 - **US.** Wash-sale window 30 days either side; short- and long-term gains taxed differently; foreign tax credit on international dividends in taxable accounts; municipal bonds exempt from federal and sometimes state tax; Roth contribution and conversion rules interact with harvesting.
 - **UK.** Bed-and-breakfast rule with same-day and 30-day matching; the yearly capital gains allowance gives a small automatic harvest; ISAs remove capital gains and dividend tax inside the wrapper, so location is mainly what goes in or out.
@@ -176,6 +176,11 @@ With an allocation that does not fit or fees of 1.5%, harvesting is rarely the f
 - **India.** Listed shares held under 12 months taxed at 20%, over 12 months at 12.5% above ₹1.25 lakh a year (from the 2024 budget); debt-fund indexation was removed in 2023; ELSS, PPF and other accounts have their own rules; wash-sale restrictions are less formalised.
 - **Australia.** A 50% capital gains discount for assets held over 12 months; franking credits on domestic dividends affect placement.
 - **Canada.** A 50% capital gains inclusion rate (subject to change); a 30-day superficial-loss rule; placement is mainly between TFSA, RRSP and non-registered accounts.
+- **Germany.** Investment income is taxed at a flat 25% plus the solidarity surcharge (and church tax for members), after a saver's allowance of €1,000 a person; losses on shares can be set only against gains on shares.
+- **Japan.** Gains and dividends on listed shares are taxed at about 20.315%. Losses can be set against that year's listed-share income and carried forward three years, but only by filing a return every year; a loss inside NISA cannot be set against taxable gains, so harvesting happens only in taxable accounts.
+- **Brazil.** An individual pays no tax on gains from ordinary share sales in a month when total sales are R$20,000 or less (day trades and ETF units excluded); above that, gains are taxed at 15%, and losses can be carried forward against later gains of the same kind.
+- **Indonesia.** A sale of listed shares carries a final tax of 0.1% of the sale value, gain or loss, so selling at a loss brings no tax saving on those shares.
+- **South Africa.** The first R40,000 of net capital gains a year is excluded and 40% of the rest is taxed at the marginal rate; unused capital losses carry forward. Tax-free savings accounts (R46,000 a year from March 2026, R500,000 for life) pay no tax on growth, and unused yearly room is lost.
 
 The ideas are similar everywhere; the rules change often, and a licensed tax professional is the place to confirm them.
 

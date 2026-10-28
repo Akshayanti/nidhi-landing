@@ -32,7 +32,7 @@ glossary:
     definition: "Earnings outside your main job, such as freelancing, consulting, teaching or a small business."
 order: 48
 pubDate: 2026-10-30
-updatedDate: 2026-10-21
+updatedDate: 2026-10-28
 localRules: [tax, benefits]
 level: "optimizing"
 primaryPersona: "eva"
@@ -166,7 +166,7 @@ A commonly described pattern is moving deliberately every few years early in a c
 The principles travel; the pay structures do not.
 
 <details class="lesson-depth">
-<summary class="disclosure">Pay and negotiation in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Pay and negotiation by region</summary>
 
 - **US.** Pay varies widely by city and field. Equity (RSUs, options) is common in tech and often negotiable at the offer. Some states require pay ranges in job ads.
 - **UK.** Base salary dominates in most industries. Public-sector pay is banded and largely fixed; private-sector negotiation is more common than often assumed. Salary sacrifice (pension top-ups, cycle-to-work, car leases) changes the effective package.
@@ -174,6 +174,9 @@ The principles travel; the pay structures do not.
 - **India.** Public and private pay differ substantially; IT and financial-services roles often see large jumps on a move; variable pay (bonus, ESOPs, RSUs) is a big part of senior packages. How the package is split into components can matter for tax, depending on the income-tax regime.
 - **Australia.** Employers must pay superannuation as a percentage of salary, so a higher base means higher retirement contributions. Salary sacrifice is common.
 - **Canada.** RRSP matching and pension arrangements scale with salary; norms vary by province.
+- **Japan.** In Rengo's final 2026 tally, pay rises agreed in the spring wage talks (shuntō) averaged 5.01%, the third year above 5%; unions at employers with fewer than 300 staff averaged 4.69%.
+- **Brazil.** A formal (CLT) job adds a 13th salary each year and a deposit of 8% of pay into the worker's FGTS account, so the monthly salary understates both the yearly income and the employer's cost.
+- **UAE.** Salaries are not subject to personal income tax. Under the federal private-sector rules, foreign employees with a year's service earn an end-of-service gratuity of 21 days' basic pay for each of the first five years and 30 days for each later year; free zones and approved alternative savings schemes can differ, and the split between basic pay and allowances changes its value.
 
 </details>
 

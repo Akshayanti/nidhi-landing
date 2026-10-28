@@ -29,7 +29,7 @@ glossary:
 order: 58.6
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-25
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [property, inheritance, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -146,13 +146,14 @@ A common approach is to count your own share: if you own 40% of a house, 40% of 
 ## Ownership structures differ by country
 
 <details class="lesson-depth">
-<summary class="disclosure">Ownership forms in England, Germany, Czechia, France, Spain, Italy and the US</summary>
+<summary class="disclosure">Ownership forms by country</summary>
 
 - **England and Wales.** No more than four people can be named on the legal title. Groups usually hold as tenants in common and record their shares in a declaration of trust; larger groups hold through a trust or a company.
 - **Germany.** Housing co-operatives are long established, and the *Mietshäuser Syndikat* model takes buildings out of the market into collective ownership.
 - **Czechia.** Housing co-operatives (*bytové družstvo*) are a long-standing form, and co-ownership in defined shares (*podílové spoluvlastnictví*) lets several people own a property in stated fractions.
 - **France, Spain, Italy.** Co-ownership in undivided shares is the usual form. Forced heirship means a share may have to pass to children or other relatives, whatever the owners agreed.
 - **United States.** Tenancy in common, limited liability companies holding a property, housing co-operatives and community land trusts. Rules differ by state.
+- **Japan and Brazil.** A co-owner can generally demand partition at any time, and co-owners can agree not to partition for no more than five years at a time. If the property cannot be divided, remedies can include transfer to one co-owner with compensation, or a sale, depending on the country and circumstances. That makes the exit terms part of the ownership agreement.
 
 </details>
 
