@@ -19,7 +19,7 @@ const W = 1080;
 const H = 1350;
 const SH = 1920;
 const MAX_SLIDES = 8;
-const MULTI_KEYS = new Set(['offer', 'input', 'row', 'calc', 'case', 'bar', 'item', 'month', 'more', 'left_item', 'right_item', 'route', 'tier']);
+const MULTI_KEYS = new Set(['offer', 'input', 'row', 'calc', 'case', 'bar', 'item', 'month', 'more', 'left_item', 'right_item', 'route', 'tier', 'card']);
 const BANNED_TAGS = new Set([
   '#personalfinance', '#financialliteracy', '#moneytips', '#wealthbuilding',
   '#financialfreedom', '#desifinance', '#indiansineurope', '#indianfinance',
@@ -583,6 +583,35 @@ function offersHtml(s) {
 }
 
 const LAYOUTS = {
+  // A call for help: real site text in one or more browser cards, the phrase
+  // under review highlighted, an optional review comment, then the ask.
+  // card: url | LANGUAGE | heading | phrase to highlight | lead (optional)
+  request: s => {
+    const cardLines = [].concat(s.fields.card || []);
+    const cards = cardLines.map(line => {
+      const [url, lang, heading, mark, lead] = cells(line);
+      const marked = mark ? rich(heading).replace(rich(mark), `<mark>${rich(mark)}</mark>`) : rich(heading);
+      return `<div class="request-card">
+        <div class="request-bar"><span class="request-dots"><i></i><i></i><i></i></span>${esc(url)}<span class="request-lang${/^[\x00-\x7F\u00C0-\u024F]+$/.test(lang) ? '' : ' native'}">${esc(lang)}</span></div>
+        <div class="request-text"><div class="request-heading">${marked}</div>${lead ? `<div class="request-lead">${rich(lead)}</div>` : ''}</div>
+      </div>`;
+    }).join('');
+    const [commentLabel, comment] = s.fields.comment ? cells(s.fields.comment) : [];
+    return `
+      <div class="request-exhibit">
+        ${s.fields.example ? `<div class="request-example">${rich(s.fields.example)}</div>` : ''}
+        <div class="request-cards${cardLines.length > 1 ? ' compact' : ''}">${cards}
+          ${comment ? `<div class="request-comment"><small>${rich(commentLabel)}</small>${rich(comment)}</div>` : ''}
+        </div>
+      </div>
+      <div class="request-copy">
+        ${s.fields.kicker ? `<p class="request-kicker">${rich(s.fields.kicker)}</p>` : ''}
+        <h1>${rich(s.fields.title)}</h1>
+        ${s.fields.line ? `<p class="request-line">${rich(s.fields.line)}</p>` : ''}
+      </div>
+      ${s.fields.status ? `<div class="request-status"><i></i>${rich(s.fields.status)}</div>` : ''}`;
+  },
+
   sheet: s => {
     const rows = (s.fields.row || []).map((line, index) => {
       const [label, value, currency, rowNote] = cells(line);
@@ -879,6 +908,33 @@ const CSS = `
   .bands-hook h1 { max-width:920px; margin-top:32px; font-size:74px; line-height:1.02; }
   .bands-hook .premise { margin-top:22px; }
 
+  .layout-request { padding:150px 72px 112px; }
+  .layout-request .content { justify-content:center; gap:0; padding-bottom:40px; }
+  .layout-request .handle { bottom:54px; right:72px; font-size:22px; }
+  .request-exhibit { padding:26px 26px 32px; border-radius:30px; background:rgba(0,33,113,.045); }
+  .request-example { margin:0 4px 20px; display:flex; align-items:center; gap:12px; font:800 19px 'Inter',sans-serif; letter-spacing:3px; text-transform:uppercase; color:var(--faint); }
+  .request-example::before { content:''; width:10px; height:10px; border-radius:50%; border:2px solid var(--faint); }
+  .request-cards { position:relative; display:flex; flex-direction:column; gap:22px; }
+  .request-card { border:2px solid var(--rule); border-radius:22px; background:#fff; box-shadow:14px 16px 0 rgba(0,33,113,.06); overflow:hidden; }
+  .request-bar { height:60px; padding:0 26px; display:flex; align-items:center; gap:18px; border-bottom:2px solid var(--rule); background:#F3F0E9; font:600 21px 'Inter',sans-serif; color:var(--soft); white-space:nowrap; }
+  .request-lang.native { letter-spacing:0; font-size:22px; }
+  .request-dots { display:flex; gap:9px; } .request-dots i { width:13px; height:13px; border-radius:50%; background:var(--rule); }
+  .request-lang { margin-left:auto; font:800 19px 'Inter',sans-serif; letter-spacing:3px; color:var(--accent); }
+  .request-text { padding:40px 38px 150px; }
+  .request-heading { font:700 46px/1.2 'Inter',sans-serif; letter-spacing:-1px; color:var(--ink); }
+  .request-lead { margin-top:16px; font:450 28px/1.35 'Roboto',sans-serif; color:var(--soft); }
+  .request-cards.compact .request-text { padding:30px 38px 34px; }
+  .request-cards.compact .request-heading { font-size:40px; }
+  .request-card mark { background:#FFF1D6; color:inherit; box-shadow:inset 0 -5px 0 var(--warn); padding:0 4px; }
+  .request-comment { position:absolute; right:28px; bottom:26px; width:470px; padding:20px 24px; border:2px solid var(--warn); border-radius:14px; background:#FFF8E8; box-shadow:8px 9px 0 rgba(201,121,26,.12); font:650 28px/1.28 'Inter',sans-serif; color:var(--ink); }
+  .request-comment small { display:block; margin-bottom:6px; font:500 20px 'Inter',sans-serif; color:var(--soft); }
+  .request-copy { padding:52px 8px 0; }
+  .request-kicker { font:600 32px/1.25 'Inter',sans-serif; color:var(--soft); }
+  .request-copy h1 { margin-top:14px; max-width:920px; font:800 70px/1.05 'Inter',sans-serif; letter-spacing:-2.5px; }
+  .request-line { margin-top:28px; max-width:920px; font:500 32px/1.35 'Inter',sans-serif; color:var(--soft); }
+  .request-line em { font-style:normal; font-weight:700; color:var(--ink); }
+  .request-status { position:absolute; left:72px; bottom:54px; display:flex; align-items:center; gap:12px; font:650 24px 'Inter',sans-serif; color:var(--soft); }
+  .request-status i { width:12px; height:12px; border-radius:50%; background:var(--warn); }
   .layout-sheet { padding:150px 72px 112px; }
   .layout-sheet .content { justify-content:flex-start; gap:0; }
   .layout-sheet .handle { bottom:54px; right:72px; font-size:22px; }
@@ -1053,7 +1109,7 @@ function slideHtml(kit, deck, slide) {
   return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''}">
   ${bare ? '' : `<div class="eyebrow">${esc(kit.frontmatter.chip || '')}</div>`}
   <div class="content">${LAYOUTS[slide.layout](slide, deck)}</div>
-  ${slide.layout === 'hook' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}
+  ${slide.layout === 'hook' || slide.layout === 'request' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}
   <div class="handle">@nidhi.today</div>
 </div>`);
 }
