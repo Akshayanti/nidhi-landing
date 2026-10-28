@@ -32,7 +32,7 @@ glossary:
     definition: "An account that takes a charitable contribution now, often for a tax deduction, and pays it out to charities later."
 order: 51
 pubDate: 2099-01-14
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -173,14 +173,19 @@ For **tax refunds and smaller bonuses,** from €500 to €5,000, a short pause 
 </details>
 
 <details class="lesson-depth">
-<summary class="disclosure">Windfall rules in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Inheritance and windfall rules by region</summary>
 
 - **US.** Vesting shares are common in tech and finance; 401(k) and IRA limits set catch-up room; donor-advised funds are widely used; long- and short-term capital gains rates differ.
 - **UK.** Bonus timing interacts with the 5 April tax-year end; ISA allowances refresh yearly; pension annual allowances can be carried forward from earlier years; bed-and-breakfast rules govern loss harvesting.
 - **Eurozone.** Tax treatment varies widely; bonuses are often taxed as ordinary income at high marginal rates; pension caps are usually yearly.
-- **India.** Bonuses, vesting shares and sale proceeds have specific rules (short- and long-term gains, ESOP tax at vest and sale; indexation relief was removed for most assets in 2024).
+- **India.** Bonuses, vesting shares and sale proceeds have specific rules (short- and long-term gains, ESOP tax at vest and sale; indexation relief was removed for most assets in 2024). There is no inheritance tax (estate duty was abolished for deaths from March 16, 1985), but heirs pay income tax on what inherited assets earn and capital gains tax when they sell, measured from the previous owner's cost; for an asset held since before April 2001, the heir can use its market value on April 1, 2001 instead.
 - **Australia.** Superannuation caps for concessional and non-concessional contributions; small-business capital gains concessions can greatly reduce tax on a qualifying sale.
 - **Canada.** RRSP and TFSA limits with carry-forward room; the capital gains inclusion rate affects timing; charitable credits.
+- **Japan.** Inheritance tax runs from 10% to 55% on each heir's statutory share. The basic exemption is ¥30 million plus ¥6 million per statutory heir, and heirs file and pay within 10 months of learning of the death.
+- **South Korea.** Inheritance tax runs from 10% to 50%, the top rate applying above ₩3 billion. The government has proposed taxing what each heir receives from 2028; it is not yet law.
+- **South Africa.** Estate duty is 20% on the first R30 million of the dutiable estate and 25% above it, after a R3.5 million abatement.
+- **Brazil.** Each state and the Federal District levies ITCMD on inheritances and gifts, capped at 8% by the Senate. A 2023 constitutional amendment requires progressive rates, and states are adjusting their laws.
+- **UAE.** Muslims' estates follow Sharia succession rules. For non-Muslims, a federal decree-law in force since February 2023 applies unless they choose the law of their nationality: without a will, where there are a spouse and children, half goes to the spouse and the rest to the children equally. Wills can be registered with the DIFC Wills Service Centre, Dubai Courts or the Abu Dhabi Judicial Department.
 
 </details>
 

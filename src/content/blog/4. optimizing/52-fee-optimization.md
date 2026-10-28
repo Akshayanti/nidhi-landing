@@ -13,6 +13,8 @@ takeaways:
   - text: "When an adviser's fee is worth paying and when it is not"
     href: "#an-advisers-percentage-fee-grows-in-euros-as-the-pot-grows"
 glossary:
+  - term: "Fund"
+    definition: "Money from many investors pooled into one portfolio run by a manager; each investor holds units or shares whose value reflects their part of the fund."
   - term: "Expense ratio"
     definition: "A fund's yearly running cost, as a percentage of the money invested: 0.75% costs €75 a year on €10,000."
   - term: "Platform fee"
@@ -27,7 +29,7 @@ glossary:
     definition: "A sales charge some funds take from the money you invest or withdraw, often 3 to 5.75%."
 order: 52
 pubDate: 2099-01-15
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 localRules: [investments, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -56,7 +58,7 @@ referentialReading:
     type: "book"
 ---
 
-Marcus, 34, saves €500 a month for retirement in a managed account. His statement shows one fund fee. He also pays a platform and an adviser, neither of which appears as a line he would notice.
+Marcus, 34, saves €500 a month for retirement in a managed account. His statement shows one [fund](#term-fund) fee. He also pays a platform and an adviser, neither of which appears as a line he would notice.
 
 Long-term returns come from the market, from the extra return for taking certain risks, and occasionally from skill that is hard to spot in advance. The first two are outside anyone's control. Fees are different: visible in advance, controllable today, and certain every year. A fund at 0.05% is 0.95 points cheaper than one at 1.00%, and that is arithmetic, not a forecast.
 
@@ -140,7 +142,7 @@ A common one-time review lists every holding with its expense ratio, any load an
 ## Fees where you live
 
 <details class="lesson-depth">
-<summary class="disclosure">Fees in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Fees by region</summary>
 
 - **US.** Broad index funds often cost 0.03 to 0.10%; commission-free stock and ETF trading is standard at major brokers; some workplace plans still hold expensive legacy funds.
 - **UK.** Platform fees (often 0.15 to 0.45%) stack with fund fees; the OCF (ongoing charges figure) is the standard disclosure; ISA wrappers are largely fee-neutral; SIPP fees vary widely.
@@ -148,6 +150,22 @@ A common one-time review lists every holding with its expense ratio, any load an
 - **India.** Direct plans bought from the fund house typically cost 0.5 to 1% a year less than regular plans sold through distributors; SEBI caps on expense ratios have lowered fees.
 - **Australia.** Superannuation fees vary widely; industry funds are typically cheaper than retail funds, and regulatory attention has pushed fees down.
 - **Canada.** Many retail mutual funds have historically charged 2% or more (MER); passive ETFs and discount brokers offer cheaper alternatives, though platform fees remain higher than in the US.
+- **Japan.** Index funds admitted to NISA's tsumitate allowance must meet criteria set by the Financial Services Agency, among them no sales charge and a trust fee at or below 0.5% a year for domestic assets and 0.75% for foreign assets, before tax.
+- **South Africa.** The Effective Annual Cost (EAC), an industry disclosure standard since 2016, combines investment management, advice, administration and other charges into one standard measure, shown for 1, 3 and 5 years and to the end of the term.
+- **Brazil.** Funds charge a management fee (taxa de administração) whether or not they beat their benchmark, and many multi-market funds add a performance fee, commonly 20% of the return above the benchmark. Investors in many funds, though not equity or real estate funds, also face come-cotas: income tax withheld in advance each May and November by reducing their holdings, at 15% or more.
+
+</details>
+
+<details class="lesson-depth">
+<summary class="disclosure">Common fund names and structures by region</summary>
+
+- **US and India.** A mutual fund. In India a SIP (systematic investment plan) is a way of putting a fixed amount into a mutual fund at regular intervals, not a separate product.
+- **EU.** Many open-ended funds sold to retail investors across the EU are UCITS, funds under the EU's common rules, which must buy back investors' units on request.
+- **UK.** Unit trusts create and cancel units, and OEICs (open-ended investment companies) create and cancel shares, as people buy and sell, at the value of their holdings. An investment trust is different: a company listed on the stock exchange with a fixed number of shares, whose price can sit above or below the value of what it holds.
+- **Japan.** 投資信託 (tōshi shintaku, often shortened to tōshin), whose running cost is the trust fee (信託報酬, shintaku hōshū).
+- **Indonesia.** Reksa dana, run by an investment manager licensed by the OJK, the financial services authority.
+- **Brazil.** Fundo de investimento, registered with the CVM, the securities regulator; investors hold quotas (cotas).
+- **Saudi Arabia.** An investment fund, regulated by the Capital Market Authority; many public funds are certified Sharia-compliant by a Sharia committee appointed for the fund, and each fund's terms and conditions list its fees, charges and expenses. The [interest-free finance post](/blog/interest-free-and-sharia-compliant-finance/) covered how the screening works.
 
 </details>
 

@@ -31,7 +31,7 @@ glossary:
 order: 56.5
 companionOf: "geographic-arbitrage"
 pubDate: 2099-01-20
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [residence, tax, pensions]
 level: "inclusive-finances"
 primaryPersona: "jiri"
@@ -192,6 +192,9 @@ India, the Philippines, Mexico and other major receiving countries offer special
 - **United Kingdom.** Large banks offer basic accounts. Credit history starts from zero; registering on the electoral roll, where eligible, and a reported phone contract are common first steps.
 - **United States.** Credit scores drive renting, borrowing and sometimes hiring. Secured cards and credit-builder loans are the usual start. Some lenders accept an ITIN in place of a Social Security number.
 - **Gulf states.** Residency is tied to employment, accounts may be frozen when a visa is cancelled, and foreign workers usually have no route to a local pension (end-of-service gratuity schemes are the closest equivalent), which is why many keep savings portable from the start.
+- **India.** Non-resident Indians hold two kinds of account: NRE (non-resident external) accounts, whose interest is tax-free in India and which can be sent abroad freely, and NRO (non-resident ordinary) accounts for income earned in India, such as rent, whose interest is taxed and from which repatriation is capped at US$1 million a financial year.
+- **Japan.** Foreign residents pay into the public pension. Someone leaving with at least six months but less than ten years of coverage can claim a lump-sum withdrawal within two years of leaving, counting at most five years of contributions, but the claim cancels those years for any future pension.
+- **Brazil.** Opening a bank account needs a CPF tax number, which foreigners can get from the Receita Federal or a Brazilian consulate.
 
 </details>
 

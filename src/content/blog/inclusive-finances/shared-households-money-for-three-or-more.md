@@ -29,6 +29,7 @@ glossary:
 order: 47.5
 companionOf: "account-consolidation-and-financial-data-hygiene"
 pubDate: 2026-10-28
+updatedDate: 2026-10-28
 localRules: [tenancy, benefits]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -198,6 +199,10 @@ The names on the lease and the utility contracts decide who is liable; a private
 **Denmark and the Netherlands.** Cohousing began in Denmark and is well established in northern Europe. Shared and co-operative housing there can work differently from an ordinary joint tenancy: who holds the contract, whether each resident has their own right to live there, and what the community's rules say about payments and notice all matter.
 
 **United States.** Rules differ by state and city. Joint leases are standard, and some cities cap how many unrelated adults may share a home.
+
+**Japan.** A 2013 government survey found that many share houses used fixed-term leases, often for under a year. These leases carry no right to renewal, so the end date matters more than in an ordinary lease.
+
+**Brazil.** A landlord may ask for only one form of guarantee: a guarantor, a deposit of up to three months' rent, rent-guarantee insurance or pledged fund units. In a shared rental, the person who supplies that guarantee can be exposed if housemates do not pay.
 
 </details>
 

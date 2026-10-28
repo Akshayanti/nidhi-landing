@@ -32,6 +32,7 @@ glossary:
 order: 45.5
 companionOf: "life-events"
 pubDate: 2026-10-21
+updatedDate: 2026-10-28
 localRules: [family-law, inheritance, benefits, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -238,7 +239,7 @@ The shape of the problem is the same everywhere; the details vary by country. Tr
 <details class="lesson-depth">
 <summary class="disclosure">Why a will does less in some countries</summary>
 
-In England and Wales, much of the United States and other common-law systems, a will can leave almost everything to almost anyone. In much of continental Europe and Latin America, [forced heirship](#term-forced-heirship) rules limit what a will can do. A will still matters there, but it works inside tighter limits.
+In England and Wales, much of the United States and other common-law systems, a will can leave almost everything to almost anyone. In much of continental Europe and Latin America, [forced heirship](#term-forced-heirship) rules limit what a will can do. In Japan, a spouse and descendants have a reserved share they can claim against a will, as do parents and other ascendants when there are no descendants. Under many Islamic inheritance systems, a will can generally pass up to a third of the estate to people outside the fixed heirs without the heirs' consent. A will still matters there, but it works inside tighter limits.
 
 </details>
 

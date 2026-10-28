@@ -27,7 +27,7 @@ glossary:
     definition: "Tax some countries charge on unrealised gains when you stop being resident there."
 order: 56
 pubDate: 2099-01-19
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 localRules: [tax, pensions, benefits]
 level: "optimizing"
 primaryPersona: "eva"
@@ -176,7 +176,7 @@ The [currencies post](/blog/managing-money-across-currencies/) covered the gener
 ## Common routes, region by region
 
 <details class="lesson-depth">
-<summary class="disclosure">Routes from Europe, the US, India, Australia and Canada</summary>
+<summary class="disclosure">Routes and remote-work visas by region</summary>
 
 - **Northern Europe or the US to Southern Europe:** Portugal, Spain, southern France, southern Italy, Greece; costs often 30 to 50% lower. Portugal's NHR regime changed substantially in 2024; Spain has its Beckham regime and a digital-nomad visa.
 - **The UK to Central and Eastern Europe:** Poland, Czechia, Hungary, Slovakia; costs often 40 to 60% lower; EU citizens move freely, others use national visas.
@@ -186,6 +186,7 @@ The [currencies post](/blog/managing-money-across-currencies/) covered the gener
 - **Australia or New Zealand to Southeast Asia or the Pacific:** good time zones; strict home residency rules, so leaving cleanly needs checking.
 - **Within Canada, or to Mexico:** Ontario or British Columbia to Atlantic provinces or the Prairies, or retirement visas in Mexico.
 - **Cross-border commuting:** living in a cheaper country and working across the border, as between Belgium and Luxembourg, Germany or France and Switzerland, Malaysia and Singapore, or the US and Mexico.
+- **Remote-work visas outside Europe** set an income floor and bar local work: Japan's (from 2024) allows six months, with no extension, on ¥10 million a year; Brazil's allows a year, renewable once, on US$1,500 a month; Indonesia's E33G allows up to a year on US$60,000 a year; Dubai's allows a year, and can be applied for again, on US$3,500 a month. A visa settles the right to stay, not where tax is due.
 
 </details>
 

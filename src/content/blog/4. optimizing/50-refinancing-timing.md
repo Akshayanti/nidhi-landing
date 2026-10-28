@@ -175,6 +175,6 @@ Closing costs are also money that could have been invested: €5,000 at 6% a yea
 
 </details>
 
-The next post covers windfalls, a similar decision: a lump sum lands and has to be placed across debt, investing and cash.
+The next post covers how much an income can carry in loans, the question that comes before borrowing at all.
 
 If you refinanced today, how many months would you need to keep the loan to come out ahead, and how sure are you of that?
