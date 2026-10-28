@@ -25,7 +25,7 @@ glossary:
 order: 58.7
 companionOf: "unmarried-and-cohabiting-couples"
 pubDate: 2099-01-26
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [family-law, inheritance, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -141,7 +141,7 @@ A household that plans to age together carries an untested assumption: that the 
 <summary class="disclosure">How countries differ</summary>
 
 - **Most of Europe, the Americas and Australasia.** Marriage is limited to two. Multi-partner households rely on contracts, wills and designations. Forced heirship in much of continental Europe and Latin America limits what a will can leave to partners.
-- **Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia, under rules that differ by country and by religious or customary law. Such marriages are often not recognised elsewhere, which can leave later spouses with no legal status after a move.
+- **Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia, under rules that differ by country and by religious or customary law. Such marriages are often not recognised elsewhere, which can leave later spouses with no legal status after a move. Marriage and property rules differ too: in Kenya, customary and Islamic marriages are potentially polygamous under the 2014 Marriage Act, and in South Africa a husband in a customary marriage who wants to enter another must apply to a court to approve a written contract regulating the future property system of his marriages, and needs his first wife's consent.
 - **United States.** A few cities, such as some in Massachusetts, register domestic partnerships for more than two people, usually covering local matters such as hospital visits and city employee benefits; they do not change state or federal law.
 - **Criminal law.** In some countries, living as a multi-partner household carries legal risk beyond the financial, and a financial plan is not the right tool for that decision.
 

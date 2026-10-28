@@ -27,7 +27,7 @@ glossary:
     definition: "What actually lands in your account after tax, pension contributions and other deductions."
 order: 44
 pubDate: 2026-10-16
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -177,13 +177,14 @@ No special software is needed. A sheet with twelve columns, one per month, and r
 </details>
 
 <details class="lesson-depth">
-<summary class="disclosure">The five once a year costs, by country</summary>
+<summary class="disclosure">Once a year costs and income, by country</summary>
 
 - **Insurance renewals:** car, home, life, disability, private health; the renewal month is often arbitrary.
 - **Tax payments.** Salaried workers in most countries have tax taken at source, so the yearly lump is small or none. Self-employed people and higher earners often owe a top-up. Self-employed people may make advance or estimated payments during the year, on schedules that differ by country (India and the US use instalments, for example). Employees under systems such as UK PAYE and many EU payrolls usually have tax taken from each payslip, though a later return or assessment can still bring a refund or a top-up.
-- **Property costs:** property tax (council tax in the UK, taxe foncière in France, Grundsteuer in Germany, municipal property tax in India), billed yearly, twice yearly or in instalments, and maintenance.
+- **Property and vehicle costs:** property tax (council tax in the UK, taxe foncière in France, Grundsteuer in Germany, municipal property tax in India, fixed asset tax in Japan, IPTU in Brazil), billed yearly, twice yearly or in instalments, and maintenance. Brazil's IPVA vehicle tax also falls early in the year, with a discount for paying in one go in many states.
 - **School or tuition:** termly in many countries, once or twice a year in others, yearly at university.
 - **Seasonal and cultural spending:** holidays, gift seasons and festivals such as Diwali, Christmas, Eid or Chinese New Year.
+- **Once a year income.** In some countries the yearly lump is pay: Brazil's 13th salary, usually paid half by November 30 and the rest by December 20; the Philippines' 13th-month pay for private-sector rank-and-file employees, due by December 24; and Indonesia's religious holiday allowance (THR), due at least seven days before the holiday. A forecast that puts it in the right month shows whether it covers the costs above.
 
 The idea travels; the list is your own.
 

@@ -26,7 +26,7 @@ glossary:
     definition: "What money could have earned elsewhere. Cash used for a house deposit stops earning market returns."
 order: 45
 pubDate: 2026-10-19
-updatedDate: "2026-10-21"
+updatedDate: "2026-10-28"
 localRules: [benefits, pensions, tax]
 level: "optimizing"
 primaryPersona: "eva"
@@ -91,7 +91,7 @@ Families also often move to a bigger home or a particular school area. A €300,
 <details class="lesson-depth">
 <summary class="disclosure">How childcare costs differ by country</summary>
 
-Early years are dominated by childcare, roughly €6,000 to €20,000 a year depending on country and format if both parents work; the national averages above already include a typical level, so your own number can sit well above or below them. Middle years are activities, clothing, food and school costs; later years education, transport and possibly university. Nordic countries heavily subsidise childcare and university, which lowers the direct-cost line but not the income-shift line. The US and UK have expensive childcare and mixed university costs. India has low-cost state schooling but often significant private-school costs for middle-class households, and university costs are meaningful. Australia and New Zealand sit somewhere in between. Your own country's figures say more than a headline number from a US study.
+Early years are dominated by childcare, roughly €6,000 to €20,000 a year depending on country and format if both parents work; the national averages above already include a typical level, so your own number can sit well above or below them. Middle years are activities, clothing, food and school costs; later years education, transport and possibly university. Nordic countries heavily subsidise childcare and university, which lowers the direct-cost line but not the income-shift line. Japan has waived fees for eligible kindergarten and nursery services for children aged 3 to 5 since October 2019, with a monthly cap for some services. The US and UK have expensive childcare and mixed university costs. India has low-cost state schooling but often significant private-school costs for middle-class households, and university costs are meaningful. Australia and New Zealand sit somewhere in between. Your own country's figures say more than a headline number from a US study.
 
 </details>
 

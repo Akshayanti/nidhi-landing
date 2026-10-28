@@ -26,7 +26,7 @@ glossary:
     definition: "A return that strips out the timing of contributions and withdrawals, so it shows how the investments themselves did; the standard for comparing funds."
 order: 54
 pubDate: 2099-01-17
-updatedDate: "2026-10-22"
+updatedDate: "2026-10-28"
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -155,7 +155,7 @@ Checking monthly mostly amplifies noise; studies of myopic loss aversion suggest
 ## Inflation measures and benchmarks where you live
 
 <details class="lesson-depth">
-<summary class="disclosure">Inflation measures and benchmarks in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Inflation measures and benchmarks by region</summary>
 
 - **US.** Inflation as CPI-U or PCE; benchmarks such as the S&P 500, Russell 2000, MSCI EAFE, MSCI Emerging Markets and the Bloomberg US Aggregate Bond index.
 - **UK.** CPI and RPI measure inflation differently, so it matters which one a comparison uses; benchmarks such as the FTSE 100, FTSE All-Share, FTSE Global All Cap and Bloomberg Global Aggregate.
@@ -163,6 +163,10 @@ Checking monthly mostly amplifies noise; studies of myopic loss aversion suggest
 - **India.** CPI is the main policy measure, with WPI also reported; benchmarks such as the Nifty 50, Nifty 500 and BSE Sensex. Nominal returns have been high but so has inflation, so comparisons with other markets mean more in real terms.
 - **Australia.** CPI; benchmarks such as the ASX 200 and the Bloomberg AusBond Composite.
 - **Canada.** CPI; benchmarks such as the S&P/TSX Composite and the FTSE Canada Universe Bond index.
+- **Japan.** CPI from the Statistics Bureau, with the "core" measure excluding fresh food against the Bank of Japan's 2% target; benchmarks such as TOPIX and the Nikkei 225.
+- **Brazil.** The IPCA, published by IBGE, is the official inflation measure and the one the 3% target uses; benchmarks such as the Ibovespa for shares, and the CDI rate as the usual yardstick for fixed income and cash.
+- **Turkey.** CPI (TÜFE) from TurkStat, which was still above 30% a year in mid-2026; benchmarks such as the BIST 100. At that level a nominal gain says almost nothing until inflation is taken out.
+- **South Africa.** CPI from Stats SA, against a 3% inflation target with a 1-point tolerance band, being phased in; benchmarks such as the JSE All Share index.
 
 </details>
 

@@ -35,7 +35,7 @@ glossary:
 order: 58.5
 companionOf: "insurance-optimization"
 pubDate: 2099-01-24
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [family-law, inheritance, pensions, tax]
 level: "inclusive-finances"
 primaryPersona: "eva"
@@ -146,13 +146,16 @@ Whether the saving from marrying or registering a partnership outweighs a couple
 ## Country rules decide which protections apply
 
 <details class="lesson-depth">
-<summary class="disclosure">Country notes from England to Australia</summary>
+<summary class="disclosure">Country notes by region</summary>
 
 - **England and Wales.** No cohabitation status. Wills, declared shares in property and pension nominations do the work.
 - **France.** A civil partnership (PACS) gives joint income tax treatment but no automatic inheritance, so partners need wills.
 - **Germany, Italy, Spain.** Forced heirship limits how much a will can leave to a partner, and tax allowances for unmarried partners are far smaller than for spouses.
 - **Australia, New Zealand, parts of Canada.** De facto partners gain significant property and inheritance rights after a qualifying period. Documents still help, because they remove the need to prove the relationship.
 - **United States.** Rules are set state by state. Beneficiary forms carry particular weight because so much wealth sits in retirement accounts.
+- **Brazil.** A stable union (união estável) is a recognised status, and since a 2017 Supreme Court ruling a partner inherits as a spouse does.
+- **Japan.** An unmarried partner is not a legal heir, so leaving assets to a partner generally needs a will. Survivor pensions can still be paid if the relationship and financial dependence are proven.
+- **South Africa.** Cohabitation has no general legal status, and a Domestic Partnerships Bill is still a draft. Since a 2021 Constitutional Court ruling, a surviving permanent life partner can inherit when there is no will and can claim maintenance from the estate.
 
 </details>
 

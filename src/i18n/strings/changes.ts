@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-10-28',
     items: [
       {
+        id: 'lessons-more-countries',
+        text: {
+          en: 'Seven lessons already published, from financial projections to shared households, now have notes on how things work in more countries, such as Japan, Brazil, Indonesia and the Philippines.',
+          es: 'Siete lecciones ya publicadas, desde las proyecciones financieras hasta los hogares compartidos, tienen ahora notas sobre cómo funcionan las cosas en más países, como Japón, Brasil, Indonesia y Filipinas.',
+          cs: 'Sedm už zveřejněných lekcí, od finančních projekcí po sdílené domácnosti, teď obsahuje poznámky o tom, jak věci fungují ve více zemích, například v Japonsku, Brazílii, Indonésii a na Filipínách.',
+          mr: 'आधीच प्रकाशित झालेल्या सात धड्यांमध्ये, आर्थिक अंदाजांपासून सामायिक घरांपर्यंत, आता जपान, ब्राझील, इंडोनेशिया आणि फिलिपिन्स यांसारख्या आणखी देशांमध्ये गोष्टी कशा चालतात याच्या नोंदी आहेत.',
+          hi: 'पहले से प्रकाशित सात पाठों में, वित्तीय अनुमानों से लेकर साझा घरों तक, अब यह भी लिखा है कि जापान, ब्राज़ील, इंडोनेशिया और फ़िलीपींस जैसे और देशों में चीज़ें कैसे काम करती हैं।',
+        },
+      },
+      {
         id: 'ai-assistant-visits',
         text: {
           en: 'The analytics that note when a visit comes from an AI assistant or tool now recognise more of them, such as Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat and Kimi. No new kind of information is recorded, and the privacy notice lists them all.',

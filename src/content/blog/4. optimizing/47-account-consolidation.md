@@ -32,7 +32,7 @@ glossary:
     definition: "Seeing balances from many institutions in one place, through an app or a regular manual list."
 order: 47
 pubDate: 2026-10-26
-updatedDate: 2026-10-21
+updatedDate: 2026-10-28
 localRules: [pensions, credit]
 level: "optimizing"
 primaryPersona: "eva"
@@ -209,7 +209,7 @@ Many people note the exception in the inventory and look at it again each year.
 The steps are the same everywhere; the names and paperwork are local.
 
 <details class="lesson-depth">
-<summary class="disclosure">Transfer routes in the US, UK, eurozone, India, Australia and Canada</summary>
+<summary class="disclosure">Transfer routes by region</summary>
 
 - **US.** Old 401(k) employer plans roll into a new employer plan or an IRA (individual retirement account); brokerage holdings move in kind through ACATS; health savings accounts can move between administrators. Scores mainly through FICO and VantageScore.
 - **UK.** Old workplace pension pots often consolidate into a SIPP (self-invested personal pension); Cash and Stocks & Shares ISAs transfer between providers keeping their tax status. Scores through Experian, Equifax and TransUnion.
@@ -217,6 +217,8 @@ The steps are the same everywhere; the names and paperwork are local.
 - **India.** EPF balances move between employers through the UAN; NPS is one account across employers by design; demat holdings consolidate through CDSL and NSDL. Scores through CIBIL, Experian, Equifax and CRIF High Mark.
 - **Australia.** Super funds consolidate through the ATO or SuperStream, often a real saving because each fund can charge its own fees and insurance premiums; the insurance you would lose is worth checking first.
 - **Canada.** RRSPs and TFSAs transfer between institutions. Scores through Equifax and TransUnion Canada.
+- **Japan.** A workplace defined-contribution pot needs a destination within six months of leaving, such as iDeCo or the new employer's plan; otherwise it is transferred automatically to a holding account, where, as of March 2025, about 1.38 million people's pots, ¥336 billion in all, sat. Credit records are held by three bureaus, CIC, JICC and KSC, with no single score.
+- **Brazil.** Private pensions can move to another provider without tax through portability, PGBL to PGBL and VGBL to VGBL only.
 
 </details>
 

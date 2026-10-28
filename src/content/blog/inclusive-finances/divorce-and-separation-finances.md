@@ -26,7 +26,7 @@ glossary:
     definition: "Each borrower owes the whole of a joint debt, so the lender can pursue any one of them for all of it."
 order: 59.5
 pubDate: 2099-01-28
-updatedDate: 2026-10-22
+updatedDate: 2026-10-28
 localRules: [family-law, pensions, tax, credit]
 level: "inclusive-finances"
 primaryPersona: "marcus"
@@ -168,6 +168,7 @@ Rebuilding takes longer than dividing. Two homes cost more than one, so the new 
 - **Marriage contracts** are common and routinely enforced in much of continental Europe, given weight but not always binding in England and Wales, and enforceable in the US depending on the state.
 - **Pensions:** some countries divide pension rights automatically on divorce; others require a spouse to ask; in some, state pension entitlements can also be shared.
 - **The family home:** several countries protect a spouse's or children's right to stay for a period, whoever's name is on it.
+- **Japan and Indonesia:** since April 2026 Japan's Civil Code presumes that both spouses contributed equally to property acquired together during the marriage, and the time to claim a division rose from two to five years after divorce. In Indonesia property acquired during the marriage is generally joint, but its division follows the law that applies to the couple; for Muslims the Compilation of Islamic Law generally gives each spouse half unless a marriage agreement says otherwise.
 - **Cross-border marriages:** if you married in one country and live in another, more than one country's rules may be arguable, and which court hears the case can change the result, so early advice matters.
 - **Religious and customary marriages:** a marriage made only under religious or customary rites may not be recognised by civil law where you live, which can leave a spouse with the weaker position of an unmarried partner.
 
