@@ -144,6 +144,16 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 28, 2026',
+    iso: '2026-10-28',
+    material: true,
+    summary: 'The analytics event that marks a visit arriving from an AI assistant or AI tool now recognises more of them. It records the same two things as before, only for more referring sites.',
+    details: [
+      'The $ai_referrer event is sent when the page you came from is a known AI assistant or AI tool. Besides ChatGPT, Perplexity, Claude, Gemini, Microsoft Copilot, You.com, DeepSeek and Grok, it now also covers Mistral Vibe, formerly Le Chat (chat.mistral.ai), Meta AI (meta.ai), Microsoft 365 Copilot (copilot.cloud.microsoft), Google AI Studio (aistudio.google.com), NotebookLM (notebooklm.google.com), Duck.ai (duck.ai), Phind (phind.com), Poe (poe.com), Qwen Chat (chat.qwen.ai) and Kimi (kimi.com).',
+      'The event carries what it carried before: the referring site\'s name (ai_referrer_domain) and the referring address as your browser reports it (ai_referrer_full). That address is already part of every pageview, as "the URL you came from" above, and browsers usually pass on only the site name, not the page. It is sent under the same consent choice as pageviews. No new event, property, storage key or third party.',
+    ],
+  },
+  {
     date: 'Oct 23, 2026',
     iso: '2026-10-23',
     material: true,
