@@ -54,10 +54,10 @@ const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 // -----------------------------------------------------------------------------
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^1.3.0',
-  '@astrojs/react': '^7.1.0',
+  '@astrojs/react': '^7.1.1',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
-  astro: '^7.4.1',
+  astro: '^7.4.2',
   react: '^19.3.1',
   'react-dom': '^19.3.1',
 };
@@ -65,13 +65,13 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
-  puppeteer: '^25.15.0',
+  puppeteer: '^25.16.0',
   // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
   // errors on its own.
   typescript: '7.0.2',
 };
 
-const EXPECTED_NODE_ENGINE = '>=22.22.0';
+const EXPECTED_NODE_ENGINE = '>=22.23.4';
 const EXPECTED_LOCKFILE_VERSION = 3;
 
 // -----------------------------------------------------------------------------
