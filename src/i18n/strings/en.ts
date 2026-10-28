@@ -702,6 +702,8 @@ export const en = {
       },
       toolAddresses:
         'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
+      toolExports:
+        'Every free tool can download a spreadsheet of its results, or make a PDF report: a short summary of the results that your browser’s print dialog prints or saves as a PDF. Both are made in your browser and never uploaded. The file or printout holds the values you entered, and once saved it is outside our reach (your downloads folder, synced folders, backups, other apps), so we cannot see or delete it. Your browser may add the page address and the date to a printout’s header or footer; you can turn that off in the print dialog. Using either sends one anonymous event that says which of the two you used, and nothing else.',
       monteCarlo: {
         before:
           'Anonymous interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',
@@ -720,7 +722,7 @@ export const en = {
         after: ', etc.) if you arrived from a link we or someone else tagged.',
       },
       consentClicks:
-        'Click heatmaps and autocaptured events: basically, which elements on a page get clicked, including clicks on things that don’t respond (“dead clicks”). We use this to spot broken links and layouts that confuse people. We don’t record page-speed measurements or browser errors at all.',
+        'Click heatmaps and autocaptured events: basically, which elements on a page get clicked, including clicks on things that don’t respond (“dead clicks”). We use this to spot broken links and layouts that confuse people. We don’t record page-speed measurements or browser errors at all. A click is described only by the label the site gives an element (its data-attr), the kind of element and its position on the page: never its text, its accessibility label or any other attribute, which could hold what you typed.',
     },
 
     newsletter: {

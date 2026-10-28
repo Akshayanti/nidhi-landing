@@ -57,7 +57,7 @@ interface Props {
 const DEFAULT_COUNTRY: Record<Locale, string> = { en: '', hi: 'IND', es: '', cs: 'CZE', mr: 'IND' };
 
 const { locale } = Astro.props;
-const { inflation } = dict(locale).tools;
+const { inflation, export: exportStrings } = dict(locale).tools;
 const strings = inflation.page;
 const island = inflation.island;
 const t = format;
@@ -188,6 +188,7 @@ const faqSchema = {
     <InflationCalculator
       client:load
       strings={island}
+      exportStrings={exportStrings}
       defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       defaultCountry={defaultCountry}
       countries={countries}

@@ -531,6 +531,8 @@ export const cs: Dict = {
       },
       toolAddresses:
         'U žádného nástroje zdarma adresa stránky nenese to, co zadáte, takže to nemůže nést ani adresa URL, kterou zaznamenává webová analytika. Nástroje vaše údaje při používání do adresy nezapisují. Odkaz ke sdílení je nese za znakem #, v části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je z adresního řádku přesune dřív, než se spustí webová analytika. Jako pojistka skript webové analytiky před odesláním jakékoli události odstraní z adresy každého nástroje zdarma vše kromě parametrů kampaní (utm_source a podobně).',
+      toolExports:
+        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu anonymní událost, která říká jen to, kterou z nich jste použili.',
       monteCarlo: {
         before:
           'Anonymní události interakce v simulátoru Monte Carlo: kterou měnu zvolíte, jaký předpoklad výnosu a počet simulovaných trajektorií vyberete, zda zapnete nebo vypnete výběry, zda otevřete tabulku výsledků, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
@@ -547,7 +549,7 @@ export const cs: Dict = {
         after: ' atd.), pokud návštěva přišla z odkazu, který jsme označili my nebo někdo jiný.',
       },
       consentClicks:
-        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec.',
+        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co jste zadali.',
     },
 
     newsletter: {

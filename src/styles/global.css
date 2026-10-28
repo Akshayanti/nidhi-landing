@@ -6908,3 +6908,248 @@ button.mcnw-legendItem:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Free tools: "Save or share these results" and the printed report
+   (ToolExport.tsx)
+   ========================================================================== */
+
+.tool-export {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+}
+.tool-exportHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.tool-exportButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+/* A share link's copied-address bar takes its own line under the buttons. */
+.tool-exportButtons > [role='status'] {
+  flex-basis: 100%;
+}
+.tool-exportBtn {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 10px 16px;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  background: var(--color-bg-white);
+  color: var(--color-deep-blue);
+  border: 1px solid var(--color-deep-blue);
+}
+.tool-exportBtn:hover {
+  background: var(--color-bg-subtle);
+}
+.tool-exportBtn:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+/* Not ready yet: still focusable (aria-disabled), told apart by its dashed
+   edge and muted text rather than by fading it to unreadable. */
+.tool-exportBtn[aria-disabled='true'] {
+  cursor: not-allowed;
+  border-style: dashed;
+  color: var(--color-text-secondary);
+  border-color: var(--color-text-secondary);
+}
+.tool-exportNote,
+.tool-exportStatus {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+.tool-exportNote--app {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.tool-exportStatus:empty {
+  display: none;
+}
+@media (max-width: 640px) {
+  .tool-exportButtons > * {
+    flex: 1 1 100%;
+  }
+}
+
+/* The report is never on screen. */
+.tool-report {
+  display: none;
+}
+
+/*
+ * On paper only the report shows: every element that neither holds the report
+ * nor sits inside it is hidden, and the ones that hold it lose their own
+ * spacing and colour. Black on white, whatever the screen's theme.
+ */
+@media print {
+  @page {
+    size: auto;
+    margin: 16mm 14mm;
+  }
+  body:has(.tool-report) *:not(:has(.tool-report)):not(.tool-report):not(.tool-report *) {
+    display: none !important;
+  }
+  body:has(.tool-report),
+  body:has(.tool-report) *:has(.tool-report) {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    max-width: none !important;
+    width: auto !important;
+  }
+  .tool-report {
+    display: block;
+    color: #111;
+    font-family: var(--font-body);
+    font-size: 11pt;
+    line-height: 1.55;
+    font-variant-numeric: tabular-nums;
+  }
+  .tool-report h1,
+  .tool-report h2 {
+    font-family: var(--font-heading);
+    color: #111;
+    break-after: avoid;
+  }
+  .tool-reportHeader {
+    border-bottom: 2px solid #111;
+    padding-bottom: 6pt;
+    margin-bottom: 10pt;
+  }
+  .tool-reportKicker {
+    margin: 0;
+    font-size: 9pt;
+    text-transform: uppercase;
+  }
+  /* Spacing letters apart breaks Devanagari's joined forms. */
+  .tool-reportKicker:not(:lang(hi), :lang(mr)) {
+    letter-spacing: 0.08em;
+  }
+  .tool-reportTitle {
+    margin: 2pt 0;
+    font-size: 18pt;
+    line-height: 1.25;
+  }
+  .tool-reportMeta {
+    margin: 0;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .tool-report h2 {
+    margin: 12pt 0 4pt;
+    font-size: 12.5pt;
+  }
+  .tool-report p,
+  .tool-report ul {
+    margin: 0 0 5pt;
+  }
+  .tool-report ul {
+    padding-left: 14pt;
+  }
+  .tool-reportLead {
+    font-size: 12pt;
+    font-weight: 600;
+  }
+  .tool-reportBlock {
+    break-inside: avoid;
+    margin-bottom: 8pt;
+  }
+  .tool-reportTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 4pt 0;
+  }
+  .tool-reportTable caption {
+    text-align: left;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 10.5pt;
+    padding-bottom: 3pt;
+  }
+  .tool-reportTable thead {
+    display: table-header-group;
+  }
+  .tool-reportTable th,
+  .tool-reportTable td {
+    border-bottom: 0.75pt solid #bbb;
+    padding: 3pt 5pt;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tool-reportTable thead th {
+    border-bottom: 1.25pt solid #111;
+    font-weight: 700;
+  }
+  .tool-reportTable tbody th {
+    font-weight: 400;
+  }
+  .tool-reportTable tr {
+    break-inside: avoid;
+  }
+  .tool-reportNum {
+    text-align: right !important;
+    white-space: nowrap;
+  }
+  .tool-reportNote {
+    font-size: 9pt;
+    color: #444;
+  }
+  .tool-reportFigure {
+    margin: 8pt 0;
+  }
+  .tool-reportFigure figcaption {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 10.5pt;
+    margin-bottom: 3pt;
+  }
+  .tool-reportFigure svg {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .tool-reportAxis {
+    font-size: 11px;
+    fill: #333;
+    font-family: var(--font-body);
+  }
+  .tool-reportKey {
+    list-style: none;
+    padding: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt 14pt;
+    font-size: 9pt;
+  }
+  .tool-reportKey li {
+    display: flex;
+    align-items: center;
+    gap: 5pt;
+  }
+  .tool-reportFooter {
+    margin-top: 12pt;
+    padding-top: 6pt;
+    border-top: 0.75pt solid #999;
+    font-size: 9pt;
+    color: #444;
+  }
+}

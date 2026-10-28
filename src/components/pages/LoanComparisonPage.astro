@@ -43,6 +43,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const tool = dict(locale).tools.loanComparison;
+const exportStrings = dict(locale).tools.export;
 
 const siteUrl = 'https://nidhi.today';
 
@@ -198,7 +199,7 @@ const faqSchema = {
       </p>
     </header>
 
-    <LoanCompare client:load strings={tool.island} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
+    <LoanCompare client:load strings={tool.island} exportStrings={exportStrings} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />

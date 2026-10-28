@@ -44,6 +44,10 @@ import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
+import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
+import { loanSheets } from '../utils/loan/export.ts';
+import { loanReport } from '../utils/loan/report.ts';
 
 /**
  * The tool's words, for one locale.
@@ -765,11 +769,13 @@ function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
  */
 export default function LoanCompare({
   strings,
+  exportStrings,
   defaultCurrency,
   numberLocale,
   amountLocale,
 }: {
   strings: Strings;
+  exportStrings: Dict['tools']['export'];
   defaultCurrency: string;
   /** How the page writes numbers, for reading the boxes: 'en', 'en-IN' or 'es'. */
   numberLocale: string;
@@ -969,6 +975,27 @@ export default function LoanCompare({
     }
   }, [vendors, globalState, strings.toolbar.copyPrompt]);
 
+  // Both copies are of the offers as the page shows them; the event says only
+  // which kind was made.
+  const downloadSpreadsheet = () => {
+    const sheets = loanSheets({
+      island: strings,
+      common: exportStrings,
+      currency,
+      vendors,
+      results,
+      names: vendors.map((v, i) => shownName(v.name, i, strings)),
+      date: isoDate(),
+      page: `${window.location.origin}${window.location.pathname}`,
+    });
+    downloadWorkbook(sheets, 'loan-comparison');
+    track('free_loan_comparison_exported', { format: 'xlsx' });
+  };
+  const printPage = () => {
+    track('free_loan_comparison_exported', { format: 'pdf' });
+    printResults();
+  };
+
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
@@ -1020,16 +1047,6 @@ export default function LoanCompare({
         <div className="lc-toolbarActions">
           <button
             type="button"
-            className="lc-shareBtn"
-            onClick={copyShareLink}
-            aria-describedby="lc-share-status"
-            title={strings.toolbar.shareTitle}
-            data-attr="lc-share-copy"
-          >
-            {copied ? strings.toolbar.shareCopied : strings.toolbar.share}
-          </button>
-          <button
-            type="button"
             className="lc-resetBtn"
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
@@ -1042,26 +1059,6 @@ export default function LoanCompare({
           >
             {strings.toolbar.reset}
           </button>
-          {copied && shareUrl && (
-            <div className="lc-shareUrlBar" role="status" aria-live="polite">
-              <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
-              <input
-                className="lc-shareUrlInput"
-                value={shareUrl}
-                readOnly
-                onFocus={(e) => e.target.select()}
-                aria-label={strings.toolbar.shareUrlAria}
-              />
-            </div>
-          )}
-          <span
-            id="lc-share-status"
-            className="lc-srOnly"
-            role="status"
-            aria-live="polite"
-          >
-            {copied ? strings.toolbar.shareStatus : ''}
-          </span>
         </div>
       </div>
 
@@ -1144,6 +1141,49 @@ export default function LoanCompare({
         strings={strings}
       />
 
+      <ToolExport
+        strings={exportStrings}
+        share={
+          <>
+            <button
+              type="button"
+              className="lc-shareBtn"
+              onClick={copyShareLink}
+              aria-describedby="lc-share-status"
+              title={strings.toolbar.shareTitle}
+              data-attr="lc-share-copy"
+            >
+              {copied ? strings.toolbar.shareCopied : strings.toolbar.share}
+            </button>
+            {copied && shareUrl && (
+              <div className="lc-shareUrlBar" role="status" aria-live="polite">
+                <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
+                <input
+                  className="lc-shareUrlInput"
+                  value={shareUrl}
+                  readOnly
+                  onFocus={(e) => e.target.select()}
+                  aria-label={strings.toolbar.shareUrlAria}
+                />
+              </div>
+            )}
+            <span
+              id="lc-share-status"
+              className="lc-srOnly"
+              role="status"
+              aria-live="polite"
+            >
+              {copied ? strings.toolbar.shareStatus : ''}
+            </span>
+          </>
+        }
+        xlsxAttr="lc-export-xlsx"
+        pdfAttr="lc-export-pdf"
+        ready={validResults.length > 0}
+        onSpreadsheet={downloadSpreadsheet}
+        onPrint={printPage}
+      />
+
       <AnalysisTabs
         vendors={vendors}
         results={results}
@@ -1163,10 +1203,38 @@ export default function LoanCompare({
           {strings.disclaimer.body}
         </p>
       </details>
+
+      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
     </div>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );
+}
+
+/**
+ * What prints: the offers as the page shows them, with the summary's range
+ * sentence as the answer. Like the page, it names no offer as the one to
+ * take. Hidden on screen (see ToolReport).
+ */
+function PrintedReport({ strings, exportStrings, currency, vendors, results }: {
+  strings: Strings;
+  exportStrings: Dict['tools']['export'];
+  currency: string;
+  vendors: VendorInput[];
+  results: LoanResult[];
+}) {
+  const { formatMoney, amountLocale } = useMoney();
+  const names = vendors.map((v, i) => shownName(v.name, i, strings));
+  const totals = results.filter((r) => !r.error && r.schedule.length > 0).map((r) => r.totalPaidMinor).sort((a, b) => a - b);
+  const d = strings.delta;
+  const answer =
+    totals.length < 2
+      ? d.empty
+      : totals[0] === totals[totals.length - 1]
+        ? `${d.sameBefore}${formatMoney(totals[0], currency)}${d.sameAfter}`
+        : `${d.rangeBefore}${formatMoney(totals[0], currency)}${d.rangeTo}${formatMoney(totals[totals.length - 1], currency)}${d.rangeAcross}${formatMoney(totals[totals.length - 1] - totals[0], currency)}${d.rangeAfter}`;
+  const report = loanReport({ island: strings, common: exportStrings, currency, vendors, results, names, answer: [answer] });
+  return <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? 'en-US'} />;
 }
 
 // ---- Vendor card -----------------------------------------------------------

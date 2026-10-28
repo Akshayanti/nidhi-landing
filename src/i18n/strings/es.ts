@@ -565,6 +565,8 @@ export const es: Dict = {
       },
       toolAddresses:
         'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
+      toolExports:
+        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento anónimo que dice cuál de las dos usaste, y nada más.',
       monteCarlo: {
         before:
           'Eventos anónimos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
@@ -581,7 +583,7 @@ export const es: Dict = {
         after: ', etc.) si llegaste desde un enlace etiquetado por nosotros o por otra persona.',
       },
       consentClicks:
-        'Mapas de calor de clics y eventos capturados automáticamente: básicamente, en qué elementos de una página se hace clic, incluidos los clics en cosas que no responden («clics muertos»). Lo usamos para detectar enlaces rotos y diseños que confunden a la gente. No registramos en absoluto mediciones de velocidad de página ni errores del navegador.',
+        'Mapas de calor de clics y eventos capturados automáticamente: básicamente, en qué elementos de una página se hace clic, incluidos los clics en cosas que no responden («clics muertos»). Lo usamos para detectar enlaces rotos y diseños que confunden a la gente. No registramos en absoluto mediciones de velocidad de página ni errores del navegador. Un clic se describe solo con la etiqueta que el sitio da al elemento (su data-attr), el tipo de elemento y su posición en la página: nunca con su texto, su etiqueta de accesibilidad ni ningún otro atributo, que podría contener lo que escribiste.',
     },
 
     newsletter: {

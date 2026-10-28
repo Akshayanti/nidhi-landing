@@ -40,6 +40,10 @@ import { SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type 
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
+import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
+import { inflationReport } from '../utils/inflation/report.ts';
+import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
 
 // ===========================================================================
 // Copy
@@ -55,6 +59,7 @@ import type { Dict } from '../i18n/strings/types.ts';
 // ===========================================================================
 
 type Strings = Dict['tools']['inflation']['island'];
+type ExportStrings = Dict['tools']['export'];
 
 const t = format;
 
@@ -233,6 +238,7 @@ function effectiveFrom(from: number | null, options: number[]): number | null {
  */
 export default function InflationCalculator({
   strings,
+  exportStrings,
   defaultCurrency,
   defaultCountry,
   countries,
@@ -242,6 +248,7 @@ export default function InflationCalculator({
   amountLocale,
 }: {
   strings: Strings;
+  exportStrings: ExportStrings;
   defaultCurrency: string;
   defaultCountry: string;
   countries: CountryOption[];
@@ -415,6 +422,61 @@ export default function InflationCalculator({
     track('free_inflation_share_copied');
   }
 
+  // A copy is of the answer on screen (the settled state), and only once that
+  // answer is there: not while a field is invalid or a history is loading.
+  const settledCountry = settled.country ? countryByCode.get(settled.country) ?? null : null;
+  function shownAnswer(): InflationAnswer | null {
+    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale);
+    if (a === 'loading') return null;
+    const first = a.points[0];
+    const last = a.points[a.points.length - 1];
+    return {
+      question: a.calendar && settledCountry ? t(strings.questions.pastCountry, { country: settledCountry.name }) : strings.questions[settled.mode],
+      sentences: a.sentences,
+      value: a.value,
+      points: a.points,
+      axis: a.axis,
+      chartTitle: a.chartTitle,
+      history: a.calendar && settledCountry && first && last ? { country: settledCountry.name, from: first.x, to: last.x } : null,
+    };
+  }
+  const exportReady = !hasErrors && shownAnswer() !== null;
+
+  const decimals = Math.round(Math.log10(CURRENCIES.find((c) => c.code === settled.currency)?.factor ?? 100));
+
+  // What prints: the answer on screen, its sentences as the page shows them.
+  // Hidden on screen (see ToolReport); absent while there is no answer.
+  function printedReport() {
+    const answer = shownAnswer();
+    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale);
+    if (!answer || a === 'loading') return null;
+    const band = a.band.length > 0 ? [`${strings.results.bandLabel} ${a.band.join(' · ')}`] : [];
+    return inflationReport({ island: strings, common: exportStrings, state: settled, answer, decimals, lines: [a.headline, ...a.sentences, ...band], method: a.method });
+  }
+  const report = printedReport();
+
+  function downloadSpreadsheet() {
+    const answer = shownAnswer();
+    if (!answer) return;
+    const sheets = inflationSheets({
+      island: strings,
+      common: exportStrings,
+      state: settled,
+      answer,
+      decimals,
+      date: isoDate(),
+      page: `${window.location.origin}${window.location.pathname}`,
+    });
+    downloadWorkbook(sheets, 'inflation');
+    track('free_inflation_exported', { format: 'xlsx' });
+  }
+
+  function printPage() {
+    track('free_inflation_exported', { format: 'pdf' });
+    printResults();
+  }
+
+
   function reset() {
     setForm(toForm(start, numberLocale));
     setSettled(start);
@@ -565,9 +627,6 @@ export default function InflationCalculator({
         </div>
 
         <div className="ifc-actions">
-          <button type="button" className="ifc-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
-            {copied ? strings.actions.copied : strings.actions.copy}
-          </button>
           <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset} data-attr="free-inflation-reset">
             {strings.actions.reset}
           </button>
@@ -587,6 +646,22 @@ export default function InflationCalculator({
         narrow={narrow}
         numberLocale={numberLocale}
       />
+
+      <ToolExport
+        strings={exportStrings}
+        share={
+          <button type="button" className="ifc-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
+            {copied ? strings.actions.copied : strings.actions.copy}
+          </button>
+        }
+        xlsxAttr="free-inflation-export-xlsx"
+        pdfAttr="free-inflation-export-pdf"
+        ready={exportReady}
+        onSpreadsheet={downloadSpreadsheet}
+        onPrint={printPage}
+      />
+
+      {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </AmountLocaleContext.Provider>
   );
@@ -873,6 +948,8 @@ function HistoryBars({
 
 interface Answer {
   headline: string;
+  /** The answer as a number: an amount, or for "keeping up" the real rate in % a year. */
+  value: number;
   sentences: string[];
   band: string[];
   method: string;
@@ -908,6 +985,7 @@ function computeAnswer(
     const average = (Math.pow(factor, 1 / span) - 1) * 100;
     return {
       headline: aboutText(value, code, strings, amountLocale),
+      value,
       sentences: [
         t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
         t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }),
@@ -935,6 +1013,7 @@ function computeAnswer(
     const lead = same ? r.keepSame : real > 0 ? r.keepMore : r.keepLess;
     return {
       headline: t(r.keepHeadline, { real: pct(same ? 0 : real, numberLocale, 2, true) }),
+      value: same ? 0 : real,
       sentences: [
         t(lead, { growth: pct(g, numberLocale), rate: pct(i, numberLocale), real: pct(Math.abs(real), numberLocale) }),
         t(r.keepAfter, { years, amount, growth: pct(g, numberLocale), result: aboutText(after, code, strings, amountLocale) }),
@@ -955,6 +1034,7 @@ function computeAnswer(
   const template = mode === 'buy' ? r.buy : mode === 'cost' ? r.cost : r.past;
   return {
     headline: aboutText(value, code, strings, amountLocale),
+    value,
     sentences: [t(template, { rate: pct(i, numberLocale), amount, years, result: aboutText(value, code, strings, amountLocale) })],
     band: sides.map((rate) => t(r.bandItem, { rate: pct(rate, numberLocale), result: aboutText(answer(formula, A, rate, n), code, strings, amountLocale) })),
     method: r.method,

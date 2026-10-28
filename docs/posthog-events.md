@@ -1,6 +1,6 @@
 # PostHog Events
 
-> Checked against the codebase on 2026-10-07. Update when events are added, renamed, or removed. Ready-made dashboard setup: `docs/posthog-dashboards-prompt.md`.
+> Checked against the codebase on 2026-10-07; keeping a copy and the click filter added 2026-10-28. Update when events are added, renamed, or removed. Ready-made dashboard setup: `docs/posthog-dashboards-prompt.md`.
 
 All events use `https://eu.i.posthog.com` as the API host. Client-side events go through the PostHog JS SDK (`window.posthog.capture`). Server-side events go through the PostHog HTTP API (`POST /capture/`) from two Google Apps Scripts: `scripts/newsletter.gs` and `scripts/waitlist.gs`.
 
@@ -125,6 +125,17 @@ All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No even
 
 ---
 
+### Keeping a copy, every free tool: `src/components/ToolExport.tsx`
+
+Each tool has a "Save or share these results" block under its result: its share button (same label as before), "Download as a spreadsheet (Excel, Google Sheets)" and "Make a PDF report". The last opens the print dialog with the tool's printed report (`ToolReport`), which is on the page but hidden on screen and holds no label, so it is never clicked or captured. Each tool sends one event when one of the two file buttons is used. The only property is which of the two; never an amount, a name, the file name or anything in the file. `pdf` means the print dialog was opened, not that a PDF was saved (the page cannot know).
+
+| Event | Properties | Trigger |
+|---|---|---|
+| `free_loan_comparison_exported` | `format: 'xlsx' \| 'pdf'` | Spreadsheet downloaded or print dialog opened |
+| `free_multi_currency_net_worth_exported` | `format: 'xlsx' \| 'pdf'` | Same; the rows CSV keeps `free_multi_currency_net_worth_csv_downloaded` |
+| `free_monte_carlo_exported` | `format: 'xlsx' \| 'pdf'` | Same |
+| `free_inflation_exported` | `format: 'xlsx' \| 'pdf'` | Same |
+
 ## Server-side explicit events — `scripts/newsletter.gs` and `scripts/waitlist.gs`
 
 Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_` in each script). The `distinct_id` is `SHA-256(lowercase(trim(email)))`, hex-encoded — identical to the browser's `posthog.identify(hash)` call, so PostHog stitches client + server events into a single user timeline.
@@ -207,6 +218,8 @@ Both the browser (`SubscribeSection.astro`, before `blog_subscribe_submit`) and 
 ## Autocapture: `data-attr` elements
 
 PostHog autocapture records clicks on elements with a `data-attr` attribute. These are gated on cookie consent (`closeConsent` in `CookieConsent.astro` enables `autocapture` + `enable_heatmaps` only after accept).
+
+**What a click carries.** PostHog describes the clicked element and its ancestors up to `<body>` (`$elements_chain`; this project sends it as a string). Two layers keep typed text and tool results out of it. `Analytics.astro` passes `element_attribute_ignorelist` (accessibility labels, titles, values, styles, links, ids, SVG geometry) to autocapture and dead clicks, and `before_send` rebuilds every element description through `src/utils/shared/cleanElements.js`: a tag name from a fixed list, `attr__data-attr` only when the value is in the label registry, `nth-child` and `nth-of-type` from 1 to 999, and nothing else. `$el_text`, `$external_click_url`, `$element_selectors` and `$selected_content` are removed. A chain that cannot be read is sent empty. The registry is read from the source at build time (`src/utils/analyticsLabels.ts`); a `data-attr` written in a form it cannot resolve fails `npm test`. So filters on `data-attr`, tag and position keep working; filters on classes, ids, `href` or text match nothing.
 
 ### Navigation (`src/components/Header.astro`)
 
@@ -312,6 +325,7 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `data-attr` value | Element |
 |---|---|
 | `lc-share-copy` | Share/copy button |
+| `lc-export-xlsx`, `lc-export-pdf` | "Download as a spreadsheet (Excel, Google Sheets)" and "Make a PDF report" |
 | `lc-reset` | Reset to defaults button |
 | `lc-vendor-add` | Add vendor button |
 | `lc-vendor-remove` | Remove vendor button |
@@ -326,7 +340,8 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `mcnw-rates-retry` | Retry rates button |
 | `mcnw-asset-add` | Add asset button |
 | `mcnw-csv-upload` | CSV upload button |
-| `mcnw-csv-download` | CSV download button |
+| `mcnw-csv-download` | "Save rows as CSV (to upload later)" button |
+| `mcnw-export-xlsx`, `mcnw-export-pdf` | "Download as a spreadsheet (Excel, Google Sheets)" and "Make a PDF report" |
 | `mcnw-asset-remove` | Remove asset button |
 | `mcnw-share-cancel` | Share modal cancel button |
 | `mcnw-share-copy` | Share modal copy button |
@@ -338,8 +353,15 @@ PostHog autocapture records clicks on elements with a `data-attr` attribute. The
 | `data-attr` value | Element |
 |---|---|
 | `free-monte-carlo-share` | "Copy a link to this plan" button |
+| `free-monte-carlo-export-xlsx`, `free-monte-carlo-export-pdf` | "Download as a spreadsheet (Excel, Google Sheets)" and "Make a PDF report" |
 | `free-monte-carlo-reset` | Reset button |
 | `free-monte-carlo-net-worth-link` | Link to the multi-currency net worth calculator under the inputs |
 | `related-financial-projections`, `related-what-if-scenarios`, `related-income-replacement-ratio`, `related-understanding-risk`, `related-diversification` | Related reading cards |
 | `free-cta-monte-carlo-simulator` | Card on `/free/` |
 | `footer-monte-carlo-simulator` | Footer link |
+
+### Inflation calculator (`src/components/InflationCalculator.tsx`)
+
+| `data-attr` value | Element |
+|---|---|
+| `free-inflation-export-xlsx`, `free-inflation-export-pdf` | "Download as a spreadsheet (Excel, Google Sheets)" and "Make a PDF report" |

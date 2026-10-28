@@ -310,6 +310,12 @@ describe('aggregate', () => {
 // ---------------------------------------------------------------------------
 
 describe('parseCSV', () => {
+  it('takes off the apostrophe the download puts before a formula-like name, and only that one', () => {
+    const { rows, errors } = parseCSV("Name,Value,Currency,Type\n'=SUM(A1),100,EUR,Asset\n'Tis,200,EUR,Asset\n''-x,300,EUR,Asset");
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => r.name), ['=SUM(A1)', "'Tis", "'-x"]);
+  });
+
   it('parses valid CSV with header', () => {
     const csv = `name,value,currency,type
 US Stocks,50000,USD,asset
