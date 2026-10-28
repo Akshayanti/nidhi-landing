@@ -53,7 +53,7 @@ const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 // Update these maps in the same PR as any package.json change.
 // -----------------------------------------------------------------------------
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
-  '@anthropic-ai/sdk': '^0.32.1',
+  '@anthropic-ai/sdk': '^1.3.0',
   '@astrojs/react': '^7.1.0',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
