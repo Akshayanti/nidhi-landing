@@ -62,6 +62,7 @@ export const hi: Dict = {
       contact: 'हमसे संपर्क करें',
       email: 'ईमेल',
       instagram: 'Instagram',
+      beta: "प्लानर बीटा",
     },
     // Devanagari has no upper or lower case, so the desktop dropdown and the
     // sheet word these the same. They are listed separately anyway, because

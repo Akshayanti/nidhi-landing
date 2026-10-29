@@ -56,6 +56,7 @@ export const es: Dict = {
       contact: 'Contáctanos',
       email: 'Correo electrónico',
       instagram: 'Instagram',
+      beta: "Beta del planificador",
     },
     // Sentence case in Spanish, so the dropdown's tool names match the sheet's.
     // The keys stay because `Dict` requires them.

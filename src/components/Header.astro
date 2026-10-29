@@ -104,6 +104,16 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
           </ul>
         </div>
       ))}
+      {/* The planner beta: a plain link like the dropdowns, not a button, so the
+          lessons and tools stay what the header leads with. It stays in the
+          row from 720px, after the dropdowns have moved into the sheet; below
+          that the sheet's first entry carries it. */}
+      <a
+        href={href('/beta/')}
+        class:list={['nav-link', { active: barePath === '/beta/' }]}
+        aria-current={barePath === '/beta/' ? 'page' : undefined}
+        data-attr="nav-beta"
+      >{navLabel(strings, 'beta', 'menu')}</a>
       {otherLocales.length > 0 && (
         <LangPicker locale={locale} alternates={alternates} variant="header" />
       )}
@@ -124,10 +134,20 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     </div>
   </nav>
 
-  {/* Phones only: the site's links in one panel under the header, in place
-      of the dropdown, the Learn link and the footer's link columns. */}
+  {/* Phones and tablets (up to 1023px): the site's links in one panel under
+      the header, in place of the dropdowns and the footer's link columns. */}
   <div class="nav-sheet" id="nav-sheet" hidden>
     <nav class="container container--wide nav-sheetInner" aria-label={strings.nav.menuLabel}>
+      {/* The planner beta, first and on its own: the header's one link outside
+          a group. Styled like every other entry. */}
+      <div class="nav-sheetGroup">
+        <a
+          href={href('/beta/')}
+          class:list={[{ active: isSheetActive('/beta/') }]}
+          aria-current={isSheetActive('/beta/') ? 'page' : undefined}
+          data-attr="nav-menu-beta"
+        >{navLabel(strings, 'beta')}</a>
+      </div>
       {groups.map((group) => (
         <div class="nav-sheetGroup">
           <p class="nav-sheetHeading">{strings.nav.groups[group.key]}</p>
@@ -338,14 +358,23 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-right { gap: 4px; }
   }
 
-  /* Phone menu: hidden on wider screens, where the two dropdowns
-     and the footer columns do the job. */
+  /* The menu sheet: hidden on desktop, where the two dropdowns and the footer
+     columns do the job. Up to 1023px the dropdowns move into it: their labels
+     run long in some languages (Spanish "Herramientas gratuitas"), and with
+     the beta link beside them the row overflowed below about 900px. One
+     breakpoint for every language rather than per-language tuning. */
   .nav-menuToggle,
   .nav-sheet { display: none; }
 
-  @media (max-width: 640px) {
-    .nav-dropdown,
+  /* The beta link stays in the row while it fits beside the language pill,
+     the theme toggle and the menu button in every language: Spanish, the
+     longest, needs about 680px. */
+  @media (max-width: 719px) {
     .nav-right > .nav-link { display: none; }
+  }
+
+  @media (max-width: 1023px) {
+    .nav-dropdown { display: none; }
 
     .nav-menuToggle {
       display: grid;
@@ -689,8 +718,8 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     sheet.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() { setOpen(false); });
     });
-    // Rotating a phone to a wider layout hides the button; close the panel too.
-    var wide = window.matchMedia('(min-width: 641px)');
+    // Widening the window to the desktop layout hides the button; close the panel too.
+    var wide = window.matchMedia('(min-width: 1024px)');
     if (wide.addEventListener) wide.addEventListener('change', function(e) { if (e.matches) setOpen(false); });
   })();
 </script>
