@@ -9,7 +9,7 @@ hashtags_day1: "#multilingual #moneytools #FinancialLiteracyIsYourRight #volunte
 keywords_day1: "personal finance in Hindi, personal finance in Spanish, personal finance in Czech, personal finance in Marathi, free finance tools, net worth calculator, loan calculator, inflation calculator, multilingual website, global expats, money abroad, finanzas personales, calculadora financiera, calculadora de préstamos, herramientas financieras gratis, वित्तीय योजना, लोन कैलकुलेटर, महँगाई कैलकुलेटर, osobní finance, finanční kalkulačka, kalkulačka půjčky, आर्थिक नियोजन, कर्ज कॅल्क्युलेटर, महागाई कॅल्क्युलेटर"
 ---
 
-> **Needs attention (Oct 25, 2026).** Rewritten Oct 25 with the owner as a 7-slide carousel; redesigned Oct 29 (owner: the earlier slides read as promotion, not a call for help) as 2 request slides showing real site text under review; promotion only at the end of the caption; council and Codex visuals signed off Oct 29; voice "I" (owner, Oct 25). Stories: one per slide (`scripts/slides-to-reel.sh output/instagram-kit/sundays/02-languages/day1/carousel output/instagram-kit/sundays/02-languages/day1`). Reel parked by the owner. Waiting for the owner's review before scheduling (Nov 1, 12:00 CET = 16:30 IST); remove this note once scheduled.
+> **Needs attention (Oct 25, 2026).** Rewritten Oct 25 with the owner as a 7-slide carousel; redesigned Oct 29 (owner: the earlier slides read as promotion, not a call for help) as 2 request slides showing real site text under review, plus a third listing the coming languages (owner, Oct 29); promotion only at the end of the caption; council and Codex visuals signed off Oct 29; voice "I" (owner, Oct 25). Stories: one per slide (`scripts/slides-to-reel.sh output/instagram-kit/sundays/02-languages/day1/carousel output/instagram-kit/sundays/02-languages/day1`). Reel parked by the owner. Waiting for the owner's review before scheduling (Nov 1, 12:00 CET = 16:30 IST); remove this note once scheduled.
 
 ## Brief
 
@@ -31,7 +31,7 @@ What helping looks like: read nidhi in your language. Does it sound right? If yo
 
 In return: a say in the glossary words for your language, credit on the site if you want it, and an invite when the planner's beta opens.
 
-More languages are coming, listed on the second slide. No dates yet, but you can sign up for yours now on the same form, and I'll reach out when work on it starts.
+More languages are coming, listed on the last slide. No dates yet, but you can sign up for yours now on the same form, and I'll reach out when work on it starts.
 
 → Sign up at nidhi.today/volunteers/ (link in bio)
 
@@ -53,7 +53,7 @@ status: Volunteers wanted · nidhi.today/volunteers/
 
 ### Slide 2 (request)
 
-alt: Two cards show the same heading on the Czech and Marathi net worth calculator pages: "Porozumějte svému čistému jmění" and "तुमची निव्वळ संपत्ती समजून घ्या", with the words for net worth highlighted. Below: What helping looks like. Read nidhi in your language. Does it sound right? If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed. Coming next, and you can sign up for these now too: Français, Português, Bahasa Indonesia, Deutsch, 日本語, Tiếng Việt, Türkçe, 한국어, العربية. Sign up at nidhi.today/volunteers/, link in bio.
+alt: Two cards show the same heading on the Czech and Marathi net worth calculator pages: "Porozumějte svému čistému jmění" and "तुमची निव्वळ संपत्ती समजून घ्या", with the words for net worth highlighted. Below: What helping looks like. Read nidhi in your language. Does it sound right? If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed. Sign up at nidhi.today/volunteers/, link in bio.
 
 example: Example from the site
 card: Kalkulačka čistého jmění · nidhi | ČEŠTINA | Porozumějte svému čistému jmění | čistému jmění
@@ -61,11 +61,20 @@ card: निव्वळ संपत्ती कॅल्क्युलेट
 kicker: What helping looks like
 title: Read nidhi in your language. Does it sound right?
 line: If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed.
-next: Coming next. You can sign up for these now too | Français · Português · Bahasa Indonesia · Deutsch · 日本語 · Tiếng Việt · Türkçe · 한국어 · العربية
+status: Sign up · nidhi.today/volunteers/ · link in bio
+
+### Slide 3 (request)
+
+alt: More languages are coming. Speak one of these? Sign up now too: Français, Português, Bahasa Indonesia, Deutsch, 日本語, Tiếng Việt, Türkçe, 한국어, العربية. No dates yet. I'll reach out when work on yours starts. Sign up at nidhi.today/volunteers/, link in bio.
+
+kicker: More languages are coming
+title: Speak one of these? Sign up now too.
+next: | Français · Português · Bahasa Indonesia · Deutsch · 日本語 · Tiếng Việt · Türkçe · 한국어 · العربية
+line: No dates yet. I'll reach out when work on yours starts.
 status: Sign up · nidhi.today/volunteers/ · link in bio
 
 ## Stories
 
-d1_f1_share: each of the two carousel slides, one story per slide, in order (owner, Oct 23, 2026: no poll and no extra frame for this post)
+d1_f1_share: each of the three carousel slides, one story per slide, in order (owner, Oct 23, 2026: no poll and no extra frame for this post)
 d1_f1_time: with the Sunday post
 d1_f1_caption: Can you help me?
