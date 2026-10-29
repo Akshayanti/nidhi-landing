@@ -19,6 +19,7 @@ withheld: What changes when income is informal and paid in cash, rotating saving
 ## Day 1 (angle)
 
 angle: Going freelance at your old salary's day rate is a pay cut: the rate has to fund everything an employer paid for
+breadth: narrow | Speaks to people going or working freelance, a sub-audience; the day rate maths needs that situation
 number: €154 a paid day as an employee, €250 a billable day freelance for the same life, about 1.6 times
 takeaway: Fewer paid days plus a self funded bundle is why a common rule of thumb puts a freelance rate at one and a half to two times the salaried equivalent.
 tool: Price your bundle. Working days, less leave and sick days, less unbilled time; salary plus pension and insurance; divide one by the other.
@@ -137,6 +138,7 @@ read: A twelve month worked example of paying yourself a steady salary
 ## Day 2 (angle)
 
 angle: Uneven income is a variance problem, not a discipline problem: one holding account, tax first, a fixed salary
+breadth: narrow | Uneven monthly income is a sub-audience (freelance, gig, seasonal work); salaried viewers do not share the problem
 number: €600 to €5,100 a month in, a flat €2,000 a month out, and the year still ended €1,650 ahead
 takeaway: The holding account does the swinging so the household budget does not have to; a salary set below the after tax average leaves room for a worse year.
 tool: The salary method. Every payment lands in one holding account, tax moves out the day it arrives, a fixed salary leaves on a fixed date, and the account absorbs the swings.
