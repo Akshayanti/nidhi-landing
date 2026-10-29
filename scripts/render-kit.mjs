@@ -586,7 +586,8 @@ const LAYOUTS = {
   // A call for help: real site text in one or more browser cards, the phrase
   // under review highlighted, an optional review comment, then the ask.
   // card: url | LANGUAGE | heading | phrase to highlight | lead (optional)
-  // next: label | language · language · ... (optional chips under the line)
+  // next: label | language · language · ... (optional chips under the title;
+  // with no cards the slide is the chips alone, set larger)
   request: s => {
     const cardLines = [].concat(s.fields.card || []);
     const cards = cardLines.map(line => {
@@ -599,18 +600,19 @@ const LAYOUTS = {
     }).join('');
     const [commentLabel, comment] = s.fields.comment ? cells(s.fields.comment) : [];
     const [nextLabel, nextLangs] = s.fields.next ? cells(s.fields.next) : [];
+    const chips = nextLangs ? `<div class="request-next${cardLines.length ? '' : ' solo'}">${nextLabel ? `<small>${rich(nextLabel)}</small>` : ''}<div class="request-chips">${nextLangs.split(' · ').map(l => `<span${/[\u0600-\u06FF]/.test(l) ? ' dir="rtl"' : ''}>${esc(l)}</span>`).join('')}</div></div>` : '';
     return `
-      <div class="request-exhibit">
+      ${cardLines.length ? `<div class="request-exhibit">
         ${s.fields.example ? `<div class="request-example">${rich(s.fields.example)}</div>` : ''}
         <div class="request-cards${cardLines.length > 1 ? ' compact' : ''}">${cards}
           ${comment ? `<div class="request-comment"><small>${rich(commentLabel)}</small>${rich(comment)}</div>` : ''}
         </div>
-      </div>
+      </div>` : ''}
       <div class="request-copy">
         ${s.fields.kicker ? `<p class="request-kicker">${rich(s.fields.kicker)}</p>` : ''}
         <h1>${rich(s.fields.title)}</h1>
+        ${chips}
         ${s.fields.line ? `<p class="request-line">${rich(s.fields.line)}</p>` : ''}
-        ${nextLabel ? `<div class="request-next"><small>${rich(nextLabel)}</small><div class="request-chips">${nextLangs.split(' · ').map(l => `<span${/[\u0600-\u06FF]/.test(l) ? ' dir="rtl"' : ''}>${esc(l)}</span>`).join('')}</div></div>` : ''}
       </div>
       ${s.fields.status ? `<div class="request-status"><i></i>${rich(s.fields.status)}</div>` : ''}`;
   },
@@ -940,6 +942,9 @@ const CSS = `
   .request-next small { display:block; margin-bottom:12px; font:700 24px 'Inter',sans-serif; color:var(--ink); }
   .request-chips { display:flex; flex-wrap:wrap; gap:10px; max-width:936px; }
   .request-chips span { padding:7px 16px; border:2px solid var(--rule); border-radius:999px; background:#fff; font:550 24px 'Inter',sans-serif; color:var(--ink); }
+  .request-next.solo { margin-top:56px; }
+  .request-next.solo .request-chips { gap:18px; }
+  .request-next.solo .request-chips span { padding:14px 30px; font-size:40px; font-weight:600; box-shadow:6px 7px 0 rgba(0,33,113,.06); }
   .request-status { position:absolute; left:72px; bottom:54px; display:flex; align-items:center; gap:12px; font:650 24px 'Inter',sans-serif; color:var(--soft); }
   .request-status i { width:12px; height:12px; border-radius:50%; background:var(--warn); }
   .layout-sheet { padding:150px 72px 112px; }
