@@ -90,3 +90,25 @@ export function liveInclusive(posts: GuidePost[], now: Date): { count: number; g
     groups: INCLUSIVE_GROUPS.filter((g) => g.guides.some((s) => live.has(s))).map(({ id, label }) => ({ id, label })),
   };
 }
+
+/** The ladder levels, in reading order (src/utils/home/startingPoints.ts). */
+const LADDER = ['discovery', 'building', 'psychology', 'optimizing', 'mastery'];
+
+/**
+ * The ladder levels whose pages hold a published guide, in ladder order: each
+ * guide sits after the lesson it builds on (`pathLevel`, set by getPathPosts
+ * only on published posts placed on the path).
+ */
+export function inclusiveHostLevels(posts: { level: string; pathLevel?: string }[]): string[] {
+  return LADDER.filter((level) => posts.some((p) => p.level === 'inclusive-finances' && p.pathLevel === level));
+}
+
+/**
+ * The collection's one line, the same on the home page and /blog/: who it is
+ * for and where its guides sit. `levels` are the localized names of the levels
+ * whose pages hold a published guide; without one, the line leaves them out.
+ */
+export function inclusiveLine(strings: { inclusive: string; inclusiveAt: string }, levels: string[], lang: string): string {
+  if (levels.length === 0) return strings.inclusive;
+  return strings.inclusiveAt.replace('{levels}', new Intl.ListFormat(lang, { type: 'disjunction' }).format(levels));
+}

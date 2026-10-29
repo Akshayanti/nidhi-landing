@@ -39,6 +39,17 @@ export const learnEn = {
       mastery: 'Mastery',
       'inclusive-finances': 'Inclusive Finances',
     } as Record<string, string>,
+    /**
+     * Collections: other ways into the path, shown after the levels on /blog/
+     * and after the routes on the home page, in the same words in both.
+     * Inclusive Finances: its line says who it is for and where its guides
+     * sit; `{levels}` is the level or levels whose pages hold a published one.
+     */
+    collections: {
+      heading: 'Or browse a collection',
+      inclusive: "Built for financial lives the standard plan doesn't fit. Optional guides, read alongside the lessons.",
+      inclusiveAt: "Built for financial lives the standard plan doesn't fit. Optional guides, each one placed after the {levels} lesson it builds on.",
+    },
 
     /** One line per ladder level, for the level list on `/blog/`. */
     summaries: {
@@ -312,13 +323,6 @@ export const learnEn = {
       youAreHere: 'You are here',
       srRead: 'read',
       lessonsCount: '{count} lessons',
-      alongside: 'Alongside every level',
-      inclusiveName: 'Inclusive Finances',
-      inclusiveSr: ', alongside every level',
-      inclusiveSummary: 'When the standard plan does not fit: couples, shared homes, moving countries, disability and more',
-      guideOne: 'guide',
-      guideMany: 'guides',
-      guideFew: 'guides',
       findHeading: 'Find a lesson',
       browseByTopic: 'Browse by topic',
       glossary: 'Glossary',
@@ -468,6 +472,11 @@ export const learnHi: typeof learnEn = {
       optimizing: 'निखार',
       mastery: 'निपुणता',
       'inclusive-finances': 'सबके लिए वित्त',
+    },
+    collections: {
+      heading: 'या कोई संग्रह देखें',
+      inclusive: 'उन लोगों के लिए बना, जिनकी आर्थिक ज़िंदगी में मानक योजना नहीं बैठती। पाठों के साथ पढ़ने के लिए वैकल्पिक मार्गदर्शिकाएँ।',
+      inclusiveAt: 'उन लोगों के लिए बना, जिनकी आर्थिक ज़िंदगी में मानक योजना नहीं बैठती। वैकल्पिक मार्गदर्शिकाएँ: हर मार्गदर्शिका {levels} के उस पाठ के बाद आती है जिस पर वह आधारित है।',
     },
     summaries: {
       discovery: 'पैसे की बुनियादी भाषा',
@@ -709,13 +718,6 @@ export const learnHi: typeof learnEn = {
       youAreHere: 'आप यहाँ हैं',
       srRead: 'पढ़ा',
       lessonsCount: '{count} पाठ',
-      alongside: 'हर स्तर के साथ',
-      inclusiveName: 'सबके लिए वित्त',
-      inclusiveSr: ', हर स्तर के साथ',
-      inclusiveSummary: 'जब मानक योजना फ़िट नहीं बैठती: जोड़े, साझा घर, देश बदलना, विकलांगता और बहुत कुछ',
-      guideOne: 'मार्गदर्शिका',
-      guideMany: 'मार्गदर्शिकाएँ',
-      guideFew: 'मार्गदर्शिकाएँ',
       findHeading: 'पाठ खोजें',
       browseByTopic: 'विषय से देखें',
       glossary: 'शब्दावली',
@@ -854,6 +856,11 @@ export const learnEs: typeof learnEn = {
       optimizing: 'Optimización',
       mastery: 'Dominio',
       'inclusive-finances': 'Finanzas inclusivas',
+    },
+    collections: {
+      heading: 'O explora una colección',
+      inclusive: 'Pensado para vidas financieras que no encajan con el plan estándar. Guías opcionales para leer junto a las lecciones.',
+      inclusiveAt: 'Pensado para vidas financieras que no encajan con el plan estándar. Guías opcionales: cada una va después de la lección de {levels} en la que se apoya.',
     },
     summaries: {
       discovery: 'El lenguaje básico del dinero',
@@ -1091,13 +1098,6 @@ export const learnEs: typeof learnEn = {
       youAreHere: 'Estás aquí',
       srRead: 'leída',
       lessonsCount: '{count} lecciones',
-      alongside: 'Junto a todos los niveles',
-      inclusiveName: 'Finanzas inclusivas',
-      inclusiveSr: ', junto a todos los niveles',
-      inclusiveSummary: 'Cuando el plan estándar no encaja: parejas, hogares compartidos, mudarse de país, discapacidad y más',
-      guideOne: 'guía',
-      guideMany: 'guías',
-      guideFew: 'guías',
       findHeading: 'Encuentra una lección',
       browseByTopic: 'Explorar por tema',
       glossary: 'Glosario',
@@ -1244,6 +1244,11 @@ export const learnCs: typeof learnEn = {
       mastery: 'Mistrovství',
       'inclusive-finances': 'Inkluzivní finance',
     } as Record<string, string>,
+    collections: {
+      heading: 'Nebo si projděte sbírku',
+      inclusive: 'Pro finanční životy, na které standardní plán nesedí. Volitelní průvodci ke čtení vedle lekcí.',
+      inclusiveAt: 'Pro finanční životy, na které standardní plán nesedí. Volitelní průvodci: každý následuje po lekci z úrovně {levels}, na kterou navazuje.',
+    },
 
     summaries: {
       discovery: 'Základní jazyk peněz',
@@ -1486,13 +1491,6 @@ export const learnCs: typeof learnEn = {
       youAreHere: 'Jste tady',
       srRead: 'přečteno',
       lessonsCount: 'počet lekcí: {count}',
-      alongside: 'Souběžně s každou úrovní',
-      inclusiveName: 'Inkluzivní finance',
-      inclusiveSr: ', souběžně s každou úrovní',
-      inclusiveSummary: 'Když standardní plán nesedí: páry, sdílené bydlení, stěhování do jiné země, zdravotní postižení a další',
-      guideOne: 'průvodce',
-      guideMany: 'průvodců',
-      guideFew: 'průvodci',
       findHeading: 'Najít lekci',
       browseByTopic: 'Procházet podle tématu',
       glossary: 'Slovníček pojmů',
@@ -1632,6 +1630,11 @@ export const learnMr: typeof learnEn = {
       optimizing: 'सुधारणा',
       mastery: 'प्रभुत्व',
       'inclusive-finances': 'सर्वसमावेशक वित्त',
+    },
+    collections: {
+      heading: 'किंवा एखादा संग्रह पाहा',
+      inclusive: 'ज्यांच्या आर्थिक आयुष्याला सर्वसाधारण योजना बसत नाही, त्यांच्यासाठी बनवलेले. धड्यांसोबत वाचण्यासाठी ऐच्छिक मार्गदर्शिका.',
+      inclusiveAt: 'ज्यांच्या आर्थिक आयुष्याला सर्वसाधारण योजना बसत नाही, त्यांच्यासाठी बनवलेले. ऐच्छिक मार्गदर्शिका: प्रत्येक मार्गदर्शिका {levels} पातळीतील ज्या धड्यावर आधारित आहे, त्या धड्यानंतर येते.',
     },
     summaries: {
       discovery: 'पैशांची मूलभूत भाषा',
@@ -1867,13 +1870,6 @@ export const learnMr: typeof learnEn = {
       youAreHere: 'तुम्ही इथे आहात',
       srRead: 'वाचले',
       lessonsCount: 'धडे: {count}',
-      alongside: 'प्रत्येक पातळीसोबत',
-      inclusiveName: 'सर्वसमावेशक वित्त',
-      inclusiveSr: ', प्रत्येक पातळीसोबत',
-      inclusiveSummary: 'सर्वसाधारण योजना बसत नाही तेव्हा: जोडपी, सामायिक घरे, देश बदलणे, अपंगत्व आणि बरेच काही',
-      guideOne: 'मार्गदर्शिका',
-      guideMany: 'मार्गदर्शिका',
-      guideFew: 'मार्गदर्शिका',
       findHeading: 'धडा शोधा',
       browseByTopic: 'विषयानुसार पाहा',
       glossary: 'शब्दसूची',

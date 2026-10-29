@@ -436,6 +436,19 @@ inc-2, inc-7a and inc-7b were split from a single draft, "Communal Living and Mu
 >
 > **Note (proposed, Sep 30, 2026):** `inclusive-finances` is a proposed sixth level. Unlike every other level in this table, it is **deliberately not part of the sequential prerequisite chain** — see "Exposure and IA strategy" under the "INCLUSIVE FINANCES" section below. Its posts carry `inc-N` planning ids (see "Ids" under the publishing order), and a handful cross-reference Mastery-level concepts (estate planning, generational wealth), but neither describes a reading gate: the level is exposed to readers from day one of the site, not after they finish the other 75 posts. Same code-activation requirement as Psychology: add `'inclusive-finances'` to the `level` enum in `src/content.config.ts`, but its `LearningPath.tsx` treatment differs from every other level (see below) rather than simply appending to `LEVEL_ORDER`.
 
+### Lessons, levels and collections (owner, Oct 29, 2026)
+
+The pattern every way into the path follows, so a new one (How-to first, action plan step 12) slots in without a new design:
+
+- **Lessons are the ladder.** The five levels above are the only levels. Lessons count toward reading progress. A level with no published lesson is still shown, not linked ("Not yet available"), until its first lesson goes live.
+- **A collection is another way into the same path, never a level.** It has a hub page and one line that says who it is for and what is in it. Two shapes exist:
+  - **Guides beside the lessons** (Inclusive Finances): separate, optional pieces. Each guide has one host lesson (`companionOf`) and ships only once that host is live (the build fails otherwise, `assertCompanionHosts`); it sits right after it on that level's page, is marked "Optional", and does not count toward progress. Assigned hosts are in Optimizing and Mastery, with two guides hosted by another guide; `divorce-and-separation-finances` has no host yet. Today only Optimizing holds a published guide, so the line names only Optimizing.
+  - **Lessons gathered by kind** (How-to): existing lessons from any level, which stay in their level and count as usual; the hub lists them.
+- **Where collections show:** after the levels on /blog/ and after the starting routes on the home page, under one heading ("Or browse a collection"), in the same words in both places (`learn.collections` in `src/i18n/strings/learn.ts`). A collection appears once its hub has something published.
+- **Counts are of lessons only.** The home page's lesson count (hero and FAQ) leaves guides out, and a collection's card shows no count: its line describes it instead. For Inclusive Finances the line names the levels whose pages hold a published guide, computed at build time (`inclusiveHostLevels`, `inclusiveLine`).
+- When How-to ships, the `collections` prop on /blog/ and the home row become a list, each shown once its hub has something published.
+- The schema still files Inclusive Finances under `level`; moving it to its own collection field is a later refactor with nothing a reader sees.
+
 ---
 
 ## Gap Analysis

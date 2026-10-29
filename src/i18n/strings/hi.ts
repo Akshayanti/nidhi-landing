@@ -1056,11 +1056,6 @@ export const hi: Dict = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'इस रास्ते के सब पाठ पढ़ लिए। ',
       doorPath: 'सीखने के रास्ते पर आगे बढ़ते रहें',
-      inclusiveLead: 'उन लोगों के लिए बना, जिनकी आर्थिक ज़िंदगी में मानक योजना नहीं बैठती।',
-      inclusiveTitle: 'मानक योजना मेरे जीवन में नहीं बैठती।',
-      inclusiveMeta: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
-      inclusiveMetaFew: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
-      inclusiveMetaOne: 'सबके लिए वित्त · {count} गाइड, किसी भी पड़ाव पर',
       inclusiveGo: 'देखें',
     },
     /** Step 2: what the free tools are for. */
@@ -1084,6 +1079,8 @@ export const hi: Dict = {
     planner: {
       heading: 'देखें कि यह कहाँ तक जा सकता है।',
       body: 'मैंने एक प्लानर बनाना शुरू किया है: आपकी संपत्ति, आपका कर्ज़, आपकी कमाई और आपका खर्च, सब एक जगह, एक मुद्रा में या कई में, ताकि ऐसे फ़ैसले लेने से पहले आप उनकी तुलना कर सकें।',
+      /** After the body: when the beta opens, with a link to /beta/. */
+      beta: { before: 'बीटा मुफ़्त है और इसे जनवरी 2027 में खोलने की योजना है।', link: 'बीटा टेस्टर्स को क्या मिलेगा' },
     },
     /**
      * The worked example. Its numbers are computed (src/utils/home/), so the

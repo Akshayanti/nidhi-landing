@@ -32,8 +32,14 @@ export interface PathPlacement {
  * Fails the build when a live companion names a host slug that is not in the
  * collection at all (a typo, or a Mastery post published under a different
  * slug than the one fixed in the plan). Without this the companion would
- * silently drop off the learning path. Companions that are not live yet, and
- * hosts that exist but are scheduled for later, are fine.
+ * silently drop off the learning path. Companions that are not live yet are
+ * fine.
+ *
+ * Also fails when a live Inclusive Finances guide has no host, or its host is
+ * not live yet: the collection's line on the home page and /blog/ says every
+ * guide comes right after the lesson it builds on, so a guide ships only once
+ * its host has (docs/plans/blog-content-plan.md, "Lessons, levels and
+ * collections").
  */
 export function assertCompanionHosts<T extends Placeable & { data: { pubDate: Date } }>(allPosts: T[], now: Date): void {
   const slugs = new Set(allPosts.map((p) => p.data.slug));
@@ -43,6 +49,39 @@ export function assertCompanionHosts<T extends Placeable & { data: { pubDate: Da
   if (broken.length > 0) {
     const list = broken.map((p) => `${p.data.slug} -> ${p.data.companionOf}`).join(', ');
     throw new Error(`Live companion posts name a host slug that does not exist: ${list}. Fix companionOf or the host's slug.`);
+  }
+  const bySlug = new Map(allPosts.map((p) => [p.data.slug, p]));
+  const early = allPosts.filter((p) => {
+    if (p.data.level !== 'inclusive-finances' || p.data.pubDate > now) return false;
+    const host = p.data.companionOf ? bySlug.get(p.data.companionOf) : undefined;
+    return !host || host.data.pubDate > now;
+  });
+  if (early.length > 0) {
+    const list = early.map((p) => `${p.data.slug} -> ${p.data.companionOf ?? '(no host)'}`).join(', ');
+    throw new Error(`Live Inclusive Finances guides need a live host lesson: ${list}. Set companionOf, or schedule the guide after its host.`);
+  }
+}
+
+/**
+ * Fails the build when a guide is not right after its host in reading order:
+ * the host must come first, with only other guides between them (a guide
+ * hosted by another guide follows that one). Placement follows `order`, so a
+ * wrong `order` would put a guide under the wrong lesson or level while its
+ * line says it comes right after the lesson it builds on. A guide whose host
+ * is not visible is skipped (dev, before the Mastery lessons exist).
+ * `sortedPosts` must be the visible posts in `order` order.
+ */
+export function assertCompanionOrder<T extends Placeable>(sortedPosts: T[]): void {
+  const index = new Map(sortedPosts.map((p, i) => [p.data.slug, i]));
+  const misplaced = sortedPosts.filter((p, i) => {
+    const { level, companionOf } = p.data;
+    if (level !== 'inclusive-finances' || !companionOf || !index.has(companionOf)) return false;
+    const h = index.get(companionOf)!;
+    return h >= i || sortedPosts.slice(h + 1, i).some((q) => q.data.level !== 'inclusive-finances');
+  });
+  if (misplaced.length > 0) {
+    const list = misplaced.map((p) => `${p.data.slug} -> ${p.data.companionOf}`).join(', ');
+    throw new Error(`Inclusive Finances guides are not right after their host lesson: ${list}. Give each one an \`order\` just after its host's (host 45 -> guide 45.5).`);
   }
 }
 
