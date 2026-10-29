@@ -516,7 +516,7 @@ export const en = {
       description: "The nidhi planner beta is free and invite-only, through the waitlist. Paid features stay free for 12 months after launch.",
     },
     title: "The planner beta",
-    lead: "I'm building a planner for real lives: what you own, owe, earn and expect to spend in one place, in one currency or several, projected forward with the assumptions shown. The beta is free and opens by January 1, 2027. Access may open earlier, in stages.",
+    lead: "I'm building a planner for real lives: what you own, owe, earn and expect to spend in one place, in one currency or several, projected forward with the assumptions shown. The beta is free and is planned to open in January 2027. Access may open earlier, in stages.",
     getHeading: "What beta testers get",
     get: {
       during: "The paid features are free during the beta.",
@@ -544,7 +544,7 @@ export const en = {
     howHeading: "How it works",
     how: {
       join: "Join the waitlist below.",
-      email: "While you're on the waitlist, you get one email when your access opens, no later than January 1, 2027. That email is your invite.",
+      email: "While you're on the waitlist, you get one email when your access opens. That email is your invite.",
       account: "Create your account. From then on, you're a beta tester.",
       use: "Use it, and tell me what's missing.",
     },
@@ -1299,7 +1299,7 @@ export const en = {
         },
         {
           q: 'What is the planner, and when can I use it?',
-          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. Its free beta opens by January 1, 2027, and the waitlist gets one email when access opens.',
+          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. Its free beta is planned to open in January 2027, and the waitlist gets one email when access opens.',
           /** The text of a link to /beta/ after the answer. */
           more: "What beta testers get",
         },

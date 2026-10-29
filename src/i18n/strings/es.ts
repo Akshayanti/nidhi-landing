@@ -419,7 +419,7 @@ export const es: Dict = {
       description: "Beta gratuita del planificador de nidhi, solo por invitación. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
     },
     title: "La beta del planificador",
-    lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y se abre a más tardar el 1 de enero de 2027. El acceso puede abrirse antes, por etapas.",
+    lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y está previsto que se abra en enero de 2027. El acceso puede abrirse antes, por etapas.",
     getHeading: "Qué reciben quienes prueban la beta",
     get: {
       during: "Las funciones de pago son gratuitas durante la beta.",
@@ -447,7 +447,7 @@ export const es: Dict = {
     howHeading: "Cómo funciona",
     how: {
       join: "Apúntate a la lista de espera de abajo.",
-      email: "Mientras estés en la lista de espera, recibirás un solo correo cuando se abra tu acceso, a más tardar el 1 de enero de 2027. Ese correo es tu invitación.",
+      email: "Mientras estés en la lista de espera, recibirás un solo correo cuando se abra tu acceso. Ese correo es tu invitación.",
       account: "Crea tu cuenta. Desde ese momento, formas parte de la beta.",
       use: "Úsalo y cuéntame qué le falta.",
     },
@@ -1059,7 +1059,7 @@ export const es: Dict = {
         },
         {
           q: '¿Qué es el planificador y cuándo podré usarlo?',
-          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Su beta gratuita se abre a más tardar el 1 de enero de 2027, y quienes estén en la lista de espera reciben un solo correo cuando se abre su acceso.',
+          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Está previsto que su beta gratuita se abra en enero de 2027, y quienes estén en la lista de espera reciben un solo correo cuando se abre su acceso.',
           more: "Qué reciben quienes prueban la beta",
         },
       ],

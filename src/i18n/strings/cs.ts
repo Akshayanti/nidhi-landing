@@ -394,7 +394,7 @@ export const cs: Dict = {
       description: "Beta plánovače nidhi je zdarma a jen na pozvánku. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
     },
     title: "Beta plánovače",
-    lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevře se nejpozději 1. ledna 2027. Přístup se může otevírat i dřív, postupně.",
+    lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevřít se má v lednu 2027. Přístup se může otevírat i dřív, postupně.",
     getHeading: "Co v betě získáte",
     get: {
       during: "Placené funkce jsou během bety zdarma.",
@@ -422,7 +422,7 @@ export const cs: Dict = {
     howHeading: "Jak to funguje",
     how: {
       join: "Zapište se na čekací listinu níže.",
-      email: "Dokud jste na čekací listině, dostanete jeden e-mail, až se vám otevře přístup, nejpozději 1. ledna 2027. Ten e-mail je vaše pozvánka.",
+      email: "Dokud jste na čekací listině, dostanete jeden e-mail, až se vám otevře přístup. Ten e-mail je vaše pozvánka.",
       account: "Založte si účet. Od té chvíle jste součástí bety.",
       use: "Používejte ho a napište mi, co v něm chybí.",
     },
@@ -1013,7 +1013,7 @@ export const cs: Dict = {
         },
         {
           q: 'Co je plánovač a kdy ho budu moct používat?',
-          a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Jeho beta zdarma se otevře nejpozději 1. ledna 2027 a kdo je na čekací listině, dostane jeden e-mail, až se otevře přístup.',
+          a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Jeho beta zdarma se má otevřít v lednu 2027 a kdo je na čekací listině, dostane jeden e-mail, až se otevře přístup.',
           more: "Co v betě získáte",
         },
       ],
