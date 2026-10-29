@@ -586,6 +586,7 @@ const LAYOUTS = {
   // A call for help: real site text in one or more browser cards, the phrase
   // under review highlighted, an optional review comment, then the ask.
   // card: url | LANGUAGE | heading | phrase to highlight | lead (optional)
+  // next: label | language · language · ... (optional chips under the line)
   request: s => {
     const cardLines = [].concat(s.fields.card || []);
     const cards = cardLines.map(line => {
@@ -597,6 +598,7 @@ const LAYOUTS = {
       </div>`;
     }).join('');
     const [commentLabel, comment] = s.fields.comment ? cells(s.fields.comment) : [];
+    const [nextLabel, nextLangs] = s.fields.next ? cells(s.fields.next) : [];
     return `
       <div class="request-exhibit">
         ${s.fields.example ? `<div class="request-example">${rich(s.fields.example)}</div>` : ''}
@@ -608,6 +610,7 @@ const LAYOUTS = {
         ${s.fields.kicker ? `<p class="request-kicker">${rich(s.fields.kicker)}</p>` : ''}
         <h1>${rich(s.fields.title)}</h1>
         ${s.fields.line ? `<p class="request-line">${rich(s.fields.line)}</p>` : ''}
+        ${nextLabel ? `<div class="request-next"><small>${rich(nextLabel)}</small><div class="request-chips">${nextLangs.split(' · ').map(l => `<span${/[\u0600-\u06FF]/.test(l) ? ' dir="rtl"' : ''}>${esc(l)}</span>`).join('')}</div></div>` : ''}
       </div>
       ${s.fields.status ? `<div class="request-status"><i></i>${rich(s.fields.status)}</div>` : ''}`;
   },
@@ -933,6 +936,10 @@ const CSS = `
   .request-copy h1 { margin-top:14px; max-width:920px; font:800 70px/1.05 'Inter',sans-serif; letter-spacing:-2.5px; }
   .request-line { margin-top:28px; max-width:920px; font:500 32px/1.35 'Inter',sans-serif; color:var(--soft); }
   .request-line em { font-style:normal; font-weight:700; color:var(--ink); }
+  .request-next { margin-top:26px; }
+  .request-next small { display:block; margin-bottom:12px; font:700 24px 'Inter',sans-serif; color:var(--ink); }
+  .request-chips { display:flex; flex-wrap:wrap; gap:10px; max-width:936px; }
+  .request-chips span { padding:7px 16px; border:2px solid var(--rule); border-radius:999px; background:#fff; font:550 24px 'Inter',sans-serif; color:var(--ink); }
   .request-status { position:absolute; left:72px; bottom:54px; display:flex; align-items:center; gap:12px; font:650 24px 'Inter',sans-serif; color:var(--soft); }
   .request-status i { width:12px; height:12px; border-radius:50%; background:var(--warn); }
   .layout-sheet { padding:150px 72px 112px; }
