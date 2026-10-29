@@ -9,7 +9,7 @@ hashtags_day1: "#multilingual #moneytools #FinancialLiteracyIsYourRight #volunte
 keywords_day1: "personal finance in Hindi, personal finance in Spanish, personal finance in Czech, personal finance in Marathi, free finance tools, net worth calculator, loan calculator, inflation calculator, multilingual website, global expats, money abroad, finanzas personales, calculadora financiera, calculadora de préstamos, herramientas financieras gratis, वित्तीय योजना, लोन कैलकुलेटर, महँगाई कैलकुलेटर, osobní finance, finanční kalkulačka, kalkulačka půjčky, आर्थिक नियोजन, कर्ज कॅल्क्युलेटर, महागाई कॅल्क्युलेटर"
 ---
 
-> **Needs attention (Oct 25, 2026).** Rewritten Oct 25 with the owner as a 7-slide carousel; redesigned Oct 29 (owner: the earlier slides read as promotion, not a call for help) as 2 request slides showing real site text under review, plus a third listing the coming languages (owner, Oct 29); promotion only at the end of the caption; council and Codex visuals signed off Oct 29; voice "I" (owner, Oct 25). Stories: one per slide (`scripts/slides-to-reel.sh output/instagram-kit/sundays/02-languages/day1/carousel output/instagram-kit/sundays/02-languages/day1`). Reel parked by the owner. Waiting for the owner's review before scheduling (Nov 1, 12:00 CET = 16:30 IST); remove this note once scheduled.
+> **Scheduled Oct 29, 2026** in Business Suite, Instagram only: carousel and its 3 stories, Sun Nov 1, 16:30 IST. Caption body trimmed to fit Instagram's 2,200 characters (owner chose to trim the body; council unanimous Oct 29).
 
 ## Brief
 
@@ -23,15 +23,13 @@ honesty: Matches the site: LOCALES are en, hi, es, cs and mr; /hi/, /es/, /cs/ a
 
 Financial literacy is everyone's right and I need your help to make it that way.
 
-I'm looking for volunteers who speak Spanish, Czech or Marathi natively, or nearly so. nidhi is live in those languages, but I drafted the translations with AI, and I can't tell whether they sound right. Would a native speaker say it this way?
+I'm looking for volunteers who speak Spanish, Czech or Marathi natively, or nearly so. I drafted nidhi's translations into them with AI and can't tell if they sound right. Help me check them and, if you'd like, translate the lessons too (English only for now). A financial background is welcome, not needed.
 
-Why it matters to me: only about 1 in 5 people in the world speak English (about 1.5 billion English speakers, per Ethnologue 2025, in a world of about 8.1 billion). Money help should reach the other four, in their own language.
-
-What helping looks like: read nidhi in your language. Does it sound right? If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed.
+Why it matters to me: only about 1 in 5 people speak English (about 1.5 billion of 8.1 billion, per Ethnologue 2025). Money help should reach the other four, in their own language.
 
 In return: a say in the glossary words for your language, credit on the site if you want it, and an invite when the planner's beta opens.
 
-More languages are coming, listed on the last slide. No dates yet, but you can sign up for yours now on the same form, and I'll reach out when work on it starts.
+More languages are coming, listed on the last slide. No dates yet: sign up for yours now and I'll reach out when work on it starts.
 
 → Sign up at nidhi.today/volunteers/ (link in bio)
 
