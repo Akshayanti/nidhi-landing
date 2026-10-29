@@ -6,7 +6,7 @@ Status (Oct 29, 2026): English v5 approved by the council (unanimous, 4 rounds).
 
 ## Decisions (owner, Oct 29, 2026)
 
-- Beta is free; opens by January 1, 2027; access may open earlier, in stages.
+- Beta is free; opens by January 1, 2027; access may open earlier, in stages. Changed the same day (owner): "is planned to open in January 2027", so a slip doesn't break a promise, and no per-person invite date (the strategy plans small waves).
 - Beta tester = anyone who creates an account while the beta is open (strategy doc). The stricter rule discussed earlier (5 assets or debts, a request, 5 lessons) was dropped in favour of the strategy doc.
 - Paid features free during the beta and for 12 months after launch; then a founding price, billed yearly, locked while subscribed; 30 days after the free year to take it; no card, nothing charged automatically; otherwise the free plan, data kept, export always; reminders 30, 14 and 1 days before, in the planner and by email to account holders; cancelling ends the founding price.
 - Never stated: any price, the launch date, the paid/free feature split, Founding 50/500, lifetime, future features.
@@ -74,3 +74,4 @@ H2: How it works
 - What's changed item `planner-beta-page` (2026-10-29).
 - Footer: "Planner beta" link in the About column, click label `footer-beta` (in the privacy changelog entry).
 - SEO: search titles name the product ("Free personal finance planner beta | nidhi" and translations); meta descriptions carry no date (cached snippets go stale; council), say invite-only and the free year after launch; canonical, hreflang for all five, Open Graph, WebPage JSON-LD; in the sitemap; llms.txt line (no date).
+- Date wording (Oct 29, owner + council): "planned to open in January 2027" on /beta/, home FAQ, exports and What's changed; step 2 no longer promises an invite by January 1. The published wording is logged in GRANDFATHER_STRATEGY.md Public Commitments.
