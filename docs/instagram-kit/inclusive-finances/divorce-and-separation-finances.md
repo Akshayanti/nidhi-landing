@@ -10,6 +10,8 @@ keywords_day2: "after divorce checklist, update beneficiary after divorce, ex st
 
 ## Brief
 
+host: 51 Windfall Management (from Oct 30, 2026; ships right after it). The reels and carousel do not open from the host yet: write the companion opener ("the last post treated a lump sum as new money...") when these reels are made.
+
 person: Two people separating, anonymous
 situation: A settlement gives each person €200,000 on paper. One share is cash and savings. One is the equity in a €400,000 home. One is a pension.
 withheld: The three broad systems for dividing property, the inventory in detail, securing documents without hiding assets, the three options for a shared home, the rules for couples who never married, and rebuilding a plan on one income.
