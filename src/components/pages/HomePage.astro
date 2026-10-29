@@ -23,7 +23,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import HeroChart from '../HeroChart.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
-import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, localizedPath, type Locale } from '../../i18n';
 import { EXAMPLES, EXAMPLE_CURRENCY, EXAMPLE_RETURN, starterExample, yearlyPath } from '../../utils/home/heroExamples.ts';
 import {
   assertHomepageSlugs,
@@ -34,7 +34,8 @@ import {
   resolveStartingPoints,
   TOOLS,
 } from '../../utils/home/startingPoints.ts';
-import { assertInclusiveGroups, INCLUSIVE_HUB, liveInclusive } from '../../utils/inclusiveGuides.ts';
+import { assertInclusiveGroups, INCLUSIVE_HUB, inclusiveHostLevels, inclusiveLine, liveInclusive } from '../../utils/inclusiveGuides.ts';
+import { getPathPosts } from '../../utils/learnPosts';
 import { formatProseAmount, formatProsePercent } from '../../utils/shared/formatAmount.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { getCollection } from 'astro:content';
@@ -44,7 +45,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { home, fullStop } = dict(locale);
+const { home, learn, fullStop } = dict(locale);
 
 /** This page's own address for a root-relative path. */
 const href = (path: string) => localizedPath(locale, path);
@@ -74,11 +75,14 @@ const levelLabel = (level: string | null) => (level ? (home.levels as Record<str
 // Inclusive Finances joins the starting points once a guide in it is live.
 assertInclusiveGroups(allPosts);
 const inclusive = liveInclusive(allPosts, now);
+// Its line on the routes, in the same words as on /blog/.
+const inclusiveText = inclusiveLine(learn.collections, inclusiveHostLevels(await getPathPosts()).map((id) => learn.levels[id]), LOCALE_META[locale].htmlLang);
 
 // The page's counts, one number wherever it appears (the hero and the FAQ).
-// Inclusive Finances guides are lessons too, though they sit outside the
-// ladder `counts.total` covers. A tool counts once it is live.
-const lessonTotal = counts.total + inclusive.count;
+// Lessons only: Inclusive Finances guides are a collection beside the ladder
+// (docs/plans/blog-content-plan.md, "Lessons, levels and collections"), so
+// they are not counted. A tool counts once it is live.
+const lessonTotal = counts.total;
 const toolTotal = Object.keys(TOOLS).filter(isToolLive).length;
 
 // The worked example, computed (see src/utils/home/heroExamples.ts): the
@@ -312,25 +316,8 @@ const faqSchema = {
           Hindi, the lessons they open are not. */}
       <LessonsInEnglish locale={locale} />
 
-      {/* Who the path is written for, said before the routes rather than only on
-          the beliefs page. The route that answers it comes first, so the line
-          shows only while that route does. */}
-      {inclusive.count > 0 && <p class="routes-lead">{home.lessons.inclusiveLead}</p>}
-
       {/* One line per route. Each opens the first lesson this browser has not read yet. */}
       <ul class="routes" role="list">
-        {inclusive.count > 0 && (
-          <li style="--start-level: var(--level-inclusive-finances)">
-            <a class="route route--inclusive" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
-              <span class="route-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
-              </span>
-              <span class="route-title">{home.lessons.inclusiveTitle}</span>
-              <span class="route-meta">{t(plural(LOCALE_META[locale].htmlLang, inclusive.count, home.lessons.inclusiveMetaOne, home.lessons.inclusiveMetaFew, home.lessons.inclusiveMeta), { count: inclusive.count })}</span>
-              <span class="route-go">{home.lessons.inclusiveGo} <span aria-hidden="true">&rarr;</span></span>
-            </a>
-          </li>
-        )}
         {startingPoints.map((s) => s.lessons.length === 0 ? (
           <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
             {/* A level whose lessons are still scheduled: shown, not linked, until the first one goes live. */}
@@ -360,6 +347,26 @@ const faqSchema = {
           </li>
         ))}
       </ul>
+
+      {/* Collections: other ways into the path, after the routes, in the same
+          words as on /blog/. Inclusive Finances shows once a guide is live. */}
+      {inclusive.count > 0 && (
+        <>
+          <h3 class="routes-lead">{learn.collections.heading}</h3>
+          <ul class="routes" role="list">
+            <li style="--start-level: var(--level-inclusive-finances)">
+              <a class="route" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
+                <span class="route-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
+                </span>
+                <span class="route-title">{learn.levels['inclusive-finances']}</span>
+                <span class="route-meta">{inclusiveText}</span>
+                <span class="route-go">{home.lessons.inclusiveGo} <span aria-hidden="true">&rarr;</span></span>
+              </a>
+            </li>
+          </ul>
+        </>
+      )}
 
       <p class="section-foot">
         <a href={href('/blog/')} data-attr="home-cta-blog">{home.lessons.foot}</a>
@@ -441,7 +448,7 @@ const faqSchema = {
         <div class="planner-copy">
           <p class="step-mark"><span class="step-num" aria-hidden="true">3</span><span class="chart-srOnly">{t(home.steps.mark, { n: 3 })}</span>{home.steps.plan}</p>
           <h2 id="planner-heading">{home.planner.heading}</h2>
-          <p class="cap-body">{home.planner.body}</p>
+          <p class="cap-body">{home.planner.body} {home.planner.beta.before} <a href={href('/beta/')}>{home.planner.beta.link}</a></p>
           <div class="starter starter--chart">
             <p class="starter-label">{home.example.label}</p>
             <p class="starter-text">{home.example.text}</p>
@@ -1177,7 +1184,8 @@ const faqSchema = {
   }
 
   .routes-lead {
-    margin: 0 0 12px;
+    margin: 32px 0 12px;
+    font-size: 1rem;
     max-width: 820px;
     font-family: var(--font-heading);
     font-weight: 700;

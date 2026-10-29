@@ -55,6 +55,8 @@ interface LearnHomeProps {
   /** Every published lesson, ladder lessons in reading order first. */
   lessons: LearnLesson[];
   inclusiveCount: number;
+  /** The collections group after the levels: its heading and the Inclusive Finances line, built by the page. */
+  collections: { heading: string; inclusiveName: string; inclusiveLine: string };
   /** Levels the helper may suggest: fully published (src/utils/levelHelper.ts). */
   helperLevels: string[];
   strings: Strings;
@@ -177,7 +179,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
   );
 }
 
-export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
+export function LearnHome({ levels, lessons, inclusiveCount, collections, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -459,7 +461,7 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
         </ol>
         {inclusiveCount > 0 && (
           <>
-            <p className="learn-alongside" aria-hidden="true">{strings.alongside}</p>
+            <h3 className="learn-alongside">{collections.heading}</h3>
             <a
               className="learn-level"
               href={inclusiveHref}
@@ -468,10 +470,9 @@ export function LearnHome({ levels, lessons, inclusiveCount, helperLevels, strin
             >
               <span className="learn-num learn-numRoute" aria-hidden="true"><CompassIcon /></span>
               <span className="learn-levelText">
-                <span className="learn-levelName">{strings.inclusiveName} <span className="lp-srOnly">{strings.inclusiveSr}</span></span>
-                <span className="learn-levelSummary">{strings.inclusiveSummary}</span>
+                <span className="learn-levelName">{collections.inclusiveName}</span>
+                <span className="learn-levelSummary">{collections.inclusiveLine}</span>
               </span>
-              <span className="learn-levelCount">{inclusiveCount} {plural(lang, inclusiveCount, strings.guideOne, strings.guideFew, strings.guideMany)}</span>
               <Chevron />
             </a>
           </>

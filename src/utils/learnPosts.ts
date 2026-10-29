@@ -12,7 +12,7 @@
  */
 import { getCollection } from 'astro:content';
 import { getLayeredReadingTime } from './readingTime';
-import { assertCompanionHosts, placeOnPath } from './companions';
+import { assertCompanionHosts, assertCompanionOrder, placeOnPath } from './companions';
 import { LADDER_LEVELS } from './home/startingPoints';
 import { assertConceptSlugs } from './levelHelper';
 import { lessonPath } from '../i18n/config.ts';
@@ -61,6 +61,7 @@ export async function getPathPosts(): Promise<PathPost[]> {
   const visible = allPosts
     .filter((post) => isDev || post.data.pubDate <= now)
     .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  assertCompanionOrder(visible);
   const placements = placeOnPath(visible);
   return visible
     .map((post) => ({
@@ -124,4 +125,3 @@ export async function getTopicIndex(): Promise<Array<{ tag: string; groups: Topi
   const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
   return tags.map((tag) => ({ tag, groups: topicGroups(posts, tag) }));
 }
-

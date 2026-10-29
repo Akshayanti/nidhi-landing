@@ -20,6 +20,7 @@ import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import { getHelperLevels, getPathPosts } from '../utils/learnPosts';
+import { inclusiveHostLevels, inclusiveLine } from '../utils/inclusiveGuides';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
 
 interface Props {
@@ -46,6 +47,13 @@ const levels = LADDER_LEVELS.map((id) => ({
   total: ladder.filter((p) => p.level === id).length,
   href: levelHref(id),
 }));
+
+// Inclusive Finances, in the same words as on the home page.
+const collections = {
+  heading: learn.collections.heading,
+  inclusiveName: learn.levels['inclusive-finances'],
+  inclusiveLine: inclusiveLine(learn.collections, inclusiveHostLevels(posts).map((id) => learn.levels[id]), LOCALE_META[locale].htmlLang),
+};
 
 // Ladder lessons in reading order first, then the Inclusive Finances guides.
 // `href` is the lesson's own English address, set by `getPathPosts`: a lesson
@@ -115,6 +123,7 @@ const blogItemListSchema = {
         levels={levels}
         lessons={lessons}
         inclusiveCount={inclusive.length}
+        collections={collections}
         helperLevels={helperLevels}
         strings={blogIndex.island}
         inclusiveHref={localizedPath(locale, '/blog/inclusive-finances/')}

@@ -943,11 +943,6 @@ export const cs: Dict = {
       doorContinue: 'Pokračovat: ',
       doorRead: 'Trasa dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
-      inclusiveLead: 'Pro finanční životy, na které standardní plán nesedí.',
-      inclusiveTitle: 'Standardní plán na můj život nesedí.',
-      inclusiveMeta: 'Inkluzivní finance · {count} průvodců, pro jakoukoli fázi',
-      inclusiveMetaFew: 'Inkluzivní finance · {count} průvodci, pro jakoukoli fázi',
-      inclusiveMetaOne: 'Inkluzivní finance · 1 průvodce, pro jakoukoli fázi',
       inclusiveGo: 'Prozkoumat',
     },
     tools: {
@@ -968,6 +963,8 @@ export const cs: Dict = {
     planner: {
       heading: 'Podívejte se, kam to může vést.',
       body: 'Stavím plánovač: co vlastníte, dlužíte, vyděláváte a utrácíte na jednom místě, v jedné měně i ve více měnách, aby šlo rozhodnutí, jako je toto, porovnat dřív, než je uděláte.',
+      /** After the body: when the beta opens, with a link to /beta/. */
+      beta: { before: 'Beta je zdarma a otevřít se má v lednu 2027.', link: 'Co v betě získáte' },
     },
     example: {
       label: 'Jedno rozhodnutí, dvě cesty',

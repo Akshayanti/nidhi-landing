@@ -1205,12 +1205,6 @@ export const en = {
       /** Replaces it once every lesson on the route is read. */
       doorRead: 'Route read. ',
       doorPath: 'Keep going on the learning path',
-      /** Above the routes: who the path is written for. */
-      inclusiveLead: 'Built for financial lives that don’t fit the standard plan.',
-      inclusiveTitle: 'The standard plan doesn’t fit my life.',
-      inclusiveMeta: 'Inclusive Finances · {count} guides, any stage',
-      inclusiveMetaFew: 'Inclusive Finances · {count} guides, any stage',
-      inclusiveMetaOne: 'Inclusive Finances · 1 guide, any stage',
       inclusiveGo: 'Explore',
     },
     /** Step 2: what the free tools are for. */
@@ -1234,6 +1228,8 @@ export const en = {
     planner: {
       heading: 'See where it could go.',
       body: "I'm building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.",
+      /** After the body: when the beta opens, with a link to /beta/. */
+      beta: { before: 'The beta is free and is planned to open in January 2027.', link: 'What beta testers get' },
     },
     /**
      * The worked example. Its numbers are computed (src/utils/home/), so the

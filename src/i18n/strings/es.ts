@@ -988,11 +988,6 @@ export const es: Dict = {
       doorContinue: 'Continúa con ',
       doorRead: 'Has leído la ruta. ',
       doorPath: 'Sigue en la ruta de aprendizaje',
-      inclusiveLead: 'Pensado para vidas financieras que no encajan con el plan estándar.',
-      inclusiveTitle: 'El plan estándar no encaja con mi vida.',
-      inclusiveMeta: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
-      inclusiveMetaFew: 'Finanzas inclusivas · {count} guías, para cualquier etapa',
-      inclusiveMetaOne: 'Finanzas inclusivas · 1 guía, para cualquier etapa',
       inclusiveGo: 'Explorar',
     },
     tools: {
@@ -1014,6 +1009,8 @@ export const es: Dict = {
     planner: {
       heading: 'Mira adónde podría llegar.',
       body: 'Estoy creando un planificador: lo que tienes, debes, ganas y gastas en un solo lugar, en una moneda o en varias, para que puedas comparar decisiones como esta antes de tomarlas.',
+      /** After the body: when the beta opens, with a link to /beta/. */
+      beta: { before: 'La beta es gratuita y está previsto que se abra en enero de 2027.', link: 'Qué reciben quienes prueban la beta' },
     },
     example: {
       label: 'Una decisión, comparada',
