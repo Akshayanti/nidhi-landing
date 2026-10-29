@@ -332,6 +332,28 @@ export default defineConfig({
     '/blog/tg/': '/blog/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/wa/': '/blog/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/dsc/': '/blog/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+    // The same, landing on the planner beta page, in each language; utm_content
+    // beta_link tells them from the home and blog links.
+    '/beta/ig/': '/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/beta/tg/': '/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/beta/wa/': '/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/beta/dsc/': '/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/hi/beta/ig/': '/hi/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/hi/beta/tg/': '/hi/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/hi/beta/wa/': '/hi/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/hi/beta/dsc/': '/hi/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/es/beta/ig/': '/es/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/es/beta/tg/': '/es/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/es/beta/wa/': '/es/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/es/beta/dsc/': '/es/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/cs/beta/ig/': '/cs/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/cs/beta/tg/': '/cs/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/cs/beta/wa/': '/cs/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/cs/beta/dsc/': '/cs/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/mr/beta/ig/': '/mr/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/mr/beta/tg/': '/mr/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/mr/beta/wa/': '/mr/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+    '/mr/beta/dsc/': '/mr/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
     // The Hindi edition's own short links, for a biography written in Hindi.
     // They land on the Hindi home page, so the address a visitor ends up at
     // (and the pageview it sends) says which language and which platform.

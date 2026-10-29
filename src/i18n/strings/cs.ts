@@ -89,6 +89,7 @@ export const cs: Dict = {
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
       volunteers: 'Dobrovolná pomoc',
+      beta: "Beta plánovače",
       editorialPolicy: 'Redakční zásady',
       changes: 'Co se změnilo',
       privacy: 'Soukromí',
@@ -378,8 +379,52 @@ export const cs: Dict = {
         lead: 'Uvedení na webu, pokud chcete:',
         rest: ' vyberete si jméno, které se na webu zobrazí. Za jeden jazyk může být uvedeno více lidí a kdykoli můžete požádat o odstranění.',
       },
-      beta: { lead: 'Pozvánka do bety plánovače, pokud chcete:', rest: ' samostatná, nepovinná volba ve formuláři.' },
+      beta: {
+        lead: "Pozvánka do bety plánovače, pokud chcete:",
+        rest: " samostatná, nepovinná volba ve formuláři. Když si založíte účet, dokud je beta otevřená, máte stejně jako všichni v betě placené funkce 12 měsíců po spuštění zdarma. ",
+        link: "Jak beta funguje",
+        after: ".",
+      },
       brag: { lead: 'Důvod k hrdosti:', rest: ' někdo si díky vám může číst o penězích ve svém jazyce.' },
+    },
+  },
+  beta: {
+    meta: {
+      title: "Beta osobního finančního plánovače zdarma | nidhi",
+      description: "Beta plánovače nidhi je zdarma a jen na pozvánku. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
+    },
+    title: "Beta plánovače",
+    lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevře se nejpozději 1. ledna 2027. Přístup se může otevírat i dřív, postupně.",
+    getHeading: "Co v betě získáte",
+    get: {
+      during: "Placené funkce jsou během bety zdarma.",
+      freeYear: "Po spuštění zůstanou placené funkce zdarma ještě 12 měsíců.",
+      founding: "Po tomto roce si je můžete ponechat za zakladatelskou cenu s ročním účtováním, pevnou po celou dobu, kdy budete mít předplatné.",
+      noCard: "Během bety ani v roce zdarma se karta nevyžaduje. Nic se automaticky neúčtuje.",
+    },
+    whoHeading: "Kdo patří do bety",
+    who: "Každý, kdo si založí účet, dokud je beta otevřená. Během bety lze účet založit jen na pozvánku a pozvánky se rozesílají postupně, takže si ho nemůže hned založit každý.",
+    afterHeading: "Po roce zdarma",
+    after: {
+      take: "Zakladatelskou cenu si můžete zvolit až do 30 dnů po skončení vašeho roku zdarma.",
+      free: "Nebo přejít na bezplatný tarif. Vaše data zůstanou a můžete je kdykoli exportovat.",
+      remind: "Jakmile budete mít účet, připomenu vám to v plánovači i e-mailem 30 dní, 14 dní a 1 den před koncem vašeho roku zdarma.",
+      cancel: "Pokud předplatné později zrušíte, zakladatelská cena končí. Návrat je za běžnou cenu.",
+    },
+    undecidedHeading: "Zatím nerozhodnuto",
+    undecided: "Ceny ani datum spuštění zatím nejsou stanovené. Oznámím je před spuštěním.",
+    whyHeading: "Proč se zapojit",
+    why: {
+      early: "Uvidíte plánovač dřív, než se otevře všem. Během bety je jen na pozvánku a pozvánky dostávají lidé z čekací listiny.",
+      shape: "To, co mi řeknete, ovlivní, čím se stane.",
+      whole: "Nástroje zdarma odpovídají vždy na jednu otázku. Plánovač vzniká proto, aby držel celý obraz pohromadě a šlo rozhodnutí porovnat dřív, než je uděláte.",
+    },
+    howHeading: "Jak to funguje",
+    how: {
+      join: "Zapište se na čekací listinu níže.",
+      email: "Dokud jste na čekací listině, dostanete jeden e-mail, až se vám otevře přístup, nejpozději 1. ledna 2027. Ten e-mail je vaše pozvánka.",
+      account: "Založte si účet. Od té chvíle jste součástí bety.",
+      use: "Používejte ho a napište mi, co v něm chybí.",
     },
   },
   changes: {
@@ -510,7 +555,7 @@ export const cs: Dict = {
       always: 'Vždy, aby web fungoval a zlepšoval se:',
       withConsent: 'Jen pokud na cookie liště kliknete na „Ano, souhlasím“:',
       newsletter: 'Pokud se přihlásíte k odběru newsletteru blogu:',
-      waitlist: 'Pokud se zapíšete na čekací listinu ke spuštění produktu:',
+      waitlist: 'Pokud se zapíšete na čekací listinu plánovače:',
       volunteers: 'Pokud nám nabídnete pomoc s překladem webu:',
       browserOnly: 'Uloženo jen ve vašem prohlížeči, nikdy se nám neposílá:',
     },
@@ -572,7 +617,7 @@ export const cs: Dict = {
       total:
         'Pokud se na čekací listinu přihlásí dost lidí, web může ukázat celkový počet registrací zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda se přihlásil konkrétní člověk.',
       from: {
-        before: 'E-mail o spuštění přijde z adresy ',
+        before: 'E-mail s pozvánkou přijde z adresy ',
         after: '. Přidejte si ji do kontaktů, aby neskončil ve spamu.',
       },
     },
@@ -614,7 +659,7 @@ export const cs: Dict = {
           '), abychom respektovali vaše přání ji nějakou dobu nevidět. Obsahuje jen typ zavření a datum a čas, žádnou e-mailovou adresu ani osobní údaje.',
       },
       waitlistSignedUp: {
-        before: 'Zda proběhl váš zápis na čekací listinu ke spuštění produktu (',
+        before: 'Zda proběhl váš zápis na čekací listinu plánovače (',
         after:
           '), abychom vám při dalších návštěvách přestali ukazovat formulář čekací listiny. Obsahuje jen příznak stavu a datum a čas, nikdy vaši e-mailovou adresu.',
       },
@@ -633,7 +678,7 @@ export const cs: Dict = {
       },
       waitlist: {
         lead: 'Čekací listina:',
-        rest: ' abychom vám poslali přesně jeden e-mail, až se produkt nidhi spustí. Nic dalšího. Žádný newsletter, žádná série e-mailů, žádná propagace.',
+        rest: ' abychom vám poslali přesně jeden e-mail, až se vám otevře přístup k plánovači nidhi: vaši pozvánku do bety. Nic dalšího. Žádný newsletter, žádná série e-mailů, žádná propagace.',
       },
       volunteers: {
         lead: 'Dobrovolná pomoc:',
@@ -696,7 +741,7 @@ export const cs: Dict = {
       },
       waitlist: {
         lead: 'Registrace na čekací listinu:',
-        rest: ' dokud nepošleme e-mail o spuštění a nebudete mít čas na něj reagovat, nebo dokud nás nepožádáte o vyřazení. Napište nám kdykoli.',
+        rest: ' dokud nepošleme e-mail s pozvánkou a nebudete mít čas na něj reagovat, nebo dokud nás nepožádáte o vyřazení. Napište nám kdykoli.',
       },
       volunteers: {
         lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
@@ -815,6 +860,7 @@ export const cs: Dict = {
     region: 'Čekací listina na přednostní přístup',
     heading: 'Chcete plánovač, až se otevře?',
     joined: 'Na mé čekací listině je už {n}+ lidí.',
+    beta: { before: "Kdo se zapojí do bety, má placené funkce 12 měsíců po spuštění zdarma. ", link: "Jak beta funguje" },
     emailLabel: 'E-mailová adresa',
     cta: 'Dejte mi vědět',
     privacyBefore: 'Jeden e-mail, až se přístup otevře. ',
@@ -967,7 +1013,8 @@ export const cs: Dict = {
         },
         {
           q: 'Co je plánovač a kdy ho budu moct používat?',
-          a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Otevírá se postupně. Zapište se na seznam a až se otevře, dostanete jeden e-mail.',
+          a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Jeho beta zdarma se otevře nejpozději 1. ledna 2027 a kdo je na čekací listině, dostane jeden e-mail, až se otevře přístup.',
+          more: "Co v betě získáte",
         },
       ],
       why: 'nidhi vzniklo, protože neexistoval nástroj, který by seděl na obyčejný finanční život: peníze ve více než jedné zemi, dluhy v jiné, budoucnost přes hranice. Tak ho stavím a cestou vysvětluji, co se učím.',

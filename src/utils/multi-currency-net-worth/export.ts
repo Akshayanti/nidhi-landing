@@ -60,6 +60,7 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
       ...(showAmounts ? [] : [[x.hiddenLabel, x.hiddenText] as Cell[]]),
       [common.about.privacy, common.about.privacyText],
       [common.about.note, common.about.noteText],
+      [common.about.beta, common.about.betaText],
     ],
   };
 

@@ -162,7 +162,7 @@ const starterFootnote = t(home.example.footnote, {
 });
 
 // Shown on the page and, word for word, in the FAQPage data below.
-const faqs = home.faq.items.map((f) => ({ q: f.q, a: t(f.a, { total: lessonTotal }) }));
+const faqs = home.faq.items.map((f) => ({ q: f.q, a: t(f.a, { total: lessonTotal }), more: 'more' in f ? f.more : undefined }));
 
 const description = home.meta.description;
 
@@ -474,7 +474,7 @@ const faqSchema = {
         {faqs.map((f, i) => (
           <details class="faq-item" data-attr={`home-faq-${i + 1}`}>
             <summary class="disclosure"><h3>{f.q}</h3></summary>
-            <p>{f.a}</p>
+            <p>{f.a}{f.more && <> <a href={href('/beta/')}>{f.more}</a></>}</p>
           </details>
         ))}
       </div>

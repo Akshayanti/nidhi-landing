@@ -84,7 +84,7 @@ const webPageSchema = {
       <ul class="vol-list">
         <li><strong>{v.get.say.lead}</strong>{v.get.say.rest}</li>
         <li><strong>{v.get.credit.lead}</strong>{v.get.credit.rest}</li>
-        <li><strong>{v.get.beta.lead}</strong>{v.get.beta.rest}</li>
+        <li><strong>{v.get.beta.lead}</strong>{v.get.beta.rest}<a href={localizedPath(locale, '/beta/')}>{v.get.beta.link}</a>{v.get.beta.after}</li>
         <li><strong>{v.get.brag.lead}</strong>{v.get.brag.rest}</li>
       </ul>
 

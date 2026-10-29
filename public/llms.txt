@@ -8,6 +8,7 @@ nidhi is designed for people starting their financial journey as well as people 
 - [Home](https://nidhi.today/): What nidhi is, where to start for your situation, which lesson goes with which free tool, and the planner (opening in stages).
 - [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
 - [Learning Path](https://nidhi.today/blog/): All lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
+- [Planner Beta](https://nidhi.today/beta/): The free beta of the nidhi planner, invite-only through the waitlist: what beta testers get, who counts as one, and what is not decided yet.
 
 ## Languages
 The site is published in English (the default, at the root), Hindi at [/hi/](https://nidhi.today/hi/), Spanish at [/es/](https://nidhi.today/es/), Czech at [/cs/](https://nidhi.today/cs/) and Marathi at [/mr/](https://nidhi.today/mr/). Each edition translates the site's own pages: the home page, the learning path's level and topic pages, the free tools, the about, beliefs and editorial-policy pages and the privacy notice. The lessons are written once, in English, and every edition links to the same English lesson at its one address. Every page names its other editions with hreflang.

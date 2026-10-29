@@ -67,6 +67,7 @@ export function inflationSheets({ island, common, state, answer, decimals, date,
       [x.moneyLabel, x.moneyText],
       [common.about.privacy, common.about.privacyText],
       [common.about.note, common.about.noteText],
+      [common.about.beta, common.about.betaText],
     ],
   };
 

@@ -103,6 +103,7 @@ why this one won, so it is not re-argued in a later lesson.
 | assets | संपत्तियाँ | Singular संपत्ति where the sentence needs it. |
 | what you owe | जो आप पर बकाया है | Never the bare जो आप पर है, which is "what is on you" and reads as unfinished. In a list (what you own, owe, earn and spend) use nouns instead: आपकी संपत्ति, आपका कर्ज़, आपकी कमाई और आपका खर्च. |
 | liabilities | देनदारियाँ | **Bracket** (liabilities). Not ऋण: देनदारियाँ covers mortgages, card balances and informal debt alike. |
+| volunteer | स्वयंसेवक | **Bracket** (volunteer). Owner, 2026-10-29: replaces the loanword वॉलंटियर in the nav, the volunteers page, its banner, the privacy notice and What's changed. |
 | debt | कर्ज़ | The everyday word. ऋण is formal and is avoided outside quoted material. |
 | loan | लोन | ऋण avoided for readability, see above. |
 | principal | मूलधन | No bracket: every Indian loan statement prints it. |

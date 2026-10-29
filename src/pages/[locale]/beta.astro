@@ -1,0 +1,12 @@
+---
+import BetaPage from '../../components/pages/BetaPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<BetaPage locale={locale} />
