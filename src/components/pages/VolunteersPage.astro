@@ -9,8 +9,9 @@
  *
  * The form itself is a Google Form (scripts/volunteer-form.gs) and is only
  * linked, never embedded: an embed would load Google on this page, which the
- * privacy notice does not describe. Both buttons carry the same click label,
- * `volunteers-form`, which the privacy notice names.
+ * privacy notice does not describe. The one button, after both language
+ * lists, carries the click label `volunteers-form`, which the privacy notice
+ * names.
  *
  * Language names are names, in their own script, so they are not in the
  * catalogs: the open ones come from LOCALE_META, the upcoming ones follow
@@ -66,13 +67,6 @@ const webPageSchema = {
       </ul>
       <p class="vol-note">{v.nowNote}</p>
 
-      <p class="vol-cta">
-        <a href={FORM_URL} class="vol-btn" data-attr="volunteers-form">{v.cta}</a>
-      </p>
-      <p class="vol-small">
-        {v.note.before}<a href={localizedPath(locale, '/privacy/')} data-attr="volunteers-privacy">{v.note.link}</a>{v.note.after}
-      </p>
-
       <h2>{v.nextHeading}</h2>
       <ul class="chips" role="list">
         {UPCOMING.map((u) => <li class="chip" lang={u.lang} dir={u.dir}>{u.name}</li>)}
@@ -94,8 +88,11 @@ const webPageSchema = {
         <li><strong>{v.get.brag.lead}</strong>{v.get.brag.rest}</li>
       </ul>
 
-      <p class="vol-cta vol-cta--end">
+      <p class="vol-cta">
         <a href={FORM_URL} class="vol-btn" data-attr="volunteers-form">{v.cta}</a>
+      </p>
+      <p class="vol-small">
+        {v.note.before}<a href={localizedPath(locale, '/privacy/')} data-attr="volunteers-privacy">{v.note.link}</a>{v.note.after}
       </p>
     </div>
   </section>
@@ -169,7 +166,7 @@ const webPageSchema = {
   }
 
   .vol-cta {
-    margin-top: var(--space-5);
+    margin-top: var(--space-6);
   }
 
   /* The home page's primary button, which is scoped to that page. */
@@ -196,10 +193,6 @@ const webPageSchema = {
   .vol-btn:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
-  }
-
-  .vol-cta--end {
-    margin-top: var(--space-6);
   }
 
   .vol-list {

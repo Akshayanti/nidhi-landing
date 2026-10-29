@@ -31,7 +31,7 @@ What helping looks like: read nidhi in your language. Does it sound right? If yo
 
 In return: a say in the glossary words for your language, credit on the site if you want it, and an invite when the planner's beta opens.
 
-French, Portuguese, Indonesian, German, Japanese, Vietnamese, Turkish or Korean? Those come next, with no dates yet. Arabic comes later, once the layout supports right to left text. Sign up at nidhi.today/volunteers/ and I'll reach out when yours starts.
+More languages are coming, listed on the second slide. No dates yet, but you can sign up for yours now on the same form, and I'll reach out when work on it starts.
 
 → Sign up at nidhi.today/volunteers/ (link in bio)
 
@@ -53,7 +53,7 @@ status: Volunteers wanted · nidhi.today/volunteers/
 
 ### Slide 2 (request)
 
-alt: Two cards show the same heading on the Czech and Marathi net worth calculator pages: "Porozumějte svému čistému jmění" and "तुमची निव्वळ संपत्ती समजून घ्या", with the words for net worth highlighted. Below: What helping looks like. Read nidhi in your language. Does it sound right? If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed. Sign up at nidhi.today/volunteers/, link in bio.
+alt: Two cards show the same heading on the Czech and Marathi net worth calculator pages: "Porozumějte svému čistému jmění" and "तुमची निव्वळ संपत्ती समजून घ्या", with the words for net worth highlighted. Below: What helping looks like. Read nidhi in your language. Does it sound right? If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed. Coming next, and you can sign up for these now too: Français, Português, Bahasa Indonesia, Deutsch, 日本語, Tiếng Việt, Türkçe, 한국어, العربية. Sign up at nidhi.today/volunteers/, link in bio.
 
 example: Example from the site
 card: Kalkulačka čistého jmění · nidhi | ČEŠTINA | Porozumějte svému čistému jmění | čistému jmění
@@ -61,6 +61,7 @@ card: निव्वळ संपत्ती कॅल्क्युलेट
 kicker: What helping looks like
 title: Read nidhi in your language. Does it sound right?
 line: If you'd like, help translate the lessons too, which are English only for now. A financial background is welcome, not needed.
+next: Coming next. You can sign up for these now too | Français · Português · Bahasa Indonesia · Deutsch · 日本語 · Tiếng Việt · Türkçe · 한국어 · العربية
 status: Sign up · nidhi.today/volunteers/ · link in bio
 
 ## Stories
