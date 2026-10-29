@@ -124,6 +124,7 @@ export const en = {
       about: 'About nidhi',
       beliefs: 'What I believe',
       volunteers: 'Volunteer',
+      beta: "Planner beta",
       editorialPolicy: 'Editorial policy',
       changes: "What's changed",
       privacy: 'Privacy',
@@ -494,8 +495,58 @@ export const en = {
         lead: 'Credit, if you want it:',
         rest: ' choose the name shown on the site. Several people can be credited for one language, and you can ask to be removed at any time.',
       },
-      beta: { lead: 'A planner beta invite, if you want one:', rest: ' a separate, optional choice on the form.' },
+      beta: {
+        lead: "A planner beta invite, if you want one:",
+        rest: " a separate, optional choice on the form. Create your account while the beta is open and, like every beta tester, you get the paid features free for 12 months after launch. ",
+        link: "How the beta works",
+        after: ".",
+      },
       brag: { lead: 'Bragging rights:', rest: ' someone can read about money in their language, thanks to you.' },
+    },
+  },
+  /**
+   * The planner beta page (/beta/): what beta testers get, who counts, and how
+   * the invite works. Every sentence is a public commitment: the wording follows
+   * NetWorthAndExpenses/docs/strategy/BETA_REWARD_BRIEF.md and must not name a
+   * price, the launch date or the feature split (docs/plans/beta-reward.md).
+   */
+  beta: {
+    meta: {
+      title: "Free personal finance planner beta | nidhi",
+      description: "The nidhi planner beta is free and invite-only, through the waitlist. Paid features stay free for 12 months after launch.",
+    },
+    title: "The planner beta",
+    lead: "I'm building a planner for real lives: what you own, owe, earn and expect to spend in one place, in one currency or several, projected forward with the assumptions shown. The beta is free and opens by January 1, 2027. Access may open earlier, in stages.",
+    getHeading: "What beta testers get",
+    get: {
+      during: "The paid features are free during the beta.",
+      freeYear: "After launch, the paid features stay free for 12 months.",
+      founding: "After that year, you can keep them at a founding price, billed yearly, locked for as long as you stay subscribed.",
+      noCard: "No card is asked for during the beta or the free year. Nothing is charged automatically.",
+    },
+    whoHeading: "Who counts as a beta tester",
+    who: "Anyone who creates an account while the beta is open. During the beta, accounts are by invite only, and invites go out in stages, so not everyone can create one straight away.",
+    afterHeading: "After the free year",
+    after: {
+      take: "You can take the founding price up to 30 days after your free year ends.",
+      free: "Or move to the free plan. Your data stays, and you can export it any time.",
+      remind: "Once you have an account, I'll remind you in the planner and by email 30 days, 14 days and 1 day before your free year ends.",
+      cancel: "If you cancel later, the founding price ends. Coming back is at the normal price.",
+    },
+    undecidedHeading: "Not decided yet",
+    undecided: "Prices and the launch date aren't set. I'll announce them before launch.",
+    whyHeading: "Why join",
+    why: {
+      early: "See the planner before it opens to everyone. During the beta it's invite only, and the invites go to the waitlist.",
+      shape: "What you tell me shapes what it becomes.",
+      whole: "The free tools answer one question at a time. The planner is being built to keep the whole picture together, so you can compare decisions before you make them.",
+    },
+    howHeading: "How it works",
+    how: {
+      join: "Join the waitlist below.",
+      email: "While you're on the waitlist, you get one email when your access opens, no later than January 1, 2027. That email is your invite.",
+      account: "Create your account. From then on, you're a beta tester.",
+      use: "Use it, and tell me what's missing.",
     },
   },
   changes: {
@@ -679,7 +730,7 @@ export const en = {
       always: 'Always, to keep the site working and improving:',
       withConsent: 'Only if you click “Sure, that’s fine” on the cookie banner:',
       newsletter: 'If you subscribe to the blog newsletter:',
-      waitlist: 'If you join the product-launch waitlist:',
+      waitlist: 'If you join the planner waitlist:',
       volunteers: 'If you volunteer to help translate the site:',
       browserOnly: 'Stored only in your browser, never sent to us:',
     },
@@ -746,7 +797,7 @@ export const en = {
       total:
         'If enough people join the waitlist, the site may show a rounded-down total of signups. It never shows any email address, or whether any particular person has joined.',
       from: {
-        before: 'The launch email will come from ',
+        before: 'The invite email will come from ',
         after: '. Add it to your contacts so it doesn’t land in spam.',
       },
     },
@@ -793,7 +844,7 @@ export const en = {
           '), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.',
       },
       waitlistSignedUp: {
-        before: 'Whether you’ve signed up for the product-launch waitlist (',
+        before: 'Whether you’ve signed up for the planner waitlist (',
         after:
           '), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.',
       },
@@ -812,7 +863,7 @@ export const en = {
       },
       waitlist: {
         lead: 'Waitlist:',
-        rest: ' to send you exactly one email when the nidhi product launches. Nothing else. Not a newsletter, not a drip sequence, not cross-promotion.',
+        rest: ' to send you exactly one email when access to the nidhi planner opens for you: your beta invite. Nothing else. Not a newsletter, not a drip sequence, not cross-promotion.',
       },
       volunteers: {
         lead: 'Volunteers:',
@@ -883,7 +934,7 @@ export const en = {
       },
       waitlist: {
         lead: 'Waitlist signups:',
-        rest: ' until we send the launch email and you’ve had time to act on it, or until you ask us to remove you. Email us anytime.',
+        rest: ' until we send the invite email and you’ve had time to act on it, or until you ask us to remove you. Email us anytime.',
       },
       volunteers: {
         lead: 'Volunteer form answers:',
@@ -1042,6 +1093,8 @@ export const en = {
     heading: 'Want the planner when it opens?',
     /** Under the heading once 20 people have joined, rounded down to a multiple of 20 (src/utils/waitlistCount.ts). */
     joined: '{n}+ people have joined my waitlist.',
+    /** After the heading: the beta reward, with a link to /beta/ (left out on that page). */
+    beta: { before: "Beta testers get the paid features free for 12 months after launch. ", link: "How the beta works" },
     emailLabel: 'Email address',
     cta: 'Notify me',
     /** Split around the link, so a translation can move it inside the sentence. */
@@ -1246,7 +1299,9 @@ export const en = {
         },
         {
           q: 'What is the planner, and when can I use it?',
-          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. It is opening in stages. Join the list and you will get one email when it opens.',
+          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. Its free beta opens by January 1, 2027, and the waitlist gets one email when access opens.',
+          /** The text of a link to /beta/ after the answer. */
+          more: "What beta testers get",
         },
       ],
       why: 'nidhi started because I couldn’t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So I’m building it, and explaining what I learn along the way.',

@@ -316,6 +316,7 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
 
       <footer className="tool-reportFooter">
         <p>{date ? format(r.footer, { date }) : ''}</p>
+        <p>{r.beta}</p>
         <p>{address}</p>
       </footer>
     </article>

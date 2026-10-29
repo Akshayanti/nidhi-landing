@@ -38,6 +38,7 @@ export const exportEn = {
     assumptions: 'Assumptions and limits',
     sampled: 'Every fifth year is shown, and the last. The spreadsheet has every year.',
     footer: 'Made with nidhi.today on {date}. An educational estimate, not financial advice. This report holds the values you typed. It was made on your device, and nothing was uploaded.',
+    beta: "The nidhi planner is in development. Its free beta opens by January 1, 2027: nidhi.today/beta/",
   },
   sheets: {
     about: 'About',
@@ -57,6 +58,8 @@ export const exportEn = {
     note: 'Note',
     noteText:
       'An educational estimate from a free tool, not financial advice. The page explains how it is worked out and what it leaves out.',
+    beta: "Planner beta",
+    betaText: "The nidhi planner is in development. Its free beta opens by January 1, 2027: nidhi.today/beta/",
   },
   yes: 'Yes',
   no: 'No',
@@ -83,6 +86,7 @@ export const exportHi: typeof exportEn = {
     assumptions: 'धारणाएँ और सीमाएँ',
     sampled: 'हर पाँचवाँ साल और आख़िरी साल दिखाया गया है। स्प्रेडशीट में हर साल की जानकारी है।',
     footer: 'nidhi.today पर {date} को बनाई गई। यह शैक्षिक अनुमान है, वित्तीय सलाह नहीं। इस रिपोर्ट में आपके भरे आँकड़े हैं। यह आपके डिवाइस पर बनी, और कुछ भी अपलोड नहीं हुआ।',
+    beta: "nidhi का प्लानर बन रहा है। इसका मुफ़्त बीटा 1 जनवरी 2027 तक खुल जाएगा: nidhi.today/hi/beta/",
   },
   sheets: {
     about: 'जानकारी',
@@ -102,6 +106,8 @@ export const exportHi: typeof exportEn = {
     note: 'ध्यान दें',
     noteText:
       'यह एक मुफ़्त टूल का शैक्षिक अनुमान है, वित्तीय सलाह नहीं। पेज बताता है कि इसकी गणना कैसे होती है और यह किन बातों को शामिल नहीं करता।',
+    beta: "प्लानर बीटा",
+    betaText: "nidhi का प्लानर बन रहा है। इसका मुफ़्त बीटा 1 जनवरी 2027 तक खुल जाएगा: nidhi.today/hi/beta/",
   },
   yes: 'हाँ',
   no: 'नहीं',
@@ -125,6 +131,7 @@ export const exportEs: typeof exportEn = {
     assumptions: 'Supuestos y límites',
     sampled: 'Se muestra un año de cada cinco, además del último. La hoja de cálculo contiene todos los años.',
     footer: 'Creado en nidhi.today el {date}. Una estimación con fines educativos, no asesoramiento financiero. Este informe contiene las cifras que escribiste. Se creó en tu dispositivo y no se subió nada.',
+    beta: "El planificador de nidhi está en desarrollo. Su beta gratuita se abre a más tardar el 1 de enero de 2027: nidhi.today/es/beta/",
   },
   sheets: {
     about: 'Información',
@@ -144,6 +151,8 @@ export const exportEs: typeof exportEn = {
     note: 'Nota',
     noteText:
       'Una estimación educativa de una herramienta gratuita, no asesoramiento financiero. La página explica cómo se calcula y qué deja fuera.',
+    beta: "Beta del planificador",
+    betaText: "El planificador de nidhi está en desarrollo. Su beta gratuita se abre a más tardar el 1 de enero de 2027: nidhi.today/es/beta/",
   },
   yes: 'Sí',
   no: 'No',
@@ -167,6 +176,7 @@ export const exportCs: typeof exportEn = {
     assumptions: 'Předpoklady a omezení',
     sampled: 'Zobrazen je každý pátý rok a poslední rok. Tabulka obsahuje všechny roky.',
     footer: 'Vytvořeno na nidhi.today dne {date}. Vzdělávací odhad, ne finanční poradenství. Tato zpráva obsahuje zadaná čísla. Vznikla ve vašem zařízení a nic se nenahrálo.',
+    beta: "Plánovač nidhi se připravuje. Jeho beta zdarma se otevře nejpozději 1. ledna 2027: nidhi.today/cs/beta/",
   },
   sheets: {
     about: 'O souboru',
@@ -186,6 +196,8 @@ export const exportCs: typeof exportEn = {
     note: 'Poznámka',
     noteText:
       'Vzdělávací odhad z bezplatného nástroje, ne finanční poradenství. Stránka vysvětluje, jak se počítá a co do výpočtu nezahrnuje.',
+    beta: "Beta plánovače",
+    betaText: "Plánovač nidhi se připravuje. Jeho beta zdarma se otevře nejpozději 1. ledna 2027: nidhi.today/cs/beta/",
   },
   yes: 'Ano',
   no: 'Ne',
@@ -209,6 +221,7 @@ export const exportMr: typeof exportEn = {
     assumptions: 'गृहीतके आणि मर्यादा',
     sampled: 'दर पाचवे वर्ष आणि शेवटचे वर्ष दाखवले आहे. स्प्रेडशीटमध्ये प्रत्येक वर्षाचा समावेश आहे.',
     footer: 'nidhi.today वर {date} रोजी तयार केला. हा शैक्षणिक अंदाज आहे, आर्थिक सल्ला नाही. या अहवालात तुम्ही भरलेले आकडे आहेत. तो तुमच्या डिव्हाइसवर तयार झाला, आणि काहीही अपलोड झाले नाही.',
+    beta: "nidhi चा प्लॅनर तयार होत आहे. त्याचा मोफत बीटा 1 जानेवारी 2027 पर्यंत सुरू होईल: nidhi.today/mr/beta/",
   },
   sheets: {
     about: 'माहिती',
@@ -228,6 +241,8 @@ export const exportMr: typeof exportEn = {
     note: 'टीप',
     noteText:
       'हा एका मोफत साधनाचा शैक्षणिक अंदाज आहे, आर्थिक सल्ला नाही. पेजवर याची गणना कशी होते आणि यात कोणत्या गोष्टी धरलेल्या नाहीत हे सांगितले आहे.',
+    beta: "प्लॅनर बीटा",
+    betaText: "nidhi चा प्लॅनर तयार होत आहे. त्याचा मोफत बीटा 1 जानेवारी 2027 पर्यंत सुरू होईल: nidhi.today/mr/beta/",
   },
   yes: 'हो',
   no: 'नाही',

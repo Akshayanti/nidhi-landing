@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-10-29',
+    items: [
+      {
+        id: 'planner-beta-page',
+        text: {
+          en: "A new page explains the planner beta: it's free and opens by January 1, 2027. Beta testers get the paid features free for 12 months after launch, then a founding price, billed yearly, locked for as long as they stay subscribed. The waitlist box links to it, and now also sits at the end of every lesson.",
+          es: "Una página nueva explica la beta del planificador: es gratuita y se abre a más tardar el 1 de enero de 2027. Quienes la prueben reciben las funciones de pago gratis durante 12 meses tras el lanzamiento y, después, un precio de fundador, con facturación anual, fijo mientras mantengan la suscripción. El recuadro de la lista de espera enlaza a ella, y ahora aparece también al final de cada lección.",
+          cs: "Nová stránka vysvětluje betu plánovače: je zdarma a otevře se nejpozději 1. ledna 2027. Kdo se do ní zapojí, má placené funkce 12 měsíců po spuštění zdarma a potom zakladatelskou cenu s ročním účtováním, pevnou po celou dobu, kdy předplatné trvá. Odkazuje na ni rámeček s čekací listinou, který je teď i na konci každé lekce.",
+          mr: "एक नवीन पान प्लॅनर बीटाबद्दल सांगते: तो मोफत आहे आणि 1 जानेवारी 2027 पर्यंत सुरू होईल. बीटा टेस्टर्सना लाँचनंतर 12 महिने पेड फीचर्स मोफत मिळतील, त्यानंतर सुरुवातीच्या सदस्यांची किंमत, वार्षिक बिलिंगवर, सदस्यत्व चालू असेपर्यंत निश्चित. प्रतीक्षा यादीच्या चौकटीतून त्याची लिंक आहे, आणि ही चौकट आता प्रत्येक धड्याच्या शेवटीही आहे.",
+          hi: "एक नया पेज प्लानर बीटा के बारे में बताता है: यह मुफ़्त है और 1 जनवरी 2027 तक खुल जाएगा। बीटा टेस्टर्स को लॉन्च के बाद 12 महीने तक पेड फ़ीचर्स मुफ़्त मिलेंगे, फिर शुरुआती सदस्यों की दर, सालाना बिलिंग पर, जो सब्सक्रिप्शन चालू रहने तक तय रहेगी। वेटलिस्ट बॉक्स से इसका लिंक है, और यह बॉक्स अब हर पाठ के आख़िर में भी है।",
+        },
+      },
+    ],
+  },
+  {
     date: '2026-10-28',
     items: [
       {
@@ -109,7 +124,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'He añadido una página de voluntariado para quien hable un idioma de forma nativa o casi nativa y quiera mejorar las traducciones de nidhi, ayudar a traducir las lecciones o saber cuándo se abre su idioma. La página de inicio y el pie de página llevan a ella, y el aviso de privacidad explica qué recoge su formulario y cuánto tiempo se guarda.',
           cs: 'Přibyla stránka pro dobrovolnou pomoc pro ty, kdo jazyk ovládají jako rodný nebo skoro stejně dobře a chtějí zlepšit překlady nidhi, pomoct s překladem lekcí nebo dostat zprávu, až se jejich jazyk otevře. Odkazuje na ni úvodní stránka i patička a zásady ochrany soukromí uvádějí, co její formulář sbírá a jak dlouho se to uchovává.',
           mr: 'भाषा मातृभाषेसारखी येणाऱ्या आणि nidhi ची भाषांतरे सुधारायला, धड्यांचे भाषांतर करायला मदत करायला, किंवा आपली भाषा सुरू झाल्यावर कळवले जावे असे वाटणाऱ्या लोकांसाठी आता स्वयंसेवकांचे पान आहे. मुख्य पान आणि तळटीप त्याकडे नेतात, आणि त्याचा फॉर्म काय गोळा करतो व ते किती काळ साठवले जाते ते गोपनीयता सूचनेत लिहिले आहे.',
-          hi: 'अब उन लोगों के लिए एक वॉलंटियर पेज है जो किसी भाषा को मातृभाषा की तरह या लगभग उतनी ही अच्छी तरह जानते हैं और nidhi के अनुवाद सुधारना, पाठों के अनुवाद में मदद करना, या अपनी भाषा शुरू होने पर ख़बर पाना चाहते हैं। होम पेज और फ़ुटर उस तक ले जाते हैं, और उसका फ़ॉर्म क्या लेता है और उसे कितने समय तक रखा जाता है, यह प्राइवेसी नोटिस में लिखा है।',
+          hi: 'अब उन लोगों के लिए एक स्वयंसेवक (volunteer) पेज है जो किसी भाषा को मातृभाषा की तरह या लगभग उतनी ही अच्छी तरह जानते हैं और nidhi के अनुवाद सुधारना, पाठों के अनुवाद में मदद करना, या अपनी भाषा शुरू होने पर ख़बर पाना चाहते हैं। होम पेज और फ़ुटर उस तक ले जाते हैं, और उसका फ़ॉर्म क्या लेता है और उसे कितने समय तक रखा जाता है, यह प्राइवेसी नोटिस में लिखा है।',
         },
       },
     ],

@@ -144,6 +144,20 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 29, 2026',
+    iso: '2026-10-29',
+    material: true,
+    summary: 'A new page about the planner beta, at /beta/ in every language, linked from the footer (click label footer-beta), with short links for social profiles. The waitlist box now also appears at the end of every lesson and on the beta page. The notice now says what the waitlist\'s one email is: your beta invite, sent when access to the planner opens for you. Nothing new is collected.',
+    details: [
+      'The planner beta page, at /beta/ (and /hi/beta/, /es/beta/, /cs/beta/ and /mr/beta/), explains the beta and what beta testers get. Like every page, it sends an anonymous pageview and page-leave event. It ends with the same waitlist box as the home page, which sends only what this notice already describes for waitlist signups, including the page you signed up from.',
+      'The waitlist box now also appears at the end of every lesson. Signing up there sends the same as anywhere else, with the lesson\'s address as the page you signed up from.',
+      'The links to the beta page, in the waitlist box, on the volunteers page and in the home page\'s questions, carry no click label of their own. The footer\'s new link to the beta page carries footer-beta, recorded only if you accept the cookie banner, like the footer\'s other links.',
+      'Short links for social profiles, /beta/ig, /beta/tg, /beta/wa and /beta/dsc, and the same under /hi/, /es/, /cs/ and /mr/, lead to that language\'s beta page with the same campaign parameters the other short links carry, and utm_content=beta_link. The redirect page itself loads no analytics.',
+      'The waitlist\'s one email: this notice called it the launch email, sent when the product launches. It is the invite to the planner beta, sent when access opens for you, which can be before public launch. It is still exactly one email, and the waitlist is still used for nothing else. The waitlist box and the home page already said "when access opens"; the notice now says the same, in every edition.',
+      'The free tools\' spreadsheet and PDF report now include one line saying the planner\'s free beta opens by January 1, 2027, with the beta page\'s address. It is plain text: the files still hold only what they held before, are still made on your device, and nothing is uploaded.',
+    ],
+  },
+  {
     date: 'Oct 28, 2026',
     iso: '2026-10-28',
     material: true,

@@ -16,9 +16,11 @@ import { shownWaitlistCount, waitlistCount } from '../utils/waitlistCount';
 interface Props {
   /** The language of the page the box sits on. */
   locale: Locale;
+  /** The beta reward line under the heading; off on /beta/ itself, which it links to. */
+  showBeta?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, showBeta = true } = Astro.props;
 const { waitlist } = dict(locale);
 // "20+ people have joined my waitlist.": absent until there are 20 (see waitlistCount).
 // The dev server shows the exact count instead, ungated, for the founder only.
@@ -48,6 +50,11 @@ const inputId = `${idPrefix}-email`;
         </p>
       ) : (
         joined !== null && <p class="waitlist-text">{format(waitlist.joined, { n: joined })}</p>
+      )}
+      {showBeta && (
+        <p class="waitlist-text waitlist-beta">
+          {waitlist.beta.before}<a href={localizedPath(locale, '/beta/')}>{waitlist.beta.link}</a>
+        </p>
       )}
 
       <form
@@ -440,6 +447,24 @@ const inputId = `${idPrefix}-email`;
   }
 
   .waitlist-privacy a:hover { color: white; }
+
+  /* The beta line: white on the blue box, as the privacy link, never the site's teal link colour. */
+  .waitlist-beta { color: white; }
+
+  .waitlist-beta a {
+    color: white;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .waitlist-beta a:hover { text-decoration-thickness: 2px; }
+
+  .waitlist-beta a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 
   /* Post-submit success */
   .waitlist-post { text-align: center; }

@@ -88,6 +88,7 @@ export const es: Dict = {
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
       volunteers: 'Voluntariado',
+      beta: "Beta del planificador",
       editorialPolicy: 'Política editorial',
       changes: 'Qué ha cambiado',
       privacy: 'Privacidad',
@@ -403,8 +404,52 @@ export const es: Dict = {
         lead: 'Crédito, si lo quieres:',
         rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que lo quitemos en cualquier momento.',
       },
-      beta: { lead: 'Invitación a la beta del planificador, si la quieres:', rest: ' una opción aparte y opcional en el formulario.' },
+      beta: {
+        lead: "Invitación a la beta del planificador, si la quieres:",
+        rest: " una opción aparte y opcional en el formulario. Si creas tu cuenta mientras la beta está abierta, recibes, como quienes prueban la beta, las funciones de pago gratis durante 12 meses tras el lanzamiento. ",
+        link: "Cómo funciona la beta",
+        after: ".",
+      },
       brag: { lead: 'Motivo de orgullo:', rest: ' alguien puede leer sobre dinero en su idioma gracias a ti.' },
+    },
+  },
+  beta: {
+    meta: {
+      title: "Beta gratuita del planificador financiero personal | nidhi",
+      description: "Beta gratuita del planificador de nidhi, solo por invitación. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
+    },
+    title: "La beta del planificador",
+    lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y se abre a más tardar el 1 de enero de 2027. El acceso puede abrirse antes, por etapas.",
+    getHeading: "Qué reciben quienes prueban la beta",
+    get: {
+      during: "Las funciones de pago son gratuitas durante la beta.",
+      freeYear: "Tras el lanzamiento, las funciones de pago siguen siendo gratuitas durante 12 meses.",
+      founding: "Después de ese año, puedes conservarlas a un precio de fundador, con facturación anual, fijo mientras mantengas la suscripción.",
+      noCard: "No se pide tarjeta durante la beta ni durante el año gratuito. No se cobra nada automáticamente.",
+    },
+    whoHeading: "Quién forma parte de la beta",
+    who: "Cualquier persona que cree una cuenta mientras la beta está abierta. Durante la beta, las cuentas son solo por invitación y las invitaciones se envían por etapas, así que no todo el mundo podrá crear una enseguida.",
+    afterHeading: "Después del año gratuito",
+    after: {
+      take: "Puedes elegir el precio de fundador hasta 30 días después de que termine tu año gratuito.",
+      free: "O pasar al plan gratuito. Tus datos se conservan y puedes exportarlos cuando quieras.",
+      remind: "Una vez que tengas cuenta, te lo recordaré en el planificador y por correo 30 días, 14 días y 1 día antes de que termine tu año gratuito.",
+      cancel: "Si cancelas más adelante, el precio de fundador termina. Si vuelves, pagas el precio normal.",
+    },
+    undecidedHeading: "Aún sin decidir",
+    undecided: "Los precios y la fecha de lanzamiento no están fijados. Los anunciaré antes del lanzamiento.",
+    whyHeading: "Por qué unirte",
+    why: {
+      early: "Ves el planificador antes de que se abra a todo el mundo. Durante la beta es solo por invitación, y las invitaciones van a quienes están en la lista de espera.",
+      shape: "Lo que me cuentes da forma a lo que llegue a ser.",
+      whole: "Las herramientas gratuitas responden a una pregunta cada vez. El planificador se está creando para reunir todo el panorama, para que puedas comparar decisiones antes de tomarlas.",
+    },
+    howHeading: "Cómo funciona",
+    how: {
+      join: "Apúntate a la lista de espera de abajo.",
+      email: "Mientras estés en la lista de espera, recibirás un solo correo cuando se abra tu acceso, a más tardar el 1 de enero de 2027. Ese correo es tu invitación.",
+      account: "Crea tu cuenta. Desde ese momento, formas parte de la beta.",
+      use: "Úsalo y cuéntame qué le falta.",
     },
   },
   changes: {
@@ -544,7 +589,7 @@ export const es: Dict = {
       // Quotes the Spanish cookie banner's accept button (cookie.accept).
       withConsent: 'Solo si haces clic en «Sí, me parece bien» en el aviso de cookies:',
       newsletter: 'Si te suscribes al boletín del blog:',
-      waitlist: 'Si te apuntas a la lista de espera para el lanzamiento del producto:',
+      waitlist: 'Si te apuntas a la lista de espera del planificador:',
       volunteers: 'Si te ofreces para ayudar a traducir el sitio:',
       browserOnly: 'Guardado solo en tu navegador, nunca se nos envía:',
     },
@@ -606,7 +651,7 @@ export const es: Dict = {
       total:
         'Si se une suficiente gente a la lista de espera, el sitio puede mostrar el total de inscripciones, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha apuntado.',
       from: {
-        before: 'El correo del lanzamiento llegará desde ',
+        before: 'El correo de invitación llegará desde ',
         after: '. Añádela a tus contactos para que no acabe en spam.',
       },
     },
@@ -648,7 +693,7 @@ export const es: Dict = {
           '), para respetar tu decisión de no volver a verlo durante un tiempo. Solo contiene un tipo de cierre y una fecha y hora, sin dirección de correo ni datos personales.',
       },
       waitlistSignedUp: {
-        before: 'Si te has apuntado a la lista de espera para el lanzamiento del producto (',
+        before: 'Si te has apuntado a la lista de espera del planificador (',
         after:
           '), para dejar de mostrarte el formulario de la lista de espera en futuras visitas. Solo contiene un indicador de estado y una fecha y hora, nunca tu dirección de correo electrónico.',
       },
@@ -667,7 +712,7 @@ export const es: Dict = {
       },
       waitlist: {
         lead: 'Lista de espera:',
-        rest: ' para enviarte exactamente un correo cuando se lance el producto nidhi. Nada más. Ni un boletín, ni una secuencia automática de correos, ni promoción cruzada.',
+        rest: ' para enviarte exactamente un correo cuando se abra tu acceso al planificador de nidhi: tu invitación a la beta. Nada más. Ni un boletín, ni una secuencia automática de correos, ni promoción cruzada.',
       },
       volunteers: {
         lead: 'Voluntariado:',
@@ -730,7 +775,7 @@ export const es: Dict = {
       },
       waitlist: {
         lead: 'Altas en la lista de espera:',
-        rest: ' hasta que enviemos el correo del lanzamiento y hayas tenido tiempo de actuar, o hasta que nos pidas que te eliminemos. Escríbenos cuando quieras.',
+        rest: ' hasta que enviemos el correo de invitación y hayas tenido tiempo de actuar, o hasta que nos pidas que te eliminemos. Escríbenos cuando quieras.',
       },
       volunteers: {
         lead: 'Respuestas del formulario de voluntariado:',
@@ -853,6 +898,7 @@ export const es: Dict = {
     region: 'Lista de espera de acceso anticipado',
     heading: '¿Quieres el planificador cuando se abra el acceso?',
     joined: '{n}+ personas se han unido a mi lista de espera.',
+    beta: { before: "Quienes prueben la beta reciben las funciones de pago gratis durante 12 meses tras el lanzamiento. ", link: "Cómo funciona la beta" },
     emailLabel: 'Correo electrónico',
     cta: 'Avísame',
     privacyBefore: 'Un correo cuando se abra el acceso. ',
@@ -1013,7 +1059,8 @@ export const es: Dict = {
         },
         {
           q: '¿Qué es el planificador y cuándo podré usarlo?',
-          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Se está abriendo por etapas. Apúntate a la lista y recibirás un solo correo cuando se abra el acceso.',
+          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Su beta gratuita se abre a más tardar el 1 de enero de 2027, y quienes estén en la lista de espera reciben un solo correo cuando se abre su acceso.',
+          more: "Qué reciben quienes prueban la beta",
         },
       ],
       why: 'nidhi nació porque no encontraba una herramienta que encajara con una vida financiera corriente: dinero en más de un país, deudas en otro, un futuro que cruza fronteras. Así que la estoy construyendo, y contando lo que aprendo por el camino.',

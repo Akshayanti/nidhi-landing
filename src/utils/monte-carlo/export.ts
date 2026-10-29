@@ -50,6 +50,7 @@ export function monteCarloSheets({ island, common, state, result, date, page }: 
       [x.moneyLabel, x.moneyText],
       [common.about.privacy, common.about.privacyText],
       [common.about.note, common.about.noteText],
+      [common.about.beta, common.about.betaText],
     ],
   };
 

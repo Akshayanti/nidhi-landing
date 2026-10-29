@@ -67,6 +67,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
       [x.scheduleLabel, x.scheduleText],
       [common.about.privacy, common.about.privacyText],
       [common.about.note, common.about.noteText],
+      [common.about.beta, common.about.betaText],
     ],
   };
 

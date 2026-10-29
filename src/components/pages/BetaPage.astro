@@ -1,0 +1,135 @@
+---
+/**
+ * The planner beta page: what beta testers get, who counts, and how the invite
+ * works, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/beta.astro`, a three line wrapper around
+ * this; the other languages come through `src/pages/[locale]/beta.astro`.
+ *
+ * Every sentence here is a public commitment. The wording follows
+ * NetWorthAndExpenses/docs/strategy/BETA_REWARD_BRIEF.md (see
+ * docs/plans/beta-reward.md): no price, no launch date, no feature split.
+ *
+ * The box at the end is the same waitlist box as the home page, without its
+ * beta line, which links here. Nothing on this page collects anything else.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WaitlistSection from '../WaitlistSection.astro';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { beta: b } = dict(locale);
+
+const pageUrl = new URL(localizedPath(locale, '/beta/'), 'https://nidhi.today').href;
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
+  name: b.title,
+  description: b.meta.description,
+  url: pageUrl,
+};
+---
+
+<BaseLayout locale={locale} alternates={LOCALES} title={b.meta.title} description={b.meta.description} jsonLd={[webPageSchema]}>
+  <section class="beta-page">
+    <div class="beta-container">
+      <header>
+        <h1 class="beta-title">{b.title}</h1>
+        <p class="beta-lead">{b.lead}</p>
+      </header>
+
+      <h2>{b.getHeading}</h2>
+      <ul class="beta-list">
+        <li>{b.get.during}</li>
+        <li>{b.get.freeYear}</li>
+        <li>{b.get.founding}</li>
+        <li>{b.get.noCard}</li>
+      </ul>
+
+      <h2>{b.whoHeading}</h2>
+      <p class="beta-text">{b.who}</p>
+
+      <h2>{b.afterHeading}</h2>
+      <ul class="beta-list">
+        <li>{b.after.take}</li>
+        <li>{b.after.free}</li>
+        <li>{b.after.remind}</li>
+        <li>{b.after.cancel}</li>
+      </ul>
+
+      <h2>{b.undecidedHeading}</h2>
+      <p class="beta-text">{b.undecided}</p>
+
+      <h2>{b.whyHeading}</h2>
+      <ul class="beta-list">
+        <li>{b.why.early}</li>
+        <li>{b.why.shape}</li>
+        <li>{b.why.whole}</li>
+      </ul>
+
+      <h2>{b.howHeading}</h2>
+      <ol class="beta-list">
+        <li>{b.how.join}</li>
+        <li>{b.how.email}</li>
+        <li>{b.how.account}</li>
+        <li>{b.how.use}</li>
+      </ol>
+    </div>
+  </section>
+  <WaitlistSection locale={locale} showBeta={false} />
+</BaseLayout>
+
+<style>
+  .beta-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4) var(--space-4);
+  }
+
+  .beta-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .beta-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .beta-lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+
+  .beta-text {
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  .beta-list {
+    padding-left: 1.2rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  .beta-list li + li {
+    margin-top: var(--space-2);
+  }
+</style>
