@@ -24,8 +24,9 @@ glossary:
     definition: "The form naming who receives a pension or insurance payout. Depending on the scheme, it is binding or only a guide. Some schemes call it a nomination or a designation."
   - term: "Joint and several liability"
     definition: "Each borrower owes the whole of a joint debt, so the lender can pursue any one of them for all of it."
-order: 59.5
-pubDate: 2099-01-28
+companionOf: "windfall-management"
+order: 51.5
+pubDate: 2099-01-14
 updatedDate: 2026-10-28
 localRules: [family-law, pensions, tax, credit]
 level: "inclusive-finances"
@@ -47,7 +48,7 @@ faq:
   - question: "Does this apply if we were never married?"
     answer: "The practical steps do: the inventory, comparing assets after tax and costs, updating every beneficiary, and separating joint debts. What is missing is the legal framework for dividing property. Unmarried partners often fall back on ordinary property law, but title is not always the whole answer: written agreements, financial contributions and statutory or equitable claims may matter. That is why a cohabitation agreement made while things are good matters so much."
 reelPromise: "A worked comparison of three 'equal' €200,000 assets that are not equal at all, and the full separation checklist in order"
-relatedSlugs: ["unmarried-and-cohabiting-couples", "cash-flow-forecasting", "financial-projections", "tax-advantaged-accounts"]
+relatedSlugs: ["windfall-management", "cash-flow-forecasting", "financial-projections", "tax-advantaged-accounts"]
 referentialReading:
   - title: "A Guide to the Treatment of Pensions on Divorce"
     author: "Pension Advisory Group (United Kingdom)"
@@ -60,6 +61,8 @@ referentialReading:
 ---
 
 Two people are separating. They are comparing three possible €200,000 shares of their settlement: cash and savings, the equity in a €400,000 home, and a pension. Each has the same paper value. Whether they are equal depends on what each €200,000 is made of.
+
+The [windfalls post](/blog/windfall-management/) treated a lump sum as new money arriving in a household that stays the same, and put a divorce settlement among the sums many people park for 90 days or more. A settlement is different: it divides money the couple already had, much of it not cash, while each person moves from a shared household to living on their own income.
 
 A separation is the reverse of forming a household: one set of accounts, one home, one pension plan and one budget become two, usually while both people are under strain. The legal side differs in every country; this post does not cover custody, how maintenance is calculated, or court procedure. It covers a practical framework that travels reasonably well: inventorying the finances, comparing unlike assets, and finding the paperwork that may survive a settlement. Local law still controls the result. Decisions here are hard to reverse and some carry real tax consequences, which is why people commonly work with a family lawyer where they live and, for pensions and property, a financial professional who handles separations.
 
@@ -91,7 +94,7 @@ Married couples start from their country's default regime for who owns what.
 
 These are defaults, and a marriage contract, where one was signed, can replace them. And each usually separates what was built during the marriage from what each person brought in or inherited, which is why the inventory records when things were acquired.
 
-**Couples who never married** have none of these regimes. In most places the starting point is ordinary property law: whose name is on it, plus any written agreement, which is why the [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) stressed a cohabitation agreement. Some countries do give long-term partners claims on separation. Everything below applies either way.
+**Couples who never married** have none of these regimes. In most places the starting point is ordinary property law: whose name is on it, plus any written agreement, which is why a written cohabitation agreement matters so much for couples who live together without marrying. Some countries do give long-term partners claims on separation. Everything below applies either way.
 
 </details>
 
@@ -158,7 +161,7 @@ Usually yes. The lender was not party to the settlement, so it can pursue either
 6. **Beneficiary forms, wills and powers of attorney reviewed,** with permitted changes made at the legally appropriate time.
 7. **The budget, emergency fund and projection rebuilt on one income.**
 
-Rebuilding takes longer than dividing. Two homes cost more than one, so the new budget starts from the actual single income rather than half the old one. On one income, many people aim for a larger emergency fund than before (the [solo agers post](/blog/solo-agers-and-single-income-households/) covered why). Health cover through a spouse's employer may end, and life and income protection needs change, especially for someone now supporting children alone. A thin credit file in your own name is rebuilt in whatever way the local system counts, and the [projection](/blog/financial-projections/) is rerun with the new balance and savings rate. The first year is often about stability, with the plan coming after.
+Rebuilding takes longer than dividing. Two homes cost more than one, so the new budget starts from the actual single income rather than half the old one. On one income, many people aim for a larger emergency fund than before, since there is no second income to lean on while things settle. Health cover through a spouse's employer may end, and life and income protection needs change, especially for someone now supporting children alone. A thin credit file in your own name is rebuilt in whatever way the local system counts, and the [projection](/blog/financial-projections/) is rerun with the new balance and savings rate. The first year is often about stability, with the plan coming after.
 
 ## Local law changes how property, pensions and the home are treated
 
