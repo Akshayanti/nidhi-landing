@@ -89,6 +89,7 @@ export const en = {
       contact: 'Contact us',
       email: 'Email',
       instagram: 'Instagram',
+      beta: "Planner beta",
     },
     /**
      * The desktop dropdown's own wording, for the entries whose label differs

@@ -57,6 +57,7 @@ export const cs: Dict = {
       contact: 'Kontakt',
       email: 'E-mail',
       instagram: 'Instagram',
+      beta: "Beta plánovače",
     },
     // Sentence case in Czech, so the dropdown's tool names match the sheet's.
     // The keys stay because `Dict` requires them.

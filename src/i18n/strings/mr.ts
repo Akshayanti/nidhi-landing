@@ -56,6 +56,7 @@ export const mr: Dict = {
       contact: 'संपर्क करा',
       email: 'ईमेल',
       instagram: 'Instagram',
+      beta: "प्लॅनर बीटा",
     },
     menu: {
       multiCurrencyNetWorth: 'निव्वळ संपत्ती कॅल्क्युलेटर',
