@@ -778,7 +778,7 @@ export const en = {
       },
       investOrPayOff: {
         before:
-          'Anonymous interaction events on the invest or pay off calculator: that a comparison was shown, whether you copy the shareable link, and whether you reset the form. Unlike the other tools, none of them carries a choice you make: not the country, the currency, the return setting or the comparison date. If you accept the cookie banner, clicks inside the calculator\'s form are not recorded and heatmaps are paused on that page. Picking a country loads its inflation history from nidhi.today itself, never from the World Bank. ',
+          'Anonymous interaction events on the invest or pay off calculator: that a comparison was shown, whether you copy the shareable link, whether you export a spreadsheet or PDF, whether you reset the form, and whether you open a shared view, with its campaign source. Unlike the other tools, none of them carries a choice you make: not the country, the currency, the return setting or the comparison date. If you accept the cookie banner, clicks inside the calculator\'s form are not recorded and heatmaps are paused on that page. Picking a country loads its inflation history from nidhi.today itself, never from the World Bank. ',
         strong: 'The debt, payments, rates, amounts, fees and taxes you enter are never sent.',
       },
       // Two `<code>` elements in one sentence, so the component supplies both

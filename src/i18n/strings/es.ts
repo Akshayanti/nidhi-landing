@@ -635,7 +635,7 @@ export const es: Dict = {
       },
       investOrPayOff: {
         before:
-          'Eventos anónimos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir y si reinicias el formulario. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+          'Eventos anónimos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
       },
       campaigns: {

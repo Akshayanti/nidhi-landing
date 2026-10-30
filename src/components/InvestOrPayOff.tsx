@@ -543,7 +543,7 @@ export default function InvestOrPayOff({
         </fieldset>
 
         <div className="ifc-actions">
-          <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset} data-attr="free-invest-or-pay-off-reset">
+          <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset}>
             {strings.actions.reset}
           </button>
           <span className="ifc-hint">{hasErrors ? strings.results.fix : ''}</span>

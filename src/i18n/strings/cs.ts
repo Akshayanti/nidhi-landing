@@ -601,7 +601,7 @@ export const cs: Dict = {
       },
       investOrPayOff: {
         before:
-          'Anonymní události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení a zda formulář vynulujete. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
+          'Anonymní události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení, zda exportujete tabulku nebo PDF, zda formulář vynulujete a zda otevřete sdílené zobrazení, včetně zdroje kampaně. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
         strong: 'Dluh, splátky, sazby, částky, poplatky a daně, které zadáte, se nikdy neposílají.',
       },
       campaigns: {
