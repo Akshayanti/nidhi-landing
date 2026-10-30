@@ -28,7 +28,7 @@ glossary:
   - term: "Avalanche method"
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
-pubDate: 2099-01-11
+pubDate: 2026-11-04
 updatedDate: "2026-10-25"
 localRules: [tax, pensions, borrowing]
 level: "optimizing"

@@ -28,7 +28,7 @@ glossary:
   - term: "Cash-out refinance"
     definition: "A new loan larger than the old balance, with the difference paid to you, which extracts home equity rather than saving interest."
 order: 50
-pubDate: 2099-01-12
+pubDate: 2026-11-06
 updatedDate: "2026-10-25"
 localRules: [borrowing, tax]
 level: "optimizing"
