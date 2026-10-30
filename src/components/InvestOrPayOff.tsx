@@ -217,6 +217,18 @@ export default function InvestOrPayOff({
   const id = (k: string) => `${uid}-${k}`;
   const countryByCode = useMemo(() => new Map(countries.map((c) => [c.code, c])), [countries]);
 
+  // Click data, recorded only with cookie consent, must not say which return
+  // setting or comparison date was picked, or that a figure was typed
+  // (council, Oct 30, 2026). So the form is marked ph-no-capture, its choices
+  // carry no click labels, and heatmaps, which record where a click lands and
+  // ignore ph-no-capture, are paused on this page, as the learning path's
+  // helper does. Analytics.astro reads the same flag if PostHog loads later.
+  useEffect(() => {
+    window.nidhiHeatmapsPaused = true;
+    const ph = window.posthog;
+    if (ph && ph.__loaded && typeof ph.set_config === 'function') ph.set_config({ enable_heatmaps: false });
+  }, []);
+
   // Shared links carry the state after the #. ToolStateGuard, in the page
   // head, moved it out of the address bar into a window property before
   // analytics started; it is read from there, never from window.location.
@@ -396,7 +408,7 @@ export default function InvestOrPayOff({
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <div className="ifc-root iop-root">
-      <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
+      <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <fieldset className="iop-section">
           <legend className="iop-legend">{strings.sections.debt}</legend>
           <div className="ifc-grid">
@@ -467,7 +479,7 @@ export default function InvestOrPayOff({
                 {form.inflation.trim() !== '' && (
                   <>
                     {' '}
-                    <button type="button" className="iop-linkBtn" onClick={() => setForm((f) => ({ ...f, inflation: '' }))} data-attr="free-invest-or-pay-off-use-country">
+                    <button type="button" className="iop-linkBtn" onClick={() => setForm((f) => ({ ...f, inflation: '' }))}>
                       {strings.fields.useCountry}
                     </button>
                   </>
@@ -488,7 +500,6 @@ export default function InvestOrPayOff({
                   value={choice}
                   checked={form.returns === choice}
                   onChange={() => setForm((f) => ({ ...f, returns: choice }))}
-                  data-attr={`free-invest-or-pay-off-returns-${choice}`}
                 />
                 <span className="iop-choiceText">
                   <span className="iop-choiceLabel">{strings.returns[choice].label}</span>
@@ -524,7 +535,6 @@ export default function InvestOrPayOff({
                   value={h}
                   checked={form.horizon === h}
                   onChange={() => setForm((f) => ({ ...f, horizon: h }))}
-                  data-attr={`free-invest-or-pay-off-horizon-${h}`}
                 />
                 <span className="iop-choiceLabel">{strings.horizons[h]}</span>
               </label>

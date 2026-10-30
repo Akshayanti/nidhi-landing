@@ -599,6 +599,11 @@ export const cs: Dict = {
           'Anonymní události interakce v inflační kalkulačce: kterou otázku zvolíte (kupní síla později, cena později, z minulosti do dneška, drží krok), kterou měnu a historii které země vyberete, zda jako sazbu použijete průměr země, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. Výběr země načte její historii přímo z nidhi.today, nikdy ze Světové banky. ',
         strong: 'Částky, sazby a roky, které zadáte, se nikdy neposílají.',
       },
+      investOrPayOff: {
+        before:
+          'Anonymní události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení a zda formulář vynulujete. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
+        strong: 'Dluh, splátky, sazby, částky, poplatky a daně, které zadáte, se nikdy neposílají.',
+      },
       campaigns: {
         before: 'Parametry kampaní (',
         middle: ', ',

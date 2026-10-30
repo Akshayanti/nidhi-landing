@@ -633,6 +633,11 @@ export const es: Dict = {
           'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
       },
+      investOrPayOff: {
+        before:
+          'Eventos anónimos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir y si reinicias el formulario. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
+      },
       campaigns: {
         before: 'Parámetros de campaña (',
         middle: ', ',

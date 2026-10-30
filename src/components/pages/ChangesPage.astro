@@ -15,7 +15,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { DATE_LOCALE, LOCALE_META, LOCALES, dict, format, localizedPath, type Locale } from '../../i18n';
 import { plural } from '../../i18n/plural.ts';
-import { CHANGE_DAYS, type ChangeItem } from '../../i18n/strings/changes.ts';
+import { type ChangeItem } from '../../i18n/strings/changes.ts';
+import { liveChangeDays } from '../../utils/liveChanges.ts';
 
 interface Props {
   locale: Locale;
@@ -23,6 +24,8 @@ interface Props {
 
 const { locale } = Astro.props;
 const { changes } = dict(locale);
+// The dated days plus any launch item whose release has come (liveChanges.ts).
+const CHANGE_DAYS = await liveChangeDays();
 
 const siteUrl = 'https://nidhi.today';
 const pageUrl = new URL(localizedPath(locale, '/changes/'), siteUrl).href;
