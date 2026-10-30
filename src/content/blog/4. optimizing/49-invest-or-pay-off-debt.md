@@ -51,7 +51,7 @@ relatedTool:
   label: "Invest or pay off calculator"
   cta: "Compare both paths with your own debt, on the same date and after your country’s inflation"
   idea: "Paying off a debt usually produces a certain saving close to its effective interest rate, after fees, tax relief and repayment charges; investing offers an uncertain return. The calculator shows how the two compared across thousands of simulated market histories."
-reelPromise: "Why many people take an employer match early, a seven-step default order for several debts, and the mental-accounting trap that quietly costs households thousands"
+reelPromise: "Why many people take an employer match early, a seven step default order for several debts, and the mental accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
   - title: "Opportunity Cost"
