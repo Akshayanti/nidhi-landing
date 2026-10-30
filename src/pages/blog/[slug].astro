@@ -176,7 +176,11 @@ const relatedTool =
   (toolUrl === MONTE_CARLO_URL && !(await isMonteCarloReleased())) ||
   (toolUrl === INVEST_OR_PAY_OFF_URL && !(await isInvestOrPayOffReleased()))
     ? undefined
-    : post.data.relatedTool;
+    : post.data.relatedTool && toolUrl
+      // Lessons write the address without its trailing slash; the site's
+      // addresses all end in one (trailingSlash: 'always').
+      ? { ...post.data.relatedTool, url: toolUrl }
+      : undefined;
 
 const readingTime = getLayeredReadingTime(post.body || '');
 ---
