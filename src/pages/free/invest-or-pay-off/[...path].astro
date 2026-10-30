@@ -1,0 +1,22 @@
+---
+/**
+ * The English invest or pay off calculator page.
+ *
+ * A rest route so the page can be left out of the production build until the
+ * tool launches with lesson 49 (see src/utils/invest-or-pay-off/release.ts),
+ * and a thin wrapper so that every language renders one component: the page
+ * itself is `src/components/pages/InvestOrPayOffPage.astro`, and the other
+ * languages come through
+ * `src/pages/[locale]/free/invest-or-pay-off/[...path].astro`.
+ *
+ * When released it builds exactly one page, at /free/invest-or-pay-off/.
+ */
+import InvestOrPayOffPage from '../../../components/pages/InvestOrPayOffPage.astro';
+import { isInvestOrPayOffReleased } from '../../../utils/invest-or-pay-off/release.ts';
+
+export async function getStaticPaths() {
+  return (await isInvestOrPayOffReleased()) ? [{ params: { path: undefined } }] : [];
+}
+---
+
+<InvestOrPayOffPage locale="en" />
