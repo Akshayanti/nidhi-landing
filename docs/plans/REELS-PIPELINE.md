@@ -440,6 +440,61 @@ fit (a worked example, a side-by-side table, a rule of thumb), not a generic
 (see Reel-vs-blog division of labour) and MUST be backed by content actually
 present in the post body.
 
+### 1e. Follow-through: cut ideas, never steps
+
+Added Oct 30, 2026, after the owner found the gig work reels unclear: day 1
+reached a €250 day rate without ever saying the €4,000 of pension and
+insurance that turns €40,000 into €44,000, and day 2 named "the salary
+method" without showing it work. Both had passed a council check that only
+asked whether each figure had context.
+
+- Before writing beats, write the reel's one idea as a chain: each input,
+  then the result, or each step of the mechanism. Every link the result
+  depends on is said or shown. A viewer should be able to retell the idea
+  after one watch.
+- If the chain does not fit 25 to 35 s, cut an idea (a second point, a recap
+  card), never a link. The tool or recap card is optional: cut it before
+  cutting a link.
+- The math-literacy guard forbids asking the viewer to compute, not showing
+  what a result is made of. A link can be given in words ("about a third of
+  the year") when another number would break the stat cap.
+- A method reel shows the mechanism working on its example (thin months draw
+  the account down, big months refill it) before it names the method. The
+  script follows the explanation; the chart stages follow the script.
+- Every review of a reel (writing, council, batch checks) asks the cold
+  viewer retell question: "Using only the voice and screen text, retell the
+  idea and how each number was reached. Which link is missing?" A reel that
+  fails is rewritten, not trimmed.
+- Numbers are a budget, not a chain. A reel carries one comparison as
+  numbers; every other link is given in words ("a third of the year", "the
+  employer's pension"). Count the distinct numbers said or shown: more than
+  four in a reel, or more than one new number in a beat outside the hook, is
+  a rewrite. (The first fix of the gig work day 1 reel walked every input as
+  a number and the owner called it a "numbers bombardment".)
+- Every beat changes the picture. If two beats in a row would show the same
+  frame, give the second its own visual (a grid, a card, a highlight) or
+  merge the beats. Direct bar reels have a `days` stage (a grid of working
+  days, some greyed) for exactly this.
+- Before the owner sees a reel, Claude runs these checks on the rendered
+  frames itself (number budget, a new picture for every beat, the retell
+  test, 25 to 35 s), and every council brief lists each beat's visual and the
+  number count, not only the script. Showing the owner a reel that fails them
+  is the failure.
+- Day 1 asks the lesson's main question, in the lesson's own terms (often its
+  title), and answers it enough to understand the takeaway: the core rule and
+  one example. Exceptions, non-essential caveats and the less obvious ideas
+  (the asterisks) go to day 2 or 3, which open from day 1 ("Part two: ...");
+  any caveat necessary to keep day 1 accurate stays in day 1. A day 1 built on
+  the lesson's example or a side calculation instead of its question is a
+  rewrite. (Oct 30: 49 day 1 had become card vs mortgage, and 50 day 1 a
+  division exercise; both lessons ask whether to act at all.)
+- Linked days: when day 2 continues day 1's question, day 1's end card teases
+  it as "Part 2: ..." (never "tomorrow": reels reach viewers for days) and day
+  2's hook opens "Part two: ..."; the topic chips read "<TOPIC> · PART 1/2".
+  Link only when the days continue one question. Day 2 opens from the exact
+  place day 1 ends (its last card or line), so any change to day 1 means
+  rereading day 2's hook and day 1's teaser together.
+
 ### 2. Reel-vs-blog division of labour
 
 The reel is the **hook**, not the tutorial. It exists to get someone

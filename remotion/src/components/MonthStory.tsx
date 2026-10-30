@@ -379,8 +379,11 @@ function CalendarVisual({ input, story, now }: { input: ReelInput; story: Calend
   const chartExit = progress(now, b6.startMs, b6.startMs + 300);
   const cardIn = progress(now, b6.startMs + 310, b6.startMs + 760);
   const cardOut = progress(now, b7.startMs, b7.startMs + 480);
-  const chartOpacity = now < b6.startMs ? 1 : now < b7.startMs ? 1 - chartExit : cardOut;
-  const cardOpacity = now < b6.startMs ? 0 : now < b7.startMs ? cardIn : 1 - cardOut;
+  // The rule card normally gives way to the smoothed beat; when the smoothed beat
+  // comes first, the card holds until the reel ends.
+  const cardEnd = b7.startMs > b6.startMs ? b7.startMs : Infinity;
+  const chartOpacity = now < b6.startMs ? 1 : now < cardEnd ? 1 - chartExit : cardOut;
+  const cardOpacity = now < b6.startMs ? 0 : now < cardEnd ? cardIn : 1 - cardOut;
   // The average ladder plots pay against costs, so it needs a reference
   // (pay) line; a story without one (an income chart) keeps its bars.
   const mode: CalendarMode = activeStage === "short"
@@ -402,7 +405,7 @@ function CalendarVisual({ input, story, now }: { input: ReelInput; story: Calend
         <CalendarBars story={story} values={displayValues} mode={mode} annotatedMonths={highlighted} annotationOpacity={annotationOpacity} />
         <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
       </div>
-      {now >= b6.startMs && now < b7.startMs + 500 && (
+      {now >= b6.startMs && now < cardEnd + 500 && (
         <div style={{ opacity: cardOpacity }}>
           <MonthHeading input={input} now={now} />
           <FormulaCard card={formulaFor(story)} />

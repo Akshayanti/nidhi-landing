@@ -9,10 +9,10 @@
   "mode": "riff",
   "mood": "curious",
   "topic": "Waiting for a lower rate has a known cost",
-  "topicChip": "THE WAIT",
+  "topicChip": "REFINANCING · PART 2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Blog example: refinancing to 4.25% saves €200 a month; waiting six months forgoes 6 x 200 = €1,200; in the blog's scenario rates then rise to 4.75%. Markets already price expected cuts (blog). Illustrative."
+    "notes": "Blog example: refinancing to 4.25% saves €200 a month; waiting six months forgoes 6 x 200 = €1,200; rates can also rise while waiting (the blog's scenario). Markets already price expected cuts (blog). Illustrative."
   },
   "barStory": {
     "mode": "direct",
@@ -29,7 +29,7 @@
       {
         "id": "now",
         "label": "Refinance now",
-        "sublabel": "€200 a month, six months",
+        "sublabel": "savings over six months",
         "value": 1200,
         "display": "€1,200",
         "tone": "teal"
@@ -37,9 +37,9 @@
       {
         "id": "wait",
         "label": "Wait six months",
-        "sublabel": "same six months",
+        "sublabel": "savings over six months",
         "value": 0,
-        "display": "€0",
+        "display": "€0 saved",
         "tone": "amber"
       }
     ],
@@ -49,10 +49,10 @@
     {
       "id": "wait-cost",
       "layout": "bar-gap",
-      "narration": "A lower rate is available to you today. What does waiting six months cost?",
+      "narration": "Part two: say it passes the break even check. Should you wait for a lower rate? Here's what six months costs.",
       "onscreenLines": [
-        "Refinance now?",
-        "Or wait six months?",
+        "Part 2: refinance now?",
+        "Or wait for a lower rate?",
         ""
       ],
       "anchor": {
@@ -81,27 +81,15 @@
     {
       "id": "b2",
       "kind": "warning",
-      "narration": "Waiting six months for a lower rate gives that up, for certain.",
-      "onscreenText": "Wait: €1,200 not saved",
-      "subtext": "For certain",
+      "narration": "Waiting gives up that twelve hundred in savings, and rates may rise or fall.",
+      "onscreenText": "Wait: €1,200 forgone",
+      "subtext": "Rates may rise or fall",
       "emphasis": [
         "certain"
       ],
       "anchor": {
         "type": "bars",
         "stage": "second"
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "warning",
-      "narration": "And rates can rise: in one scenario, to four point seven five.",
-      "onscreenText": "Rates can rise too",
-      "subtext": "One scenario: 4.25% to 4.75%",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
       }
     },
     {
@@ -127,7 +115,7 @@
             "tone": "amber"
           },
           {
-            "label": "= Waiting costs",
+            "label": "= Savings forgone",
             "value": "€1,200",
             "tone": "ink"
           }
@@ -144,8 +132,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "A lower rate is available today. What does waiting six months cost?\n\nIf refinancing now saves €200 a month, waiting gives up €1,200 for certain. A later rate has to win that back. In one scenario, rates instead rise from 4.25% to 4.75%.\n\n→ Know someone waiting for rates to fall? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Markets already price the cuts they expect; rates and costs vary by lender and country.",
-    "tiktok": "Waiting six months for a lower rate can cost €1,200 for certain. Illustrative."
+    "instagram": "A lower rate is available today. What does waiting six months cost?\n\nIf refinancing now saves €200 a month, waiting six months gives up €1,200 of savings. A later rate has to win that back, and rates may rise or fall.\n\n→ Know someone waiting for rates to fall? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Markets already price the cuts they expect; rates and costs vary by lender and country. Not financial advice.",
+    "tiktok": "Waiting six months for a lower rate gives up €1,200 of savings, and rates may rise or fall. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",

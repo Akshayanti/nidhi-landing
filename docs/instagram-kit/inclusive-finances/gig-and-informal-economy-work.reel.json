@@ -9,7 +9,7 @@
   "mode": "riff",
   "mood": "curious",
   "topic": "A freelance day rate has to fund everything an employer paid for",
-  "topicChip": "FREELANCE RATES",
+  "topicChip": "FREELANCE · PART 1",
   "assumptions": {
     "currency": "EUR",
     "notes": "Salaried job €40,000 a year, about 260 working days, all paid: €40,000 ÷ 260 = about €154 a paid day. Employer adds a 5% pension contribution (€2,000) and sick pay and insurance. Freelancer: 260 days less 25 holiday, 10 public holidays and 5 sick days = 220; about a fifth unbilled leaves about 176 billable days. Needs €40,000 + €2,000 pension + roughly €2,000 insurance = €44,000. €44,000 ÷ 176 = €250 a day, about 1.6 times €154. Charging €154 is a pay cut of more than a third (154 ÷ 250 = 0.62). Common rule of thumb: 1.5 to 2 times. Illustrative."
@@ -28,7 +28,7 @@
       {
         "id": "employee",
         "label": "Salaried",
-        "sublabel": "€40,000 ÷ 260 paid days",
+        "sublabel": "Old salary by the day",
         "value": 154,
         "display": "€154",
         "tone": "muted"
@@ -36,7 +36,7 @@
       {
         "id": "freelance",
         "label": "Freelance, same life",
-        "sublabel": "€44,000 ÷ 176 billable days",
+        "sublabel": "Billed days only, own pension",
         "value": 250,
         "display": "€250",
         "tone": "amber"
@@ -54,10 +54,10 @@
     {
       "id": "old-rate-pay-cut",
       "layout": "bar-gap",
-      "narration": "Freelancing at your old salary's day rate? Same life, that's a pay cut.",
+      "narration": "Going freelance? Charging your old salary by the day is a pay cut.",
       "onscreenLines": [
         "Your old day rate?",
-        "Same life: a pay cut",
+        "What the same life needs",
         ""
       ],
       "anchor": {
@@ -74,90 +74,97 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "A salaried job pays about a hundred and fifty four euros a day.",
-      "onscreenText": "Salaried: €154 a day",
-      "subtext": "€40,000 over about 260 paid days",
+      "narration": "A salary pays every working day, holidays and sick days included.",
+      "onscreenText": "Salaried: all paid",
+      "subtext": "Each square is a working day",
       "emphasis": [
-        "paid"
+        "every"
       ],
       "anchor": {
         "type": "bars",
-        "stage": "first"
+        "stage": "days",
+        "days": {
+          "total": 260,
+          "unpaid": 0,
+          "paidLabel": "Paid"
+        }
       }
     },
     {
       "id": "b2",
       "kind": "warning",
-      "narration": "Freelance, only billed days pay. After leave, sick days and finding work, about a hundred and seventy six.",
-      "onscreenText": "176 days you can bill",
-      "subtext": "Out of about 260 working days",
+      "narration": "Freelance, time off and finding clients go unpaid: about a third of the year.",
+      "onscreenText": "A third go unpaid",
+      "subtext": "Grey squares earn nothing",
       "emphasis": [
-        "billed"
+        "third"
       ],
       "anchor": {
         "type": "bars",
-        "stage": "first"
+        "stage": "days",
+        "days": {
+          "total": 260,
+          "unpaid": 84,
+          "paidLabel": "Billed",
+          "unpaidLabel": "Unpaid"
+        }
       }
     },
     {
       "id": "b3",
-      "kind": "comparison",
-      "narration": "Salary, pension and insurance take about two hundred and fifty a billed day.",
-      "onscreenText": "Freelance: €250 a day",
-      "subtext": "1.6 times the salaried day",
+      "kind": "definition",
+      "narration": "And the pension and insurance an employer paid? Yours now.",
+      "onscreenText": "Now on you",
+      "subtext": "",
       "emphasis": [
-        "fifty"
+        "Yours"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The employer paid",
+        "rows": [
+          {
+            "label": "Pension",
+            "value": "You now",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Insurance",
+            "value": "You now",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Contributions vary by country."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "So the same life needs about one point six times the day rate.",
+      "onscreenText": "Same life, higher rate",
+      "subtext": "Before saving anything extra",
+      "emphasis": [
+        "six"
       ],
       "anchor": {
         "type": "bars",
         "stage": "ratio"
       }
-    },
-    {
-      "id": "b4",
-      "kind": "definition",
-      "narration": "The full bundle: billable days, employer costs, one division.",
-      "onscreenText": "The full bundle",
-      "subtext": "",
-      "emphasis": [],
-      "anchor": {
-        "type": "card",
-        "stage": "tool",
-        "title": "The full bundle",
-        "rows": [
-          {
-            "label": "Billable days",
-            "value": "176",
-            "valueSize": "small",
-            "tone": "ink"
-          },
-          {
-            "label": "Salary, pension, insurance",
-            "value": "€44,000",
-            "valueSize": "small",
-            "tone": "ink"
-          },
-          {
-            "label": "Day rate",
-            "value": "€250",
-            "valueSize": "small",
-            "tone": "teal"
-          }
-        ],
-        "footnote": "Illustrative. Contributions vary by country."
-      }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone going freelance? Send them this.",
-    "onscreenText": "Send this to them",
-    "subtext": "Before they set a rate",
+    "narration": "Part two: paying yourself steadily when that money arrives unevenly. Send this to someone going freelance.",
+    "onscreenText": "Part 2: a steady salary",
+    "subtext": "Send this to someone going freelance",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Going freelance at your old salary's day rate? For the same life, that's a pay cut.\n\nA €40,000 salary pays about €154 a day, every day paid. Freelance, only billed days pay: about 176 after leave and finding work. Covering the salary, pension and insurance takes about €250 a billable day, 1.6 times.\n\n→ Know someone going freelance? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Contributions and billable time vary by country. Not tax advice.",
-    "tiktok": "Freelancing at your old salary's day rate? For the same life, that is a pay cut.\n\nFour lines price what an employer used to pay for. Illustrative.",
+    "instagram": "Going freelance from a €40,000 job? The obvious day rate, about €154, is a pay cut for the same life.\n\nA salary pays every working day, holidays included. Freelance, only billed days pay, about two in three. Add the pension and insurance an employer paid, and a €40,000 salary needs about €250 a day, not €154. Part 2: paying yourself a steady salary when that money arrives unevenly.\n\n→ Know someone going freelance? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Contributions and billable time vary by country. Not tax advice.",
+    "tiktok": "Leaving a salaried job to freelance? The obvious day rate is a pay cut for the same life.\n\nBillable days and employer costs, one step at a time. Illustrative.",
     "instagramKeywords": [
       "freelance day rate",
       "how much to charge freelance",

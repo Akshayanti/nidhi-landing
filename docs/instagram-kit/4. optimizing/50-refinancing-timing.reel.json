@@ -8,8 +8,8 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A refinance pays only after its break even month",
-  "topicChip": "BREAK EVEN",
+  "topic": "Should you refinance? Only if you keep the loan past its break even month",
+  "topicChip": "REFINANCING · PART 1",
   "assumptions": {
     "currency": "EUR",
     "notes": "Blog example: closing costs €4,000, monthly saving €200, break even 4,000 / 200 = month 20. Held 60 months: (60 - 20) x 200 = €8,000 ahead; held 24 months: €800. Ignores rate, tax and term changes and the opportunity cost of the costs. Common guideline from the blog: hold period often 2x the break even or more."
@@ -26,19 +26,19 @@
       "title": "THE BREAK EVEN CHECK",
       "rows": [
         {
-          "label": "Costs, fees included",
-          "value": "€4,000",
+          "label": "Break even",
+          "value": "Month 20",
           "tone": "ink"
         },
         {
-          "label": "Monthly saving",
-          "value": "÷ €200",
-          "tone": "amber"
+          "label": "Keep it longer",
+          "value": "Ahead",
+          "tone": "teal"
         },
         {
-          "label": "Break even",
-          "value": "Month 20",
-          "tone": "teal"
+          "label": "Sell sooner",
+          "value": "Behind",
+          "tone": "amber"
         }
       ],
       "footnote": "Many people look for keeping the loan about twice that long. Illustrative."
@@ -49,10 +49,10 @@
     {
       "id": "when-paid-off",
       "layout": "month-gap",
-      "narration": "If a refinance saves you two hundred euros a month, when has it actually paid off? It is one division.",
+      "narration": "Should you refinance? It comes down to one month.",
       "onscreenLines": [
-        "Your refinance saves €200 a month",
-        "When has it paid off?",
+        "Should you refinance?",
+        "Find the break even month",
         ""
       ],
       "anchor": {
@@ -60,7 +60,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "paid"
+        "one"
       ]
     }
   ],
@@ -69,8 +69,8 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Say it costs four thousand euros, fees included.",
-      "onscreenText": "€4,000 of costs",
+      "narration": "A refinance has costs up front: say four thousand euros.",
+      "onscreenText": "€4,000 up front",
       "subtext": "Fees and any repayment charges",
       "emphasis": [],
       "anchor": {
@@ -81,7 +81,7 @@
     {
       "id": "b3",
       "kind": "stat",
-      "narration": "It saves two hundred a month.",
+      "narration": "Then it saves you two hundred a month.",
       "onscreenText": "€200 a month saved",
       "subtext": "The lower payment",
       "emphasis": [],
@@ -93,9 +93,9 @@
     {
       "id": "b4",
       "kind": "stat",
-      "narration": "Four thousand divided by two hundred: month twenty, before it is ahead.",
-      "onscreenText": "Month 20",
-      "subtext": "€4,000 ÷ €200",
+      "narration": "Twenty months of savings pay those costs back.",
+      "onscreenText": "Month 20: break even",
+      "subtext": "Ahead only after this",
       "emphasis": [
         "twenty"
       ],
@@ -107,9 +107,9 @@
     {
       "id": "b7",
       "kind": "definition",
-      "narration": "Many people look for keeping the loan about twice that long, because plans to stay are often hopeful.",
+      "narration": "So it depends how long you keep the loan. Sell before month twenty and it comes out behind.",
       "onscreenText": "The break even check",
-      "subtext": "Costs ÷ monthly saving",
+      "subtext": "How long will you keep it?",
       "emphasis": [],
       "anchor": {
         "type": "months",
@@ -119,14 +119,14 @@
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone refinancing before a move? Send them this.",
-    "onscreenText": "Send this to them",
-    "subtext": "Before they refinance",
+    "narration": "Part two: it passes the check, but should you wait for a lower rate? Send this to someone about to refinance.",
+    "onscreenText": "Part 2: the cost of waiting",
+    "subtext": "Send this to someone about to refinance",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "If a refinance saves you €200 a month, when has it actually paid off?\n\nWith €4,000 of costs, the answer is month 20. Keep it 5 years and it is about €8,000 ahead. Sell at 2 years and it is €800.\n\n→ Know someone refinancing before a move? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Ignores rate, tax and term changes; costs and early repayment charges vary by country.",
-    "tiktok": "A refinance saves €200 a month. When has it paid off? Month 20 on €4,000 of costs. Illustrative."
+    "instagram": "If a refinance saves you €200 a month, when has it actually paid off?\n\nShould you refinance? Here, €4,000 of costs and €200 a month saved break even at month 20. Keep the loan longer and it comes out ahead; sell sooner and it comes out behind. Many people look for keeping it about twice that long. Part 2: it passes the check, but should you wait for a lower rate?\n\n→ Know someone refinancing before a move? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Ignores rate, tax and term changes; costs and early repayment charges vary by country. Not financial advice.",
+    "tiktok": "Should you refinance? Only if you keep the loan past its break even month: month 20 on €4,000 of costs and €200 a month saved. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",

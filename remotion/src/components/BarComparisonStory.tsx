@@ -346,6 +346,35 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
   );
 }
 
+// A year of working days as squares. Unpaid days are spread evenly through the
+// grid and turn grey one after another over the first part of the beat.
+function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string }; local: number; enter: number }) {
+  const columns = 20;
+  const greying = unitProgress(local, 0.08, 0.6);
+  const unpaidIndices = Array.from({ length: days.total }, (_, index) => index).filter(
+    (index) => Math.floor(((index + 1) * days.unpaid) / days.total) > Math.floor((index * days.unpaid) / days.total),
+  );
+  const order = new Map(unpaidIndices.map((index, rank) => [index, rank]));
+  const greyed = Math.round(greying * unpaidIndices.length);
+  return (
+    <div style={{ position: "absolute", left: 92, right: 100, top: 560, opacity: enter, transform: `translateY(${(1 - enter) * 18}px)` }} data-reel-reveal>
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: 9, padding: 22, border: `2px solid ${BRAND.hairline}`, borderRadius: 22, background: "rgba(255,255,255,0.5)" }}>
+        {Array.from({ length: days.total }, (_, index) => {
+          const rank = order.get(index);
+          const unpaid = rank !== undefined && rank < greyed;
+          return <div key={index} style={{ height: 30, borderRadius: 7, background: unpaid ? "rgba(0,33,113,0.09)" : BRAND.teal, border: unpaid ? `2px solid ${BRAND.hairline}` : "2px solid transparent" }} />;
+        })}
+      </div>
+      <div style={{ marginTop: 30, display: "flex", gap: 44, fontFamily: TYPE.ui, fontSize: 30, fontWeight: 760 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, color: BRAND.ink }}><span style={{ width: 26, height: 26, borderRadius: 7, background: BRAND.teal }} />{days.paidLabel}</div>
+        {days.unpaid > 0 && days.unpaidLabel && (
+          <div style={{ display: "flex", alignItems: "center", gap: 14, color: BRAND.inkMuted, opacity: greying > 0 ? 1 : 0 }}><span style={{ width: 26, height: 26, borderRadius: 7, background: "rgba(0,33,113,0.09)", border: `2px solid ${BRAND.hairline}` }} />{days.unpaidLabel}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const story = input.plan.barStory;
   if (!story) return null;
@@ -368,8 +397,20 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
     );
   }
 
+  const days = active?.beat.anchor?.type === "bars" && stage === "days" ? active.beat.anchor.days : undefined;
+  if (days && active) {
+    const local = (now - active.span.startMs) / Math.max(1, active.span.endMs - active.span.startMs);
+    return (
+      <div style={{ position: "absolute", inset: 0 }}>
+        <StoryHeading input={input} now={now} />
+        <DayGrid days={days} local={local} enter={enter} />
+        <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
+      </div>
+    );
+  }
+
   const bars = stage === "first" ? story.bars.slice(0, 1) : story.bars;
-  const showBars = stage && !["blank", "hook"].includes(stage);
+  const showBars = stage && !["blank", "hook", "days"].includes(stage);
   const showRatio = stage === "ratio";
   const callout = story.callout ?? story.ratio;
   return (
@@ -441,15 +482,17 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
   const beat = toolCardBeat(input);
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.barStory;
-  if (!card || !story) return null;
+  if (!story) return null;
   // A compact card is 410 px tall at two rows and 560 at three or four, so anything past two rows
-  // moves up and drops the disclosure line to keep clear of the CTA headline.
-  const hasFourRows = card.rows.length > 2;
+  // moves up and drops the disclosure line to keep clear of the CTA headline. A reel without a
+  // tool card beat keeps the headline and disclosure, centred higher.
+  const hasFourRows = card !== undefined && card.rows.length > 2;
+  const headlineTop = !card ? 470 : hasFourRows ? 790 : 760;
   return (
     <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
-      <div style={{ position: "absolute", left: 145, top: hasFourRows ? 180 : 235, opacity: enter, transform: `translateY(${(1 - enter) * 20}px) rotate(-1deg)` }} data-reel-reveal><ToolCard card={card} compact /></div>
-      {!hasFourRows && <div style={{ position: "absolute", left: 130, right: 150, top: 680, textAlign: "center", fontFamily: TYPE.ui, fontSize: 22, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.disclosure}</div>}
-      <div style={{ position: "absolute", left: 70, right: 100, top: hasFourRows ? 790 : 760, textAlign: "center", opacity: enter }}>
+      {card && <div style={{ position: "absolute", left: 145, top: hasFourRows ? 180 : 235, opacity: enter, transform: `translateY(${(1 - enter) * 20}px) rotate(-1deg)` }} data-reel-reveal><ToolCard card={card} compact /></div>}
+      {!hasFourRows && <div style={{ position: "absolute", left: 130, right: 150, top: card ? 680 : 360, textAlign: "center", fontFamily: TYPE.ui, fontSize: 22, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.disclosure}</div>}
+      <div style={{ position: "absolute", left: 70, right: 100, top: headlineTop, textAlign: "center", opacity: enter }}>
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 47, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>

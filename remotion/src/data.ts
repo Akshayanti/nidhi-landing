@@ -58,7 +58,8 @@ export type BarStage =
   | "callout"
   | "ratio"
   | "principle"
-  | "close";
+  | "close"
+  | "days";
 
 export type BarTone = "muted" | "ink" | "amber" | "teal";
 
@@ -358,7 +359,13 @@ export type BeatAnchor =
       caption?: string;
     }
   | { type: "chart"; stage: ChartStage; chips?: string[] }
-  | { type: "bars"; stage: BarStage; segment?: number }
+  | {
+      type: "bars";
+      stage: BarStage;
+      segment?: number;
+      /** Stage "days": a grid of working days, `unpaid` of them greyed out during the beat. */
+      days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string };
+    }
   | { type: "months"; stage: MonthStage; months?: string[] }
   | { type: "columns"; stage: ColumnStage }
   | { type: "routes"; stage: RouteStage }
