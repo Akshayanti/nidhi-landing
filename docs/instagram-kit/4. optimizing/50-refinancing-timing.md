@@ -108,9 +108,9 @@ read: The rate drop rule of thumb and where it breaks
 
 angle: Waiting for a lower rate has a known cost
 breadth: narrow | Needs a refinancing condition: a viewer holding off a refinance for a lower rate
-number: Waiting six months on a €200 a month saving gives up €1,200 for certain, and rates can rise instead
-takeaway: A later, lower rate has to win back what waiting cost; markets already price the cuts they expect.
-tool: The wait test. Monthly saving × months waited = what waiting costs.
+number: Waiting six months on a €200 a month saving gives up €1,200 of savings, and rates may rise or fall
+takeaway: A later, lower rate has to win back what waiting gave up; markets already price the cuts they expect.
+tool: The wait test. Monthly saving × months waited = savings forgone.
 send_to: A friend holding off a refinance in case rates fall further.
 send_why: number
 
@@ -129,7 +129,7 @@ hashtags: #nidhi #nidhicompounding #interestrates #remortgage #borrowing
 
 Know someone holding off a refinance in case rates fall further?
 
-If refinancing now saves €200 a month, waiting six months gives up €1,200 for certain. A later rate has to win that back, and rates can rise instead.
+If refinancing now saves €200 a month, waiting six months gives up €1,200 of savings. A later rate has to win that back, and rates may rise or fall.
 
 → Send this to them before they wait again
 
@@ -162,13 +162,13 @@ rule: Expected cuts are already priced.
 
 ### Slide 3 (tool)
 
-alt: Tool card, the wait test, before you wait for a lower rate: monthly saving, €200; times months waited, 6; what waiting costs, €1,200, which a later rate has to win back.
+alt: Tool card, the wait test, before you wait for a lower rate: monthly saving, €200; times months waited, 6; savings forgone, €1,200, which a later rate has to win back.
 
 band: The wait test
 lead: Before you wait for lower
 row: Monthly saving | €200 | teal | from refinancing now
 row: × Months waited | × 6 | warn | until the hoped for rate
-row: = Waiting costs | €1,200 | ink | for a later rate to win back
+row: = Savings forgone | €1,200 | ink | for a later rate to win back
 note: Illustrative.
 
 ### Slide 4 (closer)
@@ -213,7 +213,7 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: How long people keep their loan
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the wait test: monthly saving times months waited is what waiting costs; €200 × 6 is €1,200.
+d2_f3_alt: Story version of the wait test: monthly saving times months waited is the savings forgone; €200 × 6 is €1,200.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: The wait test
 
