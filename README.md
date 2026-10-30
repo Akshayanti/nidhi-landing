@@ -18,3 +18,7 @@ npm run lint         # lint the project
 ```
 
 Requires **Node.js >= 22**.
+
+## License
+
+This source is public so people can read it. It is not open source, and all rights are reserved: see [LICENSE](LICENSE). Third-party material keeps its own terms: see [the notices](public/third-party-notices.txt).

@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-10-30',
+    items: [
+      {
+        id: 'volunteer-permission',
+        text: {
+          en: 'If you volunteer to translate, I now ask for your written permission by email before your first contribution, so your work can be published while the copyright stays yours. The privacy notice says what is kept from your reply and for how long.',
+          es: 'Si te ofreces para traducir, ahora pido tu permiso por escrito, por correo, antes de tu primera aportación, para poder publicar tu trabajo sin que dejes de tener sus derechos de autor. El aviso de privacidad explica qué se guarda de tu respuesta y durante cuánto tiempo.',
+          cs: 'Pokud se přihlásíte k překládání, žádám teď před vaším prvním příspěvkem e-mailem o písemné svolení, aby vaše práce mohla vyjít a autorská práva k ní zůstala vám. V oznámení o ochraně soukromí je uvedeno, co se z vaší odpovědi uchovává a jak dlouho.',
+          mr: 'तुम्ही भाषांतरासाठी स्वयंसेवक झालात, तर पहिल्या योगदानाआधी आता ईमेलवर तुमची लेखी परवानगी मागितली जाते, म्हणजे तुमचे काम प्रकाशित करता येईल आणि त्याचा कॉपीराइट तुमच्याकडेच राहील. तुमच्या उत्तरातून काय आणि किती काळ ठेवले जाते, हे प्रायव्हसी नोटिसमध्ये सांगितले आहे.',
+          hi: 'अगर आप अनुवाद के लिए स्वयंसेवक बनें, तो पहले योगदान से पहले अब ईमेल पर आपकी लिखित अनुमति माँगी जाती है, ताकि आपका काम प्रकाशित हो सके और उसका कॉपीराइट आपके पास ही रहे। आपके जवाब में से क्या और कितने समय तक रखा जाता है, यह प्राइवेसी नोटिस में बताया गया है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-10-29',
     items: [
       {

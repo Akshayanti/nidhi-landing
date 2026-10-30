@@ -65,6 +65,15 @@ The site has a "What's changed" page (`/changes/` in every language). It is how 
 4. **What counts**: copy, pages, tools, layout, behaviour, and anything the privacy changelog records, once readers can see it. **What does not**: refactors, tests, docs, CI, tooling, dependency updates, SEO metadata, performance with no visible change, spacing, alignment and contrast polish, typo fixes that do not change meaning, fixes to something shipped earlier the same day, and lessons published on schedule (the learning path lists those). A correction inside a lesson has its own record (the lesson's `corrections` field), so it gets no item here either. A pull request with nothing that counts adds nothing.
 5. `src/i18n/strings/changes.test.ts` checks the mechanical rules (one day per date, newest first, no empty day, unique ids and aliases, every language present, typography); it is the floor, as the catalog tests are.
 
+## Third-Party Notices Stay Current
+
+`LICENSE` reserves all rights in nidhi's own material and points to `public/third-party-notices.txt` for everything that belongs to someone else. The file covers what is copied into the repository or sent to visitors' browsers. Nothing updates it automatically, so a change that alters that list updates the file in the same pull request:
+
+1. **Add an entry** for a new font, image, icon, music track, video, dataset or copied code, and for an npm package whose code reaches the browser (a new client import or a new transitive dependency of one). Use the licence text and copyright line from the upstream source, verbatim. A font's own metadata names its copyright line.
+2. **Remove the entry** when the material leaves the repository and the browser bundle.
+3. **Check the terms first.** If the licence does not allow the use or asks for something the site does not do, pause and ask. Do not add material whose licence you have not read.
+4. **Not listed:** packages used only to build, test or render, which npm installs with their own licences and which are not copied into the repository, and sources a lesson only cites or links to. A routine version bump needs no change unless the package's licence or copyright line changed.
+
 ## Automated Visits Use the Internal Address
 
 Whenever the live site is opened automatically (a headless browser, the Chrome extension, a script or any other tool), start from this address: **https://nidhi.today/?internal=1**. It marks that browser as internal (the `nidhi-internal` key the privacy notice describes), so it runs no analytics and never counts as a reader. A fresh browser profile starts unmarked, so open this address first in every new browser or session before visiting any other page. Local test builds follow the rules above for analytics testing instead.

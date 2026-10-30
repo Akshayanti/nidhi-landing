@@ -98,6 +98,7 @@ export const cs: Dict = {
       changes: 'Co se změnilo',
       privacy: 'Soukromí',
       cookieSettings: 'Nastavení cookies',
+      thirdParty: 'Licence třetích stran',
     },
     disclaimerShort:
       'nidhi nabízí vzdělávací informace a nástroje, které vám pomohou porozumět vlastním penězům. Nejde o finančního poradce s příslušným oprávněním.',
@@ -646,6 +647,8 @@ export const cs: Dict = {
         'Váš souhlas s tím, že vás budeme kontaktovat e-mailem ohledně překladů, zda chcete také pozvánku do bety plánovače (samostatná, nepovinná volba), a čas odeslání formuláře.',
       credit:
         'Pokud o uvedení požádáte, jméno, které nám pro to sdělíte, se může objevit na webu spolu se jmény dalších lidí, kteří s daným jazykem pomáhají. Můžete ho kdykoli změnit nebo nechat odstranit.',
+      agreement:
+        'Pokud se pak zapojíte, požádáme vás e-mailem o svolení ke zveřejnění vaší práce. Vaše odpověď je záznamem tohoto svolení: vaše úřední jméno, e-mailová adresa, přijaté znění a datum. Zůstává v našem e-mailu Google Workspace, nikdy ho nezveřejňujeme a používáme ho jen k doložení, že svolení bylo uděleno.',
       followUp:
         'V této soukromé tabulce si také zapisujeme stav vyřízení a datum našeho posledního kontaktu s vámi, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
       google:
@@ -698,7 +701,7 @@ export const cs: Dict = {
       },
       volunteers: {
         lead: 'Dobrovolná pomoc:',
-        rest: ' k porozumění vašim jazykům, vaší úrovni a vašemu finančnímu vzdělání nebo praxi, ke kontaktování ohledně překladů, k uvedení na webu, pokud o to požádáte, a k pozvání do bety plánovače, až bude spuštěna, pokud o ni stojíte. Nic jiného.',
+        rest: ' k porozumění vašim jazykům, vaší úrovni a vašemu finančnímu vzdělání nebo praxi, ke kontaktování ohledně překladů, k uvedení na webu, pokud o to požádáte, k pozvání do bety plánovače, až bude spuštěna, pokud o ni stojíte, a pokud se zapojíte, k uchování záznamu vašeho svolení. Nic jiného.',
       },
       localPreferences: {
         lead: 'Místní předvolby:',
@@ -761,7 +764,7 @@ export const cs: Dict = {
       },
       volunteers: {
         lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
-        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění.',
+        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků.',
       },
       bounced: {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
@@ -777,7 +780,7 @@ export const cs: Dict = {
       intro:
         'Podle obecného nařízení o ochraně osobních údajů (GDPR) a podobných předpisů máte právo se nás zeptat, co o vás máme, nechat to opravit, exportovat, omezit, jak to používáme, vznést proti tomu námitku nebo to nechat smazat.',
       unsubscribe:
-        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc nám napište a vyřadíme vás, i s případným uvedením na webu. Ve všech těchto případech to na požádání uděláme i ručně.',
+        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc nám napište a vyřadíme vás, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to na požádání uděláme i ručně.',
       analytics: {
         before:
           'Události webové analytiky jsou anonymní; nemáme jak dohledat „vaše“ události, protože nevíme, kdo jste. Pokud vám to vadí, na cookie liště jednoduše odmítněte souhlas nebo použijte blokátor obsahu. Nic na webu se nerozbije. Odpověď můžete kdykoli změnit přes ',

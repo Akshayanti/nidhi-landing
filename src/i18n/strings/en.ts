@@ -133,6 +133,7 @@ export const en = {
       changes: "What's changed",
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
+      thirdParty: 'Third-party licences',
     },
     disclaimerShort:
       'nidhi provides educational information and tools to help you understand your money. It is not a licensed financial adviser.',
@@ -831,6 +832,8 @@ export const en = {
         'Your consent to be contacted by email about translating, whether you also asked to be invited to the planner’s beta (a separate, optional choice), and the time you sent the form.',
       credit:
         'If you ask for credit, the name you gave may appear on the site, listed with the others who helped with that language. You can change it or have it removed at any time.',
+      agreement:
+        'If you go on to contribute, we ask you by email for permission to publish your work. Your reply is the record of that permission: your legal name, your email address, the wording you accepted and the date. It stays in our Google Workspace email, we never publish it, and we use it only to show that permission was given.',
       followUp:
         'In that private sheet we also note a follow-up status and the date of our last contact with you, to manage replies and apply the retention period below. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
       google:
@@ -883,7 +886,7 @@ export const en = {
       },
       volunteers: {
         lead: 'Volunteers:',
-        rest: ' to understand your languages, your level and your financial background, to contact you about translating, to credit you on the site if you asked for it, and, if you asked for it, to invite you to the planner’s beta when it opens. Nothing else.',
+        rest: ' to understand your languages, your level and your financial background, to contact you about translating, to credit you on the site if you asked for it, if you asked for it, to invite you to the planner’s beta when it opens, and, if you go on to contribute, to keep the record of your permission. Nothing else.',
       },
       localPreferences: {
         lead: 'Local preferences:',
@@ -954,7 +957,7 @@ export const en = {
       },
       volunteers: {
         lead: 'Volunteer form answers:',
-        rest: ' until you ask us to remove them, or two years after our last contact with you, whichever comes first. A credit on the site stays until you ask us to remove it.',
+        rest: ' until you ask us to remove them, or two years after our last contact with you, whichever comes first. A credit on the site stays until you ask us to remove it. The record of your permission stays while we use your work, and after that only as long as reasonably necessary to establish, exercise or defend legal claims.',
       },
       bounced: {
         lead: 'Bounced or invalid emails:',
@@ -970,7 +973,7 @@ export const en = {
       intro:
         'Under the GDPR (and similar regulations), you have the right to ask us what we hold about you, correct it, export it, restrict how we use it, object to it, or delete it.',
       unsubscribe:
-        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist and the volunteer form, email us and we’ll remove you, and any credit on the site. We’ll do it manually for any of these.',
+        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist and the volunteer form, email us and we’ll remove you, and any credit on the site. If you contributed, we keep only the record of your permission, as described above. We’ll do it manually for any of these.',
       analytics: {
         before:
           'For analytics, the events are anonymous; we don’t have a way to look up “your” events because we don’t know who you are. If this bothers you, just decline the cookie banner, or use a content blocker. Nothing on the site breaks. You can change your answer any time with ',

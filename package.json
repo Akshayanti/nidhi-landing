@@ -24,8 +24,9 @@
     "render-thumbnails": "node scripts/render-thumbnails.mjs"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Akshay Aggarwal",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
   "description": "",
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",
