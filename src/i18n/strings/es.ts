@@ -49,6 +49,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Todas las herramientas gratuitas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
@@ -65,6 +66,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Ver todas las herramientas gratuitas',
     },
   },
@@ -85,6 +87,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Ver todas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
@@ -520,6 +523,13 @@ export const es: Dict = {
         title: 'Calculadora de inflación',
         desc: 'Mira qué compra una cantidad tras años de inflación, cuánto podría costar algo más adelante y si una subida salarial sigue el ritmo, con la historia anual de casi todos los países, del Banco Mundial.',
         itemName: 'Calculadora de inflación',
+      },
+      investOrPayOff: {
+        kicker: 'Deuda o inversión',
+        title: 'Calculadora: invertir o pagar deuda',
+        desc:
+          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un abanico de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
+        itemName: 'Calculadora: invertir o pagar deuda',
       },
     },
     how: {
@@ -1101,6 +1111,7 @@ export const es: Dict = {
       loanComparison: { name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
       monteCarlo: { name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
       inflation: { name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
+      investOrPayOff: { name: 'Invertir o pagar deuda', desc: 'Dos caminos, la misma fecha, descontada la inflación.' },
     },
   },
 

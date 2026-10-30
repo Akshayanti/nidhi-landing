@@ -55,6 +55,7 @@ export const hi: Dict = {
       loanComparison: 'लोन की तुलना',
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
       inflationCalculator: 'महँगाई कैलकुलेटर',
+      investOrPayOff: 'निवेश या कर्ज़ चुकाना',
       allTools: 'सभी मुफ़्त टूल',
       about: 'nidhi के बारे में',
       beliefs: 'मेरे सिद्धांत',
@@ -72,6 +73,7 @@ export const hi: Dict = {
       loanComparison: 'लोन की तुलना',
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
       inflationCalculator: 'महँगाई कैलकुलेटर',
+      investOrPayOff: 'निवेश या कर्ज़ चुकाना',
       allTools: 'सभी मुफ़्त टूल देखें',
     },
   },
@@ -92,6 +94,7 @@ export const hi: Dict = {
       loanComparison: 'लोन की तुलना',
       monteCarloSimulator: 'मोंटे कार्लो सिम्युलेटर',
       inflationCalculator: 'महँगाई कैलकुलेटर',
+      investOrPayOff: 'निवेश या कर्ज़ चुकाना',
       allTools: 'सभी देखें',
       about: 'nidhi के बारे में',
       beliefs: 'मेरे सिद्धांत',
@@ -555,6 +558,13 @@ export const hi: Dict = {
         title: 'महँगाई कैलकुलेटर',
         desc: 'देखें कि सालों की महँगाई के बाद किसी रकम से कितना ख़रीदा जा सकता है, कोई चीज़ आगे कितने की हो सकती है, और वेतन वृद्धि महँगाई के बराबर चल रही है या नहीं, World Bank से ज़्यादातर देशों के सालाना इतिहास के साथ।',
         itemName: 'महँगाई कैलकुलेटर',
+      },
+      investOrPayOff: {
+        kicker: 'कर्ज़ या निवेश',
+        title: 'निवेश या कर्ज़ चुकाना कैलकुलेटर',
+        desc:
+          'कर्ज़ जल्दी चुकाने और उतनी ही रकम हर महीने निवेश करने की तुलना, एक ही तारीख़ पर और आपके देश की महँगाई के बाद। दुनिया के शेयर बाज़ारों के इतिहास से नतीजों की एक रेंज, कोई एक मान लिया गया रिटर्न नहीं।',
+        itemName: 'निवेश या कर्ज़ चुकाना कैलकुलेटर',
       },
     },
     how: {
@@ -1193,6 +1203,7 @@ export const hi: Dict = {
       loanComparison: { name: 'लोन की तुलना', desc: 'उधार के प्रस्ताव, आमने-सामने।' },
       monteCarlo: { name: 'मोंटे कार्लो सिम्युलेटर', desc: 'एक रेखा नहीं, नतीजों की एक पूरी रेंज।' },
       inflation: { name: 'महँगाई कैलकुलेटर', desc: 'समय के साथ पैसे की क्रय शक्ति।' },
+      investOrPayOff: { name: 'निवेश या कर्ज़ चुकाना', desc: 'दो रास्ते, एक ही तारीख़, महँगाई के बाद।' },
     },
   },
 

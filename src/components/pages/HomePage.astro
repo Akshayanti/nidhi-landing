@@ -38,6 +38,7 @@ import { assertInclusiveGroups, INCLUSIVE_HUB, inclusiveHostLevels, inclusiveLin
 import { getPathPosts } from '../../utils/learnPosts';
 import { formatProseAmount, formatProsePercent } from '../../utils/shared/formatAmount.ts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
+import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release.ts';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -58,7 +59,9 @@ const allPosts = await getCollection('blog');
 assertHomepageSlugs(allPosts);
 
 const showMonteCarlo = await isMonteCarloReleased();
-const isToolLive = (href: string) => href !== MONTE_CARLO_URL || showMonteCarlo;
+const showInvestOrPayOff = await isInvestOrPayOffReleased();
+const isToolLive = (href: string) =>
+  (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
 const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
 const pairs = lessonToolPairs(allPosts, now, isToolLive);
 const counts = levelCounts(allPosts, now);

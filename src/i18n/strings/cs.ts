@@ -50,6 +50,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Všechny nástroje zdarma',
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
@@ -66,6 +67,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Zobrazit všechny nástroje zdarma',
     },
   },
@@ -86,6 +88,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Zobrazit vše',
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
@@ -490,6 +493,13 @@ export const cs: Dict = {
         title: 'Inflační kalkulačka',
         desc: 'Podívejte se, co si za částku koupíte po letech inflace, kolik může cena stát později a zda zvýšení platu drží krok, s ročními daty pro většinu zemí od Světové banky.',
         itemName: 'Inflační kalkulačka',
+      },
+      investOrPayOff: {
+        kicker: 'Dluh, nebo investice',
+        title: 'Kalkulačka: investovat, nebo splatit dluh',
+        desc:
+          'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
+        itemName: 'Kalkulačka: investovat, nebo splatit dluh',
       },
     },
     how: {
@@ -1055,6 +1065,7 @@ export const cs: Dict = {
       loanComparison: { name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
       inflation: { name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
+      investOrPayOff: { name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },
 

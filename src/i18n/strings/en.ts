@@ -82,6 +82,7 @@ export const en = {
       loanComparison: 'Loan comparison',
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
+      investOrPayOff: 'Invest or pay off',
       allTools: 'All free tools',
       about: 'About nidhi',
       beliefs: 'What I believe',
@@ -101,6 +102,7 @@ export const en = {
       loanComparison: 'Loan Comparison',
       monteCarloSimulator: 'Monte Carlo Simulator',
       inflationCalculator: 'Inflation Calculator',
+      investOrPayOff: 'Invest or Pay Off',
       allTools: 'View all free tools',
     },
   },
@@ -121,6 +123,7 @@ export const en = {
       loanComparison: 'Loan comparison',
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
+      investOrPayOff: 'Invest or pay off',
       allTools: 'View all',
       about: 'About nidhi',
       beliefs: 'What I believe',
@@ -626,6 +629,13 @@ export const en = {
         title: 'Inflation Calculator',
         desc: 'See what an amount buys after years of inflation, what a price may cost later, and whether a raise keeps up, with yearly history for most countries from the World Bank.',
         itemName: 'Inflation Calculator',
+      },
+      investOrPayOff: {
+        kicker: 'Debt or investing',
+        title: 'Invest or Pay Off Calculator',
+        desc:
+          'Compare paying a debt off early with investing the same money each month, on the same date and after your country\'s inflation. A range of outcomes from world stock history, not one assumed return.',
+        itemName: 'Invest or Pay Off Debt Calculator',
       },
     },
     how: {
@@ -1349,6 +1359,7 @@ export const en = {
       loanComparison: { name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
       monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
       inflation: { name: 'Inflation calculator', desc: 'What money buys, over the years.' },
+      investOrPayOff: { name: 'Invest or pay off', desc: 'Two paths, the same date, after inflation.' },
     },
   },
 
