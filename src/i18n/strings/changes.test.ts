@@ -7,8 +7,11 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { LOCALES } from '../config.ts';
-import { CHANGES, CHANGE_DAYS } from './changes.ts';
+import { CHANGES as DATED, CHANGE_DAYS, LAUNCH_ITEMS } from './changes.ts';
 
+// Launch items are held to every rule a dated item is; they only lack a date
+// until their release gate opens.
+const CHANGES = [...DATED, ...Object.values(LAUNCH_ITEMS).map((item) => ({ ...item, date: '' }))];
 const lines = (locale: (typeof LOCALES)[number]) => CHANGES.map((c, i) => ({ i, value: c.text[locale] }));
 
 describe("what's changed", () => {

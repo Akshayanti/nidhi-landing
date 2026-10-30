@@ -50,6 +50,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Všechny nástroje zdarma',
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
@@ -66,6 +67,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Zobrazit všechny nástroje zdarma',
     },
   },
@@ -86,6 +88,7 @@ export const cs: Dict = {
       loanComparison: 'Srovnání úvěrů',
       monteCarloSimulator: 'Simulátor Monte Carlo',
       inflationCalculator: 'Inflační kalkulačka',
+      investOrPayOff: 'Investovat, nebo splatit dluh',
       allTools: 'Zobrazit vše',
       about: 'O nidhi',
       beliefs: 'Čemu věřím',
@@ -491,6 +494,13 @@ export const cs: Dict = {
         desc: 'Podívejte se, co si za částku koupíte po letech inflace, kolik může cena stát později a zda zvýšení platu drží krok, s ročními daty pro většinu zemí od Světové banky.',
         itemName: 'Inflační kalkulačka',
       },
+      investOrPayOff: {
+        kicker: 'Dluh, nebo investice',
+        title: 'Kalkulačka: investovat, nebo splatit dluh',
+        desc:
+          'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
+        itemName: 'Kalkulačka: investovat, nebo splatit dluh',
+      },
     },
     how: {
       title: 'Jak tyto nástroje fungují',
@@ -588,6 +598,11 @@ export const cs: Dict = {
         before:
           'Anonymní události interakce v inflační kalkulačce: kterou otázku zvolíte (kupní síla později, cena později, z minulosti do dneška, drží krok), kterou měnu a historii které země vyberete, zda jako sazbu použijete průměr země, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. Výběr země načte její historii přímo z nidhi.today, nikdy ze Světové banky. ',
         strong: 'Částky, sazby a roky, které zadáte, se nikdy neposílají.',
+      },
+      investOrPayOff: {
+        before:
+          'Anonymní události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení, zda exportujete tabulku nebo PDF, zda formulář vynulujete a zda otevřete sdílené zobrazení, včetně zdroje kampaně. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
+        strong: 'Dluh, splátky, sazby, částky, poplatky a daně, které zadáte, se nikdy neposílají.',
       },
       campaigns: {
         before: 'Parametry kampaní (',
@@ -1055,6 +1070,7 @@ export const cs: Dict = {
       loanComparison: { name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
       inflation: { name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
+      investOrPayOff: { name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },
 

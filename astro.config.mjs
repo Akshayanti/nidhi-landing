@@ -204,6 +204,13 @@ const STATIC_PAGE_SOURCE = {
     // The page quotes the World Bank's update date, so new data is a new page.
     'src/data/inflation/worldbank.json',
   ],
+  'free/invest-or-pay-off': [
+    ':(literal)src/pages/free/invest-or-pay-off/[...path].astro',
+    'src/components/pages/InvestOrPayOffPage.astro',
+    'src/components/InvestOrPayOff.tsx',
+    'src/i18n/strings/tools/investOrPayOff.ts',
+    'src/data/inflation/worldbank.json',
+  ],
 };
 
 /**

@@ -20,6 +20,7 @@ import { loanComparisonCs, loanComparisonEn, loanComparisonEs, loanComparisonHi,
 import { multiCurrencyNetWorthCs, multiCurrencyNetWorthEn, multiCurrencyNetWorthEs, multiCurrencyNetWorthHi, multiCurrencyNetWorthMr } from './multiCurrencyNetWorth.ts';
 import { monteCarloCs, monteCarloEn, monteCarloEs, monteCarloHi, monteCarloMr } from './monteCarlo.ts';
 import { inflationCs, inflationEn, inflationEs, inflationHi, inflationMr } from './inflation.ts';
+import { investOrPayOffCs, investOrPayOffEn, investOrPayOffEs, investOrPayOffHi, investOrPayOffMr } from './investOrPayOff.ts';
 import { exportCs, exportEn, exportEs, exportHi, exportMr } from './export.ts';
 
 export const toolsEn = {
@@ -27,6 +28,7 @@ export const toolsEn = {
   multiCurrencyNetWorth: multiCurrencyNetWorthEn,
   monteCarlo: monteCarloEn,
   inflation: inflationEn,
+  investOrPayOff: investOrPayOffEn,
   export: exportEn,
 };
 
@@ -35,6 +37,7 @@ export const toolsHi = {
   multiCurrencyNetWorth: multiCurrencyNetWorthHi,
   monteCarlo: monteCarloHi,
   inflation: inflationHi,
+  investOrPayOff: investOrPayOffHi,
   export: exportHi,
 };
 
@@ -43,6 +46,7 @@ export const toolsEs = {
   multiCurrencyNetWorth: multiCurrencyNetWorthEs,
   monteCarlo: monteCarloEs,
   inflation: inflationEs,
+  investOrPayOff: investOrPayOffEs,
   export: exportEs,
 };
 
@@ -51,6 +55,7 @@ export const toolsCs = {
   multiCurrencyNetWorth: multiCurrencyNetWorthCs,
   monteCarlo: monteCarloCs,
   inflation: inflationCs,
+  investOrPayOff: investOrPayOffCs,
   export: exportCs,
 };
 
@@ -59,5 +64,6 @@ export const toolsMr = {
   multiCurrencyNetWorth: multiCurrencyNetWorthMr,
   monteCarlo: monteCarloMr,
   inflation: inflationMr,
+  investOrPayOff: investOrPayOffMr,
   export: exportMr,
 };

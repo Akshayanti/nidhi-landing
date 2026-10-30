@@ -136,12 +136,13 @@ export const GROWTH_TOPICS: GrowthTopicDef[] = [
  */
 export const TOOLS: Record<
   string,
-  { key: 'netWorth' | 'loanComparison' | 'monteCarlo' | 'inflation'; preview: 'donut' | 'bars' | 'fan' | 'rise' }
+  { key: 'netWorth' | 'loanComparison' | 'monteCarlo' | 'inflation' | 'investOrPayOff'; preview: 'donut' | 'bars' | 'fan' | 'rise' }
 > = {
   '/free/multi-currency-net-worth/': { key: 'netWorth', preview: 'donut' },
   '/free/loan-comparison/': { key: 'loanComparison', preview: 'bars' },
   '/free/monte-carlo-simulator/': { key: 'monteCarlo', preview: 'fan' },
   '/free/inflation-calculator/': { key: 'inflation', preview: 'rise' },
+  '/free/invest-or-pay-off/': { key: 'investOrPayOff', preview: 'bars' },
 };
 
 const withSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);

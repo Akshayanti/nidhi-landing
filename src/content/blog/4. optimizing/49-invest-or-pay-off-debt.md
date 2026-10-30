@@ -28,7 +28,7 @@ glossary:
   - term: "Avalanche method"
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
-pubDate: 2099-01-11
+pubDate: 2026-11-04
 updatedDate: "2026-10-25"
 localRules: [tax, pensions, borrowing]
 level: "optimizing"
@@ -47,10 +47,10 @@ faq:
   - question: "Isn't there a psychological benefit to paying off debt regardless of the math?"
     answer: "Yes, and it is worth respecting even when the math says otherwise. The [mental accounting post](/blog/mental-accounting/) covered how debt often carries emotional weight beyond its pure cash-flow cost: a mortgage that is technically low-rate can still feel like a burden that limits life choices. If paying off a low-rate debt aggressively gives you materially more risk tolerance in the rest of your life (able to take a lower-paying job you would love, able to weather income disruption, able to sleep well), that is a real benefit and can justify the expected-value cost. What helps is knowing what the arithmetic says first, so that any departure from it is a deliberate choice rather than a default. A costly pattern is paying down the debt that feels scariest while a more expensive one keeps compounding."
 relatedTool:
-  url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
-  cta: "See any loan’s APR and total cost, fees included"
-  idea: "Paying off a debt usually produces a certain saving close to its effective interest rate, after fees, tax relief and repayment charges; investing offers an uncertain return."
+  url: "/free/invest-or-pay-off"
+  label: "Invest or pay off calculator"
+  cta: "Compare both paths with your own debt, on the same date and after your country’s inflation"
+  idea: "Paying off a debt usually produces a certain saving close to its effective interest rate, after fees, tax relief and repayment charges; investing offers an uncertain return. The calculator shows how the two compared across thousands of simulated market histories."
 reelPromise: "Why many people take an employer match early, a seven-step default order for several debts, and the mental-accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
@@ -74,7 +74,7 @@ A common way to read the rate, in low-inflation economies:
 - **Below about 4%** (many mortgages): investing has usually come out ahead on expected value, though the average has bad decades inside it.
 - **Between 4 and 8%:** a judgement call, covered below.
 
-Where inflation is higher, mortgages at 8 to 9% can be normal and the bands move up; the comparison is made against local inflation and returns.
+Where inflation is higher, mortgages at 8 to 9% can be normal and the bands move up; the comparison is made against local inflation and returns. The free <a href="/free/invest-or-pay-off/" data-attr="post-inline-tool-invest-or-pay-off">invest or pay off calculator</a> runs this comparison with your own debt and your country's inflation.
 
 <figure>
 <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-debt-invest-title fig-debt-invest-desc">

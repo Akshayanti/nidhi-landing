@@ -22,6 +22,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { isMonteCarloReleased, monteCarloReleaseDate } from '../../utils/monte-carlo/release.ts';
+import { investOrPayOffReleaseDate, isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
 import { assertOneEntryPerDate, mergeByDate, type ChangelogEntry } from '../../utils/privacyChangelog.ts';
 import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 
@@ -77,6 +78,8 @@ const KEY = {
 // with the launch, not with the day the code was written.
 const showMonteCarlo = await isMonteCarloReleased();
 const monteCarloLaunch = await monteCarloReleaseDate();
+const showInvestOrPayOff = await isInvestOrPayOffReleased();
+const investOrPayOffLaunch = await investOrPayOffReleaseDate();
 
 type ChangelogGroup =
   | { kind: 'single'; entry: ChangelogEntry; open: boolean }
@@ -109,7 +112,7 @@ function groupChangelog(entries: ChangelogEntry[]): { first: ChangelogEntry | nu
 }
 
 // Entries that appear with a launch rather than on the day they were written.
-const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
+const monteCarloEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
     ? [
         {
           date: monteCarloLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
@@ -127,6 +130,31 @@ const launchEntries: ChangelogEntry[] = showMonteCarlo && monteCarloLaunch
         },
       ]
     : [];
+
+// The invest or pay off calculator launches with lesson 49
+// (src/utils/invest-or-pay-off/release.ts), so its entry is dated with that
+// launch and merged into that day's entry if the day has one.
+const investOrPayOffEntries: ChangelogEntry[] = showInvestOrPayOff && investOrPayOffLaunch
+    ? [
+        {
+          date: investOrPayOffLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
+          iso: investOrPayOffLaunch.toISOString().slice(0, 10),
+          material: true,
+          summary: 'New free tool: an invest or pay off calculator, in every language, linked from the lesson on whether to invest or pay off debt first. It sends fewer events than the other tools: none of them carries a choice you make, and clicks inside its form are not recorded even with cookie consent.',
+          details: [
+            'The calculator compares paying a debt off early with investing the same money, on the same date and after inflation, at /free/invest-or-pay-off/ and its Hindi, Spanish, Czech and Marathi editions. The whole comparison runs in your browser; the debt, payments, rates, amounts, fees and taxes you enter are not sent to us or anyone else.',
+            'New anonymous events, sent without cookie consent like the other tools\' events: free_invest_or_pay_off_calculated, once per page view when a comparison first shows, with no properties; free_invest_or_pay_off_share_copied; free_invest_or_pay_off_exported, with format "xlsx" or "pdf"; free_invest_or_pay_off_reset; and free_invest_or_pay_off_shared_view_opened, when you arrive from a shared link, with its utm_source. Unlike the other tools, no event says which country, currency, return setting or comparison date you picked, whether you entered tax relief or a tax on gains, or whether a note about your return appeared.',
+            'Click data, for visitors who accept the cookie banner: the calculator\'s form is marked so that PostHog does not record clicks inside it, and heatmaps, which record where a click lands, are paused on the page. Clicks on the result chart, the share and export buttons, and the links around the tool are recorded as on other pages. Reset still sends the anonymous reset event described above, but its click inside the form is not recorded.',
+            'New click labels, recorded only if you accept the cookie banner: free-invest-or-pay-off-share, free-invest-or-pay-off-export-xlsx, free-invest-or-pay-off-export-pdf, free-invest-or-pay-off-chart, free-invest-or-pay-off-lesson-link, related-invest-or-pay-off-debt, related-how-to-get-out-of-debt, tool-invest-or-pay-off (header), footer-invest-or-pay-off, free-cta-invest-or-pay-off (free tools page) and post-inline-tool-invest-or-pay-off (in the lesson).',
+            'Picking a country loads its yearly inflation from /data/inflation-history.json on nidhi.today, the same file the inflation calculator uses; your browser never contacts the World Bank. No new third party and no new storage key.',
+            'Like the other tools, it never writes your inputs into the page address. A share link carries them after the # sign, which browsers never send to a server, and the page moves them out of the address bar before analytics start; the share box says the link contains your numbers. The spreadsheet and PDF report work as on the other tools, and the file is named by the tool and the date only (nidhi-invest-or-pay-off-' + investOrPayOffLaunch.toISOString().slice(0, 10) + '.xlsx).',
+            'The page carries the planner waitlist box, the same form as on the other tools. The lesson Invest or Pay Off Debt First? links to the calculator, and the home page lists it with the other tools. The "What we collect, and when" section of this notice now says so.',
+          ],
+        },
+      ]
+    : [];
+
+const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOffEntries];
 
 /**
  * The notice's changelog. Newest first, one entry per date.
@@ -690,6 +718,11 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>
           {collect.inflation.before}<strong>{collect.inflation.strong}</strong>
         </li>
+        {showInvestOrPayOff && (
+          <li>
+            {collect.investOrPayOff.before}<strong>{collect.investOrPayOff.strong}</strong>
+          </li>
+        )}
         <li>
           {collect.campaigns.before}<code>{KEY.utmSource}</code>{collect.campaigns.middle}<code>{KEY.utmMedium}</code>{collect.campaigns.after}
         </li>

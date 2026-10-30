@@ -4,6 +4,7 @@ import LangPicker from './LangPicker.astro';
 import LogoMark from './LogoMark.astro';
 import { DEFAULT_LOCALE, LOCALES, dict, localePrefix, stripLocale, type Locale } from '../i18n';
 import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
+import { isInvestOrPayOffReleased } from '../utils/invest-or-pay-off/release.ts';
 import { DESKTOP_DROPDOWNS, navGroups, navHref, navLabel, type NavGroup, type NavLink } from './nav.ts';
 
 interface Props {
@@ -30,7 +31,8 @@ const { locale = DEFAULT_LOCALE, alternates = [locale], toolStateGlobal = '' } =
 const strings = dict(locale);
 const currentPath = Astro.url.pathname;
 const showMonteCarlo = await isMonteCarloReleased();
-const groups = navGroups({ showMonteCarlo });
+const showInvestOrPayOff = await isInvestOrPayOffReleased();
+const groups = navGroups({ showMonteCarlo, showInvestOrPayOff });
 
 // The desktop nav's two dropdowns, in the desktop nav's order.
 const dropdowns = DESKTOP_DROPDOWNS.map((key) => groups.find((group) => group.key === key)).filter(

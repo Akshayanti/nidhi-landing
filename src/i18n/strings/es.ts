@@ -49,6 +49,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Todas las herramientas gratuitas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
@@ -65,6 +66,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Ver todas las herramientas gratuitas',
     },
   },
@@ -85,6 +87,7 @@ export const es: Dict = {
       loanComparison: 'Comparador de préstamos',
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
+      investOrPayOff: 'Invertir o pagar deuda',
       allTools: 'Ver todas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
@@ -521,6 +524,13 @@ export const es: Dict = {
         desc: 'Mira qué compra una cantidad tras años de inflación, cuánto podría costar algo más adelante y si una subida salarial sigue el ritmo, con la historia anual de casi todos los países, del Banco Mundial.',
         itemName: 'Calculadora de inflación',
       },
+      investOrPayOff: {
+        kicker: 'Deuda o inversión',
+        title: 'Calculadora: invertir o pagar deuda',
+        desc:
+          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un abanico de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
+        itemName: 'Calculadora: invertir o pagar deuda',
+      },
     },
     how: {
       title: 'Cómo funcionan estas herramientas',
@@ -622,6 +632,11 @@ export const es: Dict = {
         before:
           'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
+      },
+      investOrPayOff: {
+        before:
+          'Eventos anónimos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
       },
       campaigns: {
         before: 'Parámetros de campaña (',
@@ -1101,6 +1116,7 @@ export const es: Dict = {
       loanComparison: { name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
       monteCarlo: { name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
       inflation: { name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
+      investOrPayOff: { name: 'Invertir o pagar deuda', desc: 'Dos caminos, la misma fecha, descontada la inflación.' },
     },
   },
 

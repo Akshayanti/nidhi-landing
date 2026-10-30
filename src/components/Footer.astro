@@ -2,6 +2,7 @@
 import LogoMark from './LogoMark.astro';
 import { DEFAULT_LOCALE, dict, format, type Locale } from '../i18n';
 import { isMonteCarloReleased } from '../utils/monte-carlo/release.ts';
+import { isInvestOrPayOffReleased } from '../utils/invest-or-pay-off/release.ts';
 import { navHref } from './nav.ts';
 
 interface Props {
@@ -12,6 +13,7 @@ const { locale = DEFAULT_LOCALE } = Astro.props;
 const strings = dict(locale);
 const year = new Date().getFullYear();
 const showMonteCarlo = await isMonteCarloReleased();
+const showInvestOrPayOff = await isInvestOrPayOffReleased();
 const href = (path: string) => navHref(locale, path);
 
 ---
@@ -39,6 +41,7 @@ const href = (path: string) => navHref(locale, path);
           <a href={href('/free/loan-comparison/')} data-attr="footer-loan-comparison">{strings.footer.links.loanComparison}</a>
           {showMonteCarlo && <a href={href('/free/monte-carlo-simulator/')} data-attr="footer-monte-carlo-simulator">{strings.footer.links.monteCarloSimulator}</a>}
           <a href={href('/free/inflation-calculator/')} data-attr="footer-inflation-calculator">{strings.footer.links.inflationCalculator}</a>
+          {showInvestOrPayOff && <a href={href('/free/invest-or-pay-off/')} data-attr="footer-invest-or-pay-off">{strings.footer.links.investOrPayOff}</a>}
           <a href={href('/free/')} data-attr="footer-all-tools">{strings.footer.links.allTools}</a>
         </div>
         <div class="footer-col">

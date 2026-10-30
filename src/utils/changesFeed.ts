@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import { LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
-import { CHANGES } from '../i18n/strings/changes.ts';
+import { liveChanges } from './liveChanges.ts';
 
 /**
  * The "What's changed" lines as an RSS feed, one per language, so someone can
@@ -9,8 +9,9 @@ import { CHANGES } from '../i18n/strings/changes.ts';
  * that link, built from the entry's permanent id, is also the item's guid.
  * Like the lesson feed, a feed file loads no analytics.
  */
-export function changesFeed(locale: Locale, site: URL) {
+export async function changesFeed(locale: Locale, site: URL) {
   const { changes } = dict(locale);
+  const items = await liveChanges();
   const page = localizedPath(locale, '/changes/');
   return rss({
     title: changes.feedTitle,
@@ -18,7 +19,7 @@ export function changesFeed(locale: Locale, site: URL) {
     site,
     // The links end in #<id>; a slash after it would break the anchor.
     trailingSlash: false,
-    items: CHANGES.map((c) => ({
+    items: items.map((c) => ({
       title: c.text[locale],
       pubDate: new Date(`${c.date}T00:00:00Z`),
       link: `${page}#${c.id}`,

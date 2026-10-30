@@ -28,7 +28,7 @@ glossary:
   - term: "Cash-out refinance"
     definition: "A new loan larger than the old balance, with the difference paid to you, which extracts home equity rather than saving interest."
 order: 50
-pubDate: 2099-01-12
+pubDate: 2026-11-06
 updatedDate: "2026-10-25"
 localRules: [borrowing, tax]
 level: "optimizing"
@@ -60,18 +60,22 @@ referentialReading:
     type: "blog"
 ---
 
-Eva, 31, could [refinance](#term-refinancing) her mortgage. It would cost about €4,000 and lower her payment by €200 a month. She might move in two years, and rates might fall further. Both facts change the answer more than the new rate does.
+Eva, 31, could [refinance](#term-refinancing) her mortgage, which means swapping it for a new loan at a lower rate. Switching costs about €4,000 up front in [closing costs](#term-closing-costs). After that, her payment drops by €200 a month.
+
+The question is whether she keeps the new loan long enough to win that €4,000 back. She might move in two years. Rates might also fall further.
 
 The [understanding loan terms post](/blog/understanding-loan-terms/) covered how to compare loan offers. This post takes a loan you already have and asks when replacing it pays.
 
 ## A refinance pays only after its break-even month
 
-When the old and new loans have the same remaining term and a comparable balance path, dividing the [closing costs](#term-closing-costs) by the monthly saving estimates the [break-even month](#term-break-even-month). On that assumption, Eva's €4,000 ÷ €200 is month 20. If she keeps the loan five years (60 months), the simple estimate is 40 months of savings after break-even, about €8,000 ahead; if she sells after two years (24 months), 4 months, €800 back on a €4,000 outlay. If a refinance changes the term or how fast the principal is repaid, the two remaining balances need comparing as well as the payments.
+Think of the €4,000 as a hole Eva starts in. Each month, the lower payment fills it by €200. After 20 months it is filled: that is her [break-even month](#term-break-even-month). From then on, every month leaves her €200 ahead.
+
+The quick sum is costs ÷ monthly saving. For Eva, €4,000 ÷ €200 = 20 months.
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-breakeven-title fig-breakeven-desc">
   <title id="fig-breakeven-title">Break-even and net savings over hold period</title>
-  <desc id="fig-breakeven-desc">A rising line showing cumulative interest savings from a refinance over 60 months. The line starts at negative €4,000 (closing costs paid upfront), then rises at €200 per month. At month 20 it crosses zero (the break-even point). At month 60 it reaches €8,000 of net savings. The break-even month and the final savings are labelled.</desc>
+  <desc id="fig-breakeven-desc">A rising line showing cumulative net savings from a refinance over 60 months. The line starts at negative €4,000 (closing costs paid upfront), then rises at €200 per month. At month 20 it crosses zero (the break-even point). At month 60 it reaches €8,000 of net savings. The break-even month and the final savings are labelled.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">Cumulative net savings from a refinance</text>
   <text class="fig-subtitle" x="360" y="68" text-anchor="middle">€4,000 closing costs, €200 monthly savings. Illustrative.</text>
   <line x1="80" y1="230" x2="680" y2="230" class="fig-stroke-muted" />
@@ -89,9 +93,13 @@ When the old and new loans have the same remaining term and a comparable balance
 <figcaption>Illustrative net-savings trajectory. Below the horizontal axis means you have not yet recouped closing costs; above means you are in net savings. Break-even is the crossing point.</figcaption>
 </figure>
 
-What decides a refinance is the other side of the comparison: the [hold period](#term-hold-period), how long you will really keep the loan, including a sale, an early payoff or another refinance. Because people tend to overestimate it, a common guideline is a hold period of about twice the break-even or more. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> sets your current loan against a refinanced one and shows the break-even month.
+So what decides it is how long she keeps the new loan: her [hold period](#term-hold-period), from the switch until she sells, pays it off or refinances again. People often keep a loan for less time than they expect, so a common rule of thumb is a hold period of at least twice the break-even month. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> sets a current loan against a refinanced one and shows the break-even month.
 
-Three inputs matter. **All the costs:** valuation, legal and title fees, lender fees, points, and any [early repayment charge](#term-early-repayment-charge) on the old loan (in the US, closing costs often run 2 to 5% of the loan; elsewhere they vary widely). **The real saving:** a refinance that stretches 22 remaining years into a new 30-year loan lowers the payment but can raise the total interest. **An honest hold period.**
+The estimate is only as good as what goes into it:
+
+- **All the costs,** not just the lender's fee: valuation, legal and title fees, any points paid up front for a lower rate, and any [early repayment charge](#term-early-repayment-charge) for leaving the old loan. In the US they often run 2 to 5% of the loan; elsewhere they vary widely.
+- **The real saving.** If the new loan runs longer than what is left on the old one, part of the lower payment comes from paying for more years, and the total interest can go up. The quick estimate fits when both loans end around the same time; otherwise, compare what would still be owed on each as well.
+- **An honest hold period.**
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: break-even is month 20 and Eva expects to keep the loan 24 months. Is that a comfortable margin?</summary>

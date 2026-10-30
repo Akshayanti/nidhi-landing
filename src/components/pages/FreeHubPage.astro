@@ -20,6 +20,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { INFLATION_URL } from '../../utils/inflation/history.ts';
+import { INVEST_OR_PAY_OFF_URL, isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
 import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
@@ -73,6 +74,17 @@ const specs: ToolSpec[] = [
     preview: 'rise',
     dataAttr: 'free-cta-inflation-calculator',
   },
+  // Joins the list with lesson 49 (src/utils/invest-or-pay-off/release.ts).
+  ...((await isInvestOrPayOffReleased())
+    ? [
+        {
+          key: 'investOrPayOff' as const,
+          url: localizedPath(locale, INVEST_OR_PAY_OFF_URL),
+          preview: 'bars' as const,
+          dataAttr: 'free-cta-invest-or-pay-off',
+        },
+      ]
+    : []),
 ];
 
 const tools = specs.map((spec) => ({ ...spec, ...hub.tools[spec.key] }));
