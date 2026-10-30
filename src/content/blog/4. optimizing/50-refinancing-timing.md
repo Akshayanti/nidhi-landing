@@ -51,7 +51,7 @@ relatedTool:
   label: "Loan comparison calculator"
   cta: "Compare keeping your loan against refinancing, with the break-even month"
   idea: "A refinance tends to pay when the break-even on closing costs falls well inside how long you keep the loan."
-reelPromise: "The break-even calculation that beats rules of thumb, why waiting for lower rates is a bet against the market, and the student-loan refi trap that trades protection for a small rate cut"
+reelPromise: "The break even calculation that beats rules of thumb, why waiting for lower rates is a bet against the market, and the student loan refi trap that trades protection for a small rate cut"
 relatedSlugs: ["understanding-loan-terms", "invest-or-pay-off-debt", "how-to-get-out-of-debt", "liabilities", "cash-flow-forecasting"]
 referentialReading:
   - title: "Refinancing"
