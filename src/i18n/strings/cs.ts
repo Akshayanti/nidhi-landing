@@ -498,7 +498,7 @@ export const cs: Dict = {
         kicker: 'Dluh, nebo investice',
         title: 'Kalkulačka: investovat, nebo splatit dluh',
         desc:
-          'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
+          'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
         itemName: 'Kalkulačka: investovat, nebo splatit dluh',
       },
     },
@@ -1065,7 +1065,7 @@ export const cs: Dict = {
       loanComparison: { name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
       inflation: { name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
-      investOrPayOff: { name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
+      investOrPayOff: { name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },
 

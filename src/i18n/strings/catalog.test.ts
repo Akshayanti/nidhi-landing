@@ -181,6 +181,7 @@ const IDENTICAL_OK_ES = new Set<string>([
   'tools.multiCurrencyNetWorth.island.currencies.EUR',
   'tools.monteCarlo.island.currencies.EUR',
   'tools.inflation.island.currencies.EUR',
+  'tools.investOrPayOff.island.currencies.EUR',
 ]);
 
 describe('the Spanish catalog is translated, not copied', () => {
@@ -217,6 +218,7 @@ const IDENTICAL_OK_CS = new Set<string>([
   'tools.multiCurrencyNetWorth.island.currencies.EUR',
   'tools.monteCarlo.island.currencies.EUR',
   'tools.inflation.island.currencies.EUR',
+  'tools.investOrPayOff.island.currencies.EUR',
   // "Newsletter" is the everyday Czech word (docs/i18n/cs-glossary.md).
   'privacy.why.newsletter.lead',
   // FIRE is kept as the English acronym and glossed where it is introduced.
