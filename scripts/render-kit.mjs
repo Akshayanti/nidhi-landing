@@ -1145,6 +1145,57 @@ function storyHtml(kit, frame) {
     <div class="story-foot">${rich(frame.foot || 'Read the full post · link below')}</div></div>`);
 }
 
+// Reels only (owner, Oct 28 and 30, 2026): each day is the reel and its tool
+// card story, both scheduled on Instagram and Facebook; day 2 adds the
+// "beyond this post" story with its blog link on both (Instagram through a
+// link sticker in the story media editor). No carousel, no poll or poll
+// result. The one manual step is sharing the reel to Stories. Times follow the
+// timing plan: day 1 is a Europe day, day 2 an India day (IST after European
+// summer time ends).
+function reelsOnlySheet(kit, frames) {
+  const lines = [`POSTING SHEET (reels only): ${kit.frontmatter.title}`, `Blog: ${kit.frontmatter.blog_url}`, ''];
+  for (const day of kit.days.filter(d => d.reel)) {
+    const reel = day.reel;
+    const dayFrames = frames.filter(x => x.day === day.n);
+    const share = dayFrames.find(f => f.share);
+    const tool = dayFrames.find(f => f.kind === 'tool');
+    const extra = dayFrames.find(f => f.kind === 'extra');
+    lines.push(
+      `DAY ${day.n}: ${day.angle.angle}`,
+      `  Tool to keep: ${day.angle.tool}`,
+      '',
+      `  REEL (schedule on Instagram and Facebook at ${day.n === 1 ? '07:45 Europe, 12:15 IST' : '08:45 IST'}; turn on "Share to Facebook Story")`,
+      `    Video: ${reel.video}`,
+      `    Cover: ${reel.cover}`,
+      `    Caption: ${reel.caption}`,
+      `    Hashtags: ${reel.hashtags}`,
+      `    To render again: ${reel.render}`,
+      '',
+      '  STORIES',
+    );
+    if (share) lines.push(
+      '    Reel share (yours, by hand, the moment the reel is live)',
+      `      Share: ${share.share} (tap to post sticker)`,
+      ...(share.overlay ? [`      Overlay text: ${share.overlay}`] : []),
+      ...(share.caption ? [`      Caption field: ${share.caption}`] : []),
+    );
+    if (tool) lines.push(
+      `    Tool card (schedule on Instagram and Facebook at ${day.n === 1 ? '13:30 Europe, 18:00 IST' : '14:15 IST'})`,
+      `      Image: stories/${tool.id}-${tool.kind}.png`,
+      `      Alt text: ${tool.alt}`,
+      ...(tool.caption ? [`      Caption field: ${tool.caption}`] : []),
+    );
+    if (extra) lines.push(
+      '    Beyond this post (schedule at 19:00 IST on Instagram and Facebook, each with a link to the blog post: on Instagram a link sticker below "Read the full post", through the story media Edit > More stickers > Link)',
+      `      Image: stories/${extra.id}-${extra.kind}.png`,
+      `      Alt text: ${extra.alt}`,
+      ...(extra.caption ? [`      Caption field: ${extra.caption}`] : []),
+    );
+    lines.push('', ...firstHour(true, false), '');
+  }
+  return lines.join('\n');
+}
+
 function postingSheet(kit, frames) {
   const lines = [`POSTING SHEET: ${kit.frontmatter.title}`, `Blog: ${kit.frontmatter.blog_url}`, ''];
   for (const day of kit.days) {
@@ -1198,7 +1249,7 @@ function firstHour(hasReel, hasCarousel = true) {
   const first = hasReel ? 'the reel' : 'the post';
   return [
     '  FIRST HOUR',
-    `    [ ] Story frame 1 goes up the moment ${first} is live.`,
+    `    [ ] Share ${first} to your story the moment it is live.`,
     `    [ ] Send ${first} to 3 to 5 real people it would help (friends, colleagues, an expat group you are in); ask them to watch it through, and save or send it if it is useful.`,
     '    [ ] Reply to every comment within the hour.',
     ...(hasReel && hasCarousel ? ['    [ ] When the carousel goes up later in the day: same story share and comment replies.'] : []),
@@ -1280,6 +1331,7 @@ async function findMarkdownFiles(dir, base = dir) {
 async function main() {
   const args = process.argv.slice(2);
   const lintOnly = args.includes('--lint');
+  const reelsOnly = args.includes('--reels-only');
   const target = args.find(a => !a.startsWith('--'));
   const files = target ? [target] : await findMarkdownFiles(SOURCE_DIR);
 
@@ -1312,7 +1364,7 @@ async function main() {
     };
     for (const kit of kits) {
       const outDir = join(OUTPUT_DIR, kit.subDir, kit.slug);
-      for (const day of kit.days) {
+      for (const day of reelsOnly ? [] : kit.days) {
         const deckDir = join(outDir, `day${day.n}`, 'carousel');
         for (const slide of day.deck.slides) {
           const path = await open(slideHtml(kit, day.deck, slide), join(deckDir, `slide-${String(slide.number).padStart(2, '0')}.png`), H);
@@ -1324,14 +1376,15 @@ async function main() {
       }
 
       const frames = storyFrames(kit);
-      for (const frame of frames.filter(f => f.kind)) {
+      const rendered = frames.filter(f => f.kind && !(reelsOnly && (f.kind === 'poll' || f.kind === 'result')));
+      for (const frame of rendered) {
         const path = await open(storyHtml(kit, frame), join(outDir, 'stories', `${frame.id}-${frame.kind}.png`), SH);
         for (const p of await chromeOverlaps(browserPage)) layoutErrors.push(`${kit.relPath} story ${frame.id}: ${p}`);
         await browserPage.screenshot({ path });
       }
-      await writeFile(join(outDir, 'posting-sheet.txt'), postingSheet(kit, frames), 'utf8');
-      const slides = kit.days.reduce((n, d) => n + d.deck.slides.length, 0);
-      console.log(`Rendered ${slides} slides and ${frames.filter(f => f.kind).length} story frames: ${relative(ROOT, outDir)}`);
+      await writeFile(join(outDir, 'posting-sheet.txt'), reelsOnly ? reelsOnlySheet(kit, frames) : postingSheet(kit, frames), 'utf8');
+      const slides = reelsOnly ? 0 : kit.days.reduce((n, d) => n + d.deck.slides.length, 0);
+      console.log(`Rendered ${slides} slides and ${rendered.length} story frames: ${relative(ROOT, outDir)}`);
     }
   } finally {
     await browser.close();

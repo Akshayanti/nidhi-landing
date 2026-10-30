@@ -9,7 +9,7 @@
   "mode": "riff",
   "mood": "curious",
   "topic": "An employer match can be a 100% return on the matched euros",
-  "topicChip": "THE MATCH",
+  "topicChip": "PAY OFF OR INVEST · PART 2",
   "assumptions": {
     "currency": "EUR",
     "notes": "Employer match of up to 100% on contributions up to a cap (common in US 401(k) style plans; elsewhere employer contributions may be fixed by law or absent). Card 22%. Investing about 7% a year before inflation, long run average for diversified equities, not guaranteed (blog: 6 to 8%). Mortgage 3.4%, about 2.6% effective after partial tax relief where it exists, per the blog's worked example; relief varies by country."
@@ -19,17 +19,17 @@
     "proportional": true,
     "setup": {
       "label": "Where a euro can go",
-      "display": "Four returns",
-      "note": "Matched euros, a card, investing, a mortgage",
+      "display": "Three returns",
+      "note": "Matched euros, a card, investing",
       "tone": "ink"
     },
     "unit": "%",
-    "basis": "Illustrative returns; only the match is immediate",
+    "basis": "Illustrative; matches, vesting and caps vary",
     "bars": [
       {
         "id": "match",
         "label": "Employer match",
-        "sublabel": "on matched euros, at once",
+        "sublabel": "euro for euro, up to a cap",
         "value": 100,
         "display": "up to 100%",
         "tone": "teal"
@@ -37,9 +37,9 @@
       {
         "id": "card",
         "label": "Card",
-        "sublabel": "interest avoided",
+        "sublabel": "interest a year",
         "value": 22,
-        "display": "22%",
+        "display": "22% a year",
         "tone": "amber"
       },
       {
@@ -47,28 +47,20 @@
         "label": "Investing",
         "sublabel": "expected, not guaranteed",
         "value": 7,
-        "display": "about 7%",
+        "display": "returns vary",
         "tone": "ink"
-      },
-      {
-        "id": "mortgage",
-        "label": "Mortgage",
-        "sublabel": "after partial tax relief, where it exists",
-        "value": 2.6,
-        "display": "2.6%",
-        "tone": "muted"
       }
     ],
-    "disclosure": "Illustrative. Matches, vesting and tax relief differ by employer and country."
+    "disclosure": "Illustrative. Matches and vesting differ by employer and country."
   },
   "hookVariants": [
     {
       "id": "hundred-day-one",
       "layout": "bar-gap",
-      "narration": "Can any benefit add a hundred percent on day one? Some employer matches can.",
+      "narration": "Part two: the exception to the rate check, an employer match. Some employers match every euro you put in.",
       "onscreenLines": [
-        "Can any benefit add 100% on day one?",
-        "Some employer matches can",
+        "Part 2: the rate check's exception",
+        "A euro for every euro",
         ""
       ],
       "anchor": {
@@ -87,7 +79,7 @@
       "kind": "example",
       "narration": "A match can add up to one euro for every euro you put in, up to a cap.",
       "onscreenText": "Match: up to 100%",
-      "subtext": "On the matched euros, at once",
+      "subtext": "Credited, not always yours yet",
       "emphasis": [],
       "anchor": {
         "type": "bars",
@@ -97,56 +89,44 @@
     {
       "id": "b2",
       "kind": "comparison",
-      "narration": "That is above a twenty two percent card, and above the seven percent or so investing has averaged.",
-      "onscreenText": "Above a 22% card",
-      "subtext": "And about 7% a year from investing",
+      "narration": "Kept, a euro for euro match can outweigh a year of twenty two percent card interest. Investing returns vary.",
+      "onscreenText": "Can outweigh the card",
+      "subtext": "If you keep the match",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second"
+        "stage": "third"
       }
     },
     {
       "id": "b3",
       "kind": "warning",
-      "narration": "Where it breaks: matched money is often locked until retirement, and some matches vest only after years.",
+      "narration": "Where it breaks: the money is often locked, matches can take years to vest, and only euros up to the cap count.",
       "onscreenText": "Where it breaks",
-      "subtext": "Locked money, vesting, country rules",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "definition",
-      "narration": "The match check: capturing all of it, vesting, and access to the money.",
-      "onscreenText": "The match check",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The match check",
+        "title": "Where it breaks",
         "rows": [
           {
-            "label": "Capture",
-            "value": "Up to the cap?",
+            "label": "Access",
+            "value": "Often locked",
             "valueSize": "small",
-            "tone": "teal"
+            "tone": "ink"
           },
           {
             "label": "Vesting",
-            "value": "When?",
+            "value": "Can take years",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Access",
-            "value": "Locked until?",
+            "label": "Cap",
+            "value": "Only up to it",
             "valueSize": "small",
-            "tone": "ink"
+            "tone": "teal"
           }
         ],
         "footnote": "Plans differ by employer and country. Illustrative."
@@ -161,8 +141,8 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Can any benefit add 100% on day one? Some employer matches can.\n\nA match can add up to €1 per €1, up to a cap. That is above a 22% card and above the roughly 7% a year investing has averaged. Matched money is often locked until retirement.\n\n→ Know someone skipping their match to pay off a card first? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Matches, vesting and tax relief differ by employer and country; many countries use fixed employer contributions instead.",
-    "tiktok": "Can anything add 100% on day one? Some employer matches can. Illustrative."
+    "instagram": "Can any benefit add 100% on day one? Some employer matches can.\n\nSome employers add up to €1 for every €1 you put in, up to a cap. If you keep the match, that can outweigh a year of 22% card interest; investing returns vary. Matched money is often locked until retirement, and some matches vest only after years.\n\n→ Know someone skipping their match to pay off a card first? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Matches, vesting and tax relief differ by employer and country; many countries use fixed employer contributions instead. Not financial advice.",
+    "tiktok": "One exception to check before paying a card: an employer match. If you keep it, euro for euro can outweigh a year of card interest. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",

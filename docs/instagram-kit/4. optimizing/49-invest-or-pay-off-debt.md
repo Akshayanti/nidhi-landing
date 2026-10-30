@@ -8,7 +8,7 @@ hashtags_day2: "#workplacepension #401k #expatfinance #retirementsavings #nidhi"
 keywords_day2: "employer match, pension match, matched contributions, company pension, vesting, auto enrolment, retirement plan, free money, pay off credit card, invest or pay off debt, salary sacrifice, personal finance, global expats, Arbeitgeberzuschuss, betriebliche Altersvorsorge, abondement employeur, épargne retraite, aportación empresa, plan de pensiones"
 ---
 
-> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council). Day 1 reel re-rendered at 34.8 s (tool line trimmed, council signed off); day 2 unchanged at 35.0 s. Lesson global pass done (Japan, Brazil, Kenya). Brazil rate checked Oct 25 against the Banco Central series (444.9% a year, Aug 2026). Remove this note once scheduled.
+> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council). Day 1 reel re-rendered at 34.8 s (tool line trimmed, council signed off); day 2 unchanged at 35.0 s. Lesson global pass done (Japan, Brazil, Kenya). Brazil rate checked Oct 25 against the Banco Central series (444.9% a year, Aug 2026). Remove this note once scheduled. Oct 30, 2026: both reels re-rendered from their plans so the caption's free tool line names the invest or pay off calculator, which launches with this lesson on Nov 4 (visuals unchanged: the end cards are send cards).
 
 ## Brief
 
@@ -18,12 +18,12 @@ withheld: The seven step default order for several debts, how tax relief lowers 
 
 ## Day 1 (angle)
 
-angle: The size of a debt does not set its cost; the rate does
+angle: Paying off a debt earns its rate for certain; investing earns more on average, not for sure
 breadth: narrow | Needs a loan condition: a viewer carrying both a mortgage and a card balance
-number: €500 extra avoids about €17 of interest in a year on a 3.4% mortgage, about €110 on a 22% card
-takeaway: Each euro of payoff earns the debt's rate, so the small card can be the expensive one.
+number: none in the reel beyond a 22% card; the caption names a 3.4% mortgage
+takeaway: The debt's rate against what investing might earn decides it; the rate check card gives the common bands.
 tool: The rate check. Above about 8 to 10% after tax, debt often comes first; 4 to 8% is a judgement call; below about 4%, investing often comes out ahead on expected value.
-send_to: A friend overpaying their mortgage while a card balance revolves.
+send_to: A friend weighing extra debt payments against investing.
 send_why: myth
 
 ## Day 1 (reel)
