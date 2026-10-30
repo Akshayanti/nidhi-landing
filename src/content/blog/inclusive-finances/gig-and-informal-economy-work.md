@@ -53,7 +53,7 @@ faq:
     answer: "Then the missing piece is evidence. Landlords, lenders, and visa offices all ask for proof of income, and cash leaves none unless you create it. A common approach is a simple dated log of what you were paid and by whom, deposits into an account where that is possible so there is a bank record, and any receipts or messages confirming payment. A consistent twelve-month record you made yourself is far more useful than no record."
   - question: "Do I have to pay tax during the year if nobody withholds it?"
     answer: "In most countries, yes. Where an employer would have withheld tax from each payslip, a self-employed person usually pays in instalments during the year or in a lump after it ends. The schedule and the amounts are set by local rules. The planning point travels better than the legal timing: part of each payment may eventually be due in tax, so many self-employed people set aside an estimated share as soon as the money arrives. Treating gross income as spendable is a common way freelancers end up with a bill they cannot pay."
-reelPromise: "A twelve-month worked example of paying yourself a steady salary from uneven income, and the full list of what an employer was quietly paying for"
+reelPromise: "A twelve month worked example of paying yourself a steady salary from uneven income, and the full list of what an employer was quietly paying for"
 relatedSlugs: ["growing-your-income", "cash-flow-forecasting", "emergency-fund", "tax-advantaged-accounts"]
 referentialReading:
   - title: "The Financial Diaries: How American Families Cope in a World of Uncertainty"
