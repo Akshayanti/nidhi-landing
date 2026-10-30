@@ -172,6 +172,17 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Oct 30, 2026',
+    iso: '2026-10-30',
+    material: true,
+    summary: 'Volunteers who go on to contribute are now asked by email for written permission to publish their work, and their reply is kept as the record of it. This notice now says what the record holds, how long it stays, and that it is the one thing kept after a removal request.',
+    details: [
+      'Before a first contribution, an accepted volunteer gets a short agreement by email and replies with their full legal name, the date and "I agree". This happens by email only: the volunteer form and what it collects are unchanged.',
+      'The record is that reply: legal name, email address, the wording accepted and the date. It stays in our Google Workspace email, it is never published, and it is used only to show that permission was given.',
+      'Retention: the record stays while we use the volunteer\'s work, and after that only as long as reasonably necessary to establish, exercise or defend legal claims. This is an exception to the volunteer form\'s two-year period and to removal on request, for people who contributed. The form answers and any credit are still removed as before.',
+    ],
+  },
+  {
     date: 'Oct 29, 2026',
     iso: '2026-10-29',
     material: true,
@@ -763,6 +774,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>{volunteersNotice.answers}</li>
         <li>{volunteersNotice.consent}</li>
         <li>{volunteersNotice.credit}</li>
+        <li>{volunteersNotice.agreement}</li>
         <li>{volunteersNotice.followUp}</li>
         <li>{volunteersNotice.google}</li>
       </ul>

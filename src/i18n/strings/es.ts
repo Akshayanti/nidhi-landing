@@ -97,6 +97,7 @@ export const es: Dict = {
       changes: 'Qué ha cambiado',
       privacy: 'Privacidad',
       cookieSettings: 'Configuración de cookies',
+      thirdParty: 'Licencias de terceros',
     },
     disclaimerShort:
       'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un profesional acreditado de las finanzas.',
@@ -680,6 +681,8 @@ export const es: Dict = {
         'Tu consentimiento para que te contactemos por correo electrónico sobre la traducción, si además pediste que te invitemos a la beta del planificador (una opción aparte y opcional) y la hora a la que enviaste el formulario.',
       credit:
         'Si pides crédito, el nombre que nos diste puede aparecer en el sitio, junto a las demás personas que ayudaron con ese idioma. Puedes cambiarlo o pedir que lo quitemos en cualquier momento.',
+      agreement:
+        'Si luego colaboras, te pedimos por correo permiso para publicar tu trabajo. Tu respuesta es el registro de ese permiso: tu nombre legal, tu dirección de correo, el texto que aceptaste y la fecha. Se queda en nuestro correo de Google Workspace, nunca lo publicamos y lo usamos solo para demostrar que diste el permiso.',
       followUp:
         'En esa hoja privada también anotamos el estado del seguimiento y la fecha de nuestro último contacto contigo, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
       google:
@@ -732,7 +735,7 @@ export const es: Dict = {
       },
       volunteers: {
         lead: 'Voluntariado:',
-        rest: ' para entender qué idiomas hablas, tu nivel y tu formación en finanzas, contactarte sobre la traducción, darte crédito en el sitio si lo pediste y, si lo pediste, invitarte a la beta del planificador cuando abra. Nada más.',
+        rest: ' para entender qué idiomas hablas, tu nivel y tu formación en finanzas, contactarte sobre la traducción, darte crédito en el sitio si lo pediste, invitarte a la beta del planificador cuando abra si lo pediste y, si colaboras, conservar el registro de tu permiso. Nada más.',
       },
       localPreferences: {
         lead: 'Preferencias locales:',
@@ -795,7 +798,7 @@ export const es: Dict = {
       },
       volunteers: {
         lead: 'Respuestas del formulario de voluntariado:',
-        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. El crédito en el sitio se mantiene hasta que nos pidas quitarlo.',
+        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales.',
       },
       bounced: {
         lead: 'Correos rebotados o no válidos:',
@@ -811,7 +814,7 @@ export const es: Dict = {
       intro:
         'Según el RGPD (y normativas similares), tienes derecho a preguntarnos qué datos tenemos sobre ti, a rectificarlos, a exportarlos, a limitar cómo los usamos, a oponerte a su uso o a suprimirlos.',
       unsubscribe:
-        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera y del formulario de voluntariado, escríbenos y te eliminaremos, junto con el crédito en el sitio si lo hay. En cualquiera de estos casos, lo haremos a mano si nos lo pides.',
+        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera y del formulario de voluntariado, escríbenos y te eliminaremos, junto con el crédito en el sitio si lo hay. Si colaboraste, solo conservamos el registro de tu permiso, como se indica más arriba. En cualquiera de estos casos, lo haremos a mano si nos lo pides.',
       analytics: {
         before:
           'En cuanto a la analítica, los eventos son anónimos; no tenemos forma de buscar «tus» eventos porque no sabemos quién eres. Si eso te molesta, simplemente rechaza el aviso de cookies o usa un bloqueador de contenido. No se rompe nada en el sitio. Puedes cambiar tu respuesta en cualquier momento con ',

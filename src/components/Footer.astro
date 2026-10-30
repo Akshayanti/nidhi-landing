@@ -72,7 +72,7 @@ const href = (path: string) => navHref(locale, path);
       <p class="disclaimer">
         {strings.footer.disclaimerShort}{' '}<span class="footer-wideOnly">{strings.footer.disclaimerLong}</span>
       </p>
-      <p class="footer-copy">{format(strings.footer.copyright, { year })}</p>
+      <p class="footer-copy">{format(strings.footer.copyright, { year })} <a href="/third-party-notices.txt">{strings.footer.links.thirdParty}</a></p>
     </div>
   </div>
 </footer>

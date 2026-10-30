@@ -1,0 +1,35 @@
+Copyright (c) 2026 Akshay Aggarwal. All rights reserved.
+
+This repository holds the source of nidhi.today: its code, lessons,
+translations, images, videos, brand assets, plans and other material. It is
+public so that people can read it. It is not open source, and it is not offered
+for reuse.
+
+No licence is granted. To the extent this material is protected by law, you may
+not copy, adapt, translate, republish, host or distribute any of it, in whole or
+in part, without written permission from the copyright holder. This covers
+setting up a copy of the site at another address.
+
+You are welcome to link to nidhi.today and to share links to its pages.
+
+GitHub's Terms of Service grant GitHub and its users limited rights to this
+material through GitHub's service, including viewing and forking public
+repositories. Those terms do not grant permission to deploy, publish or
+distribute the site elsewhere.
+
+Earlier versions of package.json identified the package licence as ISC. That
+metadata has been removed. No ISC licence is offered for versions published
+after this notice. The copyright holder reserves their position concerning
+earlier versions.
+
+Nothing here limits what the law lets you do without permission, such as fair
+use, fair dealing or quoting within the limits of the law where you are.
+
+Third-party material, including software dependencies, fonts and data, belongs
+to its own authors and stays under its own terms. This notice does not cover it.
+See public/third-party-notices.txt.
+
+Please do not submit translations, code or other material unless the copyright
+holder has first provided written contribution terms and you have accepted them.
+
+To ask for permission, write to hello@nidhi.today.
