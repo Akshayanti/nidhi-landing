@@ -789,6 +789,8 @@ export const en = {
         middle: ', ',
         after: ', etc.) if you arrived from a link we or someone else tagged.',
       },
+      lessonShare:
+        'Sharing or saving a lesson: the system share sheet opens only when you tap Share, and the link and title go to the app you choose. The WhatsApp and email links contact those destinations only when you tap them. A link shared or copied with these buttons carries campaign parameters that say only that it was shared and how, nothing about you, and when someone opens it their anonymous pageview includes them. Save as PDF uses your browser’s print window on your device and uploads nothing. To explain what to do in an app’s browser that cannot print, the page reads your browser’s name on your device and does not send the result.',
       consentClicks:
         'Click heatmaps and autocaptured events: basically, which elements on a page get clicked, including clicks on things that don’t respond (“dead clicks”). We use this to spot broken links and layouts that confuse people. We don’t record page-speed measurements or browser errors at all. A click is described only by the label the site gives an element (its data-attr), the kind of element and its position on the page: never its text, its accessibility label or any other attribute, which could hold what you typed.',
     },

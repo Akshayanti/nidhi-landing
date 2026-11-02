@@ -3,7 +3,10 @@ slug: "multi-partner-households"
 title: "Polyamorous and Multi-Partner Households: Protecting Everyone"
 seoTitle: "Polyamorous Households: Protecting Everyone"
 description: "Where the law recognises one spouse at most, other partners get no automatic protection. Who marries whom, and how wills, beneficiary forms and proxies cover everyone else."
-tldr: "In most countries the law recognises one spouse at a time, so in a household of three or more partners the automatic protections of marriage reach one married pair at most. That raises two questions a couple never asks: who holds the one legal slot, and how the others get equivalent cover. Wills naming every partner, beneficiary forms with percentages, healthcare proxies with alternates in order, powers of attorney and a written agreement do most of it. Joint tax, partner visas and legal parentage generally stay with one pair and need workarounds."
+tldr:
+  - "In most countries the law recognises one spouse at a time, so marriage's automatic protections reach one pair at most."
+  - "Wills naming every partner, account nominations with percentages, healthcare proxies, legal authority to act and a written agreement can cover most of the gap."
+  - "Joint tax, partner visas and legal parentage generally stay with one pair and need workarounds."
 takeaways:
   - text: "Why the law offers one spouse slot, and what that means for the rest"
     href: "#the-law-offers-one-spouse-slot"

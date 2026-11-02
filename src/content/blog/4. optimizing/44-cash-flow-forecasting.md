@@ -2,7 +2,10 @@
 slug: "cash-flow-forecasting"
 title: "Cash Flow Forecasting: Plan for the Months That Run Short"
 description: "How a 12-month cash flow forecast catches the months a monthly budget hides, how to set aside for once-a-year costs, and how to work out your cash runway."
-tldr: "A monthly average can look healthy while once-a-year costs leave some months short. A cash flow forecast walks month by month and shows those months in advance, along with your cash runway: how long liquid money would last if pay stopped. It works alongside a long-term projection, not instead of one."
+tldr:
+  - "A monthly average can look healthy while once-a-year costs leave some months short."
+  - "Walking through the year month by month shows those months in advance, and how long easy-to-reach money would last if pay stopped."
+  - "It works alongside a long-term estimate of your savings, not instead of one."
 takeaways:
   - text: "Why a positive monthly average can still hide shortfall months"
     href: "#a-monthly-average-hides-the-months-that-come-up-short"

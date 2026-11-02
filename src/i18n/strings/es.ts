@@ -644,6 +644,8 @@ export const es: Dict = {
         middle: ', ',
         after: ', etc.) si llegaste desde un enlace etiquetado por nosotros o por otra persona.',
       },
+      lessonShare:
+        'Compartir o guardar una lección: la hoja de compartir del sistema se abre solo cuando tocas Share, y el enlace y el título van a la aplicación que elijas. Los enlaces de WhatsApp y de correo contactan con esos destinos solo cuando los tocas. Un enlace compartido o copiado con estos botones lleva parámetros de campaña que dicen solo que se compartió y cómo, nada sobre ti, y cuando alguien lo abre, su evento anónimo de visita los incluye. Save as PDF usa la ventana de impresión de tu navegador en tu dispositivo y no sube nada. Para explicar qué hacer en el navegador de una aplicación que no puede imprimir, la página lee el nombre de tu navegador en tu dispositivo y no envía el resultado.',
       consentClicks:
         'Mapas de calor de clics y eventos capturados automáticamente: básicamente, en qué elementos de una página se hace clic, incluidos los clics en cosas que no responden («clics muertos»). Lo usamos para detectar enlaces rotos y diseños que confunden a la gente. No registramos en absoluto mediciones de velocidad de página ni errores del navegador. Un clic se describe solo con la etiqueta que el sitio da al elemento (su data-attr), el tipo de elemento y su posición en la página: nunca con su texto, su etiqueta de accesibilidad ni ningún otro atributo, que podría contener lo que escribiste.',
     },

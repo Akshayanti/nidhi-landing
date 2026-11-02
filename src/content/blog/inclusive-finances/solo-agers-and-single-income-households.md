@@ -3,7 +3,10 @@ slug: "solo-agers-and-single-income-households"
 title: "Living Solo: An Emergency Fund and Retirement on One Income"
 seoTitle: "Living Solo: Emergency Fund and Retirement on One Income"
 description: "Living on one income, or growing older alone? Which rules of thumb assume a second earner, how much to adjust them, and the five documents that name who acts for you."
-tldr: "Many rules of thumb hide a second adult. Six months of savings gives a couple nearly 20 months of runway when one job goes, and a single earner 6. Common adjustments on one income: a larger emergency fund, stronger income protection, fixed costs set for one income, and a retirement number built for one person, about 70% of a couple's budget rather than 50%. The other half is naming, in writing, who acts for you if you cannot, and planning for care you may have to pay for."
+tldr:
+  - "Many rules hide a second adult: six months of savings gives a couple nearly 20 months when one job goes, a single earner 6."
+  - "Common adjustments include larger emergency savings, stronger income protection and a retirement number built for one, about 70% of a couple's budget rather than 50%."
+  - "The other half is naming, in writing, who acts for you if you cannot, and planning for care you may pay for."
 takeaways:
   - text: "How to adjust common rules of thumb for one income"
     href: "#adjusting-common-rules-of-thumb-for-one-income"

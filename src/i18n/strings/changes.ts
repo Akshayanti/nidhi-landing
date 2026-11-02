@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-02',
+    items: [
+      {
+        id: 'lesson-tldr-plain',
+        text: {
+          en: 'The short summary at the top of every lesson is now two or three plain bullets, written without the glossary’s special terms, so you can get the idea before you meet the vocabulary.',
+          es: 'El resumen breve al inicio de cada lección ahora son dos o tres puntos sencillos, escritos sin los términos especiales del glosario, para que captes la idea antes de encontrarte con el vocabulario.',
+          cs: 'Krátké shrnutí na začátku každé lekce má teď dvě nebo tři jednoduché odrážky bez odborných pojmů ze slovníčku, takže pochopíte myšlenku dřív, než narazíte na slovní zásobu.',
+          mr: 'प्रत्येक धड्याच्या सुरुवातीचा छोटा सारांश आता दोन किंवा तीन सोप्या मुद्द्यांत आहे, शब्दसूचीतील खास संज्ञा न वापरता लिहिलेला, म्हणजे शब्दांशी ओळख होण्याआधीच मूळ कल्पना समजते.',
+          hi: 'हर पाठ की शुरुआत का छोटा सार अब दो या तीन आसान बिंदुओं में है, शब्दावली के खास शब्दों के बिना लिखा हुआ, ताकि शब्दों से सामना होने से पहले ही बात समझ में आ जाए।',
+        },
+      },
+      {
+        id: 'lesson-share-save',
+        text: {
+          en: 'You can now send any lesson to a friend, copy its link or keep it as a PDF to read offline, with buttons just above the lesson and again at its end. The privacy notice says what each one sends.',
+          es: 'Ahora puedes enviar cualquier lección a alguien, copiar su enlace o guardarla en PDF para leerla sin conexión, con botones justo antes de la lección y otra vez al final. El aviso de privacidad explica qué envía cada uno.',
+          cs: 'Každou lekci teď můžete poslat známému, zkopírovat její odkaz nebo si ji uložit jako PDF ke čtení bez připojení, a to tlačítky přímo nad lekcí i na jejím konci. V oznámení o ochraně soukromí je uvedeno, co které z nich odesílá.',
+          mr: 'आता कोणताही धडा मित्राला पाठवता येतो, त्याची लिंक कॉपी करता येते किंवा ऑफलाइन वाचण्यासाठी PDF म्हणून ठेवता येतो. त्यासाठी धड्याच्या अगदी वर आणि शेवटीही बटणे आहेत. त्यातील प्रत्येक बटण काय पाठवते ते गोपनीयता सूचनेत दिले आहे.',
+          hi: 'अब किसी भी पाठ को दोस्त को भेजा जा सकता है, उसका लिंक कॉपी किया जा सकता है या ऑफ़लाइन पढ़ने के लिए PDF के रूप में रखा जा सकता है। इसके लिए पाठ के ठीक ऊपर और उसके अंत में भी बटन हैं। हर बटन क्या भेजता है, यह प्राइवेसी नोटिस में लिखा है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-10-30',
     items: [
       {

@@ -2,7 +2,10 @@
 slug: "financial-projections"
 title: "How Much Will Your Savings Grow? Financial Projections"
 description: "How to project your savings 10 to 30 years ahead: why one growth assumption can move the result by a million euros, how to choose it, and what a Monte Carlo result really means."
-tldr: "A projection plays today's savings forward under stated assumptions; it is a conditional picture, not a prediction. The growth rate moves the result enormously, so many planners use a range of real returns anchored on long-run history. A Monte Carlo simulation shows the spread, and \"in 90% of runs\" is the model's estimate, not a promise."
+tldr:
+  - "Playing today's savings forward under stated assumptions gives a conditional picture, not a prediction."
+  - "The growth rate moves the result enormously, so many planners use a range of inflation-adjusted rates based on long-run history."
+  - "Running many random market paths shows the spread, and \"in 90% of runs\" is the model's estimate, not a promise."
 takeaways:
   - text: "Why a projection is a conditional picture, not a prediction"
     href: "#glossary"

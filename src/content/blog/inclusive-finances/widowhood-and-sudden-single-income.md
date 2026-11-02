@@ -2,7 +2,10 @@
 slug: "widowhood-and-sudden-single-income"
 title: "After a Partner's Death: Money Steps and What Can Wait"
 description: "After a partner dies: the short list with deadlines, the long list that can wait six to twelve months, why income falls further than costs, and the scams that target the bereaved."
-tldr: "After a partner dies, registration, access to day-to-day cash, notifications and time-limited claims such as survivor benefits may need early attention; exact deadlines and account rules are local. Large, hard-to-reverse decisions, from selling the home to investing a payout, often do not share those deadlines, and many bereavement guides suggest allowing six to twelve months before making them. Statistical equivalence scales put one adult's needs at roughly two-thirds to 70% of a couple's, while income can fall much further, especially without a survivor pension. Scams aimed at the bereaved are common."
+tldr:
+  - "After a partner dies, registration, access to day-to-day cash, notifications and time-limited claims may need early attention; exact deadlines and account rules are local."
+  - "When no real deadline applies, many bereavement guides suggest waiting six to twelve months before large decisions that are hard to reverse."
+  - "One adult's needs are often about two-thirds to 70% of a couple's; income can fall further without a survivor pension, and scams target the bereaved."
 takeaways:
   - text: "Which tasks after a death have deadlines and which can wait"
     href: "#which-tasks-after-a-death-have-deadlines-and-which-can-wait"

@@ -3,7 +3,10 @@ slug: "account-consolidation-and-financial-data-hygiene"
 title: "Account Consolidation: Combining Old Pensions and Bank Accounts"
 seoTitle: "How to Consolidate Old Pensions and Bank Accounts"
 description: "Old pensions, forgotten savings accounts, unused cards: how to consolidate accounts, move an old pension without a tax bill, and what closing a card does to a credit score."
-tldr: "Forgotten accounts leak money through fees, idle cash and pricier funds, and they hide part of your picture. A common clean-up lists every account, sorts each into keep or close, moves the rest, and settles on two or three institutions. A direct, provider-to-provider pension transfer commonly avoids the withholding, deadlines and tax surprises a payment made to you can bring."
+tldr:
+  - "Forgotten accounts can leak money through fees, idle cash and pricier investments, and hide part of your picture."
+  - "A common clean-up lists every account, sorts each into keep or close, moves the rest and settles on two or three institutions."
+  - "Moving a pension straight between providers commonly avoids the withholding, deadlines and tax surprises a payment to you can bring."
 takeaways:
   - text: "Why account sprawl builds up and what it quietly costs"
     href: "#forgotten-accounts-can-cost-money-every-year"

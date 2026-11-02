@@ -3,7 +3,10 @@ slug: "interest-free-and-sharia-compliant-finance"
 title: "Interest-Free Finance: Islamic Mortgages and Halal Investing"
 seoTitle: "Islamic Mortgages and Halal Investing"
 description: "How interest-free home finance works (murabaha, ijara, diminishing musharakah), the questions to ask before signing, and how screened halal investing, sukuk and takaful work."
-tldr: "If interest is ruled out, home finance works through a sale, a lease or a shared-ownership partnership, and the comparison starts with the total amount payable, or its projection where rent can change. Owning shares is generally permitted, with a two-layer screen on what companies do and how they are financed. Sukuk and takaful stand in for bonds and insurance. Scholars differ on details, and availability varies widely by country."
+tldr:
+  - "Where interest is ruled out, home finance uses a sale, lease or shared ownership, compared by total cost or an estimate when rent can change."
+  - "Owning shares is generally permitted, with a two-layer check on what companies do and how they are financed."
+  - "Islamic bonds and insurance have their own forms, scholars differ on details, and availability varies widely by country."
 takeaways:
   - text: "Why trade, ownership and shared risk take the place of interest"
     href: "#money-is-not-for-rent"

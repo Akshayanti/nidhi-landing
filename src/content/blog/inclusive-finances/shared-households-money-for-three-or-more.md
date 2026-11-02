@@ -3,7 +3,10 @@ slug: "shared-households-money-for-three-or-more"
 title: "Shared Households: Splitting Rent and Bills Fairly With Flatmates"
 seoTitle: "Splitting Rent and Bills Fairly With Flatmates"
 description: "How to split rent and bills fairly between flatmates on different incomes, what a shared lease makes each tenant liable for, and what one departure costs the rest."
-tldr: "Flatmates, co-ops and other households of three or more share costs, while tenancy, partnership and co-operative law may give them very different rights from a married couple, depending on the arrangement and the country. An equal split can weigh five times more on one income than another, so many households choose a method on purpose. The exit test shows what one departure costs the rest, and a one-page agreement covers what the lease does not."
+tldr:
+  - "Households of three or more share costs, but their rights may differ from a married couple's, depending on the arrangement and country."
+  - "An equal split can weigh five times more on one income than another, so many households choose a method on purpose."
+  - "Working out what one departure costs the rest helps, and a one-page agreement covers what the lease does not."
 takeaways:
   - text: "Why an equal split and an income split weigh so differently"
     href: "#an-equal-split-weighs-very-differently-on-each-income"

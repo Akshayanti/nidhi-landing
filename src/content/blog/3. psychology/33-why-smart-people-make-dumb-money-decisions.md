@@ -2,7 +2,10 @@
 slug: "why-smart-people-make-dumb-money-decisions"
 title: "Why Smart People Make Predictable Money Mistakes"
 description: "You can know the math perfectly and still panic-sell at the bottom. Your brain runs two systems, and the fast one takes charge when money is on the line."
-tldr: "Knowing the right thing to do and doing it are different skills, governed by different parts of the brain. Daniel Kahneman described two modes of thinking: System 1 is fast, automatic, and emotional; System 2 is slow, deliberate, and effortful. Most money mistakes happen when System 1 grabs the wheel during a moment that needs System 2: a market drop, a hot tip, a tempting purchase. The brain you carry was tuned to survive immediate threats on the savanna, not to compound capital over forty years. This series introduces the predictable biases that follow from that mismatch, and the systems that beat them. The fix is never 'be smarter.' It's 'design around the brain you actually have.'"
+tldr:
+  - "Knowing what to do and doing it are different skills."
+  - "Kahneman described fast, emotional thinking and slow, deliberate thinking, and many money mistakes happen when the fast kind takes over where slow thinking is needed."
+  - "The fix is rarely being smarter; it is designing around the brain you have."
 takeaways:
   - "Why knowing the right move and making it are different skills"
   - "How fast System 1 thinking takes over in heated money moments"

@@ -3,7 +3,10 @@ slug: "life-events"
 title: "Life Events: Planning Your Finances for a Baby, a Home or a Move"
 seoTitle: "Planning Your Finances for a Baby, a Home or a Move"
 description: "Children, career breaks, buying a home and moving abroad can often be planned for, though their timing may change. How to put them in the plan, and buffer for the rest."
-tldr: "Many big life events, children, a career break, a home, a move abroad, can be seen coming and planned for, though their timing can change. When a parent cuts back, the pay given up can outweigh a child's direct costs. What nobody can foresee gets a buffer instead: an emergency fund, insurance and room in the plan."
+tldr:
+  - "Children, a home, time out of work or a move abroad can often be planned for, though timing can change."
+  - "When a parent cuts back, the pay given up can outweigh a child's direct costs."
+  - "What nobody can foresee is left to emergency savings, insurance and room in the plan."
 takeaways:
   - text: "Why many big life events can be planned for, not just buffered"
     href: "#many-big-life-events-can-be-seen-coming"

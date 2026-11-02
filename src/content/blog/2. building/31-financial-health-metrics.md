@@ -2,7 +2,10 @@
 slug: "financial-health-metrics"
 title: "Financial Health Metrics: How to Know If You're on Track"
 description: "Net worth alone doesn't tell you whether your finances are healthy. A handful of ratios does, and they're close to the ones planners and lenders look at."
-tldr: "Net worth is a snapshot; ratios are the diagnosis. Six metrics cover most of what matters: debt-to-asset ratio (how leveraged you are), liquid asset percentage (how flexible), emergency fund coverage (how resilient to shocks), savings rate (how fast you're building), debt-to-income ratio (how strained cash flow is), and income replacement ratio (how close you are to financial independence). Each has a rough 'healthy' zone, not a single right answer. The goal isn't to optimize every ratio; it's to catch the ones drifting into unhealthy territory early, while the fixes are still small."
+tldr:
+  - "Net worth is a snapshot, and ratios help explain what is behind it."
+  - "Six measures cover debt against assets, easy-to-reach money, emergency cover, the share of income saved, debt against income and progress toward financial independence."
+  - "Each has a rough healthy zone, not one right answer, and the aim is catching drift while fixes are small."
 takeaways:
   - "Why ratios tell you more than net worth alone"
   - "What each of the six health metrics measures"

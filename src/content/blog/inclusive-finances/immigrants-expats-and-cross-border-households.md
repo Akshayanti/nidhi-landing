@@ -3,7 +3,10 @@ slug: "immigrants-expats-and-cross-border-households"
 title: "Moving Abroad: Building Credit and Banking in a New Country"
 seoTitle: "Moving Abroad: Building Credit and Banking"
 description: "Moved countries? Your credit history stays behind. The order that rebuilds a bank account, address and credit file, and how to cut what sending money home costs."
-tldr: "Crossing a border resets your credit file, bank relationship and paper trail. Rebuilding follows an order, because each step produces the document the next asks for: identification and a tax number, a basic bank account, proof of address, income on the record, then small reported credit where the local system works that way. For money sent home, compare what the recipient actually receives: on €300 a month, a 6.5% cost against 2% is €1,620 over ten years."
+tldr:
+  - "Crossing a border resets your credit file, bank relationship and paper trail."
+  - "Rebuilding follows an order: identification and a tax number, a basic bank account, proof of address, recorded income, then small reported credit where relevant."
+  - "For money sent home, what the recipient receives is what counts: on €300 a month, 6.5% against 2% is €1,620 over ten years."
 takeaways:
   - text: "What credit history and banking carry across a border"
     href: "#checking-what-credit-history-and-banking-carry-across-a-border"

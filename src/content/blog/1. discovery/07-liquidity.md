@@ -3,7 +3,10 @@ slug: "liquidity"
 title: "Liquidity: Why Being Unable to Access Your Money Is a Risk"
 seoTitle: "Liquidity: Why Being Unable to Access Money Is a Risk"
 description: "Having money and being able to use it are not the same thing. Liquidity is how quickly you can turn an asset into cash without losing its value."
-tldr: "Liquidity is how fast you can convert an asset to cash without losing value. Cash is fully liquid. Real estate is not. Low liquidity means you might be worth a lot on paper but unable to pay for an emergency. The right mix depends on your situation: keep enough liquid assets to cover emergencies, then invest the rest for growth."
+tldr:
+  - "Liquidity is how fast something can become cash without losing value: cash is fully liquid, property is not."
+  - "With little of it, you might be worth a lot on paper and still unable to pay for an emergency."
+  - "The right mix depends on your situation, and many people keep enough accessible for emergencies before investing the rest."
 takeaways:
   - "What liquidity means: how fast an asset becomes cash"
   - "Why a high net worth can still leave you short in an emergency"

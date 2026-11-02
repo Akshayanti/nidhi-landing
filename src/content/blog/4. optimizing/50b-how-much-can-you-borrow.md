@@ -3,7 +3,10 @@ slug: "how-much-can-you-borrow"
 title: "How Much Can You Borrow? Home and Car Loan Rules of Thumb, Tested"
 seoTitle: "How Much Can You Borrow? Loan Rules of Thumb, Tested"
 description: "How much mortgage or car loan can your income carry? The 28/36, 20-30-40 and 20/4/10 rules people quote, what regulators actually cap, and a stress test for your own numbers."
-tldr: "A lender's maximum and the loan your budget can carry are different numbers. Popular rules of thumb such as 28/36 and 20-30-40 give very different answers for the same income, and regulators cap lending in different ways from country to country. Many people test a loan against a higher rate and a lower income before deciding how much of the maximum to use."
+tldr:
+  - "A lender's maximum and the loan your budget can carry are different numbers."
+  - "Popular rules such as 28/36 and 20-30-40 give very different answers for the same income, and regulators set limits differently by country."
+  - "Many people test a loan against a higher rate and lower income before deciding how much of the maximum to use."
 takeaways:
   - text: "Why the bank's maximum is not the same as what your budget can carry"
     href: "#a-lenders-maximum-is-not-your-budget"

@@ -2,7 +2,10 @@
 slug: "present-bias-and-your-future-self"
 title: "Present Bias: Why Your Future Self Keeps Getting Robbed"
 description: "Present bias makes your future self feel like a stranger you owe nothing. That is why saving loses to spending now, and why willpower is the wrong fix."
-tldr: "Present bias is the brain's habit of valuing rewards now far above the same rewards later, with the steepest drop happening right at the boundary of today. One hundred euros now feels far better than 110 next week, yet 100 in fifty-two weeks feels about the same as 110 in fifty-three weeks. The same one-week wait barely registers when it is far off but feels unbearable when it is immediate. The deeper problem is that the brain treats your future self almost like a stranger, so saving feels like giving money to someone else. Willpower loses this fight because it relies on winning the same battle every single day. Systems win, because they make the good choice automatic and the bad choice the one you have to go out of your way to make: automate savings, route raises straight to investing, and make save-first the default."
+tldr:
+  - "Present bias values rewards now far above the same rewards later, with the steepest drop at the edge of today."
+  - "The brain can treat your future self almost like a stranger, so saving feels like giving money away."
+  - "Willpower has to win daily, while systems such as automatic saving remove the daily decision."
 takeaways:
   - "Why a reward now feels worth far more than the same reward later"
   - "Why your future self can feel like a stranger you owe nothing"

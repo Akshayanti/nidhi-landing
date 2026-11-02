@@ -3,7 +3,10 @@ slug: "gig-and-informal-economy-work"
 title: "Gig, Freelance and Informal Work: Paying Yourself a Steady Salary"
 seoTitle: "Gig and Freelance Work: Paying Yourself a Steady Salary"
 description: "Going freelance or paid in cash: what an employer was quietly paying for, how to price a freelance day rate, and how to pay yourself a steady salary from uneven income."
-tldr: "Without an employer, your rate has to fund what one used to pay for, so a freelance day rate often needs to be 1.5 to 2 times the salaried one. Uneven income is a variance problem, not a discipline problem: one holding account, tax set aside the day money arrives, and a fixed monthly salary. Cash workers also need a record of what they earn."
+tldr:
+  - "A freelance day rate often needs to be 1.5 to 2 times the salaried one, to cover what an employer used to pay."
+  - "Uneven income is about swings, not discipline; one method collects payments in one account, sets aside tax and pays you a fixed monthly salary."
+  - "Cash workers also need a record of what they earn."
 takeaways:
   - text: "Why a freelance rate must fund what an employer used to pay for"
     href: "#setting-a-freelance-rate-that-replaces-a-salary"

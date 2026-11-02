@@ -324,7 +324,7 @@ function buildUserMessage({ meta, body, mode, availableFigures }) {
     `slug: ${meta.slug}`,
     `title: ${meta.title}`,
     `description: ${meta.description ?? ""}`,
-    `tldr: ${meta.tldr ?? ""}`,
+    `tldr: ${Array.isArray(meta.tldr) ? meta.tldr.join(" ") : meta.tldr ?? ""}`,
     `level: ${meta.level ?? ""}`,
     `tags: ${Array.isArray(meta.tags) ? meta.tags.join(", ") : ""}`,
   ].join("\n");

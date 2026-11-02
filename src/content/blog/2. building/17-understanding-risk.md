@@ -2,7 +2,10 @@
 slug: "understanding-risk"
 title: "Understanding Risk: What It Actually Means for Your Money"
 description: "Risk isn't about losing everything. It's about how much things can move, and whether you have time to wait for them to move back."
-tldr: "Financial risk isn't danger. It's uncertainty. Volatility (short-term price swings) is different from permanent loss (the money is gone). Your risk tolerance is how much fluctuation you can stomach. Your risk capacity is how much you can afford to absorb based on your timeline and financial situation. Time transforms risk: over short periods, stocks can lose 30-40% of their value; over long periods, they've historically been the strongest wealth builder. A risk many people overlook is doing nothing. Inflation erodes the purchasing power of cash that earns less than it. Understanding risk lets you take the right amount: enough to grow, not so much that a downturn derails your plan."
+tldr:
+  - "Financial risk is uncertainty, and short-term price swings are different from losing money permanently."
+  - "Over one year, stocks can lose 30 to 40%; over decades, broad US holdings have usually gained, without guarantees elsewhere."
+  - "Doing nothing is a risk too, because inflation erodes cash that earns less than it; the right amount of risk depends on your situation."
 takeaways:
   - "Why volatility and permanent loss are not the same thing"
   - "How risk tolerance differs from risk capacity"

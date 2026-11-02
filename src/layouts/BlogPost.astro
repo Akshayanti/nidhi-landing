@@ -9,12 +9,13 @@ import type { LocalRuleArea } from '../utils/localRules';
 import type { LayeredReadingTime } from '../utils/readingTime';
 import { DEFAULT_LOCALE, dict } from '../i18n';
 import { GLOSSARY_CARD_ID, termId } from '../utils/glossary.mjs';
+import LessonShare from '../components/LessonShare.astro';
 
 interface Props {
   title: string;
   seoTitle?: string;
   description: string;
-  tldr: string;
+  tldr: string[];
   pubDate: Date;
   updatedDate?: Date;
   /** Substantive corrections, oldest first, as the frontmatter lists them. */
@@ -246,7 +247,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         <h1 class="post-title">{title}</h1>
         <div class="post-tldr">
           <span class="tldr-label">TL;DR</span>
-          <p>{tldr}</p>
+          <ul class="post-tldr-list">{tldr.map((bullet) => <li>{bullet}</li>)}</ul>
         </div>
         {/*
           What the lesson covers, before the reader commits to it. Plain text
@@ -310,6 +311,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             ))}
           </div>
         )}
+        <LessonShare slug={slug} title={title} />
       </header>
 
       {regulatoryNote === 'caution' && (
@@ -430,6 +432,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         <div class="disclaimer">
           <strong>A quick note:</strong> This article is educational content, not investment advice or a personal recommendation under MiFID II. Examples, historical figures, and any projections are illustrative and don't predict future results. Tax treatment depends on your country and personal situation. For decisions that meaningfully affect your finances, a qualified or regulated adviser can help apply these ideas to your circumstances.
         </div>
+
+        <LessonShare slug={slug} title={title} labelled />
+
+        {/* Only on paper, so a saved copy says where it came from and that it can go out of date. */}
+        <p class="lesson-print-foot">
+          {title}. From nidhi.today/blog/{slug}/. Published {dateStr}.{updatedDate && ` Updated ${updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}.`} <span data-print-saved></span> Lessons can change: the latest version and any corrections are at this address.
+        </p>
 
         {seriesPosition && levelLabel && (
           <p class="post-series-foot">
@@ -625,11 +634,16 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 </script>
 
 <script is:inline>
-  // A printed lesson shows every expander, the glossary and FAQ answer open; after
-  // printing, each one goes back to how the reader left it.
+  // A printed lesson shows every expander, the glossary and FAQ answer open and
+  // light colours; after printing, the page goes back to how the reader left it.
   (function() {
     var closed = [];
+    var theme = null;
+    var saved = document.querySelector('[data-print-saved]');
     window.addEventListener('beforeprint', function() {
+      theme = document.documentElement.getAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', 'light');
+      if (saved) saved.textContent = 'Saved on ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + '.';
       closed = Array.prototype.filter.call(
         document.querySelectorAll('#post-content details:not([open]), .post-faq details:not([open]), .post-glossary details:not([open])'),
         function(d) { d.open = true; return true; }
@@ -638,6 +652,67 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     window.addEventListener('afterprint', function() {
       closed.forEach(function(d) { d.open = false; });
       closed = [];
+      if (theme) document.documentElement.setAttribute('data-theme', theme);
+    });
+  })();
+
+  // The share bars (LessonShare.astro). The browser's name is read here only, to
+  // say why a PDF needs another browser, and is never sent.
+  (function() {
+    var IN_APP = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|; wv\)/;
+    document.querySelectorAll('[data-lesson-share]').forEach(function(bar) {
+      var native = bar.querySelector('[data-share-native]');
+      var copy = bar.querySelector('[data-share-copy]');
+      var save = bar.querySelector('[data-share-save]');
+      var status = bar.querySelector('[data-share-status]');
+      var address = bar.querySelector('[data-share-address]');
+      var timer;
+
+      function copyLink(done, failed) {
+        var write = navigator.clipboard && navigator.clipboard.writeText(bar.dataset.copyUrl);
+        (write || Promise.reject()).then(done, function() {
+          address.hidden = false;
+          address.select();
+          status.textContent = failed;
+        });
+      }
+
+      copy.hidden = false;
+      save.hidden = false;
+      if (navigator.share) {
+        native.hidden = false;
+        bar.querySelectorAll('[data-share-fallback]').forEach(function(link) { link.hidden = true; });
+        native.addEventListener('click', function() {
+          navigator.share({ title: bar.dataset.title, url: bar.dataset.nativeUrl }).catch(function(err) {
+            if (err && err.name === 'AbortError') return;
+            copyLink(
+              function() { status.textContent = 'Sharing did not open, so the link was copied instead.'; },
+              'Sharing did not open. Press and hold the link to copy it.'
+            );
+          });
+        });
+      }
+
+      copy.addEventListener('click', function() {
+        copyLink(function() {
+          copy.textContent = '\u2713 Copied';
+          status.textContent = 'Link copied';
+          clearTimeout(timer);
+          timer = setTimeout(function() {
+            copy.textContent = 'Copy link';
+            status.textContent = '';
+          }, 4000);
+        }, 'Could not copy. Press and hold the link to copy it.');
+      });
+
+      save.addEventListener('click', function() {
+        if (IN_APP.test(navigator.userAgent)) {
+          status.textContent = "To save a PDF, first open this page in your phone's browser from the \u2022\u2022\u2022 menu. Or copy the link and paste it there.";
+          return;
+        }
+        status.textContent = 'In the print window, choose Save as PDF. On iPhone: Share, then Save to Files.';
+        window.print();
+      });
     });
   })();
 
@@ -774,9 +849,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     border-radius: var(--radius-md);
     padding: var(--space-3) var(--space-5);
     margin-bottom: var(--space-4);
-    display: flex;
-    gap: var(--space-3);
-    align-items: flex-start;
   }
 
   .tldr-label {
@@ -786,15 +858,18 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-deep-blue);
-    flex-shrink: 0;
-    padding-top: 2px;
   }
 
-  .post-tldr p {
+  .post-tldr-list {
+    margin: var(--space-2) 0 0;
+    padding-inline-start: 1.1em;
     font-size: 0.9rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
-    margin: 0;
+  }
+
+  .post-tldr-list li + li {
+    margin-top: var(--space-1);
   }
 
   /* "In this lesson": a preview, not a card. The label matches the TL;DR
@@ -999,7 +1074,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   }
 
   @media print {
-    .post-glossary { break-inside: avoid; box-shadow: none; }
+    .post-glossary { box-shadow: none; }
+    .post-glossary-item { break-inside: avoid; }
+    /* On paper the definitions are open, so the controls for them have no job. */
+    .post-glossary-all,
+    .post-glossary:has(.post-glossary-defs[open]) .post-glossary-chips,
+    .post-glossary-defs[open] .post-glossary-summary { display: none; }
   }
 
   .post-tags {
@@ -1631,10 +1711,29 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     }
   }
 
+  .lesson-print-foot {
+    display: none;
+  }
+
   @media print {
     .lesson-index-button,
-    .lesson-index {
+    .lesson-index,
+    .reading-progress,
+    .post-tags,
+    .post-tool,
+    .post-series-foot,
+    .post-nav,
+    .post-related {
       display: none;
+    }
+
+    .lesson-print-foot {
+      display: block;
+      margin-top: var(--space-6);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border);
+      font-size: 0.85rem;
+      color: var(--color-text);
     }
   }
 

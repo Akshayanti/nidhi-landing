@@ -2,7 +2,10 @@
 slug: "what-is-net-worth"
 title: "What Is Net Worth and Why Does It Matter?"
 description: "Your net worth is the clearest single number for whether you're building wealth or standing still. Here's why it tells you more than your salary."
-tldr: "Net worth is everything you own minus everything you owe. It's the closest thing to one number for your full financial picture: how much you earn, spend, save, and owe. Track it over time and you'll see whether you're actually building wealth or just earning money."
+tldr:
+  - "Net worth is everything you own minus everything you owe."
+  - "It is the closest thing to one number for your whole financial picture."
+  - "Followed over time, it shows whether you are building wealth or only earning money."
 takeaways:
   - "What net worth is: what you own minus what you owe"
   - "Why it tells you more than your salary does"

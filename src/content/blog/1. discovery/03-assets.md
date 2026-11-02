@@ -2,7 +2,10 @@
 slug: "assets"
 title: "Assets: What You Own and What Actually Counts"
 description: "Your assets are everything you own that has value. But not everything that looks like an asset behaves like one. Here's how to tell the difference."
-tldr: "An asset is something you own that can be converted into money or generates income. Cash, investments, and property are assets. Your salary, your degree, and your potential are not. The quality of an asset matters as much as its existence: liquidity, appreciation, and stability all affect how much an asset actually does for your net worth."
+tldr:
+  - "An asset is something you own that can become money or brings in income."
+  - "Cash, investments and property count; your salary, degree and potential do not."
+  - "How easily it sells, whether it gains value and how steady it is all affect what an asset does for you."
 takeaways:
   - "What counts as an asset, and why your salary does not"
   - "How liquidity, direction and stability decide an asset's quality"
