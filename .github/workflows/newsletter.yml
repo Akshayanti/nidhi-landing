@@ -43,7 +43,7 @@ on:
     - cron: '03 7 * * *'
 
 permissions:
-  contents: write   # commit .last-sent-guid.txt back to main
+  contents: write   # commit .last-sent-guid.txt to newsletter-state
   issues: write     # open failure-notification issues
 
 concurrency:
@@ -143,6 +143,20 @@ jobs:
             echo "::error title=Newsletter pipeline will be skipped::One or more required secrets are missing. All subsequent steps (send, commit marker, scan bounces, notify) will be skipped. Fix by adding the secrets flagged above."
           fi
 
+      - name: Load newsletter marker
+        # The record of sent posts lives on `newsletter-state` (see the commit
+        # step below). The copy on `main` only seeds that branch on its first
+        # run. If this fetch ever fails, the older copy is safe to use: Apps
+        # Script keeps its own `sent_guid:` record and skips posts already sent.
+        if: steps.preflight.outputs.configured == 'true'
+        run: |
+          if git fetch --depth=1 origin "+refs/heads/newsletter-state:refs/remotes/origin/newsletter-state" 2>/dev/null; then
+            git show origin/newsletter-state:.last-sent-guid.txt > .last-sent-guid.txt
+            echo "Marker loaded from newsletter-state."
+          else
+            echo "No newsletter-state branch yet: using the marker on main."
+          fi
+
       - name: Send newsletter for new posts
         id: newsletter
         if: steps.preflight.outputs.configured == 'true'
@@ -161,53 +175,45 @@ jobs:
         continue-on-error: true
 
       - name: Commit updated newsletter marker
-        # Pushes .last-sent-guid.txt directly to `main` using the default
-        # GITHUB_TOKEN (made available by `persist-credentials: true` on the
-        # checkout step above).
+        # Pushes .last-sent-guid.txt to the unprotected `newsletter-state`
+        # branch using the default GITHUB_TOKEN (made available by
+        # `persist-credentials: true` on the checkout step above). It cannot go
+        # to `main`: the required status checks there reject direct pushes,
+        # which failed this step from Oct 2026 on. No workflow runs on a push
+        # to `newsletter-state`, so this never triggers a deploy.
         #
-        # This requires that the `main` branch protection rule does NOT
-        # include "Require a pull request before merging" — that rule
-        # blocks every direct push from Actions (the default GITHUB_TOKEN
-        # cannot bypass it without an explicit bypass-list entry, which
-        # the classic Branch Protection UI doesn't let you add for the
-        # github-actions[bot] identity). Other protections — required
-        # status checks, force-push restrictions, deletion blocks — are
-        # all compatible with this step. If you ever turn the PR rule back
-        # on, you'll need to either:
-        #   (a) migrate to Rulesets and add GitHub Actions (Integration ID
-        #       15368) to the bypass list, or
-        #   (b) move the marker to an unprotected branch (see
-        #       docs/plans/blog-subscription-setup.md for the pattern).
-        #
-        # If the push fails despite no PR rule, the most likely cause is a
-        # newly-added "Restrict who can push" actor list that excludes the
-        # bot — re-check the protection rule.
+        # The worktree keeps the checkout untouched. Lines already on the
+        # branch are kept, so a concurrent run's record is not overwritten.
+        id: marker
         if: steps.newsletter.outcome == 'success'
         run: |
-          if git diff --quiet -- .last-sent-guid.txt; then
-            echo "No marker changes to commit."
-            exit 0
-          fi
+          set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .last-sent-guid.txt
-          git commit -m "chore(newsletter): record sent post GUIDs [skip deploy]"
-          # Race-proof push: rebase on top of any newer main commits, retry.
-          # deploy.yml has `paths-ignore: ['.last-sent-guid.txt']` on its
-          # push trigger, so this commit does NOT re-trigger a deploy — no
-          # infinite loop. Retries here only help with the concurrent-deploy
-          # race; they cannot rescue a branch-protection rejection (see
-          # block comment above the step).
+          STATE="$RUNNER_TEMP/newsletter-state"
           for attempt in 1 2 3; do
-            git pull --rebase --autostash origin main || true
-            if git push origin HEAD:main; then
+            rm -rf "$STATE"
+            git worktree prune
+            if git fetch --depth=1 origin "+refs/heads/newsletter-state:refs/remotes/origin/newsletter-state" 2>/dev/null; then
+              git worktree add --detach "$STATE" origin/newsletter-state
+            else
+              git worktree add --detach "$STATE" HEAD
+            fi
+            grep -vxFf "$STATE/.last-sent-guid.txt" .last-sent-guid.txt >> "$STATE/.last-sent-guid.txt" || true
+            if git -C "$STATE" diff --quiet -- .last-sent-guid.txt && git rev-parse --verify --quiet origin/newsletter-state >/dev/null; then
+              echo "No marker changes to commit."
+              exit 0
+            fi
+            git -C "$STATE" add .last-sent-guid.txt
+            git -C "$STATE" commit --allow-empty -m "chore(newsletter): record sent post GUIDs"
+            if git -C "$STATE" push origin HEAD:refs/heads/newsletter-state; then
               echo "Marker pushed on attempt $attempt"
               exit 0
             fi
             echo "Push attempt $attempt failed, retrying..."
             sleep 5
           done
-          echo "::error::Failed to push newsletter marker after 3 attempts. If this started failing after a branch-protection change, the most likely cause is that 'Require a pull request before merging' was re-enabled on main — see the comment block above this step for remediation."
+          echo "::error::Failed to push newsletter marker to newsletter-state after 3 attempts."
           exit 1
 
       - name: Scan for newsletter bounces
@@ -219,6 +225,7 @@ jobs:
         # is fine (see verifyScanBouncesSig_).
         id: bounce_scan
         if: >-
+          always() &&
           steps.preflight.outputs.configured == 'true' &&
           github.event.inputs.skip_bounce_scan != 'true'
         run: |
@@ -254,6 +261,7 @@ jobs:
           steps.newsletter.outcome != 'skipped' &&
           (
             steps.newsletter.outcome == 'failure' ||
+            steps.marker.outcome == 'failure' ||
             steps.newsletter.outputs.any_failed == '1' ||
             (steps.newsletter.outputs.total_failed != '' && steps.newsletter.outputs.total_failed != '0') ||
             (steps.newsletter.outputs.total_partial != '' && steps.newsletter.outputs.total_partial != '0')
@@ -262,6 +270,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           OUTCOME: ${{ steps.newsletter.outcome }}
+          MARKER_OUTCOME: ${{ steps.marker.outcome }}
           ANY_FAILED: ${{ steps.newsletter.outputs.any_failed }}
           TOTAL_SENT: ${{ steps.newsletter.outputs.total_sent }}
           TOTAL_FAILED: ${{ steps.newsletter.outputs.total_failed }}
@@ -282,6 +291,7 @@ jobs:
           | | |
           |---|---|
           | Step outcome | \`$OUTCOME\` |
+          | Marker push | \`${MARKER_OUTCOME:-?}\` |
           | Posts attempted | \`${POSTS_ATTEMPTED:-?}\` |
           | Total sent | \`${TOTAL_SENT:-?}\` |
           | Total failed | \`${TOTAL_FAILED:-?}\` |
