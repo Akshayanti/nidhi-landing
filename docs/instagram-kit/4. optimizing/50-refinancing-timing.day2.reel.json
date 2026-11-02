@@ -14,41 +14,10 @@
     "currency": "EUR",
     "notes": "Blog example: refinancing to 4.25% saves €200 a month; waiting six months forgoes 6 x 200 = €1,200; rates can also rise while waiting (the blog's scenario). Markets already price expected cuts (blog). Illustrative."
   },
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "setup": {
-      "label": "A lower rate, today",
-      "display": "€200 a month",
-      "note": "Saved by refinancing now",
-      "tone": "ink"
-    },
-    "unit": "EUR",
-    "basis": "Six months of a €200 a month saving, illustrative",
-    "bars": [
-      {
-        "id": "now",
-        "label": "Refinance now",
-        "sublabel": "savings over six months",
-        "value": 1200,
-        "display": "€1,200",
-        "tone": "teal"
-      },
-      {
-        "id": "wait",
-        "label": "Wait six months",
-        "sublabel": "savings over six months",
-        "value": 0,
-        "display": "€0 saved",
-        "tone": "amber"
-      }
-    ],
-    "disclosure": "Illustrative. Rates and costs vary by lender and country."
-  },
   "hookVariants": [
     {
       "id": "wait-cost",
-      "layout": "bar-gap",
+      "layout": "chart-gap",
       "narration": "Part two: say it passes the break even check. Should you wait for a lower rate? Here's what six months costs.",
       "onscreenLines": [
         "Part 2: refinance now?",
@@ -56,8 +25,8 @@
         ""
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "hook"
+        "type": "race",
+        "stage": "race"
       },
       "emphasis": [
         "waiting"
@@ -74,8 +43,8 @@
       "subtext": "€200 a month, six months",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "first"
+        "type": "race",
+        "stage": "race"
       }
     },
     {
@@ -85,11 +54,11 @@
       "onscreenText": "Wait: €1,200 forgone",
       "subtext": "Rates may rise or fall",
       "emphasis": [
-        "certain"
+        "gives"
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "second"
+        "type": "race",
+        "stage": "finish"
       }
     },
     {
@@ -141,5 +110,49 @@
     "interestrates",
     "remortgage",
     "borrowing"
-  ]
+  ],
+  "lineRace": {
+    "periodLabel": "Month",
+    "firstPeriod": 0,
+    "series": [
+      {
+        "id": "now",
+        "label": "Refinance now",
+        "tone": "teal",
+        "values": [
+          0,
+          200,
+          400,
+          600,
+          800,
+          1000,
+          1200
+        ]
+      },
+      {
+        "id": "wait",
+        "label": "Wait",
+        "tone": "amber",
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dashed": true
+      }
+    ],
+    "ceiling": 1500,
+    "gridlines": [
+      1000
+    ],
+    "secondsPerPeriod": 1.2,
+    "scope": "Illustrative. Savings from refinancing, before any later rate change. Rates and costs vary.",
+    "disclosure": "Illustrative. Savings from refinancing, before any later rate change. Rates and costs vary.",
+    "cardOnBeat": true,
+    "headLabelsFrom": 2
+  }
 }

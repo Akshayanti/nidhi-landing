@@ -184,7 +184,7 @@ more: Why active funds mostly trail after fees
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: What does 1% take?
+d1_f1_overlay: What could 1% take?
 d1_f1_caption: A 1% fee over 40 years
 
 d1_f2_kind: poll

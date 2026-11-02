@@ -133,7 +133,28 @@ export interface LineRaceStory {
   /** Period name for the ticker, e.g. "Year". */
   periodLabel: string;
   /** Value plotted at period 1, 2, ... All series have the same length. */
-  series: Array<{ id: string; label: string; tone: RaceTone; values: number[] }>;
+  series: Array<{
+    id: string;
+    label: string;
+    tone: RaceTone;
+    values: number[];
+    /** Fixed text beside the line's head, in place of its running euro value. */
+    headText?: string;
+    /** Dashed line, for a figure that is an average rather than a known amount. */
+    dashed?: boolean;
+  }>;
+  /** Number of the first plotted period. Defaults to 1; use 0 to start from now. */
+  firstPeriod?: number;
+  /** Hide the euro labels on the value axis. */
+  hideValueAxis?: boolean;
+  /** Rounding of the running euro labels. Defaults to €100. */
+  headStep?: number;
+  /** Period at which the line labels appear, for lines that start too close to label. */
+  headLabelsFrom?: number;
+  /** Show the tool card in place of the chart during its beat, not only on the CTA. */
+  cardOnBeat?: boolean;
+  /** Marks the period where one line reaches another. */
+  crossing?: { period: number; value: number; label: string };
   /** Top of the value axis (the axis always starts at 0). */
   ceiling: number;
   /** Gridline values, e.g. [50000, 100000]. */
@@ -141,7 +162,10 @@ export interface LineRaceStory {
   /** Seconds per period while racing. */
   secondsPerPeriod: number;
   /** Running total of (upper - lower) across the periods plotted so far. */
-  gap?: { upper: string; lower: string; label: string; finalLabel: string };
+  gap?: { upper: string; lower: string; label: string; finalLabel: string
+    /** Read the gap between the lines at this point, not the sum so far. */
+    atPoint?: boolean;
+  };
   /** Short scope line shown under the chart for the whole story. */
   scope: string;
   disclosure: string;

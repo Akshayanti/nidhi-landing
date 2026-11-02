@@ -14,41 +14,10 @@
     "currency": "EUR",
     "notes": "Blog example: closing costs €4,000, monthly saving €200, break even 4,000 / 200 = month 20. Held 60 months: (60 - 20) x 200 = €8,000 ahead; held 24 months: €800. Ignores rate, tax and term changes and the opportunity cost of the costs. Common guideline from the blog: hold period often 2x the break even or more."
   },
-  "monthStory": {
-    "mode": "runway",
-    "unit": "EUR",
-    "start": 4000,
-    "cashLabel": "Refinance costs, fees included",
-    "drainLabel": "Left to win back",
-    "monthlyCost": 200,
-    "slots": 24,
-    "card": {
-      "title": "THE BREAK EVEN CHECK",
-      "rows": [
-        {
-          "label": "Break even",
-          "value": "Month 20",
-          "tone": "ink"
-        },
-        {
-          "label": "Keep it longer",
-          "value": "Ahead",
-          "tone": "teal"
-        },
-        {
-          "label": "Sell sooner",
-          "value": "Behind",
-          "tone": "amber"
-        }
-      ],
-      "footnote": "Many people look for keeping the loan about twice that long. Illustrative."
-    },
-    "disclosure": "Illustrative. Ignores rate, tax and term changes."
-  },
   "hookVariants": [
     {
       "id": "when-paid-off",
-      "layout": "month-gap",
+      "layout": "chart-gap",
       "narration": "Should you refinance? It comes down to one month.",
       "onscreenLines": [
         "Should you refinance?",
@@ -56,8 +25,8 @@
         ""
       ],
       "anchor": {
-        "type": "months",
-        "stage": "hook"
+        "type": "race",
+        "stage": "race"
       },
       "emphasis": [
         "one"
@@ -74,8 +43,8 @@
       "subtext": "Fees and any repayment charges",
       "emphasis": [],
       "anchor": {
-        "type": "months",
-        "stage": "cash"
+        "type": "race",
+        "stage": "race"
       }
     },
     {
@@ -86,8 +55,8 @@
       "subtext": "The lower payment",
       "emphasis": [],
       "anchor": {
-        "type": "months",
-        "stage": "cost"
+        "type": "race",
+        "stage": "race"
       }
     },
     {
@@ -100,8 +69,8 @@
         "twenty"
       ],
       "anchor": {
-        "type": "months",
-        "stage": "drain"
+        "type": "race",
+        "stage": "finish"
       }
     },
     {
@@ -112,8 +81,27 @@
       "subtext": "How long will you keep it?",
       "emphasis": [],
       "anchor": {
-        "type": "months",
-        "stage": "rule"
+        "type": "card",
+        "stage": "tool",
+        "title": "THE BREAK EVEN CHECK",
+        "rows": [
+          {
+            "label": "Break even",
+            "value": "Month 20",
+            "tone": "ink"
+          },
+          {
+            "label": "Keep it longer",
+            "value": "Ahead",
+            "tone": "teal"
+          },
+          {
+            "label": "Sell sooner",
+            "value": "Behind",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Many people look for keeping the loan about twice that long. Illustrative."
       }
     }
   ],
@@ -134,5 +122,89 @@
     "refinancing",
     "mortgagerates",
     "homeloan"
-  ]
+  ],
+  "lineRace": {
+    "periodLabel": "Month",
+    "firstPeriod": 0,
+    "series": [
+      {
+        "id": "saved",
+        "label": "Saved so far",
+        "tone": "teal",
+        "values": [
+          0,
+          200,
+          400,
+          600,
+          800,
+          1000,
+          1200,
+          1400,
+          1600,
+          1800,
+          2000,
+          2200,
+          2400,
+          2600,
+          2800,
+          3000,
+          3200,
+          3400,
+          3600,
+          3800,
+          4000,
+          4200,
+          4400,
+          4600,
+          4800
+        ]
+      },
+      {
+        "id": "costs",
+        "label": "Costs up front",
+        "tone": "amber",
+        "values": [
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000
+        ]
+      }
+    ],
+    "ceiling": 6000,
+    "gridlines": [
+      2000,
+      4000
+    ],
+    "secondsPerPeriod": 0.4,
+    "crossing": {
+      "period": 20,
+      "value": 4000,
+      "label": "Month 20"
+    },
+    "scope": "Illustrative. Ignores rate, tax and term changes.",
+    "disclosure": "Illustrative. Ignores rate, tax and term changes.",
+    "cardOnBeat": true
+  }
 }

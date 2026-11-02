@@ -137,25 +137,33 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
   const count = story.series[0]?.values.length ?? 0;
   const upper = story.gap ? story.series.find((s) => s.id === story.gap!.upper) : undefined;
   const lower = story.gap ? story.series.find((s) => s.id === story.gap!.lower) : undefined;
-  const period = Math.min(count, Math.floor(pos) + 1);
+  // A count from zero names the point the line has reached; a count from one names the period it is in.
+  const period = story.firstPeriod === undefined ? Math.min(count, Math.floor(pos) + 1) : Math.round(pos) + story.firstPeriod;
   const ordered = [...story.series].sort((a, b) => valueAt(b.values, pos) - valueAt(a.values, pos));
-  const headLabelOffset = (rank: number) => (rank === 0 ? -1 : 1);
+  const first = story.firstPeriod ?? 1;
+  // Only the lowest line labels below its head, so three close lines stay apart.
+  // A count from zero steps its labels with the period shown, so the euros match the period.
+  const labelPos = story.firstPeriod === undefined ? pos : Math.round(pos);
+  const labelOpacity = clamp((pos - (story.headLabelsFrom ?? 0)) / 0.3 + (story.headLabelsFrom ? 0 : 1));
+  const headLabelOffset = (rank: number) => (rank === story.series.length - 1 && rank > 0 ? 1 : -1);
 
   return (
     <svg viewBox="0 0 1080 1920" width="1080" height="1920" style={{ position: "absolute", inset: 0 }}>
       {story.gridlines.map((value) => (
         <g key={value}>
           <line x1={PLOT.left} y1={yAt(value, story.ceiling)} x2={PLOT.right} y2={yAt(value, story.ceiling)} stroke={BRAND.hairline} strokeWidth={2} strokeDasharray="5 12" />
-          <text x={PLOT.left - 30} y={yAt(value, story.ceiling) + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>
-            {euro(value, 1000).replace(",000", "k")}
-          </text>
+          {!story.hideValueAxis && (
+            <text x={PLOT.left - 30} y={yAt(value, story.ceiling) + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>
+              {euro(value, 1000).replace(",000", "k")}
+            </text>
+          )}
         </g>
       ))}
       <line x1={PLOT.left} y1={PLOT.bottom} x2={PLOT.right} y2={PLOT.bottom} stroke={BRAND.inkMuted} strokeWidth={3} />
-      <text x={PLOT.left - 30} y={PLOT.bottom + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>€0</text>
+      {!story.hideValueAxis && <text x={PLOT.left - 30} y={PLOT.bottom + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>€0</text>}
       {[0, Math.floor((count - 1) / 2), count - 1].map((i) => (
         <text key={i} x={xAt(i, count)} y={PLOT.bottom + 40} textAnchor={i === 0 ? "start" : i === count - 1 ? "end" : "middle"} fontFamily={TYPE.ui} fontSize={24} fontWeight={650} fill={BRAND.inkMuted}>
-          {story.periodLabel} {i + 1}
+          {story.periodLabel} {i + first}
         </text>
       ))}
 
@@ -167,8 +175,8 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
         const color = toneColor(series.tone);
         return (
           <g key={series.id}>
-            <path d={pathUpTo(series.values, pos, story.ceiling)} fill="none" stroke={color} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
-            {series.values.slice(0, Math.floor(pos) + 1).map((value, i) => {
+            <path d={pathUpTo(series.values, pos, story.ceiling)} fill="none" stroke={color} strokeWidth={11} strokeLinecap={series.dashed ? "butt" : "round"} strokeLinejoin="round" strokeDasharray={series.dashed ? "26 20" : undefined} />
+            {!series.dashed && series.values.slice(0, Math.floor(pos) + 1).map((value, i) => {
               // The newest point pops in; older points settle to small dots.
               const age = pos - i;
               const r = age < 1 ? 5 + 6 * (1 - age) : 5;
@@ -187,15 +195,26 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
         return (
           <g key={series.id}>
             <circle cx={x} cy={y} r={14} fill={BRAND.paper} stroke={color} strokeWidth={7} />
-            <text x={x + 30} y={dir < 0 ? y - 42 : y + 56} fontFamily={TYPE.ui} fontSize={44} fontWeight={830} fill={color} style={{ fontVariantNumeric: "tabular-nums" }}>
-              {euro(valueAt(series.values, pos))}
-            </text>
-            <text x={x + 30} y={dir < 0 ? y - 10 : y + 90} fontFamily={TYPE.ui} fontSize={27} fontWeight={720} fill={BRAND.inkSoft}>
-              {series.label}
-            </text>
+            {labelOpacity > 0 && (
+              <g opacity={labelOpacity}>
+                <text x={x + 30} y={dir < 0 ? y - 42 : y + 56} fontFamily={TYPE.ui} fontSize={44} fontWeight={830} fill={color} style={{ fontVariantNumeric: "tabular-nums" }}>
+                  {series.headText ?? euro(valueAt(series.values, labelPos), story.headStep)}
+                </text>
+                <text x={x + 30} y={dir < 0 ? y - 10 : y + 90} fontFamily={TYPE.ui} fontSize={27} fontWeight={720} fill={BRAND.inkSoft}>
+                  {series.label}
+                </text>
+              </g>
+            )}
           </g>
         );
       })}
+
+      {story.crossing && pos >= story.crossing.period && (
+        <g>
+          <line x1={xAt(story.crossing.period, count)} y1={yAt(story.crossing.value, story.ceiling)} x2={xAt(story.crossing.period, count)} y2={PLOT.bottom} stroke={BRAND.inkSoft} strokeWidth={4} strokeDasharray="10 10" />
+          <text x={xAt(story.crossing.period, count) - 16} y={PLOT.bottom - 22} textAnchor="end" fontFamily={TYPE.ui} fontSize={32} fontWeight={820} fill={BRAND.ink}>{story.crossing.label}</text>
+        </g>
+      )}
 
       <text x={PLOT.right} y={PLOT.top - 30} textAnchor="end" fontFamily={TYPE.ui} fontSize={28} fontWeight={820} letterSpacing="0.12em" fill={BRAND.inkSoft} style={{ fontVariantNumeric: "tabular-nums" }}>
         {story.periodLabel.toUpperCase()} {period}
@@ -223,14 +242,16 @@ function GapCounter({ story, pos, finish }: { story: LineRaceData; pos: number; 
   // The lines sit on period points (0 to count - 1); the counter accrues over
   // count periods so it reads 0 at the start and the full total at the finish.
   const count = upper.values.length;
-  const total = runningGap(upper.values, lower.values, (pos / Math.max(1, count - 1)) * count);
+  const total = story.gap.atPoint
+    ? valueAt(upper.values, Math.round(pos)) - valueAt(lower.values, Math.round(pos))
+    : runningGap(upper.values, lower.values, (pos / Math.max(1, count - 1)) * count);
   return (
     <div style={{ position: "absolute", left: 72, right: 90, top: 1352 }}>
       <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>
         {(finish >= 1 ? story.gap.finalLabel : story.gap.label).toUpperCase()}
       </div>
       <div style={{ marginTop: 6, fontFamily: TYPE.ui, fontSize: 104, fontWeight: 850, lineHeight: 1, letterSpacing: "-0.05em", color: BRAND.ink, fontVariantNumeric: "tabular-nums" }}>
-        {finish >= 1 ? `About ${euro(total, 1000)}` : euro(total)}
+        {finish >= 1 ? `About ${euro(total, 1000)}` : euro(total, story.headStep)}
       </div>
     </div>
   );
@@ -263,6 +284,8 @@ export function LineRaceStory({ input }: { input: ReelInput }) {
   const pos = clamp((now - start) / Math.max(1, end - start)) * (count - 1);
   const finish = progress(now, end, end + 600);
   const hookMode = now < input.hookSpan.endMs;
+  const activeAnchor = currentBeat(input, now)?.beat.anchor;
+  const beatCard = story.cardOnBeat && activeAnchor?.type === "card" ? activeAnchor : undefined;
 
   return (
     <div style={{ position: "absolute", inset: 0 }}>
@@ -273,8 +296,14 @@ export function LineRaceStory({ input }: { input: ReelInput }) {
         </>
       )}
       {!hookMode && <RaceHeading input={input} now={now} />}
-      <RaceChart story={story} pos={pos} finish={finish} />
-      <GapCounter story={story} pos={pos} finish={finish} />
+      {beatCard ? (
+        <div style={{ position: "absolute", left: 145, top: 470 }}><ToolCard card={beatCard} compact /></div>
+      ) : (
+        <>
+          <RaceChart story={story} pos={pos} finish={finish} />
+          <GapCounter story={story} pos={pos} finish={finish} />
+        </>
+      )}
       <ScopeLine story={story} />
     </div>
   );

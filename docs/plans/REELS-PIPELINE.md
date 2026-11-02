@@ -425,6 +425,8 @@ rebalancing, goals):
 The audit signal: a reel that opens with the answer (the flow diagram or the
 account list in beat 1) has spent its tension before it built any. Re-order
 so the figure proves the stakes mid-reel and the flow resolves them late.
+See §1f: the cover may show the result as a picture; the tension arc withholds
+the mechanism, not necessarily the result.
 
 **Cold-hook rule.** Never assume the viewer already follows the account or
 has seen earlier posts. Banned in any spoken or on-screen copy: "after the
@@ -494,6 +496,47 @@ asked whether each figure had context.
   Link only when the days continue one question. Day 2 opens from the exact
   place day 1 ends (its last card or line), so any change to day 1 means
   rereading day 2's hook and day 1's teaser together.
+
+### 1f. Reach patterns: show the answer as a picture
+
+Added Nov 2, 2026, from the 18 reels of Oct 12 to 31 (median reach 118.5). This
+is a working default from a small sample with topic mixed in and no watch time
+data, not a proven rule. Review it with the Nov 2 to 15 safety check report and
+again at 40 reels.
+
+- Default cover and hook: one picture that shows the answer with a number on
+  it. Bars or lines whose shape carries the idea. A reel whose first frame is a
+  list or labels in boxes is a rewrite unless the topic has no quantity to draw,
+  and then say why in the kit. (Chart covers: 11 reels, median 178, top 1,120.
+  Box covers: 7 reels, median 111, top 119.)
+- Fewer words is not the goal. A wordy cover over a chart reached 1,120; four
+  words over a list reached 111. Ask whether the picture carries the idea with
+  the headline covered.
+- A bar must show a real quantity. Equal bars labelled with words ("Sure",
+  "Varies") are boxes in disguise.
+- The hook puts the viewer in it, with something that applies to most people:
+  their pay, their money, what if, if your. A question alone is not enough:
+  without a shown number or a wide audience, questions reached 45 to 129.
+- Show the answer, hold the how. The cover gives the result; the reel earns its
+  watch by showing how it is reached and where it breaks. This updates §1d: what
+  is withheld is the mechanism, not the number. Accuracy caveats needed for the
+  shown answer stay on the cover or in the first beat.
+- Prefer a picture that keeps moving or builds over a run of static cards. One
+  reel only so far (Oct 30), so this is to test, not to require.
+- Chart form, also a test: where a quantity moves over time, prefer an animated
+  line (`lineRace`). Otherwise prefer vertical columns, and use horizontal bars
+  when labels are long. Do not force a line onto something that does not change
+  over time. Reach from Oct 12 to 31: line median 780 (n=2), vertical 333 (n=3),
+  horizontal 122 (n=4). One account, small samples, with topic and execution
+  mixed in.
+- Do not read these as causes: length, script length, post slot, topic day and
+  caption did not separate the top two.
+- Reach is not the whole job. The two highest-reach reels produced 0 sends, 2
+  saves and 0 follows. Keep the existing CTA rules; this sample does not show
+  what earns a send.
+- Nothing here relaxes §1e, the math-literacy guard, the MiFID wording or
+  "Illustrative" disclosure, and a chart must be drawn to scale unless it says
+  otherwise.
 
 ### 2. Reel-vs-blog division of labour
 
