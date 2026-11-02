@@ -9,7 +9,10 @@ on:
     paths-ignore:
       - '.last-sent-guid.txt'
   schedule:
-    # Daily rebuild at 06:03 UTC (08:03 CEST) to publish date-gated posts.
+    # Daily rebuild to publish date-gated posts. GitHub starts this hours late
+    # (08:22 to 11:45 UTC in Oct 2026), after the 06:45 UTC reel, so
+    # scripts/deploy-trigger.gs dispatches this workflow at about 05:30 UTC.
+    # This schedule is the backstop for that trigger.
     # The newsletter workflow is triggered downstream of this (via the
     # trigger-newsletter job below), so scheduled deploys also end up
     # firing a newsletter pass — which, if nothing is pending, is a no-op
