@@ -8,59 +8,28 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "Paying off a debt earns its rate for certain; investing earns more on average, not for sure",
+  "topic": "Paying off a debt avoids interest at its rate; investing has averaged more, not for sure",
   "topicChip": "PAY OFF OR INVEST · PART 1",
   "assumptions": {
     "currency": "EUR",
-    "notes": "€500 extra for one year. Mortgage 3.4%: 500 x 0.034 = €17. Card 22%: 500 x 0.22 = €110. Ratio 110 / 17 = 6.5. First year interest avoided, simple interest; a card balance may clear sooner. Balances €280,000 mortgage and €4,000 card from the blog's worked example. Rate bands: low inflation economies, after tax, from the blog."
-  },
-  "barStory": {
-    "mode": "direct",
-    "proportional": false,
-    "unit": "EUR",
-    "basis": "Illustrative; investing returns are not guaranteed",
-    "bars": [
-      {
-        "id": "payoff",
-        "label": "Pay off debt",
-        "sublabel": "certain",
-        "value": 40,
-        "display": "Sure",
-        "tone": "teal"
-      },
-      {
-        "id": "invest",
-        "label": "Invest",
-        "sublabel": "not guaranteed",
-        "value": 40,
-        "display": "Varies",
-        "tone": "ink"
-      }
-    ],
-    "ratio": {
-      "display": "The hurdle",
-      "from": "payoff",
-      "to": "invest",
-      "label": "the debt's rate vs investing"
-    },
-    "disclosure": "Illustrative. Investing returns are not guaranteed."
+    "notes": "€1,000 for 5 years. 1,000 x (1 + rate)^years: card 22% about €2,703, investing about 7% about €1,403, mortgage 3.4% about €1,182; euro results not shown on screen. Debt lines show interest charged if the balance stays with no payments, which a real balance would not do for long. Investing line is the lesson's past average for diversified shares, drawn dashed because real returns jump around; not guaranteed. Card 22% and mortgage 3.4% from the blog's worked example. Rate bands: low inflation economies, after tax, from the blog."
   },
   "hookVariants": [
     {
-      "id": "big-or-small",
-      "layout": "bar-gap",
-      "narration": "Spare money: pay off debt, or invest? Start with one number.",
+      "id": "rate-bars",
+      "layout": "chart-gap",
+      "narration": "Spare money and a debt? Pay it off, or invest? Start with its rate.",
       "onscreenLines": [
-        "Pay off the debt?",
-        "Or invest?",
+        "Pay off the debt, or invest?",
+        "Start with the debt's rate",
         ""
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "hook"
+        "type": "race",
+        "stage": "race"
       },
       "emphasis": [
-        "one"
+        "rate"
       ]
     }
   ],
@@ -69,51 +38,52 @@
     {
       "id": "b1",
       "kind": "definition",
-      "narration": "Paying off a debt earns its rate, for certain: that interest stops.",
+      "narration": "Paying it off avoids interest at that rate.",
       "onscreenText": "Pay off: the debt's rate",
       "subtext": "Interest you no longer pay",
       "emphasis": [
         "certain"
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "first"
+        "type": "race",
+        "stage": "race"
       }
     },
     {
       "id": "b2",
       "kind": "comparison",
-      "narration": "Investing has usually earned more, but not for sure.",
-      "onscreenText": "Invest: more, on average",
+      "narration": "Investing has averaged about seven percent, not guaranteed.",
+      "onscreenText": "Invest: about 7%, on average",
       "subtext": "Past results, no guarantee",
       "emphasis": [
-        "usually"
+        "average"
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "second"
+        "type": "race",
+        "stage": "race"
       }
     },
     {
       "id": "b3",
-      "kind": "definition",
-      "narration": "So it's the debt's rate against what investing might earn.",
-      "onscreenText": "One number to check",
-      "subtext": "The debt's interest rate",
+      "kind": "comparison",
+      "narration": "A twenty two percent card is above it. A three point four percent mortgage, below.",
+      "onscreenText": "Above or below?",
+      "subtext": "The debt's rate against that average",
       "emphasis": [
-        "rate"
+        "above",
+        "below"
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "ratio"
+        "type": "race",
+        "stage": "finish"
       }
     },
     {
       "id": "b4",
       "kind": "definition",
-      "narration": "A twenty two percent card sets a high, certain hurdle for investing. A low mortgage rate sets a lower one, and investing isn't guaranteed.",
+      "narration": "Above, paying off often comes first. Below, investing often leads, on average.",
       "onscreenText": "The rate check",
-      "subtext": "",
+      "subtext": "In between is a judgement call",
       "emphasis": [],
       "anchor": {
         "type": "card",
@@ -122,7 +92,7 @@
         "rows": [
           {
             "label": "High rate",
-            "value": "Pay off often first",
+            "value": "Paying off often first",
             "valueSize": "small",
             "tone": "amber"
           },
@@ -134,7 +104,7 @@
           },
           {
             "label": "Low rate",
-            "value": "Investing often preferred",
+            "value": "Investing often leads",
             "valueSize": "small",
             "tone": "teal"
           }
@@ -145,14 +115,14 @@
   ],
   "cta": {
     "approved": "share",
-    "narration": "Part two: the exception, an employer match. Send this to someone weighing it up.",
+    "narration": "Part two: the rate check's exception, an employer match. Send this to someone deciding.",
     "onscreenText": "Part 2: the match",
-    "subtext": "Send this to someone weighing it up",
+    "subtext": "Send this to someone deciding",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Where does your extra €500 do more: the big mortgage, or the small card?\n\nPaying off a debt earns its rate, for certain: that interest stops. Investing has usually earned more over the long run, but not for sure. So start with the debt's rate: illustratively, a 22% card sets a high, certain hurdle for investing to beat; a 3.4% mortgage sets a lower one. Investing is not guaranteed. Part 2: the exception to the rate check, an employer match.\n\n→ Know someone weighing extra debt payments against investing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Rate bands are for low inflation economies, after tax. Investing returns are not guaranteed. Not financial advice.",
-    "tiktok": "Spare money: pay off debt or invest? Paying off earns the debt's rate for certain; investing earns more on average, not for sure. Illustrative, not financial advice."
+    "instagram": "Spare money and a debt? Pay it off, or invest? Start with its rate.\n\nPaying off a debt avoids interest at its rate. Diversified shares have averaged about 7% a year, with bad years inside that and no guarantee. Illustratively, a 22% card sits far above that, and paying it off often comes first. A 3.4% mortgage sits below it, and investing has often come out ahead, though not in every decade. In between is a judgement call. Part 2: the exception to the rate check, an employer match.\n\n→ Know someone weighing extra debt payments against investing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Rate bands are for low inflation economies, after tax. Investing returns are not guaranteed. Not financial advice.",
+    "tiktok": "Spare money and a debt? Pay it off or invest? Start with the debt's rate. Illustrative, investing returns are not guaranteed, not financial advice."
   },
   "hashtags": [
     "nidhi",
@@ -160,5 +130,62 @@
     "creditcarddebt",
     "mortgagetips",
     "debtfree"
-  ]
+  ],
+  "lineRace": {
+    "periodLabel": "Year",
+    "firstPeriod": 0,
+    "hideValueAxis": true,
+    "series": [
+      {
+        "id": "card",
+        "label": "Credit card",
+        "tone": "amber",
+        "values": [
+          1000.0,
+          1220.0,
+          1488.4,
+          1815.85,
+          2215.33,
+          2702.71
+        ],
+        "headText": "22%"
+      },
+      {
+        "id": "invest",
+        "label": "Investing average",
+        "tone": "ink",
+        "values": [
+          1000.0,
+          1070.0,
+          1144.9,
+          1225.04,
+          1310.8,
+          1402.55
+        ],
+        "headText": "about 7%",
+        "dashed": true
+      },
+      {
+        "id": "mortgage",
+        "label": "Mortgage",
+        "tone": "teal",
+        "values": [
+          1000.0,
+          1034.0,
+          1069.16,
+          1105.51,
+          1143.09,
+          1181.96
+        ],
+        "headText": "3.4%"
+      }
+    ],
+    "ceiling": 3000,
+    "gridlines": [],
+    "secondsPerPeriod": 1.5,
+    "scope": "Illustrative: €1,000 at each rate for 5 years. Debts: if left unpaid. Investing: past average, not guaranteed.",
+    "disclosure": "Illustrative: €1,000 at each rate for 5 years. Debts: if left unpaid. Investing: past average, not guaranteed.",
+    "cardOnBeat": true,
+    "headLabelsFrom": 2
+  }
 }

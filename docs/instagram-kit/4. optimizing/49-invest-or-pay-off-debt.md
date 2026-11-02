@@ -18,9 +18,9 @@ withheld: The seven step default order for several debts, how tax relief lowers 
 
 ## Day 1 (angle)
 
-angle: Paying off a debt earns its rate for certain; investing earns more on average, not for sure
+angle: Paying off a debt avoids interest at its rate; investing has averaged more, not for sure
 breadth: narrow | Needs a loan condition: a viewer carrying both a mortgage and a card balance
-number: none in the reel beyond a 22% card; the caption names a 3.4% mortgage
+number: three rates on one chart to scale: card 22%, investing about 7% (past average, not guaranteed), mortgage 3.4%
 takeaway: The debt's rate against what investing might earn decides it; the rate check card gives the common bands.
 tool: The rate check. Above about 8 to 10% after tax, debt often comes first; 4 to 8% is a judgement call; below about 4%, investing often comes out ahead on expected value.
 send_to: A friend weighing extra debt payments against investing.
@@ -195,8 +195,8 @@ more: How tax relief changes a debt's rate
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Mortgage or card?
-d1_f1_caption: Where €500 extra avoids more interest
+d1_f1_overlay: Pay it off, or invest?
+d1_f1_caption: Start with the debt's rate
 
 d1_f2_kind: poll
 d1_f2_alt: Plain story background with the series label, for the poll sticker asking which debt gets extra money first.
