@@ -2,7 +2,10 @@
 slug: "tax-advantaged-accounts"
 title: "Tax-Advantaged Accounts: Where to Hold Your Investments"
 description: "Where you hold an investment can matter as much as what you invest in. Tax-advantaged accounts can save more than most fund-selection decisions."
-tldr: "Tax-advantaged accounts are wrappers that reduce or defer the tax on your investments. Every developed economy has them in roughly five flavours: employer-matched retirement, tax-deferred personal retirement, tax-free-growth personal retirement, purpose-specific accounts (health, education, first home), and equity-linked accounts with lockups. The vehicle names change by country but the decision logic doesn't. A common default ordering: build a starter emergency fund, clear high-interest debt, capture any employer match (many people do this as soon as the starter fund exists), complete the emergency fund, then fill tax-advantaged retirement accounts before a taxable brokerage. The post walks through each category and ends with a country-by-country reference table."
+tldr:
+  - "These accounts reduce or defer tax on your investments, and the names change by country while the logic does not."
+  - "They fall into roughly five groups, including workplace retirement plans and accounts for health, education or a first home, though availability varies."
+  - "A common order is starter emergency savings, high-interest debt, money an employer adds, full emergency savings, retirement accounts, then taxable investing."
 takeaways:
   - "The five functional categories of tax-advantaged accounts"
   - "The order commonly suggested for filling them, and why"

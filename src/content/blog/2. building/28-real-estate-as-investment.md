@@ -2,7 +2,10 @@
 slug: "real-estate-as-investment"
 title: "Real Estate as an Investment: Beyond Just Owning a Home"
 description: "Real estate is the asset most people own, the one most people misunderstand, and the one where the math is least intuitive."
-tldr: "Real estate is a distinct asset class with its own return profile, risks, and quirks. It generates returns through rental income and capital appreciation, but the honest total return has to include maintenance, taxes, insurance, vacancy, and transaction costs, which typically consume a larger share of gross returns than people expect. Leverage through a mortgage amplifies both gains and losses. Real estate is highly illiquid and concentrated by nature: one property, one location, one large ticket size. 'Renting is throwing money away' is a myth. The right comparison is always renting plus investing the difference vs buying and paying ownership costs. Your primary home is a strange hybrid: an asset on the balance sheet, a liability in the cash flow, and a lifestyle decision before it is a financial one."
+tldr:
+  - "Property earns through rent and rising value, but maintenance, tax, insurance, vacancy and transaction costs take a larger share than people expect."
+  - "A mortgage magnifies both gains and losses, and property is hard to sell and concentrated in one place."
+  - "The fair comparison is renting plus investing the difference against buying and paying ownership costs."
 takeaways:
   - "Why gross appreciation overstates real estate returns"
   - "How mortgage leverage amplifies both gains and losses"

@@ -2,7 +2,10 @@
 slug: "how-to-get-out-of-debt"
 title: "How to Get Out of Debt: Snowball vs. Avalanche"
 description: "Two well-known strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes math. How each works and what each one suits."
-tldr: "The snowball method pays off debts from smallest balance to largest, building momentum with quick wins. The avalanche method pays off debts from highest interest rate to lowest, minimizing total interest paid. Both work. The interest difference between them is often modest, so the method someone actually sticks with tends to matter more. Both rely on keeping up minimum payments on everything and directing extra money at one target debt."
+tldr:
+  - "Paying off the smallest balance first brings quick wins."
+  - "Paying off the highest rate first costs the least interest, though the difference is often modest."
+  - "Both keep up minimum payments everywhere, and the method someone sticks with tends to matter more."
 takeaways:
   - "Why both methods rely on minimum payments on every debt"
   - "How the snowball method builds momentum with quick wins"

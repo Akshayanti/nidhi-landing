@@ -3,7 +3,10 @@ slug: "blended-and-non-traditional-families"
 title: "Blended Families: Wills That Provide for Stepchildren and Partners"
 seoTitle: "Blended Families: Wills for Stepchildren and Partners"
 description: "Stepchildren usually inherit nothing by default, and leaving everything to a spouse can cut out your own children. How blended families provide for both, and share costs across homes."
-tldr: "Rules about children assume two legal parents and one household. In a blended family, stepchildren usually inherit nothing unless named, and the most natural will, everything to my spouse, can disinherit your own children by accident when the surviving spouse's estate passes to their own heirs. Depending on local law and providers' rules, families may use a life interest, separately directed assets or life insurance to balance a survivor's needs with provision for children. Across homes, who pays for which child, who controls a child's account and who claims which allowance are questions many families agree out loud and write down."
+tldr:
+  - "In a blended family, stepchildren usually inherit nothing unless named."
+  - "Leaving everything to a spouse can accidentally disinherit your children if the surviving spouse's estate later passes to their own heirs."
+  - "Depending on local law and provider rules, a lifelong right to use assets, assets left directly to children or life insurance can provide for both."
 takeaways:
   - text: "How naming stepchildren brings them into your inheritance plan"
     href: "#naming-stepchildren-in-your-inheritance-plan"

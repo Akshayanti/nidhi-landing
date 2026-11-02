@@ -2,7 +2,10 @@
 slug: "refinancing-timing"
 title: "Should You Refinance Your Mortgage? The Break-Even Test"
 description: "When does refinancing a mortgage or loan pay off? The break-even month, where the rate-drop rule of thumb breaks, the trade-off when waiting for lower rates, and cash-out risks."
-tldr: "A refinance pays only after its break-even month. Closing costs divided by the monthly payment reduction is a useful first estimate when the old and new loans have comparable remaining terms; otherwise the remaining balances need comparing too. Many people look for keeping the loan about twice that long. The 0.5 to 1 point rate-drop rule is a rough guide that breaks with very low or high costs and small balances, and waiting for further cuts gives up the savings available on today's terms, while postponing the refinancing costs."
+tldr:
+  - "Replacing a loan pays off only once the monthly saving has covered the cost of switching."
+  - "Those costs divided by the monthly saving give a rough first estimate when both loans have similar time left."
+  - "Many people look for keeping the loan about twice that long; waiting for a lower rate gives up today's savings but delays switching costs."
 takeaways:
   - text: "Why break-even is compared with how long you will keep the loan"
     href: "#a-refinance-pays-only-after-its-break-even-month"

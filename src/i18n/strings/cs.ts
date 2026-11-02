@@ -610,6 +610,8 @@ export const cs: Dict = {
         middle: ', ',
         after: ' atd.), pokud návštěva přišla z odkazu, který jsme označili my nebo někdo jiný.',
       },
+      lessonShare:
+        'Sdílení nebo uložení lekce: systémová nabídka sdílení se otevře, jen když klepnete na Share, a odkaz s názvem dostane aplikace, kterou si vyberete. Odkazy na WhatsApp a e-mail se s těmito službami spojí, jen když na ně klepnete. Odkaz sdílený nebo zkopírovaný těmito tlačítky nese parametry kampaní, které říkají jen to, že byl sdílen a jak, nic o vás, a když ho někdo otevře, jeho anonymní událost zobrazení stránky je obsahuje. Save as PDF používá okno tisku vašeho prohlížeče ve vašem zařízení a nic nenahrává. Aby stránka v prohlížeči aplikace, který neumí tisknout, mohla vysvětlit další postup, přečte ve vašem zařízení název prohlížeče a výsledek nikam neposílá.',
       consentClicks:
         'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co jste zadali.',
     },

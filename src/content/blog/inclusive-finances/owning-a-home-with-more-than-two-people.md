@@ -3,7 +3,10 @@ slug: "owning-a-home-with-more-than-two-people"
 title: "Buying a Home With Friends or Partners: Owning It Together"
 seoTitle: "Buying a Home With Friends or Partners"
 description: "Buying a home with three or more people? How joint tenancy can hand the house to the last survivor, why title and mortgage are separate, and what a co-ownership agreement records."
-tldr: "When three or more people buy a home, three things decide whether it works. The title: under joint tenancy each death passes the share to the remaining owners, so the last survivor ends up with everything; stated shares let each person choose where theirs goes. The mortgage, a separate question: everyone named owes the whole debt, and someone who pays without being on the title or the loan has the weakest position. And a co-ownership agreement recording contributions and a buy-out formula, because a departure usually means refinancing."
+tldr:
+  - "When three or more people buy a home, the title, the mortgage and a written agreement decide whether it works."
+  - "Under one kind of title the last survivor ends up with everything; stated shares let each person choose where theirs goes."
+  - "Everyone on the mortgage owes the whole debt, and someone paying without being on the title or loan has the weakest position."
 takeaways:
   - text: "Who inherits your share under joint tenancy or tenancy in common"
     href: "#choosing-joint-tenancy-or-tenancy-in-common-who-inherits-your-share"

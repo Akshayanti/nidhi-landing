@@ -2,7 +2,10 @@
 slug: "financial-planning-with-a-disability"
 title: "Disabled People: Working and Saving Around Benefit Limits"
 description: "Earning or saving more can cost a disabled person more in lost benefits than it brings in. How the benefit cliff works, what to check first, and the accounts and trusts that may help protect support."
-tldr: "For a disabled person on means-tested support, standard advice to earn more and save more can backfire. Benefits are withdrawn as income or savings rise, sometimes all at once: in this post's invented example, €100 more pay costs €800 a month. Three questions before any change help: what counts as income, what counts as savings, and what happens at the limit. Depending on local rules, a protected account or suitably drafted trust may let someone save without all of it counting in a means test, and families considering an inheritance can check whether leaving money to such a structure would protect support better than a direct gift."
+tldr:
+  - "For a disabled person whose support depends on income or savings, the usual advice to earn and save more can backfire."
+  - "Support is withdrawn as income or savings rise, sometimes all at once: in this lesson's invented example, €100 more pay costs €800 a month."
+  - "Depending on local rules, a special savings account or suitable legal structure may let someone save without all of it counting for support."
 takeaways:
   - text: "What to check about benefit limits before earnings or savings change"
     href: "#checking-benefit-limits-before-earnings-or-savings-change"

@@ -2,7 +2,10 @@
 slug: "emergency-fund"
 title: "The Emergency Fund: Your First Financial Safety Net"
 description: "Before you invest or pay extra on debt, build a buffer. An emergency fund is the foundation that keeps the rest of your plan from collapsing."
-tldr: "An emergency fund is cash set aside for unexpected expenses: job loss, medical bills, car repairs, home repairs. A common approach is one month of essential expenses first, then three to six months, adjusted for income stability and your safety net. It usually sits somewhere accessible but separate from daily accounts. It exists so that a crisis doesn't become a debt spiral."
+tldr:
+  - "This is cash set aside for unexpected costs such as job loss, medical bills or repairs, so a crisis does not become a debt spiral."
+  - "A common approach is one month of essential costs first, then three to six months, adjusted for income stability and your safety net."
+  - "It usually sits somewhere accessible but separate from daily accounts."
 takeaways:
   - "Why an emergency fund stops a crisis becoming debt"
   - "How to size it from one month to three to six months of essentials"

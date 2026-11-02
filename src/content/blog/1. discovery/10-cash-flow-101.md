@@ -2,7 +2,10 @@
 slug: "cash-flow-101"
 title: "Cash Flow 101: Where Your Money Actually Goes"
 description: "Money comes in, money goes out. Cash flow is the map that shows you exactly where it all travels, and whether you're running a surplus or a deficit."
-tldr: "Cash flow is the movement of money in and out of your life over a period of time. Positive cash flow means you earn more than you spend. Negative cash flow means you're slowly falling behind. Tracking cash flow is the first step to controlling it. Most people don't know their number, and that's the problem."
+tldr:
+  - "Cash flow is the money moving in and out of your life over a period of time."
+  - "Positive means you earn more than you spend; negative means you are slowly falling behind."
+  - "Many people do not know their number, and tracking it is a common first step to controlling it."
 takeaways:
   - "What cash flow is and how to work out yours"
   - "Why variable expenses are where you have the most control"

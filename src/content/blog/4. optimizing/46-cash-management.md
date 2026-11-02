@@ -3,7 +3,10 @@ slug: "cash-management"
 title: "Cash Management: Where to Keep Your Emergency Fund and Cash Savings"
 seoTitle: "Where to Keep Your Emergency Fund and Cash Savings"
 description: "Where to keep cash, not just how much: the three jobs cash does, the kinds of account that fit each, and what rising or falling rates do to each one."
-tldr: "Cash at 0% quietly loses value to inflation. A common approach gives cash three jobs, this month's spending, an emergency buffer and money for a goal a few years away, and keeps each where that job fits. Which accounts exist, how they are protected and how they are taxed depends on your country."
+tldr:
+  - "Cash at 0% quietly loses value to inflation."
+  - "A common approach gives cash three jobs, this month's spending, emergencies and a goal a few years away, and keeps each where it fits."
+  - "Which accounts exist, how they are protected and how they are taxed depends on your country."
 takeaways:
   - text: "Why cash in a 0% account quietly loses value to inflation"
     href: "#cash-at-0-loses-value-you-never-see"

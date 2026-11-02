@@ -3,7 +3,10 @@ slug: "liabilities"
 title: "Liabilities: What You Owe and Why the Interest Rate Matters"
 seoTitle: "Liabilities: What You Owe and Why the Rate Matters"
 description: "Liabilities are everything you owe. Not all debt is equal: the interest rate determines whether a liability is manageable or dangerous to your net worth."
-tldr: "A liability is money you owe to someone else, usually with interest. The interest rate is usually the most important detail: a mortgage at 3.5% and a credit card at 22% are fundamentally different obligations. Ask three questions about any debt: what is the rate, what did it buy, and can you afford the payments? If the rate is higher than what you could realistically earn investing, after tax, paying the debt first usually wins."
+tldr:
+  - "A liability is money you owe, usually with interest."
+  - "The rate usually matters most: a mortgage at 3.5% and a card at 22% are very different debts."
+  - "When debt costs more than investments could realistically earn after tax, reducing that debt usually leaves more money overall."
 takeaways:
   - "Why the interest rate matters more than the balance"
   - "How to judge any debt with three questions"

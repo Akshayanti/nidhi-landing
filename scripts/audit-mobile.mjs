@@ -152,7 +152,7 @@ for (const path of pages) {
 
     // Reading text under 16px: paragraphs and list items in post bodies,
     // summaries, FAQ answers and page body copy.
-    document.querySelectorAll('.prose p, .prose li, .post-tldr p, .post-faq-a, .post-faq-a p, .about-intro, .about-body p, .about-body').forEach((p) => {
+    document.querySelectorAll('.prose p, .prose li, .post-tldr li, .post-faq-a, .post-faq-a p, .about-intro, .about-body p, .about-body').forEach((p) => {
       if (p.closest('figure, table')) return;
       const fs = parseFloat(getComputedStyle(p).fontSize);
       if (fs < 16) out.smallBody.push(`${p.className || p.parentElement.className} ${fs}px`);

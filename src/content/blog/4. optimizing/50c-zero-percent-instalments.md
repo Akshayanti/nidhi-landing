@@ -3,7 +3,10 @@ slug: "zero-percent-instalments"
 title: "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free"
 seoTitle: "Is 0% EMI or Buy Now Pay Later Really Free?"
 description: "No-cost EMI, buy now pay later, interest-free card instalments and deferred-interest store cards: who pays when it is free, the costs that turn it into credit, and the rules where you live."
-tldr: "A 0% instalment plan can be genuinely free, but someone usually pays: the shop through a fee, you through a higher price or a lost cash discount, or through processing fees, tax on interest and late charges. Choosing twelve month-end payments of €100 over a €1,140 cash price costs about 10% a year. Studies find that paying later also tends to raise spending."
+tldr:
+  - "A 0% instalment plan can be truly free, but someone usually pays: the shop, or you through a higher price, lost discount or fees."
+  - "Twelve month-end payments of €100 instead of paying €1,140 up front cost about 10% a year."
+  - "Studies find that paying later also tends to raise spending."
 takeaways:
   - text: "Who pays when an instalment plan is free"
     href: "#when-it-is-free-someone-else-pays"

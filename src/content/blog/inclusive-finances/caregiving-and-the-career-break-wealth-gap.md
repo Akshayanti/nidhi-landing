@@ -2,7 +2,10 @@
 slug: "caregiving-and-the-career-break-wealth-gap"
 title: "Caregivers: Protecting Your Pension During a Career Break"
 description: "A five-year caregiving break can leave a pension gap three times the contributions it skipped. Where it comes from, why the wealth gap outgrows the pay gap, and how carers catch up."
-tldr: "A caregiving break costs more than the salary given up. In this post's example, a five-year break at 35 skips €20,000 of pension contributions during the break and, with a 10% lower salary afterwards, another €10,000 over the following 25 years, leaving about €94,000 less in the pension at 65, on top of €300,000 of pay. That is one reason women's average pension income in the EU is about twice as far below men's as their hourly pay. Caregiver credits, contributions to the carer's own pension during the break, a negotiated return and catch-up contributions put part of the cost back with the household."
+tldr:
+  - "A caregiving break costs more than the salary given up."
+  - "In one example, five years out at 35 and 10% lower pay after leave about €94,000 less pension at 65, plus €300,000 of pay."
+  - "Pension top-ups for caring, contributions during the break, a negotiated return and catch-up contributions can put part of the cost back with the household."
 takeaways:
   - text: "How a career break's pension cost grows until retirement"
     href: "#seeing-how-a-career-breaks-pension-cost-grows-until-retirement"

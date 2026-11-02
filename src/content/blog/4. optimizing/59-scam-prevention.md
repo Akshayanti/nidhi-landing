@@ -2,7 +2,10 @@
 slug: "recognizing-and-avoiding-financial-scams-and-fraud"
 title: "Financial Scams: How to Spot One, and What to Do After"
 description: "Scam scripts change; the warning signs do not. Six red flags, the cheap defenses that stop most attacks, the emotional levers scammers use, and the four steps if fraud happens."
-tldr: "Financial fraud follows a few patterns: guaranteed returns above the risk-free rate, time pressure, unsolicited contact, hard-to-reverse payment methods, recruitment-based schemes and requests for passwords, codes or access. Knowing the patterns matters more than any specific script. Cheap defenses set up once, such as two-factor authentication, a credit freeze where one exists, transaction alerts and calling back on a known number, can block common attacks or expose them sooner. If fraud happens: freeze, document, report, monitor."
+tldr:
+  - "Fraud follows patterns: guaranteed returns above a safe rate, time pressure, unsolicited contact, hard-to-reverse payments, recruitment schemes and requests for passwords or codes."
+  - "Cheap defences set up once, such as login codes, transaction alerts and calling back on a known number, can block attacks or expose them sooner."
+  - "If fraud happens, the usual steps are to freeze accounts, document it, report it and monitor what follows."
 takeaways:
   - text: "Why warning-sign patterns matter more than specific scam scripts"
     href: "#warning-sign-patterns-matter-more-than-specific-scripts"

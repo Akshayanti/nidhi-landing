@@ -3,7 +3,10 @@ slug: "advanced-rebalancing"
 title: "Advanced Rebalancing: Glide Paths and Bond Tents Near Retirement"
 seoTitle: "Rebalancing: Glide Paths and Bond Tents Near Retirement"
 description: "How rebalancing changes near retirement: what the 100 minus age rule gets right, how a bond tent cushions the first years of withdrawals, and why too many bonds can backfire."
-tldr: "Near retirement the target mix often starts to move, and drift costs more once withdrawals begin. Glide paths, from 100 minus age to target-date funds, shift toward bonds over time. A bond tent raises bonds for about five years either side of retirement, when bad returns do the most damage, then lets shares rise again. Too many bonds can leave a 30-year retirement exposed to inflation, loss aversion can stall rebalancing, and a guaranteed pension can justify holding more in shares."
+tldr:
+  - "Near retirement the target mix often starts to move, and drift costs more once withdrawals begin."
+  - "Common approaches shift toward bonds over time, or hold more bonds for about five years either side of retirement, when bad returns do most damage."
+  - "Too many bonds can leave a long retirement exposed to inflation, and a guaranteed pension can justify holding more in shares."
 takeaways:
   - text: "What the 100 minus age rule captures and where it falls short"
     href: "#what-the-100-minus-age-rule-captures-and-where-it-falls-short"

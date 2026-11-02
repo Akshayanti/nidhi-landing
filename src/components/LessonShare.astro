@@ -1,0 +1,112 @@
+---
+/**
+ * Share or save a lesson: one bar closing the header and one after the lesson.
+ *
+ * Without JavaScript only the two plain links show. The script in BlogPost.astro
+ * then shows Copy link and Save as PDF, and swaps the links for Share where the
+ * browser can open its own share sheet. Nothing reaches a third party before a
+ * tap. Lessons are English in every edition, so these labels are too.
+ */
+import { emailHref, lessonShareUrl, whatsAppHref } from '../utils/lessonShare';
+
+interface Props {
+  slug: string;
+  title: string;
+  /** The end bar names itself; the top bar stays quiet under the header. */
+  labelled?: boolean;
+}
+
+const { slug, title, labelled = false } = Astro.props;
+---
+
+<div
+  class:list={['lesson-share', { 'lesson-share--labelled': labelled }]}
+  role="group"
+  aria-label="Share or save this lesson"
+  data-lesson-share
+  data-title={title}
+  data-native-url={lessonShareUrl(slug, 'native')}
+  data-copy-url={lessonShareUrl(slug, 'copy')}
+>
+  {labelled && <p class="lesson-share-label" aria-hidden="true">Share or save this lesson</p>}
+  <div class="lesson-share-row">
+    <button type="button" class="tool-exportBtn" data-attr="lesson-share-native" data-share-native hidden>Share</button>
+    <a class="tool-exportBtn lesson-share-link" href={whatsAppHref(slug, title)} target="_blank" rel="noopener noreferrer" data-attr="lesson-share-whatsapp" data-share-fallback>Send on WhatsApp</a>
+    <a class="tool-exportBtn lesson-share-link" href={emailHref(slug, title)} rel="noopener noreferrer" data-attr="lesson-share-email" data-share-fallback>Send by email</a>
+    <button type="button" class="tool-exportBtn" data-attr="lesson-copy-link" data-share-copy hidden>Copy link</button>
+    <button type="button" class="tool-exportBtn lesson-share-save" data-attr="lesson-save-pdf" data-share-save hidden>Save as PDF</button>
+  </div>
+  <p class="lesson-share-status" role="status" data-share-status></p>
+  <input class="lesson-share-address" type="text" readonly aria-label="Link to this lesson" value={lessonShareUrl(slug, 'copy')} data-share-address hidden />
+</div>
+
+<style>
+  .lesson-share {
+    margin-top: var(--space-5);
+  }
+
+  .lesson-share--labelled {
+    margin-top: var(--space-8);
+  }
+
+  .lesson-share-label {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .lesson-share-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .lesson-share-row [hidden],
+  .lesson-share-address[hidden] {
+    display: none;
+  }
+
+  .lesson-share-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  /* A different job from sending, so it stands a little apart. */
+  .lesson-share-save {
+    margin-inline-start: var(--space-4);
+  }
+
+  .lesson-share-status {
+    margin: var(--space-2) 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  .lesson-share-status:empty {
+    display: none;
+  }
+
+  .lesson-share-address {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: var(--space-2);
+    padding: 0 var(--space-3);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  @media (max-width: 480px) {
+    .lesson-share-save {
+      margin-inline-start: 0;
+    }
+  }
+</style>

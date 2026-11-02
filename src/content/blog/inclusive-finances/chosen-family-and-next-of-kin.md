@@ -2,7 +2,10 @@
 slug: "chosen-family-and-next-of-kin"
 title: "Chosen Family: Naming Friends to Act for You"
 description: "If your closest people are friends, legal defaults may give relatives roles or rights that friends do not have. How the next-of-kin order works, why spoken wishes fail, and how to put your chosen family in charge."
-tldr: "When you cannot speak for yourself, and when you die, local rules decide who is consulted, who may decide, who administers the estate and who inherits. Relatives often have priority in some of those rules, while friends may have no automatic role, however close. For people whose real family is chosen, the list can name the wrong people for every role that matters, and telling people your wishes may not change the legal default; appropriately prepared local documents can change or influence some of those roles. A plan for chosen family splits the roles among several people, names a substitute for each, funds what it asks, and puts the funeral in writing."
+tldr:
+  - "When you cannot speak for yourself or you die, local rules decide who is consulted, who decides and who inherits."
+  - "Relatives often come first for some roles, while friends may have no automatic role, and telling people your wishes may not change that."
+  - "Suitable local documents can change or influence some roles, while a plan can divide them among several people and name substitutes."
 takeaways:
   - text: "Why next of kin follows blood and marriage, not closeness"
     href: "#next-of-kin-follows-blood-and-marriage-not-closeness"

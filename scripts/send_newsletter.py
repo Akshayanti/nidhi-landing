@@ -362,8 +362,7 @@ def extract_post(
     title_node = soup.select_one(".post-title") or soup.select_one("h1")
     title = title_node.get_text(strip=True) if title_node else ""
 
-    tldr_node = soup.select_one(".post-tldr p")
-    tldr = tldr_node.get_text(strip=True) if tldr_node else ""
+    tldr = " ".join(li.get_text(strip=True) for li in soup.select(".post-tldr li"))
 
     # The page shows the main path ("5 min read"); the email opens every
     # expander, so it shows the whole lesson's time from data-total-minutes.

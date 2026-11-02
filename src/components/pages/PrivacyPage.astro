@@ -172,6 +172,20 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 2, 2026',
+    iso: '2026-11-02',
+    material: true,
+    summary: 'Every lesson now has buttons to share it, copy its link or save it as a PDF. Nothing reaches another service before you tap. Links shared this way carry campaign parameters, so a shared lesson\'s visits can be counted, and new click labels are recorded only if you accept the cookie banner.',
+    details: [
+      'Share opens your device\'s own share sheet, where the browser offers one. It passes the lesson\'s title and link to the app you choose, and the page is not told which one.',
+      'Where there is no share sheet, two plain links take its place: WhatsApp (wa.me) and your email app. They contact those destinations only when you tap them, and pass the lesson\'s title and link. The WhatsApp link is opened with no referrer. No third-party script, embed, icon or request is added.',
+      'Links from these buttons are the lesson\'s address plus utm_source=share, utm_medium=referral, utm_campaign=lesson_share and utm_content, which is native, copy, whatsapp or email. They hold nothing about you and nothing from your visit. When someone opens such a link, their anonymous pageview includes those parameters, like any other tagged link.',
+      'New click labels, recorded only if you accept the cookie banner, as before: lesson-share-native, lesson-share-whatsapp, lesson-share-email, lesson-copy-link and lesson-save-pdf. There is no new event without consent, and no way to tell whether a share was completed.',
+      'Save as PDF uses your browser\'s print window on your device and uploads nothing. The page sets the date it was saved on the printed copy and does not store it. In Instagram\'s and Facebook\'s browsers and other in-app browsers, which may not print, the button explains how to open the page in your phone\'s browser instead. To know when, the page reads your browser\'s name on your device and does not send the result.',
+      'Browser storage is unchanged. There is no offline cache or service worker.',
+    ],
+  },
+  {
     date: 'Oct 30, 2026',
     iso: '2026-10-30',
     material: true,
@@ -737,6 +751,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>
           {collect.campaigns.before}<code>{KEY.utmSource}</code>{collect.campaigns.middle}<code>{KEY.utmMedium}</code>{collect.campaigns.after}
         </li>
+        <li>{collect.lessonShare}</li>
       </ul>
 
       <p><strong>{lead.withConsent}</strong></p>

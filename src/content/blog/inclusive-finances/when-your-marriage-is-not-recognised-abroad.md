@@ -3,7 +3,10 @@ slug: "when-your-marriage-is-not-recognised-abroad"
 title: "Same-Sex Marriage Abroad: Protecting Your Rights When You Move"
 seoTitle: "Same-Sex Marriage Abroad: Protecting Your Rights"
 description: "A marriage valid at home can lose its legal effect at a border, and its financial protections with it. The six-question check before a move, and the documents to test under local law."
-tldr: "A marriage is a legal status granted country by country. A couple married in one place can move somewhere that recognises the marriage fully, only for some purposes, as another status, or not at all, affecting inheritance, survivor pensions, medical authority, tax and immigration rights. Same-sex couples meet this most often. A six-question recognition check before moving tests the destination, and protections based on ownership and contract may help where status does not, though each must be checked under the destination's law."
+tldr:
+  - "A marriage is a legal status granted country by country, so moving can change how far it is recognised."
+  - "That can affect inheritance, survivor pensions, medical authority, tax and immigration rights, and same-sex couples meet this most often."
+  - "A six-question check before moving tests the destination, and ownership and contract protections may help where status does not, subject to that country's law."
 takeaways:
   - text: "How to check that your marriage is recognised where you move"
     href: "#checking-that-your-marriage-is-recognised-where-you-move"

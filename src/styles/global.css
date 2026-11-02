@@ -920,7 +920,29 @@ details[open] > .disclosure::after,
   }
 }
 
+/* A printed or saved lesson is the lesson, not the site around it. The print
+ * foot in BlogPost.astro says where it came from. */
 @media print {
+  body:has(.blog-post) .site-header,
+  body:has(.blog-post) .site-footer,
+  body:has(.blog-post) .skip-link,
+  body:has(.blog-post) .cookie-overlay,
+  .blog-post .waitlist,
+  .blog-post .subscribe,
+  .blog-post .lesson-share {
+    display: none !important;
+  }
+
+  html:has(.blog-post),
+  body:has(.blog-post) {
+    background: #fff !important;
+  }
+
+  /* A wide table shows in full on paper; its scroll box would clip it. */
+  .prose .table-scroll {
+    overflow: visible;
+  }
+
   .prose details.lesson-depth,
   .prose details.quick-check {
     break-inside: avoid;
@@ -4480,7 +4502,7 @@ body[data-page="landing"] .site-footer {
   }
   .lc-fieldHint, .lc-resultHint { font-size: 0.875rem !important; }
   .prose code { font-size: 0.875rem !important; }
-  .post-tldr, .post-tldr p, .post-faq-a, .post-faq-a p,
+  .post-tldr, .post-tldr li, .post-faq-a, .post-faq-a p,
   .about-intro, .about-body, .about-body p,
   .belief-body p, .beliefs-intro, .disclaimer, .lc-disclaimer, .mcnw-disclaimer,
   .lc-faqQ, .lc-faqA, .ifcp-faqQ, .ifcp-faqA, .mcsp-faqQ, .mcsp-faqA,

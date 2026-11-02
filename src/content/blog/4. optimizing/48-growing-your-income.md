@@ -3,7 +3,10 @@ slug: "growing-your-income"
 title: "Growing Your Income: Salary Negotiation and Career Capital"
 seoTitle: "Growing Income: Salary Negotiation and Career Capital"
 description: "How to negotiate a salary offer, why a €5,000 starting gap can be worth about €238,000 over a career, and whether switching jobs or staying pays more."
-tldr: "Cutting costs has a floor; raising income has more room, though it depends on your field and market. A higher starting salary carries into every later percentage raise: €5,000 more at the start is about €238,000 more over 30 years at 3% raises. Negotiating at the offer stage, building career capital and weighing a move against staying are the main levers."
+tldr:
+  - "Cutting costs has a floor; raising income has more room, depending on your field and market."
+  - "A higher starting salary carries into later raises: €5,000 more at the start is about €238,000 over 30 years at 3% raises."
+  - "The main levers are negotiating before accepting a job, building skills and reputation, and weighing a move against staying."
 takeaways:
   - text: "Why raising income has more room than cutting expenses"
     href: "#raising-income-has-more-room-than-cutting-costs"

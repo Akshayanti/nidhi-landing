@@ -16,7 +16,11 @@ const blog = defineCollection({
      */
     seoTitle: z.string().max(57).optional(),
     description: z.string(),
-    tldr: z.string(),
+    /**
+     * Two or three short plain bullets, with no glossary term from any lesson.
+     * src/utils/tldrRules.ts holds the limits and checks them at build time.
+     */
+    tldr: z.array(z.string()),
     /**
      * Two to five short topic phrases ("Why ...", "How to ..."), listed under
      * the TL;DR as "In this lesson". Each one names something the lesson

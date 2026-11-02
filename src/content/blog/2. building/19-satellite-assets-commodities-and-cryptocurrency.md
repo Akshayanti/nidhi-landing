@@ -3,7 +3,10 @@ slug: "satellite-assets-commodities-and-cryptocurrency"
 title: "Beyond the Core: Commodities and Cryptocurrency as Satellite Assets"
 seoTitle: "Commodities and Cryptocurrency as Satellite Assets"
 description: "Commodities and crypto come up in most investing conversations but don't behave like the core four. Why many portfolios hold them only as small satellites."
-tldr: "Commodities (gold, oil, agricultural products, industrial metals) and cryptocurrency sit outside the four core asset classes. Commodities have no cash flow; their returns come purely from price changes. They're a legitimate hedge against inflation and currency crises, but a poor long-term wealth engine. Most have produced near-zero real returns over very long periods, with gold around 1% real. A 5-10% allocation is a common ceiling; many investors hold none. Cryptocurrency is closer to a speculative asset than a traditional investment. It produces no cash flow, has a short track record, and has gone through multiple 70-85% drawdowns. Mainstream guidance is consistent on a few points: borrowing to buy it and concentrating in it have wiped people out, and any holding is best thought of as money that could be lost entirely. Where people hold either, it is usually as a small satellite around a core of stocks, bonds, real estate, and cash, not as the foundation of a plan."
+tldr:
+  - "Commodities have no cash flow and are a hedge more than a long-term wealth engine, with near-zero long-run returns after inflation for most."
+  - "Cryptocurrency is closer to speculation, with no cash flow, a short record and repeated falls of 70 to 85%."
+  - "Where people hold either, it is usually a small part around a core of stocks, bonds, property and cash."
 takeaways:
   - "Why commodities and crypto have no underlying cash flow"
   - "Why gold works as a hedge rather than a wealth engine"

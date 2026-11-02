@@ -3,7 +3,10 @@ slug: "unmarried-and-cohabiting-couples"
 title: "Unmarried Couples: Protecting Each Other's Home and Pension"
 seoTitle: "Unmarried Couples: Protecting Home and Pension"
 description: "Living together but not married? In most places you do not inherit, receive pensions or make medical decisions by default. The five documents that rebuild most of those protections."
-tldr: "Marriage switches on a bundle of defaults: inheritance without a will, survivor pensions, medical decisions, tax treatment and a framework for dividing property. Living together, however long, switches on few of them in most places; common-law marriage is widely believed in and rarely exists. Five kinds of document can recreate or clarify parts of that bundle, depending on local law and provider rules: a will, beneficiary forms, a clear record of how the home is owned, a cohabitation agreement and powers of attorney. Tax treatment usually cannot be rebuilt, only planned around, and a partner visa needs its own route."
+tldr:
+  - "Marriage brings automatic inheritance, pension and medical rights; in most places, living together brings few of them, however long the relationship."
+  - "Common-law marriage is widely believed in and rarely exists."
+  - "Wills, account nominations, home ownership records, a couple's written agreement and decision powers can recreate or clarify parts, depending on local law and provider rules."
 takeaways:
   - text: "What marriage switches on automatically, and what you miss"
     href: "#what-marriage-switches-on-automatically"

@@ -2,7 +2,10 @@
 slug: "geographic-arbitrage"
 title: "Geographic Arbitrage: Living Abroad to Save More"
 description: "Earning where pay is high and living where costs are low: how it changes your savings rate and FI target, and the visa, tax residency, healthcare and currency risks to check first."
-tldr: "Geographic arbitrage means earning where pay is high and living where costs are low. It raises the savings rate and lowers the financial independence target at once, which can cut the time to financial independence by more than half. Visas, tax residency, healthcare, currency moves and distance from family decide whether it works in practice."
+tldr:
+  - "The idea is to earn where pay is high and live where costs are low."
+  - "Saving more and needing less at once can cut the time to financial independence by more than half."
+  - "Visas, where you pay tax, healthcare, currency moves and distance from family decide whether it works in practice."
 takeaways:
   - text: "Why a lower cost base raises savings and lowers your FI target"
     href: "#a-lower-cost-base-moves-both-the-savings-rate-and-the-finish-line"

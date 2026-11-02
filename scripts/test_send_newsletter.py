@@ -19,7 +19,7 @@ SITE_URL = "https://nidhi.today"
 
 PAGE = """<!doctype html><html><body>
 <h1 class="post-title">A lesson</h1>
-<div class="post-tldr"><p>Short answer.</p></div>
+<div class="post-tldr"><ul><li>Short answer.</li><li>Second point.</li></ul></div>
 <div class="prose" id="post-content">
 <p>This opening paragraph is long enough to be the teaser hook for the email.</p>
 <details class="quick-check">
