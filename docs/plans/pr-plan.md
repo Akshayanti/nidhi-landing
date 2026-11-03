@@ -61,7 +61,7 @@ Verified against a fresh `npm run build` run.
 | PR3 | Performance + sitemap + dynamic OG | 9, 11, 24 | done | PR0 |
 | PR4 | `WebSite.SearchAction` wire-up | 17 | done (with PR3) | PR0 |
 | PR5 | Schema track: FAQ + relatedSlugs + inline links | 4 (population), 7 | 8-12 h | PR2 |
-| PR6-PR13 | Depth rewrites for thin Discovery posts | 3 (collectively) | 12-16 h | PR5 |
+| PR6-PR13 | Depth rewrites for thin Discovery posts (**superseded Nov 2026**, see that section) | 3 (collectively) | none | PR5 |
 | PR14 | EEAT: named author, byline, editorial policy, sameAs | 6, 25 | 3-5 h | PR0 |
 | PR15 | PostHog defer + env wire-up | 8 | 1-2 h | PR0 |
 | PR16 | Per-post OG image generator (optional) | 14 | 4-6 h | PR3 |
@@ -389,6 +389,15 @@ None. Content edits.
 ---
 
 ## PR6 through PR13: Depth rewrites for thin Discovery posts
+
+> **Status (2026-11-03): superseded. Do not run these PRs.** The lesson direction is now set by the November 2026 reader research, "Lesson organisation for casual readers", which favours short, layered lessons for novices reading on phones. The case for length below does not hold:
+> - Google says length alone does not affect ranking and there is no word-count target; its helpful-content guidance treats writing to a word count as a warning sign, and the rater guidelines mark down filler that inflates a page.
+> - HowTo rich results were withdrawn in Sept 2023, and FAQ rich results stopped showing for all sites in May 2026. Visible FAQs stay for readers.
+> - EUR, USD and INR example sets conflict with the euro default and the no currency-cycling rule for Discovery in `blog-content-plan.md`.
+> - Folded lesson sections are in the static HTML, so depth can sit in a fold without making the page longer to read.
+> - "Too thin to rank" (finding 3) was never measured: the repo has no Search Console data.
+>
+> **Carried over:** inline backward links in Discovery bodies (several have 0 or 1); an accuracy pass wherever a short answer could mislead, with long caveats in a fold; Search Console data before any future SEO rewrite. Finding 3 is closed as not valid, not as done.
 
 > One PR per post (4-8 PRs depending on batching). Brings each thin Discovery post above the 1,500-word threshold competing SERPs require.
 
@@ -1027,7 +1036,7 @@ All 27 findings, condensed. Each cross-refs the PR that closes it. Full evidence
 |---|---|---|---|
 | 1 | Home page H1 is the brand word, not a keyword phrase | Addressed (PR18 pending merge) | PR18 |
 | 2 | Blog post `<title>` tags omit the brand suffix; tag pages too | **Resolved** (PR1) | — |
-| 3 | Discovery posts too thin to rank | Open | PR6-PR13 |
+| 3 | Discovery posts too thin to rank | Closed, not valid (Nov 2026): length is not a ranking factor; see PR6-PR13 status | PR6-PR13 (superseded) |
 | 4 | Internal linking weak; `relatedSlugs` is dead code | **Resolved** (render side, PR2); population in PR5 | PR5 |
 | 5 | `/blog/tag/` returns a 404 | **Resolved** (PR2) | — |
 | 6 | EEAT signals missing for YMYL content | Open | PR14 |
