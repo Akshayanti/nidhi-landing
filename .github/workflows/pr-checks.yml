@@ -1,8 +1,10 @@
 name: PR Checks (free tools)
 
 # Runs the install, lint, type check, test, audit, and build gates whenever a
-# PR touches files that power the site's tools, pages or build. Unrelated PRs
-# (a lesson draft, for example) don't pay the cost of running the full suite.
+# PR touches files that power the site's tools, pages, lessons or build.
+# Unrelated PRs (plans and docs, for example) don't pay the cost of running the
+# full suite. A separate "Remotion" job checks the reel renderer when a PR
+# touches remotion/.
 #
 # Every job is a REQUIRED status check on `main` (Settings -> Branches). That
 # is why the path filter lives in the "Detect changes" job below rather than
@@ -11,7 +13,9 @@ name: PR Checks (free tools)
 # forever, blocking the merge. A job skipped by `if:` reports "skipped", which
 # satisfies a required check. Required checks, by job name:
 #   Detect changes, Install (lockfile integrity), Lint, Type check, Tests,
-#   npm audit (high+), Build (static).
+#   npm audit (high+), Build (static), Remotion (required from Nov 2026,
+#   council round 20). Renaming or removing a job means changing that list
+#   in the same breath, or every PR waits for a check that never reports.
 #
 # The Hindi edition is built as a stack of PRs: each one targets the branch
 # below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
@@ -46,6 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.filter.outputs.run }}
+      remotion: ${{ steps.filter.outputs.remotion }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -61,6 +66,7 @@ jobs:
         run: |
           if [ "$EVENT" != "pull_request" ]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "remotion=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           patterns=(
@@ -78,23 +84,17 @@ jobs:
             'src/components/Header.astro'
             'src/components/LangPicker.astro'
             'src/components/Analytics.astro'
-            'src/utils/shared/*'
-            'src/utils/monte-carlo/*'
-            'src/utils/inflation/*'
             # The inflation calculator's World Bank data, refreshed monthly by
             # inflation-data.yml in a pull request that should run the suite.
             'src/data/*'
             # Global type declarations the type check reads.
             'src/types/*'
-            # Loan comparator utilities (math, URL state, validated inputs)
-            # were grouped under src/utils/loan/ so a PR that touches only the
-            # math (e.g. changing an APR formula) still triggers the gate.
-            'src/utils/loan/*'
-            # Multi-currency net worth analyzer utilities (math + URL state).
-            # Renamed from the earlier currency-risk dir; without this glob a
-            # PR touching only the math would silently skip CI.
-            'src/utils/multi-currency-net-worth/*'
-            'src/utils/dependencies.test.ts'
+            # Every utility and its tests: the tools' math and URL state, the
+            # shared helpers, the glossary and home helpers, the dependency
+            # snapshot. One glob, because the list of subdirectories it replaced
+            # (Nov 2026) had fallen behind: glossary.mjs, home/ and
+            # invest-or-pay-off/ were tested but never triggered the checks.
+            'src/utils/*'
             'scripts/*'
             # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
             # would silently break the deploy workflow's post-deploy step;
@@ -130,27 +130,42 @@ jobs:
             # required, a skipped run counts as a pass, so any file that can
             # break the build has to be listed: every route (including the
             # `[locale]` mirror), every component and style, the content
-            # schema and the public assets. Lesson files are left out on
-            # purpose, as before: drafts change often and the deploy builds
-            # them anyway.
+            # schema and the public assets.
             'src/pages/*'
             'src/components/*'
             'src/styles/*'
             'src/content.config.ts'
             'public/*'
+            # Lessons. They were left out once, on the grounds that the deploy
+            # builds them anyway, but the build leaves out lessons dated in the
+            # future, so a mistake in a scheduled lesson surfaced only on its
+            # publish day, as a failed deploy. Here the type check validates
+            # every lesson's frontmatter (astro sync), and the tests read every
+            # lesson file, future-dated ones included (Nov 2026).
+            'src/content/*'
           )
           run=false
+          remotion=false
           while IFS= read -r file; do
+            # The reel renderer has its own package and lockfile, checked by
+            # the Remotion job, not by the site's.
+            if [[ "$file" == remotion/* ]]; then
+              echo "remotion: $file"
+              remotion=true
+              continue
+            fi
+            if [ "$run" = true ]; then continue; fi
             for pattern in "${patterns[@]}"; do
               # Unquoted on purpose: the pattern is a glob.
               if [[ "$file" == $pattern ]]; then
                 echo "matched: $file ($pattern)"
                 run=true
-                break 2
+                break
               fi
             done
           done < <(git diff --name-only HEAD^1 HEAD)
           echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "remotion=$remotion" >> "$GITHUB_OUTPUT"
 
   # ---------------------------------------------------------------------------
   # Lockfile + dependency integrity. `npm ci` fails fast if package.json and
@@ -319,3 +334,36 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  # ---------------------------------------------------------------------------
+  # The reel renderer (remotion/): its own package.json and lockfile. Runs only
+  # when a PR touches remotion/, Dependabot's Remotion bumps included. It
+  # installs strictly and type-checks; it renders nothing, since that needs a
+  # browser download and a real reel plan (the layout guard rejects the
+  # composition's placeholder props). No npm audit: Remotion never reaches
+  # readers, which is also why the site's audit uses --omit=dev.
+  # ---------------------------------------------------------------------------
+  remotion:
+    name: Remotion
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.remotion == 'true'
+    defaults:
+      run:
+        working-directory: remotion
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+
+      - name: Install (strict)
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit -p .
