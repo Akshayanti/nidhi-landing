@@ -512,7 +512,7 @@ export const en = {
    * The planner beta page (/beta/): what beta testers get, who counts, and how
    * the invite works. Every sentence is a public commitment: the wording follows
    * NetWorthAndExpenses/docs/strategy/BETA_REWARD_BRIEF.md and must not name a
-   * price, the launch date or the feature split (docs/plans/beta-reward.md).
+   * price, the launch date or the feature split (docs/plans/done/beta-reward.md).
    */
   beta: {
     meta: {
