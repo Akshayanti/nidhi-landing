@@ -983,9 +983,11 @@ export const cs: Dict = {
         currencies: '„Kolik dohromady dělají moje účty v různých měnách?“',
       },
     },
-    /** Around the founder's note; the note's own words are in src/i18n/strings/founderNote.ts until approved. */
+    /** The founder's note: its heading, the founder's words, and the links under it. */
     note: {
       label: 'Proč nidhi? Pár slov od člověka, který za projektem stojí',
+      quote: '„Spousta rad o penězích končí investicí, kterou si máte koupit. V nidhi to tak není. Věřím, že finanční gramotnost je právem každého. Lekce, navždy zdarma, jednoduchými slovy vysvětlují, jak která myšlenka funguje a kde selhává. Rozhodujete se tak informovaně, ne podle odhadů.“',
+      signOff: 'S láskou z Prahy',
       trustLine: 'Bez reklam. Bez prodeje dat. Se zdroji.',
     },
     helpCard: {

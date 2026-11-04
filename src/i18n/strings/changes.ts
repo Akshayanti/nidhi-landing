@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-04',
     items: [
       {
+        id: 'founder-note',
+        text: {
+          en: 'The home page now has a short note from me on why nidhi exists, with a promise that the lessons stay free, forever.',
+          es: 'La página de inicio tiene ahora una breve nota mía sobre por qué existe nidhi, con la promesa de que las lecciones seguirán siendo gratuitas para siempre.',
+          cs: 'Na úvodní stránce je teď krátká poznámka ode mě o tom, proč nidhi existuje, se slibem, že lekce zůstanou navždy zdarma.',
+          mr: 'मुख्यपृष्ठावर आता nidhi का आहे याबद्दल माझे थोडेसे मनोगत आहे. धडे कायम मोफत राहतील, असे वचनही त्यात आहे.',
+          hi: 'होम पेज पर अब मेरी ओर से एक छोटी-सी बात है कि nidhi क्यों बना है। साथ में यह वादा भी है कि पाठ हमेशा मुफ़्त रहेंगे।',
+        },
+      },
+      {
         id: 'waitlist-remembered',
         text: {
           en: 'If you have already joined the planner waitlist, the home page now says so where the sign-up box was, and explains that only this browser remembers it.',

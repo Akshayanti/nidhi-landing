@@ -900,9 +900,11 @@ export const mr: Dict = {
         currencies: '“वेगवेगळ्या चलनांतील माझ्या खात्यांचे एकूण मूल्य किती आहे?”',
       },
     },
-    /** Around the founder's note; the note's own words are in src/i18n/strings/founderNote.ts until approved. */
+    /** The founder's note: its heading, the founder's words, and the links under it. */
     note: {
       label: 'nidhi का? nidhi सुरू करणाऱ्या व्यक्तीकडून काही शब्द',
+      quote: '“पैशांबद्दलचे बरेचसे सल्ले शेवटी एखादी गुंतवणूक विकत घ्या असे सांगून संपतात. nidhi वर असे काहीही होत नाही. माझा विश्वास आहे की आर्थिक साक्षरता हा प्रत्येकाचा हक्क आहे. हे धडे कायम मोफत राहतील. प्रत्येक कल्पना कशी काम करते आणि कुठे कमी पडते, हे त्यांत सोप्या शब्दांत समजावले आहे. म्हणून तुमचे निर्णय अंदाज नव्हे, तर माहितीवर आधारित निवडी असतात.”',
+      signOff: 'प्रेमाने, प्रागहून',
       trustLine: 'जाहिराती नाहीत. डेटाची विक्री नाही. स्रोत दिलेले.',
     },
     helpCard: {

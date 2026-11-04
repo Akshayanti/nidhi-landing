@@ -1084,9 +1084,11 @@ export const hi: Dict = {
         currencies: '“अलग-अलग मुद्राओं में मेरे खातों की कुल रकम कितनी है?”',
       },
     },
-    /** Around the founder's note; the note's own words are in src/i18n/strings/founderNote.ts until approved. */
+    /** The founder's note: its heading, the founder's words, and the links under it. */
     note: {
       label: 'nidhi क्यों? इसकी शुरुआत से जुड़ी एक बात',
+      quote: '“पैसों से जुड़ी बहुत-सी सलाह का अंत किसी निवेश को ख़रीदने पर होता है। nidhi पर ऐसा नहीं होता। मेरा मानना है कि वित्तीय साक्षरता (financial literacy) हर किसी का हक़ है। ये पाठ हमेशा मुफ़्त रहेंगे। इनमें सरल शब्दों में समझाया गया है कि हर विचार कैसे काम करता है और कहाँ काम नहीं करता। इसलिए आपके फ़ैसले जानकारी के आधार पर लिए जाते हैं, अंदाज़ों पर नहीं।”',
+      signOff: 'प्यार के साथ, प्राग से',
       trustLine: 'कोई विज्ञापन नहीं। डेटा की बिक्री नहीं। स्रोत दिए गए हैं।',
     },
     helpCard: {

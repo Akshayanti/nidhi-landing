@@ -14,8 +14,7 @@
  * then who is behind it and two common questions. The design and the
  * decisions behind it are in docs/plans/homepage-variant-c.md.
  *
- * Every word is in the `home` catalog namespace, apart from the founder's
- * note (src/i18n/strings/founderNote.ts, a placeholder until approved). Every
+ * Every word is in the `home` catalog namespace. Every
  * lesson and tool link is chosen in src/utils/home/startingPoints.ts, which
  * deals in structure only: ids, levels, slugs and addresses.
  */
@@ -35,7 +34,6 @@ import { assertInclusiveGroups, INCLUSIVE_HUB, inclusiveHostLevels, inclusiveLin
 import { getPathPosts } from '../../utils/learnPosts';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
 import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release.ts';
-import { FOUNDER_NOTE } from '../../i18n/strings/founderNote.ts';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -51,8 +49,6 @@ const href = (path: string) => localizedPath(locale, path);
 const t = format;
 /** Outside English, marks a link that opens an English lesson. */
 const lessonLang = locale === DEFAULT_LOCALE ? {} : { hreflang: 'en' };
-/** Outside English, marks text that is still English only. */
-const enOnly = locale === DEFAULT_LOCALE ? {} : { lang: 'en' };
 
 // The volunteer card says "five languages" in words, in every catalog.
 if (LOCALES.length !== 5) {
@@ -98,10 +94,6 @@ const inclusiveText = inclusiveLine(learn.collections, inclusiveHostLevels(await
 // same filter the tools section uses.
 const lessonTotal = counts.total;
 const toolTotal = tools.length;
-
-// The founder's note is a placeholder until the owner approves its words: the
-// dev server shows it for review, a production build leaves it out.
-const showNote = isDev || !FOUNDER_NOTE.placeholder;
 
 // Shown on the page and, word for word, in the FAQPage data below.
 const faqs = home.faq.items;
@@ -359,12 +351,11 @@ const faqSchema = {
        5. Who is behind nidhi, and the call for translators
        ============================================================= */}
   <section class="lp-section" id="why">
-    <div class={`lp-section-inner help-grid${showNote ? '' : ' help-grid--card-only'}`}>
-      {showNote && (
+    <div class="lp-section-inner help-grid">
         <figure class="note">
           <h2 class="note-label">{home.note.label}</h2>
-          <blockquote class="note-say" {...enOnly}><p>{FOUNDER_NOTE.quote}</p></blockquote>
-          <figcaption class="note-by" {...enOnly}>{FOUNDER_NOTE.signOff}</figcaption>
+          <blockquote class="note-say"><p>{home.note.quote}</p></blockquote>
+          <figcaption class="note-by">{home.note.signOff}</figcaption>
           <p class="note-links">
             <span>{home.note.trustLine}</span>{' '}
             <a href={href('/about/')} data-attr="home-cta-about">{footer.links.about}</a>
@@ -376,7 +367,6 @@ const faqSchema = {
             <a href={href('/privacy/')} data-attr="home-privacy">{footer.links.privacy}</a>
           </p>
         </figure>
-      )}
       <div class="help-card">
         <p class="help-eyebrow">{home.helpCard.eyebrow}</p>
         <h2 class="help-heading" id="help-heading">{home.helpCard.heading}</h2>
@@ -931,8 +921,6 @@ const faqSchema = {
 
   @media (min-width: 900px) {
     .help-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 56px; align-items: center; }
-    .help-grid--card-only { grid-template-columns: minmax(0, 1fr); }
-    .help-grid--card-only .help-card { max-width: 520px; }
   }
 
   /* A person speaking, so it is set apart from the product sections. */
@@ -965,6 +953,7 @@ const faqSchema = {
     line-height: 1.5;
     color: var(--color-text-primary);
     text-indent: -0.42em;
+    text-wrap: pretty;
   }
 
   /* No faked italics or Latin serif for Devanagari, once the note is translated. */

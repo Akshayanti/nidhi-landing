@@ -1026,9 +1026,11 @@ export const es: Dict = {
         currencies: '«¿Cuánto suman mis cuentas en distintas monedas?»',
       },
     },
-    /** Around the founder's note; the note's own words are in src/i18n/strings/founderNote.ts until approved. */
+    /** The founder's note: its heading, the founder's words, and the links under it. */
     note: {
       label: '¿Por qué nidhi? Una nota de quien lo fundó',
+      quote: '«Muchos consejos sobre dinero acaban invitándote a comprar una inversión. En nidhi, nada acaba así. Creo que la educación financiera es un derecho de todas las personas. Las lecciones, gratuitas para siempre, explican con palabras sencillas cómo funciona cada idea y dónde falla. Así, tus decisiones son elecciones informadas, no conjeturas.»',
+      signOff: 'Con cariño, desde Praga',
       trustLine: 'Sin anuncios. Sin venta de datos. Con fuentes citadas.',
     },
     helpCard: {

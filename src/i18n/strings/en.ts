@@ -1244,13 +1244,12 @@ export const en = {
         currencies: '“How do my accounts in different currencies add up?”',
       },
     },
-    /**
-     * Around the founder's note. The note's own words (the quote and the
-     * sign-off) are not here yet: they are a placeholder in
-     * src/i18n/strings/founderNote.ts until the owner approves them.
-     */
+    /** The founder's note: its heading, the founder's words, and the links under it. */
     note: {
       label: 'Why nidhi? A note from the founder',
+      /** The founder's own words. The founder is never given a gender in any language. */
+      quote: '“A lot of money advice ends with an investment to buy. At nidhi, nothing does. I believe financial literacy is everyone’s right. The lessons, free forever, explain in plain words how each idea works and where it breaks. So your decisions are informed choices, not guesses.”',
+      signOff: 'With love, from Prague',
       trustLine: 'No ads. No data selling. Sources cited.',
     },
     /** The card beside the founder's note, while the call for translators runs. */
