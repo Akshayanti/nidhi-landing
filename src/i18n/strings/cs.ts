@@ -491,7 +491,7 @@ export const cs: Dict = {
       inflation: {
         kicker: 'Ceny v čase',
         title: 'Inflační kalkulačka',
-        desc: 'Podívejte se, co si za částku koupíte po letech inflace, kolik může cena stát později a zda zvýšení platu drží krok, s ročními daty pro většinu zemí od Světové banky.',
+        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co si za své peníze koupíte později, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
         itemName: 'Inflační kalkulačka',
       },
       investOrPayOff: {
@@ -1042,7 +1042,7 @@ export const cs: Dict = {
       netWorth: { question: '„Jaké je moje čisté jmění napříč měnami?“', name: 'Kalkulačka čistého jmění', desc: 'Jedna měna i více.' },
       loanComparison: { question: '„Který úvěr mě vyjde levněji?“', name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { question: '„Jaké rozpětí výsledků může můj plán mít?“', name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
-      inflation: { question: '„Co si za své peníze koupím později?“', name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
+      inflation: { question: '„Drží moje peníze krok s cenami?“', name: 'Inflační kalkulačka', desc: 'Minulost, budoucnost a vaše zvýšení platu, po zohlednění inflace.' },
       investOrPayOff: { question: '„Mám nejdřív investovat, nebo splatit dluh?“', name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },
