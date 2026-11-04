@@ -627,7 +627,7 @@ export const en = {
       inflation: {
         kicker: 'Prices over time',
         title: 'Inflation Calculator',
-        desc: 'See what an amount buys after years of inflation, what a price may cost later, and whether a raise keeps up, with yearly history for most countries from the World Bank.',
+        desc: 'Prices usually rise a little every year, and it adds up. See what your money will buy later, what things may cost, what an old amount is worth today, and whether your raise keeps up. For past amounts it can use your country\'s actual yearly inflation, from the World Bank, for most countries.',
         itemName: 'Inflation Calculator',
       },
       investOrPayOff: {
@@ -1322,7 +1322,7 @@ export const en = {
       netWorth: { question: '“Where do I stand, across currencies?”', name: 'Net worth calculator', desc: 'One currency or several.' },
       loanComparison: { question: '“Which loan costs me less?”', name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
       monteCarlo: { question: '“What range of results could my plan have?”', name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
-      inflation: { question: '“What will my money buy later?”', name: 'Inflation calculator', desc: 'What money buys, over the years.' },
+      inflation: { question: '“Is my money keeping up with prices?”', name: 'Inflation calculator', desc: 'Past, future and your raise, after inflation.' },
       investOrPayOff: { question: '“Should I invest or pay off my debt first?”', name: 'Invest or pay off', desc: 'Two paths, the same date, after inflation.' },
     },
   },

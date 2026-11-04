@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-04',
     items: [
       {
+        id: 'inflation-describes-all',
+        text: {
+          en: 'The home page and the free tools page now describe the questions the inflation calculator answers: what money will buy later, what things may cost, what an old amount is worth today, and whether a raise keeps up.',
+          es: 'La página de inicio y la de herramientas gratuitas ahora describen las preguntas que responde la calculadora de inflación: qué podrá comprar el dinero más adelante, cuánto podrían costar las cosas, cuánto vale hoy una cantidad de antes y si una subida salarial sigue el ritmo.',
+          cs: 'Úvodní stránka i stránka nástrojů zdarma teď popisují otázky, na které inflační kalkulačka odpovídá: co si za peníze koupíte později, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda zvýšení platu drží krok.',
+          mr: 'महागाई कॅल्क्युलेटर ज्या प्रश्नांची उत्तरे देते, ते आता मुख्यपृष्ठावर आणि मोफत साधनांच्या पानावर सांगितले आहेत: पुढे पैशांतून काय विकत घेता येईल, वस्तू किती महाग होऊ शकतात, जुन्या रकमेची आज किंमत किती, आणि पगारवाढ महागाईच्या बरोबरीने जाते का.',
+          hi: 'महँगाई कैलकुलेटर जिन सवालों के जवाब देता है, वे अब होम पेज और मुफ़्त टूल वाले पेज पर बताए गए हैं: आगे पैसे से कितना ख़रीदा जा सकेगा, चीज़ें कितने की हो सकती हैं, पुरानी कोई रकम आज कितने के बराबर है, और वेतन वृद्धि महँगाई के बराबर चल रही है या नहीं।',
+        },
+      },
+      {
         id: 'founder-note',
         text: {
           en: 'The home page now has a short note from me on why nidhi exists, with a promise that the lessons stay free, forever.',
