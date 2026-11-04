@@ -3,11 +3,12 @@
 Faceless reels for nidhi.today blog posts. Cream editorial palette, kinetic
 typography, karaoke captions, LLM-driven scripts. Rendered with Remotion.
 
-> **Status (May 2026):** v2 rewrite shipped. Discovery first (Series 1: 16
-> Basics posts), Building reels follow ~4 weeks behind carousels. Targets
-> Instagram Reels + TikTok (1080×1920 9:16). 45–75s primary cut for
-> Discovery; tension-arc Building reels (figure + flow + 6 beats) run longer,
-> ~75–85s. 12–20s hook-cut byproduct (off by default).
+> **Status (Nov 2026):** v2 pipeline in use for the Optimizing and Inclusive
+> Finances run. Reels are the only feed format since Oct 29, 2026 (PLAYBOOK
+> §2.1). Current reels follow the light rules: 25 to 35 s, at most 5 beats
+> (`action-plan-nov-2026.md` standing rules; §1e). They are written as kit plans (`docs/instagram-kit/<level>/*.reel.json`)
+> and rendered with `--from-plan`; the LLM route below is kept but not used for
+> the current run. The hook cut is off by default.
 
 ---
 
@@ -50,6 +51,19 @@ node scripts/render-reels.mjs emergency-fund --from-plan --variants-all
 # Also render the 15-20s hook-cut byproduct (off by default)
 node scripts/render-reels.mjs --hookcut
 ```
+
+**Current route (kit reels).** Copy each day's kit plan into `output/plans/<level>/`
+(`render-kit --reels-only` does not copy them), then render from the plan:
+
+```sh
+cp "docs/instagram-kit/4. optimizing/<NN-slug>.reel.json" output/plans/optimizing/<NN-slug>.json
+cp "docs/instagram-kit/4. optimizing/<NN-slug>.day2.reel.json" output/plans/optimizing/<NN-slug>-day2.json
+node scripts/render-reels.mjs <slug> --level optimizing --from-plan                # day 1
+node scripts/render-reels.mjs <slug> --level optimizing --from-plan --angle day2   # day 2
+```
+
+The commands above that call the LLM are the earlier route (Discovery and
+Building).
 
 Outputs are organised per-level (mirrors `src/content/blog/`):
 
@@ -148,6 +162,12 @@ output/videos/<slug>.mp4   (h264, 1080×1920, 30fps, ~45–75s)
 output/videos/<slug>-hookcut.mp4   (12–20s short)
 ```
 
+**Current kit reels differ from the diagram above,** which describes the LLM
+route: at most 5 beats and 25 to 35 s (the light rules), a topic chip that reads
+"<TOPIC> · PART 1/2" when two days are linked (§1e), and the data-driven
+stories in `remotion/src/components/` (growth chart, bars, months, `lineRace`,
+columns, bands, route).
+
 ---
 
 ## What changed vs v1
@@ -197,10 +217,11 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
   foryoupage. Saturated tags (banned per PLAYBOOK): personalfinance,
   financialliteracy, moneytips.
 - **Hashtag rotation (May 2026 cohort-fight protection)**: slots 1+2 are
-  mandatory `#nidhi` + `#nidhibasics` / `#nidhibuilding`. Slot 3 is the
+  mandatory `#nidhi` + the level tag (`#nidhibasics`, `#nidhibuilding`, and
+  `#nidhicompounding` for Optimizing). Slot 3 is the
   topic-specific niche tag, unique per post. Slots 4+5 rotate from a wider
   community/audience/topic-axis pool — no anchor may run on more than ~3
-  posts in a 16-post series. PLAYBOOK §30 documents the regression: when
+  posts in a 16-post series. PLAYBOOK Decision #30 documents the regression: when
   12 of 16 Discovery reels shared `#expatfinance`, IG anchored the account
   to one cluster and stalled non-follower reach. Pre-flight audit script:
   `node -e '...' | sort | uniq -c | awk "$1>3"`.
@@ -212,6 +233,9 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
   that duplicate the hashtag list (token-collapse comparison), banned
   terms. EN must dominate the count vs any single non-EN language
   (PLAYBOOK §3 cohort-balance rule).
+  Kit reels take their keywords from the kit instead (`keywords_day1`,
+  `keywords_day2`), where the `render-kit.mjs` lint enforces 18 to 24. Open
+  question for the owner: which count holds for reels (PLAYBOOK §6).
 - **TikTok extras (May 2026)**: `caption.tiktokTopics` is a 3–5 item array
   of natural-language English search-query phrases, rendered as a single
   `Topics: phrase1, phrase2, ...` line above the hashtag wave in
@@ -326,6 +350,10 @@ named character does/sees/says something specific; kind="comparison" where
 two named people / two named offers / two specific moments are juxtaposed;
 kind="warning" framed as a moment a real person notices. Decontextualised
 stats and abstract rules count toward the cap but NOT toward this minimum.
+
+Open question for the owner: the showing minimum (4 body beats) was written
+for 7 to 15 beat reels and cannot hold in a reel of at most 5 beats. Scale it
+(for example, most body beats show) or drop it for kit reels.
 
 **Recurring scene / character requirement.** If Variant 0's hook names a
 character (Maya, Jakub, Ana, Lukas) or sets a scene, that name or scene
@@ -668,6 +696,9 @@ Drift between them produces reels that don't match operator expectations.
 
 ## Series anchoring policy (counter-intuitive)
 
+Written for Discovery and Building; items 1 to 3 are Discovery and Building
+only. Current reels show a topic chip (§1e) and carry `#nidhicompounding`.
+
 **Don't put series mention in the spoken hook.** The 0–3s hook window decides
 completion rate (the 2026 IG/TikTok dominant metric). Spoken series
 anchoring ("Part 8 of 16…") burns that window. Instead:
@@ -735,6 +766,9 @@ To enable, drop royalty-free instrumental tracks into
 
 ## Hook A/B variants
 
+Not in current use: kit reels render one hook each, and no A/B results are
+recorded.
+
 Every plan carries 3 `hookVariants` (the LLM authors all three; the operator
 or the LLM picks a default). `useHookVariant` (0, 1, or 2) selects which one a
 render uses. The A/B is genuine end-to-end:
@@ -766,28 +800,25 @@ failed; fixed May/June 2026.)
 
 ---
 
-## Content cadence (May–July 2026)
+## Content cadence
 
-| Week | Carousels | Reels (new) |
-|---|---|---|
-| May 19–22 | Discovery wrap (last 1–2) | none (rewrite shipping) |
-| May 25–29 | Building #17–19 | **Discovery reels #1–3** (back-fill) |
-| Jun 1–5 | Building #20–22 | Discovery reels #4–6 |
-| Jun 8–12 | Building #23–25 | Discovery reels #7–9 |
-| Jun 15–19 | Building #26–28 | Discovery #10–12 + **Building reels #17–18 start** |
-| Jun 22–26 | Building #29–31 | Discovery #13–16 + Building #19–22 |
-| Jun 29–Jul 3 | Building #32 / wrap | Building #23–28 |
-| Jul 6–10 | Optimizing prep | Building #29–32 wrap |
-
-3 reels/week (Tue/Wed/Thu 14:30 CET — `PLAYBOOK.md:25-44`). Each reel ships
-with a 12–20s hookcut byproduct, doubling content volume for stories /
-TikTok-only A/B slots.
+Archived: see [done/REELS-PIPELINE.md](done/REELS-PIPELINE.md#content-cadence-mayjuly-2026). The current slots are in PLAYBOOK §2.1.
 
 ---
 
 ## Operator runbook
 
-### First reel of a new post
+### Current reels (kit route)
+
+Write the day's plan in the kit (`docs/instagram-kit/<level>/<NN-slug>.reel.json`,
+`.day2.reel.json`), run the §1e checks on the rendered frames, take it to the
+council, then copy and render as in the TL;DR above. The lesson must be live
+before its day 1 reel (12:15 IST): the Apps Script trigger
+(`scripts/deploy-trigger.gs`, #276) asks for the deploy at about 11:00 IST, and
+the scheduled cron is the backstop. A day 2 reel (08:45 IST) posts before that
+deploy, which is fine only while it links to the previous day's lesson.
+
+### First reel of a new post (LLM route)
 
 ```sh
 # 1. Generate plans only (cheap, fast)
@@ -831,6 +862,7 @@ roughly **$0.05–$0.08 per reel**. 32 reels (Discovery + Building) ≈ $2.
 ### What to commit
 
 - ✅ `scripts/`, `remotion/src/` — all source
+- ✅ `docs/instagram-kit/**/*.reel.json`: the source of truth for current reels
 - ✅ `output/plans/{discovery,building}/*.json` — useful for diffing LLM output
 - ✅ `output/captions/{discovery,building}/*.{txt,json}` — ready to paste, no PII
 - ❌ `output/videos/{discovery,building}/*.mp4` — gitignored (large binaries)

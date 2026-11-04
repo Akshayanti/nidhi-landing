@@ -1,5 +1,7 @@
 # Free tool: invest or pay off debt (scope brief)
 
+> Archived 2026-11-03: built and merged in #269, gated on lesson 49 (pubDate 2026-11-04); the 8-week review gate and the Nov 4 launch check moved to action-plan-nov-2026.md.
+
 **Status:** Design signed off by the council (round 4, Oct 30, 2026). Owner: build now, gated on lesson 49's pubDate so everything goes live at once on 49's slot (~Nov 4).
 
 **Owner's asks so far (Oct 30, 2026):**

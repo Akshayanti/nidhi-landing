@@ -1,5 +1,7 @@
 # Planner beta reward: decisions and copy
 
+> Archived 2026-11-03: shipped in #263 to #266 (the /beta/ page, waitlist line, header link, date wording); the live wording is in the catalogs, and the invite code and cohort privacy entries belong to the planner repo.
+
 Status (Oct 29, 2026): English v5 approved by the council (unanimous, 4 rounds). Next: the owner approves the English wording, then hi, es, cs and mr (council), then build. Nothing is on the site yet.
 
 **Source of truth:** `../NetWorthAndExpenses/docs/strategy/GRANDFATHER_STRATEGY.md`, and for wording its `BETA_REWARD_BRIEF.md` (true / not decided / honesty rules, Directive 2 calculator-not-adviser, Directive 13 plain copy). If this file and those disagree, those win. After publishing, the final wording goes to the owner to log under "Public Commitments" in the strategy doc.

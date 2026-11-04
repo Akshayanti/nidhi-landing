@@ -1,0 +1,138 @@
+# Instagram Keyword & Hashtag Tuning Rationale (archived parts)
+
+Archived parts of the file. The live file is [../IG-KEYWORDS.md](../IG-KEYWORDS.md).
+
+## Opening (under the title)
+
+> Moved 2026-11-03: overtaken by reels-only format (Oct 29) and Part 1/Part 2 linking in REELS-PIPELINE §1e; kits carry their own keywords (in kit frontmatter, not in a `## Caption` section).
+
+Per-post **audience angles** and **tuning rationale** for IG posts. The final hashtag lines and keyword arrays themselves live in each post file's `## Caption` section — that's the source of truth once a post is drafted. This doc carries the bits that don't land in the post file:
+
+- the per-post audience angle (who exactly the post is aimed at)
+- decision notes that explain why specific hashtags or keywords were included or excluded (deliberate omissions, country-vs-global hashtag choices, etc.)
+
+Use it as the **staging ground** when planning a new series, and as a **reference during rewrites or consistency reviews** to recover the original target audience and any deliberate exclusions. Tuning rules live in `PLAYBOOK.md` §3 (hashtags) and §6 (keywords block); the rules below are the project-wide defaults that informed each post's tuning.
+
+
+## Series 2 — Money in Action (Building, posts 17–32)
+
+> Moved 2026-11-03: record of shipped posts (Series 2 shipped); overtaken by reels-only format (Oct 29) and Part 1/Part 2 linking in REELS-PIPELINE §1e; kits carry their own keywords.
+
+
+Eyebrow chip on every non-hook slide reads `Money in Action · N of 16`. The series covers the full Building level (16 posts). All posts in this series have been drafted; their captions carry the canonical hashtag and keyword arrays. Notes below preserve the audience-angle target and any exclusion rationale that doesn't appear in the post files.
+
+### Post 17 — Understanding Risk
+
+**Audience angle:** first-time investors and conservative savers sitting on cash, afraid of "losing it all."
+
+---
+
+### Post 18 — Investing 101: Asset Classes
+
+**Audience angle:** learners picking their first basket — stocks/bonds/real estate/cash decision framework.
+
+---
+
+### Post 19 — Satellite Assets: Commodities and Crypto
+
+**Audience angle:** investors weighing whether gold or crypto belongs in their plan; "satellite vs core" framing for the curious-but-cautious.
+
+---
+
+### Post 20 — Diversification
+
+**Audience angle:** intermediate investors auditing concentration — single employer, single country, single sector.
+
+---
+
+### Post 21 — Getting Started Investing
+
+**Audience angle:** people who've been reading about investing for a year but haven't opened an account yet.
+
+*Brokerage names deliberately dropped from the keyword array (decision: avoid product-specific endorsements; the search phrases route searchers to the topic without naming Trade Republic / Interactive Brokers / Degiro / etc).*
+
+---
+
+### Post 22 — Taxes and Your Financial Plan
+
+**Audience angle:** intermediate planners underestimating tax drag on long-term compounding.
+
+---
+
+### Post 23 — Tax-Advantaged Accounts
+
+**Audience angle:** people maxing the wrong accounts, or ignoring the retirement wrapper that fits their country.
+
+*Country-specific hashtags (`#ISAaccount`, `#SIPPpension`) deliberately replaced with broader audience-axis tags. Localized account names (Riester, PEA, PER, etc.) live in the keyword array — that's the surface where they pull search reach, while the hashtag line stays globally legible.*
+
+---
+
+### Post 24 — Rebalancing Your Portfolio
+
+**Audience angle:** existing investors whose portfolios have drifted — 70/30 has quietly become 85/15.
+
+---
+
+### Post 25 — Introduction to Financial Independence
+
+**Audience angle:** FIRE newcomers running the math for the first time — "wait, it's savings rate, not salary?"
+
+---
+
+### Post 26 — Passive Income Streams
+
+**Audience angle:** wealth-builders planning income replacement — crossover point, dividend/rent/interest math.
+
+---
+
+### Post 27 — Understanding Loan Terms
+
+**Audience angle:** mortgage shoppers and refinancers decoding APR, amortisation, fixed vs variable.
+
+---
+
+### Post 28 — Real Estate as Investment
+
+**Audience angle:** rent-vs-buy decision makers and buy-to-let first-timers; "renting is throwing money away" myth-busters.
+
+---
+
+### Post 29 — Managing Money Across Currencies
+
+**Audience angle:** expats, diaspora, cross-border earners — multi-currency is the normal shape, not an edge case.
+
+---
+
+### Post 30 — Setting Financial Goals
+
+**Audience angle:** planners stuck with vague "someday" goals — translate wishes into numbers + dates.
+
+---
+
+### Post 31 — Financial Health Metrics
+
+**Audience angle:** spreadsheet trackers wanting a scorecard — debt-to-income, savings rate, income replacement ratio.
+
+---
+
+### Post 32 — Your Financial Dashboard
+
+**Audience angle:** personal-CFO-minded users setting a check-in cadence — monthly/quarterly/annual review rhythm.
+
+---
+
+## Future series
+
+> Moved 2026-11-03: overtaken by reels-only format (Oct 29) and Part 1/Part 2 linking in REELS-PIPELINE §1e; kits carry their own keywords; Series 3 shipped, and Series 4 entries were never added because each kit's `angle:` line holds the angle. The Inclusive Finances line stays live.
+
+
+When planning Series 3 / Mastery posts, add a new section here with one entry per post containing:
+
+- **Audience angle** — one line on who the post is aimed at (must be distinct from neighbouring posts in the series so the cohort signal stays clean)
+- **Rationale notes** (optional) — only when a deliberate inclusion or exclusion in the hashtag/keyword block needs to be documented (deviations from the tuning rules above, country-vs-global trade-offs, deliberately excluded terms, etc.)
+
+The actual hashtag line and keyword array go straight into the post file's `## Caption` section once the post is drafted; no need to stage them here.
+
+- **Series 3, Money in Mind (Psychology, posts 33 to 42):** shipped; captions live in the post files.
+- **Series 4, Money, Compounding (Optimizing, posts 43 to 60):** name decided Sep 30, 2026. Chip text is `Money, Compounding` with no "N of 18" counter, because Inclusive Finances companion posts are interleaved through the level (see `blog-content-plan.md`, "Publishing order from post 43 onward"). Add entries here when posts land.
+- **Series 5, Mastery:** name TBD. Add entries here when blog posts land.

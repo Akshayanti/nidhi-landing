@@ -1,6 +1,6 @@
 # Blog Content Plan: Discovery to Mastery
 
-> Complete content plan for nidhi.today blog, organized by the 4 learning levels defined in `src/components/LearningPath.tsx`.
+> Complete content plan for nidhi.today blog, organized by the five learning levels in the `level` enum of `src/content.config.ts` (level copy in `src/i18n/strings/learn.ts`), plus the Inclusive Finances collection, which is not a level.
 
 ---
 
@@ -44,10 +44,10 @@ This check caught the Building-series bug (April 2026) where Getting Started rel
 Blog tags are filter affordances, not keyword stuffing. They must be drawn from this closed list:
 
 **Level tags (exactly one per post, required):**
-`discovery` · `building` · `psychology` · `optimizing` · `mastery` · `inclusive-finances` (proposed)
+`discovery` · `building` · `psychology` · `optimizing` · `mastery` · `inclusive-finances` (the schema still files the Inclusive Finances collection under `level`)
 
 **Topic tags (one to three per post):**
-`fundamentals` · `saving` · `debt` · `investing` · `risk` · `taxes` · `fire` · `real-estate` · `currency` · `goals` · `planning` · `psychology` · `relationships` (proposed) · `disability` (proposed) · `immigration` (proposed)
+`fundamentals` · `saving` · `debt` · `investing` · `risk` · `taxes` · `fire` · `real-estate` · `currency` · `goals` · `planning` · `psychology` · `relationships` · `disability` · `immigration`
 
 **Rules:**
 - **Max 4 blog tags per post.** One level tag + one to three topic tags.
@@ -55,7 +55,7 @@ Blog tags are filter affordances, not keyword stuffing. They must be drawn from 
 - **No `personal finance` / `financial literacy` tags.** Every post on this site is about those; the tags add nothing for filtering.
 - **Instagram hashtags are a separate system** governed by `docs/plans/PLAYBOOK.md` section 3 (max 5, with niche/geo/brand composition).
 
-This keeps the tag universe bounded at ~17 tags today, ~20 if the Inclusive Finances level and its three proposed topic tags (`relationships`, `disability`, `immigration`) are approved. Do not add these three tags to actual post frontmatter until the level is confirmed; they are reserved here so the vocabulary decision is made once, deliberately, rather than tag-by-tag.
+The tag universe is about 20 tags, including `inclusive-finances` and the three situation tags (`relationships`, `disability`, `immigration`), which power "Explore by situation". Archived: see done/blog-content-plan.md#4-controlled-tag-vocabulary.
 
 ### 5. Tone
 
@@ -114,7 +114,9 @@ Replace with one of:
 
 **Country-specific acronyms count as jargon under rule 1.** Gloss on first use, even if the acronym is "obvious" to readers from its home country.
 
-**Not in scope:** the site's own operating currency (INR for pricing). This rule governs educational content, not commercial or pricing copy.
+**Not in scope:** the site's own commercial or pricing copy (no price is set yet). This rule governs educational content.
+
+Open question for the owner: does the euro default hold for readers in India? (Raised in `reports/Lesson organisation for casual readers.md`; Rule 7 itself was not amended on Oct 25, 2026.)
 
 **Check before shipping a Building+ post:** does it name its eurozone defaults, and does it supplement with at least one cross-continent comparison (named equivalents, a comparison table, a range, or an explicit caveat) where readers in other regions would otherwise get stuck?
 
@@ -160,7 +162,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 - One title, one optional subtitle, one short caption. Captions can run an italic line of context; they should not re-explain the figure.
 - All numerical figures carry an "Illustrative" tag inside the figure or in the caption — same MiFID-on-images rule as image content elsewhere.
 
-**Currently shipped figures (May 2026):** eight figures across eight posts (four Building, four Discovery), all inline SVG with one consistent visual grammar. xkcd #927 was retained briefly on #23 as the only photo embed but cut on consistency grounds — see PLAYBOOK Decision #30. Each kept figure shows something prose alone cannot.
+**First shipped figures (May 2026; on Nov 3, 2026, 49 lessons carry 50 figures):** eight figures across eight posts (four Building, four Discovery), all inline SVG with one consistent visual grammar. xkcd #927 was retained briefly on #23 as the only photo embed but cut on consistency grounds — see PLAYBOOK Decision #30. Each kept figure shows something prose alone cannot.
 
 | Post | Figure | Why it earns the slot |
 |---|---|---|
@@ -262,25 +264,18 @@ Layering aims to keep the lesson's reasoning while helping readers reach a usefu
 
 **Suggestions not yet applied** (from the Oct 20, 2026 review; try them on the next conversions):
 - **Key figure near the top**, when one figure carries the lesson's argument (emergency fund: "€3,000 shock, €3,000 vs €3,600").
-- **Open with a person:** the personas (`primaryPersona`) appear in the text of only 2 of 78 lessons. A short scene beats a definition; spread the stories beyond Eva (63 of 78 lessons).
-- **Figures that replace prose:** use a figure when shape, comparison or sequence communicates the idea more clearly than prose (Wait But Why's rule: if a drawing can do the work of the next paragraph, draw it). The reading-time count strips `<svg>`, so treat the displayed estimate as an approximation, not evidence that a figure costs the reader no time. 29 of 78 lessons have no figure.
-- **"Try it with your numbers"**: link the matching free tool where it fits; only 14 of 78 lessons set `relatedTool`.
+- **Open with a person:** the personas (`primaryPersona`) appear in the text of only 2 of 78 lessons (Oct 20 count). A short scene beats a definition; spread the stories beyond Eva (primary persona on 63 of 80 lessons, Nov 3).
+- **Figures that replace prose:** use a figure when shape, comparison or sequence communicates the idea more clearly than prose (Wait But Why's rule: if a drawing can do the work of the next paragraph, draw it). The reading-time count strips `<svg>`, so treat the displayed estimate as an approximation, not evidence that a figure costs the reader no time. 31 of 80 lessons have no figure (Nov 3).
+- **"Try it with your numbers"**: link the matching free tool where it fits; only 16 of 80 lessons set `relatedTool` (Nov 3).
 - **Reels land on the matching section**: link stickers and story links to `/blog/<slug>/#<heading-id>`, and reuse the reel's first line in that section.
 - **Jargon** explained in brackets on first use (already Rule 1); questions as turns in the argument.
 
-**Audit of Optimizing and Inclusive lessons (Oct 21, 2026), against the inc-1 feedback.** No other lesson has a `seoTitle`, a glossary card, linked takeaways or expanders yet.
-- **Counted, repeated headings.** 15 of the 17 other Inclusive lessons are built as "Part one: ... / Part two: ... / Cross-continent notes / Getting started". Optimizing leans on counted frameworks ("The four-step framework", "Adjustment one" to "four", "Category one" to "four", "Modifier one/two") and ends almost every lesson with "Cross-continent notes" and "Getting started".
-- **Beneficiary forms presented as a sure fix.** `blended-and-non-traditional-families`, `building-your-own-default`, `chosen-family-and-next-of-kin`, `divorce-and-separation-finances` and `multi-partner-households` treat naming a beneficiary as settling who is paid, without the binding-or-guide caveat or the difference between a lump sum and a survivor pension; their own wording needs revising, with a link to inc-1's "Is a pension beneficiary form binding?" section.
-- **Glossary candidates.** Many lessons define terms in bold paragraphs; the heaviest are `geographic-arbitrage` (35 bold-term paragraphs), `income-replacement-ratio` (34) and `scam-prevention` (32). The series terms appear in 8 Inclusive lessons that do not link to their definitions.
-- **Glossary page reach.** `/blog/glossary/` is linked only from glossary cards until it gets a link from `/blog/` or the Inclusive hub (both translated pages, so that link needs catalog strings in every language).
-- **Search words.** Weakest titles for search: "Building Your Own Default", "Interest-Free Finance: A Different Toolkit", "More Than Two Partners: Protecting Everyone", "Chosen Family: Planning When the Law Picks Your Relatives".
-- **Not audited automatically:** sections that repeat each other (as inc-1's "Five defaults" and its expander did) need a read of each lesson.
-
-**Rollout and measurement (not started).**
-1. **Reader test:** five readers from the group that called the blog text heavy read the old and new inc-1 on a phone (the old version is in git before #192) for three minutes, then explain the idea back. This, not analytics, is the main signal: blog traffic is small.
+**Rollout and measurement (steps 1 to 3 not started as of Nov 3, 2026).**
+1. **Reader test:** five readers from the group that called the blog text heavy read the old and new inc-1 on a phone (the old version is in git before #192) for three minutes, then explain the idea back. This, not analytics, is the main signal: blog traffic is small. Still not run as of Nov 3, 2026; it gates this rule for Discovery, Building and Psychology.
+   Open question for the owner: add one cold reader who arrives from a reel, as the November report proposes? This needs council sign-off.
 2. **Control lesson:** convert one long-live lesson (emergency fund, live since May 2026) to compare before and after.
 3. **PostHog:** check whether the page-leave events already carry scroll depth. Do not add any capture without a privacy changelog entry; the privacy notice says no continuous scroll stream is recorded.
-4. Then the remaining inclusive drafts (inc-2 onward), then older lessons. Each conversion re-checks its Instagram kit.
+4. Then older lessons. Each conversion re-checks its Instagram kit. (The inclusive drafts were all converted by Oct 22, 2026.)
 
 **Status:** the rule for every Optimizing and Inclusive Finances lesson, published or future, from Oct 21, 2026 (owner's decision; PLAYBOOK "Blog lessons" and Decision #44 hold the agreed list). The build enforces the checkable parts through `src/utils/layeredLessons.ts`. Every lesson at both levels was converted by Oct 22, 2026, through stacked PRs in publish order, and the backlog list was retired; a new lesson must pass from the start. For Discovery, Building and Psychology it stays a pilot: the timings and components there wait on the reader test and the control-lesson review.
 
@@ -294,46 +289,27 @@ Layering aims to keep the lesson's reasoning while helping readers reach a usefu
 
 ## Publishing Cadence & Timeline
 
-**Publishing cadence:** one post at a time on Monday, Wednesday, and Friday (blog post + Instagram carousel published together).
+**Publishing cadence:** one post at a time on Monday, Wednesday, and Friday (blog post + its two-day reel run; reels only from Oct 29, 2026).
 
-**As of May 4, 2026:** posts 1-8 are live (post 8 published today). Post 9 goes live Wed May 6, then one per M/W/F slot from there.
-
-| Milestone | Post | Target date |
-|-----------|------|-------------|
-| Discovery complete | post 16 | Fri May 22, 2026 |
-| Building complete | post 32 | Mon Jun 29, 2026 |
-| **BETA LAUNCH** | -- | **date TBD** (app not live as of Jul 15, 2026; blog stays tool-agnostic until launch decision) |
-| Psychology complete | post 42 | Wed Jul 22, 2026 |
-| Optimizing complete | post 60 | Wed Sep 2, 2026 |
-| Mastery complete | post 75 | Wed Oct 7, 2026 |
-
-**Timeline note (updated May 4, 2026):** Cadence is Mon/Wed/Fri (3/week). Previous plan assumed every-3-days (~2.3/week), so end dates pulled in by ~2-3 weeks. Gap analysis (April 23, 2026) added 5 posts. Post 13 (Time Value of Money) was removed — its unique content (present value, discount rate, opportunity cost) folded into Saving vs Investing. Budgeting was moved from Building to Discovery. Building is 13 posts (not 14).
-
-**Timeline note (updated May 7, 2026):** Building reordered. See "BUILDING" section intro for the pedagogical rationale. Post-by-post publication dates updated; Building complete date (Mon Jun 22) unchanged because the count is unchanged (still 13 posts).
-
-**Timeline note (updated Jul 14, 2026, first pass):** Milestone table refreshed to reflect actual counts and pubDates on disk. Building expanded to 16 posts (17-32) with the May 2026 additions and the #18/#19 split, ending Mon Jun 29 (post 32 = Financial Dashboard). Psychology (10 posts, 33-42) ends Wed Jul 22. Optimizing expanded to 16 posts (43-58) in the July 2026 audit, ending Fri Aug 28. Mastery (12 posts, 59-70) ends Fri Sep 25.
-
-**Timeline note (updated Jul 14, 2026, second pass):** Curriculum expanded further after an audit of Optimizing gaps and previously-deferred topics. Four new posts added to Optimizing (cash management, account consolidation, refinancing timing, scam prevention), taking Optimizing from 16 → 20 posts (43-62). Three new posts added to Mastery (charitable giving, children's finances part 1: teaching, children's finances part 2: financial vehicles), taking Mastery from 12 → 15 posts (63-77). Full curriculum grew from 70 → 77 posts. Optimizing complete date shifts Fri Aug 28 → Mon Sep 7; Mastery complete date shifts Fri Sep 25 → Mon Oct 12.
-
-**Timeline note (updated Jul 15, 2026, third pass — Path B compression):** Coverage review after drafting the first Optimizing posts identified two posts as thin on standalone financial-knowledge value without an app-hands-on angle: old #45 What-If Scenarios (mostly tool usage) and old #62 Invest-vs-Debt Decision Tree Advanced (substantial overlap with #50). Old #45 folded into #43 (Financial Projections gains a scenarios section). Old #62 folded into #50 (Invest or Pay Off Debt gains employer-match, tax-deduction, and multi-debt-sequencing sections). Optimizing 20 → 18 posts (43-60). Mastery renumbered 63-77 → 61-75 (count unchanged at 15). Full curriculum 77 → 75 posts. Optimizing complete date Mon Sep 7 → Wed Sep 2. Mastery complete date Mon Oct 12 → Wed Oct 7.
+**Status (Nov 3, 2026):** 52 lessons are live: Discovery, Building and Psychology in full, Optimizing 43 to 48 (with 43b), and the guides inc-1 to inc-3. 49 publishes Nov 4 and 50 on Nov 6; everything else carries a 2099 placeholder date. The old milestone table and timeline notes are archived: see done/blog-content-plan.md#publishing-cadence--timeline.
 
 **App-integration policy (added Jul 15, 2026):** The site is a **tool-agnostic financial-knowledge blog** for the foreseeable future. Blog post body content must not reference product features, tool capabilities, or the nidhi app by name. The `App tie-in (add on launch day):` lines in per-post entries below are **future-conditional notes**, retained for the historical record and for potential post-launch use. They are not to be reproduced in current or upcoming blog post bodies. If and when the app launches and a decision is made to add integration content, a separate pass will retrofit CTAs across shipped posts; that decision has not been made as of Jul 15, 2026.
 
-**Update (Oct 1, 2026): honest anticipation, free tools always allowed.** The site is building anticipation for nidhi while staying honest that it is not out yet. Two changes to the policy above: (1) posts may link the live free tools at `/free/` (loan comparison, multi-currency net worth) wherever they genuinely help the reader, in the body or through `relatedTool` frontmatter; (2) any product reference, on the blog or Instagram, describes nidhi as being built ("the person building nidhi"), never as available, and never claims features or dates that do not exist yet. Body content still teaches without leaning on the product.
+**Update (Oct 1, 2026): honest anticipation, free tools always allowed.** The site is building anticipation for nidhi while staying honest that it is not out yet. Two changes to the policy above: (1) posts may link the live free tools at `/free/` (loan comparison, multi-currency net worth, Monte Carlo simulator, inflation calculator, and invest or pay off, which launches Nov 4, 2026) wherever they genuinely help the reader, in the body or through `relatedTool` frontmatter; (2) any product reference, on the blog or Instagram, describes nidhi as being built ("the person building nidhi"), never as available, and never claims features or dates that do not exist yet. Body content still teaches without leaning on the product. A waitlist box for the planner sits at the end of every lesson (Oct 29, 2026).
 
-**Beta launch target:** Originally scheduled for late June 2026 immediately after post 32 (Financial Dashboard, Mon Jun 29). As of Jul 15, 2026, the launch has not occurred and no fixed date is set. Blog continues to publish as tool-agnostic educational content on the M/W/F cadence, independent of app timeline.
+**Beta:** planned to open in January 2027 (the `/beta/` page). The blog publishes on its own cadence regardless.
 
 ### Publishing order from post 43 onward (decided Sep 30, 2026)
 
-**Status:** publishing has been paused since post 42 (Wed Jul 22, 2026). The Optimizing and Mastery dates in the milestone table above are stale. **Placeholder dates (Oct 1, 2026):** the 18 Optimizing drafts and the 18 Inclusive Finances pieces carry consecutive placeholder `pubDate`s from 2099-01-01 to 2099-02-06, one day each in publishing order (43, 43b, 44, 45, inc-1, 46, ... 60, then inc-9 to inc-16), so they stay hidden in production while the order is preserved. Re-date them to the real schedule (release plan phase 0) before anything ships. **Restart (Oct 7, 2026):** #43 is dated Mon Oct 12, 2026, with its Instagram run on Oct 12 and 13, and #43b Wed Oct 14, 2026, run on Oct 14 and 15. Then #44 Fri Oct 16, #45 Mon Oct 19, inc-1 Wed Oct 21, #46 Fri Oct 23, #47 Mon Oct 26 (Instagram kits ready through #47); the rest keep their placeholders until re-dated. Host callout on #45 for inc-1 is still to add when inc-1 publishes.
+**Status (Nov 3, 2026):** publishing restarted Oct 12, 2026. Dated so far: 43 Oct 12, 43b Oct 14, 44 Oct 16, 45 Oct 19, inc-1 Oct 21, 46 Oct 23, 47 Oct 26, inc-2 Oct 28, 48 Oct 30, inc-3 Nov 2, 49 Nov 4, 50 Nov 6. The rest carry 2099 placeholder dates in publishing order, and some share a day (50b, 50c and inc-4 are all 2099-01-13; 51 and inc-8 are 2099-01-14); re-date them before they ship.
 
-**Start date is gated on Instagram.** The restart date is not set. It is decided once the reworked Instagram content kit (see `PLAYBOOK.md`) is judged good enough on a pilot post. Blog posts do not restart ahead of that.
+**Open item, overdue: host callouts.** inc-1, inc-2 and inc-3 are live, but their hosts 45, 47 and 48 do not link to them, and the template adds no callout (Exposure item 3 below). Add the three now; the next pairs (50 to inc-4, 51 to inc-8) need theirs when the guides publish.
 
 **Inclusive Finances is interleaved, not appended.** The 16 Inclusive Finances slot posts (inc-1 to inc-16) do not run as a block after Mastery and do not run as a sixth step in the queue. Each one ships directly after the curriculum post whose default-household assumption it breaks, as that post's companion. Inclusive posts are in bold:
 
 | Level | Publishing order |
 |---|---|
-| Optimizing | 43, 43b, 44, 45, **inc-1**, 46, 47, **inc-2**, 48, **inc-3**, 49, 50, **inc-4**, A how much can you borrow (50.6, added Oct 25, 2026), B 0% instalments (50.7, added Oct 25, 2026), 51, **inc-8**, 52, 53, 54, 56, **inc-5**, 57, **inc-6**, 58, **inc-7**, 59, 60 |
+| Optimizing | 43, 43b, 44, 45, **inc-1**, 46, 47, **inc-2**, 48, **inc-3**, 49, 50, **inc-4**, 50b How much can you borrow (50.6, added Oct 25, 2026), 50c 0% instalments (50.7, added Oct 25, 2026), 51, **inc-8**, 52, 53, 54, 56, **inc-5**, 57, **inc-6**, 58, **inc-7**, 59, 60 |
 | Mastery | 61, 62, 63, **inc-9**, 64, 65, 66, **inc-10**, 67, 68, 69, **inc-11**, 70, **inc-12**, 71, **inc-13**, 72, 73, **inc-14**, 74, **inc-15**, 75, **inc-16** |
 
 | Inclusive post | Ships after | The default it breaks |
@@ -355,7 +331,7 @@ Layering aims to keep the lesson's reasoning while helping readers reach a usefu
 | inc-15 Widowhood and Sudden Single-Income Transition | 74 Generational Wealth | Wealth transfer happens on a planned timeline |
 | inc-16 Building Your Own Default (capstone) | 75 The Complete Picture | Closes both arcs together |
 
-Total 49 posts in slots, 16 weeks and one extra slot at three per week before holiday skips, plus two sub-articles that take no slot.
+Total 51 posts in slots (28 Optimizing, 23 Mastery), 17 weeks at three per week before holiday skips, plus two sub-articles that take no slot.
 
 **Ids (renamed Oct 1, 2026).** Inclusive Finances posts are identified as `inc-N`, numbered in publishing order, with sub-articles taking their parent's number plus a letter. The earlier 76 to 93 numbers reflected writing order and are retired; the map below keeps old references (commit messages, notes, the Sep 30 session) resolvable. The ids are planning labels only: they never appear in file names, `order` values, or anything a reader sees.
 
@@ -384,23 +360,24 @@ If the release order changes later (see the Mastery checkpoint below), the ids s
 
 ### Release plan (decided Oct 1, 2026)
 
-Optimizing, Mastery, Inclusive Finances and the Beliefs series are released in this order. Reels are created in the same order, since every slot post gets two (PLAYBOOK §2.1).
+Optimizing, Mastery, Inclusive Finances and the Beliefs series are released in this order. Reels are created in the same order, since every slot post gets one to three days of one reel a day (PLAYBOOK §2.1).
 
 | Phase | When | What ships |
 |---|---|---|
-| 0. Build buffer | Two weeks before restart, nothing published | Instagram kits for the first six slot posts (43 done, then 43b, 44, 45, inc-1, 46; 43b inherits the old 43 day 2 "what repeats" kit); the reel visuals they need (month bars, two columns, checklist card, split bar); Beliefs reworked to the kit format; Optimizing `pubDate`s re-dated; Mastery drafting starts |
-| Comeback | The Sunday before restart | Beliefs 1, "Built from frustration" |
-| 1. Optimizing | Weeks 1 to 9 | 43 to 60 (with 43b) and inc-1 to inc-8 interleaved (27 slot posts); inc-7a and inc-7b on the non-slot days after inc-7 |
-| 2. Mastery | Weeks 10 to 17 | 61 to 75 with inc-9 to inc-16 interleaved (23 slot posts), ending on the capstone after The Complete Picture |
-| Beliefs | Every other Sunday from the comeback | Beliefs 2 to 6, so the series runs through about week 10 |
+| 0. Build buffer and comeback | Done | Archived: see done/blog-content-plan.md#release-plan-decided-oct-1-2026 |
+| 1. Optimizing | Weeks 1 to 10 | 43 to 60 (with 43b, 50b and 50c) and inc-1 to inc-8 interleaved (28 slot posts); inc-7a and inc-7b on the non-slot days after inc-7 |
+| 2. Mastery | Weeks 11 to 18 | 61 to 75 with inc-9 to inc-16 interleaved (23 slot posts), ending on the capstone after The Complete Picture |
+| Beliefs | Sundays | Sunday format from Nov 8 is an open question for the owner (PLAYBOOK §2.1, Sundays) |
 
 - **Companions stay next to their hosts (Oct 1, 2026).** Each inc post ships in the slot right after its host, even where that bunches them (two in week 3, four of the last eight slots in weeks 7 to 9). Connection to the host matters more than an even spread, so there is no per-week cap.
-- **Buffer.** Keep at least one week of finished kits (reels, carousels, stories) ahead of the posting date throughout.
-- **Mastery checkpoint, week 5.** Mastery is not drafted, and all 15 posts must be drafted before week 10. If fewer than about six are drafted by week 5, run inc-9 to inc-16 as a short stretch (about three weeks) between phases 1 and 2. They are written to stand alone with inline recaps, so this is the one case where a short run of inclusive posts is worth it.
-- **Holidays.** Skipping the Christmas to New Year week (PLAYBOOK §2) puts the run at about 17 to 18 weeks from restart.
+- **Buffer.** Keep at least one week of finished kits (reels and stories) ahead of the posting date throughout.
+- **Mastery checkpoint, week 5.** Mastery is not drafted, and all 15 posts must be drafted before week 10. If fewer than about six are drafted by week 5, run inc-9 to inc-16 as a short stretch (about three weeks) between phases 1 and 2. They are written to stand alone with inline recaps, so this is the one case where a short run of inclusive posts is worth it. **Due the week of Nov 9, 2026:** no Mastery lesson is drafted (none in `src/content/blog`, none in `docs/drafts`), so by this rule inc-9 to inc-16 run as a short stretch between the phases unless the owner decides otherwise.
+- **Holidays.** Skipping the Christmas to New Year week (PLAYBOOK §2) puts the run at about 18 to 19 weeks from restart.
 - **inc-1 runs two days.** The Sep 30 audit failed it for holding one idea; the draft now has a second one ("Why the cheap fixes are usually enough"), so it runs the normal two days.
 
 **Sub-articles (introduced Sep 30, 2026).** A sub-article extends an Inclusive Finances post to a narrower situation. It is attached to a parent post, publishes in the days after the parent on a non-slot day (Tuesday or Thursday), is linked from the parent once live, and does not get its own two-day Instagram run. It carries an `order` just after its parent. Two exist, both under inc-7 Unmarried and Cohabiting Couples:
+
+Open question for the owner: do inc-7a and inc-7b get their own two-day Instagram run? This plan and PLAYBOOK say no, but two-day kits and day 1 and day 2 reel plans exist for both (`docs/instagram-kit/`, commit 128ab5e, Oct 9, 2026). Align plan, PLAYBOOK and kits once decided.
 
 | Sub-article | Parent | Order | What it extends |
 |---|---|---|---|
@@ -409,9 +386,9 @@ Optimizing, Mastery, Inclusive Finances and the Beliefs series are released in t
 
 inc-2, inc-7a and inc-7b were split from a single draft, "Communal Living and Multi-Partner Households", which ran to about 3,700 words and had no host post. The original is kept in `docs/drafts/inclusive-finances/_superseded/`.
 
-**Draft status (Sep 30, 2026).** All eighteen Inclusive Finances pieces are drafted and self-reviewed (fifteen original posts, plus inc-2 and the two sub-articles inc-7a and inc-7b): the ones that ship inside Optimizing (inc-1, inc-3 to inc-8) and the eight that ship inside Mastery (inc-9 to inc-16). They are staged in `docs/drafts/inclusive-finances/`, not in `src/content/blog/`, because the content schema does not yet accept `level: inclusive-finances` and a file with that level inside the collection fails the build. Each carries final frontmatter, a placeholder 2099 `pubDate` (consecutive with the Optimizing drafts in publishing order, see "Placeholder dates" above), and an `order` value that places it after its host (45.5, 47.5, 48.5, 50.5, 51.5, 56.5, 57.5, 58.5, then 63.5, 66.5, 69.5, 70.5, 71.5, 73.5, 74.5, 75.5). (inc-8 was at 59.5 until Oct 30, 2026, when 51 Windfall Management became its host.) They move into the collection when the level's code support lands. **Update (Sep 30, 2026):** the code support has landed and the drafts now live in `src/content/blog/inclusive-finances/` (no number prefix on the folder, since the level is not a step in the ladder). The level is in the schema enum, `LevelBadge`, and a `--level-inclusive-finances` color token; `LearningPath.tsx` places each post after its host as an optional follow-up (Exposure item 1, revised Oct 1, 2026); the hub is at `/blog/inclusive-finances/` with "Explore by situation" links and the same cards and read toggles as the learning path; and the homepage has its own entry card. **Mastery host slugs, fixed in advance (Oct 1, 2026):** the eight Mastery companions (inc-9 to inc-16) name hosts whose posts are not written yet, so the hosts' slugs were fixed now from the planned titles and each Mastery entry below carries a "Slug (fixed)" line: `retirement-planning`, `pension-income-and-payout-options`, `international-retirement`, `estate-planning-basics`, `charitable-giving-optimization`, `financial-vehicles-for-children`, `generational-wealth`, `the-complete-picture`. Publish each Mastery post under that slug, or update the companion's `companionOf` to match. The production build fails if a live companion names a host slug that is not in the collection (`assertCompanionHosts` in `src/utils/companions.ts`). Until the hosts exist, those eight appear on the hub but not on the learning path. With the 2099 placeholder `pubDate` the posts show only in `npm run dev`. Production is unchanged, except that the hub page exists with a noindex tag and an empty state, and is left out of the sitemap until the first post goes live. Host callouts (Exposure item 3) are still to do, and are added as each companion publishes. **Figures (Sep 30, 2026):** six of the eighteen carry one inline SVG each, chosen with Codex against Rule 9: the benefit cliff (disability), contributions missed vs pension missing at 65 after a career break (caregiving; reworked Oct 3, 2026 so the post follows the pension side and leaves the pay calculation to post 45), jagged income in and flat salary out (gig work), equal vs income-based split as a share of income (shared households), the accidental disinheritance flow (blended families), and the three-question audit (the level opener). The six use one colour grammar: blue for the default arrangement, teal for a deliberate fix, warn for loss or exclusion, muted for context, and no success green. Divorce ("equal values, unequal assets") and widowhood ("the arithmetic of one") were considered and cut: the first would present fixed discounts the post itself qualifies, and the second repeats its table in a post about recent loss. The other ten are document, rights, or coordination problems whose tables already do the work. The eight Mastery companions refer to their host posts in plain prose with an inline recap, because the Mastery posts are not drafted and have no slugs to link to; add those links once the hosts exist. The legal, tax, benefit, and religious specifics were written from general knowledge and have not been checked by a specialist.
+**Mastery host slugs, fixed in advance (Oct 1, 2026):** the eight Mastery companions (inc-9 to inc-16) name hosts whose posts are not written yet, so the hosts' slugs were fixed now from the planned titles and each Mastery entry below carries a "Slug (fixed)" line: `retirement-planning`, `pension-income-and-payout-options`, `international-retirement`, `estate-planning-basics`, `charitable-giving-optimization`, `financial-vehicles-for-children`, `generational-wealth`, `the-complete-picture`. Publish each Mastery post under that slug, or update the companion's `companionOf` to match. The production build fails if a live companion names a host slug that is not in the collection (`assertCompanionHosts` in `src/utils/companions.ts`). Until the hosts exist, those eight appear on the hub but not on the learning path. The eight Mastery companions refer to their host posts in plain prose with an inline recap; add those links once the hosts exist. The full Sep 30 draft status is archived: see done/blog-content-plan.md#release-plan-decided-oct-1-2026.
 
-**Instagram structure (decided Sep 30, 2026).** Each blog post gets two days and two angles; each day carries one angle as a reel and a carousel. `docs/plans/instagram-two-angle-audit.md` lists both angles for all 25 posts in this run and the visual each needs.
+**Instagram structure.** Each blog post gets two days and two angles, each day one reel (reels only from Oct 29, 2026). Day 1 and day 2 are linked as Part 1 and Part 2 (REELS-PIPELINE §1e, Oct 30, 2026). Angles, hashtags and keywords live in each post's kit.
 
 **Consequences for the posts themselves:**
 
@@ -419,22 +396,19 @@ inc-2, inc-7a and inc-7b were split from a single draft, "Communal Living and Mu
 - **Level and hub unchanged.** Inclusive posts keep `level: inclusive-finances` and the ungated hub described under "Exposure and IA strategy". On the learning path they sit beside their hosts as optional follow-ups (Exposure item 1, revised Oct 1, 2026), matching the publishing order.
 - **Two-way companion link.** Each inclusive post links back to its host post, and the host post carries the short "This assumes X. If that is not your situation, see ..." callout. Because the inclusive post ships one slot after its host, the host's callout is added when the companion publishes (Editorial Rule 2: no forward hyperlinks).
 - **Inline recaps.** inc-7, inc-8, and inc-6 now ship before Mastery posts they lean on (estate planning #70, safe withdrawal rate #62). Each needs a self-contained one-paragraph recap of those concepts, with the link to the Mastery post added once it ships. The stand-alone rule (Exposure item 5) already requires this.
-- **Instagram framing (updated Oct 1, 2026).** Inclusive Finances is its own theme on Instagram: its own chip, `Money, For You and Me` (named Oct 1, 2026), and its own profile Highlight, so followers can recognise the theme and find it again. The chip carries no "N of 16" counter. Each post is still framed as the companion to the previous post ("the last post assumed X; what if that is not you?") and still ships interleaved, never as a block. Situation and topic hashtags only, never identity tags (PLAYBOOK §3 account-level cohort hygiene). This replaces the Sep 30 decision to run them under the host level's chip.
+- **Instagram framing (updated Oct 1, 2026).** Inclusive Finances is its own theme on Instagram: its own chip, `Money, For You and Me` (named Oct 1, 2026), and its own profile Highlight, so followers can recognise the theme and find it again. The chip carries no "N of 16" counter. Each post is still framed as the companion to the previous post ("the last post assumed X; what if that is not you?") and still ships interleaved, never as a block. Situation and topic hashtags only, never identity tags (PLAYBOOK §3 account-level cohort hygiene). This replaces the Sep 30 decision to run them under the host level's chip. Reels carry a topic chip with the part ("FREELANCE · PART 1/2", REELS-PIPELINE §1e).
 
-## Level System (from `src/content.config.ts` and `src/components/LearningPath.tsx`)
+## Level System (from `src/content.config.ts` and `src/i18n/strings/learn.ts`)
 
 | Level | Label | Prerequisite | Target |
 |-------|-------|-------------|--------|
 | `discovery` | Discovery | For beginners | 16 posts |
 | `building` | Building | Comfortable with basics | 16 posts |
 | `psychology` | Psychology | Knows the basics, ready to understand how the mind sabotages the math | 10 posts |
-| `optimizing` | Optimizing | Has a budget, investment plan, and bias awareness | 18 posts |
-| `mastery` | Mastery | Experienced planners | 15 posts |
-| `inclusive-finances` | Inclusive Finances | No prerequisite — relevant at any stage | 15 posts (proposed) |
+| `optimizing` | Optimizing | Has a budget, investment plan, and bias awareness | 20 lessons (43 to 60 without 55, plus 43b, 50b, 50c) |
+| `mastery` | Mastery | Experienced planners | 15 posts (none written yet) |
 
-> **Note:** `psychology` is a new level added May 4, 2026. Requires adding `'psychology'` to the `level` enum in `src/content.config.ts` and to `LearningPath.tsx` before the first post ships.
->
-> **Note (proposed, Sep 30, 2026):** `inclusive-finances` is a proposed sixth level. Unlike every other level in this table, it is **deliberately not part of the sequential prerequisite chain** — see "Exposure and IA strategy" under the "INCLUSIVE FINANCES" section below. Its posts carry `inc-N` planning ids (see "Ids" under the publishing order), and a handful cross-reference Mastery-level concepts (estate planning, generational wealth), but neither describes a reading gate: the level is exposed to readers from day one of the site, not after they finish the other 75 posts. Same code-activation requirement as Psychology: add `'inclusive-finances'` to the `level` enum in `src/content.config.ts`, but its `LearningPath.tsx` treatment differs from every other level (see below) rather than simply appending to `LEVEL_ORDER`.
+> **Note:** Inclusive Finances is a collection, not a level: 18 guides (16 slot posts and two sub-articles), all drafted. See the next section. The old notes are archived: see done/blog-content-plan.md#level-system-from-srccontentconfigts-and-srccomponentslearningpathtsx.
 
 ### Lessons, levels and collections (owner, Oct 29, 2026)
 
@@ -453,16 +427,16 @@ The pattern every way into the path follows, so a new one (How-to first, action 
 
 ## Gap Analysis
 
-Current state as of May 7, 2026. Discovery (16 posts) is complete and either live or scheduled. Building expanded from 13 → 15 posts after a coverage audit.
+Current state as of May 7, 2026 (history). Discovery (16 posts) is complete and either live or scheduled. Building expanded from 13 → 15 posts after a coverage audit, and to 16 with the May 9 split of #18. Post numbers in the tables below use current numbering.
 
 ### Filled gaps from earlier iterations
 
 | Post | Level | Why it was added |
 |------|-------|------------------|
 | #16 Insurance Basics | Discovery | Insurance affects net worth, cash flow, and risk management. Originally absent; added to round out Discovery. |
-| #21 Taxes and Your Financial Plan | Building | No earlier post covered taxation conceptually. Added so downstream Building posts can reason in after-tax terms. Kept jurisdiction-generic per MiFID II guardrails. |
-| #24 Introduction to Financial Independence | Building | FIRE calculators ship at beta as traffic tools. Originally in Mastery — moved forward so readers landing on the calculators have context. |
-| #26 Understanding Loan Terms | Building | Loan vendor comparison is a beta feature. Existing #5 (debt payoff) covered managing existing debt; #26 covers acquiring debt wisely. |
+| #22 Taxes and Your Financial Plan | Building | No earlier post covered taxation conceptually. Added so downstream Building posts can reason in after-tax terms. Kept jurisdiction-generic per MiFID II guardrails. |
+| #25 Introduction to Financial Independence | Building | FIRE calculators were planned as traffic tools (never built; parked in `phase-free-tools-beta.md`). Originally in Mastery — moved forward so readers landing on the calculators have context. |
+| #27 Understanding Loan Terms | Building | Loan vendor comparison is a beta feature. Existing #5 (debt payoff) covered managing existing debt; #27 covers acquiring debt wisely. |
 | Optimizing: Cash Flow Forecasting | Optimizing | Phase 1.5 cash flow modelling is a beta must-have. Added during earlier gap analysis. |
 
 ### New gaps identified and filled in May 2026
@@ -471,8 +445,8 @@ A full content audit of the 16 Discovery + (then) 13 Building posts surfaced two
 
 | New Post | Why needed |
 |----------|-----------|
-| **#22 Tax-Advantaged Accounts** | #21 (Taxes) is deliberately abstract — concepts and functional patterns, no jurisdictional products, per MiFID guardrails. But readers making concrete account-selection decisions had no bridge between the concept and regional vehicles. Post #22 maps five functional categories (employer-matched retirement, tax-deferred personal retirement, tax-free-growth personal retirement, purpose-specific, equity-linked with lockup) to regional equivalents (401(k), EPF, ISA, NPS, Roth IRA, SIPP, TFSA, etc.) via comparison tables under rule 7. |
-| **#23 Rebalancing** | Mentioned in passing in #19 (diversification), #21 (taxes), and #31 (dashboard), but no post covered the mechanics — calendar vs threshold vs contribution-based methods, tax-awareness across account types, frequency research, common pitfalls. Load-bearing for readers investing across multiple accounts from #20 onward. |
+| **#23 Tax-Advantaged Accounts** | #22 (Taxes) is deliberately abstract — concepts and functional patterns, no jurisdictional products, per MiFID guardrails. But readers making concrete account-selection decisions had no bridge between the concept and regional vehicles. Post #23 maps five functional categories (employer-matched retirement, tax-deferred personal retirement, tax-free-growth personal retirement, purpose-specific, equity-linked with lockup) to regional equivalents (401(k), EPF, ISA, NPS, Roth IRA, SIPP, TFSA, etc.) via comparison tables under rule 7. |
+| **#24 Rebalancing** | Mentioned in passing in #20 (diversification), #22 (taxes), and #32 (dashboard), but no post covered the mechanics — calendar vs threshold vs contribution-based methods, tax-awareness across account types, frequency research, common pitfalls. Load-bearing for readers investing across multiple accounts from #21 onward. |
 
 Plus the Psychology level (10 posts, now #33-42) was added on May 4, 2026 between Building and Optimizing, as behavioural prep for the advanced topics in Optimizing and Mastery where behavioural mistakes cost the most.
 
@@ -494,7 +468,7 @@ A follow-up audit surfaced additional Optimizing gaps and reopened previously-de
 
 | New Post | Home | Why needed |
 |----------|------|-----------|
-| **#46 Cash Management** | Optimizing | Building #8 (Emergency Fund) introduced the concept; vehicle selection across the rate environment (HYSA vs money-market fund vs T-bill ladder vs short-duration bond ETF) was uncovered. Previously deferred as "covered inside #8" but the vehicle fine-tuning is a distinct Optimizing decision. |
+| **#46 Cash Management** | Optimizing | Discovery #8 (Emergency Fund) introduced the concept; vehicle selection across the rate environment (HYSA vs money-market fund vs T-bill ladder vs short-duration bond ETF) was uncovered. Previously deferred as "covered inside #8" but the vehicle fine-tuning is a distinct Optimizing decision. |
 | **#47 Account Consolidation and Financial Data Hygiene** | Optimizing | Career-length accumulation creates account sprawl (forgotten retirement accounts, dormant brokerages, rate-of-the-month savings accounts). Not covered anywhere. Data hygiene as an enabler for every downstream Optimizing decision. |
 | **#50 Refinancing Timing** | Optimizing | Building #27 (Loan Terms) taught how to compare loans at origination. The ongoing refinance-vs-hold decision (break-even math, no-cost vs cash-in vs cash-out variants, when timing works against you) was uncovered. Distinct from prepayment mechanics already in #5 and #27. |
 | **#59 Recognizing and Avoiding Financial Scams and Fraud** | Optimizing | Previously deferred as "Optimizing or later." Universal scam taxonomy, structural defenses (2FA, credit freeze, cooling-off rule), and recovery playbook. Behavioural angle ties directly to Psychology #39 (Herd Behavior / FOMO) as the scammer's primary lever. Higher reader-value than several posts already in Optimizing for the Eva-type audience. |
@@ -506,7 +480,7 @@ A follow-up audit surfaced additional Optimizing gaps and reopened previously-de
 
 Rather than new standalone posts:
 
-- **Rule of 72** (mental shortcut for compounding) + **lump-sum vs DCA** (evidence-based treatment) → Post #20 Getting Started
+- **Rule of 72** (mental shortcut for compounding) + **lump-sum vs DCA** (evidence-based treatment) → Post #21 Getting Started
 - **Commodities** (raw materials and inflation hedges) + **deliberate cryptocurrency stance** (speculation vs investment, position sizing) → originally folded into Post #18 Asset Classes; **split out in May 2026** into a dedicated Post #19 *Beyond the Core: Commodities and Cryptocurrency* once it became clear the satellite material distorted the four-core-class framing of #18
 - **Rule 7 supplementation** (regional equity index parallels, cross-continent transaction cost ranges, non-US rent-vs-buy calculators, 4% rule caveats for non-US markets) → Posts #18, #24, #25, #27, #30
 - **Return-convention harmonisation** (5-7% real for developed markets as eurozone default, replacing inconsistent 7-8% claims) → Posts #03, #06, #11, #13, #17, #18
@@ -516,7 +490,7 @@ Rather than new standalone posts:
 | Concept | Why |
 |---------|-----|
 | **Compound interest deep-dive** | Already covered deeply across #06 (appreciation), #13 (saving vs investing), #21 (cost of delay), #25 (retirement cost-of-delay). A fifth post would be redundant. |
-| **Debt payoff strategies** | Already covered deeply in #05 (snowball/avalanche/hybrid) and #27 (loan terms), plus #51 for the refinancing-timing decision specifically. |
+| **Debt payoff strategies** | Already covered deeply in #05 (snowball/avalanche/hybrid) and #27 (loan terms), plus #50 for the refinancing-timing decision specifically. |
 | **Index funds / ETFs as standalone** | Folded into #18 (intro) and #21 (practical application) rather than given a separate post. |
 
 ### Gaps heard from readers, Oct 25, 2026
@@ -525,37 +499,7 @@ Rather than new standalone posts:
 
 **On the rules heard at the talk.** The speaker quoted a home loan rule "35-20-5" and a car rule "20-5-10". They may be tuned to India or reflect the speaker's own view, and no source found matches them. The versions found in print are home 20-30-40 (Tata Capital, Brigade Group) and 5-20-30-40 (emicalculator.net, attributed to a podcast), and car 20/4/10 (US personal finance; source still to find). The talk's numbers stay field notes and are not used in a lesson unless an independent source is found.
 
-**New Optimizing lessons (decided Oct 25, 2026).**
-
-| Lesson | Order | What it covers |
-|---|---|---|
-| A. How much can you borrow? | 50.6 | Affordability variables (payment share of income, total debt share, deposit, tenure) and a stress test; variable-rate resets, currency mismatch, uneven income, lender approval against personal affordability. Quoted ratios labelled by origin and intended market: 28/36 (US), 20-30-40 and 5-20-30-40 (India), 20/4/10 for cars, and regulator caps where they exist, each sourced. |
-| B. 0% instalments: when free is free | 50.7 | No-cost EMI, meses sin intereses, parcelado sem juros, buy now pay later brands by region (dated), store 0% finance. Genuinely free merchant-funded offers alongside the costs: processing fees, tax on interest, the lost cash discount, deferred interest, late fees, autopay failure, several plans stacked, refund friction, credit file effects, early repayment, mental accounting. Diagnostic, never "never use". |
-
-- **Placement: after 50 and its companion inc-4, before 51.** 49 and 50 are written as a pair (49 closes: "The next post covers refinancing timing, the same question applied over time") and inc-4 opens from both, so A and B do not go between them. Before 49 was ruled out: A and B cannot be drafted, reviewed and kitted by ~Nov 4, and the blog and reels would pause for about a week. A and B depend on neither 49 nor 50 and can link back to both.
-- **Links.** When A is confirmed in its slot, 50's closing line changes from windfalls to A, in plain text (Rule 2; "the next post" skips companions, as 50 already does over inc-4). A and B link back to 49 and 50; B's closing line points to 51. At the same time: frontmatter orders, this plan's publishing order table, related links, and the kit and reel plan indexes.
-- **Fallback.** Each ships only if its draft, sources, council review and full Instagram kit meet the one-week kit buffer for its slot. If either misses, both move together to the end of Optimizing (orders 60.3, 60.6). Review is never shortened to make a slot.
-- **Global coverage is a documented decision.** Before drafting, record here for A and B which regions each covers and why, and which claims need country-specific treatment versus a global principle with examples. Country facts are sourced and dated.
-
-**Regions for lessons A and B (council signed off and owner approved, Oct 25, 2026).** The test for including a place: its rule or product changes the reader's calculation or checklist, and every regional example says what changes. At most one or two places per region; each regulation carries its status and date; every fact is sourced and dated in `source-ledger.md` before drafting. Anything else goes to the ledger, not the lesson.
-
-| | Lesson A: How much can you borrow? | Lesson B: 0% instalments |
-|---|---|---|
-| Core, everywhere | Payment share of income, total debt share, deposit, tenure, a stress test, rate resets, currency mismatch, uneven income, lender approval against personal affordability | Who pays when it is "free", processing fees, tax on interest, deferred interest, late fees, autopay failure, stacking plans, refunds, credit file effects, mental accounting |
-| Rules people quote | 28/36 (US lender heuristic), 20-30-40 and 5-20-30-40 (India), 20/4/10 for cars (US personal finance), each with origin and intended market | |
-| North America | Canada: mortgage stress test (qualifying rate formula, date) | BNPL; US deferred-interest store cards |
-| Europe | UK: loan-to-income flow limit (an FPC recommendation implemented through the PRA and FCA); Netherlands: income-based lending norms in mortgage credit rules (Nibud supplies the figures) | Revised EU Consumer Credit Directive (applies from Nov 20, 2026); UK BNPL regulation (in force since Jul 15, 2026) |
-| South and East Asia | India: RBI loan-to-value caps by loan size, lenders' income-obligation ratios labelled as practice; Korea: DSR rules | India: no-cost EMI (RBI's position stated with date and scope, no implied ban); Korea: interest-free card instalments |
-| Southeast Asia | | Paylater under Indonesia's regulator rules |
-| Oceania | Australia: serviceability buffer (APRA) | Australia: BNPL regulated as credit since Jun 10, 2025 |
-| Middle East and Turkey | UAE: debt burden ratio cap (Central Bank) | Tabby and Tamara, Saudi BNPL rules; Turkey: card instalments (taksit) and limits on their number |
-| Africa | South Africa: statutory affordability assessment (National Credit Act) | South Africa: BNPL under the National Credit Act if sourced; otherwise "not profiled here for space and evidence", never "no market" |
-| Latin America | Brazil only if an authoritative source shows a binding effect; otherwise recorded as not profiled, with the reason | Mexico: meses sin intereses; Brazil: parcelado sem juros |
-| Ledger only | Ireland, New Zealand, Singapore, China (15% national minimum down payment since Sep 2024, local floors) | China: Huabei |
-
-**The Optimizing global pass (decided Oct 25, 2026).** One pass over every Optimizing lesson's "where you live" section, adding the regions whose rules change the decision, within the 14 minute cap. The Inclusive Finances companions inside the Optimizing run (inc-1 to inc-8, inc-7a, inc-7b) are part of the pass (owner, Oct 25). It lands in two batches: (a) the unpublished lessons, inc-3 and 49 to 60 with their companions, in publishing order, each passed by the council before its publish date, inc-3, 49 and 50 first; (b) the published 43 to 48, inc-1 and inc-2 as one batch afterwards, as updates with no correction record, since nothing was wrong. inc-4 also gets a consistency check with 49 and 50 before it publishes. Instagram kits change only if an edit changes a lesson's promise, example or action.
-
-**52 Fees.** One gloss on first use of "fund": the names readers know by country (each label checked against a primary source), and SIP or a savings plan as a way to contribute, not a product. Lands in batch (a).
+**New Optimizing lessons 50b and 50c (decided Oct 25, 2026).** 50b How much can you borrow? (order 50.6) and 50c 0% instalments (order 50.7) were drafted and merged in #247. Their plan and regions table, and the Optimizing global pass (done by Oct 28, 2026), are archived: see done/blog-content-plan.md#gaps-heard-from-readers-oct-25-2026.
 
 **Open item: older lessons (Discovery, Building, Psychology).** Global updates are made as updates to those lessons, one at a time, and stay on this list until done:
 - the "where you live" sections, where a region's rules change the decision;
@@ -586,16 +530,14 @@ FI starting in your 40s ("what changes when you start in your 40s", not "FIRE is
 
 ### New level proposed Sep 30, 2026: Inclusive Finances
 
-A review of the curriculum's trajectory (Discovery through Mastery, 75 posts, all built around a "default household": legally married or single, dual conventional income, stable employer benefits, legally-recognized family structure) surfaced a systematic gap rather than a missing post: none of the five levels address financial planning for a household whose situation doesn't match that default. Examples: unmarried or cohabiting couples, same-sex couples in jurisdictions that don't recognize their marriage, blended and chosen families, solo agers, single-income households, gig and informal-economy workers, people with disabilities (means-tested benefit cliffs), immigrants and cross-border households, culturally- or religiously-distinct financial systems (interest-free finance), and multi-generational household economics.
-
-This is proposed as a sixth level, **Inclusive Finances (15 posts as proposed; 16 slot posts and two sub-articles once drafted, ids inc-1 to inc-16)**. It was first numbered 76 to 90 after Mastery, reflecting writing order and the fact that several posts reference Mastery-level vocabulary (SWR, estate planning, withdrawal sequencing) rather than re-deriving it. **It is not read-gated behind the other five levels.** A reader arriving with none of the curriculum's prior context should be able to land on any post in this level and use it. Full per-post plan below, after the Mastery section.
+Archived: see done/blog-content-plan.md#new-level-proposed-sep-30-2026-inclusive-finances. Inclusive Finances is now a collection of 18 guides, not a level (see "Lessons, levels and collections").
 
 ### Exposure and IA strategy (decided Sep 30, 2026)
 
 The level's value depends on it being genuinely reachable by someone who needs it, not discoverable only by a reader who has already worked through 75 posts. Six concrete decisions, to be implemented together:
 
-1. **Place each post on the learning path as an optional follow-up to its host.** (Revised Oct 1, 2026. The original decision pinned the level above Discovery as its own block; on review it read as "step zero", sat ahead of the beginner material, and duplicated the hub.) Inclusive posts are not a step of the ladder and `inclusive-finances` stays out of `LEVEL_ORDER`. Each post names its host in frontmatter (`companionOf: "<host slug>"`) and appears inside the host's level section, directly after the host, the same order it publishes in. `src/utils/companions.ts` (`placeOnPath`) computes the placement from all visible posts, so tag pages place them the same way; a companion is left off the path until its host is visible. Posts that only share a slot (inc-8, Divorce and Separation) omit `companionOf` and are placed by `order`. (Superseded Oct 30, 2026: every live guide needs a live host, and inc-8's host is 51 Windfall Management.) On the path an inclusive card carries a diamond marker instead of the round dot and the line "Optional follow-up to <host title>", in the level's green. **They never count toward progress:** level counts, overall progress, "Completed", auto-collapse, "Start here", and "Mark the level as read/unread" all use the level's own posts only. The blog index links to the hub once, under the level nav ("Not the household the standard advice assumes? Browse every Inclusive Finances guide"). The "no prerequisite" promise is carried by that link, the hub, the homepage card, and search, not by position on the path.
-2. **Give it a standalone hub page**, not just a section nested inside `/blog/`. Own URL, a short framing paragraph explaining why the level exists, then its 15 posts. This is what gets linked from nav and homepage, and what should rank for direct searches ("financial planning unmarried couple," "same sex couple finances different countries") without requiring the reader to discover the learning path first.
+1. **Place each post on the learning path as an optional follow-up to its host.** (Revised Oct 1, 2026. The original decision pinned the level above Discovery as its own block; on review it read as "step zero", sat ahead of the beginner material, and duplicated the hub.) Inclusive posts are not a step of the ladder (the old `LEVEL_ORDER` list no longer exists). Each post names its host in frontmatter (`companionOf: "<host slug>"`) and appears inside the host's level section, directly after the host, the same order it publishes in. `src/utils/companions.ts` (`placeOnPath`) computes the placement from all visible posts, so tag pages place them the same way; a companion is left off the path until its host is visible. Posts that only share a slot (inc-8, Divorce and Separation) omit `companionOf` and are placed by `order`. (Superseded Oct 30, 2026: every live guide needs a live host, and inc-8's host is 51 Windfall Management.) On the path an inclusive card carries a diamond marker instead of the round dot and the line "Optional follow-up to <host title>", in the level's green. **They never count toward progress:** level counts, overall progress, "Completed", auto-collapse, "Start here", and "Mark the level as read/unread" all use the level's own posts only. Since Oct 29, 2026, /blog/ and the home page link to the hub from one "Or browse a collection" row (`learn.collections`). The "no prerequisite" promise is carried by that row, the hub, and search, not by position on the path.
+2. **Give it a standalone hub page**, not just a section nested inside `/blog/`. Own URL, a short framing paragraph explaining why the level exists, then its 18 guides. This is what gets linked from nav and homepage, and what should rank for direct searches ("financial planning unmarried couple," "same sex couple finances different countries") without requiring the reader to discover the learning path first. Done: the hub is at `/blog/inclusive-finances/`.
 3. **Cross-link from the exact curriculum posts where a default assumption breaks**, at the point of need rather than relying on a reader to find a separate section. Confirmed insertion points from the Optimizing draft review below, plus the corresponding Mastery and Building posts:
    - Building #23 (Tax-Advantaged Accounts) → Inclusive Finances inc-7 (Unmarried and Cohabiting Couples)
    - Optimizing #57 (Income Replacement Ratio) and #58 (Insurance Optimization) → inc-7, alongside the light inline carve-outs noted below
@@ -605,9 +547,10 @@ The level's value depends on it being genuinely reachable by someone who needs i
    - Mastery #70 (Estate Planning Basics) → inc-7, inc-12 (Chosen Family), inc-8 (Divorce and Separation)
    - Mastery #72/#73 (Teaching Kids / Financial Vehicles for Children) → inc-14
    Each is a short callout ("This assumes X. If that doesn't describe your situation, see [Inclusive Finances post].") added to the existing post, not a rewrite.
-4. **Feature it on the homepage independent of "start the curriculum."** Its own entry point, not nested under a "Learning Path" CTA, so it isn't implicitly framed as advanced or later-stage content.
+   **Overdue** for the three live pairs (45 to inc-1, 47 to inc-2, 48 to inc-3): see the status under "Publishing order from post 43 onward".
+4. **Feature it on the homepage independent of "start the curriculum."** Superseded Oct 29, 2026 by the "Or browse a collection" row. Archived: see done/blog-content-plan.md#exposure-and-ia-strategy-decided-sep-30-2026.
 5. **Write every post to stand alone.** Since entry points are search, a cross-link, or direct nav rather than sequential reading, each post needs a self-contained opening and inline one-line recaps (with backlinks) for any curriculum concept it leans on — the same jargon-gloss discipline Discovery uses for terms, applied here to *concepts* a reader may not have encountered yet. "Not gated" has to hold editorially, not just structurally; a post that silently assumes the reader did Building #23 first is gated in practice even if it's technically reachable.
-6. **Add a situation-based filter as a second navigation axis.** The three proposed topic tags (`relationships`, `disability`, `immigration`) power an "Explore by situation" entry point that surfaces matching posts across *all* levels, not only this one, so the level's reach isn't capped at its own 15 posts.
+6. **Add a situation-based filter as a second navigation axis.** The three topic tags (`relationships`, `disability`, `immigration`) power an "Explore by situation" entry point that surfaces matching posts across *all* levels, not only this one, so the level's reach isn't capped at its own 18 guides. Done: "Explore by situation" is live (`learn.ts`).
 
 Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the point of need, content that doesn't gatekeep on prior reading); items 2, 4, and 6 are additive. All six are planned together here so the level ships already exposed correctly rather than needing an IA retrofit later.
 
@@ -721,7 +664,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 **Builds on:** Taxes (#22), Tax-Advantaged Accounts (#23), Rebalancing (#24), Saving vs Investing (#13), Investing 101 (#18), Cash Flow 101 (#10)
 **Key concept:** **[GAP FILL — critical for beta FIRE features]** Financial independence = your investments generate enough to cover expenses indefinitely. The core formula: FIRE number = annual expenses / safe withdrawal rate. Four flavors: Lean FIRE (bare minimum), Traditional FIRE (current lifestyle), Fat FIRE (comfortable margin), Coast FIRE (stop saving, let growth do the work). Savings rate as the key lever: why a 50% savings rate reaches FI in ~17 years regardless of income level. **4% rule caveat (strengthened):** US-derived from Trinity Study; non-US readers in higher-inflation or lower-return markets should use 3-3.5% as a more conservative baseline, translating to a target of 28-33× annual expenses rather than 25×. Advanced FIRE (sequence risk, drawdown, SWR deep dive) deferred to Mastery. Crossover point mentioned here; canonical treatment in Passive Income (#26).
 **Gloss requirements:** "safe withdrawal rate" (SWR); "sequence risk" (one-line teaser); "Coast FIRE."
-**App tie-in (add on launch day):** nidhi calculates all four FIRE numbers and shows when you'll cross each threshold. The free FIRE calculator and Coast FIRE calculator let you explore this before signing up.
+**App tie-in (add on launch day):** nidhi calculates all four FIRE numbers and shows when you'll cross each threshold.
 
 ---
 
@@ -1126,11 +1069,11 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ---
 
-# INCLUSIVE FINANCES (inc-1 to inc-16, proposed Sep 30, 2026)
+# INCLUSIVE FINANCES (inc-1 to inc-16, planned Sep 30, 2026; a collection, not a level)
 
 > Entries below are in the original writing order, not publishing order; see "Ids" and "Publishing order from post 43 onward" for both.
 
-> Financial planning tools and defaults (spousal benefits, joint filing, intestacy, employer benefits, credit history) are built around a "default" household. This level teaches how to plan when your situation doesn't match that default. **No prerequisite, not read-gated behind the rest of the curriculum** — see "Exposure and IA strategy" in the Gap Analysis section above. A handful of posts reference Mastery-level vocabulary (SWR, estate planning) where genuinely relevant, but each does so with an inline one-line recap and backlink rather than assuming the reader arrived from Mastery. **Proposed, not yet drafted.** See "New level proposed Sep 30, 2026" in the Gap Analysis section above for rationale and the editorial guardrail every post in this level must follow (teach the decision framework as universal, map the specific legal mechanism per jurisdiction, never assert what "the law" says without a scope note).
+> Financial planning tools and defaults (spousal benefits, joint filing, intestacy, employer benefits, credit history) are built around a "default" household. This level teaches how to plan when your situation doesn't match that default. **No prerequisite, not read-gated behind the rest of the curriculum** — see "Exposure and IA strategy" in the Gap Analysis section above. A handful of posts reference Mastery-level vocabulary (SWR, estate planning) where genuinely relevant, but each does so with an inline one-line recap and backlink rather than assuming the reader arrived from Mastery. **All 18 guides are drafted; inc-1 to inc-3 are live.** See done/blog-content-plan.md#new-level-proposed-sep-30-2026-inclusive-finances for the original rationale, and "Exposure and IA strategy" above for the editorial guardrail every post in this level must follow (teach the decision framework as universal, map the specific legal mechanism per jurisdiction, never assert what "the law" says without a scope note).
 
 ### inc-1: When the Default Plan Doesn't Fit You
 **Builds on:** Nothing — this is the level's own entry point, self-contained by design (see Exposure and IA strategy, item 5)
@@ -1248,7 +1191,7 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 
 ### inc-16: Building Your Own Default (capstone)
 **Builds on:** All previous posts in this level
-**Key concept:** A capstone synthesizing the level's throughline: every post here took a mainstream financial-planning default and showed what breaks when it doesn't apply, then rebuilt the equivalent deliberately. This post gives readers the general-purpose version of that audit, so they can apply it to a default this level didn't specifically cover: list the defaults your financial plan currently relies on (marital status, family structure, income stability, legal residency, documented disability status, benefit-system assumptions), check which ones actually hold for your situation, and for each one that doesn't, name the deliberate structure that replaces it. Closes the level, and the full 90-post curriculum, on the idea that a financial plan built on checked assumptions is more robust than one built on inherited defaults, for every reader, not only those this level was written for.
+**Key concept:** A capstone synthesizing the level's throughline: every post here took a mainstream financial-planning default and showed what breaks when it doesn't apply, then rebuilt the equivalent deliberately. This post gives readers the general-purpose version of that audit, so they can apply it to a default this level didn't specifically cover: list the defaults your financial plan currently relies on (marital status, family structure, income stability, legal residency, documented disability status, benefit-system assumptions), check which ones actually hold for your situation, and for each one that doesn't, name the deliberate structure that replaces it. Closes the level, and the full 95-post curriculum, on the idea that a financial plan built on checked assumptions is more robust than one built on inherited defaults, for every reader, not only those this level was written for.
 **Gloss requirements:** None new; synthesizes terms from the rest of the level.
 **Scope note:** None; capstone, not a new topical claim.
 
@@ -1259,24 +1202,13 @@ Items 1, 3, and 5 do most of the work (visibility on the path page, reach at the
 **Added:** Sep 30, 2026, as a 16th Inclusive Finances post, then split the same day into inc-2 (Shared Households, companion to Optimizing #47) and the sub-articles inc-7a and inc-7b under inc-7. The entry below describes the original combined draft, kept in `docs/drafts/inclusive-finances/_superseded/`.
 **Key concept:** The default household is one adult or one legal pair. Households with three or more adults whose money is tied together (housemates, housing co-operatives, cohousing, intentional communities, multi-partner households) meet a shared set of gaps: costs split by habit not method, joint and several lease liability, group title where joint tenancy leaves the last survivor with everything, and a legal system that recognises at most one spouse. Covers: a worked four-adult cost split (equal vs income-based, showing an 80%-of-income burden for the lowest earner under an equal split), the **exit test** (what the household costs the remaining members if any one person leaves), the lease, group ownership and buy-out formulas, co-operative / land trust / cohousing structures as functional categories, and a table of spouse-only defaults with the document that extends each one to other partners. Includes how to count a shared asset in one's own net worth (own share only).
 **Gloss requirements:** "joint and several liability"; "joint tenancy" vs. "tenancy in common"; "buy-out formula"; "trust"; "healthcare proxy"; "forced heirship."
-**Scope note:** Tenancy, property, co-operative, and family law are jurisdiction-specific, and multi-partner recognition barely exists anywhere. Teaches the categories and what to check, not any country's rules. The two recognition examples in the FAQ (Massachusetts cities' multi-person domestic partnerships) are unverified and need a specialist check before publication. Children in multi-partner households are deferred to inc-14 in plain prose (no link: inc-14 ships later).
-
----
-
----
-
-### BETA LAUNCH POST (unnumbered, major event)
-**Level:** n/a -- announcement, not educational
-**Builds on:** Everything from posts 1-32
-**Key concept:** "You've been learning the building blocks of financial planning. Now there's a tool that puts it all together." Maps each concept readers have learned (net worth, assets, liabilities, cash flow, budgeting, investing, diversification, FIRE basics, loan comparison, goals, dashboard) to the specific nidhi feature that implements it.
-**Timing:** Immediately after post 32 (end of Building level), before the Psychology series begins. Target: **late June 2026** (post 32 lands Mon Jun 29). At this point readers have the full foundation + practical skills that map 1:1 to the app's Phase 1 feature set, including FIRE concepts, loan comparison understanding, and the dashboard framing.
-**Follow-up action:** Same day, add brief CTAs to all posts 1-32. All subsequent posts (33+) ship with CTAs built in from the start — the Psychology series uses the app as its recurring example of a System-2 anti-bias tool.
+**Scope note:** Tenancy, property, co-operative, and family law are jurisdiction-specific, and multi-partner recognition barely exists anywhere. Teaches the categories and what to check, not any country's rules. The two recognition examples in the FAQ (Massachusetts cities' multi-person domestic partnerships) are unverified and need a specialist check before publication. Children in multi-partner households are deferred to inc-14 in plain prose (no link: inc-14 ships later). Still unverified on Nov 3, 2026, and `source-ledger.md` has no row for it: add one, or cut the example, before inc-7b publishes.
 
 ---
 
 ## Summary: Reading Order by Level
 
-Full sequence across all five phases. Discovery shipped M/W/F through late May 2026; Building through late June; Psychology through mid-July; Optimizing through early September; Mastery closes early October.
+Full sequence across all five phases. Discovery shipped M/W/F through late May 2026; Building through late June; Psychology through mid-July; Optimizing restarted Oct 12, 2026 and runs into 2027; Mastery is not drafted yet.
 
 ### Discovery (1-16) — fundamentals
 
@@ -1318,7 +1250,7 @@ Risk → asset classes (four core) → satellite assets (commodities + crypto st
 29. Multi-Currency — Mon Jun 22
 30. Setting Financial Goals — Wed Jun 24
 31. Financial Health Metrics — Fri Jun 26
-32. Financial Dashboard — **Mon Jun 29 → BETA LAUNCH**
+32. Financial Dashboard — Mon Jun 29
 
 ### Psychology (33-42) — behavioural layer
 
@@ -1326,7 +1258,7 @@ Added May 2026. Bridges Building → Optimizing. Bias-awareness before fine-tuni
 
 ### Optimizing (43-60) — fine-tuning
 
-Projections + what-if scenarios → cash flow forecasting → life events → **cash management** → **account consolidation** → **growing your income** → invest-vs-debt (with advanced sequencing) → **refinancing timing** → **windfall management** → fees → **tax-loss harvesting & asset location** → benchmarking → Monte Carlo → geographic arbitrage → income replacement → **insurance optimization** → **scam prevention** → **advanced rebalancing (glide paths)**.
+Projections + what-if scenarios → cash flow forecasting → life events → **cash management** → **account consolidation** → **growing your income** → invest-vs-debt (with advanced sequencing) → **refinancing timing** → **how much can you borrow** → **0% instalments** → **windfall management** → fees → **tax-loss harvesting & asset location** → benchmarking → geographic arbitrage → income replacement → **insurance optimization** → **scam prevention** → **advanced rebalancing (glide paths)**.
 
 43. Financial Projections *(Monte Carlo merged in Oct 3, 2026)*
 43b. What-If Scenarios *(old #45 content, folded into #43 on Jul 15, split back out Oct 3, 2026 for the reading-time cap)*
@@ -1337,6 +1269,8 @@ Projections + what-if scenarios → cash flow forecasting → life events → **
 48. **Growing Your Income** (NEW, July 2026)
 49. Invest or Pay Off Debt *(includes old #62 advanced-scenarios content, Jul 15 2026 fold)*
 50. **Refinancing Timing** (NEW, Jul 14 2026)
+50b. **How Much Can You Borrow?** (NEW, Oct 25, 2026)
+50c. **Is 0% EMI or Buy Now Pay Later Really Free?** (NEW, Oct 25, 2026)
 51. **Windfall Management** (NEW, July 2026)
 52. Fee Optimization
 53. **Tax-Loss Harvesting and Asset Location** (NEW, July 2026)
@@ -1400,7 +1334,7 @@ Post numbers use current numbering across all five levels: Discovery (1-16), Bui
 | 22 | is_tax_advantaged flag, configurable tax rates, after-tax return projections |
 | 23 | is_tax_advantaged flag maps to functional categories; users tag accounts per regional vehicle |
 | 24 | Target vs current allocation view, drift threshold alerts, contribution-based rebalancing suggestions (Q91, Q93) |
-| 25 | Lean/Traditional/Fat/Coast FIRE calculations, free FIRE calculator, free Coast FIRE calculator |
+| 25 | Lean/Traditional/Fat/Coast FIRE calculations |
 | 26 | income_passive asset type, crossover point (Q16) |
 | 27 | Loan vendor comparison tool, IRR methodology, break-even analysis |
 | 28 | real_estate asset type, mortgage amortisation |
@@ -1461,7 +1395,7 @@ Post numbers use current numbering across all five levels: Discovery (1-16), Bui
 
 Blog posts are public educational content ("issued exclusively for the public") and do NOT trigger MiFID II. However, blog language should stay consistent with the app's regulatory posture. Core principle: **"nidhi shows math. The user makes decisions."**
 
-Reference: `/docs/strategy/regulatory-advisory-classification.md` (7 bright lines)
+Reference: `/docs/strategy/regulatory-advisory-classification.md` (7 bright lines). **Missing:** this file is not in the repository (checked Nov 3, 2026); the bright lines below are the working reference.
 
 ### Directive philosophy: bright lines are narrow on purpose
 
@@ -1633,9 +1567,9 @@ If a future audit surfaces specific imperative-voice patterns that genuinely cro
 
 ---
 
-## LearningPath.tsx Update (when posts ship)
+## Level `covered` strings (open)
 
-The `covered` descriptions in `src/components/LearningPath.tsx` should be updated to match actual content:
+The `covered` descriptions now live in `src/i18n/strings/learn.ts` (`learn.levelMeta.<level>.covered`) and its four translations, and readers see them. They still disagree with the lessons: Discovery lists "time value of money" (removed), Building lists "Budgeting" (in Discovery), and Optimizing lists only four topics. Open: update them in all five languages to match actual content, along these lines:
 
 ```
 discovery:  "Net worth, assets, liabilities, debt payoff, compound interest, liquidity, emergency funds, income vs wealth, cash flow, purchasing power, currency, saving vs investing, budgeting, credit, insurance"
@@ -1645,7 +1579,7 @@ optimizing: "Projections and what-if scenarios, cash flow forecasting, life even
 mastery:    "FIRE advanced strategies, safe withdrawal rate, retirement, sequence risk, longevity, pensions, tax-aware investing, withdrawal sequencing, international retirement, estate planning, charitable giving, teaching kids about money, financial vehicles for children, generational wealth"
 ```
 
-**Schema state:** `'psychology'` was added to the `level` enum in `src/content.config.ts` and `LearningPath.tsx` before Psychology shipped (Jul 1, 2026). No further schema changes required — Optimizing and Mastery already exist as levels.
+**Schema state:** `'psychology'` was added to the `level` enum in `src/content.config.ts` and `LearningPath.tsx` before Psychology shipped (Jul 1, 2026). `'inclusive-finances'` was added to the enum on Sep 30, 2026, for the collection (see "Lessons, levels and collections").
 
 **Note on Building `covered` string:** mentions Rule of 72, commodities/crypto, and lump-sum vs DCA because those are post-level topics now covered in the body of Building, not because they're standalone posts. This helps the learning path description be accurate.
 
