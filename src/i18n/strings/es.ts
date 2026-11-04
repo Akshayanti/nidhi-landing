@@ -72,7 +72,6 @@ export const es: Dict = {
   },
 
   footer: {
-    tagline: 'El dinero, entendido',
     columns: {
       learn: 'Aprende',
       tools: 'Herramientas gratuitas',
@@ -88,12 +87,12 @@ export const es: Dict = {
       monteCarloSimulator: 'Simulador Monte Carlo',
       inflationCalculator: 'Calculadora de inflación',
       investOrPayOff: 'Invertir o pagar deuda',
-      allTools: 'Ver todas',
+      allTools: 'Todas las herramientas gratuitas',
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
       volunteers: 'Voluntariado',
       beta: "Beta del planificador",
-      editorialPolicy: 'Política editorial',
+      editorialPolicy: 'Cómo se escriben las lecciones',
       changes: 'Qué ha cambiado',
       privacy: 'Privacidad',
       cookieSettings: 'Configuración de cookies',
@@ -927,6 +926,7 @@ export const es: Dict = {
     privacyAfter: '.',
     successTitle: 'Ya estás en la lista',
     successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',
+    rememberedBody: 'Este navegador recuerda que te apuntaste, así que muestra esta nota en lugar del formulario. En otro navegador o dispositivo seguirá apareciendo el formulario; no hace falta apuntarse otra vez.',
     confirmPrompt: '¿Es correcta esta dirección?',
     confirmYes: 'Sí, avísame',
     confirmChange: 'Cambiarla',
@@ -963,129 +963,94 @@ export const es: Dict = {
       ],
       site: 'El dinero, entendido. Aprende finanzas personales, entiende tu propio dinero y planifica tu futuro, desde lo básico hasta las finanzas que abarcan varias monedas y países.',
     },
-    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
-    volunteers: { text: 'Ayuda a traducir nidhi: se busca gente que hable de forma nativa o casi nativa.', link: 'Cómo participar' },
+    /**
+     * The bar under the header that points to /volunteers/ while the call
+     * runs. The whole bar is one link; `link` is drawn as a pill after `text`,
+     * and the page adds the arrow.
+     */
+    volunteers: { text: '¿Hablas bien otro idioma?', link: 'Ayuda a traducir nidhi' },
     hero: {
-      heading: 'Entiende tu dinero.',
-      subhead: ['Lecciones gratuitas.', 'Herramientas privadas.', 'Un planificador en camino.'],
-      startLearning: 'Empieza a aprender',
-      tryTool: 'Prueba una herramienta gratuita',
-      promise: '{lessons} lecciones gratuitas. {tools} herramientas privadas. Sin cuenta y sin anuncios. Lo que escribes en las herramientas se queda en tu dispositivo.',
-      welcomeBack: 'Hola de nuevo. Sigue donde lo dejaste:',
+      heading: 'Entiende tu dinero, paso a paso.',
+      lead: 'Lee una lección breve. Pruébala con tus propias cifras en una herramienta gratuita. Pronto podrás ver el panorama completo en el planificador.',
+      /** Jumps to the planner section; the page adds the arrow. */
+      plannerLink: 'Ver el planificador',
     },
-    journey: {
-      label: 'Aprende, haz balance, planifica · cifras ilustrativas',
-      learnStep: '1 · Aprende',
-      learnBig: '¿Qué es el patrimonio neto?',
-      learnSmall: 'Lo que tienes, menos lo que debes.',
-      stockStep: '2 · Haz balance',
-      // Both values are signed (+/−), so "o" never needs to become "u".
-      stockBig: '{one} o {two}',
-      stockSmall: 'Patrimonio neto de dos personas que ganan {amount} al mes cada una.',
-      planStep: '3 · Planifica',
-      planBig: '{gap} más al cabo de {years} años',
-      planSmall: 'Por ahorrar e invertir {extra} más cada mes.',
-    },
-    steps: {
-      learn: 'Aprende',
-      stock: 'Haz balance',
+    /** "Which sounds like you?": see the English catalog. */
+    situations: {
+      heading: '¿Cuál se parece a tu caso?',
+      read: 'Lee',
+      try: 'Prueba',
       plan: 'Planifica',
-      /** Spoken before the heading, and hidden: "Paso 1: Aprende". */
-      mark: 'Paso {n}: ',
+      soon: 'en el planificador, pronto',
+      more: 'Muchas más preguntas como estas, en {lessons} lecciones y {tools} herramientas.',
+      moreLink: 'Encuentra la tuya',
+      items: {
+        currencies: { who: '«Tengo dinero en más de un país»', lesson: 'Gestionar el dinero en varias monedas' },
+        loans: { who: '«Estoy comparando ofertas de préstamo»', lesson: 'Cómo comparar las condiciones de un préstamo' },
+      },
     },
+    /** The lessons section: the ways in, one line each. */
     lessons: {
-      heading: 'Lecciones gratuitas, para siempre.',
-      body: 'Lecciones breves para cualquier hogar, en cualquier país; cuando haya que tener en cuenta la normativa local, te indican qué comprobar. Sin muro de pago y sin crear una cuenta.',
-      helperQuestion: '¿No sabes cuál es para ti?',
-      helperLink: 'Dos preguntas te sugieren por dónde empezar',
+      heading: 'Entiende la idea, con lecciones gratuitas',
+      body: 'Lecciones breves, para cualquier país. La ruta 1 no da nada por sabido.',
+      helperLink: '¿No lo tienes claro? Responde dos preguntas',
+      routeN: 'Ruta {n}: ',
       foot: 'Ver toda la ruta de aprendizaje',
+      /** A route whose lessons are still scheduled: shown, not linked. */
       comingSoon: '{level} · lecciones próximamente',
       comingSoonNoLevel: 'Más lecciones',
       levelCount: '{level} · {count} lecciones',
       severalLevels: 'Lecciones de varios niveles',
       // Followed by the route's first lesson title, like doorContinue.
       start: 'Empieza',
+      /** Replaces `start` for a route the reader has already begun. */
       doorContinue: 'Continúa con ',
+      /** Replaces it once every lesson on the route is read. */
       doorRead: 'Has leído la ruta. ',
       doorPath: 'Sigue en la ruta de aprendizaje',
       inclusiveGo: 'Explorar',
     },
     tools: {
-      heading: 'Mira dónde estás.',
-      body: 'Herramientas gratuitas que funcionan en tu navegador, así que lo que escribes se queda en tu dispositivo.',
-    },
-    compare: {
-      label: 'Mismos ingresos: {amount} al mes por persona',
-      owns: 'Tiene',
-      owes: 'Debe',
-      netWorth: 'patrimonio neto',
-      caption: 'Los ingresos son lo que entra. El patrimonio neto es lo que tienes menos lo que debes. Cifras ilustrativas.',
-      people: {
-        // "Vehículo" for "car": neither coche nor carro (glossary rule 4).
-        alex: { name: 'Alex', note: 'Un vehículo y una tarjeta, ambos a crédito' },
-        sam: { name: 'Sam', note: 'Ahorros, una pensión y un pequeño préstamo' },
-      },
+      heading: 'Pruébalo con tus propias cifras, con herramientas gratuitas',
+      body: 'Sin cuenta. Las herramientas funcionan en tu navegador: lo que escribes se queda en tu dispositivo.',
+      privacyLink: 'Qué hacen las herramientas con tus cifras',
     },
     planner: {
-      heading: 'Mira adónde podría llegar.',
-      body: 'Estoy creando un planificador: lo que tienes, debes, ganas y gastas en un solo lugar, en una moneda o en varias, para que puedas comparar decisiones como esta antes de tomarlas.',
-      /** After the body: when the beta opens, with a link to /beta/. */
-      beta: { before: 'La beta es gratuita y está previsto que se abra en enero de 2027.', link: 'Qué reciben quienes prueban la beta' },
+      badge: 'Beta en enero de 2027',
+      heading: 'Míralo todo junto, en el planificador',
+      body: 'Cada herramienta responde a una pregunta. Un préstamo cambia lo que puedes ahorrar, y la inflación cambia lo que compran los ahorros. El planificador reúne lo que tienes, lo que debes, lo que ganas y lo que gastas en una sola imagen. Con los supuestos a la vista.',
+      questionsLead: 'Preguntas que te ayudará a responder:',
+      questions: {
+        loan: '«¿Cómo cambiaría un préstamo nuevo lo que puedo ahorrar?»',
+        careerBreak: '«¿Podría vivir de mis ahorros durante una pausa laboral?»',
+        currencies: '«¿Cuánto suman mis cuentas en distintas monedas?»',
+      },
     },
-    example: {
-      label: 'Una decisión, comparada',
-      text: 'El mismo punto de partida; solo cambia lo que se añade cada mes.',
-      currencyNote:
-        'Los euros son solo la moneda que usa este ejemplo. Los dos caminos obtienen la misma rentabilidad porcentual, así que la diferencia entre ellos también es proporcional: en rupias o en dólares, las dos líneas dibujarían la misma forma; solo cambiaría el eje.',
-      gapLead: 'Unos {gap} de diferencia al cabo de {years} años.',
-      gapRest: 'La mayor parte es el dinero extra aportado; el resto es crecimiento.',
-      fold: 'Cómo funciona este ejemplo',
-      chartTitle: 'Ejemplo: una decisión comparada a lo largo de diez años',
-      today: 'Hoy',
-      year: 'Año {n}',
-      axisStart: 'hoy',
-      axisEnd: '+{years} años',
-      perMonth: '{amount}/mes',
-      description:
-        'Dos trayectorias de ejemplo a partir de los mismos {invested} invertidos hoy, con una rentabilidad ilustrativa del {pct} anual descontada la inflación. Añadiendo {monthly} al mes se llega a unos {end} al cabo de {years} años; añadiendo {higher} al mes, a unos {alternative}. La diferencia, de unos {gap}, se debe a {extra} más aportados y a unos {growth} más de crecimiento.',
-      footnote:
-        'Supone una rentabilidad ilustrativa del {pct} anual descontada la inflación, y que la cantidad de cada mes se añade al principio del mes. La rentabilidad real varía de un año a otro y puede ser negativa. Un patrimonio neto completo no crece a un solo ritmo: un vehículo pierde valor y un préstamo se va pagando.',
-      keysHint: 'Usa las flechas izquierda y derecha del teclado para leer sus valores.',
+    /** The founder's note: its heading, the founder's words, and the links under it. */
+    note: {
+      label: '¿Por qué nidhi? Una nota de quien lo fundó',
+      quote: '«Muchos consejos sobre dinero acaban invitándote a comprar una inversión. En nidhi, nada acaba así. Creo que la educación financiera es un derecho de todas las personas. Las lecciones, gratuitas para siempre, explican con palabras sencillas cómo funciona cada idea y dónde falla. Así, tus decisiones son elecciones informadas, no conjeturas.»',
+      signOff: 'Con cariño, desde Praga',
+      trustLine: 'Sin anuncios. Sin venta de datos. Con fuentes citadas.',
+    },
+    helpCard: {
+      eyebrow: 'Se busca ayuda voluntaria',
+      heading: 'Ayuda a traducir nidhi.',
+      body: 'La interfaz está en cinco idiomas, traducida con ayuda de IA. Revisa una traducción o ayuda a traducir las lecciones que solo están en inglés.',
+      link: 'Más información',
     },
     faq: {
-      heading: 'Preguntas frecuentes',
+      heading: 'Dos preguntas frecuentes',
       items: [
         {
-          q: '¿nidhi es para quien empieza de cero?',
-          a: 'Sí. La ruta de aprendizaje empieza por explicar qué es el patrimonio neto y no da nada por sabido. Cada lección explica sus términos sobre la marcha. Hay {total} lecciones publicadas hasta ahora, y la ruta principal está en orden de lectura, así que puedes empezar por la primera y seguir adelante.',
-        },
-        {
-          q: '¿Necesito tener dinero en más de una moneda para usar nidhi?',
-          a: 'No. Todo funciona con una sola moneda. La opción de varias monedas está ahí para cuando tu vida lo requiera: ahorros en un país, una pensión o una vivienda en otro, o planes de mudarte.',
-        },
-        {
           q: '¿Cuánto cuesta nidhi?',
-          a: 'Las lecciones y las herramientas gratuitas no cuestan nada y no necesitan cuenta. Las lecciones seguirán siendo gratuitas, sin muro de pago.',
+          a: 'Las lecciones y las herramientas gratuitas no cuestan nada y no necesitan cuenta. Las lecciones seguirán siendo gratuitas, sin muro de pago. La beta del planificador también es gratuita.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
           a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un profesional acreditado de las finanzas. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
-        {
-          q: '¿Qué pasa con los números que escribo en las herramientas?',
-          a: 'Se quedan en tu dispositivo y no se envían a nidhi. Las herramientas gratuitas calculan en tu navegador y nunca ponen lo que escribes en la dirección de la página. Cuando una herramienta necesita datos externos, como los tipos de cambio del día, tu navegador le pide a ese servicio solo los tipos, nunca tus cantidades; como cualquier solicitud, eso le muestra tu dirección IP. La página de privacidad tiene los detalles.',
-        },
-        {
-          q: '¿Qué es el planificador y cuándo podré usarlo?',
-          a: 'El planificador lo reúne todo: lo que tienes, debes, ganas y prevés gastar, proyectado hacia el futuro con los supuestos a la vista, para que puedas comparar decisiones antes de tomarlas. Está previsto que su beta gratuita se abra en enero de 2027, y quienes estén en la lista de espera reciben un solo correo cuando se abre su acceso.',
-          more: "Qué reciben quienes prueban la beta",
-        },
       ],
-      why: 'nidhi nació porque no encontraba una herramienta que encajara con una vida financiera corriente: dinero en más de un país, deudas en otro, un futuro que cruza fronteras. Así que la estoy construyendo, y contando lo que aprendo por el camino.',
-      trustLine: 'Hecho en Praga. Sin anuncios y sin venta de datos. Las lecciones citan sus fuentes.',
-      trustBeliefs: 'En qué creo',
-      trustEditorial: 'Cómo escribimos',
-      trustPrivacy: 'Política de privacidad',
     },
     levels: {
       discovery: 'Descubrimiento',
@@ -1117,11 +1082,11 @@ export const es: Dict = {
       },
     },
     toolCards: {
-      netWorth: { name: 'Calculadora de patrimonio neto', desc: 'Una moneda o varias.' },
-      loanComparison: { name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
-      monteCarlo: { name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
-      inflation: { name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
-      investOrPayOff: { name: 'Invertir o pagar deuda', desc: 'Dos caminos, la misma fecha, descontada la inflación.' },
+      netWorth: { question: '«¿Dónde estoy, sumando todas mis monedas?»', name: 'Calculadora de patrimonio neto', desc: 'Una moneda o varias.' },
+      loanComparison: { question: '«¿Qué préstamo me sale más barato?»', name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
+      monteCarlo: { question: '«¿Qué abanico de resultados podría tener mi plan?»', name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
+      inflation: { question: '«¿Qué podrá comprar mi dinero más adelante?»', name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
+      investOrPayOff: { question: '«¿Invierto o pago primero mi deuda?»', name: 'Invertir o pagar deuda', desc: 'Dos caminos, la misma fecha, descontada la inflación.' },
     },
   },
 

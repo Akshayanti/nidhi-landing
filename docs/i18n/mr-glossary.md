@@ -55,7 +55,7 @@ as a defect.
    cited sources and the country-neutral "where to check locally" wording stay
    as the English has them. **One exception, owner's decision of Oct 20 2026:**
    the home page's worked example and its chart are in rupees, reusing the
-   Hindi edition's figures (`EXAMPLES.INR` in `src/utils/home/heroExamples.ts`).
+   Hindi edition's figures (the example left the home page on 2026-11-04; the rule stands for any future one).
    Where Marathi copy names several currencies, the order is rupees, then
    dollars, then euros, as on the Hindi edition.
 7. **Digits stay Latin.** `₹`, `€`, `$`, `4%`, `1,00,000` and `2026` are written

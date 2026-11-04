@@ -108,7 +108,6 @@ export const en = {
   },
 
   footer: {
-    tagline: 'Money, understood',
     columns: {
       learn: 'Learn',
       tools: 'Free Tools',
@@ -124,12 +123,12 @@ export const en = {
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
       investOrPayOff: 'Invest or pay off',
-      allTools: 'View all',
+      allTools: 'All free tools',
       about: 'About nidhi',
       beliefs: 'What I believe',
       volunteers: 'Volunteer',
       beta: "Planner beta",
-      editorialPolicy: 'Editorial policy',
+      editorialPolicy: 'How lessons are written',
       changes: "What's changed",
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
@@ -1125,6 +1124,8 @@ export const en = {
     successTitle: "You're on the list",
     /** Also true for an address already on the list: the page never says which case it is. */
     successBody: "We'll send you one email when access opens. That's it. An address already on the list stays on it once.",
+    /** On the home page, for a browser that has already joined: shown with `successTitle` instead of the form. */
+    rememberedBody: 'This browser remembers that you joined, so it shows this note instead of the form. On another browser or device the form still appears; there is no need to sign up again.',
     /** The check shown before anything is sent, with the typed address after it. */
     confirmPrompt: 'Is this the right address?',
     confirmYes: 'Yes, notify me',
@@ -1162,57 +1163,50 @@ export const en = {
       ],
       site: 'Money, understood. Learn personal finance, understand your own money, and plan your future, from the basics to finances that span currencies and countries.',
     },
-    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
-    volunteers: { text: 'Help translate nidhi: native or near native speakers wanted.', link: 'See how to volunteer' },
+    /**
+     * The bar under the header that points to /volunteers/ while the call
+     * runs. The whole bar is one link; `link` is drawn as a pill after `text`,
+     * and the page adds the arrow.
+     */
+    volunteers: { text: 'Fluent in another language?', link: 'Help translate nidhi' },
     hero: {
-      heading: 'Understand your money.',
-      /** Three phrases, each its own element so they can wrap independently. */
-      subhead: ['Free lessons.', 'Private tools.', 'A planner on the way.'],
-      startLearning: 'Start learning',
-      tryTool: 'Try a free tool',
-      /**
-       * Under the two buttons: what free and private mean, with counts filled in
-       * at build. Scoped to the tools, because the waitlist form does send an email.
-       */
-      promise: '{lessons} free lessons. {tools} private tools. No account, no ads. What you type in the tools stays on your device.',
-      /** Shown only to a reader this browser knows has started the path. */
-      welcomeBack: 'Welcome back. Pick up where you left off:',
+      heading: 'Understand your money, one step at a time.',
+      lead: 'Read a short lesson. Try it on your own numbers with a free tool. Soon, see the whole picture in the planner.',
+      /** Jumps to the planner section; the page adds the arrow. */
+      plannerLink: 'See the planner',
     },
     /**
-     * The card beside the hero: the three steps at a glance. Steps 2 and 3
-     * carry the worked example's numbers, so their sentences are templates.
+     * "Which sounds like you?", beside the hero: two readers' situations, each
+     * followed through a lesson (Read), a free tool (Try) and the planner
+     * (Plan). Keyed by `SITUATIONS` in src/utils/home/startingPoints.ts. Each
+     * `who` is a reader speaking, so it carries its own quotation marks;
+     * `lesson` is a short form of the lesson's title (the lesson itself is in
+     * English), and `plan` names the planner question in `planner.questions`.
      */
-    journey: {
-      label: 'Learn, take stock, plan ahead · illustrative amounts',
-      learnStep: '1 · Learn',
-      learnBig: 'What is net worth?',
-      learnSmall: 'What you own, minus what you owe.',
-      stockStep: '2 · Take stock',
-      /**
-       * The two illustrative net worths side by side, one person's and the
-       * other's. Only the connector between them is translatable, which is why
-       * it is a template rather than two spans and a hardcoded "or".
-       */
-      stockBig: '{one} or {two}',
-      stockSmall: 'Net worth of two people who both earn {amount} a month.',
-      planStep: '3 · Plan ahead',
-      planBig: '{gap} more after {years} years',
-      planSmall: 'From saving and investing {extra} more each month.',
+    situations: {
+      heading: 'Which sounds like you?',
+      read: 'Read',
+      try: 'Try',
+      plan: 'Plan',
+      /** Under a planner question, on its own line with a clock mark: the planner is not open yet. */
+      soon: 'in the planner, soon',
+      /** Counts filled in at build: live ladder lessons and released tools. */
+      more: 'Many more questions like these, across {lessons} lessons and {tools} tools.',
+      /** Jumps to the lessons section; the page adds the arrow. */
+      moreLink: 'Find yours',
+      items: {
+        currencies: { who: '“I have money in more than one country.”', lesson: 'Managing money across currencies' },
+        loans: { who: '“I’m comparing loan offers.”', lesson: 'How to compare loan terms' },
+      },
     },
-    /** The numbered marker above each step's heading. */
-    steps: {
-      learn: 'Learn',
-      stock: 'Take stock',
-      plan: 'Plan ahead',
-      /** Spoken before the heading, and hidden: "Step 1: Learn". */
-      mark: 'Step {n}: ',
-    },
-    /** Step 1: the ways in, one line each. */
+    /** The lessons section: the ways in, one line each. */
     lessons: {
-      heading: 'Free lessons, forever.',
-      body: 'Short lessons for any household, in any country, and where local rules matter, they say what to check. No paywall, no account.',
-      helperQuestion: 'Not sure which fits?',
-      helperLink: 'Two questions suggest where to start',
+      /** A link to the learning path; the page adds the arrow. */
+      heading: 'Learn the idea, with free lessons',
+      body: 'Short lessons, for any country. Route 1 assumes no prior knowledge.',
+      helperLink: 'Not sure? Answer two questions',
+      /** Read before each route line, and hidden: the intro names "Route 1" and the badge is drawn, not read. */
+      routeN: 'Route {n}: ',
       foot: 'See the whole learning path',
       /** A route whose lessons are still scheduled: shown, not linked. */
       comingSoon: '{level} · lessons coming soon',
@@ -1227,105 +1221,61 @@ export const en = {
       doorPath: 'Keep going on the learning path',
       inclusiveGo: 'Explore',
     },
-    /** Step 2: what the free tools are for. */
+    /** The tools section. */
     tools: {
-      heading: 'See where you stand.',
-      body: 'Free tools that run in your browser, so what you type stays on your device.',
+      /** A link to /free/; the page adds the arrow. */
+      heading: 'Try it on your own numbers, with free tools',
+      body: 'No account. Tools run in your browser: what you type stays on your device.',
+      /** Opens the privacy notice at its free-tools paragraph. */
+      privacyLink: 'How the tools handle your numbers',
     },
-    /** The two people, same income, different net worth. */
-    compare: {
-      label: 'Same income, {amount} a month each',
-      owns: 'Owns',
-      owes: 'Owes',
-      netWorth: 'net worth',
-      caption: 'Income is what comes in. Net worth is what you own minus what you owe. Illustrative amounts.',
-      people: {
-        alex: { name: 'Alex', note: 'A car and a card, both on credit' },
-        sam: { name: 'Sam', note: 'Savings, a pension, a small loan' },
+    /** The planner section, beside the waitlist. */
+    planner: {
+      badge: 'Beta January 2027',
+      /** A link to /beta/; the page adds the arrow. */
+      heading: 'See it all together, in the planner',
+      body: 'Each tool answers one question. A loan changes what you can save, and inflation changes what savings buy. The planner brings what you own, owe, earn and spend into one picture. Assumptions shown.',
+      /** Questions a reader might bring to the planner, each in its own quotation marks. */
+      /** Above the questions: says whose questions they are. The page shows them without quotation marks here. */
+      questionsLead: 'Questions it will help you answer:',
+      questions: {
+        loan: '“How would a new loan change what I can save?”',
+        careerBreak: '“Could my savings support a career break?”',
+        currencies: '“How do my accounts in different currencies add up?”',
       },
     },
-    /** Step 3: the planner, and the one decision compared. */
-    planner: {
-      heading: 'See where it could go.',
-      body: "I'm building a planner: what you own, owe, earn and spend in one place, in one currency or several, so you can compare decisions like this one before you make them.",
-      /** After the body: when the beta opens, with a link to /beta/. */
-      beta: { before: 'The beta is free and is planned to open in January 2027.', link: 'What beta testers get' },
+    /** The founder's note: its heading, the founder's words, and the links under it. */
+    note: {
+      label: 'Why nidhi? A note from the founder',
+      /** The founder's own words. The founder is never given a gender in any language. */
+      quote: '“A lot of money advice ends with an investment to buy. At nidhi, nothing does. I believe financial literacy is everyone’s right. The lessons, free forever, explain in plain words how each idea works and where it breaks. So your decisions are informed choices, not guesses.”',
+      signOff: 'With love, from Prague',
+      trustLine: 'No ads. No data selling. Sources cited.',
     },
-    /**
-     * The worked example. Its numbers are computed (src/utils/home/), so the
-     * sentences here are templates, and the chart's own labels come from the
-     * four keys at the bottom.
-     */
-    example: {
-      label: 'One decision, compared',
-      text: 'Same start; only the amount added each month changes.',
-      /**
-       * Answers the question a reader who is not paid in euros asks on seeing
-       * one. It is the same point `editorialPolicy.anyCountry` makes at length,
-       * in two sentences, and it has to stay true if the example's currency is
-       * ever changed: what it describes is a proportion, not an amount.
-       */
-      currencyNote:
-        'Euros are just the currency this example uses. Both paths earn the same percentage return, so the gap between them is a proportion as well: in rupees or dollars the two lines would draw the same shape, only the axis would change.',
-      /** Bolded, and read as one sentence with `gapRest` after it. */
-      gapLead: 'About {gap} apart after {years} years.',
-      gapRest: 'Most of that is the extra money put in; the rest is growth.',
-      fold: 'How this example works',
-      chartTitle: 'Example: one decision compared over ten years',
-      /** The chart's x-axis points: the first is `today`, the rest are years. */
-      today: 'Today',
-      year: 'Year {n}',
-      axisStart: 'today',
-      axisEnd: '+{years} years',
-      /** A chart series label, in the legend and read aloud on hover. */
-      perMonth: '{amount}/mo',
-      /** Read aloud, and printed for a reader who cannot see the chart. */
-      description:
-        'Two example paths from the same {invested} invested today, at an illustrative {pct} a year after inflation. Adding {monthly} a month reaches about {end} after {years} years; adding {higher} a month reaches about {alternative}. The gap of about {gap} is {extra} more put in and about {growth} more growth.',
-      footnote:
-        'Assumes an illustrative {pct} a year after inflation, with each month\'s amount added at the start of the month. Real returns vary from year to year and can be negative. A whole net worth does not grow at one rate: a car loses value and a loan is paid down.',
-      /** Spoken to a screen reader that lands on the chart. */
-      keysHint: 'Use the left and right arrow keys to read its values.',
+    /** The card beside the founder's note, while the call for translators runs. */
+    helpCard: {
+      eyebrow: 'Volunteers wanted',
+      heading: 'Help translate nidhi.',
+      /** Names the number of languages in words; the page fails the build if LOCALES no longer has five. */
+      body: 'The interface is in five languages, translated with AI help. Check a translation, or help translate the English-only lessons.',
+      link: 'Learn more',
     },
     faq: {
-      heading: 'FAQ',
+      heading: 'Two common questions',
       /**
        * Questions and answers. The same text is printed on the page and
        * published as FAQPage structured data, so it is written once here.
        */
       items: [
         {
-          q: 'Is nidhi for beginners?',
-          a: 'Yes. The learning path starts with what net worth is and assumes no prior knowledge. Each lesson explains its terms as it goes. There are {total} lessons so far, and the main path is in reading order, so you can start at the top and keep going.',
-        },
-        {
-          q: 'Do I need money in more than one currency to use nidhi?',
-          a: 'No. Everything works with a single currency. Multi-currency support is there for when your life needs it: savings in one country, a pension or property in another, or plans to move.',
-        },
-        {
           q: 'What does nidhi cost?',
-          a: 'The lessons and the free tools cost nothing and need no account. The lessons will stay free, with no paywall.',
+          a: 'The lessons and the free tools cost nothing and need no account. The lessons will stay free, with no paywall. The planner’s beta is free too.',
         },
         {
           q: 'Is this financial advice?',
           a: 'No. nidhi is educational: it explains how money works and lets you model your own situation. It is not a licensed financial adviser. For decisions that matter, talk to a qualified professional.',
         },
-        {
-          q: 'What happens to the numbers I type into the tools?',
-          a: 'They stay on your device and are not sent to nidhi. The free tools calculate in your browser and never put what you type into the page address. When a tool needs outside data, such as the day\'s exchange rates, your browser asks that service for the rates only, never your amounts; like any request, it shows that service your IP address. The privacy page has the details.',
-        },
-        {
-          q: 'What is the planner, and when can I use it?',
-          a: 'The planner brings everything together: what you own, owe, earn and expect to spend, projected forward with the assumptions shown, so you can compare decisions before you make them. Its free beta is planned to open in January 2027, and the waitlist gets one email when access opens.',
-          /** The text of a link to /beta/ after the answer. */
-          more: "What beta testers get",
-        },
       ],
-      why: 'nidhi started because I couldn’t find a tool that fit an ordinary financial life: money in more than one country, debts in another, a future that crosses borders. So I’m building it, and explaining what I learn along the way.',
-      trustLine: 'Made in Prague. No ads, no data selling. Lessons cite their sources.',
-      trustBeliefs: 'What I believe',
-      trustEditorial: 'How we write',
-      trustPrivacy: 'Privacy policy',
     },
     /** The level names, as a level is named on a card. */
     levels: {
@@ -1363,13 +1313,17 @@ export const en = {
         detail: 'Projections, what-if scenarios, cash flow, fees and taxes: the same ideas, with more moving parts.',
       },
     },
-    /** The tool cards, keyed by `TOOLS` in src/utils/home/startingPoints.ts. */
+    /**
+     * The tool cards, keyed by `TOOLS` in src/utils/home/startingPoints.ts:
+     * the reader's question (in its own quotation marks), the tool's name and
+     * one line.
+     */
     toolCards: {
-      netWorth: { name: 'Net worth calculator', desc: 'One currency or several.' },
-      loanComparison: { name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
-      monteCarlo: { name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
-      inflation: { name: 'Inflation calculator', desc: 'What money buys, over the years.' },
-      investOrPayOff: { name: 'Invest or pay off', desc: 'Two paths, the same date, after inflation.' },
+      netWorth: { question: '“Where do I stand, across currencies?”', name: 'Net worth calculator', desc: 'One currency or several.' },
+      loanComparison: { question: '“Which loan costs me less?”', name: 'Loan comparison', desc: 'Borrowing offers, side by side.' },
+      monteCarlo: { question: '“What range of results could my plan have?”', name: 'Monte Carlo simulator', desc: 'A range of outcomes, not one line.' },
+      inflation: { question: '“What will my money buy later?”', name: 'Inflation calculator', desc: 'What money buys, over the years.' },
+      investOrPayOff: { question: '“Should I invest or pay off my debt first?”', name: 'Invest or pay off', desc: 'Two paths, the same date, after inflation.' },
     },
   },
 
