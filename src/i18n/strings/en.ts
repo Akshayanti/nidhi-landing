@@ -1186,8 +1186,8 @@ export const en = {
       read: 'Read',
       try: 'Try',
       plan: 'Plan',
-      /** After a planner question: the planner is not open yet. */
-      soon: 'soon',
+      /** Under a planner question, on its own line with a clock mark: the planner is not open yet. */
+      soon: 'in the planner, soon',
       /** Counts filled in at build: live ladder lessons and released tools. */
       more: 'Many more questions like these, across {lessons} lessons and {tools} tools.',
       /** Jumps to the lessons section; the page adds the arrow. */
@@ -1234,6 +1234,8 @@ export const en = {
       heading: 'See it all together, in the planner',
       body: 'Each tool answers one question. A loan changes what you can save, and inflation changes what savings buy. The planner brings what you own, owe, earn and spend into one picture. Assumptions shown.',
       /** Questions a reader might bring to the planner, each in its own quotation marks. */
+      /** Above the questions: says whose questions they are. The page shows them without quotation marks here. */
+      questionsLead: 'Questions it will help you answer:',
       questions: {
         loan: '“How would a new loan change what I can save?”',
         careerBreak: '“Could my savings support a career break?”',

@@ -980,7 +980,7 @@ export const es: Dict = {
       read: 'Lee',
       try: 'Prueba',
       plan: 'Planifica',
-      soon: 'pronto',
+      soon: 'en el planificador, pronto',
       more: 'Muchas más preguntas como estas, en {lessons} lecciones y {tools} herramientas.',
       moreLink: 'Encuentra la tuya',
       items: {
@@ -1018,6 +1018,7 @@ export const es: Dict = {
       badge: 'Beta en enero de 2027',
       heading: 'Míralo todo junto, en el planificador',
       body: 'Cada herramienta responde a una pregunta. Un préstamo cambia lo que puedes ahorrar, y la inflación cambia lo que compran los ahorros. El planificador reúne lo que tienes, lo que debes, lo que ganas y lo que gastas en una sola imagen. Con los supuestos a la vista.',
+      questionsLead: 'Preguntas que te ayudará a responder:',
       questions: {
         loan: '«¿Cómo cambiaría un préstamo nuevo lo que puedo ahorrar?»',
         careerBreak: '«¿Podría vivir de mis ahorros durante una pausa laboral?»',

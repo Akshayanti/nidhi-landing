@@ -938,7 +938,7 @@ export const cs: Dict = {
       read: 'Čtěte',
       try: 'Zkuste',
       plan: 'Plánujte',
-      soon: 'brzy',
+      soon: 'v plánovači, brzy',
       more: 'Mnohem víc podobných otázek najdete mezi {lessons} lekcemi a {tools} nástroji.',
       moreLink: 'Najděte tu svou',
       items: {
@@ -975,6 +975,7 @@ export const cs: Dict = {
       badge: 'Beta v lednu 2027',
       heading: 'Všechno pohromadě, v plánovači',
       body: 'Každý nástroj odpovídá na jednu otázku. Úvěr mění, kolik můžete ušetřit, a inflace mění, co si za úspory koupíte. Plánovač spojí to, co vlastníte, dlužíte, vyděláváte a utrácíte, do jednoho obrazu. Předpoklady jsou vidět.',
+      questionsLead: 'Otázky, na které vám pomůže odpovědět:',
       questions: {
         loan: '„Jak by nový úvěr změnil, kolik můžu ušetřit?“',
         careerBreak: '„Vystačí mi úspory na pauzu v kariéře?“',

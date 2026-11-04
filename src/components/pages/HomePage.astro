@@ -73,6 +73,9 @@ const situations = resolveSituations(allPosts, now, isToolLive);
 const tools = liveTools(isToolLive);
 const counts = levelCounts(allPosts, now);
 
+/** A catalog question without its outer quotation marks, in any of the five languages' styles. */
+const unquote = (q: string) => q.replace(/^[“„«"]\s*/, '').replace(/\s*[”“»"]$/, '');
+
 // Each situation ends on one of the planner section's questions.
 const planQuestion = { currencies: home.planner.questions.currencies, loans: home.planner.questions.loan };
 
@@ -211,7 +214,13 @@ const faqSchema = {
                 <li>
                   <p class="chain-row chain-plan">
                     <span class="chain-k">{home.situations.plan}</span>
-                    <span class="chain-q">{planQuestion[s.id]}{' '}<span class="chain-k chain-soon">{home.situations.soon}</span></span>
+                    <span class="chain-q">
+                      {planQuestion[s.id]}<span class="sr-only">,</span>{' '}
+                      <span class="chain-soon">
+                        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.25" /><path d="M8 4.75V8l2.25 1.5" /></svg>
+                        {home.situations.soon}
+                      </span>
+                    </span>
                   </p>
                 </li>
               </ol>
@@ -331,10 +340,13 @@ const faqSchema = {
         <p class="planner-badge" aria-hidden="true">{home.planner.badge}</p>
         <h2 id="planner-heading"><a class="hlink" href={href('/beta/')} data-attr="home-planner-head">{home.planner.heading}<span class="sr-only">{fullStop} {home.planner.badge}</span>&nbsp;<span aria-hidden="true">&rarr;</span></a></h2>
         <p class="cap-body">{home.planner.body}</p>
-        <ul class="planner-qs" role="list">
-          <li>{home.planner.questions.loan}</li>
-          <li>{home.planner.questions.careerBreak}</li>
-          <li>{home.planner.questions.currencies}</li>
+        {/* The same questions as the hero's Plan rows, without their quotation
+            marks: here they are what the planner answers, not a reader speaking. */}
+        <h3 id="planner-qs-lead" class="planner-qs-lead">{home.planner.questionsLead}</h3>
+        <ul class="planner-qs" role="list" aria-labelledby="planner-qs-lead">
+          <li>{unquote(home.planner.questions.loan)}</li>
+          <li>{unquote(home.planner.questions.careerBreak)}</li>
+          <li>{unquote(home.planner.questions.currencies)}</li>
         </ul>
       </div>
       <div class="planner-signup">
@@ -481,6 +493,20 @@ const faqSchema = {
 
   @media (max-width: 759px) {
     .vol-bar { justify-content: flex-start; text-align: left; font-size: 0.8125rem; }
+  }
+
+  /* Read by screen readers, not drawn: "Route 1" before each route line,
+     the beta date in the planner heading, the pause before "soon". */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* ----------------------------------------------------------------
@@ -664,7 +690,8 @@ const faqSchema = {
   .chain-go:focus-visible .chain-t { text-decoration: underline; text-underline-offset: 3px; }
 
   .chain-plan { padding: 8px 0 4px; }
-  .chain-q { color: var(--color-text-primary); }
+  /* Not a link yet: muted, no arrow, and a status line of its own under it. */
+  .chain-q { color: var(--color-text-secondary); }
 
   .chain-k {
     font-size: 0.875rem;
@@ -672,7 +699,17 @@ const faqSchema = {
     color: var(--color-text-secondary);
   }
 
-  .chain-soon { margin-left: 2px; white-space: nowrap; }
+  .chain-soon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+
+  .chain-soon svg { flex-shrink: 0; }
 
   .sits-more {
     margin: 14px 0 0;
@@ -825,6 +862,11 @@ const faqSchema = {
     .planner-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; }
   }
 
+  /* A browser that has already joined the waitlist hides the box
+     (WaitlistSection, nidhi-waitlist-signedup); the text then takes the row. */
+  .planner-grid:has(.waitlist[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  .planner-grid:has(.waitlist[hidden]) .planner-signup { display: none; }
+
   .planner-badge {
     display: inline-block;
     margin: 0 0 10px;
@@ -841,7 +883,7 @@ const faqSchema = {
 
   /* Devanagari's vowel signs shrink first at small sizes, and its marks above
      and below the line need more room between lines. */
-  :global(html:is([lang='hi'], [lang='mr'])) :is(.chain-k, .route-meta, .tool-desc, .note-links, .vol-bar) { font-size: 0.9375rem; }
+  :global(html:is([lang='hi'], [lang='mr'])) :is(.chain-k, .chain-soon, .route-meta, .tool-desc, .note-links, .vol-bar) { font-size: 0.9375rem; }
   :global(html:is([lang='hi'], [lang='mr'])) .hero-copy h1 { line-height: 1.2; }
 
   /* Devanagari has no capitals, and tracking only spaces it apart. */
@@ -851,7 +893,14 @@ const faqSchema = {
     letter-spacing: normal;
   }
 
-  .planner-qs { list-style: none; margin: 14px 0 0; padding: 0; }
+  .planner-qs-lead {
+    margin: 18px 0 6px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .planner-qs { list-style: none; margin: 0; padding: 0; }
 
   .planner-qs li {
     padding: 10px 0;
