@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-04',
     items: [
       {
+        id: 'waitlist-remembered',
+        text: {
+          en: 'If you have already joined the planner waitlist, the home page now says so where the sign-up box was, and explains that only this browser remembers it.',
+          es: 'Si ya te apuntaste a la lista de espera del planificador, la página de inicio ahora lo indica donde estaba el formulario, y explica que solo este navegador lo recuerda.',
+          cs: 'Pokud už jste na čekací listině plánovače, úvodní stránka to teď ukáže místo přihlašovacího formuláře a vysvětlí, že si to pamatuje jen tento prohlížeč.',
+          mr: 'प्लॅनरच्या प्रतीक्षा यादीत तुमचे नाव आधीच असेल, तर मुख्यपृष्ठावर नोंदणीच्या चौकटीच्या जागी आता तसे दिसते, आणि हे फक्त याच ब्राउझरला लक्षात असते असेही सांगितले जाते.',
+          hi: 'अगर प्लानर की वेटलिस्ट में आपका नाम पहले से है, तो होम पेज पर साइन-अप बॉक्स की जगह अब यही दिखता है, और यह भी बताया जाता है कि यह बात सिर्फ़ इसी ब्राउज़र को याद रहती है।',
+        },
+      },
+      {
         id: 'footer-columns',
         text: {
           en: 'The footer at the bottom of every page is tidier: four even columns on wider screens, and Privacy and Cookie settings on its last line, where they are easy to find on a phone too.',

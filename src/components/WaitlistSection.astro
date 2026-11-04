@@ -18,9 +18,16 @@ interface Props {
   locale: Locale;
   /** The beta reward line under the heading; off on /beta/ itself, which it links to. */
   showBeta?: boolean;
+  /**
+   * For a browser that has already joined: show a short "you're on the list"
+   * note in place of the form, instead of hiding the box. Only the home page
+   * asks for it, where the box has a column of its own; everywhere else the
+   * box simply disappears, as before.
+   */
+  rememberedNote?: boolean;
 }
 
-const { locale, showBeta = true } = Astro.props;
+const { locale, showBeta = true, rememberedNote = false } = Astro.props;
 const { waitlist } = dict(locale);
 // "20+ people have joined my waitlist.": absent until there are 20 (see waitlistCount).
 // The dev server shows the exact count instead, ungated, for the founder only.
@@ -37,7 +44,7 @@ const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
 ---
 
-<section class="waitlist" aria-label={waitlist.region}>
+<section class="waitlist" aria-label={waitlist.region} data-remembered-note={rememberedNote ? '' : undefined}>
   <div class="waitlist-box">
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
@@ -96,6 +103,19 @@ const inputId = `${idPrefix}-email`;
         </p>
       )}
     </div>
+
+    {/* A browser that joined on an earlier visit (nidhi-waitlist-signedup). */}
+    {rememberedNote && (
+      <div class="waitlist-post" data-waitlist-state="remembered" hidden>
+        <div class="waitlist-success-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <h3 class="waitlist-success-title">{waitlist.successTitle}</h3>
+        <p class="waitlist-success-body">{waitlist.rememberedBody}</p>
+      </div>
+    )}
 
     <!-- Post-submit: success -->
     <div class="waitlist-post" data-waitlist-state="post" hidden>
@@ -159,7 +179,15 @@ const inputId = `${idPrefix}-email`;
     function applyState() {
       var state = readState();
       if (state) {
-        if (section) section.hidden = true;
+        var remembered = section && section.hasAttribute('data-remembered-note') && section.querySelector('[data-waitlist-state="remembered"]');
+        if (remembered) {
+          section.hidden = false;
+          if (preEl) preEl.hidden = true;
+          if (postEl) postEl.hidden = true;
+          remembered.hidden = false;
+        } else if (section) {
+          section.hidden = true;
+        }
         return;
       }
       if (section) section.hidden = false;

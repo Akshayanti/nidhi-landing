@@ -123,12 +123,12 @@ export const en = {
       monteCarloSimulator: 'Monte Carlo simulator',
       inflationCalculator: 'Inflation calculator',
       investOrPayOff: 'Invest or pay off',
-      allTools: 'View all',
+      allTools: 'All free tools',
       about: 'About nidhi',
       beliefs: 'What I believe',
       volunteers: 'Volunteer',
       beta: "Planner beta",
-      editorialPolicy: 'Editorial policy',
+      editorialPolicy: 'How lessons are written',
       changes: "What's changed",
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
@@ -1124,6 +1124,8 @@ export const en = {
     successTitle: "You're on the list",
     /** Also true for an address already on the list: the page never says which case it is. */
     successBody: "We'll send you one email when access opens. That's it. An address already on the list stays on it once.",
+    /** On the home page, for a browser that has already joined: shown with `successTitle` instead of the form. */
+    rememberedBody: 'This browser remembers that you joined, so it shows this note instead of the form. On another browser or device the form still appears; there is no need to sign up again.',
     /** The check shown before anything is sent, with the typed address after it. */
     confirmPrompt: 'Is this the right address?',
     confirmYes: 'Yes, notify me',
@@ -1250,7 +1252,6 @@ export const en = {
     note: {
       label: 'Why nidhi? A note from the founder',
       trustLine: 'No ads. No data selling. Sources cited.',
-      editorial: 'How lessons are written',
     },
     /** The card beside the founder's note, while the call for translators runs. */
     helpCard: {

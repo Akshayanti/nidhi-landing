@@ -202,13 +202,13 @@ const faqSchema = {
                 <li>
                   <a class="chain-row chain-go" href={s.lesson.href} data-attr={`home-sit-${s.id}-lesson`} {...lessonLang}>
                     <span class="chain-k">{home.situations.read}</span>
-                    <span class="chain-t">{home.situations.items[s.id].lesson}&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    <span class="chain-t"><span class="chain-u">{home.situations.items[s.id].lesson}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
                   </a>
                 </li>
                 <li>
                   <a class="chain-row chain-go" href={href(s.tool.href)} data-attr={`home-sit-${s.id}-tool`}>
                     <span class="chain-k">{home.situations.try}</span>
-                    <span class="chain-t">{home.toolCards[s.tool.key].name}&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    <span class="chain-t"><span class="chain-u">{home.toolCards[s.tool.key].name}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
                   </a>
                 </li>
                 <li>
@@ -350,7 +350,7 @@ const faqSchema = {
         </ul>
       </div>
       <div class="planner-signup">
-        <WaitlistSection locale={locale} />
+        <WaitlistSection locale={locale} rememberedNote />
       </div>
     </div>
   </section>
@@ -371,7 +371,7 @@ const faqSchema = {
             <span aria-hidden="true"> · </span>
             <a href={href('/beliefs/')} data-attr="home-cta-beliefs">{footer.links.beliefs}</a>
             <span aria-hidden="true"> · </span>
-            <a href={href('/editorial-policy/')} data-attr="home-editorial-policy">{home.note.editorial}</a>
+            <a href={href('/editorial-policy/')} data-attr="home-editorial-policy">{footer.links.editorialPolicy}</a>
             <span aria-hidden="true"> · </span>
             <a href={href('/privacy/')} data-attr="home-privacy">{footer.links.privacy}</a>
           </p>
@@ -686,8 +686,19 @@ const faqSchema = {
     text-decoration: none;
   }
 
-  .chain-go:hover .chain-t,
-  .chain-go:focus-visible .chain-t { text-decoration: underline; text-underline-offset: 3px; }
+  /* Underlined at rest: the chain links share the headline's blue, so the
+     line, not the colour, is what says "link" (council round 11). Only the
+     words are underlined, not the space and arrow after them. Devanagari gets a
+     deeper offset, so the line clears the vowel signs below the letters. */
+  .chain-go .chain-u {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    text-decoration-skip-ink: auto;
+  }
+  .chain-go:hover .chain-u,
+  .chain-go:focus-visible .chain-u { text-decoration-thickness: 2px; }
+  :global(html:is([lang='hi'], [lang='mr'])) .chain-go .chain-u { text-underline-offset: 0.35em; }
 
   .chain-plan { padding: 8px 0 4px; }
   /* Not a link yet: muted, no arrow, and a status line of its own under it. */
