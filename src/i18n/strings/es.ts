@@ -1035,7 +1035,7 @@ export const es: Dict = {
       eyebrow: 'Se busca ayuda voluntaria',
       heading: 'Ayuda a traducir nidhi.',
       body: 'La interfaz está en cinco idiomas, traducida con ayuda de IA. Revisa una traducción o ayuda a traducir las lecciones que solo están en inglés.',
-      link: 'Cómo participar',
+      link: 'Más información',
     },
     faq: {
       heading: 'Dos preguntas frecuentes',

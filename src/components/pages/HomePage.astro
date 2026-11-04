@@ -379,9 +379,9 @@ const faqSchema = {
       )}
       <div class="help-card">
         <p class="help-eyebrow">{home.helpCard.eyebrow}</p>
-        <h2 class="help-heading">{home.helpCard.heading}</h2>
+        <h2 class="help-heading" id="help-heading">{home.helpCard.heading}</h2>
         <p class="help-body">{home.helpCard.body}</p>
-        <a class="help-link" href={href('/volunteers/')} data-attr="home-help-volunteer">{home.helpCard.link}&nbsp;<span aria-hidden="true">&rarr;</span></a>
+        <a class="help-link" href={href('/volunteers/')} data-attr="home-help-volunteer" aria-describedby="help-heading">{home.helpCard.link}&nbsp;<span aria-hidden="true">&rarr;</span></a>
       </div>
     </div>
   </section>

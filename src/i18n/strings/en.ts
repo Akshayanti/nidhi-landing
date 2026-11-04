@@ -1258,7 +1258,7 @@ export const en = {
       heading: 'Help translate nidhi.',
       /** Names the number of languages in words; the page fails the build if LOCALES no longer has five. */
       body: 'The interface is in five languages, translated with AI help. Check a translation, or help translate the English-only lessons.',
-      link: 'See how to volunteer',
+      link: 'Learn more',
     },
     faq: {
       heading: 'Two common questions',

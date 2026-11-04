@@ -992,7 +992,7 @@ export const cs: Dict = {
       eyebrow: 'Hledám dobrovolnou pomoc',
       heading: 'Pomozte s překladem nidhi.',
       body: 'Rozhraní je přeložené do pěti jazyků s pomocí AI. Zkontrolujte překlad nebo pomozte přeložit lekce, které jsou zatím jen v angličtině.',
-      link: 'Jak se zapojit',
+      link: 'Zjistit více',
     },
     faq: {
       heading: 'Dvě časté otázky',
