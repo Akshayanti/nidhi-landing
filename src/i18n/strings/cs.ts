@@ -73,7 +73,6 @@ export const cs: Dict = {
   },
 
   footer: {
-    tagline: 'Peníze srozumitelně',
     columns: {
       learn: 'Lekce',
       tools: 'Nástroje zdarma',
@@ -921,125 +920,91 @@ export const cs: Dict = {
       ],
       site: 'Peníze srozumitelně. Učte se osobní finance, porozumějte vlastním penězům a plánujte budoucnost, od základů po finance rozložené mezi měny a země.',
     },
-    /** The one line strip after the hero that points to /volunteers/ while the call runs. */
-    volunteers: { text: 'Pomozte s překladem nidhi: hledám lidi, kteří jazyk ovládají jako rodný nebo skoro stejně dobře.', link: 'Jak se zapojit' },
+    /**
+     * The bar under the header that points to /volunteers/ while the call
+     * runs. The whole bar is one link; `link` is drawn as a pill after `text`,
+     * and the page adds the arrow.
+     */
+    volunteers: { text: 'Ovládáte dobře jiný jazyk?', link: 'Pomozte s překladem nidhi' },
     hero: {
-      heading: 'Porozumějte svým penězům.',
-      subhead: ['Lekce zdarma.', 'Soukromé nástroje.', 'Plánovač na cestě.'],
-      startLearning: 'Začít s lekcemi',
-      tryTool: 'Vyzkoušet nástroj zdarma',
-      promise: 'Lekce zdarma: {lessons}. Soukromé nástroje: {tools}. Bez účtu, bez reklam. Co do nástrojů zadáte, zůstává ve vašem zařízení.',
-      welcomeBack: 'Vítejte zpět. Navažte tam, kde to máte rozečtené:',
+      heading: 'Porozumějte svým penězům, krok za krokem.',
+      lead: 'Přečtěte si krátkou lekci. Vyzkoušejte si ji na vlastních číslech v nástroji zdarma. Brzy uvidíte celý obraz v plánovači.',
+      /** Jumps to the planner section; the page adds the arrow. */
+      plannerLink: 'Zobrazit plánovač',
     },
-    journey: {
-      label: 'Učte se, udělejte si přehled, plánujte dopředu · ukázkové částky',
-      learnStep: '1 · Učte se',
-      learnBig: 'Co je čisté jmění?',
-      learnSmall: 'Co vlastníte, minus co dlužíte.',
-      stockStep: '2 · Udělejte si přehled',
-      stockBig: '{one} nebo {two}',
-      stockSmall: 'Čisté jmění dvou lidí se stejným příjmem {amount} měsíčně.',
-      planStep: '3 · Plánujte dopředu',
-      planBig: '{gap} navíc po {years} letech',
-      planSmall: 'Díky tomu, že každý měsíc spoříte a investujete o {extra} víc.',
+    /** "Which sounds like you?": see the English catalog. */
+    situations: {
+      heading: 'Co z toho se týká vás?',
+      read: 'Čtěte',
+      try: 'Zkuste',
+      plan: 'Plánujte',
+      soon: 'brzy',
+      more: 'Mnohem víc podobných otázek najdete mezi {lessons} lekcemi a {tools} nástroji.',
+      moreLink: 'Najděte tu svou',
+      items: {
+        currencies: { who: '„Mám peníze ve více než jedné zemi.“', lesson: 'Peníze ve více měnách' },
+        loans: { who: '„Porovnávám nabídky úvěrů.“', lesson: 'Jak porovnat podmínky úvěrů' },
+      },
     },
-    steps: {
-      learn: 'Učte se',
-      stock: 'Udělejte si přehled',
-      plan: 'Plánujte dopředu',
-      mark: 'Krok {n}: ',
-    },
+    /** The lessons section: the ways in, one line each. */
     lessons: {
-      heading: 'Lekce zdarma, navždy.',
-      body: 'Krátké lekce pro jakoukoli domácnost v jakékoli zemi, a kde záleží na místních pravidlech, řeknou, co si ověřit. Bez placeného přístupu, bez účtu.',
-      helperQuestion: 'Nevíte, co se pro vás hodí?',
-      helperLink: 'Dvě otázky navrhnou, kde začít',
+      heading: 'Pochopte myšlenku, s lekcemi zdarma',
+      body: 'Krátké lekce pro jakoukoli zemi. Cesta 1 nepředpokládá žádné předchozí znalosti.',
+      helperLink: 'Nevíte? Odpovězte na dvě otázky',
+      routeN: 'Cesta {n}: ',
       foot: 'Zobrazit celou vzdělávací cestu',
+      /** A route whose lessons are still scheduled: shown, not linked. */
       comingSoon: '{level} · lekce brzy',
       comingSoonNoLevel: 'Další lekce',
       levelCount: '{level} · počet lekcí: {count}',
       severalLevels: 'Lekce z několika úrovní',
       start: 'Začít',
+      /** Replaces `start` for a route the reader has already begun. */
       doorContinue: 'Pokračovat: ',
+      /** Replaces it once every lesson on the route is read. */
       doorRead: 'Trasa dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
       inclusiveGo: 'Prozkoumat',
     },
     tools: {
-      heading: 'Podívejte se, kde stojíte.',
-      body: 'Nástroje zdarma, které běží ve vašem prohlížeči, takže to, co zadáte, zůstává ve vašem zařízení.',
-    },
-    compare: {
-      label: 'Stejný příjem: {amount} měsíčně na osobu',
-      owns: 'Vlastní',
-      owes: 'Dluží',
-      netWorth: 'čisté jmění',
-      caption: 'Příjem je to, co přichází. Čisté jmění je to, co vlastníte, minus to, co dlužíte. Ukázkové částky.',
-      people: {
-        alex: { name: 'Alex', note: 'Auto a karta, obojí na dluh' },
-        sam: { name: 'Sam', note: 'Úspory, penze, malá půjčka' },
-      },
+      heading: 'Vyzkoušejte si to na vlastních číslech, s nástroji zdarma',
+      body: 'Bez účtu. Nástroje běží ve vašem prohlížeči: co napíšete, zůstane ve vašem zařízení.',
+      privacyLink: 'Jak nástroje zacházejí s vašimi čísly',
     },
     planner: {
-      heading: 'Podívejte se, kam to může vést.',
-      body: 'Stavím plánovač: co vlastníte, dlužíte, vyděláváte a utrácíte na jednom místě, v jedné měně i ve více měnách, aby šlo rozhodnutí, jako je toto, porovnat dřív, než je uděláte.',
-      /** After the body: when the beta opens, with a link to /beta/. */
-      beta: { before: 'Beta je zdarma a otevřít se má v lednu 2027.', link: 'Co v betě získáte' },
+      badge: 'Beta v lednu 2027',
+      heading: 'Všechno pohromadě, v plánovači',
+      body: 'Každý nástroj odpovídá na jednu otázku. Úvěr mění, kolik můžete ušetřit, a inflace mění, co si za úspory koupíte. Plánovač spojí to, co vlastníte, dlužíte, vyděláváte a utrácíte, do jednoho obrazu. Předpoklady jsou vidět.',
+      questions: {
+        loan: '„Jak by nový úvěr změnil, kolik můžu ušetřit?“',
+        careerBreak: '„Vystačí mi úspory na pauzu v kariéře?“',
+        currencies: '„Kolik dohromady dělají moje účty v různých měnách?“',
+      },
     },
-    example: {
-      label: 'Jedno rozhodnutí, dvě cesty',
-      text: 'Stejný začátek; mění se jen částka vkládaná každý měsíc.',
-      currencyNote:
-        'Koruny jsou jen měna, kterou tento příklad používá. Obě cesty mají stejný procentní výnos, takže rozdíl mezi nimi je také poměr: v eurech nebo dolarech by obě čáry měly stejný tvar, změnila by se jen osa.',
-      gapLead: 'Po {years} letech je rozdíl zhruba {gap}.',
-      gapRest: 'Většinu tvoří peníze vložené navíc; zbytek je růst.',
-      fold: 'Jak tento příklad funguje',
-      chartTitle: 'Příklad: porovnání jednoho rozhodnutí v průběhu deseti let',
-      today: 'Dnes',
-      year: 'Rok {n}',
-      axisStart: 'dnes',
-      axisEnd: '+{years} let',
-      perMonth: '{amount}/měs.',
-      description:
-        'Dvě ukázkové cesty začínají stejnou dnes investovanou částkou {invested} a počítají s ukázkovým výnosem {pct} ročně po odečtení inflace. Při vkladu {monthly} měsíčně je výsledek po {years} letech zhruba {end}; při vkladu {higher} měsíčně zhruba {alternative}. Rozdíl zhruba {gap} tvoří {extra} vložených navíc a zhruba {growth} růstu navíc.',
-      footnote:
-        'Předpokládá ukázkový výnos {pct} ročně po odečtení inflace, s měsíční částkou přidanou na začátku každého měsíce. Skutečné výnosy se rok od roku liší a mohou být záporné. Celé čisté jmění neroste jedním tempem: auto ztrácí hodnotu a půjčka se splácí.',
-      keysHint: 'Hodnoty přečtete šipkami doleva a doprava.',
+    /** Around the founder's note; the note's own words are in src/i18n/strings/founderNote.ts until approved. */
+    note: {
+      label: 'Proč nidhi? Pár slov od člověka, který za projektem stojí',
+      trustLine: 'Bez reklam. Bez prodeje dat. Se zdroji.',
+      editorial: 'Jak se lekce píšou',
+    },
+    helpCard: {
+      eyebrow: 'Hledám dobrovolnou pomoc',
+      heading: 'Pomozte s překladem nidhi.',
+      body: 'Rozhraní je přeložené do pěti jazyků s pomocí AI. Zkontrolujte překlad nebo pomozte přeložit lekce, které jsou zatím jen v angličtině.',
+      link: 'Jak se zapojit',
     },
     faq: {
-      heading: 'Časté dotazy',
+      heading: 'Dvě časté otázky',
       items: [
         {
-          q: 'Je nidhi pro ty, kdo začínají?',
-          a: 'Ano. Vzdělávací cesta začíná tím, co je čisté jmění, a nepředpokládá žádné předchozí znalosti. Každá lekce vysvětluje své pojmy průběžně. Počet lekcí je zatím {total} a lekce v hlavní cestě jdou po sobě v pořadí čtení, takže stačí začít nahoře a pokračovat.',
-        },
-        {
-          q: 'Potřebuji k používání nidhi peníze ve více než jedné měně?',
-          a: 'Ne. Vše funguje s jedinou měnou. Podpora více měn je tu pro chvíle, kdy ji život potřebuje: úspory v jedné zemi, důchod nebo nemovitost v jiné, nebo plány na stěhování.',
-        },
-        {
           q: 'Kolik nidhi stojí?',
-          a: 'Lekce a nástroje zdarma nestojí nic a nepotřebují účet. Lekce zůstanou zdarma, bez placeného přístupu.',
+          a: 'Lekce a nástroje zdarma nestojí nic a nepotřebují účet. Lekce zůstanou zdarma, bez placeného přístupu. Beta plánovače je také zdarma.',
         },
         {
           q: 'Je to finanční poradenství?',
           a: 'Ne. nidhi je vzdělávací: vysvětluje, jak peníze fungují, a umožňuje vymodelovat vlastní situaci. Není finančním poradcem s příslušným oprávněním. U rozhodnutí, na kterých záleží, se poraďte s kvalifikovaným odborníkem.',
         },
-        {
-          q: 'Co se stane s čísly, která zadám do nástrojů?',
-          a: 'Zůstávají ve vašem zařízení a neposílají se nidhi. Nástroje zdarma počítají ve vašem prohlížeči a nikdy nezapisují, co zadáte, do adresy stránky. Když nástroj potřebuje vnější data, například denní směnné kurzy, váš prohlížeč se dané služby zeptá jen na kurzy, nikdy neposílá vaše částky; jako každý požadavek ukáže té službě vaši IP adresu. Podrobnosti najdete na stránce o soukromí.',
-        },
-        {
-          q: 'Co je plánovač a kdy ho budu moct používat?',
-          a: 'Plánovač spojuje vše dohromady: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, promítnuté do budoucnosti s viditelnými předpoklady, aby šlo rozhodnutí porovnat dřív, než je uděláte. Jeho beta zdarma se má otevřít v lednu 2027 a kdo je na čekací listině, dostane jeden e-mail, až se otevře přístup.',
-          more: "Co v betě získáte",
-        },
       ],
-      why: 'nidhi vzniklo, protože neexistoval nástroj, který by seděl na obyčejný finanční život: peníze ve více než jedné zemi, dluhy v jiné, budoucnost přes hranice. Tak ho stavím a cestou vysvětluji, co se učím.',
-      trustLine: 'Vyrobeno v Praze. Žádné reklamy, žádný prodej dat. Lekce citují své zdroje.',
-      trustBeliefs: 'Čemu věřím',
-      trustEditorial: 'Jak píšeme',
-      trustPrivacy: 'Zásady ochrany soukromí',
     },
     levels: {
       discovery: 'Objevování',
@@ -1071,11 +1036,11 @@ export const cs: Dict = {
       },
     },
     toolCards: {
-      netWorth: { name: 'Kalkulačka čistého jmění', desc: 'Jedna měna i více.' },
-      loanComparison: { name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
-      monteCarlo: { name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
-      inflation: { name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
-      investOrPayOff: { name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
+      netWorth: { question: '„Jaké je moje čisté jmění napříč měnami?“', name: 'Kalkulačka čistého jmění', desc: 'Jedna měna i více.' },
+      loanComparison: { question: '„Který úvěr mě vyjde levněji?“', name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
+      monteCarlo: { question: '„Jaké rozpětí výsledků může můj plán mít?“', name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
+      inflation: { question: '„Co si za své peníze koupím později?“', name: 'Inflační kalkulačka', desc: 'Co si za peníze koupíte v průběhu let.' },
+      investOrPayOff: { question: '„Mám nejdřív investovat, nebo splatit dluh?“', name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },
 

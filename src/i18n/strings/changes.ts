@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-04',
+    items: [
+      {
+        id: 'footer-columns',
+        text: {
+          en: 'The footer at the bottom of every page is tidier: four even columns on wider screens, and Privacy and Cookie settings on its last line, where they are easy to find on a phone too.',
+          es: 'El pie de cada página está más ordenado: cuatro columnas iguales en pantallas anchas, y «Privacidad» y «Configuración de cookies» en la última línea, donde también es fácil encontrarlas en el móvil.',
+          cs: 'Zápatí na konci každé stránky je přehlednější: na širších obrazovkách čtyři stejné sloupce a „Soukromí“ a „Nastavení cookies“ na posledním řádku, kde je snadno najdete i v telefonu.',
+          mr: 'प्रत्येक पानाच्या तळाशी असलेला फूटर आता अधिक नीटनेटका आहे: मोठ्या स्क्रीनवर चार समान स्तंभ, आणि गोपनीयता व कुकी सेटिंग्ज शेवटच्या ओळीत, जिथे ती फोनवरही सहज सापडतात.',
+          hi: 'हर पेज के नीचे का फ़ुटर अब ज़्यादा व्यवस्थित है: बड़ी स्क्रीन पर चार बराबर कॉलम, और प्राइवेसी व कुकी सेटिंग आख़िरी पंक्ति में, जहाँ ये फ़ोन पर भी आसानी से मिल जाती हैं।',
+        },
+      },
+      {
+        id: 'home-situations',
+        text: {
+          en: 'The home page is simpler: two common situations show how a lesson, a free tool and the planner fit together, and the call for translators now sits right at the top.',
+          es: 'La página de inicio es más sencilla: dos situaciones frecuentes muestran cómo encajan una lección, una herramienta gratuita y el planificador, y la invitación a ayudar con las traducciones aparece ahora al principio de la página.',
+          cs: 'Úvodní stránka je jednodušší: dvě běžné situace ukazují, jak do sebe zapadá lekce, nástroj zdarma a plánovač, a výzva k pomoci s překladem je teď hned nahoře.',
+          mr: 'मुख्यपृष्ठ आता अधिक सोपे आहे: दोन नेहमीच्या परिस्थितींच्या उदाहरणांतून धडा, मोफत साधन आणि प्लॅनर एकत्र कसे उपयोगी पडतात हे दिसते. भाषांतरात मदतीचे आवाहन आता पानाच्या अगदी वर आहे.',
+          hi: 'होम पेज अब सरल है: दो आम स्थितियाँ दिखाती हैं कि एक पाठ, एक मुफ़्त टूल और प्लानर कैसे एक साथ जुड़ते हैं, और अनुवादकों के लिए अपील अब सबसे ऊपर है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-02',
     items: [
       {

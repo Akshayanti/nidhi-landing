@@ -41,7 +41,7 @@ breach as a defect.
    agreeing between the two languages.
    **One exception, decided 2026-10-12:** the home page's worked example and
    its chart are in rupees in the Hindi edition, with figures chosen at Indian
-   scale (`EXAMPLES.INR` in `src/utils/home/heroExamples.ts`), not converted.
+   scale (the example left the home page on 2026-11-04; the rule stands for any future one), not converted.
    Where Hindi copy names several currencies, the order is rupees, then
    dollars, then euros. The lessons, which are English, keep their euros.
 4. **Digits stay Latin.** `₹`, `€`, `$`, `4%`, `1,00,000` and `2026` are written
