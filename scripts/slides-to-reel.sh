@@ -22,6 +22,10 @@ place() { # card, x, y, out: soft navy shadow drawn and blurred on the full canv
 i=0
 for s in "$IN"/slide-0*.png; do
   i=$((i+1)); n=$(printf %02d $i)
+  # A slide that is already a 9:16 frame (a kit with format: "reel") is used as it is, for the reel and the story.
+  if [ "$(magick identify -format %h "$s")" = "1920" ]; then
+    cp "$s" "$OUT/stories/story-$n.png"; [ ${#DURS[@]} -gt 0 ] && cp "$s" "$OUT/reel/frames/frame-$n.png"; continue
+  fi
   card "$s" 1000 "$OUT/tmp-story-card.png"; place "$OUT/tmp-story-card.png" 40 290 "$OUT/stories/story-$n.png"
   if [ ${#DURS[@]} -gt 0 ]; then card "$s" 900 "$OUT/tmp-reel-card.png"; place "$OUT/tmp-reel-card.png" 48 330 "$OUT/reel/frames/frame-$n.png"; fi
 done

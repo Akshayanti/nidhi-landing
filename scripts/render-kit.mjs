@@ -18,6 +18,9 @@ const OUTPUT_DIR = join(ROOT, 'output', 'instagram-kit');
 const W = 1080;
 const H = 1350;
 const SH = 1920;
+// Reel frames (format: "reel"): CSS size, captured at 1.5x to 1080 x 1920.
+const REEL_W = 810;
+const REEL_H = 1440;
 const MAX_SLIDES = 8;
 const MULTI_KEYS = new Set(['offer', 'input', 'row', 'calc', 'case', 'bar', 'item', 'month', 'more', 'left_item', 'right_item', 'route', 'tier', 'card']);
 const BANNED_TAGS = new Set([
@@ -824,6 +827,30 @@ const CSS = `
   .premise { font:500 40px/1.2 'Roboto',sans-serif; color:var(--soft); margin-top:-8px; }
   .swipe { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); font:700 22px 'Inter',sans-serif; letter-spacing:4px; color:var(--accent); }
   .swipe span { font-size:28px; margin-left:8px; }
+  .reel-frame .swipe { display:none; }
+  .slide.reel-frame { width:${REEL_W}px; height:${REEL_H}px; padding:150px 110px 340px 52px; }
+  .reel-frame .eyebrow { top:100px; left:52px; }
+  .reel-frame .handle, .reel-frame.layout-request .handle { bottom:290px; right:110px; }
+  .reel-frame .request-status { left:52px; bottom:290px; }
+  .reel-frame .dots { display:none; }
+  .reel-frame .request-copy { padding-top:36px; }
+  .reel-frame .request-copy h1 { font-size:58px; letter-spacing:-2px; }
+  .reel-frame .request-text { padding:28px 30px 120px; }
+  .reel-frame .request-cards.compact .request-text { padding:22px 30px 24px; }
+  .reel-frame .request-heading { font-size:40px; }
+  .reel-frame .request-cards.compact .request-heading { font-size:34px; }
+  .reel-frame .request-comment { position:relative; right:auto; bottom:auto; width:auto; margin-left:120px; font-size:30px; }
+  .reel-frame .request-cards:not(.compact) .request-text { padding-bottom:36px; }
+  .reel-frame .request-exhibit { padding:20px; }
+  .reel-frame.layout-request .handle { display:none; }
+  /* Body text at least 48 px on the 1080 frame (36 css px x 4/3); council, Nov 5, 2026. */
+  .reel-frame .request-line, .reel-frame .request-kicker { font-size:37px; }
+  .reel-frame .request-lead { font-size:36px; }
+  .reel-frame .case-detail { font-size:37px; }
+  .reel-frame .sort-column-item { font-size:37px; min-height:120px; }
+  .reel-frame .sort-column { height:640px; }
+  .reel-frame .request-bar { padding:0 18px; gap:12px; font-size:17px; }
+  .reel-frame .request-lang { font-size:15px; letter-spacing:2px; }
   .layout-hook { padding-top:70px; }
   .layout-hook .content { justify-content:flex-start; gap:26px; }
   .layout-hook .bars { margin:60px 0 40px; }
@@ -1122,10 +1149,13 @@ function slideHtml(kit, deck, slide) {
   const bare = slide.layout === 'hook' || slide.layout === 'columns' || slide.layout === 'routes' || slide.layout === 'bands' || slide.layout === 'tool';
   // text_style: "strong" in a kit's frontmatter sets detail lines, chips and notes in ink and a heavier weight,
   // for posts whose message lives in those lines rather than in the headings.
-  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''}">
+  // format: "reel" in a kit's frontmatter: the slides become frames of a silent reel (slides-to-reel.sh),
+  // so the carousel's swipe cue and progress dots are left out.
+  const reel = kit.frontmatter.format === 'reel';
+  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''} ${reel ? 'reel-frame' : ''}">
   ${bare ? '' : `<div class="eyebrow">${esc(kit.frontmatter.chip || '')}</div>`}
   <div class="content">${LAYOUTS[slide.layout](slide, deck)}</div>
-  ${slide.layout === 'hook' || slide.layout === 'request' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}
+  ${reel || slide.layout === 'hook' || slide.layout === 'request' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}
   <div class="handle">@nidhi.today</div>
 </div>`);
 }
@@ -1359,8 +1389,8 @@ async function main() {
   const layoutErrors = [];
   try {
     const browserPage = await browser.newPage();
-    const open = async (html, path, height) => {
-      await browserPage.setViewport({ width: W, height, deviceScaleFactor: 2 });
+    const open = async (html, path, height, width = W, scale = 2) => {
+      await browserPage.setViewport({ width, height, deviceScaleFactor: scale });
       await browserPage.setContent(html, { waitUntil: 'domcontentloaded', timeout: 10000 });
       await browserPage.evaluate(() => document.fonts.ready);
       await mkdir(dirname(path), { recursive: true });
@@ -1372,7 +1402,10 @@ async function main() {
       for (const day of reelsOnly ? [] : kit.days) {
         const deckDir = join(outDir, `day${day.n}`, 'carousel');
         for (const slide of day.deck.slides) {
-          const path = await open(slideHtml(kit, day.deck, slide), join(deckDir, `slide-${String(slide.number).padStart(2, '0')}.png`), H);
+          // A reel kit's slides are 9:16 frames: laid out at 810 x 1440 and captured at 4/3, so they come out
+          // 1080 x 1920 with every size a third larger than on a carousel slide (council, Nov 5, 2026: phone legibility).
+          const reelKit = kit.frontmatter.format === 'reel';
+          const path = await open(slideHtml(kit, day.deck, slide), join(deckDir, `slide-${String(slide.number).padStart(2, '0')}.png`), reelKit ? REEL_H : H, reelKit ? REEL_W : W, reelKit ? 1080 / REEL_W : 2);
           if (await fit(browserPage)) console.warn(`  overflow: day ${day.n} slide ${slide.number}`);
           for (const p of await chromeOverlaps(browserPage)) layoutErrors.push(`${kit.relPath} day ${day.n} slide ${slide.number}: ${p}`);
           await browserPage.screenshot({ path });
