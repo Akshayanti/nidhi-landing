@@ -1,11 +1,13 @@
 /**
  * What the homepage links to, chosen at build time from the blog collection.
  *
- * The homepage names lessons by slug in three places: the "Start wherever
- * you are" situations, the "grows with you" topics, and (through each post's
- * `relatedTool`) the lesson and tool pairs. Every one of them goes through
- * the same filter, so a scheduled post never gets a homepage link before its
- * pubDate, and a gated tool never appears before it launches.
+ * The homepage names lessons by slug in two places: the routes in the lessons
+ * section, and the two situations in the hero ("Which sounds like you?").
+ * Routes go through the same filter as everything else on the site, so a
+ * scheduled post never gets a homepage link before its pubDate and a gated
+ * tool never appears before it launches. A situation is a whole chain (lesson,
+ * tool, planner question), so it is never shown half-built: the build fails
+ * instead (`resolveSituations`).
  *
  * `assertHomepageSlugs` fails the build when a slug named here is not in the
  * collection at all (a typo, or a post renamed later), the same way
@@ -81,71 +83,63 @@ export const STARTING_POINTS: StartingPointDef[] = [
   },
 ];
 
-interface GrowthTopicDef {
-  id: string;
-  label: string;
-  detail: string;
-  lessons: string[];
-}
-
-/** Life getting more involved, roughly in the order it tends to happen. */
-export const GROWTH_TOPICS: GrowthTopicDef[] = [
-  {
-    id: 'safety-net',
-    label: 'A first salary and a safety net',
-    detail: 'Where your money goes, and how much to keep for the unexpected.',
-    lessons: ['cash-flow-101', 'emergency-fund'],
-  },
-  {
-    id: 'investing',
-    label: 'Investing for the long run',
-    detail: 'Risk, diversification and the accounts that make it simpler.',
-    lessons: ['understanding-risk', 'diversification'],
-  },
-  {
-    id: 'home',
-    label: 'Borrowing, and maybe a home',
-    detail: 'What a loan really costs, and whether property fits your plan.',
-    lessons: ['understanding-loan-terms', 'real-estate-as-investment'],
-  },
-  {
-    id: 'taxes',
-    label: 'Taxes that touch every decision',
-    detail: 'Thinking in after-tax terms, and where to hold investments.',
-    lessons: ['taxes-and-your-financial-plan', 'tax-advantaged-accounts'],
-  },
-  {
-    id: 'independence',
-    label: 'Retirement and financial independence',
-    detail: 'What enough looks like, and how long it might take to get there.',
-    lessons: ['introduction-to-financial-independence', 'financial-projections'],
-  },
-  {
-    id: 'currencies',
-    label: 'Money in more than one country',
-    detail: 'Assets, debts and plans in different currencies, seen as one picture.',
-    lessons: ['managing-money-across-currencies', 'why-your-euro-buys-more-in-some-countries'],
-  },
-];
+export type ToolKey = 'netWorth' | 'loanComparison' | 'monteCarlo' | 'inflation' | 'investOrPayOff';
 
 /**
- * What a tool's card on the home page needs that is not a word: which address
- * it points at, which small drawing illustrates it, and which catalog entry
- * (`home.tools`) names and describes it. Keyed by URL, because that is how a
- * lesson names its `relatedTool`.
+ * The free tools, in the order the homepage's tools section lists them, each
+ * keyed to its catalog entry (`home.toolCards[key]`: the reader's question,
+ * the tool's name and one line). Keyed by the address each card opens.
  */
-export const TOOLS: Record<
-  string,
-  { key: 'netWorth' | 'loanComparison' | 'monteCarlo' | 'inflation' | 'investOrPayOff'; preview: 'donut' | 'bars' | 'fan' | 'rise' }
-> = {
-  '/free/multi-currency-net-worth/': { key: 'netWorth', preview: 'donut' },
-  '/free/loan-comparison/': { key: 'loanComparison', preview: 'bars' },
-  '/free/monte-carlo-simulator/': { key: 'monteCarlo', preview: 'fan' },
-  '/free/inflation-calculator/': { key: 'inflation', preview: 'rise' },
-  '/free/invest-or-pay-off/': { key: 'investOrPayOff', preview: 'bars' },
+export const TOOLS: Record<string, { key: ToolKey }> = {
+  '/free/multi-currency-net-worth/': { key: 'netWorth' },
+  '/free/loan-comparison/': { key: 'loanComparison' },
+  '/free/invest-or-pay-off/': { key: 'investOrPayOff' },
+  '/free/inflation-calculator/': { key: 'inflation' },
+  '/free/monte-carlo-simulator/': { key: 'monteCarlo' },
 };
 
-const withSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
+/** The tools section's cards: every tool `isToolLive` accepts, in TOOLS order. */
+export function liveTools(isToolLive: (href: string) => boolean): Array<{ href: string; key: ToolKey }> {
+  return Object.entries(TOOLS)
+    .filter(([href]) => isToolLive(href))
+    .map(([href, meta]) => ({ href, key: meta.key }));
+}
+
+/**
+ * The hero's situations: one reader's question, followed through a lesson
+ * (Read), a free tool (Try) and the planner (Plan). Structure only; every word
+ * is in `home.situations[id]`. The lesson is English in every edition and
+ * opens at its one address; the tool is localized by the page.
+ */
+export const SITUATIONS = [
+  { id: 'currencies', lesson: 'managing-money-across-currencies', tool: '/free/multi-currency-net-worth/' },
+  { id: 'loans', lesson: 'understanding-loan-terms', tool: '/free/loan-comparison/' },
+] as const;
+
+export type SituationId = (typeof SITUATIONS)[number]['id'];
+
+/**
+ * The situations ready to render. Each one is a whole chain, so a lesson that
+ * is not published or a tool that is not released fails the build with a
+ * message, rather than leaving a situation with a missing step.
+ */
+export function resolveSituations(
+  posts: HomePost[],
+  now: Date,
+  isToolLive: (href: string) => boolean = () => true,
+): Array<{ id: SituationId; lesson: LessonLink; tool: { href: string; key: ToolKey } }> {
+  const live = liveIndex(posts, now);
+  return SITUATIONS.map((s) => {
+    const [lesson] = toLinks([s.lesson], live);
+    if (!lesson) {
+      throw new Error(`The homepage situation "${s.id}" links to the lesson "${s.lesson}", which is not published. Publish it or change SITUATIONS in src/utils/home/startingPoints.ts.`);
+    }
+    if (!TOOLS[s.tool] || !isToolLive(s.tool)) {
+      throw new Error(`The homepage situation "${s.id}" links to the tool ${s.tool}, which is not released. Change SITUATIONS in src/utils/home/startingPoints.ts.`);
+    }
+    return { id: s.id, lesson, tool: { href: s.tool, key: TOOLS[s.tool].key } };
+  });
+}
 
 const isLive = (p: HomePost, now: Date) => p.data.pubDate <= now;
 
@@ -162,7 +156,7 @@ function toLinks<T extends HomePost>(slugs: string[], live: Map<string, T>): Les
 
 /** Every slug the homepage names, for the build-time check. */
 export function homepageSlugs(): string[] {
-  return [...STARTING_POINTS.flatMap((s) => s.lessons), ...GROWTH_TOPICS.flatMap((t) => t.lessons)];
+  return [...STARTING_POINTS.flatMap((s) => s.lessons), ...SITUATIONS.map((s) => s.lesson)];
 }
 
 export function assertHomepageSlugs(allPosts: HomePost[]): void {
@@ -229,71 +223,4 @@ export function routeNext(route: LessonLink[], readSlugs: string[]): { next: Les
     next: route.find((l) => !read.has(l.slug)) ?? null,
     started: route.some((l) => read.has(l.slug)),
   };
-}
-
-export interface GrowthTopic {
-  id: string;
-  label: string;
-  detail: string;
-  lessons: LessonLink[];
-}
-
-export function resolveGrowthTopics(posts: HomePost[], now: Date): GrowthTopic[] {
-  const live = liveIndex(posts, now);
-  return GROWTH_TOPICS.map((t) => ({ ...t, lessons: toLinks(t.lessons, live) })).filter((t) => t.lessons.length > 0);
-}
-
-export interface LessonToolPair {
-  lesson: LessonLink;
-  tool: { href: string } & (typeof TOOLS)[string];
-}
-
-/**
- * One pair per tool: the earliest live lesson (in reading order) that names
- * it as its `relatedTool`. `isToolLive` lets the caller hide gated tools.
- * The tool's name and description come from `home.tools[tool.key]`.
- */
-export function lessonToolPairs(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean): LessonToolPair[] {
-  const sorted = posts
-    .filter((p) => isLive(p, now) && p.data.relatedTool)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-  const pairs = new Map<string, LessonToolPair>();
-  for (const p of sorted) {
-    const href = withSlash(p.data.relatedTool!.url);
-    const meta = TOOLS[href];
-    if (!meta || pairs.has(href) || !isToolLive(href)) continue;
-    pairs.set(href, {
-      lesson: { slug: p.data.slug, title: p.data.title, href: `/blog/${p.data.slug}/` },
-      tool: { href, ...meta },
-    });
-  }
-  return [...pairs.values()];
-}
-
-/**
- * The live ladder lessons in reading order, for the "Continue learning" link.
- * Inclusive Finances posts are optional follow-ups, so they are left out.
- */
-export function readingOrder(posts: HomePost[], now: Date): LessonLink[] {
-  return posts
-    .filter((p) => isLive(p, now) && (LADDER_LEVELS as readonly string[]).includes(p.data.level))
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
-    .map((p) => ({ slug: p.data.slug, title: p.data.title, href: `/blog/${p.data.slug}/` }));
-}
-
-/**
- * The next lesson for someone who has read `readSlugs`: the first unread
- * lesson after the furthest one they have read, so a reader who jumped
- * ahead (often from a search) carries on from there rather than being sent
- * back to the start. Once nothing is left after that point, the earliest
- * lesson they skipped. Null when they have read nothing on the current path
- * (then the page keeps "Start learning"), or all of it.
- */
-export function nextLesson(order: LessonLink[], readSlugs: string[]): LessonLink | null {
-  const read = new Set(readSlugs);
-  let furthest = -1;
-  order.forEach((l, i) => { if (read.has(l.slug)) furthest = i; });
-  if (furthest < 0) return null;
-  const unread = (l: LessonLink) => !read.has(l.slug);
-  return order.slice(furthest + 1).find(unread) ?? order.find(unread) ?? null;
 }

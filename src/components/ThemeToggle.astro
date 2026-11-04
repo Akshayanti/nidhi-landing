@@ -71,6 +71,20 @@ const strings = dict(locale);
     width: 16px;
     height: 16px;
   }
+
+  /* Phones: each button is a 44px tap target. The group's own padding and
+     gap shrink so the header row keeps its width. */
+  @media (max-width: 640px) {
+    .theme-toggle { padding: 1px; gap: 0; }
+    .theme-btn { width: 44px; height: 44px; }
+    .theme-icon { width: 18px; height: 18px; }
+  }
+
+  /* Phones up to 420px: the row is full (the language pill shows its tag
+     from 361px), so the buttons give up width, never height. */
+  @media (max-width: 420px) {
+    .theme-btn { width: 36px; }
+  }
 </style>
 
 <script is:inline>

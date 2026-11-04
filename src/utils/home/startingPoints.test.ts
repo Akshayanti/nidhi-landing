@@ -10,11 +10,9 @@ import { en } from '../../i18n/strings/en.ts';
 import {
   assertHomepageSlugs,
   homepageSlugs,
-  lessonToolPairs,
   levelCounts,
-  nextLesson,
-  readingOrder,
-  resolveGrowthTopics,
+  liveTools,
+  resolveSituations,
   resolveStartingPoints,
   routeNext,
   type HomePost,
@@ -98,11 +96,6 @@ describe('starting points', () => {
     assert.deepEqual(routeNext(route, ['b']), { next: route[0], started: true });
     assert.deepEqual(routeNext(route, ['a', 'b', 'c']), { next: null, started: true });
   });
-
-  it('growth topics follow the same rule', () => {
-    const topics = resolveGrowthTopics([post('managing-money-across-currencies', 'building', 29)], NOW);
-    assert.deepEqual(topics.map((t) => t.id), ['currencies']);
-  });
 });
 
 describe('level counts', () => {
@@ -118,52 +111,42 @@ describe('level counts', () => {
   });
 });
 
-describe('lesson and tool pairs', () => {
-  it('pairs each tool with its earliest live lesson and hides gated tools', () => {
-    const posts = [
-      post('later', 'optimizing', 47, PAST, '/free/multi-currency-net-worth'),
-      post('how-to-calculate-net-worth', 'discovery', 2, PAST, '/free/multi-currency-net-worth'),
-      post('understanding-loan-terms', 'building', 27, PAST, '/free/loan-comparison'),
-      post('financial-projections', 'optimizing', 43, PAST, '/free/monte-carlo-simulator'),
-      post('scheduled', 'building', 1, FUTURE, '/free/loan-comparison'),
-    ];
-    const pairs = lessonToolPairs(posts, NOW, (href) => href !== '/free/monte-carlo-simulator/');
-    assert.deepEqual(pairs.map((p) => [p.lesson.slug, p.tool.href]), [
-      ['how-to-calculate-net-worth', '/free/multi-currency-net-worth/'],
-      ['understanding-loan-terms', '/free/loan-comparison/'],
+describe('situations', () => {
+  const posts = [post('managing-money-across-currencies', 'building', 29), post('understanding-loan-terms', 'building', 27)];
+
+  it('each one is a lesson and a tool, currencies first', () => {
+    const sits = resolveSituations(posts, NOW);
+    assert.deepEqual(sits.map((s) => [s.id, s.lesson.href, s.tool.href, s.tool.key]), [
+      ['currencies', '/blog/managing-money-across-currencies/', '/free/multi-currency-net-worth/', 'netWorth'],
+      ['loans', '/blog/understanding-loan-terms/', '/free/loan-comparison/', 'loanComparison'],
     ]);
-    assert.equal(pairs[0].tool.key, 'netWorth');
-    assert.equal(pairs[0].tool.preview, 'donut');
+  });
+
+  it('fails the build rather than show a chain with a step missing', () => {
+    assert.throws(() => resolveSituations([posts[0]], NOW), /understanding-loan-terms/);
+    assert.throws(() => resolveSituations([posts[0], post('understanding-loan-terms', 'building', 27, FUTURE)], NOW), /not published/);
+    assert.throws(() => resolveSituations(posts, NOW, (href) => href !== '/free/loan-comparison/'), /not released/);
+  });
+
+  it('their lessons are in the build-time slug check', () => {
+    assert.ok(homepageSlugs().includes('managing-money-across-currencies'));
+    assert.ok(homepageSlugs().includes('understanding-loan-terms'));
   });
 });
 
-describe('continue learning', () => {
-  const order = readingOrder([
-    post('c', 'building', 3),
-    post('a', 'discovery', 1),
-    post('b', 'discovery', 2),
-    post('x', 'inclusive-finances', 2),
-    post('z', 'psychology', 9, FUTURE),
-  ], NOW);
-
-  it('reading order is live ladder lessons by order', () => {
-    assert.deepEqual(order.map((l) => l.slug), ['a', 'b', 'c']);
+describe('tool cards', () => {
+  it('lists live tools in the section\'s order, leaving out gated ones', () => {
+    assert.deepEqual(liveTools(() => true).map((t) => t.key), ['netWorth', 'loanComparison', 'investOrPayOff', 'inflation', 'monteCarlo']);
+    assert.deepEqual(
+      liveTools((href) => href !== '/free/invest-or-pay-off/').map((t) => t.href),
+      ['/free/multi-currency-net-worth/', '/free/loan-comparison/', '/free/inflation-calculator/', '/free/monte-carlo-simulator/'],
+    );
   });
 
-  it('suggests the first unread lesson after the furthest read', () => {
-    assert.equal(nextLesson(order, ['a'])?.slug, 'b');
-    assert.equal(nextLesson(order, ['b'])?.slug, 'c');
-  });
-
-  it('after the last lesson, falls back to the earliest one skipped', () => {
-    assert.equal(nextLesson(order, ['c'])?.slug, 'a');
-    assert.equal(nextLesson(order, ['a', 'c'])?.slug, 'b');
-  });
-
-  it('returns null with no progress, unknown slugs, or everything read', () => {
-    assert.equal(nextLesson(order, []), null);
-    assert.equal(nextLesson(order, ['gone', 'x']), null);
-    assert.equal(nextLesson(order, ['a', 'b', 'c']), null);
+  it('every tool has its card copy in the catalog', () => {
+    for (const { key } of liveTools(() => true)) {
+      const card = en.home.toolCards[key];
+      assert.ok(card.question && card.name && card.desc, key);
+    }
   });
 });
-

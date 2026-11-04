@@ -64,14 +64,13 @@ export const DATE_LOCALE: Record<Locale, string> = {
 };
 
 /**
- * How a figure in the site's own copy is written in each edition: the home
- * page's worked example, its chart, and any amount a catalog string quotes.
- * English readers write `€10,000`, Hindi readers `₹1,50,000` (the Hindi example
- * is in rupees, see `EXAMPLE_CURRENCY`). A Spanish reader reads
+ * How a figure in the site's own copy is written in each edition: any amount
+ * a catalog string quotes or a page formats in prose.
+ * English readers write `€10,000`, Hindi readers `₹1,50,000`. A Spanish reader reads
  * `10,000` as ten with three decimals, so the Spanish edition writes
  * `10.000 €`, as the RAE and every euro country that speaks Spanish do.
  * Czech groups with a no-break space and writes the symbol after the number,
- * `10 000 Kč` (the Czech example is in koruna, see `EXAMPLE_CURRENCY`).
+ * `10 000 Kč`.
  *
  * Lessons are not affected: they are English and keep English figures. The
  * free tools format an amount by the currency the reader chose, except on a
