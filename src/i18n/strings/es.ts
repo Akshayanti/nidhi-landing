@@ -521,7 +521,7 @@ export const es: Dict = {
       inflation: {
         kicker: 'Los precios con el tiempo',
         title: 'Calculadora de inflación',
-        desc: 'Mira qué compra una cantidad tras años de inflación, cuánto podría costar algo más adelante y si una subida salarial sigue el ritmo, con la historia anual de casi todos los países, del Banco Mundial.',
+        desc: 'Los precios suelen subir un poco cada año, y eso se acumula. Mira qué podrá comprar tu dinero más adelante, cuánto podrían costar las cosas, cuánto vale hoy una cantidad de antes y si tu subida salarial sigue el ritmo. Para cantidades del pasado, puede usar la inflación anual real de tu país, del Banco Mundial, en la mayoría de los países.',
         itemName: 'Calculadora de inflación',
       },
       investOrPayOff: {
@@ -1085,7 +1085,7 @@ export const es: Dict = {
       netWorth: { question: '«¿Dónde estoy, sumando todas mis monedas?»', name: 'Calculadora de patrimonio neto', desc: 'Una moneda o varias.' },
       loanComparison: { question: '«¿Qué préstamo me sale más barato?»', name: 'Comparador de préstamos', desc: 'Ofertas de préstamo, una al lado de otra.' },
       monteCarlo: { question: '«¿Qué abanico de resultados podría tener mi plan?»', name: 'Simulador Monte Carlo', desc: 'Un abanico de resultados, no una sola línea.' },
-      inflation: { question: '«¿Qué podrá comprar mi dinero más adelante?»', name: 'Calculadora de inflación', desc: 'Lo que compra el dinero con los años.' },
+      inflation: { question: '«¿Mi dinero sigue el ritmo de los precios?»', name: 'Calculadora de inflación', desc: 'Pasado, futuro y tu subida salarial, descontada la inflación.' },
       investOrPayOff: { question: '«¿Invierto o pago primero mi deuda?»', name: 'Invertir o pagar deuda', desc: 'Dos caminos, la misma fecha, descontada la inflación.' },
     },
   },
