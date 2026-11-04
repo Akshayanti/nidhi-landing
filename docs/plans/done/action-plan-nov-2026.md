@@ -10,6 +10,12 @@ Live plan: [../action-plan-nov-2026.md](../action-plan-nov-2026.md).
 |---|---|---|---|
 | 1 | **Nov 1 volunteer call** (`docs/instagram-kit/sundays/02-languages.md`): build a reel from the five approved slides and the caption as they stand, plus five stories, one per slide. Owner reviews before scheduling. | First, on the owner's go | Carousel (7 slides) and 7 stories ready Oct 25; copy council-approved; waiting for the owner's review, then scheduling. Reel parked by the owner |
 
+> Moved 2026-11-04: step 3a done; checked on nidhi.today the same day.
+
+| # | Step | When | Status |
+|---|---|---|---|
+| 3a | **Nov 4 launch check (lesson 49 and the invest or pay off tool):** after 05:36 UTC, confirm lesson 49 and the tool (`/free/` page in five languages, hub, home listing, privacy entry, What's changed item) are live before the 06:45 UTC reel. The Apps Script trigger (#276) asks for the deploy at about 11:00 IST; if the pages are not live, trigger Deploy to GitHub Pages by hand. | Nov 4, after 05:36 UTC | Done Nov 4: lesson 49 and the tool's page in all five languages answer on nidhi.today, and the hub, the home listing, the privacy entry and the What's changed item carry it |
+
 ## Decisions due elsewhere
 
 > Moved 2026-11-03: the Nov 1 readout was recorded Nov 2 (log); reels only confirmed, and the proposed safety line was replaced by the signed-off safety check.

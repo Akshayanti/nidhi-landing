@@ -83,7 +83,7 @@ The lesson must be live before its day 1 reel: the Apps Script trigger (`scripts
 
 **Chip and series signal.** Kits keep the series chip in their frontmatter (`Money, Compounding` for Optimizing, `Money, For You and Me` for Inclusive Finances, which is its own theme with its own profile Highlight); the reel itself shows its topic chip, with "· PART 1" or "· PART 2" when the days are linked. Each inclusive post still ships interleaved, directly after its host, and opens from the assumption the host post makes. Every series keeps a Highlight so the profile works as a library.
 
-**Sundays.** Open question for the owner: what Sundays carry from Nov 8. The action plan records a Sunday format "agreed" on Oct 28 and "unchanged" at the Nov 2 readout, but it is not written down anywhere, and the remaining Sunday kits (Beliefs 3 to 7, the net worth, loan and Monte Carlo tool posts in `docs/instagram-kit/`) are carousels.
+**Sundays (owner, Nov 4, 2026).** From Nov 8, each Sunday carries two silent text reels: one Belief (next: Beliefs 3) and one volunteering (the translator call). Nov 8 gets a new volunteering reel and story; later Sundays alternate reposting that reel and that story. Lesson runs pause on Sunday: the next lesson starts the day after the previous lesson's last reel, with no fixed weekday grid ("let the days decide the dates"). The remaining Sunday kits (Beliefs 3 to 7 and the tool posts in `docs/instagram-kit/`) are carousels, so each Belief needs a reel built from its kit; building waits for the owner's review of the reel decisions (`action-plan-nov-2026.md`, log, Nov 4).
 
 ### 2.2 Who posts what (decided Oct 14, 2026)
 
