@@ -84,7 +84,7 @@ export function parseKit(content, relPath) {
       const day = h2[1].match(/^Day (\d+)\s*\((\w+)\)/);
       // "Day 3 (story)" holds the one tool card a reels only day 3 shows in Stories; parsed like a deck.
       if (day && (day[2] === 'carousel' || day[2] === 'story')) {
-        deck = { day: Number(day[1]), slides: [], caption: '' };
+        deck = { day: Number(day[1]), slides: [], caption: '', storyOnly: day[2] === 'story' };
         dayOf(deck.day).deck = deck;
       } else if (day) {
         block = { kind: 'day', day: Number(day[1]), part: day[2], lines: [] };
@@ -151,7 +151,11 @@ export function lintKit(kit) {
   for (const [key, value] of Object.entries(kit.sections.stories || {})) noDash(`Stories ${key}`, value);
   // Day 3 runs only in the reels only version (council, Oct 2026): a reel plus the tool card story, no
   // carousel. Its "carousel" section holds the one tool slide the story renders from, never a feed post.
-  if (kit.days.length !== 2 && kit.days.length !== 3) err('Kit', `${kit.days.length} day(s) found, expected 2, or 3 with a reels only day 3`);
+  // A one day lesson (council, Nov 4, 2026: lessons 50b and 50c) is reels only too: its day 1 is a
+  // reel and a "Day 1 (story)" tool card, with no carousel.
+  const oneDay = kit.days.length === 1 && kit.days[0].deck?.storyOnly;
+  if (!oneDay && kit.days.length !== 2 && kit.days.length !== 3) err('Kit', `${kit.days.length} day(s) found, expected 2, 3 with a reels only day 3, or 1 reels only day with a "Day 1 (story)"`);
+  if (kit.days.some(d => d.deck?.storyOnly && d.n !== 3) && !oneDay) err('Kit', 'only day 3, or the single day of a one day kit, may be a story only day');
 
   // Pieces in posting order; consecutive pieces must not share a hashtag except #nidhi.
   let previous = null;
@@ -161,9 +165,9 @@ export function lintKit(kit) {
       if (!day.angle?.[key]) err(`${D} angle`, `missing "${key}"`);
     }
     const sendFormat = Boolean(day.angle?.send_to) || needsSendFormat(kit);
-    const extraDay = day.n === 3;
+    const extraDay = day.n === 3 || Boolean(day.deck?.storyOnly);
     // Written before day 1 publishes, so it sits in the brief: no premise, no day 3.
-    if (extraDay && !kit.sections.brief?.day3) err('Brief', 'a day 3 needs "day3:", one sentence naming the friend, the moment and the numbers');
+    if (day.n === 3 && !kit.sections.brief?.day3) err('Brief', 'a day 3 needs "day3:", one sentence naming the friend, the moment and the numbers');
     if (sendFormat) {
       if (!day.angle?.send_to) err(`${D} angle`, 'missing "send_to:" naming one friend at one moment');
       if (!SEND_WHY.has(day.angle?.send_why)) err(`${D} angle`, `"send_why:" must be one of ${[...SEND_WHY].join(', ')}`);
@@ -186,8 +190,8 @@ export function lintKit(kit) {
 
     if (extraDay) {
       const tools = day.deck?.slides || [];
-      if (tools.length !== 1 || tools[0].layout !== 'tool') err(`${D} story`, 'day 3 holds exactly one "tool" slide, for the story only');
-      if (day.deck?.caption) err(`${D} story`, 'day 3 has no feed carousel, so no caption');
+      if (tools.length !== 1 || tools[0].layout !== 'tool') err(`${D} story`, 'a story only day holds exactly one "tool" slide, for the story only');
+      if (day.deck?.caption) err(`${D} story`, 'a story only day has no feed carousel, so no caption');
       for (const slide of tools) if (!slide.fields.alt) err(`${D} tool`, 'missing "alt:" text');
       continue;
     }
@@ -1364,6 +1368,7 @@ async function main() {
     };
     for (const kit of kits) {
       const outDir = join(OUTPUT_DIR, kit.subDir, kit.slug);
+      if (!reelsOnly && kit.days.some(d => d.deck?.storyOnly && d.n !== 3)) throw new Error(`${kit.relPath} is a one day reels only kit: render it with --reels-only`);
       for (const day of reelsOnly ? [] : kit.days) {
         const deckDir = join(outDir, `day${day.n}`, 'carousel');
         for (const slide of day.deck.slides) {

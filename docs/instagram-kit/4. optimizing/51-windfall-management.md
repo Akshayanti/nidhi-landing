@@ -8,22 +8,22 @@ hashtags_day2: "#lifestyleinflation #spendinghabits #moneymindset #expatlife #ni
 keywords_day2: "lifestyle upgrade, lifestyle creep, spending ratchet, windfall spending, recurring costs, car upgrade, bigger home, monthly expenses, one off money, subscriptions, budget check, personal finance, global expats, Lebensstilinflation, Fixkosten, inflation du mode de vie, dépenses fixes, inflación del estilo de vida, gastos fijos"
 ---
 
-> **Needs attention (Oct 25, 2026).** Council (Oct 25, awaiting the owner): runs two days. Day 1 is the bonus reel (today's day 3, with its caption), day 2 the €400 a month upgrade reel. The €50,000 inheritance reel (today's day 1) is not posted: it teaches the same lesson as the bonus reel, and a bonus is the more common situation.
+> **Reels only (Nov 5, 2026).** Two days, per the Oct 25 council: day 1 the bonus reel (redrawn Nov 5 as a 30 day grid and bars to scale, REELS-PIPELINE §1f), day 2 the €400 a month upgrade reel. The inheritance reel was deleted. The carousels below are kept as files and not posted. Remove this note once scheduled.
 
 ## Brief
 
 person: Petra, 38
 situation: Petra has received €50,000 from the sale of her late mother's flat. She is tempted by a bigger car on a €400 a month lease.
-day3: A friend getting a €5,000 year end bonus who usually spends it the same week: the 30 day parking period, worked through with their numbers.
 withheld: The plan step and the seven step order at the scale of a windfall, lump sum against spreading it out (Vanguard's two thirds finding and its limits), concentration in the familiar, inheritance and grief, tax aware timing, and country notes.
 
 ## Day 1 (angle)
 
-angle: Many people park a windfall before deciding anything
-number: €50,000 parked for 90 days at an illustrative 4% earns about €500 before tax
-takeaway: Parking buys decision time at a small cost; the decision comes after the emotion.
-tool: The parking period. Bonus: about 30 days; sale proceeds: 60 to 90; inheritance: 90 or more.
-send_to: A friend who has just inherited money and feels they must decide now.
+angle: Many people park a windfall before deciding anything; for a regular bonus, about 30 days
+breadth: narrow | Needs a bonus or another windfall: a viewer expecting money beyond their pay
+number: A €5,000 bonus parked 30 days at an illustrative 4% earns about €16 before tax; the point is the 30 days
+takeaway: Parking buys decision time at a small cost; the plan is written before the money moves.
+tool: The 30 day bonus check. Park it, name the account, write where each euro goes, then move it. The story card widens it to the parking period: a bonus about 30 days, sale proceeds 60 to 90, an inheritance 90 or more.
+send_to: A friend getting a year end bonus who usually spends it the same week.
 send_why: checklist
 
 ## Day 1 (reel)
@@ -33,7 +33,7 @@ render: node scripts/render-reels.mjs windfall-management --level optimizing --f
 video: output/videos/optimizing/51-windfall-management.mp4
 cover: output/thumbnails/optimizing/51-windfall-management.png
 caption: output/captions/optimizing/51-windfall-management.ig.txt
-hashtags: #nidhi #nidhicompounding #inheritancemoney #lumpsum #financialcalm
+hashtags: #nidhi #nidhicompounding #yearendbonus #bonusplan #savingshabits
 
 ## Day 1 (carousel)
 
@@ -106,6 +106,7 @@ read: Lump sum against spreading it out
 ## Day 2 (angle)
 
 angle: A one off windfall can turn into a permanent monthly cost
+breadth: narrow | Needs a windfall and an upgrade decision: a viewer with a bonus or inheritance weighing a bigger car or flat
 number: A €400 a month upgrade costs €4,800 a year; by about 10 years and 5 months it has used up a €50,000 windfall, before growth, tax or inflation
 takeaway: Expenses rise easily and fall reluctantly, so a one time inflow can become an ongoing outflow.
 tool: The ratchet check. Compare six months of spending before and after the windfall.
@@ -178,43 +179,12 @@ send: Know someone upgrading with a windfall? Send them this.
 more: Concentration in the familiar
 more: Lump sum against spreading it out
 
-## Day 3 (angle)
-
-angle: A regular bonus gets a short parking period too
-number: A €5,000 bonus parked 30 days at an illustrative 4% earns about €16 before tax; the point is the 30 days
-takeaway: For a regular, expected windfall, about 30 days of parking is a common practice; the plan is written before the money moves.
-tool: The 30 day bonus check. Park it, name the account, write where each euro goes, then move it.
-send_to: A friend getting a year end bonus who usually spends it the same week.
-send_why: checklist
-
-## Day 3 (reel)
-
-plan: 51-windfall-management.day3.reel.json
-render: node scripts/render-reels.mjs windfall-management --level optimizing --from-plan --angle day3
-video: output/videos/optimizing/51-windfall-management-day3.mp4
-cover: output/thumbnails/optimizing/51-windfall-management-day3.png
-caption: output/captions/optimizing/51-windfall-management-day3.ig.txt
-hashtags: #nidhi #nidhicompounding #yearendbonus #bonusplan #savingshabits
-
-## Day 3 (story)
-
-### Slide 1 (tool)
-
-alt: Tool card, the 30 day bonus check: park it in a named account; write where each euro goes; then move it.
-
-band: The 30 day bonus check
-lead: When a bonus lands
-row: Days 1 to 30 | Park it | teal | in a named account
-row: Meanwhile | Write it | ink | where each euro goes
-row: Day 30 | Move it | warn | as written
-note: Illustrative. A common practice, not a rule.
-
 ## Stories
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: €50,000 just landed?
-d1_f1_caption: What many people do with a windfall first
+d1_f1_overlay: Bonus landing soon?
+d1_f1_caption: What many people do with a bonus first
 
 d1_f2_kind: poll
 d1_f2_alt: Plain story background with the series label, for the poll sticker asking what people did with their last windfall.
@@ -254,13 +224,3 @@ d2_f4_title: All at once, or in steps?
 d2_f4_body: In a few markets' history, all at once won about two thirds of the time. Steps can limit regret.
 d2_f4_sticker: link sticker to the blog post
 d2_f4_caption: Lump sum against spreading it out
-
-d3_f1_share: the day 3 reel
-d3_f1_time: at posting
-d3_f1_overlay: Bonus landing soon?
-d3_f1_caption: A 30 day pause for a bonus
-
-d3_f2_kind: tool
-d3_f2_alt: Story version of the 30 day bonus check: park it in a named account, write where each euro goes, then move it.
-d3_f2_time: evening
-d3_f2_caption: The 30 day bonus check

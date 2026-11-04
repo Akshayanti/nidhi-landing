@@ -34,7 +34,7 @@ glossary:
   - term: "Donor-advised fund"
     definition: "An account that takes a charitable contribution now, often for a tax deduction, and pays it out to charities later."
 order: 51
-pubDate: 2099-01-14
+pubDate: 2026-11-13
 updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"

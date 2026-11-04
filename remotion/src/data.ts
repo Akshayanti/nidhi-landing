@@ -147,6 +147,8 @@ export interface LineRaceStory {
   firstPeriod?: number;
   /** Hide the euro labels on the value axis. */
   hideValueAxis?: boolean;
+  /** Hide the period ticker and the numbered period labels under the axis (51 day 2: the crossing label carries the time). */
+  hidePeriodLabels?: boolean;
   /** Rounding of the running euro labels. Defaults to €100. */
   headStep?: number;
   /** Period at which the line labels appear, for lines that start too close to label. */
@@ -550,6 +552,8 @@ export interface ReelPlan {
     mode?: "standard" | "segmented" | "direct" | "sum";
     /** Preserve the numerical ratio instead of enforcing the standard minimum bar width. */
     proportional?: boolean;
+    /** Smallest bar width in px; set it low when one value is tiny next to another (51 day 1: €16 against €5,000). */
+    minBarWidth?: number;
     setup?: { label: string; display: string; note?: string; tone?: BarTone };
     unit: string;
     basis: string;

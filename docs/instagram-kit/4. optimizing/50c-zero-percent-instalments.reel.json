@@ -1,0 +1,162 @@
+{
+  "slug": "zero-percent-instalments",
+  "postTitle": "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/zero-percent-instalments",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Is 0% really free? Only if the price matches paying now; a lost discount is the cost",
+  "topicChip": "0% INSTALMENTS",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Blog example (Jiri): a €1,200 laptop as twelve month-end payments of €100 at 0%, or €1,140 paid now. Difference €60. Twelve month-end €100 payments against €1,140 now: an annual rate of about 10% (lesson's script). Studies (NBER, Central Bank of Ireland 2025) find paying later tends to raise spending. The 10% a year equivalent stays in the lesson and caption teaser, not the reel (council Nov 5: number budget and retell)."
+  },
+  "hookVariants": [
+    {
+      "id": "free-or-not",
+      "layout": "bar-gap",
+      "narration": "Zero percent instalments: free or not? Check the price for paying now.",
+      "onscreenLines": [
+        "0% instalments: free?",
+        "Check the price for paying now",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "now"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "A laptop: twelve hundred euros in monthly payments at zero percent.",
+      "onscreenText": "€1,200 at 0%",
+      "subtext": "Paid monthly over a year",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "Or eleven hundred and forty if you pay today.",
+      "onscreenText": "€1,140 paid now",
+      "subtext": "The shop's cash price",
+      "emphasis": [
+        "today"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "comparison",
+      "narration": "That sixty euro gap is the cost of paying later: a lost discount.",
+      "onscreenText": "€60 more to pay later",
+      "subtext": "A lost discount is a cost",
+      "emphasis": [
+        "cost"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "Same price, no fees, paid on time: then it can be free. Paying later also tends to raise spending, studies find.",
+      "onscreenText": "The checkout check",
+      "subtext": "Before you tap instalments",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "THE CHECKOUT CHECK",
+        "rows": [
+          {
+            "label": "Price vs paying now",
+            "value": "Same?",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Late, or a balance left",
+            "value": "Fees? Interest?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Buy it paid now",
+            "value": "At this price?",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "Paying later tends to raise spending, studies find. Illustrative."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who picks instalments.",
+    "onscreenText": "Send this to them",
+    "subtext": "Someone who picks instalments",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "0% instalments: free or not? Check the price for paying now.\n\nA laptop is €1,200 in monthly payments at 0%, or €1,140 paid today. That €60 gap is the cost of paying later: a lost discount. The full post works out what yearly rate it equals. Same price, no fees, paid on time: then it can be free. Paying later also tends to raise spending, studies find.\n\n→ Know someone who always picks instalments at checkout? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: twelve month end payments of €100. Fees and rules vary by country and provider. Not financial advice.",
+    "tiktok": "Is 0% really free? Only if the price matches paying now: a €60 gap on €1,140 is the cost of paying later. Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "buynowpaylater",
+    "nocostemi",
+    "shoppingtips"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "What the laptop costs in total, illustrative",
+    "bars": [
+      {
+        "id": "instalments",
+        "label": "0% instalments",
+        "sublabel": "monthly, over a year",
+        "value": 1200,
+        "display": "€1,200",
+        "tone": "amber"
+      },
+      {
+        "id": "now",
+        "label": "Pay now",
+        "sublabel": "the cash price",
+        "value": 1140,
+        "display": "€1,140",
+        "tone": "teal"
+      }
+    ],
+    "callout": {
+      "display": "€60",
+      "from": "now",
+      "to": "instalments",
+      "label": "a lost discount"
+    },
+    "disclosure": "Illustrative: twelve month end payments of €100 against €1,140 now."
+  }
+}

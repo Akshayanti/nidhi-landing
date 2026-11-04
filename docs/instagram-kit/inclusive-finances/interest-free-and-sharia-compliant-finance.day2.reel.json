@@ -104,7 +104,7 @@
     {
       "id": "b3",
       "kind": "warning",
-      "narration": "The mix changes: fewer banks, sukuk in place of bonds.",
+      "narration": "Across a portfolio: fewer banks, sukuk in place of bonds.",
       "onscreenText": "A different mix",
       "subtext": "Different from the broad market",
       "emphasis": [
@@ -145,19 +145,19 @@
             "tone": "teal"
           }
         ],
-        "footnote": "Thresholds differ between standards. Not religious guidance or investment advice."
+        "footnote": "Ratios are shares of a company's size; how size is measured, and the thresholds, differ between standards. Not religious guidance."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone choosing a screened fund? Send them this.",
+    "narration": "Choosing a screened fund? Send them this.",
     "onscreenText": "Send this to them",
     "subtext": "Before they pick a fund",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Investing in shares can fit an interest free plan. The hard part: which companies?\n\nWhat a company does: conventional banking, alcohol and gambling are typically out. How it is financed: common tests cap interest bearing debt, and cash plus interest bearing securities, at about a third each, and prohibited income at about 5%. The result holds fewer banks, with sukuk in place of bonds.\n\n→ Know someone choosing a screened fund? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nThresholds differ between standards. Not religious guidance or investment advice.",
+    "instagram": "Investing in shares can fit an interest free plan. The hard part: which companies?\n\nWhat a company does: conventional banking, alcohol and gambling are typically out. How it is financed: common tests cap interest bearing debt, and cash plus interest bearing securities, at about a third each, and prohibited income at about 5%. The result holds fewer banks, with sukuk in place of bonds.\n\n→ Know someone choosing a screened fund? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nThresholds differ between standards. Not religious guidance. Not financial advice.",
     "tiktok": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nTwo layers of screening, and what they do to a portfolio. Not religious guidance.",
     "instagramKeywords": [
       "screened investing",

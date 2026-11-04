@@ -161,7 +161,7 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
       ))}
       <line x1={PLOT.left} y1={PLOT.bottom} x2={PLOT.right} y2={PLOT.bottom} stroke={BRAND.inkMuted} strokeWidth={3} />
       {!story.hideValueAxis && <text x={PLOT.left - 30} y={PLOT.bottom + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>€0</text>}
-      {[0, Math.floor((count - 1) / 2), count - 1].map((i) => (
+      {!story.hidePeriodLabels && [0, Math.floor((count - 1) / 2), count - 1].map((i) => (
         <text key={i} x={xAt(i, count)} y={PLOT.bottom + 40} textAnchor={i === 0 ? "start" : i === count - 1 ? "end" : "middle"} fontFamily={TYPE.ui} fontSize={24} fontWeight={650} fill={BRAND.inkMuted}>
           {story.periodLabel} {i + first}
         </text>
@@ -216,9 +216,11 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
         </g>
       )}
 
-      <text x={PLOT.right} y={PLOT.top - 30} textAnchor="end" fontFamily={TYPE.ui} fontSize={28} fontWeight={820} letterSpacing="0.12em" fill={BRAND.inkSoft} style={{ fontVariantNumeric: "tabular-nums" }}>
-        {story.periodLabel.toUpperCase()} {period}
-      </text>
+      {!story.hidePeriodLabels && (
+        <text x={PLOT.right} y={PLOT.top - 30} textAnchor="end" fontFamily={TYPE.ui} fontSize={28} fontWeight={820} letterSpacing="0.12em" fill={BRAND.inkSoft} style={{ fontVariantNumeric: "tabular-nums" }}>
+          {story.periodLabel.toUpperCase()} {period}
+        </text>
+      )}
 
       {upper && lower && finish > 0 && (() => {
         const x = PLOT.right + 6;

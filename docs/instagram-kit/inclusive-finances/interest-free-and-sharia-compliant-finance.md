@@ -8,7 +8,7 @@ hashtags_day2: "#valuesbasedinvesting #diversification #indexinvesting #expatmon
 keywords_day2: "screened investing, sharia screening, screened index, sukuk, purification, prohibited income, interest bearing debt, financial ratios screening, sector tilt, profit sharing deposit, takaful, ethical portfolio, retirement account fund choice, personal finance, global expats, money abroad, islamische Geldanlage, ethisches Investieren, investissement islamique, finance éthique, inversión islámica, investimento etico"
 ---
 
-> **Needs attention (Oct 25, 2026).** Reels rebuilt Oct 25 to the light rules (34.9 s and 35.1 s, share CTA, council signed off). Lesson global pass done (Turkey, Nigeria; consistency with 49 and 50 checked). Still open: the carousels are over the light slide limit; trim them only if the Nov 1 readout keeps the reel plus carousel format. Remove this note once scheduled.
+> **Reels only (Nov 5, 2026).** Reels as rebuilt Oct 25 (34.8 s, 35.1 s); day 1 caption gains "not financial advice". Both covers are labelled boxes, kept on purpose (REELS-PIPELINE §1f allows it when the idea has no quantity to draw): day 1 teaches which contract is on the table (sale, lease, partnership), day 2 the two layer screen; a price or ratio drawn to scale would show one structure's numbers, not the choice. The carousels below are kept as files and not posted. Remove this note once scheduled.
 
 ## Brief
 
@@ -19,6 +19,7 @@ withheld: What changes for cash, retirement accounts and insurance, zakat as a f
 ## Day 1 (angle)
 
 angle: With interest ruled out, home finance runs on a sale, a lease or a partnership, and the rate question gives way to total amount payable
+breadth: narrow | A sub audience: households for whom interest is ruled out, buying a home
 number: A €250,000 flat sold on for €400,000 over 25 years, a €150,000 margin disclosed and fixed on day one
 takeaway: Monthly costs can look like a mortgage while the contract is different. Knowing which structure is on the table tells you which questions to ask.
 tool: Five questions before signing: total amount payable, early settlement, late payment, whether the cost can change, and who certified it.
@@ -141,6 +142,7 @@ read: Screened investing, sukuk and takaful
 ## Day 2 (angle)
 
 angle: Owning shares is generally considered permissible; the work is the two layer screen, and it changes what a diversified portfolio holds
+breadth: narrow | A sub audience: investors who want an interest free, screened portfolio
 number: Common screens put interest bearing debt and cash at around a third each, and prohibited income at around 5%; exact ratios differ between standards
 takeaway: A screened portfolio tilts away from banks and insurers and swaps bonds for sukuk, so it will not move in step with the headline index; the spread across regions and sectors still needs checking.
 tool: The two layer screen. What the company does, then how it is financed: debt, cash and prohibited income, plus purification of any small prohibited income.

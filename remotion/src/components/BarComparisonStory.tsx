@@ -245,7 +245,7 @@ function BarHook({ input }: { input: ReelInput }) {
       <div style={{ position: "absolute", top: 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
       {bars.map((bar, index) => {
         const y = index === 0 ? 420 : 980;
-        const width = Math.max(story.proportional ? 76 : 150, (bar.value / max) * 760);
+        const width = Math.max(story.minBarWidth ?? (story.proportional ? 76 : 150), (bar.value / max) * 760);
         const valueInside = width >= 520;
         return (
           <div key={bar.id} style={{ position: "absolute", left: 76, right: 90, top: y }}>
@@ -315,7 +315,7 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
           reveal={first}
           top={620}
           scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))}
-          minBarWidth={story.proportional ? 69 : undefined}
+          minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)}
         />
       )}
       {showRepeat && (
@@ -330,7 +330,7 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
           <RepeatField bar={repeating} input={input} fill={repeatFill} collapse={repeatCollapse} />
         </>
       )}
-      {showResolved && <ResolvedBars bars={story.bars} reveal={reveal} top={540} stagger={false} labelsReveal={afterCard ? 1 : resolvedLabels} minBarWidth={story.proportional ? 69 : undefined} />}
+      {showResolved && <ResolvedBars bars={story.bars} reveal={reveal} top={540} stagger={false} labelsReveal={afterCard ? 1 : resolvedLabels} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
       {now >= ratioStart && now < ratioEnd && <ComparisonCallout input={input} amount={callout?.display ?? ""} opacity={ratio} />}
       {now >= b5.startMs && now < b6.startMs && (
         <div style={{ position: "absolute", left: 94, right: 120, top: 1335, display: "flex", justifyContent: "space-between", opacity: principle }}>
@@ -423,7 +423,7 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
           {story.setup.note && <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 29, fontWeight: 650, color: BRAND.inkMuted }}>{story.setup.note}</div>}
         </div>
       )}
-      {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.proportional ? 69 : undefined} />}
+      {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
       {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} opacity={enter} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
