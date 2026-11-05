@@ -115,7 +115,7 @@ note: A question many people use, not an answer.
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: One sum. How to divide it?
+d1_f1_overlay: A large sum lands. Where first?
 d1_f1_caption: How many people divide a large sum
 
 d1_f3_kind: tool
@@ -125,7 +125,7 @@ d1_f3_caption: One sum, several jobs
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: All at once, or spread out?
+d2_f1_overlay: A sum to invest: at once or spread?
 d2_f1_caption: Investing a sum all at once or in parts
 
 d2_f3_kind: tool

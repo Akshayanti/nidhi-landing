@@ -16,7 +16,7 @@ withheld: The named rules of thumb and national caps (28/36, 20-30-40, 20/4/10, 
 
 angle: Banks often limit the loan payment to a share of pay; which pay they mean changes the answer
 breadth: narrow | Needs a borrowing condition: a viewer about to take a mortgage or a large loan
-number: Marcus's payment is a third of his pay before tax and almost half of his take home pay
+number: The same payment is a third of pay before tax and almost half of take home pay
 takeaway: Borrowing rules compare the payment and all debts with pay, and a rule's percentage means little until you know which pay it uses.
 tool: Which pay? Before tax or after; bills come from take home pay; the gap is bigger where tax and contributions are high.
 send_to: A friend comparing borrowing rules they read online.
@@ -42,15 +42,15 @@ lead: Before using a borrowing rule
 row: The rule | Before tax? | warn | or take home pay, after tax and contributions
 row: Bills | Take home | teal | they are paid from what reaches the account
 row: High tax | Bigger gap | warn | the same rule allows more of what is left
-note: Illustrative. A third of pay before tax was almost half of take home pay for Marcus.
+note: Illustrative. A third of pay before tax can be almost half of take home pay.
 
 ## Day 2 (angle)
 
-angle: The bank says yes; would the loan survive a setback? A higher rate, then a checklist
+angle: The bank says it can lend you this much; how do you test whether it works for you? Rates rise, income drops, room to save
 breadth: narrow | Needs a borrowing condition: a viewer about to take a mortgage or a large loan
-number: The bank's maximum takes 33% of Marcus's pay before tax today and 42% at a higher rate
+number: One loan's payment takes 33% of pay before tax today and 42% if rates rise
 takeaway: A lender's maximum and a loan that still works after a setback are different numbers; a stress test shows the gap before signing.
-tool: Would it still work? The payment when a fixed rate ends; household income lower for a while; room for saving and emergencies; a loan in another currency than pay.
+tool: Test the amount. If rates rise or a fixed rate ends; if income drops for a while; room left to save; a loan in another currency than pay.
 send_to: A friend about to take a mortgage who plans to borrow the bank's maximum.
 send_why: checklist
 
@@ -67,13 +67,13 @@ hashtags: #nidhi #nidhicompounding #mortgagetips #stresstest #moneyabroad
 
 ### Slide 1 (tool)
 
-alt: Tool card, would it still work, before you sign: the payment when a fixed rate ends; household income lower for a while; room left for saving and emergencies; a loan in another currency than your pay.
+alt: Tool card, test the amount, before you sign: the payment if rates rise or a fixed rate ends; income lower for a while; room left to save; a loan in another currency than your pay.
 
-band: Would it still work?
+band: Test the amount
 lead: Before you sign
-row: Fixed rate ends | Payment? | warn | when the rate fixed for some years resets
-row: Income | Lower? | warn | for a while, or one income for a couple
-row: Room left | Saving? | teal | and an emergency fund
+row: Rates rise | Payment? | warn | or a rate fixed for some years ends
+row: Income drops | Payable? | warn | for a while, or one income for a couple
+row: Room to save | Monthly? | teal | and an emergency fund
 row: Currency | Moves? | ink | if pay and loan currencies differ, the payment can rise
 note: Illustrative. Many people decide how much of the maximum to use after this.
 
@@ -91,13 +91,13 @@ d1_f3_caption: Which pay is the rule using?
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Would your loan survive a setback?
+d2_f1_overlay: Does the bank's offer work for you?
 d2_f1_caption: The stress test before a loan
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of would it still work: the payment when a fixed rate ends, income lower for a while, room left for saving and an emergency fund, and a loan in another currency than pay.
+d2_f3_alt: Story version of test the amount: the payment if rates rise, income lower for a while, room left to save, and a loan in another currency than pay.
 d2_f3_time: evening
-d2_f3_caption: Would it still work?
+d2_f3_caption: Test the amount
 
 d2_f4_kind: extra
 d2_f4_alt: Beyond this post: for the same €54,000 salary, popular rules of thumb and national caps give illustrative amounts from about €120,000 to about €430,000, because they measure different things.

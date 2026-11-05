@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "The bank's yes is not a loan that still works after a setback: a higher rate, then a checklist",
+  "topic": "The bank says it can lend you this much: how do you test whether that amount works for you?",
   "topicChip": "BORROWING · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Marcus: the bank's €330,000 over 30 years at 3.5% is about €1,482 a month, 32.9% of €4,500 before tax, shown 33%. At 5.5% about €1,874, 41.6%, shown 42% (car loan left out). The reel says 'a higher interest rate' (no rate numbers, council Nov 5). Checklist from the lesson's stress checks: the rate when a fixed period ends; household income lower; room for saving and an emergency fund; a loan in a currency other than pay. Numbers: 33%, 42%."
+    "notes": "One loan: €330,000 over 30 years at 3.5% is about €1,482 a month, 32.9% of €4,500 before tax, shown 33%. At 5.5% about €1,874, 41.6%, shown 42%. Addressed to the viewer (owner, Nov 5: no one has a stake in Marcus). Tests from the lesson's stress checks: rates rise (or a fixed rate ends), income lower for a while, room left to save; a loan in another currency stays in the caption and story card. Numbers: 33%, 42%."
   },
   "hookVariants": [
     {
-      "id": "could-he-pay",
+      "id": "test-it",
       "layout": "bar-gap",
-      "narration": "Part two. The bank offers its maximum loan. Could Marcus still pay if rates rose?",
+      "narration": "Part two. The bank says it can lend you this much. How do you test whether it works for you?",
       "onscreenLines": [
-        "The bank offers its maximum",
-        "Could he pay if rates rose?",
+        "The bank's offer",
+        "Does it work for you?",
         ""
       ],
       "anchor": {
@@ -29,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "still"
+        "you"
       ]
     }
   ],
@@ -38,8 +38,8 @@
     {
       "id": "b1",
       "kind": "stat",
-      "narration": "Today, the payment takes thirty three percent of his pay before tax.",
-      "onscreenText": "33% of pay",
+      "narration": "Say its payment takes thirty three percent of your pay before tax.",
+      "onscreenText": "33% of your pay",
       "subtext": "At today's rate",
       "emphasis": [],
       "anchor": {
@@ -50,10 +50,12 @@
     {
       "id": "b2",
       "kind": "warning",
-      "narration": "At a higher rate, forty two percent.",
-      "onscreenText": "42% at a higher rate",
+      "narration": "What if rates rise? In this example, the payment could take forty two percent.",
+      "onscreenText": "42% if rates rise",
       "subtext": "Same loan, same pay",
-      "emphasis": [],
+      "emphasis": [
+        "rise"
+      ],
       "anchor": {
         "type": "bars",
         "stage": "second"
@@ -62,82 +64,76 @@
     {
       "id": "b3",
       "kind": "list",
-      "narration": "So many also check: the payment when a fixed rate ends, and lower income for a while.",
-      "onscreenText": "If things go wrong",
-      "subtext": "Rate, income",
+      "narration": "If your income drops for a while, could you still pay?",
+      "onscreenText": "Income drops",
+      "subtext": "Could you still pay?",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Would it still work?",
+        "title": "Test the amount",
         "rows": [
           {
-            "label": "When a fixed rate ends",
-            "value": "The payment then?",
+            "label": "Rates rise",
+            "value": "Payment then?",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Household income",
-            "value": "Lower for a while?",
+            "label": "Income drops",
+            "value": "Still payable?",
             "valueSize": "small",
             "tone": "amber"
           }
         ],
-        "footnote": "Illustrative. A check many people run, not a rule."
+        "footnote": "Illustrative. Tests many people run, not a rule."
       }
     },
     {
       "id": "b4",
       "kind": "list",
-      "narration": "Room left for saving. And a loan in another currency, which can cost more when currencies move.",
-      "onscreenText": "Room left, currency",
-      "subtext": "Saving, currency moves",
+      "narration": "And is there room left to save each month?",
+      "onscreenText": "Room to save",
+      "subtext": "Each month",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Would it still work?",
+        "title": "Test the amount",
         "rows": [
           {
-            "label": "When a fixed rate ends",
-            "value": "The payment then?",
+            "label": "Rates rise",
+            "value": "Payment then?",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Household income",
-            "value": "Lower for a while?",
+            "label": "Income drops",
+            "value": "Still payable?",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Room left for",
-            "value": "Saving, emergencies?",
+            "label": "Room to save",
+            "value": "Each month?",
             "valueSize": "small",
             "tone": "teal"
-          },
-          {
-            "label": "Loan in another currency",
-            "value": "Currency moves?",
-            "valueSize": "small",
-            "tone": "ink"
           }
         ],
-        "footnote": "Illustrative. A check many people run, not a rule."
+        "footnote": "Illustrative. Tests many people run, not a rule."
       }
     }
   ],
   "cta": {
     "approved": "share",
     "handle": "@nidhi.today",
-    "narration": "Checking this is called a stress test. Send this to someone about to borrow.",
+    "narration": "Checking this is called a stress test. Many use it to choose a loan below the bank's maximum. Send this on.",
     "onscreenText": "Send this to them",
     "subtext": "Before they sign"
   },
   "caption": {
-    "instagram": "The bank offers Marcus its maximum loan. Could he still pay if rates rose?\n\nIn Marcus's example, the bank's maximum loan takes 33% of his pay before tax. At a higher interest rate, the same loan takes 42%.\n\nMany people run a checklist: what the payment is when a fixed rate ends, what happens if household income falls for a while, whether there is still room for saving and emergencies, and, with pay in one currency and the loan in another, how the exchange rate moves the payment. That is a stress test. The bank's yes and a loan that still works answer different questions.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
-    "tiktok": "The bank says yes. Would the loan survive a higher rate, lower income, or an exchange rate move? A stress test checklist. Illustrative, not financial advice."
+    "instagram": "The bank says it can lend you this much. How do you test whether it works for you?\n\nSay the payment takes 33% of your pay before tax. If rates rise, or a fixed rate ends, the same loan could take 42%.\n\nMany people test the amount before signing: could you still pay if rates rise, if your income drops for a while, and is there room left to save each month? With pay in one currency and the loan in another, currency moves can raise the payment too. If one test fails, many try a smaller loan. That is called a stress test.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
+    "tiktok": "The bank says it can lend you this much. How do you test it? Rates rise, income drops, room to save. If one fails, many try a smaller loan. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
@@ -162,21 +158,21 @@
       {
         "id": "today",
         "label": "Today's rate",
-        "sublabel": "share of pay before tax",
+        "sublabel": "share of your pay before tax",
         "value": 33,
         "display": "33%",
         "tone": "teal"
       },
       {
         "id": "up",
-        "label": "A higher rate",
+        "label": "If rates rise",
         "sublabel": "same loan, same pay",
         "value": 42,
         "display": "42%",
         "tone": "amber"
       }
     ],
-    "disclosure": "Illustrative: the bank's maximum loan, as a share of the same pay before tax.",
-    "hideValuesInHook": true
-  }
+    "disclosure": "Illustrative: one loan, the same pay, a higher rate. Rates and terms in the caption."
+  },
+  "hookStyle": "question"
 }

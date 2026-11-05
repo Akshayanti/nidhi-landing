@@ -13,6 +13,7 @@ import {
   type ToolCardData,
 } from "../data";
 import { ActiveCard, lastCardBeat } from "./cardBeats";
+import { QuestionHook } from "./QuestionHook";
 import { ToolCard } from "./ToolCard";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -204,6 +205,7 @@ function ComparisonCallout({ input, amount, opacity }: { input: ReelInput; amoun
 function BarHook({ input }: { input: ReelInput }) {
   const story = input.plan.barStory;
   if (!story) return null;
+  if (input.plan.hookStyle === "question") return <QuestionHook plan={input.plan} />;
   const hook = input.plan.hookVariants[input.plan.useHookVariant];
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
@@ -815,6 +817,7 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const story = plan.barStory;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (story.mode === "segmented") return <SegmentedHook plan={plan} cover />;
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));

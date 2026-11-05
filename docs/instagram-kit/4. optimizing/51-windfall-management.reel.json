@@ -18,10 +18,10 @@
     {
       "id": "divide",
       "layout": "bands-gap",
-      "narration": "An inheritance arrives as one sum. How do people divide it?",
+      "narration": "A large sum lands in your account. Where does it go first?",
       "onscreenLines": [
-        "One sum arrives",
-        "How do people divide it?",
+        "A large sum lands",
+        "Where does it go first?",
         ""
       ],
       "anchor": {
@@ -130,7 +130,7 @@
     "subtext": "Send this to someone with money landing"
   },
   "caption": {
-    "instagram": "An inheritance arrives as one sum. How do people divide it?\n\nMany people set it apart first, in its own account, while taxes and urgent bills are checked. Then they look at expensive debt, since paying it off stops the interest draining the pot; cash for surprise costs, called emergency savings; saving where tax is lower, usually up to a yearly limit; and the rest, spread across many investments rather than riding on one.\n\nOne sum, several jobs. Pause, then plan.\n\nPart 2: invest it all at once, or spread it out?\n\n→ Know someone with an inheritance or a bonus landing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which of these fit, and in what order, differs by household and country. Not financial advice.",
+    "instagram": "A large sum lands in your account, from an inheritance, a bonus or a sale. Where does it go first?\n\nMany people set it apart first, in its own account, while taxes and urgent bills are checked. Then they look at expensive debt, since paying it off stops the interest draining the pot; cash for surprise costs, called emergency savings; saving where tax is lower, usually up to a yearly limit; and the rest, spread across many investments rather than riding on one.\n\nOne sum, several jobs. Pause, then plan.\n\nPart 2: invest it all at once, or spread it out?\n\n→ Know someone with an inheritance or a bonus landing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which of these fit, and in what order, differs by household and country. Not financial advice.",
     "tiktok": "An inheritance arrives as one sum. Many people set it apart first, then look at expensive debt, emergency savings, saving where tax is lower, and spreading the rest. Illustrative."
   },
   "hashtags": [
@@ -176,7 +176,7 @@
         "tone": "teal"
       }
     ],
-    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country.",
-    "labelsOnlyInHook": true
-  }
+    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country."
+  },
+  "hookStyle": "question"
 }

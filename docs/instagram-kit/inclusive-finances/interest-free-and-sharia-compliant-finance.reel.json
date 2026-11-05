@@ -53,8 +53,7 @@
     ],
     "emphasis": "partnership",
     "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country.",
-    "hideCostInHook": true,
-    "labelsOnlyInHook": true
+    "hideCostInHook": true
   },
   "hookVariants": [
     {
@@ -186,5 +185,6 @@
     "homefinance",
     "buyingahome"
   ],
-  "reelPromise": "How the three main home finance structures without interest work, and the questions to ask before signing"
+  "reelPromise": "How the three main home finance structures without interest work, and the questions to ask before signing",
+  "hookStyle": "question"
 }

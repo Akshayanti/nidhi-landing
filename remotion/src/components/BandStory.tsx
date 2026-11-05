@@ -10,6 +10,7 @@ import {
   type ReelPlan,
   type ToolCardData,
 } from "../data";
+import { QuestionHook } from "./QuestionHook";
 import { ActiveCard, lastCardBeat } from "./cardBeats";
 import { ToolCard } from "./ToolCard";
 
@@ -154,6 +155,7 @@ function Hook({ plan, cover = false }: { plan: ReelPlan; cover?: boolean }) {
   const story = plan.bandStory;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover={cover} />;
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <div style={{ position: "absolute", top: cover ? 278 : 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 820, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>

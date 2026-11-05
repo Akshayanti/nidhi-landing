@@ -587,6 +587,8 @@ export interface ReelPlan {
   hookVariants: HookVariant[];
   /** Selected hook index, default 0. CLI --variant overrides. */
   useHookVariant: number;
+  /** "question": the hook frame shows only the topic chip and the hook lines, no chart or bands. */
+  hookStyle?: "question";
   beats: Beat[];
   cta: CTABlock;
   caption: PlatformCaption;

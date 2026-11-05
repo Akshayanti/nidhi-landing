@@ -41,17 +41,16 @@
       }
     ],
     "emphasis": "finance",
-    "disclosure": "Thresholds are approximate and differ between standards. Not religious guidance or investment advice.",
-    "labelsOnlyInHook": true
+    "disclosure": "Thresholds are approximate and differ between standards. Not religious guidance or investment advice."
   },
   "hookVariants": [
     {
       "id": "which-companies",
       "layout": "bands-gap",
-      "narration": "Shares can fit an interest free plan. Which companies pass its checks?",
+      "narration": "Investing without interest? How do you know which companies fit?",
       "onscreenLines": [
-        "Shares can fit",
-        "Which companies pass?",
+        "Investing without interest?",
+        "Which companies fit?",
         ""
       ],
       "anchor": {
@@ -169,5 +168,6 @@
     "sukuk",
     "investingeurope"
   ],
-  "reelPromise": "How sale, lease and partnership home finance work, and what changes for savings, retirement accounts and insurance"
+  "reelPromise": "How sale, lease and partnership home finance work, and what changes for savings, retirement accounts and insurance",
+  "hookStyle": "question"
 }

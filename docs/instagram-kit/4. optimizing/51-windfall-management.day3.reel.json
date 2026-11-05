@@ -194,7 +194,7 @@
         "tone": "ink"
       }
     ],
-    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country.",
-    "labelsOnlyInHook": true
-  }
+    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country."
+  },
+  "hookStyle": "question"
 }

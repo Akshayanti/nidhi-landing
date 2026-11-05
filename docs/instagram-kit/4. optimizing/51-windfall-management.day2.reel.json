@@ -18,10 +18,10 @@
     {
       "id": "at-once",
       "layout": "bar-gap",
-      "narration": "Part two: invest it all at once, or spread it out?",
+      "narration": "Part two. You have a sum to invest. All at once, or spread out?",
       "onscreenLines": [
-        "Part 2: all at once",
-        "or spread it out?",
+        "A sum to invest",
+        "All at once, or spread out?",
         ""
       ],
       "anchor": {
@@ -214,7 +214,7 @@
         "tone": "ink"
       }
     ],
-    "disclosure": "Source: a 2023 study by a large fund manager, global shares. Past data, mostly developed markets: a tendency, not a promise.",
-    "hideValuesInHook": true
-  }
+    "disclosure": "Source: a 2023 study by a large fund manager, global shares. Past data, mostly developed markets: a tendency, not a promise."
+  },
+  "hookStyle": "question"
 }
