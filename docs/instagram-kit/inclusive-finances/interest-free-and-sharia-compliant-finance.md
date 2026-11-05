@@ -216,15 +216,15 @@ rule: You do not have to run the screens yourself
 
 ### Slide 5 (tool)
 
-alt: Tool card, the two layer screen: activity, what does the company do; debt, around a third, interest bearing debt to size; cash, around a third, cash and interest securities to size; income, around 5%, the share from prohibited sources; purify, charity, that portion of dividends.
+alt: Tool card, the two layer screen: activity, what does the company do; debt, around a third of its size, debt that charges interest; cash, around a third of its size, cash earning interest; income, around 5% of its income, from banking, alcohol and the like; give, charity, that share of the profit paid out to you.
 
 band: The two layer screen
 lead: What a screened fund checks
 row: Activity | 1 | ink | what does the company do?
-row: Debt | ⅓ | ink | interest bearing debt to size
-row: Cash | ⅓ | ink | cash and interest securities to size
-row: Income | 5% | ink | share from prohibited sources
-row: Purify | Charity | teal | that portion of dividends
+row: Debt | ⅓ | ink | debt that charges interest, of its size
+row: Cash | ⅓ | ink | cash earning interest, of its size
+row: Income | 5% | ink | of its income, from banking, alcohol and the like
+row: Give | Charity | teal | that share of the profit paid out to you
 also: Thresholds are approximate and differ between standards.
 note: Not religious guidance. Check which standard a fund follows.
 
@@ -292,7 +292,7 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: What you said about interest free home finance
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the two layer screen card: what the company does, then its debt, cash and prohibited income, and purification.
+d2_f3_alt: Story version of the two layer screen card: what the company does, then its debt and cash against its size, its income from banking, alcohol and the like, and giving that share of the profit to charity.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: The two layer screen behind screened funds
 

@@ -301,7 +301,7 @@ Layering aims to keep the lesson's reasoning while helping readers reach a usefu
 
 ### Publishing order from post 43 onward (decided Sep 30, 2026)
 
-**Status (Nov 5, 2026):** publishing restarted Oct 12, 2026. Dated so far: 43 Oct 12, 43b Oct 14, 44 Oct 16, 45 Oct 19, inc-1 Oct 21, 46 Oct 23, 47 Oct 26, inc-2 Oct 28, 48 Oct 30, inc-3 Nov 2, 49 Nov 4, 50 Nov 6, inc-4 Nov 9, 50b Nov 11, 50c Nov 12, 51 Nov 13 (each lesson starts the day after the previous lesson's last reel, PLAYBOOK §2.1). The rest carry 2099 placeholder dates in publishing order (inc-8 is 2099-01-14); re-date them before they ship.
+**Status (Nov 5, 2026):** publishing restarted Oct 12, 2026. Dated so far: 43 Oct 12, 43b Oct 14, 44 Oct 16, 45 Oct 19, inc-1 Oct 21, 46 Oct 23, 47 Oct 26, inc-2 Oct 28, 48 Oct 30, inc-3 Nov 2, 49 Nov 4, 50 Nov 6, inc-4 Nov 9, 50b Nov 11, 50c Nov 13, 51 Nov 16 (each lesson starts the day after the previous lesson's last reel, PLAYBOOK §2.1). The rest carry 2099 placeholder dates in publishing order (inc-8 is 2099-01-14); re-date them before they ship.
 
 **Open item, overdue: host callouts.** inc-1, inc-2 and inc-3 are live, but their hosts 45, 47 and 48 do not link to them, and the template adds no callout (Exposure item 3 below). Add the three now; the next pairs (50 to inc-4, 51 to inc-8) need theirs when the guides publish.
 

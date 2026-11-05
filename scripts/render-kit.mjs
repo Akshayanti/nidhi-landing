@@ -157,12 +157,13 @@ export function lintKit(kit) {
   // Day 3 runs only in the reels only version (council, Oct 2026): a reel plus the tool card story, no
   // carousel. Its "carousel" section holds the one tool slide the story renders from, never a feed post.
   // A one day lesson (council, Nov 4, 2026: lessons 50b and 50c) is reels only too: its day 1 is a
-  // reel and a "Day 1 (story)" tool card, with no carousel.
-  const oneDay = kit.days.length === 1 && kit.days[0].deck?.storyOnly;
-  if (!oneDay && kit.days.length !== 2 && kit.days.length !== 3) err('Kit', `${kit.days.length} day(s) found, expected 2, 3 with a reels only day 3, or 1 reels only day with a "Day 1 (story)"`);
-  if (kit.days.some(d => d.deck?.storyOnly && d.n !== 3) && !oneDay) err('Kit', 'only day 3, or the single day of a one day kit, may be a story only day');
+  // reel and a "Day 1 (story)" tool card, with no carousel. A kit written reels only from the start
+  // (owner, Nov 5, 2026: 50b and 50c grew to two days) has a "Day N (story)" tool card on every day.
+  const storyKit = kit.days.length >= 1 && kit.days.every(d => d.deck?.storyOnly);
+  if (!storyKit && kit.days.length !== 2 && kit.days.length !== 3) err('Kit', `${kit.days.length} day(s) found, expected 2, 3 with a reels only day 3, or a reels only kit with a "Day N (story)" on every day`);
+  if (kit.days.some(d => d.deck?.storyOnly && d.n !== 3) && !storyKit) err('Kit', 'only day 3, or every day of a reels only kit, may be a story only day');
 
-  // Pieces in posting order; consecutive pieces must not share a hashtag except #nidhi.
+  // Pieces in posting order; consecutive pieces must not share a hashtag except the #nidhi ones.
   let previous = null;
   for (const day of kit.days) {
     const D = `Day ${day.n}`;
@@ -188,7 +189,8 @@ export function lintKit(kit) {
       if (!tags.includes('#nidhi')) err(where, 'hashtags must include #nidhi');
       for (const tag of tags) {
         if (BANNED_TAGS.has(tag.toLowerCase())) err(where, `banned hashtag ${tag}`);
-        if (previous && tag !== '#nidhi' && previous.tags.includes(tag)) err(where, `hashtag ${tag} repeats from ${previous.where}`);
+        // #nidhi and the series tags (#nidhicompounding, #nidhiforyouandme) mark the account and series, so they repeat.
+        if (previous && !tag.toLowerCase().startsWith('#nidhi') && previous.tags.includes(tag)) err(where, `hashtag ${tag} repeats from ${previous.where}`);
       }
       previous = { where, tags };
     }

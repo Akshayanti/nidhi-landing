@@ -1,0 +1,184 @@
+{
+  "slug": "zero-percent-instalments",
+  "postTitle": "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/zero-percent-instalments",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Free until a deadline: on some store cards, anything left unpaid brings interest back to the day of purchase",
+  "topicChip": "0% UNTIL A DEADLINE",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example (deferred interest): €1,200 on a store card, no interest if paid in full within a year. Paying €90 a month leaves €120 at the deadline; at 25% a year, interest charged back to the purchase date is about €176 (lesson), more than the €120 left. The reel keeps €90 and €120 in words (council Nov 5: number budget). Numbers in the reel: 0%, €1,200, €176, and 25% in the disclosure."
+  },
+  "hookVariants": [
+    {
+      "id": "deadline",
+      "layout": "bar-gap",
+      "narration": "Zero percent, then a hundred and seventy six euros of interest?",
+      "onscreenLines": [
+        "0% on a store card",
+        "Then €176 of interest?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "interest"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Twelve hundred euros on a store card, no interest if fully paid within a year.",
+      "onscreenText": "€1,200, no interest for a year",
+      "subtext": "If all of it is paid by then",
+      "emphasis": [
+        "all"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "The monthly payments fall a little short.",
+      "onscreenText": "Paid every month",
+      "subtext": "Each square is a month",
+      "emphasis": [
+        "short"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "days",
+        "days": {
+          "total": 12,
+          "unpaid": 0,
+          "paidLabel": "Paid, a little short"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "At the deadline, some is still unpaid.",
+      "onscreenText": "Some still unpaid",
+      "subtext": "At the deadline",
+      "emphasis": [
+        "unpaid"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "So interest goes back to the purchase day: about a hundred and seventy six euros, more than was left. That is deferred interest.",
+      "onscreenText": "€176 back to day one",
+      "subtext": "Called deferred interest",
+      "emphasis": [
+        "day"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "definition",
+      "narration": "Check the date, the whole amount, and what happens if not.",
+      "onscreenText": "The deadline check",
+      "subtext": "Before you sign up",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "THE DEADLINE CHECK",
+        "rows": [
+          {
+            "label": "Deadline",
+            "value": "When exactly?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "The whole amount",
+            "value": "Paid by then?",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "If not",
+            "value": "Interest from day one?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Terms vary by provider and country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Know someone on a store card deal? Send them this.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before the deadline",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "0% on a store card, then €176 of interest? Here is how that happens.\n\nA €1,200 purchase, no interest if all of it is paid within a year. The monthly payments fall a little short, so at the deadline some is still unpaid. Because of that, interest is charged back to the day of purchase: about €176, more than what was left. That is called deferred interest.\n\n→ Know someone on a store card 0% deal? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €90 a month leaves €120 at the deadline; interest at 25% a year from the purchase date. Terms vary by provider and country. Not financial advice.",
+    "tiktok": "0% on a store card until a deadline: if anything is left, interest can be charged back to the day of purchase. Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "storecard",
+    "creditcardtips",
+    "moneytraps"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "On a store card",
+      "display": "€1,200",
+      "note": "No interest if all of it is paid within a year",
+      "tone": "ink"
+    },
+    "unit": "EUR",
+    "basis": "A €1,200 purchase, not quite paid off by the deadline, illustrative",
+    "bars": [
+      {
+        "id": "left",
+        "label": "Still unpaid",
+        "sublabel": "at the deadline",
+        "value": 120,
+        "display": "Some",
+        "tone": "ink"
+      },
+      {
+        "id": "interest",
+        "label": "Interest charged",
+        "sublabel": "back to day one",
+        "value": 176,
+        "display": "€176",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative: interest at 25% a year, from the purchase date. Terms vary by provider."
+  },
+  "reelPromise": "Who pays when 0% really is free, the fees that turn it into credit, and the rules where you live"
+}

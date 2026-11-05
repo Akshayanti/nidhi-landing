@@ -218,6 +218,8 @@ export interface BandStory {
   layout?: "weighted" | "equal";
   emphasis: string;
   disclosure: string;
+  /** Hide each band's `cost` pill in the hook and cover, when it names a term the hook has not explained. */
+  hideCostInHook?: boolean;
 }
 
 export type MonthStage =

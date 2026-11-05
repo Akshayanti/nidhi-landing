@@ -8,7 +8,7 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm",
-  "topic": "A regular bonus gets a short parking period too",
+  "topic": "A regular bonus gets a short wait too",
   "topicChip": "BONUS WEEK",
   "assumptions": {
     "currency": "EUR",
@@ -20,7 +20,7 @@
       "layout": "bar-gap",
       "narration": "Your bonus lands this week. Where does it usually go by Friday?",
       "onscreenLines": [
-        "Bonus this week? Park it",
+        "Bonus this week? Set it aside",
         "30 days earn about €16",
         ""
       ],
@@ -30,7 +30,7 @@
         "days": {
           "total": 30,
           "unpaid": 0,
-          "paidLabel": "Parked"
+          "paidLabel": "Set aside"
         }
       },
       "emphasis": [
@@ -44,7 +44,7 @@
       "id": "b1",
       "kind": "example",
       "narration": "A common practice for a regular bonus: thirty days in a separate, named account.",
-      "onscreenText": "Park it: 30 days",
+      "onscreenText": "Set aside: 30 days",
       "subtext": "Each square is a day",
       "emphasis": [],
       "anchor": {
@@ -53,7 +53,7 @@
         "days": {
           "total": 30,
           "unpaid": 0,
-          "paidLabel": "Parked"
+          "paidLabel": "Set aside"
         }
       }
     },
@@ -74,7 +74,7 @@
     {
       "id": "b3",
       "kind": "definition",
-      "narration": "Meanwhile, many people write where each euro goes, then move it on day thirty.",
+      "narration": "Meanwhile, many people write down where each euro goes, then move it on day thirty.",
       "onscreenText": "The 30 day bonus check",
       "subtext": "",
       "emphasis": [],
@@ -85,7 +85,7 @@
         "rows": [
           {
             "label": "Days 1 to 30",
-            "value": "Parked",
+            "value": "Set aside",
             "tone": "teal"
           },
           {
@@ -111,7 +111,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your bonus lands this week. Where does it usually go by Friday?\n\nA common practice for a regular bonus: 30 days in a separate, named account, while you write where each euro goes. €5,000 at 4% earns about €16. The point is the 30 days.\n\n→ Know someone getting a year end bonus who usually spends it the same week? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax. Rates and deposit protection vary by country. Not financial advice.",
+    "instagram": "Your bonus lands this week. Where does it usually go by Friday?\n\nA common practice for a regular bonus: 30 days in a separate, named account, while you write down where each euro goes. €5,000 at 4% earns about €16. The point is the 30 days.\n\n→ Know someone getting a year end bonus who usually spends it the same week? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax. Rates and deposit protection vary by country. Not financial advice.",
     "tiktok": "Bonus this week? A 30 day pause is a common practice. Illustrative."
   },
   "hashtags": [
@@ -125,11 +125,11 @@
     "mode": "direct",
     "proportional": true,
     "unit": "EUR",
-    "basis": "A €5,000 bonus parked 30 days at an illustrative 4%, before tax",
+    "basis": "A €5,000 bonus set aside 30 days at an illustrative 4%, before tax",
     "bars": [
       {
         "id": "parked",
-        "label": "Parked",
+        "label": "Set aside",
         "sublabel": "the bonus",
         "value": 5000,
         "display": "€5,000",
@@ -146,5 +146,6 @@
     ],
     "disclosure": "Illustrative: 4% a year, before tax.",
     "minBarWidth": 6
-  }
+  },
+  "reelPromise": "How long many people set money aside, whether to invest it all at once or in steps, and how one off money turns into monthly costs"
 }

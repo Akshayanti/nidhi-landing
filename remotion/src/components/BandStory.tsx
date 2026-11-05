@@ -59,7 +59,7 @@ function StoryHeading({ input, now }: { input: ReelInput; now: number }) {
   );
 }
 
-function BandPanel({ band, left, top, width, height, large = false, emphasis = false, opacity = 1 }: { band: BandDatum; left: number; top: number; width: number; height: number; large?: boolean; emphasis?: boolean; opacity?: number }) {
+function BandPanel({ band, left, top, width, height, large = false, emphasis = false, opacity = 1, hideCost = false }: { band: BandDatum; left: number; top: number; width: number; height: number; large?: boolean; emphasis?: boolean; opacity?: number; hideCost?: boolean }) {
   const color = toneColor(band.tone);
   const pad = large ? 38 : 28;
   const roomy = height >= 500;
@@ -72,7 +72,7 @@ function BandPanel({ band, left, top, width, height, large = false, emphasis = f
     <div style={{ position: "absolute", left, top, width, height, border: `${emphasis ? 5 : 3}px solid ${color}`, borderRadius: 28, overflow: "hidden", background: "rgba(255,255,255,0.76)", boxShadow: emphasis ? "14px 16px 0 rgba(0,137,123,0.10)" : "10px 12px 0 rgba(0,33,113,0.06)", opacity }}>
       <div style={{ height: headerHeight, padding: large ? "25px 36px" : "20px 28px", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, background: color, color: BRAND.paper }}>
         <div style={{ fontFamily: TYPE.ui, fontSize: large ? 46 : 35, fontWeight: 860, lineHeight: 1 }}>{band.label}</div>
-        <div style={{ padding: large ? "10px 18px" : "8px 14px", borderRadius: 999, background: BRAND.paper, fontFamily: TYPE.ui, fontSize: large ? 28 : 24, lineHeight: 1, fontWeight: 840, color }}>{band.cost}</div>
+        {!hideCost && <div style={{ padding: large ? "10px 18px" : "8px 14px", borderRadius: 999, background: BRAND.paper, fontFamily: TYPE.ui, fontSize: large ? 28 : 24, lineHeight: 1, fontWeight: 840, color }}>{band.cost}</div>}
       </div>
       <div style={{ padding: `${bodyPad}px ${pad}px` }}>
         {band.items.map((item, index) => (
@@ -86,7 +86,7 @@ function BandPanel({ band, left, top, width, height, large = false, emphasis = f
   );
 }
 
-function WeightedBands({ bands, top, hook = false, cover = false, emphasisId, opacity = 1 }: { bands: BandDatum[]; top: number; hook?: boolean; cover?: boolean; emphasisId?: string; opacity?: number }) {
+function WeightedBands({ bands, top, hook = false, cover = false, emphasisId, opacity = 1, hideCost = false }: { bands: BandDatum[]; top: number; hook?: boolean; cover?: boolean; emphasisId?: string; opacity?: number; hideCost?: boolean }) {
   const [free, modest, hard] = bands;
   if (!free || !modest || !hard) return null;
   const side = cover ? 70 : 64;
@@ -96,14 +96,14 @@ function WeightedBands({ bands, top, hook = false, cover = false, emphasisId, op
   const smallWidth = (1080 - side * 2 - gap) / 2;
   return (
     <div style={{ opacity }}>
-      <BandPanel band={free} left={side} top={top} width={1080 - side * 2} height={freeHeight} large emphasis={emphasisId === free.id || hook} />
-      <BandPanel band={modest} left={side} top={top + freeHeight + 30} width={smallWidth} height={smallHeight} emphasis={emphasisId === modest.id} />
-      <BandPanel band={hard} left={side + smallWidth + gap} top={top + freeHeight + 30} width={smallWidth} height={smallHeight} emphasis={emphasisId === hard.id} />
+      <BandPanel band={free} left={side} top={top} width={1080 - side * 2} height={freeHeight} large emphasis={emphasisId === free.id || hook} hideCost={hideCost} />
+      <BandPanel band={modest} left={side} top={top + freeHeight + 30} width={smallWidth} height={smallHeight} emphasis={emphasisId === modest.id} hideCost={hideCost} />
+      <BandPanel band={hard} left={side + smallWidth + gap} top={top + freeHeight + 30} width={smallWidth} height={smallHeight} emphasis={emphasisId === hard.id} hideCost={hideCost} />
     </div>
   );
 }
 
-function EqualBands({ bands, top, cover = false, opacity = 1 }: { bands: BandDatum[]; top: number; cover?: boolean; opacity?: number }) {
+function EqualBands({ bands, top, cover = false, opacity = 1, hideCost = false }: { bands: BandDatum[]; top: number; cover?: boolean; opacity?: number; hideCost?: boolean }) {
   // Up to four equal bands; a fourth (for example the four steps of a
   // process) shrinks every panel so the stack still fits above the disclosure.
   const four = bands.length >= 4;
@@ -112,7 +112,7 @@ function EqualBands({ bands, top, cover = false, opacity = 1 }: { bands: BandDat
   return (
     <div style={{ opacity }}>
       {bands.slice(0, 4).map((band, index) => (
-        <BandPanel key={band.id} band={band} left={64} top={top + index * (height + gap)} width={952} height={height} />
+        <BandPanel key={band.id} band={band} left={64} top={top + index * (height + gap)} width={952} height={height} hideCost={hideCost} />
       ))}
     </div>
   );
@@ -121,8 +121,11 @@ function EqualBands({ bands, top, cover = false, opacity = 1 }: { bands: BandDat
 function AllBands({ plan, top, hook = false, cover = false, opacity = 1 }: { plan: ReelPlan; top: number; hook?: boolean; cover?: boolean; opacity?: number }) {
   const story = plan.bandStory;
   if (!story) return null;
-  if (story.layout === "equal") return <EqualBands bands={story.bands} top={top} cover={cover} opacity={opacity} />;
-  return <WeightedBands bands={story.bands} top={top} hook={hook} cover={cover} emphasisId={story.emphasis} opacity={opacity} />;
+  // A band's name can be a term the hook has not explained yet (murabaha, ijara): hideCostInHook keeps it
+  // off the hook and cover, so it first appears on its own beat after the narration describes it.
+  const hideCost = hook && Boolean(story.hideCostInHook);
+  if (story.layout === "equal") return <EqualBands bands={story.bands} top={top} cover={cover} opacity={opacity} hideCost={hideCost} />;
+  return <WeightedBands bands={story.bands} top={top} hook={hook} cover={cover} emphasisId={story.emphasis} opacity={opacity} hideCost={hideCost} />;
 }
 
 function ZeroRateBands({ bands, opacity }: { bands: BandDatum[]; opacity: number }) {

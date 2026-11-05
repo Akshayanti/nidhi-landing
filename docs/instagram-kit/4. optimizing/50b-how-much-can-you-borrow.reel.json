@@ -20,8 +20,8 @@
       "layout": "bar-gap",
       "narration": "How much can you borrow? The bank's limit and what your pay can carry are different numbers.",
       "onscreenLines": [
-        "A €330,000 loan today",
-        "If rates rise 2 points",
+        "The bank's maximum loan",
+        "If its rate goes 3.5% → 5.5%",
         ""
       ],
       "anchor": {
@@ -38,7 +38,7 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Say the bank offers three hundred and thirty thousand euros. That is its limit, not your budget.",
+      "narration": "Say the bank offers its maximum. That is its limit, not your budget.",
       "onscreenText": "The bank's maximum",
       "subtext": "Its limit, not your budget",
       "emphasis": [
@@ -52,8 +52,8 @@
     {
       "id": "b2",
       "kind": "stat",
-      "narration": "At the offered rate, the payment takes a third of pay before tax.",
-      "onscreenText": "Offered rate: 33% of pay",
+      "narration": "At three and a half percent, the payment takes a third of pay before tax.",
+      "onscreenText": "At 3.5%: 33% of pay",
       "subtext": "The payment, before tax",
       "emphasis": [
         "third"
@@ -66,8 +66,8 @@
     {
       "id": "b3",
       "kind": "warning",
-      "narration": "If rates rise two points, the same loan takes forty two percent.",
-      "onscreenText": "Rates up 2 points: 42%",
+      "narration": "At five and a half percent, the same loan takes forty two percent.",
+      "onscreenText": "At 5.5%: 42% of pay",
       "subtext": "Same loan, same pay",
       "emphasis": [
         "forty"
@@ -120,7 +120,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "How much can you borrow? The bank's limit and what your pay can carry are different numbers.\n\nSay the bank offers €330,000. At the offered rate the payment takes a third of pay before tax; two points higher, the same loan takes 42%. That is a stress test: many people try a higher rate and a lower income, then decide how much of the maximum to use.\n\n→ Know someone about to take a mortgage? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
+    "instagram": "How much can you borrow? The bank's limit and what your pay can carry are different numbers.\n\nSay the bank offers €330,000. At 3.5% the payment takes a third of pay before tax; at 5.5%, the same loan takes 42%. That is a stress test: many people try a higher rate and a lower income, then decide how much of the maximum to use.\n\n→ Know someone about to take a mortgage? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
     "tiktok": "How much can you borrow? The bank's maximum is not your budget: test the loan at a higher rate first. Illustrative, not financial advice."
   },
   "hashtags": [
@@ -135,7 +135,7 @@
     "proportional": true,
     "setup": {
       "label": "The bank's offer",
-      "display": "€330,000",
+      "display": "Its maximum",
       "note": "Payment shown as a share of pay before tax",
       "tone": "ink"
     },
@@ -144,7 +144,7 @@
     "bars": [
       {
         "id": "today",
-        "label": "Offered rate",
+        "label": "At 3.5%",
         "sublabel": "the payment",
         "value": 33,
         "display": "33%",
@@ -152,7 +152,7 @@
       },
       {
         "id": "up",
-        "label": "Rates up 2 points",
+        "label": "At 5.5%",
         "sublabel": "same loan, same pay",
         "value": 42,
         "display": "42%",
@@ -160,5 +160,6 @@
       }
     ],
     "disclosure": "Illustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%."
-  }
+  },
+  "reelPromise": "Why one salary gets very different mortgage answers, and what lenders cap where you live"
 }

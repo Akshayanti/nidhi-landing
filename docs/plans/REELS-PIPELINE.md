@@ -501,6 +501,7 @@ asked whether each figure had context.
   four in a reel, or more than one new number in a beat outside the hook, is
   a rewrite. (The first fix of the gig work day 1 reel walked every input as
   a number and the owner called it a "numbers bombardment".)
+- A financial term is explained, or replaced with plain words, before it is said or shown anywhere in the reel: in the hook, on chart labels, chips, tool cards, the story tool card and the caption (owner, Nov 5, 2026: "windfall" in 51 day 2). Show the thing first, then name it ("that is called deferred interest"). A hook that shows every band hides band names that are terms with `bandStory.hideCostInHook`. The caption's "Read the full post" line comes from the lesson's `reelPromise` unless the plan sets its own; set one when the lesson's has terms or hyphens.
 - Every beat changes the picture. If two beats in a row would show the same
   frame, give the second its own visual (a grid, a card, a highlight) or
   merge the beats. Direct bar reels have a `days` stage (a grid of working

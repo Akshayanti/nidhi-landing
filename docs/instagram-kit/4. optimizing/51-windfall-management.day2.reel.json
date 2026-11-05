@@ -9,7 +9,7 @@
   "mode": "riff",
   "mood": "calm",
   "topic": "A one off windfall can turn into a permanent monthly cost",
-  "topicChip": "THE RATCHET",
+  "topicChip": "ONE OFF, THEN MONTHLY",
   "assumptions": {
     "currency": "EUR",
     "notes": "€400 a month = €4,800 a year. €50,000 / 4,800 = 10.4 years (about 10 years 5 months). Windfall line held flat at €50,000; upgrade line = total paid so far. Before growth, tax or inflation. Illustrative."
@@ -19,7 +19,7 @@
     "series": [
       {
         "id": "windfall",
-        "label": "The windfall",
+        "label": "One off €50,000",
         "tone": "ink",
         "values": [
           50000,
@@ -78,7 +78,7 @@
     {
       "id": "how-long",
       "layout": "chart-gap",
-      "narration": "How long can a fifty thousand euro windfall pay for a four hundred euro a month upgrade?",
+      "narration": "Fifty thousand euros from a bonus or an inheritance. How long can it pay for a four hundred euro a month upgrade?",
       "onscreenLines": [
         "A €400 a month upgrade",
         "€50,000 gone in about 10 years 5 months",
@@ -110,7 +110,7 @@
     {
       "id": "b3",
       "kind": "comparison",
-      "narration": "After about ten years and five months, the upgrade has used up the whole windfall. And the monthly cost keeps going.",
+      "narration": "After about ten years and five months, the upgrade has used up the whole fifty thousand. And the monthly cost keeps going.",
       "onscreenText": "About 10 years 5 months",
       "subtext": "Before growth, tax or inflation",
       "emphasis": [
@@ -124,14 +124,14 @@
     {
       "id": "b4",
       "kind": "definition",
-      "narration": "The ratchet check: compare spending before and after the money lands.",
-      "onscreenText": "The ratchet check",
+      "narration": "The before and after check: compare spending before and after the money lands.",
+      "onscreenText": "The before and after check",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The ratchet check",
+        "title": "The before and after check",
         "rows": [
           {
             "label": "Before",
@@ -155,14 +155,14 @@
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone upgrading with a windfall? Send them this.",
+    "narration": "Know someone upgrading with a bonus or an inheritance? Send them this.",
     "onscreenText": "Send this to them",
     "subtext": "Before they sign",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "How long can a one off windfall pay for a €400 a month upgrade?\n\n€400 a month is €4,800 a year. After about 10 years and 5 months it has used up a €50,000 windfall, and the monthly cost keeps going.\n\n→ Know someone about to upgrade their car or flat with a bonus or inheritance? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Before growth, tax or inflation. Not financial advice.",
-    "tiktok": "A €50,000 windfall against a €400 a month upgrade: used up after about 10 years and 5 months. Illustrative."
+    "instagram": "How long can a one off sum, like a bonus or an inheritance, pay for a €400 a month upgrade?\n\n€400 a month is €4,800 a year. After about 10 years and 5 months it has used up €50,000, and the monthly cost keeps going.\n\n→ Know someone about to upgrade their car or flat with a bonus or inheritance? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Before growth, tax or inflation. Not financial advice.",
+    "tiktok": "€50,000 from a bonus or an inheritance against a €400 a month upgrade: used up after about 10 years and 5 months. Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -170,5 +170,6 @@
     "lifestylecreep",
     "carlease",
     "moneyhabits"
-  ]
+  ],
+  "reelPromise": "How long many people set money aside, whether to invest it all at once or in steps, and how one off money turns into monthly costs"
 }

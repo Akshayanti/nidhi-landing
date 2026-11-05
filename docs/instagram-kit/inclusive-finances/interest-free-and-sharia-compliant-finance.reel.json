@@ -52,7 +52,8 @@
       }
     ],
     "emphasis": "partnership",
-    "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country."
+    "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country.",
+    "hideCostInHook": true
   },
   "hookVariants": [
     {
@@ -192,5 +193,6 @@
     "islamicfinance",
     "homefinance",
     "buyingahome"
-  ]
+  ],
+  "reelPromise": "How the three main home finance structures without interest work, and the questions to ask before signing"
 }

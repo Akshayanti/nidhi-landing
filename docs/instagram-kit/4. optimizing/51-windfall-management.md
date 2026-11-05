@@ -22,7 +22,7 @@ angle: Many people park a windfall before deciding anything; for a regular bonus
 breadth: narrow | Needs a bonus or another windfall: a viewer expecting money beyond their pay
 number: A €5,000 bonus parked 30 days at an illustrative 4% earns about €16 before tax; the point is the 30 days
 takeaway: Parking buys decision time at a small cost; the plan is written before the money moves.
-tool: The 30 day bonus check. Park it, name the account, write where each euro goes, then move it. The story card widens it to the parking period: a bonus about 30 days, sale proceeds 60 to 90, an inheritance 90 or more.
+tool: The 30 day bonus check. Set it aside, name the account, write down where each euro goes, then move it. The story card widens it to how long to set it aside: a bonus about 30 days, sale proceeds 60 to 90, an inheritance 90 or more.
 send_to: A friend getting a year end bonus who usually spends it the same week.
 send_why: checklist
 
@@ -76,9 +76,9 @@ Parking buys **decision time**; the decision comes after the emotion.
 
 ### Slide 3 (tool)
 
-alt: Tool card, the parking period, when money lands: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
+alt: Tool card, how long to set it aside, when money lands: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
 
-band: The parking period
+band: How long to set it aside
 lead: When money lands
 row: Bonus | 30 days | teal | regular, expected
 row: Sale proceeds | 60 to 90 | ink | larger, irregular
@@ -161,9 +161,9 @@ rule: Once becomes ongoing.
 
 ### Slide 3 (tool)
 
-alt: Tool card, the ratchet check, after money lands: spending in the six months before; spending in the six months after; for each rise, a planned change or a drift.
+alt: Tool card, the before and after check, after money lands: spending in the six months before; spending in the six months after; for each rise, a planned change or a drift.
 
-band: The ratchet check
+band: The before and after check
 lead: After money lands
 row: Before | 6 months | ink | average monthly spending
 row: After | 6 months | warn | the same months, later
@@ -194,14 +194,14 @@ d1_f2_poll_opts: Spent it fast | Saved or invested | Still deciding
 d1_f2_caption: What people did with their last windfall
 
 d1_f3_kind: tool
-d1_f3_alt: Story version of the parking period: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
+d1_f3_alt: Story version of how long to set it aside: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
 d1_f3_time: evening, with the day 1 carousel
-d1_f3_caption: The parking period
+d1_f3_caption: How long to set it aside
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Windfall vs €400 a month?
-d2_f1_caption: How long a windfall lasts against a monthly cost
+d2_f1_overlay: €50,000 vs €400 a month?
+d2_f1_caption: How long €50,000 lasts against a monthly cost
 
 d2_f2_kind: result
 d2_f2_alt: Yesterday's poll question, what people did with their last bonus or windfall, with an empty box for the result.
@@ -212,9 +212,9 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: What people did with their last windfall
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the ratchet check: compare six months of spending before and after the windfall, and ask whether each rise was planned.
+d2_f3_alt: Story version of the before and after check: compare six months of spending before and after the money lands, and ask whether each rise was planned.
 d2_f3_time: evening, with the day 2 carousel
-d2_f3_caption: The ratchet check
+d2_f3_caption: The before and after check
 
 d2_f4_kind: extra
 d2_f4_alt: Beyond this post: historically, investing a lump sum at once beat spreading it over 12 months about two thirds of the time in a few developed markets; spreading it can still limit regret.
