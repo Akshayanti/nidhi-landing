@@ -8,168 +8,162 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm",
-  "topic": "A one off windfall can turn into a permanent monthly cost",
-  "topicChip": "ONE OFF, THEN MONTHLY",
+  "topic": "Invest a sum all at once, or spread it out? In a study of global shares, all at once came out ahead about two thirds of the time",
+  "topicChip": "ONE SUM · PART 2/3",
   "assumptions": {
     "currency": "EUR",
-    "notes": "€400 a month = €4,800 a year. €50,000 / 4,800 = 10.4 years (about 10 years 5 months). Windfall line held flat at €50,000; upgrade line = total paid so far. Before growth, tax or inflation. Illustrative."
-  },
-  "lineRace": {
-    "periodLabel": "Year",
-    "series": [
-      {
-        "id": "windfall",
-        "label": "One off €50,000",
-        "tone": "ink",
-        "values": [
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000,
-          50000
-        ],
-        "headText": "€50,000"
-      },
-      {
-        "id": "upgrade",
-        "label": "Paid for the upgrade",
-        "tone": "teal",
-        "values": [
-          4800,
-          9600,
-          14400,
-          19200,
-          24000,
-          28800,
-          33600,
-          38400,
-          43200,
-          48000,
-          52800,
-          57600
-        ],
-        "headText": "€400 a month"
-      }
-    ],
-    "ceiling": 60000,
-    "gridlines": [
-      25000,
-      50000
-    ],
-    "secondsPerPeriod": 0.5,
-    "scope": "Before growth, tax or inflation.",
-    "disclosure": "Illustrative. €400 a month, before growth, tax or inflation.",
-    "hideValueAxis": true,
-    "crossing": {
-      "period": 9.42,
-      "value": 50000,
-      "label": "About 10 years 5 months"
-    },
-    "hidePeriodLabels": true
+    "notes": "The lesson's 2023 fund manager study (Cost averaging: invest now or temporarily hold your cash?): global shares, 1976 to 2022, plus checks in the US, UK, Canada, Europe and Australia; investing at once beat spreading over 3 months about two thirds of the time over rolling one year periods, because shares and bonds beat cash most of the time. Bars to scale: 67 and 33. 'Dollar cost averaging' is not used. Numbers: three months, a year, two thirds."
   },
   "hookVariants": [
     {
-      "id": "how-long",
-      "layout": "chart-gap",
-      "narration": "Fifty thousand euros from a bonus or an inheritance. How long can it pay for a four hundred euro a month upgrade?",
+      "id": "at-once",
+      "layout": "bar-gap",
+      "narration": "Part two: invest it all at once, or spread it out?",
       "onscreenLines": [
-        "A €400 a month upgrade",
-        "€50,000 gone in about 10 years 5 months",
+        "Part 2: all at once",
+        "or spread it out?",
         ""
       ],
       "anchor": {
-        "type": "race",
-        "stage": "race"
+        "type": "bars",
+        "stage": "hook"
       },
       "emphasis": [
-        "month"
+        "spread"
       ]
     }
   ],
   "useHookVariant": 0,
   "beats": [
     {
-      "id": "b2",
-      "kind": "stat",
-      "narration": "Four hundred a month is four thousand eight hundred a year.",
-      "onscreenText": "€4,800 a year",
-      "subtext": "€400 a month, every month",
+      "id": "b1",
+      "kind": "example",
+      "narration": "All at once, or in equal parts over three months.",
+      "onscreenText": "At once, or in parts",
+      "subtext": "Over three months",
       "emphasis": [],
       "anchor": {
-        "type": "race",
-        "stage": "race"
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "A study of global shares compared the results a year later.",
+      "onscreenText": "Checked a year later",
+      "subtext": "Each square is a month",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "days",
+        "days": {
+          "total": 12,
+          "unpaid": 9,
+          "paidLabel": "Invested in parts",
+          "unpaidLabel": "Until the check",
+          "tail": true,
+          "columns": 6
+        }
       }
     },
     {
       "id": "b3",
-      "kind": "comparison",
-      "narration": "After about ten years and five months, the upgrade has used up the whole fifty thousand. And the monthly cost keeps going.",
-      "onscreenText": "About 10 years 5 months",
-      "subtext": "Before growth, tax or inflation",
+      "kind": "stat",
+      "narration": "All at once came out ahead about two thirds of the time. Spreading, the rest.",
+      "onscreenText": "About two thirds",
+      "subtext": "All at once ahead",
       "emphasis": [
-        "keeps"
+        "two"
       ],
       "anchor": {
-        "type": "race",
-        "stage": "finish"
+        "type": "bars",
+        "stage": "second"
       }
     },
     {
       "id": "b4",
-      "kind": "definition",
-      "narration": "The before and after check: compare spending before and after the money lands.",
-      "onscreenText": "The before and after check",
-      "subtext": "",
+      "kind": "list",
+      "narration": "Investments usually beat cash, so waiting usually cost some growth. Spreading puts less on a single day.",
+      "onscreenText": "Why",
+      "subtext": "Cash, growth, timing",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The before and after check",
+        "title": "Why",
         "rows": [
           {
-            "label": "Before",
-            "value": "Spending",
-            "tone": "ink"
+            "label": "Invested money",
+            "value": "Beat cash",
+            "valueSize": "small",
+            "tone": "teal"
           },
           {
-            "label": "After",
-            "value": "Spending",
+            "label": "Waiting",
+            "value": "Some growth",
+            "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Each rise",
-            "value": "Planned?",
-            "tone": "teal"
+            "label": "Spreading",
+            "value": "Timing",
+            "valueSize": "small",
+            "tone": "ink"
           }
         ],
-        "footnote": "Illustrative. A check, not a budget."
+        "footnote": "Past data, mostly developed markets: a tendency, not a promise."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone upgrading with a bonus or an inheritance? Send them this.",
-    "onscreenText": "Send this to them",
-    "subtext": "Before they sign",
-    "handle": "@nidhi.today"
+    "handle": "@nidhi.today",
+    "narration": "Send this on. Part three: shares or a home?",
+    "onscreenText": "Part 3: shares or a home?",
+    "subtext": "Send this to someone with money landing"
   },
   "caption": {
-    "instagram": "How long can a one off sum, like a bonus or an inheritance, pay for a €400 a month upgrade?\n\n€400 a month is €4,800 a year. After about 10 years and 5 months it has used up €50,000, and the monthly cost keeps going.\n\n→ Know someone about to upgrade their car or flat with a bonus or inheritance? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Before growth, tax or inflation. Not financial advice.",
-    "tiktok": "€50,000 from a bonus or an inheritance against a €400 a month upgrade: used up after about 10 years and 5 months. Illustrative."
+    "instagram": "Invest it all at once, or spread it out?\n\nAll at once, or in equal parts over three months. A study of global shares compared the results a year later: all at once came out ahead about two thirds of the time, and spreading in the rest.\n\nInvestments usually beat cash, so money waiting usually missed growth. Spreading puts less on a single day.\n\nPast data, mostly developed markets: a tendency, not a promise.\n\nPart 3: what if the inheritance is shares or a home?\n\n→ Know someone with money to invest? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nSource: a 2023 study by a large fund manager, global markets 1976 to 2022, investing at once against spreading over three months. Not financial advice.",
+    "tiktok": "All at once, or spread over three months? In a study of global shares, all at once came out ahead about two thirds of the time a year later. A tendency, not a promise."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "lifestylecreep",
-    "carlease",
-    "moneyhabits"
+    "lumpsuminvesting",
+    "investingbasics",
+    "longterminvesting"
   ],
-  "reelPromise": "How long many people set money aside, whether to invest it all at once or in steps, and how one off money turns into monthly costs"
+  "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "One sum, two ways",
+      "display": "At once or in parts",
+      "note": "Equal parts over three months",
+      "tone": "ink"
+    },
+    "unit": "%",
+    "basis": "Share of one year periods each came out ahead, global shares",
+    "bars": [
+      {
+        "id": "lump",
+        "label": "All at once ahead",
+        "sublabel": "of the time",
+        "value": 67,
+        "display": "About ⅔",
+        "tone": "teal"
+      },
+      {
+        "id": "spread",
+        "label": "Spreading ahead",
+        "sublabel": "the rest",
+        "value": 33,
+        "display": "The rest",
+        "tone": "ink"
+      }
+    ],
+    "disclosure": "Source: a 2023 study by a large fund manager, global shares. Past data, mostly developed markets: a tendency, not a promise."
+  }
 }

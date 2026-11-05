@@ -4,22 +4,22 @@ blog_url: "https://nidhi.today/blog/how-much-can-you-borrow/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, two days (owner, Nov 5, 2026).** Day 1 the stress test, day 2 which pay a rule uses (before tax or take home). No carousel. Remove this note once scheduled.
+> **Reels only, two days (owner, Nov 5, 2026).** Day 1 the four measures every borrowing rule uses and which pay it counts, day 2 the stress test with a checklist. No national rule is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
 
 ## Brief
 
 person: Marcus, 34
 situation: Marcus earns €54,000 a year before tax (€4,500 a month) and pays €300 a month on a car loan. His bank offers €330,000 for a flat over 30 years at 3.5%.
-withheld: Why the same salary gets answers from about €120,000 to €430,000, the four ratios every rule is built from, the 28/36, 20-30-40 and 20/4/10 rules and where they come from, and what regulators cap by country.
+withheld: The named rules of thumb and national caps (28/36, 20-30-40, 20/4/10, the UAE, South Korea, UK, Canada and Australia limits), how the same salary gets about €120,000 to €430,000, and where each rule breaks.
 
 ## Day 1 (angle)
 
-angle: How much can you borrow? The bank's maximum is not your budget; many people test the loan at a higher rate first
+angle: Borrowing rules differ across countries; four measures help compare them, and which pay they count changes the answer
 breadth: narrow | Needs a borrowing condition: a viewer about to take a mortgage or a large loan
-number: The bank's €330,000 takes 33% of pay before tax at today's rate and 42% if rates rise two points
-takeaway: A lender's maximum and the loan a budget can carry are different numbers; a stress test shows the gap before signing.
-tool: The stress test. Try the payment at a higher rate and on a lower income, and check what is left for saving; then decide how much of the maximum to use.
-send_to: A friend about to take a mortgage who plans to borrow the bank's maximum.
+number: Marcus's payment is a third of his pay before tax and almost half of his take home pay
+takeaway: Every borrowing rule mixes the same four measures, and a rule's percentage means little until you know which pay it uses.
+tool: Which pay? Before tax or after; bills come from take home pay; the gap is bigger where tax and contributions are high.
+send_to: A friend comparing borrowing rules they read online.
 send_why: number
 
 ## Day 1 (reel)
@@ -29,41 +29,9 @@ render: cp "docs/instagram-kit/4. optimizing/50b-how-much-can-you-borrow.reel.js
 video: output/videos/optimizing/how-much-can-you-borrow.mp4
 cover: output/thumbnails/optimizing/how-much-can-you-borrow.png
 caption: output/captions/optimizing/how-much-can-you-borrow.ig.txt
-hashtags: #nidhi #nidhicompounding #mortgage #firsthome #homebuying
+hashtags: #nidhi #nidhicompounding #mortgage #borrowingmoney #homebuying
 
 ## Day 1 (story)
-
-### Slide 1 (tool)
-
-alt: Tool card, the stress test, before you sign: the rate higher, say 3.5% to 5.5%, or the rate when a fixed period ends; income, a fifth lower; then check there is room left for saving and an emergency fund.
-
-band: The stress test
-lead: Checks many people run
-row: Rate | Higher | warn | say 3.5% → 5.5%, or the rate when a fixed period ends
-row: Income | Lower | warn | a fifth less, or one income
-row: Room left | Saving? | teal | and an emergency fund
-note: Illustrative. Many people decide how much of the maximum to use after this.
-
-## Day 2 (angle)
-
-angle: Which pay is the rule using? The same payment is a third of pay before tax and 45% of take home pay
-breadth: narrow | Needs a borrowing condition: a viewer checking a loan against a rule of thumb
-number: Marcus's €1,482 payment is 33% of pay before tax and 45% of what reaches his account
-takeaway: Many borrowing rules use pay before tax, while bills are paid from take home pay; in high tax countries the same rule allows a much larger share of what is left.
-tool: Which pay? Before tax or after; bills come from take home pay; the gap is bigger where tax and contributions are high.
-send_to: A friend checking a mortgage against a rule of thumb they read online.
-send_why: number
-
-## Day 2 (reel)
-
-plan: 50b-how-much-can-you-borrow.day2.reel.json
-render: cp "docs/instagram-kit/4. optimizing/50b-how-much-can-you-borrow.day2.reel.json" output/plans/optimizing/how-much-can-you-borrow-day2.json && node scripts/render-reels.mjs how-much-can-you-borrow --level optimizing --from-plan --angle day2
-video: output/videos/optimizing/how-much-can-you-borrow-day2.mp4
-cover: output/thumbnails/optimizing/how-much-can-you-borrow-day2.png
-caption: output/captions/optimizing/how-much-can-you-borrow-day2.ig.txt
-hashtags: #nidhi #nidhicompounding #takehomepay #mortgagetips #moneyabroad
-
-## Day 2 (story)
 
 ### Slide 1 (tool)
 
@@ -74,29 +42,62 @@ lead: Before using a borrowing rule
 row: The rule | Before tax? | warn | or take home pay, after tax and contributions
 row: Bills | Take home | teal | they are paid from what reaches the account
 row: High tax | Bigger gap | warn | the same rule allows more of what is left
-note: Illustrative. 33% of pay before tax was 45% of take home pay for Marcus.
+note: Illustrative. A third of pay before tax was almost half of take home pay for Marcus.
+
+## Day 2 (angle)
+
+angle: The bank says yes; would the loan survive a setback? A higher rate, then a checklist
+breadth: narrow | Needs a borrowing condition: a viewer about to take a mortgage or a large loan
+number: The bank's maximum takes 33% of Marcus's pay before tax today and 42% at a higher rate
+takeaway: A lender's maximum and a loan that still works after a setback are different numbers; a stress test shows the gap before signing.
+tool: Would it still work? The payment when a fixed rate ends; household income lower for a while; room for saving and emergencies; a loan in another currency than pay.
+send_to: A friend about to take a mortgage who plans to borrow the bank's maximum.
+send_why: checklist
+
+## Day 2 (reel)
+
+plan: 50b-how-much-can-you-borrow.day2.reel.json
+render: cp "docs/instagram-kit/4. optimizing/50b-how-much-can-you-borrow.day2.reel.json" output/plans/optimizing/how-much-can-you-borrow-day2.json && node scripts/render-reels.mjs how-much-can-you-borrow --level optimizing --from-plan --angle day2
+video: output/videos/optimizing/how-much-can-you-borrow-day2.mp4
+cover: output/thumbnails/optimizing/how-much-can-you-borrow-day2.png
+caption: output/captions/optimizing/how-much-can-you-borrow-day2.ig.txt
+hashtags: #nidhi #nidhicompounding #mortgagetips #stresstest #moneyabroad
+
+## Day 2 (story)
+
+### Slide 1 (tool)
+
+alt: Tool card, would it still work, before you sign: the payment when a fixed rate ends; household income lower for a while; room left for saving and emergencies; a loan in another currency than your pay.
+
+band: Would it still work?
+lead: Before you sign
+row: Fixed rate ends | Payment? | warn | when the rate fixed for some years resets
+row: Income | Lower? | warn | for a while, or one income for a couple
+row: Room left | Saving? | teal | and an emergency fund
+row: Currency | Moves? | ink | if pay and loan currencies differ, the payment can rise
+note: Illustrative. Many people decide how much of the maximum to use after this.
 
 ## Stories
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: What if your rate went up?
-d1_f1_caption: The stress test before a mortgage
+d1_f1_overlay: A third or almost half?
+d1_f1_caption: Four measures behind every borrowing rule
 
 d1_f3_kind: tool
-d1_f3_alt: Story version of the stress test: the rate higher, say 3.5% to 5.5%, income a fifth lower, and room left for saving and an emergency fund.
+d1_f3_alt: Story version of which pay: does the rule use pay before tax or after; bills come from take home pay; the gap is bigger in high tax countries.
 d1_f3_time: evening
-d1_f3_caption: The stress test
+d1_f3_caption: Which pay is the rule using?
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: 33% or 45% of your pay?
-d2_f1_caption: Which pay a borrowing rule uses
+d2_f1_overlay: Would your loan survive a setback?
+d2_f1_caption: The stress test before a loan
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of which pay: does the rule use pay before tax or after; bills come from take home pay; the gap is bigger in high tax countries.
+d2_f3_alt: Story version of would it still work: the payment when a fixed rate ends, income lower for a while, room left for saving and an emergency fund, and a loan in another currency than pay.
 d2_f3_time: evening
-d2_f3_caption: Which pay is the rule using?
+d2_f3_caption: Would it still work?
 
 d2_f4_kind: extra
 d2_f4_alt: Beyond this post: for the same €54,000 salary, popular rules of thumb and national caps give illustrative amounts from about €120,000 to about €430,000, because they measure different things.

@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "Which pay is the rule using? The same payment is a third of pay before tax and 45% of take home pay",
-  "topicChip": "BORROWING",
+  "topic": "The bank's yes is not a loan that still works after a setback: a higher rate, then a checklist",
+  "topicChip": "BORROWING · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Blog example (Marcus): €54,000 a year before tax (€4,500 a month), about €3,300 a month after tax. Payment on the bank's €330,000 at 3.5% over 30 years: about €1,482 a month = 32.9% of €4,500 (shown 33%) and 44.9% of €3,300 (shown 45%; the lesson says about 45%). Numbers in the reel: €1,482, 33%, 45%."
+    "notes": "Marcus: the bank's €330,000 over 30 years at 3.5% is about €1,482 a month, 32.9% of €4,500 before tax, shown 33%. At 5.5% about €1,874, 41.6%, shown 42% (car loan left out). The reel says 'a higher interest rate' (no rate numbers, council Nov 5). Checklist from the lesson's stress checks: the rate when a fixed period ends; household income lower; room for saving and an emergency fund; a loan in a currency other than pay. Numbers: 33%, 42%."
   },
   "hookVariants": [
     {
-      "id": "which-pay",
+      "id": "setback",
       "layout": "bar-gap",
-      "narration": "Same payment: a third of your pay, or almost half? It depends which pay you count.",
+      "narration": "Part two: the bank says yes. Would the loan survive a setback?",
       "onscreenLines": [
-        "Same payment: 33% or 45%?",
-        "Depends on which pay you count",
+        "Part 2: the bank says yes",
+        "Would it survive a setback?",
         ""
       ],
       "anchor": {
@@ -29,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "which"
+        "setback"
       ]
     }
   ],
@@ -37,129 +37,145 @@
   "beats": [
     {
       "id": "b1",
-      "kind": "example",
-      "narration": "Marcus pays about one thousand four hundred and eighty euros a month.",
-      "onscreenText": "One payment",
-      "subtext": "The same in both bars",
-      "emphasis": [
-        "same"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "blank"
-      }
-    },
-    {
-      "id": "b2",
       "kind": "stat",
-      "narration": "Against his pay before tax, it is a third.",
-      "onscreenText": "33% of pay before tax",
-      "subtext": "What many rules measure",
-      "emphasis": [
-        "third"
-      ],
+      "narration": "Marcus's maximum loan takes thirty three percent of his pay before tax.",
+      "onscreenText": "33% of pay",
+      "subtext": "At today's rate",
+      "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "first"
       }
     },
     {
-      "id": "b3",
+      "id": "b2",
       "kind": "warning",
-      "narration": "Against what reaches his account after tax, it is forty five percent.",
-      "onscreenText": "45% of take home pay",
-      "subtext": "What reaches the account",
-      "emphasis": [
-        "forty"
-      ],
+      "narration": "At a higher rate, forty two percent.",
+      "onscreenText": "42% at a higher rate",
+      "subtext": "Same loan, same pay",
+      "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second"
       }
     },
     {
-      "id": "b4",
-      "kind": "definition",
-      "narration": "Many rules use pay before tax. Bills come from take home pay.",
-      "onscreenText": "Which pay?",
-      "subtext": "Before you use a rule",
+      "id": "b3",
+      "kind": "list",
+      "narration": "So many check: the payment when a rate fixed for some years ends, and income lower for a while.",
+      "onscreenText": "If things go wrong",
+      "subtext": "Rate, income",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "WHICH PAY?",
+        "title": "Would it still work?",
         "rows": [
           {
-            "label": "The rule",
-            "value": "Before tax or after?",
+            "label": "When a fixed rate ends",
+            "value": "The payment then?",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Bills",
-            "value": "From take home",
-            "valueSize": "small",
-            "tone": "teal"
-          },
-          {
-            "label": "High tax countries",
-            "value": "Bigger gap",
+            "label": "Household income",
+            "value": "Lower for a while?",
             "valueSize": "small",
             "tone": "amber"
           }
         ],
-        "footnote": "Illustrative. The rule's income decides the answer."
+        "footnote": "Illustrative. A check many people run, not a rule."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Room left for saving and emergencies. And with a loan in another currency than your pay, currency moves can raise the payment.",
+      "onscreenText": "Room left, currency",
+      "subtext": "Saving, currency moves",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Would it still work?",
+        "rows": [
+          {
+            "label": "When a fixed rate ends",
+            "value": "The payment then?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Household income",
+            "value": "Lower for a while?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Room left for",
+            "value": "Saving, emergencies?",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Loan in another currency",
+            "value": "Currency moves?",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "Illustrative. A check many people run, not a rule."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Checking a borrowing rule? Send this to a friend.",
+    "handle": "@nidhi.today",
+    "narration": "That is a stress test. Send this to someone about to borrow.",
     "onscreenText": "Send this to them",
-    "subtext": "Before they use a rule",
-    "handle": "@nidhi.today"
+    "subtext": "Before they sign"
   },
   "caption": {
-    "instagram": "The same mortgage payment: a third of your pay, or almost half? It depends on which pay you count.\n\nMarcus pays about €1,482 a month. Against his pay before tax, that is 33%. Against what reaches his account after tax and contributions, it is 45%. Many borrowing rules use pay before tax; bills are paid from take home pay. Many people check which one a rule means.\n\n→ Know someone checking a borrowing rule? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, about €3,300 after it. Tax and rules vary by country. Not financial advice.",
-    "tiktok": "Same mortgage payment: 33% of pay before tax, 45% of take home pay. Check which pay a borrowing rule uses. Illustrative, not financial advice."
+    "instagram": "The bank says yes. Would the loan survive a setback?\n\nIn Marcus's example, the bank's maximum loan takes 33% of his pay before tax. At a higher interest rate, the same loan takes 42%.\n\nMany people run a checklist: what the payment is when a fixed rate ends, what happens if household income falls for a while, whether there is still room for saving and emergencies, and, with pay in one currency and the loan in another, how the exchange rate moves the payment. That is a stress test. The bank's yes and a loan that still works answer different questions.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
+    "tiktok": "The bank says yes. Would the loan survive a higher rate, lower income, or an exchange rate move? A stress test checklist. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "takehomepay",
     "mortgagetips",
+    "stresstest",
     "moneyabroad"
   ],
+  "reelPromise": "The four measures behind every borrowing rule, and the stress test many people run before signing",
   "barStory": {
     "mode": "direct",
     "proportional": true,
     "setup": {
-      "label": "Marcus's payment",
-      "display": "€1,482 a month",
-      "note": "The same payment in both bars",
+      "label": "The bank's offer",
+      "display": "Its maximum",
+      "note": "Payment shown as a share of pay before tax",
       "tone": "ink"
     },
     "unit": "%",
-    "basis": "The same monthly payment as a share of two kinds of pay, illustrative",
+    "basis": "Monthly payment as a share of pay before tax, illustrative",
     "bars": [
       {
-        "id": "gross",
-        "label": "Pay before tax",
-        "sublabel": "what many rules use",
+        "id": "today",
+        "label": "Today's rate",
+        "sublabel": "share of pay before tax",
         "value": 33,
         "display": "33%",
         "tone": "teal"
       },
       {
-        "id": "net",
-        "label": "Take home pay",
-        "sublabel": "what reaches the account",
-        "value": 45,
-        "display": "45%",
+        "id": "up",
+        "label": "A higher rate",
+        "sublabel": "same loan, same pay",
+        "value": 42,
+        "display": "42%",
         "tone": "amber"
       }
     ],
-    "disclosure": "Illustrative. Take home pay is what is left after tax and contributions."
-  },
-  "reelPromise": "Why one salary gets very different mortgage answers, and what lenders cap where you live"
+    "disclosure": "Illustrative: the bank's maximum loan, as a share of the same pay before tax."
+  }
 }

@@ -8,28 +8,28 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "How much can you borrow? The bank's maximum is not your budget: many people test the loan at a higher rate first",
-  "topicChip": "BORROWING",
+  "topic": "Borrowing rules differ across countries; four measures help compare them, and which pay they use changes the answer",
+  "topicChip": "BORROWING · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Blog example (Marcus): pay before tax €54,000 a year, €4,500 a month. Bank offer €330,000 over 30 years. At 3.5%: about €1,482 a month = 32.9% of €4,500, shown as 33%. At 5.5% (two points higher): about €1,874 = 41.6%, shown as 42%. Car loan left out of both bars (the lesson's 48% includes it). The lesson's stress checks: rate up 2 to 3 points; income down a fifth (payment then 41% of the smaller pay)."
+    "notes": "Lesson: every borrowing rule is built from four measures (payment share, all debts share, deposit, term), plus whether a share is of pay before tax or take home pay. Marcus: €330,000 over 30 years at 3.5% is about €1,482 a month, 33% of €4,500 before tax (a third) and 45% of about €3,300 take home (almost half). No national rule named (owner, Nov 5: no single country framing). Numbers: four, a third, almost half."
   },
   "hookVariants": [
     {
-      "id": "bank-vs-budget",
-      "layout": "bar-gap",
-      "narration": "How much can you borrow? The bank's limit and what your pay can carry are different numbers.",
+      "id": "four-measures",
+      "layout": "bands-gap",
+      "narration": "Borrowing rules differ by country. Here is what they measure.",
       "onscreenLines": [
-        "The bank's maximum loan",
-        "If its rate goes 3.5% → 5.5%",
+        "Borrowing rules differ",
+        "Here is what they measure",
         ""
       ],
       "anchor": {
-        "type": "bars",
+        "type": "bands",
         "stage": "hook"
       },
       "emphasis": [
-        "different"
+        "four"
       ]
     }
   ],
@@ -37,129 +37,148 @@
   "beats": [
     {
       "id": "b1",
-      "kind": "example",
-      "narration": "Say the bank offers its maximum. That is its limit, not your budget.",
-      "onscreenText": "The bank's maximum",
-      "subtext": "Its limit, not your budget",
-      "emphasis": [
-        "limit"
-      ],
+      "kind": "list",
+      "narration": "The payment, and all debts together, each as a share of pay.",
+      "onscreenText": "The payment, all debts",
+      "subtext": "Each as a share of pay",
+      "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "blank"
+        "type": "bands",
+        "stage": "all"
       }
     },
     {
       "id": "b2",
-      "kind": "stat",
-      "narration": "At three and a half percent, the payment takes a third of pay before tax.",
-      "onscreenText": "At 3.5%: 33% of pay",
-      "subtext": "The payment, before tax",
-      "emphasis": [
-        "third"
-      ],
+      "kind": "list",
+      "narration": "The part of the price paid upfront, called the deposit. And the loan's length.",
+      "onscreenText": "Paid upfront, loan length",
+      "subtext": "The deposit, how long it runs",
+      "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "first"
+        "type": "bands",
+        "stage": "emphasis"
       }
     },
     {
       "id": "b3",
-      "kind": "warning",
-      "narration": "At five and a half percent, the same loan takes forty two percent.",
-      "onscreenText": "At 5.5%: 42% of pay",
-      "subtext": "Same loan, same pay",
+      "kind": "stat",
+      "narration": "Which pay, though? A third of Marcus's pay before tax.",
+      "onscreenText": "A third of pay before tax",
+      "subtext": "Marcus's payment",
       "emphasis": [
-        "forty"
+        "third"
       ],
-      "anchor": {
-        "type": "bars",
-        "stage": "second"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "definition",
-      "narration": "That is a stress test. Many people try a higher rate and a lower income, then decide how much of the maximum to use.",
-      "onscreenText": "The stress test",
-      "subtext": "Before you sign",
-      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "THE STRESS TEST",
+        "title": "Which pay?",
         "rows": [
           {
-            "label": "Rate",
-            "value": "Higher",
-            "valueSize": "small",
-            "tone": "amber"
-          },
-          {
-            "label": "Income",
-            "value": "Lower",
-            "valueSize": "small",
-            "tone": "amber"
-          },
-          {
-            "label": "Room left for",
-            "value": "Saving",
+            "label": "Pay before tax",
+            "value": "A third",
             "valueSize": "small",
             "tone": "teal"
           }
         ],
-        "footnote": "Many people decide how much of the maximum to use after this. Illustrative."
+        "footnote": "Illustrative. Rules differ in which pay they use."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "And almost half of what reaches his account, called take home pay.",
+      "onscreenText": "Almost half of pay after tax",
+      "subtext": "The same payment",
+      "emphasis": [
+        "half"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Which pay?",
+        "rows": [
+          {
+            "label": "Pay before tax",
+            "value": "A third",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Take home pay",
+            "value": "Almost half",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Rules differ in which pay they use."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone about to take a mortgage.",
-    "onscreenText": "Send this to someone buying a home",
-    "subtext": "Before they sign",
-    "handle": "@nidhi.today"
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone borrowing. Part two: a setback.",
+    "onscreenText": "Part 2: would it survive a setback?",
+    "subtext": "Send this to someone about to borrow"
   },
   "caption": {
-    "instagram": "How much can you borrow? The bank's limit and what your pay can carry are different numbers.\n\nSay the bank offers €330,000. At 3.5% the payment takes a third of pay before tax; at 5.5%, the same loan takes 42%. That is a stress test: many people try a higher rate and a lower income, then decide how much of the maximum to use.\n\n→ Know someone about to take a mortgage? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
-    "tiktok": "How much can you borrow? The bank's maximum is not your budget: test the loan at a higher rate first. Illustrative, not financial advice."
+    "instagram": "Borrowing rules differ by country. Here is what they measure.\n\nThe monthly loan payment, and all debt payments together, each as a share of pay. The part of the price paid upfront, called the deposit. And the loan's length, where longer means a smaller payment and more interest overall.\n\nThen, which pay? Marcus's payment is a third of his pay before tax, and almost half of what reaches his account, called take home pay. Different limits and different definitions of pay give different borrowing amounts.\n\nPart 2: would the loan survive a setback?\n\n→ Know someone about to borrow for a home? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €54,000 a year before tax, a 30 year loan at 3.5%. Limits and definitions vary by country and lender. Not financial advice.",
+    "tiktok": "Borrowing rules differ by country. Here is what they measure: the payment, all debts, the deposit and the loan's length. And which pay they use. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
     "mortgage",
-    "firsthome",
+    "borrowingmoney",
     "homebuying"
   ],
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "setup": {
-      "label": "The bank's offer",
-      "display": "Its maximum",
-      "note": "Payment shown as a share of pay before tax",
-      "tone": "ink"
-    },
-    "unit": "%",
-    "basis": "Monthly payment as a share of pay before tax, illustrative",
-    "bars": [
+  "reelPromise": "Why one salary gets very different answers from borrowing rules, and what lenders cap where you live",
+  "bandStory": {
+    "layout": "equal",
+    "hideCostInHook": true,
+    "emphasis": "deposit",
+    "bands": [
       {
-        "id": "today",
-        "label": "At 3.5%",
-        "sublabel": "the payment",
-        "value": 33,
-        "display": "33%",
+        "id": "payment",
+        "label": "The payment",
+        "cost": "Share of pay",
+        "items": [
+          "Each month's loan payment",
+          "As a share of income"
+        ],
         "tone": "teal"
       },
       {
-        "id": "up",
-        "label": "At 5.5%",
-        "sublabel": "same loan, same pay",
-        "value": 42,
-        "display": "42%",
+        "id": "debts",
+        "label": "All debts",
+        "cost": "Share of pay",
+        "items": [
+          "Every loan and card",
+          "The new payment included"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "deposit",
+        "label": "Paid upfront",
+        "cost": "Share of price",
+        "items": [
+          "The part of the price",
+          "paid from your own money"
+        ],
         "tone": "amber"
+      },
+      {
+        "id": "term",
+        "label": "Loan length",
+        "cost": "Years",
+        "items": [
+          "Longer: a smaller payment",
+          "and more interest overall"
+        ],
+        "tone": "ink"
       }
     ],
-    "disclosure": "Illustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%."
-  },
-  "reelPromise": "Why one salary gets very different mortgage answers, and what lenders cap where you live"
+    "disclosure": "Illustrative. Limits and definitions differ by country and lender."
+  }
 }

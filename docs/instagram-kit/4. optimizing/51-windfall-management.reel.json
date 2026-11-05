@@ -8,33 +8,28 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm",
-  "topic": "A regular bonus gets a short wait too",
-  "topicChip": "BONUS WEEK",
+  "topic": "An inheritance arrives as one sum: how many people divide it",
+  "topicChip": "ONE SUM · PART 1/3",
   "assumptions": {
     "currency": "EUR",
-    "notes": "€5,000 bonus parked 30 days at an illustrative 4%: 5,000 x 0.04 x 30/365 = €16.44, about €16, before tax. The 30 day period for regular windfalls is from the blog. Picture: a grid of 30 day squares, then bars to scale (€5,000 parked, about €16 earned)."
+    "notes": "Lesson: set the money apart in its own labelled account while taxes and urgent obligations are checked; then the usual priorities at the scale of the sum: expensive debt, emergency savings, tax advantaged saving capped by this year's limit, the rest invested, spread wide (concentration). Considerations, not a sequence (council Nov 5). No numbers."
   },
   "hookVariants": [
     {
-      "id": "bonus-week",
-      "layout": "bar-gap",
-      "narration": "Your bonus lands this week. Where does it usually go by Friday?",
+      "id": "divide",
+      "layout": "bands-gap",
+      "narration": "An inheritance arrives as one sum. How do people divide it?",
       "onscreenLines": [
-        "Bonus this week? Set it aside",
-        "30 days earn about €16",
+        "One sum arrives",
+        "How do people divide it?",
         ""
       ],
       "anchor": {
-        "type": "bars",
-        "stage": "days",
-        "days": {
-          "total": 30,
-          "unpaid": 0,
-          "paidLabel": "Set aside"
-        }
+        "type": "bands",
+        "stage": "hook"
       },
       "emphasis": [
-        "Friday"
+        "divide"
       ]
     }
   ],
@@ -43,109 +38,144 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "A common practice for a regular bonus: thirty days in a separate, named account.",
-      "onscreenText": "Set aside: 30 days",
-      "subtext": "Each square is a day",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "days",
-        "days": {
-          "total": 30,
-          "unpaid": 0,
-          "paidLabel": "Set aside"
-        }
-      }
-    },
-    {
-      "id": "b2",
-      "kind": "stat",
-      "narration": "Five thousand at four percent earns about sixteen euros. The point is not the interest. It is the thirty days.",
-      "onscreenText": "About €16",
-      "subtext": "The point is the 30 days",
-      "emphasis": [
-        "days"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "second"
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "definition",
-      "narration": "Meanwhile, many people write down where each euro goes, then move it on day thirty.",
-      "onscreenText": "The 30 day bonus check",
-      "subtext": "",
+      "narration": "Many set it apart first, while taxes and urgent bills are checked.",
+      "onscreenText": "Set apart first",
+      "subtext": "Its own account",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The 30 day bonus check",
+        "title": "Set apart first",
         "rows": [
           {
-            "label": "Days 1 to 30",
-            "value": "Set aside",
+            "label": "Its own account",
+            "value": "Named",
+            "valueSize": "small",
             "tone": "teal"
           },
           {
             "label": "Meanwhile",
-            "value": "A plan",
+            "value": "Taxes, urgent bills",
+            "valueSize": "small",
             "tone": "ink"
-          },
-          {
-            "label": "Day 30",
-            "value": "As planned",
-            "tone": "amber"
           }
         ],
-        "footnote": "Illustrative. A common practice, not a rule."
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "Then expensive debt, which drains it with interest.",
+      "onscreenText": "Expensive debt",
+      "subtext": "Stops the interest",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "debt"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Cash for surprises: emergency savings.",
+      "onscreenText": "Cash for surprises",
+      "subtext": "Emergency savings",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "cushion"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Saving where tax is lower, up to a yearly limit.",
+      "onscreenText": "Saving with lower tax",
+      "subtext": "Up to a yearly limit",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "tax"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "And the rest, spread across many investments.",
+      "onscreenText": "The rest, spread wide",
+      "subtext": "Many investments",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "spread"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone with a bonus coming? Send them this.",
-    "onscreenText": "Send this to them",
-    "subtext": "Before payday",
-    "handle": "@nidhi.today"
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone with money landing. Part two: at once, or spread out?",
+    "onscreenText": "Part 2: at once or spread out?",
+    "subtext": "Send this to someone with money landing"
   },
   "caption": {
-    "instagram": "Your bonus lands this week. Where does it usually go by Friday?\n\nA common practice for a regular bonus: 30 days in a separate, named account, while you write down where each euro goes. €5,000 at 4% earns about €16. The point is the 30 days.\n\n→ Know someone getting a year end bonus who usually spends it the same week? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax. Rates and deposit protection vary by country. Not financial advice.",
-    "tiktok": "Bonus this week? A 30 day pause is a common practice. Illustrative."
+    "instagram": "An inheritance arrives as one sum. How do people divide it?\n\nMany people set it apart first, in its own account, while taxes and urgent bills are checked. Then they look at expensive debt, since paying it off stops the interest draining the pot; cash for surprise costs, called emergency savings; saving where tax is lower, usually up to a yearly limit; and the rest, spread across many investments rather than riding on one.\n\nOne sum, several jobs. Pause, then plan.\n\nPart 2: invest it all at once, or spread it out?\n\n→ Know someone with an inheritance or a bonus landing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which of these fit, and in what order, differs by household and country. Not financial advice.",
+    "tiktok": "An inheritance arrives as one sum. Many people set it apart first, then look at expensive debt, emergency savings, saving where tax is lower, and spreading the rest. Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "yearendbonus",
-    "bonusplan",
-    "savingshabits"
+    "inheritance",
+    "windfall",
+    "moneyplan"
   ],
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "unit": "EUR",
-    "basis": "A €5,000 bonus set aside 30 days at an illustrative 4%, before tax",
-    "bars": [
+  "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
+  "bandStory": {
+    "layout": "equal",
+    "emphasis": "debt",
+    "bands": [
       {
-        "id": "parked",
-        "label": "Set aside",
-        "sublabel": "the bonus",
-        "value": 5000,
-        "display": "€5,000",
+        "id": "debt",
+        "label": "Expensive debt",
+        "cost": "Stops the interest",
+        "items": [
+          "Paying it off",
+          "stops the pot draining"
+        ],
+        "tone": "amber"
+      },
+      {
+        "id": "cushion",
+        "label": "Cash for surprises",
+        "cost": "Emergency savings",
+        "items": [
+          "For costs",
+          "nobody planned"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "tax",
+        "label": "Saving with lower tax",
+        "cost": "Yearly limit",
+        "items": [
+          "Where they live",
+          "often capped each year"
+        ],
         "tone": "ink"
       },
       {
-        "id": "earned",
-        "label": "Earned in 30 days",
-        "sublabel": "at 4%, before tax",
-        "value": 16,
-        "display": "About €16",
+        "id": "spread",
+        "label": "The rest, spread wide",
+        "cost": "Many investments",
+        "items": [
+          "Not riding",
+          "on one thing"
+        ],
         "tone": "teal"
       }
     ],
-    "disclosure": "Illustrative: 4% a year, before tax.",
-    "minBarWidth": 6
-  },
-  "reelPromise": "How long many people set money aside, whether to invest it all at once or in steps, and how one off money turns into monthly costs"
+    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country."
+  }
 }

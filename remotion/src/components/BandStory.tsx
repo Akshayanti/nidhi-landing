@@ -10,6 +10,7 @@ import {
   type ReelPlan,
   type ToolCardData,
 } from "../data";
+import { ActiveCard, lastCardBeat } from "./cardBeats";
 import { ToolCard } from "./ToolCard";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -31,7 +32,7 @@ function findBeat(input: ReelInput, predicate: (beat: Beat) => boolean) {
 }
 
 function cardBeat(input: ReelInput) {
-  return findBeat(input, (beat) => beat.anchor?.type === "card");
+  return lastCardBeat(input);
 }
 
 function spanFor(input: ReelInput, beat: Beat | undefined, fallbackId: string): BeatSpan {
@@ -202,15 +203,12 @@ function Visual({ input, now }: { input: ReelInput; now: number }) {
   if (now < input.hookSpan.endMs) return <Hook plan={input.plan} />;
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "bands" ? active.beat.anchor.stage : undefined;
-  const toolBeat = cardBeat(input);
-  const toolSpan = spanFor(input, toolBeat, "b6");
-  const tool = toolBeat?.anchor?.type === "card" ? toolBeat.anchor : undefined;
-  if (now >= toolSpan.startMs && now < toolSpan.endMs && tool) {
-    const enter = progress(now, toolSpan.startMs, toolSpan.startMs + 450);
+  if (active?.beat.anchor?.type === "card") {
+    const enter = progress(now, active.span.startMs, active.span.startMs + 450);
     return (
       <div style={{ position: "absolute", inset: 0 }}>
         <StoryHeading input={input} now={now} />
-        <div style={{ position: "absolute", left: 97, top: 420, opacity: enter, transform: `translateY(${(1 - enter) * 18}px)` }} data-reel-reveal><ToolCard card={tool as ToolCardData} /></div>
+        <ActiveCard input={input} beat={active.beat} enter={enter} />
       </div>
     );
   }

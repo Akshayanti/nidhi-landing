@@ -1,0 +1,205 @@
+{
+  "slug": "windfall-management",
+  "postTitle": "Windfalls: Bonuses, Inheritances, and Sale Proceeds",
+  "postLevel": "optimizing",
+  "episode": 9,
+  "seriesTotal": 0,
+  "blogPath": "blog/windfall-management",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "calm",
+  "topic": "When an inheritance is shares or a home: the cash test, concentration, and a home's three options",
+  "topicChip": "ONE SUM · PART 3/3",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson: concentration in the familiar; the cash test (someone handed the same amount in cash would rarely buy it, from the vesting shares section, framed as a question, not an outcome: council Nov 5 dropped 'many find the answer is no'); inherited property: sell, rent out or live in, a decision in month six often better than month two; estate deadlines handled separately from allocation; tax on a sale varies by country. No numbers."
+  },
+  "hookVariants": [
+    {
+      "id": "not-cash",
+      "layout": "bands-gap",
+      "narration": "Part three: what if the inheritance is shares or a home?",
+      "onscreenLines": [
+        "Part 3: inherited",
+        "shares or a home?",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "cash"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "One question: if its value came as cash, would you buy this same thing?",
+      "onscreenText": "The cash test",
+      "subtext": "Would you buy it?",
+      "emphasis": [
+        "cash"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The cash test",
+        "rows": [
+          {
+            "label": "What arrived",
+            "value": "Shares or a home",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "If its value came as cash",
+            "value": "Would you buy it?",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "A question many people use, not an answer."
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "Keeping it can leave much riding on one thing. That is called concentration.",
+      "onscreenText": "Much on one thing",
+      "subtext": "Riding on one asset",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The cash test",
+        "rows": [
+          {
+            "label": "What arrived",
+            "value": "Shares or a home",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "If its value came as cash",
+            "value": "Would you buy it?",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Keeping it",
+            "value": "Much on one thing?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "A question many people use, not an answer."
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "For a home: sell, rent it out, or live in it, each with its own costs and income.",
+      "onscreenText": "A home: three options",
+      "subtext": "Costs and income of each",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "all"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "story",
+      "narration": "Deadlines to settle what was left, and tax, come first. The investment decision can then take time.",
+      "onscreenText": "Deadlines first",
+      "subtext": "Then the decision can take time",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Two timelines",
+        "rows": [
+          {
+            "label": "Settling what was left",
+            "value": "Fixed dates",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Tax on a sale",
+            "value": "Check locally",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "The investment decision",
+            "value": "Can take time",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone who has inherited.",
+    "onscreenText": "Send this to them",
+    "subtext": "Someone who has inherited"
+  },
+  "caption": {
+    "instagram": "What if the inheritance is shares or a home, not cash?\n\nOne question people use: if its value came as cash, would you buy this same thing? Keeping it can leave much of your money riding on one thing. That is called concentration.\n\nFor a home, people compare selling, renting it out and living in it, with the costs and income of each. Deadlines to settle what was left, and tax, come first; the investment decision can then take time.\n\n→ Know someone who has inherited shares or a home? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Estate rules, deadlines and tax vary by country. Not financial advice.",
+    "tiktok": "Inherited shares or a home? The cash test: if its value came as cash, would you buy this same thing? Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "inheritedproperty",
+    "estateplanning",
+    "diversification"
+  ],
+  "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
+  "bandStory": {
+    "layout": "equal",
+    "emphasis": "sell",
+    "bands": [
+      {
+        "id": "sell",
+        "label": "Sell it",
+        "cost": "Cash to spread",
+        "items": [
+          "Tax on a sale",
+          "differs by country"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "rent",
+        "label": "Rent it out",
+        "cost": "Income and costs",
+        "items": [
+          "Rent in",
+          "upkeep and tax out"
+        ],
+        "tone": "ink"
+      },
+      {
+        "id": "live",
+        "label": "Live in it",
+        "cost": "Rent saved",
+        "items": [
+          "No rent to pay",
+          "the upkeep stays"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country."
+  }
+}

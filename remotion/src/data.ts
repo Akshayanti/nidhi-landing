@@ -392,7 +392,7 @@ export type BeatAnchor =
       stage: BarStage;
       segment?: number;
       /** Stage "days": a grid of working days, `unpaid` of them greyed out during the beat. */
-      days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string };
+      days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number };
     }
   | { type: "months"; stage: MonthStage; months?: string[] }
   | { type: "columns"; stage: ColumnStage }

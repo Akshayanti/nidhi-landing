@@ -1,226 +1,153 @@
 ---
-title: "Windfalls: Bonuses, Inheritances, and Sale Proceeds"
+title: "Windfalls: What to Do With an Inheritance, Bonus or Sale Proceeds"
 blog_url: "https://nidhi.today/blog/windfall-management/"
 chip: "Money, Compounding"
-hashtags_day1: "#windfall #inheritance #bonusseason #expatmoney #nidhi"
-keywords_day1: "windfall money, inherited money, bonus, sale proceeds, lump sum, what to do with a windfall, park the money, high yield savings, money market fund, cooling off period, financial decisions, grief and money, personal finance, money abroad, global expats, Erbschaft, Bonuszahlung, héritage, prime annuelle, herencia, paga extra"
-hashtags_day2: "#lifestyleinflation #spendinghabits #moneymindset #expatlife #nidhi"
-keywords_day2: "lifestyle upgrade, lifestyle creep, spending ratchet, windfall spending, recurring costs, car upgrade, bigger home, monthly expenses, one off money, subscriptions, budget check, personal finance, global expats, Lebensstilinflation, Fixkosten, inflation du mode de vie, dépenses fixes, inflación del estilo de vida, gastos fijos"
 ---
 
-> **Reels only (Nov 5, 2026).** Two days, per the Oct 25 council: day 1 the bonus reel (redrawn Nov 5 as a 30 day grid and bars to scale, REELS-PIPELINE §1f), day 2 the €400 a month upgrade reel. The inheritance reel was deleted. The carousels below are kept as files and not posted. Remove this note once scheduled.
+> **Reels only, three days (owner, Nov 5, 2026).** Day 1 how many people divide one sum, day 2 all at once or spread out, day 3 when the inheritance is shares or a home. The €400 a month upgrade reel and the bonus reel were replaced. No carousel. Remove this note once scheduled.
 
 ## Brief
 
 person: Petra, 38
-situation: Petra has received €50,000 from the sale of her late mother's flat. She is tempted by a bigger car on a €400 a month lease.
-withheld: The plan step and the seven step order at the scale of a windfall, lump sum against spreading it out (Vanguard's two thirds finding and its limits), concentration in the familiar, inheritance and grief, tax aware timing, and country notes.
+situation: Petra has received €50,000 from the sale of her late mother's flat.
+day3: A friend who has just inherited shares or a home and feels pushed to decide: the cash test, with no numbers.
+withheld: How long many people wait by kind of windfall, the seven step order at the scale of a windfall, how one off money turns into monthly costs, inheritance and grief, vesting employer shares, a business sale, tax aware timing, and country notes.
 
 ## Day 1 (angle)
 
-angle: Many people park a windfall before deciding anything; for a regular bonus, about 30 days
-breadth: narrow | Needs a bonus or another windfall: a viewer expecting money beyond their pay
-number: A €5,000 bonus parked 30 days at an illustrative 4% earns about €16 before tax; the point is the 30 days
-takeaway: Parking buys decision time at a small cost; the plan is written before the money moves.
-tool: The 30 day bonus check. Set it aside, name the account, write down where each euro goes, then move it. The story card widens it to how long to set it aside: a bonus about 30 days, sale proceeds 60 to 90, an inheritance 90 or more.
-send_to: A friend getting a year end bonus who usually spends it the same week.
+angle: An inheritance arrives as one sum; many people set it apart, then look at expensive debt, emergency savings, saving where tax is lower, and spreading the rest
+breadth: narrow | Needs a windfall: a viewer with an inheritance, bonus or sale money landing
+number: none; one sum, several jobs
+takeaway: A lump sum is easier to place once it is set apart and split by job, not decided in one move.
+tool: Set apart first. Its own named account; meanwhile, taxes and urgent bills are checked.
+send_to: A friend who has just received an inheritance or a large bonus.
 send_why: checklist
 
 ## Day 1 (reel)
 
 plan: 51-windfall-management.reel.json
-render: node scripts/render-reels.mjs windfall-management --level optimizing --from-plan
+render: cp "docs/instagram-kit/4. optimizing/51-windfall-management.reel.json" output/plans/optimizing/51-windfall-management.json && node scripts/render-reels.mjs windfall-management --level optimizing --from-plan
 video: output/videos/optimizing/51-windfall-management.mp4
 cover: output/thumbnails/optimizing/51-windfall-management.png
 caption: output/captions/optimizing/51-windfall-management.ig.txt
-hashtags: #nidhi #nidhicompounding #yearendbonus #bonusplan #savingshabits
+hashtags: #nidhi #nidhicompounding #inheritance #windfall #moneyplan
 
-## Day 1 (carousel)
+## Day 1 (story)
 
-### Caption
+### Slide 1 (tool)
 
-Know someone who has just inherited money and feels they must decide now?
+alt: Tool card, one sum, several jobs: set apart first in its own account; expensive debt; cash for surprises, called emergency savings; saving where tax is lower, up to a yearly limit; the rest spread across many investments.
 
-Many people park a windfall first: a separate, labelled savings account for 30 days or more, depending on the windfall. €50,000 parked for 90 days at 4% earns about €500 while they decide.
-
-→ Send this to them this week
-
-The full post covers lump sum against spreading it out.
-
-Illustrative, before tax. Rates, deposit protection and inheritance rules vary by country.
-
-Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.
-
-### Slide 1 (hook)
-
-alt: Four steps in a row: park, 30 to 90 days; plan; deploy; monitor. Park is highlighted. Headline: Your €50,000 just landed. What do many people do first? Illustrative.
-
-tier: Park | 30 to 90 days | teal
-tier: Plan | on paper | ink
-tier: Deploy | in steps | ink
-tier: Monitor | 6 to 12 months | ink
-premise: Illustrative.
-
-Your €50,000 just landed. What do many people do **first**?
-
-### Slide 2 (bars)
-
-alt: Bars: €50,000 parked for 90 days at an illustrative 4% earns about €500 before tax. Parking buys decision time at a small cost.
-
-title: What parking costs
-strip: Illustrative · 4%, before tax
-bar: Parked | 50000 | €50,000 | ink
-bar: Interest, 90 days | 500 | about €500 | teal
-
-Parking buys **decision time**; the decision comes after the emotion.
-
-### Slide 3 (tool)
-
-alt: Tool card, how long to set it aside, when money lands: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
-
-band: How long to set it aside
-lead: When money lands
-row: Bonus | 30 days | teal | regular, expected
-row: Sale proceeds | 60 to 90 | ink | larger, irregular
-row: Inheritance | 90 or more | warn | longer if grief is acute
-note: A common practice, not a rule.
-
-### Slide 4 (scenarios)
-
-alt: Where it breaks: deposit protection has limits for large sums; markets can rise while the money waits; parking is not a plan, it only buys time to write one.
-
-title: Where it breaks
-case: Large sums | check deposit limits
-case: Markets | can rise meanwhile
-case: Parking | is not a plan
-rule: It buys time, nothing more.
-
-### Slide 5 (closer)
-
-alt: Closing slide: The decision comes after the emotion. Know someone who just inherited money? Send them this. On the blog: lump sum against spreading it out.
-
-kicker: The decision comes after the emotion.
-send: Know someone who just inherited money? Send them this.
-read: Lump sum against spreading it out
+band: One sum, several jobs
+lead: When a large sum lands
+row: First | Set apart | teal | its own account, while taxes and bills are checked
+row: Expensive debt | Paid off? | warn | it drains the sum with interest
+row: Surprises | Cash ready? | teal | emergency savings
+row: Lower tax | Room left? | ink | saving with a yearly limit
+row: The rest | Spread wide | ink | many investments, not one
+note: Illustrative. Which fit, and in what order, differs by household and country.
 
 ## Day 2 (angle)
 
-angle: A one off windfall can turn into a permanent monthly cost
-breadth: narrow | Needs a windfall and an upgrade decision: a viewer with a bonus or inheritance weighing a bigger car or flat
-number: A €400 a month upgrade costs €4,800 a year; by about 10 years and 5 months it has used up a €50,000 windfall, before growth, tax or inflation
-takeaway: Expenses rise easily and fall reluctantly, so a one time inflow can become an ongoing outflow.
-tool: The ratchet check. Compare six months of spending before and after the windfall.
-send_to: A friend about to upgrade their car or flat with a bonus or inheritance.
+angle: Invest it all at once, or spread it out? In a study of global shares, all at once came out ahead about two thirds of the time a year later
+breadth: narrow | Needs a sum to invest: a viewer with a windfall or savings to put in
+number: About two thirds of the time, all at once beat spreading over three months, checked a year later
+takeaway: Investing at once has usually come out ahead because investments usually beat cash; spreading puts less on a single day.
+tool: Why. Invested money usually beat cash, so waiting cost some growth; spreading puts less on one day.
+send_to: A friend unsure whether to invest a sum all at once.
 send_why: number
 
 ## Day 2 (reel)
 
 plan: 51-windfall-management.day2.reel.json
-render: node scripts/render-reels.mjs windfall-management --level optimizing --from-plan --angle day2
+render: cp "docs/instagram-kit/4. optimizing/51-windfall-management.day2.reel.json" output/plans/optimizing/51-windfall-management-day2.json && node scripts/render-reels.mjs windfall-management --level optimizing --from-plan --angle day2
 video: output/videos/optimizing/51-windfall-management-day2.mp4
 cover: output/thumbnails/optimizing/51-windfall-management-day2.png
 caption: output/captions/optimizing/51-windfall-management-day2.ig.txt
-hashtags: #nidhi #nidhicompounding #lifestylecreep #carlease #moneyhabits
+hashtags: #nidhi #nidhicompounding #lumpsuminvesting #investingbasics #longterminvesting
 
-## Day 2 (carousel)
+## Day 2 (story)
 
-### Caption
+### Slide 1 (tool)
 
-Know someone about to upgrade their car or flat with a bonus or inheritance?
+alt: Tool card, all at once or spread out: invested money has usually beaten cash, so waiting usually cost some growth; spreading puts less on a single day. Past data, mostly developed markets.
 
-A €400 a month upgrade costs €4,800 a year. By about 10 years and 5 months it has used up a €50,000 windfall, and the monthly cost keeps going.
+band: All at once or spread out?
+lead: What a study of global shares found
+row: Invested | Beat cash | teal | usually, over a year
+row: Waiting | Growth? | warn | money in cash usually missed some
+row: Spreading | Timing | ink | less rides on a single date
+note: Past data, mostly developed markets: a tendency, not a promise.
 
-→ Send this to them before they sign
+## Day 3 (angle)
 
-The full post covers concentration in the familiar.
+angle: What if the inheritance is shares or a home? The cash test, concentration, and a home's three options
+breadth: narrow | Needs an inheritance of assets: a viewer who has inherited shares or property
+number: none
+takeaway: Receiving an asset does not make it a choice; the cash test asks whether you would buy it with its value in cash, and estate deadlines run separately from the investment decision.
+tool: The cash test. What arrived; if its value came as cash, would you buy it; keeping it, how much rides on one thing.
+send_to: A friend who has inherited shares or a home.
+send_why: checklist
 
-Illustrative. Before growth, tax or inflation.
+## Day 3 (reel)
 
-Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.
+plan: 51-windfall-management.day3.reel.json
+render: cp "docs/instagram-kit/4. optimizing/51-windfall-management.day3.reel.json" output/plans/optimizing/51-windfall-management-day3.json && node scripts/render-reels.mjs windfall-management --level optimizing --from-plan --angle day3
+video: output/videos/optimizing/51-windfall-management-day3.mp4
+cover: output/thumbnails/optimizing/51-windfall-management-day3.png
+caption: output/captions/optimizing/51-windfall-management-day3.ig.txt
+hashtags: #nidhi #nidhicompounding #inheritedproperty #estateplanning #diversification
 
-### Slide 1 (hook)
+## Day 3 (story)
 
-alt: A €50,000 windfall line stays flat while the total paid for a €400 a month upgrade climbs by €4,800 a year and passes it in about 10 years 5 months. Headline: How long can your windfall pay for a €400 a month upgrade? Illustrative.
+### Slide 1 (tool)
 
-strip: Illustrative · before growth, tax or inflation
-offer: Your windfall | €50,000 | muted
-offer: The upgrade | €400 a month | teal
-answer: About 10 years 5 months | until the upgrade has used it all
+alt: Tool card, the cash test, when an inheritance is shares or a home: what arrived; if its value came as cash, would you buy it; keeping it, how much rides on one thing, called concentration.
 
-How long can your windfall pay for a **€400 a month** upgrade?
-
-### Slide 2 (scenarios)
-
-alt: Why it sticks: the cost is monthly, the money was once; expenses rise easily and fall reluctantly; the new level starts to feel essential.
-
-title: Why it sticks
-case: Monthly cost | one off money
-case: Easy up | hard down
-case: New normal | feels essential
-rule: Once becomes ongoing.
-
-### Slide 3 (tool)
-
-alt: Tool card, the before and after check, after money lands: spending in the six months before; spending in the six months after; for each rise, a planned change or a drift.
-
-band: The before and after check
-lead: After money lands
-row: Before | 6 months | ink | average monthly spending
-row: After | 6 months | warn | the same months, later
-row: Each rise | Planned? | teal | or did it drift
-note: Illustrative. A check, not a budget.
-
-### Slide 4 (closer)
-
-alt: Closing slide: A one off sum, a monthly cost. Know someone upgrading with a windfall? Send them this. Also in the full post: concentration in the familiar, and lump sum against spreading it out.
-
-kicker: A one off sum, a monthly cost.
-send: Know someone upgrading with a windfall? Send them this.
-more: Concentration in the familiar
-more: Lump sum against spreading it out
+band: The cash test
+lead: When an inheritance is not cash
+row: What came | An asset | ink | shares or a home, not cash
+row: As cash | Buy it? | teal | if its value came as cash
+row: Keeping | One thing? | warn | called concentration
+note: A question many people use, not an answer.
 
 ## Stories
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Bonus landing soon?
-d1_f1_caption: What many people do with a bonus first
-
-d1_f2_kind: poll
-d1_f2_alt: Plain story background with the series label, for the poll sticker asking what people did with their last windfall.
-d1_f2_time: 90 minutes later
-d1_f2_poll_q: Your last bonus or windfall?
-d1_f2_poll_opts: Spent it fast | Saved or invested | Still deciding
-d1_f2_caption: What people did with their last windfall
+d1_f1_overlay: One sum. How to divide it?
+d1_f1_caption: How many people divide a large sum
 
 d1_f3_kind: tool
-d1_f3_alt: Story version of how long to set it aside: a bonus, about 30 days; sale proceeds, 60 to 90 days; an inheritance, 90 days or more.
-d1_f3_time: evening, with the day 1 carousel
-d1_f3_caption: How long to set it aside
+d1_f3_alt: Story version of one sum, several jobs: set apart first, expensive debt, emergency savings, saving where tax is lower, up to a yearly limit, and the rest spread wide.
+d1_f3_time: evening
+d1_f3_caption: One sum, several jobs
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: €50,000 vs €400 a month?
-d2_f1_caption: How long €50,000 lasts against a monthly cost
-
-d2_f2_kind: result
-d2_f2_alt: Yesterday's poll question, what people did with their last bonus or windfall, with an empty box for the result.
-d2_f2_time: 90 minutes later
-d2_f2_label: Yesterday's poll
-d2_f2_title: Your last bonus or windfall?
-d2_f2_operator: Type the winning answer and its share as overlay text in the empty box.
-d2_f2_caption: What people did with their last windfall
+d2_f1_overlay: All at once, or spread out?
+d2_f1_caption: Investing a sum all at once or in parts
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the before and after check: compare six months of spending before and after the money lands, and ask whether each rise was planned.
-d2_f3_time: evening, with the day 2 carousel
-d2_f3_caption: The before and after check
+d2_f3_alt: Story version of all at once or spread out: invested money usually beat cash, so waiting cost some growth, and spreading puts less on one day.
+d2_f3_time: evening
+d2_f3_caption: All at once or spread out?
 
-d2_f4_kind: extra
-d2_f4_alt: Beyond this post: historically, investing a lump sum at once beat spreading it over 12 months about two thirds of the time in a few developed markets; spreading it can still limit regret.
-d2_f4_time: late evening
-d2_f4_label: Beyond this post
-d2_f4_title: All at once, or in steps?
-d2_f4_body: In a few markets' history, all at once won about two thirds of the time. Steps can limit regret.
-d2_f4_sticker: link sticker to the blog post
-d2_f4_caption: Lump sum against spreading it out
+d3_f1_share: the day 3 reel
+d3_f1_time: at posting
+d3_f1_overlay: Inherited shares or a home?
+d3_f1_caption: When an inheritance is not cash
+
+d3_f3_kind: tool
+d3_f3_alt: Story version of the cash test: what arrived, whether you would buy it with its value in cash, and how much rides on one thing.
+d3_f3_time: evening
+d3_f3_caption: The cash test
+
+d3_f4_kind: extra
+d3_f4_alt: Beyond this post: grief and sales pressure. Firms selling financial products often approach people right after a loss, and many advisers find decisions made months later go better than those made in the first weeks.
+d3_f4_time: late evening
+d3_f4_label: Beyond this post
+d3_f4_title: Grief and sales pressure.
+d3_f4_body: Firms selling financial products often approach people right after a loss. Many advisers find decisions made months later go better than those in the first weeks.
+d3_f4_sticker: link sticker to the blog post
+d3_f4_caption: Inheritance and grief
