@@ -8,8 +8,6 @@ hashtags_day2: "#valuesbasedinvesting #diversification #indexinvesting #expatmon
 keywords_day2: "screened investing, sharia screening, screened index, sukuk, purification, prohibited income, interest bearing debt, financial ratios screening, sector tilt, profit sharing deposit, takaful, ethical portfolio, retirement account fund choice, personal finance, global expats, money abroad, islamische Geldanlage, ethisches Investieren, investissement islamique, finance éthique, inversión islámica, investimento etico"
 ---
 
-> **Reels only (Nov 5, 2026).** Reels as rebuilt Oct 25 (34.8 s, 35.1 s); day 1 caption gains "not financial advice". Both covers are labelled boxes, kept on purpose (REELS-PIPELINE §1f allows it when the idea has no quantity to draw): day 1 teaches which contract is on the table (sale, lease, partnership), day 2 the two layer screen; a price or ratio drawn to scale would show one structure's numbers, not the choice. The carousels below are kept as files and not posted. Remove this note once scheduled.
-
 ## Brief
 
 person: A home buyer, anonymous, for whom interest is ruled out

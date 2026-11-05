@@ -4,8 +4,6 @@ blog_url: "https://nidhi.today/blog/windfall-management/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, three days (owner, Nov 5, 2026).** Day 1 how many people divide one sum, day 2 all at once or spread out, day 3 when the inheritance is shares or a home. The €400 a month upgrade reel and the bonus reel were replaced. No carousel. Remove this note once scheduled.
-
 ## Brief
 
 person: Petra, 38

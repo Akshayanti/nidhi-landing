@@ -4,8 +4,6 @@ blog_url: "https://nidhi.today/blog/zero-percent-instalments/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, two days (owner, Nov 5, 2026).** Day 1 who pays for 0% (one example, the checkout check as its story card), day 2 the fine print that ends it. No single country's product is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
-
 ## Brief
 
 person: Jiri, 38

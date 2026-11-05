@@ -4,8 +4,6 @@ blog_url: "https://nidhi.today/blog/how-much-can-you-borrow/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, two days (owner, Nov 5, 2026).** Day 1 what borrowing rules compare and which pay they count (one step per beat; deposit and loan length in the caption), day 2 the stress test with a checklist. No national rule is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
-
 ## Brief
 
 person: Marcus, 34
