@@ -4,7 +4,7 @@ blog_url: "https://nidhi.today/blog/zero-percent-instalments/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, two days (owner, Nov 5, 2026).** Day 1 who pays for 0%, day 2 the fine print that ends it. No single country's product is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
+> **Reels only, two days (owner, Nov 5, 2026).** Day 1 who pays for 0% (one example, the checkout check as its story card), day 2 the fine print that ends it. No single country's product is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
 
 ## Brief
 
@@ -14,7 +14,7 @@ withheld: What €60 costs as a yearly rate (about 10%), the worked deferred int
 
 ## Day 1 (angle)
 
-angle: 0% instalments charge no interest, so who pays? Sometimes the shop, sometimes a higher price, sometimes a lost discount
+angle: Instalments with no interest: who pays? Often the shop, and no interest does not always mean the lowest price
 breadth: narrow | Needs a specific product: a viewer offered instalments at a checkout
 number: €1,200 in instalments against €1,140 paid now
 takeaway: A 0% plan can be free when the price is the same, there are no fees and every payment is on time; otherwise someone pays, often the buyer.
@@ -80,7 +80,7 @@ note: Illustrative. Terms vary by provider and country.
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Who pays for your 0%?
+d1_f1_overlay: No interest. Who pays?
 d1_f1_caption: Who pays when instalments are free
 
 d1_f3_kind: tool

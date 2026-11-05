@@ -4,7 +4,7 @@ blog_url: "https://nidhi.today/blog/how-much-can-you-borrow/"
 chip: "Money, Compounding"
 ---
 
-> **Reels only, two days (owner, Nov 5, 2026).** Day 1 the four measures every borrowing rule uses and which pay it counts, day 2 the stress test with a checklist. No national rule is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
+> **Reels only, two days (owner, Nov 5, 2026).** Day 1 what borrowing rules compare and which pay they count (one step per beat; deposit and loan length in the caption), day 2 the stress test with a checklist. No national rule is the subject of a reel (owner: no single country framing). No carousel. Remove this note once scheduled.
 
 ## Brief
 
@@ -14,10 +14,10 @@ withheld: The named rules of thumb and national caps (28/36, 20-30-40, 20/4/10, 
 
 ## Day 1 (angle)
 
-angle: Borrowing rules differ across countries; four measures help compare them, and which pay they count changes the answer
+angle: Banks often limit the loan payment to a share of pay; which pay they mean changes the answer
 breadth: narrow | Needs a borrowing condition: a viewer about to take a mortgage or a large loan
 number: Marcus's payment is a third of his pay before tax and almost half of his take home pay
-takeaway: Every borrowing rule mixes the same four measures, and a rule's percentage means little until you know which pay it uses.
+takeaway: Borrowing rules compare the payment and all debts with pay, and a rule's percentage means little until you know which pay it uses.
 tool: Which pay? Before tax or after; bills come from take home pay; the gap is bigger where tax and contributions are high.
 send_to: A friend comparing borrowing rules they read online.
 send_why: number
@@ -81,7 +81,7 @@ note: Illustrative. Many people decide how much of the maximum to use after this
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: A third or almost half?
+d1_f1_overlay: Which pay do they mean?
 d1_f1_caption: Four measures behind every borrowing rule
 
 d1_f3_kind: tool

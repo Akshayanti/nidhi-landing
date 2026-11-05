@@ -8,7 +8,7 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "0% instalments charge no interest, so who pays? Sometimes the shop, sometimes a higher price, sometimes a lost discount",
+  "topic": "0% instalments charge no interest, so who pays? Often the shop; and no interest does not always mean the lowest price",
   "topicChip": "0% · PART 1/2",
   "assumptions": {
     "currency": "EUR",
@@ -20,7 +20,7 @@
       "layout": "bands-gap",
       "narration": "Instalments with no interest. Who pays for that?",
       "onscreenLines": [
-        "0% instalments",
+        "No interest?",
         "Who pays for that?",
         ""
       ],
@@ -38,9 +38,9 @@
     {
       "id": "b1",
       "kind": "list",
-      "narration": "The shop may pay a fee, as it sells more. Then it may cost you nothing.",
-      "onscreenText": "The shop pays",
-      "subtext": "It can cost you nothing extra",
+      "narration": "Often the shop pays the company behind the plan a fee, because instalments help it sell more.",
+      "onscreenText": "The shop pays a fee",
+      "subtext": "It sells more",
       "emphasis": [],
       "anchor": {
         "type": "bands",
@@ -50,9 +50,9 @@
     {
       "id": "b2",
       "kind": "list",
-      "narration": "Or the cost is in a higher price.",
-      "onscreenText": "A higher price",
-      "subtext": "Than paying now",
+      "narration": "But no interest does not always mean the lowest price.",
+      "onscreenText": "Not always the lowest price",
+      "subtext": "Compared with paying now",
       "emphasis": [],
       "anchor": {
         "type": "bands",
@@ -62,74 +62,66 @@
     {
       "id": "b3",
       "kind": "example",
-      "narration": "Or paying now is cheaper. One thousand two hundred euros in instalments.",
+      "narration": "Imagine a laptop: one thousand two hundred euros in instalments.",
       "onscreenText": "€1,200 in instalments",
-      "subtext": "A laptop",
+      "subtext": "Imagine a laptop",
       "emphasis": [],
       "anchor": {
-        "type": "bands",
-        "stage": "discount"
+        "type": "card",
+        "stage": "tool",
+        "title": "Same laptop",
+        "rows": [
+          {
+            "label": "In instalments",
+            "value": "€1,200",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Prices vary by shop and country."
       }
     },
     {
       "id": "b4",
       "kind": "comparison",
-      "narration": "Or one thousand one hundred and forty today. More in instalments.",
+      "narration": "Paid now, one thousand one hundred and forty. No interest, and it still costs more.",
       "onscreenText": "€1,140 paid now",
-      "subtext": "The instalments cost more",
+      "subtext": "No interest, still more",
       "emphasis": [
         "more"
       ],
       "anchor": {
-        "type": "bands",
-        "stage": "emphasis"
-      }
-    },
-    {
-      "id": "b5",
-      "kind": "definition",
-      "narration": "Same price, no fees, on time: no extra cost.",
-      "onscreenText": "The checkout check",
-      "subtext": "Before choosing instalments",
-      "emphasis": [],
-      "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The checkout check",
+        "title": "Same laptop",
         "rows": [
           {
-            "label": "Price",
-            "value": "Same as paying now?",
-            "valueSize": "small",
-            "tone": "teal"
-          },
-          {
-            "label": "Fees",
-            "value": "Any at all?",
+            "label": "In instalments",
+            "value": "€1,200",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "Every payment",
-            "value": "On time?",
+            "label": "Paid now",
+            "value": "€1,140",
             "valueSize": "small",
-            "tone": "ink"
+            "tone": "teal"
           }
         ],
-        "footnote": "Illustrative. Terms vary by shop, provider and country."
+        "footnote": "Illustrative. Prices vary by shop and country."
       }
     }
   ],
   "cta": {
     "approved": "share",
     "handle": "@nidhi.today",
-    "narration": "Send this on. Part two: the fine print.",
+    "narration": "The price for paying now shows the difference. Send this on. Part two: the fine print.",
     "onscreenText": "Part 2: the fine print",
     "subtext": "Send this to someone who picks instalments"
   },
   "caption": {
-    "instagram": "Instalments with no interest. Who pays for that?\n\nSometimes the shop pays the provider a fee, because instalments help it sell more; then it can cost you nothing extra. Sometimes the cost is built into a higher price. Sometimes paying now is cheaper: a laptop at €1,200 in instalments or €1,140 paid now, and the instalments cost more, whatever the label says.\n\nSame price, no fees, every payment on time: then it can cost you nothing extra.\n\nPart 2: the fine print that ends 0%.\n\n→ Know someone who picks instalments at every checkout? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Terms vary by shop, provider and country. Not financial advice.",
-    "tiktok": "0% instalments charge no interest. Who pays? Sometimes the shop, sometimes a higher price, sometimes a lost discount. Illustrative, not financial advice."
+    "instagram": "Instalments with no interest. Who pays for that?\n\nOften the shop pays the company behind the plan a fee, because instalments help it sell more. But no interest does not always mean the lowest price. Imagine a laptop at €1,200 in instalments, or €1,140 paid now: no interest, and it still costs more.\n\nThe price for paying now shows the difference. Same price, no fees, every payment on time: then it can cost you nothing extra.\n\nPart 2: the fine print that ends 0%.\n\n→ Know someone who picks instalments at every checkout? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Terms vary by shop, provider and country. Not financial advice.",
+    "tiktok": "Instalments with no interest. Who pays? Often the shop. But no interest is not always the lowest price: €1,200 in instalments, €1,140 paid now. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
@@ -142,35 +134,25 @@
   "bandStory": {
     "layout": "equal",
     "hideCostInHook": true,
-    "emphasis": "discount",
+    "emphasis": "price",
     "bands": [
       {
         "id": "shop",
         "label": "The shop pays",
-        "cost": "Maybe no cost",
+        "cost": "Pays a fee",
         "items": [
-          "A fee to the provider",
+          "To the plan's company",
           "because it sells more"
         ],
         "tone": "teal"
       },
       {
         "id": "price",
-        "label": "A higher price",
-        "cost": "In the price",
+        "label": "Not always cheapest",
+        "cost": "Compare",
         "items": [
-          "Above the price",
-          "for paying now"
-        ],
-        "tone": "amber"
-      },
-      {
-        "id": "discount",
-        "label": "A lost discount",
-        "cost": "Cheaper now",
-        "items": [
-          "Paying now",
-          "was cheaper"
+          "No interest",
+          "can still cost more"
         ],
         "tone": "amber"
       }

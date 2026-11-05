@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "Borrowing rules differ across countries; four measures help compare them, and which pay they use changes the answer",
+  "topic": "Borrowing rules compare the payment and all debts with pay; which pay they count changes the answer",
   "topicChip": "BORROWING · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Lesson: every borrowing rule is built from four measures (payment share, all debts share, deposit, term), plus whether a share is of pay before tax or take home pay. Marcus: €330,000 over 30 years at 3.5% is about €1,482 a month, 33% of €4,500 before tax (a third) and 45% of about €3,300 take home (almost half). No national rule named (owner, Nov 5: no single country framing). Numbers: four, a third, almost half."
+    "notes": "Lesson: every borrowing rule is built from four measures (payment share, all debts share, deposit, term), plus whether a share is of pay before tax or take home pay. Marcus: €330,000 over 30 years at 3.5% is about €1,482 a month, 33% of €4,500 before tax (a third) and 45% of about €3,300 take home (almost half). No national rule named (owner, Nov 5: no single country framing). Deposit and loan length stay in the caption and lesson (owner, Nov 5: one step per beat). Numbers: a third, almost half."
   },
   "hookVariants": [
     {
-      "id": "four-measures",
+      "id": "which-pay",
       "layout": "bands-gap",
-      "narration": "Borrowing rules differ by country. Here is what they measure.",
+      "narration": "Banks often limit the loan payment to a share of your pay. Which pay do they mean?",
       "onscreenLines": [
-        "Borrowing rules differ",
-        "Here is what they measure",
+        "A share of your pay",
+        "But which pay?",
         ""
       ],
       "anchor": {
@@ -29,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "four"
+        "which"
       ]
     }
   ],
@@ -38,31 +38,31 @@
     {
       "id": "b1",
       "kind": "list",
-      "narration": "The payment, and all debts together, each as a share of pay.",
-      "onscreenText": "The payment, all debts",
-      "subtext": "Each as a share of pay",
+      "narration": "Rules compare the monthly loan payment with your pay.",
+      "onscreenText": "The payment",
+      "subtext": "Compared with pay",
       "emphasis": [],
       "anchor": {
         "type": "bands",
-        "stage": "all"
+        "stage": "payment"
       }
     },
     {
       "id": "b2",
       "kind": "list",
-      "narration": "The part of the price paid upfront, called the deposit. And the loan's length.",
-      "onscreenText": "Paid upfront, loan length",
-      "subtext": "The deposit, how long it runs",
+      "narration": "Many also add up every debt you pay each month.",
+      "onscreenText": "All debts",
+      "subtext": "Also compared with pay",
       "emphasis": [],
       "anchor": {
         "type": "bands",
-        "stage": "emphasis"
+        "stage": "debts"
       }
     },
     {
       "id": "b3",
       "kind": "stat",
-      "narration": "Which pay, though? A third of Marcus's pay before tax.",
+      "narration": "Marcus's payment is a third of his pay before tax.",
       "onscreenText": "A third of pay before tax",
       "subtext": "Marcus's payment",
       "emphasis": [
@@ -87,7 +87,7 @@
       "id": "b4",
       "kind": "warning",
       "narration": "And almost half of what reaches his account, called take home pay.",
-      "onscreenText": "Almost half of pay after tax",
+      "onscreenText": "Almost half of take home pay",
       "subtext": "The same payment",
       "emphasis": [
         "half"
@@ -117,13 +117,13 @@
   "cta": {
     "approved": "share",
     "handle": "@nidhi.today",
-    "narration": "Send this to someone borrowing. Part two: a setback.",
+    "narration": "Same payment, a different answer. Send this to someone borrowing abroad. Part two: a setback.",
     "onscreenText": "Part 2: would it survive a setback?",
-    "subtext": "Send this to someone about to borrow"
+    "subtext": "Send this to someone borrowing abroad"
   },
   "caption": {
-    "instagram": "Borrowing rules differ by country. Here is what they measure.\n\nThe monthly loan payment, and all debt payments together, each as a share of pay. The part of the price paid upfront, called the deposit. And the loan's length, where longer means a smaller payment and more interest overall.\n\nThen, which pay? Marcus's payment is a third of his pay before tax, and almost half of what reaches his account, called take home pay. Different limits and different definitions of pay give different borrowing amounts.\n\nPart 2: would the loan survive a setback?\n\n→ Know someone about to borrow for a home? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €54,000 a year before tax, a 30 year loan at 3.5%. Limits and definitions vary by country and lender. Not financial advice.",
-    "tiktok": "Borrowing rules differ by country. Here is what they measure: the payment, all debts, the deposit and the loan's length. And which pay they use. Illustrative, not financial advice."
+    "instagram": "Banks often limit the loan payment to a share of your pay. Which pay do they mean?\n\nBorrowing rules compare the monthly loan payment with your pay, and many also add up every debt you pay each month. Other measures matter too: the part of the price paid upfront, called the deposit, and the loan's length.\n\nThen, which pay? Marcus's payment is a third of his pay before tax, and almost half of what reaches his account, called take home pay. The same payment can pass one rule and fail another.\n\nPart 2: would the loan survive a setback?\n\n→ Know someone borrowing in a new country? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €54,000 a year before tax, a 30 year loan at 3.5%. Limits and definitions vary by country and lender. Not financial advice.",
+    "tiktok": "Banks often limit the loan payment to a share of your pay. Which pay? Before tax, Marcus's payment is a third; of take home pay, almost half. Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
@@ -136,7 +136,7 @@
   "bandStory": {
     "layout": "equal",
     "hideCostInHook": true,
-    "emphasis": "deposit",
+    "emphasis": "debts",
     "bands": [
       {
         "id": "payment",
@@ -155,26 +155,6 @@
         "items": [
           "Every loan and card",
           "The new payment included"
-        ],
-        "tone": "ink"
-      },
-      {
-        "id": "deposit",
-        "label": "Paid upfront",
-        "cost": "Share of price",
-        "items": [
-          "The part of the price",
-          "paid from your own money"
-        ],
-        "tone": "amber"
-      },
-      {
-        "id": "term",
-        "label": "Loan length",
-        "cost": "Years",
-        "items": [
-          "Longer: a smaller payment",
-          "and more interest overall"
         ],
         "tone": "ink"
       }

@@ -16,12 +16,12 @@
   },
   "hookVariants": [
     {
-      "id": "setback",
+      "id": "could-he-pay",
       "layout": "bar-gap",
-      "narration": "Part two: the bank says yes. Would the loan survive a setback?",
+      "narration": "Part two. The bank offers its maximum loan. Could Marcus still pay if rates rose?",
       "onscreenLines": [
-        "Part 2: the bank says yes",
-        "Would it survive a setback?",
+        "The bank offers its maximum",
+        "Could he pay if rates rose?",
         ""
       ],
       "anchor": {
@@ -29,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "setback"
+        "still"
       ]
     }
   ],
@@ -38,7 +38,7 @@
     {
       "id": "b1",
       "kind": "stat",
-      "narration": "Marcus's maximum loan takes thirty three percent of his pay before tax.",
+      "narration": "Today, the payment takes thirty three percent of his pay before tax.",
       "onscreenText": "33% of pay",
       "subtext": "At today's rate",
       "emphasis": [],
@@ -62,7 +62,7 @@
     {
       "id": "b3",
       "kind": "list",
-      "narration": "So many check: the payment when a rate fixed for some years ends, and income lower for a while.",
+      "narration": "So many also check: the payment when a fixed rate ends, and lower income for a while.",
       "onscreenText": "If things go wrong",
       "subtext": "Rate, income",
       "emphasis": [],
@@ -90,7 +90,7 @@
     {
       "id": "b4",
       "kind": "list",
-      "narration": "Room left for saving and emergencies. And with a loan in another currency than your pay, currency moves can raise the payment.",
+      "narration": "Room left for saving. And a loan in another currency, which can cost more when currencies move.",
       "onscreenText": "Room left, currency",
       "subtext": "Saving, currency moves",
       "emphasis": [],
@@ -131,12 +131,12 @@
   "cta": {
     "approved": "share",
     "handle": "@nidhi.today",
-    "narration": "That is a stress test. Send this to someone about to borrow.",
+    "narration": "Checking this is called a stress test. Send this to someone about to borrow.",
     "onscreenText": "Send this to them",
     "subtext": "Before they sign"
   },
   "caption": {
-    "instagram": "The bank says yes. Would the loan survive a setback?\n\nIn Marcus's example, the bank's maximum loan takes 33% of his pay before tax. At a higher interest rate, the same loan takes 42%.\n\nMany people run a checklist: what the payment is when a fixed rate ends, what happens if household income falls for a while, whether there is still room for saving and emergencies, and, with pay in one currency and the loan in another, how the exchange rate moves the payment. That is a stress test. The bank's yes and a loan that still works answer different questions.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
+    "instagram": "The bank offers Marcus its maximum loan. Could he still pay if rates rose?\n\nIn Marcus's example, the bank's maximum loan takes 33% of his pay before tax. At a higher interest rate, the same loan takes 42%.\n\nMany people run a checklist: what the payment is when a fixed rate ends, what happens if household income falls for a while, whether there is still room for saving and emergencies, and, with pay in one currency and the loan in another, how the exchange rate moves the payment. That is a stress test. The bank's yes and a loan that still works answer different questions.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
     "tiktok": "The bank says yes. Would the loan survive a higher rate, lower income, or an exchange rate move? A stress test checklist. Illustrative, not financial advice."
   },
   "hashtags": [
