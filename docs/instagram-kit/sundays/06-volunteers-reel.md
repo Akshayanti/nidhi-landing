@@ -10,8 +10,6 @@ hashtags_day1: "#multilingual #moneytools #FinancialLiteracyIsYourRight #volunte
 keywords_day1: "personal finance in Hindi, personal finance in Spanish, personal finance in Czech, personal finance in Marathi, free finance tools, net worth calculator, loan calculator, inflation calculator, multilingual website, global expats, money abroad, finanzas personales, calculadora financiera, calculadora de préstamos, herramientas financieras gratis, वित्तीय योजना, लोन कैलकुलेटर, महँगाई कैलकुलेटर, osobní finance, finanční kalkulačka, kalkulačka půjčky, आर्थिक नियोजन, कर्ज कॅल्क्युलेटर, महागाई कॅल्क्युलेटर"
 ---
 
-> **Reel (Nov 5, 2026).** The Nov 1 call for volunteers (`02-languages.md`, council and owner approved) as a silent reel: its three slides, with a new second card on why. Built with `scripts/slides-to-reel.sh` (seconds per slide in `reel_seconds`). Remove this note once scheduled.
-
 ## Brief
 
 purpose: The Nov 1 call for volunteers, again, as a reel (carousels reached about 10 people a post in October). Same asks and facts as Nov 1; see `02-languages.md` for the full brief and honesty notes.

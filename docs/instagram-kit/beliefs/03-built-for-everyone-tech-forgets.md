@@ -8,8 +8,6 @@ format: "stories"
 story_link: "link sticker to nidhi.today/beliefs/"
 ---
 
-> **Stories (Nov 5, 2026).** Sundays from Nov 8: the volunteer call goes out in the morning and the Belief goes out in the evening as stories only, no reel and no feed post (owner). These slides render straight to story frames (`format: "stories"`); the last carries the link sticker. Remove this note once scheduled.
-
 ## Brief
 
 purpose: Beliefs 3. Money tools should work for people who use a screen reader, see colour differently, or take in information differently. Names what the site actually does, so the belief is concrete.

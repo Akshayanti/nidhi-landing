@@ -8,8 +8,6 @@ format: "stories"
 story_link: "link sticker to nidhi.today/blog/"
 ---
 
-> **Stories (Nov 5, 2026).** Sundays from Nov 8: the volunteer call goes out in the morning and the Belief goes out in the evening as stories only, no reel and no feed post (owner). These slides render straight to story frames (`format: "stories"`); the last carries the link sticker. Remove this note once scheduled.
-
 ## Brief
 
 purpose: Beliefs 4. The lessons and the free tools stay free in full: no paywall, no "subscribe for the good stuff", no half answer behind a gate. If a lesson helped someone decide better, even without ever using the product, it did its job.
