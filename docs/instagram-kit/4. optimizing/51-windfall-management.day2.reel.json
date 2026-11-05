@@ -50,7 +50,7 @@
     {
       "id": "b2",
       "kind": "example",
-      "narration": "A study of global shares compared the results a year later.",
+      "narration": "A study of global shares checked a year later.",
       "onscreenText": "Checked a year later",
       "subtext": "Each square is a month",
       "emphasis": [],
@@ -84,9 +84,9 @@
     {
       "id": "b4",
       "kind": "list",
-      "narration": "Investments usually beat cash, so waiting usually cost some growth. Spreading puts less on a single day.",
+      "narration": "Investments usually beat cash.",
       "onscreenText": "Why",
-      "subtext": "Cash, growth, timing",
+      "subtext": "Invested money",
       "emphasis": [],
       "anchor": {
         "type": "card",
@@ -95,7 +95,57 @@
         "rows": [
           {
             "label": "Invested money",
-            "value": "Beat cash",
+            "value": "Usually beat cash",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Past data, mostly developed markets: a tendency, not a promise."
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "So in the study, waiting cost some growth.",
+      "onscreenText": "Waiting",
+      "subtext": "Cost some growth",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Why",
+        "rows": [
+          {
+            "label": "Invested money",
+            "value": "Usually beat cash",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Waiting",
+            "value": "Some growth",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Past data, mostly developed markets: a tendency, not a promise."
+      }
+    },
+    {
+      "id": "b6",
+      "kind": "list",
+      "narration": "Spreading puts less on a single day.",
+      "onscreenText": "Spreading",
+      "subtext": "Less on a single day",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Why",
+        "rows": [
+          {
+            "label": "Invested money",
+            "value": "Usually beat cash",
             "valueSize": "small",
             "tone": "teal"
           },
@@ -164,6 +214,7 @@
         "tone": "ink"
       }
     ],
-    "disclosure": "Source: a 2023 study by a large fund manager, global shares. Past data, mostly developed markets: a tendency, not a promise."
+    "disclosure": "Source: a 2023 study by a large fund manager, global shares. Past data, mostly developed markets: a tendency, not a promise.",
+    "hideValuesInHook": true
   }
 }

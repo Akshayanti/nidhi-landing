@@ -159,6 +159,7 @@
         "tone": "ink"
       }
     ],
-    "disclosure": "Illustrative. Limits and definitions differ by country and lender."
+    "disclosure": "Illustrative. Limits and definitions differ by country and lender.",
+    "labelsOnlyInHook": true
   }
 }

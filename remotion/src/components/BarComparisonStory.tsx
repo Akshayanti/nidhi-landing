@@ -246,7 +246,8 @@ function BarHook({ input }: { input: ReelInput }) {
       <div style={{ position: "absolute", top: 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
       {bars.map((bar, index) => {
         const y = index === 0 ? 420 : 980;
-        const width = Math.max(story.minBarWidth ?? (story.proportional ? 76 : 150), (bar.value / max) * 760);
+        const hidden = Boolean(story.hideValuesInHook);
+        const width = hidden ? 380 : Math.max(story.minBarWidth ?? (story.proportional ? 76 : 150), (bar.value / max) * 760);
         const valueInside = width >= 520;
         return (
           <div key={bar.id} style={{ position: "absolute", left: 76, right: 90, top: y }}>
@@ -261,7 +262,7 @@ function BarHook({ input }: { input: ReelInput }) {
               <div style={valueInside
                 ? { position: "absolute", left: 24, top: 70, width: Math.max(0, width - 48), transform: "translateY(-50%)", fontFamily: TYPE.ui, fontSize: 54, fontWeight: 830, color: BRAND.paper, whiteSpace: "nowrap", textAlign: "right" }
                 : { position: "absolute", left: width + 22, top: 70, transform: "translateY(-50%)", fontFamily: TYPE.ui, fontSize: 54, fontWeight: 830, color: barTextColor(bar), whiteSpace: "nowrap" }}>
-                {bar.display}
+                {hidden ? "?" : bar.display}
               </div>
             </div>
           </div>

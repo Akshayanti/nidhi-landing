@@ -18,10 +18,10 @@
     {
       "id": "not-cash",
       "layout": "bands-gap",
-      "narration": "Part three: what if the inheritance is shares or a home?",
+      "narration": "Part three: inherited shares or a home. Do you have to decide now?",
       "onscreenLines": [
-        "Part 3: inherited",
-        "shares or a home?",
+        "Shares or a home?",
+        "Decide now?",
         ""
       ],
       "anchor": {
@@ -29,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "cash"
+        "now"
       ]
     }
   ],
@@ -37,8 +37,58 @@
   "beats": [
     {
       "id": "b1",
+      "kind": "story",
+      "narration": "First, the deadlines to settle what was left. They have fixed dates.",
+      "onscreenText": "Deadlines first",
+      "subtext": "Fixed dates",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Two timelines",
+        "rows": [
+          {
+            "label": "Settling what was left",
+            "value": "Fixed dates",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "story",
+      "narration": "The investment decision can then take time.",
+      "onscreenText": "Then the decision",
+      "subtext": "It can take time",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Two timelines",
+        "rows": [
+          {
+            "label": "Settling what was left",
+            "value": "Fixed dates",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "The investment decision",
+            "value": "Can take time",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b3",
       "kind": "definition",
-      "narration": "One question: if its value came as cash, would you buy this same thing?",
+      "narration": "When it comes, one question: if its value came as cash, would you buy this same thing?",
       "onscreenText": "The cash test",
       "subtext": "Would you buy it?",
       "emphasis": [
@@ -66,7 +116,7 @@
       }
     },
     {
-      "id": "b2",
+      "id": "b4",
       "kind": "warning",
       "narration": "Keeping it can leave much riding on one thing. That is called concentration.",
       "onscreenText": "Much on one thing",
@@ -98,52 +148,6 @@
         ],
         "footnote": "A question many people use, not an answer."
       }
-    },
-    {
-      "id": "b3",
-      "kind": "list",
-      "narration": "For a home: sell, rent it out, or live in it, each with its own costs and income.",
-      "onscreenText": "A home: three options",
-      "subtext": "Costs and income of each",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "story",
-      "narration": "Deadlines to settle what was left, and tax, come first. The investment decision can then take time.",
-      "onscreenText": "Deadlines first",
-      "subtext": "Then the decision can take time",
-      "emphasis": [],
-      "anchor": {
-        "type": "card",
-        "stage": "tool",
-        "title": "Two timelines",
-        "rows": [
-          {
-            "label": "Settling what was left",
-            "value": "Fixed dates",
-            "valueSize": "small",
-            "tone": "amber"
-          },
-          {
-            "label": "Tax on a sale",
-            "value": "Check locally",
-            "valueSize": "small",
-            "tone": "ink"
-          },
-          {
-            "label": "The investment decision",
-            "value": "Can take time",
-            "valueSize": "small",
-            "tone": "teal"
-          }
-        ],
-        "footnote": "Illustrative. Rules and deadlines vary by country."
-      }
     }
   ],
   "cta": {
@@ -167,39 +171,30 @@
   "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
   "bandStory": {
     "layout": "equal",
-    "emphasis": "sell",
+    "emphasis": "shares",
     "bands": [
       {
-        "id": "sell",
-        "label": "Sell it",
-        "cost": "Cash to spread",
+        "id": "shares",
+        "label": "Inherited shares",
+        "cost": "Often few companies",
         "items": [
-          "Tax on a sale",
-          "differs by country"
+          "Their value",
+          "moves every day"
         ],
         "tone": "teal"
       },
       {
-        "id": "rent",
-        "label": "Rent it out",
-        "cost": "Income and costs",
+        "id": "home",
+        "label": "An inherited home",
+        "cost": "One property",
         "items": [
-          "Rent in",
-          "upkeep and tax out"
+          "Its costs",
+          "keep running"
         ],
         "tone": "ink"
-      },
-      {
-        "id": "live",
-        "label": "Live in it",
-        "cost": "Rent saved",
-        "items": [
-          "No rent to pay",
-          "the upkeep stays"
-        ],
-        "tone": "amber"
       }
     ],
-    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country."
+    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country.",
+    "labelsOnlyInHook": true
   }
 }

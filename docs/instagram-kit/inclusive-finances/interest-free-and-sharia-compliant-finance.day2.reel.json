@@ -38,30 +38,20 @@
           "Income from banking, alcohol and the like: under about 5% of income"
         ],
         "tone": "teal"
-      },
-      {
-        "id": "portfolio",
-        "label": "Result",
-        "cost": "A different mix",
-        "items": [
-          "Fewer banks, more technology",
-          "A shorter list of companies",
-          "Certificates tied to assets (sukuk), not loans"
-        ],
-        "tone": "ink"
       }
     ],
     "emphasis": "finance",
-    "disclosure": "Thresholds are approximate and differ between standards. Not religious guidance or investment advice."
+    "disclosure": "Thresholds are approximate and differ between standards. Not religious guidance or investment advice.",
+    "labelsOnlyInHook": true
   },
   "hookVariants": [
     {
       "id": "which-companies",
       "layout": "bands-gap",
-      "narration": "Shares can fit an interest free plan. Which companies?",
+      "narration": "Shares can fit an interest free plan. Which companies pass its checks?",
       "onscreenLines": [
         "Shares can fit",
-        "Which companies?",
+        "Which companies pass?",
         ""
       ],
       "anchor": {
@@ -103,29 +93,15 @@
     },
     {
       "id": "b3",
-      "kind": "warning",
-      "narration": "Fewer banks, and in place of loans, certificates tied to assets, called sukuk.",
-      "onscreenText": "A different mix",
-      "subtext": "Different from the broad market",
-      "emphasis": [
-        "different"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "portfolio"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "list",
-      "narration": "The screen: its business, its debt and cash, and income from banking or alcohol.",
-      "onscreenText": "The screening check",
-      "subtext": "",
+      "kind": "definition",
+      "narration": "Together, these two layers are called the screen.",
+      "onscreenText": "The screen",
+      "subtext": "Two layers of checks",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The screening check",
+        "title": "The screen",
         "rows": [
           {
             "label": "What it does",

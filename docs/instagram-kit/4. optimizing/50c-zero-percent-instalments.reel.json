@@ -157,6 +157,7 @@
         "tone": "amber"
       }
     ],
-    "disclosure": "Illustrative. Who pays differs by shop, provider and country."
+    "disclosure": "Illustrative. Who pays differs by shop, provider and country.",
+    "labelsOnlyInHook": true
   }
 }

@@ -176,6 +176,7 @@
         "tone": "amber"
       }
     ],
-    "disclosure": "Illustrative: the bank's maximum loan, as a share of the same pay before tax."
+    "disclosure": "Illustrative: the bank's maximum loan, as a share of the same pay before tax.",
+    "hideValuesInHook": true
   }
 }

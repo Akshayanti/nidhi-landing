@@ -20,7 +20,7 @@
       {
         "id": "sale",
         "label": "Sale",
-        "cost": "Murabaha",
+        "cost": "Price fixed",
         "items": [
           "The financier buys the home",
           "Sells it to you at a higher price",
@@ -31,7 +31,7 @@
       {
         "id": "lease",
         "label": "Lease",
-        "cost": "Ijara",
+        "cost": "Rent, then own",
         "items": [
           "The financier owns the home",
           "You rent it, rent usually reviewed",
@@ -42,7 +42,7 @@
       {
         "id": "partnership",
         "label": "Partnership",
-        "cost": "Diminishing musharakah",
+        "cost": "Shares bought out",
         "items": [
           "You buy the home together",
           "Rent on their share only",
@@ -53,7 +53,8 @@
     ],
     "emphasis": "partnership",
     "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country.",
-    "hideCostInHook": true
+    "hideCostInHook": true,
+    "labelsOnlyInHook": true
   },
   "hookVariants": [
     {
@@ -80,7 +81,7 @@
       "id": "b1",
       "kind": "example",
       "narration": "A sale: the financier buys the home and sells it to you at a higher price, fixed upfront.",
-      "onscreenText": "Sale: murabaha",
+      "onscreenText": "A sale",
       "subtext": "Total price fixed on day one",
       "emphasis": [
         "fixed"
@@ -94,8 +95,8 @@
       "id": "b2",
       "kind": "example",
       "narration": "A lease: the financier owns it, you pay rent, ownership passes later.",
-      "onscreenText": "Lease: ijara",
-      "subtext": "Ownership by a separate sale or gift",
+      "onscreenText": "A lease",
+      "subtext": "Ownership passes later",
       "emphasis": [
         "rent"
       ],
@@ -108,7 +109,7 @@
       "id": "b3",
       "kind": "example",
       "narration": "A partnership: you buy it together, then buy out their share.",
-      "onscreenText": "Partnership: musharakah",
+      "onscreenText": "A partnership",
       "subtext": "Rent only on their shrinking share",
       "emphasis": [
         "together"
@@ -120,29 +121,20 @@
     },
     {
       "id": "b4",
-      "kind": "list",
-      "narration": "Many then ask: projected total, cost of settling early, and who certified it.",
-      "onscreenText": "Three questions",
-      "subtext": "",
+      "kind": "definition",
+      "narration": "Before signing, many ask for the total price, in writing.",
+      "onscreenText": "Before signing",
+      "subtext": "The total price, in writing",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Three questions",
+        "title": "Before signing",
         "rows": [
           {
-            "label": "Total or projected",
-            "value": "1",
-            "tone": "ink"
-          },
-          {
-            "label": "Settling early",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "Who certified it",
-            "value": "3",
+            "label": "The total price",
+            "value": "In writing?",
+            "valueSize": "small",
             "tone": "teal"
           }
         ],

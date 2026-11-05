@@ -38,9 +38,31 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Many set it apart first, while taxes and urgent bills are checked.",
+      "narration": "Many first set it apart, in its own account.",
       "onscreenText": "Set apart first",
       "subtext": "Its own account",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Set apart first",
+        "rows": [
+          {
+            "label": "Its own account",
+            "value": "Named",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "While it waits, taxes and urgent bills come first.",
+      "onscreenText": "Set it apart",
+      "subtext": "Taxes and urgent bills first",
       "emphasis": [],
       "anchor": {
         "type": "card",
@@ -64,7 +86,7 @@
       }
     },
     {
-      "id": "b2",
+      "id": "b3",
       "kind": "list",
       "narration": "Then expensive debt, which drains it with interest.",
       "onscreenText": "Expensive debt",
@@ -76,7 +98,7 @@
       }
     },
     {
-      "id": "b3",
+      "id": "b4",
       "kind": "list",
       "narration": "Cash for surprises: emergency savings.",
       "onscreenText": "Cash for surprises",
@@ -85,18 +107,6 @@
       "anchor": {
         "type": "bands",
         "stage": "cushion"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "list",
-      "narration": "Saving where tax is lower, up to a yearly limit.",
-      "onscreenText": "Saving with lower tax",
-      "subtext": "Up to a yearly limit",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "tax"
       }
     },
     {
@@ -156,16 +166,6 @@
         "tone": "teal"
       },
       {
-        "id": "tax",
-        "label": "Saving with lower tax",
-        "cost": "Yearly limit",
-        "items": [
-          "Where they live",
-          "often capped each year"
-        ],
-        "tone": "ink"
-      },
-      {
         "id": "spread",
         "label": "The rest, spread wide",
         "cost": "Many investments",
@@ -176,6 +176,7 @@
         "tone": "teal"
       }
     ],
-    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country."
+    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country.",
+    "labelsOnlyInHook": true
   }
 }

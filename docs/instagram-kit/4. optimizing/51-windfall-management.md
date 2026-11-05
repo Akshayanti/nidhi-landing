@@ -81,7 +81,7 @@ note: Past data, mostly developed markets: a tendency, not a promise.
 
 ## Day 3 (angle)
 
-angle: What if the inheritance is shares or a home? The cash test, concentration, and a home's three options
+angle: Inherited shares or a home: do you have to decide now? Deadlines first, then the cash test and concentration
 breadth: narrow | Needs an inheritance of assets: a viewer who has inherited shares or property
 number: none
 takeaway: Receiving an asset does not make it a choice; the cash test asks whether you would buy it with its value in cash, and estate deadlines run separately from the investment decision.
@@ -135,7 +135,7 @@ d2_f3_caption: All at once or spread out?
 
 d3_f1_share: the day 3 reel
 d3_f1_time: at posting
-d3_f1_overlay: Inherited shares or a home?
+d3_f1_overlay: Shares or a home. Decide now?
 d3_f1_caption: When an inheritance is not cash
 
 d3_f3_kind: tool

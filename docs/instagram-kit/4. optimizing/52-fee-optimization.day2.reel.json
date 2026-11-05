@@ -57,7 +57,7 @@
             "label": "Trading, tax",
             "value": 0.3,
             "display": "0.3%",
-            "tone": "muted"
+            "tone": "teal"
           }
         ]
       }
@@ -101,9 +101,9 @@
     {
       "id": "b2",
       "kind": "example",
-      "narration": "Layered: an active fund at one percent, a platform at 0.3.",
-      "onscreenText": "Fund and platform",
-      "subtext": "1.0% + 0.3%",
+      "narration": "Layered: a fund whose managers pick shares, at one percent a year.",
+      "onscreenText": "Fund: 1.0%",
+      "subtext": "Managers pick the shares",
       "emphasis": [],
       "anchor": {
         "type": "bars",
@@ -113,10 +113,23 @@
     },
     {
       "id": "b3",
-      "kind": "warning",
-      "narration": "Then an adviser at one, and trading and tax around 0.3. About 2.6 percent.",
-      "onscreenText": "About 2.6% a year",
-      "subtext": "Adviser, trading and tax added",
+      "kind": "example",
+      "narration": "The platform that holds it, 0.3 more.",
+      "onscreenText": "Platform: 0.3%",
+      "subtext": "Where the fund is held",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Then an adviser, at one percent more.",
+      "onscreenText": "Adviser: 1.0%",
+      "subtext": "On top again",
       "emphasis": [],
       "anchor": {
         "type": "bars",
@@ -125,11 +138,24 @@
       }
     },
     {
-      "id": "b4",
+      "id": "b5",
+      "kind": "warning",
+      "narration": "With trading and tax costs, about 2.6 percent a year.",
+      "onscreenText": "About 2.6% a year",
+      "subtext": "All the layers",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 4
+      }
+    },
+    {
+      "id": "b6",
       "kind": "definition",
-      "narration": "The fee audit: fund, platform, then adviser and trading costs, in writing.",
+      "narration": "Many ask for each layer in writing.",
       "onscreenText": "The fee audit",
-      "subtext": "",
+      "subtext": "Each layer, in writing",
       "emphasis": [],
       "anchor": {
         "type": "card",
@@ -138,19 +164,19 @@
         "rows": [
           {
             "label": "Fund",
-            "value": "Expense ratio",
+            "value": "Yearly fee?",
             "valueSize": "small",
             "tone": "ink"
           },
           {
             "label": "Platform",
-            "value": "Annual charge",
+            "value": "Yearly charge?",
             "valueSize": "small",
             "tone": "amber"
           },
           {
-            "label": "The rest",
-            "value": "Adviser, trading",
+            "label": "Adviser, trading",
+            "value": "In writing?",
             "valueSize": "small",
             "tone": "teal"
           }
@@ -161,7 +187,7 @@
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone with one fee on their statement? Send them this.",
+    "narration": "Send this to someone with one fee on their statement.",
     "onscreenText": "Send this to them",
     "subtext": "Before their next review",
     "handle": "@nidhi.today"

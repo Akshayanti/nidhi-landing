@@ -220,6 +220,8 @@ export interface BandStory {
   disclosure: string;
   /** Hide each band's `cost` pill in the hook and cover, when it names a term the hook has not explained. */
   hideCostInHook?: boolean;
+  /** Hook and cover show only each band's name: no pill, no items, so nothing is shown before its beat explains it. */
+  labelsOnlyInHook?: boolean;
 }
 
 export type MonthStage =
@@ -566,6 +568,8 @@ export interface ReelPlan {
     ratio?: { display: string; from: string; to: string; label?: string };
     /** Segmented hook: show the second bar's total instead of "?" (when the answer is the hook). */
     revealInHook?: boolean;
+    /** Direct two-bar hook: draw both bars at one neutral length with "?" so the result waits for its beat. */
+    hideValuesInHook?: boolean;
     disclosure: string;
   };
   /** Optional persistent month visual for calendar bars or runway depletion. */
