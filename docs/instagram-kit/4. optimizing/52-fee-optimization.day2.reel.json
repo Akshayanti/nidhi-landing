@@ -71,8 +71,8 @@
       "layout": "bar-gap",
       "narration": "Your statement may show one fee. How many layers sit underneath?",
       "onscreenLines": [
-        "Your statement shows one fee",
-        "How many layers under it?",
+        "Your statement shows one fee. You may pay more",
+        "How many fees are you really paying?",
         ""
       ],
       "anchor": {
@@ -202,5 +202,6 @@
     "feeaudit",
     "wealthmanagement",
     "investingtips"
-  ]
+  ],
+  "hookStyle": "question"
 }

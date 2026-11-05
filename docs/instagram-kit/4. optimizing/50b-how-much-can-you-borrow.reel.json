@@ -20,8 +20,8 @@
       "layout": "bands-gap",
       "narration": "Banks often limit your loan payment to a share of your pay. But which pay?",
       "onscreenLines": [
-        "A share of your pay",
-        "But which pay?",
+        "The bank uses your pay to limit what you can borrow",
+        "Does it count pay before or after tax?",
         ""
       ],
       "anchor": {

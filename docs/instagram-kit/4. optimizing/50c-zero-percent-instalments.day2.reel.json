@@ -20,8 +20,8 @@
       "layout": "bar-gap",
       "narration": "Part two: zero percent interest can still cost you.",
       "onscreenLines": [
-        "Part 2: 0% interest",
-        "can still cost you",
+        "Your plan is interest free until a deadline",
+        "What if you still owe money then?",
         ""
       ],
       "anchor": {
@@ -157,5 +157,6 @@
       }
     ],
     "disclosure": "Illustrative: the interest can be more than the balance left. Terms vary by provider and country."
-  }
+  },
+  "hookStyle": "question"
 }

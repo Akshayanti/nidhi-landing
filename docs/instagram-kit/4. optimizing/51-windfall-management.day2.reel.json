@@ -20,8 +20,8 @@
       "layout": "bar-gap",
       "narration": "Part two. You have a sum to invest. All at once, or spread out?",
       "onscreenLines": [
-        "A sum to invest",
-        "All at once, or spread out?",
+        "You have a large sum to invest",
+        "All at once, or spread over months?",
         ""
       ],
       "anchor": {

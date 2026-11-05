@@ -672,7 +672,7 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
 function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const story = input.plan.barStory;
   if (!story) return null;
-  if (now < input.hookSpan.endMs) return <SegmentedHook plan={input.plan} />;
+  if (now < input.hookSpan.endMs) return input.plan.hookStyle === "question" ? <QuestionHook plan={input.plan} /> : <SegmentedHook plan={input.plan} />;
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const segment = active?.beat.anchor?.type === "bars" ? active.beat.anchor.segment : undefined;
@@ -817,6 +817,7 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const story = plan.barStory;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (story.mode === "segmented") return <SegmentedHook plan={plan} cover />;
   const bars = story.bars.slice(0, 4);

@@ -20,8 +20,8 @@
       "layout": "bar-gap",
       "narration": "Part two. The bank says it can lend you this much. How do you test whether it works for you?",
       "onscreenLines": [
-        "The bank's offer",
-        "Does it work for you?",
+        "The bank says it can lend you this much",
+        "How do you test it works for you?",
         ""
       ],
       "anchor": {

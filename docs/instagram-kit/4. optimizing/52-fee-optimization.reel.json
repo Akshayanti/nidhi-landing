@@ -20,8 +20,8 @@
       "layout": "chart-gap",
       "narration": "What could a one percent fee take from your final pot?",
       "onscreenLines": [
-        "What could 1% take from your pot?",
-        "About a quarter, vs a 0.05% fee",
+        "Your investments cost 1% a year in fees",
+        "How much could that add up to?",
         ""
       ],
       "anchor": {
@@ -231,5 +231,6 @@
     },
     "scope": "Illustrative. €10,000 start, compounded monthly, before tax.",
     "disclosure": "Illustrative. €10,000 start, compounded monthly, before tax."
-  }
+  },
+  "hookStyle": "question"
 }
