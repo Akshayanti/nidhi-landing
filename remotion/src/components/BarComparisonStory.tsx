@@ -413,7 +413,8 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
     );
   }
 
-  const bars = stage === "first" ? story.bars.slice(0, 1) : story.bars;
+  // One bar per beat: "first" shows one, "second" two, any later stage all of them.
+  const bars = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
   const showBars = stage && !["blank", "hook", "days"].includes(stage);
   const showRatio = stage === "ratio";
   const callout = story.callout ?? story.ratio;
