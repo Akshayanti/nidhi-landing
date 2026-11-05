@@ -1,7 +1,7 @@
 ---
 type: standalone
 title: "Sunday Nov 8: volunteers wanted, as a reel"
-when: "Sunday Nov 8, 2026, as a silent reel with one story (owner, Nov 4). Later Sundays alternate reposting this reel and this story."
+when: "Sunday Nov 8, 2026, morning, as a silent reel, with its first card as a story (owner, Nov 5). Every Sunday morning carries the volunteer call, reusing this reel or the Nov 1 carousel (02-languages.md)."
 blog_url: "https://nidhi.today/volunteers/?utm_source=instagram&utm_medium=social&utm_campaign=sunday_volunteers&utm_content=reel"
 chip: "A request"
 text_style: "strong"
@@ -87,5 +87,5 @@ status: Sign up · nidhi.today/volunteers/ · link in bio
 ## Stories
 
 d1_f1_share: the reel's first card as a story (stories/story 01), with a link sticker to nidhi.today/volunteers/
-d1_f1_time: with the reel
+d1_f1_time: right after the reel
 d1_f1_caption: Can you help me?

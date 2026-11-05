@@ -124,6 +124,8 @@ function storyFrames(kit) {
   return [...frames.values()].sort((a, b) => a.day - b.day || a.frame - b.frame);
 }
 
+// Kits whose slides are 9:16 frames: a silent reel, or a stories only set.
+const verticalKit = kit => kit.frontmatter.format === 'reel' || kit.frontmatter.format === 'stories';
 const tagList = value => (value || '').split(/\s+/).filter(Boolean);
 const deckTags = (kit, day) => kit.frontmatter[`hashtags_day${day.n}`] || '';
 const deckKeywords = (kit, day) => (kit.frontmatter[`keywords_day${day.n}`] || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -257,13 +259,17 @@ function lintStandalone(kit) {
   if (!day?.deck) return [...errors, 'Day 1: no carousel found'];
   if (day.reel) push('Day 1', 'a standalone kit has no reel');
   const C = 'Post';
+  if (kit.frontmatter.format === 'stories') {
+    if (!kit.frontmatter.story_link) push(C, 'a stories kit names its last frame\'s link sticker in "story_link:"');
+    if (day.deck.caption) push(C, 'a stories kit has no caption: stories carry none');
+  }
   const tags = tagList(deckTags(kit, day));
   if (tags.length > 5) push(C, `${tags.length} hashtags, max 5`);
-  if (!tags.includes('#nidhi')) push(C, 'hashtags must include #nidhi');
+  if (kit.frontmatter.format !== 'stories' && !tags.includes('#nidhi')) push(C, 'hashtags must include #nidhi');
   for (const tag of tags) if (BANNED_TAGS.has(tag.toLowerCase())) push(C, `banned hashtag ${tag}`);
   const keywords = deckKeywords(kit, day);
-  if (keywords.length < 18 || keywords.length > 24) push(C, `${keywords.length} keywords, expected 18 to 24`);
-  if (!day.deck.caption) push(C, 'missing caption');
+  if (kit.frontmatter.format !== 'stories' && (keywords.length < 18 || keywords.length > 24)) push(C, `${keywords.length} keywords, expected 18 to 24`);
+  if (kit.frontmatter.format !== 'stories' && !day.deck.caption) push(C, 'missing caption');
   if (DASH.test(day.deck.caption)) push(`${C} caption`, 'dash or hyphen in caption');
   if (day.deck.slides.length > MAX_SLIDES) push(C, `${day.deck.slides.length} slides, max ${MAX_SLIDES}`);
   for (const slide of day.deck.slides) {
@@ -851,6 +857,9 @@ const CSS = `
   .reel-frame .sort-column { height:640px; }
   .reel-frame .request-bar { padding:0 18px; gap:12px; font-size:17px; }
   .reel-frame .request-lang { font-size:15px; letter-spacing:2px; }
+  .slide.reel-frame.story-frame { padding:215px 52px 345px 52px; }
+  .story-frame .eyebrow { top:170px; }
+  .story-frame .handle, .story-frame .request-status { bottom:290px; }
   .layout-hook { padding-top:70px; }
   .layout-hook .content { justify-content:flex-start; gap:26px; }
   .layout-hook .bars { margin:60px 0 40px; }
@@ -1150,9 +1159,11 @@ function slideHtml(kit, deck, slide) {
   // text_style: "strong" in a kit's frontmatter sets detail lines, chips and notes in ink and a heavier weight,
   // for posts whose message lives in those lines rather than in the headings.
   // format: "reel" in a kit's frontmatter: the slides become frames of a silent reel (slides-to-reel.sh),
-  // so the carousel's swipe cue and progress dots are left out.
-  const reel = kit.frontmatter.format === 'reel';
-  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''} ${reel ? 'reel-frame' : ''}">
+  // so the carousel's swipe cue and progress dots are left out. format: "stories" (owner, Nov 5, 2026: the Sunday
+  // Belief goes out as evening stories only) uses the same 9:16 frames, with the margins moved for Stories' chrome.
+  const reel = verticalKit(kit);
+  const stories = kit.frontmatter.format === 'stories';
+  return page(`<div class="slide layout-${slide.layout} ${edge ? 'strong-handle' : ''} ${kit.frontmatter.text_style === 'strong' ? 'text-strong' : ''} ${reel ? 'reel-frame' : ''} ${stories ? 'story-frame' : ''}">
   ${bare ? '' : `<div class="eyebrow">${esc(kit.frontmatter.chip || '')}</div>`}
   <div class="content">${LAYOUTS[slide.layout](slide, deck)}</div>
   ${reel || slide.layout === 'hook' || slide.layout === 'request' || deck.slides.length === 1 ? '' : `<div class="dots">${dots}</div>`}
@@ -1228,6 +1239,28 @@ function reelsOnlySheet(kit, frames) {
     lines.push('', ...firstHour(true, false), '');
   }
   return lines.join('\n');
+}
+
+// Stories only (owner, Nov 5, 2026): the Sunday Belief is a set of story frames in the evening, no feed post.
+function storiesSheet(kit) {
+  const day = kit.days[0];
+  return [
+    `POSTING SHEET (stories only): ${kit.frontmatter.title}`,
+    `Link: ${kit.frontmatter.blog_url}`,
+    '',
+    `STORIES: ${kit.frontmatter.when}`,
+    `  Schedule all ${day.deck.slides.length} frames in this order on Instagram and Facebook, a minute apart.`,
+    ...day.deck.slides.flatMap(s => [
+      `  Frame ${s.number}: day1/stories/story-${String(s.number).padStart(2, '0')}.png`,
+      `    Alt text: ${s.fields.alt}`,
+      ...(s.number === day.deck.slides.length ? [`    Sticker: ${kit.frontmatter.story_link}`] : []),
+    ]),
+    '',
+    '  No caption, no hashtags: stories carry none.',
+    '    [ ] Reply to every story reply the same day.',
+    '    [ ] No reactions or shares from your own other accounts.',
+    '',
+  ].join('\n');
 }
 
 function postingSheet(kit, frames) {
@@ -1404,13 +1437,16 @@ async function main() {
         for (const slide of day.deck.slides) {
           // A reel kit's slides are 9:16 frames: laid out at 810 x 1440 and captured at 4/3, so they come out
           // 1080 x 1920 with every size a third larger than on a carousel slide (council, Nov 5, 2026: phone legibility).
-          const reelKit = kit.frontmatter.format === 'reel';
-          const path = await open(slideHtml(kit, day.deck, slide), join(deckDir, `slide-${String(slide.number).padStart(2, '0')}.png`), reelKit ? REEL_H : H, reelKit ? REEL_W : W, reelKit ? 1080 / REEL_W : 2);
+          // A stories kit writes its frames straight to day1/stories as story-NN.png, with no caption.
+          const reelKit = verticalKit(kit);
+          const storiesKit = kit.frontmatter.format === 'stories';
+          const name = storiesKit ? join(outDir, `day${day.n}`, 'stories', `story-${String(slide.number).padStart(2, '0')}.png`) : join(deckDir, `slide-${String(slide.number).padStart(2, '0')}.png`);
+          const path = await open(slideHtml(kit, day.deck, slide), name, reelKit ? REEL_H : H, reelKit ? REEL_W : W, reelKit ? 1080 / REEL_W : 2);
           if (await fit(browserPage)) console.warn(`  overflow: day ${day.n} slide ${slide.number}`);
           for (const p of await chromeOverlaps(browserPage)) layoutErrors.push(`${kit.relPath} day ${day.n} slide ${slide.number}: ${p}`);
           await browserPage.screenshot({ path });
         }
-        if (day.n < 3) await writeFile(join(deckDir, 'caption.txt'), captionText(kit, day), 'utf8');
+        if (day.n < 3 && kit.frontmatter.format !== 'stories') await writeFile(join(deckDir, 'caption.txt'), captionText(kit, day), 'utf8');
       }
 
       const frames = storyFrames(kit);
@@ -1420,7 +1456,7 @@ async function main() {
         for (const p of await chromeOverlaps(browserPage)) layoutErrors.push(`${kit.relPath} story ${frame.id}: ${p}`);
         await browserPage.screenshot({ path });
       }
-      await writeFile(join(outDir, 'posting-sheet.txt'), reelsOnly ? reelsOnlySheet(kit, frames) : postingSheet(kit, frames), 'utf8');
+      await writeFile(join(outDir, 'posting-sheet.txt'), reelsOnly ? reelsOnlySheet(kit, frames) : kit.frontmatter.format === 'stories' ? storiesSheet(kit) : postingSheet(kit, frames), 'utf8');
       const slides = reelsOnly ? 0 : kit.days.reduce((n, d) => n + d.deck.slides.length, 0);
       console.log(`Rendered ${slides} slides and ${rendered.length} story frames: ${relative(ROOT, outDir)}`);
     }
