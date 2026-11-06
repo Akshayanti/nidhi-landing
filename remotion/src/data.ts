@@ -147,6 +147,8 @@ export interface LineRaceStory {
   firstPeriod?: number;
   /** Hide the euro labels on the value axis. */
   hideValueAxis?: boolean;
+  /** Hide the period ticker and the numbered period labels under the axis (51 day 2: the crossing label carries the time). */
+  hidePeriodLabels?: boolean;
   /** Rounding of the running euro labels. Defaults to €100. */
   headStep?: number;
   /** Period at which the line labels appear, for lines that start too close to label. */
@@ -216,6 +218,10 @@ export interface BandStory {
   layout?: "weighted" | "equal";
   emphasis: string;
   disclosure: string;
+  /** Hide each band's `cost` pill in the hook and cover, when it names a term the hook has not explained. */
+  hideCostInHook?: boolean;
+  /** Hook and cover show only each band's name: no pill, no items, so nothing is shown before its beat explains it. */
+  labelsOnlyInHook?: boolean;
 }
 
 export type MonthStage =
@@ -388,7 +394,7 @@ export type BeatAnchor =
       stage: BarStage;
       segment?: number;
       /** Stage "days": a grid of working days, `unpaid` of them greyed out during the beat. */
-      days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string };
+      days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number };
     }
   | { type: "months"; stage: MonthStage; months?: string[] }
   | { type: "columns"; stage: ColumnStage }
@@ -550,6 +556,8 @@ export interface ReelPlan {
     mode?: "standard" | "segmented" | "direct" | "sum";
     /** Preserve the numerical ratio instead of enforcing the standard minimum bar width. */
     proportional?: boolean;
+    /** Smallest bar width in px; set it low when one value is tiny next to another (51 day 1: €16 against €5,000). */
+    minBarWidth?: number;
     setup?: { label: string; display: string; note?: string; tone?: BarTone };
     unit: string;
     basis: string;
@@ -560,6 +568,8 @@ export interface ReelPlan {
     ratio?: { display: string; from: string; to: string; label?: string };
     /** Segmented hook: show the second bar's total instead of "?" (when the answer is the hook). */
     revealInHook?: boolean;
+    /** Direct two-bar hook: draw both bars at one neutral length with "?" so the result waits for its beat. */
+    hideValuesInHook?: boolean;
     disclosure: string;
   };
   /** Optional persistent month visual for calendar bars or runway depletion. */
@@ -577,6 +587,8 @@ export interface ReelPlan {
   hookVariants: HookVariant[];
   /** Selected hook index, default 0. CLI --variant overrides. */
   useHookVariant: number;
+  /** "question": the hook frame shows only the topic chip and the hook lines, no chart or bands. */
+  hookStyle?: "question";
   beats: Beat[];
   cta: CTABlock;
   caption: PlatformCaption;

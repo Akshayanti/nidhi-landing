@@ -8,8 +8,6 @@ hashtags_day2: "#valuesbasedinvesting #diversification #indexinvesting #expatmon
 keywords_day2: "screened investing, sharia screening, screened index, sukuk, purification, prohibited income, interest bearing debt, financial ratios screening, sector tilt, profit sharing deposit, takaful, ethical portfolio, retirement account fund choice, personal finance, global expats, money abroad, islamische Geldanlage, ethisches Investieren, investissement islamique, finance éthique, inversión islámica, investimento etico"
 ---
 
-> **Needs attention (Oct 25, 2026).** Reels rebuilt Oct 25 to the light rules (34.9 s and 35.1 s, share CTA, council signed off). Lesson global pass done (Turkey, Nigeria; consistency with 49 and 50 checked). Still open: the carousels are over the light slide limit; trim them only if the Nov 1 readout keeps the reel plus carousel format. Remove this note once scheduled.
-
 ## Brief
 
 person: A home buyer, anonymous, for whom interest is ruled out
@@ -19,6 +17,7 @@ withheld: What changes for cash, retirement accounts and insurance, zakat as a f
 ## Day 1 (angle)
 
 angle: With interest ruled out, home finance runs on a sale, a lease or a partnership, and the rate question gives way to total amount payable
+breadth: narrow | A sub audience: households for whom interest is ruled out, buying a home
 number: A €250,000 flat sold on for €400,000 over 25 years, a €150,000 margin disclosed and fixed on day one
 takeaway: Monthly costs can look like a mortgage while the contract is different. Knowing which structure is on the table tells you which questions to ask.
 tool: Five questions before signing: total amount payable, early settlement, late payment, whether the cost can change, and who certified it.
@@ -141,6 +140,7 @@ read: Screened investing, sukuk and takaful
 ## Day 2 (angle)
 
 angle: Owning shares is generally considered permissible; the work is the two layer screen, and it changes what a diversified portfolio holds
+breadth: narrow | A sub audience: investors who want an interest free, screened portfolio
 number: Common screens put interest bearing debt and cash at around a third each, and prohibited income at around 5%; exact ratios differ between standards
 takeaway: A screened portfolio tilts away from banks and insurers and swaps bonds for sukuk, so it will not move in step with the headline index; the spread across regions and sectors still needs checking.
 tool: The two layer screen. What the company does, then how it is financed: debt, cash and prohibited income, plus purification of any small prohibited income.
@@ -214,15 +214,15 @@ rule: You do not have to run the screens yourself
 
 ### Slide 5 (tool)
 
-alt: Tool card, the two layer screen: activity, what does the company do; debt, around a third, interest bearing debt to size; cash, around a third, cash and interest securities to size; income, around 5%, the share from prohibited sources; purify, charity, that portion of dividends.
+alt: Tool card, the two layer screen: activity, what does the company do; debt, around a third of its size, debt that charges interest; cash, around a third of its size, cash earning interest; income, around 5% of its income, from banking, alcohol and the like; give, charity, that share of the profit paid out to you.
 
 band: The two layer screen
 lead: What a screened fund checks
 row: Activity | 1 | ink | what does the company do?
-row: Debt | ⅓ | ink | interest bearing debt to size
-row: Cash | ⅓ | ink | cash and interest securities to size
-row: Income | 5% | ink | share from prohibited sources
-row: Purify | Charity | teal | that portion of dividends
+row: Debt | ⅓ | ink | debt that charges interest, of its size
+row: Cash | ⅓ | ink | cash earning interest, of its size
+row: Income | 5% | ink | of its income, from banking, alcohol and the like
+row: Give | Charity | teal | that share of the profit paid out to you
 also: Thresholds are approximate and differ between standards.
 note: Not religious guidance. Check which standard a fund follows.
 
@@ -290,7 +290,7 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: What you said about interest free home finance
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the two layer screen card: what the company does, then its debt, cash and prohibited income, and purification.
+d2_f3_alt: Story version of the two layer screen card: what the company does, then its debt and cash against its size, its income from banking, alcohol and the like, and giving that share of the profit to charity.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: The two layer screen behind screened funds
 

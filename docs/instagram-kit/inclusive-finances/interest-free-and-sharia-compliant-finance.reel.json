@@ -20,7 +20,7 @@
       {
         "id": "sale",
         "label": "Sale",
-        "cost": "Murabaha",
+        "cost": "Price fixed",
         "items": [
           "The financier buys the home",
           "Sells it to you at a higher price",
@@ -31,7 +31,7 @@
       {
         "id": "lease",
         "label": "Lease",
-        "cost": "Ijara",
+        "cost": "Rent, then own",
         "items": [
           "The financier owns the home",
           "You rent it, rent usually reviewed",
@@ -42,7 +42,7 @@
       {
         "id": "partnership",
         "label": "Partnership",
-        "cost": "Diminishing musharakah",
+        "cost": "Shares bought out",
         "items": [
           "You buy the home together",
           "Rent on their share only",
@@ -52,7 +52,8 @@
       }
     ],
     "emphasis": "partnership",
-    "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country."
+    "disclosure": "Illustrative. Not religious guidance. Scholars differ on details, and availability varies by country.",
+    "hideCostInHook": true
   },
   "hookVariants": [
     {
@@ -60,8 +61,8 @@
       "layout": "bands-gap",
       "narration": "Interest ruled out, by faith or choice? You can still finance a home, not with a loan.",
       "onscreenLines": [
-        "Interest ruled out?",
-        "Not with a loan",
+        "You want a home, but not a loan with interest",
+        "How can you pay for it?",
         ""
       ],
       "anchor": {
@@ -79,7 +80,7 @@
       "id": "b1",
       "kind": "example",
       "narration": "A sale: the financier buys the home and sells it to you at a higher price, fixed upfront.",
-      "onscreenText": "Sale: murabaha",
+      "onscreenText": "A sale",
       "subtext": "Total price fixed on day one",
       "emphasis": [
         "fixed"
@@ -93,8 +94,8 @@
       "id": "b2",
       "kind": "example",
       "narration": "A lease: the financier owns it, you pay rent, ownership passes later.",
-      "onscreenText": "Lease: ijara",
-      "subtext": "Ownership by a separate sale or gift",
+      "onscreenText": "A lease",
+      "subtext": "Ownership passes later",
       "emphasis": [
         "rent"
       ],
@@ -107,8 +108,8 @@
       "id": "b3",
       "kind": "example",
       "narration": "A partnership: you buy it together, then buy out their share.",
-      "onscreenText": "Partnership: musharakah",
-      "subtext": "Your share grows, the rent falls",
+      "onscreenText": "A partnership",
+      "subtext": "Rent only on their shrinking share",
       "emphasis": [
         "together"
       ],
@@ -119,29 +120,20 @@
     },
     {
       "id": "b4",
-      "kind": "list",
-      "narration": "Many then ask: projected total, cost of settling early, and who certified it.",
-      "onscreenText": "Three questions",
-      "subtext": "",
+      "kind": "definition",
+      "narration": "Before signing, many ask for the total price, in writing.",
+      "onscreenText": "Before signing",
+      "subtext": "The total price, in writing",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Three questions",
+        "title": "Before signing",
         "rows": [
           {
-            "label": "Total or projected",
-            "value": "1",
-            "tone": "ink"
-          },
-          {
-            "label": "Settling early",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "Who certified it",
-            "value": "3",
+            "label": "The total price",
+            "value": "In writing?",
+            "valueSize": "small",
             "tone": "teal"
           }
         ],
@@ -157,7 +149,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Interest ruled out, by faith or by choice? A home can still be financed, just not with a loan.\n\nThree structures do it: a sale (murabaha), with the total price fixed on day one; a lease to own (ijara); and a shrinking partnership (diminishing musharakah). Monthly costs can look like a mortgage. The contract, and who carries the risk, differ.\n\n→ Know someone financing a home without interest? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nA financial explanation, not religious guidance. Scholars differ on details, and availability varies by country.",
+    "instagram": "Interest ruled out, by faith or by choice? A home can still be financed, just not with a loan.\n\nThree structures do it: a sale (murabaha), with the total price fixed on day one; a lease to own (ijara); and a shrinking partnership (diminishing musharakah). Monthly costs can look like a mortgage. The contract, and who carries the risk, differ.\n\n→ Know someone financing a home without interest? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nA financial explanation, not religious guidance. Scholars differ on details, and availability varies by country. Not financial advice.",
     "tiktok": "Most home buying advice starts with: compare the rate. For many people, interest is ruled out.\n\nA sale, a lease or a partnership, and five questions before signing. Not religious guidance.",
     "instagramKeywords": [
       "interest free home finance",
@@ -192,5 +184,7 @@
     "islamicfinance",
     "homefinance",
     "buyingahome"
-  ]
+  ],
+  "reelPromise": "How the three main home finance structures without interest work, and the questions to ask before signing",
+  "hookStyle": "question"
 }

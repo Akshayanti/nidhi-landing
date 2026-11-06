@@ -9,10 +9,10 @@
   "mode": "riff",
   "mood": "reflective",
   "topic": "Equal values are not equal assets after tax, costs and timing",
-  "topicChip": "EQUAL ON PAPER",
+  "topicChip": "SPLITTING ASSETS · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "The post's illustrative comparison: three assets each worth €200,000 on paper. Cash and savings: nothing reduces it, €200,000, usable now. Equity in a €400,000 home: selling costs of about 6% of the price, €24,000, leave about €176,000 if sold. Pension: tax on withdrawal at an illustrative 20%, €40,000, leaves about €160,000, at retirement age. Gap between cash and pension: €40,000. Selling costs and pension tax vary widely by country and person."
+    "notes": "The post's illustrative comparison: three assets each worth €200,000 on paper. Cash and savings: nothing reduces it, €200,000, usable now. Equity in a €400,000 home: selling costs of about 6% of the price, €24,000, leave about €176,000 if sold. Pension: tax on withdrawal at an illustrative 20%, €40,000, leaves about €160,000, at retirement age. Gap between cash and pension: €40,000. Selling costs and pension tax vary widely by country and person. Rebuilt Nov 5, 2026 to the current reel rules: viewer first hook, one asset per beat, numbers €200,000, €176,000, €160,000 (6% and 20% in the caption only)."
   },
   "barStory": {
     "mode": "direct",
@@ -36,8 +36,8 @@
       },
       {
         "id": "home",
-        "label": "Home equity, once sold",
-        "sublabel": "about 6% selling costs",
+        "label": "A share of a home, once sold",
+        "sublabel": "after selling costs",
         "value": 176000,
         "display": "about €176,000",
         "tone": "ink"
@@ -45,67 +45,30 @@
       {
         "id": "pension",
         "label": "Pension, after tax",
-        "sublabel": "illustrative 20%, at retirement",
+        "sublabel": "after tax, at retirement age",
         "value": 160000,
         "display": "about €160,000",
         "tone": "amber"
       }
     ],
-    "callout": {
-      "display": "€40,000",
-      "from": "cash",
-      "to": "pension",
-      "label": "Same paper value, cash against pension"
-    },
-    "disclosure": "Illustrative: about 6% selling costs on a €400,000 home, 20% tax on a pension withdrawal. Both vary widely by country and person."
+    "disclosure": "Illustrative. Selling costs and pension tax vary widely by country and person; rates in the caption."
   },
   "hookVariants": [
     {
-      "id": "not-equal",
+      "id": "equal-on-paper",
       "layout": "bar-gap",
-      "narration": "Three assets, two hundred thousand euros each on paper. After tax, costs and waiting, they are not equal.",
+      "narration": "Splitting assets? Two hundred thousand in cash, or in a pension. Are they worth the same to you?",
       "onscreenLines": [
-        "€200,000 each, on paper",
-        "Not equal after tax and costs"
+        "Splitting assets: €200,000 each on paper",
+        "Are they worth the same to you?",
+        ""
       ],
       "anchor": {
         "type": "bars",
         "stage": "hook"
       },
       "emphasis": [
-        "not"
-      ]
-    },
-    {
-      "id": "hidden-gap",
-      "layout": "bar-gap",
-      "narration": "An even split of savings, a home and a pension can hide a forty thousand euro gap.",
-      "onscreenLines": [
-        "An even split?",
-        "A €40,000 gap inside"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "gap"
-      ]
-    },
-    {
-      "id": "kept-the-house",
-      "layout": "bar-gap",
-      "narration": "Keeping the house can feel like winning a separation. Whether it is depends on the arithmetic.",
-      "onscreenLines": [
-        "I kept the house",
-        "Did I win?"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "arithmetic"
+        "same"
       ]
     }
   ],
@@ -113,136 +76,87 @@
   "beats": [
     {
       "id": "b1",
-      "kind": "example",
-      "narration": "A separation divides three assets, each worth two hundred thousand euros on paper. Cash. Equity in a home. A pension.",
-      "onscreenText": "€200,000 each, on paper",
-      "subtext": "Cash, home equity, pension",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "blank"
-      }
-    },
-    {
-      "id": "b2",
-      "kind": "example",
-      "narration": "The cash is worth its face value. Two hundred thousand euros, usable now.",
+      "kind": "stat",
+      "narration": "Cash: two hundred thousand, usable now.",
       "onscreenText": "Cash: €200,000",
       "subtext": "Usable now",
-      "emphasis": [
-        "now"
-      ],
+      "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "first"
       }
     },
     {
-      "id": "b3",
+      "id": "b2",
       "kind": "example",
-      "narration": "The equity sits in a four hundred thousand euro home. Illustrative six percent selling costs leave about one hundred seventy six thousand.",
-      "onscreenText": "Home equity: about €176,000",
-      "subtext": "After about 6% selling costs",
-      "emphasis": [
-        "selling"
-      ],
+      "narration": "A share of a home: once sold, selling costs leave about one hundred seventy six thousand.",
+      "onscreenText": "A home: about €176,000",
+      "subtext": "After selling costs",
+      "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second"
       }
     },
     {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "A pension: after tax, about one hundred sixty thousand, at retirement age.",
+      "onscreenText": "A pension: about €160,000",
+      "subtext": "After tax, and later",
+      "emphasis": [
+        "later"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "third"
+      }
+    },
+    {
       "id": "b4",
-      "kind": "example",
-      "narration": "At an illustrative twenty percent withdrawal tax, the pension loses forty thousand, leaving about one hundred sixty thousand at retirement age.",
-      "onscreenText": "Pension: about €160,000",
-      "subtext": "After an illustrative 20% tax",
-      "emphasis": [
-        "tax"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "third"
-      }
-    },
-    {
-      "id": "b5",
-      "kind": "comparison",
-      "narration": "Same paper value. A forty thousand euro gap between the cash and the pension, and decades between when each can be used.",
-      "onscreenText": "A €40,000 gap",
-      "subtext": "And decades apart in timing",
-      "emphasis": [
-        "decades"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "third"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "list",
-      "narration": "For each asset, compare its value after tax, its holding or selling costs, and when it can be used.",
-      "onscreenText": "Three questions per asset",
-      "subtext": "Tax, cost, timing",
-      "emphasis": [
-        "after"
-      ],
+      "kind": "definition",
+      "narration": "So many people compare each asset three ways.",
+      "onscreenText": "Three questions",
+      "subtext": "For every asset",
+      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
         "title": "Three questions per asset",
         "rows": [
           {
-            "label": "What is it worth after tax?",
-            "value": "1",
+            "label": "After tax?",
+            "value": "Worth what",
+            "valueSize": "small",
             "tone": "ink"
           },
           {
-            "label": "What does it cost to hold or sell?",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "When can it actually be used?",
-            "value": "3",
-            "tone": "teal"
-          },
-          {
-            "label": "Example gap, cash against pension",
-            "value": "€40,000",
+            "label": "To hold or sell?",
+            "value": "Costs what",
             "valueSize": "small",
             "tone": "amber"
+          },
+          {
+            "label": "Usable when?",
+            "value": "Now or later",
+            "valueSize": "small",
+            "tone": "teal"
           }
         ],
-        "footnote": "Illustrative. Rules vary by country and person."
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "story",
-      "narration": "It cuts both ways. A pension grows untaxed meanwhile, and a home is worth more to someone who lives in it. Compare like with like.",
-      "onscreenText": "Compare like with like",
-      "subtext": "After tax, after costs, by timing",
-      "emphasis": [
-        "like"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
+        "footnote": "It cuts both ways: a pension can grow untaxed meanwhile, and a home is worth more to whoever lives in it."
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for every asset on the table.",
-    "onscreenText": "Save the three questions",
-    "subtext": "For every asset on the table",
-    "handle": "@nidhi.today"
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "Equal on paper, not equal in use. Send this to someone dividing assets.",
+    "onscreenText": "Part 2: the paperwork a split leaves",
+    "subtext": "Send this to someone dividing assets"
   },
   "caption": {
-    "instagram": "Three assets, €200,000 each on paper. After tax, costs and waiting, they are not equal.\n\nCash and savings: €200,000, usable now. Equity in a €400,000 home: selling costs of about 6% of the price take €24,000, leaving about €176,000 once sold. A pension: tax on withdrawal at an illustrative 20% takes €40,000, leaving about €160,000, at retirement age. It cuts both ways: a pension also grows untaxed in the meantime, and a home is worth more to someone who needs to live in it.\n\nThree questions for every asset on the table: what is it worth after tax, what does it cost to hold or sell, and when can it actually be used?\n\n→ Save this for every asset on the table\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Selling costs and pension tax vary widely by country and person. Not legal or tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Three assets, €200,000 each on paper. After tax, costs and waiting, they are not equal.\n\nThree questions for every asset in a separation. Illustrative figures.",
+    "instagram": "Splitting assets in a separation? €200,000 in cash and €200,000 in a pension. Are they worth the same to you?\n\nAfter the windfall series, money that arrives through a split: the same headline number can be worth very different amounts.\n\nCash and savings: €200,000, usable now. Equity in a €400,000 home: selling costs of about 6% of the price take €24,000, leaving about €176,000 once sold. A pension: tax on withdrawal at an illustrative 20% takes €40,000, leaving about €160,000, at retirement age. It cuts both ways: a pension also grows untaxed in the meantime, and a home is worth more to someone who needs to live in it.\n\nThree questions for every asset on the table: what is it worth after tax, what does it cost to hold or sell, and when can it actually be used?\n\n→ Know someone dividing assets? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Selling costs and pension tax vary widely by country and person. Not legal or tax advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Splitting assets? €200,000 in cash, in a home or in a pension is not worth the same after tax, costs and waiting. Illustrative, not legal or tax advice.",
     "instagramKeywords": [
       "dividing assets",
       "equal split",
@@ -276,5 +190,6 @@
     "divorcefinances",
     "separation",
     "moneyafterdivorce"
-  ]
+  ],
+  "hookStyle": "question"
 }

@@ -1,0 +1,162 @@
+{
+  "slug": "zero-percent-instalments",
+  "postTitle": "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/zero-percent-instalments",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "0% interest can still cost you: a balance left at a deadline, a late or failed payment, fees on top",
+  "topicChip": "0% · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson: deferred interest (some plans charge interest back to the purchase date if any balance is left at the deadline; €1,200, €120 left, about €176 at 25%, left out: council Nov 5, the figure needs its schedule and rate). Bars are not to scale of any plan. Late or failed payments bring fees, and on some plans switch the plan to interest; processing fees and tax on hidden interest. Numbers: 0%, €1,200."
+  },
+  "hookVariants": [
+    {
+      "id": "fine-print",
+      "layout": "bar-gap",
+      "narration": "Part two: zero percent interest can still cost you.",
+      "onscreenLines": [
+        "Your plan is interest free until a deadline",
+        "What if you still owe money then?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "cost"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Twelve hundred euros, at zero percent until a deadline.",
+      "onscreenText": "€1,200 at 0%",
+      "subtext": "Until a deadline",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "A small balance is left at the deadline.",
+      "onscreenText": "A little left",
+      "subtext": "At the deadline",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "warning",
+      "narration": "On some plans, interest is then charged from purchase day, on the whole purchase, not just what is left. That is called deferred interest.",
+      "onscreenText": "Interest from day one",
+      "subtext": "On the whole purchase",
+      "emphasis": [
+        "whole"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Also check late or failed payments, and fees or taxes on top.",
+      "onscreenText": "The fine print",
+      "subtext": "Late payments, fees",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The fine print",
+        "rows": [
+          {
+            "label": "Deadline",
+            "value": "Whole amount paid?",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "A late or failed payment",
+            "value": "A fee? Interest?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "On top",
+            "value": "Fees, taxes?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Terms vary by provider and country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone paying in instalments.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before the deadline"
+  },
+  "caption": {
+    "instagram": "0% interest can still cost you. Three lines in the fine print.\n\n€1,200 bought at 0% until a deadline. The monthly payments leave a small balance at the deadline. On some plans, interest is then charged from purchase day, on the whole purchase, not just what is left. That is called deferred interest.\n\nA late or failed payment can bring a fee, or on some plans, interest. And there can be fees on the plan: processing fees, and any taxes that apply.\n\n→ Know someone paying in instalments? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: the interest can be more than the balance left. Terms vary by provider and country. Not financial advice.",
+    "tiktok": "0% interest can still cost you: a balance left at the deadline, a late payment, fees on top. Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "interestfree",
+    "moneytraps",
+    "creditcardtips"
+  ],
+  "reelPromise": "Who pays when 0% really is free, the costs that turn it into credit, and the checks many people run first",
+  "barStory": {
+    "mode": "direct",
+    "proportional": false,
+    "setup": {
+      "label": "Bought at 0%",
+      "display": "€1,200",
+      "note": "No interest if all is paid by a deadline",
+      "tone": "ink"
+    },
+    "unit": "",
+    "basis": "Illustrative: lengths show the idea, not a real plan",
+    "bars": [
+      {
+        "id": "left",
+        "label": "Left at the deadline",
+        "sublabel": "a small balance",
+        "value": 12,
+        "display": "A little",
+        "tone": "ink"
+      },
+      {
+        "id": "interest",
+        "label": "Interest charged",
+        "sublabel": "from purchase day",
+        "value": 40,
+        "display": "More",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative: the interest can be more than the balance left. Terms vary by provider and country."
+  },
+  "hookStyle": "question"
+}

@@ -8,54 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm",
-  "topic": "A regular bonus gets a short parking period too",
-  "topicChip": "BONUS WEEK",
+  "topic": "When an inheritance is shares or a home: the cash test, concentration, and a home's three options",
+  "topicChip": "ONE SUM · PART 3/3",
   "assumptions": {
     "currency": "EUR",
-    "notes": "€5,000 bonus parked 30 days at an illustrative 4%: 5,000 x 0.04 x 30/365 = €16.44, about €16, before tax. The 30 day period for regular windfalls is from the blog."
-  },
-  "bandStory": {
-    "layout": "equal",
-    "bands": [
-      {
-        "id": "park",
-        "label": "Park it",
-        "cost": "Days 1 to 30",
-        "items": [
-          "A named account"
-        ],
-        "tone": "teal"
-      },
-      {
-        "id": "write",
-        "label": "Write it",
-        "cost": "Meanwhile",
-        "items": [
-          "Where each euro goes"
-        ],
-        "tone": "ink"
-      },
-      {
-        "id": "move",
-        "label": "Move it",
-        "cost": "Day 30",
-        "items": [
-          "As written"
-        ],
-        "tone": "amber"
-      }
-    ],
-    "emphasis": "park",
-    "disclosure": "Illustrative. A common practice, not a rule."
+    "notes": "Lesson: concentration in the familiar; the cash test (someone handed the same amount in cash would rarely buy it, from the vesting shares section, framed as a question, not an outcome: council Nov 5 dropped 'many find the answer is no'); inherited property: sell, rent out or live in, a decision in month six often better than month two; estate deadlines handled separately from allocation; tax on a sale varies by country. No numbers."
   },
   "hookVariants": [
     {
-      "id": "bonus-week",
+      "id": "not-cash",
       "layout": "bands-gap",
-      "narration": "Your bonus lands this week. Where does it usually go by Friday?",
+      "narration": "Part three: inherited shares or a home. Do you have to decide now?",
       "onscreenLines": [
-        "Bonus this week?",
-        "Where is it by Friday?",
+        "You inherited shares or a home, and feel rushed",
+        "Do you have to decide now?",
         ""
       ],
       "anchor": {
@@ -63,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "Friday"
+        "now"
       ]
     }
   ],
@@ -71,78 +37,164 @@
   "beats": [
     {
       "id": "b1",
-      "kind": "example",
-      "narration": "A common practice for a regular bonus: thirty days in a separate, named account.",
-      "onscreenText": "Park it: 30 days",
-      "subtext": "A named account",
+      "kind": "story",
+      "narration": "First, the deadlines to settle what was left. They have fixed dates.",
+      "onscreenText": "Deadlines first",
+      "subtext": "Fixed dates",
       "emphasis": [],
       "anchor": {
-        "type": "bands",
-        "stage": "park"
+        "type": "card",
+        "stage": "tool",
+        "title": "Two timelines",
+        "rows": [
+          {
+            "label": "Settling what was left",
+            "value": "Fixed dates",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
       }
     },
     {
       "id": "b2",
-      "kind": "stat",
-      "narration": "Five thousand at four percent earns about sixteen euros. The point is not the interest. It is the thirty days.",
-      "onscreenText": "About €16",
-      "subtext": "The point is the 30 days",
-      "emphasis": [
-        "days"
-      ],
+      "kind": "story",
+      "narration": "The investment decision can then take time.",
+      "onscreenText": "Then the decision",
+      "subtext": "It can take time",
+      "emphasis": [],
       "anchor": {
-        "type": "bands",
-        "stage": "all"
+        "type": "card",
+        "stage": "tool",
+        "title": "Two timelines",
+        "rows": [
+          {
+            "label": "Settling what was left",
+            "value": "Fixed dates",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "The investment decision",
+            "value": "Can take time",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
       }
     },
     {
       "id": "b3",
       "kind": "definition",
-      "narration": "Meanwhile, write where each euro goes. On day thirty, move it as written.",
-      "onscreenText": "The 30 day bonus check",
-      "subtext": "",
+      "narration": "When it comes, one question: if its value came as cash, would you buy this same thing?",
+      "onscreenText": "The cash test",
+      "subtext": "Would you buy it?",
+      "emphasis": [
+        "cash"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "The cash test",
+        "rows": [
+          {
+            "label": "What arrived",
+            "value": "Shares or a home",
+            "valueSize": "small",
+            "tone": "ink"
+          },
+          {
+            "label": "If its value came as cash",
+            "value": "Would you buy it?",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "A question many people use, not an answer."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "Keeping it can leave much riding on one thing. That is called concentration.",
+      "onscreenText": "Much on one thing",
+      "subtext": "Riding on one asset",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The 30 day bonus check",
+        "title": "The cash test",
         "rows": [
           {
-            "label": "Days 1 to 30",
-            "value": "Park it",
-            "tone": "teal"
-          },
-          {
-            "label": "Meanwhile",
-            "value": "Write it",
+            "label": "What arrived",
+            "value": "Shares or a home",
+            "valueSize": "small",
             "tone": "ink"
           },
           {
-            "label": "Day 30",
-            "value": "Move it",
+            "label": "If its value came as cash",
+            "value": "Would you buy it?",
+            "valueSize": "small",
+            "tone": "teal"
+          },
+          {
+            "label": "Keeping it",
+            "value": "Much on one thing?",
+            "valueSize": "small",
             "tone": "amber"
           }
         ],
-        "footnote": "Illustrative. A common practice, not a rule."
+        "footnote": "A question many people use, not an answer."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone with a bonus coming? Send them this.",
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone who has inherited.",
     "onscreenText": "Send this to them",
-    "subtext": "Before payday",
-    "handle": "@nidhi.today"
+    "subtext": "Someone who has inherited"
   },
   "caption": {
-    "instagram": "Your bonus lands this week. Where does it usually go by Friday?\n\nA common practice for a regular bonus: 30 days in a separate, named account, while you write where each euro goes. €5,000 at 4% earns about €16. The point is the 30 days.\n\n→ Know someone getting a year end bonus who usually spends it the same week? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax.",
-    "tiktok": "Bonus this week? A 30 day pause is a common practice. Illustrative."
+    "instagram": "What if the inheritance is shares or a home, not cash?\n\nOne question people use: if its value came as cash, would you buy this same thing? Keeping it can leave much of your money riding on one thing. That is called concentration.\n\nFor a home, people compare selling, renting it out and living in it, with the costs and income of each. Deadlines to settle what was left, and tax, come first; the investment decision can then take time.\n\n→ Know someone who has inherited shares or a home? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Estate rules, deadlines and tax vary by country. Not financial advice.",
+    "tiktok": "Inherited shares or a home? The cash test: if its value came as cash, would you buy this same thing? Illustrative, not financial advice."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "yearendbonus",
-    "bonusplan",
-    "savingshabits"
-  ]
+    "inheritedproperty",
+    "estateplanning",
+    "diversification"
+  ],
+  "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
+  "bandStory": {
+    "layout": "equal",
+    "emphasis": "shares",
+    "bands": [
+      {
+        "id": "shares",
+        "label": "Inherited shares",
+        "cost": "Often few companies",
+        "items": [
+          "Their value",
+          "moves every day"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "home",
+        "label": "An inherited home",
+        "cost": "One property",
+        "items": [
+          "Its costs",
+          "keep running"
+        ],
+        "tone": "ink"
+      }
+    ],
+    "disclosure": "Illustrative. Taxes, estate rules and deadlines differ by country."
+  },
+  "hookStyle": "question"
 }

@@ -8,64 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm",
-  "topic": "Many people park a windfall before deciding anything",
-  "topicChip": "PARK IT FIRST",
+  "topic": "An inheritance arrives as one sum: how many people divide it",
+  "topicChip": "ONE SUM · PART 1/3",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Blog: if savings pay 4% a year, €50,000 parked for 90 days earns about €500 of interest (50,000 x 0.04 x 90/365 = €493). Before tax. Parking periods from the blog: regular windfall about 30 days; larger irregular 60 to 90; emotionally loaded 90 minimum. Within deposit insurance limits."
-  },
-  "bandStory": {
-    "layout": "equal",
-    "bands": [
-      {
-        "id": "park",
-        "label": "Park",
-        "cost": "30 to 90 days",
-        "items": [
-          "A named savings account",
-          "Earns while you decide"
-        ],
-        "tone": "teal"
-      },
-      {
-        "id": "plan",
-        "label": "Plan",
-        "cost": "On paper",
-        "items": [
-          "Where each euro goes"
-        ],
-        "tone": "ink"
-      },
-      {
-        "id": "deploy",
-        "label": "Deploy",
-        "cost": "As written",
-        "items": [
-          "All at once or in steps"
-        ],
-        "tone": "ink"
-      },
-      {
-        "id": "monitor",
-        "label": "Monitor",
-        "cost": "6 to 12 months",
-        "items": [
-          "Spending and allocation"
-        ],
-        "tone": "amber"
-      }
-    ],
-    "emphasis": "park",
-    "disclosure": "Illustrative. 4% before tax; rates and deposit protection vary by country."
+    "notes": "Lesson: set the money apart in its own labelled account while taxes and urgent obligations are checked; then the usual priorities at the scale of the sum: expensive debt, emergency savings, tax advantaged saving capped by this year's limit, the rest invested, spread wide (concentration). Considerations, not a sequence (council Nov 5). No numbers."
   },
   "hookVariants": [
     {
-      "id": "just-landed",
+      "id": "divide",
       "layout": "bands-gap",
-      "narration": "Fifty thousand euros just landed. What do many people do first? They park it, often ninety days or more for an inheritance.",
+      "narration": "A large sum lands in your account. Where does it go first?",
       "onscreenLines": [
-        "€50,000 just landed?",
-        "Many park it first",
+        "A large sum just landed in your account",
+        "Where does it go first?",
         ""
       ],
       "anchor": {
@@ -73,7 +29,7 @@
         "stage": "hook"
       },
       "emphasis": [
-        "Nothing"
+        "divide"
       ]
     }
   ],
@@ -82,75 +38,145 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Many people park it in a named savings account. At four percent, it earns about five hundred in ninety days.",
-      "onscreenText": "Park: about €500",
-      "subtext": "€50,000, 90 days, 4% before tax",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "park"
-      }
-    },
-    {
-      "id": "b2",
-      "kind": "list",
-      "narration": "That buys time to plan, deploy, and check spending after.",
-      "onscreenText": "Then plan, deploy, monitor",
-      "subtext": "The decision comes after the emotion",
-      "emphasis": [],
-      "anchor": {
-        "type": "bands",
-        "stage": "all"
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "definition",
-      "narration": "A common practice: thirty days for a bonus, sixty to ninety for a sale, ninety or more for an inheritance.",
-      "onscreenText": "The parking period",
-      "subtext": "",
+      "narration": "Many first set it apart, in its own account.",
+      "onscreenText": "Set apart first",
+      "subtext": "Its own account",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The parking period",
+        "title": "Set apart first",
         "rows": [
           {
-            "label": "Bonus",
-            "value": "30 days",
+            "label": "Its own account",
+            "value": "Named",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "While it waits, taxes and urgent bills come first.",
+      "onscreenText": "Set it apart",
+      "subtext": "Taxes and urgent bills first",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Set apart first",
+        "rows": [
+          {
+            "label": "Its own account",
+            "value": "Named",
+            "valueSize": "small",
             "tone": "teal"
           },
           {
-            "label": "Sale proceeds",
-            "value": "60 to 90",
+            "label": "Meanwhile",
+            "value": "Taxes, urgent bills",
+            "valueSize": "small",
             "tone": "ink"
-          },
-          {
-            "label": "Inheritance",
-            "value": "90 or more",
-            "tone": "amber"
           }
         ],
-        "footnote": "A common practice, not a rule."
+        "footnote": "Illustrative. Rules and deadlines vary by country."
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "Then expensive debt, which drains it with interest.",
+      "onscreenText": "Expensive debt",
+      "subtext": "Stops the interest",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "debt"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "Cash for surprises: emergency savings.",
+      "onscreenText": "Cash for surprises",
+      "subtext": "Emergency savings",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "cushion"
+      }
+    },
+    {
+      "id": "b5",
+      "kind": "list",
+      "narration": "And the rest, spread across many investments.",
+      "onscreenText": "The rest, spread wide",
+      "subtext": "Many investments",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "spread"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone who just inherited money? Send them this.",
-    "onscreenText": "Send this to them",
-    "subtext": "Before they decide",
-    "handle": "@nidhi.today"
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone with money landing. Part two: at once, or spread out?",
+    "onscreenText": "Part 2: at once or spread out?",
+    "subtext": "Send this to someone with money landing"
   },
   "caption": {
-    "instagram": "€50,000 just landed in your account. What do many people do first? They park it before deciding, often 90 days or more after an inheritance.\n\nThey park it in a separate, named savings account. At 4%, €50,000 earns about €500 in 90 days while they plan.\n\n→ Know someone who has just inherited money and feels they must decide now? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative, before tax. Rates and deposit protection vary by country.",
-    "tiktok": "€50,000 just landed? Many people park it before deciding. Illustrative."
+    "instagram": "A large sum lands in your account, from an inheritance, a bonus or a sale. Where does it go first?\n\nMany people set it apart first, in its own account, while taxes and urgent bills are checked. Then they look at expensive debt, since paying it off stops the interest draining the pot; cash for surprise costs, called emergency savings; saving where tax is lower, usually up to a yearly limit; and the rest, spread across many investments rather than riding on one.\n\nOne sum, several jobs. Pause, then plan.\n\nPart 2: invest it all at once, or spread it out?\n\n→ Know someone with an inheritance or a bonus landing? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which of these fit, and in what order, differs by household and country. Not financial advice.",
+    "tiktok": "An inheritance arrives as one sum. Many people set it apart first, then look at expensive debt, emergency savings, saving where tax is lower, and spreading the rest. Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "inheritancemoney",
-    "lumpsum",
-    "financialcalm"
-  ]
+    "inheritance",
+    "windfall",
+    "moneyplan"
+  ],
+  "reelPromise": "How many people divide a large sum, whether to invest it all at once or spread it out, and what to do when it arrives as shares or a home",
+  "bandStory": {
+    "layout": "equal",
+    "emphasis": "debt",
+    "bands": [
+      {
+        "id": "debt",
+        "label": "Expensive debt",
+        "cost": "Stops the interest",
+        "items": [
+          "Paying it off",
+          "stops the pot draining"
+        ],
+        "tone": "amber"
+      },
+      {
+        "id": "cushion",
+        "label": "Cash for surprises",
+        "cost": "Emergency savings",
+        "items": [
+          "For costs",
+          "nobody planned"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "spread",
+        "label": "The rest, spread wide",
+        "cost": "Many investments",
+        "items": [
+          "Not riding",
+          "on one thing"
+        ],
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. Many people look at these; which fit, and in what order, differs by household and country."
+  },
+  "hookStyle": "question"
 }

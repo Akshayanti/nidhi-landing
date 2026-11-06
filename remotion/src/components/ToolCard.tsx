@@ -12,10 +12,18 @@ export function ToolCard({
   card,
   compact = false,
   style,
+  newFrom,
+  newReveal = 1,
+  visibleRows,
 }: {
   card: ToolCardData;
   compact?: boolean;
   style?: CSSProperties;
+  /** Rows from this index fade in with `newReveal` (a checklist built over several beats). */
+  newFrom?: number;
+  newReveal?: number;
+  /** Rows from this index are laid out but hidden, so a building checklist keeps its final row heights. */
+  visibleRows?: number;
 }) {
   const rows = card.rows.slice(0, 5);
   const width = compact ? 790 : 886;
@@ -67,6 +75,8 @@ export function ToolCard({
             <div
               key={`${row.label}-${row.value}`}
               style={{
+                opacity: visibleRows !== undefined && index >= visibleRows ? 0 : newFrom !== undefined && index >= newFrom ? newReveal : 1,
+                transform: newFrom !== undefined && index >= newFrom ? `translateY(${(1 - newReveal) * 14}px)` : undefined,
                 height: rowHeight,
                 boxSizing: "border-box",
                 display: "grid",
