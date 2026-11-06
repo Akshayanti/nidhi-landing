@@ -2,7 +2,7 @@
 
 > 5 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background, with one deliberate exception: the dark-mode teal used for text, accents, charts and the Discovery level (`#26A69A`, AA at 5.6:1). See "Dark mode: lightness, not just hue" below.
 
-**Last updated:** 2026-11-07
+**Last updated:** 2026-11-06
 
 **One copy for both repos.** This file is nidhi's brand and colour guide for the site (this repo) and for the planner (`NetWorthAndExpenses`). The planner's `docs/brand/color-palette.md` points here; change the guide here, never there. The shared rules come first; then how each codebase implements them, and where the two differ today.
 

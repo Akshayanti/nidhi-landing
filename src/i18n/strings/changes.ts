@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-07',
+    date: '2026-11-06',
     items: [
       {
         id: 'header-tagline',
@@ -52,11 +52,6 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'पानाच्या सर्वात वर, nidhi या नावाखाली, आता पानाच्या भाषेत टॅगलाइन दिसते. फोनवर ती पानाच्या वरच्या भागाच्या अगदी खाली वेगळ्या ओळीत येते. मराठी टॅगलाइन नवीन आहे: “पैशाची समज, एकदम सहज”.',
         },
       },
-    ],
-  },
-  {
-    date: '2026-11-06',
-    items: [
       {
         id: 'shared-cookie-answer',
         text: {
