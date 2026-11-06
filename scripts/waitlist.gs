@@ -49,7 +49,25 @@
  *                            The token travels in the body, never the URL,
  *                            so it does not end up in logs.
  *
- *   GET  ?action=health     Per-dependency ok/error JSON report.
+ *   POST action=list        form body: action, token
+ *                            Returns { ok: true, items: [{ email, source,
+ *                            created_at }] } when the token's SHA-256 matches
+ *                            LIST_TOKEN_SHA256_ below (a different token from
+ *                            the count one): one item per distinct, valid
+ *                            address, the first row winning, and nothing else
+ *                            from the sheet. The planner's admin tools read it
+ *                            on demand to choose whom to invite; nothing is
+ *                            invited automatically. The action and the token are
+ *                            read only from the POST body (form-encoded);
+ *                            anything in the query string is ignored, so a
+ *                            token sent in the URL is never accepted. If the
+ *                            sheet's first three headers are not email,
+ *                            source, created_at it answers { ok: false,
+ *                            error: 'schema' }.
+ *
+ *   GET  ?action=health     Coarse ok/false per dependency, with no tab names,
+ *                            counts or error text (details go to the script's
+ *                            own logs).
  */
 
 // ============================================================================
@@ -197,18 +215,23 @@ function doGet(e) {
       '</body></html>'
     );
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    // The message can name sheet internals, so the caller gets a fixed word.
+    console.error('[waitlist] GET failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
 
 function doPost(e) {
   try {
+    // The list action reads its action and token from the body only.
+    if (formBody_(e).action === 'list') return handleList_(e);
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'waitlist') return handleWaitlist_(e);
     if (action === 'count') return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    console.error('[waitlist] POST failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
 
@@ -244,8 +267,74 @@ function handleCount_(e) {
   return jsonResponse_({ ok: true, count: count });
 }
 
-// Walks the longer of the two whole, with no early return, so the time taken
-// says nothing about the token's length or how much of a guess was right.
+// The list action has its own token, so a leaked count token (which the
+// landing build holds) cannot read addresses. The plain token lives only in
+// the planner server's environment. Rotate it like the count token: new
+// token, new hash here, redeploy.
+var LIST_TOKEN_SHA256_ = '3be003dad4fd77a8765f2b77c57328a8127e43300db7290b96303abdcd99c32b';
+
+// Longest token the list action will hash: the real one is 43 characters, so
+// anything longer is not it and is not worth hashing.
+var MAX_TOKEN_LENGTH_ = 128;
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// First occurrence of each distinct, valid address wins. Only these three
+// fields leave the sheet.
+function handleList_(e) {
+  var given = String(formBody_(e).token || '');
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !sameString_(sha256Hex_(given), LIST_TOKEN_SHA256_)) return jsonResponse_({ ok: false, error: 'forbidden' });
+  var s = sheet_();
+  if (!headersMatch_(s)) return jsonResponse_({ ok: false, error: 'schema' });
+  var last = s.getLastRow();
+  if (last < 2) return jsonResponse_({ ok: true, items: [] });
+  var seen = {};
+  var items = [];
+  s.getRange(2, COL.email, last - 1, COL.created_at - COL.email + 1).getValues().forEach(function (row) {
+    var email = normalizeEmail_(row[COL.email - 1]);
+    if (!isValidEmail_(email) || seen[email]) return;
+    seen[email] = true;
+    var created = row[COL.created_at - 1];
+    items.push({
+      email: email,
+      source: String(row[COL.source - 1] || '').slice(0, 200),
+      created_at: created instanceof Date ? created.toISOString() : String(created || ''),
+    });
+  });
+  return jsonResponse_({ ok: true, items: items });
+}
+
+/** Whether row 1 starts with email, source, created_at, so a moved column never leaks the wrong data. */
+function headersMatch_(sh) {
+  var headers = sh.getRange(1, 1, 1, 3).getValues()[0];
+  var expected = ['email', 'source', 'created_at'];
+  for (var i = 0; i < expected.length; i++) {
+    if (String(headers[i] || '').toLowerCase().trim() !== expected[i]) return false;
+  }
+  return true;
+}
+
+// Compare the fixed-length SHA-256 hex digests without returning at the first
+// mismatch.
 function sameString_(a, b) {
   var len = Math.max(a.length, b.length);
   var diff = a.length ^ b.length;
@@ -337,12 +426,15 @@ function dedupeOnce_(sh) {
 function handleHealth_() {
   var report = { ok: true, checks: {} };
 
+  // The result is public, so it says only ok or not; the reason is logged.
   function check(name, fn) {
     try {
-      report.checks[name] = { ok: true, info: fn() || null };
+      fn();
+      report.checks[name] = { ok: true };
     } catch (err) {
       report.ok = false;
-      report.checks[name] = { ok: false, error: String(err && err.message ? err.message : err) };
+      report.checks[name] = { ok: false };
+      console.error('[waitlist] health check ' + name + ' failed: ' + err);
     }
   }
 
@@ -350,32 +442,18 @@ function handleHealth_() {
     var required = ['SPREADSHEET_ID', 'SHEET_NAME', 'SITE_URL'];
     var missing = required.filter(function (k) { return !prop_(k); });
     if (missing.length) throw new Error('Missing: ' + missing.join(', '));
-    return { configured: required };
   });
 
   check('web_app_url', function () {
-    var url = ScriptApp.getService().getUrl();
-    if (!url) throw new Error('ScriptApp.getService().getUrl() returned empty — not deployed as a web app?');
-    report.web_app_url = url;
-    return { url: url };
+    if (!ScriptApp.getService().getUrl()) throw new Error('not deployed as a web app');
   });
 
   check('sheet', function () {
-    var s = sheet_();
-    var headers = s.getRange(1, 1, 1, 3).getValues()[0];
-    var expected = ['email', 'source', 'created_at'];
-    for (var i = 0; i < expected.length; i++) {
-      if (String(headers[i] || '').toLowerCase() !== expected[i]) {
-        throw new Error('Column ' + (i + 1) + ' header "' + headers[i] + '" does not match expected "' + expected[i] + '". Headers found: ' + JSON.stringify(headers));
-      }
-    }
-    var rows = s.getLastRow() - 1; // minus header
-    return { tab: s.getName(), headers: headers, row_count: rows };
+    if (!headersMatch_(sheet_())) throw new Error('headers do not match');
   });
 
   check('posthog', function () {
-    var cfg = config_();
-    return { configured: !!cfg.posthogApiKey, host: cfg.posthogHost };
+    config_();
   });
 
   return jsonResponse_(report);
