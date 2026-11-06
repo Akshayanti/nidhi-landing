@@ -259,6 +259,7 @@ note records why this one won.
 
 | English | Marathi | Notes |
 | --- | --- | --- |
+| Money, understood (brand tagline: the header, image alt text, structured data, print) | पैशाची समज, एकदम सहज | Owner's decision, Nov 6 2026, with the council, replacing पैसा, समजेल असा. The Marathi sibling of the Hindi पैसे की समझ, एकदम सहज: समज/सहज echo each other (samaj/sahaj, closer than in Hindi), and एकदम and सहज are everyday Marathi. Singular पैशाची, not plural पैशांची: the line names money as an idea, as in पैशाची किंमत; the plural leans toward amounts and dealings (पैशांचे व्यवहार). No full stop as a slogan: the line has no verb. It appears five times in `src/i18n/strings/mr.ts` (`nav.tagline`, `meta.defaultImageAlt`, `home.meta.imageAlt`, `home.schema.slogan`, `home.schema.site`) and must read identically in all five. |
 | Understand your money (the home page headline, and its title, description and share-image text) | तुमचे व्यवहार समजून घ्या | Owner's decision, Oct 20 2026, on a native speaker's suggestion: व्यवहार (your dealings with money) reads more naturally than पैसे. |
 | lesson | धडा | Plural धडे. |
 | learning path | शिकण्याचा मार्ग | |

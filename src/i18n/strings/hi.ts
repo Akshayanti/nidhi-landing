@@ -24,13 +24,15 @@ export const hi: Dict = {
   },
 
   /**
-   * The brand line, "Money, understood", in its one approved Hindi rendering.
-   * It appears five times in this file (here, the footer tagline, and three
-   * keys under `home`) and must read identically in all five, which is what
-   * `docs/i18n/hi-glossary.md` records it for.
+   * The brand line, "Money, understood", in its one approved Hindi rendering,
+   * पैसे की समझ, एकदम सहज. It appears five times in this file (here,
+   * `nav.tagline` in the header, and three keys under `home`) and must read
+   * identically in all five, which is what `docs/i18n/hi-glossary.md` records
+   * it for. The slogan and header keys carry no danda (the line has no verb);
+   * in running text a danda ends it.
    */
   meta: {
-    defaultImageAlt: 'nidhi: पैसा, समझ आ गया। मुफ़्त पर्सनल फाइनेंस टूल और वित्तीय साक्षरता।',
+    defaultImageAlt: 'nidhi: पैसे की समझ, एकदम सहज। मुफ़्त पर्सनल फाइनेंस टूल और वित्तीय साक्षरता।',
   },
 
   languagePicker: {
@@ -43,6 +45,7 @@ export const hi: Dict = {
     menuLabel: 'मेन्यू',
     menuCloseLabel: 'मेन्यू बंद करें',
     homeLabel: 'nidhi का होम पेज',
+    tagline: 'पैसे की समझ, एकदम सहज',
     newTabHint: ' (नए टैब में खुलता है)',
     groups: { learn: 'सीखें', tools: 'मुफ़्त टूल', about: 'हमारे बारे में', language: 'भाषा' },
     buttons: { tools: 'मुफ़्त टूल', learn: 'सीखें' },
@@ -1049,11 +1052,11 @@ export const hi: Dict = {
       description:
         'अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल: बुनियादी बातों से लेकर उन हालात तक जहाँ पैसा कई मुद्राओं में फैला हो।',
       imageAlt:
-        'nidhi: पैसा, समझ आ गया। अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल।',
+        'nidhi: पैसे की समझ, एकदम सहज। अपने पैसे को समझने और अपने भविष्य की योजना बनाने के लिए मुफ़्त पर्सनल फाइनेंस पाठ और निजी टूल।',
     },
     /** Structured data, not visible text. It still reads in the page's language. */
     schema: {
-      slogan: 'पैसा, समझ आ गया।',
+      slogan: 'पैसे की समझ, एकदम सहज',
       organization:
         'nidhi आम लोगों को अपना पैसा समझने में मदद करता है: मुफ़्त और क्रमबद्ध पर्सनल फाइनेंस पाठ, ब्राउज़र में ही चलने वाले निजी टूल, और वित्तीय भविष्य के लिए एक प्लानर। शुरुआत बुनियादी बातों से होती है और वित्त के जटिल होते जाने पर भी यह काम आता है, तब भी जब पैसा कई मुद्राओं और देशों में बँटा हो।',
       knowsAbout: [
@@ -1067,7 +1070,7 @@ export const hi: Dict = {
         'व्यवहारगत वित्त',
         'कई मुद्राओं में पैसा',
       ],
-      site: 'पैसा, समझ आ गया। पर्सनल फाइनेंस सीखें, अपने पैसे को समझें, और अपने भविष्य की योजना बनाएँ: बुनियादी बातों से लेकर उन हालात तक जहाँ पैसा कई मुद्राओं और देशों में फैला हो।',
+      site: 'पैसे की समझ, एकदम सहज। पर्सनल फाइनेंस सीखें, अपने पैसे को समझें, और अपने भविष्य की योजना बनाएँ: बुनियादी बातों से लेकर उन हालात तक जहाँ पैसा कई मुद्राओं और देशों में फैला हो।',
     },
     /**
      * The bar under the header that points to /volunteers/ while the call
