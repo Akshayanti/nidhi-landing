@@ -172,6 +172,21 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 6, 2026',
+    iso: '2026-11-06',
+    material: true,
+    summary: 'The planner can now invite people from the waitlist and the volunteer beta list. Its database stores the email addresses an admin invites, with the invitation records, and is hosted by DigitalOcean in Frankfurt. To choose whom to invite, our admins read the two lists in the planner\'s admin tools, which reach the sheets through a protected link whose secret key stays on the planner\'s server. A person picks every invite, and the waitlist still sends one email: your invite. Each site build, scheduled ones included, now reads both lists automatically to compute a public total of people waiting for a beta invite (the waitlist plus the volunteers who ticked the beta box, each person once); invitations are still chosen by a person. This change adds no visitor analytics, browser storage or third-party requests on this site.',
+    details: [
+      'What changed: the planner\'s database now stores the email address of each person an admin invites to the beta, with the invitation\'s records: when it was created, its expiry, whether it was withdrawn or used, and which account used it. It lives on DigitalOcean (Frankfurt, Germany, region FRA1, in the EU), which the "Where it lives" section now lists. Account data in the planner is covered by the planner\'s own privacy notice.',
+      'Who can read the lists: the waitlist and the volunteer beta-interest list stay in the Google Sheets they are in today. A small number of nidhi admins read them in the planner\'s admin tools, to choose whom to invite. The tools reach each sheet through a protected link: a request that carries a secret key, which stays on the planner\'s server and is never shown to admins. From the waitlist, the planner is sent only the email address, the page you signed up from and when you signed up. From the volunteer sheet, it is sent only the email address and when the form was submitted, and only for people who ticked the planner beta box. Your other answers stay in the sheet.',
+      'Retention: the planner keeps an invitation record while it can still be used. Unused invitation records are deleted 30 days after they expire or are withdrawn, an invitation with no end date stays until it is withdrawn or used, and used invitation records are deleted with the account. Asking for removal at hello@nidhi.today removes both the sheet entry and the planner record. "How long we keep it" now says so.',
+      'Nothing is automatic: a person is invited only when an admin picks them. Being on a list does not invite anyone by itself. Separately, each site build, including builds started by the site\'s publishing schedule, reads the lists automatically to work out the public waiting total and nothing else.',
+      'Still one email: the waitlist\'s promise is unchanged, one email when the beta opens for you, which is your invite. Nothing else is sent to waitlist or volunteer addresses because of this. The waitlist line that said there was no status tracking is corrected: it now says the planner records an invitation\'s status.',
+      'Waiting total: the waitlist box on the home page and the free tools may say how many people are waiting for a beta invite ("12 people are waiting for a beta invite."). The number counts the distinct addresses on the waitlist plus the volunteers who ticked the planner beta box on the volunteer form, each person once even if they are on both. Every site build, including the scheduled ones, reads the two lists automatically to work out this number and nothing else. It is worked out inside our Google account: the waitlist\'s script opens the volunteer form\'s response sheet itself, and only the single number leaves it, in answer to a request that carries a secret token, once per site build. Your browser makes no request for it. No email address or name is displayed, but someone who already knows about a particular signup or beta choice may be able to infer it from a change in the total. It replaces the earlier waitlist-only total, which appeared from 20 in steps of 20. Now the number is shown from 1: exact below 20, then rounded down to a multiple of 5 up to 49 and a multiple of 10 from 50, with a plus sign. Because small numbers are exact, a change of one can be noticed between one site build and the next, which is how such an inference could be made. If the volunteer sheet cannot be read, no number is shown. The waitlist and volunteer sections of this notice now say so, in every edition.',
+      'On this site, practice is unchanged: no new visitor analytics, no new cookie or browser storage, no new third-party request. The "What we collect, and when", "Where it lives", "What we don\'t do" and "How long we keep it" sections of this notice now say all of this, in every edition.',
+    ],
+  },
+  {
     date: 'Nov 4, 2026',
     iso: '2026-11-04',
     material: true,
@@ -792,6 +807,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>{waitlistNotice.page}</li>
         <li>{waitlistNotice.timestamp}</li>
         <li>{waitlistNotice.singleOptIn}</li>
+        <li>{waitlistNotice.invites}</li>
         <li>{waitlistNotice.total}</li>
         <li>
           {waitlistNotice.from.before}<code>{KEY.updates}</code>{waitlistNotice.from.after}
@@ -806,6 +822,8 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>{volunteersNotice.credit}</li>
         <li>{volunteersNotice.agreement}</li>
         <li>{volunteersNotice.followUp}</li>
+        <li>{volunteersNotice.invites}</li>
+        <li>{volunteersNotice.total}</li>
         <li>{volunteersNotice.google}</li>
       </ul>
 
@@ -837,6 +855,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>
           <strong>{where.processors.google.name}</strong>{where.processors.google.before}<code>{KEY.hello}</code>{where.processors.google.middle}<code>{KEY.updates}</code>{where.processors.google.after}
         </li>
+        <li><strong>{where.processors.planner.name}</strong>{where.processors.planner.rest}</li>
         <li><strong>{where.processors.github.name}</strong>{where.processors.github.rest}</li>
         <li><strong>{where.processors.browser.name}</strong>{where.processors.browser.rest}</li>
       </ul>
@@ -863,6 +882,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li><strong>{retention.newsletter.lead}</strong>{retention.newsletter.rest}</li>
         <li><strong>{retention.waitlist.lead}</strong>{retention.waitlist.rest}</li>
         <li><strong>{retention.volunteers.lead}</strong>{retention.volunteers.rest}</li>
+        <li><strong>{retention.invites.lead}</strong>{retention.invites.rest}</li>
         <li><strong>{retention.bounced.lead}</strong>{retention.bounced.rest}</li>
         <li><strong>{retention.localStorage.lead}</strong>{retention.localStorage.rest}</li>
       </ul>

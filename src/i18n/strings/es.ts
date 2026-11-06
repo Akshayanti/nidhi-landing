@@ -665,9 +665,11 @@ export const es: Dict = {
       email: 'Tu dirección de correo electrónico.',
       page: 'La página desde la que te apuntaste.',
       timestamp: 'La fecha y hora en que te apuntaste.',
-      singleOptIn: 'Sin paso de confirmación ni seguimiento de estado. Alta directa (single opt-in).',
+      singleOptIn: 'No hace falta ningún correo de confirmación. Si te invitamos, el planificador registra el estado de la invitación, como se explica más abajo.',
+      invites:
+        'Para elegir a quién invitar a la beta del planificador, un administrador de nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que los administradores nunca reciben. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
       total:
-        'Si se une suficiente gente a la lista de espera, el sitio puede mostrar el total de inscripciones, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha apuntado.',
+        'El sitio puede mostrar cuántas personas esperan una invitación a la beta: las de esta lista de espera más las personas voluntarias que marcaron la casilla de la beta del planificador, y cada una cuenta una sola vez aunque esté en ambas. Ese número se calcula dentro de nuestra cuenta de Google y solo el número sale de ella. Por debajo de 20 es exacto, así que entre una actualización del sitio y la siguiente puede verse un cambio de uno. Desde 20 se redondea hacia abajo, a un múltiplo de 5 hasta 49 y a un múltiplo de 10 desde 50. No se muestra ninguna dirección de correo. Alguien que ya tenga información sobre una inscripción concreta o la elección de la beta podría deducirla a partir de un cambio en el total.',
       from: {
         before: 'El correo de invitación llegará desde ',
         after: '. Añádela a tus contactos para que no acabe en spam.',
@@ -686,6 +688,10 @@ export const es: Dict = {
         'Si luego colaboras, te pedimos por correo permiso para publicar tu trabajo. Tu respuesta es el registro de ese permiso: tu nombre legal, tu dirección de correo, el texto que aceptaste y la fecha. Se queda en nuestro correo de Google Workspace, nunca lo publicamos y lo usamos solo para demostrar que diste el permiso.',
       followUp:
         'En esa hoja privada también anotamos el estado del seguimiento y la fecha de nuestro último contacto contigo, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
+      invites:
+        'Si marcaste la casilla de la beta del planificador, un administrador de nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
+      total:
+        'Si marcaste la casilla de la beta del planificador, también cuentas en el total de personas que esperan una invitación a la beta que el sitio puede mostrar (descrito arriba, en la lista de espera), una sola vez aunque estés también en la lista de espera. Solo se muestra el número, nunca tu dirección. Aquí también existe la posibilidad de deducción descrita arriba.',
       google:
         'La página del formulario es de Google, así que mientras lo rellenas se aplican las condiciones y la política de privacidad de Google.',
     },
@@ -755,7 +761,12 @@ export const es: Dict = {
           before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
           middle: ' para contacto general y soporte, ',
           after:
-            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Solo nosotros podemos leer las hojas y las respuestas guardadas en ellas.',
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Las hojas son privadas: los administradores de nidhi pueden leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella.',
+        },
+        planner: {
+          name: 'DigitalOcean',
+          rest:
+            ' (Fráncfort, Alemania; región FRA1, en la UE): aloja la base de datos del planificador, que guarda solo las direcciones de correo que un administrador invita y los registros de invitación descritos en «Cuánto tiempo lo conservamos». Los datos de cuenta los cubre el aviso de privacidad del propio planificador.',
         },
         github: {
           name: 'GitHub Pages',
@@ -767,7 +778,7 @@ export const es: Dict = {
         },
       },
       thatIsAll:
-        'Esa es la lista completa de servicios que tratan datos por nosotros. No hay un cuarto encargado del tratamiento escondido en una nota al pie.',
+        'Esa es la lista completa de servicios que tratan datos por nosotros. No hay un quinto encargado del tratamiento escondido en una nota al pie.',
       frankfurter: {
         lead: 'Un servicio al que tu navegador se conecta directamente: Frankfurter',
         rest: ', un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales. Tu navegador le pide los tipos más recientes cuando abres la calculadora de patrimonio neto (y otra vez si cambias allí la moneda de tus gastos). La solicitud solo incluye códigos de moneda, nunca tus cantidades ni nada que hayas escrito, y la respuesta es una tabla con los tipos de muchas monedas, de la que la calculadora conserva las que ofrece. Como cualquier solicitud que hace tu navegador, le muestra a Frankfurter tu dirección IP y el tipo de navegador. Va directamente de tu navegador a Frankfurter, así que nosotros nunca la vemos, y Frankfurter es independiente de nosotros: lo que conserve depende de ellos.',
@@ -781,7 +792,7 @@ export const es: Dict = {
         'No te rastreamos entre sitios. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
       screen: 'No grabamos tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento.',
       replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
-      imports: 'No importamos las listas del boletín ni de la lista de espera, ni las respuestas del formulario de voluntariado, a ninguna otra herramienta ni sistema de envío de correos.',
+      imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando un administrador lo pide, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que un administrador invita, junto con los registros de invitación.',
     },
 
     retention: {
@@ -800,6 +811,11 @@ export const es: Dict = {
       volunteers: {
         lead: 'Respuestas del formulario de voluntariado:',
         rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales.',
+      },
+      invites: {
+        lead: 'Invitaciones a la beta del planificador:',
+        rest:
+          ' si un administrador te invita desde cualquiera de las dos listas, el planificador guarda tu correo electrónico, cuándo se creó la invitación, su caducidad, si se retiró o se usó y qué cuenta la usó. Los registros de invitaciones sin usar se eliminan 30 días después de que caduquen o se retiren. Una invitación sin fecha de fin se conserva hasta que se retire o se use. Los registros de invitaciones usadas se eliminan junto con la cuenta. Para que lo eliminemos antes, escríbenos a hello@nidhi.today: eso incluye tanto la entrada de la hoja como el registro del planificador.',
       },
       bounced: {
         lead: 'Correos rebotados o no válidos:',
@@ -917,7 +933,10 @@ export const es: Dict = {
   waitlist: {
     region: 'Lista de espera de acceso anticipado',
     heading: '¿Quieres el planificador cuando se abra el acceso?',
-    joined: '{n}+ personas se han unido a mi lista de espera.',
+    waitingOne: '{n} persona espera una invitación a la beta.',
+    waitingFew: '{n} personas esperan una invitación a la beta.',
+    waitingMany: '{n} personas esperan una invitación a la beta.',
+    waitingAtLeast: '{n}+ personas esperan una invitación a la beta.',
     beta: { before: "Quienes prueben la beta reciben las funciones de pago gratis durante 12 meses tras el lanzamiento. ", link: "Cómo funciona la beta" },
     emailLabel: 'Correo electrónico',
     cta: 'Avísame',

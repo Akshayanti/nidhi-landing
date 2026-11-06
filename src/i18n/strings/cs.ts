@@ -631,9 +631,11 @@ export const cs: Dict = {
       email: 'Vaše e-mailová adresa.',
       page: 'Stránka, ze které zápis proběhl.',
       timestamp: 'Datum a čas zápisu.',
-      singleOptIn: 'Žádný potvrzovací krok, žádné sledování stavu. Přihlášení bez potvrzení (single opt-in).',
+      singleOptIn: 'Potvrzovací e-mail není potřeba. Pokud vás pozveme, plánovač zaznamená stav pozvánky, jak je popsáno níže.',
+      invites:
+        'Aby správce nidhi vybral, koho pozvat do bety plánovače, čte tento seznam v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a správci ho nikdy nedostanou. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které jste se přihlásili, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
       total:
-        'Pokud se na čekací listinu přihlásí dost lidí, web může ukázat celkový počet registrací zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda se přihlásil konkrétní člověk.',
+        'Web může ukázat, kolik lidí čeká na pozvánku do bety: lidé z této čekací listiny a dobrovolníci, kteří zaškrtli políčko pro betu plánovače, každý započtený jen jednou, i když je na obou seznamech. Číslo se spočítá uvnitř našeho účtu Google a ven z něj odchází jen samotné číslo. Pod 20 je přesné, takže změnu o jednoho člověka lze zaznamenat mezi dvěma sestaveními webu. Od 20 se zaokrouhluje dolů, do 49 na násobek 5 a od 50 na násobek 10. Žádná e-mailová adresa se nezobrazuje. Kdo už má informace o konkrétním přihlášení nebo zaškrtnutí políčka pro betu, může je ze změny celkového počtu odvodit.',
       from: {
         before: 'E-mail s pozvánkou přijde z adresy ',
         after: '. Přidejte si ji do kontaktů, aby neskončil ve spamu.',
@@ -652,6 +654,10 @@ export const cs: Dict = {
         'Pokud se pak zapojíte, požádáme vás e-mailem o svolení ke zveřejnění vaší práce. Vaše odpověď je záznamem tohoto svolení: vaše úřední jméno, e-mailová adresa, přijaté znění a datum. Zůstává v našem e-mailu Google Workspace, nikdy ho nezveřejňujeme a používáme ho jen k doložení, že svolení bylo uděleno.',
       followUp:
         'V této soukromé tabulce si také zapisujeme stav vyřízení a datum našeho posledního kontaktu s vámi, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
+      invites:
+        'Pokud jste zaškrtli políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
+      total:
+        'Pokud jste zaškrtli políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
       google:
         'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
     },
@@ -721,7 +727,12 @@ export const cs: Dict = {
           before: ' (regiony Google Cloud v EU): naše e-mailové adresy (',
           middle: ' pro obecný kontakt a podporu, ',
           after:
-            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Jen my můžeme číst tabulky a odpovědi v nich uložené.',
+            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo.',
+        },
+        planner: {
+          name: 'DigitalOcean',
+          rest:
+            ' (Frankfurt, Německo; region FRA1, v EU): hostuje databázi plánovače, která obsahuje jen e-mailové adresy, které správce pozve, a záznamy o pozvánkách popsané v části „Jak dlouho to uchováváme“. Údaje o účtu pokrývají vlastní zásady ochrany soukromí plánovače.',
         },
         github: {
           name: 'GitHub Pages',
@@ -733,7 +744,7 @@ export const cs: Dict = {
         },
       },
       thatIsAll:
-        'To je úplný seznam služeb, které pro nás zpracovávají data. Žádný čtvrtý zpracovatel schovaný někde v poznámce pod čarou.',
+        'To je úplný seznam služeb, které pro nás zpracovávají data. Žádný pátý zpracovatel schovaný někde v poznámce pod čarou.',
       frankfurter: {
         lead: 'Jedna služba, kterou váš prohlížeč kontaktuje přímo: Frankfurter',
         rest: ', bezplatná otevřená služba, která spojuje směnné kurzy zveřejňované centrálními bankami a dalšími oficiálními zdroji. Váš prohlížeč ji požádá o nejnovější kurzy, když otevřete kalkulačku čistého jmění (a znovu, pokud tam změníte měnu svých výdajů). Požadavek obsahuje jen kódy měn, nikdy vaše částky ani nic z toho, co napíšete, a odpovědí je tabulka kurzů mnoha měn, ze které si kalkulačka ponechá ty, které nabízí. Jako každý požadavek z vašeho prohlížeče ukáže službě Frankfurter vaši IP adresu a typ prohlížeče. Jde přímo z vašeho prohlížeče do služby Frankfurter, takže ho nikdy nevidíme, a Frankfurter je na nás nezávislý: co uchovává, je jeho věc.',
@@ -747,7 +758,7 @@ export const cs: Dict = {
         'Nesledujeme vás napříč weby. Žádný Facebook pixel, žádný tag Google Ads, žádný LinkedIn Insight, žádný TikTok pixel, žádný retargeting jakéhokoli druhu.',
       screen: 'Nenahráváme vaši obrazovku, stisky kláves, hodnoty formulářů ani průběžné posouvání stránky.',
       replies: 'Odpovědi na e-maily newsletteru dostane člověk na adrese hello@nidhi.today, který je čte. Nikdy je nevkládáme do žádného systému webové analytiky ani reklamního systému.',
-      imports: 'Seznam odběratelů newsletteru, čekací listinu ani odpovědi z formuláře pro dobrovolnou pomoc neimportujeme do žádného jiného nástroje ani rozesílacího systému.',
+      imports: 'Seznam odběratelů newsletteru neimportujeme do žádných jiných nástrojů ani rozesílacích systémů. Když o to správce požádá, plánovač čte omezené údaje z čekací listiny a ze seznamu zájemců o betu mezi dobrovolníky, popsané výše, aby pomohl vybrat, koho pozvat. V jeho databázi se ukládají jen adresy, které správce pozve, spolu se záznamy o pozvánkách.',
     },
 
     retention: {
@@ -766,6 +777,11 @@ export const cs: Dict = {
       volunteers: {
         lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
         rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků.',
+      },
+      invites: {
+        lead: 'Pozvánky do bety plánovače:',
+        rest:
+          ' pokud vás správce pozve z kterékoli ze dvou listin, plánovač uloží vaši e-mailovou adresu, kdy pozvánka vznikla, kdy vyprší, zda byla odvolána nebo použita a jaký účet ji použil. Záznamy o nepoužitých pozvánkách se mažou 30 dní po vypršení nebo odvolání. Pozvánka bez data konce zůstává, dokud není odvolána nebo použita. Záznamy o použitých pozvánkách se mažou spolu s účtem. Chcete-li je odstranit dříve, napište na hello@nidhi.today: týká se to záznamu v tabulce i záznamu v plánovači.',
       },
       bounced: {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
@@ -879,7 +895,10 @@ export const cs: Dict = {
   waitlist: {
     region: 'Čekací listina na přednostní přístup',
     heading: 'Chcete plánovač, až se otevře?',
-    joined: 'Na mé čekací listině je už {n}+ lidí.',
+    waitingOne: 'Na pozvánku do bety čeká {n} člověk.',
+    waitingFew: 'Na pozvánku do bety čekají {n} lidé.',
+    waitingMany: 'Na pozvánku do bety čeká {n} lidí.',
+    waitingAtLeast: 'Na pozvánku do bety čeká {n}+ lidí.',
     beta: { before: "Kdo se zapojí do bety, má placené funkce 12 měsíců po spuštění zdarma. ", link: "Jak beta funguje" },
     emailLabel: 'E-mailová adresa',
     cta: 'Dejte mi vědět',
