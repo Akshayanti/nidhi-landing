@@ -1,0 +1,163 @@
+{
+  "slug": "zero-percent-instalments",
+  "postTitle": "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free",
+  "postLevel": "optimizing",
+  "episode": 10,
+  "seriesTotal": 0,
+  "blogPath": "blog/zero-percent-instalments",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "0% instalments charge no interest, so who pays? Often the shop; and no interest does not always mean the lowest price",
+  "topicChip": "0% · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson: when a plan charges nothing, the cost lands elsewhere: the shop pays a fee (it sells more), the price is higher, or a cash discount is lost (Jiri: €1,200 in instalments or €1,140 paid now; €60, about 10% a year, left in the lesson). Free when the price is the same, no fees, every payment on time. Numbers: 0%, €1,200, €1,140."
+  },
+  "hookVariants": [
+    {
+      "id": "who-pays",
+      "layout": "bands-gap",
+      "narration": "Instalments with no interest. Who pays for that?",
+      "onscreenLines": [
+        "The shop lets you pay in parts, with no interest",
+        "So who pays for that?",
+        ""
+      ],
+      "anchor": {
+        "type": "bands",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "who"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "list",
+      "narration": "Often the shop pays the company behind the plan a fee, because instalments help it sell more.",
+      "onscreenText": "The shop pays a fee",
+      "subtext": "It sells more",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "shop"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "list",
+      "narration": "But no interest does not always mean the lowest price.",
+      "onscreenText": "Not always the lowest price",
+      "subtext": "Compared with paying now",
+      "emphasis": [],
+      "anchor": {
+        "type": "bands",
+        "stage": "price"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "Imagine a laptop: one thousand two hundred euros in instalments.",
+      "onscreenText": "€1,200 in instalments",
+      "subtext": "Imagine a laptop",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Same laptop",
+        "rows": [
+          {
+            "label": "In instalments",
+            "value": "€1,200",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Prices vary by shop and country."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "comparison",
+      "narration": "Paid now, one thousand one hundred and forty. No interest, and it still costs more.",
+      "onscreenText": "€1,140 paid now",
+      "subtext": "No interest, still more",
+      "emphasis": [
+        "more"
+      ],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Same laptop",
+        "rows": [
+          {
+            "label": "In instalments",
+            "value": "€1,200",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Paid now",
+            "value": "€1,140",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Prices vary by shop and country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "The price for paying now shows the difference. Send this on. Part two: the fine print.",
+    "onscreenText": "Part 2: the fine print",
+    "subtext": "Send this to someone who picks instalments"
+  },
+  "caption": {
+    "instagram": "Instalments with no interest. Who pays for that?\n\nOften the shop pays the company behind the plan a fee, because instalments help it sell more. But no interest does not always mean the lowest price. Imagine a laptop at €1,200 in instalments, or €1,140 paid now: no interest, and it still costs more.\n\nThe price for paying now shows the difference. Same price, no fees, every payment on time: then it can cost you nothing extra.\n\nPart 2: the fine print that ends 0%.\n\n→ Know someone who picks instalments at every checkout? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Terms vary by shop, provider and country. Not financial advice.",
+    "tiktok": "Instalments with no interest. Who pays? Often the shop. But no interest is not always the lowest price: €1,200 in instalments, €1,140 paid now. Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "buynowpaylater",
+    "shoppingtips",
+    "instalments"
+  ],
+  "reelPromise": "Who pays when 0% really is free, the costs that turn it into credit, and why paying later tends to raise spending",
+  "bandStory": {
+    "layout": "equal",
+    "hideCostInHook": true,
+    "emphasis": "price",
+    "bands": [
+      {
+        "id": "shop",
+        "label": "The shop pays",
+        "cost": "Pays a fee",
+        "items": [
+          "To the plan's company",
+          "because it sells more"
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "price",
+        "label": "Not always cheapest",
+        "cost": "Compare",
+        "items": [
+          "No interest",
+          "can still cost more"
+        ],
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Who pays differs by shop, provider and country."
+  },
+  "hookStyle": "question"
+}

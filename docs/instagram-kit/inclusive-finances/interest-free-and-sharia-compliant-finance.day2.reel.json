@@ -33,22 +33,11 @@
         "label": "Layer 2",
         "cost": "How it is financed",
         "items": [
-          "Interest bearing debt: about a third",
-          "Cash and interest securities: about a third",
-          "Prohibited income: about 5%"
+          "Debt that charges interest: under about ⅓ of its size",
+          "Cash earning interest: under about ⅓ of its size",
+          "Income from banking, alcohol and the like: under about 5% of income"
         ],
         "tone": "teal"
-      },
-      {
-        "id": "portfolio",
-        "label": "Result",
-        "cost": "A different mix",
-        "items": [
-          "Fewer banks, more technology",
-          "A shorter list of companies",
-          "Sukuk in place of bonds"
-        ],
-        "tone": "ink"
       }
     ],
     "emphasis": "finance",
@@ -58,10 +47,10 @@
     {
       "id": "which-companies",
       "layout": "bands-gap",
-      "narration": "Shares can fit an interest free plan. Which companies?",
+      "narration": "Investing without interest? How do you know which companies fit?",
       "onscreenLines": [
-        "Shares can fit",
-        "Which companies?",
+        "You want to invest without earning interest",
+        "Which companies' shares fit?",
         ""
       ],
       "anchor": {
@@ -78,9 +67,9 @@
     {
       "id": "b1",
       "kind": "list",
-      "narration": "Layer one: what it does. Conventional banks, alcohol and gambling are typically out.",
+      "narration": "Layer one: its business. Banks, alcohol and gambling are usually out.",
       "onscreenText": "Layer 1: what it does",
-      "subtext": "Whole industries screened out",
+      "subtext": "Whole industries left out",
       "emphasis": [],
       "anchor": {
         "type": "bands",
@@ -90,7 +79,7 @@
     {
       "id": "b2",
       "kind": "list",
-      "narration": "Layer two: its finances. Interest bearing debt is commonly capped at about a third.",
+      "narration": "Layer two: debt that charges interest, often under a third of its size.",
       "onscreenText": "Layer 2: its finances",
       "subtext": "Ratios differ between standards",
       "emphasis": [
@@ -103,29 +92,15 @@
     },
     {
       "id": "b3",
-      "kind": "warning",
-      "narration": "The mix changes: fewer banks, sukuk in place of bonds.",
-      "onscreenText": "A different mix",
-      "subtext": "Different from the broad market",
-      "emphasis": [
-        "different"
-      ],
-      "anchor": {
-        "type": "bands",
-        "stage": "portfolio"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "list",
-      "narration": "The screen: business, debt, cash and securities, prohibited income.",
-      "onscreenText": "The screening check",
-      "subtext": "",
+      "kind": "definition",
+      "narration": "Together, these two layers are called the screen.",
+      "onscreenText": "The screen",
+      "subtext": "Two layers of checks",
       "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "The screening check",
+        "title": "The screen",
         "rows": [
           {
             "label": "What it does",
@@ -134,31 +109,32 @@
             "tone": "ink"
           },
           {
-            "label": "Debt, cash, securities",
-            "value": "About ⅓ each",
+            "label": "Debt, cash earning interest",
+            "value": "Under ⅓ of size",
             "valueSize": "small",
             "tone": "ink"
           },
           {
-            "label": "Prohibited income",
-            "value": "About 5%",
-            "tone": "teal"
+            "label": "Income from those businesses",
+            "value": "Under 5% of income",
+            "tone": "teal",
+            "valueSize": "small"
           }
         ],
-        "footnote": "Thresholds differ between standards. Not religious guidance or investment advice."
+        "footnote": "Debt and cash are measured against the company's size, that income against its total income. How size is measured, and the thresholds, differ between standards. Not religious guidance."
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Know someone choosing a screened fund? Send them this.",
+    "narration": "Choosing a screened fund? Send them this.",
     "onscreenText": "Send this to them",
     "subtext": "Before they pick a fund",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Investing in shares can fit an interest free plan. The hard part: which companies?\n\nWhat a company does: conventional banking, alcohol and gambling are typically out. How it is financed: common tests cap interest bearing debt, and cash plus interest bearing securities, at about a third each, and prohibited income at about 5%. The result holds fewer banks, with sukuk in place of bonds.\n\n→ Know someone choosing a screened fund? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nThresholds differ between standards. Not religious guidance or investment advice.",
-    "tiktok": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nTwo layers of screening, and what they do to a portfolio. Not religious guidance.",
+    "instagram": "Investing in shares can fit an interest free plan. The hard part: which companies?\n\nWhat a company does: conventional banking, alcohol and gambling are typically out. How it is financed: common tests keep debt that charges interest, and cash earning interest, under about a third of the company's size each, and income from businesses like banking or alcohol under about 5% of its income. The result holds fewer banks, and in place of loans to governments or companies, certificates tied to assets, called sukuk.\n\n→ Know someone choosing a screened fund? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nThresholds differ between standards. Not religious guidance. Not financial advice.",
+    "tiktok": "Investing in shares can fit an interest free plan. The hard part is which companies.\n\nTwo layers of screening, and what they do to the mix of investments. Not religious guidance.",
     "instagramKeywords": [
       "screened investing",
       "sharia screening",
@@ -192,5 +168,6 @@
     "sukuk",
     "investingeurope"
   ],
-  "reelPromise": "How cost plus, lease and partnership home finance work, and what changes for cash, retirement accounts and insurance"
+  "reelPromise": "How sale, lease and partnership home finance work, and what changes for savings, retirement accounts and insurance",
+  "hookStyle": "question"
 }

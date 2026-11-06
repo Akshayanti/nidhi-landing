@@ -28,7 +28,7 @@ glossary:
   - term: "Cash price"
     definition: "The price for paying the full amount now, which some shops set lower than the instalment price."
 order: 50.7
-pubDate: 2099-01-13
+pubDate: 2026-11-13
 localRules: [credit, borrowing, tax]
 level: "optimizing"
 primaryPersona: "jiri"

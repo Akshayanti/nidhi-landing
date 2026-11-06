@@ -10,7 +10,7 @@ keywords_day2: "after divorce checklist, update beneficiary after divorce, ex st
 
 ## Brief
 
-host: 51 Windfall Management (from Oct 30, 2026; ships right after it). The reels and carousel do not open from the host yet: write the companion opener ("the last post treated a lump sum as new money...") when these reels are made.
+host: 51 Windfall Management (from Oct 30, 2026; ships right after it). Reels rebuilt Nov 5, 2026 to the current rules (25 to 35 s, viewer first question covers, one step per beat); the companion opener is the day 1 caption's second line ("After the windfall series, money that arrives through a split").
 
 person: Two people separating, anonymous
 situation: A settlement gives each person €200,000 on paper. One share is cash and savings. One is the equity in a €400,000 home. One is a pension.
@@ -18,7 +18,7 @@ withheld: The three broad systems for dividing property, the inventory in detail
 
 ## Day 1 (angle)
 
-angle: Equal values are not equal assets: €200,000 in cash, in home equity and in a pension are worth different amounts after tax, costs and waiting
+angle: Splitting assets? €200,000 in cash, in a share of a home and in a pension are worth different amounts after tax, costs and waiting
 number: €200,000 each on paper: about €200,000, €176,000 and €160,000 after illustrative selling costs and tax
 takeaway: Comparing each asset after tax, after costs and by when it can be used shows what a split is actually worth. The rates differ by country and by person, and it cuts both ways.
 tool: Three questions per asset: what is it worth after tax, what does it cost to hold or sell, when can it actually be used?
@@ -138,7 +138,7 @@ read: The full separation checklist, in order
 
 ## Day 2 (angle)
 
-angle: A settlement divides assets; it does not update a single form, and the lender never signed it
+angle: Your separation is settled: is your ex still named on your pension, your will or your loans?
 number: Three kinds of paperwork that stay exactly as they were: beneficiary forms, wills and powers of attorney, joint debts
 takeaway: Many people update every form once they are legally free to, with the timing checked locally, and pay off or move joint debts into one name where affordable.
 tool: Three checks after a split: who is named on every form, who could act for you or inherit, whose name is on every debt?
@@ -263,7 +263,7 @@ more: The three options for a shared home
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: €200,000 each. Not equal.
+d1_f1_overlay: €200,000 each. Worth the same?
 d1_f1_caption: Why an equal split is not always equal
 
 d1_f2_kind: poll
@@ -280,7 +280,7 @@ d1_f3_caption: Three questions for every asset
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: A settlement updates no forms
+d2_f1_overlay: Is your ex still named?
 d2_f1_caption: The paperwork a settlement leaves behind
 
 d2_f2_kind: result

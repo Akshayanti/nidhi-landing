@@ -10,6 +10,7 @@ import {
   type ReelInput,
   type ReelPlan,
 } from "../data";
+import { QuestionHook } from "./QuestionHook";
 
 // The plot keeps one position for the whole story, hook included, so the race
 // never jumps when the hook text gives way to beat headings.
@@ -161,7 +162,7 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
       ))}
       <line x1={PLOT.left} y1={PLOT.bottom} x2={PLOT.right} y2={PLOT.bottom} stroke={BRAND.inkMuted} strokeWidth={3} />
       {!story.hideValueAxis && <text x={PLOT.left - 30} y={PLOT.bottom + 8} textAnchor="end" fontFamily={TYPE.ui} fontSize={22} fontWeight={650} fill={BRAND.inkMuted}>€0</text>}
-      {[0, Math.floor((count - 1) / 2), count - 1].map((i) => (
+      {!story.hidePeriodLabels && [0, Math.floor((count - 1) / 2), count - 1].map((i) => (
         <text key={i} x={xAt(i, count)} y={PLOT.bottom + 40} textAnchor={i === 0 ? "start" : i === count - 1 ? "end" : "middle"} fontFamily={TYPE.ui} fontSize={24} fontWeight={650} fill={BRAND.inkMuted}>
           {story.periodLabel} {i + first}
         </text>
@@ -216,9 +217,11 @@ function RaceChart({ story, pos, finish }: { story: LineRaceData; pos: number; f
         </g>
       )}
 
-      <text x={PLOT.right} y={PLOT.top - 30} textAnchor="end" fontFamily={TYPE.ui} fontSize={28} fontWeight={820} letterSpacing="0.12em" fill={BRAND.inkSoft} style={{ fontVariantNumeric: "tabular-nums" }}>
-        {story.periodLabel.toUpperCase()} {period}
-      </text>
+      {!story.hidePeriodLabels && (
+        <text x={PLOT.right} y={PLOT.top - 30} textAnchor="end" fontFamily={TYPE.ui} fontSize={28} fontWeight={820} letterSpacing="0.12em" fill={BRAND.inkSoft} style={{ fontVariantNumeric: "tabular-nums" }}>
+          {story.periodLabel.toUpperCase()} {period}
+        </text>
+      )}
 
       {upper && lower && finish > 0 && (() => {
         const x = PLOT.right + 6;
@@ -277,7 +280,9 @@ export function LineRaceStory({ input }: { input: ReelInput }) {
   // The race starts with the hook so something moves in the first second.
   // When the plan has a "finish" beat, the last point lands as that beat
   // starts, so the narration and the final number arrive together.
-  const start = Math.max(0, input.hookSpan.startMs) + 150;
+  const question = input.plan.hookStyle === "question";
+  // A question hook holds the chart back: the race starts once the question has been asked.
+  const start = (question ? Math.max(0, input.hookSpan.endMs) : Math.max(0, input.hookSpan.startMs)) + 150;
   const finishSpan = spanOf(input, raceBeat(input, "finish"));
   const nominalEnd = start + (count - 1) * story.secondsPerPeriod * 1000;
   const end = finishSpan ? Math.max(start + 4000, finishSpan.startMs + 150) : nominalEnd;
@@ -287,6 +292,7 @@ export function LineRaceStory({ input }: { input: ReelInput }) {
   const activeAnchor = currentBeat(input, now)?.beat.anchor;
   const beatCard = story.cardOnBeat && activeAnchor?.type === "card" ? activeAnchor : undefined;
 
+  if (hookMode && question) return <QuestionHook plan={input.plan} />;
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       {hookMode && (
@@ -348,6 +354,7 @@ export function LineRaceCover({ plan }: { plan: ReelPlan }) {
   const story = plan.lineRace;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   const count = story.series[0]?.values.length ?? 0;
   return (
     <div style={{ position: "absolute", inset: 0 }}>

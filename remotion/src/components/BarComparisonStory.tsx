@@ -12,6 +12,8 @@ import {
   type ReelPlan,
   type ToolCardData,
 } from "../data";
+import { ActiveCard, lastCardBeat } from "./cardBeats";
+import { QuestionHook } from "./QuestionHook";
 import { ToolCard } from "./ToolCard";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -35,7 +37,7 @@ function multiplierBeat(input: ReelInput, stage: MultiplierStage) {
 }
 
 function toolCardBeat(input: ReelInput) {
-  return findBeat(input, (beat) => beat.anchor?.type === "card");
+  return lastCardBeat(input);
 }
 
 function spanFor(input: ReelInput, beat: Beat | undefined, fallbackId: string): BeatSpan {
@@ -203,6 +205,7 @@ function ComparisonCallout({ input, amount, opacity }: { input: ReelInput; amoun
 function BarHook({ input }: { input: ReelInput }) {
   const story = input.plan.barStory;
   if (!story) return null;
+  if (input.plan.hookStyle === "question") return <QuestionHook plan={input.plan} />;
   const hook = input.plan.hookVariants[input.plan.useHookVariant];
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
@@ -245,7 +248,8 @@ function BarHook({ input }: { input: ReelInput }) {
       <div style={{ position: "absolute", top: 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
       {bars.map((bar, index) => {
         const y = index === 0 ? 420 : 980;
-        const width = Math.max(story.proportional ? 76 : 150, (bar.value / max) * 760);
+        const hidden = Boolean(story.hideValuesInHook);
+        const width = hidden ? 380 : Math.max(story.minBarWidth ?? (story.proportional ? 76 : 150), (bar.value / max) * 760);
         const valueInside = width >= 520;
         return (
           <div key={bar.id} style={{ position: "absolute", left: 76, right: 90, top: y }}>
@@ -260,7 +264,7 @@ function BarHook({ input }: { input: ReelInput }) {
               <div style={valueInside
                 ? { position: "absolute", left: 24, top: 70, width: Math.max(0, width - 48), transform: "translateY(-50%)", fontFamily: TYPE.ui, fontSize: 54, fontWeight: 830, color: BRAND.paper, whiteSpace: "nowrap", textAlign: "right" }
                 : { position: "absolute", left: width + 22, top: 70, transform: "translateY(-50%)", fontFamily: TYPE.ui, fontSize: 54, fontWeight: 830, color: barTextColor(bar), whiteSpace: "nowrap" }}>
-                {bar.display}
+                {hidden ? "?" : bar.display}
               </div>
             </div>
           </div>
@@ -315,7 +319,7 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
           reveal={first}
           top={620}
           scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))}
-          minBarWidth={story.proportional ? 69 : undefined}
+          minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)}
         />
       )}
       {showRepeat && (
@@ -330,7 +334,7 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
           <RepeatField bar={repeating} input={input} fill={repeatFill} collapse={repeatCollapse} />
         </>
       )}
-      {showResolved && <ResolvedBars bars={story.bars} reveal={reveal} top={540} stagger={false} labelsReveal={afterCard ? 1 : resolvedLabels} minBarWidth={story.proportional ? 69 : undefined} />}
+      {showResolved && <ResolvedBars bars={story.bars} reveal={reveal} top={540} stagger={false} labelsReveal={afterCard ? 1 : resolvedLabels} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
       {now >= ratioStart && now < ratioEnd && <ComparisonCallout input={input} amount={callout?.display ?? ""} opacity={ratio} />}
       {now >= b5.startMs && now < b6.startMs && (
         <div style={{ position: "absolute", left: 94, right: 120, top: 1335, display: "flex", justifyContent: "space-between", opacity: principle }}>
@@ -348,12 +352,18 @@ function BarVisual({ input, now }: { input: ReelInput; now: number }) {
 
 // A year of working days as squares. Unpaid days are spread evenly through the
 // grid and turn grey one after another over the first part of the beat.
-function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string }; local: number; enter: number }) {
-  const columns = 20;
-  const greying = unitProgress(local, 0.08, 0.6);
-  const unpaidIndices = Array.from({ length: days.total }, (_, index) => index).filter(
-    (index) => Math.floor(((index + 1) * days.unpaid) / days.total) > Math.floor((index * days.unpaid) / days.total),
-  );
+// `tail` greys the last squares instead (months 1 to 3 invested, then a wait until the check), and
+// `columns` sets a coarser grid for a short series such as twelve months.
+function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number }; local: number; enter: number }) {
+  const columns = days.columns ?? 20;
+  const squareHeight = columns <= 6 ? 96 : 30;
+  // A tail grid shows its final state from the start: the first squares are the invested months.
+  const greying = days.tail ? 1 : unitProgress(local, 0.08, 0.6);
+  const unpaidIndices = days.tail
+    ? Array.from({ length: days.unpaid }, (_, index) => days.total - days.unpaid + index)
+    : Array.from({ length: days.total }, (_, index) => index).filter(
+      (index) => Math.floor(((index + 1) * days.unpaid) / days.total) > Math.floor((index * days.unpaid) / days.total),
+    );
   const order = new Map(unpaidIndices.map((index, rank) => [index, rank]));
   const greyed = Math.round(greying * unpaidIndices.length);
   return (
@@ -362,7 +372,7 @@ function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number
         {Array.from({ length: days.total }, (_, index) => {
           const rank = order.get(index);
           const unpaid = rank !== undefined && rank < greyed;
-          return <div key={index} style={{ height: 30, borderRadius: 7, background: unpaid ? "rgba(0,33,113,0.09)" : BRAND.teal, border: unpaid ? `2px solid ${BRAND.hairline}` : "2px solid transparent" }} />;
+          return <div key={index} style={{ height: squareHeight, borderRadius: 7, background: unpaid ? "rgba(0,33,113,0.09)" : BRAND.teal, border: unpaid ? `2px solid ${BRAND.hairline}` : "2px solid transparent" }} />;
         })}
       </div>
       <div style={{ marginTop: 30, display: "flex", gap: 44, fontFamily: TYPE.ui, fontSize: 30, fontWeight: 760 }}>
@@ -382,17 +392,11 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const enter = active ? progress(now, active.span.startMs + 100, active.span.startMs + 750) : 1;
-  const toolBeat = toolCardBeat(input);
-  const toolSpan = spanFor(input, toolBeat, "b6");
-  const tool = toolBeat?.anchor?.type === "card" ? toolBeat.anchor : undefined;
-
-  if (now >= toolSpan.startMs && now < toolSpan.endMs && tool) {
+  if (active?.beat.anchor?.type === "card") {
     return (
       <div style={{ position: "absolute", inset: 0 }}>
         <StoryHeading input={input} now={now} />
-        <div style={{ position: "absolute", left: 97, top: 420, opacity: enter, transform: `translateY(${(1 - enter) * 18}px)` }} data-reel-reveal>
-          <ToolCard card={tool as ToolCardData} />
-        </div>
+        <ActiveCard input={input} beat={active.beat} enter={enter} />
       </div>
     );
   }
@@ -409,7 +413,8 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
     );
   }
 
-  const bars = stage === "first" ? story.bars.slice(0, 1) : story.bars;
+  // One bar per beat: "first" shows one, "second" two, any later stage all of them.
+  const bars = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
   const showBars = stage && !["blank", "hook", "days"].includes(stage);
   const showRatio = stage === "ratio";
   const callout = story.callout ?? story.ratio;
@@ -423,7 +428,7 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
           {story.setup.note && <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 29, fontWeight: 650, color: BRAND.inkMuted }}>{story.setup.note}</div>}
         </div>
       )}
-      {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.proportional ? 69 : undefined} />}
+      {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
       {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} opacity={enter} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
@@ -437,14 +442,11 @@ function SumBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const enter = active ? progress(now, active.span.startMs + 100, active.span.startMs + 750) : 1;
-  const toolBeat = toolCardBeat(input);
-  const toolSpan = spanFor(input, toolBeat, "b6");
-  const tool = toolBeat?.anchor?.type === "card" ? toolBeat.anchor : undefined;
-  if (now >= toolSpan.startMs && now < toolSpan.endMs && tool) {
+  if (active?.beat.anchor?.type === "card") {
     return (
       <div style={{ position: "absolute", inset: 0 }}>
         <StoryHeading input={input} now={now} />
-        <div style={{ position: "absolute", left: 97, top: 420, opacity: enter, transform: `translateY(${(1 - enter) * 18}px)` }} data-reel-reveal><ToolCard card={tool as ToolCardData} /></div>
+        <ActiveCard input={input} beat={active.beat} enter={enter} />
       </div>
     );
   }
@@ -671,7 +673,7 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
 function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const story = input.plan.barStory;
   if (!story) return null;
-  if (now < input.hookSpan.endMs) return <SegmentedHook plan={input.plan} />;
+  if (now < input.hookSpan.endMs) return input.plan.hookStyle === "question" ? <QuestionHook plan={input.plan} /> : <SegmentedHook plan={input.plan} />;
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const segment = active?.beat.anchor?.type === "bars" ? active.beat.anchor.segment : undefined;
@@ -816,6 +818,8 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const story = plan.barStory;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
+  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (story.mode === "segmented") return <SegmentedHook plan={plan} cover />;
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));

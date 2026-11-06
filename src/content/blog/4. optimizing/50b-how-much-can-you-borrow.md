@@ -46,7 +46,7 @@ glossary:
   - term: "UK loan-to-income limit"
     definition: "A UK limit on mortgages of 4.5 times income or more: they may make up only about 15% of new lending. It caps how much of the market is lent at that level, not what any one borrower can get."
 order: 50.6
-pubDate: 2099-01-13
+pubDate: 2026-11-11
 localRules: [borrowing, credit, property]
 level: "optimizing"
 primaryPersona: "marcus"

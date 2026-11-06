@@ -35,7 +35,7 @@ glossary:
     definition: "Cooperative insurance in which members pay into a shared pool and cover each other's losses from it."
 order: 50.5
 companionOf: "refinancing-timing"
-pubDate: 2099-01-13
+pubDate: 2026-11-09
 updatedDate: 2026-10-25
 localRules: [investments, borrowing, deposit-protection, tax]
 level: "inclusive-finances"

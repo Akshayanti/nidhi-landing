@@ -1,0 +1,178 @@
+{
+  "slug": "how-much-can-you-borrow",
+  "postTitle": "How Much Can You Borrow? Home and Car Loan Rules of Thumb, Tested",
+  "postLevel": "optimizing",
+  "episode": 9,
+  "seriesTotal": 0,
+  "blogPath": "blog/how-much-can-you-borrow",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The bank says it can lend you this much: how do you test whether that amount works for you?",
+  "topicChip": "BORROWING · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "One loan: €330,000 over 30 years at 3.5% is about €1,482 a month, 32.9% of €4,500 before tax, shown 33%. At 5.5% about €1,874, 41.6%, shown 42%. Addressed to the viewer (owner, Nov 5: no one has a stake in Marcus). Tests from the lesson's stress checks: rates rise (or a fixed rate ends), income lower for a while, room left to save; a loan in another currency stays in the caption and story card. Numbers: 33%, 42%."
+  },
+  "hookVariants": [
+    {
+      "id": "test-it",
+      "layout": "bar-gap",
+      "narration": "Part two. The bank says it can lend you this much. How do you test whether it works for you?",
+      "onscreenLines": [
+        "The bank says it can lend you this much",
+        "How do you test it works for you?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": [
+        "you"
+      ]
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "stat",
+      "narration": "Say its payment takes thirty three percent of your pay before tax.",
+      "onscreenText": "33% of your pay",
+      "subtext": "At today's rate",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "warning",
+      "narration": "What if rates rise? In this example, the payment could take forty two percent.",
+      "onscreenText": "42% if rates rise",
+      "subtext": "Same loan, same pay",
+      "emphasis": [
+        "rise"
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "list",
+      "narration": "If your income drops for a while, could you still pay?",
+      "onscreenText": "Income drops",
+      "subtext": "Could you still pay?",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Test the amount",
+        "rows": [
+          {
+            "label": "Rates rise",
+            "value": "Payment then?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Income drops",
+            "value": "Still payable?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Illustrative. Tests many people run, not a rule."
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "list",
+      "narration": "And is there room left to save each month?",
+      "onscreenText": "Room to save",
+      "subtext": "Each month",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Test the amount",
+        "rows": [
+          {
+            "label": "Rates rise",
+            "value": "Payment then?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Income drops",
+            "value": "Still payable?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Room to save",
+            "value": "Each month?",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. Tests many people run, not a rule."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "Checking this is called a stress test. Many use it to choose a loan below the bank's maximum. Send this on.",
+    "onscreenText": "Send this to them",
+    "subtext": "Before they sign"
+  },
+  "caption": {
+    "instagram": "The bank says it can lend you this much. How do you test whether it works for you?\n\nSay the payment takes 33% of your pay before tax. If rates rise, or a fixed rate ends, the same loan could take 42%.\n\nMany people test the amount before signing: could you still pay if rates rise, if your income drops for a while, and is there room left to save each month? With pay in one currency and the loan in another, currency moves can raise the payment too. If one test fails, many try a smaller loan. That is called a stress test.\n\n→ Know someone about to take a loan? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative: €4,500 a month before tax, 30 years, 3.5% and 5.5%. Lending rules vary by country. Not financial advice.",
+    "tiktok": "The bank says it can lend you this much. How do you test it? Rates rise, income drops, room to save. If one fails, many try a smaller loan. Illustrative, not financial advice."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "mortgagetips",
+    "stresstest",
+    "moneyabroad"
+  ],
+  "reelPromise": "The four measures behind every borrowing rule, and the stress test many people run before signing",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "setup": {
+      "label": "The bank's offer",
+      "display": "Its maximum",
+      "note": "Payment shown as a share of pay before tax",
+      "tone": "ink"
+    },
+    "unit": "%",
+    "basis": "Monthly payment as a share of pay before tax, illustrative",
+    "bars": [
+      {
+        "id": "today",
+        "label": "Today's rate",
+        "sublabel": "share of your pay before tax",
+        "value": 33,
+        "display": "33%",
+        "tone": "teal"
+      },
+      {
+        "id": "up",
+        "label": "If rates rise",
+        "sublabel": "same loan, same pay",
+        "value": 42,
+        "display": "42%",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative: one loan, the same pay, a higher rate. Rates and terms in the caption."
+  },
+  "hookStyle": "question"
+}

@@ -8,99 +8,28 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "calm-authority",
-  "topic": "A settlement divides assets; it does not update forms, and the lender never signed it",
-  "topicChip": "AFTER THE SPLIT",
+  "topic": "After a settlement: the forms, will and loans it does not change",
+  "topicChip": "SPLITTING ASSETS · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "No figures. From the post: a settlement divides assets but does not update beneficiary designations, wills or powers of attorney; in many systems a divorce does not cancel a beneficiary form, which often overrides a will; a lender can still pursue either person for a joint debt; pensions are divided through a formal order or procedure, not a withdrawal. Rules differ by country."
-  },
-  "columnStory": {
-    "left": {
-      "id": "divides",
-      "title": "What a settlement divides",
-      "rule": "Assets",
-      "items": [
-        "Who keeps the home",
-        "How savings are split",
-        "How a pension is shared"
-      ],
-      "tone": "teal"
-    },
-    "right": {
-      "id": "unchanged",
-      "title": "Still as it was",
-      "rule": "Until someone changes it",
-      "items": [
-        "Beneficiary forms",
-        "Wills and executors",
-        "Powers of attorney",
-        "Joint loans"
-      ],
-      "tone": "amber"
-    },
-    "buffers": [
-      "Beneficiary forms updated, timing checked locally",
-      "Wills and powers of attorney replaced",
-      "Joint debts paid off or moved into one name"
-    ],
-    "swap": {
-      "item": "Joint loans",
-      "belongs": "right",
-      "wrongLabel": "settled in the agreement",
-      "correctLabel": "the lender did not sign"
-    },
-    "disclosure": "Illustrative. Rules on divorce, pensions and wills differ by country. Not legal advice."
+    "notes": "No figures. From the post: a settlement divides assets but does not update beneficiary designations, wills or powers of attorney; in many systems a divorce does not cancel a beneficiary form, which often overrides a will; a lender can still pursue either person for a joint debt; pensions are divided through a formal order or procedure, not a withdrawal. Rules differ by country. Rebuilt Nov 5, 2026: viewer first hook, one paper per beat, no figures; the formal pension split stays in the caption."
   },
   "hookVariants": [
     {
-      "id": "updates-no-forms",
-      "layout": "columns-gap",
-      "narration": "A divorce settlement divides the assets. It does not update a single form.",
-      "onscreenLines": [
-        "A settlement divides assets",
-        "It updates no forms",
-        "Who is still named?"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "single"
-      ]
-    },
-    {
       "id": "still-named",
-      "layout": "columns-gap",
-      "narration": "A former partner can still be named on a pension form long after a divorce.",
+      "layout": "bands-gap",
+      "narration": "Your separation is settled. Is your ex still named on your pension, your will or your loans?",
       "onscreenLines": [
-        "Divorced, still named",
-        "On the pension form",
+        "Your separation is settled",
+        "Is your ex still named on your forms?",
         ""
       ],
       "anchor": {
-        "type": "columns",
+        "type": "bands",
         "stage": "hook"
       },
       "emphasis": [
         "still"
-      ]
-    },
-    {
-      "id": "lender-did-not-sign",
-      "layout": "columns-gap",
-      "narration": "After a separation, a lender can still collect a joint loan from either person, whatever the settlement says.",
-      "onscreenLines": [
-        "The settlement says one pays",
-        "The lender did not sign it",
-        ""
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "either"
       ]
     }
   ],
@@ -109,129 +38,110 @@
     {
       "id": "b1",
       "kind": "list",
-      "narration": "A settlement decides who keeps the home, how savings are split, and how a pension is shared.",
+      "narration": "A settlement decides who keeps the home, and how savings and a pension are shared.",
       "onscreenText": "What a settlement divides",
-      "subtext": "Home, savings, pension",
+      "subtext": "The assets",
       "emphasis": [],
       "anchor": {
-        "type": "columns",
-        "stage": "left"
+        "type": "bands",
+        "stage": "divides"
       }
     },
     {
       "id": "b2",
-      "kind": "definition",
-      "narration": "Pensions are usually split through a formal order or procedure, not by withdrawing cash, which can be taxed. The name differs by country.",
-      "onscreenText": "Assets, divided",
-      "subtext": "Pensions by formal order, not withdrawal",
-      "emphasis": [
-        "order"
-      ],
+      "kind": "warning",
+      "narration": "A pension or insurance form can still name your ex. In many places, divorce does not cancel it.",
+      "onscreenText": "A form may still name your ex",
+      "subtext": "Who is named?",
+      "emphasis": [],
       "anchor": {
-        "type": "columns",
-        "stage": "left-rule"
+        "type": "card",
+        "stage": "tool",
+        "title": "What may still need checking",
+        "rows": [
+          {
+            "label": "Pension or insurance form",
+            "value": "Who is named?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Rules and timing differ by country; some courts restrict changes while a case is open."
       }
     },
     {
       "id": "b3",
-      "kind": "list",
-      "narration": "But some paperwork stays exactly as it was. Beneficiary forms. Wills and executors. Powers of attorney. Joint loans.",
-      "onscreenText": "What stays as it was",
-      "subtext": "Forms, wills, powers, joint loans",
-      "emphasis": [
-        "stays"
-      ],
+      "kind": "warning",
+      "narration": "Your will may still name your ex.",
+      "onscreenText": "Your will",
+      "subtext": "Still names them?",
+      "emphasis": [],
       "anchor": {
-        "type": "columns",
-        "stage": "right"
+        "type": "card",
+        "stage": "tool",
+        "title": "What may still need checking",
+        "rows": [
+          {
+            "label": "Pension or insurance form",
+            "value": "Who is named?",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Your will",
+            "value": "Names them?",
+            "valueSize": "small",
+            "tone": "amber"
+          }
+        ],
+        "footnote": "Rules and timing differ by country; some courts restrict changes while a case is open."
       }
     },
     {
       "id": "b4",
       "kind": "warning",
-      "narration": "In many systems a divorce does not cancel a beneficiary form, and the form often overrides a will.",
-      "onscreenText": "Until someone changes it",
-      "subtext": "A form can outrank a will",
-      "emphasis": [
-        "overrides"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "right-rule"
-      }
-    },
-    {
-      "id": "b5",
-      "kind": "warning",
-      "narration": "A common mistake is treating a joint loan as settled. The lender did not sign the settlement, and can still pursue either person.",
-      "onscreenText": "A joint loan stays joint",
-      "subtext": "The lender did not sign the agreement",
-      "emphasis": [
-        "either"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "swap"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "list",
-      "narration": "Common fixes include updating beneficiary forms where permitted, replacing wills and powers of attorney, and separating joint debts where affordable.",
-      "onscreenText": "Three usual fixes",
-      "subtext": "Forms, documents, debts",
-      "emphasis": [
-        "fixes"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "buffers"
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "list",
-      "narration": "So after any split, three checks. Who is named on every form? Who could act for you, or inherit? Whose name is on every debt?",
-      "onscreenText": "Three checks after a split",
-      "subtext": "Named, acting, owing",
-      "emphasis": [
-        "three"
-      ],
+      "narration": "On a joint loan, the lender can still pursue either of you. The settlement does not bind it.",
+      "onscreenText": "A joint loan",
+      "subtext": "The settlement does not bind the lender",
+      "emphasis": [],
       "anchor": {
         "type": "card",
         "stage": "tool",
-        "title": "Three checks after a split",
+        "title": "What may still need checking",
         "rows": [
           {
-            "label": "Who is named on every form?",
-            "value": "1",
-            "tone": "ink"
+            "label": "Pension or insurance form",
+            "value": "Who is named?",
+            "valueSize": "small",
+            "tone": "amber"
           },
           {
-            "label": "Who could act for you, or inherit?",
-            "value": "2",
-            "tone": "ink"
+            "label": "Your will",
+            "value": "Names them?",
+            "valueSize": "small",
+            "tone": "amber"
           },
           {
-            "label": "Whose name is on every debt?",
-            "value": "3",
-            "tone": "teal"
+            "label": "A joint loan",
+            "value": "Still joint?",
+            "valueSize": "small",
+            "tone": "ink"
           }
         ],
-        "footnote": "Not legal advice. Rules differ by country."
+        "footnote": "Rules and timing differ by country; some courts restrict changes while a case is open."
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for after any split.",
-    "onscreenText": "Save the three checks",
-    "subtext": "For after any split",
-    "handle": "@nidhi.today"
+    "approved": "share",
+    "handle": "@nidhi.today",
+    "narration": "Send this to someone after a split.",
+    "onscreenText": "Send this to them",
+    "subtext": "After any split"
   },
   "caption": {
-    "instagram": "A divorce settlement divides the assets. It does not update a single form.\n\nA pension or life insurance form can still name a former partner, and in many systems a divorce does not cancel it; the form often overrides a will. A former partner may still be executor, heir or the person with power of attorney. And a joint loan stays joint: the lender did not sign the settlement, and can still pursue either person. Pensions themselves are usually split through a formal order or procedure, not a withdrawal, which can be taxed.\n\nThree checks after any split: who is named on every form, who could act for you or inherit, and whose name is on every debt?\n\n→ Save this for after any split\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot legal advice. Rules on divorce, pensions and wills differ by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "A divorce settlement divides the assets. It does not update a single form.\n\nThree checks for after any split. Rules differ by country.",
+    "instagram": "Your separation is settled. Is your former partner still named on your pension, your will or your loans?\n\nA settlement divides the assets. It does not update a single form.\n\nA pension or life insurance form can still name a former partner, and in many systems a divorce does not cancel it; the form often overrides a will. A former partner may still be executor, heir or the person with power of attorney. And a joint loan stays joint: the lender did not sign the settlement, and can still pursue either person. Pensions themselves are usually split through a formal order or procedure, not a withdrawal, which can be taxed.\n\nThree checks after any split: who is named on every form, who could act for you or inherit, and whose name is on every debt?\n\n→ Know someone after a split? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nNot legal advice. Rules on divorce, pensions and wills differ by country.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
+    "tiktok": "Your separation is settled. Is your ex still named on your pension, will or loans? A settlement does not change those. Not legal advice.",
     "instagramKeywords": [
       "update beneficiary after divorce",
       "ex still named on pension",
@@ -265,5 +175,23 @@
     "lifeadmin",
     "financialreset"
   ],
-  "reelPromise": "The three broad systems for dividing property, and rebuilding a budget, an emergency fund and a projection on one income"
+  "reelPromise": "The three broad systems for dividing property, and rebuilding a budget, an emergency fund and a projection on one income",
+  "hookStyle": "question",
+  "bandStory": {
+    "layout": "equal",
+    "emphasis": "divides",
+    "bands": [
+      {
+        "id": "divides",
+        "label": "What a settlement divides",
+        "cost": "Assets",
+        "items": [
+          "Who keeps the home",
+          "How savings and a pension are shared"
+        ],
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. Rules on divorce, pensions and wills differ by country. Not legal advice."
+  }
 }
