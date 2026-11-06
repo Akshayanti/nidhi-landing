@@ -116,3 +116,20 @@ describe('short links for social profiles', () => {
     }
   });
 });
+
+describe('short codes printed on posters', () => {
+  // A typed short code leads to its poster's page, tagged typed; the improv
+  // QR code alone carries #signup.
+  const config = readFileSync(new URL('../../astro.config.mjs', import.meta.url), 'utf8');
+  const codes = {
+    '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
+    '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
+    '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
+  };
+
+  it('redirects each printed code with its campaign and utm_content=typed', () => {
+    for (const [code, target] of Object.entries(codes)) {
+      assert.ok(config.includes(`'${code}': '${target}'`), `missing ${code}`);
+    }
+  });
+});

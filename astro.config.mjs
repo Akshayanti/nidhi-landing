@@ -383,6 +383,15 @@ export default defineConfig({
     '/mr/tg/': '/mr/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
     '/mr/wa/': '/mr/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
     '/mr/dsc/': '/mr/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+    // Short codes printed on posters, for people who type the
+    // address instead of scanning. Each leads to its poster's page (the QR
+    // codes carry the full tagged address and need no redirect), with the
+    // improv typed code going to the home page top and its QR code to #signup,
+    // and utm_content=typed against the QR codes' utm_content=qr. The codes and
+    // campaign names stay neutral: no venue or shop is named in an address.
+    '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
+    '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
+    '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
   },
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and

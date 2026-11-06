@@ -172,6 +172,15 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 7, 2026',
+    iso: '2026-11-07',
+    material: true,
+    summary: 'Short links printed on posters, /improv/, /cs/plakat/ and /hi/parivar/, lead to the site with campaign parameters, as the social short links do.',
+    details: [
+      'Short links for printed posters, for people who type an address instead of scanning a QR code: /improv/ leads to the home page, /cs/plakat/ to the Czech free tools page and /hi/parivar/ to the Hindi free tools page. Each adds campaign parameters naming the print run (utm_source=poster, utm_medium=print, utm_campaign=improv_shows, plakat or family) and utm_content=typed. The QR codes on the same posters lead to the same pages with the same parameters and utm_content=qr. The redirect page itself loads no analytics; the pageview on the page it leads to carries the parameters, as with the social short links.',
+    ],
+  },
+  {
     date: 'Nov 6, 2026',
     iso: '2026-11-06',
     material: true,
