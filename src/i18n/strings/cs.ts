@@ -108,9 +108,11 @@ export const cs: Dict = {
 
   cookie: {
     dialogLabel: 'Souhlas s cookies',
-    textBefore: 'Anonymní zobrazení stránek počítáme v každém případě, abychom viděli, co pomáhá. Můžeme zaznamenávat také ',
+    textBefore: 'Zobrazení stránek počítáme v každém případě, abychom viděli, co pomáhá. Můžeme zaznamenávat také ',
     textEmphasis: 'kliknutí',
-    textAfter: ', abychom našli nefunkční odkazy a matoucí rozvržení? Žádné reklamy, žádný prodej dat.',
+    textAfter: ' a uložit ve vašem prohlížeči ID návštěvníka, které propojí vaše návštěvy, abychom našli nefunkční odkazy a matoucí rozvržení? Žádné reklamy, žádný prodej dat.',
+    planner:
+      'Vaše odpověď platí i v plánovači na app.nidhi.today, pokud váš prohlížeč neblokuje cookies. Tam souhlas propojí události používání s vaším účtem, abychom viděli, kde se lidé zasekávají. Vaši obrazovku nikdy nenahráváme.',
     privacyLink: 'Podívejte se, co skutečně sbíráme →',
     decline: 'Ne, děkuji',
     accept: 'Ano, souhlasím',
@@ -568,19 +570,21 @@ export const cs: Dict = {
       newsletter: 'Pokud se přihlásíte k odběru newsletteru blogu:',
       waitlist: 'Pokud se zapíšete na čekací listinu plánovače:',
       volunteers: 'Pokud nám nabídnete pomoc s překladem webu:',
+      planner: 'V plánovači na app.nidhi.today:',
+      consentChoice: 'Vaše odpověď na cookie liště:',
       browserOnly: 'Uloženo jen ve vašem prohlížeči, nikdy se nám neposílá:',
     },
 
     collect: {
       pageviews: {
-        before: 'Anonymní události zobrazení a opuštění stránky, přes ',
+        before: 'Události zobrazení a opuštění stránky, přes ',
         link: 'PostHog Cloud EU',
         after:
-          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádné ID uživatele.',
+          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádný účet. Události stránky, na které jste, spojuje náhodné ID; pokud na cookie liště nesouhlasíte, platí jen pro tuto stránku a nikdy se neukládá ve vašem prohlížeči, takže vaše návštěvy nejsou propojené. Totéž platí pro události nástrojů níže.',
       },
       freeTools: {
         before:
-          'Anonymní události interakce na stránkách nástrojů zdarma: kterou měnu zvolíte v kalkulačce pro srovnání úvěrů, zda přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky, zda otevřete panel „Další možnosti“, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce na stránkách nástrojů zdarma: kterou měnu zvolíte v kalkulačce pro srovnání úvěrů, zda přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky, zda otevřete panel „Další možnosti“, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Finanční hodnoty, které zadáte, se nikdy neposílají',
         after:
           ': ani výše úvěru, ani úroková sazba, ani poplatky, ani název poskytovatele. Celý smysl kalkulačky je v tom, že se výpočet provádí ve vašem prohlížeči.',
@@ -588,20 +592,20 @@ export const cs: Dict = {
       toolAddresses:
         'U žádného nástroje zdarma adresa stránky nenese to, co zadáte, takže to nemůže nést ani adresa URL, kterou zaznamenává webová analytika. Nástroje vaše údaje při používání do adresy nezapisují. Odkaz ke sdílení je nese za znakem #, v části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je z adresního řádku přesune dřív, než se spustí webová analytika. Jako pojistka skript webové analytiky před odesláním jakékoli události odstraní z adresy každého nástroje zdarma vše kromě parametrů kampaní (utm_source a podobně).',
       toolExports:
-        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu anonymní událost, která říká jen to, kterou z nich jste použili.',
+        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, kterou z nich jste použili.',
       monteCarlo: {
         before:
-          'Anonymní události interakce v simulátoru Monte Carlo: kterou měnu zvolíte, jaký předpoklad výnosu a počet simulovaných trajektorií vyberete, zda zapnete nebo vypnete výběry, zda otevřete tabulku výsledků, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce v simulátoru Monte Carlo: kterou měnu zvolíte, jaký předpoklad výnosu a počet simulovaných trajektorií vyberete, zda zapnete nebo vypnete výběry, zda otevřete tabulku výsledků, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Částky, roky, poplatky a poměr, které zadáte, se nikdy neposílají.',
       },
       inflation: {
         before:
-          'Anonymní události interakce v inflační kalkulačce: kterou otázku zvolíte (kupní síla později, cena později, z minulosti do dneška, drží krok), kterou měnu a historii které země vyberete, zda jako sazbu použijete průměr země, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. Výběr země načte její historii přímo z nidhi.today, nikdy ze Světové banky. ',
+          'Události interakce v inflační kalkulačce: kterou otázku zvolíte (kupní síla později, cena později, z minulosti do dneška, drží krok), kterou měnu a historii které země vyberete, zda jako sazbu použijete průměr země, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. Výběr země načte její historii přímo z nidhi.today, nikdy ze Světové banky. ',
         strong: 'Částky, sazby a roky, které zadáte, se nikdy neposílají.',
       },
       investOrPayOff: {
         before:
-          'Anonymní události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení, zda exportujete tabulku nebo PDF, zda formulář vynulujete a zda otevřete sdílené zobrazení, včetně zdroje kampaně. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
+          'Události interakce v kalkulačce investovat, nebo splatit dluh: že se zobrazilo srovnání, zda zkopírujete odkaz ke sdílení, zda exportujete tabulku nebo PDF, zda formulář vynulujete a zda otevřete sdílené zobrazení, včetně zdroje kampaně. Na rozdíl od ostatních nástrojů žádná z nich nenese vaši volbu: ani zemi, ani měnu, ani nastavení výnosu, ani datum srovnání. Pokud přijmete cookie lištu, kliknutí uvnitř formuláře kalkulačky se nezaznamenávají a teplotní mapy jsou na té stránce pozastavené. Výběr země načte její historii inflace přímo z nidhi.today, nikdy ze Světové banky. ',
         strong: 'Dluh, splátky, sazby, částky, poplatky a daně, které zadáte, se nikdy neposílají.',
       },
       campaigns: {
@@ -610,9 +614,24 @@ export const cs: Dict = {
         after: ' atd.), pokud návštěva přišla z odkazu, který jsme označili my nebo někdo jiný.',
       },
       lessonShare:
-        'Sdílení nebo uložení lekce: systémová nabídka sdílení se otevře, jen když klepnete na Share, a odkaz s názvem dostane aplikace, kterou si vyberete. Odkazy na WhatsApp a e-mail se s těmito službami spojí, jen když na ně klepnete. Odkaz sdílený nebo zkopírovaný těmito tlačítky nese parametry kampaní, které říkají jen to, že byl sdílen a jak, nic o vás, a když ho někdo otevře, jeho anonymní událost zobrazení stránky je obsahuje. Save as PDF používá okno tisku vašeho prohlížeče ve vašem zařízení a nic nenahrává. Aby stránka v prohlížeči aplikace, který neumí tisknout, mohla vysvětlit další postup, přečte ve vašem zařízení název prohlížeče a výsledek nikam neposílá.',
+        'Sdílení nebo uložení lekce: systémová nabídka sdílení se otevře, jen když klepnete na Share, a odkaz s názvem dostane aplikace, kterou si vyberete. Odkazy na WhatsApp a e-mail se s těmito službami spojí, jen když na ně klepnete. Odkaz sdílený nebo zkopírovaný těmito tlačítky nese parametry kampaní, které říkají jen to, že byl sdílen a jak, nic o vás, a když ho někdo otevře, jeho událost zobrazení stránky je obsahuje. Save as PDF používá okno tisku vašeho prohlížeče ve vašem zařízení a nic nenahrává. Aby stránka v prohlížeči aplikace, který neumí tisknout, mohla vysvětlit další postup, přečte ve vašem zařízení název prohlížeče a výsledek nikam neposílá.',
       consentClicks:
         'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co jste zadali.',
+      consentVisitorId:
+        'Náhodné ID návštěvníka, které PostHog ukládá ve vašem prohlížeči (localStorage), aby propojil vaše návštěvy. Neobsahuje jméno ani e-mail, ale protože propojuje vaše návštěvy v čase, odliší váš prohlížeč od ostatních. Proto je pseudonymní, ne anonymní, a čeká na váš souhlas. Když později souhlas odmítnete, smaže se; potom ID platí jen pro stránku, na které právě jste, takže pozdější události se s dřívějšími nepropojí.',
+      planner: {
+        anonymous:
+          'Pokud na cookie liště nesouhlasíte: zobrazení stránek a události používání, například kterou obrazovku jste otevřeli nebo že jste přidali účet, spustili projekci nebo uložili scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
+        consented:
+          'Jen pokud souhlasíte: tytéž události, propojené s kódem vytvořeným z vašeho účtu, abychom viděli, kde se jeden člověk napříč návštěvami zasekává. Kód neobsahuje vaše jméno, e-mail ani ID účtu a nedá se na ně převést zpět, ale když nás požádáte o dohledání nebo smazání vašich událostí, dokážeme ho s vaším účtem spárovat. PostHog pak ve vašem prohlížeči ukládá náhodné ID návštěvníka, aby propojil vaše návštěvy.',
+      },
+      consentChoice: {
+        before: 'Od 6. listopadu 2026 se ukládá do cookie (',
+        after:
+          ') pro nidhi.today a jeho subdomény, mezi které patří i plánovač, na jeden rok, takže jedna odpověď platí pro oba weby. Obsahuje jen „accepted“ nebo „declined“ a váš prohlížeč ji posílá s každým požadavkem na oba weby.',
+        older:
+          'Volba provedená před tímto datem zůstává v localStorage vašeho prohlížeče pod stejným názvem a platí jen na tomto webu; plánovač se zeptá sám. Jakmile tento web uvidí sdílenou odpověď, starší kopie se smaže, takže se sem nemůže vrátit. Pokud váš prohlížeč blokuje cookies, uloží se vaše odpověď místo toho do localStorage tohoto webu, platí jen na tomto webu a vydrží, dokud nesmažete data prohlížeče.',
+      },
     },
 
     newsletter: {
@@ -620,6 +639,8 @@ export const cs: Dict = {
       page: 'Stránka, ze které přihlášení proběhlo (abychom věděli, zda vás přivedl přehled blogu, nebo konkrétní článek).',
       timestamps: 'Datum a čas přihlášení, potvrzení a (pokud k tomu dojde) odhlášení.',
       status: 'Stav vašeho odběru: čekající na potvrzení, potvrzený nebo odhlášený.',
+      analytics:
+        'Vlastní události newsletteru (přihlášení, potvrzení nebo odhlášení) se v PostHogu zaznamenávají pod kódem vytvořeným z vaší e-mailové adresy (hash SHA-256), abychom viděli, kolik lidí odběr potvrdí. Jen pokud na cookie liště souhlasíte, propojí přihlášení k odběru s tímto kódem i zobrazení stránek v tomto prohlížeči, abychom viděli, které stránky vedou lidi k přihlášení.',
       total:
         'Pokud se přihlásí a odběr potvrdí dost lidí, web může ukázat celkový počet potvrzených odběratelů zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda odebírá konkrétní člověk.',
       from: {
@@ -643,7 +664,7 @@ export const cs: Dict = {
     },
     volunteers: {
       form:
-        'Stránka pro dobrovolnou pomoc na adrese nidhi.today/volunteers/ je součástí tohoto webu. Jako každá stránka odesílá anonymní událost zobrazení a opuštění stránky. Její tlačítko otevírá formulář Google, který spravuje náš účet Google Workspace; pokud přijmete lištu o cookies, kliknutí na toto tlačítko se zaznamená podle jeho štítku volunteers-form. Vaše odpovědi se ke Googlu dostanou, až když formulář odešlete. Přihlášení nepotřebujete a váš účet Google není součástí odpovědí, které dostáváme.',
+        'Stránka pro dobrovolnou pomoc na adrese nidhi.today/volunteers/ je součástí tohoto webu. Jako každá stránka odesílá událost zobrazení a opuštění stránky. Její tlačítko otevírá formulář Google, který spravuje náš účet Google Workspace; pokud přijmete cookie lištu, kliknutí na toto tlačítko se zaznamená podle jeho štítku volunteers-form. Vaše odpovědi se ke Googlu dostanou, až když formulář odešlete. Přihlášení nepotřebujete a váš účet Google není součástí odpovědí, které dostáváme.',
       answers:
         'Vaše e-mailová adresa a to, co nám sdělíte: jméno pro uvedení na webu, které jazyky, zda máte finanční vzdělání nebo praxi (a poznámku k tomu, pokud ji přidáte), jak chcete pomoci, zda chcete uvedení na webu, a vaši úroveň v jednotlivých jazycích.',
       consent:
@@ -662,7 +683,6 @@ export const cs: Dict = {
         'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
     },
     browserStorage: {
-      consent: { before: 'Vaše volba ohledně cookies (', after: ').' },
       theme: { before: 'Vaše volba motivu: světlý, tmavý nebo podle systému (', after: ').' },
       internal: {
         before: 'Jen pro tým nidhi: příznak (',
@@ -690,7 +710,7 @@ export const cs: Dict = {
           '), abychom vám při dalších návštěvách přestali ukazovat formulář čekací listiny. Obsahuje jen příznak stavu a datum a čas, nikdy vaši e-mailovou adresu.',
       },
     },
-    clearsEverything: 'Smazáním dat webu ve vašem prohlížeči okamžitě zmizí vše výše uvedené.',
+    clearsEverything: 'Smazáním dat webu ve vašem prohlížeči okamžitě zmizí vše v tomto seznamu. Události už odeslané do PostHogu to nesmaže: v plánovači nás požádejte, ať ty vaše dohledáme a smažeme; na tomto webu je dokážeme rozlišit, jen pokud jsou propojené s vaším kódem z newsletteru.',
 
     why: {
       analytics: {
@@ -720,7 +740,7 @@ export const cs: Dict = {
       processors: {
         posthog: {
           name: 'PostHog Cloud EU',
-          rest: ' (Frankfurt, Německo): náš zpracovatel pro webovou analytiku. Nahrávání relací je vypnuté. Používáme jejich standardní produkt bez vlastních vlastností osoby, které by vás identifikovaly, ledaže se přihlásíte k odběru; pak se stav vašeho odběru stane vlastností anonymního záznamu osoby pro analýzu konverzního trychtýře.',
+          rest: ' (Frankfurt, Německo): náš zpracovatel pro webovou analytiku. Nahrávání relací je vypnuté. Na tomto webu používáme jejich standardní produkt bez vlastních vlastností osoby, které by vás identifikovaly, ledaže se přihlásíte k odběru; pak se stav vašeho odběru stane vlastností záznamu osoby pro analýzu konverzního trychtýře. V plánovači se s vaším souhlasem události propojují s kódem účtu popsaným výše.',
         },
         google: {
           name: 'Google Workspace',
@@ -744,7 +764,7 @@ export const cs: Dict = {
         },
       },
       thatIsAll:
-        'To je úplný seznam služeb, které pro nás zpracovávají data. Žádný pátý zpracovatel schovaný někde v poznámce pod čarou.',
+        'To jsou služby, které zpracovávají data pro vše, co tyto zásady popisují. Žádný další zpracovatel schovaný někde v poznámce pod čarou.',
       frankfurter: {
         lead: 'Jedna služba, kterou váš prohlížeč kontaktuje přímo: Frankfurter',
         rest: ', bezplatná otevřená služba, která spojuje směnné kurzy zveřejňované centrálními bankami a dalšími oficiálními zdroji. Váš prohlížeč ji požádá o nejnovější kurzy, když otevřete kalkulačku čistého jmění (a znovu, pokud tam změníte měnu svých výdajů). Požadavek obsahuje jen kódy měn, nikdy vaše částky ani nic z toho, co napíšete, a odpovědí je tabulka kurzů mnoha měn, ze které si kalkulačka ponechá ty, které nabízí. Jako každý požadavek z vašeho prohlížeče ukáže službě Frankfurter vaši IP adresu a typ prohlížeče. Jde přímo z vašeho prohlížeče do služby Frankfurter, takže ho nikdy nevidíme, a Frankfurter je na nás nezávislý: co uchovává, je jeho věc.',
@@ -755,8 +775,8 @@ export const cs: Dict = {
       ads: 'Nezobrazujeme reklamy. Na tomto webu není žádná reklamní technologie.',
       sell: 'Vaše data nikomu neprodáváme, nepronajímáme, nelicencujeme ani neposkytujeme k dalšímu šíření.',
       crossSite:
-        'Nesledujeme vás napříč weby. Žádný Facebook pixel, žádný tag Google Ads, žádný LinkedIn Insight, žádný TikTok pixel, žádný retargeting jakéhokoli druhu.',
-      screen: 'Nenahráváme vaši obrazovku, stisky kláves, hodnoty formulářů ani průběžné posouvání stránky.',
+        'Nesledujeme vás na webech jiných firem. Žádný Facebook pixel, žádný tag Google Ads, žádný LinkedIn Insight, žádný TikTok pixel, žádný retargeting jakéhokoli druhu.',
+      screen: 'Nepoužíváme nahrávání relací ani analytiku k zachycení vaší obrazovky, stisků kláves, hodnot formulářů ani průběžného posouvání stránky, na tomto webu ani v plánovači.',
       replies: 'Odpovědi na e-maily newsletteru dostane člověk na adrese hello@nidhi.today, který je čte. Nikdy je nevkládáme do žádného systému webové analytiky ani reklamního systému.',
       imports: 'Seznam odběratelů newsletteru neimportujeme do žádných jiných nástrojů ani rozesílacích systémů. Když o to správce požádá, plánovač čte omezené údaje z čekací listiny a ze seznamu zájemců o betu mezi dobrovolníky, popsané výše, aby pomohl vybrat, koho pozvat. V jeho databázi se ukládají jen adresy, které správce pozve, spolu se záznamy o pozvánkách.',
     },
@@ -764,7 +784,7 @@ export const cs: Dict = {
     retention: {
       analytics: {
         lead: 'Události webové analytiky:',
-        rest: ' 12 měsíců (výchozí doba uchování ve službě PostHog; neprodloužili jsme ji), potom se automaticky smažou.',
+        rest: ' 12 měsíců (výchozí doba uchování ve službě PostHog; neprodloužili jsme ji), potom se automaticky smažou. Týká se to i událostí z plánovače.',
       },
       newsletter: {
         lead: 'Odběratelé newsletteru:',
@@ -787,9 +807,17 @@ export const cs: Dict = {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
         rest: ' smažeme, jakmile si jich všimneme, obvykle do týdne.',
       },
+      visitorId: {
+        lead: 'Vaše ID návštěvníka v PostHogu (jen s vaším souhlasem):',
+        rest: ' dokud nesmažete data prohlížeče, nebo dokud na cookie liště souhlas neodmítnete, čímž se smaže.',
+      },
+      consentCookie: {
+        lead: 'Cookie z cookie lišty:',
+        rest: ' rok od vaší volby, nebo dokud nesmažete data prohlížeče. Nová volba počítá rok znovu.',
+      },
       localStorage: {
-        lead: 'Váš localStorage:',
-        rest: ' dokud nesmažete data prohlížeče. Znovu: nikdy ho nevidíme.',
+        lead: 'Vaše místní předvolby:',
+        rest: ' dokud nesmažete data prohlížeče. Nikdy je nevidíme.',
       },
     },
 
@@ -800,9 +828,9 @@ export const cs: Dict = {
         'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc nám napište a vyřadíme vás, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to na požádání uděláme i ručně.',
       analytics: {
         before:
-          'Události webové analytiky jsou anonymní; nemáme jak dohledat „vaše“ události, protože nevíme, kdo jste. Pokud vám to vadí, na cookie liště jednoduše odmítněte souhlas nebo použijte blokátor obsahu. Nic na webu se nerozbije. Odpověď můžete kdykoli změnit přes ',
+          'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud jste na cookie liště souhlasili; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',
         strong: 'Nastavení cookies',
-        after: ' v dolní části každé stránky; když tam odmítnete, zaznamenávání kliknutí se okamžitě zastaví.',
+        after: ' v dolní části každé stránky; když tam odmítnete, okamžitě se zastaví zaznamenávání kliknutí i ukládání ID návštěvníka ve vašem prohlížeči a v plánovači se nové události přestanou propojovat s vámi.',
       },
       contact: {
         before: 'V ostatních věcech napište na ',

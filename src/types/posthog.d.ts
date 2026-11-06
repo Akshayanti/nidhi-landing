@@ -18,5 +18,13 @@ declare global {
       __loaded?: boolean;
       set_config?: (config: Record<string, unknown>) => void;
     };
+    /** The cookie-banner answer, from consentRuntime.js (inlined by the page). */
+    nidhiConsent?: {
+      read: () => 'accepted' | 'declined' | null;
+      save: (choice: 'accepted' | 'declined') => void;
+      apply: () => boolean;
+      accepted: () => boolean;
+      forgetStoredAnalyticsId: () => void;
+    };
   }
 }

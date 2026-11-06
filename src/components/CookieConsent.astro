@@ -1,5 +1,6 @@
 ---
 import { DEFAULT_LOCALE, dict, localizedPath, type Locale } from '../i18n';
+import consentRuntimeScript from '../utils/shared/consentRuntime.js?raw';
 
 interface Props {
   locale?: Locale;
@@ -9,11 +10,12 @@ const { locale = DEFAULT_LOCALE } = Astro.props;
 const strings = dict(locale);
 ---
 
-<div id="cookie-overlay" class="cookie-overlay" role="dialog" aria-label={strings.cookie.dialogLabel} aria-modal="true">
+<div id="cookie-overlay" class="cookie-overlay" role="dialog" aria-label={strings.cookie.dialogLabel} aria-describedby="cookie-text cookie-planner" aria-modal="true">
   <div class="cookie-modal">
-    <p class="cookie-text">
+    <p id="cookie-text" class="cookie-text">
       {strings.cookie.textBefore}<em>{strings.cookie.textEmphasis}</em>{strings.cookie.textAfter}
     </p>
+    <p id="cookie-planner" class="cookie-text">{strings.cookie.planner}</p>
     <p class="cookie-sub">
       <a href={localizedPath(locale, '/privacy/')} data-attr="cookie-privacy-link">{strings.cookie.privacyLink}</a>
     </p>
@@ -24,6 +26,7 @@ const strings = dict(locale);
   </div>
 </div>
 
+<script is:inline set:html={consentRuntimeScript}></script>
 <script is:inline>
   (function() {
     var overlay = document.getElementById('cookie-overlay');
@@ -54,24 +57,15 @@ const strings = dict(locale);
     }
 
     function closeConsent(choice) {
-      try { localStorage.setItem('nidhi-cookie-consent', choice); } catch (_) {}
+      window.nidhiConsent.save(choice);
       // Close first, so the prompt can never get stuck open.
       overlay.style.display = 'none';
       overlay.classList.remove('cookie-overlay--visible');
-      // Apply the choice to the running SDK straight away, both ways: a
-      // "No thanks" after an earlier "Sure" switches click recording off for
-      // the rest of this visit too. Before the SDK finishes loading (or when a
-      // blocker stops it), posthog is a stub without set_config;
-      // Analytics.astro reads the stored choice when it starts.
-      if (window.posthog && typeof window.posthog.set_config === 'function') {
-        var on = choice === 'accepted';
-        // Heatmaps stay off while the learning path's level helper is open.
-        // Clicks are recorded with Analytics.astro's settings, which keep
-        // attributes that can hold typed text out of them; without those
-        // settings, clicks stay off.
-        var clicks = on && window.nidhiClickCapture ? window.nidhiClickCapture : false;
-        window.posthog.set_config({ autocapture: clicks, enable_heatmaps: on && !window.nidhiHeatmapsPaused, capture_dead_clicks: clicks });
-      }
+      // Apply the choice to the running SDK straight away, both ways
+      // (Analytics.astro): a "No thanks" after an earlier "Sure" switches click
+      // recording off and stops storing the visitor ID for the rest of this
+      // visit too.
+      window.nidhiConsent.apply();
       document.removeEventListener('keydown', trapFocus);
       // Return focus to the element that was focused before the overlay opened
       if (previousFocus) { try { previousFocus.focus(); } catch (_) {} }
@@ -89,8 +83,7 @@ const strings = dict(locale);
       openConsent();
     });
 
-    var consent = null;
-    try { consent = localStorage.getItem('nidhi-cookie-consent'); } catch (_) {}
+    var consent = window.nidhiConsent.read();
     if (consent === 'accepted' || consent === 'declined') {
       overlay.style.display = 'none';
       return;
@@ -109,9 +102,10 @@ const strings = dict(locale);
     height: 100%;
     z-index: 9999;
     background: rgba(0, 0, 0, 0.5);
-    align-items: center;
+    align-items: safe center;
     justify-content: center;
     padding: 1rem;
+    overflow-y: auto;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -126,11 +120,16 @@ const strings = dict(locale);
     padding: 2rem;
     max-width: 420px;
     width: 100%;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    margin: auto;
     text-align: center;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   }
 
+  /* Prose reads from a straight edge; only the link and the buttons stay centred. */
   .cookie-text {
+    text-align: start;
     margin: 0 0 0.5rem;
     font-size: 0.9rem;
     color: var(--color-text-secondary);

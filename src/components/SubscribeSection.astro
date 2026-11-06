@@ -497,7 +497,9 @@ const inputId = `subscribe-email-${variant}`;
       // → confirmed because each step carries a different distinct_id.
       var hashedId = await subscriberDistinctId(email);
       if (window.posthog) {
-        if (hashedId) {
+        // Joining this browser's events to the subscriber's needs a yes on
+        // the cookie banner, like any lasting ID (consentRuntime.js).
+        if (hashedId && window.nidhiConsent && window.nidhiConsent.accepted()) {
           try { window.posthog.identify(hashedId); } catch (_) {}
         }
         var domain = email.split('@')[1] || '';
