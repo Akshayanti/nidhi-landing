@@ -284,6 +284,10 @@ jobs:
           pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
           python -m unittest scripts/test_send_newsletter.py
 
+      # The QR code generator for print material (standard library only).
+      - name: Run QR code tests
+        run: python -m unittest scripts/test_qr_svg.py
+
   # ---------------------------------------------------------------------------
   # Vulnerability audit. Lets a freshly-introduced known-vulnerable
   # transitive dep block the merge.
