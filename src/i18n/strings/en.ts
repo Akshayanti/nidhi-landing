@@ -815,7 +815,7 @@ export const en = {
       invites:
         'To choose whom to invite to the planner beta, a nidhi admin reads this list through the planner’s admin tools. Those tools reach the sheet through a protected link, with a secret key that stays on the planner’s server and is never shown to admins. This read sends the planner only your email address, the page you signed up from and when you signed up. Being on the list invites no one by itself: a person picks every invite. The waitlist still sends you one email: your invite.',
       total:
-        'If enough people join the waitlist, the site may show a rounded-down total of signups. It never shows any email address, or whether any particular person has joined.',
+        'The site may show how many people are waiting for a beta invite: the people on this waitlist plus the volunteers who ticked the planner beta box, each counted once even if they are on both. Our Google account works out that number, and only the number leaves it. Below 20 it is exact, so a change of one can be seen between one site build and the next. From 20 it is rounded down, to a multiple of 5 up to 49 and to a multiple of 10 from 50. No email address is displayed. Someone who already knows about a particular signup or beta choice may be able to infer it from a change in the total.',
       from: {
         before: 'The invite email will come from ',
         after: '. Add it to your contacts so it doesn’t land in spam.',
@@ -841,6 +841,8 @@ export const en = {
         'In that private sheet we also note a follow-up status and the date of our last contact with you, to manage replies and apply the retention period below. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
       invites:
         'If you ticked the planner beta box, a nidhi admin can read your email address and when you submitted the form through the planner’s admin tools, which use the same kind of protected link, to choose whom to invite. This read sends the planner only those two things, and only for people who ticked the box; your other answers stay in the sheet. Ticking the box invites no one by itself: a person picks every invite, and the invite is the one email that comes from it.',
+      total:
+        'If you ticked the planner beta box, you are also counted in the total of people waiting for a beta invite that the site may show (described under the waitlist above), once even if you are on the waitlist too. Only the number is displayed, never your address. The same possibility of inference described above applies here.',
       google:
         'The form page itself is Google’s, so Google’s own terms and privacy policy apply while you fill it in.',
     },
@@ -916,7 +918,7 @@ export const en = {
           before: ' (Google Cloud EU regions): our email addresses (',
           middle: ' for general contact and support, ',
           after:
-            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs), and the Google Form for volunteer translators with the sheet its answers go to. The sheets are private: nidhi admins can read them directly, and the planner’s server can retrieve only the fields described under the waitlist and the volunteer form.',
+            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs), and the Google Form for volunteer translators with the sheet its answers go to. The sheets are private: nidhi admins can read them directly, and the planner’s server can retrieve only the fields described under the waitlist and the volunteer form. The waitlist’s script also opens the volunteer sheet, inside our Google account, to work out the total of people waiting for a beta invite; only that number leaves it.',
         },
         planner: {
           name: 'DigitalOcean',
@@ -1125,8 +1127,12 @@ export const en = {
   waitlist: {
     region: 'Early-access waitlist',
     heading: 'Want the planner when it opens?',
-    /** Under the heading once 20 people have joined, rounded down to a multiple of 20 (src/utils/waitlistCount.ts). */
-    joined: '{n}+ people have joined my waitlist.',
+    /** Under the heading, for a count of 1 to 19 (src/utils/waitlistCount.ts): people waiting for a beta invite across the waitlist and the volunteers who ticked the beta box. */
+    waitingOne: '{n} person is waiting for a beta invite.',
+    waitingFew: '{n} people are waiting for a beta invite.',
+    waitingMany: '{n} people are waiting for a beta invite.',
+    /** From 20 people, rounded down: {n} is the rounded number. */
+    waitingAtLeast: '{n}+ people are waiting for a beta invite.',
     /** After the heading: the beta reward, with a link to /beta/ (left out on that page). */
     beta: { before: "Beta testers get the paid features free for 12 months after launch. ", link: "How the beta works" },
     emailLabel: 'Email address',

@@ -10,11 +10,12 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const BETA = "Invite me to the planner's beta when it opens.";
+const VOLUNTEER_SHEET_ID = '1K3LL_00Kq4L0ouTsr2cQc25xKNLn5YaI75KnKn9U3Z8';
 const WHEN = new Date('2026-01-01T00:00:00Z');
 
 /** Loads a script with `rows` (header row first) as its only sheet. */
-function load(file, rows, { sheetCount = 1 } = {}) {
-  const sheet = {
+function fakeSheet(rows) {
+  return {
     getLastRow: () => rows.length,
     getLastColumn: () => rows[0].length,
     getName: () => 'tab',
@@ -22,6 +23,14 @@ function load(file, rows, { sheetCount = 1 } = {}) {
       getValues: () => rows.slice(r - 1, r - 1 + nr).map((row) => row.slice(c - 1, c - 1 + nc)),
     }),
   };
+}
+
+/**
+ * `volunteerRows` is the volunteer spreadsheet that waitlist.gs opens by id
+ * for its count; `null` makes opening it throw, as an unshared sheet would.
+ */
+function load(file, rows, { sheetCount = 1, volunteerRows = undefined, volunteerTabs = 1 } = {}) {
+  const sheet = fakeSheet(rows);
   const junk = { getLastRow: () => 1, getLastColumn: () => 1, getRange: () => ({ getValues: () => [['Notes']] }) };
   const sheets = sheetCount === 2 ? [junk, sheet] : [sheet];
   const ctx = {
@@ -34,7 +43,13 @@ function load(file, rows, { sheetCount = 1 } = {}) {
     ContentService: { MimeType: { JSON: 1 }, createTextOutput: (s) => ({ s, setMimeType() { return this; } }) },
     SpreadsheetApp: {
       getActiveSpreadsheet: () => ({ getSheets: () => sheets }),
-      openById: () => ({ getSheetByName: () => sheet }),
+      openById: (id) => {
+        if (id === VOLUNTEER_SHEET_ID) {
+          if (volunteerRows === undefined || volunteerRows === null) throw new Error('no access');
+          return { getSheets: () => [junk, ...Array.from({ length: volunteerTabs }, () => fakeSheet(volunteerRows))] };
+        }
+        return { getSheetByName: () => sheet };
+      },
     },
     PropertiesService: { getScriptProperties: () => ({ getProperty: () => 'x' }) },
     ScriptApp: { getService: () => ({ getUrl: () => 'https://example.invalid/exec' }) },
@@ -113,6 +128,96 @@ describe('waitlist.gs list action', () => {
   });
 });
 
+describe('waitlist.gs count action', () => {
+  const header = ['email', 'source', 'created_at'];
+  const volunteerHeader = ['Timestamp', 'Email', 'Name to credit (optional)', 'Planner beta (optional)'];
+  const waitlist = [header, ['A@x.io', 'p', WHEN], ['a@x.io', 'p', WHEN], ['bad', 'p', WHEN], ['b@x.io', 'p', WHEN]];
+  const count = (wait, volunteers, tokenGiven = TOKEN) => {
+    const c = withToken(load('scripts/waitlist.gs', wait, { volunteerRows: volunteers }), 'COUNT_TOKEN_SHA256_');
+    return answer(c.doPost(post({ action: 'count', token: tokenGiven })));
+  };
+
+  it('counts the union of waitlist addresses and beta-ticked volunteers', () => {
+    const volunteers = [volunteerHeader, [WHEN, 'c@x.io', 'n', BETA], [WHEN, 'd@x.io', 'n', `Other, ${BETA}`]];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 4 });
+  });
+
+  it('counts a person on both lists once, however the address is written', () => {
+    const volunteers = [volunteerHeader, [WHEN, ' A@X.io ', 'n', BETA], [WHEN, 'c@x.io', 'n', BETA], [WHEN, 'C@x.io', 'n', BETA]];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 3 });
+  });
+
+  it('leaves out volunteers who did not tick the beta box', () => {
+    const volunteers = [volunteerHeader, [WHEN, 'c@x.io', 'n', ''], [WHEN, 'd@x.io', 'n', 'Something else']];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 2 });
+  });
+
+  it('leaves out invalid volunteer addresses', () => {
+    const volunteers = [volunteerHeader, [WHEN, 'nope', 'n', BETA], [WHEN, '', 'n', BETA]];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 2 });
+  });
+
+  it('counts volunteers when the waitlist is empty, and the waitlist when there are no volunteers', () => {
+    assert.deepEqual(count([header], [volunteerHeader, [WHEN, 'c@x.io', 'n', BETA]]), { ok: true, count: 1 });
+    assert.deepEqual(count(waitlist, [volunteerHeader]), { ok: true, count: 2 });
+  });
+
+  it('finds the volunteer columns by header text, wherever they are', () => {
+    const volunteers = [['Planner beta (optional)', 'Email'], [BETA, 'c@x.io']];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 3 });
+  });
+
+  it('answers an error, not a lower number, when the volunteer headers do not match', () => {
+    const out = count(waitlist, [['Timestamp', 'Email'], [WHEN, 'c@x.io']]);
+    assert.deepEqual(out, { ok: false, error: 'schema' });
+  });
+
+  it('answers an error when the volunteer spreadsheet cannot be opened', () => {
+    assert.deepEqual(count(waitlist, null), { ok: false, error: 'error' });
+  });
+
+  it('counts a choice only when it is a whole selected option, not part of another', () => {
+    const volunteers = [
+      volunteerHeader,
+      [WHEN, 'c@x.io', 'n', `Other, ${BETA}`],
+      [WHEN, 'd@x.io', 'n', `${BETA}, Other`],
+      [WHEN, 'e@x.io', 'n', `A, ${BETA}, B`],
+      [WHEN, 'f@x.io', 'n', `${BETA} Not really`],
+      [WHEN, 'g@x.io', 'n', `Maybe: ${BETA}`],
+    ];
+    assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 5 });
+  });
+
+  it('answers schema when the waitlist headers are not where the count expects them', () => {
+    const moved = [['source', 'email', 'created_at'], ['p', 'a@x.io', WHEN]];
+    assert.deepEqual(count(moved, [volunteerHeader]), { ok: false, error: 'schema' });
+  });
+
+  it('answers schema, not the first tab, when two volunteer tabs have the headers', () => {
+    const c = withToken(load('scripts/waitlist.gs', waitlist, { volunteerRows: [volunteerHeader, [WHEN, 'c@x.io', 'n', BETA]], volunteerTabs: 2 }), 'COUNT_TOKEN_SHA256_');
+    assert.deepEqual(answer(c.doPost(post({ action: 'count', token: TOKEN }))), { ok: false, error: 'schema' });
+  });
+
+  it('never accepts the token or the action from the query string', () => {
+    const c = withToken(load('scripts/waitlist.gs', waitlist, { volunteerRows: [volunteerHeader] }), 'COUNT_TOKEN_SHA256_');
+    const query = { parameter: { action: 'count', token: TOKEN }, postData: { contents: '' } };
+    assert.equal(answer(c.doPost(query)).ok, false);
+    assert.equal(answer(c.doPost(query)).count, undefined);
+    const mixed = { parameter: { action: 'count', token: TOKEN }, postData: { contents: 'action=count' } };
+    assert.equal(answer(c.doPost(mixed)).error, 'forbidden');
+  });
+
+  it('refuses an oversized token', () => {
+    assert.equal(count(waitlist, [volunteerHeader], 't'.repeat(500)).error, 'forbidden');
+  });
+
+  it('refuses a wrong token and returns only the number', () => {
+    assert.equal(count(waitlist, [volunteerHeader], 'nope').error, 'forbidden');
+    const out = count(waitlist, [volunteerHeader, [WHEN, 'c@x.io', 'Private Name', BETA]]);
+    assert.deepEqual(Object.keys(out), ['ok', 'count']);
+  });
+});
+
 describe('volunteer-list.gs', () => {
   const header = ['Timestamp', 'Email', 'Name to credit (optional)', 'Planner beta (optional)'];
   const rows = [
@@ -178,15 +283,23 @@ describe('volunteer-list.gs', () => {
 
   it('matches the choice and the question titles the form script creates', () => {
     const form = fs.readFileSync('scripts/volunteer-form.gs', 'utf8');
-    const list = load('scripts/volunteer-list.gs', rows);
-    const get = (name) => vm.runInContext(name, list);
     // The form writes the choice as a single-quoted literal in setChoiceValues.
     const choice = /setChoiceValues\(\[('(?:[^'\\]|\\.)*')\]\)/g;
     const literals = [...form.matchAll(choice)].map((m) => vm.runInNewContext(m[1]));
-    assert.ok(literals.includes(get('BETA_CHOICE_')), 'the beta choice text differs from the form');
-    for (const [constant, title] of [['HEADER_EMAIL_', 'Email'], ['HEADER_TIMESTAMP_', 'Timestamp'], ['HEADER_BETA_', 'Planner beta (optional)']]) {
-      assert.equal(get(constant), title);
-      if (title !== 'Timestamp') assert.ok(form.includes(`.setTitle('${title}')`), `${title} is not a question title in the form`);
+    // waitlist.gs holds its own copy of the contract for its count.
+    const copies = [
+      ['scripts/volunteer-list.gs', { choice: 'BETA_CHOICE_', email: 'HEADER_EMAIL_', timestamp: 'HEADER_TIMESTAMP_', beta: 'HEADER_BETA_' }],
+      ['scripts/waitlist.gs', { choice: 'VOLUNTEER_BETA_CHOICE_', email: 'VOLUNTEER_HEADER_EMAIL_', beta: 'VOLUNTEER_HEADER_BETA_' }],
+    ];
+    for (const [file, names] of copies) {
+      const get = (name) => vm.runInContext(name, load(file, rows));
+      assert.ok(literals.includes(get(names.choice)), `${file}: the beta choice text differs from the form`);
+      const titles = { email: 'Email', timestamp: 'Timestamp', beta: 'Planner beta (optional)' };
+      for (const [key, constant] of Object.entries(names)) {
+        if (key === 'choice') continue;
+        assert.equal(get(constant), titles[key], `${file}: ${constant}`);
+        if (key !== 'timestamp') assert.ok(form.includes(`.setTitle('${titles[key]}')`), `${titles[key]} is not a question title in the form`);
+      }
     }
   });
 });

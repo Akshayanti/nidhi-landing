@@ -669,7 +669,7 @@ export const es: Dict = {
       invites:
         'Para elegir a quién invitar a la beta del planificador, un administrador de nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que los administradores nunca reciben. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
       total:
-        'Si se une suficiente gente a la lista de espera, el sitio puede mostrar el total de inscripciones, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha apuntado.',
+        'El sitio puede mostrar cuántas personas esperan una invitación a la beta: las de esta lista de espera más las personas voluntarias que marcaron la casilla de la beta del planificador, y cada una cuenta una sola vez aunque esté en ambas. Ese número se calcula dentro de nuestra cuenta de Google y solo el número sale de ella. Por debajo de 20 es exacto, así que entre una actualización del sitio y la siguiente puede verse un cambio de uno. Desde 20 se redondea hacia abajo, a un múltiplo de 5 hasta 49 y a un múltiplo de 10 desde 50. No se muestra ninguna dirección de correo. Alguien que ya tenga información sobre una inscripción concreta o la elección de la beta podría deducirla a partir de un cambio en el total.',
       from: {
         before: 'El correo de invitación llegará desde ',
         after: '. Añádela a tus contactos para que no acabe en spam.',
@@ -690,6 +690,8 @@ export const es: Dict = {
         'En esa hoja privada también anotamos el estado del seguimiento y la fecha de nuestro último contacto contigo, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
       invites:
         'Si marcaste la casilla de la beta del planificador, un administrador de nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
+      total:
+        'Si marcaste la casilla de la beta del planificador, también cuentas en el total de personas que esperan una invitación a la beta que el sitio puede mostrar (descrito arriba, en la lista de espera), una sola vez aunque estés también en la lista de espera. Solo se muestra el número, nunca tu dirección. Aquí también existe la posibilidad de deducción descrita arriba.',
       google:
         'La página del formulario es de Google, así que mientras lo rellenas se aplican las condiciones y la política de privacidad de Google.',
     },
@@ -759,7 +761,7 @@ export const es: Dict = {
           before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
           middle: ' para contacto general y soporte, ',
           after:
-            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Las hojas son privadas: los administradores de nidhi pueden leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado.',
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Las hojas son privadas: los administradores de nidhi pueden leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella.',
         },
         planner: {
           name: 'DigitalOcean',
@@ -931,7 +933,10 @@ export const es: Dict = {
   waitlist: {
     region: 'Lista de espera de acceso anticipado',
     heading: '¿Quieres el planificador cuando se abra el acceso?',
-    joined: '{n}+ personas se han unido a mi lista de espera.',
+    waitingOne: '{n} persona espera una invitación a la beta.',
+    waitingFew: '{n} personas esperan una invitación a la beta.',
+    waitingMany: '{n} personas esperan una invitación a la beta.',
+    waitingAtLeast: '{n}+ personas esperan una invitación a la beta.',
     beta: { before: "Quienes prueben la beta reciben las funciones de pago gratis durante 12 meses tras el lanzamiento. ", link: "Cómo funciona la beta" },
     emailLabel: 'Correo electrónico',
     cta: 'Avísame',
