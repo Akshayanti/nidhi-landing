@@ -14,13 +14,7 @@ picks the mask with the lowest penalty score, as the QR standard
 (ISO/IEC 18004) describes. Higher error correction (Q, H) survives more damage
 on print; M is the default and suits posters.
 
-Options:
-    -o, --output FILE   where to write the SVG (default: print to stdout)
-    --ecc L|M|Q|H       error-correction level (default: M)
-    --border N          quiet zone in modules (default: 4, the standard minimum)
-    --dark COLOUR       colour of dark modules (default: #000000)
-    --light COLOUR      background colour (default: #ffffff)
-    --mask 0-7          force a mask instead of choosing one (for testing)
+Usage, options, examples and print tips: python3 scripts/qr_svg.py --help
 
 Tests: python3 -m unittest scripts/test_qr_svg.py
 """
@@ -366,14 +360,51 @@ def check_url(url: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description='Make a deterministic QR code SVG for one URL.')
-    parser.add_argument('url', help='the http or https URL to encode')
-    parser.add_argument('-o', '--output', help='SVG file to write (default: stdout)')
-    parser.add_argument('--ecc', default='M', choices=['L', 'M', 'Q', 'H'], type=str.upper)
-    parser.add_argument('--border', default=4, type=int)
-    parser.add_argument('--dark', default='#000000')
-    parser.add_argument('--light', default='#ffffff')
-    parser.add_argument('--mask', type=int, choices=range(8))
+    parser = argparse.ArgumentParser(
+        prog='qr_svg.py',
+        description=(
+            'Make a QR code for one web address and save it as an SVG image.\n'
+            'The same address and options always give exactly the same file,\n'
+            'and nothing is sent anywhere: the address itself is encoded, so\n'
+            'scans go straight to it.'
+        ),
+        epilog=(
+            'examples:\n'
+            '  python3 scripts/qr_svg.py "https://nidhi.today/" -o qr.svg\n'
+            '      save a QR code for the home page as qr.svg\n\n'
+            '  python3 scripts/qr_svg.py "https://nidhi.today/free/?utm_source=poster&utm_campaign=yoga" \\\n'
+            '      --ecc H --dark "#0A3D8F" -o poster-qr.svg\n'
+            '      a tagged link, sturdier against smudges, in brand blue\n\n'
+            'tips:\n'
+            '  - Put the address in quotes, or the shell cuts it at "&" or "?".\n'
+            '  - Shorter addresses make simpler codes that scan more easily.\n'
+            '  - Keep the white border (4 is the standard minimum) and keep\n'
+            '    dark modules on a light background, or some phones fail to scan.\n'
+            '  - The SVG has no fixed size: scale it to the print size you need.\n'
+            '    A common rule of thumb is a width of about a tenth of the\n'
+            '    scanning distance, and no less than 2 cm.\n'
+            '  - Scan a test print before printing many.'
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument('url', help='the one http:// or https:// address to encode (quote it)')
+    parser.add_argument('-o', '--output', metavar='FILE',
+                        help='where to save the SVG; without it, the SVG is printed to the terminal')
+    parser.add_argument('--ecc', default='M', choices=['L', 'M', 'Q', 'H'], type=str.upper,
+                        help='error correction: how much of the code can be damaged and still scan '
+                             '(L about 7%%, M 15%%, Q 25%%, H 30%%); higher makes a denser code (default: M)')
+    parser.add_argument('--border', default=4, type=int, metavar='N',
+                        help='white margin around the code, in modules (default: 4, the standard minimum)')
+    parser.add_argument('--dark', default='#000000', metavar='COLOUR',
+                        help='colour of the dark squares, like "#0A3D8F" or "black" (default: #000000)')
+    parser.add_argument('--light', default='#ffffff', metavar='COLOUR',
+                        help='background colour (default: #ffffff)')
+    parser.add_argument('--mask', type=int, choices=range(8), metavar='0-7',
+                        help='force a mask pattern instead of letting the script choose the best one '
+                             '(for testing; leave it out)')
+    if not (sys.argv[1:] if argv is None else argv):
+        parser.print_help()
+        return 2
     args = parser.parse_args(argv)
     try:
         url = check_url(args.url)
