@@ -423,10 +423,12 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 
 #### The brand tagline
 
-"Money, understood" appears four times in `src/i18n/strings/hi.ts`, as
-`meta.defaultImageAlt`, `home.meta.imageAlt`, `home.schema.slogan` and
-`home.schema.site`, and it has to read identically in all four. It also sits
-under the wordmark on Hindi print material. It got translated twice before
+"Money, understood" appears five times in `src/i18n/strings/hi.ts`, as
+`nav.tagline` (shown under the wordmark in the site header, or on its own line
+under the header on phones), `meta.defaultImageAlt`, `home.meta.imageAlt`,
+`home.schema.slogan` and `home.schema.site`, and it has to read identically in
+all five; a test holds `nav.tagline` and `home.schema.slogan` together. It also
+sits under the wordmark on Hindi print material. It got translated twice before
 this line existed (`पैसे की समझ` in the footer, `पैसा, समझ के साथ` on the home
 page), which is the failure this entry prevents.
 

@@ -25,10 +25,11 @@ export const hi: Dict = {
 
   /**
    * The brand line, "Money, understood", in its one approved Hindi rendering,
-   * पैसे की समझ, एकदम सहज. It appears four times in this file (here, and
-   * three keys under `home`) and must read identically in all four, which is
-   * what `docs/i18n/hi-glossary.md` records it for. The slogan key carries no
-   * danda (the line has no verb); in running text a danda ends it.
+   * पैसे की समझ, एकदम सहज. It appears five times in this file (here,
+   * `nav.tagline` in the header, and three keys under `home`) and must read
+   * identically in all five, which is what `docs/i18n/hi-glossary.md` records
+   * it for. The slogan and header keys carry no danda (the line has no verb);
+   * in running text a danda ends it.
    */
   meta: {
     defaultImageAlt: 'nidhi: पैसे की समझ, एकदम सहज। मुफ़्त पर्सनल फाइनेंस टूल और वित्तीय साक्षरता।',
@@ -44,6 +45,7 @@ export const hi: Dict = {
     menuLabel: 'मेन्यू',
     menuCloseLabel: 'मेन्यू बंद करें',
     homeLabel: 'nidhi का होम पेज',
+    tagline: 'पैसे की समझ, एकदम सहज',
     newTabHint: ' (नए टैब में खुलता है)',
     groups: { learn: 'सीखें', tools: 'मुफ़्त टूल', about: 'हमारे बारे में', language: 'भाषा' },
     buttons: { tools: 'मुफ़्त टूल', learn: 'सीखें' },

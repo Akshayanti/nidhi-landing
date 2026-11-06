@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-07',
+    items: [
+      {
+        id: 'header-tagline',
+        text: {
+          en: 'The header now shows nidhi’s tagline under the name, in the language of the page: “Money, understood” in English. On phones it has its own line just below the header. Hindi and Marathi have new taglines: “पैसे की समझ, एकदम सहज” and “पैशाची समज, एकदम सहज”.',
+          hi: 'पेज के सबसे ऊपर, nidhi नाम के नीचे, अब पेज की भाषा में टैगलाइन दिखती है। फ़ोन पर यह पेज के ऊपरी हिस्से के ठीक नीचे अलग पंक्ति में आती है। हिंदी की टैगलाइन नई है: “पैसे की समझ, एकदम सहज”।',
+          es: 'La cabecera muestra ahora el lema de nidhi debajo del nombre, en el idioma de la página: «El dinero, entendido». En el móvil va en su propia línea, justo debajo de la cabecera.',
+          cs: 'V záhlaví je teď pod jménem nidhi heslo v jazyce stránky: „Peníze srozumitelně“. Na telefonu má vlastní řádek hned pod záhlavím.',
+          mr: 'पानाच्या सर्वात वर, nidhi या नावाखाली, आता पानाच्या भाषेत टॅगलाइन दिसते. फोनवर ती पानाच्या वरच्या भागाच्या अगदी खाली वेगळ्या ओळीत येते. मराठी टॅगलाइन नवीन आहे: “पैशाची समज, एकदम सहज”.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-06',
     items: [
       {

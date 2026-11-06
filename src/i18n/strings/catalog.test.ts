@@ -452,3 +452,14 @@ describe('Hindi counted strings carry their count', () => {
     assert.deepEqual(offenders, []);
   });
 });
+
+describe('the brand tagline', () => {
+  // The header shows nav.tagline and structured data carries home.schema.slogan.
+  // They are one line per language (docs/color-palette.md, "Tagline").
+  it('reads the same in the header and the slogan, in every language', () => {
+    for (const locale of LOCALES) {
+      const d = dict(locale);
+      assert.equal(d.nav.tagline, d.home.schema.slogan, locale);
+    }
+  });
+});

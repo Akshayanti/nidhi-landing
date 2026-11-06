@@ -62,6 +62,13 @@ export const en = {
     menuCloseLabel: 'Close menu',
     /** `aria-label` on the logo link. The wordmark beside it says "nidhi". */
     homeLabel: 'nidhi home',
+    /**
+     * The brand tagline, shown under the wordmark in the header. It is the
+     * same line as `home.schema.slogan` (a test holds the two together) and
+     * the one recorded for each language in docs/color-palette.md. The logo
+     * link's aria-label adds it after `homeLabel` for screen readers.
+     */
+    tagline: 'Money, understood',
     /** Read out after a link that opens a new tab. */
     newTabHint: ' (opens in a new tab)',
     /**

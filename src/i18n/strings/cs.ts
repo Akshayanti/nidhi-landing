@@ -38,6 +38,7 @@ export const cs: Dict = {
     menuLabel: 'Nabídka',
     menuCloseLabel: 'Zavřít nabídku',
     homeLabel: 'nidhi, úvodní stránka',
+    tagline: 'Peníze srozumitelně',
     newTabHint: ' (otevře se na nové kartě)',
     groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O nás', language: 'Jazyk' },
     buttons: { tools: 'Nástroje zdarma', learn: 'Lekce' },
