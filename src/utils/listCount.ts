@@ -1,6 +1,6 @@
 /**
- * The size of one of the site's sign-up lists (the planner waitlist, the
- * newsletter), for a line like "20+ people have joined my waitlist.".
+ * The size of one of the site's sign-up lists (the newsletter, and the people waiting
+ * for a beta invite), for a line like "20+ readers get new lessons by email.".
  *
  * Read once per build, never in a visitor's browser: the build posts a secret
  * token to the list's Apps Script `count` action, which answers with one whole

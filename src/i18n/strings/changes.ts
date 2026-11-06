@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-06',
+    items: [
+      {
+        id: 'beta-waiting-count',
+        text: {
+          en: 'The waitlist box now says how many people are waiting for a beta invite, from the very first person, and the number includes volunteers who asked for a beta invite on the volunteer form. Small numbers are exact; larger ones are rounded down, like "25+".',
+          hi: 'वेटलिस्ट बॉक्स अब पहले व्यक्ति से ही बताता है कि कितने लोग बीटा निमंत्रण का इंतज़ार कर रहे हैं, और इस संख्या में वे स्वयंसेवक भी गिने जाते हैं जिन्होंने स्वयंसेवक फ़ॉर्म पर बीटा निमंत्रण माँगा है। छोटी संख्याएँ बिल्कुल सही दिखती हैं; बड़ी संख्याएँ नीचे की ओर पूर्णांकित होती हैं, जैसे "25+"।',
+          es: 'El cuadro de la lista de espera ahora dice cuántas personas esperan una invitación a la beta, desde la primera, y el número incluye a quienes pidieron una invitación a la beta en el formulario de voluntariado. Los números pequeños son exactos; los mayores se redondean hacia abajo, como «25+».',
+          cs: 'Okénko čekací listiny teď ukazuje, kolik lidí čeká na pozvánku do bety, už od prvního člověka, a do čísla se počítají i dobrovolníci, kteří si o pozvánku do bety řekli ve formuláři pro dobrovolníky. Malá čísla jsou přesná, větší se zaokrouhlují dolů, třeba „25+“.',
+          mr: 'प्रतीक्षा यादीचा बॉक्स आता पहिल्या व्यक्तीपासूनच सांगतो की किती लोक बीटा आमंत्रणाची वाट पाहत आहेत, आणि स्वयंसेवक फॉर्मवर बीटा आमंत्रण मागणारे स्वयंसेवकही या संख्येत मोजले जातात. लहान संख्या अचूक असतात; मोठ्या संख्या खालच्या बाजूला पूर्णांक केल्या जातात, जसे “25+”.',
+        },
+      },
+      {
+        id: 'beta-invites-notice',
+        text: {
+          en: 'The privacy notice now explains how people are chosen for planner beta invitations. An admin requests the lists and chooses whom to invite. The planner reads email addresses and signup times, plus the signup page for waitlist entries. Only invited addresses are saved in its database, with invitation records. Joining either list does not automatically send an invitation. The waitlist still sends one email: your invite.',
+          hi: 'प्राइवेसी नोटिस में अब बताया गया है कि प्लानर बीटा के निमंत्रण के लिए लोग कैसे चुने जाते हैं। एडमिन सूचियाँ माँगता है और तय करता है कि किसे बुलाना है। प्लानर ईमेल पते और साइनअप का समय पढ़ता है, और वेटलिस्ट की प्रविष्टियों के लिए साइनअप वाला पेज भी। इसके डेटाबेस में सिर्फ़ निमंत्रित पते सहेजे जाते हैं, निमंत्रण के रिकॉर्ड के साथ। किसी सूची में जुड़ने भर से निमंत्रण अपने आप नहीं जाता। वेटलिस्ट से आपको सिर्फ़ एक ईमेल मिलेगा: आपका निमंत्रण।',
+          es: 'El aviso de privacidad ahora explica cómo se elige a quién invitar a la beta del planificador. Un administrador pide las listas y elige a quién invitar. El planificador lee los correos y la hora de alta, y además la página de alta en el caso de la lista de espera. En su base de datos solo se guardan las direcciones invitadas, con los registros de invitación. Apuntarse a una lista no envía ninguna invitación automáticamente. La lista de espera sigue enviándote un solo correo: tu invitación.',
+          cs: 'Zásady ochrany soukromí teď vysvětlují, jak se vybírá, kdo dostane pozvánku do bety plánovače. Správce si vyžádá seznamy a vybere, koho pozvat. Plánovač čte e-mailové adresy a časy přihlášení, u čekací listiny i stránku, ze které se lidé přihlásili. V jeho databázi se ukládají jen pozvané adresy, spolu se záznamy o pozvánkách. Zapsání na seznam automaticky pozvánku nepošle. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka.',
+          mr: 'प्लॅनर बीटाच्या आमंत्रणांसाठी लोक कसे निवडले जातात, ते आता गोपनीयता सूचनेत सांगितले आहे. अॅडमिन याद्या मागवतो आणि कोणाला बोलवायचे ते ठरवतो. प्लॅनर ईमेल पत्ते आणि नोंदणीच्या वेळा वाचतो, तसेच प्रतीक्षा यादीतील नोंदींसाठी नोंदणी केलेले पान. त्याच्या डेटाबेसमध्ये फक्त आमंत्रित पत्ते, आमंत्रणाच्या रेकॉर्डसह, साठवले जातात. कोणत्याही यादीत सामील होण्याने आपोआप आमंत्रण जात नाही. प्रतीक्षा यादीतून तुम्हाला एकच ईमेल येईल: तुमचे आमंत्रण.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-04',
     items: [
       {

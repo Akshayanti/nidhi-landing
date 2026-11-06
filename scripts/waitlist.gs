@@ -42,14 +42,38 @@
  *   POST action=count       form body: action, token
  *                            Returns { ok: true, count } when the token's
  *                            SHA-256 matches COUNT_TOKEN_SHA256_ below: the
- *                            number of distinct,
- *                            valid addresses on the list, and nothing else.
- *                            The landing site's build reads it to show a
- *                            rounded-down total ("20+ people have joined").
+ *                            number of distinct, valid addresses across the
+ *                            waitlist AND the volunteers who ticked the
+ *                            planner-beta box in the volunteer form's response
+ *                            spreadsheet (opened by VOLUNTEER_SPREADSHEET_ID_),
+ *                            and nothing else. If that spreadsheet cannot be
+ *                            read or its headers do not match, it answers
+ *                            { ok: false, error: 'schema' | 'error' } rather
+ *                            than a lower number. The landing site's build
+ *                            reads it to show how many people are waiting for
+ *                            a beta invite.
  *                            The token travels in the body, never the URL,
  *                            so it does not end up in logs.
  *
- *   GET  ?action=health     Per-dependency ok/error JSON report.
+ *   POST action=list        form body: action, token
+ *                            Returns { ok: true, items: [{ email, source,
+ *                            created_at }] } when the token's SHA-256 matches
+ *                            LIST_TOKEN_SHA256_ below (a different token from
+ *                            the count one): one item per distinct, valid
+ *                            address, the first row winning, and nothing else
+ *                            from the sheet. The planner's admin tools read it
+ *                            on demand to choose whom to invite; nothing is
+ *                            invited automatically. The action and the token are
+ *                            read only from the POST body (form-encoded);
+ *                            anything in the query string is ignored, so a
+ *                            token sent in the URL is never accepted. If the
+ *                            sheet's first three headers are not email,
+ *                            source, created_at it answers { ok: false,
+ *                            error: 'schema' }.
+ *
+ *   GET  ?action=health     Coarse ok/false per dependency, with no tab names,
+ *                            counts or error text (details go to the script's
+ *                            own logs).
  */
 
 // ============================================================================
@@ -197,18 +221,25 @@ function doGet(e) {
       '</body></html>'
     );
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    // The message can name sheet internals, so the caller gets a fixed word.
+    console.error('[waitlist] GET failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
 
 function doPost(e) {
   try {
+    // The list action reads its action and token from the body only.
+    // The list and count actions read their action and token from the body only.
+    var bodyAction = formBody_(e).action;
+    if (bodyAction === 'list') return handleList_(e);
+    if (bodyAction === 'count') return handleCount_(e);
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'waitlist') return handleWaitlist_(e);
-    if (action === 'count') return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    console.error('[waitlist] POST failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
 
@@ -227,25 +258,186 @@ function safeSiteUrl_() {
 // (openssl rand -hex 32), set the secret, put its SHA-256 here, redeploy.
 var COUNT_TOKEN_SHA256_ = 'a443a8d061ebe14cf7cb89e48a63d4fc2d4d59dd5124c64337b9a7e4edc444c8';
 
-// Distinct, valid addresses: duplicates kept from before dedupe and blank or
-// malformed rows do not inflate the total the site shows.
+// People waiting for a beta invite, counted once each across two lists: the
+// waitlist above, and the volunteers who ticked the planner-beta box in the
+// volunteer form's response spreadsheet. The union is built here, inside the
+// same Google account, and only its size leaves the script. Duplicates kept
+// from before dedupe, blank or malformed addresses and volunteers who did not
+// tick the box do not inflate the total the site shows.
+//
+// If the volunteer sheet cannot be read or its headers moved, the answer is an
+// error rather than the waitlist alone: a silently lower number would be
+// shown as the truth, while an error makes the build leave the line out.
 function handleCount_(e) {
-  var given = String((e.parameter && e.parameter.token) || '');
-  if (!given || !sameString_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) return jsonResponse_({ ok: false, error: 'forbidden' });
-  var s = sheet_();
-  var last = s.getLastRow();
-  if (last < 2) return jsonResponse_({ ok: true, count: 0 });
+  var given = String(formBody_(e).token || '');
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !sameString_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) return jsonResponse_({ ok: false, error: 'forbidden' });
   var seen = {};
   var count = 0;
-  s.getRange(2, COL.email, last - 1, 1).getValues().forEach(function (row) {
-    var email = normalizeEmail_(row[0]);
+  function add(raw) {
+    var email = normalizeEmail_(raw);
     if (isValidEmail_(email) && !seen[email]) { seen[email] = true; count++; }
-  });
+  }
+  var s = sheet_();
+  // A moved column would count the wrong data, so the waitlist's headers are
+  // checked here as the list action checks them.
+  if (!headersMatch_(s)) return jsonResponse_({ ok: false, error: 'schema' });
+  var last = s.getLastRow();
+  if (last >= 2) {
+    s.getRange(2, COL.email, last - 1, 1).getValues().forEach(function (row) { add(row[0]); });
+  }
+  var volunteers;
+  try {
+    volunteers = betaVolunteerEmails_();
+  } catch (err) {
+    console.error('[waitlist] volunteer sheet unreadable: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
+  }
+  if (!volunteers) return jsonResponse_({ ok: false, error: 'schema' });
+  volunteers.forEach(add);
   return jsonResponse_({ ok: true, count: count });
 }
 
-// Walks the longer of the two whole, with no early return, so the time taken
-// says nothing about the token's length or how much of a guess was right.
+// ----------------------------------------------------------------------------
+// Volunteer form contract: the header texts and the choice the count depends
+// on. Same texts as scripts/volunteer-list.gs, found the same way (by header,
+// not position). Keep in step with scripts/volunteer-form.gs (a test compares
+// them). The spreadsheet id is not a secret: opening it needs access to the
+// Google account that owns it.
+// ----------------------------------------------------------------------------
+
+var VOLUNTEER_SPREADSHEET_ID_ = '1K3LL_00Kq4L0ouTsr2cQc25xKNLn5YaI75KnKn9U3Z8';
+var VOLUNTEER_HEADER_EMAIL_ = 'Email';
+var VOLUNTEER_HEADER_BETA_ = 'Planner beta (optional)';
+var VOLUNTEER_BETA_CHOICE_ = 'Invite me to the planner\'s beta when it opens.';
+
+/** Column index (0-based) of the email and beta headers, or null if either is missing. */
+function volunteerColumns_(headers) {
+  var wanted = { email: VOLUNTEER_HEADER_EMAIL_, beta: VOLUNTEER_HEADER_BETA_ };
+  var found = {};
+  for (var key in wanted) {
+    var idx = -1;
+    for (var i = 0; i < headers.length; i++) {
+      if (String(headers[i]).trim() === wanted[key]) { idx = i; break; }
+    }
+    if (idx < 0) return null;
+    found[key] = idx;
+  }
+  return found;
+}
+
+/**
+ * Raw email cells of the volunteers who ticked the beta box, from the first
+ * tab whose header row has both headers (a form's spreadsheet can gain tabs,
+ * so position is no guide). Null when no tab matches or when more than one
+ * does (an archived copy would otherwise silently supply an old count);
+ * throws when the spreadsheet cannot be opened.
+ */
+function betaVolunteerEmails_() {
+  var sheets = SpreadsheetApp.openById(VOLUNTEER_SPREADSHEET_ID_).getSheets();
+  var found = null;
+  for (var i = 0; i < sheets.length; i++) {
+    var sh = sheets[i];
+    var width = sh.getLastColumn();
+    if (width < 1 || sh.getLastRow() < 1) continue;
+    var cols = volunteerColumns_(sh.getRange(1, 1, 1, width).getValues()[0]);
+    if (!cols) continue;
+    if (found) return null;
+    var rows = sh.getLastRow() - 1;
+    if (rows < 1) { found = []; continue; }
+    var emails = sh.getRange(2, cols.email + 1, rows, 1).getValues();
+    var betas = sh.getRange(2, cols.beta + 1, rows, 1).getValues();
+    var out = [];
+    for (var r = 0; r < rows; r++) {
+      if (hasChoice_(betas[r][0], VOLUNTEER_BETA_CHOICE_)) out.push(emails[r][0]);
+    }
+    found = out;
+  }
+  return found;
+}
+
+/**
+ * Whether a checkbox answer includes the choice. The sheet stores the chosen
+ * texts joined by ", ", and a choice text may itself hold a comma, so the cell
+ * matches when it equals the choice or the choice sits between the separators
+ * at either end or in the middle. An exact match, not a substring, so another
+ * option that merely contains the text never counts.
+ */
+function hasChoice_(cell, choice) {
+  var text = String(cell || '');
+  if (text === choice) return true;
+  return text.indexOf(choice + ', ') === 0 ||
+    text.slice(-(choice.length + 2)) === ', ' + choice ||
+    text.indexOf(', ' + choice + ', ') >= 0;
+}
+
+// The list action has its own token, so a leaked count token (which the
+// landing build holds) cannot read addresses. The plain token lives only in
+// the planner server's environment. Rotate it like the count token: new
+// token, new hash here, redeploy.
+var LIST_TOKEN_SHA256_ = '3be003dad4fd77a8765f2b77c57328a8127e43300db7290b96303abdcd99c32b';
+
+// Longest token the list action will hash: the real one is 43 characters, so
+// anything longer is not it and is not worth hashing.
+var MAX_TOKEN_LENGTH_ = 128;
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// First occurrence of each distinct, valid address wins. Only these three
+// fields leave the sheet.
+function handleList_(e) {
+  var given = String(formBody_(e).token || '');
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !sameString_(sha256Hex_(given), LIST_TOKEN_SHA256_)) return jsonResponse_({ ok: false, error: 'forbidden' });
+  var s = sheet_();
+  if (!headersMatch_(s)) return jsonResponse_({ ok: false, error: 'schema' });
+  var last = s.getLastRow();
+  if (last < 2) return jsonResponse_({ ok: true, items: [] });
+  var seen = {};
+  var items = [];
+  s.getRange(2, COL.email, last - 1, COL.created_at - COL.email + 1).getValues().forEach(function (row) {
+    var email = normalizeEmail_(row[COL.email - 1]);
+    if (!isValidEmail_(email) || seen[email]) return;
+    seen[email] = true;
+    var created = row[COL.created_at - 1];
+    items.push({
+      email: email,
+      source: String(row[COL.source - 1] || '').slice(0, 200),
+      created_at: created instanceof Date ? created.toISOString() : String(created || ''),
+    });
+  });
+  return jsonResponse_({ ok: true, items: items });
+}
+
+/** Whether row 1 starts with email, source, created_at, so a moved column never leaks the wrong data. */
+function headersMatch_(sh) {
+  var headers = sh.getRange(1, 1, 1, 3).getValues()[0];
+  var expected = ['email', 'source', 'created_at'];
+  for (var i = 0; i < expected.length; i++) {
+    if (String(headers[i] || '').toLowerCase().trim() !== expected[i]) return false;
+  }
+  return true;
+}
+
+// Compare the fixed-length SHA-256 hex digests without returning at the first
+// mismatch.
 function sameString_(a, b) {
   var len = Math.max(a.length, b.length);
   var diff = a.length ^ b.length;
@@ -337,12 +529,15 @@ function dedupeOnce_(sh) {
 function handleHealth_() {
   var report = { ok: true, checks: {} };
 
+  // The result is public, so it says only ok or not; the reason is logged.
   function check(name, fn) {
     try {
-      report.checks[name] = { ok: true, info: fn() || null };
+      fn();
+      report.checks[name] = { ok: true };
     } catch (err) {
       report.ok = false;
-      report.checks[name] = { ok: false, error: String(err && err.message ? err.message : err) };
+      report.checks[name] = { ok: false };
+      console.error('[waitlist] health check ' + name + ' failed: ' + err);
     }
   }
 
@@ -350,32 +545,18 @@ function handleHealth_() {
     var required = ['SPREADSHEET_ID', 'SHEET_NAME', 'SITE_URL'];
     var missing = required.filter(function (k) { return !prop_(k); });
     if (missing.length) throw new Error('Missing: ' + missing.join(', '));
-    return { configured: required };
   });
 
   check('web_app_url', function () {
-    var url = ScriptApp.getService().getUrl();
-    if (!url) throw new Error('ScriptApp.getService().getUrl() returned empty — not deployed as a web app?');
-    report.web_app_url = url;
-    return { url: url };
+    if (!ScriptApp.getService().getUrl()) throw new Error('not deployed as a web app');
   });
 
   check('sheet', function () {
-    var s = sheet_();
-    var headers = s.getRange(1, 1, 1, 3).getValues()[0];
-    var expected = ['email', 'source', 'created_at'];
-    for (var i = 0; i < expected.length; i++) {
-      if (String(headers[i] || '').toLowerCase() !== expected[i]) {
-        throw new Error('Column ' + (i + 1) + ' header "' + headers[i] + '" does not match expected "' + expected[i] + '". Headers found: ' + JSON.stringify(headers));
-      }
-    }
-    var rows = s.getLastRow() - 1; // minus header
-    return { tab: s.getName(), headers: headers, row_count: rows };
+    if (!headersMatch_(sheet_())) throw new Error('headers do not match');
   });
 
   check('posthog', function () {
-    var cfg = config_();
-    return { configured: !!cfg.posthogApiKey, host: cfg.posthogHost };
+    config_();
   });
 
   return jsonResponse_(report);
