@@ -635,7 +635,7 @@ export const cs: Dict = {
       invites:
         'Aby správce nidhi vybral, koho pozvat do bety plánovače, čte tento seznam v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a správci ho nikdy nedostanou. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které jste se přihlásili, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
       total:
-        'Pokud se na čekací listinu přihlásí dost lidí, web může ukázat celkový počet registrací zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda se přihlásil konkrétní člověk.',
+        'Web může ukázat, kolik lidí čeká na pozvánku do bety: lidé z této čekací listiny a dobrovolníci, kteří zaškrtli políčko pro betu plánovače, každý započtený jen jednou, i když je na obou seznamech. Číslo se spočítá uvnitř našeho účtu Google a ven z něj odchází jen samotné číslo. Pod 20 je přesné, takže změnu o jednoho člověka lze zaznamenat mezi dvěma sestaveními webu. Od 20 se zaokrouhluje dolů, do 49 na násobek 5 a od 50 na násobek 10. Žádná e-mailová adresa se nezobrazuje. Kdo už má informace o konkrétním přihlášení nebo zaškrtnutí políčka pro betu, může je ze změny celkového počtu odvodit.',
       from: {
         before: 'E-mail s pozvánkou přijde z adresy ',
         after: '. Přidejte si ji do kontaktů, aby neskončil ve spamu.',
@@ -656,6 +656,8 @@ export const cs: Dict = {
         'V této soukromé tabulce si také zapisujeme stav vyřízení a datum našeho posledního kontaktu s vámi, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
       invites:
         'Pokud jste zaškrtli políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
+      total:
+        'Pokud jste zaškrtli políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
       google:
         'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
     },
@@ -725,7 +727,7 @@ export const cs: Dict = {
           before: ' (regiony Google Cloud v EU): naše e-mailové adresy (',
           middle: ' pro obecný kontakt a podporu, ',
           after:
-            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky.',
+            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo.',
         },
         planner: {
           name: 'DigitalOcean',
@@ -893,7 +895,10 @@ export const cs: Dict = {
   waitlist: {
     region: 'Čekací listina na přednostní přístup',
     heading: 'Chcete plánovač, až se otevře?',
-    joined: 'Na mé čekací listině je už {n}+ lidí.',
+    waitingOne: 'Na pozvánku do bety čeká {n} člověk.',
+    waitingFew: 'Na pozvánku do bety čekají {n} lidé.',
+    waitingMany: 'Na pozvánku do bety čeká {n} lidí.',
+    waitingAtLeast: 'Na pozvánku do bety čeká {n}+ lidí.',
     beta: { before: "Kdo se zapojí do bety, má placené funkce 12 měsíců po spuštění zdarma. ", link: "Jak beta funguje" },
     emailLabel: 'E-mailová adresa',
     cta: 'Dejte mi vědět',

@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-06',
     items: [
       {
+        id: 'beta-waiting-count',
+        text: {
+          en: 'The waitlist box now says how many people are waiting for a beta invite, from the very first person, and the number includes volunteers who asked for a beta invite on the volunteer form. Small numbers are exact; larger ones are rounded down, like "25+".',
+          hi: 'वेटलिस्ट बॉक्स अब पहले व्यक्ति से ही बताता है कि कितने लोग बीटा निमंत्रण का इंतज़ार कर रहे हैं, और इस संख्या में वे स्वयंसेवक भी गिने जाते हैं जिन्होंने स्वयंसेवक फ़ॉर्म पर बीटा निमंत्रण माँगा है। छोटी संख्याएँ बिल्कुल सही दिखती हैं; बड़ी संख्याएँ नीचे की ओर पूर्णांकित होती हैं, जैसे "25+"।',
+          es: 'El cuadro de la lista de espera ahora dice cuántas personas esperan una invitación a la beta, desde la primera, y el número incluye a quienes pidieron una invitación a la beta en el formulario de voluntariado. Los números pequeños son exactos; los mayores se redondean hacia abajo, como «25+».',
+          cs: 'Okénko čekací listiny teď ukazuje, kolik lidí čeká na pozvánku do bety, už od prvního člověka, a do čísla se počítají i dobrovolníci, kteří si o pozvánku do bety řekli ve formuláři pro dobrovolníky. Malá čísla jsou přesná, větší se zaokrouhlují dolů, třeba „25+“.',
+          mr: 'प्रतीक्षा यादीचा बॉक्स आता पहिल्या व्यक्तीपासूनच सांगतो की किती लोक बीटा आमंत्रणाची वाट पाहत आहेत, आणि स्वयंसेवक फॉर्मवर बीटा आमंत्रण मागणारे स्वयंसेवकही या संख्येत मोजले जातात. लहान संख्या अचूक असतात; मोठ्या संख्या खालच्या बाजूला पूर्णांक केल्या जातात, जसे “25+”.',
+        },
+      },
+      {
         id: 'beta-invites-notice',
         text: {
           en: 'The privacy notice now explains how people are chosen for planner beta invitations. An admin requests the lists and chooses whom to invite. The planner reads email addresses and signup times, plus the signup page for waitlist entries. Only invited addresses are saved in its database, with invitation records. Joining either list does not automatically send an invitation. The waitlist still sends one email: your invite.',

@@ -10,7 +10,8 @@
 // tool (through ToolWaitlist.astro). Once someone signs up, the shared
 // localStorage key hides it on every page.
 
-import { dict, format, localizedPath, type Locale } from '../i18n';
+import { dict, format, localizedPath, plural, type Locale } from '../i18n';
+import { PROSE_NUMBER_LOCALE } from '../i18n/config';
 import { shownWaitlistCount, waitlistCount } from '../utils/waitlistCount';
 
 interface Props {
@@ -29,7 +30,7 @@ interface Props {
 
 const { locale, showBeta = true, rememberedNote = false } = Astro.props;
 const { waitlist } = dict(locale);
-// "20+ people have joined my waitlist.": absent until there are 20 (see waitlistCount).
+// "12 people are waiting for a beta invite.": absent at 0, exact below 20, then rounded down (see waitlistCount).
 // The dev server shows the exact count instead, ungated, for the founder only.
 const signups = await waitlistCount();
 const joined = shownWaitlistCount(signups);
@@ -53,10 +54,10 @@ const inputId = `${idPrefix}-email`;
         <p class="waitlist-text waitlist-devCount">
           {signups === null
             ? 'Dev only: waitlist count unavailable. Set WAITLIST_COUNT_TOKEN in .env.'
-            : `Dev only: ${signups} on the waitlist. The live site shows this from 20, rounded down to a multiple of 20.`}
+            : `Dev only: ${signups} waiting (waitlist plus beta volunteers). The live site shows it exact below 20, then rounded down (to 5s below 50, to 10s from 50).`}
         </p>
       ) : (
-        joined !== null && <p class="waitlist-text">{format(waitlist.joined, { n: joined })}</p>
+        joined !== null && <p class="waitlist-text">{format(joined.atLeast ? waitlist.waitingAtLeast : plural(PROSE_NUMBER_LOCALE[locale], joined.n, waitlist.waitingOne, waitlist.waitingFew, waitlist.waitingMany), { n: joined.n })}</p>
       )}
       {showBeta && (
         <p class="waitlist-text waitlist-beta">
