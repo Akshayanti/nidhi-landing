@@ -64,8 +64,8 @@ const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
  * from LOCALE_META in `src/i18n/config.ts`.
  */
 const IDENTICAL_OK = new Set<string>([
-  // The privacy notice names four services, and three of those names are the
-  // services' own (the fourth, "Your browser", is prose and is translated). A
+  // The privacy notice names five services, and four of those names are the
+  // services' own (the fifth, "Your browser", is prose and is translated). A
   // reader who wants to look one up has to look up the name it actually has,
   // and a translator rendering "Google Workspace" in Devanagari would be
   // inventing a company. `privacy.collect.pageviews.link` is the same name
@@ -74,6 +74,7 @@ const IDENTICAL_OK = new Set<string>([
   'privacy.where.processors.posthog.name',
   'privacy.where.processors.google.name',
   'privacy.where.processors.github.name',
+  'privacy.where.processors.planner.name',
 
   // A level page's document title is the level's own name and one-line summary
   // around the brand suffix, and those two already come from the catalog. The
