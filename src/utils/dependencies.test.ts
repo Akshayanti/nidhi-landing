@@ -57,7 +57,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@astrojs/react': '^7.1.2',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
-  astro: '^7.4.4',
+  astro: '^7.4.5',
   react: '^19.3.1',
   'react-dom': '^19.3.1',
 };
