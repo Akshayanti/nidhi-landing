@@ -148,9 +148,11 @@ export const en = {
      * has to carry markup. Keep the space at the end of `textBefore` and the
      * one at the start of `textAfter`.
      */
-    textBefore: 'We count anonymous pageviews either way, to see what’s helping. Can we also record ',
+    textBefore: 'We count pageviews either way, to see what’s helping. Can we also record ',
     textEmphasis: 'clicks',
-    textAfter: ' so we can spot broken links and layouts that confuse people? No ads, no data sold.',
+    textAfter: ' and keep a visitor ID in your browser that links your visits, so we can spot broken links and layouts that confuse people? No ads, no data sold.',
+    /** One answer covers this site and the planner: the choice is shared between them. */
+    planner: 'Your answer also applies in the planner at app.nidhi.today, unless your browser blocks cookies. There, a yes links usage events to your account, so we can see where people get stuck. We never record your screen.',
     privacyLink: 'See what we actually collect →',
     decline: 'No thanks',
     accept: 'Sure, that’s fine',
@@ -743,21 +745,23 @@ export const en = {
       newsletter: 'If you subscribe to the blog newsletter:',
       waitlist: 'If you join the planner waitlist:',
       volunteers: 'If you volunteer to help translate the site:',
+      planner: 'In the planner at app.nidhi.today:',
+      consentChoice: 'Your answer on the cookie banner:',
       browserOnly: 'Stored only in your browser, never sent to us:',
     },
 
     collect: {
       pageviews: {
-        before: 'Anonymous pageview and page-leave events, via ',
+        before: 'Pageview and page-leave events, via ',
         link: 'PostHog Cloud EU',
         after:
-          '. That includes the URL you visited, the URL you came from, your approximate country (derived from your IP address, which PostHog then discards), and your browser, OS, and viewport size. No name, no email, no user ID.',
+          '. That includes the URL you visited, the URL you came from, your approximate country (derived from your IP address, which PostHog then discards), and your browser, OS, and viewport size. No name, no email, no account. A random ID ties together the events of the page you’re on; unless you say yes on the cookie banner, it lasts only for that page and is never stored in your browser, so your visits aren’t linked to each other. The same goes for the tool events below.',
       },
       // The bold clause sits mid-sentence, so `before` ends with the space that
       // precedes it and `after` begins with the colon that follows it.
       freeTools: {
         before:
-          'Anonymous interaction events on the Free Tools pages: which currency you pick on the loan-comparison calculator, whether you toggle between solving for term vs monthly payment, whether you open the “More options” panel, whether you copy the shareable link, and whether you reset the form. ',
+          'Interaction events on the Free Tools pages: which currency you pick on the loan-comparison calculator, whether you toggle between solving for term vs monthly payment, whether you open the “More options” panel, whether you copy the shareable link, and whether you reset the form. ',
         strong: 'The financial values you type are never sent',
         after:
           ': not the loan amount, not the interest rate, not the fees, not the vendor name. The whole point of the calculator is that the math runs in your browser.',
@@ -765,20 +769,20 @@ export const en = {
       toolAddresses:
         'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
       toolExports:
-        'Every free tool can download a spreadsheet of its results, or make a PDF report: a short summary of the results that your browser’s print dialog prints or saves as a PDF. Both are made in your browser and never uploaded. The file or printout holds the values you entered, and once saved it is outside our reach (your downloads folder, synced folders, backups, other apps), so we cannot see or delete it. Your browser may add the page address and the date to a printout’s header or footer; you can turn that off in the print dialog. Using either sends one anonymous event that says which of the two you used, and nothing else.',
+        'Every free tool can download a spreadsheet of its results, or make a PDF report: a short summary of the results that your browser’s print dialog prints or saves as a PDF. Both are made in your browser and never uploaded. The file or printout holds the values you entered, and once saved it is outside our reach (your downloads folder, synced folders, backups, other apps), so we cannot see or delete it. Your browser may add the page address and the date to a printout’s header or footer; you can turn that off in the print dialog. Using either sends one event that says which of the two you used, and nothing else.',
       monteCarlo: {
         before:
-          'Anonymous interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',
+          'Interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',
         strong: 'The amounts, years, fees and mix you enter are never sent.',
       },
       inflation: {
         before:
-          "Anonymous interaction events on the inflation calculator: which question you pick (buying power later, cost later, past to today, keeping up), which currency and which country's history you pick, whether you use a country's average as the rate, whether you copy the shareable link, and whether you reset the form. Picking a country loads its history from nidhi.today itself, never from the World Bank. ",
+          "Interaction events on the inflation calculator: which question you pick (buying power later, cost later, past to today, keeping up), which currency and which country's history you pick, whether you use a country's average as the rate, whether you copy the shareable link, and whether you reset the form. Picking a country loads its history from nidhi.today itself, never from the World Bank. ",
         strong: 'The amounts, rates and years you enter are never sent.',
       },
       investOrPayOff: {
         before:
-          'Anonymous interaction events on the invest or pay off calculator: that a comparison was shown, whether you copy the shareable link, whether you export a spreadsheet or PDF, whether you reset the form, and whether you open a shared view, with its campaign source. Unlike the other tools, none of them carries a choice you make: not the country, the currency, the return setting or the comparison date. If you accept the cookie banner, clicks inside the calculator\'s form are not recorded and heatmaps are paused on that page. Picking a country loads its inflation history from nidhi.today itself, never from the World Bank. ',
+          'Interaction events on the invest or pay off calculator: that a comparison was shown, whether you copy the shareable link, whether you export a spreadsheet or PDF, whether you reset the form, and whether you open a shared view, with its campaign source. Unlike the other tools, none of them carries a choice you make: not the country, the currency, the return setting or the comparison date. If you accept the cookie banner, clicks inside the calculator\'s form are not recorded and heatmaps are paused on that page. Picking a country loads its inflation history from nidhi.today itself, never from the World Bank. ',
         strong: 'The debt, payments, rates, amounts, fees and taxes you enter are never sent.',
       },
       // Two `<code>` elements in one sentence, so the component supplies both
@@ -789,9 +793,24 @@ export const en = {
         after: ', etc.) if you arrived from a link we or someone else tagged.',
       },
       lessonShare:
-        'Sharing or saving a lesson: the system share sheet opens only when you tap Share, and the link and title go to the app you choose. The WhatsApp and email links contact those destinations only when you tap them. A link shared or copied with these buttons carries campaign parameters that say only that it was shared and how, nothing about you, and when someone opens it their anonymous pageview includes them. Save as PDF uses your browser’s print window on your device and uploads nothing. To explain what to do in an app’s browser that cannot print, the page reads your browser’s name on your device and does not send the result.',
+        'Sharing or saving a lesson: the system share sheet opens only when you tap Share, and the link and title go to the app you choose. The WhatsApp and email links contact those destinations only when you tap them. A link shared or copied with these buttons carries campaign parameters that say only that it was shared and how, nothing about you, and when someone opens it their pageview includes them. Save as PDF uses your browser’s print window on your device and uploads nothing. To explain what to do in an app’s browser that cannot print, the page reads your browser’s name on your device and does not send the result.',
       consentClicks:
         'Click heatmaps and autocaptured events: basically, which elements on a page get clicked, including clicks on things that don’t respond (“dead clicks”). We use this to spot broken links and layouts that confuse people. We don’t record page-speed measurements or browser errors at all. A click is described only by the label the site gives an element (its data-attr), the kind of element and its position on the page: never its text, its accessibility label or any other attribute, which could hold what you typed.',
+      consentVisitorId:
+        'A random visitor ID that PostHog keeps in your browser (localStorage), so your visits are linked to each other. It holds no name or email, but because it links your visits over time, it tells your browser apart from others. That makes it pseudonymous, not anonymous, which is why it waits for your yes. Saying no later removes it; after that, the ID lasts only for the page you’re on, so later events aren’t linked to earlier ones.',
+      planner: {
+        anonymous:
+          'Unless you say yes on the cookie banner: pageviews and usage events, such as which screen you opened, or that you added an account, ran a projection or saved a what-if. Those events record amounts only as rough ranges. They carry no name, email or account ID, and every account or item ID in a page address is replaced before anything is sent. Nothing is stored in your browser for them.',
+        consented:
+          'Only if you say yes: the same events, linked to a code made from your account, so we can see where one person gets stuck across visits. The code doesn’t contain your name, email or account ID and can’t be turned back into them, but we can match it to your account when you ask us to find or delete your events. PostHog then keeps a random visitor ID in your browser to join your visits.',
+      },
+      consentChoice: {
+        before: 'Since November 6, 2026, it is kept in a cookie (',
+        after:
+          ') for nidhi.today and its subdomains, which include the planner, for a year, so one answer covers both. It holds only “accepted” or “declined”, and your browser sends it with each request to both sites.',
+        older:
+          'A choice made before that date stays in your browser’s localStorage under the same name and applies on this site only; the planner asks for itself. Once this site sees a shared answer, that older copy is removed, so it can’t come back here. If your browser blocks cookies, your answer is kept in this site’s localStorage instead, applies on this site only, and lasts until you clear your browser data.',
+      },
     },
 
     newsletter: {
@@ -799,6 +818,8 @@ export const en = {
       page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there).',
       timestamps: 'Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.',
       status: 'Your subscription status: pending, confirmed, or unsubscribed.',
+      analytics:
+        'Our newsletter’s own events (you subscribed, confirmed or left) are recorded in PostHog under a code made from your email address (a SHA-256 hash), so we can see how many people confirm. Only with a yes on the cookie banner does subscribing also link this browser’s pageviews to that code, so we can see which pages lead people to subscribe.',
       total:
         'If enough people subscribe and confirm, the site may show a rounded-down total of confirmed subscribers. It never shows any email address, or whether any particular person has subscribed.',
       // The address itself is a `<code>` in the component.
@@ -828,7 +849,7 @@ export const en = {
      */
     volunteers: {
       form:
-        'The volunteer page at nidhi.today/volunteers/ is part of this site. Like every page, it sends an anonymous pageview and page-leave event. Its button opens a Google Form run by our Google Workspace account; if you accept the cookie banner, a click on that button is recorded by its label, volunteers-form. Your answers go to Google only when you submit the form. You do not need to sign in, and your Google account is not part of the answers we receive.',
+        'The volunteer page at nidhi.today/volunteers/ is part of this site. Like every page, it sends a pageview and page-leave event. Its button opens a Google Form run by our Google Workspace account; if you accept the cookie banner, a click on that button is recorded by its label, volunteers-form. Your answers go to Google only when you submit the form. You do not need to sign in, and your Google account is not part of the answers we receive.',
       answers:
         'Your email address, and what you choose to tell us: the name to credit, which languages, whether you have a financial background (and a note about it, if you add one), how you would like to help, whether you want credit on the site, and your level in each language.',
       consent:
@@ -847,7 +868,6 @@ export const en = {
         'The form page itself is Google’s, so Google’s own terms and privacy policy apply while you fill it in.',
     },
     browserStorage: {
-      consent: { before: 'Your cookie-consent choice (', after: ').' },
       theme: { before: 'Your light/dark/system theme preference (', after: ').' },
       internal: {
         before: 'For the nidhi team only: a flag (',
@@ -875,7 +895,7 @@ export const en = {
           '), so we stop showing you the waitlist form on future visits. Contains only a status flag and timestamp, never your email address.',
       },
     },
-    clearsEverything: 'Clearing your browser’s site data wipes all of the above instantly.',
+    clearsEverything: 'Clearing your browser’s site data wipes everything in this list instantly. It doesn’t delete events already sent to PostHog: in the planner, ask us to find and delete yours; on this site we can single them out only if they are linked to your newsletter code.',
 
     why: {
       analytics: {
@@ -911,7 +931,7 @@ export const en = {
       processors: {
         posthog: {
           name: 'PostHog Cloud EU',
-          rest: ' (Frankfurt, Germany): our analytics processor. Session recording is disabled. We use their standard product, with no custom person properties that would identify you, unless you subscribe, in which case your subscription status becomes a property on the anonymous person record for funnel analysis.',
+          rest: ' (Frankfurt, Germany): our analytics processor. Session recording is off. On this site we use their standard product, with no custom person properties that would identify you, unless you subscribe, in which case your subscription status becomes a property on the person record for funnel analysis. In the planner, with your yes, events are linked to the account code described above.',
         },
         google: {
           name: 'Google Workspace',
@@ -935,7 +955,7 @@ export const en = {
         },
       },
       thatIsAll:
-        'That’s the whole list of services that handle data for us. There’s no fifth processor in a footnote somewhere.',
+        'These are the services that handle data for everything this notice describes. There’s no other processor in a footnote somewhere.',
       // The bold lead names the service; the component supplies the address in
       // parentheses after it, and `rest` carries the comma that follows them.
       frankfurter: {
@@ -948,8 +968,8 @@ export const en = {
       ads: 'We don’t run ads. No ad tech on this site at all.',
       sell: 'We don’t sell, rent, license, or syndicate your data to anyone.',
       crossSite:
-        'We don’t cross-site track you. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
-      screen: 'We don’t record your screen, keystrokes, form values, or continuous scroll stream.',
+        'We don’t track you across other companies’ websites. No Facebook pixel, no Google Ads tag, no LinkedIn Insight, no TikTok pixel, no retargeting of any kind.',
+      screen: 'We don’t use session recording or analytics to capture your screen, keystrokes, form values, or a continuous scroll stream, on this site or in the planner.',
       replies: 'Replies to newsletter emails reach a person at hello@nidhi.today, who reads them. We never feed them into any analytics or ads system.',
       imports: 'We don’t import the newsletter list into other tools or mailing systems. When an admin asks, the planner reads the limited waitlist and volunteer beta details described above to help choose whom to invite. Only addresses an admin invites are saved in its database, together with invitation records.',
     },
@@ -957,7 +977,7 @@ export const en = {
     retention: {
       analytics: {
         lead: 'Analytics events:',
-        rest: ' 12 months (PostHog’s default retention; we haven’t extended it), then auto-deleted.',
+        rest: ' 12 months (PostHog’s default retention; we haven’t extended it), then auto-deleted. This covers the planner’s events too.',
       },
       newsletter: {
         lead: 'Newsletter subscribers:',
@@ -980,9 +1000,17 @@ export const en = {
         lead: 'Bounced or invalid emails:',
         rest: ' removed as soon as we notice them, usually within a week.',
       },
+      visitorId: {
+        lead: 'Your PostHog visitor ID (only with your yes):',
+        rest: ' until you clear your browser data, or until you say no on the cookie banner, which removes it.',
+      },
+      consentCookie: {
+        lead: 'Your cookie-banner cookie:',
+        rest: ' a year from your choice, or until you clear your browser data. A new choice starts the year again.',
+      },
       localStorage: {
-        lead: 'Your localStorage:',
-        rest: ' until you clear your browser data. Again, we never see it.',
+        lead: 'Your local preferences:',
+        rest: ' until you clear your browser data. We never see them.',
       },
     },
 
@@ -993,9 +1021,9 @@ export const en = {
         'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist and the volunteer form, email us and we’ll remove you, and any credit on the site. If you contributed, we keep only the record of your permission, as described above. We’ll do it manually for any of these.',
       analytics: {
         before:
-          'For analytics, the events are anonymous; we don’t have a way to look up “your” events because we don’t know who you are. If this bothers you, just decline the cookie banner, or use a content blocker. Nothing on the site breaks. You can change your answer any time with ',
+          'On this site, analytics events aren’t linked to your name or account, so we can’t look up “your” events. The exceptions are newsletter events and pageviews linked to your newsletter code: we can find and delete those when you ask. In the planner, events are linked to you only if you said yes on the cookie banner; then we can find and delete them too. Saying no doesn’t delete events already sent. Saying no, or using a content blocker, breaks nothing on either site. You can change your answer any time with ',
         strong: 'Cookie settings',
-        after: ' at the bottom of every page; saying no there stops click recording straight away.',
+        after: ' at the bottom of every page; saying no there straight away stops click recording, stops the visitor ID being saved in your browser, and in the planner stops new events being linked to you.',
       },
       // The address is the component's, and so is the word the reader is asked
       // to type in the subject: the same inbox reads every edition, and the

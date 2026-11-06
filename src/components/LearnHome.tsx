@@ -92,9 +92,7 @@ function pauseHeatmaps(paused: boolean) {
   if (paused) {
     ph.set_config({ enable_heatmaps: false });
   } else {
-    let consented = false;
-    try { consented = localStorage.getItem('nidhi-cookie-consent') === 'accepted'; } catch { /* ignore */ }
-    if (consented) ph.set_config({ enable_heatmaps: true });
+    if (window.nidhiConsent?.accepted()) ph.set_config({ enable_heatmaps: true });
   }
 }
 

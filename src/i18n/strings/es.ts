@@ -110,10 +110,12 @@ export const es: Dict = {
     // The space at the end of `textBefore` and the one at the start of
     // `textAfter` are part of the sentence. The opening ¿ sits in `textBefore`.
     textBefore:
-      'Contamos visitas anónimas a las páginas en cualquier caso, para ver qué resulta útil. ¿Podemos registrar también los ',
+      'Contamos las visitas a las páginas en cualquier caso, para ver qué resulta útil. ¿Podemos registrar también los ',
     textEmphasis: 'clics',
     textAfter:
-      ' para detectar enlaces rotos y diseños que confunden a la gente? Sin anuncios y sin vender datos.',
+      ' y guardar en tu navegador un ID de visitante que enlaza tus visitas, para detectar enlaces rotos y diseños que confunden a la gente? Sin anuncios y sin vender datos.',
+    planner:
+      'Tu respuesta también vale en el planificador de app.nidhi.today, salvo que tu navegador bloquee las cookies. Allí, un sí enlaza los eventos de uso con tu cuenta, para ver dónde se atasca la gente. Nunca grabamos tu pantalla.',
     privacyLink: 'Mira lo que recogemos de verdad →',
     decline: 'No, gracias',
     accept: 'Sí, me parece bien',
@@ -602,19 +604,21 @@ export const es: Dict = {
       newsletter: 'Si te suscribes al boletín del blog:',
       waitlist: 'Si te apuntas a la lista de espera del planificador:',
       volunteers: 'Si te ofreces para ayudar a traducir el sitio:',
+      planner: 'En el planificador de app.nidhi.today:',
+      consentChoice: 'Tu respuesta en el aviso de cookies:',
       browserOnly: 'Guardado solo en tu navegador, nunca se nos envía:',
     },
 
     collect: {
       pageviews: {
-        before: 'Eventos anónimos de visita y de salida de página, a través de ',
+        before: 'Eventos de visita y de salida de página, a través de ',
         link: 'PostHog Cloud EU',
         after:
-          '. Eso incluye la URL que visitaste, la URL desde la que llegaste, tu país aproximado (deducido de tu dirección IP, que PostHog descarta después) y tu navegador, sistema operativo y tamaño de ventana. Sin nombre, sin correo electrónico, sin ID de usuario.',
+          '. Eso incluye la URL que visitaste, la URL desde la que llegaste, tu país aproximado (deducido de tu dirección IP, que PostHog descarta después) y tu navegador, sistema operativo y tamaño de ventana. Sin nombre, sin correo electrónico, sin cuenta. Un ID aleatorio une los eventos de la página en la que estás; salvo que digas que sí en el aviso de cookies, dura solo mientras estás en esa página y nunca se guarda en tu navegador, así que tus visitas no quedan enlazadas entre sí. Lo mismo vale para los eventos de las herramientas de abajo.',
       },
       freeTools: {
         before:
-          'Eventos anónimos de interacción en las páginas de herramientas gratuitas: qué moneda eliges en el comparador de préstamos, si cambias entre calcular el plazo y la cuota mensual, si abres el panel «Más opciones», si copias el enlace para compartir y si restableces el formulario. ',
+          'Eventos de interacción en las páginas de herramientas gratuitas: qué moneda eliges en el comparador de préstamos, si cambias entre calcular el plazo y la cuota mensual, si abres el panel «Más opciones», si copias el enlace para compartir y si restableces el formulario. ',
         strong: 'Los valores financieros que escribes nunca se envían',
         after:
           ': ni la cantidad del préstamo, ni la tasa de interés, ni las comisiones, ni el nombre de la entidad financiera. La razón de ser de la calculadora es que los cálculos se hacen en tu navegador.',
@@ -622,20 +626,20 @@ export const es: Dict = {
       toolAddresses:
         'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
       toolExports:
-        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento anónimo que dice cuál de las dos usaste, y nada más.',
+        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
       monteCarlo: {
         before:
-          'Eventos anónimos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
+          'Eventos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
         strong: 'Las cantidades, los años, las comisiones y la combinación de activos que introduces nunca se envían.',
       },
       inflation: {
         before:
-          'Eventos anónimos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+          'Eventos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
       },
       investOrPayOff: {
         before:
-          'Eventos anónimos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
+          'Eventos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
         strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
       },
       campaigns: {
@@ -644,9 +648,24 @@ export const es: Dict = {
         after: ', etc.) si llegaste desde un enlace etiquetado por nosotros o por otra persona.',
       },
       lessonShare:
-        'Compartir o guardar una lección: la hoja de compartir del sistema se abre solo cuando tocas Share, y el enlace y el título van a la aplicación que elijas. Los enlaces de WhatsApp y de correo contactan con esos destinos solo cuando los tocas. Un enlace compartido o copiado con estos botones lleva parámetros de campaña que dicen solo que se compartió y cómo, nada sobre ti, y cuando alguien lo abre, su evento anónimo de visita los incluye. Save as PDF usa la ventana de impresión de tu navegador en tu dispositivo y no sube nada. Para explicar qué hacer en el navegador de una aplicación que no puede imprimir, la página lee el nombre de tu navegador en tu dispositivo y no envía el resultado.',
+        'Compartir o guardar una lección: la hoja de compartir del sistema se abre solo cuando tocas Share, y el enlace y el título van a la aplicación que elijas. Los enlaces de WhatsApp y de correo contactan con esos destinos solo cuando los tocas. Un enlace compartido o copiado con estos botones lleva parámetros de campaña que dicen solo que se compartió y cómo, nada sobre ti, y cuando alguien lo abre, su evento de visita los incluye. Save as PDF usa la ventana de impresión de tu navegador en tu dispositivo y no sube nada. Para explicar qué hacer en el navegador de una aplicación que no puede imprimir, la página lee el nombre de tu navegador en tu dispositivo y no envía el resultado.',
       consentClicks:
         'Mapas de calor de clics y eventos capturados automáticamente: básicamente, en qué elementos de una página se hace clic, incluidos los clics en cosas que no responden («clics muertos»). Lo usamos para detectar enlaces rotos y diseños que confunden a la gente. No registramos en absoluto mediciones de velocidad de página ni errores del navegador. Un clic se describe solo con la etiqueta que el sitio da al elemento (su data-attr), el tipo de elemento y su posición en la página: nunca con su texto, su etiqueta de accesibilidad ni ningún otro atributo, que podría contener lo que escribiste.',
+      consentVisitorId:
+        'Un ID de visitante aleatorio que PostHog guarda en tu navegador (localStorage), para enlazar tus visitas entre sí. No contiene nombre ni correo, pero como enlaza tus visitas a lo largo del tiempo, distingue tu navegador de los demás. Eso lo hace seudónimo, no anónimo, y por eso espera a tu sí. Si después dices que no, se elimina; a partir de ahí, el ID dura solo mientras estás en cada página, así que los eventos posteriores no se enlazan con los anteriores.',
+      planner: {
+        anonymous:
+          'Salvo que digas que sí en el aviso de cookies: visitas a páginas y eventos de uso, como qué pantalla abriste o que añadiste una cuenta, calculaste una proyección o guardaste un escenario hipotético. Esos eventos registran los importes solo como rangos aproximados. No llevan nombre, correo ni ID de cuenta, y cualquier ID de cuenta o de elemento en la dirección de una página se sustituye antes de enviar nada. No se guarda nada en tu navegador para ellos.',
+        consented:
+          'Solo si dices que sí: los mismos eventos, enlazados con un código creado a partir de tu cuenta, para ver dónde se atasca una persona a lo largo de sus visitas. El código no contiene tu nombre, tu correo ni tu ID de cuenta y no se puede convertir de nuevo en ellos, pero podemos relacionarlo con tu cuenta cuando nos pidas encontrar o borrar tus eventos. Entonces PostHog guarda un ID de visitante aleatorio en tu navegador para unir tus visitas.',
+      },
+      consentChoice: {
+        before: 'Desde el 6 de noviembre de 2026 se guarda en una cookie (',
+        after:
+          ') para nidhi.today y sus subdominios, entre ellos el planificador, durante un año, así que una sola respuesta vale para los dos. Solo contiene «accepted» o «declined», y tu navegador la envía con cada solicitud a los dos sitios.',
+        older:
+          'Una elección hecha antes de esa fecha sigue en el localStorage de tu navegador con el mismo nombre y vale solo en este sitio; el planificador pregunta por su cuenta. En cuanto este sitio ve una respuesta compartida, esa copia anterior se elimina, así que no puede volver aquí. Si tu navegador bloquea las cookies, tu respuesta se guarda en el localStorage de este sitio, vale solo en este sitio y dura hasta que borres los datos de tu navegador.',
+      },
     },
 
     newsletter: {
@@ -654,6 +673,8 @@ export const es: Dict = {
       page: 'La página desde la que te suscribiste (para saber si te trajo el índice del blog o una entrada concreta).',
       timestamps: 'La fecha y hora en que te suscribiste, confirmaste y (si lo haces) cancelaste la suscripción.',
       status: 'El estado de tu suscripción: pendiente, confirmada o cancelada.',
+      analytics:
+        'Los eventos propios del boletín (te suscribiste, confirmaste o te diste de baja) se registran en PostHog con un código creado a partir de tu dirección de correo (un hash SHA-256), para saber cuánta gente confirma. Solo con un sí en el aviso de cookies, suscribirte enlaza también las páginas vistas en este navegador con ese código, para saber qué páginas llevan a la gente a suscribirse.',
       total:
         'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscriptores confirmados, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
@@ -677,7 +698,7 @@ export const es: Dict = {
     },
     volunteers: {
       form:
-        'La página de voluntariado en nidhi.today/volunteers/ forma parte de este sitio. Como todas las páginas, envía un evento anónimo de visita y de salida de la página. Su botón abre un formulario de Google gestionado por nuestra cuenta de Google Workspace; si aceptas el aviso de cookies, el clic en ese botón se registra por su etiqueta, volunteers-form. Tus respuestas solo llegan a Google cuando envías el formulario. No necesitas iniciar sesión, y tu cuenta de Google no forma parte de las respuestas que recibimos.',
+        'La página de voluntariado en nidhi.today/volunteers/ forma parte de este sitio. Como todas las páginas, envía un evento de visita y de salida de la página. Su botón abre un formulario de Google gestionado por nuestra cuenta de Google Workspace; si aceptas el aviso de cookies, el clic en ese botón se registra por su etiqueta, volunteers-form. Tus respuestas solo llegan a Google cuando envías el formulario. No necesitas iniciar sesión, y tu cuenta de Google no forma parte de las respuestas que recibimos.',
       answers:
         'Tu dirección de correo electrónico y lo que decidas contarnos: el nombre para el crédito, qué idiomas, si tienes formación en finanzas (y una nota sobre ella, si la añades), cómo quieres ayudar, si quieres crédito en el sitio y tu nivel en cada idioma.',
       consent:
@@ -696,7 +717,6 @@ export const es: Dict = {
         'La página del formulario es de Google, así que mientras lo rellenas se aplican las condiciones y la política de privacidad de Google.',
     },
     browserStorage: {
-      consent: { before: 'Tu elección sobre las cookies (', after: ').' },
       theme: { before: 'Tu preferencia de tema claro, oscuro o del sistema (', after: ').' },
       internal: {
         before: 'Solo para el equipo de nidhi: un indicador (',
@@ -724,7 +744,7 @@ export const es: Dict = {
           '), para dejar de mostrarte el formulario de la lista de espera en futuras visitas. Solo contiene un indicador de estado y una fecha y hora, nunca tu dirección de correo electrónico.',
       },
     },
-    clearsEverything: 'Si borras los datos del sitio en tu navegador, todo lo anterior desaparece al instante.',
+    clearsEverything: 'Si borras los datos del sitio en tu navegador, todo lo de esta lista desaparece al instante. Eso no borra los eventos ya enviados a PostHog: en el planificador, pídenos que encontremos y borremos los tuyos; en este sitio solo podemos identificarlos si están enlazados con tu código del boletín.',
 
     why: {
       analytics: {
@@ -754,7 +774,7 @@ export const es: Dict = {
       processors: {
         posthog: {
           name: 'PostHog Cloud EU',
-          rest: ' (Fráncfort, Alemania): nuestro encargado del tratamiento para la analítica. La grabación de sesiones está desactivada. Usamos su producto estándar, sin propiedades personalizadas de persona que te identifiquen, salvo si te suscribes: en ese caso, el estado de tu suscripción pasa a ser una propiedad del registro anónimo de persona para el análisis del embudo.',
+          rest: ' (Fráncfort, Alemania): nuestro encargado del tratamiento para la analítica. La grabación de sesiones está desactivada. En este sitio usamos su producto estándar, sin propiedades personalizadas de persona que te identifiquen, salvo si te suscribes: en ese caso, el estado de tu suscripción pasa a ser una propiedad del registro de persona para el análisis del embudo. En el planificador, con tu sí, los eventos se enlazan con el código de cuenta descrito arriba.',
         },
         google: {
           name: 'Google Workspace',
@@ -778,7 +798,7 @@ export const es: Dict = {
         },
       },
       thatIsAll:
-        'Esa es la lista completa de servicios que tratan datos por nosotros. No hay un quinto encargado del tratamiento escondido en una nota al pie.',
+        'Estos son los servicios que tratan datos para todo lo que describe este aviso. No hay otro encargado del tratamiento escondido en una nota al pie.',
       frankfurter: {
         lead: 'Un servicio al que tu navegador se conecta directamente: Frankfurter',
         rest: ', un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales. Tu navegador le pide los tipos más recientes cuando abres la calculadora de patrimonio neto (y otra vez si cambias allí la moneda de tus gastos). La solicitud solo incluye códigos de moneda, nunca tus cantidades ni nada que hayas escrito, y la respuesta es una tabla con los tipos de muchas monedas, de la que la calculadora conserva las que ofrece. Como cualquier solicitud que hace tu navegador, le muestra a Frankfurter tu dirección IP y el tipo de navegador. Va directamente de tu navegador a Frankfurter, así que nosotros nunca la vemos, y Frankfurter es independiente de nosotros: lo que conserve depende de ellos.',
@@ -789,8 +809,8 @@ export const es: Dict = {
       ads: 'No mostramos anuncios. Ninguna tecnología publicitaria en este sitio.',
       sell: 'No vendemos, alquilamos, licenciamos ni redistribuimos tus datos a nadie.',
       crossSite:
-        'No te rastreamos entre sitios. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
-      screen: 'No grabamos tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento.',
+        'No te rastreamos en los sitios web de otras empresas. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
+      screen: 'No usamos grabación de sesiones ni analítica para capturar tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento, ni en este sitio ni en el planificador.',
       replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
       imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando un administrador lo pide, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que un administrador invita, junto con los registros de invitación.',
     },
@@ -798,7 +818,7 @@ export const es: Dict = {
     retention: {
       analytics: {
         lead: 'Eventos de analítica:',
-        rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente.',
+        rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente. Esto incluye también los eventos del planificador.',
       },
       newsletter: {
         lead: 'Suscriptores del boletín:',
@@ -821,9 +841,17 @@ export const es: Dict = {
         lead: 'Correos rebotados o no válidos:',
         rest: ' se eliminan en cuanto los detectamos, normalmente en una semana.',
       },
+      visitorId: {
+        lead: 'Tu ID de visitante de PostHog (solo con tu sí):',
+        rest: ' hasta que borres los datos de tu navegador, o hasta que digas que no en el aviso de cookies, lo que lo elimina.',
+      },
+      consentCookie: {
+        lead: 'La cookie del aviso de cookies:',
+        rest: ' un año desde tu elección, o hasta que borres los datos de tu navegador. Una nueva elección vuelve a empezar el año.',
+      },
       localStorage: {
-        lead: 'Tu localStorage:',
-        rest: ' hasta que borres los datos de tu navegador. Una vez más: nosotros nunca lo vemos.',
+        lead: 'Tus preferencias locales:',
+        rest: ' hasta que borres los datos de tu navegador. Nosotros nunca las vemos.',
       },
     },
 
@@ -834,9 +862,9 @@ export const es: Dict = {
         'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera y del formulario de voluntariado, escríbenos y te eliminaremos, junto con el crédito en el sitio si lo hay. Si colaboraste, solo conservamos el registro de tu permiso, como se indica más arriba. En cualquiera de estos casos, lo haremos a mano si nos lo pides.',
       analytics: {
         before:
-          'En cuanto a la analítica, los eventos son anónimos; no tenemos forma de buscar «tus» eventos porque no sabemos quién eres. Si eso te molesta, simplemente rechaza el aviso de cookies o usa un bloqueador de contenido. No se rompe nada en el sitio. Puedes cambiar tu respuesta en cualquier momento con ',
+          'En este sitio, los eventos de analítica no están enlazados con tu nombre ni con tu cuenta, así que no podemos buscar «tus» eventos. Las excepciones son los eventos del boletín y las páginas vistas enlazadas con tu código del boletín: esos podemos encontrarlos y borrarlos cuando nos lo pidas. En el planificador, los eventos se enlazan contigo solo si dijiste que sí en el aviso de cookies; entonces también podemos encontrarlos y borrarlos. Decir que no no borra los eventos ya enviados. Decir que no, o usar un bloqueador de contenido, no rompe nada en ninguno de los dos sitios. Puedes cambiar tu respuesta en cualquier momento con ',
         strong: 'Configuración de cookies',
-        after: ', al pie de cada página; si ahí respondes que no, el registro de clics se detiene de inmediato.',
+        after: ', al pie de cada página; si ahí respondes que no, se detienen de inmediato el registro de clics y el guardado del ID de visitante en tu navegador, y en el planificador los nuevos eventos dejan de enlazarse contigo.',
       },
       // The address and the subject word are the component's: one inbox reads
       // every edition.

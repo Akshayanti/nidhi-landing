@@ -19,6 +19,7 @@
 import { LOCALES, localePrefix } from '../i18n';
 import { scanLabels } from '../utils/analyticsLabels.ts';
 import cleanElementsScript from '../utils/shared/cleanElements.js?raw';
+import consentRuntimeScript from '../utils/shared/consentRuntime.js?raw';
 
 // The known locale prefixes (`['/hi']`), built from the locale registry rather
 // than spelled out, so the URL backstop below cannot drift from the routes.
@@ -38,10 +39,17 @@ const clickLabels = { exact, prefixes };
 ---
 
 <script is:inline set:html={cleanElementsScript}></script>
+<script is:inline set:html={consentRuntimeScript}></script>
 <script is:inline define:vars={{ posthogKey, localePrefixes, analyticsTest, clickLabels }}>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 
-  var hasFullConsent = localStorage.getItem('nidhi-cookie-consent') === 'accepted';
+  // The answer is read and applied by consentRuntime.js (inlined above).
+  var hasFullConsent = window.nidhiConsent.accepted();
+  if (!hasFullConsent) window.nidhiConsent.forgetStoredAnalyticsId();
+  document.addEventListener('visibilitychange', function () {
+    // The answer may have changed in another tab or in the planner.
+    if (document.visibilityState === 'visible') window.nidhiConsent.apply();
+  });
 
   // Backstop for the free tools (CLAUDE.md, "Free tools keep inputs out of
   // URLs"). The tools never write inputs into the address and ToolStateGuard
@@ -172,21 +180,19 @@ const clickLabels = { exact, prefixes };
     // tools show what people type (vendor names, amounts, results), and a
     // click or dead click on that text would otherwise send it.
     mask_all_text: true,
-    persistence: 'localStorage',
+    persistence: hasFullConsent ? 'localStorage' : 'memory',
     disable_session_recording: true,
     before_send: function (event) {
       if (event) { cleanProps(event.properties); cleanProps(event.$set); cleanProps(event.$set_once); }
       return cleanClicks(event);
     },
-    // Consent given before the SDK finished loading could not be applied by
-    // the cookie prompt (the pre-load stub has no set_config), so apply it here.
-    loaded: function(ph) {
-      if (!hasFullConsent && localStorage.getItem('nidhi-cookie-consent') === 'accepted') {
-        ph.set_config({ autocapture: window.nidhiClickCapture, enable_heatmaps: true, capture_dead_clicks: window.nidhiClickCapture });
-      }
-      // The learning path's level helper pauses heatmaps while it is open, so
-      // no click position shows which answer was picked (LearnHome.tsx).
-      if (window.nidhiHeatmapsPaused) ph.set_config({ enable_heatmaps: false });
+    // An answer given, or withdrawn, before the SDK finished loading could
+    // not be applied by the banner (the pre-load stub has no set_config), so
+    // apply the current one here, both ways. consentRuntime.js also keeps
+    // heatmaps off while the learning path's level helper is open, so no
+    // click position shows which answer was picked (LearnHome.tsx).
+    loaded: function() {
+      window.nidhiConsent.apply();
     },
   })
 
