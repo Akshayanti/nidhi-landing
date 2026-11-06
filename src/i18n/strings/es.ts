@@ -37,6 +37,7 @@ export const es: Dict = {
     menuLabel: 'Menú',
     menuCloseLabel: 'Cerrar menú',
     homeLabel: 'Inicio de nidhi',
+    tagline: 'El dinero, entendido',
     newTabHint: ' (se abre en una pestaña nueva)',
     groups: { learn: 'Aprende', tools: 'Herramientas gratuitas', about: 'Acerca de', language: 'Idioma' },
     buttons: { tools: 'Herramientas gratuitas', learn: 'Aprende' },

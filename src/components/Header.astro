@@ -69,9 +69,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 
 <header class="site-header">
   <nav class="site-nav container container--wide" aria-label={strings.nav.primaryLabel}>
-    <a href={href('/')} class="logo" data-attr="nav-logo" aria-label={strings.nav.homeLabel}>
+    <a href={href('/')} class="logo" data-attr="nav-logo" aria-label={`${strings.nav.homeLabel}, ${strings.nav.tagline}`}>
       <LogoMark size={32} />
-      <span class="logo-text">nidhi</span>
+      <span class="logo-words">
+        <span class="logo-text">nidhi</span>
+        <span class="logo-tagline">{strings.nav.tagline}</span>
+      </span>
     </a>
     <div class="nav-right">
       {dropdowns.map((group) => (
@@ -214,6 +217,11 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     </nav>
   </div>
 </header>
+{/* Phones: the tagline has no room beside the logo, so it gets its own line
+    under the header, which scrolls away with the page. The logo link's label
+    already carries the tagline, so this copy is hidden from screen readers
+    rather than read twice. */}
+<p class="tagline-strip" aria-hidden="true">{strings.nav.tagline}</p>
 
 <style>
   .site-header {
@@ -250,11 +258,51 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .logo :global(svg) { width: 28px; height: 28px; }
   }
 
+  /* The wordmark with the brand tagline under it, as in the full logo
+     (docs/color-palette.md, "Tagline"). */
+  .logo-words {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
   .logo-text {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    line-height: 1;
     letter-spacing: -0.02em;
+  }
+
+  .logo-tagline {
+    font-size: 0.90625rem;
+    line-height: 1.15;
+    color: var(--color-teal);
+    white-space: nowrap;
+  }
+
+  .tagline-strip { display: none; }
+
+  /* Below 520px the language pill, the theme toggle and the menu button leave
+     the logo too little room for the tagline in any language (measured on
+     the Hindi and Marathi lines, the widest), so it moves to the strip under
+     the header and the wordmark keeps its full size. */
+  @media (max-width: 519px) {
+    .logo-tagline { display: none; }
+    .logo-text { font-size: 1.4rem; }
+
+    .tagline-strip {
+      display: block;
+      margin: 0;
+      padding: 5px var(--space-4);
+      text-align: center;
+      font-size: 0.875rem;
+      line-height: 1.3;
+      color: var(--color-teal);
+      background: var(--color-bg-white);
+      border-bottom: 1px solid var(--color-border-light);
+    }
   }
 
   .nav-right {

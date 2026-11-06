@@ -419,27 +419,47 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | contact us | हमसे संपर्क करें |
 | page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
 | Prague | प्राग | Devanagari, as Indian Hindi writing has it. It appears once, in the beliefs page's `foundingLocation`. |
-| Money, understood (brand tagline) | पैसा, समझ आ गया। | |
+| Money, understood (brand tagline) | पैसे की समझ, एकदम सहज | Owner, 2026-11-06; replaces पैसा, समझ आ गया। See below. |
 
 #### The brand tagline
 
-"Money, understood" appears five times in `src/i18n/strings/hi.ts` as
-`meta.defaultImageAlt`, `footer.tagline`, `home.schema.slogan`,
-`home.meta.imageAlt` and `home.schema.site`, and it has to read identically in
-all five. It got translated twice before this line existed (`पैसे की समझ` in the
-footer, `पैसा, समझ के साथ` on the home page), which is the failure this entry
-prevents.
+"Money, understood" appears five times in `src/i18n/strings/hi.ts`, as
+`nav.tagline` (shown under the wordmark in the site header, or on its own line
+under the header on phones), `meta.defaultImageAlt`, `home.meta.imageAlt`,
+`home.schema.slogan` and `home.schema.site`, and it has to read identically in
+all five; a test holds `nav.tagline` and `home.schema.slogan` together. It also
+sits under the wordmark on Hindi print material. It got translated twice before
+this line existed (`पैसे की समझ` in the footer, `पैसा, समझ के साथ` on the home
+page), which is the failure this entry prevents.
 
-`पैसा, समझ आ गया।` was chosen over the two obvious candidates for two reasons.
-`पैसे की समझ` is a noun phrase with no beat to it: it names a topic where the
-English makes a claim. `पैसा, समझा` keeps the two-beat shape and the participle
-does agree with masculine `पैसा`, but a bare `समझा` stranded by a comma is read
-first as a transitive clause with a dropped subject, "understood the money",
-rather than as the appositive the English has. `समझ आ गया` is the idiom Hindi
-actually uses for something clicking, and its perfective aspect says what the
-English past participle says. It ends in a danda, unlike the English, which
-drops its full stop: a Hindi line that ends on a finite verb reads as truncated
-without one.
+**Current, decided 2026-11-06 by the owner, with the council:**
+`पैसे की समझ, एकदम सहज` (*paise ki samajh, ekdum sahaj*: understanding money,
+completely easy). The owner asked for a line that sticks and, ideally, rhymes.
+It opens with the noun phrase the first translation had and completes it with
+a claim, which is what that bare noun phrase lacked. समझ and सहज echo each
+other (the same vowels and a final palatal), which gives the line its hook
+without a forced rhyme, and एकदम is the warm everyday intensifier older
+Hindi-first readers use. The council checked it against the rule on claims the
+evidence cannot carry: एकदम strengthens the line, but it describes how the
+understanding is offered, not an outcome promised to the reader, so it stands.
+The line has no verb, so it takes no danda as a slogan; where it opens running
+text, a danda ends it like any sentence. It marks no one's gender and gives no
+instruction.
+
+Considered on the way and set aside: `पैसा, अब समझ आया।` and `पैसा, समझ में
+आ गया।` (natural, but not memorable, which was the brief); `उलझा पैसा, अब
+सुलझा।` (sticky, but reads as finances sorted out rather than understood);
+`पैसा अब पहेली नहीं।` (crisp, no rhyme); `पैसा कैसा? ...` (reads as "what kind
+of money?"); `पैसे की समझ, सबके लिए सहज` (the inclusion is right, but "easy for
+everyone" promises an outcome; `सबके लिए` alone or `सबके लिए सुलभ` would pass
+but lose the echo).
+
+**Before 2026-11-06:** `पैसा, समझ आ गया।`, chosen over `पैसे की समझ` (a noun
+phrase with no beat: it names a topic where the English makes a claim) and
+`पैसा, समझा` (a bare समझा stranded by a comma reads first as a transitive
+clause with a dropped subject, "understood the money"). `समझ आ गया` is the
+idiom Hindi uses for something clicking. It was replaced because it did not
+stick, not because it was wrong.
 
 ## Transliteration style
 
