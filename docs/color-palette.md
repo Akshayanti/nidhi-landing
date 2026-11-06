@@ -2,7 +2,7 @@
 
 > 5 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background, with one deliberate exception: the dark-mode teal used for text, accents, charts and the Discovery level (`#26A69A`, AA at 5.6:1). See "Dark mode: lightness, not just hue" below.
 
-**Last updated:** 2026-10-10
+**Last updated:** 2026-11-06
 
 ---
 
@@ -22,6 +22,20 @@ The brand uses these specific identity slots from the extended palette:
 - `palette-teal` (slot 6) and `palette-teal-dark`
 
 Other palette identities (red, amber, purple, etc.) are reserved for level identities, chart series, and semantic UI states. They are not part of the brand identity and should not be used as primary brand surfaces.
+
+### Tagline
+
+The tagline is "Money, understood". Each language has one approved line, kept in its catalog under `home.schema.slogan` and recorded, with the reasoning, in that language's glossary under `docs/i18n/`. Use it exactly as written wherever the tagline appears: under the wordmark in a logo lockup (set in the accent teal, regular weight, below "nidhi"), in image alt text, structured data and print. Never translate it afresh for one piece.
+
+| Language | Tagline | Notes |
+|----------|---------|-------|
+| English | Money, understood | No full stop in a lockup or slogan. |
+| Hindi | पैसे की समझ, एकदम सहज | Since 2026-11-06 (was पैसा, समझ आ गया।). No danda: the line has no verb. |
+| Spanish | El dinero, entendido | |
+| Czech | Peníze srozumitelně | |
+| Marathi | पैसा, समजेल असा | |
+
+The logo files under `public/brand/` and the social images under `public/brand/social/` carry the English line only.
 
 ---
 
