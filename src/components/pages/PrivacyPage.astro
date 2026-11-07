@@ -172,6 +172,15 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 7, 2026',
+    iso: '2026-11-07',
+    material: true,
+    summary: 'One more short link for print: /yoga/, on a flier, leads to the free tools page with campaign parameters, like the poster links added on Nov 6.',
+    details: [
+      'What changed: /yoga/ leads to the English free tools page and adds utm_source=poster, utm_medium=print, utm_campaign=yoga and utm_content=typed. The QR code on the same flier leads to the same page with the same parameters and utm_content=qr. The redirect page itself loads no analytics; the pageview on the page it leads to carries the parameters, as with the other short links.',
+    ],
+  },
+  {
     date: 'Nov 6, 2026',
     iso: '2026-11-06',
     material: true,

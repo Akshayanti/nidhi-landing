@@ -392,6 +392,7 @@ export default defineConfig({
     '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
     '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
     '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
+    '/yoga/': '/free/?utm_source=poster&utm_medium=print&utm_campaign=yoga&utm_content=typed',
   },
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and

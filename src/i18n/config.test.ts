@@ -125,6 +125,7 @@ describe('short codes printed on posters', () => {
     '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
     '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
     '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
+    '/yoga/': '/free/?utm_source=poster&utm_medium=print&utm_campaign=yoga&utm_content=typed',
   };
 
   it('redirects each printed code with its campaign and utm_content=typed', () => {
