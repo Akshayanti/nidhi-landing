@@ -61,12 +61,24 @@ export interface LinkInput {
 }
 
 /**
- * The tagged link, or null while the campaign is empty after normalising.
+ * The campaign field starts as this, a reminder rather than a value: no code
+ * is made until it is replaced with the event's own name (owner, Nov 8, 2026).
+ */
+export const PLACEHOLDER_CAMPAIGN = 'tba';
+
+/** Defaults for the other fields (owner, Nov 8, 2026). */
+export const DEFAULT_SOURCE = 'event';
+export const DEFAULT_MEDIUM = 'social_in_person';
+export const DEFAULT_CONTENT = 'qr';
+
+/**
+ * The tagged link, or null while the campaign is empty after normalising or
+ * still the placeholder.
  * Empty source, medium or content are left out rather than sent blank.
  */
 export function buildLink(input: LinkInput): string | null {
   const campaign = normaliseUtm(input.campaign);
-  if (!campaign) return null;
+  if (!campaign || campaign === PLACEHOLDER_CAMPAIGN) return null;
   const params: [string, string][] = [
     ['utm_source', normaliseUtm(input.source)],
     ['utm_medium', normaliseUtm(input.medium)],

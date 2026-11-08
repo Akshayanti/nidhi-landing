@@ -42,6 +42,16 @@ test('buildLink refuses an empty campaign, so no stale code is exported', () => 
   assert.equal(buildLink({ prefix: '', path: '/', source: 'event', medium: 'print', campaign: ' !! ', content: 'qr' }), null);
 });
 
+test('buildLink refuses the placeholder campaign until it is replaced', () => {
+  const base = { prefix: '', path: '/', source: 'event', medium: 'social_in_person', content: 'qr' };
+  assert.equal(buildLink({ ...base, campaign: 'tba' }), null);
+  assert.equal(buildLink({ ...base, campaign: ' TBA ' }), null);
+  assert.equal(
+    buildLink({ ...base, campaign: 'pint-of-view' }),
+    'https://nidhi.today/?utm_source=event&utm_medium=social_in_person&utm_campaign=pint-of-view&utm_content=qr',
+  );
+});
+
 test('fileName uses normalised values only', () => {
   assert.equal(fileName('Diwali Mela', 'hi', 'png'), 'nidhi-qr-diwali-mela-hi.png');
   assert.equal(fileName('../x', 'en', 'svg'), 'nidhi-qr-x-en.svg');

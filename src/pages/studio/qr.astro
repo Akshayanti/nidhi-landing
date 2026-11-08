@@ -20,7 +20,7 @@
  */
 import '../../styles/global.css';
 import { LOCALES, LOCALE_META, localePrefix } from '../../i18n';
-import { DESTINATIONS } from '../../utils/qr/destinations.ts';
+import { DEFAULT_CONTENT, DEFAULT_MEDIUM, DEFAULT_SOURCE, DESTINATIONS, PLACEHOLDER_CAMPAIGN } from '../../utils/qr/destinations.ts';
 import { isMonteCarloReleased } from '../../utils/monte-carlo/release.ts';
 import { isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
 
@@ -73,7 +73,7 @@ const languages = LOCALES.map((locale) => ({
 
         <div class="field">
           <label for="qr-campaign">Campaign <span class="field__req">(required)</span></label>
-          <input id="qr-campaign" name="campaign" type="text" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" enterkeyhint="done" aria-describedby="qr-campaign-out" placeholder="e.g. parivaar" />
+          <input id="qr-campaign" name="campaign" type="text" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" enterkeyhint="done" aria-describedby="qr-campaign-out" value={PLACEHOLDER_CAMPAIGN} />
           <p class="field__out" id="qr-campaign-out" data-for="campaign" aria-live="polite"></p>
         </div>
 
@@ -81,17 +81,17 @@ const languages = LOCALES.map((locale) => ({
           <summary>Source, medium, content</summary>
           <div class="field">
             <label for="qr-source">Source</label>
-            <input id="qr-source" name="source" type="text" value="event" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-source-out" />
+            <input id="qr-source" name="source" type="text" value={DEFAULT_SOURCE} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-source-out" />
             <p class="field__out" id="qr-source-out" data-for="source"></p>
           </div>
           <div class="field">
             <label for="qr-medium">Medium</label>
-            <input id="qr-medium" name="medium" type="text" value="print" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-medium-out" />
+            <input id="qr-medium" name="medium" type="text" value={DEFAULT_MEDIUM} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-medium-out" />
             <p class="field__out" id="qr-medium-out" data-for="medium"></p>
           </div>
           <div class="field">
             <label for="qr-content">Content</label>
-            <input id="qr-content" name="content" type="text" value="qr" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-content-out" />
+            <input id="qr-content" name="content" type="text" value={DEFAULT_CONTENT} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-content-out" />
             <p class="field__out" id="qr-content-out" data-for="content"></p>
           </div>
         </details>
@@ -117,7 +117,7 @@ const languages = LOCALES.map((locale) => ({
       <section class="studio__result" aria-labelledby="qr-result-h">
         <h2 id="qr-result-h" class="visually-hidden">Result</h2>
         <div class="studio__qr" id="qr-preview" role="img" aria-label="QR code preview">
-          <p class="studio__placeholder">Type a campaign to make the code.</p>
+          <p class="studio__placeholder">Replace “tba” with the campaign to make the code.</p>
         </div>
         <p class="studio__meta" id="qr-meta"></p>
         <p class="studio__url"><code id="qr-url"></code></p>
@@ -139,7 +139,7 @@ const languages = LOCALES.map((locale) => ({
 
     <script>
       import { makeMatrix, toSvg, versionOf, type EccLevel } from '../../utils/qr/encode.ts';
-      import { buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
+      import { PLACEHOLDER_CAMPAIGN, buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
 
       const BORDER = 4; // the standard's minimum quiet zone, in modules
       const PNG_TARGET = 1024;
@@ -206,7 +206,8 @@ const languages = LOCALES.map((locale) => ({
           const name = out.dataset.for as string;
           const raw = value(name);
           const clean = normaliseUtm(raw);
-          if (name === 'campaign' && raw.trim() && !clean) out.textContent = 'Use letters a to z, digits, hyphens or underscores.';
+          if (name === 'campaign' && clean === PLACEHOLDER_CAMPAIGN) out.textContent = `Replace “${PLACEHOLDER_CAMPAIGN}” with the event or campaign name.`;
+          else if (name === 'campaign' && !clean) out.textContent = raw.trim() ? 'Use letters a to z, digits, hyphens or underscores.' : 'Required: the event or campaign name.';
           else if (clean && clean !== raw) out.textContent = `Sent as: ${clean}`;
           else if (!clean && name !== 'campaign') out.textContent = raw ? 'Left out' : 'Left out (empty)';
           else out.textContent = '';
