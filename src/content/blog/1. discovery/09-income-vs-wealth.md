@@ -12,7 +12,7 @@ takeaways:
   - "Why the gap between income and spending builds wealth"
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -67,7 +67,7 @@ A person earning €3,000 who saves €1,000 a month will be wealthier after fiv
 
 ## The income trap
 
-It's easy to fall into the trap of thinking a higher salary solves everything. But income without discipline just creates more expensive habits.
+It's easy to fall into the trap of thinking a higher salary solves everything. Without a plan for the extra, a higher income often just funds more expensive habits.
 
 This pattern has a name: lifestyle inflation. When your income rises, your spending rises with it. A bigger apartment, a newer car, more frequent dinners out. The income went up, but the wealth gap stayed the same, or even shrank.
 
@@ -116,7 +116,7 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
 
 Three shifts people commonly make:
 
-1. **Track the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income, and it's one of the biggest levers on long-term wealth that you control
+1. **Tracking the gap.** Not your salary, but the difference between what comes in and what goes out. That gap is your wealth engine. Expressed as a percentage, it's your **savings rate** (Income - Expenses)*100 / Income, and it's one of the biggest levers on long-term wealth that you control
 2. **Automating the save.** A fixed amount moves to savings the day salary arrives, rather than whatever happens to be left at month end. It works because the decision is made once, not every month
 3. **Delaying the upgrade.** When income grows, some people hold spending steady for a few months and let the extra flow into savings first. How much room there is depends on how tight the budget already is
 

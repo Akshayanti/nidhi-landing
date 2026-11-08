@@ -166,7 +166,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 
 | Post | Figure | Why it earns the slot |
 |---|---|---|
-| #5 Get Out of Debt (Discovery) | Same debts, two paths to zero | Horizontal Gantt of 4 debts under each method. Snowball's first cleared bar is short (4 months) but the credit card sits dashed-warn for 30 months while interest compounds. Avalanche's first cleared bar is long (17 months) but expensive debt dies first. Both reach zero at ~month 43-44; the *order of attack* is the visible argument |
+| #5 Get Out of Debt (Discovery) | Same debts, two paths to zero | Horizontal Gantt of 4 debts under each method. Snowball's first cleared bar is short (4 months) but the credit card sits dashed-warn for 23 months while interest compounds. Avalanche's first cleared bar is long (17 months) but expensive debt dies first. Both reach zero at about month 38 to 39 (months corrected Nov 8, 2026; the first version showed 30 and 43 to 44); the *order of attack* is the visible argument |
 | #11 Purchasing Power (Discovery) | The widening gap | Two lines from €10,000 at year 0: nominal climbing gently to €11,614, real falling to €5,537. Shaded gap = purchasing power lost while the bank balance kept ticking up. The post's core claim made geometric |
 | #13 Saving vs Investing (Discovery) | What 30 years of patience looks like | Two curves over 30 years — savings (1%) almost flat, investing (7%) curving up to €76,123. Shaded €62,644 gap labelled. The exponential curve and flat line side-by-side render opportunity cost as inarguable |
 | #17 Understanding Risk (Building) | Time narrows the range | Bars of historical return ranges over 1y / 5y / 10y / 20y horizons. Loss tail (warning) shrinks to zero as horizon grows. Time changes the *character* of risk, not just the magnitude |
@@ -502,7 +502,7 @@ Rather than new standalone posts:
 **New Optimizing lessons 50b and 50c (decided Oct 25, 2026).** 50b How much can you borrow? (order 50.6) and 50c 0% instalments (order 50.7) were drafted and merged in #247. Their plan and regions table, and the Optimizing global pass (done by Oct 28, 2026), are archived: see done/blog-content-plan.md#gaps-heard-from-readers-oct-25-2026.
 
 **Open item: older lessons (Discovery, Building, Psychology).** Global updates are made as updates to those lessons, one at a time, and stay on this list until done:
-- the "where you live" sections, where a region's rules change the decision;
+- the "where you live" sections, where a region's rules change the decision (Discovery done Nov 8, 2026; lesson 5 deliberately has none, owner: more would overwhelm a beginner; Building and Psychology still to do);
 - 18 Investing 101: what funds are called where you live;
 - 29 Managing money across currencies: why higher inflation tends to weaken a currency, with several currency pairs;
 - 30 Setting financial goals: money as a multiplier that costs time, health or lifestyle, and needs a purpose (or a Beliefs Sunday instead).

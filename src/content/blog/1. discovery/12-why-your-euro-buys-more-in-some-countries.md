@@ -4,7 +4,7 @@ title: "Why Your Euro Buys More in Some Countries Than Others"
 description: "Exchange rates show how much one currency is worth in another, not what it actually buys. That gap is where purchasing power parity comes in."
 tldr:
   - "An exchange rate is the price of one currency in another."
-  - "The same money buys different amounts in different countries: a €3 coffee in Helsinki might cost €1.20 in Lisbon."
+  - "The same money buys different amounts in different countries: a €4.50 cappuccino in Helsinki might cost €1.60 in Lisbon."
   - "This helps explain living costs, travel budgets and why moving can change what your salary buys."
 takeaways:
   - "What an exchange rate does and does not tell you"
@@ -12,7 +12,7 @@ takeaways:
   - "How to compare salaries across countries in real terms"
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -62,7 +62,7 @@ Exchange rates change constantly. They're driven by supply and demand, interest 
 
 ## Why the same amount buys different things in different countries
 
-Here's a simple test: how much does a cappuccino cost?
+Here's a simple test: how much might a cappuccino cost? (Illustrative café prices; real ones vary by café and year.)
 
 | City | Price of a Cappuccino |
 |------|----------------------|
@@ -152,4 +152,4 @@ Understanding exchange rates and PPP is the foundation for managing money across
 
 In the [previous post](/blog/purchasing-power/), we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
 
-So we know that money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and getting the sequence right matters more than most people think.
+So we know that money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and the order often matters more than it first seems.

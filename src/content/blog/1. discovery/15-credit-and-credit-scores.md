@@ -14,7 +14,7 @@ takeaways:
   - "How to build good credit in your country's system"
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [credit]
 level: "discovery"
 primaryPersona: "eva"
@@ -37,9 +37,9 @@ faq:
   - question: "Do I need to carry a credit card balance to build credit?"
     answer: "No. Paying your full balance every month builds credit just as effectively as carrying a balance, and you avoid paying any interest. In systems that record positive history, like the US and UK, what counts is using the card regularly and paying on time."
   - question: "What happens if I have no credit history?"
-    answer: "It depends on your country's system. In systems that reward positive history, like the US, a thin file can be as limiting as a bad one, because lenders have nothing to base their assessment on, and a basic card used for small purchases and paid in full is a common way to start. In negative-data systems such as SCHUFA in Germany or BKR in the Netherlands, a clean record already counts in your favour. This is common for people new to a country or young adults, so check how your local system works first."
+    answer: "It depends on your country's system. In systems that reward positive history, like the US, a thin file can be as limiting as a bad one, because lenders have nothing to base their assessment on, and a basic card used for small purchases and paid in full is a common way to start. In negative-data systems such as France's Banque de France register (FICP), which lists only repayment problems, a clean record already counts in your favour. This is common for people new to a country or young adults, so check how your local system works first."
   - question: "How does my credit score affect mortgage rates?"
-    answer: "It depends on where you live. In markets with tiered pricing, like the US, a higher score gets you a lower rate: in an illustrative €200,000 mortgage over 25 years, the difference between excellent and poor credit can cost over €77,000 in additional interest. In many European markets, your record mainly decides whether you are approved, while the rate depends more on your deposit, income and lender. Either way, a clean record keeps borrowing easier and cheaper."
+    answer: "It depends on where you live. In markets with tiered pricing, like the US and, at several large banks, India, a higher score gets you a lower rate: in an illustrative €200,000 mortgage over 25 years, the difference between excellent and poor credit can cost over €77,000 in additional interest. In many European markets, your record mainly decides whether you are approved, while the rate depends more on your deposit, income and lender. Either way, a clean record keeps borrowing easier and cheaper."
 ---
 
 You've been paying your bills on time for years. You have no outstanding debt. You apply for a mortgage and the bank offers you 3.8%. Your colleague, who earns roughly the same salary, gets offered 3.2%. Over 25 years on a €200,000 mortgage, that 0.6% difference costs you over €19,000 more in interest.
@@ -52,7 +52,7 @@ A credit score is a number that represents how reliably you've handled borrowed 
 
 The higher the score, the lower the perceived risk. The lower the risk, the better the terms you're offered: lower interest rates, higher borrowing limits, and faster approvals.
 
-Different countries use different scoring systems. In the US, FICO and VantageScore dominate. In Germany, it's SCHUFA. In the UK, Experian, Equifax, and TransUnion. In India, CIBIL. In Australia, there are three competing bureaus. The details differ, but the core principle is the same everywhere: lenders check your history before deciding whether (and at what price) to lend.
+Different countries use different scoring systems. In the US, FICO and VantageScore dominate. In Germany, it's SCHUFA. In the UK, Experian, Equifax, and TransUnion. In India, CIBIL. In Australia, there are three competing bureaus, which since 2018 have also received repayment history from the major banks. The details differ, but the core principle is the same everywhere: lenders check your history before deciding whether (and at what price) to lend.
 
 ## What goes into your score
 
@@ -60,7 +60,7 @@ Credit scoring varies significantly by country. In the US, the FICO model assign
 
 Despite these differences, several factors matter across nearly all systems:
 
-### 1. Payment history (universally the most important)
+### 1. Payment history
 
 Have you paid your bills on time? Every late payment, missed payment, or default is recorded. A single missed payment can stay on your record for years. Consistent on-time payment is a heavily weighted factor in most scoring systems that publish their criteria.
 
@@ -85,7 +85,7 @@ Applying for multiple new credit lines in a short period suggests financial pres
     <title id="fig-cr-title">What moves your score, most to least</title>
     <desc id="fig-cr-desc">Five factors ranked by typical importance. Payment history is the largest, then how much of your credit you use, then how long your history is, then your mix of credit types, then recent applications. The exact weights differ by country and bureau, so this shows rank, not percentages.</desc>
     <text x="440" y="44" text-anchor="middle" class="fig-title">What moves your score</text>
-    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Ranked most to least important, across most systems</text>
+    <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Ranked as in FICO&#8217;s published weights; other systems differ</text>
     <rect x="120" y="98" width="600" height="34" rx="6" class="fig-fill-teal"/>
     <text x="134" y="120" text-anchor="start" class="fig-label" style="fill: var(--neutral-white);">Paying on time</text>
     <text x="706" y="120" text-anchor="end" class="fig-tick" style="fill: var(--neutral-white);">biggest lever</text>
@@ -100,10 +100,10 @@ Applying for multiple new credit lines in a short period suggests financial pres
     <text x="500" y="312" text-anchor="start" class="fig-tick">smallest lever</text>
     <text x="440" y="378" text-anchor="middle" class="fig-tick" style="font-style: italic;">Directional ranking. Exact weights vary by country and bureau (FICO, SCHUFA, Experian, CIBIL, and others).</text>
   </svg>
-  <figcaption>The order is what travels across borders, not the math. Paying on time, every time, does more than everything below it combined, which is why the simple advice works almost everywhere.</figcaption>
+  <figcaption>The exact weights are FICO's (payment history about 35%, its largest category); most other systems publish less and weigh things differently. Missed payments, though, are recorded by positive and negative-data systems alike, which is why paying on time travels well.</figcaption>
 </figure>
 
-**A note on how systems differ:** Some countries (like the US) require you to actively build a positive credit history, i.e., you need to borrow and repay to get a good score. Others (like Germany's SCHUFA or the Netherlands' BKR) focus more on negative data, a clean record with no defaults is itself a strong indicator. Some countries don't have consumer credit scores at all; lenders pull reports and make their own assessment. The advice in this post, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
+**A note on how systems differ:** In some countries (like the US), a score is built from a record of borrowing and repaying, so someone who has never borrowed has little to show. Others (like France, whose central register lists only repayment problems) focus on negative data, so a clean record with no defaults is itself a strong indicator. Germany's SCHUFA sits in between, using both positive and negative information. Some countries don't have consumer credit scores at all; lenders pull reports and make their own assessment (Japan, for example, has several credit bureaus and no single universal score). The advice in this post, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
 
 ## How it affects you: the interest rate gap
 
@@ -116,7 +116,7 @@ The most direct impact is on borrowing costs. A higher credit score gets you a l
 | Average | 4.5% | €1,112 | €133,500 |
 | Poor | 5.5% | €1,228 | €168,500 |
 
-In this illustrative tiered example, the difference between excellent and poor credit on the same mortgage is over €77,000 in additional interest. That kind of tiered pricing is typical in the US; in many European markets your record mainly decides whether you are approved, while the rate depends more on your deposit, income and lender. Either way, a clean record keeps borrowing easier and cheaper.
+In this illustrative tiered example, the difference between excellent and poor credit on the same mortgage is over €77,000 in additional interest. That kind of tiered pricing is typical in the US, and several large Indian banks also set home loan rates partly by credit score; in many European markets your record mainly decides whether you are approved, while the rate depends more on your deposit, income and lender. Either way, a clean record keeps borrowing easier and cheaper.
 
 ## Why it matters even if you avoid debt
 

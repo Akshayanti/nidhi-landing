@@ -12,7 +12,7 @@ takeaways:
   - "Why a mix of cash and investments balances safety and growth"
 order: 3
 pubDate: 2026-04-23
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [pensions, tax]
 level: "discovery"
 primaryPersona: "eva"
@@ -58,7 +58,7 @@ Common assets:
 
 ## What doesn't count as an asset
 
-This is where people go wrong. These are not assets:
+These are often counted, but they are not assets:
 
 - **Your salary**: income is a flow, not a stock. It becomes an asset only when you save it
 - **Your degree**: education increases your earning potential, but you can't sell your diploma
@@ -79,7 +79,7 @@ Two people with €100,000 in assets are not necessarily in the same position. W
 
 ## The asset spectrum
 
-Think of assets on a spectrum from most to least useful for building net worth:
+Here is how common assets compare on those three dimensions:
 
 | Asset | Liquid? | Direction | Stable? |
 |-------|---------|-----------|---------|
@@ -90,7 +90,7 @@ Think of assets on a spectrum from most to least useful for building net worth:
 | Cars | Yes (but at a loss) | Down | No |
 | Collectibles | Maybe | Unpredictable | No |
 
-Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real estate has often appreciated over long periods but is illiquid, and some markets have stayed flat or fallen for a decade or more. Cars lose value the minute you drive them off the lot.
+Cash is safe but loses ground to inflation. Stocks grow but bounce around. Real estate has often appreciated over long periods but is illiquid, and some markets have stayed flat or fallen for a decade or more. Cars start losing value as soon as they are bought.
 
 ## What this means for you
 

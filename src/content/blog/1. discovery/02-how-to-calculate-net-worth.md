@@ -12,7 +12,7 @@ takeaways:
   - "Why updating your number monthly reveals the trend"
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-06-03
+updatedDate: 2026-11-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -43,7 +43,7 @@ faq:
   - question: "How do I calculate my net worth?"
     answer: "List everything you own at its current value: bank balances, investments, pension or retirement accounts, property, and vehicles. List everything you owe at its outstanding balance: mortgage, student loans, car loan, credit cards, and personal loans. Add up the assets, add up the liabilities, and subtract liabilities from assets. The result is your net worth. For property and cars, use current market value rather than purchase price. If you are unsure of a figure, estimate conservatively; a number that is roughly right beats no number at all. The whole exercise takes about ten minutes."
   - question: "What should I include as assets when calculating net worth?"
-    answer: "Include anything you own that has resale or cash value: checking and savings balances, cash on hand, stock and fund portfolios at current market value, pension and retirement account balances, crypto at current value, real estate at its current estimated market value, vehicles priced from a used-car site, and any valuables you could realistically sell. Use current values, not what you paid. Do not include your salary, your degree, or future earnings; those are not assets you own today. Small forgotten accounts, like an old savings account or an employer pension, often add up to more than people expect."
+    answer: "Include anything you own that has resale or cash value: current (checking) and savings balances, cash on hand, stock and fund portfolios at current market value, pension and retirement account balances, crypto at current value, real estate at its current estimated market value, vehicles priced from a used-car site, and any valuables you could realistically sell. Use current values, not what you paid. Do not include your salary, your degree, or future earnings; those are not assets you own today. Small forgotten accounts, like an old savings account or an employer pension, often add up to more than people expect."
   - question: "Should I use the loan balance or the monthly payment for liabilities?"
     answer: "Use the current outstanding balance, not the monthly payment. Your liability is the total amount you still owe, regardless of how you repay it. If your mortgage has €180,000 of principal remaining, that €180,000 is the liability, even though you might only pay €900 a month. The monthly payment matters for budgeting and cash flow, but for net worth you need the full remaining balance of every debt: mortgage principal, student loans, car loan, credit card balances, and personal loans."
   - question: "How do I calculate net worth with assets in different currencies?"
@@ -61,13 +61,13 @@ Here's a method that takes about ten minutes. Grab a pen, open your banking apps
 Go through every account and asset you have. Use current balances, not what you originally paid.
 
 **Cash and bank accounts:**
-- Checking account balance
+- Current (checking) account balance
 - Savings account balance
 - Any cash on hand
 
 **Investments:**
 - Stock portfolio at current market value
-- Mutual funds and ETFs
+- Funds and ETFs (mutual funds, unit trusts and their local equivalents)
 - Pension or retirement account balance
 - Crypto at current value
 
@@ -78,7 +78,7 @@ Go through every account and asset you have. Use current balances, not what you 
 **Other:**
 - Valuable items you could realistically sell
 
-If you're unsure about a value, estimate conservatively. A number that's roughly right is infinitely better than no number at all.
+If you're unsure about a value, estimate conservatively. A number that's roughly right is far more useful than no number at all.
 
 ## Step 2: List your liabilities
 
@@ -88,7 +88,7 @@ Now list everything you owe.
 - Student loans
 - Car loan
 - Credit card balances
-- Personal loans from friends or family
+- Personal loans, including money owed to friends or family
 - Any other debt
 
 Use the current outstanding balance, not the monthly payment. If your mortgage has €180,000 remaining, that's your liability, regardless of what you pay each month.
