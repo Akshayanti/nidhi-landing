@@ -22,6 +22,8 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "goals", "planning"]
 faq:
+  - question: "Why think about what money is for before setting amounts?"
+    answer: "Earning money usually costs hours of work, and it can also cost sleep, health, time with family or a lifestyle given up today. Many people start goal setting with purpose rather than amounts because a goal with a clear purpose makes it possible to judge whether that cost is worth paying, while \"more savings\" without a purpose or stopping point can become an open-ended target. Research on what money can provide, such as surveys in four high-income countries linking time-saving purchases to higher life satisfaction (Whillans and colleagues, 2017), is related but does not test purpose-first goal setting directly. For someone whose income only just covers essentials, the purpose is often the next bill, and how people weigh these costs depends on their health, family, work security and values."
   - question: "What turns a financial wish into a real goal?"
     answer: "A number and a date. Buy a house is a wish; have 40,000 euros saved for a deposit by June 2031 is a goal. A usable financial goal has four components: a specific target amount in exact euros, not enough to be comfortable; a specific date, a month and year, not in a few years; a path from here to there, meaning how much must move from income to savings each month at an assumed rate of return; and a place it will live, the right container for the timeline. Miss any one and the goal degrades: a target without a date can never be on track or behind, and a date without a target can never be enough."
   - question: "How do I convert a goal into a monthly contribution?"

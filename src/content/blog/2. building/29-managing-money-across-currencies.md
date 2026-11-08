@@ -136,7 +136,7 @@ Exchange rates move for many reasons: interest rate differences, inflation diffe
 
 Inflation means each unit of a currency buys less at home every year. Suppose prices rise 10% a year in one country and 2% a year in another, and the exchange rate between them stays fixed. Each year, the first country's goods get about 8% more expensive for buyers paying in the second currency, and the second country's goods get about 8% cheaper for buyers in the first. Buyers shift toward the cheaper goods, so demand for the first currency falls and demand for the second rises.
 
-Savers can add to the pressure. When a currency is losing buying power quickly, some people move savings into a steadier currency or into foreign assets, and each such move means selling the weaker currency. That protection is not guaranteed: exchange rates, investment losses, fees and rules on moving money can all eat into it. Over long periods, exchange rates tend to make up part of the accumulated difference in inflation between two countries. This is the relative version of [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/). It does not mean the same goods end up costing the same everywhere: transport costs, taxes and local services such as rent and haircuts, which cannot be traded across borders, keep price levels apart.
+Savers can add to the pressure. When a currency is losing buying power quickly, some people move savings into a steadier currency or into foreign assets, and each such move means selling the weaker currency. Moving savings this way does not guarantee a better outcome: exchange rates, investment losses, fees and rules on moving money can all eat into the gains. Over long periods, exchange rates tend to make up part of the accumulated difference in inflation between two countries. This is the relative version of [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/). It does not mean the same goods end up costing the same everywhere: transport costs, taxes and local services such as rent and haircuts, which cannot be traded across borders, keep price levels apart.
 
 The pattern shows up in the data, measured against the US dollar. US prices rose about 2.5% a year over the same period:
 
@@ -161,18 +161,17 @@ The last two rows show the limits, and so do timing and the way some currencies 
 - **Japan.** Prices barely rose, yet the yen weakened. Other forces were stronger over this period, among them interest rates: Japan's stayed near or below zero while US rates rose, especially from 2022, which made dollar savings more attractive than yen savings.
 - **Czechia.** Prices rose faster than in the US, yet the koruna ended roughly where it started. One common explanation, known as the Balassa-Samuelson effect, is that as poorer economies catch up with richer ones, their incomes, productivity and price levels rise together, and their currencies can strengthen in real terms rather than fall in line with inflation.
 - **Timing.** Even where the pattern holds, it holds over decades, not months. Research on purchasing power parity has long found that gaps between exchange rates and price levels close slowly, with historical estimates of the time for half a gap to close commonly around three to five years (Rogoff, "The Purchasing Power Parity Puzzle", 1996). That is an average from past data, not a countdown for any currency today. The Brazilian real, for example, strengthened from about 2.4 to 1.8 per dollar between 2005 and 2010 before weakening again.
-
 - **Pegged and managed currencies.** Many currencies are pegged to another currency or closely managed by their central bank, and some countries restrict moving money abroad. There the official rate can stay put for years while inflation differs, and the adjustment, when it comes, can be sudden.
 
 So inflation differences describe a long-run tendency, not a forecast. They are a reason to expect a high-inflation currency to lose ground over a long horizon, not a guide to what it will do next year.
 
-Three time horizons to keep separate:
+### Three time horizons to keep separate
 
-- **Short-term (days/months).** Mostly noise for planning purposes
-- **Medium-term (years).** Real deviations from fair value can persist for years. This is where multi-currency people occasionally feel real pain or gain
-- **Long-term (decades).** Currencies in stable countries tend to move in more predictable bands relative to each other, but individual decades can still diverge
+- **Short-term (days to months).** Moves are mostly noise for planning purposes.
+- **Medium-term (years).** Exchange-rate changes can noticeably change the home-currency cost of expenses abroad or the home-currency value of savings held in another currency. This is where people whose lives span currencies can feel real losses or gains.
+- **Long-term (decades).** The inflation tendency shows up most clearly over decades, but as Japan and Czechia show, other forces can outweigh it for a whole period.
 
-The practical implication: don't try to trade based on short-term moves, don't assume medium-term exchange rates will revert quickly, and don't bet that long-term relationships will hold exactly as they did historically.
+For planning, this means short-term moves say little about the future, medium-term gaps may not close quickly, and long-term relationships may not hold as they did in the past.
 
 ## When to diversify currency exposure, and when not to
 

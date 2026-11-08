@@ -201,13 +201,13 @@ No single asset class wins in all conditions. Holding a mix means some part of y
 
 ## What a fund is
 
-Many people hold these asset classes through a fund: a pot that pools money from many investors and is run by a manager who buys the stocks, bonds or other assets for everyone at once. Each contribution buys units (or shares) of the fund at the price of the day, your share of the fund depends on how many units you hold, and the value of a unit follows the value of everything the fund holds, after its costs.
+Many people hold these asset classes through a fund: a pot that pools money from many investors and is run by a manager who buys the stocks, bonds or other assets for everyone at once. Each contribution buys units (or shares) of the fund, and your share of the fund depends on how many units you hold. With a conventional open-ended fund, the price of a unit is based on its net asset value: what the fund holds minus what it owes, divided by the number of units, usually worked out once each business day. Fees or pricing adjustments can change what you pay or receive. Funds traded on a stock exchange also have a market price, described below.
 
 A fund is not an asset class of its own. A stock fund behaves like stocks and a bond fund like bonds. A money market fund holds short-term debt and is often used like cash, but it is not a bank deposit and can lose value. Many funds spread money across many holdings, though how widely depends on what each fund is set up to buy. What a fund adds is that pooling and a manager, paid for with a yearly management fee.
 
 Two common ways to buy into a fund:
 
-- **Directly from the fund.** With a conventional open-ended fund, you buy units from the fund and sell them back to it, at the value of what it holds, usually priced once a day. This is the conventional open-ended fund.
+- **Directly from the fund.** With a conventional open-ended fund, you buy units from the fund and sell them back to it at a price based on its net asset value per unit, usually worked out once each business day.
 - **On a stock exchange.** Exchange-traded funds (ETFs) are bought and sold between investors during the trading day, like a share, at a market price that usually stays close to the value of what the fund holds but can sit above or below it, especially when markets are stressed or the ETF's holdings are hard to trade.
 
 The name on your statement depends on where you live, and the same idea goes by many names.
@@ -216,7 +216,7 @@ The name on your statement depends on where you live, and the same idea goes by 
 <summary class="disclosure">What funds are called where you live</summary>
 
 - **US and India.** A mutual fund. In India a SIP (systematic investment plan) is a way of putting a fixed amount into a mutual fund at regular intervals, not a separate product.
-- **EU.** Many funds sold to the public across the EU are UCITS, funds under the EU's common rules, which must buy back investors' units on request, though a fund can suspend this in exceptional circumstances.
+- **EU.** Many funds sold to the public across the EU are UCITS, funds under the EU's common rules. A conventional UCITS fund must buy back investors' units on request, though it can suspend this in exceptional circumstances; people holding a UCITS ETF usually sell their shares on the stock exchange instead.
 - **UK.** Unit trusts and OEICs (open-ended investment companies) are open-ended funds. An investment trust is different: a company listed on the stock exchange with a fixed number of shares, whose price can sit above or below the value of what it holds.
 - **Spain and Mexico.** A fondo de inversión. In Spain it is a collective investment institution (IIC) run by a management company, and investors are called partícipes; in Mexico the funds are supervised by the CNBV, the banking and securities regulator.
 - **Czechia.** A podílový fond, whose investors hold podílové listy (units) and own the fund's assets together, in proportion to their units.
