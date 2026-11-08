@@ -13,7 +13,7 @@ takeaways:
   - "When budgeting buckets help and when to collapse the folders"
 order: 35
 pubDate: 2026-07-06
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "petra"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -22,11 +22,11 @@ faq:
   - question: "What is mental accounting?"
     answer: "Mental accounting, a concept introduced by economist Richard Thaler, is the tendency to treat money differently depending on its source or its assigned purpose, despite the fact that money is fungible: one euro is exactly as spendable as any other, regardless of where it came from. In practice this means a tax refund or a bonus feels like found money and gets spent loosely, while the identical sum arriving as regular salary gets handled with care. It means keeping cash in a low-interest savings folder while owing money on a high-interest debt folder, never mentally putting the two side by side. The labels feel real, but the money does not know what folder you put it in."
   - question: "Is mental accounting always a bad thing?"
-    answer: "No. Used deliberately, it is one of the most effective budgeting tools there is. Setting up separate buckets for rent, groceries, savings, and fun, whether as real sub-accounts or just labels, harnesses mental accounting on purpose to keep spending inside sensible limits. The envelope method and pay-yourself-first both work precisely because they exploit how the brain respects category boundaries. The bias becomes destructive only when the boundaries cause worse decisions: paying off a small comforting debt before a large expensive one, splurging a windfall you would never have spent from savings, or letting idle cash sit beside costly debt. The aim is not to abolish the folders but to override them when they are steering you wrong."
+    answer: "No. Used deliberately, it is a widely used budgeting tool. Setting up separate buckets for rent, groceries, savings, and fun, whether as real sub-accounts or just labels, harnesses mental accounting on purpose to keep spending inside sensible limits. The envelope method and pay-yourself-first both work precisely because they exploit how the brain respects category boundaries. The bias becomes destructive only when the boundaries cause worse decisions: paying off a small comforting debt before a large expensive one, splurging a windfall you would never have spent from savings, or letting idle cash sit beside costly debt. The aim is not to abolish the folders but to override them when they are steering you wrong."
   - question: "What is the house-money effect?"
     answer: "The house-money effect is the tendency to take bigger risks with money you see as winnings than with money you see as your own original stake. The name comes from gambling: after a win, players often bet more loosely because it feels like they are playing with the casino's money rather than their own, even though, once won, it is entirely theirs. In investing, the same effect shows up when people gamble recklessly with investment gains or a windfall they would never have risked from their salary. The money is identical in every way that matters; only the mental label differs. Recognising that a gain is now simply your money, subject to the same care as any other euro, defuses the effect."
   - question: "Why do people keep savings while carrying credit card debt?"
-    answer: "Because the savings and the debt live in separate mental folders that rarely get compared directly. Keeping, say, 5,000 euros in an emergency fund earning around 2% while carrying 5,000 euros of credit card debt costing around 18% means paying roughly 800 euros a year for the comfort of seeing a savings balance. Purely on the math, using most of that cash to clear the high-interest debt is strongly favourable, since no safe savings account reliably pays anything close to 18%. The reason people do not is mental accounting: the emergency fund feels sacred and the debt feels like a separate problem. Putting both numbers on one line shows the true cost; how much buffer is worth keeping alongside the debt depends on income stability and how secure your access to credit is."
+    answer: "Because the savings and the debt live in separate mental folders that rarely get compared directly. Keeping, say, 5,000 euros in an emergency fund earning around 2% while carrying 5,000 euros of credit card debt costing around 18% means paying roughly 800 euros a year for the comfort of seeing a savings balance. Purely on the math, using most of that cash to clear the high-interest debt comes out well ahead, since no safe savings account reliably pays anything close to 18%. The reason people do not is mental accounting: the emergency fund feels sacred and the debt feels like a separate problem. Putting both numbers on one line shows the true cost; how much buffer is worth keeping alongside the debt depends on income stability and how secure your access to credit is."
 reelPromise: "The tax-refund test, the house-money effect, and the one-line calculation that exposes when your mental folders are costing you real money"
 relatedSlugs: ["loss-aversion-and-the-disposition-effect", "why-smart-people-make-dumb-money-decisions", "budgeting", "how-to-get-out-of-debt", "emergency-fund"]
 referentialReading:
@@ -102,7 +102,7 @@ The same thing happens with investments and windfalls. People who would never ga
 
 ## When the folders are actually helping
 
-Here is the twist that makes mental accounting interesting rather than simply a flaw to fix: the same instinct, used on purpose, is one of the best budgeting tools there is.
+Here is the twist that makes mental accounting interesting rather than simply a flaw to fix: the same instinct, used on purpose, powers several common budgeting methods.
 
 [Budgeting](/blog/budgeting/) by buckets, rent here, groceries there, savings in their own account, fun in another, works precisely because the brain respects folder boundaries. The envelope method is mental accounting made physical. Pay-yourself-first works because moving money into the savings folder before you can spend it puts it behind a boundary your brain will then defend.
 

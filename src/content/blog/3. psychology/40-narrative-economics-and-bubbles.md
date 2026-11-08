@@ -12,7 +12,7 @@ takeaways:
   - "How sane position sizes and diversification keep you grounded"
 order: 40
 pubDate: 2026-07-17
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -26,7 +26,7 @@ faq:
     answer: "Because inside a bubble, every signal that later looks like an obvious warning instead looks like confirmation. Prices are rising, which feels like proof the story is right. Respected people are participating, which provides social proof. The story is plausible and often built on something genuinely real, so scepticism feels like missing the point. And anyone who sold early looks foolish for a while, which punishes caution. Recency bias makes the recent climb feel like the natural order, and availability bias makes the constant stream of success stories feel representative. Only afterwards, when the story breaks, does the whole thing look inevitable. Hindsight makes bubbles obvious; foresight rarely does."
   - question: "What are recency bias and availability bias?"
     answer: "Recency bias is the tendency to give too much weight to recent events and assume the latest trend will simply continue, which makes a few good years feel like a permanent new normal and a few bad years feel like the end of the world. Availability bias is the tendency to judge how likely something is by how easily examples come to mind, so vivid, frequently repeated stories feel more probable than dull statistics that are actually more representative. In a bubble the two reinforce each other: prices have risen recently, so recency bias says they will keep rising, and the airwaves are full of people who got rich, so availability bias makes getting rich feel like the typical outcome. Both push you toward the story and away from the base rates."
-reelPromise: "The four-part anatomy every bubble shares, the four most expensive words in finance, and how to stay grounded without trying to time the top"
+reelPromise: "The four-part anatomy every bubble shares, the four costly words John Templeton warned about, and how to stay grounded without trying to time the top"
 relatedSlugs: ["herd-behavior-and-fomo", "why-smart-people-make-dumb-money-decisions", "understanding-risk", "diversification", "satellite-assets-commodities-and-cryptocurrency"]
 referentialReading:
   - title: "Narrative Economics: How Stories Go Viral and Drive Major Economic Events"
@@ -64,7 +64,7 @@ Strip away the specifics and almost every bubble has the same four parts.
 1. **A plausible story.** Crucially, it is usually built on something genuinely real. Tulips really were fashionable. The internet really did change the world. Houses really are valuable. The kernel of truth is what makes the enthusiasm feel reasonable rather than ridiculous, and it is what disarms the sceptics.
 2. **Rising prices that seem to prove it.** The climb becomes its own evidence. "It keeps going up, so the story must be right." Price action gets mistaken for confirmation.
 3. **New-era thinking.** The belief that the normal rules of value no longer apply, because something fundamental has changed. Old measures of what a thing is worth get waved away as relics from before the new era.
-4. **The four most expensive words in finance: "this time is different."** Whenever someone points to history and the past pattern of busts, the answer is that history does not apply here, for reasons that always sound specific and persuasive in the moment.
+4. **Four costly words: "this time is different."** In 1993 the investor John Templeton counted them among the most costly words in the history of investing, and the line has been quoted ever since. Whenever someone points to history and the past pattern of busts, the answer is that history does not apply here, for reasons that always sound specific and persuasive in the moment.
 
 When you notice those four ingredients gathering, especially the fourth, you are not necessarily looking at a bubble. But you are looking at the exact conditions in which bubbles grow.
 
@@ -111,7 +111,7 @@ Together they make the inside of a bubble feel less like a bubble and more like 
 
 So the goal is not to become someone who calls the top, because almost nobody reliably can, and trying tends to cause its own mistakes. The goal is to stay grounded enough that no single story can take you down.
 
-- **Position sizes that survive being wrong.** The people who come through bubbles intact rarely let one story grow into a bet that ruins them if it breaks. This is the discipline the [satellite portion of a portfolio](/blog/satellite-assets-commodities-and-cryptocurrency/) is meant to enforce: speculative, story-driven holdings are sized so that being wrong is survivable.
+- **Position sizes that survive being wrong.** People who come through bubbles intact tend not to let one story grow into a bet that ruins them if it breaks. This is the discipline the [satellite portion of a portfolio](/blog/satellite-assets-commodities-and-cryptocurrency/) is meant to enforce: speculative, story-driven holdings are sized so that being wrong is survivable.
 - **Diversification.** [Diversification](/blog/diversification/) is, in part, protection against being completely right about the wrong story. If no single holding can sink a portfolio, no single broken narrative can either.
 - **Treat "this time is different" as a warning, not an invitation.** When a story requires you to abandon the basics, ignore valuation, concentrate heavily, or borrow to join in, the story itself is the risk. The need to wave away history is the tell.
 - **Separate the truth in the story from the price.** Often the underlying story is partly true. The internet did change everything. That truth still says nothing about whether today's price is sensible. A great technology and a terrible price routinely coexist.

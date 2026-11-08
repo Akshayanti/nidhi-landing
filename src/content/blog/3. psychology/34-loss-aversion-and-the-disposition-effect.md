@@ -12,7 +12,7 @@ takeaways:
   - "How checking less and automating stop panic-selling"
 order: 34
 pubDate: 2026-07-03
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -25,7 +25,7 @@ faq:
   - question: "Why does checking my portfolio often make me a worse investor?"
     answer: "Because the more frequently you look, the more often you see a loss, and each loss tends to sting more than an equal gain pleases. Markets rise over long stretches but fall on a large share of individual days. Someone who checks once a day sees a down day very often; someone who checks once a year sees a gain in most years. The daily checker therefore experiences far more emotional pain for the same underlying return, and that accumulated discomfort drives unhelpful action: selling in a dip, abandoning a plan, chasing whatever felt safer. This is sometimes called myopic loss aversion: too short a viewing window turns ordinary volatility into a stream of painful events."
   - question: "How do I stop loss aversion from hurting my returns?"
-    answer: "You cannot remove the feeling, but you can remove the moments where it does damage. Three structural fixes do most of the work. First, check less often: a quarterly or even annual review fits the timescale of a long-term portfolio and spares you the noise of daily swings. Second, automate contributions so money keeps investing on schedule regardless of how the market or you happen to feel that week, which prevents fear from pausing the plan. Third, judge the portfolio against its multi-year plan, not its worst recent week, so a normal drawdown reads as expected rather than alarming. Decide your rules when calm, write them down, and let the system execute them when you are not."
+    answer: "You cannot remove the feeling, but you can remove the moments where it does damage. Three structural fixes are commonly used. First, checking less often: many long-term investors find a quarterly or even annual review fits the timescale of a long-term portfolio and spares them the noise of daily swings. Second, automating contributions so money keeps going in on schedule regardless of how the market or you happen to feel that week, which stops fear from pausing the plan. Third, judging the portfolio against its multi-year plan, not its worst recent week, so a normal drawdown reads as expected rather than alarming. The rules are easier to follow when they are decided calmly and written down, so the system can carry them out when you are not calm."
 reelPromise: "Why a down day hurts twice as much as an up day helps, the disposition-effect data, and the three structural fixes that beat the feeling"
 relatedSlugs: ["why-smart-people-make-dumb-money-decisions", "understanding-risk", "saving-vs-investing", "getting-started-investing", "rebalancing-your-portfolio"]
 referentialReading:
@@ -108,7 +108,7 @@ Markets rise over years but fall on a large share of individual days. So conside
 
 Now layer loss aversion on top. Each of those down days stings about twice as hard as an up day pleases. The daily checker lives through a relentless drip of small, doubled pains for exactly the same long-term return as the calm annual checker who barely notices the journey. Shrink your viewing window and ordinary volatility turns into a stream of painful events. The more you watch, the worse you feel, and the worse you feel, the more likely you are to do something you will regret.
 
-This is why the single cheapest improvement most investors can make is to look less often.
+This is why looking less often is such a cheap change for a long-term investor.
 
 ## You cannot delete the feeling. You can defuse the moment.
 
@@ -119,13 +119,13 @@ What works is removing the moments where the fear can do damage:
 1. **Check less often.** A long-term portfolio has a long-term timescale. Many long-term investors find quarterly enough, and some check a simple, diversified holding only once a year. Fewer looks means fewer panic windows. If you only review the [dashboard](/blog/financial-dashboard/) on a schedule, the dips between reviews never get a vote.
 2. **Automate the contributions.** If your investing happens automatically each month, fear never gets the chance to pause it. The money goes in during the scary months too, which in US stock market history have tended to be among the most rewarding months to keep buying, though no period guarantees that.
 3. **Judge against the plan, not the week.** A 20% drop is alarming if your reference point is last month's high. It is unremarkable if your reference point is the multi-year plan you wrote when calm, which already assumed that drops like this happen. The drop did not break the plan. The plan expected it.
-4. **Pre-decide the rules.** Write down, in advance, what would actually make you change your investments: a change in your goals, your timeline, or your circumstances, never a change in this week's price. Then a scary week has nothing to act on, because the decision was already made by your calmer self.
+4. **Pre-decide the rules.** Many long-term investors write down, in advance, what would make them change their investments: a change in their goals, timeline or circumstances, rather than a change in this week's price. Then a scary week has nothing to act on, because the decision was already made by a calmer self. (A plan for money needed soon, or a long-term plan that no longer fits, is a different case: then a change can be the right call.)
 
 ## What you can do
 
-- **Picture the coin flip.** The next time a market drop tempts you to sell, remember that the urge is the 2-to-1 ratio talking, not new information. The fear is real; the threat usually is not.
+- **Picture the coin flip.** The next time a market drop tempts you to sell, remember that the urge is the roughly 2-to-1 ratio talking, not new information. The fear is real; the threat usually is not.
 - **Pick a checking cadence and stick to it.** Decide now how often you will look, monthly or quarterly or yearly, and treat any urge to peek in between as a symptom rather than a signal.
 - **Automate so the plan survives your moods.** Set contributions to happen on their own, so the scary months get invested in exactly like the calm ones.
-- **Name the disposition effect when you feel it.** If you are tempted to sell a winner while clinging to a loser "until it recovers," that is loss aversion choosing for you. The right question is which investment you would buy today, not which one would let you avoid admitting a mistake.
+- **Name the disposition effect when you feel it.** If you are tempted to sell a winner while clinging to a loser "until it recovers," that is loss aversion choosing for you. A question many people find more useful is which investment they would buy today, not which one would let them avoid admitting a mistake.
 
 Loss aversion is about money that is genuinely yours, gained or lost. The next bias is subtler: it is about how your brain secretly files money into different mental folders and treats each one by different rules, even though every euro is identical. That is mental accounting, and it is where we go next.
