@@ -13,7 +13,7 @@ takeaways:
   - "How people weigh paying down debt against investing"
 order: 4
 pubDate: 2026-04-25
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [tax, borrowing]
 level: "discovery"
 primaryPersona: "eva"
@@ -32,11 +32,11 @@ faq:
   - question: "Why does the interest rate matter more than the balance?"
     answer: "Because the rate determines how expensive a debt becomes over time, not just how big it looks today. A €200,000 mortgage at 3.5% costs roughly €100,000 in interest over 25 years, but it buys an asset that may appreciate while you build equity. A €3,000 credit card balance at 22%, paid only at the minimum, can cost more in interest than the original purchases, meaning you pay for them twice. Same act of borrowing, wildly different outcomes. Two debts of identical size can be worlds apart in danger depending purely on the rate attached to them."
   - question: "How do I tell good debt from bad debt?"
-    answer: "Skip the simplistic good-versus-bad labels and ask three questions about any debt. First, what is the interest rate? In low-inflation economies, anything above roughly 8 to 10% is usually expensive and worth tackling quickly; in higher-inflation countries, judge the rate against inflation instead. Second, what did the debt buy? Borrowing for something that appreciates, like education or a home, has a different character than borrowing for consumption, like a holiday or a dinner. Third, can you comfortably make the payments? Even low-interest debt becomes a problem if it eats too much of your monthly cash flow. The answers tell you how worried to be far better than any label."
+    answer: "Good-versus-bad labels oversimplify, so many people use three questions instead. First, what is the interest rate? In low-inflation economies, anything above roughly 8 to 10% after tax is usually treated as expensive, and many people pay it down quickly; in higher-inflation countries, the rate is weighed against local inflation, income growth and after-tax returns instead. Second, what did the debt buy? Borrowing for something that appreciates, like education or a home, has a different character than borrowing for consumption, like a holiday or a dinner. Third, can you comfortably make the payments? Even low-interest debt becomes a problem if it eats too much of your monthly cash flow. The answers tell you how worried to be far better than any label."
   - question: "Should I pay off debt or invest first?"
-    answer: "Compare the interest rate on the debt against the return you could realistically expect from investing. When the rate on the debt is higher than that expected return, paying the debt first usually wins: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. When the debt is cheap, say a 3% mortgage, many people keep paying it slowly and invest the difference for a higher expected return, while others value the certainty of prepaying. Tax, inflation and your cash reserve all shift the answer. Missed minimum payments are costly either way, because they trigger penalties and damage your credit."
+    answer: "A common approach compares the interest rate on the debt with the return investing could realistically be expected to earn. When the rate on the debt is higher than that expected return, paying the debt first has usually come out ahead: clearing a 22% credit card is effectively a guaranteed 22% return, and no reliable investment pays that. When the debt is cheap, say a 3% mortgage, many people keep paying it slowly and invest the difference for a higher expected return, while others value the certainty of prepaying. Tax, inflation and your cash reserve all shift the answer. Missed minimum payments are costly either way, because they trigger penalties and damage your credit."
   - question: "Is mortgage interest tax-deductible?"
-    answer: "In some countries it has been, but the benefit is being phased out or restricted across much of Europe, so do not assume it applies to you. Where it exists, mortgage interest relief lowers the effective cost of the loan, which is one reason a mortgage is often the cheapest debt you can hold. Still, treat any tax break as a secondary factor rather than the reason to borrow. Your country's current rules decide this, and they change frequently. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
+    answer: "It depends on the country, and the rules change. Some still allow it: the Netherlands at a capped rate (37.56% in 2026), and India up to 2 lakh rupees a year on a self-occupied home, under the old tax regime only. Others have ended it for homeowners, such as the UK in 2000, and Spain's national deduction for homes bought from 2013 (earlier buyers keep a transitional relief). Where it exists, relief lowers the effective cost of the loan. Many people treat a tax break as a secondary factor rather than a reason to borrow, because the rules can change during a 25-year loan. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
 ---
 
 We've looked at [what you own](/blog/assets/). Now let's look at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth/) equation. And for most people, they're the side that hurts.
@@ -67,17 +67,23 @@ The same concept: borrowing money but with wildly different outcomes. The intere
 
 Instead of "good debt" and "bad debt", which oversimplifies things, ask three questions:
 
-1. **What is the interest rate?** Compare it with inflation and with what your investments could realistically earn after tax. In low-inflation countries, rates above roughly 8-10% are usually expensive and worth addressing quickly; where inflation runs higher, the line sits higher too
+1. **What is the interest rate?** How does it compare with inflation and with what investments could realistically earn after tax? In low-inflation countries, rates above roughly 8-10% after tax are usually treated as expensive, and many people pay them down quickly; where inflation runs higher, the line sits higher too
 2. **What did the debt buy?** Debt that funds something [appreciating](/blog/assets/) (education, a home) has a different character than debt that funded consumption (a holiday, a dinner)
 3. **Can you comfortably make the payments?** Even low-interest debt becomes a problem if it eats too much of your cash flow
 
 ## The main types of debt
 
-**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. In some countries, mortgage interest is tax-deductible, though this benefit is being phased out or restricted across much of Europe. Whether any relief applies is set by national tax law. The catch: it's a long commitment and you need stable income.
+**Mortgage debt** is usually the cheapest interest rate you'll find. It buys an asset that may appreciate. Whether the interest is tax-deductible depends on the country, and it changes the true cost: the Netherlands allows it at a capped rate (37.56% in 2026); India allows up to ₹2 lakh a year on a self-occupied home under the old tax regime, but not the new one; the UK ended relief for homeowners in 2000, and Spain ended its national deduction for homes bought from 2013, keeping a transitional relief for earlier buyers. The catch: it's a long commitment and it relies on stable income.
 
-**Student loan debt** invests in your earning potential. It makes sense if the education leads to a career that meaningfully increases your income. It doesn't make sense if the degree costs more than the salary increase it delivers.
+**Student loan debt** invests in your earning potential. It tends to pay off when the education leads to a career that meaningfully increases income, and less so when the degree costs more than the salary increase it delivers. In some countries the repayment rules change how the debt behaves:
 
-**Credit card debt** is the most common trap. High interest, compounding daily, easy to accumulate and hard to eliminate. If you carry a balance, every purchase effectively costs more than the price tag.
+- **England:** repayments are 9% of income above a threshold (£25,000 a year for Plan 5 loans, which started repayment in April 2026), and whatever is left is written off 30 years after repayment was due to start for Plan 2 loans, 40 years for Plan 5
+- **Australia:** HELP debts are repaid through the tax system, only on income above a threshold (A$67,000 in 2025-26)
+- **The Netherlands:** repayment follows income for up to 35 years under the current system, and any balance left after that is written off
+
+Where repayment follows income and the rest is written off, an extra payment can go toward a balance that would otherwise have been cancelled, which is why many people there treat these loans differently from bank debt.
+
+**Credit card debt** is a common trap. High interest, often compounding daily, easy to accumulate and hard to eliminate. If you carry a balance, every purchase effectively costs more than the price tag.
 
 **Consumer loans for depreciating assets**, for example, financing a car or furniture at high rates means you're paying interest on something that loses value from the day you buy it.
 
@@ -87,7 +93,7 @@ A widely used rule of thumb: when the interest rate on a debt is higher than the
 
 ## What this means for your net worth
 
-Every liability subtracts from your net worth. But the way debts are handled makes a huge difference:
+Every liability subtracts from your net worth. But the way debts are handled makes a big difference:
 
 - High-interest debt is the clearest case for fast repayment, because clearing it is a high, guaranteed return
 - Low-interest debt is where people differ: some prefer to invest the difference for a higher expected return, others prefer the certainty of being debt-free

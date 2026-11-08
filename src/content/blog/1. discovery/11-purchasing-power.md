@@ -4,7 +4,7 @@ title: "Purchasing Power: Why €1,000 Today Isn't €1,000 Tomorrow"
 description: "A euro today buys more than a euro in ten years. Purchasing power explains why, and the force behind its decline, inflation, is why saving alone isn't enough."
 tldr:
   - "What your money can buy shrinks over time as prices rise, which is inflation."
-  - "At 2 to 3% a year, money loses roughly half its buying power over 25 years."
+  - "At 2 to 3% a year, money loses roughly 40 to 50% of its buying power over 25 years."
   - "Earning 2% in savings while prices rise 3% means losing ground, so keeping up takes returns above inflation."
 takeaways:
   - "Why the same money buys less as prices rise"
@@ -12,7 +12,7 @@ takeaways:
   - "Why cash in a low-interest account loses value over time"
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -50,7 +50,7 @@ faq:
     answer: "The first step is thinking in real terms: subtract inflation from every interest rate, return, and raise to see the true number. Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
 ---
 
-You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it. Not even close.
+You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it.
 
 That's not a guess. That's purchasing power, and it's the concept that makes sense of why saving alone isn't enough.
 
@@ -140,11 +140,17 @@ When you put money in a savings account earning 1%, and prices rise 2.5%, you di
 
 A negative real return means you're getting poorer on paper, even as your account balance grows. This is why understanding purchasing power changes every financial decision you make.
 
+## Inflation is not 2% everywhere
+
+The examples here use an illustrative 2.5%. Elsewhere the same idea plays out at a very different speed. World Bank figures for consumer price inflation put Turkey at about 35% and Nigeria at about 23% in 2025, and Argentina at about 220% in 2024. At 35%, prices roughly double in a little over two years, and cash earning nothing loses about a quarter of its buying power in a single year, a loss that takes about twelve years at 2.5%. (At rates this high, the simple subtraction above overstates the loss; it is a close approximation only when rates are low.)
+
+High inflation usually comes with high interest rates, so the comparison that matters is still the rate earned against local inflation, not the headline number. Some governments also sell bonds whose value rises with inflation: index-linked gilts in the UK, OAT€i bonds in France (linked to eurozone prices) and Tesouro IPCA+ in Brazil, for example. Their prices can still move before they mature. The [free inflation calculator](/free/inflation-calculator/) uses the same World Bank figures for each country.
+
 ## How inflation interacts with your finances
 
-**Savings**: Cash sitting in a low-interest account is practically guaranteed to lose value over time. If your savings account's interest rate is below inflation, you're going backward in real terms.
+**Savings**: Cash sitting in a low-interest account tends to lose value over time. If your savings account's interest rate is below inflation, you're going backward in real terms.
 
-**[Debt](/blog/liabilities/)**: Inflation actually helps borrowers. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
+**[Debt](/blog/liabilities/)**: Inflation tends to help borrowers with fixed-rate debt. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
 
 **Investments**: Stocks, real estate, and other assets that tend to grow over time can outpace inflation. That's one of the main reasons people invest instead of just saving.
 
@@ -154,7 +160,7 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
 2. **Idle cash has a cost.** Beyond an emergency fund, money that earns less than inflation loses value in real terms. How much cash is "idle" depends on your upcoming needs
-3. **Growth assets are the usual answer, with trade-offs.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
+3. **Many people turn to growth assets, with trade-offs.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
 4. **Plans need revisiting.** Prices change. An emergency fund, a salary and a savings rate all drift, so it helps to check them periodically.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-08',
+    items: [
+      {
+        id: 'beginner-lessons-more-countries',
+        text: {
+          en: 'The 16 beginner lessons now explain how things differ between countries where the rules change the answer: when retirement savings can be reached early, how unemployment benefits change the size of an emergency fund, how student loans are repaid, how health cover works, and what inflation far above 2% does to cash. I also fixed a chart in the snowball and avalanche lesson that showed the wrong months.',
+          es: 'Las 16 lecciones para principiantes explican ahora en qué se diferencian los países cuando las normas cambian la respuesta: cuándo se puede sacar antes el ahorro para la jubilación, cómo el subsidio de desempleo cambia el tamaño del fondo de emergencia, cómo se devuelven los préstamos de estudios, cómo funciona la cobertura sanitaria y qué le hace al efectivo una inflación muy por encima del 2 %. También corregí un gráfico de la lección sobre los métodos bola de nieve y avalancha que mostraba meses equivocados.',
+          cs: 'Šestnáct lekcí pro začátečníky teď vysvětluje, v čem se země liší tam, kde pravidla mění odpověď: kdy se dá k penězům na důchod dostat dřív, jak podpora v nezaměstnanosti mění velikost finanční rezervy, jak se splácejí studentské půjčky, jak funguje zdravotní pojištění a co s hotovostí udělá inflace vysoko nad 2 %. Opravený je také graf v lekci o metodách sněhové koule a laviny, který ukazoval špatné měsíce.',
+          mr: 'नवशिक्यांसाठीच्या 16 धड्यांमध्ये आता, जिथे नियमांमुळे उत्तर बदलते तिथे देशांनुसार गोष्टी कशा वेगळ्या असतात हे सांगितले आहे: निवृत्तीची बचत लवकर काढता येते की नाही, बेरोजगारी भत्त्यामुळे आपत्कालीन निधीचा आकार कसा बदलतो, विद्यार्थी कर्ज कसे फेडले जाते, आरोग्य विमा कसा चालतो, आणि 2 टक्क्यांपेक्षा खूप जास्त महागाई रोख रकमेचे काय करते. स्नोबॉल आणि ॲव्हलांच पद्धतींच्या धड्यातील एका आलेखात चुकीचे महिने दाखवले होते; तोही दुरुस्त केला आहे.',
+          hi: 'शुरुआती 16 पाठों में अब यह भी बताया गया है कि जहाँ नियम जवाब बदल देते हैं, वहाँ अलग-अलग देशों में चीज़ें कैसे अलग होती हैं: रिटायरमेंट की बचत जल्दी निकाली जा सकती है या नहीं, बेरोज़गारी भत्ता आपातकालीन कोष (emergency fund) का आकार कैसे बदलता है, स्टूडेंट लोन कैसे चुकाया जाता है, स्वास्थ्य बीमा कैसे काम करता है, और 2% से कहीं ज़्यादा महँगाई नकदी के साथ क्या करती है। स्नोबॉल और एवलांच वाले पाठ का एक चार्ट गलत महीने दिखा रहा था; उसे भी ठीक कर दिया गया है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-06',
     items: [
       {

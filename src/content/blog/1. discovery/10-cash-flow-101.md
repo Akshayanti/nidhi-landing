@@ -12,7 +12,7 @@ takeaways:
   - "Why your savings rate is a better progress signal than salary alone"
 order: 10
 pubDate: 2026-05-08
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -34,9 +34,9 @@ faq:
   - question: "What is the difference between fixed and variable expenses?"
     answer: "Fixed expenses stay roughly the same each month: rent or mortgage, insurance, loan payments, and subscriptions. You committed to them, they are predictable, and they are hard to change quickly. Variable expenses fluctuate from month to month: groceries, dining out, clothing, entertainment, and travel. These are where most surprise spending hides, and also where you have the most day-to-day control. Splitting your spending into these two groups helps you see where the levers are. Big savings often come from trimming a fixed cost once, like switching providers, and from setting limits on the variable categories that quietly add up."
   - question: "How do I calculate my monthly cash flow?"
-    answer: "You do not need a complex budget. First, list your monthly income: salary, side income, and any regular inflow. Second, list your fixed expenses: rent, loans, insurance, and subscriptions. Third, track your variable spending for one month using your bank statement, capturing every transaction. Fourth, subtract all expenses from your income. The result is your monthly cash flow. If it is positive, you have a surplus to direct toward savings, debt, or investing. If it is negative, something needs to change. Doing this once gives you the number most people never actually calculate, despite knowing their salary by heart."
+    answer: "You do not need a complex budget. First, list your monthly income: salary, side income, and any regular inflow. Second, list your fixed expenses: rent, loans, insurance, and subscriptions. Third, track your variable spending for one month using your bank statement, capturing every transaction. Fourth, subtract all expenses from your income. The result is your monthly cash flow. If it is positive, you have a surplus to direct toward savings, debt, or investing. If it is negative, something needs to change. Doing this once gives you the number many people never calculate, even though they know their salary by heart."
   - question: "What does a healthy cash flow look like?"
-    answer: "There is no single right number, but a common guideline splits income three ways: spend no more than 50 percent on needs such as housing, food, transport, and insurance; keep at least 20 percent for savings, debt repayment, or investing; and use the remaining 30 percent for wants. These are rough targets, not strict rules, and a high-cost city may push needs higher. The warning sign is when needs consume around 80 percent of income, because that leaves almost nothing to build with. The exact split matters less than having a deliberate surplus rather than spending whatever happens to be left."
+    answer: "There is no single right number, but a widely quoted guideline, the 50/30/20 split popularised by Elizabeth Warren and Amelia Warren Tyagi in their 2005 book All Your Worth, divides after-tax income into about 50 percent for needs such as housing, food, transport and insurance, at least 20 percent for savings, debt repayment or investing, and 30 percent for wants. It was written with US households in mind, and in high-cost cities or on low incomes needs often take far more than half. When needs take around 80 percent of income, very little is left to build with. The exact split matters less than having a deliberate surplus rather than spending whatever happens to be left."
   - question: "How is savings rate related to cash flow?"
     answer: "Your savings rate is your cash flow expressed as a percentage of income: (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, your 600 surplus is a 20 percent savings rate. For tracking whether you are building wealth, this number often says more than your salary alone. Someone earning 6,000 euros at a 5 percent rate builds wealth slower than someone earning 3,000 at 20 percent. A common benchmark is 20 percent, but direction matters more than the exact figure. Track it monthly: rising means your wealth engine is accelerating, falling means something changed and deserves attention."
 ---
@@ -55,7 +55,7 @@ Cash flow is simply the difference between money coming in and money going out o
 
 **Zero cash flow**: Every euro that comes in goes right back out. You're treading water.
 
-## Why most people don't know their number?
+## Why many people don't know their number
 
 Ask someone how much they earn, and they can usually tell you. Ask them how much they spend, and the answer gets fuzzy.
 
@@ -84,13 +84,13 @@ The result is your monthly cash flow. If it's positive, you have a surplus to wo
 
 ## What does a healthy cash flow look like?
 
-There's no single right number, but a widely quoted guideline (the 50/30/20 split) looks like this:
+There's no single right number, but a widely quoted guideline, the 50/30/20 split from Elizabeth Warren and Amelia Warren Tyagi's 2005 book *All Your Worth*, looks like this:
 
 - About 50% of income on needs (housing, food, transport, insurance)
 - At least 20% for savings, debt repayment, or investments
 - The remaining 30% for wants
 
-These are rough targets, not rules. But if your needs eat up 80% of your income, there's very little room to build anything.
+These are rough targets, not rules, and the split was written for US households: in expensive cities or on low incomes, needs often take far more than half. But if your needs eat up 80% of your income, there's very little room to build anything.
 
 ## Your savings rate: cash flow as a percentage
 
@@ -136,4 +136,4 @@ Cash flow and net worth are linked. As we discussed in the [income vs. wealth po
 
 Positive cash flow each month means your [assets](/blog/assets/) grow (or your [liabilities](/blog/liabilities/) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
 
-That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, a starter cushion is usually the first place it goes: your financial safety net. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. The order matters: stabilize, then optimize.
+That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, a starter cushion is usually the first place it goes: your financial safety net. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. Many plans follow the same order: stabilize first, then optimize.

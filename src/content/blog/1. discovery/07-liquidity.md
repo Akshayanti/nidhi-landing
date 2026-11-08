@@ -13,7 +13,7 @@ takeaways:
   - "How to match your money's liquidity to your timeline"
 order: 7
 pubDate: 2026-05-01
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [pensions, tax, borrowing]
 level: "discovery"
 primaryPersona: "eva"
@@ -47,7 +47,7 @@ You might have €100,000 in [net worth](/blog/what-is-net-worth/) and still not
 
 How? If most of that net worth is tied up in a house or a retirement account, you can't get to it quickly without penalty or loss.
 
-That's liquidity, and ignoring it is one of the most common ways an otherwise solid financial plan falls apart.
+That's liquidity, and ignoring it is a common way an otherwise solid financial plan comes unstuck.
 
 ## What liquidity means
 
@@ -67,8 +67,8 @@ Think of it as a scale:
 |---|---|---|
 | Cash / current account | Instantly | None |
 | Savings account | 1-2 days | None |
-| Stocks / index funds | 2-3 days | Market may be down when you sell |
-| Bonds | 2-3 days | Usually small for short-term bonds; long-term bonds can fall sharply when rates rise |
+| Stocks / index funds | 1-3 days, depending on the market | Market may be down when you sell |
+| Bonds | 1-3 days | Usually small for short-term bonds; long-term bonds can fall sharply when rates rise |
 | Retirement accounts | Days if early access is allowed; in many countries, not until retirement age | Possible tax penalty, or no access at all |
 | Real estate | Weeks to months | Selling costs, market conditions |
 | Car | Days to weeks | Depreciated value |
@@ -142,10 +142,24 @@ There's no single correct ratio, but many people think in three tiers:
 
 The sizes depend on your income stability, insurance, your country's safety net and how soon your goals arrive.
 
+## How locked retirement money is depends on where you live
+
+National rules decide whether a retirement account is reachable in a crisis or closed until retirement. A few examples:
+
+- **US:** taxable withdrawals from traditional 401(k) plans and IRAs before age 59½ usually face income tax plus a 10% additional tax, with some exceptions; money paid into a Roth IRA follows different, looser rules
+- **UK:** private pensions can normally be reached from 55, rising to 57 from 6 April 2028
+- **Australia:** super is preserved until 60 for anyone born from 1 July 1964, and even then usually only on retiring, apart from narrow cases such as severe financial hardship
+- **Japan:** iDeCo savings generally cannot be withdrawn before 60
+- **India:** the EPF allows partial withdrawals for specified needs such as illness, education, marriage and housing, subject to service and balance limits
+- **Malaysia:** since May 2024, 10% of new EPF contributions for members under 55 go to a flexible account that can be withdrawn at any time, in amounts of at least RM50
+- **South Africa:** since September 2024, a third of new contributions go to a savings pot that allows one withdrawal per tax year, of at least R2,000 and taxed as income
+
+The same balance can count as a last-resort reserve in one country and be out of reach for decades in another, which is why many people check their own scheme's rules before counting a pension in their emergency plans.
+
 ## Common liquidity mistakes
 
 - **Keeping too much in cash.** Beyond your emergency fund and short-term goals, excess cash slowly loses purchasing power to inflation
-- **Keeping too little in cash.** If every euro is invested, you'll be forced to sell investments at whatever the market price is, which could be down exactly when you need the money
+- **Keeping too little in cash.** If every euro is invested, you may be forced to sell investments at whatever the market price is, which could be down exactly when you need the money
 - **Confusing accessible with liquid.** Borrowing against your home (a home equity loan or line of credit, where lenders offer one) gives you access to its value, but you're paying interest. Accessible is not the same as liquid
 - **Forgetting about tax penalties.** Withdrawing from retirement accounts early can trigger taxes and penalties that significantly reduce what you actually get. Whether early access is allowed, and what it costs, depends on your country and plan
 
