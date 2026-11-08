@@ -10,8 +10,10 @@
  *   nothing typed here can reach PostHog and the owner's visits never count.
  *   The privacy notice says an unlisted owner page loads no analytics.
  * - Unlisted: noindex, left out of the sitemap (astro.config.mjs) and linked
- *   from nowhere. Not named in robots.txt or the privacy changelog, which
- *   would advertise it. No password: it can only make codes for nidhi.today.
+ *   from nowhere. Its address is not given in robots.txt, the privacy notice
+ *   or its changelog (they describe it only as an unlisted page for QR
+ *   codes), which would advertise it. No password: it can only make codes
+ *   for nidhi.today.
  * - English only and outside the catalogs: an owner tool, not reader copy.
  * - Nothing in the address and no browser storage: a reload starts fresh.
  *
@@ -134,6 +136,7 @@ const languages = LOCALES.map((locale) => ({
       import { makeMatrix, versionOf } from '../../utils/qr/encode.ts';
       import { toSvgWithLogo } from '../../utils/qr/logo.ts';
       import { MIN_CAMPAIGN_LENGTH, buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
+      import { downloadBlob } from '../../utils/shared/exportFile.ts';
 
       // Always the highest level, H (about 30% can be rebuilt): the logo in
       // the centre uses part of it, the rest is left for smudges and glare.
@@ -141,6 +144,9 @@ const languages = LOCALES.map((locale) => ({
 
       const BORDER = 4; // the standard's minimum quiet zone, in modules
       const PNG_TARGET = 1024;
+      // The PNG waits until typing pauses, so each keystroke does not
+      // rasterise and encode a 1,000-pixel image only to throw it away.
+      const PNG_DELAY_MS = 200;
 
       const form = document.getElementById('qr-form') as HTMLFormElement;
       const preview = document.getElementById('qr-preview') as HTMLDivElement;
@@ -158,6 +164,7 @@ const languages = LOCALES.map((locale) => ({
         url: string;
         svg: string;
         png: Blob | null;
+        pngFailed: boolean;
         names: { svg: string; png: string };
       }
       let current: Current | null = null;
@@ -177,11 +184,14 @@ const languages = LOCALES.map((locale) => ({
       // Draw the SVG (code and logo) onto a canvas at a whole number of pixels
       // per module, so every module edge lands on a pixel and the PNG stays
       // crisp. The image comes from a same-origin blob, so the canvas stays
-      // exportable.
+      // exportable. The SVG is given its pixel size first: one with only a
+      // viewBox has no natural size, which some browsers refuse to draw or
+      // rasterise small and stretch.
       async function pngFrom(svg: string, modules: number): Promise<Blob | null> {
         const full = modules + 2 * BORDER;
         const px = full * Math.ceil(PNG_TARGET / full);
-        const href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+        const sized = svg.replace('<svg ', `<svg width="${px}" height="${px}" `);
+        const href = URL.createObjectURL(new Blob([sized], { type: 'image/svg+xml' }));
         try {
           const img = new Image();
           img.src = href;
@@ -231,23 +241,13 @@ const languages = LOCALES.map((locale) => ({
           campaign: value('campaign'),
           content: value('content'),
         });
-        if (!url) {
-          current = null;
-          preview.innerHTML = placeholder;
-          meta.textContent = '';
-          urlOut.textContent = '';
-          setEnabled(false);
-          return;
-        }
+        if (!url) return clear('');
         const dark = darkColour();
         let matrix: boolean[][];
         try {
           matrix = makeMatrix(url, ECC);
         } catch {
-          current = null;
-          setEnabled(false);
-          say('That link is too long for a QR code.');
-          return;
+          return clear('That link is too long for a QR code.');
         }
         const svg = toSvgWithLogo(matrix, BORDER, dark);
         const campaign = value('campaign');
@@ -256,6 +256,7 @@ const languages = LOCALES.map((locale) => ({
           url,
           svg,
           png: null,
+          pngFailed: false,
           names: { svg: fileName(campaign, locale, 'svg'), png: fileName(campaign, locale, 'png') },
         };
         preview.innerHTML = svg;
@@ -266,11 +267,26 @@ const languages = LOCALES.map((locale) => ({
         setEnabled(true);
         // Made ahead, so a tap on Share can call the share sheet at once:
         // browsers only allow it straight from the tap.
+        await new Promise((resolve) => setTimeout(resolve, PNG_DELAY_MS));
+        if (mine !== generation || !current) return;
         const png = await pngFrom(svg, matrix.length);
         if (mine !== generation || !current) return;
         current.png = png;
+        current.pngFailed = !png;
+        if (!png) say('This browser could not make the PNG. Download the SVG instead.');
         shareBtn.hidden = !(png && canShareFile(png, current.names.png));
         setEnabled(true);
+      }
+
+      // No code: the placeholder, no link, nothing to save.
+      function clear(message: string) {
+        current = null;
+        preview.innerHTML = placeholder;
+        preview.setAttribute('aria-label', 'QR code preview');
+        meta.textContent = '';
+        urlOut.textContent = '';
+        say(message);
+        setEnabled(false);
       }
 
       function canShareFile(png: Blob, name: string): boolean {
@@ -282,29 +298,20 @@ const languages = LOCALES.map((locale) => ({
         }
       }
 
-      function download(blob: Blob, name: string) {
-        const href = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = href;
-        a.download = name;
-        document.body.append(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(href), 1000);
-      }
-
+      // Text fields, the select and the radios all fire `input`; listening to
+      // `change` too would redraw the same code again on every blur.
       form.addEventListener('input', () => void update());
-      form.addEventListener('change', () => void update());
       form.addEventListener('submit', (e) => e.preventDefault());
 
       svgBtn.addEventListener('click', () => {
         if (!current) return;
-        download(new Blob([current.svg], { type: 'image/svg+xml' }), current.names.svg);
+        downloadBlob(new Blob([current.svg], { type: 'image/svg+xml' }), current.names.svg);
         say(`Saved ${current.names.svg}`);
       });
       pngBtn.addEventListener('click', () => {
+        if (current?.pngFailed) return say('This browser could not make the PNG. Download the SVG instead.');
         if (!current?.png) return say('The PNG is still being made; try again in a moment.');
-        download(current.png, current.names.png);
+        downloadBlob(current.png, current.names.png);
         say(`Saved ${current.names.png}`);
       });
       shareBtn.addEventListener('click', () => {
