@@ -244,6 +244,10 @@ export default defineConfig({
       // still listed.
       const transactional = ['confirm', 'subscription-confirmed', 'subscription-invalid', 'unsubscribe', 'unsubscribed'];
       if (transactional.includes(path.split('/')[0])) return false;
+      // The owner's tools under /studio/ (the QR maker) are unlisted: noindex,
+      // linked from nowhere and kept out of the sitemap. Not named in robots.txt,
+      // which would advertise them.
+      if (path.split('/')[0] === 'studio') return false;
       // Per-tag listings (/blog/tag/<tag>/) carry `noindex,follow` in
       // src/pages/blog/tag/[tag].astro. Listing a noindexed URL in the
       // sitemap sends crawlers two opposite signals, so keep them out.

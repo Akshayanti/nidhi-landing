@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-08',
     items: [
       {
+        id: 'pages-without-analytics',
+        text: {
+          en: 'The privacy notice now says which pages send no analytics at all: the short links that forward you to another page, and an unlisted page I use to make QR codes for events.',
+          hi: 'प्राइवेसी नोटिस अब बताता है कि कौन-से पेज कोई एनालिटिक्स नहीं भेजते: छोटे लिंक, जो आपको किसी दूसरे पेज पर भेज देते हैं, और कार्यक्रमों के लिए QR कोड बनाने का एक अंदरूनी पेज, जो कहीं सूचीबद्ध नहीं है।',
+          es: 'El aviso de privacidad dice ahora qué páginas no envían ninguna analítica: los enlaces cortos que te llevan a otra página y una página interna, sin enlaces desde el sitio, que uso para crear códigos QR para eventos.',
+          cs: 'Zásady ochrany soukromí teď uvádějí, které stránky neodesílají žádnou webovou analytiku: krátké odkazy, které vás přesměrují na jinou stránku, a neveřejná stránka pro tvorbu QR kódů na akce.',
+          mr: 'गोपनीयता सूचनेत आता सांगितले आहे की कोणती पाने वापराचे विश्लेषण अजिबात पाठवत नाहीत: तुम्हाला दुसऱ्या पानावर पाठवणाऱ्या छोट्या लिंक, आणि कार्यक्रमांसाठी QR कोड बनवण्याचे, कुठेही न दाखवलेले एक अंतर्गत पान.',
+        },
+      },
+      {
         id: 'building-lessons-more-countries',
         text: {
           en: 'The sixteen lessons on building your finances now say more about how the rules differ by country, such as public pensions, fees for repaying a loan early, minimum deposits and crypto taxes. A few figures are corrected too, including the table of historical stock returns in the lesson on risk.',

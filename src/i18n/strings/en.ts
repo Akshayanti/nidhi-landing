@@ -762,7 +762,7 @@ export const en = {
         before: 'Pageview and page-leave events, via ',
         link: 'PostHog Cloud EU',
         after:
-          '. That includes the URL you visited, the URL you came from, your approximate country (derived from your IP address, which PostHog then discards), and your browser, OS, and viewport size. No name, no email, no account. A random ID ties together the events of the page you’re on; unless you say yes on the cookie banner, it lasts only for that page and is never stored in your browser, so your visits aren’t linked to each other. The same goes for the tool events below.',
+          '. That includes the URL you visited, the URL you came from, your approximate country (derived from your IP address, which PostHog then discards), and your browser, OS, and viewport size. No name, no email, no account. A random ID ties together the events of the page you’re on; unless you say yes on the cookie banner, it lasts only for that page and is never stored in your browser, so your visits aren’t linked to each other. The same goes for the tool events below. Two kinds of page send none: the short links that forward you to another page (the page they lead to sends the pageview), and an unlisted internal page for making QR codes, which loads no analytics and draws its codes on the device itself.',
       },
       // The bold clause sits mid-sentence, so `before` ends with the space that
       // precedes it and `after` begins with the colon that follows it.
@@ -856,7 +856,7 @@ export const en = {
      */
     volunteers: {
       form:
-        'The volunteer page at nidhi.today/volunteers/ is part of this site. Like every page, it sends a pageview and page-leave event. Its button opens a Google Form run by our Google Workspace account; if you accept the cookie banner, a click on that button is recorded by its label, volunteers-form. Your answers go to Google only when you submit the form. You do not need to sign in, and your Google account is not part of the answers we receive.',
+        'The volunteer page at nidhi.today/volunteers/ is part of this site. Like the other pages here, it sends a pageview and page-leave event. Its button opens a Google Form run by our Google Workspace account; if you accept the cookie banner, a click on that button is recorded by its label, volunteers-form. Your answers go to Google only when you submit the form. You do not need to sign in, and your Google account is not part of the answers we receive.',
       answers:
         'Your email address, and what you choose to tell us: the name to credit, which languages, whether you have a financial background (and a note about it, if you add one), how you would like to help, whether you want credit on the site, and your level in each language.',
       consent:

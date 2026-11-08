@@ -581,7 +581,7 @@ export const cs: Dict = {
         before: 'Události zobrazení a opuštění stránky, přes ',
         link: 'PostHog Cloud EU',
         after:
-          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádný účet. Události stránky, na které jste, spojuje náhodné ID; pokud na cookie liště nesouhlasíte, platí jen pro tuto stránku a nikdy se neukládá ve vašem prohlížeči, takže vaše návštěvy nejsou propojené. Totéž platí pro události nástrojů níže.',
+          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádný účet. Události stránky, na které jste, spojuje náhodné ID; pokud na cookie liště nesouhlasíte, platí jen pro tuto stránku a nikdy se neukládá ve vašem prohlížeči, takže vaše návštěvy nejsou propojené. Totéž platí pro události nástrojů níže. Dva druhy stránek je neodesílají: krátké odkazy, které vás přesměrují na jinou stránku (zobrazení odešle až stránka, na kterou vedou), a neveřejná interní stránka pro tvorbu QR kódů, na kterou nikde nevede odkaz; nespouští žádnou webovou analytiku a kódy vytváří přímo v zařízení.',
       },
       freeTools: {
         before:
@@ -665,7 +665,7 @@ export const cs: Dict = {
     },
     volunteers: {
       form:
-        'Stránka pro dobrovolnou pomoc na adrese nidhi.today/volunteers/ je součástí tohoto webu. Jako každá stránka odesílá událost zobrazení a opuštění stránky. Její tlačítko otevírá formulář Google, který spravuje náš účet Google Workspace; pokud přijmete cookie lištu, kliknutí na toto tlačítko se zaznamená podle jeho štítku volunteers-form. Vaše odpovědi se ke Googlu dostanou, až když formulář odešlete. Přihlášení nepotřebujete a váš účet Google není součástí odpovědí, které dostáváme.',
+        'Stránka pro dobrovolnou pomoc na adrese nidhi.today/volunteers/ je součástí tohoto webu. Jako ostatní stránky webu odesílá událost zobrazení a opuštění stránky. Její tlačítko otevírá formulář Google, který spravuje náš účet Google Workspace; pokud přijmete cookie lištu, kliknutí na toto tlačítko se zaznamená podle jeho štítku volunteers-form. Vaše odpovědi se ke Googlu dostanou, až když formulář odešlete. Přihlášení nepotřebujete a váš účet Google není součástí odpovědí, které dostáváme.',
       answers:
         'Vaše e-mailová adresa a to, co nám sdělíte: jméno pro uvedení na webu, které jazyky, zda máte finanční vzdělání nebo praxi (a poznámku k tomu, pokud ji přidáte), jak chcete pomoci, zda chcete uvedení na webu, a vaši úroveň v jednotlivých jazycích.',
       consent:

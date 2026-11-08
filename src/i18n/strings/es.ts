@@ -615,7 +615,7 @@ export const es: Dict = {
         before: 'Eventos de visita y de salida de página, a través de ',
         link: 'PostHog Cloud EU',
         after:
-          '. Eso incluye la URL que visitaste, la URL desde la que llegaste, tu país aproximado (deducido de tu dirección IP, que PostHog descarta después) y tu navegador, sistema operativo y tamaño de ventana. Sin nombre, sin correo electrónico, sin cuenta. Un ID aleatorio une los eventos de la página en la que estás; salvo que digas que sí en el aviso de cookies, dura solo mientras estás en esa página y nunca se guarda en tu navegador, así que tus visitas no quedan enlazadas entre sí. Lo mismo vale para los eventos de las herramientas de abajo.',
+          '. Eso incluye la URL que visitaste, la URL desde la que llegaste, tu país aproximado (deducido de tu dirección IP, que PostHog descarta después) y tu navegador, sistema operativo y tamaño de ventana. Sin nombre, sin correo electrónico, sin cuenta. Un ID aleatorio une los eventos de la página en la que estás; salvo que digas que sí en el aviso de cookies, dura solo mientras estás en esa página y nunca se guarda en tu navegador, así que tus visitas no quedan enlazadas entre sí. Lo mismo vale para los eventos de las herramientas de abajo. Dos tipos de página no envían ninguno: los enlaces cortos que te llevan a otra página (el evento de visita lo envía la página a la que llevan) y una página interna para crear códigos QR, sin enlaces desde el sitio, que no carga ninguna analítica y crea los códigos en el propio dispositivo.',
       },
       freeTools: {
         before:
@@ -699,7 +699,7 @@ export const es: Dict = {
     },
     volunteers: {
       form:
-        'La página de voluntariado en nidhi.today/volunteers/ forma parte de este sitio. Como todas las páginas, envía un evento de visita y de salida de la página. Su botón abre un formulario de Google gestionado por nuestra cuenta de Google Workspace; si aceptas el aviso de cookies, el clic en ese botón se registra por su etiqueta, volunteers-form. Tus respuestas solo llegan a Google cuando envías el formulario. No necesitas iniciar sesión, y tu cuenta de Google no forma parte de las respuestas que recibimos.',
+        'La página de voluntariado en nidhi.today/volunteers/ forma parte de este sitio. Como las demás páginas del sitio, envía un evento de visita y de salida de la página. Su botón abre un formulario de Google gestionado por nuestra cuenta de Google Workspace; si aceptas el aviso de cookies, el clic en ese botón se registra por su etiqueta, volunteers-form. Tus respuestas solo llegan a Google cuando envías el formulario. No necesitas iniciar sesión, y tu cuenta de Google no forma parte de las respuestas que recibimos.',
       answers:
         'Tu dirección de correo electrónico y lo que decidas contarnos: el nombre para el crédito, qué idiomas, si tienes formación en finanzas (y una nota sobre ella, si la añades), cómo quieres ayudar, si quieres crédito en el sitio y tu nivel en cada idioma.',
       consent:

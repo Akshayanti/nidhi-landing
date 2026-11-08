@@ -172,6 +172,15 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 8, 2026',
+    iso: '2026-11-08',
+    material: false,
+    summary: 'A correction to this notice: it said every page sends a pageview and page-leave event, and two kinds of page send none. It now names them.',
+    details: [
+      'What changed: the "Pageview and page-leave events" item now says that the short links which forward you to another page send no events (the page they lead to sends the pageview, as before), and that neither does an unlisted internal page for making QR codes for print and events. That page loads no analytics, no cookie banner and no third-party script, stores nothing in the browser and keeps nothing in its address; it draws its codes on the device it is opened on. The volunteers paragraph now says "Like the other pages here" instead of "Like every page". Nothing collected, stored or sent by any other page changes.',
+    ],
+  },
+  {
     date: 'Nov 7, 2026',
     iso: '2026-11-07',
     material: true,

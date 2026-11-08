@@ -1,0 +1,563 @@
+---
+/**
+ * The owner's QR maker, at /studio/qr/: a tagged link to any page in any
+ * language, drawn as a QR code on the device, for a flier or a stand at an
+ * event, without a coding environment or a QR service.
+ *
+ * Deliberately outside the site's chrome (owner decisions, council-approved
+ * Nov 8, 2026):
+ * - No analytics at all: no Analytics, CookieConsent, Header or Footer, so
+ *   nothing typed here can reach PostHog and the owner's visits never count.
+ *   The privacy notice says an unlisted owner page loads no analytics.
+ * - Unlisted: noindex, left out of the sitemap (astro.config.mjs) and linked
+ *   from nowhere. Its address is not given in robots.txt, the privacy notice
+ *   or its changelog (they describe it only as an unlisted page for QR
+ *   codes), which would advertise it. No password: it can only make codes
+ *   for nidhi.today.
+ * - English only and outside the catalogs: an owner tool, not reader copy.
+ * - Nothing in the address and no browser storage: a reload starts fresh.
+ *
+ * The encoder (src/utils/qr/encode.ts) is a port of scripts/qr_svg.py and is
+ * tested byte for byte against it. Every code is made at level H with the
+ * nidhi icon in a cleared centre square (src/utils/qr/logo.ts); the campaign
+ * starts empty and needs 3 characters or more (owner, Nov 8, 2026).
+ */
+import '../../styles/global.css';
+import { LOCALES, LOCALE_META, localePrefix } from '../../i18n';
+import { DEFAULT_CONTENT, DEFAULT_MEDIUM, DEFAULT_SOURCE, DESTINATIONS, MIN_CAMPAIGN_LENGTH } from '../../utils/qr/destinations.ts';
+import { isMonteCarloReleased } from '../../utils/monte-carlo/release.ts';
+import { isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
+
+const released = {
+  monteCarlo: await isMonteCarloReleased(),
+  investOrPayOff: await isInvestOrPayOffReleased(),
+};
+const destinations = DESTINATIONS.filter((d) => !d.gate || released[d.gate]);
+const languages = LOCALES.map((locale) => ({
+  locale,
+  prefix: localePrefix(locale).replace(/^\//, ''),
+  label: LOCALE_META[locale].label,
+}));
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+    <title>QR maker</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="studio">
+    <main class="studio__main">
+      <header class="studio__head">
+        <h1>QR maker</h1>
+        <p class="studio__lede">
+          A tagged link to nidhi.today, drawn on this device. Nothing you type leaves it, and this page runs no analytics.
+        </p>
+      </header>
+
+      <form class="studio__form" id="qr-form" novalidate>
+        <div class="field">
+          <label for="qr-lang">Language</label>
+          <select id="qr-lang" name="lang">
+            {languages.map((l) => <option value={l.prefix} data-locale={l.locale}>{l.label}</option>)}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="qr-path">Page</label>
+          <select id="qr-path" name="path">
+            {destinations.map((d) => <option value={d.path}>{d.label}</option>)}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="qr-campaign">Campaign <span class="field__req">(required)</span></label>
+          <input id="qr-campaign" name="campaign" type="text" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" enterkeyhint="done" aria-describedby="qr-campaign-out" minlength={MIN_CAMPAIGN_LENGTH} required placeholder="e.g. pint-of-view" />
+          <p class="field__out" id="qr-campaign-out" data-for="campaign" aria-live="polite"></p>
+        </div>
+
+        <details class="studio__more">
+          <summary>Source, medium, content</summary>
+          <div class="field">
+            <label for="qr-source">Source</label>
+            <input id="qr-source" name="source" type="text" value={DEFAULT_SOURCE} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-source-out" />
+            <p class="field__out" id="qr-source-out" data-for="source"></p>
+          </div>
+          <div class="field">
+            <label for="qr-medium">Medium</label>
+            <input id="qr-medium" name="medium" type="text" value={DEFAULT_MEDIUM} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-medium-out" />
+            <p class="field__out" id="qr-medium-out" data-for="medium"></p>
+          </div>
+          <div class="field">
+            <label for="qr-content">Content</label>
+            <input id="qr-content" name="content" type="text" value={DEFAULT_CONTENT} maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" aria-describedby="qr-content-out" />
+            <p class="field__out" id="qr-content-out" data-for="content"></p>
+          </div>
+        </details>
+
+        <div class="studio__row">
+          <fieldset class="field">
+            <legend>Colour</legend>
+            <label class="choice"><input type="radio" name="dark" value="#000000" checked /> Black</label>
+            <label class="choice"><input type="radio" name="dark" value="#0A3D8F" /> Brand blue</label>
+          </fieldset>
+        </div>
+      </form>
+
+      <section class="studio__result" aria-labelledby="qr-result-h">
+        <h2 id="qr-result-h" class="visually-hidden">Result</h2>
+        <div class="studio__qr" id="qr-preview" role="img" aria-label="QR code preview">
+          <p class="studio__placeholder">Type a campaign of 3 characters or more to make the code.</p>
+        </div>
+        <p class="studio__meta" id="qr-meta"></p>
+        <p class="studio__url"><code id="qr-url"></code></p>
+        <div class="studio__actions">
+          <button type="button" class="btn btn--primary" id="qr-share" hidden disabled>Share PNG</button>
+          <button type="button" class="btn" id="qr-png" disabled>Download PNG</button>
+          <button type="button" class="btn" id="qr-svg" disabled>Download SVG</button>
+          <button type="button" class="btn" id="qr-copy" disabled>Copy link</button>
+          <button type="button" class="btn btn--quiet" id="qr-reset">Reset</button>
+        </div>
+        <p class="studio__status" id="qr-status" role="status" aria-live="polite"></p>
+        <p class="studio__tip">
+          SVG for print (it scales to any size). Keep the white border, and scan a test print before printing many.
+        </p>
+      </section>
+
+      <p class="studio__back"><a href="/">nidhi.today</a></p>
+    </main>
+
+    <script>
+      import { makeMatrix, versionOf } from '../../utils/qr/encode.ts';
+      import { toSvgWithLogo } from '../../utils/qr/logo.ts';
+      import { MIN_CAMPAIGN_LENGTH, buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
+      import { downloadBlob } from '../../utils/shared/exportFile.ts';
+
+      // Always the highest level, H (about 30% can be rebuilt): the logo in
+      // the centre uses part of it, the rest is left for smudges and glare.
+      const ECC = 'H';
+
+      const BORDER = 4; // the standard's minimum quiet zone, in modules
+      const PNG_TARGET = 1024;
+      // The PNG waits until typing pauses, so each keystroke does not
+      // rasterise and encode a 1,000-pixel image only to throw it away.
+      const PNG_DELAY_MS = 200;
+
+      const form = document.getElementById('qr-form') as HTMLFormElement;
+      const preview = document.getElementById('qr-preview') as HTMLDivElement;
+      const meta = document.getElementById('qr-meta') as HTMLParagraphElement;
+      const urlOut = document.getElementById('qr-url') as HTMLElement;
+      const status = document.getElementById('qr-status') as HTMLParagraphElement;
+      const shareBtn = document.getElementById('qr-share') as HTMLButtonElement;
+      const pngBtn = document.getElementById('qr-png') as HTMLButtonElement;
+      const svgBtn = document.getElementById('qr-svg') as HTMLButtonElement;
+      const copyBtn = document.getElementById('qr-copy') as HTMLButtonElement;
+      const resetBtn = document.getElementById('qr-reset') as HTMLButtonElement;
+      const placeholder = preview.innerHTML;
+
+      interface Current {
+        url: string;
+        svg: string;
+        png: Blob | null;
+        pngFailed: boolean;
+        names: { svg: string; png: string };
+      }
+      let current: Current | null = null;
+      let generation = 0;
+
+      const value = (name: string) => (form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement).value;
+      const darkColour = () => (form.querySelector('input[name="dark"]:checked') as HTMLInputElement).value;
+      const localeOf = () => {
+        const select = form.elements.namedItem('lang') as HTMLSelectElement;
+        return select.selectedOptions[0]?.dataset.locale ?? 'en';
+      };
+
+      function say(message: string) {
+        status.textContent = message;
+      }
+
+      // Draw the SVG (code and logo) onto a canvas at a whole number of pixels
+      // per module, so every module edge lands on a pixel and the PNG stays
+      // crisp. The image comes from a same-origin blob, so the canvas stays
+      // exportable. The SVG is given its pixel size first: one with only a
+      // viewBox has no natural size, which some browsers refuse to draw or
+      // rasterise small and stretch.
+      async function pngFrom(svg: string, modules: number): Promise<Blob | null> {
+        const full = modules + 2 * BORDER;
+        const px = full * Math.ceil(PNG_TARGET / full);
+        const sized = svg.replace('<svg ', `<svg width="${px}" height="${px}" `);
+        const href = URL.createObjectURL(new Blob([sized], { type: 'image/svg+xml' }));
+        try {
+          const img = new Image();
+          img.src = href;
+          await img.decode();
+          const canvas = document.createElement('canvas');
+          canvas.width = canvas.height = px;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return null;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, px, px);
+          ctx.drawImage(img, 0, 0, px, px);
+          return await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+        } catch {
+          return null;
+        } finally {
+          URL.revokeObjectURL(href);
+        }
+      }
+
+      function setEnabled(on: boolean) {
+        for (const b of [pngBtn, svgBtn, copyBtn]) b.disabled = !on;
+        shareBtn.disabled = !(on && current?.png);
+      }
+
+      function showNormalised() {
+        for (const out of form.querySelectorAll<HTMLElement>('.field__out')) {
+          const name = out.dataset.for as string;
+          const raw = value(name);
+          const clean = normaliseUtm(raw);
+          if (name === 'campaign' && !raw.trim()) out.textContent = `Required: the event or campaign name, ${MIN_CAMPAIGN_LENGTH} characters or more.`;
+          else if (name === 'campaign' && !clean) out.textContent = 'Use letters a to z, digits, hyphens or underscores.';
+          else if (name === 'campaign' && clean.length < MIN_CAMPAIGN_LENGTH) out.textContent = `At least ${MIN_CAMPAIGN_LENGTH} characters (now: ${clean}).`;
+          else if (clean && clean !== raw) out.textContent = `Sent as: ${clean}`;
+          else if (!clean && name !== 'campaign') out.textContent = raw ? 'Left out' : 'Left out (empty)';
+          else out.textContent = '';
+        }
+      }
+
+      async function update() {
+        const mine = ++generation;
+        showNormalised();
+        const url = buildLink({
+          prefix: value('lang'),
+          path: value('path'),
+          source: value('source'),
+          medium: value('medium'),
+          campaign: value('campaign'),
+          content: value('content'),
+        });
+        if (!url) return clear('');
+        const dark = darkColour();
+        let matrix: boolean[][];
+        try {
+          matrix = makeMatrix(url, ECC);
+        } catch {
+          return clear('That link is too long for a QR code.');
+        }
+        const svg = toSvgWithLogo(matrix, BORDER, dark);
+        const campaign = value('campaign');
+        const locale = localeOf();
+        current = {
+          url,
+          svg,
+          png: null,
+          pngFailed: false,
+          names: { svg: fileName(campaign, locale, 'svg'), png: fileName(campaign, locale, 'png') },
+        };
+        preview.innerHTML = svg;
+        preview.setAttribute('aria-label', `QR code for ${url}`);
+        meta.textContent = `Version ${versionOf(matrix)}, ${matrix.length} by ${matrix.length} modules, level ${ECC}, with logo`;
+        urlOut.textContent = url;
+        say('');
+        setEnabled(true);
+        // Made ahead, so a tap on Share can call the share sheet at once:
+        // browsers only allow it straight from the tap.
+        await new Promise((resolve) => setTimeout(resolve, PNG_DELAY_MS));
+        if (mine !== generation || !current) return;
+        const png = await pngFrom(svg, matrix.length);
+        if (mine !== generation || !current) return;
+        current.png = png;
+        current.pngFailed = !png;
+        if (!png) say('This browser could not make the PNG. Download the SVG instead.');
+        shareBtn.hidden = !(png && canShareFile(png, current.names.png));
+        setEnabled(true);
+      }
+
+      // No code: the placeholder, no link, nothing to save.
+      function clear(message: string) {
+        current = null;
+        preview.innerHTML = placeholder;
+        preview.setAttribute('aria-label', 'QR code preview');
+        meta.textContent = '';
+        urlOut.textContent = '';
+        say(message);
+        setEnabled(false);
+      }
+
+      function canShareFile(png: Blob, name: string): boolean {
+        if (typeof navigator.canShare !== 'function') return false;
+        try {
+          return navigator.canShare({ files: [new File([png], name, { type: 'image/png' })] });
+        } catch {
+          return false;
+        }
+      }
+
+      // Text fields, the select and the radios all fire `input`; listening to
+      // `change` too would redraw the same code again on every blur.
+      form.addEventListener('input', () => void update());
+      form.addEventListener('submit', (e) => e.preventDefault());
+
+      svgBtn.addEventListener('click', () => {
+        if (!current) return;
+        downloadBlob(new Blob([current.svg], { type: 'image/svg+xml' }), current.names.svg);
+        say(`Saved ${current.names.svg}`);
+      });
+      pngBtn.addEventListener('click', () => {
+        if (current?.pngFailed) return say('This browser could not make the PNG. Download the SVG instead.');
+        if (!current?.png) return say('The PNG is still being made; try again in a moment.');
+        downloadBlob(current.png, current.names.png);
+        say(`Saved ${current.names.png}`);
+      });
+      shareBtn.addEventListener('click', () => {
+        if (!current?.png) return;
+        const file = new File([current.png], current.names.png, { type: 'image/png' });
+        navigator.share({ files: [file] }).then(
+          () => say('Shared.'),
+          (err: Error) => {
+            if (err?.name !== 'AbortError') say('Sharing failed. Download the PNG instead.');
+          },
+        );
+      });
+      copyBtn.addEventListener('click', async () => {
+        if (!current) return;
+        try {
+          await navigator.clipboard.writeText(current.url);
+          say('Link copied.');
+        } catch {
+          say('Copying is blocked here. Press and hold the link above to copy it.');
+        }
+      });
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        say('');
+        void update();
+      });
+
+      void update();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --studio-bg: var(--neutral-off-white);
+    --studio-surface: var(--neutral-white);
+    --studio-text: var(--neutral-900);
+    --studio-muted: var(--neutral-600);
+    --studio-border: var(--neutral-control-edge);
+    --studio-accent: var(--palette-blue);
+    --studio-on-accent: var(--neutral-white);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --studio-bg: var(--neutral-page-bg-dark);
+      --studio-surface: var(--neutral-surface-dark);
+      --studio-text: var(--neutral-off-white);
+      --studio-muted: var(--neutral-500);
+      --studio-border: var(--neutral-500);
+      --studio-accent: var(--palette-blue-dark);
+      --studio-on-accent: var(--neutral-page-bg-dark);
+    }
+  }
+  :root[data-theme='dark'] {
+    --studio-bg: var(--neutral-page-bg-dark);
+    --studio-surface: var(--neutral-surface-dark);
+    --studio-text: var(--neutral-off-white);
+    --studio-muted: var(--neutral-500);
+    --studio-border: var(--neutral-500);
+    --studio-accent: var(--palette-blue-dark);
+    --studio-on-accent: var(--neutral-page-bg-dark);
+  }
+
+  body.studio {
+    margin: 0;
+    background: var(--studio-bg);
+    color: var(--studio-text);
+    font-family: var(--font-body);
+  }
+  .studio__main {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.25rem 1rem 3rem;
+  }
+  .studio__head h1 {
+    color: var(--studio-text);
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin: 0 0 0.25rem;
+  }
+  .studio__lede,
+  .studio__tip,
+  .studio__meta {
+    color: var(--studio-muted);
+    font-size: 0.95rem;
+    margin: 0.25rem 0 1rem;
+  }
+  .studio__form {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.3rem;
+    min-width: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .field label,
+  .field legend {
+    font-weight: 600;
+    padding: 0;
+  }
+  .field__req {
+    font-weight: 400;
+    color: var(--studio-muted);
+  }
+  .field input[type='text'],
+  .field select {
+    font: inherit;
+    font-size: 1rem; /* 16px or more, so phones don't zoom in on focus */
+    min-height: 2.75rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+    background: var(--studio-surface);
+    color: var(--studio-text);
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .field__out {
+    margin: 0;
+    min-height: 1.2em;
+    font-size: 0.9rem;
+    color: var(--studio-muted);
+  }
+  .studio__more {
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    background: var(--studio-surface);
+  }
+  .studio__more summary {
+    cursor: pointer;
+    min-height: 2.25rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+  }
+  .studio__more[open] {
+    display: grid;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .studio__row {
+    display: grid;
+    gap: 1rem;
+  }
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    font-weight: 400 !important;
+  }
+  .choice input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0;
+  }
+  .studio__result {
+    margin-top: 1.5rem;
+  }
+  /* The code always sits on white with its quiet zone, in dark mode too. */
+  .studio__qr {
+    background: #ffffff;
+    border-radius: 8px;
+    aspect-ratio: 1;
+    width: min(100%, 22rem);
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--studio-border);
+  }
+  .studio__qr svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 8px;
+  }
+  .studio__placeholder {
+    color: #5a5a5a;
+    padding: 1rem;
+    text-align: center;
+  }
+  .studio__meta {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .studio__url {
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+  }
+  .studio__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .btn {
+    font: inherit;
+    font-weight: 600;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--studio-accent);
+    background: var(--studio-surface);
+    color: var(--studio-text);
+    cursor: pointer;
+  }
+  .btn--primary {
+    grid-column: 1 / -1;
+    background: var(--studio-accent);
+    color: var(--studio-on-accent);
+  }
+  .btn--quiet {
+    border-color: var(--studio-border);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn[hidden] {
+    display: none;
+  }
+  .btn:focus-visible,
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .studio__more summary:focus-visible {
+    outline: 3px solid var(--studio-accent);
+    outline-offset: 2px;
+  }
+  .studio__status {
+    min-height: 1.4em;
+    margin: 0.75rem 0 0;
+  }
+  .studio__back a {
+    color: var(--studio-accent);
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
