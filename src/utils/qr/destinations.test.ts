@@ -42,10 +42,12 @@ test('buildLink refuses an empty campaign, so no stale code is exported', () => 
   assert.equal(buildLink({ prefix: '', path: '/', source: 'event', medium: 'print', campaign: ' !! ', content: 'qr' }), null);
 });
 
-test('buildLink refuses the placeholder campaign until it is replaced', () => {
+test('buildLink needs a campaign of at least three characters', () => {
   const base = { prefix: '', path: '/', source: 'event', medium: 'social_in_person', content: 'qr' };
-  assert.equal(buildLink({ ...base, campaign: 'tba' }), null);
-  assert.equal(buildLink({ ...base, campaign: ' TBA ' }), null);
+  assert.equal(buildLink({ ...base, campaign: '' }), null);
+  assert.equal(buildLink({ ...base, campaign: 'ab' }), null);
+  assert.equal(buildLink({ ...base, campaign: ' a b ' }), 'https://nidhi.today/?utm_source=event&utm_medium=social_in_person&utm_campaign=a-b&utm_content=qr');
+  assert.equal(buildLink({ ...base, campaign: 'a!b' }), null);
   assert.equal(
     buildLink({ ...base, campaign: 'pint-of-view' }),
     'https://nidhi.today/?utm_source=event&utm_medium=social_in_person&utm_campaign=pint-of-view&utm_content=qr',

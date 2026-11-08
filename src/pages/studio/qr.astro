@@ -16,11 +16,13 @@
  * - Nothing in the address and no browser storage: a reload starts fresh.
  *
  * The encoder (src/utils/qr/encode.ts) is a port of scripts/qr_svg.py and is
- * tested byte for byte against it.
+ * tested byte for byte against it. Every code is made at level H with the
+ * nidhi icon in a cleared centre square (src/utils/qr/logo.ts); the campaign
+ * starts empty and needs 3 characters or more (owner, Nov 8, 2026).
  */
 import '../../styles/global.css';
 import { LOCALES, LOCALE_META, localePrefix } from '../../i18n';
-import { DEFAULT_CONTENT, DEFAULT_MEDIUM, DEFAULT_SOURCE, DESTINATIONS, PLACEHOLDER_CAMPAIGN } from '../../utils/qr/destinations.ts';
+import { DEFAULT_CONTENT, DEFAULT_MEDIUM, DEFAULT_SOURCE, DESTINATIONS, MIN_CAMPAIGN_LENGTH } from '../../utils/qr/destinations.ts';
 import { isMonteCarloReleased } from '../../utils/monte-carlo/release.ts';
 import { isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
 
@@ -73,7 +75,7 @@ const languages = LOCALES.map((locale) => ({
 
         <div class="field">
           <label for="qr-campaign">Campaign <span class="field__req">(required)</span></label>
-          <input id="qr-campaign" name="campaign" type="text" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" enterkeyhint="done" aria-describedby="qr-campaign-out" value={PLACEHOLDER_CAMPAIGN} />
+          <input id="qr-campaign" name="campaign" type="text" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" enterkeyhint="done" aria-describedby="qr-campaign-out" minlength={MIN_CAMPAIGN_LENGTH} required placeholder="e.g. pint-of-view" />
           <p class="field__out" id="qr-campaign-out" data-for="campaign" aria-live="polite"></p>
         </div>
 
@@ -97,15 +99,6 @@ const languages = LOCALES.map((locale) => ({
         </details>
 
         <div class="studio__row">
-          <div class="field">
-            <label for="qr-ecc">Error correction</label>
-            <select id="qr-ecc" name="ecc">
-              <option value="L">L (7%), simplest</option>
-              <option value="M" selected>M (15%), posters</option>
-              <option value="Q">Q (25%)</option>
-              <option value="H">H (30%), rough print</option>
-            </select>
-          </div>
           <fieldset class="field">
             <legend>Colour</legend>
             <label class="choice"><input type="radio" name="dark" value="#000000" checked /> Black</label>
@@ -117,7 +110,7 @@ const languages = LOCALES.map((locale) => ({
       <section class="studio__result" aria-labelledby="qr-result-h">
         <h2 id="qr-result-h" class="visually-hidden">Result</h2>
         <div class="studio__qr" id="qr-preview" role="img" aria-label="QR code preview">
-          <p class="studio__placeholder">Replace “tba” with the campaign to make the code.</p>
+          <p class="studio__placeholder">Type a campaign of 3 characters or more to make the code.</p>
         </div>
         <p class="studio__meta" id="qr-meta"></p>
         <p class="studio__url"><code id="qr-url"></code></p>
@@ -138,8 +131,13 @@ const languages = LOCALES.map((locale) => ({
     </main>
 
     <script>
-      import { makeMatrix, toSvg, versionOf, type EccLevel } from '../../utils/qr/encode.ts';
-      import { PLACEHOLDER_CAMPAIGN, buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
+      import { makeMatrix, versionOf } from '../../utils/qr/encode.ts';
+      import { toSvgWithLogo } from '../../utils/qr/logo.ts';
+      import { MIN_CAMPAIGN_LENGTH, buildLink, fileName, normaliseUtm } from '../../utils/qr/destinations.ts';
+
+      // Always the highest level, H (about 30% can be rebuilt): the logo in
+      // the centre uses part of it, the rest is left for smudges and glare.
+      const ECC = 'H';
 
       const BORDER = 4; // the standard's minimum quiet zone, in modules
       const PNG_TARGET = 1024;
@@ -176,24 +174,31 @@ const languages = LOCALES.map((locale) => ({
         status.textContent = message;
       }
 
-      // Draw the matrix onto a canvas at a whole number of pixels per module,
-      // so every module edge lands on a pixel and the PNG stays crisp.
-      function pngFrom(matrix: boolean[][], dark: string): Promise<Blob | null> {
-        const full = matrix.length + 2 * BORDER;
-        const scale = Math.ceil(PNG_TARGET / full);
-        const canvas = document.createElement('canvas');
-        canvas.width = canvas.height = full * scale;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return Promise.resolve(null);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = dark;
-        matrix.forEach((row, y) => {
-          row.forEach((cell, x) => {
-            if (cell) ctx.fillRect((x + BORDER) * scale, (y + BORDER) * scale, scale, scale);
-          });
-        });
-        return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      // Draw the SVG (code and logo) onto a canvas at a whole number of pixels
+      // per module, so every module edge lands on a pixel and the PNG stays
+      // crisp. The image comes from a same-origin blob, so the canvas stays
+      // exportable.
+      async function pngFrom(svg: string, modules: number): Promise<Blob | null> {
+        const full = modules + 2 * BORDER;
+        const px = full * Math.ceil(PNG_TARGET / full);
+        const href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+        try {
+          const img = new Image();
+          img.src = href;
+          await img.decode();
+          const canvas = document.createElement('canvas');
+          canvas.width = canvas.height = px;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return null;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, px, px);
+          ctx.drawImage(img, 0, 0, px, px);
+          return await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+        } catch {
+          return null;
+        } finally {
+          URL.revokeObjectURL(href);
+        }
       }
 
       function setEnabled(on: boolean) {
@@ -206,8 +211,9 @@ const languages = LOCALES.map((locale) => ({
           const name = out.dataset.for as string;
           const raw = value(name);
           const clean = normaliseUtm(raw);
-          if (name === 'campaign' && clean === PLACEHOLDER_CAMPAIGN) out.textContent = `Replace “${PLACEHOLDER_CAMPAIGN}” with the event or campaign name.`;
-          else if (name === 'campaign' && !clean) out.textContent = raw.trim() ? 'Use letters a to z, digits, hyphens or underscores.' : 'Required: the event or campaign name.';
+          if (name === 'campaign' && !raw.trim()) out.textContent = `Required: the event or campaign name, ${MIN_CAMPAIGN_LENGTH} characters or more.`;
+          else if (name === 'campaign' && !clean) out.textContent = 'Use letters a to z, digits, hyphens or underscores.';
+          else if (name === 'campaign' && clean.length < MIN_CAMPAIGN_LENGTH) out.textContent = `At least ${MIN_CAMPAIGN_LENGTH} characters (now: ${clean}).`;
           else if (clean && clean !== raw) out.textContent = `Sent as: ${clean}`;
           else if (!clean && name !== 'campaign') out.textContent = raw ? 'Left out' : 'Left out (empty)';
           else out.textContent = '';
@@ -233,18 +239,17 @@ const languages = LOCALES.map((locale) => ({
           setEnabled(false);
           return;
         }
-        const ecc = value('ecc') as EccLevel;
         const dark = darkColour();
         let matrix: boolean[][];
         try {
-          matrix = makeMatrix(url, ecc);
+          matrix = makeMatrix(url, ECC);
         } catch {
           current = null;
           setEnabled(false);
           say('That link is too long for a QR code.');
           return;
         }
-        const svg = toSvg(matrix, BORDER, dark, '#ffffff');
+        const svg = toSvgWithLogo(matrix, BORDER, dark);
         const campaign = value('campaign');
         const locale = localeOf();
         current = {
@@ -255,13 +260,13 @@ const languages = LOCALES.map((locale) => ({
         };
         preview.innerHTML = svg;
         preview.setAttribute('aria-label', `QR code for ${url}`);
-        meta.textContent = `Version ${versionOf(matrix)}, ${matrix.length} by ${matrix.length} modules, level ${ecc}`;
+        meta.textContent = `Version ${versionOf(matrix)}, ${matrix.length} by ${matrix.length} modules, level ${ECC}, with logo`;
         urlOut.textContent = url;
         say('');
         setEnabled(true);
         // Made ahead, so a tap on Share can call the share sheet at once:
         // browsers only allow it straight from the tap.
-        const png = await pngFrom(matrix, dark);
+        const png = await pngFrom(svg, matrix.length);
         if (mine !== generation || !current) return;
         current.png = png;
         shareBtn.hidden = !(png && canShareFile(png, current.names.png));
@@ -447,13 +452,7 @@ const languages = LOCALES.map((locale) => ({
   }
   .studio__row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-  }
-  @media (max-width: 26rem) {
-    .studio__row {
-      grid-template-columns: 1fr;
-    }
   }
   .choice {
     display: flex;
