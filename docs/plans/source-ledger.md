@@ -157,6 +157,7 @@ Started Oct 25, 2026 with the Optimizing global pass (`action-plan-nov-2026.md`,
 
 | Lesson | Jurisdiction | Fact | Why not |
 |---|---|---|---|
+| 05 get out of debt | UK, Germany, US, India | Debt help and insolvency routes (debt relief orders, consumer insolvency, bankruptcy chapters) | Owner, Nov 8, 2026: Discovery stays light; more country detail would overwhelm a beginner |
 | inc-3 gig work | World | ILO: over 61% of the world's employed work informally (2018), 86% in Africa, 25% in Europe and Central Asia | The lesson already cites the ILO report and says informal work covers most of the world's workers; adding it would repeat |
 | 49 invest or pay off debt | Gulf, Islamic finance | Interest-free home finance and Islamic banking | Covered by the companion inc-4, which publishes after 50; Rule 2 forbids a forward link from 49 |
 | 50b how much can you borrow | Brazil | 30% instalment-to-income in home finance | Bank practice, not a rule: the Banco Central (via Portas) says each bank sets its own percentage, usually not above 30%; Serasa on Caixa. Not profiled in the lesson (decision: Brazil only if binding) |
