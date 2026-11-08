@@ -14,7 +14,8 @@ takeaways:
   - "Why matching assets to obligations beats trading currencies"
 order: 29
 pubDate: 2026-06-22
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
+localRules: [tax]
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -31,11 +32,11 @@ faq:
   - question: "Which three currencies should I focus on?"
     answer: "Rather than tracking every currency you touch, focus on three. Your income currency is the one you earn in, usually your main paycheck, say EUR. Your expense currency is the one you actually spend in day to day, which may differ if you live somewhere your employer does not pay you in the local money. Your planning currency is the one your major future goals are denominated in: retirement in India in INR, a property in the US in USD, or family support abroad. The key question is how well these three match. If all three are EUR, you have no real exposure. If they diverge, one or more dimensions of your life is exchange-rate sensitive."
   - question: "What is currency concentration and why is it risky?"
-    answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, invest in a euro-denominated global fund, and contribute to a euro pension: you are 100% euro-concentrated. That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The usual way to reduce that risk is to roughly match the currency mix of assets to the currency mix of future obligations."
+    answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, hold euro bonds, and expect a pension paid in euros: you are heavily euro-concentrated. (Shares change the picture: even euro-area companies earn part of their money abroad, and a global fund priced in euros, unless it is hedged, still holds dollar, yen and other currencies underneath.) That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The usual way to reduce that risk is to roughly match the currency mix of assets to the currency mix of future obligations."
   - question: "When does diversifying into multiple currencies make sense?"
-    answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependents in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, holding 80% of your portfolio in euros is fine. Chasing currency diversification through frequent trading is almost always worse than staying simple."
+    answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependents in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, having about 80% of the portfolio's underlying currency exposure in euros is consistent with that default. Chasing currency diversification through frequent trading usually adds cost without improving on staying simple."
   - question: "How often should I review my currency exposure?"
-    answer: "Annually, not daily. Currency markets are pure noise over days and months, so making decisions off short-term moves is a mistake. Real deviations from fair value can persist for years, which is where multi-currency people occasionally feel genuine pain or gain, and over decades currencies of higher-inflation countries tend to weaken against lower-inflation ones. The practical approach is a once-a-year audit alongside other rebalancing checks: map your currency flows across income, expenses, family support, savings, investments, and planned retirement spending, then check the big mismatches. You do not need to trade currencies. You need to notice mismatches and decide whether each is fine, tolerable, or worth reducing."
+    answer: "Annually, not daily. Currency moves over days and months are mostly noise for planning, so many people avoid decisions based on them. Real deviations from fair value can persist for years, which is where multi-currency people occasionally feel genuine pain or gain, and over decades currencies of higher-inflation countries tend to weaken against lower-inflation ones. The practical approach is a once-a-year audit alongside other rebalancing checks: map your currency flows across income, expenses, family support, savings, investments, and planned retirement spending, then check the big mismatches. You do not need to trade currencies. You need to notice mismatches and decide whether each is fine, tolerable, or worth reducing."
 referentialReading:
   - title: "Foreign Exchange Risk"
     author: "Wikipedia"
@@ -49,7 +50,7 @@ referentialReading:
 
 You live in Berlin. You earn in euros. But your parents are in Bangalore and you send money home in rupees. Your company pays a bonus in dollars because the parent is in San Francisco. The apartment you might buy someday is in Lisbon. The pension plan from your first job is in pounds, because you started your career in London.
 
-On paper you have a single net worth. In reality, you have five currencies quietly pulling in different directions. Some years they all help. Some years one of them drops 15% and half your "pound pension" disappears in euro terms without anyone changing a single line on a balance sheet.
+On paper you have a single net worth. In reality, you have five currencies quietly pulling in different directions. Some years they all help. Some years one of them drops 15% and your "pound pension" loses 15% of its value in euro terms without anyone changing a single line on a balance sheet.
 
 This is the normal shape of expat, diaspora, and cross-border lives. Most general personal finance advice skips it. This post is about handling it without turning into a currency trader.
 
@@ -110,11 +111,11 @@ Most expat or diaspora readers are in the second case. Most international profes
 
 The [diversification post](/blog/diversification/) covered six dimensions of spreading risk. Currency was one of them, and it's one of the easiest to miss.
 
-Consider a typical situation: you earn in euros, spend in euros, save in a euro-denominated bank account, invest in a euro-denominated global stock index fund, and contribute to a euro-denominated retirement scheme. Your life is 100% euro-concentrated.
+Consider a typical situation: you earn in euros, spend in euros, save in a euro-denominated bank account, hold euro bonds, and expect a pension paid in euros. Your life is heavily euro-concentrated. (Shares change the picture: even euro-area companies earn part of their money abroad, and a global fund priced in euros, unless it is hedged back to euros, holds mostly other currencies underneath.)
 
 Is that wrong? Not necessarily. If all your future expenses are in euros, that's actually the right alignment. Your liabilities and assets are in the same currency.
 
-But if you plan to retire in a different country, or expect substantial ongoing support to family in a different currency, or might relocate, then 100% euro concentration is hidden risk. A weaker euro in your retirement years would quietly shrink your effective wealth in the currency that actually matters to you.
+But if you plan to retire in a different country, or expect substantial ongoing support to family in a different currency, or might relocate, then heavy euro concentration is hidden risk. A weaker euro in your retirement years would quietly shrink your effective wealth in the currency that actually matters to you.
 
 The framework to reason about this:
 
@@ -130,7 +131,7 @@ Exchange rates move for many reasons: interest rate differences, inflation diffe
 
 Three time horizons to keep separate:
 
-- **Short-term (days/months).** Pure noise for planning purposes. Don't make decisions off of it
+- **Short-term (days/months).** Mostly noise for planning purposes
 - **Medium-term (years).** Real deviations from fair value can persist for years. This is where multi-currency people occasionally feel real pain or gain
 - **Long-term (decades).** Currencies in stable countries tend to move in more predictable bands relative to each other, but individual decades can still diverge
 
@@ -151,9 +152,11 @@ There is a real trade-off here, and it matters.
 
 - Your life really is in one currency zone and will be
 - Cross-border complexity has real costs: transfer fees, spreads, paperwork, tax complications
-- Chasing "currency diversification" by trading often is almost always worse than staying simple
+- Chasing "currency diversification" by trading often usually adds cost without improving on staying simple
 
-The common default is to **roughly match the asset currency mix to the obligation currency mix**, with a bias toward simplicity. If 80% of future spending will be in euros, having about 80% of a portfolio euro-denominated is consistent with that principle. How far to take it depends on the size of the gap, the costs of moving money, and how volatile the currencies involved are.
+The common default is to **roughly match the asset currency mix to the obligation currency mix**, with a bias toward simplicity. If 80% of future spending will be in euros, having about 80% of a portfolio's underlying currency exposure in euros is consistent with that principle; what counts is what a fund holds, not the currency it is priced in. How far to take it depends on the size of the gap, the costs of moving money, and how volatile the currencies involved are.
+
+Rules can also limit how far you can match. Some countries cap how much residents can move abroad each year: China lets individuals buy the equivalent of $50,000 a year in foreign currency for permitted purposes such as travel and study, not for buying property or securities abroad, and India's Liberalised Remittance Scheme allows up to $250,000 a year, with tax collected at source on larger remittances. Others tax currency gains or require foreign accounts to be reported. Checking these before building a multi-currency plan avoids surprises.
 
 ## A practical framework
 

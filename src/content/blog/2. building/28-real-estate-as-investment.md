@@ -13,7 +13,7 @@ takeaways:
   - "Why the fair comparison is buying vs renting and investing"
 order: 28
 pubDate: 2026-06-19
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [property, tax]
 level: "building"
 primaryPersona: "eva"
@@ -28,7 +28,7 @@ faq:
   - question: "How does leverage change real estate risk?"
     answer: "Most buyers put down 10 to 25% and borrow the rest, and that leverage amplifies returns in both directions. On a €300,000 property bought with a €60,000 deposit, a 10% rise in value lifts your equity by €30,000, a 50% gain on your money. But a 10% fall wipes out half your equity, and a 20% fall erases it entirely, leaving you underwater if it falls further. The asset moves a normal amount; the equity moves much more. This is why leverage has made many people wealthy and ruined many others, and why the mortgage interest rate matters enormously to whether the math works."
   - question: "Is renting really throwing money away?"
-    answer: "No, this is the most damaging real estate myth. Rent pays for shelter, flexibility, and the transfer of property-specific risk to your landlord. Buying does not eliminate those costs, it moves them to your side. Equally, a primary home is not a pure investment: it generates no cash income, costs money every month, and appreciates only at modest real rates after maintenance, taxes, insurance, and transaction costs. The honest comparison is never simply rent versus buy. It is buying versus renting and investing the difference. Where prices are very high relative to rents, renting plus investing often wins; where rents are high relative to prices, owning often wins."
+    answer: "No. This is a common real estate myth. Rent pays for shelter, flexibility, and the transfer of property-specific risk to your landlord. Buying does not eliminate those costs, it moves them to your side. Equally, a primary home is not a pure investment: it generates no cash income, costs money every month, and appreciates only at modest real rates after maintenance, taxes, insurance, and transaction costs. The honest comparison is never simply rent versus buy. It is buying versus renting and investing the difference. Where prices are very high relative to rents, renting plus investing often wins; where rents are high relative to prices, owning often wins."
   - question: "Why does illiquidity matter for real estate?"
     answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is why owners commonly keep a larger cash buffer than a pure-paper portfolio would need, and why it helps to make that trade deliberately."
 referentialReading:
@@ -78,7 +78,7 @@ Typical ongoing costs of ownership, as an annual percentage of property value:
 
 For a typical residential property, total ongoing costs commonly consume 2-4% of property value per year, and transaction costs alone eat 5-10% when you buy and eventually sell. A property that "appreciated 30% over 10 years" may have delivered much less to the owner once those costs are netted out.
 
-> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 2-4% in the US, 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
+> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 8-10% in the US (mostly agent commissions of around 5 to 6% paid on sale, plus closing costs), 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
 
 This isn't an argument against real estate. It's an argument against treating gross appreciation as your return.
 
@@ -111,14 +111,14 @@ This has practical consequences:
 
 - You cannot easily rebalance from real estate to something else
 - A forced sale (job loss, divorce, relocation) can crystallise a bad price
-- Your emergency fund needs to be larger, because the property cannot fund a short-term crisis
+- Owners commonly keep a larger emergency fund, because the property cannot fund a short-term crisis
 - Real estate locks your money in place at a specific geography
 
 Most people also end up heavily concentrated in one property. If it's your home, the concentration is total: the entire investment is one asset, in one city, in one currency, exposed to one local market. This is the opposite of the [diversification](/blog/diversification/) principle covered earlier in this series, which is fine as long as you know that's the trade you're making.
 
 ## "Renting is throwing money away": why this is wrong
 
-The most damaging myth about real estate is that rent is a pure loss and ownership is a pure investment. Both halves are wrong.
+A common myth about real estate is that rent is a pure loss and ownership is a pure investment. Both halves are wrong.
 
 **Rent is not thrown away.** You're paying for shelter, flexibility, and a transfer of property-specific risk (maintenance, market risk, interest-rate risk) to your landlord. Buying doesn't eliminate those costs; it just moves them to your side.
 
@@ -156,7 +156,7 @@ Factors that still make buying structurally attractive in specific situations:
 - Forced savings discipline (the principal portion of the mortgage payment is involuntary saving)
 - Stability and security for families with school-age children
 - Lifestyle value of actually owning the space you live in
-- Favourable tax treatment of primary residences in some jurisdictions (jurisdiction-specific)
+- Favourable tax treatment of a primary residence in some countries: in the UK and the US most or all of the gain on selling your main home is usually tax-free (the US within limits of $250,000, or $500,000 for couples), and in Germany a home can be sold free of tax if the owner lived in it throughout, or in the year of sale and the two years before, or held it for more than ten years
 
 Factors that often make renting structurally sensible:
 

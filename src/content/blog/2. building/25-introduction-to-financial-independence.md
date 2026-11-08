@@ -14,7 +14,7 @@ takeaways:
   - "Why savings rate is the main lever on your time to FI"
 order: 25
 pubDate: 2026-06-12
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [benefits, pensions]
 level: "building"
 primaryPersona: "eva"
@@ -32,7 +32,7 @@ faq:
   - question: "Why does savings rate matter more than income for reaching financial independence?"
     answer: "Savings rate is income minus expenses divided by income, and it controls two things at once: how much you contribute and how much you eventually need. High spending raises your FIRE target while leaving less to invest, so a low saver is squeezed from both sides. The classic table shows that two people on very different salaries but the same savings rate reach independence in roughly the same number of years. A 20% saver is about 37 years away; a 50% saver is about 17 years away, regardless of the underlying paycheck. Expenses, not salary, set the pace."
   - question: "What are the four common types of FIRE?"
-    answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Pick the flavor you can imagine sustaining for decades rather than the one that sounds most impressive."
+    answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Many people pick the flavor they can imagine sustaining for decades rather than the one that sounds most impressive."
   - question: "Is the 4% rule a guarantee that my money will last?"
     answer: "No. The 4% rule comes from the Trinity Study, which used US historical data over a 30-year horizon for a specific stock and bond mix. It found that portfolio survived 4% inflation-adjusted withdrawals in most tested scenarios, but it is a rule of thumb, not a promise. Longer retirements, lower-return environments, and different markets all weaken it. Readers in higher-inflation regions often start at 3 to 3.5%, lifting the target to roughly 28 to 33 times annual expenses. Treat 4% as a starting point for thinking, and remember that sequence-of-returns risk and drawdown strategy matter as much as the headline rate."
   - question: "What is the crossover point in financial independence?"
@@ -92,6 +92,8 @@ Two things should jump out of that table. First, the numbers are large but not u
 
 > **Important caveats on the 4% rule.** It was calibrated on US historical data, over a 30-year horizon, for a specific stock/bond mix. It does not guarantee success, particularly for longer retirements, lower-return environments, or different markets. A more conservative starting point for readers in higher-inflation or lower-return markets (parts of Europe, India, Japan, most emerging economies) is typically 3 to 3.5%, which translates to a target of roughly 28 to 33 times annual expenses rather than 25. Treat the 4% figure as a starting point for thinking, not a final answer. More realistic drawdown planning is covered in the Mastery series.
 
+> **Public pensions change the number.** The 25× target assumes the portfolio pays for everything, forever. In many countries a state or mandatory workplace pension starts at a set age and covers part of your spending from then on, so the portfolio only has to cover the gap. The OECD's *Pensions at a Glance 2025* models the net replacement rate from mandatory schemes for someone on average earnings who works a full career from age 22 at about 63% of previous earnings on average, from under 35% in Ireland and Lithuania to 96% in the Netherlands. Someone stopping work before pension age needs enough to bridge the years until it starts, and less after; how much depends on your country's rules and your contribution record.
+
 ## The four common flavors
 
 FIRE isn't a single target. People usually pick a flavor that matches their preferred lifestyle and timeline.
@@ -142,9 +144,9 @@ Vicki Robin's *Your Money or Your Life* popularized a related idea that's worth 
 
 Before the crossover, you need work income to survive. After the crossover, even if you still work, you're doing so by choice. The crossover is usually years before the full FIRE number, because you don't need to have reached "25× expenses" the moment investment income first matches expenses. You just need your portfolio to be on track to keep covering them.
 
-Tracking your crossover point alongside net worth is one of the most motivating things you can do early in the journey. It's the first concrete signal that work is shifting from obligation to choice.
+Many people find tracking the crossover point alongside net worth one of the most motivating parts of the early journey. It's the first concrete signal that work is shifting from obligation to choice.
 
-## The lever that actually matters: savings rate
+## The lever with the most pull: savings rate
 
 The most counter-intuitive insight in the FIRE literature is that under the classic assumptions (steady returns, spending that stays the same in retirement), your time to financial independence depends mostly on your savings rate, not your income.
 

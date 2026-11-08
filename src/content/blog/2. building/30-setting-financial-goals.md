@@ -14,7 +14,7 @@ takeaways:
   - "How to prioritise goals by math and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -26,7 +26,7 @@ faq:
   - question: "How do I convert a goal into a monthly contribution?"
     answer: "Translate the wish into a target amount and a date, then work out the monthly contribution at a realistic rate of return. For a 45,000 euro house deposit in five years at an assumed 5% annual return, you need roughly 662 euros a month, and more if the money sits mostly in cash. Stretch it to seven years and the figure drops to about 449 euros; ten years, about 290 euros; compress it to three years and it jumps to roughly 1,160 euros. This is the value of the translation: it replaces comforting vagueness with a price tag. Someone with 300 euros of monthly capacity now knows the five-year version is not feasible at their current pace, which is useful information, not failure."
   - question: "What are the three time-horizon buckets for goals?"
-    answer: "Short-term, zero to three years: the money must be there on a specific date, so market swings are unacceptable. Keep it in cash or savings-equivalent vehicles; returns are low, which is the price of certainty. Examples include a wedding or next year's holiday. Medium-term, three to seven years: long enough that pure cash loses ground to inflation, short enough that a market drop could hurt, so a blend of cash and conservative investments works, biased toward cash as the date nears. Long-term, seven-plus years: volatility averages out in historical data and inflation is the bigger enemy, so diversified, stock-heavy investments belong here. Examples include retirement and a child's university."
+    answer: "Short-term, zero to three years: the money must be there on a specific date, so market swings are unacceptable. It is usually kept in cash or savings-equivalent vehicles; returns are low, which is the price of certainty. Examples include a wedding or next year's holiday. Medium-term, three to seven years: long enough that pure cash loses ground to inflation, short enough that a market drop could hurt, so a blend of cash and conservative investments is common, biased toward cash as the date nears. Long-term, seven-plus years: volatility averages out in historical data and inflation is the bigger enemy, so diversified, stock-heavy investments are common here. Examples include retirement and a child's university."
   - question: "Why is delaying a long-term goal so expensive?"
     answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
@@ -71,7 +71,7 @@ The translation from wish to goal usually exposes something inconvenient: the wi
 Example: "I want to buy a house someday."
 
 - What kind of house, in what area? → A 2-bedroom flat in your city, currently ~€250,000 average
-- What deposit? → 15-20%, a common range in many markets (minimum deposits and loan-to-value limits are set by lenders, and in some countries by the financial regulator), so roughly €40,000-€50,000
+- What deposit? → 15-20%, a common range in many markets (minimum deposits are set by lenders and, in some countries, by the regulator: Ireland's central bank caps most first-time buyer mortgages at 90% of the price, India's RBI at 75 to 90% depending on the loan size, while the Netherlands allows up to 100%), so roughly €40,000-€50,000
 - When? → Let's say 5 years
 - So the goal: save/invest to have €45,000 in 5 years
 
@@ -110,7 +110,7 @@ Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), chi
 | Medium-term (3-7y) | Mix of savings + conservative investments | Some | Moderate |
 | Long-term (7+y) | Diversified investments | Higher | Higher |
 
-Mismatching bucket and container is one of the most common goal-setting errors. Long-term money in a savings account tends to erode with inflation. Short-term money in the stock market gambles the timeline.
+Mismatching bucket and container is a common goal-setting error. Long-term money in a savings account tends to erode with inflation. Short-term money in the stock market gambles the timeline.
 
 ## The cost of delaying
 

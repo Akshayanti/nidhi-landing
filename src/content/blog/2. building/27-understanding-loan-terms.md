@@ -14,7 +14,7 @@ takeaways:
   - "How prepayment and break-even maths change the total cost"
 order: 27
 pubDate: 2026-06-17
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -57,7 +57,7 @@ Two lenders offer you a mortgage. Bank A advertises 3.2%. Bank B advertises 3.1%
 
 Except Bank B charges €3,000 in arrangement fees, requires a mandatory insurance product, and has a variable rate after the first 3 years. Bank A has no fees, a fully fixed rate for the whole term, and allows free prepayment. Once you do the real math, Bank A is thousands of euros cheaper over the life of the loan.
 
-This is how most people lose money on loans: by comparing the wrong number. The [liabilities post](/blog/liabilities/) covered why the interest rate matters most when evaluating existing debt. This post is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
+A common way people overpay on loans is comparing the wrong number. The [liabilities post](/blog/liabilities/) covered why the interest rate matters most when evaluating existing debt. This post is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
 
 ## Why the advertised rate is misleading
 
@@ -215,7 +215,7 @@ Caveats:
 - Refinancing restarts the amortisation clock. A new 25-year loan from year 10 of an old one may have a lower payment but extend total interest paid
 - Hidden costs: new appraisal, new arrangement fees, legal fees. Not all are obvious in marketing copy
 
-## Prepayment: the most effective interest-reducer
+## Prepayment: a powerful interest-reducer
 
 If your loan allows it without penalty, prepaying principal is one of the most powerful ways to reduce total interest paid.
 
@@ -223,7 +223,7 @@ Example: the €250,000, 3%, 25-year mortgage above has total interest of roughl
 
 Prepayment is effectively a guaranteed return equal to the loan's interest rate. A 3% mortgage prepayment delivers a guaranteed 3% after-tax return (in jurisdictions without mortgage interest tax relief; the math is slightly different where such relief exists). A 7% consumer loan delivers a guaranteed 7%. That's why high-interest debt dominates investment returns in the prioritization hierarchy covered in the [saving vs. investing post](/blog/saving-vs-investing/).
 
-Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy. Any right to repay early, and any cap on early-repayment fees, is set by consumer-credit law where you live, and the lender can say what your contract allows.
+Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy. Any right to repay early, and any cap on early-repayment fees, is set by consumer-credit law where you live, and the lender can say what your contract allows. A few examples of how much the rules differ: in India, lenders may not charge prepayment or foreclosure fees on floating-rate loans to individuals for non-business purposes (RBI rules in force from January 2026); in Germany, a fixed-rate mortgage can be ended without compensation with six months' notice once ten years have passed since the loan was fully disbursed, that is, since the lender handed over the whole amount (a later agreement on the repayment timing or the interest rate can restart the clock), while earlier repayment usually costs a Vorfälligkeitsentschädigung; in the UK, early repayment charges of a few percent are common during a fixed-rate period; in the US, most mortgages carry no prepayment penalty.
 
 ## Comparing loan offers: the honest method
 

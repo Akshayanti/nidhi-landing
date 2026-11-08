@@ -502,7 +502,7 @@ Rather than new standalone posts:
 **New Optimizing lessons 50b and 50c (decided Oct 25, 2026).** 50b How much can you borrow? (order 50.6) and 50c 0% instalments (order 50.7) were drafted and merged in #247. Their plan and regions table, and the Optimizing global pass (done by Oct 28, 2026), are archived: see done/blog-content-plan.md#gaps-heard-from-readers-oct-25-2026.
 
 **Open item: older lessons (Discovery, Building, Psychology).** Global updates are made as updates to those lessons, one at a time, and stay on this list until done:
-- the "where you live" sections, where a region's rules change the decision (Discovery done Nov 8, 2026; lesson 5 deliberately has none, owner: more would overwhelm a beginner; Psychology done Nov 8, 2026, where only lesson 42's saving defaults depend on local rules; Building still to do);
+- the "where you live" sections, where a region's rules change the decision (Discovery done Nov 8, 2026; lesson 5 deliberately has none, owner: more would overwhelm a beginner; Psychology done Nov 8, 2026, where only lesson 42's saving defaults depend on local rules; Building done Nov 8, 2026, with notes in 19, 22 to 25 and 27 to 31; the three items below are still open);
 - 18 Investing 101: what funds are called where you live;
 - 29 Managing money across currencies: why higher inflation tends to weaken a currency, with several currency pairs;
 - 30 Setting financial goals: money as a multiplier that costs time, health or lifestyle, and needs a purpose (or a Beliefs Sunday instead).
