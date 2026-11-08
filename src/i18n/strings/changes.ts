@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-08',
     items: [
       {
+        id: 'psychology-lessons-evidence',
+        text: {
+          en: 'The ten psychology lessons now say more about the evidence behind their claims and where it stops, and less about what you should do. The lesson on building an anti-bias financial life now notes where the law already makes retirement saving automatic or compulsory, as in the UK, New Zealand and Australia.',
+          es: 'Las diez lecciones de psicología dicen ahora más sobre las pruebas en las que se basan y sus límites, y menos sobre lo que deberías hacer. La lección sobre cómo construir una vida financiera a prueba de sesgos indica ahora dónde la ley ya hace automático u obligatorio el ahorro para la jubilación, como en el Reino Unido, Nueva Zelanda y Australia.',
+          cs: 'Deset lekcí o psychologii teď víc říká o tom, o jaké důkazy se opírají a kde tyto důkazy končí, a méně o tom, co byste měli dělat. Lekce o tom, jak si zařídit finance odolné vůči zkreslením, teď zmiňuje, kde už zákon dělá spoření na důchod automatickým nebo povinným, například ve Spojeném království, na Novém Zélandu a v Austrálii.',
+          mr: 'मानसशास्त्रावरील दहा धडे आता त्यांच्या दाव्यांमागील पुराव्यांबद्दल आणि त्या पुराव्यांच्या मर्यादांबद्दल अधिक सांगतात, आणि तुम्ही काय करावे हे कमी सांगतात. पूर्वग्रहांपासून सुरक्षित आर्थिक आयुष्य घडवण्याच्या धड्यात आता हेही नमूद केले आहे की कुठे कायद्यानेच निवृत्तीची बचत आपोआप किंवा सक्तीची होते, जसे युनायटेड किंगडम, न्यूझीलंड आणि ऑस्ट्रेलियामध्ये.',
+          hi: 'मनोविज्ञान के दस पाठ अब अपने दावों के पीछे के सबूतों और उनकी सीमाओं के बारे में ज़्यादा बताते हैं, और यह कम कहते हैं कि आपको क्या करना चाहिए। पूर्वाग्रहों (bias) से बचाने वाली वित्तीय ज़िंदगी बनाने वाले पाठ में अब यह भी लिखा है कि कहाँ क़ानून ही रिटायरमेंट की बचत को अपने-आप होने वाली या अनिवार्य बना देता है, जैसे यूनाइटेड किंगडम, न्यूज़ीलैंड और ऑस्ट्रेलिया में।',
+        },
+      },
+      {
         id: 'beginner-lessons-more-countries',
         text: {
           en: 'The 16 beginner lessons now explain how things differ between countries where the rules change the answer: when retirement savings can be reached early, how unemployment benefits change the size of an emergency fund, how student loans are repaid, how health cover works, and what inflation far above 2% does to cash. I also fixed a chart in the snowball and avalanche lesson that showed the wrong months.',

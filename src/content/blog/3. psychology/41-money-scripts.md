@@ -13,7 +13,7 @@ takeaways:
   - "Why couples' money fights are often about beliefs, not numbers"
 order: 41
 pubDate: 2026-07-20
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "petra"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -50,7 +50,7 @@ It was not. Petra grew up in a home where money was tight and tense, where a car
 
 Neither of them chose these beliefs. They absorbed them, silently, decades before either had heard the word "budget." And those inherited beliefs, not the holiday, were what they were really arguing about.
 
-These are money scripts, and they may be the most powerful force in this entire series, precisely because they are the quietest.
+These are money scripts, and they may be a powerful force in this series, precisely because they are so quiet.
 
 ## The beliefs you never decided to hold
 
@@ -68,7 +68,7 @@ Klontz grouped the beliefs into four broad patterns. Almost nobody is a pure sin
 
 **Money status: "I am what I own."** The belief that your worth as a person is measured by your net worth, or at least by how it looks to others. It can motivate. But it leads to spending to impress, hiding debt behind appearances, and taking risky bets to keep up, because being seen to fall behind feels like a threat to the self, not just the wallet. Much of the [herd-chasing and FOMO](/blog/herd-behavior-and-fomo/) from earlier is money status looking for a scoreboard.
 
-**Money vigilance: "Watch it carefully."** A careful, alert, often private and slightly anxious relationship with money. This is the healthiest script on average, and the one most associated with actually saving. But pushed too far it becomes its own prison: excessive frugality, secrecy even with a partner, an inability to ever relax or enjoy what has been built, and worry that no balance can soothe. Petra, from the start of this post, runs a strong money vigilance script.
+**Money vigilance: "Watch it carefully."** A careful, alert, often private and slightly anxious relationship with money. In Klontz's studies it is the one script linked to better financial health rather than worse, and to actually saving. But pushed too far it becomes its own prison: excessive frugality, secrecy even with a partner, an inability to ever relax or enjoy what has been built, and worry that no balance can soothe. Petra, from the start of this post, runs a strong money vigilance script.
 
 <figure>
 <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-ms-title fig-ms-desc">
@@ -104,7 +104,7 @@ Klontz grouped the beliefs into four broad patterns. Almost nobody is a pure sin
 
 Now look again at Petra and her partner. They are not really arguing about a holiday. They are arguing from two different inherited belief systems about what money is for: safety versus living. The euros are just the surface the deeper clash happens to break against.
 
-This is why money arguments feel so disproportionately charged, and why a spreadsheet rarely settles them. You cannot resolve a clash of scripts by debating a number, because the number was never the real subject. What helps is naming the scripts out loud: recognising that one partner is running vigilance and the other status or worship, and that each script came from somewhere understandable. Once both people can see the belief beneath the argument, the argument usually loses most of its heat.
+This is why money arguments feel so disproportionately charged, and why a spreadsheet rarely settles them. You cannot resolve a clash of scripts by debating a number, because the number was never the real subject. What helps is naming the scripts out loud: recognising that one partner is running a vigilance script and the other a different belief about what money is for, and that each came from somewhere understandable. Enjoying experiences is not in itself one of the four scripts; it becomes worship or status only if it rests on beliefs like "more money will fix it" or "I am what I own". Once both people can see the belief beneath the argument, the argument often loses much of its heat.
 
 ## Why awareness matters as much as arithmetic here
 
@@ -127,7 +127,7 @@ You probably cannot delete a belief installed in childhood. But you can drag it 
 
 - **Trace your money story.** Spend ten honest minutes on what money meant in your childhood home, and what you absorbed without being told. That picture is the source code of your current behaviour.
 - **Match yourself to the scripts.** Read the four patterns again and notice which one or two feel uncomfortably familiar. Discomfort usually means you have found the live one.
-- **If you share finances, compare scripts.** Sit down with your partner and name each other's scripts without judgement. Most money conflict eases once both people see they are arguing beliefs, not numbers.
+- **If you share finances, compare scripts.** Sit down with your partner and name each other's scripts without judgement. Many couples find the conflict eases once both see they are arguing beliefs, not numbers.
 - **Let awareness do the work.** You do not need to fix the script overnight. Simply catching it in the moment, "that is my script talking, not the situation," is often enough to choose differently.
 
-You have now met the whole cast: the fast brain, loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, the herd, the seductive story, and the scripts you inherited. Knowing them, as this series has said from the start, is not enough to beat them. The final post pulls everything together into the only thing that reliably works: a financial life designed so the right choice happens by default and your biases never get the wheel. That is building an anti-bias financial life, and it is where we finish.
+You have now met the whole cast: the fast brain, loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, the herd, the seductive story, and the scripts you inherited. Knowing them, as this series has said from the start, is not enough to beat them. The final post pulls everything together into the approach that tends to work better than willpower: a financial life designed so the right choice happens by default and your biases never get the wheel. That is building an anti-bias financial life, and it is where we finish.

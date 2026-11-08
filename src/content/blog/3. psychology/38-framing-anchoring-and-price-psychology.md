@@ -13,7 +13,7 @@ takeaways:
   - "How the from-scratch test cuts through sunk costs"
 order: 38
 pubDate: 2026-07-13
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -117,7 +117,7 @@ Unlike most biases, framing and anchoring have a defence that is genuinely easy 
 
 - **Restate every offer in your own units.** When you see "less than a coffee a day" or "only 1%," convert it to the yearly and lifetime total before you decide. The honest frame is the one that should drive the choice.
 - **Name your anchors out loud.** For any price or investment decision, identify the first number that is shaping your judgement and ask whether it deserves to. The market does not know what you paid; neither should your decision.
-- **Kill sunk costs with one question.** Knowing what you know now, would you choose this fresh today? If not, stop, and stop counting the past spending as a reason.
+- **Test sunk costs with one question.** Knowing what you know now, would you choose this fresh today? If not, the past spending is not a reason to continue.
 - **Frame your own goals on purpose.** Framing is not only used against you. You can use it for yourself: picturing a saving habit as its thirty-year total can make it feel as significant as it truly is.
 
 Framing and anchoring are about how outside wording and stray numbers steer a single decision. The next bias is about a different outside force, the most powerful one of all: other people. The pull to do what the crowd is doing builds bubbles on the way up and crashes on the way down. That is herd behaviour and FOMO, and it is where we go next.

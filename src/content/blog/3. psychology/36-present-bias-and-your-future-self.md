@@ -12,16 +12,16 @@ takeaways:
   - "How automation and pre-commitment beat daily willpower"
 order: 36
 pubDate: 2026-07-08
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "jiri"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["psychology", "saving", "fire"]
 faq:
   - question: "What is present bias?"
-    answer: "Present bias is the tendency to give far more weight to rewards available now than to rewards available later, even when waiting would leave you better off. It is closely tied to what economists call hyperbolic discounting: the value we place on a future reward drops steeply at first and then flattens out. That uneven curve produces a strange inconsistency. Offered 100 euros today or 110 next week, most people grab the 100, unwilling to wait seven days for 10 extra euros. But offered 100 in fifty-two weeks or 110 in fifty-three weeks, most people happily wait the extra week. It is the identical seven-day wait and the identical 10 euros, valued completely differently depending only on how close the first option is to right now."
+    answer: "Present bias is the tendency to give far more weight to rewards available now than to rewards available later, even when waiting would leave you better off. It is closely tied to what economists call hyperbolic discounting: the value we place on a future reward drops steeply at first and then flattens out. That uneven curve produces a strange inconsistency. Offered 100 euros today or 110 next week, many people take the 100, unwilling to wait seven days for 10 extra euros. But offered 100 in fifty-two weeks or 110 in fifty-three weeks, many of the same people happily wait the extra week. It is the identical seven-day wait and the identical 10 euros, valued completely differently depending only on how close the first option is to right now."
   - question: "Why is it so hard to save for the future?"
-    answer: "Partly because of present bias, and partly because of a deeper quirk: brain-imaging research suggests that when people think about their distant future self, the brain activity resembles thinking about a stranger more than thinking about themselves. If your future self feels like someone else, then saving for retirement feels less like providing for you and more like mailing cash to an acquaintance you will never meet. Spending now goes to the person you can feel and see; saving goes to a near-stranger decades away. Framed that way, it is no surprise that now usually wins. The countermeasure is to make that future self feel real and close, and to remove the day-to-day decision entirely by automating the saving."
+    answer: "Partly because of present bias, and partly because of a deeper quirk: brain-imaging research (a 2009 study led by Hal Ersner-Hershfield) found that people whose brain activity showed less continuity between their current and future selves discounted the future more steeply. If your future self feels like someone else, then saving for retirement feels less like providing for you and more like mailing cash to an acquaintance you will never meet. Spending now goes to the person you can feel and see; saving goes to a near-stranger decades away. Framed that way, it is no surprise that now usually wins. The countermeasure is to make that future self feel real and close, and to remove the day-to-day decision entirely by automating the saving."
   - question: "Why does willpower fail at saving money?"
     answer: "Because willpower has to win the same fight every single day, and present bias gets a fresh vote every time money is in your hands. Relying on discipline means that on the one day you are tired, stressed, or tempted, the savings plan loses, and a single skipped month becomes a habit of skipped months. Systems beat willpower because they shift the default. When saving happens automatically on payday, before the money ever reaches your spending account, the good outcome occurs without a decision and the only way to derail it is to actively intervene. You have moved the effort from doing the right thing to undoing it, and most people will not bother to undo it. That is the whole point."
   - question: "What is a commitment device and how does it help me save?"
@@ -45,9 +45,9 @@ referentialReading:
 
 Let me offer you a choice. I can give you 100 euros right now, or 110 euros if you wait one week.
 
-Most people take the 100. The extra 10 is not worth a whole week of waiting.
+Many people take the 100. The extra 10 is not worth a whole week of waiting.
 
-Now a different choice. I can give you 100 euros in fifty-two weeks, or 110 euros in fifty-three weeks. Now most people happily wait the extra week for the extra 10.
+Now a different choice. I can give you 100 euros in fifty-two weeks, or 110 euros in fifty-three weeks. Now many people happily wait the extra week for the extra 10.
 
 Look at what just happened. Both choices are the exact same trade: wait one more week, get 10 more euros. In the first version you refused. In the second you agreed. The only thing that changed was how close the payoff was to right now.
 
@@ -65,9 +65,9 @@ This is why saving feels so hard in the moment and so obvious in hindsight. The 
 
 Here is the part that gives present bias its real power.
 
-A well-known brain-imaging study found something quietly unsettling: when people imagined themselves far in the future, the pattern of brain activity looked less like thinking about themselves and more like thinking about another person entirely. The you of thirty years from now seemed to register, neurologically, a bit like a stranger.
+A 2009 brain-imaging study led by Hal Ersner-Hershfield found something quietly unsettling: people whose brain activity showed less continuity between thinking about themselves today and themselves ten years on discounted future rewards more steeply in a later test. It was a small study of university students. In later lab experiments, Hershfield and colleagues found that making the future self feel closer, for example with age-progressed photos, led people to put more into a hypothetical retirement account.
 
-Sit with what that means for saving. When you put money aside for retirement, part of your brain experiences it not as providing for yourself, but as handing cash to some distant acquaintance you will never meet. Meanwhile, spending today goes to the very real, very present person who wants the thing now.
+One way to read this: if your future self feels distant, putting money aside for retirement can feel less like providing for yourself and more like handing cash to an acquaintance you will never meet. Meanwhile, spending today goes to the very real, very present person who wants the thing now.
 
 No wonder now keeps winning. We are wired to take care of the person we can feel, and the person we can feel is always today's version.
 
@@ -119,4 +119,4 @@ Notice the common thread: every one of these removes the daily decision. That is
 - **Think about your next raise before it arrives.** Deciding in advance where some of it goes keeps lifestyle from claiming all of it by default.
 - **Make the stranger real.** Write down one specific future goal with a number and a date, and look at a simple projection of where your current saving leads. The clearer that future self becomes, the less you will rob them.
 
-Present bias is about how the brain misjudges time, overvaluing now and discounting later. The next bias is about how the brain misjudges itself, specifically the near-universal conviction that we are better-than-average investors and that our plans will go better than other people's. That is overconfidence, and it is where we go next.
+Present bias is about how the brain misjudges time, overvaluing now and discounting later. The next bias is about how the brain misjudges itself, specifically the widespread conviction that we are better investors than most people and that our plans will go better than other people's. That is overconfidence, and it is where we go next.

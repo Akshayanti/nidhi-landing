@@ -1,7 +1,7 @@
 ---
 slug: "overconfidence-and-the-planning-fallacy"
 title: "Overconfidence and the Planning Fallacy"
-description: "Overconfidence: most people rate themselves above average, which cannot be true of most people at once. It makes us trade too much and underestimate every plan."
+description: "Overconfidence: most people place themselves in the top half, which cannot be true of most people at once. It makes us trade too much and underestimate every plan."
 tldr:
   - "Overconfidence overrates our abilities and luck, and in money it shows up as heavy trading and concentrated bets."
   - "The planning fallacy underestimates time and cost, including in our own savings plans."
@@ -12,21 +12,21 @@ takeaways:
   - "How the outside view and conservative assumptions fix plans"
 order: 37
 pubDate: 2026-07-10
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["psychology", "investing", "planning"]
 faq:
   - question: "What is overconfidence bias?"
-    answer: "Overconfidence bias is the tendency to overestimate our own abilities, the accuracy of our knowledge, and the favourability of our luck. The classic illustration is that when people are surveyed, a large majority rate themselves as above-average drivers, which is statistically impossible since average means half are below. The same pattern appears in investing: most individual investors believe they can beat the market, even though the long-run evidence shows the great majority do not after costs. Overconfidence is not the same as confidence. Healthy confidence is calibrated to reality; overconfidence is confidence that outruns the evidence. In money it tends to be expensive, because it encourages people to take risks and make bets that their actual skill does not justify."
+    answer: "Overconfidence bias is the tendency to overestimate our own abilities, the accuracy of our knowledge, and the favourability of our luck. The classic illustration is that when people are surveyed, a large majority rate themselves as better than the typical, median driver, which cannot hold for most people, since no more than half can be above the median. The same pattern appears in investing: most individual investors believe they can beat the market, even though the long-run evidence shows the great majority do not after costs. Overconfidence is not the same as confidence. Healthy confidence is calibrated to reality; overconfidence is confidence that outruns the evidence. In money it tends to be expensive, because it encourages people to take risks and make bets that their actual skill does not justify."
   - question: "What is the planning fallacy?"
     answer: "The planning fallacy, described by Daniel Kahneman and Amos Tversky, is the reliable tendency to underestimate the time, cost, and difficulty of future tasks, even when we have done similar tasks before and watched them run over. Home renovations, big work projects, and personal savings plans all fall victim to it. The financial version sounds like I will start saving seriously next year when I am earning more, or this side project will be profitable within six months. Both assume the smooth path. The fix is to stop forecasting from inside the plan, where everything looks achievable, and instead look at how similar plans actually turned out, then build in a buffer for the overrun you cannot yet see."
   - question: "What is the difference between the inside view and the outside view?"
-    answer: "The inside view forecasts a project by looking at its specific details and imagining how they will unfold, which almost always produces an optimistic estimate because we picture the version where nothing goes wrong. The outside view ignores the specifics and instead asks how projects of this general type usually turn out, using the track record of similar cases as the anchor. Kahneman found the outside view to be far more accurate. For money, the inside view says my savings plan will work because I have thought it through. The outside view asks how often plans like mine survive contact with real life, and adjusts the assumptions accordingly. Whenever you can find a base rate, trust it over your own narrative."
+    answer: "The inside view forecasts a project by looking at its specific details and imagining how they will unfold, which almost always produces an optimistic estimate because we picture the version where nothing goes wrong. The outside view ignores the specifics and instead asks how projects of this general type usually turn out, using the track record of similar cases as the anchor. Kahneman and later researchers found the outside view usually gives more accurate forecasts. For money, the inside view says my savings plan will work because I have thought it through. The outside view asks how often plans like mine survive contact with real life, and adjusts the assumptions accordingly. When a base rate exists, it is usually a better anchor than your own narrative."
   - question: "Does trading more often improve investment returns?"
-    answer: "Generally the opposite. Research on individual investors, notably by Brad Barber and Terrance Odean using accounts at a US discount broker in the 1990s, found that the most active traders earned the lowest net returns, largely because frequent trading multiplies costs and tends to be driven by overconfidence rather than genuine insight. A study of day traders in Taiwan found a similar pattern. Each trade assumes you know something the person on the other side does not, and most of the time you do not. The pattern is strong enough that one of the most reliable ways to improve returns is simply to trade less: choose a sensible, diversified allocation, automate contributions, and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
-reelPromise: "The above-average-driver paradox, why the most active traders earn the least, and the outside-view trick that fixes optimistic plans"
+    answer: "Generally the opposite. Research on individual investors, notably by Brad Barber and Terrance Odean using accounts at a US discount broker in the 1990s, found that the most active traders earned the lowest net returns, largely because frequent trading multiplies costs and tends to be driven by overconfidence rather than genuine insight. A study of day traders in Taiwan found a similar pattern. Each trade assumes you know something the person on the other side does not, and most of the time you do not. The pattern is strong enough that trading less is one of the more reliable findings in this research; many people set a diversified allocation, automate contributions and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
+reelPromise: "The top-half-driver paradox, why the most active traders earn the least, and the outside-view trick that fixes optimistic plans"
 relatedSlugs: ["present-bias-and-your-future-self", "why-smart-people-make-dumb-money-decisions", "getting-started-investing", "diversification", "setting-financial-goals"]
 referentialReading:
   - title: "Thinking, Fast and Slow"
@@ -43,9 +43,9 @@ referentialReading:
     type: "book"
 ---
 
-Ask people whether they are above-average drivers, and most say yes: in one classic study of US students, around nine in ten did.
+Ask people whether they drive better than the median driver, the one in the exact middle, and most say yes: in one classic study of US students, around nine in ten placed themselves in the top half.
 
-This cannot be true. The middle driver has half of everyone below them. By definition, a large chunk of those confident people are wrong about themselves. They are not lying. They genuinely believe it. And the exact same thing happens when you ask people whether they are above-average investors.
+This cannot be true. The middle driver has half of everyone below them. By definition, a large chunk of those confident people are wrong about themselves. They are not lying. They genuinely believe it. And the exact same thing happens when you ask people whether they are better investors than most.
 
 Marcus, a friend who works in tech and reads the financial press every morning, was certain he could spot good companies before the market did. For two years he traded actively, buying what looked promising, selling what looked tired. He felt sharp and engaged the whole time. When he finally compared his results to what a boring, do-nothing index fund would have returned over the same period, he had underperformed it, before even counting the time he had spent.
 

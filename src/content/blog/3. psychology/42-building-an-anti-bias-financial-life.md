@@ -12,7 +12,8 @@ takeaways:
   - "How a dashboard replaces gut feeling with scheduled numbers"
 order: 42
 pubDate: 2026-07-22
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
+localRules: [pensions]
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -23,7 +24,7 @@ faq:
   - question: "Why does automation beat willpower for money?"
     answer: "Because willpower has to win the same fight repeatedly while automation wins it once and then holds. Relying on discipline means that on any tired, stressed, or tempted day, the good habit can lose, and a single lapse often becomes a pattern. Automation flips the default: when saving and investing happen on their own, the good outcome is what occurs unless you actively intervene to stop it, and most people will not bother to intervene. This neutralises present bias, which thrives on daily decisions, and removes the panic-window where loss aversion or herd feeling might push you to derail the plan. The effort shifts from doing the right thing to undoing it, and that shift is the whole advantage."
   - question: "What is a commitment device?"
-    answer: "A commitment device is a choice you make now that constrains or removes a tempting choice later, deliberately binding your future self to a plan your present self believes in. Automating a monthly transfer is one, since it carries out the decision without asking again. Routing future raises straight into investing before lifestyle absorbs them is another. Keeping longer-term savings somewhere mildly inconvenient to reach adds protective friction. Writing down, in advance, the only conditions under which you would change your investments stops a scary week from rewriting the plan. All commitment devices share the same logic: decide while calm and rational, then make that decision hard for a future, more emotional version of you to reverse."
+    answer: "A commitment device is a choice you make now that constrains or removes a tempting choice later, deliberately binding your future self to a plan your present self believes in. Automating a monthly transfer is one, since it carries out the decision without asking again. Routing future raises straight into investing before lifestyle absorbs them is another. Keeping longer-term savings somewhere mildly inconvenient to reach adds protective friction. Writing down, in advance, the conditions under which you would change your investments stops a scary week from rewriting a long-term plan. All commitment devices share the same logic: decide while calm and rational, then make that decision hard for a future, more emotional version of you to reverse."
   - question: "How does a financial dashboard help fight biases?"
     answer: "A dashboard fights biases by replacing gut feeling with numbers and by controlling how often you look. Reviewing a small set of metrics on a set schedule, rather than checking constantly, limits the panic windows where loss aversion and herd feeling do damage, and it judges progress against your own plan rather than against this week's market noise or someone else's story. A single, unified net worth view also collapses the mental-accounting folders that make people treat identical euros differently. In short, a dashboard is a deliberate System 2 tool for a System 1 brain: it brings the slow, rational mind to a schedule you set in advance, instead of leaving decisions to whatever you happen to feel in the moment."
 reelPromise: "The six design principles of an anti-bias financial life, mapped to every bias in the series, plus the one-page system that ties them together"
@@ -73,7 +74,7 @@ One of the most powerful tools. When saving and investing happen automatically, 
 
 ## 2. Set good defaults, so the easy path is the right one
 
-We tend to go with whatever is already set, and that tendency can be put to work. In a well-known study of one US employer, Brigitte Madrian and Dennis Shea found that enrolling new staff in the pension plan automatically raised participation sharply, mostly because few people opted out; Richard Thaler and Shlomo Benartzi found the same pull for automatic contribution increases. The same logic applies to holdings: a hands-off, diversified default invites less tinkering than a portfolio that begs to be adjusted. The idea is an arrangement where doing nothing produces a reasonable result, because doing nothing is what people reliably do.
+We tend to go with whatever is already set, and that tendency can be put to work. In a well-known study of one US employer, Brigitte Madrian and Dennis Shea found that enrolling new staff in the pension plan automatically raised participation sharply, mostly because few people opted out; Richard Thaler and Shlomo Benartzi found the same pull for automatic contribution increases. The same logic applies to holdings: a hands-off, diversified default invites less tinkering than a portfolio that begs to be adjusted. The idea is an arrangement where doing nothing produces a reasonable result, because doing nothing is what people reliably do. In some countries the law sets the default: UK employers must enrol eligible workers in a workplace pension automatically, a duty phased in from 2012, and in New Zealand eligible new employees are enrolled in KiwiSaver unless they opt out. Australia goes further and makes it compulsory: employers must pay superannuation for their staff, currently 12% of earnings, with no opt-out. Where no such default exists, many people set one up themselves.
 
 ## 3. Use checklists, to slow the fast brain when stakes are high
 
@@ -81,15 +82,15 @@ Pilots and surgeons use checklists not because they are forgetful but because ch
 
 ## 4. Pre-commit, locking choices in while you are calm
 
-Decide the rules in advance, in a quiet room, so the heated moment only executes a plan rather than making one. Some people commit part of future raises to saving before lifestyle claims them. Others write down the only conditions under which you would change your investments, a change in your goals, timeline, or circumstances, never a change in this week's price, so a scary week has nothing to act on. These commitment devices bind a future, more emotional you to the judgement of the present, rational you.
+Decide the rules in advance, in a quiet room, so the heated moment only executes a plan rather than making one. Some people commit part of future raises to saving before lifestyle claims them. Others write down the conditions under which they would change their investments, a change in goals, timeline or circumstances rather than in this week's price, so a scary week has nothing to act on. (A plan for money needed soon, or a long-term plan that no longer fits, is a different case: then a change can be the right call.) These commitment devices bind a future, more emotional you to the judgement of the present, rational you.
 
 ## 5. Reduce decision frequency, because looking less is worth more
 
 Every time you check, you create a chance to react, and reacting is usually where the damage happens. As the [loss aversion post](/blog/loss-aversion-and-the-disposition-effect/) showed, frequent checking simply multiplies the number of painful down-days you experience for the same long-term return. Review on a schedule, monthly or quarterly or yearly, and treat the urge to peek in between as a symptom rather than a signal. Fewer decisions means fewer chances to make a bad one.
 
-## 6. Keep it boring, because boring quietly wins
+## 6. Keep it boring, because boring has tended to win
 
-[Overconfidence](/blog/overconfidence-and-the-planning-fallacy/) makes activity feel like skill, but in investing, effort and reward are often inversely related once a sound plan is in place. In the research on individual investors, a [diversified](/blog/diversification/), low-cost, steadily-contributed-to portfolio, left alone, has beaten most clever tinkering over time. Boring is not a compromise. Boring is the strategy. The excitement you might crave is exactly the thing that costs you.
+[Overconfidence](/blog/overconfidence-and-the-planning-fallacy/) makes activity feel like skill, but in investing, effort and reward are often inversely related once a sound plan is in place. In the research on individual investors, a [diversified](/blog/diversification/), low-cost, steadily-contributed-to portfolio, left alone, has beaten most clever tinkering over time. For many people, boring is not a compromise but the strategy, because the excitement is often exactly what costs them.
 
 <figure>
 <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-anti-title fig-anti-desc">
@@ -127,9 +128,9 @@ A dashboard is a deliberate System 2 tool for a System 1 species. It replaces gu
 ## What you can do
 
 - **Automate one thing.** A contribution that moves to savings or investing automatically on payday, at an amount your budget can carry, defends against several biases at once, which reading alone rarely does.
-- **Write your investment rules down once.** List the only conditions under which you would change your investments. Then a scary week has a plan to follow instead of a decision to make.
-- **Pick a review cadence and protect it.** Decide how often you will look, and treat every urge to check in between as noise. Looking less is one of the highest-return habits available.
-- **Notice the appeal of excitement.** A diversified, low-cost, automated plan left alone is not settling. In the research on investor behaviour, it is the design most likely to survive contact with your own brain.
+- **Write your investment rules down once.** List the conditions under which you would change your investments, such as a change in goals, timeline or circumstances. Then a scary week has a plan to follow instead of a decision to make.
+- **Pick a review cadence and protect it.** Decide how often you will look, and treat every urge to check in between as noise. For a long-term plan, looking less removes many chances to react.
+- **Notice the appeal of excitement.** A diversified, low-cost, automated plan left alone is not settling. In the research on investor behaviour, it is a design that tends to survive contact with your own brain.
 - **Build the one-page dashboard.** A handful of numbers, reviewed on a schedule, brings your slow, rational mind to the table at a time you chose, rather than at a time your emotions chose for you.
 
 That is the end of the Psychology series. The throughline has been simple and, I hope, freeing: your money mistakes are not failures of character or intelligence. They are the predictable output of an old brain running a new problem. You do not need to rewire that brain, even where slow change is possible. You only need to build a life around it that quietly does the right thing while you get on with everything else.

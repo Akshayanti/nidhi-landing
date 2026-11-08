@@ -12,7 +12,7 @@ takeaways:
   - "Why other people's wins are a highlight reel, not the full story"
 order: 39
 pubDate: 2026-07-15
-updatedDate: 2026-07-15
+updatedDate: 2026-11-08
 level: "psychology"
 primaryPersona: "jiri"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -21,7 +21,7 @@ faq:
   - question: "What is herd behaviour in investing?"
     answer: "Herd behaviour is the tendency to follow what a large group is doing rather than acting on your own analysis, and in investing it means buying what others are buying and selling what others are selling, largely because they are doing it. The instinct is deeply human and was often protective: when the group ran, running too was usually the safe choice. In markets it backfires, because prices are set by the crowd, so following the crowd means buying after prices have already risen and selling after they have already fallen, the precise opposite of buying low and selling high. Herd behaviour is the engine of both bubbles, where everyone piles in, and crashes, where everyone rushes out, and it operates most strongly exactly when emotions run highest."
   - question: "What is FOMO in personal finance?"
-    answer: "FOMO, the fear of missing out, is the anxiety that others are gaining something you are not, and in money it is one of the most reliable drivers of bad decisions. It flares when a friend boasts about a quick gain, when a particular asset is everywhere in the news, or when it feels like everyone but you is getting rich on something. FOMO turns a perfectly sound long-term plan into something that feels boring and foolish by comparison, and pushes people to abandon it and chase whatever is hot, usually after most of the move has already happened. The antidote is to remember that you hear about wins far more than losses, and to judge your choices against your own written goals rather than against other people's highlight reels."
+    answer: "FOMO, the fear of missing out, is the anxiety that others are gaining something you are not, and in money it is a common driver of decisions people later regret. It flares when a friend boasts about a quick gain, when a particular asset is everywhere in the news, or when it feels like everyone but you is getting rich on something. FOMO turns a perfectly sound long-term plan into something that feels boring and foolish by comparison, and pushes people to abandon it and chase whatever is hot, usually after most of the move has already happened. The antidote is to remember that you hear about wins far more than losses, and to judge your choices against your own written goals rather than against other people's highlight reels."
   - question: "What is social proof and why does it move markets?"
     answer: "Social proof is the mental shortcut of assuming that if many people are doing something, it must be correct, which is often reasonable in everyday life but treacherous in markets. When a price is rising, social proof reads the rise itself as evidence that the asset is good, which attracts more buyers, which pushes the price higher, which looks like even stronger proof. Nothing about the underlying asset need have changed; the crowd is reacting to the crowd. This self-reinforcing loop is how prices can detach from any sensible value, and it is why a rising price feels safest at exactly the moment it has become most expensive. Recognising that price action is not the same as fundamental merit is the first defence."
   - question: "How do I avoid making decisions based on what everyone else is doing?"
@@ -63,7 +63,7 @@ In a market, they very often are, and worse, the act of following them is what m
 
 Here is the cruel mechanism. In markets, the crowd does not just observe the price. The crowd is the price. So when you follow the crowd, you are not getting in early on something smart. You are buying after the buying has already pushed the price up, and selling after the selling has already pushed it down.
 
-That is the exact reverse of the only rule everyone claims to follow: buy low, sell high. Herd behaviour reliably has you buying high and selling low, because the crowd feels most confident near the top and most terrified near the bottom.
+That is the exact reverse of the only rule everyone claims to follow: buy low, sell high. Herd behaviour tends to have you buying high and selling low, because the crowd feels most confident near the top and most terrified near the bottom. Timing does cost money in aggregate: Morningstar's 2025 study of US funds found that investors earned about 1.2 percentage points a year less than the funds they held over the ten years to 2024, because of when money went in and came out. That measure does not isolate herding: regular monthly contributions and rebalancing also create part of the gap, and it is US data for one decade.
 
 - On the way up, everyone is buying, the price keeps rising, and the rising price looks like proof that buying was clever. More people pile in. This is how a bubble inflates.
 - On the way down, everyone is selling, the price keeps falling, and the falling price looks like proof that selling was wise. More people rush out. This is how a crash deepens.
@@ -97,7 +97,7 @@ This is why a hot asset feels safest precisely when it has become most expensive
 
 ## FOMO and the highlight reel
 
-The emotional fuel for all of this is FOMO, the fear of missing out, and it has never been easier to feel than now.
+The emotional fuel for all of this is FOMO, the fear of missing out, and social feeds and group chats make it easy to feel.
 
 The crucial thing to understand about FOMO is the asymmetry of what you hear. The colleague at dinner told everyone about his win. He did not mention the three bets that went nowhere, or the chunk he bought near the top and is now quietly down on. Nobody posts the losses. Social feeds, dinner conversations, and group chats are highlight reels, and a highlight reel makes it look like everyone is winning except you.
 
