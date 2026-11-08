@@ -14,7 +14,7 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [tax, investments]
 level: "building"
 primaryPersona: "eva"
@@ -31,7 +31,7 @@ faq:
   - question: "Is rental property really passive income?"
     answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
   - question: "How does the crossover point relate to passive income?"
-    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income does, even if you keep working. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. These concrete thresholds motivate far better than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
+    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income does, even if you keep working. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. Many people find these concrete thresholds more motivating than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
@@ -130,7 +130,7 @@ Small versions of this milestone are worth celebrating:
 - **Cover everything but discretionary.** Financial resilience milestone
 - **Cover everything.** Crossover point. Full FI.
 
-Each of these is a concrete goal that motivates better than abstract "€X by age Y" targets.
+Many people find each of these more motivating than an abstract "€X by age Y" target.
 
 ## Why passive income accelerates FIRE
 
@@ -148,7 +148,7 @@ For many people pursuing FI, the shift in perspective from "asset value" to "inc
 - **Confusing yield with return.** A 6% yielding stock whose price has fallen 40% over three years is not a winning investment
 - **Thinking rental property is passive.** Direct landlording involves real work: tenants, maintenance, vacancies, occasional disputes, tax filings. Professional management reduces it, but also reduces yield
 - **Treating business income as passive.** A small business requires a principal who cares. When the principal checks out, most small businesses wobble
-- **Ignoring taxes.** Passive income is often taxed differently from earned income, and sometimes at higher rates. The after-tax yield is what matters
+- **Ignoring taxes.** Passive income is often taxed differently from earned income, and sometimes at higher rates. Dividends from abroad can also lose tax at source before they arrive: the US withholds 30% for non-residents, often cut to 15% under a tax treaty. The after-tax yield is what matters
 - **Chasing "streams" for their own sake.** Ten small streams of €30/month each is €3,600/year, and ten things to maintain. One broad index fund position that yields the same is simpler and usually more durable
 - **Underestimating reinvestment.** Dividends spent are just dividends. Dividends reinvested during accumulation are the engine. The compounding difference over decades is dramatic
 

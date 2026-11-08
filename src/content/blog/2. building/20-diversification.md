@@ -14,7 +14,7 @@ takeaways:
   - "Why diversification cannot protect against a market-wide fall"
 order: 20
 pubDate: 2026-06-01
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [tax]
 level: "building"
 primaryPersona: "eva"
@@ -28,7 +28,7 @@ faq:
   - question: "How much diversification is enough?"
     answer: "Often less effort than people expect. A single broad global stock index fund already holds thousands of companies across dozens of countries and every major sector, making it highly diversified within equities. Adding a broad bond index fund crosses asset classes. A combination often described as a simple starting structure is one global stock fund, one bond fund, and cash for an emergency fund and short-term needs; the split between them depends on risk capacity and horizon, and fund availability and tax treatment depend on your country. More complexity is not automatically better: every extra fund adds cost and work. A useful test for any addition is whether it covers an exposure you do not already have."
   - question: "What is concentration risk and where does it hide?"
-    answer: "Concentration risk is exposure to a single event that moves many of your assets at once. The biggest concentrations usually sit outside investment accounts. Employer concentration: your income, employer stock, and pension all depend on one company, so several pillars can go together. Geographic concentration: your job market, property, and currency all live in one country, so a local recession touches everything. Sector concentration: working in tech, living near a tech hub, and holding tech stocks is three bets on one story. Holding a large share of net worth in one employer's stock because you believe in it is among the most common and damaging mistakes."
+    answer: "Concentration risk is exposure to a single event that moves many of your assets at once. The biggest concentrations usually sit outside investment accounts. Employer concentration: your income, employer stock, and pension all depend on one company, so several pillars can go together. Geographic concentration: your job market, property, and currency all live in one country, so a local recession touches everything. Sector concentration: working in tech, living near a tech hub, and holding tech stocks is three bets on one story. Holding a large share of net worth in one employer's stock because you believe in it is a common and costly mistake."
   - question: "Does diversification protect you in a market crash?"
     answer: "Only partly. Diversification handles single-stock and single-country risk well, but it does not eliminate systemic risk. In severe global events like 2008 and March 2020, correlations rise and most assets fall together; cash is what holds its nominal value in a panic. You also cannot diversify away the market itself: if the global stock market falls 30%, any diversified stock portfolio falls roughly 30% too. Diversification smooths the ride and reduces the chance that one bad bet derails your plan, but it does not make the destination better on average. It makes it more likely you actually get there."
 relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "satellite-assets-commodities-and-cryptocurrency", "emergency-fund", "saving-vs-investing"]
@@ -109,7 +109,7 @@ The biggest concentration risks for most people aren't in their investment accou
 - **Employer concentration.** Your income, your employer stock (if you have any), your pension contributions, and in some cases your housing (if relocating for a new job is expensive) all depend on one company. If it fails, several pillars go at once
 - **Geographic concentration.** Your job market, your property, your social network, and often your currency all live in the same country. A local recession touches everything
 - **Sector concentration.** Working in tech, living near a tech hub, and investing heavily in tech stocks is three bets on the same economic story
-- **"My company is special" concentration.** Holding a large percentage of net worth in one employer's stock because you believe in the company is one of the most common and damaging mistakes. Employees of many high-profile bankruptcies lost both jobs and retirement savings on the same day
+- **"My company is special" concentration.** Holding a large percentage of net worth in one employer's stock because you believe in the company is a common and costly mistake. Employees of many high-profile bankruptcies lost both jobs and retirement savings on the same day
 
 You can't fully diversify your employment. You can avoid stacking further concentration on top of it.
 

@@ -13,7 +13,7 @@ takeaways:
   - "Which numbers are not worth tracking at all"
 order: 32
 pubDate: 2026-06-29
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [inheritance, pensions]
 level: "building"
 primaryPersona: "eva"
@@ -27,7 +27,7 @@ faq:
   - question: "What should I review monthly versus quarterly versus annually?"
     answer: "Monthly, four numbers carry most of the signal: net worth as a line over time, cash flow for the month, savings rate, and debt balances in payoff mode. Quarterly, zoom out to asset allocation drift, currency allocation if you have cross-border finances, progress against each written goal, emergency fund coverage, and active-versus-passive income composition. Annually, do the full review: the six financial health ratios, goal calibration, projection versus actual, an asset and liability audit, an insurance review, your tax position, estate basics like beneficiaries and a will, and the big-picture question of whether you are on track for the life you want. Event-driven reviews happen outside this cadence when something material changes."
   - question: "What should I deliberately not track?"
-    answer: "Some numbers invite checking without rewarding you for it. Daily portfolio value is noise unless you are a day trader, which you are not. Individual stock prices are irrelevant if you hold index funds, since the fund is the position and the stocks inside it are implementation detail. Most market news is entertainment, and very little of it requires action from a long-term investor. Your friends' finances are a drag on clarity, and social-proof-driven decisions are among the worst category of financial decisions. Removing these from your attention is not neglect; it is focus. The dashboard's job is to tell you when something is genuinely off and otherwise to get out of the way."
+    answer: "Some numbers invite checking without rewarding you for it. Daily portfolio value is noise unless you are a day trader, which most readers are not. Individual stock prices are irrelevant if you hold index funds, since the fund is the position and the stocks inside it are implementation detail. Most market news is entertainment, and very little of it requires action from a long-term investor. Your friends' finances are a drag on clarity, and decisions driven by what others are doing tend to go badly. Removing these from your attention is not neglect; it is focus. The dashboard's job is to tell you when something is genuinely off and otherwise to get out of the way."
   - question: "What is the minimum viable financial dashboard?"
     answer: "Start with four numbers monthly: net worth, income, expenses, and savings rate. If you can do just these, you already have most of the dashboard's value. The format matters less than the discipline, so a notebook or a simple spreadsheet with columns for date, total assets, total liabilities, net worth, monthly income, monthly expenses, monthly savings, savings rate, and notes is plenty. The notes column is underrated: writing why net worth dropped this month, a vacation or a car repair, prevents misinterpretation later. Add quarterly depth such as asset allocation and goal progress gradually, and schedule the annual review as a half-day appointment. A dashboard maintained imperfectly beats one you abandon."
 relatedSlugs: ["financial-health-metrics", "setting-financial-goals", "introduction-to-financial-independence", "cash-flow-101", "passive-income-streams"]
@@ -54,7 +54,7 @@ Neither works. The goal is a dashboard: a small, known set of metrics, reviewed 
 
 Most of your net worth, most of the time, doesn't move because of anything you did this week. It moves because of markets, inflation, and the slow compounding of contributions. Those forces operate on timescales of months and years, not days.
 
-A dashboard should match those timescales. Net worth is a monthly story; asset allocation is a quarterly story; full financial health is an annual story. Checking any of those at daily resolution gives you noise, not signal. Noise invites action. Action taken on noise is almost always unhelpful: rebalancing on an impulse, selling in a panic, chasing a fund that had a good week.
+A dashboard should match those timescales. Net worth is a monthly story; asset allocation is a quarterly story; full financial health is an annual story. Checking any of those at daily resolution gives you noise, not signal. Noise invites action. Action taken on noise is usually unhelpful: rebalancing on an impulse, selling in a panic, chasing a fund that had a good week.
 
 The dashboard's job is to tell you when something is genuinely off, and otherwise to get out of the way.
 
@@ -141,10 +141,10 @@ Event-driven reviews aren't full annual reviews. They're targeted: what changed,
 
 Some numbers invite checking without rewarding you for it:
 
-- **Daily portfolio value.** You are not a day trader. Daily values are noise
+- **Daily portfolio value.** For a long-term investor, daily values are noise
 - **Individual stock prices** (if you hold index funds). The fund is the position; the stocks inside it are implementation detail
 - **News about specific markets.** Most market news is entertainment. Very little of it requires action from a long-term investor
-- **Your friends' finances.** Comparison is a drag on clarity. Social-proof-driven decisions are among the worst category of financial decisions
+- **Your friends' finances.** Comparison is a drag on clarity. Decisions driven by what others are doing tend to go badly, as the [herd behaviour lesson](/blog/herd-behavior-and-fomo/) explains
 
 Removing these from your attention isn't neglect. It's focus.
 

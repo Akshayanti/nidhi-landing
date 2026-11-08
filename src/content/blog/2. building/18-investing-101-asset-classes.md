@@ -12,7 +12,7 @@ takeaways:
   - "Why no single asset class wins in every economic condition"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [deposit-protection, tax, investments]
 level: "building"
 primaryPersona: "eva"
@@ -72,7 +72,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 - **Capital appreciation**: The stock price rises over time as the company grows
 - **Dividends**: Regular cash payments from company profits (not all companies pay dividends)
 
-**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets are more volatile with similar real returns on average). This is higher than any other major asset class.
+**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets are more volatile with similar real returns on average). That has been higher than the other major asset classes over the long run, though not in every decade.
 
 **Volatility**: High. In any given year, a diversified stock portfolio might gain 25% or lose 30%. Individual stocks can swing far more. Broad stock indices (the S&P 500 in the US, the FTSE All-Share in the UK, the STOXX Europe 600 across Europe, the Nifty 50 in India, the MSCI World for a global developed-market view) have historically had negative years roughly one out of every four.
 
@@ -84,7 +84,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 | Historical real return | ~4-6% per year (developed markets) |
 | Volatility | High (15-25% annual swings typical) |
 | Liquidity | High (traded daily on exchanges) |
-| Time horizon | 5+ years minimum, ideally 10+ |
+| Time horizon | Commonly 5+ years, often 10+ |
 
 **Why they matter**: Stocks have been the primary driver of long-term wealth creation. Over most 20+ year periods they have beaten bonds and cash, though there have been long stretches, in Japan and elsewhere, when they did not.
 
@@ -153,7 +153,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 - **Interest**: Small, predictable payments from the bank or government
 
-**Historical returns**: 0-2% in real terms. Often below inflation, meaning negative real returns.
+**Historical returns**: around 0-2% a year after inflation over the long run in many countries, and negative in periods when inflation outpaces interest rates.
 
 **Volatility**: Near zero. Your €10,000 will still be €10,000 tomorrow (in nominal terms).
 
@@ -162,14 +162,14 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 | Feature | Detail |
 |---------|--------|
 | Return type | Interest |
-| Historical real return | 0-2% (often negative after inflation) |
+| Historical real return | 0-2% long run (negative in high-inflation periods) |
 | Volatility | Near zero |
 | Liquidity | Very high (instant access) |
 | Time horizon | Immediate to 1 year |
 
 **Why they matter**: Cash equivalents are where you park money you need soon: your [emergency fund](/blog/emergency-fund/), your next month's rent, your buffer for unexpected expenses. They're not investments in the growth sense. They're a holding place.
 
-**The catch**: As we've seen in the [purchasing power post](/blog/purchasing-power/), cash loses real value every year. Holding too much cash for too long is a guaranteed slow loss.
+**The catch**: As we've seen in the [purchasing power post](/blog/purchasing-power/), cash loses real value every year. Holding a lot of cash for a long time tends to be a slow loss whenever interest rates trail inflation.
 
 ## How they compare
 
@@ -179,7 +179,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |
-| **Best for** | Long-term growth | Stability, income | Income + appreciation | Short-term safety |
+| **Common role** | Long-term growth | Stability, income | Income + appreciation | Short-term safety |
 
 *Returns shown are historical averages. Past performance is not indicative of future results.*
 

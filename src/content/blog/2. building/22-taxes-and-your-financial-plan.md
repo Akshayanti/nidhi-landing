@@ -14,7 +14,7 @@ takeaways:
   - "Why planning in after-tax terms gives a more realistic picture"
 order: 22
 pubDate: 2026-06-05
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [tax]
 level: "building"
 primaryPersona: "eva"
@@ -26,7 +26,7 @@ faq:
   - question: "How much do taxes reduce investment returns over time?"
     answer: "More than most people expect, because the drag compounds. A hypothetical 7% return taxed at 25% as it accrues compounds at only 5.25%. That sounds small but is not over decades. On 10,000 euros, the gap between 7% untaxed and 5.25% with tax drag is about 3,000 euros after 10 years, nearly 11,000 after 20 years, and over 72,000 after 40 years. With the same starting amount, horizon, and market returns, tax drag in this harsh example cuts the final amount roughly in half over 40 years; real-world drag is often smaller but still compounds. This is why tax treatment is not a minor detail: it sits inside the compounding engine of the entire plan."
   - question: "What is the difference between gross and net, and which should I plan in?"
-    answer: "Gross is money before tax; net is money after tax. Plan in net terms, because that is the money you actually control. Your expenses are paid in already-taxed euros, so a 30,000 euro lifestyle is funded with net money. Your savings rate is best calculated on after-tax income, since what you can save is what is left after income tax. Long-term retirement targets must generate enough after-tax income to cover after-tax expenses. The common mental shortcut, gross salary times years compounded somehow, is almost always too optimistic because it ignores the layers of tax between gross income and actual lifestyle funding."
+    answer: "Gross is money before tax; net is money after tax. Planning in net terms tends to be more realistic, because that is the money you actually control. Your expenses are paid in already-taxed euros, so a 30,000 euro lifestyle is funded with net money. Your savings rate is best calculated on after-tax income, since what you can save is what is left after income tax. Long-term retirement targets must generate enough after-tax income to cover after-tax expenses. The common mental shortcut, gross salary times years compounded somehow, is almost always too optimistic because it ignores the layers of tax between gross income and actual lifestyle funding."
   - question: "How do tax-advantaged accounts reduce the tax drag?"
     answer: "Most fall into two patterns. Pattern one: contribute pre-tax, pay tax on withdrawal. Money goes in before income tax, grows untaxed, and is taxed as income when you withdraw in retirement, usually at a lower rate if retirement income is lower than working income. Pattern two: contribute post-tax, withdraw tax-free. Money goes in already taxed, grows untaxed, and nothing more is owed at withdrawal. Both protect investment growth from the year-by-year tax drag that would otherwise cut your compounding rate, which is worth a lot over long horizons. The trade-off is access: these accounts typically lock money up or penalize early withdrawal, making them suited for long-term goals."
   - question: "Why does capital gains treatment affect how I manage a portfolio?"
@@ -77,7 +77,7 @@ The mental model people slip into (gross salary times years of work, compounded 
 
 ## How taxes erode investment returns
 
-The single most important concept in this post is the difference between a nominal return and an after-tax return.
+A central concept in this post is the difference between a nominal return and an after-tax return.
 
 Imagine an investment earning 7% per year (a hypothetical figure used for illustration, not a return you should expect; actual returns vary and can be negative). If the returns are taxed at 25% as they accrue, the effective compounding rate drops to 5.25%. That sounds small. Over decades, it's not.
 
@@ -119,7 +119,7 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- An employer match is a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules or a need for liquidity can change the picture. A later post covers common priority orders across account types
+- An employer match is often a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules or a need for liquidity can change the picture. A later post covers common priority orders across account types
 - Default contribution settings are often set low. Many plans allow contributing more than the default, and every extra euro inside the shelter grows tax-advantaged for decades, at the cost of locking it up
 
 The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.
@@ -131,7 +131,7 @@ When you sell an investment for more than you paid, the profit is a capital gain
 Key principles that tend to hold broadly:
 
 - **Gains are only realized on sale.** Holding an investment that has risen in value doesn't trigger tax. Selling it does
-- **Holding period rules vary widely.** In some jurisdictions (US, India, others), long-term capital gains are taxed more favourably than short-term gains, rewarding buy-and-hold behaviour; Czechia goes further and exempts gains on listed securities held more than 3 years, capped from 2025 at CZK 40 million of exempted gains per year. In others (UK, Germany), the rate is flat regardless of holding period. Look up how your country handles this
+- **Holding period rules vary widely.** In some jurisdictions (US, India, others), long-term capital gains are taxed more favourably than short-term gains, rewarding buy-and-hold behaviour; Czechia goes further and exempts income from selling securities held more than 3 years (a CZK 40 million annual cap introduced in 2025 was lifted for securities from 2026). In others (UK, Germany), the rate is flat regardless of holding period. Look up how your country handles this
 - **Losses can often offset gains.** Realized capital losses may reduce the tax due on realized gains, sometimes within the same year, sometimes carried forward
 - **Unrealized gains don't show up until sold.** This matters for rebalancing decisions. Selling to rebalance a portfolio can trigger tax; doing it inside a tax-advantaged account or using new contributions to rebalance often avoids that
 
@@ -153,7 +153,7 @@ The order in which you withdraw from different account types in retirement (with
 - **Planning with gross numbers.** "I earn €60,000" doesn't tell you anything actionable. What you can save, spend, and invest is the after-tax number, which is why plans built in net terms tend to be more realistic
 - **Ignoring tax drag on investments.** A portfolio that earns 7% is not the same as a portfolio that yields 7% in your pocket. The gap is tax
 - **Skipping the employer match.** The match is an immediate after-tax return it's very hard to beat elsewhere
-- **Leaving tax-advantaged contribution room on the table.** Contribution limits are "use it or lose it" in many systems. Leaving them unused trades decades of tax-sheltered growth for extra flexibility today, a trade that only makes sense if you genuinely need the access
+- **Leaving tax-advantaged contribution room on the table.** Contribution limits are "use it or lose it" in many systems (the UK ISA allowance, for example), though some, such as Canada's RRSP and TFSA and Australia's concessional super contributions (for up to five years, if your super balance is under A$500,000), let unused room carry forward. Leaving them unused trades decades of tax-sheltered growth for extra flexibility today, a trade worth making deliberately, whether for access, expected tax rates later or the products on offer
 - **Assuming retirement income is tax-free.** Depending on account mix, a surprising amount of retirement income can be taxable, which after-tax planning brings into view
 - **Trading frequently in taxable accounts.** Every realized gain is a taxable event. Frequent trading turns paper gains into smaller after-tax gains, sometimes dramatically
 - **Ignoring cross-border tax complications.** Living in one country and holding investments in another can introduce double taxation, reporting obligations, or unfavorable treatment. If your life spans borders, it's worth understanding your specific situation before making large moves
@@ -194,4 +194,4 @@ The general rule: no blog post can replace jurisdiction-specific advice for larg
 
 Tax isn't glamorous. It's also one of the most consistent forces shaping long-term outcomes, alongside savings rate and time. Every gross number you see in financial content hides a net number underneath; every projection that ignores tax is optimistic by a predictable amount. Planning in net terms, using tax-advantaged accounts where they fit, and understanding the structural differences between account types closes most of the gap.
 
-This post stayed deliberately abstract: patterns and principles, no jurisdiction-specific products. The next post gets concrete. Every developed economy has purpose-built accounts that put those patterns into practice (401(k), ISA, SIPP, NPS, Roth IRA, TFSA, RRSP, EPF, Superannuation, ELSS, and many more). Picking the right one and contributing to them in the right order is often the highest-leverage tax decision a new investor makes.
+This post stayed deliberately abstract: patterns and principles, no jurisdiction-specific products. The next post gets concrete. Every developed economy has purpose-built accounts that put those patterns into practice (401(k), ISA, SIPP, NPS, Roth IRA, TFSA, RRSP, EPF, Superannuation, ELSS, and many more). Which ones exist where you live, and the order people commonly fill them in, can be one of the larger tax decisions a new investor makes.

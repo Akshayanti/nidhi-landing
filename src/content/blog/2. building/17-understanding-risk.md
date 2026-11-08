@@ -13,7 +13,7 @@ takeaways:
   - "Why keeping everything in cash carries its own risk"
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-10-07
+updatedDate: 2026-11-08
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -49,7 +49,7 @@ You've been told stocks are "risky" and savings accounts are "safe." So you keep
 
 Meanwhile, your colleague invested in a diversified portfolio (a mix of investments chosen so no single one can sink her). It dropped 15% one year, gained 22% the next, and over the decade averaged 7% annually. Her money doubled. Your "safe" approach was the riskier one.
 
-This is the problem with how most people think about risk. They confuse volatility with danger. They see any fluctuation as a threat. And they make decisions that protect them from the wrong thing.
+This is a common problem with how people think about risk. They confuse volatility with danger. They see any fluctuation as a threat. And they make decisions that protect them from the wrong thing.
 
 ## What risk actually means
 
@@ -82,7 +82,7 @@ A common principle is to let whichever is lower set the limit.
 
 ## How time transforms risk
 
-This is one of the most important ideas in understanding risk: time changes the picture.
+Time changes the picture, and this is a central idea in understanding risk.
 
 Over any single year, the stock market can lose 30-40% of its value. That's happened multiple times in history. If you need your money in one year, investing is genuinely risky.
 
@@ -92,17 +92,17 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 
 | Time Horizon | Worst Historical Return (stocks, annualized) | Best Historical Return | Range |
 |---|---|---|---|
-| 1 year | -43% | +54% | 97 percentage points |
-| 5 years | -7% | +28% | 35 percentage points |
-| 10 years | -3% | +19% | 22 percentage points |
-| 20 years | +2% | +17% | 15 percentage points |
+| 1 year | -44% | +53% | 97 percentage points |
+| 5 years | -13% | +28% | 41 percentage points |
+| 10 years | -2% | +20% | 22 percentage points |
+| 20 years | +2% | +18% | 16 percentage points |
 
-*Based on historical returns of broad US stock market indices over the post-1926 period. Past performance does not indicate future results, and individual non-US markets have had 20-year cohorts with negative real returns (Japan after 1989 is the most cited example). The "time narrows risk" effect is robust on average but is not a guarantee for any single market over any single window.*
+*S&P 500 total returns with dividends reinvested, before inflation, for every rolling period from 1928 to 2025 (annual data compiled by Aswath Damodaran, NYU Stern). Past performance does not indicate future results, and individual non-US markets have had 20-year cohorts with negative real returns (Japan after 1989 is the most cited example). The "time narrows risk" effect is robust on average but is not a guarantee for any single market over any single window.*
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-time-title fig-time-desc">
   <title id="fig-time-title">Time narrows the range of stock returns</title>
-  <desc id="fig-time-desc">Annualized stock returns over a single year have ranged from roughly minus forty-three percent to plus fifty-four percent in historical data. Over five-year holding periods the range narrows to roughly minus seven to plus twenty-eight. Over ten years it narrows further. Over twenty-year holding periods every observed range was positive, between roughly two and seventeen percent.</desc>
+  <desc id="fig-time-desc">Annualized stock returns over a single year have ranged from roughly minus forty-four percent to plus fifty-three percent in US data since 1928. Over five-year holding periods the range narrows to roughly minus thirteen to plus twenty-eight. Over ten years it narrows further. Over twenty-year holding periods every observed range was positive, between roughly two and eighteen percent.</desc>
   <text class="fig-title" x="360" y="48" text-anchor="middle">Time narrows the range</text>
   <text class="fig-subtitle" x="360" y="76" text-anchor="middle">Range of historical annualized stock returns by holding period</text>
   <text class="fig-tick" x="190" y="108" text-anchor="start">losses</text>
@@ -110,19 +110,19 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
   <line x1="400" y1="118" x2="400" y2="305" class="fig-stroke-rule" stroke-dasharray="3 4" />
   <text class="fig-tick" x="400" y="324" text-anchor="middle">0%</text>
   <text class="fig-sublabel" x="100" y="138" text-anchor="end">1 year</text>
-  <rect class="fig-fill-warn" x="185" y="126" width="215" height="22" rx="2" />
-  <rect class="fig-fill-blue" x="400" y="126" width="270" height="22" rx="2" />
+  <rect class="fig-fill-warn" x="180" y="126" width="220" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="400" y="126" width="265" height="22" rx="2" />
   <text class="fig-sublabel" x="100" y="186" text-anchor="end">5 years</text>
-  <rect class="fig-fill-warn" x="365" y="174" width="35" height="22" rx="2" />
+  <rect class="fig-fill-warn" x="335" y="174" width="65" height="22" rx="2" />
   <rect class="fig-fill-blue" x="400" y="174" width="140" height="22" rx="2" />
   <text class="fig-sublabel" x="100" y="234" text-anchor="end">10 years</text>
-  <rect class="fig-fill-warn" x="385" y="222" width="15" height="22" rx="2" />
-  <rect class="fig-fill-blue" x="400" y="222" width="95" height="22" rx="2" />
+  <rect class="fig-fill-warn" x="390" y="222" width="10" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="400" y="222" width="100" height="22" rx="2" />
   <text class="fig-sublabel" x="100" y="282" text-anchor="end">20 years</text>
-  <rect class="fig-fill-blue" x="410" y="270" width="75" height="22" rx="2" />
+  <rect class="fig-fill-blue" x="410" y="270" width="80" height="22" rx="2" />
   <text class="fig-quote-small" x="360" y="358" text-anchor="middle">As the horizon grows, the negative tail shrinks; in US data it was gone by 20 years.</text>
 </svg>
-<figcaption>Illustrative; based on broad historical equity index returns. Bar widths represent the historical range, not a forecast.</figcaption>
+<figcaption>S&amp;P 500 total returns before inflation, every rolling period from 1928 to 2025 (Damodaran, NYU Stern). Bar widths show the historical range, not a forecast.</figcaption>
 </figure>
 
 The pattern is clear: the longer you hold, the narrower the range of outcomes, and the more likely those outcomes are positive. Time doesn't eliminate risk, but it dramatically changes its character.
@@ -138,7 +138,7 @@ As we covered in the [purchasing power post](/blog/purchasing-power/), inflation
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
 | Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms at 4-6%, not guaranteed |
-| Keep in savings | Purchasing power erosion | Certain | €10,000 becomes ~€7,400 in real terms |
+| Keep in savings | Purchasing power erosion | Certain while the rate stays below inflation | €10,000 becomes ~€7,400 in real terms |
 | Keep as cash | Inflation + no interest | Certain | €10,000 becomes ~€6,100 in real terms |
 
 Avoiding risk isn't automatically the safe choice. Over long periods it often means accepting a likely slow loss to avoid the turbulence that comes with a probable gain.
@@ -163,15 +163,15 @@ Not all risks are equal or come from the same place.
 
 Here's the fundamental relationship: risk and return are linked. Higher potential returns come with higher uncertainty. Lower uncertainty means lower potential returns.
 
-| Asset Type | Historical Annual Return | Volatility (typical annual range) |
+| Asset Type | Historical annual return after inflation (long run) | Volatility (typical annual range) |
 |---|---|---|
 | Cash / savings | 0-2% | Near zero |
-| Government bonds | 2-4% | Low (5-10%) |
-| Corporate bonds | 3-5% | Moderate (5-15%) |
-| Diversified stocks | 4-6% (real*, developed markets) | High (15-25%) |
+| Government bonds | ~1-2% | Low (5-10%) |
+| Corporate bonds | A little above government bonds | Moderate (5-15%) |
+| Diversified stocks | 4-6% (developed markets) | High (15-25%) |
 | Individual stocks | Varies widely | Very high (30%+) |
 
-*Returns shown are historical averages, inflation-adjusted where marked "real" (purchasing-power change, not paper change). Past performance is not indicative of future results.*
+*Long-run historical averages after inflation (purchasing-power change, not paper change), based on Dimson, Marsh and Staunton's data since 1900; the same figures as the [asset classes lesson](/blog/investing-101-asset-classes/). Past performance is not indicative of future results.*
 
 You can't get stock-like returns with savings-account-like stability. Anyone promising that is either confused or dishonest. Understanding this trade-off is essential: you're not avoiding risk. You're choosing which type and how much.
 

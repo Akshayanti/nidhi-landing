@@ -13,7 +13,7 @@ takeaways:
   - "Why many people rebalance in tax-advantaged accounts first"
 order: 24
 pubDate: 2026-06-10
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [tax]
 level: "building"
 primaryPersona: "eva"
@@ -23,11 +23,11 @@ faq:
   - question: "What is portfolio rebalancing and why does it matter?"
     answer: "Rebalancing is the discipline of pulling your portfolio back to its target allocation on a schedule, regardless of what markets have been doing. Over time, market movements drift your portfolio away from target: a 70/30 stocks/bonds split can become 80/20 after a strong equity year. Your account value rises so nothing looks wrong, but your risk profile has quietly become more aggressive than the one you chose. Rebalancing fixes two problems: higher risk than intended, which means a larger drawdown than planned in the next downturn, and the loss of built-in buy-low, sell-high discipline. The primary benefit is risk control, not return enhancement; the return benefit exists but is small and statistically noisy."
   - question: "What are the three methods of rebalancing?"
-    answer: "Calendar-based: rebalance at fixed intervals, most commonly annually, by trading enough to return each asset class to its target percentage. It is simple and removes emotional timing, and is the standard recommendation for most individual investors. Threshold-based, or bands: rebalance whenever any asset drifts more than a set amount from target, commonly 5% absolute or 20% relative, doing nothing between breaches. It is responsive but requires more checking. Contribution-based: redirect new money to whichever asset is below target rather than selling what is above, which avoids capital gains tax in taxable accounts but only works while contributions are large relative to the drift. The three are not mutually exclusive."
+    answer: "Calendar-based: rebalance at fixed intervals, most commonly annually, by trading enough to return each asset class to its target percentage. It is simple and removes emotional timing, and is the usual approach in the index-investing literature. Threshold-based, or bands: rebalance whenever any asset drifts more than a set amount from target, commonly 5% absolute or 20% relative, doing nothing between breaches. It is responsive but requires more checking. Contribution-based: redirect new money to whichever asset is below target rather than selling what is above, which avoids capital gains tax in taxable accounts but only works while contributions are large relative to the drift. The three are not mutually exclusive."
   - question: "How often should I rebalance my portfolio?"
     answer: "Academic and industry research consistently finds that more frequent rebalancing does not meaningfully improve returns and often slightly hurts them after transaction costs and taxes. The sweet spot across most studies is annual calendar rebalancing, or 5% absolute threshold bands (or 20% relative), which produce very similar long-term outcomes. Quarterly rebalancing adds trading costs without clearly adding returns, and monthly rebalancing usually adds cost without clear benefit. The reason: markets have short-term momentum, so rebalancing too quickly means selling winners just as they keep winning and buying losers just as they keep losing. Annual or band-based rebalancing gives momentum time to play out while still catching meaningful drift."
   - question: "How do taxes affect where I should rebalance?"
-    answer: "Selling appreciated investments in a regular brokerage account can trigger capital gains tax, a real cost that shapes where people rebalance. Trades inside tax-advantaged accounts such as a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation typically do not trigger any current tax event, which is why many investors rebalance there first and most often. In taxable accounts, contribution-based rebalancing with new money is the common approach. When selling is unavoidable, long-held positions with large gains are more expensive to sell, some jurisdictions tax long-term holdings at reduced rates, and tax-loss harvesting can offset gains. How much any of this matters depends on your country's capital gains rules."
+    answer: "Selling appreciated investments in a regular brokerage account can trigger capital gains tax, a real cost that shapes where people rebalance. Trades inside tax-advantaged accounts such as a 401(k), IRA, SIPP, NPS, ISA or RRSP typically do not trigger any current tax event, which is why many investors rebalance there first and most often. In taxable accounts, contribution-based rebalancing with new money is the common approach. When selling is unavoidable, long-held positions with large gains are more expensive to sell, some jurisdictions tax long-term holdings at reduced rates, and tax-loss harvesting can offset gains. How much any of this matters depends on your country's capital gains rules."
   - question: "When should I not rebalance?"
     answer: "A few cases where the usual rules matter less. Small accounts: if fixed transaction costs are a meaningful percentage of trades, annual rebalancing can destroy more value than it protects, so use contribution-based methods. Near-retirement glide paths: if you are deliberately shifting toward bonds as you approach retirement, the target itself is moving and some apparent drift is intentional. Minor drift: 71/29 instead of 70/30 is not worth a trade. Right after a big drop: rebalancing then is mechanically correct but emotionally hard, and doing it gradually over a few months is acceptable if it keeps you in the plan. Avoid the opposite failure too: ignoring drift for years leaves you over-weight stocks."
 reelPromise: "All three rebalancing methods compared, a worked €100k example showing the exact trades, and where to rebalance first to avoid tax"
@@ -42,7 +42,7 @@ referentialReading:
     type: "paper"
 ---
 
-You set your portfolio at 70% stocks and 30% bonds. A year goes by. Stocks have had a great run, bonds have been flat. You check the balance: you're now at 78% stocks and 22% bonds. Your account value is up, so it feels like a win. But your *risk profile* has quietly changed. You're now holding a more aggressive portfolio than the one you chose, without ever deciding to.
+You set your portfolio at 70% stocks and 30% bonds. A year goes by. Stocks have had a great run, bonds have been flat. You check the balance: you're now at about 74% stocks and 26% bonds. Your account value is up, so it feels like a win. But your *risk profile* has quietly changed. You're now holding a more aggressive portfolio than the one you chose, without ever deciding to.
 
 That's the problem rebalancing solves. It's the discipline of pulling your portfolio back to its target allocation on a schedule, regardless of what markets have been doing. Done correctly, it's boring, automatic, and one of the few investment activities that genuinely matters.
 
@@ -54,7 +54,7 @@ Market movements don't care about your choice. Over any period longer than a few
 
 Two concrete consequences:
 
-**Higher risk than intended.** A portfolio that drifted from 70/30 to 85/15 over a long bull market is meaningfully more volatile than the one you originally chose. When the next downturn comes, the drawdown will be larger than you planned for. That's the point at which most drifted portfolios panic-sell at the worst time.
+**Higher risk than intended.** A portfolio that drifted from 70/30 to 85/15 over a long bull market is meaningfully more volatile than the one you originally chose. When the next downturn comes, the drawdown will be larger than you planned for. That is when many investors with drifted portfolios are tempted to sell at the worst time.
 
 **Missed "buy low, sell high" discipline.** Rebalancing is, by construction, a mechanism that sells whatever has gone up and buys whatever has gone down. It's not market timing; it's a systematic counterweight to the natural momentum bias in an unrebalanced portfolio. Over decades, research suggests this sometimes adds a small amount of return and more reliably reduces volatility.
 
@@ -63,22 +63,22 @@ The mistake to avoid here is treating rebalancing as a profit opportunity. The p
 <figure>
 <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-drift-title fig-drift-desc">
   <title id="fig-drift-title">Stocks slowly creeping above target across one year</title>
-  <desc id="fig-drift-desc">A portfolio targeted at 70 percent stocks drifts upward across twelve months, ending at roughly 78 percent stocks. Each individual month moves only a little; the cumulative trajectory is the trap.</desc>
+  <desc id="fig-drift-desc">A portfolio targeted at 70 percent stocks drifts upward across twelve months, ending at roughly 74 percent stocks. Each individual month moves only a little; the cumulative trajectory is the trap.</desc>
   <text class="fig-title" x="360" y="48" text-anchor="middle">Silent drift</text>
   <text class="fig-subtitle" x="360" y="76" text-anchor="middle">No single month looks wrong. The trajectory is the trap.</text>
   <line x1="120" y1="243" x2="620" y2="243" class="fig-stroke-rule" stroke-dasharray="3 5" />
   <text class="fig-tick" x="115" y="247" text-anchor="end">70% (target)</text>
-  <text class="fig-tick" x="625" y="172" text-anchor="start">78%</text>
-  <path class="fig-stroke-blue" stroke-width="3" stroke-linecap="round" fill="none" d="M 120 243 C 270 240 470 220 620 168" />
+  <text class="fig-tick" x="625" y="209" text-anchor="start">74%</text>
+  <path class="fig-stroke-blue" stroke-width="3" stroke-linecap="round" fill="none" d="M 120 243 C 270 241 470 231 620 205" />
   <circle cx="120" cy="243" r="6" class="fig-fill-blue" />
-  <circle cx="240" cy="237" r="3.5" class="fig-fill-blue" opacity="0.45" />
-  <circle cx="370" cy="224" r="3.5" class="fig-fill-blue" opacity="0.6" />
-  <circle cx="500" cy="201" r="3.5" class="fig-fill-blue" opacity="0.78" />
-  <circle cx="620" cy="168" r="6" class="fig-fill-blue" />
+  <circle cx="240" cy="240" r="3.5" class="fig-fill-blue" opacity="0.45" />
+  <circle cx="370" cy="234" r="3.5" class="fig-fill-blue" opacity="0.6" />
+  <circle cx="500" cy="222" r="3.5" class="fig-fill-blue" opacity="0.78" />
+  <circle cx="620" cy="205" r="6" class="fig-fill-blue" />
   <text class="fig-tick" x="120" y="295" text-anchor="middle">Month 0</text>
   <text class="fig-tick" x="370" y="295" text-anchor="middle">Month 6</text>
   <text class="fig-tick" x="620" y="295" text-anchor="middle">Month 12</text>
-  <text class="fig-quote-small" x="360" y="335" text-anchor="middle">Stocks +20% across the year, bonds flat. Same total value. More risk.</text>
+  <text class="fig-quote-small" x="360" y="335" text-anchor="middle">Stocks +20% across the year, bonds flat. A bigger balance, and more risk.</text>
 </svg>
 <figcaption>Illustrative path of the % of stocks in a 70/30 portfolio over twelve months of strong equity returns. The line never jumps; it just won't stop creeping.</figcaption>
 </figure>
@@ -102,7 +102,7 @@ Rebalance at fixed intervals: annually is most common, sometimes semi-annually o
 - Fixed schedule can miss large mid-year drifts if markets move sharply.
 - Forces trades even when the drift is tiny and the transaction doesn't really matter.
 
-**Best for:** Most individual investors. Annual calendar rebalancing is the standard recommendation in most index-investing literature.
+**Commonly used by:** Most individual investors in the index-investing literature, where annual calendar rebalancing is the usual suggestion.
 
 ### Threshold-based rebalancing (bands)
 
@@ -119,7 +119,7 @@ Rebalance whenever any asset class drifts more than a set amount from its target
 - Requires more frequent checking (monthly or quarterly).
 - Decision rule has to be followed honestly; it's tempting to move the bands when emotions run high.
 
-**Best for:** Investors who check portfolios more regularly anyway and are disciplined enough to follow the rule rather than adjust it.
+**Suits:** Investors who check portfolios more regularly anyway and are disciplined enough to follow the rule rather than adjust it.
 
 ### Contribution-based rebalancing
 
@@ -137,7 +137,7 @@ Rebalance by redirecting new money to whichever asset class is currently below t
 - Can take many months to close a large gap, during which the portfolio sits at the wrong allocation.
 - Doesn't work once you've stopped contributing (in retirement or during a career break).
 
-**Best for:** Accumulation-phase investors with regular contributions, especially for the taxable portion of their portfolio.
+**Suits:** Accumulation-phase investors with regular contributions, especially for the taxable portion of their portfolio.
 
 ## A worked example
 
@@ -164,7 +164,7 @@ What did that accomplish? You didn't "miss out" on any gains; you still have the
 
 Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost, and it shapes *where* people usually rebalance.
 
-**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA, RRSP, or Superannuation account typically don't trigger any current tax event, which is why many investors rebalance there first and most often.
+**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA or RRSP typically don't trigger any current tax event (Australian super is an exception: realised gains are taxed inside the fund before retirement), which is why many investors rebalance there first and most often.
 
 **In taxable accounts: contribution-based rebalancing is the common approach.** New money avoids selling. When selling is unavoidable, a few factors shape the tax cost:
 
@@ -173,6 +173,8 @@ Selling appreciated investments in a regular brokerage account can trigger capit
 - Tax-loss harvesting (selling losing positions to offset gains elsewhere) can reduce the tax impact of rebalancing if you have losses available
 
 **The asymmetry matters.** Holding the same asset allocation across tax-advantaged and taxable accounts creates flexibility. The usual pattern is to rebalance in the tax-advantaged wrapper first and touch the taxable account only when that alone can't close the gap. How much this saves depends on your country's capital gains rules: rates, holding-period rules and limits on harvesting losses are set nationally.
+
+A few examples of how far apart they are. In the Netherlands, ordinary investments are taxed each year on a deemed return on their value (Box 3), not when you sell (or on the actual return, if that is lower and you can show it), so rebalancing in a regular account adds no tax today (a move to taxing actual returns is planned from 2028). In Germany, gains are taxed at a flat 25% plus solidarity surcharge once capital income passes the €1,000 annual allowance (€2,000 for couples). In the UK, sales inside an ISA or pension carry no capital gains tax, while sales in a regular account count against a small annual exempt amount of £3,000.
 
 ## Frequency: what the evidence says
 

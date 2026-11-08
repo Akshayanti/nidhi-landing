@@ -13,7 +13,7 @@ takeaways:
   - "How reading the metrics together reveals the real story"
 order: 31
 pubDate: 2026-06-26
-updatedDate: 2026-10-09
+updatedDate: 2026-11-08
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -46,7 +46,7 @@ Your net worth is €150,000. Is that good? It's impossible to say without conte
 
 Net worth is a snapshot. Ratios are the diagnosis. A handful of them, together, tell you whether your finances are healthy, where they're drifting, and what to adjust while the fix is still small.
 
-This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator.
+This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator: Ireland limits most first-time buyer mortgages to 4 times gross income, and in the UK, mortgages at 4.5 times income or more are limited to about 15% of new lending across the market.
 
 ## Why ratios beat single numbers
 
@@ -187,7 +187,7 @@ Put them all together and you have a one-page health check:
 | Debt-to-income ratio | <35% | | |
 | Income replacement ratio | Growing over time | | |
 
-Run this once a year at minimum; quarterly is better once you have the habit. The goal isn't to be in the ideal zone on all six simultaneously. That's rare for real people at any stage of life. It's to know where you are, which direction each metric is trending, and to catch drift early.
+Many people run this once a year, and some quarterly once the habit sticks. The goal isn't to be in the ideal zone on all six simultaneously. That's rare for real people at any stage of life. It's to know where you are, which direction each metric is trending, and to catch drift early.
 
 ## How to read the whole picture
 

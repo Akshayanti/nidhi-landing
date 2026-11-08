@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-08',
     items: [
       {
+        id: 'building-lessons-more-countries',
+        text: {
+          en: 'The sixteen lessons on building your finances now say more about how the rules differ by country, such as public pensions, fees for repaying a loan early, minimum deposits and crypto taxes. A few figures are corrected too, including the table of historical stock returns in the lesson on risk.',
+          es: 'Las dieciséis lecciones para construir tus finanzas explican ahora mejor cómo cambian las reglas de un país a otro, por ejemplo las pensiones públicas, las penalizaciones por pago anticipado de un préstamo, la entrada mínima para una vivienda y los impuestos sobre las criptomonedas. También se han corregido algunas cifras, entre ellas la tabla de rentabilidades históricas de las acciones en la lección sobre el riesgo.',
+          cs: 'Šestnáct lekcí o budování vlastních financí teď víc vysvětluje, jak se pravidla liší podle země, například státní důchody, poplatky za předčasné splacení úvěru, minimální vlastní zdroje na hypotéku a daně z kryptoměn. Opravena je také řada čísel, mimo jiné tabulka historických výnosů akcií v lekci o riziku.',
+          mr: 'आर्थिक पाया घडवण्यावरील सोळा धडे आता नियम देशानुसार कसे बदलतात हे अधिक सांगतात, जसे सरकारी पेन्शन, कर्जाच्या मुदतपूर्व परतफेडीवरील दंड, घरासाठी किमान डाउन पेमेंट आणि क्रिप्टोवरील कर. काही आकडेही दुरुस्त केले आहेत, त्यात जोखमीवरील धड्यातील शेअर्सच्या ऐतिहासिक परताव्याची तालिकाही आहे.',
+          hi: 'अपनी वित्तीय नींव बनाने वाले सोलह पाठ अब ज़्यादा बताते हैं कि नियम देश के हिसाब से कैसे बदलते हैं, जैसे सरकारी पेंशन, कर्ज़ के समय से पहले भुगतान पर लगने वाली फ़ीस, घर के लिए न्यूनतम डाउन पेमेंट और क्रिप्टो पर टैक्स। कुछ आँकड़े भी सुधारे गए हैं, जिनमें जोखिम वाले पाठ में शेयरों के ऐतिहासिक रिटर्न की तालिका भी है।',
+        },
+      },
+      {
         id: 'psychology-lessons-evidence',
         text: {
           en: 'The ten psychology lessons now say more about the evidence behind their claims and where it stops, and less about what you should do. The lesson on building an anti-bias financial life now notes where the law already makes retirement saving automatic or compulsory, as in the UK, New Zealand and Australia.',
