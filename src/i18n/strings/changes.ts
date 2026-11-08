@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-08',
+    items: [
+      {
+        id: 'beta-daily-invites',
+        text: {
+          en: 'The planner beta page now says how invites will go out: once the beta opens, planned for January 2027, I’ll send them in small daily batches, so I can help each person get started. It no longer says access may open earlier.',
+          hi: 'प्लानर बीटा पेज पर अब लिखा है कि निमंत्रण कैसे भेजे जाएँगे: बीटा को जनवरी 2027 में खोलने की योजना है, और खुलने के बाद निमंत्रण रोज़ थोड़े-थोड़े करके भेजे जाएँगे, ताकि हर व्यक्ति को शुरुआत में मदद मिल सके। अब वहाँ यह नहीं लिखा कि पहुँच इससे पहले खुल सकती है।',
+          es: 'La página de la beta del planificador explica ahora cómo llegarán las invitaciones: cuando se abra la beta, prevista para enero de 2027, las enviaré en pequeños grupos cada día, para poder ayudar a cada persona a empezar. Ya no dice que el acceso pueda abrirse antes.',
+          cs: 'Stránka o betě plánovače teď vysvětluje, jak budu rozesílat pozvánky: beta se má otevřít v lednu 2027 a pak budu pozvánky rozesílat každý den po malých dávkách a budu tak mít čas pomoct každému se začátkem. Už na ní nestojí, že se přístup může otevřít dřív.',
+          mr: 'प्लॅनर बीटा पानावर आता आमंत्रणे कशी पाठवली जातील हे स्पष्ट केले आहे: बीटा जानेवारी 2027 मध्ये सुरू करण्याचे नियोजन आहे, आणि तो सुरू झाल्यावर आमंत्रणे दररोज थोडी-थोडी पाठवली जातील, जेणेकरून प्रत्येक व्यक्तीला सुरुवात करताना मदत मिळू शकेल. प्रवेश त्याआधी सुरू होऊ शकतो, असे आता तिथे लिहिलेले नाही.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-06',
     items: [
       {

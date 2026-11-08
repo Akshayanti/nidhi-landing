@@ -401,7 +401,7 @@ export const cs: Dict = {
       description: "Beta plánovače nidhi je zdarma a jen na pozvánku. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
     },
     title: "Beta plánovače",
-    lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevřít se má v lednu 2027. Přístup se může otevírat i dřív, postupně.",
+    lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevřít se má v lednu 2027. Až se otevře, budu pozvánky rozesílat každý den po malých dávkách a budu tak mít čas pomoct každému se začátkem.",
     getHeading: "Co v betě získáte",
     get: {
       during: "Placené funkce jsou během bety zdarma.",

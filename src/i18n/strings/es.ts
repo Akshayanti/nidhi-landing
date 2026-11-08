@@ -426,7 +426,7 @@ export const es: Dict = {
       description: "Beta gratuita del planificador de nidhi, solo por invitación. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
     },
     title: "La beta del planificador",
-    lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y está previsto que se abra en enero de 2027. El acceso puede abrirse antes, por etapas.",
+    lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y está previsto que se abra en enero de 2027. Cuando se abra, enviaré las invitaciones en pequeños grupos cada día, para poder ayudar a cada persona a empezar.",
     getHeading: "Qué reciben quienes prueban la beta",
     get: {
       during: "Las funciones de pago son gratuitas durante la beta.",

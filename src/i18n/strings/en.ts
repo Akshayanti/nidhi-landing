@@ -529,7 +529,7 @@ export const en = {
       description: "The nidhi planner beta is free and invite-only, through the waitlist. Paid features stay free for 12 months after launch.",
     },
     title: "The planner beta",
-    lead: "I'm building a planner for real lives: what you own, owe, earn and expect to spend in one place, in one currency or several, projected forward with the assumptions shown. The beta is free and is planned to open in January 2027. Access may open earlier, in stages.",
+    lead: "I'm building a planner for real lives: what you own, owe, earn and expect to spend in one place, in one currency or several, projected forward with the assumptions shown. The beta is free and is planned to open in January 2027. Once it opens, I'll send invites in small daily batches, so I can help each person get started.",
     getHeading: "What beta testers get",
     get: {
       during: "The paid features are free during the beta.",
