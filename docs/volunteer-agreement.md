@@ -61,7 +61,7 @@ How the sheets work, step by step, is in `docs/plans/volunteer-review-material.m
 - **Review copy:** one per volunteer and batch, link-shared.
 - **Master:** one private file per review copy (snapshot, review, register tabs), named with the copy code.
 - **Compare sheet:** one separate link-shared file per volunteer and round, when several volunteers work on a language.
-- **Published wording log:** one private sheet per language with a row for each accepted and published wording (Ref, wording, copy code, batch, date sent, agreement version). It holds no other part of a batch.
+- **Published wording log:** one private sheet per language with a row for each accepted and published wording (Ref, wording, copy code, batch, date sent, agreement version, and the Gmail message ID of the person's "I agree" reply). It holds no other part of a batch. The message ID is what still connects published wording to its permission after a removal deletes the Review copies column.
 - **Export manifests and run logs:** kept outside the repo, keyed by copy code; temporary files the scripts make are deleted at the end of each run.
 
 The parts that touch this sheet:
@@ -77,9 +77,9 @@ Sort by Last contact. For anyone last contacted more than two years ago, do the 
 
 ### When someone asks to be removed
 
-Within 30 days, in this order:
+Within 30 days of the request (on the day itself when the monthly check finds two years without contact), in this order:
 
-1. **Review data:** for each code in their Review copies (closed and replaced copies too), delete the review copy and its master file. Delete every Compare sheet that shows their suggestions, and send the other volunteers a new one without them if the round is still open. Delete their entries in the export manifests and run logs. In the published wording log, keep their rows (the permission record for published work); delete nothing else that identifies them.
+1. **Review data:** for each code in their Review copies (closed and replaced copies too), delete the review copy and its master file. Delete every Compare sheet that shows their suggestions, and send the other volunteers a new one without them if the round is still open. Delete their entries in the export manifests and run logs. Keep only their rows in the published wording log (with the reference to their "I agree" email). Delete all other review data associated with their copy codes.
 2. **Drive trash:** empty it (drive.google.com → Bin → Empty bin), so the deleted files are not kept the extra 30 days. After that, Google lets an admin restore them for 25 more days; the notice says so.
 3. **The form:** delete their row in this sheet and their Form response (Form → Responses). Deleting only the row leaves a copy in the Form.
 4. **Credit:** remove any credit from the site.

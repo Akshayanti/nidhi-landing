@@ -134,7 +134,7 @@ The owner does every deletion, by hand, within 30 days of a removal request, or 
 | Archived rounds (closed copies kept for reference) | Same as a review copy | Deleted with the volunteer's other material; archived rounds are kept at most until the round's changes ship |
 | Master files | One private file per review copy: snapshot, verdicts, dates, decisions | Deleted with the copy (whole file) |
 | Submitted snapshots | Each submitted batch as it stood | Deleted, except for wording that was accepted and published |
-| Published wording log | One private sheet per language: for accepted and published wording only, Ref, wording, copy code, batch, date sent, agreement version; no other part of a batch | Kept while the wording is used and then only as long as reasonably necessary for legal claims, as the permission record is today |
+| Published wording log | One private sheet per language: for accepted and published wording only, Ref, wording, copy code, batch, date sent, agreement version and the Gmail message ID of the "I agree" reply (so the row still points to its permission after a removal); no other part of a batch | Kept while the wording is used and then only as long as reasonably necessary for legal claims, as the permission record is today |
 | Copy map | Copy ID to volunteer | The row is deleted |
 | Private export manifests and run logs | Refs, fingerprints, copy IDs, round | Their entries for that copy ID are deleted; manifests older than the last closed round are deleted |
 | Local files made by the scripts | Temporary CSV or JSON | Never kept: deleted at the end of each run, never committed |
