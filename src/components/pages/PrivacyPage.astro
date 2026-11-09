@@ -172,6 +172,18 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 9, 2026',
+    iso: '2026-11-09',
+    material: true,
+    summary: 'Volunteers who help with translations will work in review sheets: each gets their own copy of a Google Sheet, opened by its link. This notice now says what those sheets hold, who can see what, and how long it is kept, and the right to removal covers them. It also fixes a repeated phrase in why we use volunteer answers.',
+    details: [
+      'What changed: four new items under "If you volunteer to help translate the site". Once a volunteer has given us permission to publish their work, they get a link to their own copy of a review sheet in our Google Workspace account, shared as "anyone with the link can edit", so no sign-in is needed; we give the link to no one else. It holds the site\'s words or a glossary\'s terms and what the volunteer adds: a verdict, any suggestion and reason, and whether they used AI or a translation tool. Anyone the link is passed to can open, copy, download and change the copy. If a volunteer opens it signed in to Google, Google may show their Google account name to us and to anyone else with the link (in version history or on a comment); signed out, they may appear as an anonymous animal.',
+      'New records: when a volunteer tells us by email that a batch is done, we save a copy of it as it was, in a private sheet of its own, with our notes on what they suggested and judged and the dates. The private sheet that holds the form answers gains a third column beside the follow-up status and the date of last contact: the code of each review copy we send, which connects a copy to its volunteer. Where several volunteers work on one language, each may get a separate sheet showing the others\' suggestions and reasons, with names, email addresses and other identifying details removed, under a label that changes every round. For wording we published, a private record says which wording it was, which batch it came from and when it was sent, with a reference to the volunteer\'s email giving permission; the rest of the batch is not kept.',
+      'Retention: review copies, saved batches, our notes and the separate sheets shown to other volunteers follow the volunteer form\'s rule (until a removal request, or two years after the last contact; a submitted batch counts as contact), checked every month. On request these files are deleted within 30 days, and a review copy is also deleted once its round\'s changes are on the site. Deleting a whole file removes its version history. After the Drive trash is emptied, Google lets our admin restore a deleted file for up to 25 days. Copies that someone with a link made themselves cannot be recalled. Our Google Workspace plan has no archiving tool (Vault) or retention rules, and no backup tool is connected to it.',
+      'Elsewhere in the notice: the Google Workspace entry under "Where it lives" now says the form, newsletter and waitlist sheets are private and the review copies are open to anyone with their link. "Your rights" now says removal covers the review sheets and files. The purposes for volunteer data add reviewing and improving the site\'s words. Correction: that sentence said "if you asked for it" twice in a row; it now applies once to credit and once to the beta invite. No new analytics event, click label, browser storage, third-party request or processor.',
+    ],
+  },
+  {
     date: 'Nov 8, 2026',
     iso: '2026-11-08',
     material: false,
@@ -847,6 +859,10 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li>{volunteersNotice.consent}</li>
         <li>{volunteersNotice.credit}</li>
         <li>{volunteersNotice.agreement}</li>
+        <li>{volunteersNotice.review}</li>
+        <li>{volunteersNotice.reviewIdentity}</li>
+        <li>{volunteersNotice.reviewSubmit}</li>
+        <li>{volunteersNotice.reviewShared}</li>
         <li>{volunteersNotice.followUp}</li>
         <li>{volunteersNotice.invites}</li>
         <li>{volunteersNotice.total}</li>

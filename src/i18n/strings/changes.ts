@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-09',
     items: [
       {
+        id: 'volunteer-review-sheets',
+        text: {
+          en: 'The privacy notice now explains the review sheets that translation volunteers will work in: what they hold, who can see what, and how long it is kept.',
+          hi: 'प्राइवेसी नोटिस अब उन समीक्षा शीटों के बारे में बताता है जिनमें अनुवाद करने वाले स्वयंसेवक काम करेंगे: उनमें क्या रहता है, कौन क्या देख सकता है, और वह कितने समय तक रखा जाता है।',
+          es: 'El aviso de privacidad explica ahora las hojas de revisión en las que trabajarán las personas voluntarias de traducción: qué contienen, quién puede ver qué y cuánto tiempo se conservan.',
+          cs: 'Zásady ochrany soukromí teď vysvětlují revizní tabulky, ve kterých budou pracovat dobrovolníci pro překlady: co obsahují, kdo co může vidět a jak dlouho se uchovávají.',
+          mr: 'भाषांतरासाठी मदत करणारे स्वयंसेवक ज्या पुनरावलोकन शीट्समध्ये काम करतील, त्यांच्याबद्दल गोपनीयता सूचनेत आता सांगितले आहे: त्यांत काय असते, कोण काय पाहू शकते, आणि ते किती काळ ठेवले जाते.',
+        },
+      },
+      {
         id: 'funds-currencies-goals',
         text: {
           en: 'Three lessons go a step further. Investing 101 now explains what a fund is and what funds are called where you live, from mutual funds to Indonesia’s reksa dana. The lesson on money across currencies now shows why higher inflation tends to weaken a currency, with seven currencies against the US dollar from 2005 to 2024, and where that pattern breaks. The lesson on setting goals now has a section, near its start, on what earning money costs and what it is for.',

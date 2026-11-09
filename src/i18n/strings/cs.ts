@@ -674,8 +674,16 @@ export const cs: Dict = {
         'Pokud o uvedení požádáte, jméno, které nám pro to sdělíte, se může objevit na webu spolu se jmény dalších lidí, kteří s daným jazykem pomáhají. Můžete ho kdykoli změnit nebo nechat odstranit.',
       agreement:
         'Pokud se pak zapojíte, požádáme vás e-mailem o svolení ke zveřejnění vaší práce. Vaše odpověď je záznamem tohoto svolení: vaše úřední jméno, e-mailová adresa, přijaté znění a datum. Zůstává v našem e-mailu Google Workspace, nikdy ho nezveřejňujeme a používáme ho jen k doložení, že svolení bylo uděleno.',
+      review:
+        'Jakmile nám toto svolení dáte, pošleme vám odkaz na vaši vlastní kopii revizní tabulky v Google Sheets v našem účtu Google Workspace. Obsahuje texty webu nebo pojmy pro glosář a to, co doplníte: u každého řádku vaše hodnocení, případný návrh a jeho důvod a údaj, zda při práci pomáhala AI nebo překladový nástroj. Vaše kopie je sdílená jako „kdokoli s odkazem může upravovat“, takže se nemusíte přihlašovat, a její odkaz nikomu jinému nedáváme. Kdokoli, komu odkaz předáte, ji může otevřít, zkopírovat, stáhnout a změnit, proto si ho prosím nechte pro sebe.',
+      reviewIdentity:
+        'Pokud tabulku otevřete s přihlášeným účtem Google, Google může jméno tohoto účtu ukázat nám i komukoli dalšímu, kdo má odkaz, například v historii verzí tabulky nebo u komentáře. Bez přihlášení se místo toho můžete zobrazit jako anonymní zvíře. O přihlášení vás nežádáme.',
+      reviewSubmit:
+        'Když nám e-mailem dáte vědět, že je dávka hotová, uložíme si její kopii v podobě, v jaké byla, do samostatné soukromé tabulky spolu s našimi poznámkami k vašim návrhům a hodnocením a s daty. Otevřít ji může jen nidhi. Vaši revizní kopii s vámi spojuje krátký kód, ne vaše jméno; spojení mezi kódem a vámi je uložené v soukromé tabulce s vašimi odpověďmi z formuláře.',
+      reviewShared:
+        'Pokud na jednom jazyce pracuje více dobrovolníků, můžeme každému z nich poslat samostatnou tabulku s návrhy a důvody ostatních, po odstranění jmen, e-mailových adres a všeho dalšího, co by člověka identifikovalo, pod označením, které se v každém kole mění. V malé skupině by přesto někdo mohl odhadnout, kdo co napsal.',
       followUp:
-        'V této soukromé tabulce si také zapisujeme stav vyřízení a datum našeho posledního kontaktu s vámi, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
+        'V soukromé tabulce s vašimi odpověďmi z formuláře si také zapisujeme stav vyřízení, datum našeho posledního kontaktu s vámi a kód každé revizní kopie, kterou vám pošleme, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
       invites:
         'Pokud jste zaškrtli políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
       total:
@@ -729,7 +737,7 @@ export const cs: Dict = {
       },
       volunteers: {
         lead: 'Dobrovolná pomoc:',
-        rest: ' k porozumění vašim jazykům, vaší úrovni a vašemu finančnímu vzdělání nebo praxi, ke kontaktování ohledně překladů, k uvedení na webu, pokud o to požádáte, k pozvání do bety plánovače, až bude spuštěna, pokud o ni stojíte, a pokud se zapojíte, k uchování záznamu vašeho svolení. Nic jiného.',
+        rest: ' k porozumění vašim jazykům, vaší úrovni a vašemu finančnímu vzdělání nebo praxi, ke kontaktování ohledně překladů, ke společné revizi a zlepšování textů webu, k uvedení na webu, pokud o to požádáte, k pozvání do bety plánovače, až bude spuštěna, pokud o ni stojíte, a pokud se zapojíte, k uchování záznamu vašeho svolení. Nic jiného.',
       },
       localPreferences: {
         lead: 'Místní předvolby:',
@@ -748,7 +756,7 @@ export const cs: Dict = {
           before: ' (regiony Google Cloud v EU): naše e-mailové adresy (',
           middle: ' pro obecný kontakt a podporu, ',
           after:
-            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo.',
+            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tyto tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo. Revizní kopie dobrovolníků jsou ve stejném účtu, ale soukromé v tomto smyslu nejsou: kdokoli s odkazem na kopii ji může otevřít a upravit, jak je popsáno u formuláře pro dobrovolníky. Uložené dávky, naše poznámky k nim a záznam zveřejněných textů jsou soukromé.',
         },
         planner: {
           name: 'DigitalOcean',
@@ -797,7 +805,7 @@ export const cs: Dict = {
       },
       volunteers: {
         lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
-        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků.',
+        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Totéž platí pro vaše revizní kopie, uložené dávky a naše poznámky k nim i pro samostatné tabulky, které vaše návrhy ukázaly ostatním dobrovolníkům: odeslaná dávka se počítá jako kontakt, vše starší než dva roky kontrolujeme každý měsíc a na vaši žádost tyto soubory smažeme do 30 dnů. Revizní kopii smažeme také ve chvíli, kdy jsou změny z jejího kola na webu. Smazáním celého souboru zmizí i jeho historie verzí. Po vysypání koše na Disku Google našemu správci umožní obnovit smazaný soubor ještě až 25 dní; potom zmizí nadobro. Kopie, které si někdo s odkazem sám vytvořil, zpět vzít nemůžeme. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků. U vašich textů, které jsme zveřejnili, záznam uvádí také, o jaké znění šlo, z jaké dávky pochází a kdy k nám dorazilo, s odkazem na vaši odpověď se svolením; zbytek dávky se neuchovává.',
       },
       invites: {
         lead: 'Pozvánky do bety plánovače:',
@@ -826,7 +834,7 @@ export const cs: Dict = {
       intro:
         'Podle obecného nařízení o ochraně osobních údajů (GDPR) a podobných předpisů máte právo se nás zeptat, co o vás máme, nechat to opravit, exportovat, omezit, jak to používáme, vznést proti tomu námitku nebo to nechat smazat.',
       unsubscribe:
-        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc nám napište a vyřadíme vás, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to na požádání uděláme i ručně.',
+        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc i u revizních tabulek nám napište a vyřadíme vás i s vašimi revizními soubory, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to na požádání uděláme i ručně.',
       analytics: {
         before:
           'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud jste na cookie liště souhlasili; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',

@@ -865,8 +865,16 @@ export const en = {
         'If you ask for credit, the name you gave may appear on the site, listed with the others who helped with that language. You can change it or have it removed at any time.',
       agreement:
         'If you go on to contribute, we ask you by email for permission to publish your work. Your reply is the record of that permission: your legal name, your email address, the wording you accepted and the date. It stays in our Google Workspace email, we never publish it, and we use it only to show that permission was given.',
+      review:
+        'Once you have given us that permission, we send you a link to your own copy of a review sheet in Google Sheets, in our Google Workspace account. It holds the site’s words, or the terms for a glossary, and what you add: for each row, your verdict, any suggestion and its reason, and whether you used AI or a translation tool. Your copy is shared as “anyone with the link can edit”, so you don’t need to sign in, and we give its link to no one else. Anyone you pass the link to can open, copy, download and change it, so please keep it to yourself.',
+      reviewIdentity:
+        'If you open the sheet while signed in to a Google account, Google may show that account’s name to us and to anyone else who has the link, for example in the sheet’s version history or on a comment. Signed out, you may appear as an anonymous animal instead. We don’t ask you to sign in.',
+      reviewSubmit:
+        'When you tell us by email that a batch is done, we save a copy of it as it was, in a private sheet of its own, with our notes on what you suggested and judged, and the dates. Only nidhi can open it. A short code, not your name, connects your review copy to you; the link between the code and you is kept in the private sheet that holds your form answers.',
+      reviewShared:
+        'If more than one volunteer works on a language, we may send each of them a separate sheet showing the others’ suggestions and reasons, after removing names, email addresses and anything else that identifies the person, under a label that changes every round. In a small group, someone could still guess who wrote what.',
       followUp:
-        'In that private sheet we also note a follow-up status and the date of our last contact with you, to manage replies and apply the retention period below. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
+        'In the private sheet that holds your form answers, we also note a follow-up status, the date of our last contact with you and the code of any review copy we send you, to manage replies and apply the retention period below. A new response sends us a notification that contains none of your answers. A person reads every response, and no reply, decision, credit or beta signup happens automatically.',
       invites:
         'If you ticked the planner beta box, a nidhi admin can read your email address and when you submitted the form through the planner’s admin tools, which use the same kind of protected link, to choose whom to invite. This read sends the planner only those two things, and only for people who ticked the box; your other answers stay in the sheet. Ticking the box invites no one by itself: a person picks every invite, and the invite is the one email that comes from it.',
       total:
@@ -920,7 +928,7 @@ export const en = {
       },
       volunteers: {
         lead: 'Volunteers:',
-        rest: ' to understand your languages, your level and your financial background, to contact you about translating, to credit you on the site if you asked for it, if you asked for it, to invite you to the planner’s beta when it opens, and, if you go on to contribute, to keep the record of your permission. Nothing else.',
+        rest: ' to understand your languages, your level and your financial background, to contact you about translating, to review and improve the site’s words with you, to credit you on the site if you asked for it, to invite you to the planner’s beta when it opens if you asked for it, and, if you go on to contribute, to keep the record of your permission. Nothing else.',
       },
       localPreferences: {
         lead: 'Local preferences:',
@@ -945,7 +953,7 @@ export const en = {
           before: ' (Google Cloud EU regions): our email addresses (',
           middle: ' for general contact and support, ',
           after:
-            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs), and the Google Form for volunteer translators with the sheet its answers go to. The sheets are private: nidhi admins can read them directly, and the planner’s server can retrieve only the fields described under the waitlist and the volunteer form. The waitlist’s script also opens the volunteer sheet, inside our Google account, to work out the total of people waiting for a beta invite; only that number leaves it.',
+            ' for automated product emails like beta invites and newsletter sends) and the Google Sheet that stores newsletter subscribers and waitlist signups (in separate tabs), and the Google Form for volunteer translators with the sheet its answers go to. These sheets are private: nidhi admins can read them directly, and the planner’s server can retrieve only the fields described under the waitlist and the volunteer form. The waitlist’s script also opens the volunteer sheet, inside our Google account, to work out the total of people waiting for a beta invite; only that number leaves it. Volunteers’ review copies are kept in the same account but are not private in that way: anyone with a copy’s link can open and edit it, as described under the volunteer form. The saved batches, our notes on them and the record of published wording are private.',
         },
         planner: {
           name: 'DigitalOcean',
@@ -996,7 +1004,7 @@ export const en = {
       },
       volunteers: {
         lead: 'Volunteer form answers:',
-        rest: ' until you ask us to remove them, or two years after our last contact with you, whichever comes first. A credit on the site stays until you ask us to remove it. The record of your permission stays while we use your work, and after that only as long as reasonably necessary to establish, exercise or defend legal claims.',
+        rest: ' until you ask us to remove them, or two years after our last contact with you, whichever comes first. The same applies to your review copies, the saved batches and our notes on them, and the separate sheets that showed your suggestions to other volunteers: a batch you send counts as contact, we check every month for anything past two years, and when you ask, we delete those files within 30 days. We also delete a review copy once the changes from its round are on the site. Deleting a whole file removes its version history with it. After we empty the Drive trash, Google lets our admin restore a deleted file for up to 25 days; then it is gone for good. We cannot recall copies that someone with a link made themselves. A credit on the site stays until you ask us to remove it. The record of your permission stays while we use your work, and after that only as long as reasonably necessary to establish, exercise or defend legal claims. For wording of yours that we published, that record also says which wording it was, which batch it came from and when you sent it, linked to your reply giving permission; the rest of the batch is not kept.',
       },
       invites: {
         lead: 'Planner beta invitations:',
@@ -1025,7 +1033,7 @@ export const en = {
       intro:
         'Under the GDPR (and similar regulations), you have the right to ask us what we hold about you, correct it, export it, restrict how we use it, object to it, or delete it.',
       unsubscribe:
-        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist and the volunteer form, email us and we’ll remove you, and any credit on the site. If you contributed, we keep only the record of your permission, as described above. We’ll do it manually for any of these.',
+        'For the newsletter, unsubscribing is a one-click link in every email we send, and that also schedules the deletion described above. For the waitlist, the volunteer form and the review sheets, email us and we’ll remove you, your review files and any credit on the site. If you contributed, we keep only the record of your permission, as described above. We’ll do it manually for any of these.',
       analytics: {
         before:
           'On this site, analytics events aren’t linked to your name or account, so we can’t look up “your” events. The exceptions are newsletter events and pageviews linked to your newsletter code: we can find and delete those when you ask. In the planner, events are linked to you only if you said yes on the cookie banner; then we can find and delete them too. Saying no doesn’t delete events already sent. Saying no, or using a content blocker, breaks nothing on either site. You can change your answer any time with ',

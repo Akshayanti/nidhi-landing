@@ -6,7 +6,7 @@ Send it by email to volunteers you accept, before their first contribution, not 
 
 ## The routine
 
-Everything below happens by hand. The privacy notice promises that a person reads every response and that no reply, decision, credit or beta signup happens automatically.
+Everything below happens by hand, except what the "nidhi review" menu does when you click it: it builds and collects review sheets and writes their codes into the Review copies cell. It never shares, sends, sets Status or Last contact, decides or deletes. The privacy notice promises that a person reads every response and that no reply, decision, credit or beta signup happens automatically.
 
 ### Where things live
 
@@ -15,12 +15,13 @@ Everything below happens by hand. The privacy notice promises that a person read
 - **Accepted replies:** the Gmail label "Volunteer agreements". The volunteer keeps their own copy in their inbox.
 - **This file:** the master copy of the wording; git history shows which version was live when.
 
-### The sheet's two extra columns
+### The sheet's three extra columns
 
-The privacy notice allows exactly two columns beyond the form's answers. Add nothing else (no notes, phone numbers or countries) without updating the notice first.
+The privacy notice allows exactly three columns beyond the form's answers. Add nothing else (no notes, phone numbers or countries) without updating the notice first.
 
 - **Status**, a dropdown (Insert → Dropdown, with "Reject the input" under Advanced options): `Waiting for language`, `Replied`, `Agreement sent`, `Agreed`, `Active`, `Paused`. A blank Status means a new response nobody has read yet: dropdowns have no default, and nothing fills it in automatically. There is no `Removed`: a removal deletes the row.
-- **Last contact**, a date (Data → Data validation → Is valid date, Format → Number → Date): the date of the last email either side sent.
+- **Last contact**, a date (Data → Data validation → Is valid date, Format → Number → Date): the date of the last email either side sent. A "batch done" email counts.
+- **Review copies**, text: the copy code of every review sheet sent to this person (for example `id-G1-7Q3K`: language, batch, four random characters), separated by commas. This column is the only place a copy code is connected to a person: never write a name or email in a review sheet, in the master or in a file name.
 
 Each row is coloured by its Status (Format → Conditional formatting, applied to every column from row 2 down, one "Custom formula is" rule per line below, with `B` as the Email column and `M` as the Status column; use your sheet's letters):
 
@@ -50,16 +51,43 @@ Do not rename, move or delete the form's own columns. `scripts/volunteer-list.gs
 2. **Their language is not open yet:** reply if you like, set Status to `Waiting for language`.
 3. **You accept them:** send the agreement from the template, replacing `[name]`. Set Status to `Agreement sent` and Last contact to today.
 4. **They reply "I agree":** label the email "Volunteer agreements", set Status to `Agreed`, update Last contact. Only now may they send work.
-5. **They ask for credit:** add the name to the site (a code change in the repo).
+5. **They ask for credit:** nothing is published yet. Credit follows `docs/plans/volunteer-review-material.md`, section 10 (only after completed work and their explicit yes to the exact name, role and placement; names are never committed to the repo), and waits for its own privacy notice update.
 6. **After every email either way:** update Last contact.
 
-### Every quarter
+### Review sheets
 
-Sort by Last contact. For anyone last contacted more than two years ago, delete the row in the sheet and the matching response in the Form (Form → Responses). Deleting only the row leaves a copy in the Form.
+How the sheets work, step by step, is in `docs/plans/volunteer-review-material.md`. Every review file is a whole Google file of its own, so that deleting someone's data means deleting files (with their version history), never editing rows out of a shared file:
+
+- **Review copy:** one per volunteer and batch, link-shared.
+- **Master:** one private file per review copy (snapshot, review, register tabs), named with the copy code.
+- **Compare sheet:** one separate link-shared file per volunteer and round, when several volunteers work on a language.
+- **Published wording log:** one private sheet per language with a row for each accepted and published wording (Ref, wording, copy code, batch, date sent, agreement version, and the Gmail message ID of the person's "I agree" reply). It holds no other part of a batch. The message ID is what still connects published wording to its permission after a removal deletes the Review copies column.
+- **The menu's records:** one script property per copy code in the volunteer sheet's Apps Script project (language, batch, state, the two file ids; no name or email). "Forget this person's review records" deletes them.
+
+The parts that touch this sheet:
+
+The menu lives in the sheet's own Apps Script project (Extensions → Apps Script), beside `scripts/volunteer-list.gs`; the planner's web app there stays pinned to its numbered version, so pushing the menu does not change it. After a glossary changes, export (`npx tsx scripts/review/glossary-export.ts --langs id --out <dir>`) and push `Data.js` there with clasp. Select any cell in the person's row, then use the **nidhi review** menu (after Help). Every item ends with a box listing what to do next. If an item stops part way (a network error, say), the box says so; choose **What's next?**, then the item it names: Prepare finishes an interrupted build or replacement with the same files, and Collect finishes an interrupted collection from what it already captured, without rereading the volunteer's sheet.
+
+1. **Only after `Agreed`.** Choose **Prepare next batch**. It refuses unless Status is Agreed or Active and no batch of theirs is open, picks their language from "Which languages?" (it asks if there are several), builds the next batch in order, and adds its code to Review copies. Then, by hand: open the copy, Share, General access "Anyone with the link", Editor; email the link on their existing thread; update Last contact; set Status to Active after the first batch.
+2. **"Batch done" email:** update Last contact, then choose **Collect a finished batch** and confirm the email arrived. It refuses a blank tool answer (reply and ask), saves the batch in the copy's private master, and builds the next batch straight away. Fill in the Decision column in the master; if the flags need a reply, hold the next batch until that is sorted, then send it as in step 1.
+3. **A leaked or lost link:** choose **Replace the open copy**. It marks the old code replaced (it never counts as a finished batch) and builds a new copy of the same batch. Set the old copy's General access back to Restricted, send the new one, and delete the old copy and its master once nothing in them is needed.
+4. **A round's changes are on the site:** delete that round's review copies and Compare sheets (the masters and the published wording log stay, under the rules below).
+5. **Not sure where someone is:** choose **What's next?**. **Paused** stops new batches; a finished batch they send anyway can still be collected.
+
+### Every month
+
+Sort by Last contact. For anyone last contacted more than two years ago, do the removal below that day.
 
 ### When someone asks to be removed
 
-Delete their row, delete their Form response, and remove any credit from the site. Keep only the "I agree" email, for as long as the privacy notice allows.
+Within 30 days of the request (on the day itself when the monthly check finds two years without contact), in this order:
+
+1. **Review data:** for each code in their Review copies (closed and replaced copies too), delete the review copy and its master file. Delete every Compare sheet that shows their suggestions, and send the other volunteers a new one without them if the round is still open. Use **Show this person's files** to find every copy and master. After deleting the files, choose **Forget this person's review records**, then delete the row. Keep only their rows in the published wording log (with the reference to their "I agree" email). Delete all other review data associated with their copy codes.
+2. **Drive trash:** empty it (drive.google.com → Bin → Empty bin), so the deleted files are not kept the extra 30 days. After that, Google lets an admin restore them for 25 more days; the notice says so.
+3. **The form:** delete their row in this sheet and their Form response (Form → Responses). Deleting only the row leaves a copy in the Form.
+4. **Credit:** remove any credit from the site.
+
+Keep only the permission record, for as long as the privacy notice allows: the "I agree" email in Gmail, and, for wording that was published, its rows in the published wording log.
 
 ## The email to accepted volunteers
 
