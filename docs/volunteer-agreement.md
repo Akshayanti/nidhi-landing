@@ -66,7 +66,15 @@ How the sheets work, step by step, is in `docs/plans/volunteer-review-material.m
 
 The parts that touch this sheet:
 
-The menu lives in the sheet's own Apps Script project (Extensions → Apps Script), beside `scripts/volunteer-list.gs`; the planner's web app there stays pinned to its numbered version, so pushing the menu does not change it. After a glossary changes, export (`npx tsx scripts/review/glossary-export.ts --langs id --out <dir>`) and push `Data.js` there with clasp. Select any cell in the person's row, then use the **nidhi review** menu (after Help). Every item ends with a box listing what to do next. If an item stops part way (a network error, say), the box says so; choose **What's next?**, then the item it names: Prepare finishes an interrupted build or replacement with the same files, and Collect finishes an interrupted collection from what it already captured, without rereading the volunteer's sheet.
+The menu lives in the sheet's own Apps Script project (Extensions → Apps Script; script ID `1LlekrQY50tzBswG07Z0br2RBElD2EQYEcA2evVNAcznRfq51wVuu6scM`). The ID alone gives no access: opening or changing the project needs the nidhi Google account. The project holds four files: `Code.js` (`scripts/volunteer-list.gs`), `review-sheet.js` and `review-text.js` (from `scripts/review/`), and `Data.js` (generated, never committed). After a glossary or `scripts/review/glossary-context.json` changes:
+
+1. Export every language: `npx tsx scripts/review/glossary-export.ts --langs id,es,cs,mr,fr,pt,de,ja,vi,tr,ko,ar --out <dir>`.
+2. Clone the project into an empty folder with clasp, copy in the new `Data.js` (and the review files if they changed), and `clasp push --force`.
+3. Clone it again into another empty folder and compare, to confirm what is live.
+
+Never redeploy the project for a menu or data change. The planner's web app in it is pinned to a numbered version, and the menu runs from the latest code without a deployment; a new deployment version would also change what the planner calls.
+
+Select any cell in the person's row, then use the **nidhi review** menu (after Help). Every item ends with a box listing what to do next. If an item stops part way (a network error, say), the box says so; choose **What's next?**, then the item it names: Prepare finishes an interrupted build or replacement with the same files, and Collect finishes an interrupted collection from what it already captured, without rereading the volunteer's sheet.
 
 1. **Only after `Agreed`.** Choose **Prepare next batch**. It refuses unless Status is Agreed or Active and no batch of theirs is open, picks their language from "Which languages?" (it asks if there are several), builds the next batch in order, and adds its code to Review copies. Then, by hand: open the copy, Share, General access "Anyone with the link", Editor; email the link on their existing thread; update Last contact; set Status to Active after the first batch.
 2. **"Batch done" email:** update Last contact, then choose **Collect a finished batch** and confirm the email arrived. It refuses a blank tool answer (reply and ask), saves the batch in the copy's private master, and builds the next batch straight away. Fill in the Decision column in the master; if the flags need a reply, hold the next batch until that is sorted, then send it as in step 1.
