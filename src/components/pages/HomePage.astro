@@ -18,6 +18,7 @@
  * lesson and tool link is chosen in src/utils/home/startingPoints.ts, which
  * deals in structure only: ids, levels, slugs and addresses.
  */
+import { GUIDE_HUB, getGuides } from '../../utils/guides';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
@@ -41,7 +42,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { home, learn, footer, fullStop } = dict(locale);
+const { home, learn, footer, fullStop, howTo } = dict(locale);
 
 /** This page's own address for a root-relative path. */
 const href = (path: string) => localizedPath(locale, path);
@@ -65,6 +66,8 @@ const showInvestOrPayOff = await isInvestOrPayOffReleased();
 const isToolLive = (href: string) =>
   (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
 const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
+// The How-to line under the situations shows once a guide is live.
+const hasGuides = (await getGuides()).length > 0;
 const situations = resolveSituations(allPosts, now, isToolLive);
 const tools = liveTools(isToolLive);
 const counts = levelCounts(allPosts, now);
@@ -223,6 +226,12 @@ const faqSchema = {
           <span>{t(home.situations.more, { lessons: lessonTotal, tools: toolTotal })}</span>
           {' '}<a class="jump" href="#start" data-attr="home-hero-find">{home.situations.moreLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
         </p>
+        {hasGuides && (
+          <p class="sits-howto">
+            <span>{howTo.homeLine}</span>
+            {' '}<a class="jump" href={localizedPath(locale, GUIDE_HUB)}>{howTo.homeLink}&nbsp;<span aria-hidden="true">&rarr;</span></a>
+          </p>
+        )}
       </div>
     </div>
   </section>
@@ -711,6 +720,12 @@ const faqSchema = {
   }
 
   .chain-soon svg { flex-shrink: 0; }
+
+  .sits-howto {
+    margin: 8px 0 0;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
 
   .sits-more {
     margin: 14px 0 0;

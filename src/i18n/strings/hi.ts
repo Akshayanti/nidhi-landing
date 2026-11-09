@@ -1,5 +1,6 @@
 import { toolsHi } from './tools/index.ts';
 import { learnHi } from './learn.ts';
+import { howToHi } from './howTo.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -1219,6 +1220,7 @@ export const hi: Dict = {
    * as the tools below.
    */
   ...learnHi,
+  ...howToHi,
 
   /**
    * The free tools' copy. Assembled from one module per tool: see

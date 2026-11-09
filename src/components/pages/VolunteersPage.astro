@@ -19,13 +19,17 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+import { GUIDE_HUB, getGuides } from '../../utils/guides';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const { volunteers: v } = dict(locale);
+const { volunteers: v, howTo } = dict(locale);
+// Some people arrive here from Instagram looking for help, not to help: one
+// quiet line points them to the short guides once any is live.
+const hasGuides = (await getGuides()).length > 0;
 
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdi-dQp0eylwM7TsG9KgBk2ZkiUVdh0JlWTlVmeJ8PC1q_w6w/viewform';
 
@@ -59,6 +63,7 @@ const webPageSchema = {
       <header>
         <h1 class="vol-title">{v.title}</h1>
         <p class="vol-lead">{v.lead}</p>
+        {hasGuides && <p class="vol-howto">{howTo.volunteerLine} <a href={localizedPath(locale, GUIDE_HUB)}>{howTo.volunteerLink}&nbsp;<span aria-hidden="true">&rarr;</span></a></p>}
       </header>
 
       <h2>{v.nowHeading}</h2>
@@ -99,6 +104,7 @@ const webPageSchema = {
 </BaseLayout>
 
 <style>
+  .vol-howto { font-size: 0.9rem; color: var(--color-text-secondary); margin-top: 0.5rem; }
   .vol-page {
     display: flex;
     justify-content: center;

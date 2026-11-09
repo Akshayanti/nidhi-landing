@@ -3,6 +3,7 @@ import { conceptsFor, goalsFor, suggestLevel, type Suggestion } from '../utils/l
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
+import { prepare, search, type SearchItem } from '../utils/siteSearch.ts';
 
 /**
  * The learning path's front page (/blog/): where to start or continue, an
@@ -40,6 +41,15 @@ export interface LearnLesson {
   href: string;
 }
 
+/** A How-to guide, for search: English, at its one address. */
+export interface LearnGuide {
+  id: string;
+  title: string;
+  href: string;
+  terms: string[];
+  text: string;
+}
+
 export interface LearnLevel {
   id: string;
   label: string;
@@ -52,6 +62,12 @@ export interface LearnLevel {
 
 interface LearnHomeProps {
   levels: LearnLevel[];
+  /** Live How-to guides, searched with the lessons. */
+  guides: LearnGuide[];
+  /** Lesson id → FAQ questions and "In this lesson" phrases, searched too. */
+  lessonText: Record<string, string>;
+  /** The How-to words search needs, and the hub's address in this language. */
+  howTo: { label: string; empty: string; link: string; href: string };
   /** Every published lesson, ladder lessons in reading order first. */
   lessons: LearnLesson[];
   inclusiveCount: number;
@@ -177,7 +193,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
   );
 }
 
-export function LearnHome({ levels, lessons, inclusiveCount, collections, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
+export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiveCount, collections, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -277,14 +293,14 @@ export function LearnHome({ levels, lessons, inclusiveCount, collections, helper
   };
 
   const trimmed = query.trim().toLowerCase();
-  const matches = useMemo(() => {
-    if (!trimmed) return [];
-    return lessons.filter((l) =>
-      l.title.toLowerCase().includes(trimmed) ||
-      l.description.toLowerCase().includes(trimmed) ||
-      l.tags.some((t) => t.toLowerCase().includes(trimmed)),
-    );
-  }, [lessons, trimmed]);
+  // Lessons and guides in one index, built once. What is typed stays in memory.
+  const index = useMemo(() => prepare([
+    ...guides.map((g): SearchItem => ({ id: `guide:${g.id}`, kind: 'guide', title: g.title, terms: g.terms, text: g.text })),
+    ...lessons.map((l): SearchItem => ({ id: l.id, kind: 'lesson', title: l.title, terms: l.tags, text: `${l.description} ${lessonText[l.id] ?? ''}` })),
+  ]), [guides, lessons, lessonText]);
+  const guideById = useMemo(() => new Map(guides.map((g) => [`guide:${g.id}`, g])), [guides]);
+  const matches = useMemo(() => (trimmed ? search(index, trimmed) : []), [index, trimmed]);
+  const lessonMatches = matches.filter((m) => m.kind === 'lesson').length;
   const shown = showAll ? matches : matches.slice(0, RESULT_LIMIT);
 
   useEffect(() => { setShowAll(false); }, [trimmed]);
@@ -496,14 +512,28 @@ export function LearnHome({ levels, lessons, inclusiveCount, collections, helper
           onChange={(e) => setQuery(e.target.value)}
         />
         <div className="learn-results" aria-live="polite">
-          {trimmed && (
+          {trimmed && (matches.length === 0 || lessonMatches > 0) && (
             <p className="learn-note">
               {matches.length === 0
                 ? strings.noMatches
-                : `${matches.length} ${plural(lang, matches.length, strings.lessonOne, strings.lessonFew, strings.lessonMany)}`}
+                : `${lessonMatches} ${plural(lang, lessonMatches, strings.lessonOne, strings.lessonFew, strings.lessonMany)}`}
             </p>
           )}
-          {shown.map((l) => {
+          {trimmed && matches.length === 0 && guides.length > 0 && (
+            <p className="learn-note">{howTo.empty} <a href={howTo.href}>{howTo.link}</a></p>
+          )}
+          {shown.map((m) => {
+            const guide = guideById.get(m.id);
+            if (guide) {
+              return (
+                <a key={m.id} className="learn-result" href={guide.href} data-attr="blog-search-result">
+                  <span lang="en">{guide.title}</span>
+                  <span className="learn-pill" style={{ '--lc': 'var(--color-teal-dark, var(--color-teal))' } as React.CSSProperties}>{howTo.label}</span>
+                </a>
+              );
+            }
+            const l = lessonById.get(m.id);
+            if (!l) return null;
             const inclusive = l.level === INCLUSIVE;
             return (
               <a key={l.id} className="learn-result" href={l.href} data-attr="blog-search-result">

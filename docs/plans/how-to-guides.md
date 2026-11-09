@@ -1,0 +1,77 @@
+# How-to guides
+
+Short guides at `/how-to/` that each answer one money question a reader recognises, useful without opening a lesson. Designed by the council on Nov 10, 2026, in its three-stage design process (each member presented three designs blind, each combined the best items into overall designs, then item votes and a sign-off). The owner set the goals and decided the two questions left to them.
+
+## The owner's goals
+
+1. A quick solution to a problem a reader has, wikiHow style: answer the question, then the deeper lesson, extra references and the main lessons at the end.
+2. Real value to a reader, not a fancy thing on the site; but visual, and found in search.
+3. Help a reader who is scared of everything finance understand important things easily.
+
+## Owner decisions (Nov 10, 2026)
+
+- Guide bodies are **English only**, like the lessons. The hub and the lines leading to it are in every language, and outside English each card says "Guide in English".
+- The address is **`/how-to/`**, with guides at `/how-to/<slug>/`.
+
+## What a guide is
+
+- One recognisable problem, one useful outcome. Normally 350 to 650 words, shorter when that is enough. If the answer needs more, the question is narrowed.
+- Written fresh for the task; the lesson stays the deep study. A guide names its lessons, main one first.
+- The council rejected the earlier idea of relabelling existing lessons by method ("work out a number, run a check, follow the steps"): readers think in problems, not methods.
+
+## Page order (`src/pages/how-to/[slug].astro`)
+
+1. The title is the reader's question; one line says what they will have at the end.
+2. **Short answer**, two or three plain sentences, useful on its own; reading only this is a legitimate visit.
+3. What this page can and cannot solve.
+4. A **protective strip** where safety matters (what to do now, what can wait). No universal deadlines; no promise that regulated help exists everywhere. There is no separate "first aid" format: it would frame the section around alarm, and help routes vary by country.
+5. **You'll need**: materials or nothing. Reading time always; task time only when an honest estimate exists, otherwise what it depends on.
+6. **Steps** (3 to 5): one neutral action each, why it matters, an example where helpful, cautions beside the step they qualify. Or **"See it, try it"**: a worked example first, then how to read your own.
+7. One **visual** (below).
+8. **You can stop here**: the result the reader now holds.
+9. A **blank sheet** to print and fill in where readers repeat the task. No download file.
+10. **What depends on you**: the decision the page leaves to the reader first, then what it depends on.
+11. **Go deeper**: the lessons (unpublished ones appear when they go live), a matching tool, two or three references; sources folded; last checked date.
+
+## Topic rule
+
+A guide is admitted only if its outcome is an inventory, a calculation, an understood charge, a verification, a bounded comparison or questions to ask. No product, allocation, debt-strategy, tax or legal direction; a consequential choice explains the trade-offs and links the decision lesson. Country rules are scoped. Time-sensitive protective steps are allowed; manufactured urgency is not. Each new guide gets a council editorial check: which decision could a reader infer, which assumptions drive the answer, and where it fails.
+
+## The scared reader
+
+Answer first. Terms explained at first use. One clearly fictional example person. Estimates allowed where precision does not matter, and the page says where it does. A missing number gets "where to find it". No grades, failure colours, shame or "you should already know". Never imply the task solves the whole problem.
+
+## Visuals (`src/components/GuideVisual.astro`)
+
+One per guide, from a reusable set: a timeline with a running balance, a filled table, a document with numbered notes, a message with its warning signs marked. Built from HTML text and tables, never an image; meaning never rests on colour alone. Values are written once, in the guide's frontmatter. Each guide also has a share image (`scripts/render-guide-cards.mjs`, output in `public/brand/social/how-to/`); run it after adding a guide or changing a title. Instagram panels can be adapted from a guide's own example and are reviewed alongside it.
+
+## Search and SEO
+
+- Search on `/blog/` (`src/utils/siteSearch.ts`) covers lessons and guides: words matched separately, filler words dropped, word starts only ("rent" finds "renting", not "current"), a few everyday words mapped to the lessons' words, FAQ questions and "In this lesson" phrases included. Guides come first on a tie. What is typed stays in memory.
+- Reader-question titles, answer-led meta descriptions, Article and BreadcrumbList structured data, sitemap entries dated by `lastChecked`, links both ways between guides and lessons, one line in `llms.txt`. No HowTo or FAQ schema: Google dropped those rich results.
+
+## Where readers find it
+
+The hub (`/how-to/`, grouped as "Getting through the month", "I owe money", "Money across borders", "Is this safe?"); a line at the top of `/blog/` and under a search with no results; a line under the home page's "Which sounds like you?"; one line under a lesson's TL;DR and one near its end; a quiet line on the volunteer page; the Instagram bio through `/how-to/ig/`.
+
+## Upkeep (`src/content.config.ts`, `src/utils/guides.ts`)
+
+Each guide records its lessons, the figures it shares with them (`sharedFigures`: the build fails if the lesson no longer contains the exact text), its sources, a review trigger and a last checked date. A lesson change that touches a shared figure updates the guide in the same pull request. Corrections are shown above the title, as on lessons.
+
+## Privacy and What's changed
+
+The section launched with no new analytics labels, so it needed no privacy changelog entry. A later label needs a material entry first. Search text and anything typed are never captured. The launch has a What's changed item (2026-11-10); later guides can be batched into one item a month.
+
+## Launch set and growth
+
+1. Will my money last until payday? (includes the essential-spending checklist)
+2. How do I list what I owe?
+3. What does the minimum payment on my credit-card bill mean?
+4. How do I compare two money-transfer quotes by what actually arrives?
+5. How can I check a suspicious money message? (its main lesson, 59, links once it is published)
+
+Next, a few beginners try the five tasks (no financial details collected). Growth then comes from questions readers report, consented usability sessions and observed misunderstandings, with no quota. Deferred: comparing two loans, listing accounts and regular payments, "I can't pay a bill this month", and country-specific topics (tax notices, credit reports, moving abroad).
+
+## Left out on purpose
+
+A separate first-aid section, branching walkthroughs, calculators, accounts, ratings, quizzes, personalised recommendations, translated guide bodies, HowTo or FAQ schema, a method-based hub, relabelled lessons.

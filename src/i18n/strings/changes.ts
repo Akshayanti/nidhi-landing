@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-10',
+    items: [
+      {
+        id: 'how-to-guides',
+        text: {
+          en: 'There’s a new How-to section: short guides that each answer one everyday money question, with the answer first, then what to check, and a link to the full lesson. The first five cover whether your money will last until payday, listing what you owe, what a credit card’s minimum payment means, comparing money-transfer quotes, and checking a suspicious message. Search on the learning path now also understands whole questions and everyday words like “credit card”, and finds the guides too.',
+          hi: 'अब कैसे करें नाम का एक नया सेक्शन है: छोटी गाइडें, जिनमें से हर एक पैसों से जुड़े रोज़ के एक सवाल का जवाब देती है। पहले जवाब, फिर यह कि क्या जाँचना है, और पूरे पाठ का लिंक। पहली पाँच गाइडें बताती हैं कि पैसे तनख़्वाह तक चलेंगे या नहीं, अपने कर्ज़ों की सूची कैसे बनाएँ, क्रेडिट कार्ड के न्यूनतम भुगतान का क्या मतलब है, विदेश में पैसे भेजने के कोटेशन की तुलना कैसे करें, और किसी संदिग्ध मैसेज की जाँच कैसे करें। गाइडें अंग्रेज़ी में हैं। सीखने के रास्ते की खोज, जो अंग्रेज़ी में काम करती है, अब पूरे सवाल और रोज़ के शब्द भी समझती है, और गाइडें भी ढूँढ़ती है।',
+          es: 'Hay una nueva sección, Cómo hacerlo: guías breves que responden cada una a una pregunta de dinero de todos los días, con la respuesta primero, luego qué comprobar y un enlace a la lección completa. Las cinco primeras tratan de si el dinero te llegará hasta el día de cobro, cómo hacer una lista de lo que debes, qué significa el pago mínimo de una tarjeta de crédito, cómo comparar ofertas para enviar dinero al extranjero y cómo comprobar un mensaje sospechoso. Las guías están en inglés. La búsqueda de la ruta de aprendizaje, que funciona en inglés, entiende ahora preguntas completas y palabras cotidianas, y también encuentra las guías.',
+          cs: 'Přibyla nová sekce Jak na to: krátké návody, z\u00a0nichž každý odpovídá na jednu běžnou otázku o\u00a0penězích. Nejdřív odpověď, pak co si ověřit a\u00a0odkaz na celou lekci. Prvních pět se týká toho, zda peníze vydrží do výplaty, jak sepsat, co dlužíte, co znamená minimální splátka kreditní karty, jak porovnat nabídky na převod peněz do zahraničí a\u00a0jak ověřit podezřelou zprávu. Návody jsou v\u00a0angličtině. Vyhledávání na vzdělávací cestě, které funguje v\u00a0angličtině, teď rozumí i\u00a0celým otázkám a\u00a0běžným slovům a\u00a0najde i\u00a0návody.',
+          mr: 'आता कसे करायचे नावाचा नवा विभाग आहे: छोट्या मार्गदर्शिका, ज्यांतील प्रत्येक पैशांशी संबंधित रोजच्या एका प्रश्नाचे उत्तर देते. आधी उत्तर, मग काय तपासायचे, आणि पूर्ण धड्याची लिंक. पहिल्या पाच मार्गदर्शिका सांगतात की पगारापर्यंत पैसे पुरतील का, तुमच्यावरील कर्जांची यादी कशी करायची, क्रेडिट कार्डच्या किमान भरण्याच्या रकमेचा अर्थ काय, परदेशात पैसे पाठवण्याच्या कोटेशनची तुलना कशी करायची, आणि संशयास्पद संदेश कसा तपासायचा. मार्गदर्शिका इंग्रजीत आहेत. शिकण्याच्या मार्गावरील शोध, जो इंग्रजीत चालतो, आता पूर्ण प्रश्न आणि रोजचे शब्दही समजतो, आणि मार्गदर्शिकाही शोधतो.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-09',
     items: [
       {

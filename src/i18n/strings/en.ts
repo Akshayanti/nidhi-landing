@@ -10,6 +10,7 @@
  */
 import { toolsEn } from './tools/index.ts';
 import { learnEn } from './learn.ts';
+import { howToEn } from './howTo.ts';
 
 export const en = {
   skipToContent: 'Skip to content',
@@ -1396,6 +1397,7 @@ export const en = {
    * tools below.
    */
   ...learnEn,
+  ...howToEn,
 
   /**
    * The free tools' copy. Assembled from one module per tool: see

@@ -7,6 +7,7 @@ import { LAYERED_LEVELS, layeredLessonProblems } from '../../utils/layeredLesson
 import { searchTitleProblem } from '../../utils/searchTitle';
 import { assertCorrectionDates, liveCorrections } from '../../utils/corrections';
 import { assertTldrRules } from '../../utils/tldrRules';
+import { guidesByMainLesson } from '../../utils/guides';
 import { LADDER_LEVELS } from '../../utils/home/startingPoints';
 import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release';
 import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release';
@@ -24,6 +25,8 @@ export async function getStaticPaths() {
   // Build a fast lookup so we can resolve relatedSlugs entries without a
   // linear scan per post.
   const bySlug = new Map(posts.map((p) => [p.data.slug, p]));
+  // How-to guides whose main lesson this is: one line under the TL;DR, one at the end.
+  const guidesFor = await guidesByMainLesson();
 
   /**
    * Pick up to 3 "Keep reading" suggestions for a post. Honours the
@@ -124,12 +127,13 @@ export async function getStaticPaths() {
         nextTitle: nextPost?.data.title ?? null,
         relatedPosts,
         seriesPosition,
+        guides: guidesFor.get(post.data.slug) ?? [],
       },
     };
   });
 }
 
-const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts, seriesPosition } = Astro.props;
+const { post, prevSlug, prevTitle, nextSlug, nextTitle, relatedPosts, seriesPosition, guides } = Astro.props;
 const { Content, headings } = await render(post);
 
 // Each glossary term is a link target (#term-...), so its anchor must exist
@@ -211,6 +215,7 @@ const readingTime = getLayeredReadingTime(post.body || '');
   howTo={post.data.howTo}
   relatedPosts={relatedPosts}
   seriesPosition={seriesPosition}
+  guides={guides}
   relatedTool={relatedTool}
 >
   <Content />

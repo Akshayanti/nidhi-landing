@@ -1,5 +1,6 @@
 import { toolsCs } from './tools/index.ts';
 import { learnCs } from './learn.ts';
+import { howToCs } from './howTo.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -1104,6 +1105,7 @@ export const cs: Dict = {
   },
 
   ...learnCs,
+  ...howToCs,
 
   tools: toolsCs,
 };
