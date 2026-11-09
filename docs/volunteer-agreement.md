@@ -66,7 +66,7 @@ How the sheets work, step by step, is in `docs/plans/volunteer-review-material.m
 
 The parts that touch this sheet:
 
-1. **Only after `Agreed`.** Build the copy (`scripts/review/glossary-export.ts`, then `buildGlossarySheet` in the Apps Script project "nidhi volunteer review"), then in the sheet set Share, General access to "Anyone with the link", Editor. Email the link on the person's existing thread, add the copy code to Review copies, and update Last contact.
+1. **Only after `Agreed`.** Build the copy (`scripts/review/glossary-export.ts`, which prints a new copy code such as `id-G1-7Q3K`, then `buildGlossarySheet` in the Apps Script project "nidhi volunteer review"), then in the sheet set Share, General access to "Anyone with the link", Editor. Email the link on the person's existing thread, add the copy code to Review copies, and update Last contact.
 2. **"Batch done" email:** update Last contact, then collect (`collectGlossarySheet`). Collection refuses a batch whose tool answer is blank: reply and ask.
 3. **A leaked link:** set the copy's General access back to Restricted, build a new copy with a new code, send it, and add the new code to Review copies. Delete the old copy once nothing in it is still needed.
 4. **A round's changes are on the site:** delete that round's review copies and Compare sheets (the masters and the published wording log stay, under the rules below).
