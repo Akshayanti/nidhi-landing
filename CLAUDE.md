@@ -78,6 +78,15 @@ The site has a "What's changed" page (`/changes/` in every language). It is how 
 
 Whenever the live site is opened automatically (a headless browser, the Chrome extension, a script or any other tool), start from this address: **https://nidhi.today/?internal=1**. It marks that browser as internal (the `nidhi-internal` key the privacy notice describes), so it runs no analytics and never counts as a reader. A fresh browser profile starts unmarked, so open this address first in every new browser or session before visiting any other page. Local test builds follow the rules above for analytics testing instead.
 
+## Merged Branches Are Deleted Locally
+
+Once a pull request is merged, its branch is deleted from the local checkout, so only `main` and branches with an open pull request stay local.
+
+1. **Check it is merged first.** Pull requests are squash-merged, so `git branch -d` and "is it in `main`" checks report a merged branch as unmerged. Confirm instead that the branch's last commit is an ancestor of the merged pull request's head commit (`gh pr list --state merged --json headRefName,headRefOid`), then delete it with `git branch -D`.
+2. **Remove its worktree too.** If the branch is checked out in another worktree, check that worktree for uncommitted work, then `git worktree remove` it and delete any folder left behind.
+3. **Switch off the branch first** if it is the one checked out, and run `git fetch --prune` so stale remote branches disappear. GitHub deletes the remote branch on merge.
+4. **Unmerged work is never deleted** without asking: a branch whose commits are not in a merged pull request stays until the owner decides.
+
 ## Style Rules
 
 - Never use em dashes (`&mdash;` or `—`) or double dashes (`--`) anywhere in the site. Use colons, commas, or reword instead.
