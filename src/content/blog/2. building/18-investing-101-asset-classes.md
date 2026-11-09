@@ -10,6 +10,7 @@ takeaways:
   - "How stocks, bonds, real estate and cash each generate returns"
   - "How each asset class trades return against volatility and liquidity"
   - "Why no single asset class wins in every economic condition"
+  - "What a fund is, and what funds are called where you live"
 order: 18
 pubDate: 2026-05-27
 updatedDate: 2026-11-08
@@ -42,6 +43,8 @@ faq:
     answer: "Stocks generate returns in two ways. The first is capital appreciation: the share price rises over time as the underlying company grows and becomes more valuable. The second is dividends, which are regular cash payments distributed from company profits, though not every company pays them. Broad stock markets have historically returned roughly 4% to 6% per year after inflation across developed markets, more than bonds or cash over most long periods, though not every decade. The catch is volatility. In any given year a diversified stock portfolio might gain 25% or lose 30%, and broad indices have had negative years roughly one year in four. That is why stocks are usually associated with money not needed for at least 5 years, and often 10 or more."
   - question: "Why do bonds belong in a portfolio if stocks return more?"
     answer: "Bonds provide stability and predictable income rather than growth. When you buy a bond you lend money to a government or company that pays you interest, called the coupon, and returns your principal at maturity. Globally, bonds have returned a little under 2% a year after inflation since 1900, with some countries far lower, and corporate bonds slightly more. The real value shows up when stock markets crash: high-quality government bonds often rise as investors seek safety, acting as a buffer that cushions the portfolio. Bonds protect capital rather than build it, so a portfolio of only bonds will not grow your wealth meaningfully. They are the counterweight to stocks, smoothing the ride so you are less likely to panic and sell at the bottom."
+  - question: "What is a fund, and what is it called in different countries?"
+    answer: "A fund pools money from many investors into one portfolio run by a manager, and each contribution buys units or shares at the current price; an investor's share of the fund depends on how many units they hold. A fund is not an asset class of its own: a stock fund behaves like stocks and a bond fund like bonds. With a conventional fund you buy units from the fund and sell them back to it, usually at a price set once a day; exchange-traded funds (ETFs) trade between investors on a stock exchange like a share, at a price that can differ slightly from the value of what they hold. The name depends on the country: a mutual fund in the US and India, often a UCITS fund in the EU, a unit trust or OEIC in the UK, a fondo de inversión in Spain and Mexico, a podílový fond in Czechia, 投資信託 (tōshi shintaku) in Japan, reksa dana in Indonesia and fundo de investimento in Brazil."
   - question: "What is an index fund and why do so many people start with one?"
     answer: "An index fund holds all the components of a market index, so a single purchase gives you a tiny slice of thousands of companies across dozens of countries. You are not betting on one company being the next winner; you own the whole market. Index funds are a common starting point for several reasons: they deliver diversification by default, they cost very little (typically 0.1% to 0.3% per year versus 1% to 2% for many actively managed funds), they require no stock-picking skill, and most actively managed funds have historically underperformed the index they try to beat after fees. A pairing often described in personal finance literature is a global stock index fund with a bond index fund; the mix between them depends on risk capacity and horizon, and which funds are available or tax-efficient depends on your country and account type."
   - question: "Why does no single asset class work best?"
@@ -196,9 +199,38 @@ Each asset class has strengths and weaknesses. More importantly, they tend to be
 
 No single asset class wins in all conditions. Holding a mix means some part of your portfolio is likely doing well at any given time, cushioning the parts that aren't. This concept, diversification, is what we'll explore in detail later in this series.
 
+## What a fund is
+
+Many people hold these asset classes through a fund: a pot that pools money from many investors and is run by a manager who buys the stocks, bonds or other assets for everyone at once. Each contribution buys units (or shares) of the fund, and your share of the fund depends on how many units you hold. With a conventional open-ended fund, the price of a unit is based on its net asset value: what the fund holds minus what it owes, divided by the number of units, usually worked out once each business day. Fees or pricing adjustments can change what you pay or receive. Funds traded on a stock exchange also have a market price, described below.
+
+A fund is not an asset class of its own. A stock fund behaves like stocks and a bond fund like bonds. A money market fund holds short-term debt and is often used like cash, but it is not a bank deposit and can lose value. Many funds spread money across many holdings, though how widely depends on what each fund is set up to buy. What a fund adds is that pooling and a manager, paid for with a yearly management fee.
+
+Two common ways to buy into a fund:
+
+- **Directly from the fund.** With a conventional open-ended fund, you buy units from the fund and sell them back to it at a price based on its net asset value per unit, usually worked out once each business day.
+- **On a stock exchange.** Exchange-traded funds (ETFs) are bought and sold between investors during the trading day, like a share, at a market price that usually stays close to the value of what the fund holds but can sit above or below it, especially when markets are stressed or the ETF's holdings are hard to trade.
+
+The name on your statement depends on where you live, and the same idea goes by many names.
+
+<details>
+<summary class="disclosure">What funds are called where you live</summary>
+
+- **US and India.** A mutual fund. In India a SIP (systematic investment plan) is a way of putting a fixed amount into a mutual fund at regular intervals, not a separate product.
+- **EU.** Many funds sold to the public across the EU are UCITS, funds under the EU's common rules. A conventional UCITS fund must buy back investors' units on request, though it can suspend this in exceptional circumstances; people holding a UCITS ETF usually sell their shares on the stock exchange instead.
+- **UK.** Unit trusts and OEICs (open-ended investment companies) are open-ended funds. An investment trust is different: a company listed on the stock exchange with a fixed number of shares, whose price can sit above or below the value of what it holds.
+- **Spain and Mexico.** A fondo de inversión. In Spain it is a collective investment institution (IIC) run by a management company, and investors are called partícipes; in Mexico the funds are supervised by the CNBV, the banking and securities regulator.
+- **Czechia.** A podílový fond, whose investors hold podílové listy (units) and own the fund's assets together, in proportion to their units.
+- **Japan.** 投資信託 (tōshi shintaku, often shortened to tōshin).
+- **Indonesia.** Reksa dana, run by an investment manager licensed by the OJK, the financial services authority.
+- **Brazil.** Fundo de investimento, registered with the CVM, the securities regulator; investors hold quotas (cotas).
+
+</details>
+
+Whatever the name, the same questions apply: which asset classes does the fund hold, what does it cost each year, and can you sell your units when you need to?
+
 ## Index funds: a common entry point
 
-Investing doesn't require picking individual stocks or bonds. Index funds and ETFs (exchange-traded funds) let people buy broad baskets of investments in a single purchase.
+Investing doesn't require picking individual stocks or bonds. Index funds and ETFs let people buy broad baskets of investments in a single purchase.
 
 A single global stock index fund gives exposure to thousands of companies across dozens of countries. A single bond index fund gives lending exposure to hundreds of governments and companies. The fees are typically very low (0.1-0.3% per year).
 

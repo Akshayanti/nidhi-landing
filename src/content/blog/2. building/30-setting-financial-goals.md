@@ -8,6 +8,7 @@ tldr:
   - "Short goals are often held mostly in cash, medium goals mixed and long goals mostly in investments, by time left."
   - "In this lesson's 7% example, starting ten years later roughly halves what the same monthly amount builds."
 takeaways:
+  - "Why a goal starts with what the money is for, and what earning it costs"
   - "Why a goal needs an amount, a date, a path and a place"
   - "How time horizon decides where a goal's money belongs"
   - "Why delaying a long-term goal costs more than it seems"
@@ -21,6 +22,8 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["building", "goals", "planning"]
 faq:
+  - question: "Why think about what money is for before setting amounts?"
+    answer: "Earning money usually costs hours of work, and it can also cost sleep, health, time with family or a lifestyle given up today. Many people start goal setting with purpose rather than amounts because a goal with a clear purpose makes it possible to judge whether that cost is worth paying, while \"more savings\" without a purpose or stopping point can become an open-ended target. Research on what money can provide, such as surveys in four high-income countries linking time-saving purchases to higher life satisfaction (Whillans and colleagues, 2017), is related but does not test purpose-first goal setting directly. For someone whose income only just covers essentials, the purpose is often the next bill, and how people weigh these costs depends on their health, family, work security and values."
   - question: "What turns a financial wish into a real goal?"
     answer: "A number and a date. Buy a house is a wish; have 40,000 euros saved for a deposit by June 2031 is a goal. A usable financial goal has four components: a specific target amount in exact euros, not enough to be comfortable; a specific date, a month and year, not in a few years; a path from here to there, meaning how much must move from income to savings each month at an assumed rate of return; and a place it will live, the right container for the timeline. Miss any one and the goal degrades: a target without a date can never be on track or behind, and a date without a target can never be enough."
   - question: "How do I convert a goal into a monthly contribution?"
@@ -34,6 +37,12 @@ faq:
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
+  - title: "Buying time promotes happiness (Whillans, Dunn, Smeets, Bekkers and Norton, PNAS, 2017)"
+    url: "https://doi.org/10.1073/pnas.1706541114"
+    type: "paper"
+  - title: "Income and emotional well-being: A conflict resolved (Killingsworth, Kahneman and Mellers, PNAS, 2023)"
+    url: "https://doi.org/10.1073/pnas.2208661120"
+    type: "paper"
   - title: "SMART Criteria"
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/SMART_criteria"
@@ -52,6 +61,16 @@ referentialReading:
 The difference between a wish and a goal is a number and a date. "Buy a house" is a wish. "Have €40,000 saved for a deposit by June 2031" is a goal. A goal can be measured, tracked, adjusted, and eventually hit. A wish can only be hoped for.
 
 This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), [diversification](/blog/diversification/), and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
+
+## What money costs, and what it's for
+
+Before the numbers, a step back. Money works as a multiplier: it turns into options, time, security and help for the people around you. But it has to come from somewhere. For most people it comes from hours of work, and earning it can also cost sleep, health, time with family, or a lifestyle given up today for one later. Every goal in this post has that cost behind it.
+
+That is why many people start goal setting with purpose rather than amounts: what is this money for? A goal with a clear purpose ("a deposit so we can stop moving every two years") makes it possible to judge whether its cost is worth paying. Without a purpose or a stopping point, "more savings" can become an open-ended target: no amount is obviously enough, and the cost keeps being paid without anyone deciding it was worth it.
+
+The studies below do not test purpose-first goal setting directly, but they look at what money can provide. In surveys of 6,271 people across the US, Canada, Denmark and the Netherlands (Whillans and colleagues, 2017), people who spent money to free up time, such as paying for chores they disliked, reported higher life satisfaction, across income levels. In the same paper, a small experiment with 60 working adults in Canada found better end-of-day mood and less time pressure after a time-saving purchase than after a material one. These studies measured how people felt, not long-run outcomes, and the participants lived in four high-income countries. Research on income and well-being finds that more money tends to go with higher well-being on average, but the link is weaker for some people than others: in one US study, for the least happy fifth of people, well-being stopped rising above about $100,000 a year (Killingsworth, Kahneman and Mellers, 2023). Income explains only part of how people feel.
+
+Where it breaks: for someone whose income only just covers rent, food and debts, the purpose is not a question. It is the next bill, and the cost of earning more is often not a choice. And people weigh these costs very differently: for some, long hours now for an early retirement is a fair trade, for others it is not. That depends on your health, your family, how secure your work is and what you value, which is why the rest of this post leaves the "what for" to you and focuses on the "how much and when".
 
 ## What a financial goal actually needs
 

@@ -10,6 +10,7 @@ tldr:
 takeaways:
   - "Why your net worth moves with exchange rates"
   - "How income, expense and planning currencies fit together"
+  - "Why higher inflation tends to weaken a currency, and where that pattern breaks"
   - "When currency concentration is fine and when it's a hidden risk"
   - "Why matching assets to obligations beats trading currencies"
 order: 29
@@ -33,6 +34,8 @@ faq:
     answer: "Rather than tracking every currency you touch, focus on three. Your income currency is the one you earn in, usually your main paycheck, say EUR. Your expense currency is the one you actually spend in day to day, which may differ if you live somewhere your employer does not pay you in the local money. Your planning currency is the one your major future goals are denominated in: retirement in India in INR, a property in the US in USD, or family support abroad. The key question is how well these three match. If all three are EUR, you have no real exposure. If they diverge, one or more dimensions of your life is exchange-rate sensitive."
   - question: "What is currency concentration and why is it risky?"
     answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, hold euro bonds, and expect a pension paid in euros: you are heavily euro-concentrated. (Shares change the picture: even euro-area companies earn part of their money abroad, and a global fund priced in euros, unless it is hedged, still holds dollar, yen and other currencies underneath.) That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The usual way to reduce that risk is to roughly match the currency mix of assets to the currency mix of future obligations."
+  - question: "Why does higher inflation tend to weaken a currency?"
+    answer: "If prices rise faster in one country than another while the exchange rate stays put, that country's goods get steadily more expensive for foreign buyers and foreign goods get cheaper for its own residents, so demand for its currency falls. Savers can add to the pressure when some of them move money into steadier currencies. Over long periods exchange rates tend to make up part of the accumulated inflation difference (relative purchasing power parity), though price levels themselves can stay apart. World Bank data for 2005 to 2024 show the pattern: the Turkish lira, Indian rupee, Brazilian real and Mexican peso, all with higher inflation than the US, weakened against the dollar, while the low-inflation Swiss franc strengthened. It is a long-run tendency, not a forecast: the yen weakened despite low inflation, the Czech koruna held its value despite higher inflation, and gaps typically take years to close."
   - question: "When does diversifying into multiple currencies make sense?"
     answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependents in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, having about 80% of the portfolio's underlying currency exposure in euros is consistent with that default. Chasing currency diversification through frequent trading usually adds cost without improving on staying simple."
   - question: "How often should I review my currency exposure?"
@@ -127,15 +130,48 @@ A mismatch isn't automatically a crisis. Short-term it often averages out. Over 
 
 ## Where currency risk actually comes from
 
-Exchange rates move for many reasons: interest rate differences, inflation differentials, trade flows, political events. The long-run direction tends to approximate [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/), meaning currencies of higher-inflation countries tend to weaken against currencies of lower-inflation countries. In the short run, that relationship is almost invisible under market noise.
+Exchange rates move for many reasons: interest rate differences, inflation differentials, trade flows, political events. Over long periods, one of them stands out: currencies of higher-inflation countries tend to weaken against currencies of lower-inflation countries.
 
-Three time horizons to keep separate:
+### Why higher inflation tends to weaken a currency
 
-- **Short-term (days/months).** Mostly noise for planning purposes
-- **Medium-term (years).** Real deviations from fair value can persist for years. This is where multi-currency people occasionally feel real pain or gain
-- **Long-term (decades).** Currencies in stable countries tend to move in more predictable bands relative to each other, but individual decades can still diverge
+Inflation means each unit of a currency buys less at home every year. Suppose prices rise 10% a year in one country and 2% a year in another, and the exchange rate between them stays fixed. Each year, the first country's goods get about 8% more expensive for buyers paying in the second currency, and the second country's goods get about 8% cheaper for buyers in the first. Buyers shift toward the cheaper goods, so demand for the first currency falls and demand for the second rises.
 
-The practical implication: don't try to trade based on short-term moves, don't assume medium-term exchange rates will revert quickly, and don't bet that long-term relationships will hold exactly as they did historically.
+Savers can add to the pressure. When a currency is losing buying power quickly, some people move savings into a steadier currency or into foreign assets, and each such move means selling the weaker currency. Moving savings this way does not guarantee a better outcome: exchange rates, investment losses, fees and rules on moving money can all eat into the gains. Over long periods, exchange rates tend to make up part of the accumulated difference in inflation between two countries. This is the relative version of [purchasing power parity](/blog/why-your-euro-buys-more-in-some-countries/). It does not mean the same goods end up costing the same everywhere: transport costs, taxes and local services such as rent and haircuts, which cannot be traded across borders, keep price levels apart.
+
+The pattern shows up in the data, measured against the US dollar. US prices rose about 2.5% a year over the same period:
+
+| Currency | Yearly price rise (annualised), 2005 to 2024 | Units per US dollar, 2005 | Units per US dollar, 2024 | Direction |
+|---|---|---|---|---|
+| Turkish lira | 17.1% | 1.34 | 32.81 | Weakened sharply |
+| Indian rupee | 6.7% | 44.10 | 83.67 | Weakened |
+| Brazilian real | 5.6% | 2.43 | 5.39 | Weakened |
+| Mexican peso | 4.5% | 10.90 | 18.30 | Weakened |
+| Swiss franc | 0.5% | 1.25 | 0.88 | Strengthened |
+| Japanese yen | 0.7% | 110.22 | 151.37 | Weakened, despite low inflation |
+| Czech koruna | 3.4% | 23.96 | 23.22 | Roughly unchanged, despite higher inflation |
+
+*Source: World Bank, consumer price index (FP.CPI.TOTL) and official exchange rate, yearly average (PA.NUS.FCRF). More units per dollar means a weaker currency.*
+
+The first five rows follow the pattern. The rupee is a useful example: Indian prices rose about 4 percentage points a year faster than US prices, and the rupee lost about 3.3% a year of its value in dollars, close to that gap but not equal to it. The other higher-inflation examples are similar in direction, not in size: Turkey's inflation gap with the US was about 14 points a year and the lira lost value faster still, while Brazil's real and Mexico's peso fell a little faster than their gaps alone would suggest.
+
+### Where the pattern breaks
+
+The last two rows show the limits, and so do timing and the way some currencies are managed:
+
+- **Japan.** Prices barely rose, yet the yen weakened. Other forces were stronger over this period, among them interest rates: Japan's stayed near or below zero while US rates rose, especially from 2022, which made dollar savings more attractive than yen savings.
+- **Czechia.** Prices rose faster than in the US, yet the koruna ended roughly where it started. One common explanation, known as the Balassa-Samuelson effect, is that as poorer economies catch up with richer ones, their incomes, productivity and price levels rise together, and their currencies can strengthen in real terms rather than fall in line with inflation.
+- **Timing.** Even where the pattern holds, it holds over decades, not months. Research on purchasing power parity has long found that gaps between exchange rates and price levels close slowly, with historical estimates of the time for half a gap to close commonly around three to five years (Rogoff, "The Purchasing Power Parity Puzzle", 1996). That is an average from past data, not a countdown for any currency today. The Brazilian real, for example, strengthened from about 2.4 to 1.8 per dollar between 2005 and 2010 before weakening again.
+- **Pegged and managed currencies.** Many currencies are pegged to another currency or closely managed by their central bank, and some countries restrict moving money abroad. There the official rate can stay put for years while inflation differs, and the adjustment, when it comes, can be sudden.
+
+So inflation differences describe a long-run tendency, not a forecast. They are a reason to expect a high-inflation currency to lose ground over a long horizon, not a guide to what it will do next year.
+
+### Three time horizons to keep separate
+
+- **Short-term (days to months).** Moves are mostly noise for planning purposes.
+- **Medium-term (years).** Exchange-rate changes can noticeably change the home-currency cost of expenses abroad or the home-currency value of savings held in another currency. This is where people whose lives span currencies can feel real losses or gains.
+- **Long-term (decades).** The inflation tendency shows up most clearly over decades, but as Japan and Czechia show, other forces can outweigh it for a whole period.
+
+For planning, this means short-term moves say little about the future, medium-term gaps may not close quickly, and long-term relationships may not hold as they did in the past.
 
 ## When to diversify currency exposure, and when not to
 

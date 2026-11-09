@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-09',
+    items: [
+      {
+        id: 'funds-currencies-goals',
+        text: {
+          en: 'Three lessons go a step further. Investing 101 now explains what a fund is and what funds are called where you live, from mutual funds to Indonesia’s reksa dana. The lesson on money across currencies now shows why higher inflation tends to weaken a currency, with seven currencies against the US dollar from 2005 to 2024, and where that pattern breaks. The lesson on setting goals now has a section, near its start, on what earning money costs and what it is for.',
+          es: 'Tres lecciones van un paso más allá. La lección de introducción a la inversión explica ahora qué es un fondo y cómo se llaman los fondos según el país, desde los fondos de inversión hasta los reksa dana de Indonesia. La lección sobre el dinero en varias monedas muestra ahora por qué una inflación más alta suele debilitar una moneda, con siete monedas frente al dólar estadounidense entre 2005 y 2024, y dónde falla ese patrón. La lección sobre cómo fijar objetivos tiene ahora, cerca del principio, una sección sobre lo que cuesta ganar el dinero y cuál es su propósito.',
+          cs: 'Tři lekce jdou o kus dál. Lekce o základech investování teď vysvětluje, co je fond a jak se fondům říká v různých zemích, od podílových fondů po indonéské reksa dana. Lekce o penězích ve více měnách teď ukazuje, proč vyšší inflace obvykle oslabuje měnu, na sedmi měnách vůči americkému dolaru v letech 2005 až 2024, a kde tento vzorec neplatí. Lekce o stanovení cílů má teď blízko začátku oddíl o tom, co stojí peníze vydělat a k čemu mají sloužit.',
+          mr: 'तीन धडे आता एक पाऊल पुढे जातात. गुंतवणुकीच्या मूलभूत धड्यात आता फंड म्हणजे काय आणि वेगवेगळ्या देशांत फंडांना काय म्हणतात हे सांगितले आहे, म्युच्युअल फंडांपासून इंडोनेशियातील रेक्सा दानापर्यंत. अनेक चलनांतील पैशावरील धडा आता दाखवतो की जास्त महागाईमुळे चलन सहसा कमकुवत का होते, 2005 ते 2024 या काळात अमेरिकन डॉलरच्या तुलनेत सात चलनांच्या उदाहरणांसह, आणि हा कल कुठे लागू पडत नाही. उद्दिष्टे ठरवण्यावरील धड्यात आता सुरुवातीच्या जवळ एक भाग आहे: पैसा कमावण्याची किंमत काय असते आणि तो कशासाठी आहे.',
+          hi: 'तीन पाठ अब एक कदम आगे जाते हैं। निवेश की बुनियादी बातों वाला पाठ अब बताता है कि फंड क्या होता है और अलग-अलग देशों में फंड को क्या कहते हैं, म्यूचुअल फंड से लेकर इंडोनेशिया के रेक्सा दाना तक। कई मुद्राओं में पैसे वाला पाठ अब दिखाता है कि ज़्यादा महँगाई से मुद्रा अक्सर कमज़ोर क्यों होती है, 2005 से 2024 तक अमेरिकी डॉलर के मुकाबले सात मुद्राओं के उदाहरण के साथ, और यह रुझान कहाँ लागू नहीं होता। लक्ष्य तय करने वाले पाठ में अब शुरुआत के पास एक हिस्सा है कि पैसा कमाने की क्या कीमत चुकानी पड़ती है और वह किसलिए है।',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-08',
     items: [
       {

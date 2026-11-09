@@ -501,11 +501,11 @@ Rather than new standalone posts:
 
 **New Optimizing lessons 50b and 50c (decided Oct 25, 2026).** 50b How much can you borrow? (order 50.6) and 50c 0% instalments (order 50.7) were drafted and merged in #247. Their plan and regions table, and the Optimizing global pass (done by Oct 28, 2026), are archived: see done/blog-content-plan.md#gaps-heard-from-readers-oct-25-2026.
 
-**Open item: older lessons (Discovery, Building, Psychology).** Global updates are made as updates to those lessons, one at a time, and stay on this list until done:
-- the "where you live" sections, where a region's rules change the decision (Discovery done Nov 8, 2026; lesson 5 deliberately has none, owner: more would overwhelm a beginner; Psychology done Nov 8, 2026, where only lesson 42's saving defaults depend on local rules; Building done Nov 8, 2026, with notes in 19, 22 to 25 and 27 to 31; the three items below are still open);
-- 18 Investing 101: what funds are called where you live;
-- 29 Managing money across currencies: why higher inflation tends to weaken a currency, with several currency pairs;
-- 30 Setting financial goals: money as a multiplier that costs time, health or lifestyle, and needs a purpose (or a Beliefs Sunday instead).
+**Older lessons (Discovery, Building, Psychology), done Nov 8, 2026.** Global updates were made as updates to those lessons, one at a time:
+- the "where you live" sections, where a region's rules change the decision (Discovery done Nov 8, 2026; lesson 5 deliberately has none, owner: more would overwhelm a beginner; Psychology done Nov 8, 2026, where only lesson 42's saving defaults depend on local rules; Building done Nov 8, 2026, with notes in 19, 22 to 25 and 27 to 31; the three items below done Nov 8, 2026);
+- 18 Investing 101: what funds are called where you live (done Nov 8, 2026: a "What a fund is" section with names by country);
+- 29 Managing money across currencies: why higher inflation tends to weaken a currency, with several currency pairs (done Nov 8, 2026: seven currencies against the US dollar, World Bank data 2005 to 2024, and where the pattern breaks);
+- 30 Setting financial goals: money as a multiplier that costs time, health or lifestyle, and needs a purpose (done Nov 8, 2026 as a section in the lesson, owner; not a Beliefs Sunday).
 
 FI starting in your 40s ("what changes when you start in your 40s", not "FIRE is a bad idea in your 40s") is written into Mastery's retirement and FIRE posts when they are drafted.
 
