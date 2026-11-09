@@ -1,0 +1,41 @@
+{
+  "_about": "Context for glossary review sheets, shared by every language: what each English term means and a real sentence from the site where it appears. The key is the catalog key the example comes from; review-export checks that it still exists and still contains the sentence. Order here is the order of the first batch. See docs/plans/volunteer-review-material.md, section 10.",
+  "batches": [
+    {
+      "id": "G1",
+      "title": "Money and borrowing basics",
+      "terms": [
+        { "term": "net worth", "meaning": "Everything you own minus everything you owe, at one moment.", "key": "tools.multiCurrencyNetWorth.page.related.items.0.title", "example": "What is net worth and why it matters" },
+        { "term": "debt", "meaning": "Money you owe and have to pay back.", "key": "blogIndex.island.concepts.interest", "example": "Why the interest rate on a debt matters" },
+        { "term": "loan", "meaning": "Money borrowed from a lender and repaid over time, usually with interest.", "key": "tools.loanComparison.page.faq.groups.0.items.1.q", "example": "What kinds of loans can I compare?" },
+        { "term": "assets", "meaning": "Things you own that have money value: cash, savings, investments, property.", "key": "tools.multiCurrencyNetWorth.page.related.items.0.desc", "example": "Assets minus liabilities is the simplest measure of financial health. This tool extends it to multi-currency holdings." },
+        { "term": "liabilities", "meaning": "What you owe: loans, card balances and other debts.", "key": "tools.multiCurrencyNetWorth.page.related.items.3.title", "example": "Liabilities: what you owe and why the interest rate matters" },
+        { "term": "income", "meaning": "Money a person receives, mostly from work.", "key": "tools.monteCarlo.page.related.cards.income-replacement-ratio.desc", "example": "What share of your working income you are likely to need once you stop." },
+        { "term": "savings", "meaning": "Money set aside rather than spent.", "key": "home.startingPoints.no-plan.situation", "example": "I have some savings, but no plan." },
+        { "term": "budget", "meaning": "A plan for how money coming in will be spent and saved.", "key": "learn.levelMeta.building.description", "example": "Putting the pieces together. Budgets, savings systems, and first investments." },
+        { "term": "emergency fund", "meaning": "Money kept aside for unexpected costs, such as losing a job or a repair.", "key": "blogIndex.island.concepts.emergency-fund", "example": "What an emergency fund is for" },
+        { "term": "mortgage", "meaning": "A loan to buy a home, secured against that home.", "key": "tools.loanComparison.page.faq.groups.0.items.1.a", "example": "Mortgages, auto loans, personal loans, and student loans on standard repayment plans." },
+        { "term": "insurance", "meaning": "Paying a regular amount so that a company covers certain costs if something goes wrong.", "key": "tools.loanComparison.page.faq.groups.1.items.3.q", "example": "Should I include mandatory insurance or bundled products in the fee?" },
+        { "term": "interest", "meaning": "The cost of borrowing money, or what you earn for lending or saving it.", "key": "tools.investOrPayOff.island.fields.relief", "example": "Tax relief on the interest (optional)" },
+        { "term": "interest rate", "meaning": "Interest as a percentage of the amount, usually per year.", "key": "blogIndex.island.concepts.interest", "example": "Why the interest rate on a debt matters" },
+        { "term": "fee", "meaning": "A charge for a service, such as a loan's setup fee or a fund's yearly fee.", "key": "tools.loanComparison.island.card.penalty.hint", "example": "Some loans charge a fee for paying off early" },
+        { "term": "principal", "meaning": "The amount borrowed, not counting interest; also what is still owed of it.", "key": "tools.loanComparison.page.faq.groups.2.items.0.q", "example": "Can I model paying extra principal each month?" },
+        { "term": "refinance", "meaning": "Replacing a loan with a new one, usually to get a lower rate or different terms.", "key": "tools.loanComparison.island.tabs.horizon.hint", "example": "Where you stand if you sell or refinance early" },
+        { "term": "monthly payment", "meaning": "The amount paid every month to repay a loan.", "key": "tools.loanComparison.island.engine.errors.paymentEnter", "example": "Enter a monthly payment greater than zero." },
+        { "term": "prepayment", "meaning": "Paying back some or all of a loan earlier than the schedule says.", "key": "tools.loanComparison.page.related.items.0.desc", "example": "APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost." },
+        { "term": "lender", "meaning": "Whoever lends the money: a bank or another company or person.", "key": "tools.loanComparison.page.lead.before", "example": "Plug in two to five lenders. See the monthly payment, payoff time, total amount paid, and APR; the one-number cost that folds the fee into the rate." },
+        { "term": "lump sum", "meaning": "A single, larger amount paid or received at once, rather than in parts.", "key": "tools.loanComparison.island.card.prepayments.hint", "example": "Pay extra each month or in lump sums" },
+        { "term": "exchange rate", "meaning": "How much of one currency you get for another.", "key": "tools.multiCurrencyNetWorth.island.rates.errorBefore", "example": "Exchange rates unavailable, showing raw amounts without conversion." },
+        { "term": "currency", "meaning": "A country's or region's money, such as the rupiah or the euro.", "key": "tools.multiCurrencyNetWorth.island.toolbar.currencyLabel", "example": "Your currency (the one you spend in)" },
+        { "term": "investing", "meaning": "Putting money into something, such as shares or bonds, in the hope it grows.", "key": "tools.inflation.page.related.cards.saving-vs-investing.desc", "example": "Where cash fits, where investing fits, and what inflation does to each." },
+        { "term": "investment", "meaning": "Something money is put into in the hope it grows.", "key": "learn.levelMeta.building.description", "example": "Putting the pieces together. Budgets, savings systems, and first investments." },
+        { "term": "inflation", "meaning": "Prices rising over time, so the same money buys less.", "key": "home.toolCards.investOrPayOff.desc", "example": "Two paths, the same date, after inflation." },
+        { "term": "return", "meaning": "What an investment gains or loses, usually as a percentage per year.", "key": "blogIndex.island.concepts.real-returns", "example": "What a real return is, after inflation and costs" },
+        { "term": "stock, shares", "meaning": "A part-ownership of a company that can be bought and sold.", "key": "blogIndex.island.concepts.asset-classes", "example": "How shares, bonds and cash differ" },
+        { "term": "bond", "meaning": "A loan to a government or company that pays interest and is repaid at a set date.", "key": "blogIndex.island.concepts.asset-classes", "example": "How shares, bonds and cash differ" },
+        { "term": "fund", "meaning": "Money pooled or set aside for a purpose; on the site, often an investment fund that holds many shares or bonds.", "key": "tools.investOrPayOff.island.returns.own.desc", "example": "Before inflation, as funds quote it" },
+        { "term": "risk", "meaning": "The chance that the result is worse than expected, including losing money.", "key": "tools.multiCurrencyNetWorth.page.related.items.3.desc", "example": "A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator nets both." }
+      ]
+    }
+  ]
+}

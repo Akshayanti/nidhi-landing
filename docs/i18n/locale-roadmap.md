@@ -54,6 +54,39 @@ East and North Africa.
   Traditional Chinese (Taiwan, Hong Kong; about 30 million readers) has
   neither problem and is the alternative for East Asia if wanted.
 
+## Gathering material ahead of an edition
+
+Material may be gathered for any listed language when someone offers to help.
+This does not start an edition, promise one or set a date, and does not
+change the order editions are built and published; any change to that order
+is an owner decision (owner and council, November 9, 2026).
+
+- **What counts as material:** a glossary (`<locale>-glossary.md`, headed
+  "Working material, not a published edition"), answers to the language's
+  open questions (such as its register), and later, if the owner asks for
+  one, a drafted catalog. A drafted catalog never goes into
+  `src/i18n/strings/` before the edition starts; the council decides where it
+  is kept when the owner asks for it, and it carries the English source commit and a
+  fingerprint per string, so rows whose English has changed are marked for
+  review. Volunteer work is never overwritten.
+- **Keeping it current:** each time a glossary is worked on, it is checked
+  against the current English and its source commit and "last checked" date
+  are updated, so the material cannot drift silently before an edition.
+- **What a volunteer is told:** there is no launch date and no obligation to
+  continue. They work through the same review sheets as the published
+  languages (`docs/plans/volunteer-review-material.md`), with the same
+  prerequisites.
+- **What readers see:** no edition content. No language option, page or
+  address for the language appears on the site. The one exception is credit:
+  volunteers who helped may be credited on `/volunteers/` under the language,
+  marked as in preparation, only after a completed contribution and their
+  explicit confirmation of the exact name, role and placement.
+
+Material gathered so far:
+
+- **Indonesian** (`id`), from November 2026: the glossary
+  (`id-glossary.md`), with one volunteer.
+
 ## Checks before a locale is published
 
 Each language follows the rules in `CLAUDE.md`: its catalog is complete before

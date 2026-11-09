@@ -15,12 +15,13 @@ Everything below happens by hand. The privacy notice promises that a person read
 - **Accepted replies:** the Gmail label "Volunteer agreements". The volunteer keeps their own copy in their inbox.
 - **This file:** the master copy of the wording; git history shows which version was live when.
 
-### The sheet's two extra columns
+### The sheet's three extra columns
 
-The privacy notice allows exactly two columns beyond the form's answers. Add nothing else (no notes, phone numbers or countries) without updating the notice first.
+The privacy notice allows exactly three columns beyond the form's answers. Add nothing else (no notes, phone numbers or countries) without updating the notice first.
 
 - **Status**, a dropdown (Insert → Dropdown, with "Reject the input" under Advanced options): `Waiting for language`, `Replied`, `Agreement sent`, `Agreed`, `Active`, `Paused`. A blank Status means a new response nobody has read yet: dropdowns have no default, and nothing fills it in automatically. There is no `Removed`: a removal deletes the row.
-- **Last contact**, a date (Data → Data validation → Is valid date, Format → Number → Date): the date of the last email either side sent.
+- **Last contact**, a date (Data → Data validation → Is valid date, Format → Number → Date): the date of the last email either side sent. A "batch done" email counts.
+- **Review copies**, text: the copy code of every review sheet sent to this person (for example `id-7Q3K`), separated by commas. This column is the only place a copy code is connected to a person: never write a name or email in a review sheet, in the master or in a file name.
 
 Each row is coloured by its Status (Format → Conditional formatting, applied to every column from row 2 down, one "Custom formula is" rule per line below, with `B` as the Email column and `M` as the Status column; use your sheet's letters):
 
@@ -50,16 +51,40 @@ Do not rename, move or delete the form's own columns. `scripts/volunteer-list.gs
 2. **Their language is not open yet:** reply if you like, set Status to `Waiting for language`.
 3. **You accept them:** send the agreement from the template, replacing `[name]`. Set Status to `Agreement sent` and Last contact to today.
 4. **They reply "I agree":** label the email "Volunteer agreements", set Status to `Agreed`, update Last contact. Only now may they send work.
-5. **They ask for credit:** add the name to the site (a code change in the repo).
+5. **They ask for credit:** nothing is published yet. Credit follows `docs/plans/volunteer-review-material.md`, section 10 (only after completed work and their explicit yes to the exact name, role and placement; names are never committed to the repo), and waits for its own privacy notice update.
 6. **After every email either way:** update Last contact.
 
-### Every quarter
+### Review sheets
 
-Sort by Last contact. For anyone last contacted more than two years ago, delete the row in the sheet and the matching response in the Form (Form → Responses). Deleting only the row leaves a copy in the Form.
+How the sheets work, step by step, is in `docs/plans/volunteer-review-material.md`. Every review file is a whole Google file of its own, so that deleting someone's data means deleting files (with their version history), never editing rows out of a shared file:
+
+- **Review copy:** one per volunteer and batch, link-shared.
+- **Master:** one private file per review copy (snapshot, review, register tabs), named with the copy code.
+- **Compare sheet:** one separate link-shared file per volunteer and round, when several volunteers work on a language.
+- **Published wording log:** one private sheet per language with a row for each accepted and published wording (Ref, wording, copy code, batch, date sent, agreement version). It holds no other part of a batch.
+- **Export manifests and run logs:** kept outside the repo, keyed by copy code; temporary files the scripts make are deleted at the end of each run.
+
+The parts that touch this sheet:
+
+1. **Only after `Agreed`.** Build the copy (`scripts/review/glossary-export.ts`, then `buildGlossarySheet` in the Apps Script project "nidhi volunteer review"), then in the sheet set Share, General access to "Anyone with the link", Editor. Email the link on the person's existing thread, add the copy code to Review copies, and update Last contact.
+2. **"Batch done" email:** update Last contact, then collect (`collectGlossarySheet`). Collection refuses a batch whose tool answer is blank: reply and ask.
+3. **A leaked link:** set the copy's General access back to Restricted, build a new copy with a new code, send it, and add the new code to Review copies. Delete the old copy once nothing in it is still needed.
+4. **A round's changes are on the site:** delete that round's review copies and Compare sheets (the masters and the published wording log stay, under the rules below).
+
+### Every month
+
+Sort by Last contact. For anyone last contacted more than two years ago, do the removal below that day.
 
 ### When someone asks to be removed
 
-Delete their row, delete their Form response, and remove any credit from the site. Keep only the "I agree" email, for as long as the privacy notice allows.
+Within 30 days, in this order:
+
+1. **Review data:** for each code in their Review copies (closed and replaced copies too), delete the review copy and its master file. Delete every Compare sheet that shows their suggestions, and send the other volunteers a new one without them if the round is still open. Delete their entries in the export manifests and run logs. In the published wording log, keep their rows (the permission record for published work); delete nothing else that identifies them.
+2. **Drive trash:** empty it (drive.google.com → Bin → Empty bin), so the deleted files are not kept the extra 30 days. After that, Google lets an admin restore them for 25 more days; the notice says so.
+3. **The form:** delete their row in this sheet and their Form response (Form → Responses). Deleting only the row leaves a copy in the Form.
+4. **Credit:** remove any credit from the site.
+
+Keep only the permission record, for as long as the privacy notice allows: the "I agree" email in Gmail, and, for wording that was published, its rows in the published wording log.
 
 ## The email to accepted volunteers
 
