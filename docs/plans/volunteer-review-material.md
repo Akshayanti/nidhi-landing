@@ -136,7 +136,7 @@ The owner does every deletion, by hand, within 30 days of a removal request, or 
 | Submitted snapshots | Each submitted batch as it stood | Deleted, except for wording that was accepted and published |
 | Published wording log | One private sheet per language: for accepted and published wording only, Ref, wording, copy code, batch, date sent, agreement version and the Gmail message ID of the "I agree" reply (so the row still points to its permission after a removal); no other part of a batch | Kept while the wording is used and then only as long as reasonably necessary for legal claims, as the permission record is today |
 | Copy map | Copy ID to volunteer | The row is deleted |
-| Private export manifests and run logs | Refs, fingerprints, copy IDs, round | Their entries for that copy ID are deleted; manifests older than the last closed round are deleted |
+| The menu's records (script properties) | Per copy code: language, batch, state, file ids; no name or email | Deleted with "Forget this person's review records" during a removal |
 | Local files made by the scripts | Temporary CSV or JSON | Never kept: deleted at the end of each run, never committed |
 | Google Drive trash | Deleted files for up to 30 days | Emptied by hand in the deletion run. Checked Nov 9, 2026: Drive deletes trashed files after 30 days on its own; once the trash is emptied, a Workspace admin can still restore the files for 25 days, after which Google purges them. So the notice says a deleted copy may be recoverable by nidhi's admin for up to 25 days after deletion, then is gone. |
 | Google Vault or retention rules | Copies kept by an admin policy | Checked Nov 9, 2026: none. The account is Google Workspace Business Standard, which has no Vault, so no retention rules or holds exist. If the plan is upgraded to one with Vault, the notice is checked first. |
@@ -212,3 +212,16 @@ Agreed by the council on Nov 9, 2026 (two rounds), after the owner's direction: 
 ## Running costs
 
 Refs, the context manifest, preview rounds, collections and the council's batch reviews are ongoing work, not a one-off script. A round takes the owner roughly: an export, an email per volunteer, a collection, decisions on the master, a council review, a pull request. Volunteers' questions also come to the owner, the only support contact, aiming to reply within 24 hours; deletion runs are the owner's too.
+
+## The review menu (Nov 10, 2026)
+
+Owner decision: batches should look after themselves. Council round on Nov 10 agreed the shape below; the code is `scripts/review/review-sheet.gs` and `review-text.gs`, the owner's steps are in `docs/volunteer-agreement.md`.
+
+- **Where:** the Apps Script project bound to the private volunteer sheet, with a "nidhi review" menu. Scopes: spreadsheets and the container's UI only; no Drive, Gmail or outside requests.
+- **Data:** `glossary-export.ts --langs id,...` writes every batch of every language with material into Data.js, with a fingerprint per batch. Nothing about any volunteer. Once a batch has been sent to anyone, its terms never change; new terms go in a new batch.
+- **Every language the form offers** gets the same sheet, in its own words with the English after them (`review-text.gs`); a language without a glossary yet gets "no material yet" from the menu.
+- **Prepare:** for the selected row, only when Status is Agreed or Active and nothing is open; the next batch in order; the code goes into Review copies before any file exists, so an interrupted build is finished by running Prepare again. Each copy gets a private master at once, whose "Sent" tab records exactly what was sent, the layout and the source; collection checks against that, never against newer data.
+- **Collect:** asks the owner to confirm the "batch done" email arrived; refuses a blank or computed tool answer; flags formulas anywhere, changed reference cells and inconsistent rows; keeps formulas as literal text in the snapshot; keeps the owner's decisions on a repeat run; then builds the next batch, and says to hold it if the flags need a reply.
+- **Recovery:** each file's id is saved the moment it exists and files are refilled from empty on a retry; a build resumes only if a hash of everything the copy shows is unchanged. Collection first writes a complete capture of every submitted cell and formula into the master, then works only from it, building new tabs under temporary names and swapping them in, so decisions and evidence survive any interruption. Everything written to a sheet is escaped, so no text becomes a formula.
+- **Replace** (leaked or lost link), **What's next?**, **Show this person's files** and **Forget this person's review records** (removal) complete the menu. Every action ends with a box of the owner's next manual steps.
+- **Never automatic:** sharing, sending, Status, Last contact, decisions, deletion. The council agreed no privacy notice change is needed for this: the notice already says the private sheet holds each copy's code and that nothing is replied to or decided automatically.
