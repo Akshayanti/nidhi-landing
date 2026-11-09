@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-09',
+    date: '2026-11-10',
     items: [
       {
         id: 'volunteer-review-sheets',
@@ -52,6 +52,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'भाषांतरासाठी मदत करणारे स्वयंसेवक ज्या पुनरावलोकन शीट्समध्ये काम करतील, त्यांच्याबद्दल गोपनीयता सूचनेत आता सांगितले आहे: त्यांत काय असते, कोण काय पाहू शकते, आणि ते किती काळ ठेवले जाते.',
         },
       },
+    ],
+  },
+  {
+    date: '2026-11-09',
+    items: [
       {
         id: 'funds-currencies-goals',
         text: {

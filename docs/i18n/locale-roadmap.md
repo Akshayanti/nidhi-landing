@@ -56,7 +56,9 @@ East and North Africa.
 
 ## Gathering material ahead of an edition
 
-Material may be gathered for any listed language when someone offers to help.
+Material may be gathered for any listed language, and a draft glossary is kept
+ready for every language the volunteer form offers, so a volunteer can start
+reviewing the day they agree (owner, November 10, 2026).
 This does not start an edition, promise one or set a date, and does not
 change the order editions are built and published; any change to that order
 is an owner decision (owner and council, November 9, 2026).
@@ -84,8 +86,15 @@ is an owner decision (owner and council, November 9, 2026).
 
 Material gathered so far:
 
-- **Indonesian** (`id`), from November 2026: the glossary
+- **Indonesian** (`id`), from November 9, 2026: the glossary
   (`id-glossary.md`), with one volunteer.
+- **French, Portuguese, German, Japanese, Vietnamese, Turkish, Korean and
+  Arabic** (`fr`, `pt`, `de`, `ja`, `vi`, `tr`, `ko`, `ar`), from November
+  10, 2026: a draft glossary each (`<locale>-glossary.md`), with the register
+  question and the 51 review terms, before any volunteer has signed up.
+- **Spanish, Czech and Marathi** have editions; their glossaries' existing
+  term tables feed the review sheets directly, with the wording the site uses
+  today in the draft column.
 
 ## Checks before a locale is published
 

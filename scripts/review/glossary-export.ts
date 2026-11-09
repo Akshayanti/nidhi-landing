@@ -59,18 +59,44 @@ type GlossaryRow = { english: string; draft: string; alternatives: string; notes
  * (English, draft, alternatives, notes, status). Markdown emphasis is removed,
  * since a sheet cell shows it as literal asterisks.
  */
+/**
+ * Term tables in a glossary. Two shapes are read, and nothing else:
+ *   - `| English | <draft> | Alternatives | Notes | Status |`, the review
+ *     table of a language without an edition (every row a draft);
+ *   - `| English | <language> | Notes |`, the tables of a published edition,
+ *     where the second column is the wording the site uses today.
+ * A row belongs to the table whose header it follows.
+ */
 function readGlossary(lang: string): Map<string, GlossaryRow> {
   const text = readFileSync(join(ROOT, `docs/i18n/${lang}-glossary.md`), 'utf8');
   const rows = new Map<string, GlossaryRow>();
   const plain = (s: string) => s.replace(/\*([^*]+)\*/g, '$1').replace(/`([^`]+)`/g, '$1').trim();
+  const cellsOf = (line: string) => line.trim().slice(1, -1).split('|').map((c) => c.trim());
+  let shape: 'review' | 'published' | null = null;
   for (const line of text.split('\n')) {
-    if (!line.startsWith('| ') || line.startsWith('| ---') || line.startsWith('| English') || line.startsWith('| Context')) continue;
-    const cells = line.trim().slice(1, -1).split('|').map((c) => c.trim());
-    if (cells.length !== 5) continue;
-    const [english, draft, alternatives, notes, status] = cells.map(plain);
-    rows.set(english, { english, draft, alternatives, notes, status });
+    if (!line.startsWith('|')) { shape = null; continue; }
+    if (line.startsWith('| ---')) continue;
+    const cells = cellsOf(line);
+    if (cells[0] === 'English') {
+      shape = cells.length === 5 && cells[4] === 'Status' ? 'review' : cells.length === 3 && cells[2] === 'Notes' ? 'published' : null;
+      continue;
+    }
+    if (shape === 'review' && cells.length === 5) {
+      const [english, draft, alternatives, notes, status] = cells.map(plain);
+      rows.set(english, { english, draft, alternatives, notes, status });
+    } else if (shape === 'published' && cells.length === 3) {
+      const [english, current, notes] = cells.map(plain);
+      if (!rows.has(english)) rows.set(english, { english, draft: current, alternatives: '', notes, status: 'In use' });
+    }
   }
   return rows;
+}
+
+/** "stock, shares" finds "share, stock"; "fee" finds "fees". */
+function findRow(glossary: Map<string, GlossaryRow>, term: string): GlossaryRow | undefined {
+  const items = (s: string) => s.replace(/ \(.*\)$/, '').split(',').map((x) => x.trim().toLowerCase().replace(/s$/, ''));
+  const want = items(term);
+  return glossary.get(term) ?? [...glossary.values()].find((r) => want.every((w) => items(r.english).includes(w)));
 }
 
 type Register = { options: string[]; rows: { context: string; english: string; examples: string[] }[] };
@@ -120,7 +146,7 @@ function exportLanguage(lang: string, context: { batches: { id: string; title: s
       }
       // The glossary may list a term under a fuller heading ("refinance" is
       // listed as "refinance, refinancing").
-      const row = glossary.get(t.term) ?? [...glossary.values()].find((r) => r.english.split(', ').includes(t.term));
+      const row = findRow(glossary, t.term);
       if (!row) problems.push(`${lang}: ${t.term} is not in docs/i18n/${lang}-glossary.md`);
       return {
         ref: `${lang.toUpperCase()}-${batch.id}-${String(i + 1).padStart(3, '0')}`,

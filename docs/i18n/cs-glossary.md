@@ -142,6 +142,7 @@ term already listed is not re-decided per page.
 | asset allocation | alokace aktiv | *Rozložení mezi akcie a dluhopisy* in plain prose. |
 | rebalancing | rebalancování | |
 | portfolio | portfolio | |
+| fund | fond | *Podílový fond* where the English means a mutual fund; the emergency fund is *finanční rezerva*. |
 | index fund | indexový fond | |
 | mutual fund | podílový fond | |
 | share, stock | akcie | Same form in singular and plural. |
@@ -306,6 +307,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | prepayment | mimořádná splátka | |
 | prepayment penalty | poplatek za předčasné splacení | |
 | exchange rate | směnný kurz | |
+| currency | měna | |
 | spending currency (home currency) | měna vašich výdajů | The currency your bills are priced in. Not *referenční měna* (a benchmark) and not *domácí měna*, which may not be where you live. |
 | percentile | percentil | |
 | median | medián | |

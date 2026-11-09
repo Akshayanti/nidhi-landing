@@ -116,6 +116,7 @@ listed is not re-decided per page.
 | asset allocation | asignación de activos | |
 | rebalancing | reequilibrio (de la cartera) | Not *rebalanceo*, an anglicism. |
 | portfolio | cartera | Not *portafolio* (regional). |
+| fund | fondo | *Fondo de inversión* where the English means a mutual fund; *fondo de emergencia* is its own term. |
 | index fund | fondo indexado | |
 | mutual fund | fondo de inversión | |
 | share, stock | acción, acciones | |
@@ -278,6 +279,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | refinance | refinanciar | |
 | prepayment | pago anticipado | *Amortización anticipada* leans to Spain. |
 | exchange rate | tipo de cambio | |
+| currency | moneda | *Divisa* only for foreign currency in trading contexts. |
 | home currency | moneda de referencia | *Moneda principal* can read as a dominant world currency. |
 | percentile | percentil | |
 | median | mediana | |

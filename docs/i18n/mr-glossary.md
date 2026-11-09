@@ -181,6 +181,7 @@ note records why this one won.
 | asset allocation | मालमत्ता वाटप | Contested (विभागणी). वाटप is the usual word for an allocation. |
 | rebalancing | पुनर्संतुलन | (rebalancing) on first use. |
 | portfolio | पोर्टफोलिओ | |
+| fund | फंड | English loanword as investors say it; *म्युच्युअल फंड* where the English means a mutual fund. |
 | index fund | इंडेक्स फंड | |
 | mutual fund | म्युच्युअल फंड | |
 | SIP | SIP | Latin, as investors say it. |
@@ -344,6 +345,7 @@ note records why this one won.
 | prepayment | मुदतपूर्व परतफेड | |
 | prepayment penalty | मुदतपूर्व परतफेडीवरील दंड | |
 | exchange rate | विनिमय दर | |
+| currency | चलन | |
 | spending currency (home currency) | खर्चाचे चलन | |
 | percentile | शतमक | Contested. (percentile) on first use. |
 | median | मध्यक | |
