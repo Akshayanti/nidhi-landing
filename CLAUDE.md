@@ -122,3 +122,8 @@ Every decision is approved by all three members of the council before it is acce
 3. **When the council does not agree, the council decides the way forward**: another round with new evidence, splitting the decision into parts that can be agreed separately, a smaller or reversible step, or taking the open question to the user. No single member settles it alone.
 4. **Keep both runs alive.** Run Codex and DeepSeek in the background and check on them every 20 to 30 seconds; a stalled run is restarted, not waited out.
 5. The council does not override the rest of this file: a decision that conflicts with the privacy policy, or that is the user's to make, still goes to the user.
+6. **No member leads.** Every member's vote is equal, and every member votes on everything. The member running the session writes briefs and compiles answers mechanically (who proposed what, who voted how); it does not draft the design or the answer for the others to critique. Every member checks the compile in the sign-off round.
+7. **Design questions go through three stages** (a page, a section, a format, a layout, a visual):
+   1. **Each member presents 2 to 3 designs on its own**, genuinely different in concept, without seeing anyone else's. Claude writes its designs before reading the others'.
+   2. **Every member sees all the designs**, picks the best items from each, and proposes 2 to 3 overall designs that combine them.
+   3. **The overall designs are finalised into one** by votes on each item, then a sign-off round on the whole. Only the final design goes to the owner, with any choices that are the owner's to make.
