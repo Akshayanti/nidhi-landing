@@ -51,11 +51,10 @@ context. The other editions split: Spanish uses the informal *tú*, while Hindi
 (आप), Czech (*vy*) and Marathi (तुम्ही) use the polite form. That is a
 reference, not a rule for Indonesian.
 
-**Volunteer's advice (2026-11-10):** *kamu*.
-
-**Status:** open. The volunteer advises; the owner decides after the council.
-One person's view is not proof of what readers prefer, so a point the
-volunteer is unsure about stays open.
+**Decided: *kamu*** (owner, 2026-11-10, on the volunteer's advice). The
+warmth the site's tone asks for (`../brand-identity.md`) comes through *kamu*;
+the respect an older reader expects is carried by sentence style: complete,
+polite sentences, no slang, nothing that talks down.
 
 ### 2. Other open questions
 
@@ -72,8 +71,11 @@ volunteer is unsure about stays open.
 
 ## Rules that apply to every string
 
-Drafted from `CLAUDE.md` and the other glossaries; to be confirmed with the
-register decision.
+Drafted from `CLAUDE.md` and the other glossaries.
+
+**The reader is *kamu*** (owner's decision, 2026-11-10). Possessives agree
+(*asetmu* or *aset kamu*; the volunteer says which reads more natural where).
+Never *Anda* for the reader, and never a mix on one page.
 
 1. **No em dashes and no double dashes.** Use a colon, a comma, parentheses,
    or reword.
@@ -81,7 +83,7 @@ register decision.
    the cited evidence with its limits, where it breaks, what depends on the
    reader's situation. Describe common practice ("titik awal yang umum
    adalah...", "banyak orang memulai dengan...") rather than instructing
-   ("mulailah dengan...", "Anda harus..."). Imperatives are fine for neutral
+   ("mulailah dengan...", "kamu harus..."). Imperatives are fine for neutral
    actions (the examples follow the register question: catat pengeluaran,
    periksa mutasi rekening), not for
    allocation, product, debt or tax decisions.
