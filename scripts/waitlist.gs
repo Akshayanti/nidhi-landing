@@ -489,7 +489,7 @@ function handleWaitlist_(e) {
     var sh = sheet_();
     dedupeOnce_(sh);
     if (!hasEmail_(sh, email)) {
-      if (takeSignupSlot_(new Date())) {
+      if (takeSignupSlot_()) {
         sh.appendRow([email, source, new Date()]);
         added = true;
       } else {
@@ -515,16 +515,18 @@ function handleWaitlist_(e) {
   return jsonResponse_({ ok: true });
 }
 
-/** Counts one new row against today's limit; false once the limit is reached. Call inside the lock. */
-function takeSignupSlot_(now) {
+/** Counts one new row against today's limit; false once the limit is reached. Call inside the lock, which is where the day is read. */
+function takeSignupSlot_() {
   var store = PropertiesService.getScriptProperties();
-  var key = 'signups:' + Utilities.formatDate(now, 'UTC', 'yyyy-MM-dd');
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  var key = 'signups:' + today;
   var used = Number(store.getProperty(key)) || 0;
   if (used >= MAX_SIGNUPS_PER_DAY_) return false;
   store.setProperty(key, String(used + 1));
   if (used === 0) {
+    // Only days before today are dropped, never today's own count.
     var all = store.getProperties();
-    for (var k in all) if (k.indexOf('signups:') === 0 && k !== key) store.deleteProperty(k);
+    for (var k in all) if (k.indexOf('signups:') === 0 && k.slice('signups:'.length) < today) store.deleteProperty(k);
   }
   return true;
 }

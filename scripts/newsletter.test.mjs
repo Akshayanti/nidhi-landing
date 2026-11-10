@@ -472,6 +472,31 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     assert.deepEqual(Object.keys(ctx.rec.props).filter((k) => k.startsWith('confirm_mails:')), ['confirm_mails:2026-11-11']);
   });
 
+  it('a request that waited for the lock across midnight counts against the new day and wipes nothing', () => {
+    const ctx = load();
+    vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_ = 2;', ctx);
+    // The clock passes midnight while the request waits for the lock: it
+    // arrived on Nov 10, and takes the lock on Nov 11.
+    const midnight = Date.parse('2026-11-11T00:00:00Z');
+    const lock = ctx.LockService.getScriptLock;
+    let clock = midnight - 1000;
+    vm.runInContext('Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(clock()); } static now() { return clock(); } };', Object.assign(ctx, { clock: () => clock }));
+    ctx.LockService.getScriptLock = () => { const l = lock(); const wait = l.waitLock; l.waitLock = () => { clock = midnight + 1000; wait(); }; return l; };
+    ctx.rec.props['confirm_mails:2026-11-11'] = '1'; // someone was already counted today
+    sub(ctx, { email: 'late@x.io' });
+    assert.equal(ctx.rec.props['confirm_mails:2026-11-11'], '2', 'counted against the day the lock was taken');
+    assert.equal('confirm_mails:2026-11-10' in ctx.rec.props, false);
+    sub(ctx, { email: 'over@x.io' });
+    assert.deepEqual(ctx.rec.mails, ['late@x.io'], 'the limit of 2 holds');
+  });
+
+  it('the day’s confirmations, twice over, with their reminders, leave room for a lesson', () => {
+    const limit = vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_', load());
+    const quota = vm.runInContext('QUOTA_DAILY_RECIPIENTS', load());
+    // Two UTC days of confirmations and two of reminders can fall in one 24 hours.
+    assert.ok(4 * limit + 1100 <= quota, `4 x ${limit} + a list of 1,100 must fit in ${quota}`);
+  });
+
   it('keeps only a site path as the source', () => {
     const ctx = load();
     const cases = [

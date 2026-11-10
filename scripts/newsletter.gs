@@ -719,16 +719,24 @@ function ensureFromEmailSendable_() {
 // again later, and the 3-day reminder carries the link too.
 var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 
-// Confirmation mails this script will send in one UTC day. Well under the
-// Workspace limit, so a flood of sign-ups cannot use up the day's mail and
-// stop a lesson from going out. Past it, a request changes nothing at all:
-// no row is added (each would be owed a reminder mail three days on) and no
-// existing row is touched (its link must keep working). The site cannot read
-// this script's reply, so a real reader who signs up after the limit is hit
-// sees the usual message and gets no mail that day; the limit is logged as
-// an error so the owner sees it. That is the price of not letting a script
-// send mail without end from this address.
-var MAX_CONFIRMATIONS_PER_DAY_ = 400;
+// Confirmation mails this script will send in one UTC day. Past it, a
+// request changes nothing at all: no row is added (each would be owed a
+// reminder mail three days on) and no existing row is touched (its link must
+// keep working). The site cannot read this script's reply, so a real reader
+// who signs up after the limit is hit sees the usual message and gets no mail
+// that day; the limit is logged as an error so the owner sees it. That is the
+// price of not letting a script send mail without end from this address.
+//
+// Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
+// account, not per UTC day. In the worst 24 hours a flood can take two days'
+// confirmations (the end of one UTC day and the start of the next) and two
+// days' reminders, each reminder being owed for a confirmation three days
+// earlier: four times this limit, 400 mails. That leaves 1,100 for a lesson,
+// which goes to every confirmed reader. So a lesson still goes out in full
+// while the list is under 1,100 readers; the quota warning in send_post
+// fires at 1,200. Raise the list past that and this limit, or the mail
+// service, has to change with it.
+var MAX_CONFIRMATIONS_PER_DAY_ = 100;
 
 function handleSubscribe_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
@@ -753,7 +761,7 @@ function handleSubscribe_(e) {
       if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
     }
     // Checked before anything is written: past the limit nothing changes.
-    if (!takeConfirmationSlot_(now)) return 'capped';
+    if (!takeConfirmationSlot_()) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
     } else {
@@ -782,16 +790,24 @@ function handleSubscribe_(e) {
   return jsonResponse_({ ok: true });
 }
 
-/** Counts one confirmation mail against today's limit; false once the limit is reached. Call inside the lock. */
-function takeConfirmationSlot_(now) {
-  var key = 'confirm_mails:' + Utilities.formatDate(now, 'UTC', 'yyyy-MM-dd');
+/**
+ * Counts one confirmation mail against today's limit; false once the limit
+ * is reached. Call inside the lock. The day is read here, inside the lock,
+ * not when the request arrived: a request that waited for the lock across
+ * midnight would otherwise count against yesterday and, clearing "the other
+ * days", wipe today's count.
+ */
+function takeConfirmationSlot_() {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  var key = 'confirm_mails:' + today;
   var used = Number(prop_(key)) || 0;
   if (used >= MAX_CONFIRMATIONS_PER_DAY_) return false;
   props_().setProperty(key, String(used + 1));
   if (used === 0) {
-    // First of the day: drop the counters of earlier days.
+    // First of the day: drop the counters of days before today. A later day
+    // cannot exist, and today's is never dropped.
     var all = props_().getProperties();
-    for (var k in all) if (k.indexOf('confirm_mails:') === 0 && k !== key) props_().deleteProperty(k);
+    for (var k in all) if (k.indexOf('confirm_mails:') === 0 && k.slice('confirm_mails:'.length) < today) props_().deleteProperty(k);
   }
   return true;
 }
