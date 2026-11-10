@@ -2,6 +2,10 @@
   "name": "nidhi-reels",
   "private": true,
   "type": "module",
+  "allowScripts": {
+    "esbuild": false,
+    "fsevents": false
+  },
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render": "npx tsx src/render-single.ts"

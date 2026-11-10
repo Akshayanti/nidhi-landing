@@ -1,0 +1,337 @@
+---
+/**
+ * The How-to hub (/how-to/), in whichever language it was asked for: the short
+ * guides, grouped by the problem a reader has, in the reader's words.
+ *
+ * The guides are English, like the lessons, so outside English each card says
+ * so before the click. The page's own words are in src/i18n/strings/howTo.ts.
+ * With no guide live yet it says so and stays out of search (noindex here,
+ * and out of the sitemap in astro.config.mjs).
+ *
+ * English is served from src/pages/how-to/index.astro, the other languages
+ * through src/pages/[locale]/how-to/index.astro.
+ *
+ * Finding a guide as the set grows (council, Nov 10 2026): a guide-only search
+ * at the top (each language adds its own phrases from howToAliases.ts; what
+ * is typed stays in the browser, never in the address, and nothing new is
+ * sent), a few common questions, links to each group, and, switched off until
+ * the council reviews them (src/utils/guideLayers.ts), situation cards,
+ * filters, and a preview per group linking to its own page.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { getCollection } from 'astro:content';
+import { COMMON_GUIDES, GUIDE_GROUPS, GUIDE_HUB, getGuides, getSituations, guidePath, guideReadingMinutes, situationPath } from '../../utils/guides';
+import { filtersShown, guideFacets, hubGroupView } from '../../utils/guideLayers';
+import { HOW_TO_ALIASES } from '../../i18n/strings/howToAliases';
+import { format } from '../../i18n/format';
+import { DEFAULT_LOCALE, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props { locale?: Locale }
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const strings = dict(locale);
+const { howTo } = strings;
+const siteUrl = 'https://nidhi.today';
+const hubUrl = new URL(localizedPath(locale, GUIDE_HUB), siteUrl).href;
+
+const guides = await getGuides();
+const groups = GUIDE_GROUPS
+  .map((id) => ({ id, guides: guides.filter((g) => g.data.group === id) }))
+  .filter((grp) => grp.guides.length > 0)
+  .map((grp) => ({ ...grp, view: hubGroupView(grp.guides.length) }));
+const common = COMMON_GUIDES.map((id) => guides.find((g) => g.data.slug === id)).filter((g): g is NonNullable<typeof g> => Boolean(g));
+const situations = await getSituations();
+const facets = guideFacets(guides.map((g) => g.data));
+const showFilters = filtersShown(facets);
+
+// What the hub's search reads, built here and kept in the page: the guides
+// (with this language's own phrases) and, for a search no guide matches, the
+// live lessons. Nothing is fetched and nothing typed leaves the browser.
+const isDev = import.meta.env.DEV;
+const now = new Date();
+const aliases = HOW_TO_ALIASES[locale] ?? {};
+const lessons = (await getCollection('blog')).filter((l) => isDev || l.data.pubDate <= now);
+const searchData = {
+  guides: guides.map((g) => ({
+    id: g.data.slug,
+    terms: [...g.data.searchTerms, ...(aliases[g.data.slug] ?? [])],
+    text: [g.data.description, g.data.outcome, ...g.data.answer].join(' '),
+  })),
+  lessons: lessons.map((l) => ({
+    id: l.data.slug,
+    title: l.data.title,
+    href: `/blog/${l.data.slug}/`,
+    terms: l.data.tags ?? [],
+    text: l.data.description,
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: howTo.crumbHome, item: new URL(localizedPath(locale, '/'), siteUrl).href },
+    { '@type': 'ListItem', position: 2, name: howTo.name, item: hubUrl },
+  ],
+};
+const itemListSchema = guides.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: howTo.schemaListName,
+  itemListElement: guides.map((g, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: g.data.title,
+    url: `${siteUrl}${guidePath(g.data.slug)}`,
+  })),
+} : null;
+const english = locale !== DEFAULT_LOCALE;
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={howTo.meta.title}
+  description={howTo.meta.description}
+  robots={guides.length === 0 ? 'noindex,follow' : undefined}
+  jsonLd={[breadcrumbSchema, ...(itemListSchema ? [itemListSchema] : [])]}
+>
+  <section class="ht">
+    <div class="ht-wrap">
+      <nav class="ht-crumbs" aria-label={strings.a11y.breadcrumb}>
+        <a href={localizedPath(locale, '/')}>{howTo.crumbHome}</a> <span aria-hidden="true">/</span> <span>{howTo.name}</span>
+      </nav>
+      <p class="ht-eyebrow">{howTo.eyebrow}</p>
+      <h1 class="ht-h1">{howTo.h1}</h1>
+      <p class="ht-lede">{howTo.lede}</p>
+      <LessonsInEnglish locale={locale} />
+
+      {groups.length === 0 ? (
+        <p class="ht-empty">{howTo.empty} <a href={localizedPath(locale, '/blog/')}>{howTo.emptyLink}</a></p>
+      ) : (
+        <>
+          <form class="ht-search ph-no-capture" role="search" data-ht-search>
+            <label class="ht-search-label" for="ht-q">{howTo.searchLabel}</label>
+            <div class="ht-search-row">
+              <input id="ht-q" type="search" autocomplete="off" spellcheck="false" placeholder={howTo.searchPlaceholder} data-ht-q />
+              <button type="button" class="ht-clear" data-ht-clear hidden>{howTo.searchClear}</button>
+            </div>
+          </form>
+          <p class="ht-scope">{howTo.scope}</p>
+
+          <div class="ht-results" data-ht-results hidden aria-live="polite">
+            <h2 class="ht-group-h" data-ht-results-h>{howTo.resultsHeading}</h2>
+            <p class="ht-none" data-ht-none hidden>{howTo.noGuides}</p>
+            <ul class="ht-cards" role="list" data-ht-list></ul>
+            <div data-ht-lessons hidden>
+              <h3 class="ht-sub">{howTo.lessonsFallback}</h3>
+              <ul class="ht-lessons" role="list" data-ht-lesson-list></ul>
+            </div>
+          </div>
+
+          <div data-ht-browse>
+            {common.length > 0 && (
+              <section class="ht-common" aria-labelledby="ht-common-h">
+                <h2 class="ht-sub" id="ht-common-h">{howTo.commonHeading}</h2>
+                <ul role="list">
+                  {common.map((g) => <li><a href={guidePath(g.data.slug)} hreflang={english ? 'en' : undefined} lang="en">{g.data.title}</a></li>)}
+                </ul>
+              </section>
+            )}
+
+            {situations.length > 0 && (
+              <section class="ht-situations" aria-labelledby="ht-sit-h">
+                <h2 class="ht-group-h" id="ht-sit-h">{howTo.situationsHeading}</h2>
+                <ul class="ht-cards" role="list">
+                  {situations.map(({ situation }) => (
+                    <li>
+                      <a class="ht-card link-card" href={situationPath(situation.data.slug)} hreflang={english ? 'en' : undefined}>
+                        <span class="ht-card-q" lang="en">{situation.data.title}</span>
+                        {english && <span class="ht-card-meta">{howTo.inEnglish}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {showFilters && (
+              <div class="ht-filters" role="group" aria-label={howTo.filtersLabel} data-ht-filters>
+                <span class="ht-filters-k">{howTo.filtersLabel}</span>
+                <button type="button" aria-pressed="true" data-ht-filter="">{howTo.filtersAll}</button>
+                {facets.flatMap((f) => f.values.map((v) => (
+                  <button type="button" aria-pressed="false" data-ht-filter={`${f.id}:${v.id}`}>{f.id === 'group' ? howTo.groups[v.id] : v.id} ({v.count})</button>
+                )))}
+              </div>
+            )}
+
+            <div class="ht-groups">
+              {groups.map((grp) => (
+                <section class="ht-group" aria-labelledby={`ht-${grp.id}`} data-ht-group={grp.id}>
+                  <h2 class="ht-group-h" id={`ht-${grp.id}`} tabindex="-1">{howTo.groups[grp.id]}</h2>
+                  <ul class="ht-cards" role="list">
+                    {grp.guides.map((g, i) => (
+                      <li hidden={i >= grp.view.show ? true : undefined}>
+                        <a class="ht-card link-card" href={guidePath(g.data.slug)} hreflang={english ? 'en' : undefined} data-ht-card={g.data.slug}>
+                          <span class="ht-card-q" lang="en">{g.data.title}</span>
+                          <span class="ht-card-o" lang="en">{g.data.outcome}</span>
+                          <span class="ht-card-meta">
+                            {format(howTo.readTime, { n: guideReadingMinutes(g.data) })}
+                            {english && <> · {howTo.inEnglish}</>}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {grp.view.linkToPage && (
+                    <p class="ht-all"><a href={localizedPath(locale, `${GUIDE_HUB}${grp.id}/`)}>{format(howTo.groupAll, { count: grp.guides.length })}&nbsp;<span aria-hidden="true">&rarr;</span></a></p>
+                  )}
+                </section>
+              ))}
+            </div>
+          </div>
+          <script type="application/json" id="ht-data" set:html={JSON.stringify(searchData)} />
+          <p hidden data-ht-lesson-label>{english ? howTo.inEnglishLessons : ''}</p>
+        </>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // The hub's search. Guides only; with no guide match, up to three lessons.
+  // What is typed stays in this page's memory: the form has no action and its
+  // field no name, so nothing reaches the address or any request.
+  import { prepare, search, type SearchItem } from '../../utils/siteSearch.ts';
+
+  const dataEl = document.getElementById('ht-data');
+  const input = document.querySelector<HTMLInputElement>('[data-ht-q]');
+  if (dataEl && input) {
+    const data = JSON.parse(dataEl.textContent || '{}') as {
+      guides: { id: string; terms: string[]; text: string }[];
+      lessons: { id: string; title: string; href: string; terms: string[]; text: string }[];
+    };
+    const cards = new Map<string, HTMLAnchorElement>();
+    document.querySelectorAll<HTMLAnchorElement>('[data-ht-card]').forEach((a) => cards.set(a.dataset.htCard!, a));
+    const guideIndex = prepare(data.guides.map((g): SearchItem => ({
+      id: g.id, kind: 'guide', title: cards.get(g.id)?.querySelector('.ht-card-q')?.textContent ?? '', terms: g.terms, text: g.text,
+    })));
+    const lessonIndex = prepare(data.lessons.map((l): SearchItem => ({ id: l.id, kind: 'lesson', title: l.title, terms: l.terms, text: l.text })));
+    const lessonById = new Map(data.lessons.map((l) => [l.id, l]));
+    const lessonLabel = document.querySelector('[data-ht-lesson-label]')?.textContent ?? '';
+
+    const form = document.querySelector<HTMLFormElement>('[data-ht-search]')!;
+    const clear = document.querySelector<HTMLButtonElement>('[data-ht-clear]')!;
+    const results = document.querySelector<HTMLElement>('[data-ht-results]')!;
+    const list = document.querySelector<HTMLElement>('[data-ht-list]')!;
+    const none = document.querySelector<HTMLElement>('[data-ht-none]')!;
+    const lessonsBox = document.querySelector<HTMLElement>('[data-ht-lessons]')!;
+    const lessonList = document.querySelector<HTMLElement>('[data-ht-lesson-list]')!;
+    const browse = document.querySelector<HTMLElement>('[data-ht-browse]')!;
+
+    const run = () => {
+      const q = input.value.trim();
+      clear.hidden = q === '';
+      if (!q) { results.hidden = true; browse.hidden = false; return; }
+      const found = search(guideIndex, q);
+      list.replaceChildren(...found.map((r) => {
+        const li = document.createElement('li');
+        const card = cards.get(r.id);
+        if (card) li.append(card.cloneNode(true));
+        return li;
+      }));
+      none.hidden = found.length > 0;
+      const lessonHits = found.length > 0 ? [] : search(lessonIndex, q).slice(0, 3);
+      lessonList.replaceChildren(...lessonHits.map((r) => {
+        const l = lessonById.get(r.id)!;
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = l.href;
+        a.lang = 'en';
+        a.textContent = l.title;
+        li.append(a);
+        if (lessonLabel) { const m = document.createElement('span'); m.className = 'ht-card-meta'; m.textContent = ` · ${lessonLabel}`; li.append(m); }
+        return li;
+      }));
+      lessonsBox.hidden = lessonHits.length === 0;
+      results.hidden = false;
+      browse.hidden = true;
+    };
+    input.addEventListener('input', run);
+    form.addEventListener('submit', (e) => { e.preventDefault(); run(); });
+    clear.addEventListener('click', () => { input.value = ''; run(); input.focus(); });
+  }
+
+  // Filters, shown only once the council has switched them on: one value at a
+  // time, kept in memory, never in the address.
+  document.querySelectorAll<HTMLButtonElement>('[data-ht-filter]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const value = b.dataset.htFilter ?? '';
+      document.querySelectorAll<HTMLButtonElement>('[data-ht-filter]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+      document.querySelectorAll<HTMLElement>('[data-ht-group]').forEach((sec) => {
+        sec.hidden = value !== '' && value !== `group:${sec.dataset.htGroup}`;
+      });
+    });
+  });
+</script>
+
+<style>
+  .ht-search { margin-top: var(--space-6); }
+  .ht-search-label { display: block; font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-2); }
+  .ht-search-row { display: flex; gap: var(--space-2); }
+  .ht-search input { flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--space-4); font: inherit; font-size: 1rem; border: 1.5px solid var(--color-control-edge); border-radius: 10px; background: var(--color-bg-white); color: var(--color-text-primary); }
+  /* The page has its own Clear button; the browser's second one would repeat it. */
+  .ht-search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .ht-search input:focus-visible { outline: 3px solid var(--color-deep-blue); outline-offset: 1px; }
+  .ht-clear { min-height: 48px; padding: 0 var(--space-4); border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-bg-white); color: var(--color-text-primary); font: inherit; font-weight: 600; cursor: pointer; }
+  .ht-results { margin-top: var(--space-6); }
+  .ht-none { color: var(--color-text-secondary); }
+  .ht-sub { font-size: 1rem; color: var(--color-text-primary); margin: var(--space-5) 0 var(--space-2); }
+  .ht-lessons { margin: 0; padding-inline-start: 1.2rem; display: grid; gap: var(--space-2); }
+  .ht-lessons a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  /* Common questions: plain links, no pills (council, Nov 10 2026). */
+  .ht-common ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-6); }
+  @media (max-width: 40rem) { .ht-common ul { grid-template-columns: 1fr; } }
+  .ht-common a { display: flex; align-items: center; min-height: 44px; color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  .ht-situations { margin-top: var(--space-8); }
+  .ht-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-5); }
+  .ht-filters-k { font-size: 0.9rem; color: var(--color-text-secondary); margin-inline-end: var(--space-1); }
+  .ht-filters button { min-height: 40px; padding: 0 var(--space-3); border: 1px solid var(--color-control-edge); border-radius: 999px; background: var(--color-bg-white); color: var(--color-text-primary); font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .ht-filters button[aria-pressed="true"] { background: var(--color-text-primary); border-color: var(--color-text-primary); color: var(--color-bg-white); }
+  .ht-all { margin: var(--space-3) 0 0; }
+  .ht-all a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  .ht { padding: var(--space-8) 0 var(--space-16); }
+  .ht-wrap { max-width: 52rem; margin: 0 auto; padding: 0 var(--space-4); }
+  .ht-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-4); }
+  .ht-crumbs a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  /* Brand colour by role (council, Nov 10 2026): blue for the page's headings and
+     links, green for the eyebrow; repeated cards stay neutral. */
+  .ht-eyebrow { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--color-teal); margin: 0 0 var(--space-1); }
+  .ht-h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: 1.15; }
+  .ht-lede { font-size: 1.075rem; line-height: 1.6; margin: 0 0 var(--space-2); max-width: 40rem; }
+  .ht-scope { color: var(--color-text-muted); font-size: 0.9rem; margin: var(--space-2) 0 0; max-width: 40rem; }
+  .ht-empty { margin-top: var(--space-6); }
+  .ht-groups { display: grid; gap: var(--space-10, 2.5rem); margin-top: var(--space-8); }
+  .ht-group-h { font-size: 1.2rem; color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
+  .ht-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-3); }
+  .ht-card {
+    display: grid;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-4) 40px var(--space-4) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    text-decoration: none;
+    color: inherit;
+    align-content: start;
+  }
+  .ht-card::after { color: var(--color-text-muted) !important; }
+  .ht-card:hover { border-color: var(--color-link-edge); }
+  .ht-card:hover .ht-card-q { text-decoration: underline; text-underline-offset: 0.2em; }
+  .ht-card:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; }
+  .ht-card-q { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; line-height: 1.3; color: var(--color-text-primary); }
+  .ht-card-o { font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.5; }
+  .ht-card-meta { font-size: 0.8rem; color: var(--color-text-muted); }
+  :global([data-theme="dark"]) .ht-eyebrow { color: var(--palette-teal-dark); }
+</style>

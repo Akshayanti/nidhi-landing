@@ -132,4 +132,180 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+/**
+ * How-to guides (/how-to/<slug>/): short, standalone answers to one problem a
+ * reader recognises, useful without opening a lesson. Written once, in English,
+ * like the lessons. The design and its rules were agreed by the council on
+ * Nov 10, 2026 and are recorded in docs/plans/how-to-guides.md.
+ *
+ * Everything a guide shows lives in fields rather than free markdown, so every
+ * guide keeps the agreed order (answer, scope, what you need, steps or a worked
+ * example, a stopping point, what depends on you, deeper study) and its example
+ * values are written once, in the visual that shows them.
+ */
+const visual = z.discriminatedUnion('kind', [
+  // A run of dated events from today to a target day, with the balance after each.
+  z.object({
+    kind: z.literal('timeline'),
+    caption: z.string().min(1),
+    currency: z.string().min(1),
+    start: z.object({ label: z.string().min(1), balance: z.number() }),
+    events: z.array(z.object({
+      day: z.string().min(1),
+      label: z.string().min(1),
+      amount: z.number(),
+    })).min(2).max(8),
+    end: z.object({ label: z.string().min(1) }),
+  }),
+  // A filled table: a header row and rows of cells, with an optional total row.
+  z.object({
+    kind: z.literal('table'),
+    caption: z.string().min(1),
+    columns: z.array(z.string().min(1)).min(2).max(6),
+    rows: z.array(z.array(z.string())).min(1).max(8),
+    total: z.array(z.string()).optional(),
+  }),
+  // A document (a statement, a quote) with numbered notes pointing at its lines.
+  z.object({
+    kind: z.literal('annotated'),
+    caption: z.string().min(1),
+    title: z.string().min(1),
+    lines: z.array(z.object({
+      label: z.string().min(1),
+      value: z.string().min(1),
+      note: z.string().optional(),
+    })).min(2).max(8),
+  }),
+  // A message with its warning signs marked.
+  z.object({
+    kind: z.literal('message'),
+    caption: z.string().min(1),
+    from: z.string().min(1),
+    parts: z.array(z.object({
+      text: z.string().min(1),
+      sign: z.string().optional(),
+    })).min(2).max(8),
+  }),
+]);
+
+const guides = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
+  schema: z.object({
+    slug: z.string().regex(/^[a-z0-9-]+$/),
+    /** The reader's question, as they would ask it. */
+    title: z.string().min(1),
+    seoTitle: z.string().max(57).optional(),
+    /** The meta description: it states the answer, not a teaser. */
+    description: z.string().min(1).max(170),
+    /** One line under the title: what the reader will have at the end. */
+    outcome: z.string().min(1),
+    /** Which hub group it sits in (src/utils/guides.ts). */
+    group: z.enum(['month', 'owe', 'stock', 'borders', 'safe']),
+    /** The answer, in two or three plain sentences, before anything else. */
+    answer: z.array(z.string().min(1)).min(1).max(3),
+    /** What this page can and cannot solve, side by side under the answer. */
+    scope: z.object({ can: z.string().min(1), cannot: z.string().min(1) }),
+    /** What to have at hand; empty means nothing at all. */
+    needs: z.array(z.string().min(1)),
+    /** Shown only when an honest estimate exists; otherwise `taskTimeNote` says what it depends on. */
+    taskTime: z.string().optional(),
+    taskTimeNote: z.string().optional(),
+    /**
+     * Where safety matters: what to do now and what can wait, shown as a calm
+     * strip inside the guide. No universal deadlines; help routes are scoped.
+     */
+    protective: z.object({
+      heading: z.string().min(1),
+      now: z.array(z.string().min(1)).min(1).max(5),
+      canWait: z.array(z.string().min(1)).min(1).max(4),
+      note: z.string().optional(),
+    }).optional(),
+    /** `steps` for a procedure; `example` for "See it, try it", a worked example explained in parts. */
+    form: z.enum(['steps', 'example']),
+    stepsHeading: z.string().optional(),
+    steps: z.array(z.object({
+      action: z.string().min(1),
+      why: z.string().min(1),
+      example: z.string().optional(),
+      caution: z.string().optional(),
+    })).min(3).max(5),
+    /** The guide's one visual, from the reusable set. */
+    visual,
+    /** "You have enough to...": the result the reader now holds. */
+    stopHere: z.string().min(1),
+    /** A checklist the reader can print and fill in on paper. */
+    template: z.object({
+      title: z.string().min(1),
+      columns: z.array(z.string().min(1)).min(2).max(6),
+      rows: z.number().int().min(3).max(12),
+    }).optional(),
+    /** The decision this page leaves to the reader, then what it depends on. */
+    leftToYou: z.string().min(1),
+    dependsOn: z.array(z.string().min(1)).min(2).max(5),
+    /** Lesson slugs for deeper study, main one first. Unpublished ones are skipped until they go live. */
+    lessons: z.array(z.string()).min(1).max(3),
+    /**
+     * Two or three other guides a reader of this one may need next, chosen by
+     * hand (any group). Shown as "Related questions"; one not live yet is
+     * skipped. The build fails on a slug that is no guide, or on this guide.
+     */
+    related: z.array(z.string()).min(2).max(3),
+    tool: z.object({ url: z.string().startsWith('/free/'), label: z.string().min(1) }).optional(),
+    /** Two or three global references for further reading. */
+    references: z.array(z.object({
+      title: z.string().min(1),
+      publisher: z.string().min(1),
+      url: z.string().url().startsWith('https://'),
+    })).min(1).max(3),
+    /** Where the guide's facts come from; shown folded. */
+    sources: z.array(z.object({
+      title: z.string().min(1),
+      url: z.string().url().startsWith('https://'),
+    })).optional(),
+    /** Words readers use for this problem, for site search. */
+    searchTerms: z.array(z.string().min(1)).min(2),
+    /**
+     * Upkeep: figures this guide shares with a lesson. The build fails if the
+     * lesson no longer contains `value`, so a lesson edit cannot leave the
+     * guide saying something else.
+     */
+    sharedFigures: z.array(z.object({ lesson: z.string(), value: z.string().min(1) })).optional(),
+    /** What would make this guide need a review (a rule, a figure, a lesson). */
+    reviewTrigger: z.string().min(1),
+    pubDate: z.coerce.date(),
+    lastChecked: z.coerce.date(),
+    corrections: z.array(z.object({
+      date: z.coerce.date(),
+      note: z.string().min(1),
+    })).optional(),
+  }),
+});
+
+/**
+ * How-to situation pages (/how-to/situation/<slug>/): a recognisable moment
+ * ("Something arrived in the post", "Moving to a new country") and the guides
+ * that help with it, in order. English, like the guides.
+ *
+ * Built and switched off (src/utils/guideLayers.ts): no page is made until the
+ * council has reviewed the layer, and a page needs at least three live guides.
+ * None is written in advance: each one starts from a real cluster of guides.
+ * Files starting with an underscore are notes, not pages.
+ */
+const situations = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/situations' }),
+  schema: z.object({
+    slug: z.string().regex(/^[a-z0-9-]+$/),
+    /** In the reader's words: "Something arrived in the post". */
+    title: z.string().min(1),
+    description: z.string().max(170),
+    /** Two or three plain sentences: what the guides below help with, and what they don't. */
+    intro: z.string().min(1),
+    /** Guide slugs, in the order that usually helps; not a sequence everyone must follow. */
+    guides: z.array(z.string()).min(3).max(8),
+    lessons: z.array(z.string()).max(3).default([]),
+    pubDate: z.coerce.date(),
+    lastChecked: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, guides, situations };

@@ -1,5 +1,6 @@
 import { toolsMr } from './tools/index.ts';
 import { learnMr } from './learn.ts';
+import { howToMr } from './howTo.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -967,7 +968,7 @@ export const mr: Dict = {
       link: 'अधिक जाणून घ्या',
     },
     faq: {
-      heading: 'दोन नेहमीचे प्रश्न',
+      heading: 'नेहमीचे प्रश्न',
       items: [
         {
           q: 'nidhi ला किती खर्च येतो?',
@@ -1033,6 +1034,7 @@ export const mr: Dict = {
     },
   },
   ...learnMr,
+  ...howToMr,
 
   tools: toolsMr,
 };

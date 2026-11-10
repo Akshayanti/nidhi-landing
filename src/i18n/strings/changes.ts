@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-10',
+    items: [
+      {
+        id: 'how-to-guides',
+        text: {
+          en: 'There’s a new How-to section: short guides that each answer one everyday money question, with the answer first, then what to check, and a link to the full lesson. The first ones cover getting through the month, debts and loans, taking stock of your accounts and net worth, sending money abroad, and checking whether a message or a website is genuine. At the top of the learning path you can now choose between starting from the first lesson and a guide for one question. The How-to page has its own search, which also understands some everyday words in Hindi, Spanish, Czech and Marathi. Search on the learning path now also understands whole questions and everyday words like “credit card”, and finds the guides too.',
+          hi: 'अब कैसे करें नाम का एक नया सेक्शन है: छोटी गाइडें, जिनमें से हर एक पैसों से जुड़े रोज़ के एक सवाल का जवाब देती है। पहले जवाब, फिर यह कि क्या जाँचना है, और पूरे पाठ का लिंक। पहली गाइडें महीना निकालने, कर्ज़ और लोन, अपने खातों और नेट वर्थ का हिसाब, विदेश पैसे भेजने, और किसी मैसेज या वेबसाइट के असली होने की जाँच के बारे में हैं। सीखने के रास्ते में सबसे ऊपर अब आप चुन सकते हैं: पहले पाठ से शुरुआत, या एक सवाल के लिए गाइड। कैसे करें पेज की अपनी खोज है, जो हिंदी के रोज़ के कुछ शब्द भी समझती है। गाइडें अंग्रेज़ी में हैं। सीखने के रास्ते की खोज, जो अंग्रेज़ी में काम करती है, अब पूरे सवाल और रोज़ के शब्द भी समझती है, और गाइडें भी ढूँढ़ती है।',
+          es: 'Hay una nueva sección, Cómo hacerlo: guías breves que responden cada una a una pregunta de dinero de todos los días, con la respuesta primero, luego qué comprobar y un enlace a la lección completa. Las primeras tratan de llegar a fin de mes, deudas y préstamos, hacer balance de tus cuentas y tu patrimonio neto, enviar dinero al extranjero y comprobar si un mensaje o una web son auténticos. Al principio de la ruta de aprendizaje ahora puedes elegir entre empezar por la primera lección o buscar una guía para una sola pregunta. La página Cómo hacerlo tiene su propio buscador, que también entiende algunas palabras cotidianas en español. Las guías están en inglés. La búsqueda de la ruta de aprendizaje, que funciona en inglés, entiende ahora preguntas completas y palabras cotidianas, y también encuentra las guías.',
+          cs: 'Přibyla nová sekce Jak na to: krátké návody, z\u00a0nichž každý odpovídá na jednu běžnou otázku o\u00a0penězích. Nejdřív odpověď, pak co si ověřit a\u00a0odkaz na celou lekci. První návody se týkají toho, jak vyjít do výplaty, dluhů a\u00a0půjček, přehledu o\u00a0účtech a\u00a0čistém jmění, posílání peněz do zahraničí a\u00a0ověření pravosti zprávy nebo webu. Na začátku vzdělávací cesty si teď můžete vybrat: začít první lekcí, nebo návodem na jednu otázku. Stránka Jak na to má vlastní vyhledávání, které rozumí i\u00a0některým běžným českým slovům. Návody jsou v\u00a0angličtině. Vyhledávání na vzdělávací cestě, které funguje v\u00a0angličtině, teď rozumí i\u00a0celým otázkám a\u00a0běžným slovům a\u00a0najde i\u00a0návody.',
+          mr: 'आता कसे करायचे नावाचा नवा विभाग आहे: छोट्या मार्गदर्शिका, ज्यांतील प्रत्येक पैशांशी संबंधित रोजच्या एका प्रश्नाचे उत्तर देते. आधी उत्तर, मग काय तपासायचे, आणि पूर्ण धड्याची लिंक. पहिल्या मार्गदर्शिका महिना निभवणे, कर्जे आणि लोन, तुमची खाती आणि निव्वळ संपत्ती यांचा आढावा, परदेशात पैसे पाठवणे, आणि एखादा संदेश खरा आहे का किंवा एखादी वेबसाइट खरी आहे का हे तपासणे यांबद्दल आहेत. शिकण्याच्या मार्गाच्या सुरुवातीला आता तुम्ही निवडू शकता: पहिल्या धड्यापासून सुरुवात, किंवा एका प्रश्नासाठी मार्गदर्शिका. ‘कसे करायचे’ या पानावर स्वतंत्र शोधाची सोय आहे, ज्यात मराठीतील रोजचे काही शब्द लिहूनही मार्गदर्शिका शोधता येतात. मार्गदर्शिका इंग्रजीत आहेत. शिकण्याच्या मार्गावरील शोध, जो इंग्रजीत चालतो, आता पूर्ण प्रश्न आणि रोजचे शब्दही समजतो, आणि मार्गदर्शिकाही शोधतो.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-09',
     items: [
       {

@@ -124,6 +124,36 @@ function readContentMaps() {
 const contentMaps = readContentMaps();
 
 /**
+ * How-to guides (src/content/guides/): slug → ISO date (lastChecked ?? pubDate),
+ * live ones only, and the newest of them, which dates the hub and decides
+ * whether it is in the sitemap at all (it is noindex while no guide is live).
+ */
+function readGuideMaps() {
+  const guide = new Map();
+  let newest = null;
+  const now = new Date();
+  try {
+    for (const entry of readdirSync('src/content/guides')) {
+      if (!entry.endsWith('.md')) continue;
+      const fm = readFrontmatter(join('src/content/guides', entry));
+      if (!fm || !fm.slug || !fm.pubDate) continue;
+      const pub = new Date(fm.pubDate);
+      if (Number.isNaN(pub.getTime()) || pub > now) continue;
+      const d = new Date(fm.lastChecked ?? fm.pubDate);
+      if (Number.isNaN(d.getTime())) continue;
+      const iso = d.toISOString();
+      guide.set(fm.slug, iso);
+      if (!newest || iso > newest) newest = iso;
+    }
+  } catch {
+    // No guides directory: nothing to date.
+  }
+  return { guide, newest };
+}
+
+const guideMaps = readGuideMaps();
+
+/**
  * Split an absolute pathname into its locale and the path inside that locale.
  * The locale list is explicit (`LOCALES`), never a `/[a-z]{2}/` pattern: a
  * future page whose first segment happens to be two letters must not be read
@@ -263,6 +293,8 @@ export default defineConfig({
       // hubs carry the same lessons, so whether it is live is the same
       // question in either.
       if (path === 'blog/inclusive-finances' && !contentMaps.inclusive) return false;
+      // The How-to hub is noindex while no guide is live, in every language.
+      if (path === 'how-to' && !guideMaps.newest) return false;
       // A level page with no live lessons is noindex (src/layouts/LevelPage.astro),
       // in every language, for the same reason.
       const levelPath = /^blog\/(discovery|building|psychology|optimizing|mastery)$/.exec(path);
@@ -300,6 +332,11 @@ export default defineConfig({
         // author-date if the tag map is empty.
         const newestAcrossTags = [...contentMaps.tag.values()].sort().pop();
         lastmod = newestAcrossTags ?? gitLastmod(staticPageSources(locale, 'blog/tag')) ?? undefined;
+      } else if (path === 'how-to') {
+        // The hub changes when a guide is added or checked again.
+        lastmod = guideMaps.newest ?? undefined;
+      } else if (path.startsWith('how-to/')) {
+        lastmod = guideMaps.guide.get(path.slice('how-to/'.length));
       } else if (path === 'blog/inclusive-finances') {
         // The hub changes when a guide is added or revised: date it by the
         // most recently published or updated guide.
@@ -343,6 +380,8 @@ export default defineConfig({
     '/blog/tg/': '/blog/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/wa/': '/blog/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
     '/blog/dsc/': '/blog/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+    // The same, landing on the How-to guides; utm_content howto_link tells them apart.
+    '/how-to/ig/': '/how-to/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=howto_link',
     // The same, landing on the planner beta page, in each language; utm_content
     // beta_link tells them from the home and blog links.
     '/beta/ig/': '/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',

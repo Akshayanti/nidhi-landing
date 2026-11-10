@@ -29,6 +29,14 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Install scripts: every `npm ci` here fails if a dependency has an install
+# script that the project's package.json `allowScripts` does not cover (for
+# example a puppeteer bump whose pinned approval has not been updated). Only
+# CI is strict: in .npmrc it would stop Dependabot from opening those PRs at
+# all. See README "Install scripts".
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
+
 jobs:
   build:
     runs-on: ubuntu-latest

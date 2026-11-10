@@ -66,6 +66,9 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   puppeteer: '^25.16.0',
+  // Pinned exactly: it runs the test suite in CI, so a new version should
+  // arrive as a reviewed bump, not be downloaded fresh on every run.
+  tsx: '4.23.15',
   // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
   // errors on its own.
   typescript: '7.0.2',

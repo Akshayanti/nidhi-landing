@@ -20,6 +20,8 @@ import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import { getHelperLevels, getPathPosts } from '../utils/learnPosts';
+import { getCollection } from 'astro:content';
+import { FEATURED_GUIDES, GUIDE_HUB, getGuides, guidePath } from '../utils/guides';
 import { inclusiveHostLevels, inclusiveLine } from '../utils/inclusiveGuides';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
 
@@ -29,7 +31,7 @@ interface Props {
 
 const { locale = DEFAULT_LOCALE } = Astro.props;
 const strings = dict(locale);
-const { learn, blogIndex } = strings;
+const { learn, blogIndex, howTo } = strings;
 
 const siteUrl = 'https://nidhi.today';
 const blogUrl = new URL(localizedPath(locale, '/blog/'), siteUrl).href;
@@ -61,6 +63,30 @@ const collections = {
 const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, readingTime, tags, href }) => ({
   id, title, description, level, readingTime, tags, href,
 }));
+
+// Search also reads each lesson's FAQ questions and "In this lesson" phrases,
+// which are worded the way readers ask, and the live How-to guides.
+const lessonText: Record<string, string> = {};
+for (const entry of await getCollection('blog')) {
+  const d = entry.data;
+  lessonText[d.slug] = [
+    ...(d.faq ?? []).map((f) => f.question),
+    ...(d.takeaways ?? []).map((t) => (typeof t === 'string' ? t : t.text)),
+  ].join(' ');
+}
+const guides = (await getGuides()).map((g) => ({
+  id: g.data.slug,
+  title: g.data.title,
+  href: guidePath(g.data.slug),
+  terms: g.data.searchTerms,
+  text: [g.data.description, ...g.data.answer].join(' '),
+}));
+// The questions named on the "One money question?" side, live ones only.
+const featured = FEATURED_GUIDES
+  .map((slug) => guides.find((g) => g.id === slug))
+  .filter((g): g is (typeof guides)[number] => Boolean(g))
+  .map((g) => ({ title: g.title, href: g.href }));
+const hubHref = localizedPath(locale, GUIDE_HUB);
 
 const blogBreadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -121,6 +147,20 @@ const blogItemListSchema = {
       <LearnHome
         client:load
         levels={levels}
+        guides={guides}
+        lessonText={lessonText}
+        howTo={{
+          label: howTo.searchGuide,
+          empty: howTo.searchEmpty,
+          link: howTo.faqLink,
+          href: hubHref,
+          startHeading: howTo.startHeading,
+          oneQuestion: howTo.oneQuestion,
+          body: howTo.blogBody,
+          all: howTo.blogAll,
+          inEnglish: locale === DEFAULT_LOCALE ? undefined : howTo.allInEnglish,
+          featured,
+        }}
         lessons={lessons}
         inclusiveCount={inclusive.length}
         collections={collections}
@@ -157,6 +197,7 @@ const blogItemListSchema = {
     color: var(--color-deep-blue);
     margin-bottom: var(--space-3);
   }
+
 
   .blog-index-subtitle {
     color: var(--color-text-secondary);

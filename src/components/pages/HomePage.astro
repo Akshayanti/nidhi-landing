@@ -18,6 +18,7 @@
  * lesson and tool link is chosen in src/utils/home/startingPoints.ts, which
  * deals in structure only: ids, levels, slugs and addresses.
  */
+import { GUIDE_HUB, getGuides } from '../../utils/guides';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WaitlistSection from '../WaitlistSection.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
@@ -41,7 +42,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { home, learn, footer, fullStop } = dict(locale);
+const { home, learn, footer, fullStop, howTo } = dict(locale);
 
 /** This page's own address for a root-relative path. */
 const href = (path: string) => localizedPath(locale, path);
@@ -65,6 +66,10 @@ const showInvestOrPayOff = await isInvestOrPayOffReleased();
 const isToolLive = (href: string) =>
   (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
 const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
+// The How-to line under the situations shows once a guide is live.
+const guideCount = (await getGuides()).length;
+const hasGuides = guideCount > 0;
+const guideHub = localizedPath(locale, GUIDE_HUB);
 const situations = resolveSituations(allPosts, now, isToolLive);
 const tools = liveTools(isToolLive);
 const counts = levelCounts(allPosts, now);
@@ -95,8 +100,13 @@ const inclusiveText = inclusiveLine(learn.collections, inclusiveHostLevels(await
 const lessonTotal = counts.total;
 const toolTotal = tools.length;
 
-// Shown on the page and, word for word, in the FAQPage data below.
-const faqs = home.faq.items;
+// Shown on the page and, word for word, in the FAQPage data below. With live
+// How-to guides, a second question points to them. The two original questions
+// keep their click labels (home-faq-1 and home-faq-2, as the privacy notice
+// records); the How-to question carries none, so no label is added or reused.
+const faqs: { q: string; a: string; attr?: string; link?: { href: string; label: string } }[] =
+  home.faq.items.map((f, i) => ({ ...f, attr: `home-faq-${i + 1}` }));
+if (hasGuides) faqs.splice(1, 0, { q: howTo.faqQ, a: howTo.faqA, link: { href: guideHub, label: howTo.faqLink } });
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -243,6 +253,16 @@ const faqSchema = {
           the page's language, the lessons they open are not. */}
       <LessonsInEnglish locale={locale} />
 
+      {/* One question rather than a whole route: the short How-to guides,
+          before the routes (council, Nov 10 2026). */}
+      {hasGuides && (
+        <a class="howto-card" href={guideHub}>
+          <span class="howto-card-k">{howTo.oneQuestion}</span>
+          <span class="howto-card-body">{howTo.homeBody}</span>
+          <span class="howto-card-go">{t(howTo.homeLink, { count: guideCount })}&nbsp;<span aria-hidden="true">&rarr;</span></span>
+        </a>
+      )}
+
       {/* One line per route. Each opens the first lesson this browser has not
           read yet. Inclusive Finances, a collection beside the levels, is the
           last line once a guide in it is live. */}
@@ -383,10 +403,11 @@ const faqSchema = {
     <div class="lp-section-inner lp-section-inner--narrow">
       <h2 id="faq-heading" class="faq-heading">{home.faq.heading}</h2>
       <div class="faq-list">
-        {faqs.map((f, i) => (
-          <details class="faq-item" data-attr={`home-faq-${i + 1}`}>
+        {faqs.map((f) => (
+          <details class="faq-item" data-attr={f.attr}>
             <summary class="disclosure"><h3>{f.q}</h3></summary>
             <p>{f.a}</p>
+            {f.link && <p><a class="jump" href={f.link.href}>{f.link.label}&nbsp;<span aria-hidden="true">&rarr;</span></a></p>}
           </details>
         ))}
       </div>
@@ -730,6 +751,30 @@ const faqSchema = {
   /* ----------------------------------------------------------------
      2. Lessons: one line per route
      ---------------------------------------------------------------- */
+  /* One question rather than a whole route: the How-to guides, above the routes. */
+  .howto-card {
+    display: grid;
+    gap: 4px;
+    max-width: 820px;
+    margin: 0 0 var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+  .howto-card-k {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .howto-card-body { color: var(--color-text-secondary); }
+  .howto-card-go { font-weight: 700; color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 3px; }
+  .howto-card:hover { border-color: var(--color-link-edge); }
+  .howto-card:focus-visible { outline: 3px solid var(--color-focus, var(--color-teal)); outline-offset: 2px; }
+
   .routes {
     list-style: none;
     margin: 0;
