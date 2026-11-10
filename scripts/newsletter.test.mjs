@@ -431,12 +431,13 @@ describe('newsletter.gs: bounce scan', () => {
     from = 'Mail Delivery Subsystem <mailer-daemon@googlemail.com>', ageDays = 1, readable = 'Address not found',
     outerType = 'multipart/report; boundary="b1"; report-type=delivery-status', statusType = 'message/delivery-status',
     returned = recipients[0][0], returnedRef = ref(recipients[0][0]), returnedBody = 'Hello', auth = [GOOGLE], extraParts = [],
-    to = 'updates@nidhi.today', returnedFrom = '"nidhi" <updates@nidhi.today>', preamble = [], epilogue = [],
+    to = 'updates@nidhi.today', returnedFrom = '"nidhi" <updates@nidhi.today>', preamble = [], epilogue = [], closing = ['--b1--', ''],
+    outerExtra = [],
   } = {}) => ({
     getFrom: () => from,
     getDate: () => new Date(NOW - ageDays * DAY),
     getRawContent: () => [
-      'Delivered-To: updates@nidhi.today', ...auth,
+      'Delivered-To: updates@nidhi.today', ...auth, ...outerExtra,
       `From: ${from}`, `To: ${to}`, 'Subject: Delivery Status Notification (Failure)', `Content-Type: ${outerType}`, `X-Failed-Recipients: ${recipients.map((r) => r[0]).join(', ')}`, '',
       ...preamble,
       '--b1', 'Content-Type: text/plain; charset="UTF-8"', '', readable, '',
@@ -447,7 +448,7 @@ describe('newsletter.gs: bounce scan', () => {
       `From: ${returnedFrom}`, `To: ${returned}`, 'List-ID: nidhi blog newsletter <newsletter.nidhi.today>', `X-Nidhi-Ref: ${returnedRef}`, 'Subject: A lesson', '',
       returnedBody, '',
       ...extraParts,
-      '--b1--', '',
+      ...closing,
       ...epilogue,
     ].join('\r\n'),
   });
@@ -513,7 +514,15 @@ describe('newsletter.gs: bounce scan', () => {
     ['a report whose returned mail was not sent from this script’s address', { returnedFrom: 'Attacker <attacker@evil.example>' }],
     ['a returned mail carrying two references', { extraParts: [] , returnedBody: 'x', returnedRef: `${ref('gone@x.io')}\r\nX-Nidhi-Ref: ${ref('gone@x.io')}` }],
     ['status fields in the text before the first part', { statusType: 'text/plain', preamble: ['Content-Type: message/delivery-status', '', 'Final-Recipient: rfc822; gone@x.io', 'Action: failed', 'Status: 5.1.1', ''] }],
-    ['a report that never closes', { epilogue: [], extraParts: ['--b1', 'Content-Type: text/plain', '', 'more', ''] }],
+    ['a report that never closes', { closing: [] }],
+    ['a report with a fourth part', { extraParts: ['--b1', 'Content-Type: text/plain', '', 'more', ''] }],
+    // Replayed with a second To line put above the signed one.
+    ['a report about someone else’s mail with this script’s address added above theirs', { to: 'attacker@evil.example', outerExtra: ['To: updates@nidhi.today'] }],
+    ['a report with this script’s address twice', { outerExtra: ['To: updates@nidhi.today'] }],
+    ['a returned mail whose sender only has this script’s address in its display name', { returnedFrom: '"<updates@nidhi.today>" <attacker@evil.example>' }],
+    ['a returned mail from two senders', { returnedFrom: 'updates@nidhi.today, attacker@evil.example' }],
+    ['a report that passed the sender policy but whose signature did not', { auth: ['Authentication-Results: mx.google.com; dkim=fail header.i=@googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dmarc=pass (p=QUARANTINE) header.from=googlemail.com'] }],
+    ['a report whose parts are in another order', { statusType: 'message/rfc822' }],
     ['a report built around a real reference, which Gmail did not find signed by googlemail.com', { auth: ['Authentication-Results: mx.google.com; dkim=pass header.i=@evil.example; spf=pass smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com'] }],
     ['the same with no authentication result at all', { auth: [] }],
     ['the same with the forger’s own result below Gmail’s', { auth: ['Authentication-Results: mx.google.com; dkim=none; spf=fail smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com', GOOGLE] }],
@@ -549,10 +558,21 @@ describe('newsletter.gs: bounce scan', () => {
     assert.equal(scan(ctx).marked_bounced, 1);
   });
 
-  it('accepts Gmail’s result when it reports alignment rather than the signature', () => {
+  it('accepts Gmail’s result when it is folded over lines and names the signing domain', () => {
     const ctx = load(subscribers());
     inbox(ctx, failed('gone@x.io', { auth: ['Authentication-Results: mx.google.com;\r\n       dkim=pass header.d=googlemail.com;\r\n       dmarc=pass (p=QUARANTINE) header.from=googlemail.com'] }));
     assert.equal(scan(ctx).marked_bounced, 1);
+  });
+
+  it('logs why a report from the delivery subsystem was passed over', () => {
+    const ctx = load(subscribers());
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    inbox(ctx, failed('gone@x.io', { auth: [] }), failed('gone@x.io', { to: 'attacker@evil.example' }), failed('gone@x.io', { closing: [] }));
+    assert.equal(scan(ctx).marked_bounced, 0);
+    assert.equal(logged.length, 3);
+    for (const line of logged) assert.match(line, /^\[newsletter\] bounce scan: a report from mailer-daemon@googlemail\.com was not acted on: /);
+    assert.doesNotMatch(logged.join(' '), /gone@x\.io|attacker/, 'the log names no address');
   });
 
   it('ignores a delay notice and a temporary failure', () => {

@@ -1526,7 +1526,9 @@ function mailRefTime_(ref, email) {
  * header that it puts above everything the message arrived with, under its
  * own name (mx.google.com); only that first header is read, since a sender
  * can put any such header of their own lower down. A From line alone can be
- * written by anyone.
+ * written by anyone. It has to be the signature itself that passed (dkim):
+ * a sender-policy pass alone (dmarc by way of spf) says where the message
+ * came from and nothing about its To line or its content being as signed.
  */
 function authenticatedByGoogle_(outerHeaders) {
   var first = /^Authentication-Results:[ \t]*([^\r\n]*)$/im.exec(outerHeaders);
@@ -1535,8 +1537,7 @@ function authenticatedByGoogle_(outerHeaders) {
   if (!/^mx\.google\.com[ \t]*;/i.test(results)) return false;
   // The domain must end there: googlemail.com.example.org is someone else's.
   var dkim = /\bdkim=pass\b[^;]*\bheader\.(?:i=@|d=)googlemail\.com(?![\w.-])/i.test(results);
-  var dmarc = /\bdmarc=pass\b[^;]*\bheader\.from=googlemail\.com(?![\w.-])/i.test(results);
-  return dkim || dmarc;
+  return dkim;
 }
 
 // The only sender whose reports are read: the address alone, or a display
@@ -1545,6 +1546,25 @@ var BOUNCE_SENDER_ = /^(?:[^<>]*<mailer-daemon@googlemail\.com>|mailer-daemon@go
 
 // Reports looked at in one scan, at most. Reaching it is logged.
 var BOUNCE_MAX_THREADS_ = 1000;
+
+/** Whether a header's value is exactly `address`: alone, or one display name with no brackets or commas, then the address in angle brackets. */
+function isExactly_(value, address) {
+  var v = String(value).trim().toLowerCase();
+  if (v === address) return true;
+  var m = /^([^<>,]*)<([^<>]*)>$/.exec(v);
+  return Boolean(m) && m[2] === address;
+}
+
+/**
+ * A report from Google's delivery subsystem that was not acted on, and why.
+ * Logged for the owner: it is either a forgery, or a sign that Google's
+ * reports no longer look the way this expects and real bounces are being
+ * passed over.
+ */
+function skipped_(why) {
+  console.error('[newsletter] bounce scan: a report from mailer-daemon@googlemail.com was not acted on: ' + why);
+  return [];
+}
 
 /** Headers as single lines: a folded header continues on lines that start with white space. */
 function unfold_(text) {
@@ -1584,60 +1604,59 @@ function failedRecipients_(msg) {
   // sent from. A report about someone else's mail is addressed to them, and
   // stays so if it is passed on with Google's signature intact, since the To
   // line is part of what is signed.
-  var to = /^To:[ \t]*([^\r\n]*)$/im.exec(outer);
+  // There must be exactly one To line: a signature covers the last one, so
+  // a second one put above it would be read here and signed by nobody.
   var sender = String(config_().fromEmail).toLowerCase();
-  if (!to || !new RegExp('^(?:[^<>,]*<' + sender.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '>|' + sender.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')$', 'i').test(to[1].trim())) return [];
+  var toLines = outer.match(/^To:[^\r\n]*$/gim) || [];
+  if (toLines.length !== 1 || !isExactly_(toLines[0].replace(/^To:/i, ''), sender)) return skipped_('it is not addressed to this script and nobody else');
   if (!authenticatedByGoogle_(outer)) {
     // Worth a look by the owner: either a forgery, or Google's reports no
     // longer arrive the way this expects and real bounces are being passed over.
-    console.error('[newsletter] bounce scan: a report from mailer-daemon@googlemail.com that Gmail did not find signed by googlemail.com was not acted on');
-    return [];
+    return skipped_('Gmail did not find it signed by googlemail.com');
   }
   var type = /^Content-Type:[ \t]*multipart\/report\b([^\r\n]*)$/im.exec(outer);
-  if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return [];
+  if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return skipped_('it is not a delivery report by its type');
   var boundary = /boundary[ \t]*=[ \t]*(?:"([^"]+)"|([^\s;]+))/i.exec(type[1]);
-  if (!boundary) return [];
+  if (!boundary) return skipped_('its type names no boundary');
   // A part starts at a line that is the boundary and nothing else. What
   // stands before the first such line and after the closing one (the
   // boundary followed by two more dashes) is not part of the report.
   var marker = (boundary[1] || boundary[2]).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   var text = '\n' + body;
   var close = new RegExp('\\r?\\n--' + marker + '--[ \\t]*(?=\\r?\\n|$)').exec(text);
-  if (!close) return [];
+  if (!close) return skipped_('it has no closing boundary line');
   var parts = text.slice(0, close.index).split(new RegExp('\\r?\\n--' + marker + '[ \\t]*(?=\\r?\\n)'));
   parts.shift();
   // Something to read, the status, the returned mail: three parts, in that order.
-  if (parts.length !== 3) return [];
+  if (parts.length !== 3) return skipped_('it does not have exactly three parts');
 
   // A delivery report has its parts in a fixed order: something to read,
-  // then the status, then the returned mail. Exactly one of each of the
-  // last two is expected; anything else is not read.
-  var status = null;
+  // then the status, then the returned mail. The second and third are read
+  // as exactly that, by their position.
+  var partOf = function (index, kind) {
+    var cut = /\r?\n\r?\n/.exec(parts[index]);
+    if (!cut) return null;
+    if (!kind.test(unfold_(parts[index].slice(0, cut.index)))) return null;
+    return parts[index].slice(cut.index + cut[0].length);
+  };
+  if (partOf(0, /^Content-Type:[ \t]*(?:message\/delivery-status|message\/rfc822|text\/rfc822-headers)\b/im) !== null) return skipped_('its first part is not something to read');
+  var status = partOf(1, /^Content-Type:[ \t]*message\/delivery-status\b/im);
+  var returned = partOf(2, /^Content-Type:[ \t]*(?:message\/rfc822|text\/rfc822-headers)\b/im);
   var original = null;
-  for (var p = 0; p < parts.length; p++) {
-    var cut = /\r?\n\r?\n/.exec(parts[p]);
-    if (!cut) continue;
-    var head = unfold_(parts[p].slice(0, cut.index));
-    var content = parts[p].slice(cut.index + cut[0].length);
-    if (/^Content-Type:[ \t]*message\/delivery-status\b/im.test(head)) {
-      if (status !== null) return [];
-      status = content;
-    } else if (/^Content-Type:[ \t]*(?:message\/rfc822|text\/rfc822-headers)\b/im.test(head)) {
-      if (status === null || original !== null) return [];
-      // The returned mail: its own headers come first.
-      var end = /\r?\n\r?\n/.exec(content);
-      original = unfold_(end ? content.slice(0, end.index) : content);
-    }
+  if (returned !== null) {
+    // The returned mail: its own headers come first.
+    var end = /\r?\n\r?\n/.exec(returned);
+    original = unfold_(end ? returned.slice(0, end.index) : returned);
   }
-  if (status === null || !original) return [];
+  if (status === null || !original) return skipped_('its second and third parts are not a status and a returned mail');
   // The returned mail is one this script sent: from its own address, with
   // one reference.
-  var sentFrom = /^From:[ \t]*([^\r\n]*)$/im.exec(original);
-  if (!sentFrom || sentFrom[1].toLowerCase().indexOf('<' + sender + '>') === -1) return [];
+  var fromLines = original.match(/^From:[^\r\n]*$/gim) || [];
+  if (fromLines.length !== 1 || !isExactly_(fromLines[0].replace(/^From:/i, ''), sender)) return skipped_('the mail it returns is not from this script');
   var refLines = original.match(/^X-Nidhi-Ref:[^\r\n]*$/gim) || [];
-  if (refLines.length !== 1) return [];
+  if (refLines.length !== 1) return skipped_('the mail it returns does not carry one reference');
   var refLine = /^X-Nidhi-Ref:[ \t]*(\S+)[ \t]*$/i.exec(refLines[0]);
-  if (!refLine) return [];
+  if (!refLine) return skipped_('the reference in the mail it returns cannot be read');
 
   var out = [];
   unfold_(status).split(/\r?\n\r?\n/).forEach(function (block) {
