@@ -1,2 +1,4 @@
 - [Contrast audit pitfalls](contrast-audit-pitfalls.md) — color-mix parses as color(srgb), 1.5px borders render 1px, sr-only false overlaps, dark level-5 number
 - [Dark-mode deep-blue flip](dark-mode-deep-blue-flip.md) — deep-blue token turns light in dark mode; white-on-deep-blue fills fail (~1.7:1)
+- [Full audit Nov 2026](full-audit-2026-11.md) — recurring causes found (white on flipped fills, colour-only links, placeholders, live regions) and what was sound
+- [Phone pass Nov 2026](phone-pass-2026-11.md) — touch, hydration, print, forced-colour and email causes; emulation pitfalls (smooth scroll, font flags, widened viewport)

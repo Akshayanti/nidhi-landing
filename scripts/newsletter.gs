@@ -884,8 +884,8 @@ function claimReminder_(email, confirmToken, when) {
 
 /**
  * A reminder that could not be sent gives its claim back, so the next hourly
- * run tries again. The row is found again by address, and only a row that is
- * still pending with the same confirm token is touched: the reader may have
+ * run tries again. The row is found again by its confirm token, and only a
+ * row that is still pending for the same address is touched: the reader may have
  * confirmed, unsubscribed or subscribed afresh while the mail was failing.
  */
 function releaseReminderClaim_(email, confirmToken) {
