@@ -436,7 +436,7 @@ export interface HolderScan {
  *     is closed because a method can hand the object back
  *     (`localStorage.valueOf()` is the object itself);
  *   - a test of whether it, or a member of it, is there, in the condition of
- *     an `if` or a `while` that assigns nothing: `if (window.posthog)`,
+ *     an `if` or a `while` that assigns and yields nothing: `if (window.posthog)`,
  *     `if (!window.posthog?.__loaded || typeof window.posthog.set_config !==
  *     'function')`. It must stand in the condition itself, not inside a call
  *     made there (`if (list.push(localStorage))` keeps it);
@@ -494,7 +494,8 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
     for (const m of text.matchAll(/(?<![\w$.])(?:if|while)\s*\(/g)) {
       const open = m.index + m[0].length - 1;
       const inner = balanced(text, open);
-      if (inner === null || /(?<![=!<>])=(?![=>])|=>|\+\+|--/.test(inner)) continue;
+      // `yield` takes the whole expression after it, however that is written, and hands it to the caller.
+      if (inner === null || /(?<![=!<>])=(?![=>])|=>|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(inner)) continue;
       conditions.push([open, open + inner.length + 1]);
     }
     for (const m of text.matchAll(HELD)) {
