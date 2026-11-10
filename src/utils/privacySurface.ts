@@ -440,10 +440,10 @@ export interface HolderScan {
  *     `if (!window.posthog?.__loaded || typeof window.posthog.set_config !==
  *     'function')`. It must stand in the condition itself, not inside a call
  *     made there (`if (list.push(localStorage))` keeps it);
- *   - its name in a string that is not an index: `persistence: 'localStorage'`.
  *
  * Anything else, keeping it or a part of it in a variable, returning it,
- * passing it on, indexing it, setting a property on it, is listed as
+ * passing it on, indexing it, setting a property on it, or writing its name
+ * in a string (`window['localStorage']` reaches it that way), is listed as
  * unresolved, and the test fails. A file that needs to do such a thing is
  * named in `wholeFiles` and pinned by its whole content, so any edit to it
  * at all is looked at.
@@ -537,11 +537,8 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
       const at = m.index;
       const before = text.slice(Math.max(0, at - 40), at);
       const after = text.slice(at + m[0].length, at + m[0].length + 80);
-      const quote = text[at - 1];
       const call = /^\s*\??\.\s*([A-Za-z_$][\w$]*)\s*(?:\?\.)?\s*\(/.exec(after);
       const plain =
-        // Its name in a string, unless the string is an index (`window['localStorage']`).
-        ((quote === "'" || quote === '"' || quote === '`') && after[0] === quote && !/\[\s*$/.test(text.slice(Math.max(0, at - 12), at - 1))) ||
         // One of its permitted methods, called there and then.
         (call !== null && DIRECT_CALLS[m[0]].includes(call[1])) ||
         // A test of whether it, or a member of it, is there.

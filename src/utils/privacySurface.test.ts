@@ -420,8 +420,9 @@ const EXPECTED_MENTIONS = [
 // of the names above (`ls.amount = v`, `people.set(...)`), and following an
 // object through variables in text does not work. So nothing holds them:
 // outside the files below, storage and PostHog only have one of a fixed list
-// of methods called on them, are tested in a condition, or are named in a
-// string (see scanHolders). Three files do more (the consent runtime keeps storage
+// of methods called on them, or are tested in a condition (see scanHolders).
+// Their names are not written in a string either, since a string can be
+// used to reach them. Three files do more (the consent runtime keeps storage
 // in variables and returns it; Analytics.astro replaces PostHog with a
 // stand-in when analytics are off; the type file declares its shape). They
 // are pinned by their whole content: any edit to them is a reason to look.
@@ -871,7 +872,6 @@ describe('privacy surface reader: hosts and requests', () => {
       "if ((kind === \"a)\" || kind === 'b(') && window.posthog) window.posthog.capture('e');",
       "if (!!window.posthog) window.posthog.capture('e');",
       "if (ready && !window.posthog?.__loaded) return;",
-      "const options = { persistence: on ? 'localStorage' : 'memory' };",
     ]) {
       assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
     }
@@ -885,6 +885,12 @@ describe('privacy surface reader: hosts and requests', () => {
       'const people = window.posthog.people;\npeople.set({ amount: typedAmount });',
       "const store = (typeof window !== 'undefined' && window.localStorage) || null;\nstore.amount = typedAmount;",
       "const store = window['localStorage'];",
+      "const store = window[('localStorage')];\nstore.amount = typedAmount;",
+      "const store = window[                    'localStorage'];",
+      'const store = window[`localStorage`];',
+      "const name = 'localStorage';\nconst store = window[name];",
+      "const options = { persistence: on ? 'localStorage' : 'memory' };",
+      "const ph = globalThis[\"posthog\"];",
       'localStorage.amount = typedAmount;',
       "localStorage['amount'] = typedAmount;",
       'function storage() { return window.localStorage; }',
