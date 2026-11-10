@@ -860,11 +860,29 @@ describe('privacy surface reader: hosts and requests', () => {
     const before = scanHolders(file(base), []);
     assert.deepEqual(before.lines, ['components/X.tsx: const store = localStorage;', "components/X.tsx: store.getItem('nidhi-a');"]);
     assert.deepEqual(before.unresolved, []);
-    for (const added of ['store.amount = typedAmount;', "store['amount'] = typedAmount;", 'send(store);', 'Object.assign(store, { amount });']) {
+    for (const added of ['store.amount = typedAmount;', "store['amount'] = typedAmount;", 'store?.setItem(k, v);']) {
       assert.notDeepEqual(scanHolders(file(`${base}\n${added}`), []).lines, before.lines, added);
     }
     const ph = scanHolders(file("const ph = window.posthog;\nif (ph) ph.capture('e');\nph['capture']('free_x', { amount });"), []);
     assert.equal(ph.lines.length, 3);
+    assert.deepEqual(ph.unresolved, []);
+  });
+
+  it('follows a variable that copies one, however many times', () => {
+    const base = 'const store = localStorage;\nconst other = store;\nlet third = other;';
+    const before = scanHolders(file(base), []);
+    assert.deepEqual(before.unresolved, []);
+    for (const added of ['other.amount = typedAmount;', "third['amount'] = typedAmount;", 'third.setItem(k, v);']) {
+      const after = scanHolders(file(`${base}\n${added}`), []);
+      assert.notDeepEqual(after.lines, before.lines, added);
+    }
+  });
+
+  it('a held object handed on to where it cannot be followed needs the whole file pinned', () => {
+    for (const added of ['send(store);', 'const all = [store];', 'box.s = store;', 'return store;', 'other = store;', 'Object.assign(store, { amount });', 'const { setItem } = store;']) {
+      const source = `const store = localStorage;\nstore.getItem('nidhi-a');\n${added}`;
+      assert.deepEqual(scanHolders(file(source), []).unresolved, ['components/X.tsx'], added);
+    }
   });
 
   it('a file that uses storage or PostHog as a value in any other way must be pinned whole', () => {

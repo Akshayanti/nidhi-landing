@@ -405,6 +405,8 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
   return out.sort();
 }
 
+const escapeName = (name: string): string => name.replace(/\$/g, '\\$');
+
 const HELD = '(?:localStorage|sessionStorage|posthog)';
 // `const ph = window.posthog;`: the object under another name.
 const ALIAS = new RegExp(`(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*(?:[\\w$]+\\s*\\.\\s*)?${HELD}\\s*(?:;|\\n)`, 'g');
@@ -430,9 +432,11 @@ export interface HolderScan {
  *
  * `const ph = window.posthog` adds a mention, but `ph.anything(...)` and
  * `ls.amount = v` after it spell no sensitive word. So for each such
- * variable, every line of the file that names it is listed, to be pinned: a
- * new line through the variable is a changed snapshot. A file that does more
- * with the object than that (returns it, passes it on, replaces it) cannot
+ * variable, and each variable that copies one (`const other = ph`), every
+ * line of the file that names it is listed, to be pinned: a new line through
+ * the variable is a changed snapshot. A file that does more than use a
+ * member of the object or copy it into another variable (returns it, passes
+ * it to a function, puts it in a list or on a property, replaces it) cannot
  * be followed line by line; it has to be one of `wholeFiles`, which are
  * pinned by their whole content, so any edit to them at all is looked at.
  */
@@ -445,13 +449,40 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
       pinned.push(`${path}: sha256 ${createHash('sha256').update(raw).digest('hex').slice(0, 16)}`);
       continue;
     }
-    const aliases = [...text.matchAll(ALIAS)];
-    const followed = aliases.length + [...text.matchAll(EXISTENCE)].length + [...text.matchAll(QUOTED)].length;
-    if ([...text.matchAll(VALUE_USE)].length > followed) unresolved.push(path);
-    for (const name of new Set(aliases.map((m) => m[1]))) {
-      const word = new RegExp(`(?<![\\w$.])${name.replace(/\$/g, '\\$')}(?![\\w$])`);
-      for (const line of raw.split('\n')) if (word.test(line)) lines.push(`${path}: ${line.trim()}`);
+    const direct = [...text.matchAll(ALIAS)];
+    const followed = direct.length + [...text.matchAll(EXISTENCE)].length + [...text.matchAll(QUOTED)].length;
+    let lost = [...text.matchAll(VALUE_USE)].length > followed;
+
+    // A variable that copies such a variable holds the object too.
+    const names = new Set(direct.map((m) => m[1]));
+    for (let grew = true; grew;) {
+      grew = false;
+      for (const name of [...names]) {
+        const copy = new RegExp(`(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*${escapeName(name)}\\s*(?:;|\\n)`, 'g');
+        for (const m of text.matchAll(copy)) if (!names.has(m[1])) { names.add(m[1]); grew = true; }
+      }
     }
+    for (const name of names) {
+      const n = escapeName(name);
+      const word = `(?<![\\w$.])${n}(?![\\w$])`;
+      // For this accounting a hyphen-joined token is not the variable: a
+      // short name such as `ph` is also the start of the class `ph-no-capture`.
+      const bare = `(?<![\\w$.-])${n}(?![\\w$-])`;
+      const count = (pattern: string): number => [...text.matchAll(new RegExp(pattern, 'g'))].length;
+      // Each appearance of the variable is its declaration, a member of it
+      // being used (`ph.x`, `ph?.x`, `ph[x]`), a copy into another followed
+      // variable, or a test of whether it is there. Anything else hands the
+      // object on to where it cannot be followed.
+      const known =
+        count(`(?:const|let|var)\\s+${n}\\s*=`) +
+        count(`${bare}\\s*(?:\\?\\.|\\.|\\[)`) +
+        count(`(?:const|let|var)\\s+[A-Za-z_$][\\w$]*\\s*=\\s*${n}\\s*(?:;|\\n)`) +
+        count(`(?:\\b(?:if|while)\\s*\\(\\s*!?\\s*|[!&|]\\s*)${n}(?![\\w$])\\s*(?:\\)|&&|\\|\\||[!=]==)`);
+      if (count(bare) > known) lost = true;
+      const mention = new RegExp(word);
+      for (const line of raw.split('\n')) if (mention.test(line)) lines.push(`${path}: ${line.trim()}`);
+    }
+    if (lost) unresolved.push(path);
   }
   return { pinned: pinned.sort(), lines, unresolved: unresolved.sort() };
 }
