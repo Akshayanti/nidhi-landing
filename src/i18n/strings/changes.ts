@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'tools-send-less',
+        text: {
+          en: 'The free tools now send a little less. The loan comparison no longer reports how many months you chose for the time horizon, only that you changed it, and when exchange rates fail to load, the net worth calculator reports one of a few fixed reasons instead of the browser’s own error text. A link someone shares with you can now only set a currency the tools offer, a number, or a name of ordinary length.',
+          hi: 'मुफ़्त टूल अब थोड़ी कम जानकारी भेजते हैं। लोन तुलना अब यह नहीं बताती कि समय-सीमा के लिए कितने महीने चुने गए, सिर्फ़ यह कि उसे बदला गया। विनिमय दरें लोड न हो पाएँ, तो नेट वर्थ कैलकुलेटर ब्राउज़र के अपने एरर संदेश की जगह कुछ तय कारणों में से एक बताता है। किसी के भेजे लिंक से अब सिर्फ़ वही मुद्रा चुनी जा सकती है जो टूल में मौजूद है, और उसमें सिर्फ़ संख्या या सामान्य लंबाई का नाम आ सकता है।',
+          es: 'Las herramientas gratuitas envían ahora un poco menos. El comparador de préstamos ya no informa de cuántos meses elegiste como horizonte, solo de que lo cambiaste, y cuando los tipos de cambio no se cargan, la calculadora de patrimonio neto informa de uno de unos pocos motivos fijos en lugar del texto de error del navegador. Un enlace que alguien comparta contigo solo puede fijar una moneda que las herramientas ofrecen, un número o un nombre de longitud normal.',
+          cs: 'Bezplatné nástroje teď odesílají o\u00a0něco méně. Srovnání půjček už nehlásí, kolik měsíců jste zvolili jako časový horizont, jen to, že jste ho změnili. Když se nepodaří načíst kurzy, kalkulačka čistého jmění hlásí jeden z\u00a0několika pevných důvodů místo chybového textu prohlížeče. Odkaz, který vám někdo pošle, může nastavit jen měnu, kterou nástroje nabízejí, číslo nebo název běžné délky.',
+          mr: 'मोफत साधने आता थोडी कमी माहिती पाठवतात. कर्जांची तुलना आता कालावधीसाठी किती महिने निवडले ते कळवत नाही, फक्त तो बदलला एवढेच. विनिमय दर लोड झाले नाहीत, तर निव्वळ संपत्ती कॅल्क्युलेटर ब्राउझरच्या स्वतःच्या एरर संदेशाऐवजी काही ठरावीक कारणांपैकी एक कळवतो. कोणी पाठवलेल्या लिंकमधून आता फक्त साधनांत उपलब्ध असलेले चलन, संख्या किंवा नेहमीच्या लांबीचे नाव येऊ शकते.',
+        },
+      },
+      {
         id: 'privacy-notice-wording-nov-10',
         text: {
           en: 'A few corrections to the privacy notice’s wording: it quoted a home page heading that has since been renamed, and some sentences in Hindi, Spanish and Czech had drifted from the English. The net worth calculator’s page now says, as the notice does, that exchange rates are fetched when the page opens and again if you change your spending currency. Nothing about what is collected changes.',

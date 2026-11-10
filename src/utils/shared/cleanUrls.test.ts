@@ -129,6 +129,38 @@ describe('cleanUrls: blog search', () => {
   });
 });
 
+describe('cleanUrls: newsletter tokens', () => {
+  const TOKEN = 'tok_SECRET_0123456789abcdef';
+
+  it('removes ?t= from the confirm and unsubscribe addresses, and keeps the rest', () => {
+    for (const pageName of ['confirm', 'unsubscribe']) {
+      assert.equal(clean(`${ORIGIN}/${pageName}?t=${TOKEN}`), `${ORIGIN}/${pageName}`);
+      assert.equal(clean(`${ORIGIN}/${pageName}/?t=${TOKEN}&utm_source=email`), `${ORIGIN}/${pageName}/?utm_source=email`);
+      assert.equal(clean(`/${pageName}?utm_source=email&t=${TOKEN}`), `/${pageName}?utm_source=email`);
+      for (const prefix of PREFIXES) {
+        assert.equal(clean(`${ORIGIN}${prefix}/${pageName}/?t=${TOKEN}`), `${ORIGIN}${prefix}/${pageName}/`);
+      }
+    }
+  });
+
+  it('leaves no token in any property of an event', () => {
+    const w = page();
+    const props: Record<string, unknown> = {
+      $current_url: `${ORIGIN}/unsubscribe?t=${TOKEN}`,
+      $session_entry_url: `${ORIGIN}/confirm/?t=${TOKEN}`,
+      $referrer: `${ORIGIN}/unsubscribe/?t=${TOKEN}`,
+    };
+    w.nidhiCleanUrlProps(props, PREFIXES);
+    assert.doesNotMatch(JSON.stringify(props), /tok_SECRET/);
+  });
+
+  it('leaves ?t= alone on any other page, and on another site', () => {
+    for (const value of [`${ORIGIN}/blog/?t=1`, `${ORIGIN}/confirmed/?t=1`, `${ORIGIN}/a/confirm?t=1`, `https://example.org/unsubscribe?t=${TOKEN}`]) {
+      assert.equal(clean(value), value);
+    }
+  });
+});
+
 describe('cleanUrls: event properties', () => {
   it('cleans every own property of an object in place', () => {
     const w = page();
@@ -148,6 +180,34 @@ describe('cleanUrls: event properties', () => {
       $pathname: '/hi/free/loan-comparison/',
       count: 3,
     });
+  });
+
+  it('cleans the addresses that heatmap data is keyed by', () => {
+    const w = page();
+    const tool = `${ORIGIN}/es/free/loan-comparison/`;
+    const props: Record<string, unknown> = {
+      $heatmap_data: {
+        [`${tool}?${SECRET_QUERY}#${SECRET_HASH}`]: [{ x: 1, y: 2, target_fixed: false, type: 'click' }],
+        [`${tool}?utm_source=share&x=1#y`]: [{ x: 3, y: 4, target_fixed: false, type: 'click' }],
+        [`${tool}#${SECRET_HASH}`]: [{ x: 5, y: 6, target_fixed: false, type: 'rageclick' }],
+        [`${ORIGIN}/blog/`]: [{ x: 7, y: 8, target_fixed: false, type: 'click' }],
+      },
+    };
+    w.nidhiCleanUrlProps(props, PREFIXES);
+    const sent = JSON.parse(JSON.stringify(props.$heatmap_data));
+    assert.deepEqual(Object.keys(sent).sort(), [`${ORIGIN}/blog/`, tool, `${tool}?utm_source=share`].sort());
+    // Two addresses that become the same one keep all their points.
+    assert.deepEqual(sent[tool].map((p: { x: number }) => p.x), [1, 5]);
+    assert.doesNotMatch(JSON.stringify(sent), /SECRETNAME|123456|Jane|98765/);
+  });
+
+  it('sends no heatmap data it cannot read as addresses with points', () => {
+    for (const odd of ['a string', 42, null, undefined, [`${ORIGIN}/free/x/?v1_n=SECRETNAME`]]) {
+      const w = page();
+      const props: Record<string, unknown> = { $heatmap_data: odd };
+      w.nidhiCleanUrlProps(props, PREFIXES);
+      assert.equal(JSON.stringify(props.$heatmap_data), '{}', String(odd));
+    }
   });
 
   it('accepts a missing object', () => {
@@ -180,7 +240,7 @@ describe('Analytics.astro: how PostHog is started', () => {
       'capture_exceptions: false',
       'disable_session_recording: true',
       "autocapture: hasFullConsent ? window.nidhiClickCapture : false",
-      'enable_heatmaps: hasFullConsent',
+      'enable_heatmaps: hasFullConsent && !window.nidhiHeatmapsPaused',
       "capture_dead_clicks: hasFullConsent ? window.nidhiClickCapture : false",
       "persistence: hasFullConsent ? 'localStorage' : 'memory'",
       'before_send: function (event) {',

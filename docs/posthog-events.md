@@ -84,7 +84,7 @@ All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (top of th
 | `free_loan_comparison_details_toggled` | `vendor: string` — slot label | User expands a result details `<details>` |
 | `free_loan_comparison_tab_changed` | `tab: string` — analysis tab id<br>`via: "click" \| "keyboard"` | User switches analysis tab |
 | `free_loan_comparison_split_vendor_changed` | `vendor: string` — slot label of selected vendor | User picks a vendor in the split-comparison view |
-| `free_loan_comparison_horizon_changed` | `months: number` — selected horizon in months | User changes the time horizon slider (debounced 600ms) |
+| `free_loan_comparison_horizon_changed` | none (the chosen number of months is not sent) | User changes the time horizon slider (debounced 600ms) |
 | `free_loan_comparison_refi_changed` | `field: string` — changed input field name | User changes a refinance input (debounced 600ms) |
 
 ### Multi-Currency Net Worth tool — `src/components/MultiCurrencyNetWorth.tsx`
@@ -94,7 +94,7 @@ All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wr
 | Event | Properties | Trigger |
 |---|---|---|
 | `free_multi_currency_net_worth_shared_view_opened` | `mode: string` — share mode from URL<br>`positions: number` — shared position count<br>`utm_source: string \| null` | Page opened from a share link carrying tool state (after the #, or an older ?-style link), read via ToolStateGuard |
-| `free_multi_currency_net_worth_rates_error` | `functionalCurrency: string`<br>`reason: string` — first 80 chars of error | Exchange rate API fetch fails |
+| `free_multi_currency_net_worth_rates_error` | `functionalCurrency: string`<br>`reason`: one of `network`, `http_4xx`, `http_5xx`, `http_other`, `parse`, `unknown_currency`, `other` (never the error's own text) | Exchange rate API fetch fails |
 | `free_multi_currency_net_worth_asset_added` | `count: number` — new total after add | User clicks "Add asset" |
 | `free_multi_currency_net_worth_asset_removed` | `count: number` — new total after remove | User removes an asset row |
 | `free_multi_currency_net_worth_csv_parse_errors` | `errorCount: number`<br>`validRowCount: number`<br>`firstReason: string` | CSV upload has parse errors |

@@ -2445,8 +2445,9 @@ function HorizonSection({
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
   // renders; the useEffect cleanup cancels in-flight timers when the
-  // component unmounts. Property is bucketed (months) to avoid leaking
-  // any computed loan figures.
+  // component unmounts. The event says only that the horizon was changed:
+  // the number itself is something a reader typed or dragged to, and events
+  // carry choices, never values.
   const horizonTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleHorizonChange = useCallback(
     (next: string) => {
@@ -2457,7 +2458,7 @@ function HorizonSection({
       horizonTrackTimer.current = setTimeout(() => {
         const m = Math.round(parseNumber(next));
         if (!Number.isFinite(m) || m <= 0) return;
-        track('free_loan_comparison_horizon_changed', { months: m });
+        track('free_loan_comparison_horizon_changed');
       }, 600);
     },
     [onHorizonChange],
