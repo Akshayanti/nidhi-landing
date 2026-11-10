@@ -97,11 +97,14 @@
  *                                   reasons go to the execution log. Safe
  *                                   to call; never modifies anything.
  *
- *   GET  ?action=scan_bounces       Signed (&sig=hmac-of-"scan_bounces").
- *                                   Scans the FROM_EMAIL inbox for
- *                                   mailer-daemon replies in the last 14
- *                                   days, marks matching Sheet rows as
- *                                   `bounced` so future sends skip them.
+ *   GET  ?action=scan_bounces       Signed: &ts=<unix seconds>&sig=<hmac of
+ *                                   "scan_bounces:<ts>">, good for five
+ *                                   minutes. Reads Google's delivery
+ *                                   failure reports about this script's
+ *                                   mail in the FROM_EMAIL inbox from the
+ *                                   last 14 days and marks the rows they
+ *                                   name as `bounced` so future sends skip
+ *                                   them.
  *                                   Idempotent. Triggered daily by the
  *                                   deploy workflow; can be curled
  *                                   manually with a signed URL.
@@ -202,17 +205,21 @@ function verifyRequestSignature_(rawBody, signatureHex) {
   return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
 }
 
+// How far a scan_bounces request's time may be from this script's clock.
+var SCAN_SIGNATURE_WINDOW_MS_ = 5 * 60 * 1000;
+
 /**
- * Verify scan-bounces signature. No body (GET-style trigger), so we sign a
- * fixed constant. The action is idempotent (marking bounced rows as
- * bounced is a no-op on repeat), so replay-safety over the constant isn't
- * a risk worth solving with a timestamp.
+ * Verify a scan_bounces request. There is no body to sign, so the caller
+ * signs the action's name with the time it was made, `scan_bounces:<unix
+ * seconds>`, and sends that time as `ts`. A signature is good for five
+ * minutes either side of this script's clock and then for nothing: one that
+ * is seen later (in a log, say) cannot be used again.
  */
-function verifyScanBouncesSig_(signatureHex) {
-  if (!signatureHex) return false;
-  if (!/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
-  var cfg = config_();
-  var expected = hmacHex_(cfg.hmacSecret, 'scan_bounces');
+function verifyScanBouncesSig_(signatureHex, ts) {
+  if (!signatureHex || !/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
+  if (!/^[0-9]{9,11}$/.test(String(ts || ''))) return false;
+  if (Math.abs(Date.now() - Number(ts) * 1000) > SCAN_SIGNATURE_WINDOW_MS_) return false;
+  var expected = hmacHex_(config_().hmacSecret, 'scan_bounces:' + ts);
   return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
 }
 
@@ -1457,76 +1464,98 @@ function emailDomain_(email) {
 //
 // Gmail's advanced API doesn't expose bounce webhooks for consumer accounts
 // / free Workspace tiers. The only way to notice that a subscriber's
-// address is dead is to look at `mailer-daemon` bounce replies sitting in
-// the FROM_EMAIL inbox. This job scans the last 14 days of such replies,
-// extracts failed recipient addresses, and flips matching Sheet rows from
-// `confirmed` → `bounced` so we stop burning Workspace quota on dead
-// addresses.
+// address is dead is to look at the delivery failure reports sitting in the
+// FROM_EMAIL inbox. This job reads the last 14 days of them and flips the
+// matching Sheet rows to `bounced`, so they get no more mail.
+//
+// A report counts only if all of this holds, because anyone can send this
+// inbox a message that merely looks like one:
+//   - it is from Google's own delivery subsystem, mailer-daemon@googlemail.com
+//     (a forgery of that address fails Google's sender checks and does not
+//     reach the inbox);
+//   - it is about mail this script sent: it quotes our List-ID;
+//   - it reports a permanent failure: `Action: failed` with a 5.x.x status.
+//     A delay notice or a full mailbox (4.x.x) is not one;
+//   - the address is named as the failed recipient (`Final-Recipient` or
+//     `X-Failed-Recipients`), not merely mentioned somewhere in the text;
+//   - the report is newer than the row: an old failure does not undo a
+//     later sign-up.
 //
 // `bounced` is outside the enum in listConfirmedSubscribers_() — which
-// filters on status==='confirmed' — so marked rows are implicitly dropped
-// from all future fan-outs. Re-subscribing via the public form overwrites
-// the row back to `pending` and goes through the normal double-opt-in
-// flow, which acts as a manual "we think this address works again" check.
-//
-// Why a single 14-day window:
-//  - Shorter than 14d and a weekly cron would miss bounces that arrived
-//    between runs;
-//  - Longer and we'd repeatedly re-process the same old bounces on every
-//    daily run (harmless, just wasteful).
-//
-// The extracted address set intentionally over-matches (any `<…@…>` in the
-// bounce body) and we filter to addresses actually present in our sheet,
-// so we can't accidentally mark a stranger's email.
+// filters on status==='confirmed' — so marked rows are dropped from all
+// future fan-outs, and a pending row that bounced gets no reminder.
+// Re-subscribing via the public form puts the row back to `pending` and
+// goes through the normal double opt-in.
+
+// The only sender whose reports are read.
+var BOUNCE_SENDER_ = /(?:^|<)mailer-daemon@googlemail\.com>?$/i;
+
+// Reports looked at in one scan, at most.
+var BOUNCE_MAX_THREADS_ = 500;
+
+/**
+ * The addresses one message reports as permanently failed, lower-cased; none
+ * if the message is not such a report about this script's mail.
+ */
+function failedRecipients_(msg, listHost) {
+  var from = '';
+  try { from = String(msg.getFrom() || '').trim(); } catch (_) { return []; }
+  if (!BOUNCE_SENDER_.test(from)) return [];
+  var raw = '';
+  try { raw = String(msg.getRawContent() || ''); } catch (_) { return []; }
+  if (raw.indexOf('newsletter.' + listHost) === -1) return [];
+  if (!/^Action:[ \t]*failed[ \t]*\r?$/im.test(raw)) return [];
+  if (!/^Status:[ \t]*5\.[0-9]+\.[0-9]+/im.test(raw)) return [];
+  var found = {};
+  var m;
+  var finalRecipient = /^Final-Recipient:[ \t]*rfc822;[ \t]*<?([^\s<>;,]+@[^\s<>;,]+)>?[ \t]*\r?$/gim;
+  while ((m = finalRecipient.exec(raw)) !== null) found[m[1].toLowerCase()] = true;
+  var failedHeader = /^X-Failed-Recipients:[ \t]*(.+?)[ \t]*\r?$/gim;
+  while ((m = failedHeader.exec(raw)) !== null) {
+    m[1].split(',').forEach(function (a) {
+      var addr = a.trim().toLowerCase();
+      if (/^[^\s<>;,]+@[^\s<>;,]+$/.test(addr)) found[addr] = true;
+    });
+  }
+  return Object.keys(found);
+}
 
 function handleScanBounces_(e) {
   var sig = (e && e.parameter && e.parameter.sig) || '';
-  if (!verifyScanBouncesSig_(sig)) {
+  var ts = (e && e.parameter && e.parameter.ts) || '';
+  if (!verifyScanBouncesSig_(sig, ts)) {
     return jsonResponse_({ ok: false, error: 'bad_signature' });
   }
 
   var cfg = config_();
+  var listHost = host_(cfg.siteUrl);
 
-  // Broad Gmail query — we over-match on purpose and then filter candidates
-  // against the Sheet. Bounces come from `mailer-daemon@googlemail.com`
-  // in most cases; the subject heuristic catches forwarding-service
-  // bounces that spoof a different From.
-  var query = 'in:inbox (from:mailer-daemon OR from:postmaster OR subject:"Delivery Status Notification") newer_than:14d';
-  var threads;
+  // Every report in the inbox from the last 14 days, a page at a time.
+  var query = 'in:inbox from:mailer-daemon@googlemail.com newer_than:14d';
+  var scanned = 0;
+  // address -> the time of its newest failure report
+  var failedAt = {};
   try {
-    threads = GmailApp.search(query, 0, 200);
-  } catch (err) {
-    return jsonResponse_({ ok: false, error: 'gmail_search_failed: ' + err });
-  }
-
-  // Build a Set of all addresses appearing in bounce bodies.
-  var candidates = {};
-  for (var t = 0; t < threads.length; t++) {
-    var msgs = threads[t].getMessages();
-    for (var m = 0; m < msgs.length; m++) {
-      var msg = msgs[m];
-      var haystack = '';
-      try { haystack += (msg.getSubject() || '') + '\n'; } catch (_) {}
-      try { haystack += (msg.getPlainBody() || ''); } catch (_) {}
-      // Match both `<user@host>` bracketed forms and bare addresses — bounce
-      // reports vary wildly between providers.
-      var re = /([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})/g;
-      var match;
-      while ((match = re.exec(haystack)) !== null) {
-        var addr = match[1].toLowerCase();
-        if (addr.indexOf('mailer-daemon') === 0) continue;
-        if (addr.indexOf('postmaster@') === 0)   continue;
-        if (addr === cfg.fromEmail.toLowerCase())  continue;
-        // Skip common noise: Google-generated bounce-report from lines.
-        if (/@googlemail\.com$/i.test(addr)) continue;
-        if (/@google\.com$/i.test(addr))     continue;
-        candidates[addr] = true;
+    for (var start = 0; start < BOUNCE_MAX_THREADS_; start += 100) {
+      var threads = GmailApp.search(query, start, 100);
+      scanned += threads.length;
+      for (var t = 0; t < threads.length; t++) {
+        var msgs = threads[t].getMessages();
+        for (var i = 0; i < msgs.length; i++) {
+          var when = 0;
+          try { when = msgs[i].getDate().getTime(); } catch (_) { continue; }
+          failedRecipients_(msgs[i], listHost).forEach(function (addr) {
+            if (!failedAt[addr] || failedAt[addr] < when) failedAt[addr] = when;
+          });
+        }
       }
+      if (threads.length < 100) break;
     }
+  } catch (err) {
+    console.error('[newsletter] bounce scan: reading the inbox failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'gmail_search_failed' });
   }
 
-  // Filter to addresses that actually exist in the Sheet (and are currently
-  // confirmed) — everything else is noise from the bounce body.
   // The inbox scan above took a while; the Sheet is read and written here in
   // one go under the lock, so each row number is used while it is still right.
   var markedAddrs = withSheetLock_(function () {
@@ -1536,10 +1565,14 @@ function handleScanBounces_(e) {
     if (last < 2) return out;
     var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
     for (var r = 0; r < rows.length; r++) {
-      var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
-      var rowStatus = String(rows[r][1] || '').toLowerCase();
-      if (rowStatus !== 'confirmed') continue;
-      if (!candidates[rowEmail]) continue;
+      var rowEmail = String(rows[r][COL.email - 1] || '').trim().toLowerCase();
+      var rowStatus = String(rows[r][COL.status - 1] || '').toLowerCase();
+      if (rowStatus !== 'confirmed' && rowStatus !== 'pending') continue;
+      var reported = failedAt[rowEmail];
+      if (!reported) continue;
+      // A report from before this sign-up is about an earlier one.
+      var since = rows[r][COL.createdAt - 1];
+      if (since && new Date(since).getTime() > reported) continue;
       sh.getRange(r + 2, COL.status).setValue('bounced');
       sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
       out.push(rowEmail);
@@ -1561,8 +1594,8 @@ function handleScanBounces_(e) {
 
   return jsonResponse_({
     ok: true,
-    threads_scanned: threads.length,
-    candidates: Object.keys(candidates).length,
+    threads_scanned: scanned,
+    candidates: Object.keys(failedAt).length,
     marked_bounced: marked,
   });
 }
@@ -1806,11 +1839,11 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
  *   2. Prints its length, first/last 4 chars, and format sanity checks
  *      (hex-only? whitespace? newline at end?). Safe to share the first/
  *      last 4 chars — they're not enough to reconstruct the secret.
- *   3. Computes HMAC-SHA256 of the literal string "scan_bounces" with
+ *   3. Computes HMAC-SHA256 of the literal string "secret-check" with
  *      the current secret, and prints it. You can then run the same
  *      HMAC locally with your GH Actions copy of the secret:
  *
- *        printf 'scan_bounces' \
+ *        printf 'secret-check' \
  *          | openssl dgst -sha256 -hmac 'PASTE-SECRET-HERE' \
  *          | awk '{print $NF}'
  *
@@ -1840,13 +1873,13 @@ function debugHmacSecret() {
 
   // Sign the same fixed string the GH Actions bounce-scan step signs.
   // Reproduce locally with:
-  //   printf 'scan_bounces' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
-  var sig = hmacHex_(s, 'scan_bounces');
-  console.log('HMAC-SHA256("scan_bounces") with this secret:');
+  //   printf 'secret-check' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
+  var sig = hmacHex_(s, 'secret-check');
+  console.log('HMAC-SHA256("secret-check") with this secret (a comparison value only: it opens nothing):');
   console.log('  ' + sig);
   console.log('');
   console.log('Reproduce on your terminal (with the SAME secret value you pasted into the GH Actions NEWSLETTER_HMAC_SECRET):');
-  console.log('  printf \'scan_bounces\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
+  console.log('  printf \'secret-check\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
   console.log('');
   console.log('Match? secrets are byte-identical — bad_signature is NOT a secret problem.');
   console.log('Differ? the two copies are different values. Regenerate with openssl rand -hex 32 and paste to both.');

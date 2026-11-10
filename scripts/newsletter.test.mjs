@@ -408,16 +408,105 @@ describe('newsletter.gs: one fan-out per lesson', () => {
 });
 
 describe('newsletter.gs: bounce scan', () => {
-  it('marks a confirmed address named in a bounce, under the lock', () => {
-    const ctx = load([
-      row('a@x.io', 'confirmed', 30, { unsub: tok('1') }),
-      row('gone@x.io', 'confirmed', 30, { unsub: tok('2') }),
-    ]);
-    ctx.GmailApp.search = () => [{ getMessages: () => [{ getSubject: () => 'Delivery Status Notification', getPlainBody: () => 'failed: <gone@x.io>' }] }];
-    const out = json(ctx.doGet(req({ action: 'scan_bounces', sig: sign('scan_bounces') })));
-    assert.equal(out.marked_bounced, 1);
+  const TS = String(Math.floor(NOW / 1000));
+  const scan = (ctx, ts = TS, sig = sign(`scan_bounces:${ts}`)) => json(ctx.doGet(req({ action: 'scan_bounces', ts, sig })));
+  const subscribers = () => [
+    row('a@x.io', 'confirmed', 30, { unsub: tok('1') }),
+    row('gone@x.io', 'confirmed', 30, { unsub: tok('2') }),
+    row('waiting@x.io', 'pending', 2, { confirm: tok('3'), unsub: tok('4') }),
+  ];
+  // A delivery failure report as Google writes it, about a mail this script sent.
+  const report = (to, { from = 'Mail Delivery Subsystem <mailer-daemon@googlemail.com>', action = 'failed', status = '5.1.1', list = 'nidhi blog newsletter <newsletter.nidhi.today>', ageDays = 1, extra = '' } = {}) => ({
+    getFrom: () => from,
+    getDate: () => new Date(NOW - ageDays * DAY),
+    getRawContent: () => [
+      `From: ${from}`, 'Subject: Delivery Status Notification (Failure)', `X-Failed-Recipients: ${to}`, '',
+      'Address not found', extra, '',
+      'Content-Type: message/delivery-status', '',
+      `Final-Recipient: rfc822; ${to}`, `Action: ${action}`, `Status: ${status}`, '',
+      'Content-Type: message/rfc822', '', `List-ID: ${list}`, `To: ${to}`,
+    ].join('\r\n'),
+  });
+  const inbox = (ctx, ...messages) => { ctx.GmailApp.search = (_q, start) => (start === 0 ? messages.map((m) => ({ getMessages: () => [m] })) : []); };
+
+  it('marks the address a permanent failure report names, confirmed or still pending', () => {
+    const ctx = load(subscribers());
+    ctx.rec.props.SITE_URL = 'https://nidhi.today';
+    inbox(ctx, report('gone@x.io'), report('Waiting@x.io'));
+    const out = scan(ctx);
+    assert.equal(out.marked_bounced, 2);
     assert.equal(find(ctx, 'gone@x.io')[1], 'bounced');
+    assert.equal(find(ctx, 'waiting@x.io')[1], 'bounced');
     assert.equal(find(ctx, 'a@x.io')[1], 'confirmed');
+  });
+
+  it('asks Gmail only for reports from Google’s delivery subsystem', () => {
+    const ctx = load(subscribers());
+    let asked = '';
+    ctx.GmailApp.search = (q) => { asked = q; return []; };
+    scan(ctx);
+    assert.equal(asked, 'in:inbox from:mailer-daemon@googlemail.com newer_than:14d');
+  });
+
+  for (const [what, message] of [
+    ['a message from anyone else with that subject and a list of addresses', { from: 'Someone <someone@example.com>' }],
+    ['a sender whose name merely says mailer-daemon', { from: 'mailer-daemon <attacker@example.com>' }],
+    ['a look-alike sender address', { from: 'mailer-daemon@googlemail.com.example.org' }],
+    ['a delay notice', { action: 'delayed', status: '4.4.1' }],
+    ['a temporary failure such as a full mailbox', { status: '4.2.2' }],
+    ['a failure of mail that was not this newsletter’s', { list: '' }],
+    ['a report older than the reader’s sign-up', { ageDays: 40 }],
+  ]) {
+    it(`ignores ${what}`, () => {
+      const ctx = load(subscribers());
+      ctx.rec.props.SITE_URL = 'https://nidhi.today';
+      inbox(ctx, report('gone@x.io', message));
+      assert.equal(scan(ctx).marked_bounced, 0);
+      assert.equal(find(ctx, 'gone@x.io')[1], 'confirmed');
+    });
+  }
+
+  it('ignores an address that a report only mentions', () => {
+    const ctx = load(subscribers());
+    ctx.rec.props.SITE_URL = 'https://nidhi.today';
+    inbox(ctx, report('stranger@elsewhere.io', { extra: 'cc: a@x.io, gone@x.io <gone@x.io>' }));
+    assert.equal(scan(ctx).marked_bounced, 0);
+  });
+
+  it('reads every page of reports', () => {
+    const ctx = load(subscribers());
+    ctx.rec.props.SITE_URL = 'https://nidhi.today';
+    const filler = Array.from({ length: 100 }, () => ({ getMessages: () => [report('nobody@elsewhere.io')] }));
+    const starts = [];
+    ctx.GmailApp.search = (_q, start) => { starts.push(start); return start === 0 ? filler : start === 100 ? [{ getMessages: () => [report('gone@x.io')] }] : []; };
+    assert.equal(scan(ctx).marked_bounced, 1);
+    assert.deepEqual(starts, [0, 100]);
+  });
+
+  it('needs a signature over the action and the time, made within five minutes', () => {
+    const ctx = load(subscribers());
+    assert.equal(scan(ctx).ok, true);
+    const late = String(Math.floor(NOW / 1000) - 301);
+    const early = String(Math.floor(NOW / 1000) + 301);
+    for (const [ts, sig] of [
+      [TS, sign('scan_bounces')], // the old fixed signature, as seen in a log
+      [late, sign(`scan_bounces:${late}`)],
+      [early, sign(`scan_bounces:${early}`)],
+      [TS, sign(`scan_bounces:${late}`)],
+      ['', sign('scan_bounces:')],
+      ['not-a-time', sign('scan_bounces:not-a-time')],
+      [TS, 'f'.repeat(64)],
+    ]) {
+      assert.deepEqual(scan(ctx, ts, sig), { ok: false, error: 'bad_signature' }, `${ts} ${sig.slice(0, 8)}`);
+    }
+    const edge = String(Math.floor(NOW / 1000) - 299);
+    assert.equal(scan(ctx, edge, sign(`scan_bounces:${edge}`)).ok, true);
+  });
+
+  it('says nothing about why the inbox could not be read', () => {
+    const ctx = load(subscribers());
+    ctx.GmailApp.search = () => { throw new Error('Service invoked too many times for one day: gmail (updates@nidhi.today)'); };
+    assert.deepEqual(scan(ctx), { ok: false, error: 'gmail_search_failed' });
   });
 });
 
