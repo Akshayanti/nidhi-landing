@@ -23,6 +23,7 @@ const OUT = join(ROOT, 'public/brand/social/how-to');
 const GROUPS = {
   month: 'Getting through the month',
   owe: 'I owe money',
+  stock: 'Taking stock',
   borders: 'Money across borders',
   safe: 'Is this safe?',
 };

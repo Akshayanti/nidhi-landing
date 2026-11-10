@@ -66,13 +66,25 @@ The section launched with no new analytics labels, so it needed no privacy chang
 
 ## Launch set and growth
 
+The first five guides, then, after the owner found five too few (Nov 10, 2026), a council design round chose a wave of seven more for the launch and a second wave of four. Every guide has its own council editorial check.
+
+Launch (12):
 1. Will my money last until payday? (includes the essential-spending checklist)
 2. How do I list what I owe?
 3. What does the minimum payment on my credit-card bill mean?
 4. How do I compare two money-transfer quotes by what actually arrives?
 5. How can I check a suspicious money message? (its main lesson, 59, links once it is published)
+6. How do I work out my net worth? (Taking stock; net worth calculator)
+7. How do I compare two loan offers by what they cost in total? (loan comparison; no ranking, questions about missing terms)
+8. What does a 0% EMI or buy now, pay later plan really cost? (published Nov 13 with its lesson, 50c)
+9. How do I work out a month of essential costs? (no emergency-fund target)
+10. How much would the same shopping cost after inflation? (an assumed rate, never a forecast; inflation calculator)
+11. How do I list my accounts and regular payments? (Taking stock; an inventory, never credentials)
+12. How can I check a money website is the real one? (matching details don't prove an offer is safe)
 
-Next, a few beginners try the five tasks (no financial details collected). Growth then comes from questions readers report, consented usability sessions and observed misunderstandings, with no quota. Deferred: comparing two loans, listing accounts and regular payments, "I can't pay a bill this month", and country-specific topics (tax notices, credit reports, moving abroad).
+Wave 2 (separate pull request, about two weeks later, each after its own check): turning a yearly bill into a monthly amount; my share of rent and bills (an agreed split, not what is fair); how much of my money I can get to, and when (an inventory, not where to hold money); checking the exchange rate my card used abroad (one transaction, no card recommendation).
+
+Left for later: refinancing break-even (after the loan guide sets the format), savings growth ranges, savings interest, last month's earnings and spending, early-repayment quotes, an emergency-fund target. Next, a few beginners try the guides (no financial details collected). Growth then comes from questions readers report, consented usability sessions and observed misunderstandings. Still deferred: "I can't pay a bill this month" and country-specific topics (tax notices, credit reports, moving abroad).
 
 ## Left out on purpose
 
