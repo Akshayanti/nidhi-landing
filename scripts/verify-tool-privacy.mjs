@@ -16,6 +16,7 @@
 //                      headless browser, so that one check is skipped.
 //   --dump <dir>       write every decoded payload there, one file per run
 //   --jobs <n>         browsers to run side by side (default 3)
+//   --stale-ok         run although dist/ is older than the source
 //   --plant-leak       the check checking itself: each page also sends one
 //                      event holding a typed amount, and every run must then
 //                      FAIL. Exits 0 only if all of them did.
@@ -30,10 +31,19 @@
 // value, a file name, a blob: or data: address, a tool address with state in
 // it, or an element attribute other than data-attr and positions.
 //
-// A clean payload counts only if the events were there: the consent runs must
-// show $autocapture and a $rageclick or $dead_click, and every run must show
-// $pageview and the tool's own events. Zero click events means click capture
-// never started, not that clicks are clean.
+// A clean payload counts only if the events were there. Each part of a run
+// (using the tool, the # link, the language switch, the ? link) must show its
+// own $pageview and $pageleave; using the tool must show the tool's events
+// for the named-row removal, the share and each export, and, with consent,
+// $autocapture and a $rageclick or $dead_click; across its runs every tool
+// must show both of those. Zero click events means click
+// capture never started, not that clicks are clean. A step that could not be
+// done (a button that could not be pressed, a file that was not saved) fails
+// the run: what was not exercised was not checked.
+//
+// What a clean run shows is that nothing typed was sent during these steps,
+// in the forms findLeaks reads. It is evidence about the steps taken, on the
+// build tested, not a proof about every possible click.
 //
 // Nothing reaches PostHog. The build must be a test build (a dummy key
 // PostHog rejects); only the SDK's static scripts load from PostHog; the
@@ -41,13 +51,13 @@
 // and aborted; and Chrome cannot resolve the ingestion host at all.
 
 import { createServer } from 'node:http';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun,
+  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix,
 } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -75,6 +85,16 @@ const [N1, N2] = NAMES;
  * Each tool: where its sentinel values go, and what to do that is its own.
  * `fields` are filled in order; `{ all: true }` fills every match (each offer,
  * each row), otherwise the first. Everything else is found on the page.
+ *
+ * `removeNamedRow` adds a row, names it with the second name and removes it
+ * with its own remove button: the click that sent a typed name in Oct 2026.
+ * It returns what went wrong, if anything; a removal that did not happen
+ * fails the run.
+ *
+ * `mustSend` are the tool's events that every run has to show while the tool
+ * is used, `name` or `name:format`. They are the evidence that each button
+ * was really pressed: an export that was only attempted sends nothing.
+ * `sharedView` is the event a # share link has to produce.
  */
 const TOOLS = {
   'loan-comparison': {
@@ -85,30 +105,24 @@ const TOOLS = {
       { selector: 'input[id$="-fee"]', value: A2 },
       { selector: 'input[id$="-extra"]', value: A3 },
     ],
-    // A third offer, named, then removed with its remove button.
-    async extra(page) {
-      await click(page, '[data-attr="lc-vendor-add"]');
-      await fill(page, 'input[id$="-name"]', N2, { last: true });
-      await click(page, '[data-attr="lc-vendor-remove"]', { last: true });
-    },
+    removeNamedRow: (page) => addNameRemove(page, '[data-attr="lc-vendor-add"]', '[data-attr="lc-vendor-remove"]', []),
     ownEvents: /^free_loan_comparison_/,
+    mustSend: ['vendor_added', 'vendor_removed', 'details_toggled', 'tab_changed', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
+    sharedView: 'shared_view_opened',
   },
   'multi-currency-net-worth': {
     global: '__nidhiNetWorthShared',
     fields: [
       { selector: 'input[id$="-name"]', value: N1 },
       { selector: 'input[id$="-value"]', value: A1 },
-      { selector: 'input[id$="-name"]', value: N2, last: true },
       { selector: 'input[id$="-value"]', value: A2, last: true },
     ],
-    async extra(page) {
-      await click(page, '[data-attr="mcnw-asset-add"]');
-      await fill(page, 'input[id$="-name"]', N2, { last: true });
-      await fill(page, 'input[id$="-value"]', A3, { last: true });
-      await click(page, '[data-attr="mcnw-asset-remove"]', { last: true });
-      await click(page, '[data-attr="mcnw-csv-download"]');
-    },
+    removeNamedRow: (page) => addNameRemove(page, '[data-attr="mcnw-asset-add"]', '[data-attr="mcnw-asset-remove"]', [['input[id$="-value"]', A3]]),
     ownEvents: /^free_multi_currency_net_worth_/,
+    mustSend: ['asset_added', 'asset_removed', 'csv_downloaded', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
+    files: ['.csv'],
+    // Its share link opens a read-only view, which has an event of its own.
+    sharedView: 'shared_view_opened',
   },
   'monte-carlo-simulator': {
     global: '__nidhiMonteCarloShared',
@@ -117,11 +131,15 @@ const TOOLS = {
       { selector: 'input.mcs-input[type="number"]', value: A2, nth: 1 },
     ],
     ownEvents: /^free_monte_carlo_/,
+    mustSend: ['currency_changed', 'withdrawal_toggled', 'table_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
+    sharedView: 'shared_view_opened',
   },
   'inflation-calculator': {
     global: '__nidhiInflationShared',
     fields: [{ selector: 'input[id$="-amount"]', value: A1 }],
     ownEvents: /^free_inflation_/,
+    mustSend: ['mode_changed', 'currency_changed', 'country_changed', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
+    sharedView: 'shared_view_opened',
   },
   'invest-or-pay-off': {
     global: '__nidhiInvestOrPayOffShared',
@@ -131,8 +149,27 @@ const TOOLS = {
       { selector: 'input[id$="-extra"]', value: A3 },
     ],
     ownEvents: /^free_invest_or_pay_off_/,
+    mustSend: ['calculated', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
+    sharedView: 'shared_view_opened',
   },
 };
+
+/** How many inputs on the page hold the second name. */
+const namedInputs = (page) => page.evaluate((name) => [...document.querySelectorAll('astro-island input')].filter((i) => i.value === name).length, N2);
+
+/** Adds a row, gives it the second name (and any other values), then removes it with the last remove button. */
+async function addNameRemove(page, addSelector, removeSelector, others) {
+  const before = (await visible(page, removeSelector)).length;
+  if (!(await click(page, addSelector))) return ['the add button could not be clicked, so no named row was removed'];
+  await fill(page, 'input[id$="-name"]', N2, { last: true });
+  for (const [selector, value] of others) await fill(page, selector, value, { last: true });
+  if ((await namedInputs(page)) !== 1) return ['the added row did not take its name, so no named row was removed'];
+  if (!(await click(page, removeSelector, { last: true }))) return ['the remove button of the named row could not be clicked'];
+  await sleep(300);
+  if ((await namedInputs(page)) !== 0) return ['the named row is still there after its remove button was clicked'];
+  if ((await visible(page, removeSelector)).length > before + 1) return ['a row was added but none was removed'];
+  return [];
+}
 
 const VIEWPORTS = {
   phone: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
@@ -153,18 +190,50 @@ const consents = pick('--consent', ['declined', 'accepted']);
 // The build under test
 // ---------------------------------------------------------------------------
 
-function requireTestBuild() {
-  const page = join(DIST, 'free/loan-comparison/index.html');
-  if (!existsSync(page)) {
-    console.error('No build found. Run:  PUBLIC_ANALYTICS_TEST=1 npm run build');
-    process.exit(2);
+/** Every index.html under `dir`. */
+function pagesUnder(dir) {
+  const out = [];
+  for (const name of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, name.name);
+    if (name.isDirectory()) out.push(...pagesUnder(path));
+    else if (name.name === 'index.html') out.push(path);
   }
-  if (!readFileSync(page, 'utf8').includes(TEST_KEY)) {
-    console.error(
-      'dist/ is not a test build. This check never runs against a build that carries the real PostHog key.\n' +
-      'Run:  PUBLIC_ANALYTICS_TEST=1 npm run build',
-    );
-    process.exit(2);
+  return out;
+}
+
+/** The newest change under `dir`, as a time. */
+function newest(dir) {
+  let latest = 0;
+  for (const name of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, name.name);
+    latest = Math.max(latest, name.isDirectory() ? newest(path) : statSync(path).mtimeMs);
+  }
+  return latest;
+}
+
+/**
+ * The build under test is a test build, all of it, and it is the current
+ * source. Every tool page that will be opened carries the dummy key, and no
+ * page anywhere in dist/ carries any other PostHog key.
+ */
+function requireTestBuild() {
+  const stop = (message) => { console.error(`${message}\nRun:  PUBLIC_ANALYTICS_TEST=1 npm run build   (or: npm run verify:tool-privacy)`); process.exit(2); };
+  if (!existsSync(join(DIST, 'index.html'))) stop('No build found.');
+  for (const slug of tools) for (const locale of locales) {
+    const page = join(DIST, locale === 'en' ? '' : locale, 'free', slug, 'index.html');
+    if (!existsSync(page)) stop(`dist/ has no page for ${slug} in ${locale}.`);
+    if (!readFileSync(page, 'utf8').includes(TEST_KEY)) stop(`dist/ is not a test build: ${page.slice(DIST.length)} does not carry the dummy key.`);
+  }
+  for (const page of pagesUnder(DIST)) {
+    const html = readFileSync(page, 'utf8');
+    const keys = new Set(html.match(/phc_[A-Za-z0-9_]{10,}/g) || []);
+    keys.delete(TEST_KEY);
+    if (keys.size) stop(`dist/ is not a test build: ${page.slice(DIST.length)} carries a PostHog key other than the dummy one. This check never runs against a build with a real key.`);
+  }
+  if (!argv.includes('--stale-ok')) {
+    const built = statSync(join(DIST, 'index.html')).mtimeMs;
+    const changed = Math.max(newest(join(ROOT, 'src')), statSync(join(ROOT, 'package.json')).mtimeMs, statSync(join(ROOT, 'astro.config.mjs')).mtimeMs);
+    if (changed > built) stop('dist/ is older than the source: the check would pass or fail on a site that is not the one being changed. (--stale-ok skips this.)');
   }
 }
 
@@ -225,30 +294,35 @@ const isPosthog = (host) => /(^|\.)posthog\.com$/.test(host);
  * a gzip body arrives damaged, and a second session misses the requests a
  * page sends as it unloads, which is exactly where $pageleave is.
  */
-async function watch(page, requests, problems) {
+async function watch(page, requests, problems, note) {
   const client = typeof page._client === 'function' ? page._client() : null;
   if (!client) throw new Error('This Puppeteer version does not expose the page session; verify-tool-privacy.mjs needs updating.');
   client.on('Fetch.requestPaused', ({ request }) => {
     let host = '';
     try { host = new URL(request.url).hostname; } catch { return; }
-    if (!isPosthog(host) || request.method !== 'POST') return;
+    if (!isPosthog(host) || request.method === 'GET') return;
     const parts = (request.postDataEntries || []).map((e) => Buffer.from(e.bytes || '', 'base64'));
-    requests.push({ url: request.url, body: Buffer.concat(parts) });
+    // Which part of the run the request belongs to: see `phase` in run().
+    requests.push({ url: request.url, body: Buffer.concat(parts), phase: note.phase });
   });
 
   await page.setRequestInterception(true);
   page.on('request', (req) => {
     let url;
     try { url = new URL(req.url()); } catch { req.continue(); return; }
+    const posthog = isPosthog(url.hostname);
+
     // No request of any kind, to any address, may carry what was typed: an
-    // image, a script or a fetch to the site's own server would put it in a
-    // server log. The one exception is the page load the check itself makes
-    // when it opens an old ?-style link.
-    if (!req.isNavigationRequest()) {
-      const leaks = findLeaks(`${req.url()} ${isPosthog(url.hostname) ? '' : req.postData() || ''}`);
-      if (leaks.length && !isPosthog(url.hostname)) problems.push(`a request to ${url.hostname}${url.pathname} carries what was typed: ${leaks.join(', ')}`);
+    // image, a script, a fetch or a change of page to the site's own server
+    // would put it in a server log. The one exception is the page the check
+    // itself opens to try an old ?-style link, by its exact address.
+    // The part after the # is left out: a browser keeps it and sends it to no one.
+    if (!note.opening.has(req.url())) {
+      const leaks = findLeaks(`${req.url().split('#')[0]} ${posthog ? '' : req.postData() || ''}`);
+      if (leaks.length) problems.push(`a ${req.isNavigationRequest() ? 'page load' : 'request'} to ${url.hostname}${url.pathname} carries what was typed in its address${posthog ? '' : ' or body'}: ${leaks.join(', ')}`);
     }
-    if (!isPosthog(url.hostname)) {
+
+    if (!posthog) {
       // The exchange-rate provider is answered here too: the check makes no
       // request to anyone but the local server and PostHog's script host.
       if (url.hostname === 'api.frankfurter.dev') {
@@ -262,9 +336,9 @@ async function watch(page, requests, problems) {
       req.continue();
       return;
     }
-    // The SDK's own scripts, and nothing else, load from PostHog.
-    if (req.method() === 'GET' && /^\/static\/([\w.-]+\/)?[\w.-]+\.js$/.test(url.pathname)) { req.continue(); return; }
-    if (/^\/array\/[^/]+\/config(\.js)?$/.test(url.pathname)) {
+    // The SDK's own scripts, by their bare address, and nothing else, load from PostHog.
+    if (req.method() === 'GET' && !url.search && /^\/static\/([\w.-]+\/)?[\w.-]+\.js$/.test(url.pathname)) { req.continue(); return; }
+    if (req.method() === 'GET' && /^\/array\/[^/]+\/config(\.js)?$/.test(url.pathname)) {
       const json = JSON.stringify(REMOTE_CONFIG);
       if (url.pathname.endsWith('.js')) {
         req.respond({ status: 200, headers: CORS, contentType: 'application/javascript', body: `(function(){window._POSTHOG_REMOTE_CONFIG=window._POSTHOG_REMOTE_CONFIG||{};window._POSTHOG_REMOTE_CONFIG[${JSON.stringify(TEST_KEY)}]={config:${json},siteApps:[]};})();` });
@@ -273,12 +347,19 @@ async function watch(page, requests, problems) {
       }
       return;
     }
+    // Anything else PostHog is asked for with GET was not expected: say so.
+    if (req.method() === 'GET') problems.push(`an unexpected request to PostHog: GET ${url.pathname}${url.search ? '?...' : ''}`);
     req.abort();
   });
 
   // Printing would open a dialog that stops the page; the export still runs.
+  // Copying is kept on the page instead of going to the clipboard, which
+  // every browser on the machine shares: runs side by side would read each
+  // other's links, and the person at the keyboard would lose theirs.
   await page.evaluateOnNewDocument(() => {
     window.print = () => { window.__printed = (window.__printed || 0) + 1; };
+    const keep = (text) => { window.__copied = String(text); return Promise.resolve(); };
+    try { Object.defineProperty(Clipboard.prototype, 'writeText', { configurable: true, value: keep }); } catch { /* no clipboard here */ }
   });
 }
 
@@ -332,15 +413,12 @@ async function press(page, el, times = 1, gap = 60) {
     }
   } catch { return false; }
   if (!point || point.covered) {
-    if (point) press.covered.add(point.covered);
+    if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
     return false;
   }
   for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
   return true;
 }
-// What sat over an element that could not be clicked, for the run's notes.
-press.covered = new Set();
-
 async function choose(page, selector, { last = false, nth = 0 } = {}) {
   const found = await visible(page, selector);
   return last ? found[found.length - 1] : found[nth];
@@ -375,9 +453,34 @@ async function waitForTool(page) {
   await sleep(600);
 }
 
-/** Everything a reader can do on one tool page. */
-async function useTool(page, tool, note) {
+/** Presses every visible button of the tool that has not been pressed yet, reset buttons left for last. */
+async function pressButtons(page, note, pressed) {
+  const resets = [];
+  for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
+    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`.trim()).catch(() => null);
+    if (label === null || pressed.has(label)) continue;
+    if (/reset|--ghost/i.test(label)) { resets.push(el); continue; }
+    if (/remove/.test(label)) continue; // done on a named row, and checked there
+    note.step = `clicking the button ${label}`;
+    pressed.add(label);
+    await press(page, el);
+    await sleep(250);
+    // A dialog opened by a button: use its controls, the one that closes it last.
+    const inner = [];
+    for (const d of await visible(page, 'astro-island [role="dialog"] button, astro-island dialog[open] button')) {
+      const name = await d.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`).catch(() => '');
+      inner.push([/cancel|close/i.test(name) ? 1 : 0, d]);
+    }
+    for (const [, d] of inner.sort((x, y) => x[0] - y[0])) { await press(page, d); await sleep(250); }
+    await page.keyboard.press('Escape');
+  }
+  return resets;
+}
+
+/** Everything a reader can do on one tool page. Returns what could not be done. */
+async function useTool(page, tool, note, downloads) {
   const island = 'astro-island';
+  const failed = [];
 
   // Type the distinctive values.
   note.step = 'typing values';
@@ -389,25 +492,37 @@ async function useTool(page, tool, note) {
       await fill(page, f.selector, f.value, f);
     }
   }
-  note.step = 'adding and removing a named row';
-  if (tool.extra) await tool.extra(page);
+  if (tool.removeNamedRow) {
+    note.step = 'adding and removing a named row';
+    failed.push(...await tool.removeNamedRow(page));
+  }
   await sleep(500);
+
+  // Share and export first, while the tool holds exactly what was typed.
+  const pressed = new Set();
+  await pressButtons(page, note, pressed);
+  await sleep(500);
+
+  // The link the tool itself made, if it copied one.
+  note.shared = await page.evaluate(() => window.__copied || '').catch(() => '');
 
   // Click inputs, and change every choice the tool offers.
   note.step = 'clicking inputs and choices';
-  for (const el of await visible(page, `${island} input[type="text"], ${island} input[type="number"]`)) {
-    await press(page, el);
-  }
-  // A choice from a list: the next option, picked the way a keyboard does.
+  const inputs = await visible(page, `${island} input[type="text"], ${island} input[type="number"]`);
+  for (const el of inputs) await press(page, el);
+  // A choice from a list: its next option, chosen as the browser does it.
   for (const el of await visible(page, `${island} select`)) {
-    try {
-      await el.evaluate((node) => node.scrollIntoView({ block: 'center' }));
-      await el.focus();
-      await page.keyboard.press('ArrowDown');
-    } catch { /* not reachable */ }
-    await sleep(150);
+    const next = await el.evaluate((node) => {
+      const options = [...node.options].filter((o) => !o.disabled && o.value !== node.value && o.value !== '');
+      return options.length ? options[0].value : null;
+    }).catch(() => null);
+    if (next === null) continue;
+    await press(page, el);
+    await page.keyboard.press('Escape');
+    await el.select(next).catch(() => {});
+    await sleep(200);
   }
-  for (const selector of [`${island} input[type="radio"]`, `${island} input[type="checkbox"]`, `${island} summary`, `${island} [role="tab"]`]) {
+  for (const selector of [`${island} input[type="checkbox"]`, `${island} summary`, `${island} [role="tab"]`, `${island} input[type="radio"]`]) {
     for (const el of await visible(page, selector)) {
       await press(page, el);
       await sleep(120);
@@ -415,58 +530,54 @@ async function useTool(page, tool, note) {
   }
   await sleep(400);
 
-  // Result cards and charts. Three quick clicks in one spot make a rage
-  // click; a single click on a drawing nothing listens to makes a dead click.
+  // Result cards and charts.
   note.step = 'clicking charts and results';
   // Back to the first tab, where a tool with tabs keeps its charts.
   const firstTab = await choose(page, `${island} [role="tab"]`);
   if (firstTab) { await press(page, firstTab); await sleep(400); }
-  const charts = await visible(page, `${island} svg`);
   const big = [];
-  for (const el of charts) {
+  for (const el of await visible(page, `${island} svg`)) {
     const box = await el.boundingBox().catch(() => null);
     if (box && box.width > 120 && box.height > 60) big.push(el);
   }
   note.charts = big.length;
-  for (const el of big.slice(0, 3)) {
-    await press(page, el, 3);
-    await sleep(300);
-  }
+  for (const el of big.slice(0, 8)) { await press(page, el, 3); await sleep(300); }
   const cards = await visible(page, `${island} [class*="result"], ${island} [class*="Result"], ${island} [class*="summary"], ${island} [class*="card"], ${island} output, ${island} table td`);
   note.cards = cards.length;
-  for (const el of cards.slice(0, 4)) { await press(page, el); await sleep(150); }
-  // A rage click: four quick clicks on the first chart, or else the first result.
-  const still = big[0] || cards[0];
-  if (still) { await press(page, still, 4, 80); await sleep(400); }
-  // Dead clicks: one click each on plain text, where nothing responds.
+  for (const el of cards.slice(0, 6)) { await press(page, el); await sleep(150); }
+  // Rage clicks: four quick clicks in one spot, in three different places
+  // (charts first, then results, text and fields), since a page can mark a
+  // part of itself as not to be captured. Whether PostHog saw one is checked
+  // from the events; here it only has to have been possible to make them.
+  note.step = 'rage and dead clicks';
   const plain = await visible(page, `${island} h2, ${island} h3, ${island} p, ${island} dd, ${island} td`);
   note.plain = plain.length;
-  for (const el of plain.slice(0, 4)) { await press(page, el); await sleep(300); }
+  let rage = 0;
+  for (const el of [...big, ...cards.slice(0, 6), ...plain.slice(0, 6), ...inputs]) {
+    if (rage >= 3) break;
+    if (await press(page, el, 4, 80)) { rage++; await sleep(1200); }
+  }
+  if (!rage) failed.push(`no rage click could be made (over the places tried: ${[...note.covered].join(', ') || 'nothing noted'})`);
+  // Dead clicks: one click each on plain text, where nothing responds.
+  let dead = 0;
+  for (const el of plain.slice(0, 5)) { if (await press(page, el)) dead++; await sleep(300); }
+  if (!dead) failed.push('no plain text could be clicked for a dead click');
   // PostHog decides a click was dead a few seconds after it.
   await sleep(4200);
 
-  // Every button except reset, which goes last: add, share, copy, exports.
-  note.step = 'clicking buttons';
-  const buttons = await visible(page, `${island} button:not([role="tab"])`);
-  const resets = [];
-  for (const el of buttons) {
-    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`).catch(() => null);
-    if (label === null) continue;
-    note.step = `clicking the button ${label.trim()}`;
-    if (/reset|--ghost/i.test(label)) { resets.push(el); continue; }
-    if (/remove/.test(label)) continue; // done above, on a named row
-    await press(page, el);
-    await sleep(250);
-    // A dialog opened by a button: use its buttons too, then close it.
-    for (const inner of await visible(page, 'astro-island [role="dialog"] button, astro-island dialog[open] button')) {
-      await press(page, inner);
-      await sleep(200);
-    }
-    await page.keyboard.press('Escape');
-  }
-  note.buttons = buttons.length;
+  // Buttons that only appeared after the choices were made, then reset.
+  const resets = await pressButtons(page, note, pressed);
+  note.buttons = pressed.size;
   await sleep(500);
-  return resets;
+
+  // The exports really happened: a spreadsheet was saved and the print dialog was asked for.
+  const saved = existsSync(downloads) ? readdirSync(downloads) : [];
+  for (const ext of ['.xlsx', ...(tool.files || [])]) {
+    if (!saved.some((name) => name.endsWith(ext))) failed.push(`no ${ext} file was saved: that export did not run`);
+  }
+  if (!(await page.evaluate(() => window.__printed || 0))) failed.push('the print dialog was never asked for: the PDF export did not run');
+  note.saved = saved.length;
+  return { resets, failed };
 }
 
 // ---------------------------------------------------------------------------
@@ -479,20 +590,35 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   const path = `${prefix}/free/${slug}/`;
   const requests = [];
   const problems = [];
-  const note = {};
+  // `phase` names the part of the run a request belongs to: using the tool,
+  // the # share link, the language switch, the old ? link. `opening` holds
+  // the addresses the check itself is loading.
+  const note = { phase: 'use', covered: new Set(), opening: new Set() };
   const context = await browser.createBrowserContext();
   const downloads = mkdtempSync(join(tmpdir(), 'nidhi-privacy-'));
   let page;
 
-  const open = async (address) => {
+  const open = async (address, phase) => {
+    note.phase = phase;
+    note.leaving = false;
     page = await context.newPage();
+    page.nidhiNote = note;
     await page.setViewport(VIEWPORTS[viewport]);
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36');
-    await watch(page, requests, problems);
+    await watch(page, requests, problems, note);
     const cdp = await page.createCDPSession();
     await cdp.send('Browser.setDownloadBehavior', { behavior: 'allow', downloadPath: downloads, browserContextId: context.id }).catch(() => {});
     await cdp.send('Page.setInterceptFileChooserDialog', { enabled: true }).catch(() => {});
+    const expected = new URL(base + address).pathname;
+    // If the page goes somewhere it was not sent, say during which step.
+    page.on('framenavigated', (frame) => {
+      if (frame !== page.mainFrame() || note.leaving) return;
+      const to = new URL(frame.url());
+      if (to.protocol !== 'about:' && to.pathname !== expected) problems.push(`the page went to ${to.pathname} by itself while: ${note.step}`);
+    });
+    note.opening.add(base + address);
     await page.goto(base + address, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    note.opening.delete(base + address);
     await waitForTool(page);
     if (PLANT) {
       // One leak through analytics, one through an image on the site's own server.
@@ -503,12 +629,6 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
         document.body.appendChild(img);
       }, A1);
     }
-    // If the page goes somewhere it was not sent, say during which step.
-    page.on('framenavigated', (frame) => {
-      if (frame !== page.mainFrame() || note.leaving) return;
-      const to = new URL(frame.url());
-      if (to.pathname !== new URL(base + address).pathname) note.strayed = `went to ${to.pathname} while: ${note.step}`;
-    });
   };
   // The page's last events go out as it unloads, while the abort still applies.
   const leave = async () => {
@@ -516,40 +636,57 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     await page.goto('about:blank').catch(() => {});
     await sleep(700);
     await page.close();
-    note.leaving = false;
   };
   const address = () => page.evaluate(() => window.location.pathname + window.location.search + window.location.hash);
+  // The first typed amount is on the page again: in a field, or in what a read-only view shows.
+  const restored = () => page.evaluate((amount) => [...document.querySelectorAll('astro-island input')].some((i) => i.value.replace(/\D/g, '') === amount) || document.querySelector('astro-island').innerText.replace(/\D/g, '').includes(amount), String(A1));
 
   try {
     if (consent === 'accepted') {
       await context.setCookie({ name: 'nidhi-cookie-consent', value: 'accepted', url: base, path: '/' });
     }
-    await context.overridePermissions(base, ['clipboard-read', 'clipboard-write', 'clipboard-sanitized-write']).catch(() => {});
 
     // 1. Use the tool. Without the cookie, the banner is in front of the page:
     // a reader who does not consent answers it with "decline", once.
-    await open(path);
+    await open(path, 'use');
     if (consent === 'declined') {
       if (!(await click(page, '#cookie-decline'))) problems.push('the cookie banner was not shown to a reader with no answer');
       await sleep(400);
     } else if ((await visible(page, '#cookie-overlay')).length) {
       problems.push('the cookie banner was shown although consent was already given');
     }
-    const resets = await useTool(page, tool, note);
+    const { resets, failed } = await useTool(page, tool, note, downloads);
+    problems.push(...failed);
     const state = await page.evaluate((g) => window[g] || '', tool.global);
     if (!state) problems.push('the tool published no state for the language switch, so the share-link steps had nothing to carry');
-    if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}${note.strayed ? ` (${note.strayed})` : ''}`);
+    if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}`);
     for (const el of resets) { await press(page, el); await sleep(300); }
     await leave();
 
+    // The link the tool itself copied, when it is one of ours with state after the #.
+    const utm = '?utm_source=share&utm_medium=referral';
+    let shareLink = `${path}${utm}#${state}`;
+    try {
+      const copied = new URL(note.shared);
+      // Whatever the tool copied, nothing but campaign tags may sit before its #.
+      if ([...copied.searchParams.keys()].some((k) => !k.startsWith('utm_'))) problems.push(`the copied share link carries more than utm parameters before the #: ${copied.pathname}${copied.search}`);
+      if (copied.pathname !== path) problems.push(`the copied share link is not a link to this tool: ${copied.pathname}`);
+      // It is the link opened next when it holds state (a tool with nothing changed yet copies a plain address).
+      else if (copied.hash.length > 1) shareLink = copied.pathname + copied.search + copied.hash;
+    } catch {
+      problems.push('the tool copied no share link');
+    }
+    const cleanShare = shareLink.split('#')[0];
+
     if (state) {
       // 2. A # share link: the state is moved out of the address, and applied.
-      await open(`${path}?utm_source=share&utm_medium=referral#${state}`);
-      if ((await address()) !== `${path}?utm_source=share&utm_medium=referral`) problems.push(`a # share link left state in the address: ${await address()}`);
-      const shown = await page.evaluate((amount) => [...document.querySelectorAll('astro-island input')].some((i) => i.value.replace(/\D/g, '') === amount) || document.body.innerText.replace(/\D/g, '').includes(amount), String(A1));
-      if (!shown) problems.push('a # share link did not bring the typed amount back, so the link carried no state to protect');
+      await open(shareLink, 'share');
+      if ((await address()) !== cleanShare) problems.push(`a # share link left state in the address: ${await address()}`);
+      if (!(await restored())) problems.push('a # share link did not bring the typed amount back, so the link carried no state to protect');
+      await leave();
 
-      // 3. Switch language from the share link: the state crosses after the #.
+      // 3. Switch language from the tool's own state after the #: it crosses, and is applied.
+      await open(`${path}${utm}#${state}`, 'switch');
       const other = locale === 'en' ? 'hi' : 'en';
       const otherPath = `${other === 'en' ? '' : `/${other}`}/free/${slug}/`;
       const opener = await choose(page, '.lang-picker summary, [data-attr="nav-menu"]');
@@ -559,41 +696,46 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
         problems.push(`no visible language switch to ${other}`);
       } else {
         const href = await link.evaluate((a) => a.getAttribute('href'));
-        if (/#|[?&](?!utm_)/.test(href.replace(/^[^?#]*\??/, '?').replace(/^\?$/, ''))) problems.push(`the language switch link holds more than utm parameters: ${href}`);
+        if (href.includes('#') || /[?&](?!utm_)[^=&]+=/.test(href)) problems.push(`the language switch link holds more than utm parameters: ${href}`);
         note.leaving = true;
-        await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }), press(page, link)]);
+        // The browser is sent on with the state after the #, which no server is given.
+        const [, pressedLink] = await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => null), press(page, link)]);
         note.leaving = false;
+        if (!pressedLink) problems.push('the language switch link could not be clicked');
         await waitForTool(page);
-        if (!(await address()).startsWith(otherPath) || /#/.test(await address())) problems.push(`after a language switch the address is ${await address()}`);
-        const carried = await page.evaluate((g) => window[g] || '', tool.global);
-        if (!carried) problems.push('the language switch did not carry the tool state');
+        if ((await address()) !== `${otherPath}${utm}`) problems.push(`after a language switch the address is ${await address()}`);
+        if (!(await restored())) problems.push('the language switch did not carry the typed amount across');
       }
       await leave();
 
       // 4. An old ? link: the same, from the query string.
-      await open(`${path}?${state}&utm_source=share`);
+      await open(`${path}?${state}&utm_source=share`, 'old');
       if ((await address()) !== `${path}?utm_source=share`) problems.push(`an old ? link left state in the address: ${await address()}`);
+      if (!(await restored())) problems.push('an old ? link did not bring the typed amount back');
       await leave();
     }
   } catch (err) {
-    problems.push(`the run stopped: ${err && err.message ? err.message : err}`);
-    try { await page.goto('about:blank'); await page.close(); } catch { /* already closed */ }
+    problems.push(`the run stopped while ${note.step}: ${err && err.message ? err.message : err}`);
+    try { note.leaving = true; await page.goto('about:blank'); await page.close(); } catch { /* already closed */ }
   } finally {
     await context.close().catch(() => {});
     rmSync(downloads, { recursive: true, force: true });
   }
 
-  note.covered = [...press.covered];
-  press.covered.clear();
-  const decoded = requests.map((r) => ({ url: r.url, ...decodeBody(r.url, r.body, gunzipSync) }));
-  const events = decoded.flatMap((d) => eventsIn(d.json));
-  const result = checkRun({ decoded, events, consent, headless: HEADLESS, ownEvents: tool.ownEvents, hasCharts: (note.charts || 0) > 0, origin: base });
+  const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
+  const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: d.phase })));
+  const result = checkRun({
+    decoded, events, consent, headless: HEADLESS, origin: base,
+    ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
+  });
   result.problems.unshift(...problems);
+  result.problems = [...new Set(result.problems)];
+  const notes = { ...note, covered: [...note.covered], opening: undefined };
   if (DUMP) {
     mkdirSync(DUMP, { recursive: true });
-    writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note, problems: result.problems, counts: result.counts, decoded }, null, 1));
+    writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
   }
-  return { ...result, note };
+  return { ...result, note: notes };
 }
 
 // ---------------------------------------------------------------------------
@@ -607,7 +749,7 @@ const launch = () => puppeteer.launch({
     // PostHog drops events from a browser that says it is automated.
     '--disable-blink-features=AutomationControlled',
     // An event that escapes the abort still cannot connect.
-    '--host-resolver-rules=MAP eu.i.posthog.com ~NOTFOUND',
+    '--host-resolver-rules=MAP eu.i.posthog.com ~NOTFOUND, MAP us.i.posthog.com ~NOTFOUND, MAP app.posthog.com ~NOTFOUND, MAP internal-j.posthog.com ~NOTFOUND',
     '--no-first-run', '--no-default-browser-check', '--window-size=1400,900',
     // A CI runner has no user namespace for Chrome's sandbox.
     ...(process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : []),
@@ -619,6 +761,7 @@ for (const slug of tools) for (const locale of locales) for (const viewport of v
 
 let failed = 0;
 let done = 0;
+const finished = [];
 let next = 0;
 const started = Date.now();
 console.log(`Checking ${matrix.length} runs against ${base} (${HEADLESS ? 'headless' : 'with a window'}, ${Math.min(JOBS, matrix.length)} at a time)${PLANT ? ', each with a planted leak that must be caught' : ''}.`);
@@ -644,21 +787,28 @@ async function worker() {
       browser = await launch();
     }
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
-    // Both planted leaks: the event sent to PostHog and the image asked of the site's own server.
-    const caught = result.problems.some((p) => /^a request to \/.*carries what was typed/.test(p)) && result.problems.some((p) => /^a request to 127\.0\.0\.1\/ carries what was typed/.test(p));
+    // Both planted leaks are found, the event sent to PostHog and the image
+    // asked of the site's own server, and nothing else is wrong with the run.
+    const leaks = result.problems.filter((p) => p.includes('carries what was typed'));
+    const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length;
     const ok = PLANT ? caught : result.problems.length === 0;
     done++;
     if (!ok) failed++;
+    finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
-    if (PLANT && !caught) console.log('       - the planted leak was not caught: the check cannot see what it is meant to see');
-    if (!PLANT) for (const p of result.problems) console.log(`       - ${p}`);
+    if (PLANT && !caught) console.log('       - the two planted leaks were not both caught, or something else went wrong:');
+    if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
   }
   await browser.close().catch(() => {});
 }
 await Promise.all(Array.from({ length: Math.min(JOBS, matrix.length) }, worker));
 
 server.close();
-console.log(`\n${matrix.length - failed} of ${matrix.length} runs ${PLANT ? 'caught the planted leak' : 'clean'} in ${Math.round((Date.now() - started) / 1000)} s.`);
+// Both kinds of click event were seen for every tool, in some run.
+const across = PLANT ? [] : checkMatrix(finished);
+for (const p of across) console.log(`FAIL  ${p}`);
+if (across.length) failed += 1;
+console.log(`\n${matrix.length - failed + (across.length ? 1 : 0)} of ${matrix.length} runs ${PLANT ? 'caught the planted leak' : 'clean'} in ${Math.round((Date.now() - started) / 1000)} s.`);
 if (failed) {
   console.log(PLANT
     ? 'The check missed a leak it was handed. Fix the check before trusting a clean run.'

@@ -8,38 +8,51 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkRun, decodeBody, elementProblems, eventsIn, findLeaks,
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks,
 } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
 
+const MUST = ['vendor_removed', 'exported:xlsx', 'exported:pdf'];
 const ev = (event, properties = {}) => ({ event, properties: { $current_url: `${ORIGIN}/free/loan-comparison/`, ...properties } });
 const CHAIN = 'button:attr__data-attr="lc-reset"nth-child="2"nth-of-type="1";div:nth-child="1"nth-of-type="1";body:nth-child="2"nth-of-type="1"';
 
-/** A run with everything a clean consent run has. */
+/** What a clean run sends while the tool is used. */
 function cleanEvents(consent = 'accepted') {
-  const events = [ev('$pageview'), ev('free_loan_comparison_reset'), ev('$pageleave')];
+  const events = [
+    ev('$pageview'), ev('free_loan_comparison_vendor_removed', { vendor: 'C', count: 2 }),
+    ev('free_loan_comparison_exported', { format: 'xlsx' }), ev('free_loan_comparison_exported', { format: 'pdf' }), ev('$pageleave'),
+  ];
   if (consent === 'accepted') events.push(ev('$autocapture', { $elements_chain: CHAIN, $event_type: 'click' }), ev('$rageclick', { $elements_chain: CHAIN }), ev('$dead_click', { $elements_chain: CHAIN }));
   return events;
 }
+/** What the # share link page sends. */
+const shareEvents = () => [ev('$pageview'), ev('free_loan_comparison_shared_view_opened', { vendors: 2, utm_source: 'share' }), ev('$pageleave')];
 
-/** Judges `events` as the script would: packed into request bodies, decoded, then checked. */
-function judge(events, { consent = 'accepted', headless = false, url = 'https://eu.i.posthog.com/i/v0/e/', extraRequests = [] } = {}) {
-  const bodies = [{ url, body: gzipSync(JSON.stringify(events)) }, ...extraRequests];
-  const decoded = bodies.map((r) => ({ url: r.url, ...decodeBody(r.url, r.body, gunzipSync) }));
-  return checkRun({ decoded, events: decoded.flatMap((d) => eventsIn(d.json)), consent, headless, ownEvents: OWN, hasCharts: true, origin: ORIGIN });
+/**
+ * Judges a run as the script would: each part's events packed into a request
+ * body, decoded, then checked. `events` are those sent while the tool was used.
+ */
+function judge(events, { consent = 'accepted', headless = false, url = 'https://eu.i.posthog.com/i/v0/e/', extraRequests = [], share = shareEvents(), planted = false } = {}) {
+  const bodies = [{ url, phase: 'use', body: gzipSync(JSON.stringify(events)) }, ...extraRequests.map((r) => ({ phase: 'use', ...r }))];
+  if (share) bodies.push({ url, phase: 'share', body: gzipSync(JSON.stringify(share)) });
+  const decoded = bodies.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
+  const all = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: d.phase })));
+  return checkRun({ decoded, events: all, consent, headless, ownEvents: OWN, mustSend: MUST, sharedView: 'shared_view_opened', planted, origin: ORIGIN });
 }
 
 describe('tool privacy checks: a clean run passes', () => {
   it('with consent', () => assert.deepEqual(judge(cleanEvents()).problems, []));
   it('without consent', () => assert.deepEqual(judge(cleanEvents('declined'), { consent: 'declined' }).problems, []));
-  it('counts each event', () => assert.equal(judge(cleanEvents()).counts.$pageview, 1));
+  it('counts each event', () => assert.equal(judge(cleanEvents()).counts.$pageview, 2));
 });
 
 describe('tool privacy checks: what was typed', () => {
   it('finds an amount however it is grouped or encoded', () => {
-    for (const text of ['7131719', '7,131,719', '71,31,719', '7.131.719', '7 131 719', '7 131 719', "7'131'719", '%377131719', 'a1=Flat~EUR~7131719', 'x7131719.00']) {
+    const twice = encodeURIComponent(encodeURIComponent('amount=7,131,719'));
+    const base64 = Buffer.from('{"amount":"7 131 719"}').toString('base64');
+    for (const text of ['7131719', '7,131,719', '71,31,719', '7.131.719', '7 131 719', '7 131 719', "7'131'719", '%377131719', 'a1=Flat~EUR~7131719', 'x7131719.00', twice, base64, `data=${base64}`]) {
       assert.deepEqual(findLeaks(text), ['7131719'], text);
     }
   });
@@ -48,6 +61,8 @@ describe('tool privacy checks: what was typed', () => {
     assert.deepEqual(findLeaks('aria-label="Remove ZQXVORA bank"'), ['zqxvora']);
     assert.deepEqual(findLeaks('v1=Zqxvora+Bank~1'), ['zqxvora']);
     assert.deepEqual(findLeaks('n=Wjkpelt%20Flat'), ['wjkpelt']);
+    assert.deepEqual(findLeaks('n=Wjkpelt%2520Flat'), ['wjkpelt']);
+    assert.deepEqual(findLeaks(Buffer.from('Remove Zqxvora Bank').toString('base64')), ['zqxvora']);
   });
 
   it('does not find them where they are not', () => {
@@ -76,6 +91,15 @@ describe('tool privacy checks: what was typed', () => {
       assert.ok(problems.some((p) => p.includes('carries what was typed')), problems.join('\n'));
     });
   }
+
+  it('fails a run that sends a name written with JSON escapes', () => {
+    const escaped = JSON.stringify([...cleanEvents(), ev('free_loan_comparison_x', { label: 'PLACEHOLDER' })]).replace('PLACEHOLDER', '\\u005aqxvora Bank');
+    assert.ok(!escaped.toLowerCase().includes('zqxvora'), 'the body as sent does not spell the name');
+    const decoded = [{ url: 'https://eu.i.posthog.com/i/v0/e/', phase: 'use', ...decodeBody('u', gzipSync(escaped), gunzipSync) }];
+    const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: 'use' })));
+    const { problems } = checkRun({ decoded, events, consent: 'accepted', headless: false, ownEvents: OWN, origin: ORIGIN });
+    assert.ok(problems.some((p) => p.includes('carries what was typed: zqxvora')), problems.join('\n'));
+  });
 
   it('fails a run that sends it in a request address, or in a request that is not an event', () => {
     assert.ok(judge(cleanEvents(), { url: `https://eu.i.posthog.com/i/v0/e/?u=${AMOUNTS[0]}` }).problems.some((p) => p.includes('carries what was typed')));
@@ -128,6 +152,20 @@ describe('tool privacy checks: element descriptions', () => {
     assert.notDeepEqual(elementProblems(ev('$autocapture', { $elements: [{ tag_name: 'a', attr__href: '/x' }] })), []);
     assert.notDeepEqual(elementProblems(ev('$autocapture', { $elements_chain: 'svg:', $el_text: 'x' })), []);
   });
+
+  it('rejects an element list whose allowed keys hold anything but a tag, a label and positions', () => {
+    for (const el of [
+      { tag_name: 'button', 'attr__data-attr': 'arbitrary private text' },
+      { tag_name: 'button', 'attr__data-attr': { nested: 'x' } },
+      { tag_name: 'Home Bank' },
+      { tag_name: 'button', nth_child: 'second' },
+      { tag_name: 'button', nth_of_type: 250000 },
+      'button',
+      null,
+    ]) {
+      assert.notDeepEqual(elementProblems(ev('$autocapture', { $elements: [el] })), [], JSON.stringify(el));
+    }
+  });
 });
 
 describe('tool privacy checks: tool addresses', () => {
@@ -147,34 +185,85 @@ describe('tool privacy checks: tool addresses', () => {
 
 describe('tool privacy checks: the events have to be there', () => {
   const without = (name, consent = 'accepted') => cleanEvents(consent).filter((e) => e.event !== name);
+  const says = (problems, text) => assert.ok(problems.some((p) => p.includes(text)), `expected "${text}" in:\n${problems.join('\n')}`);
 
   it('fails when nothing was sent at all', () => {
-    const { problems } = checkRun({ decoded: [], events: [], consent: 'accepted', headless: false, ownEvents: OWN, hasCharts: true, origin: ORIGIN });
-    assert.ok(problems.some((p) => p.includes('no PostHog request was seen')));
+    const { problems } = checkRun({ decoded: [], events: [], consent: 'accepted', headless: false, ownEvents: OWN, origin: ORIGIN });
+    says(problems, 'no PostHog request was seen');
   });
 
   it('fails without a pageview, a page-leave or one of the tool’s own events', () => {
-    assert.ok(judge(without('$pageview')).problems.some((p) => p.includes('no $pageview')));
-    assert.ok(judge(without('$pageleave')).problems.some((p) => p.includes('no $pageleave')));
-    assert.ok(judge(without('free_loan_comparison_reset')).problems.some((p) => p.includes('own events')));
+    says(judge(without('$pageview')).problems, 'no $pageview was seen while the tool was used');
+    says(judge(without('$pageleave')).problems, 'no $pageleave was seen while the tool was used');
+    says(judge(cleanEvents().filter((e) => !OWN.test(e.event))).problems, 'own events');
   });
 
   it('a headless run is not asked for a page-leave', () => {
-    assert.deepEqual(judge(without('$pageleave'), { headless: true }).problems, []);
+    assert.deepEqual(judge(without('$pageleave'), { headless: true, share: shareEvents().filter((e) => e.event !== '$pageleave') }).problems, []);
   });
 
-  it('with consent, fails when click capture never started', () => {
-    assert.ok(judge(without('$autocapture')).problems.some((p) => p.includes('no $autocapture')));
+  it('each part of the run needs its own evidence: a later page does not stand in for an earlier one', () => {
+    // No click capture while the tool was used, plenty on the share page.
+    const share = [...shareEvents(), ev('$autocapture', { $elements_chain: CHAIN }), ev('$rageclick', { $elements_chain: CHAIN }), ev('$dead_click', { $elements_chain: CHAIN })];
+    const quiet = cleanEvents().filter((e) => !['$autocapture', '$rageclick', '$dead_click'].includes(e.event));
+    const { problems } = judge(quiet, { share });
+    says(problems, 'no $autocapture was seen while the tool was used');
+    says(problems, 'no $rageclick or $dead_click was seen while the tool was used');
+    // And the share page needs its own pageview and page-leave.
+    says(judge(cleanEvents(), { share: shareEvents().filter((e) => e.event !== '$pageleave') }).problems, 'no $pageleave was seen on the # share link');
+    says(judge(cleanEvents(), { share: shareEvents().filter((e) => e.event !== '$pageview') }).problems, 'no $pageview was seen on the # share link');
+  });
+
+  it('with consent, a run needs click capture and a rage or a dead click', () => {
+    says(judge(without('$autocapture')).problems, 'no $autocapture');
     const neither = cleanEvents().filter((e) => e.event !== '$rageclick' && e.event !== '$dead_click');
-    assert.ok(judge(neither).problems.some((p) => p.includes('no $rageclick or $dead_click')));
-    assert.deepEqual(judge(without('$rageclick')).problems, [], 'either one is enough');
+    says(judge(neither).problems, 'no $rageclick or $dead_click');
+    assert.deepEqual(judge(without('$rageclick')).problems, []);
+    assert.deepEqual(judge(without('$dead_click')).problems, []);
+  });
+
+  it('across its runs, every tool needs both a rage click and a dead click', () => {
+    const run = (slug, consent, counts) => ({ slug, consent, counts });
+    assert.deepEqual(checkMatrix([
+      run('a', 'accepted', { $rageclick: 2 }), run('a', 'accepted', { $dead_click: 1 }), run('a', 'declined', {}),
+      run('b', 'declined', {}),
+    ]), []);
+    const problems = checkMatrix([run('a', 'accepted', { $rageclick: 2 }), run('b', 'accepted', { $dead_click: 1 }), run('b', 'declined', { $rageclick: 1 })]);
+    assert.deepEqual(problems.map((p) => p.split(',')[0]), ['a: no run with consent showed a $dead_click', 'b: no run with consent showed a $rageclick']);
   });
 
   it('without consent, fails when any click event was sent', () => {
     for (const name of ['$autocapture', '$rageclick', '$dead_click', '$$heatmap']) {
       const { problems } = judge([...cleanEvents('declined'), ev(name, { $elements_chain: CHAIN })], { consent: 'declined' });
-      assert.ok(problems.some((p) => p.includes(`yet ${name} was sent`)), name);
+      says(problems, `yet ${name} was sent`);
     }
+  });
+
+  it('fails when a step the tool must take sent nothing: a removal or an export that did not happen', () => {
+    says(judge(without('free_loan_comparison_vendor_removed')).problems, 'never sent free_loan_comparison_vendor_removed');
+    const noPdf = cleanEvents().filter((e) => !(e.event === 'free_loan_comparison_exported' && e.properties.format === 'pdf'));
+    const { problems } = judge(noPdf);
+    says(problems, 'never sent free_loan_comparison_exported:pdf');
+    assert.ok(!problems.some((p) => p.includes('exported:xlsx')));
+    // Sent on a later page does not count.
+    says(judge(without('free_loan_comparison_vendor_removed'), { share: [...shareEvents(), ev('free_loan_comparison_vendor_removed')] }).problems, 'never sent free_loan_comparison_vendor_removed');
+  });
+
+  it('fails when the # share link was not read as a shared link', () => {
+    says(judge(cleanEvents(), { share: shareEvents().filter((e) => e.event !== 'free_loan_comparison_shared_view_opened') }).problems, 'never sent free_loan_comparison_shared_view_opened');
+  });
+
+  it('fails on an event request it cannot read events from', () => {
+    const odd = { url: 'https://eu.i.posthog.com/i/v0/e/', body: gzipSync(JSON.stringify({ envelope: { items: [{ name: 'x' }] } })) };
+    says(judge(cleanEvents(), { extraRequests: [odd] }).problems, 'holds no event in a form this check reads');
+    // A flags request holds no events and is not expected to.
+    const flags = { url: 'https://eu.i.posthog.com/flags/?v=2', body: gzipSync(JSON.stringify({ token: TEST_KEY })) };
+    assert.deepEqual(judge(cleanEvents(), { extraRequests: [flags] }).problems, []);
+  });
+
+  it('the self-test event in a normal run is a failure, and expected in a self-test', () => {
+    says(judge([...cleanEvents(), ev('free_planted_leak', { amount: 1 })]).problems, 'self-test event');
+    assert.ok(!judge([...cleanEvents(), ev('free_planted_leak', { amount: 1 })], { planted: true }).problems.some((p) => p.includes('self-test event')));
   });
 });
 
@@ -225,6 +314,10 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
   it('runs every tool that has a page, with that tool’s own window property', () => {
     const routes = fs.readdirSync('src/pages/free').filter((f) => f !== 'index.astro').map((f) => f.replace(/\.astro$/, '')).sort();
     const inScript = [...script.matchAll(/^  '([a-z-]+)': \{\n    global: '(__nidhi[A-Za-z]+Shared)',/gm)];
+    // Each names the events that prove its buttons were pressed, both exports among them.
+    const musts = [...script.matchAll(/mustSend: \[([^\]]*)\]/g)];
+    assert.equal(musts.length, routes.length);
+    for (const m of musts) for (const need of ["'share_copied'", "'exported:xlsx'", "'exported:pdf'", "'reset'"]) assert.ok(m[1].includes(need), `${need} in ${m[1]}`);
     assert.deepEqual(inScript.map((m) => m[1]).sort(), routes);
     const globals = fs.readdirSync('src/utils', { withFileTypes: true })
       .filter((d) => d.isDirectory() && fs.existsSync(`src/utils/${d.name}/url.ts`))
@@ -234,9 +327,9 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
   });
 
   it('lets nothing through to PostHog but its static scripts', () => {
-    assert.ok(script.includes("'--host-resolver-rules=MAP eu.i.posthog.com ~NOTFOUND'"));
+    assert.ok(script.includes('MAP eu.i.posthog.com ~NOTFOUND'));
     assert.ok(script.includes("'--disable-blink-features=AutomationControlled'"));
-    assert.match(script, /if \(req\.method\(\) === 'GET' && \/\^\\\/static\\\//);
+    assert.ok(script.includes("if (req.method() === 'GET' && !url.search && /^\\/static\\/"), 'static scripts are let through only by their bare address');
     assert.match(script, /elementsChainAsString: true/);
     assert.match(script, /autocapture_opt_out: false/);
     assert.match(script, /await page\.goto\('about:blank'\)/);
