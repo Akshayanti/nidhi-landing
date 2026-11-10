@@ -683,14 +683,18 @@ async function useTool(page, tool, note, downloads, sent) {
   note.cards = cards.length;
   for (const el of cards.slice(0, 6)) { await press(page, el); await sleep(150); }
   // Rage clicks: four quick clicks in one spot, in three different places
-  // (charts first, then results, text and fields), since a page can mark a
+  // (charts first, then fields, results and text), since a page can mark a
   // part of itself as not to be captured. Whether PostHog saw one is checked
   // from the events; here it only has to have been possible to make them.
   note.step = 'rage and dead clicks';
   const plain = await visible(page, `${island} h2, ${island} h3, ${island} p, ${island} dd, ${island} td`);
   note.plain = plain.length;
   let rage = 0;
-  for (const el of [...big, ...cards.slice(0, 6), ...plain.slice(0, 6), ...inputs]) {
+  // Charts first, then two of the tool's own fields, then results and text.
+  // PostHog only reports a rage click on something it captures clicks on (a
+  // chart, a field, a button), never on plain text, so a tool with no chart
+  // would otherwise show none; a field takes four clicks without changing.
+  for (const el of [...big, ...inputs.slice(0, 2), ...cards.slice(0, 6), ...plain.slice(0, 6), ...inputs.slice(2)]) {
     if (rage >= 3) break;
     if (await press(page, el, 4, 80)) { rage++; await sleep(1200); }
   }
