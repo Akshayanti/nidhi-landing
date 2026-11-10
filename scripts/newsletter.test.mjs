@@ -474,6 +474,23 @@ describe('newsletter.gs: one fan-out per lesson', () => {
     assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: 'f'.repeat(64) }, body))), { ok: false, error: 'bad_signature' });
     assert.deepEqual(ctx.rec.mails, []);
   });
+
+  it('accepts a request exactly as the sender signs it', () => {
+    // The same body, secret and signature that scripts/test_newsletter_sender.py
+    // checks against the Python sender: if either side changes how it signs,
+    // one of the two tests fails before a lesson goes unsent.
+    const fixture = JSON.parse(fs.readFileSync('scripts/fixtures/send-post-signature.json', 'utf8'));
+    assert.equal(fixture.secret, SECRET);
+    assert.equal(sign(fixture.body), fixture.hex);
+    assert.match(fixture.body, /\\u00e9/, 'the body is ASCII: other characters travel as escapes');
+    const ctx = load(list());
+    const out = json(ctx.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body)));
+    assert.notEqual(out.error, 'bad_signature');
+    assert.equal(out.ok, true);
+    // One character of the body changed: refused.
+    const other = load(list());
+    assert.deepEqual(json(other.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body.replace('A lesson', 'A lesson!')))), { ok: false, error: 'bad_signature' });
+  });
 });
 
 describe('newsletter.gs: bounce scan', () => {
