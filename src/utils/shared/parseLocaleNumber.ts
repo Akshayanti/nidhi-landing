@@ -53,8 +53,10 @@ function ungroup(int: string, sep: string): string | null {
   // The whole number matches one system or the other, never a mix of the two
   // ("1,234,56,789" is neither): western groups of three throughout, or, in
   // comma-grouped numbers, twos before the last three.
-  const western = new RegExp(`^\\d{1,3}(${e}\\d{3})+$`);
-  const lakh = new RegExp(`^\\d{1,2}(${e}\\d{2})*${e}\\d{3}$`);
+  // No grouped whole number starts with a zero: "0.125" can only be a
+  // decimal, whatever the page's grouping mark is.
+  const western = new RegExp(`^[1-9]\\d{0,2}(${e}\\d{3})+$`);
+  const lakh = new RegExp(`^[1-9]\\d?(${e}\\d{2})*${e}\\d{3}$`);
   return western.test(int) || (sep === ',' && lakh.test(int)) ? int.split(sep).join('') : null;
 }
 
@@ -93,8 +95,9 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
     } else if (isGrouping(intPart, mark)) {
       // The page's grouping mark, used as grouping.
       decimal = null;
-    } else if (count === 1 && !/^\d{3}$/.test(intPart.split(mark)[1] ?? '')) {
-      // The page's grouping mark, but not in groups of three: it can only be a decimal.
+    } else if (count === 1 && (!/^\d{3}$/.test(intPart.split(mark)[1] ?? '') || /^0+$/.test(intPart.split(mark)[0]))) {
+      // The page's grouping mark, but not in groups of three, or after a
+      // whole part of zero ("0.125"): it can only be a decimal.
       decimal = mark;
     } else {
       return null;

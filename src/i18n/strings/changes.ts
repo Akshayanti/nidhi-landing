@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-11',
+    items: [
+      {
+        id: 'numbers-read-right',
+        text: {
+          en: 'Two fixes to how the tools read numbers. A decimal below one with three decimals, such as 0.125, was read as 125 on some pages; it is now read as written, in every language. And the Monte Carlo simulator now asks for whole years: half a year used to give a result line that read “NaN”.',
+          hi: 'टूल संख्याएँ कैसे पढ़ते हैं, उसमें दो सुधार हुए हैं। एक से छोटा तीन दशमलव वाला अंक, जैसे 0.125, कुछ पेजों पर 125 पढ़ा जाता था; अब वह हर भाषा में वैसा ही पढ़ा जाता है जैसा लिखा गया है। और मोंटे कार्लो सिम्युलेटर अब पूरे साल ही लेता है: आधे साल पर नतीजे की एक पंक्ति में “NaN” दिखता था।',
+          es: 'Dos correcciones en cómo las herramientas leen los números. Un decimal menor que uno con tres decimales, como 0.125, se leía como 125 en algunas páginas; ahora se lee tal como está escrito, en todos los idiomas. Y el simulador Monte Carlo pide ahora años enteros: con medio año, una línea del resultado mostraba «NaN».',
+          cs: 'Dvě opravy toho, jak nástroje čtou čísla. Desetinné číslo menší než jedna se třemi desetinnými místy, například 0.125, se na některých stránkách četlo jako 125; teď se čte tak, jak je napsané, ve všech jazycích. A\u00a0simulátor Monte Carlo teď chce celé roky: u\u00a0půl roku se v\u00a0jednom řádku výsledku objevilo „NaN“.',
+          mr: 'साधने संख्या कशा वाचतात यात दोन दुरुस्त्या झाल्या आहेत. एकापेक्षा लहान, तीन दशांश स्थाने असलेली संख्या, उदा. 0.125, काही पानांवर 125 अशी वाचली जायची; आता ती प्रत्येक भाषेत लिहिल्याप्रमाणेच वाचली जाते. आणि मॉन्टे कार्लो सिम्युलेटर आता पूर्ण वर्षेच घेतो: अर्ध्या वर्षासाठी निकालाच्या एका ओळीत “NaN” दिसायचे.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-10',
     items: [
       {
