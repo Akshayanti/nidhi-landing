@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'loan-ends-on-its-term',
+        text: {
+          en: 'The loan comparison now ends a loan on the term you type. A 30-year loan used to show as 30 years and 1 month, with a 361st payment of a few cents, in about half of all cases; those cents are now part of the last payment, as a lender would do it.',
+          hi: 'लोन की तुलना में अब लोन उसी अवधि पर खत्म होता है जो आप लिखते हैं। पहले लगभग आधे मामलों में 30 साल का लोन 30 साल 1 महीने का दिखता था, कुछ पैसों की 361वीं किस्त के साथ; अब वे पैसे आखिरी किस्त में जुड़ते हैं, जैसा लोन देने वाले करते हैं।',
+          es: 'El comparador de préstamos termina ahora el préstamo en el plazo que escribes. Antes, en cerca de la mitad de los casos, un préstamo a 30 años aparecía como de 30 años y 1 mes, con una cuota número 361 de unos céntimos; ahora esos céntimos forman parte de la última cuota, como haría una entidad financiera.',
+          cs: 'Srovnání úvěrů teď úvěr ukončí přesně po době, kterou zadáte. Dříve se zhruba v\u00a0polovině případů třicetiletý úvěr zobrazil jako 30 let a\u00a01 měsíc, s\u00a0361. splátkou ve výši několika haléřů; ty jsou teď součástí poslední splátky, jak to dělají poskytovatelé.',
+          mr: 'कर्जांची तुलना आता तुम्ही लिहिलेल्या मुदतीवरच कर्ज संपवते. आधी साधारण निम्म्या वेळा 30 वर्षांचे कर्ज 30 वर्षे 1 महिना असे दिसायचे, काही पैशांच्या 361 व्या हप्त्यासह; आता ते पैसे शेवटच्या हप्त्यात धरले जातात, जसे कर्जदाते करतात.',
+        },
+      },
+      {
         id: 'privacy-notice-wording-nov-10',
         text: {
           en: 'A few corrections to the privacy notice’s wording: it quoted a home page heading that has since been renamed, and some sentences in Hindi, Spanish and Czech had drifted from the English. The net worth calculator’s page now says, as the notice does, that exchange rates are fetched when the page opens and again if you change your spending currency. Nothing about what is collected changes.',
