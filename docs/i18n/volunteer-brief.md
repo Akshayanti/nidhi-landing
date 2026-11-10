@@ -41,7 +41,6 @@ So far:
 | Spanish | *tú* |
 | Czech | *vy* (lowercase) |
 | Marathi | तुम्ही |
-| Indonesian (glossary only, no edition yet) | *kamu* |
 
 These were each chosen for their own language; they are a reference, not a rule for yours.
 
