@@ -363,7 +363,8 @@ const SENSITIVE = [
  * It counts the file exactly as written, comments and strings included. The
  * readers blank comments first, and anything that decides what is a comment
  * can be fooled into hiding code; a plain count of the raw text cannot. The
- * price is that a comment naming one of these words counts too. `skip` names
+ * price is that a comment, a class name or a piece of prose naming one of
+ * these words counts too. `skip` names
  * files that are words only (the privacy notice).
  */
 export function scanMentions(files: SourceFile[], skip: RegExp | null = null): string[] {
@@ -371,8 +372,10 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
   for (const { path, raw } of files) {
     if (skip && skip.test(path)) continue;
     for (const word of SENSITIVE) {
-      // Not part of a longer name, nor of a hyphenated class or id (`cookie-btn`).
-      const n = [...raw.matchAll(new RegExp(`(?<![\\w$-])${word}(?![\\w$-])`, 'g'))].length;
+      // A whole word, and nothing more is assumed: a hyphen beside it may be
+      // a class name (`cookie-btn`) or a minus sign (`-fetch(...)`), and only
+      // counting both keeps the second from hiding.
+      const n = [...raw.matchAll(new RegExp(`(?<![\\w$])${word}(?![\\w$])`, 'g'))].length;
       if (n > 0) out.push(`${path}: ${word} x${n}`);
     }
   }

@@ -263,16 +263,18 @@ const EXPECTED_MENTIONS = [
   'components/Analytics.astro: setItem x1',
   'components/BaseHead.astro: getItem x1',
   'components/BaseHead.astro: localStorage x1',
-  'components/CookieConsent.astro: cookie x8',
+  'components/CookieConsent.astro: cookie x51',
+  'components/Footer.astro: cookie x2',
   'components/InflationCalculator.tsx: capture x1',
   'components/InflationCalculator.tsx: fetch x1',
   'components/InflationCalculator.tsx: posthog x1',
   'components/InflationCalculator.tsx: track x10',
-  'components/InvestOrPayOff.tsx: capture x1',
+  'components/InvestOrPayOff.tsx: capture x4',
   'components/InvestOrPayOff.tsx: cookie x1',
   'components/InvestOrPayOff.tsx: fetch x1',
   'components/InvestOrPayOff.tsx: posthog x2',
-  'components/InvestOrPayOff.tsx: track x7',
+  'components/InvestOrPayOff.tsx: track x8',
+  'components/LearnHome.tsx: capture x3',
   'components/LearnHome.tsx: getItem x1',
   'components/LearnHome.tsx: localStorage x1',
   'components/LearnHome.tsx: posthog x3',
@@ -280,6 +282,7 @@ const EXPECTED_MENTIONS = [
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',
   'components/LoanCompare.tsx: capture x4',
+  'components/LoanCompare.tsx: cookie x1',
   'components/LoanCompare.tsx: posthog x4',
   'components/LoanCompare.tsx: track x25',
   'components/MonteCarloSimulator.tsx: Worker x2',
@@ -309,6 +312,7 @@ const EXPECTED_MENTIONS = [
   'components/WaitlistSection.astro: setItem x1',
   'components/pages/HomePage.astro: getItem x1',
   'components/pages/HomePage.astro: localStorage x1',
+  'components/pages/HowToHubPage.astro: capture x1',
   'components/pages/MultiCurrencyNetWorthPage.astro: fetch x1',
   'i18n/config.ts: localStorage x1',
   'layouts/BlogPost.astro: cookie x1',
@@ -327,12 +331,14 @@ const EXPECTED_MENTIONS = [
   'pages/unsubscribe.astro: localStorage x1',
   'pages/unsubscribe.astro: posthog x2',
   'pages/unsubscribe.astro: removeItem x1',
-  'styles/global.css: track x1',
+  'styles/global.css: cookie x1',
+  'styles/global.css: track x2',
   'types/posthog.d.ts: capture x1',
+  'types/posthog.d.ts: cookie x1',
   'types/posthog.d.ts: posthog x2',
   'utils/listCount.ts: fetch x1',
   'utils/multi-currency-net-worth/math.ts: fetch x1',
-  'utils/shared/consentRuntime.js: cookie x5',
+  'utils/shared/consentRuntime.js: cookie x8',
   'utils/shared/consentRuntime.js: getItem x1',
   'utils/shared/consentRuntime.js: localStorage x7',
   'utils/shared/consentRuntime.js: posthog x2',
@@ -618,6 +624,20 @@ describe('privacy surface reader: storage', () => {
     assert.deepEqual(scan, { keys: ['nidhi-a'], unresolved: [] });
   });
 
+  it('a property of the same name does not account for a parameter', () => {
+    // `({}).key + ''` is not an appearance of the variable `key`: it is
+    // neither counted nor accounted, so the parameter stays unaccounted.
+    const scan = scanStorage(file(`
+      const key = 'nidhi-theme-mode';
+      function save(key, value) { localStorage.setItem(key, value); }
+      const _ = ({}).key + '';
+      const same = other === obj.key;
+      save(location.search, value);
+    `));
+    assert.deepEqual(scan.keys, []);
+    assert.deepEqual(scan.unresolved, ['components/X.tsx: setItem(key)']);
+  });
+
   it('counts storage reached through another name', () => {
     const before = scanMentions(file("localStorage.setItem('nidhi-a', v);"));
     const after = scanMentions(file("localStorage.setItem('nidhi-a', v);\nconst ls = localStorage;\nls.privateAmount = typedAmount;"));
@@ -670,6 +690,9 @@ describe('privacy surface reader: hosts and requests', () => {
       "/* fetch(x) */",
       "// track('e', { amount })",
       "const opening = '/*';\nwindow.posthog.capture('free_x', { amount });\nconst closing = '*/';",
+      "const r = /'/; const a = '/*'; -fetch('/?amount=' + typedAmount); const b = '*/';",
+      "x-fetch(u);",
+      "!fetch(u); +fetch(u); ~fetch(u); void fetch(u);",
     ]) {
       assert.notDeepEqual(scanMentions(file(source)), [], source);
     }
