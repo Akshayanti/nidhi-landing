@@ -11,7 +11,11 @@ import {
   isSingleCurrency,
   isSupportedCurrency,
   ownedAndOwed,
+  parseAmount,
   parseCSV,
+  decodeCsv,
+  isUnreadableAmount,
+  unreadableCount,
   formatPct,
   getCurrencyLabel,
   type AssetRow,
@@ -367,15 +371,70 @@ Apartment,200000,EUR`;
     assert.equal(rows[1].currency, 'EUR');
   });
 
-  it('defaults type to asset when omitted or unrecognized', () => {
+  it('an omitted type is an asset; a type it does not know is an error, not an asset', () => {
     const csv = `Test,50000,USD,liability
 Test2,30000,EUR
-Test3,10000,GBP,unknown`;
+Test3,10000,GBP,unknown
+Test4,10000,GBP,debt`;
     const { rows, errors } = parseCSV(csv);
-    assert.equal(errors.length, 0);
-    assert.equal(rows[0].type, 'liability');
-    assert.equal(rows[1].type, 'asset');
-    assert.equal(rows[2].type, 'asset');
+    assert.deepEqual(rows.map((r) => [r.name, r.type]), [['Test', 'liability'], ['Test2', 'asset']]);
+    assert.deepEqual(errors.map((e) => [e.line, e.reason, e.values]), [[3, 'unknownType', { value: 'unknown' }], [4, 'unknownType', { value: 'debt' }]]);
+  });
+
+  it('reads the page’s own words for the two types, in any case', () => {
+    const csv = 'Hipoteca,1000,EUR,pasivo\nCasa,5000,EUR,Activo\nLoan,1000,EUR,Liability\nX,1000,EUR,ASSET';
+    const { rows, errors } = parseCSV(csv, { asset: ['Activo'], liability: ['Pasivo'] });
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => r.type), ['liability', 'asset', 'liability', 'asset']);
+    // Without them, the Spanish words are refused, not read as assets.
+    assert.equal(parseCSV(csv).errors.length, 2);
+  });
+
+  it('skips a header line written in another language', () => {
+    for (const header of ['Nombre,Importe,Moneda,Tipo', 'Název,Hodnota,Měna,Typ', 'नाम,रकम,मुद्रा,किस्म', 'Importe,Moneda']) {
+      const { rows, errors } = parseCSV(`${header}\n${header.split(',').length === 2 ? '100,EUR' : 'Cash,100,EUR,asset'}`);
+      assert.deepEqual(errors, [], header);
+      assert.equal(rows.length, 1, header);
+    }
+  });
+
+  it('a first line that is data with a bad amount is an error, never taken for a header', () => {
+    const { rows, errors } = parseCSV('Bad,abc,USD\nGood,100,EUR');
+    assert.equal(rows.length, 1);
+    assert.deepEqual(errors.map((e) => [e.line, e.reason]), [[1, 'invalidValue']]);
+  });
+
+  it('reads a semicolon file with decimal commas, as a spreadsheet in Spanish or Czech saves it', () => {
+    const csv = 'Nombre;Importe;Moneda;Tipo\nCuenta;1000,50;EUR;Activo\nPiso;250.000,00;EUR;Activo\nHipoteca;150 000;EUR;Pasivo';
+    const { rows, errors } = parseCSV(csv, { asset: ['activo'], liability: ['pasivo'] });
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => [r.name, r.value, r.type]), [['Cuenta', '1000.5', 'asset'], ['Piso', '250000', 'asset'], ['Hipoteca', '150 000', 'liability']]);
+    assert.equal(parseAmount(rows[2].value), 150000);
+  });
+
+  it('reads a tab-separated file', () => {
+    const { rows, errors } = parseCSV('Cash\t100\tEUR\tasset\nLoan\t50\tUSD\tliability');
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => [r.name, r.value, r.currency, r.type]), [['Cash', '100', 'EUR', 'asset'], ['Loan', '50', 'USD', 'liability']]);
+  });
+
+  it('in a comma file a comma inside a quoted amount is still grouping', () => {
+    const { rows, errors } = parseCSV('Flat,"250,000",EUR,asset');
+    assert.deepEqual(errors, []);
+    assert.equal(parseAmount(rows[0].value), 250000);
+  });
+
+  it('keeps the rows it can read and names every line it cannot', () => {
+    const csv = 'Name,Value,Currency,Type\nA,16,EUR,asset\nB,-5,EUR,asset\nC,Infinity,EUR,asset\nD,€100,EUR,asset\nE,1000,EUR,asset\nF,1e400,EUR,asset';
+    const { rows, errors } = parseCSV(csv);
+    assert.deepEqual(rows.map((r) => r.name), ['A', 'E']);
+    assert.deepEqual(errors.map((e) => e.line), [3, 4, 5, 7]);
+  });
+
+  it('ignores a byte-order mark at the start of the file', () => {
+    const { rows, errors } = parseCSV(String.fromCharCode(0xfeff) + 'Name,Value,Currency\nCash,100,EUR');
+    assert.deepEqual(errors, []);
+    assert.equal(rows[0].name, 'Cash');
   });
 
   it('reports error for invalid value', () => {
@@ -553,5 +612,35 @@ describe('ownedAndOwed', () => {
       { name: 'Bad', value: 'abc', currency: 'EUR', type: 'liability' },
     ];
     assert.deepEqual(ownedAndOwed(rows, 'EUR'), { owned: 7600, owed: 5200 });
+  });
+});
+
+describe('decodeCsv', () => {
+  it('reads UTF-8 as it is', () => {
+    assert.equal(decodeCsv(new TextEncoder().encode('Café,100,EUR\nसंपत्ति,5,INR')), 'Café,100,EUR\nसंपत्ति,5,INR');
+  });
+
+  it('reads a file saved in the Windows code page, where UTF-8 would break the letters', () => {
+    // "Café úspory" in Windows-1252: é is 0xE9, ú is 0xFA.
+    const bytes = Uint8Array.from([0x43, 0x61, 0x66, 0xe9, 0x20, 0xfa, 0x73, 0x70, 0x6f, 0x72, 0x79, 0x2c, 0x31, 0x30, 0x30, 0x2c, 0x45, 0x55, 0x52]);
+    assert.equal(decodeCsv(bytes), 'Café úspory,100,EUR');
+  });
+});
+
+describe('an amount that cannot be read', () => {
+  it('is told apart from an empty box and from a number', () => {
+    for (const value of ['NaN', '€150,000', '150 000 EUR', '-150000', '1.5e400', 'abc', '१५००००']) assert.equal(isUnreadableAmount(value), true, value);
+    for (const value of ['', '   ', '0', '150000', '150,000', '1 500.25']) assert.equal(isUnreadableAmount(value), false, value);
+  });
+
+  it('is counted, since such a row is in no total', () => {
+    const rows: AssetRow[] = [
+      { name: 'Flat', value: '200000', currency: 'EUR', type: 'asset' },
+      { name: 'Mortgage', value: 'NaN', currency: 'EUR', type: 'liability' },
+      { name: '', value: '', currency: 'EUR', type: 'asset' },
+    ];
+    assert.equal(unreadableCount(rows), 1);
+    const result = aggregate(rows, 'EUR', { EUR: 1 });
+    assert.equal(result.totalNetWorthFunctional, 200000, 'the row is left out, which is why the tool must say so');
   });
 });

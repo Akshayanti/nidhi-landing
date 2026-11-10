@@ -3887,6 +3887,34 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
 }
 
+/* A row whose amount cannot be read: the box, the sentence under it, and
+   the line above the table that says how many rows are in no total. The
+   same colour and size as a field error in the other tools. */
+.mcnw-input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+.mcnw-rowError {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-danger);
+}
+
+/* With the sentence under it the amount cell is taller than its row: the
+   other boxes stay level with the amount box, not with the cell's middle. */
+.mcnw-tableRow:has(.mcnw-rowError) .mcnw-tableCell {
+  align-self: start;
+}
+
+.mcnw-notCounted {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-danger);
+}
+
 .mcnw-tableHead {
   border-bottom: 2px solid var(--color-border);
 }
