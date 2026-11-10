@@ -498,7 +498,9 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
       // A group that goes on after it closes is not a test of what is in
       // it: `(localStorage).clear()` calls a method on the object.
       const inner = balanced(text, i);
-      if (inner === null || /^\s*(?:\?\.|\.|\[|\(|`)/.test(text.slice(i + inner.length + 2, i + inner.length + 12))) return false;
+      // However much white space (or a comment, which is white space by
+      // now) stands between the bracket and what carries it on.
+      if (inner === null || /^(?:\?\.|\.|\[|\(|`)/.test(text.slice(i + inner.length + 2).trimStart())) return false;
     }
   }
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
