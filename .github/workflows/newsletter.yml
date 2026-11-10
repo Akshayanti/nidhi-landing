@@ -121,14 +121,17 @@ jobs:
             #
             # Pair with the Apps Script debugHmacSecret() function: if
             # both sides report 64 but bad_signature still happens,
-            # compare the HMAC of the literal string "scan_bounces"
+            # compare the HMAC of the literal string "secret-check"
             # from both sides — they'll match iff the secrets match.
+            # That string signs nothing: no action accepts it, so the
+            # value can sit in a public log. Never print a signature
+            # that an action accepts.
             LEN=${#NEWSLETTER_HMAC_SECRET}
-            SIG_PROBE=$(printf 'scan_bounces' \
+            SIG_PROBE=$(printf 'secret-check' \
               | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" \
               | awk '{print $NF}')
             echo "NEWSLETTER_HMAC_SECRET: configured (length=$LEN, expected=64)"
-            echo "HMAC(\"scan_bounces\", secret) = $SIG_PROBE"
+            echo "HMAC(\"secret-check\", secret) = $SIG_PROBE"
             echo "  ↳ Run debugHmacSecret() in the Apps Script editor."
             echo "     Matching output means the two secrets are byte-identical."
             if [ "$LEN" != "64" ]; then
@@ -217,12 +220,14 @@ jobs:
           exit 1
 
       - name: Scan for newsletter bounces
-        # Asks Apps Script to sweep the FROM_EMAIL inbox for mailer-daemon
-        # replies from the last 14 days and flip matching Sheet rows to
-        # status=bounced. Idempotent — safe to run multiple times.
-        # Signed with HMAC-SHA256(HMAC_SECRET, "scan_bounces") — the Apps
-        # Script action is idempotent so replay over the constant string
-        # is fine (see verifyScanBouncesSig_).
+        # Asks Apps Script to read Google's delivery failure reports in the
+        # FROM_EMAIL inbox from the last 14 days and flip the rows they
+        # name to status=bounced. Idempotent — safe to run multiple times.
+        # Signed with HMAC-SHA256(HMAC_SECRET, "scan_bounces:<unix time>");
+        # the time goes along as `ts` and the signature is good for five
+        # minutes, so one read from a log later opens nothing (see
+        # verifyScanBouncesSig_). The address is not echoed for the same
+        # reason.
         id: bounce_scan
         if: >-
           always() &&
@@ -230,12 +235,13 @@ jobs:
           github.event.inputs.skip_bounce_scan != 'true'
         run: |
           set -euo pipefail
-          SIG=$(printf 'scan_bounces' \
+          TS=$(date +%s)
+          SIG=$(printf 'scan_bounces:%s' "$TS" \
                 | openssl dgst -sha256 -hmac "$NEWSLETTER_HMAC_SECRET" \
                 | awk '{print $NF}')
           SEP='?'
           case "$NEWSLETTER_ENDPOINT" in *\?*) SEP='&' ;; esac
-          URL="${NEWSLETTER_ENDPOINT}${SEP}action=scan_bounces&sig=${SIG}"
+          URL="${NEWSLETTER_ENDPOINT}${SEP}action=scan_bounces&ts=${TS}&sig=${SIG}"
           echo "Scanning bounces…"
           RESP=$(curl -sSL --max-time 120 "$URL" || true)
           echo "Response: $RESP"
