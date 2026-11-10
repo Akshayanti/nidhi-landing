@@ -40,6 +40,10 @@
   "engines": {
     "node": ">=24.0.0"
   },
+  "allowScripts": {
+    "puppeteer@25.16.0": true,
+    "fsevents": false
+  },
   "devDependencies": {
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
