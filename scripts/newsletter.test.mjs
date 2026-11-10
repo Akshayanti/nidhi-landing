@@ -519,6 +519,10 @@ describe('newsletter.gs: bounce scan', () => {
     // Replayed with a second To line put above the signed one.
     ['a report about someone else’s mail with this script’s address added above theirs', { to: 'attacker@evil.example', outerExtra: ['To: updates@nidhi.today'] }],
     ['a report with this script’s address twice', { outerExtra: ['To: updates@nidhi.today'] }],
+    // Replayed with a second type line put above the signed one, naming
+    // another boundary, so the signed body would be cut up differently.
+    ['a report with a second type line above its own', { outerExtra: ['Content-Type: multipart/report; boundary="b2"; report-type=delivery-status'] }],
+    ['a report with its own type line twice', { outerExtra: ['Content-Type: multipart/report; boundary="b1"; report-type=delivery-status'] }],
     ['a returned mail whose sender only has this script’s address in its display name', { returnedFrom: '"<updates@nidhi.today>" <attacker@evil.example>' }],
     ['a returned mail from two senders', { returnedFrom: 'updates@nidhi.today, attacker@evil.example' }],
     ['a report that passed the sender policy but whose signature did not', { auth: ['Authentication-Results: mx.google.com; dkim=fail header.i=@googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dmarc=pass (p=QUARANTINE) header.from=googlemail.com'] }],
@@ -573,6 +577,41 @@ describe('newsletter.gs: bounce scan', () => {
     assert.equal(logged.length, 3);
     for (const line of logged) assert.match(line, /^\[newsletter\] bounce scan: a report from mailer-daemon@googlemail\.com was not acted on: /);
     assert.doesNotMatch(logged.join(' '), /gone@x\.io|attacker/, 'the log names no address');
+  });
+
+  it('logs a reason on every path that passes a report over', () => {
+    const ctx = load(subscribers());
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    const unreadable = { ...failed('gone@x.io'), getRawContent: () => { throw new Error('gmail'); } };
+    const headersOnly = { ...failed('gone@x.io'), getRawContent: () => 'From: mailer-daemon@googlemail.com' };
+    const undated = { ...failed('gone@x.io'), getDate: () => { throw new Error('no date'); } };
+    inbox(
+      ctx, unreadable, headersOnly, undated,
+      failed('gone@x.io', { outerExtra: ['Content-Type: multipart/report; boundary="b2"; report-type=delivery-status'] }),
+      // A delay notice: a report, but of nothing permanent.
+      report([['gone@x.io', 'delayed', '4.4.1']]),
+      // The reference is for another address than the one that failed.
+      failed('gone@x.io', { returnedRef: ref('a@x.io') }),
+      // The returned mail is older than the 14 days.
+      failed('gone@x.io', { returnedRef: ref('gone@x.io', { sentDaysAgo: 20 }) }),
+      // The report is dated before the mail it returns.
+      failed('gone@x.io', { ageDays: 3 }),
+    );
+    assert.equal(scan(ctx).marked_bounced, 0);
+    untouched(ctx);
+    assert.equal(logged.length, 8, logged.join('\n'));
+    for (const line of logged) assert.match(line, /^\[newsletter\] bounce scan: a report from mailer-daemon@googlemail\.com was not acted on: /);
+    assert.doesNotMatch(logged.join(' '), /@x\.io/, 'the log names no address');
+  });
+
+  it('a mail from anyone else, and an older message in a thread, are passed over without a line', () => {
+    const ctx = load(subscribers());
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    inbox(ctx, failed('gone@x.io', { from: 'Someone <someone@evil.example>' }), failed('gone@x.io', { ageDays: 20 }));
+    assert.equal(scan(ctx).marked_bounced, 0);
+    assert.deepEqual(logged, []);
   });
 
   it('ignores a delay notice and a temporary failure', () => {

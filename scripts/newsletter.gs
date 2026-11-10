@@ -1594,10 +1594,10 @@ function failedRecipients_(msg) {
   try { from = String(msg.getFrom() || '').trim(); } catch (_) { return []; }
   if (!BOUNCE_SENDER_.test(from)) return [];
   var raw = '';
-  try { raw = String(msg.getRawContent() || ''); } catch (_) { return []; }
+  try { raw = String(msg.getRawContent() || ''); } catch (_) { return skipped_('it could not be read'); }
 
   var split = /\r?\n\r?\n/.exec(raw);
-  if (!split) return [];
+  if (!split) return skipped_('it has no line between its headers and its body');
   var outer = unfold_(raw.slice(0, split.index));
   var body = raw.slice(split.index + split[0].length);
   // A report about a mail this script sent comes back to the address it was
@@ -1614,7 +1614,13 @@ function failedRecipients_(msg) {
     // longer arrive the way this expects and real bounces are being passed over.
     return skipped_('Gmail did not find it signed by googlemail.com');
   }
-  var type = /^Content-Type:[ \t]*multipart\/report\b([^\r\n]*)$/im.exec(outer);
+  // Exactly one type line, for the same reason as the To line: the type
+  // names the boundary the signed body is read by, so a second one put
+  // above the signed one would change what is read without breaking the
+  // signature.
+  var typeLines = outer.match(/^Content-Type:[^\r\n]*$/gim) || [];
+  if (typeLines.length !== 1) return skipped_('it does not have exactly one type');
+  var type = /^Content-Type:[ \t]*multipart\/report\b([^\r\n]*)$/i.exec(typeLines[0]);
   if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return skipped_('it is not a delivery report by its type');
   var boundary = /boundary[ \t]*=[ \t]*(?:"([^"]+)"|([^\s;]+))/i.exec(type[1]);
   if (!boundary) return skipped_('its type names no boundary');
@@ -1670,6 +1676,7 @@ function failedRecipients_(msg) {
     var sentAt = mailRefTime_(refLine[1], addr);
     if (sentAt && !out.some(function (x) { return x.email === addr; })) out.push({ email: addr, sentAt: sentAt });
   });
+  if (out.length === 0) return skipped_('it reports no permanent failure of the address its returned mail was made for');
   return out;
 }
 
@@ -1698,11 +1705,14 @@ function handleScanBounces_(e) {
         for (var i = 0; i < msgs.length; i++) {
           var when = NaN;
           try { when = msgs[i].getDate().getTime(); } catch (_) { /* no date: not read */ }
+          // An older message in a thread the search found is outside the 14
+          // days by design; one with no date at all is worth a line.
+          if (isNaN(when)) { skipped_('its date cannot be read'); continue; }
           if (!(when >= oldest)) continue;
           failedRecipients_(msgs[i]).forEach(function (x) {
             // The mail that failed was itself sent in the last 14 days, and
             // before its report.
-            if (!(x.sentAt >= oldest && x.sentAt <= when)) return;
+            if (!(x.sentAt >= oldest && x.sentAt <= when)) { skipped_('the mail it returns was not sent in the last 14 days and before the report'); return; }
             if (!failedAt[x.email] || failedAt[x.email].sentAt < x.sentAt) failedAt[x.email] = { reported: when, sentAt: x.sentAt };
           });
         }
