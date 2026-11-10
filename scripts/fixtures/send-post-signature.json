@@ -1,0 +1,6 @@
+{
+  "note": "One request as the sender signs it and the Apps Script checks it. Used by scripts/test_newsletter_sender.py and scripts/newsletter.test.mjs: if either side changes how it signs, one of the two tests fails.",
+  "secret": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "body": "{\"subject\": \"A lesson\", \"html\": \"<p>Caf\\u00e9: \\u201cquoted\\u201d {{UNSUBSCRIBE_URL}}</p>\", \"text\": \"t\", \"url\": \"https://nidhi.today/blog/x/\", \"guid\": \"https://nidhi.today/blog/fixture/\"}",
+  "hex": "dc32aa5c1ac9908f831ed2cfa080d79ae4609a8e182c82e9b8f6711f4f5134c3"
+}
