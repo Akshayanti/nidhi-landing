@@ -260,12 +260,14 @@ describe('computeFromInput', () => {
     );
     assert.equal(r.error, undefined);
     // The closed-form payment for 300k @ 5% / 360 months rounds DOWN to
-    // 1610.46, leaving a tiny residual that spills into a 361st row.
-    // This is the engine's documented behavior.
-    assert.equal(r.schedule.length, 361);
+    // 1610.46. The few cents that leaves are part of the 360th payment:
+    // a loan with a term ends on its term.
+    assert.equal(r.schedule.length, 360);
+    // 4.09 more than the others, here.
+    assert.equal(r.schedule[359].payment, 161_455);
     assert.equal(r.monthlyPaymentMinor, 161_046);
-    assert.equal(r.totalInterestMinor, 27_976_971);
-    assert.equal(r.totalPaidMinor, 57_976_971);
+    assert.equal(r.totalInterestMinor, 27_976_969);
+    assert.equal(r.totalPaidMinor, 57_976_969);
     assert.equal(r.schedule[r.schedule.length - 1].balance, 0);
     assert.equal(
       r.schedule.reduce((s, row) => s + row.principal, 0),
@@ -324,8 +326,8 @@ describe('computeFromInput', () => {
     // Month-61 interest jumps to 158,283 cents because of the rate
     // recast at month 61 (7% on the recast balance).
     assert.equal(hybrid.schedule[60].interest, 158_283);
-    // Hybrid recast leaves a single-cent stub past the contract length.
-    assert.equal(hybrid.schedule.length, 361);
+    // The cent the recast payment leaves is part of the last payment.
+    assert.equal(hybrid.schedule.length, 360);
     // Total interest under hybrid is 361,272.75 (361,272 cents in this
     // case — Python yields 36,127,275; let the engine speak for itself).
     assert.equal(hybrid.totalInterestMinor, 36_127_275);
@@ -406,8 +408,8 @@ describe('computeFromInput', () => {
       }),
       'USD',
     );
-    // Baseline pays off in 361 months (the rounding-stub case).
-    assert.equal(baseline.schedule.length, 361);
+    // Baseline pays off in its 360 months.
+    assert.equal(baseline.schedule.length, 360);
     // +200/month cuts that to exactly 256 months.
     assert.equal(withExtra.schedule.length, 256);
   });
