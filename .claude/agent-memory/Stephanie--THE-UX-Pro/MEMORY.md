@@ -1,0 +1,2 @@
+- [Contrast audit pitfalls](contrast-audit-pitfalls.md) — color-mix parses as color(srgb), 1.5px borders render 1px, sr-only false overlaps, dark level-5 number
+- [Dark-mode deep-blue flip](dark-mode-deep-blue-flip.md) — deep-blue token turns light in dark mode; white-on-deep-blue fills fail (~1.7:1)

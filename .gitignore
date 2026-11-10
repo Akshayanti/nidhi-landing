@@ -1,5 +1,8 @@
 .idea
-.claude
+.claude/*
+# The project's own agents and what they have learnt are versioned with it.
+!.claude/agents/
+!.claude/agent-memory/
 .astro
 node_modules
 dist
@@ -29,3 +32,6 @@ scripts/__pycache__/
 remotion/outputs/
 remotion/public/
 
+# Security and privacy weaknesses of the site: kept on the machine, never in
+# this public repository (CLAUDE.md, "Two Projects").
+docs/curr_bugs.md

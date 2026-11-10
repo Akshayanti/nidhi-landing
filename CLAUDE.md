@@ -74,6 +74,28 @@ The site has a "What's changed" page (`/changes/` in every language). It is how 
 3. **Check the terms first.** If the licence does not allow the use or asks for something the site does not do, pause and ask. Do not add material whose licence you have not read.
 4. **Not listed:** packages used only to build, test or render, which npm installs with their own licences and which are not copied into the repository, and sources a lesson only cites or links to. A routine version bump needs no change unless the package's licence or copyright line changed.
 
+## Two Projects: the Site and the Planner
+
+nidhi is two projects in two repositories. This one is the public site (nidhi.today): lessons, free tools, the waitlist and the `/beta/` page. The **planner**, the product the waitlist leads to, is built in a separate, private repository, checked out beside this one as `../NetWorthAndExpenses`.
+
+1. **Separate.** Each project has its own `CLAUDE.md`, agents, agent memory, issues and sessions. This file's rules apply here and the planner's apply there; neither side's patterns are carried into the other.
+2. **Read-only across the line.** A session or agent working here may read the planner to answer a question, and cites the file it read. It never edits the planner, and nothing learnt there is saved outside this project's memory. The same holds in the other direction.
+3. **Each knows the other exists.** Read the planner when a question touches it: site copy that says what the planner does, the handover from waitlist or beta sign-up into it, or a concept, word, number format or colour that should mean the same on both sides. A disagreement between the two is a finding; the owner decides which side changes.
+4. **They talk through sessions.** When work here needs something from the planner (a fact, a change on its side, a question for its agents), the main session sends it to a planner session and brings the answer back. An agent puts such a request in its report under "For the planner"; it does not act on the planner itself. A request arriving from the planner is answered from this project's files and rules.
+5. **Shared on purpose:** the brand. `docs/color-palette.md` here is the one colour guide for both (its "In the planner" section covers the planner), and `docs/brand-identity.md` sets audience and tone. A change to either changes the planner too, so say so in the pull request.
+6. **Private stays private.** The planner repository is private and this one is public. Its internal details (data model, unreleased features, strategy documents, findings about it) do not go into site copy, commits, issues or pull requests here beyond what the site already says publicly. Security and privacy weaknesses of the site stay out of the public issue tracker, in `docs/curr_bugs.md`, which is ignored by git.
+
+## Agents Live in the Repository
+
+The project's agents are files in `.claude/agents/`, and what they have learnt is in `.claude/agent-memory/`. Both are tracked, so every clone and every worktree has the same agents; the rest of `.claude/` is ignored.
+
+- **Jan** (`jan-financial-advisor`) checks whether what the site publishes is financially sound: a lesson's claims and figures, a tool's maths, defaults and caveats.
+- **Stephanie** (`Stephanie, THE UX Pro`) reviews pages, tools and forms for usability, accessibility and inclusivity, across languages, themes and screen widths.
+
+1. **This file is the source of the rules.** An agent prompt says who the agent is and how it works, and points here for anything every session must follow. A rule that matters is written here, not only in a prompt.
+2. **A change to an agent goes through a pull request**, like any other file. An agent's name is not changed without moving its memory folder, since memory is kept under the name.
+3. **Agent memory is public with the repository.** Nothing private goes in it: no personal data, no secrets, no planner internals.
+
 ## Automated Visits Use the Internal Address
 
 Whenever the live site is opened automatically (a headless browser, the Chrome extension, a script or any other tool), start from this address: **https://nidhi.today/?internal=1**. It marks that browser as internal (the `nidhi-internal` key the privacy notice describes), so it runs no analytics and never counts as a reader. A fresh browser profile starts unmarked, so open this address first in every new browser or session before visiting any other page. Local test builds follow the rules above for analytics testing instead.
