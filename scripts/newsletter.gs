@@ -78,17 +78,11 @@
  *                                   SHA-256 matches COUNT_TOKEN_SHA256_;
  *                                   { ok: false, error: 'forbidden' } otherwise.
  *
- *   GET  ?action=remind_pending     Sends exactly one reminder email to each
- *         or POST                    pending subscriber whose row is older
- *                                   than 3 days and hasn't received a reminder
- *                                   yet. Only operates between 06:00 and 12:59
- *                                   UTC, which keeps delivery inside civilized
- *                                   local hours for both Europe and India.
- *                                   Idempotent: safe to call repeatedly (e.g.
- *                                   hourly via a GAS time-based trigger).
- *                                   Tracks sent reminders in the
- *                                   `reminder_sent_at` column so each pending
- *                                   subscriber gets at most one reminder.
+ *   Reminders and deletions: not a web action. handleRemindPending runs
+ *   from an hourly time trigger. It sends one reminder to each pending
+ *   subscriber whose row is older than 3 days and has had none (between
+ *   9:00 and 11:59 Prague time), deletes pending rows after 7 days,
+ *   unsubscribed rows after 30 days and bounced rows after a week.
  *
  *   Reminder test: not a web action. Run testRemindFromEditor from the
  *   Apps Script editor (see its comment).
@@ -439,7 +433,6 @@ function doGet(e) {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'confirm')         return handleConfirm_(e);
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
-    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
@@ -467,7 +460,6 @@ function doPost(e) {
     if (action === 'subscribe')       return handleSubscribe_(e);
     if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
-    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     if (action === 'count')           return handleCount_(e);
@@ -778,19 +770,39 @@ function handleSubscribe_(e) {
       var status = String(values[COL.status - 1] || '').toLowerCase();
       if (status === 'confirmed') return 'confirmed';
       var createdAt = values[COL.createdAt - 1];
-      if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
+      // When this address was last sent a mail asking it to confirm: at
+      // sign-up, or later (a re-send or the reminder, both stamped in
+      // reminder_sent_at).
+      var reminded = values[COL.reminderSentAt - 1];
+      var lastAsked = Math.max(createdAt ? new Date(createdAt).getTime() : 0, reminded ? new Date(reminded).getTime() : 0) || 0;
+      if (status === 'pending' && lastAsked && now.getTime() - lastAsked < RESEND_COOLDOWN_MS_) return 'recent';
     }
     // Checked before anything is written: past the limit nothing changes.
     if (!takeDailySlot_('confirm_mails', MAX_CONFIRMATIONS_PER_DAY_)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
-    } else {
-      // pending, unsubscribed or bounced: reset to pending with fresh tokens.
-      // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
-      sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
-        'pending', source, now, '', '', confirmToken, unsubToken, '',
-      ]]);
+      return 'pending';
     }
+    var oldConfirm = String(values[COL.confirmToken - 1] || '').trim();
+    var oldUnsub = String(values[COL.unsubToken - 1] || '').trim();
+    // An unsubscribe link stays good for the life of a row: every mail
+    // already sent to this address carries the old one.
+    if (oldUnsub) unsubToken = oldUnsub;
+    if (status === 'pending' && oldConfirm) {
+      // Asked again while still waiting: the same link is sent again, so the
+      // first mail's link keeps working, and created_at stays where it was,
+      // so asking again cannot put off the 7-day expiry. The re-send counts
+      // as this row's reminder: it is stamped where the reminder is, which
+      // also starts the wait before the next re-send.
+      confirmToken = oldConfirm;
+      sh.getRange(row, COL.reminderSentAt).setValue(now);
+      return 'pending';
+    }
+    // unsubscribed or bounced (or a pending row that lost its token): back
+    // to pending with a new confirmation link and a new clock.
+    sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
+      'pending', source, now, '', '', confirmToken, unsubToken, '',
+    ]]);
     return 'pending';
   });
 
@@ -838,9 +850,10 @@ function takeDailySlot_(kind, limit) {
 // ============================================================================
 //
 // Called via a GAS time-based trigger (hourly) bound directly to
-// handleRemindPending. Only operates between 06:00 and 12:59 UTC, which
-// keeps delivery inside civilized local hours for both Europe and India.
-// Sends exactly one reminder to each pending subscriber whose row is
+// handleRemindPending, and by nothing else: it is not a web action, so
+// nobody outside can choose the moment it runs. Reminders go out between
+// 9:00 and 11:59 Prague time, as the privacy notice says. Sends exactly one
+// reminder to each pending subscriber whose row is
 // > 3 days old and hasn't received a reminder yet.
 //
 // Idempotent: the reminder_sent_at column ensures each pending subscriber
@@ -877,16 +890,70 @@ function testRemindFromEditor() {
   console.log('testRemindFromEditor: reminder sent.');
 }
 
+/** Reminders are sent from this hour up to, not including, the next one, Prague time. */
+var REMIND_FROM_HOUR_ = 9;
+var REMIND_UNTIL_HOUR_ = 12;
+
+/** An unsubscribed row is deleted this long after the unsubscribe (privacy notice: "up to 30 days"). */
+var UNSUBSCRIBED_KEPT_MS_ = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * A bounced row is deleted this long after it was marked (privacy notice:
+ * "removed as soon as we notice them, usually within a week"). The week is
+ * there so that a row marked by mistake can still be put back by hand.
+ */
+var BOUNCED_KEPT_MS_ = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Deletes the rows the privacy notice says are removed: an unsubscribed row
+ * 30 days after the unsubscribe, and a bounced row a week after it was
+ * marked (both dates are in unsubscribed_at). Returns how many of each
+ * went; no address is logged.
+ *
+ * A row whose date cannot be read is kept and counted, so that the owner
+ * sees it in the log instead of losing a row by a guess.
+ */
+function purgeDepartedRows_(now) {
+  var out = withSheetLock_(function () {
+    var counts = { unsubscribed: 0, bounced: 0, undated: 0 };
+    var sh = sheet_();
+    var last = sh.getLastRow();
+    if (last < 2) return counts;
+    var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+    var rowsToDelete = [];
+    for (var r = 0; r < rows.length; r++) {
+      var status = String(rows[r][COL.status - 1] || '').toLowerCase();
+      if (status !== 'unsubscribed' && status !== 'bounced') continue;
+      var left = rows[r][COL.unsubscribedAt - 1];
+      var age = left ? now.getTime() - new Date(left).getTime() : NaN;
+      if (isNaN(age)) { counts.undated++; continue; }
+      if (age < (status === 'bounced' ? BOUNCED_KEPT_MS_ : UNSUBSCRIBED_KEPT_MS_)) continue;
+      rowsToDelete.push(r + 2);
+      counts[status]++;
+    }
+    // Bottom-up, so a deletion never shifts a row still to be deleted.
+    for (var d = rowsToDelete.length - 1; d >= 0; d--) sh.deleteRow(rowsToDelete[d]);
+    return counts;
+  });
+  if (out.unsubscribed || out.bounced) console.log('[newsletter] purge: deleted ' + out.unsubscribed + ' unsubscribed row(s) past 30 days and ' + out.bounced + ' bounced row(s) past a week');
+  if (out.undated) console.error('[newsletter] purge: ' + out.undated + ' unsubscribed or bounced row(s) have no readable date and were kept: set the date or delete them by hand');
+  return { unsubscribed: out.unsubscribed, bounced: out.bounced };
+}
+
 function handleRemindPending() {
-  // Only run between 06:00 and 12:59 UTC. This keeps reminder delivery inside
-  // civilized local hours for both Europe (07:00 to 14:00 CE winter, 08:00 to
-  // 15:00 CE summer) and India (11:30 to 18:30 IST), and is DST-proof.
-  var utcHour = parseInt(Utilities.formatDate(new Date(), 'Etc/UTC', 'H'), 10);
-  if (utcHour < 6 || utcHour >= 13) {
-    return jsonResponse_({ ok: true, skipped: 'outside_window', utc_hour: utcHour });
+  var now = new Date();
+
+  // Rows the privacy notice says are removed: done on every run, whatever
+  // the hour, since no mail is sent for it.
+  var purged = purgeDepartedRows_(now);
+
+  // Reminders go out between 9:00 and 11:59 in Prague, as the privacy notice
+  // says ("sent between 9 AM and 12 PM Prague time"), summer and winter.
+  var pragueHour = parseInt(Utilities.formatDate(now, 'Europe/Prague', 'H'), 10);
+  if (pragueHour < REMIND_FROM_HOUR_ || pragueHour >= REMIND_UNTIL_HOUR_) {
+    return jsonResponse_({ ok: true, skipped: 'outside_window', prague_hour: pragueHour, purged: purged });
   }
 
-  var now = new Date();
   var started = Date.now();
   var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
   var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
@@ -960,7 +1027,7 @@ function handleRemindPending() {
     trackPosthog_('blog_pending_reminded', distinctIdForEmail_(x.email), { days_since_signup: x.days });
   }
 
-  var reply = { ok: true, reminded: sent, deleted: plan.expired.length, utc_hour: utcHour };
+  var reply = { ok: true, reminded: sent, deleted: plan.expired.length, prague_hour: pragueHour, purged: purged };
   if (left) reply.left_for_next_run = left;
   return jsonResponse_(reply);
 }
@@ -1099,6 +1166,9 @@ function handleConfirm_(e) {
     var sh = sheet_();
     var row = findRowByToken_(sh, COL.confirmToken, token);
     if (row === 0) return null;
+    // Only a row that is waiting can be confirmed. (An unsubscribe clears the
+    // confirmation link as well; this covers a row left from before it did.)
+    if (String(sh.getRange(row, COL.status).getValue()).toLowerCase() !== 'pending') return null;
     var who = {
       email: String(sh.getRange(row, COL.email).getValue()).trim(),
       unsubToken: String(sh.getRange(row, COL.unsubToken).getValue()).trim(),
@@ -1164,6 +1234,9 @@ function handleUnsubscribe_(e, method) {
     if (currentStatus === 'unsubscribed') return { email: who, changed: false };
     sh.getRange(row, COL.status).setValue('unsubscribed');
     sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+    // A confirmation link still out there (the reader used the unsubscribe
+    // header on the confirmation mail) must not bring the row back.
+    sh.getRange(row, COL.confirmToken).setValue('');
     return { email: who, changed: true };
   });
 

@@ -19,12 +19,13 @@ const SOURCE = fs.readFileSync('scripts/newsletter.gs', 'utf8');
 const HEADERS = ['email', 'status', 'source', 'created_at', 'confirmed_at', 'unsubscribed_at', 'confirm_token', 'unsub_token', 'reminder_sent_at'];
 const SECRET = 'a'.repeat(64);
 const DAY = 24 * 60 * 60 * 1000;
-// Inside the 06:00 to 12:59 UTC reminder window.
+// 10:00 in Prague: inside the 9:00 to 11:59 reminder window.
 const NOW = Date.parse('2026-11-10T09:00:00Z');
 const tok = (c) => c.repeat(64);
 
-const row = (email, status, ageDays, { confirm = '', unsub = '', reminded = '' } = {}) =>
-  [email, status, '/blog/', new Date(NOW - ageDays * DAY), '', '', confirm, unsub, reminded];
+const row = (email, status, ageDays, { confirm = '', unsub = '', reminded = '', left = '' } = {}) =>
+  [email, status, '/blog/', new Date(NOW - ageDays * DAY), '', left, confirm, unsub, reminded];
+const NONE_PURGED = { unsubscribed: 0, bounced: 0 };
 
 /** Loads the script over `dataRows`; returns the VM context plus what the fakes recorded. */
 function load(dataRows = []) {
@@ -69,7 +70,10 @@ function load(dataRows = []) {
       computeDigest: (_a, s) => signed(crypto.createHash('sha256').update(s).digest()),
       computeHmacSha256Signature: (data, secret) => signed(crypto.createHmac('sha256', secret).update(data).digest()),
       getUuid: () => crypto.createHash('md5').update(String(rec.uuid++)).digest('hex'),
-      formatDate: (d, _tz, fmt) => (fmt === 'H' ? String(d.getUTCHours()) : d.toISOString().slice(0, 10)),
+      // The hour in the zone asked for, as Apps Script gives it; a date otherwise.
+      formatDate: (d, tz, fmt) => (fmt === 'H'
+        ? String(Number(new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: 'numeric', hourCycle: 'h23' }).format(d)))
+        : d.toISOString().slice(0, 10)),
       base64EncodeWebSafe: (s) => Buffer.from(s, 'utf8').toString('base64url'),
       base64Encode: (s) => Buffer.from(s, 'utf8').toString('base64'),
     },
@@ -154,8 +158,16 @@ describe('newsletter.gs: no public reminder test', () => {
   it('routes only the actions that are meant to be public', () => {
     const actions = [...SOURCE.matchAll(/if \(action === '([a-z_]+)'\)/g)].map((m) => m[1]);
     assert.deepEqual([...new Set(actions)].sort(), [
-      'confirm', 'count', 'health', 'remind_pending', 'scan_bounces', 'send_post', 'subscribe', 'unsubscribe',
+      'confirm', 'count', 'health', 'scan_bounces', 'send_post', 'subscribe', 'unsubscribe',
     ]);
+  });
+
+  it('the reminder and deletion job cannot be started from the web', () => {
+    const ctx = load([row('due@x.io', 'pending', 4, { confirm: tok('1') }), row('gone@x.io', 'unsubscribed', 90, { left: new Date(NOW - 40 * DAY) })]);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'remind_pending' }))), { ok: false, error: 'unknown_action' });
+    assert.match(ctx.doGet(req({ action: 'remind_pending' })).html, /Nothing here/);
+    assert.deepEqual(ctx.rec.mails, []);
+    assert.equal(ctx.rec.rows.length, 3);
   });
 
   it('the editor-only test still sends one reminder to a pending address', () => {
@@ -195,7 +207,8 @@ describe('newsletter.gs: sheet writes hold the lock', () => {
     const ctx = load([row('old@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
     assert.deepEqual(json(ctx.doPost(req({ action: 'subscribe', email: 'old@x.io' }))), { ok: true });
     assert.deepEqual(emails(ctx), ['old@x.io']);
-    assert.notEqual(find(ctx, 'old@x.io')[6], tok('1'), 'fresh confirm token');
+    assert.equal(find(ctx, 'old@x.io')[6], tok('1'), 'the link in the first mail still works');
+    assert.equal(find(ctx, 'old@x.io')[7], tok('2'));
     assert.deepEqual(ctx.rec.mails, ['old@x.io']);
   });
 
@@ -238,14 +251,14 @@ describe('newsletter.gs: reminder run', () => {
   it('reminds the due rows once, deletes the expired ones and nobody else', () => {
     const ctx = load(sheet());
     const out = json(ctx.handleRemindPending());
-    assert.deepEqual(out, { ok: true, reminded: 2, deleted: 2, utc_hour: 9 });
+    assert.deepEqual(out, { ok: true, reminded: 2, deleted: 2, prague_hour: 10, purged: NONE_PURGED });
     assert.deepEqual(ctx.rec.mails, ['due1@x.io', 'due2@x.io']);
     assert.deepEqual(emails(ctx), ['keep@x.io', 'due1@x.io', 'fresh@x.io', 'due2@x.io', 'done@x.io']);
     assert.ok(find(ctx, 'due1@x.io')[8] && find(ctx, 'due2@x.io')[8]);
     assert.equal(find(ctx, 'fresh@x.io')[8], '');
 
     // A second run straight after finds nothing left to do.
-    assert.deepEqual(json(ctx.handleRemindPending()), { ok: true, reminded: 0, deleted: 0, utc_hour: 9 });
+    assert.deepEqual(json(ctx.handleRemindPending()), { ok: true, reminded: 0, deleted: 0, prague_hour: 10, purged: NONE_PURGED });
     assert.deepEqual(ctx.rec.mails, ['due1@x.io', 'due2@x.io']);
   });
 
@@ -261,8 +274,8 @@ describe('newsletter.gs: reminder run', () => {
     const outer = json(ctx.handleRemindPending());
     // The second run found the first reader claimed and took the other one;
     // the first run then found that one claimed. One mail each, in total.
-    assert.deepEqual(inner, { ok: true, reminded: 1, deleted: 0, utc_hour: 9 });
-    assert.deepEqual(outer, { ok: true, reminded: 1, deleted: 2, utc_hour: 9 });
+    assert.deepEqual(inner, { ok: true, reminded: 1, deleted: 0, prague_hour: 10, purged: NONE_PURGED });
+    assert.deepEqual(outer, { ok: true, reminded: 1, deleted: 2, prague_hour: 10, purged: NONE_PURGED });
     assert.deepEqual(ctx.rec.mails.slice().sort(), ['due1@x.io', 'due2@x.io']);
     assert.deepEqual(emails(ctx), ['keep@x.io', 'due1@x.io', 'fresh@x.io', 'due2@x.io', 'done@x.io']);
   });
@@ -345,11 +358,163 @@ describe('newsletter.gs: reminder run', () => {
     assert.ok(ctx.rec.rows[2][8] && ctx.rec.rows[4][8], 'the due rows are');
   });
 
-  it('does nothing outside the sending hours', () => {
+  it('sends reminders only between 9:00 and 11:59 in Prague, as the privacy notice says', () => {
+    for (const [hour, runs] of [[0, false], [8, false], [9, true], [10, true], [11, true], [12, false], [13, false], [23, false]]) {
+      const ctx = load(sheet());
+      ctx.asked = [];
+      vm.runInContext(`Utilities.formatDate = function (d, tz, fmt) { if (fmt === 'H') asked.push(tz); return fmt === 'H' ? '${hour}' : '2026-11-10'; };`, ctx);
+      const out = json(ctx.handleRemindPending());
+      assert.deepEqual([...ctx.asked], ['Europe/Prague'], 'the hour is read in Prague time');
+      if (runs) {
+        assert.deepEqual(out, { ok: true, reminded: 2, deleted: 2, prague_hour: hour, purged: NONE_PURGED });
+      } else {
+        assert.deepEqual(out, { ok: true, skipped: 'outside_window', prague_hour: hour, purged: NONE_PURGED });
+        assert.deepEqual(ctx.rec.mails, []);
+        assert.equal(ctx.rec.rows.length, 8, 'no pending row is touched outside the hours');
+      }
+    }
+  });
+
+  it('the hours hold in summer and in winter', () => {
+    // The fake clock gives the real hour in the zone asked for.
+    const hourAt = (iso) => {
+      const ctx = load([]);
+      return vm.runInContext(`parseInt(Utilities.formatDate(new Date('${iso}'), 'Europe/Prague', 'H'), 10)`, ctx);
+    };
+    assert.equal(hourAt('2026-01-15T08:00:00Z'), 9, 'winter: UTC+1');
+    assert.equal(hourAt('2026-07-15T07:00:00Z'), 9, 'summer: UTC+2');
+    assert.equal(hourAt('2026-07-15T10:00:00Z'), 12, 'summer noon is outside');
+  });
+});
+
+describe('newsletter.gs: rows the privacy notice says are removed', () => {
+  const ago = (days) => new Date(NOW - days * DAY);
+  const sheet = () => [
+    row('reader@x.io', 'confirmed', 100, { unsub: tok('1') }),
+    row('left-long-ago@x.io', 'unsubscribed', 90, { unsub: tok('2'), left: ago(31) }),
+    row('left-recently@x.io', 'unsubscribed', 90, { unsub: tok('3'), left: ago(29) }),
+    row('bounced-last-week@x.io', 'bounced', 50, { unsub: tok('4'), left: ago(8) }),
+    row('bounced-yesterday@x.io', 'bounced', 50, { unsub: tok('5'), left: ago(1) }),
+    row('left-undated@x.io', 'unsubscribed', 90, { unsub: tok('6') }),
+    row('waiting@x.io', 'pending', 1, { confirm: tok('7'), unsub: tok('8') }),
+    row('left-on-the-day@x.io', 'unsubscribed', 90, { unsub: tok('9'), left: ago(30) }),
+  ];
+
+  it('deletes an unsubscribed row after 30 days and a bounced row after a week, and nobody else', () => {
+    const ctx = load(sheet());
+    const out = json(ctx.handleRemindPending());
+    assert.deepEqual(out.purged, { unsubscribed: 2, bounced: 1 });
+    assert.deepEqual(emails(ctx), ['reader@x.io', 'left-recently@x.io', 'bounced-yesterday@x.io', 'left-undated@x.io', 'waiting@x.io']);
+    assert.deepEqual(ctx.rec.mails, [], 'nobody is mailed about it');
+    // Straight after, nothing is left to delete.
+    assert.deepEqual(json(ctx.handleRemindPending()).purged, NONE_PURGED);
+    assert.equal(ctx.rec.rows.length, 6);
+  });
+
+  it('runs at any hour, since it sends nothing', () => {
     const ctx = load(sheet());
     vm.runInContext("Utilities.formatDate = function () { return '3'; };", ctx);
-    assert.deepEqual(json(ctx.handleRemindPending()), { ok: true, skipped: 'outside_window', utc_hour: 3 });
-    assert.equal(ctx.rec.rows.length, 8);
+    const out = json(ctx.handleRemindPending());
+    assert.equal(out.skipped, 'outside_window');
+    assert.deepEqual(out.purged, { unsubscribed: 2, bounced: 1 });
+    assert.equal(ctx.rec.rows.length, 6);
+  });
+
+  it('keeps a row whose date cannot be read, and says so without naming it', () => {
+    const ctx = load([
+      row('left-undated@x.io', 'unsubscribed', 90, { unsub: tok('1') }),
+      row('bounced-undated@x.io', 'bounced', 90, { unsub: tok('2'), left: 'not a date' }),
+    ]);
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    ctx.console.log = (m) => logged.push(String(m));
+    assert.deepEqual(json(ctx.handleRemindPending()).purged, NONE_PURGED);
+    assert.equal(ctx.rec.rows.length, 3);
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /2 unsubscribed or bounced row\(s\) have no readable date and were kept/);
+    assert.doesNotMatch(logged.join(' '), /@x\.io/);
+  });
+
+  it('the log of a purge gives counts and no address', () => {
+    const ctx = load(sheet());
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    ctx.console.log = (m) => logged.push(String(m));
+    ctx.handleRemindPending();
+    assert.ok(logged.some((line) => /deleted 2 unsubscribed row\(s\) past 30 days and 1 bounced row\(s\) past a week/.test(line)));
+    assert.doesNotMatch(logged.join(' '), /@x\.io/);
+  });
+
+  it('a reader who unsubscribed and signs up again within the 30 days is not deleted as unsubscribed', () => {
+    const ctx = load([row('back@x.io', 'unsubscribed', 90, { unsub: tok('1'), left: ago(29) })]);
+    ctx.doPost(req({ action: 'subscribe', email: 'back@x.io' }));
+    assert.equal(find(ctx, 'back@x.io')[1], 'pending');
+    assert.deepEqual(json(ctx.handleRemindPending()).purged, NONE_PURGED);
+    assert.deepEqual(emails(ctx), ['back@x.io']);
+  });
+});
+
+describe('newsletter.gs: subscriber states', () => {
+  const sub = (ctx, email) => json(ctx.doPost(req({ action: 'subscribe', email })));
+
+  it('asking again while waiting sends the same link, keeps the sign-up date, and counts as the reminder', () => {
+    const ctx = load([row('p@x.io', 'pending', 2, { confirm: tok('1'), unsub: tok('2') })]);
+    const created = find(ctx, 'p@x.io')[3].getTime();
+    let mime = '';
+    ctx.rec.onSend = (_to, text) => { mime = text; };
+    sub(ctx, 'p@x.io');
+    assert.deepEqual(ctx.rec.mails, ['p@x.io']);
+    assert.ok(mime.includes(tok('1')), 'the mail carries the link the first one did');
+    const after = find(ctx, 'p@x.io');
+    assert.equal(after[3].getTime(), created, 'asking again does not put off the 7-day expiry');
+    assert.deepEqual([after[6], after[7]], [tok('1'), tok('2')]);
+    assert.ok(after[8], 'stamped as reminded');
+    // A second request straight after: inside the wait, nothing sent.
+    sub(ctx, 'p@x.io');
+    assert.deepEqual(ctx.rec.mails, ['p@x.io']);
+  });
+
+  it('a row that keeps being asked for still expires 7 days after it was made', () => {
+    const ctx = load([row('p@x.io', 'pending', 7.5, { confirm: tok('1'), unsub: tok('2'), reminded: new Date(NOW - DAY) })]);
+    sub(ctx, 'p@x.io');
+    const out = json(ctx.handleRemindPending());
+    assert.equal(out.deleted, 1);
+    assert.deepEqual(emails(ctx), []);
+  });
+
+  it('signing up again after unsubscribing keeps the unsubscribe link of every earlier mail', () => {
+    for (const status of ['unsubscribed', 'bounced']) {
+      const ctx = load([row('back@x.io', status, 60, { unsub: tok('2'), left: new Date(NOW - DAY) })]);
+      sub(ctx, 'back@x.io');
+      const after = find(ctx, 'back@x.io');
+      assert.equal(after[1], 'pending', status);
+      assert.equal(after[7], tok('2'), 'the old unsubscribe link still names this row');
+      assert.match(after[6], /^[0-9a-f]{64}$/, 'a new confirmation link');
+      assert.equal(after[5], '', 'the unsubscribe date is cleared');
+      assert.equal(after[3].getTime(), NOW, 'the clock starts again');
+      assert.deepEqual(ctx.rec.mails, ['back@x.io']);
+    }
+  });
+
+  it('unsubscribing from the confirmation mail kills its confirmation link', () => {
+    const ctx = load([row('p@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('2') }))), { ok: true });
+    assert.deepEqual([find(ctx, 'p@x.io')[1], find(ctx, 'p@x.io')[6]], ['unsubscribed', '']);
+    ctx.doGet(req({ action: 'confirm', t: tok('1') }));
+    assert.equal(find(ctx, 'p@x.io')[1], 'unsubscribed');
+    assert.deepEqual(ctx.rec.mails, [], 'no welcome mail');
+  });
+
+  it('a confirmation link confirms only a row that is waiting', () => {
+    // Rows left from before an unsubscribe cleared the link.
+    for (const status of ['unsubscribed', 'bounced', 'confirmed']) {
+      const ctx = load([row('x@x.io', status, 10, { confirm: tok('1'), unsub: tok('2'), left: new Date(NOW - DAY) })]);
+      const before = JSON.stringify(ctx.rec.rows);
+      const out = ctx.doGet(req({ action: 'confirm', t: tok('1') }));
+      assert.equal(JSON.stringify(ctx.rec.rows), before, status);
+      assert.deepEqual(ctx.rec.mails, []);
+      assert.match(JSON.stringify(out), /subscription-invalid/);
+    }
   });
 });
 
@@ -706,11 +871,14 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     const young = load([row('p@x.io', 'pending', 5 / 24, { confirm: tok('1'), unsub: tok('2') })]);
     sub(young, { email: 'p@x.io' });
     assert.deepEqual([young.rec.mails, find(young, 'p@x.io')[6]], [[], tok('1')]);
-    // Seven hours on: a new mail, with a new link.
+    // Seven hours on: a new mail, with the same link.
     const old = load([row('p@x.io', 'pending', 7 / 24, { confirm: tok('1'), unsub: tok('2') })]);
     sub(old, { email: 'p@x.io' });
     assert.deepEqual(old.rec.mails, ['p@x.io']);
-    assert.notEqual(find(old, 'p@x.io')[6], tok('1'));
+    assert.equal(find(old, 'p@x.io')[6], tok('1'));
+    // And the wait starts again from that mail, not from the sign-up.
+    sub(old, { email: 'p@x.io' });
+    assert.deepEqual(old.rec.mails, ['p@x.io']);
   });
 
   it('past the day’s limit a request changes nothing: no row, no mail, and a waiting reader’s link still works', () => {
