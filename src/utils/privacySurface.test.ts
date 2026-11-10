@@ -837,6 +837,12 @@ describe('privacy surface reader: hosts and requests', () => {
     for (const call of ['fetch(a)', 'fetch(b)', 'fetch(c)']) assert.ok(text.includes(call), call);
   });
 
+  it('a // is a comment wherever it stands, except in an address', () => {
+    const text = withoutComments("0//`\nfetch(a);//fetch(b)\nconst c = 1;//`\nfetch(d); <a href=\"x\">see https://e.example.org/path</a> fetch(f);");
+    for (const kept of ['fetch(a)', 'fetch(d)', 'https://e.example.org/path', 'fetch(f)']) assert.ok(text.includes(kept), kept);
+    assert.doesNotMatch(text, /fetch\(b\)|`/);
+  });
+
   it('keeps code that follows a // inside a string on the same line', () => {
     const text = withoutComments("const a = 'https://x.example.org // not a comment'; fetch(a); // a comment fetch(b)");
     assert.match(text, /fetch\(a\)/);
@@ -855,6 +861,9 @@ describe('privacy surface reader: hosts and requests', () => {
       "if ((window.posthog && ready) || force) window.posthog.capture('e');",
       "if (typeof window.posthog === 'undefined' || !window.posthog.__loaded) return;",
       "if (isReady(flag) && window.posthog) window.posthog.identify(id);",
+      "if (!(window.posthog && ready)) return;",
+      "if (!!window.posthog) window.posthog.capture('e');",
+      "if (ready && !window.posthog?.__loaded) return;",
       "const options = { persistence: on ? 'localStorage' : 'memory' };",
     ]) {
       assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
@@ -896,6 +905,11 @@ describe('privacy surface reader: hosts and requests', () => {
       'function* leak() { if (yield (ok && window.posthog)) {} }',
       'function keep(x) { window.leaked = x; return true; }\nif (keep //!\n(window.posthog)) {}',
       'if (keep /*!*/ (window.posthog)) {}',
+      'if (keep!(window.posthog)) {}',
+      'if (keep !(window.posthog)) {}',
+      'if (obj.keep!(localStorage)) {}',
+      'if (ready!&&keep!(window.posthog)) {}',
+      'function keep(x) { window.leaked = x; return true; }\n0//`\nif (keep //!\n(window.posthog)) {}',
       'if (a, window.posthog) go();',
       'if (a ?? localStorage) go();',
       'if (x in localStorage) go();',

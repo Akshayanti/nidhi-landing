@@ -51,8 +51,8 @@ export function sourceFile(path: string, raw: string): SourceFile {
  * template strings run until their closing backtick. Whenever it is unsure,
  * it keeps the text: an apostrophe in a page's prose is taken for an open
  * string until the line ends, which can only leave a comment in, never take
- * code out. A `//` starts a comment only at the start of a line or after
- * white space or one of `;{}(),`: the `//` of an address follows a colon.
+ * code out. A `//` starts a comment wherever it stands, except right after
+ * a colon, where it is the `//` of an address in a page's text.
  */
 export function withoutComments(text: string): string {
   let out = '';
@@ -73,7 +73,7 @@ export function withoutComments(text: string): string {
       i = stop - 1;
       continue;
     }
-    if (c === '/' && text[i + 1] === '/' && (i === 0 || /[\s;{}(),]/.test(text[i - 1]))) {
+    if (c === '/' && text[i + 1] === '/' && text[i - 1] !== ':') {
       const end = text.indexOf('\n', i);
       const stop = end === -1 ? text.length : end;
       out += ' '.repeat(stop - i);
@@ -452,19 +452,30 @@ export interface HolderScan {
  * Whether the name at [at, end) is only being tested inside the condition
  * that opens at `from`. What stands right before it must start a test, not
  * hand it on. Every bracket around it, up to the condition's own,
- * must be one that only groups: a `(` that follows `(`, `!`, `&&` or `||`.
+ * must be one that only groups: a `(` that follows `(`, `&&` or `||`, with
+ * or without a "not" in between.
  * A `(` after anything else (a name, `)`, `]`, `?.`, whatever a call can be
  * written with) may be a call, which can keep what it is given; so can `[`
  * and `{`. And what follows the name, after at most two member names, must
  * end the test: a closing bracket, `&&`, `||` or a comparison.
  */
+/**
+ * Whether `before` ends where a test can start: at `(`, `&&` or `||`, with
+ * any number of `!` after it. The `!` must be the "not" that follows one of
+ * those three: TypeScript also writes `!` after a name (`keep!(x)` is a call
+ * to `keep`), and that one follows a name.
+ */
+function startsTest(before: string): boolean {
+  return /(?:\(|&&|\|\|)$/.test(before.replace(/[\s!]+$/, ''));
+}
+
 function isTest(text: string, from: number, at: number, end: number): boolean {
   // What stands right before the name (and the `window.` it may hang from)
   // must itself start a test: the bracket, `!`, `&&`, `||`, or one of those
   // then `typeof`. Any other word there (`yield`, `await`, `return`, `void`,
   // a comma) can hand the object on.
-  const lead = text.slice(from, at).replace(/(?:window|globalThis|self|root)\s*\.\s*$/, '').trimEnd();
-  if (!/(?:\(|!|&&|\|\|)(?:\s*typeof)?$/.test(lead)) return false;
+  const lead = text.slice(from, at).replace(/(?:window|globalThis|self|root)\s*\.\s*$/, '').trimEnd().replace(/typeof$/, '');
+  if (!startsTest(lead)) return false;
   let depth = 0;
   for (let i = at - 1; i > from; i--) {
     const c = text[i];
@@ -473,8 +484,7 @@ function isTest(text: string, from: number, at: number, end: number): boolean {
     else if (c === '(') {
       if (depth > 0) { depth--; continue; }
       // An open bracket around the name: accepted only if it plainly groups.
-      const before = text.slice(from, i).trimEnd();
-      if (!/(?:\(|!|&&|\|\|)$/.test(before)) return false;
+      if (!startsTest(text.slice(from, i))) return false;
     }
   }
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
