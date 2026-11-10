@@ -67,6 +67,6 @@ How it sounds:
 | Spanish | *tú* | `es-glossary.md` |
 | Czech | *vy* (lowercase) | `cs-glossary.md` |
 | Marathi | तुम्ही | Owner, 2026-10-20 (`mr-glossary.md`) |
-| Indonesian (glossary only, no edition yet) | *kamu* | Owner, 2026-11-10, on the volunteer's advice (`id-glossary.md`) |
+| Indonesian (glossary only, no edition yet) | open, waiting for the reviewer's comments | `id-glossary.md` |
 
 Each language's choice is made for that language, by its volunteer's advice and the owner's decision, with this page as the brief: the form has to work for a 22-year-old and a 70-year-old reading the same page.
