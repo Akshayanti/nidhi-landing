@@ -773,7 +773,10 @@ def html_to_text(node) -> str:
 def build_jinja() -> Environment:
     return Environment(
         loader=FileSystemLoader(str(EMAIL_TEMPLATE_DIR)),
-        autoescape=select_autoescape(enabled_extensions=("html", "j2")),
+        # Only the HTML templates are escaped. The plain-text ones end in
+        # .txt.j2: escaping them turned every apostrophe and ampersand into
+        # an entity and broke the parameters of every link in the text part.
+        autoescape=lambda name: bool(name) and name.endswith(".html.j2"),
         trim_blocks=True,
         lstrip_blocks=True,
     )
@@ -882,6 +885,10 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
 # HMAC + HTTP
 # ---------------------------------------------------------------------------
 
+# The most lessons one run sends without BACKFILL_OK=1 (see main).
+MAX_POSTS_PER_RUN = 3
+
+
 def sign(secret: str, body: bytes) -> str:
     return hmac.new(secret.encode("utf-8"), body, hashlib.sha256).hexdigest()
 
@@ -989,6 +996,29 @@ def main() -> int:
             for it in pending[1:]:
                 record_sent(cfg.marker_file, it.guid)
         pending = pending[:1]
+
+    # A run sends a few lessons at most. More than that waiting at once is
+    # not a publishing day: it is a marker file that was lost or a feed whose
+    # addresses changed (a post's identity here is its address), and sending
+    # would mail the back catalogue to every subscriber. Nothing is sent and
+    # nothing is recorded; the run fails so that someone looks.
+    if len(pending) > MAX_POSTS_PER_RUN and not os.environ.get("BACKFILL_OK"):
+        print(
+            f"[send_newsletter] {len(pending)} posts are waiting, more than the "
+            f"{MAX_POSTS_PER_RUN} one run sends. Nothing was sent. If the feed's "
+            f"addresses changed or the marker file was lost, repair the marker "
+            f"file; to send them all on purpose, set BACKFILL_OK=1; to send only "
+            f"the newest and mark the rest as sent, set SEND_ONLY_MOST_RECENT=1.",
+            file=sys.stderr,
+        )
+        _write_gh_output({
+            "any_failed": "1",
+            "total_sent": "0",
+            "total_failed": "0",
+            "total_partial": "0",
+            "posts_attempted": "0",
+        })
+        return 2
 
     # Send oldest first so subscribers see them in chronological order.
     pending.sort(key=lambda it: _parse_pub_date_for_sort(it.pub_date))
