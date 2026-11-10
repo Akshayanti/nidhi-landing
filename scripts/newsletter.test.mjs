@@ -332,6 +332,20 @@ describe('newsletter.gs: reminder run', () => {
     assert.deepEqual(ctx.rec.mails, ['due1@x.io', 'due2@x.io']);
   });
 
+  it('reminds a due row whose address also sits on an earlier row', () => {
+    // An older sheet can hold one address twice (two subscribes that raced).
+    const ctx = load([
+      row('twice@x.io', 'confirmed', 40, { unsub: tok('1') }),
+      row('twice@x.io', 'pending', 4, { confirm: tok('2') }),
+      row('again@x.io', 'pending', 5, { confirm: tok('3'), reminded: new Date(NOW - DAY) }),
+      row('again@x.io', 'pending', 4, { confirm: tok('4') }),
+    ]);
+    assert.equal(json(ctx.handleRemindPending()).reminded, 2);
+    assert.deepEqual(ctx.rec.mails, ['twice@x.io', 'again@x.io']);
+    assert.equal(ctx.rec.rows[1][8], '', 'the confirmed row is not stamped');
+    assert.ok(ctx.rec.rows[2][8] && ctx.rec.rows[4][8], 'the due rows are');
+  });
+
   it('does nothing outside the sending hours', () => {
     const ctx = load(sheet());
     vm.runInContext("Utilities.formatDate = function () { return '3'; };", ctx);

@@ -855,17 +855,19 @@ function handleRemindPending() {
 var REMIND_TIME_BUDGET_MS_ = 4 * 60 * 1000;
 
 /**
- * The row for `email`, as { row, values }, only if it is still a pending
- * subscriber holding `confirmToken`. Call it inside the lock. The reader may
- * have confirmed, unsubscribed, expired or subscribed afresh since the row
- * was first read, and a row number from then means nothing now.
+ * The row holding `confirmToken`, as { row, values }, only if it is still a
+ * pending subscriber with this address. Call it inside the lock. The reader
+ * may have confirmed, unsubscribed, expired or subscribed afresh since the
+ * row was first read, and a row number from then means nothing now. The row
+ * is found by its token, not its address: tokens are unique, while an older
+ * Sheet may hold one address on two rows.
  */
 function pendingRowFor_(sh, email, confirmToken) {
-  var row = findSubscriberRow_(sh, email);
+  var row = findRowByToken_(sh, COL.confirmToken, confirmToken);
   if (row === 0) return null;
   var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
   if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') return null;
-  if (String(values[COL.confirmToken - 1] || '').trim() !== confirmToken) return null;
+  if (normalizeEmail_(values[COL.email - 1]) !== normalizeEmail_(email)) return null;
   return { row: row, values: values };
 }
 
