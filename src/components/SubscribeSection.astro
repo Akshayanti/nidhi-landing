@@ -204,7 +204,7 @@ const inputId = `subscribe-email-${variant}`;
 
 <script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, confirmYes: t.confirmYes, sending: t.sending, notConfigured: t.notConfigured, error: t.error, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
   (function () {
-    // Single localStorage key shared across all SubscribeSection instances
+    // Single browser storage key shared across all SubscribeSection instances
     // and the confirm/unsubscribe pages. See /privacy.
     //   - { status: 'confirmed', at }  → confirm.astro saw success
     //   - (absent)                     → not confirmed on this device
@@ -233,7 +233,7 @@ const inputId = `subscribe-email-${variant}`;
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
     }
 
-    // ---- dismiss state (localStorage) ---------------------------------
+    // ---- dismiss state (browser storage) ------------------------------
     // Separate from subscription state. Dismiss is user-initiated ("I already
     // subscribed" or "Not now") and independent of whether they've actually
     // submitted the form on this device.
@@ -298,7 +298,7 @@ const inputId = `subscribe-email-${variant}`;
 
     // SHA-256(lowercase-trimmed email), hex. Must match newsletter.gs's
     // distinctIdForEmail_() exactly — both normalise then hash so the
-    // browser's posthog.identify(hash) aliases its anon distinct_id to the
+    // browser's PostHog identify(hash) call aliases its anon distinct_id to the
     // same ID the Apps Script uses for server-side subscriber events. That
     // alias is what makes the blog_subscribe_submit → _pending →
     // _confirm_clicked → _confirmed funnel stitch in PostHog across the
@@ -329,7 +329,7 @@ const inputId = `subscribe-email-${variant}`;
 
     // Single source of truth for which panel is visible. Called on first
     // paint and whenever external state could have changed (bfcache restore,
-    // another tab updating localStorage). Keeps the UI honest even if the
+    // another tab updating browser storage). Keeps the UI honest even if the
     // browser restored a stale DOM (e.g. a disabled "Sending…" button from
     // a mid-flight submit before the user hit back).
     function applyState() {
@@ -550,7 +550,7 @@ const inputId = `subscribe-email-${variant}`;
 
     // bfcache: hitting back after submitting can restore the DOM with the
     // button stuck disabled as "Sending…" or the success panel showing the
-    // previous email. Re-derive visibility from localStorage so whatever
+    // previous email. Re-derive visibility from browser storage so whatever
     // the browser restored is overridden by actual state.
     window.addEventListener('pageshow', function (e) {
       if (e.persisted) applyState();
