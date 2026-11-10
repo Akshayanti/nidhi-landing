@@ -98,7 +98,7 @@ const RESULT_LIMIT = 8;
 
 declare global {
   interface Window {
-    // `posthog` is declared once, in src/types/posthog.d.ts.
+    // The PostHog object is declared once, in the types file under src/types/.
     nidhiHeatmapsPaused?: boolean;
   }
 }

@@ -298,7 +298,7 @@ const EXPECTED_MENTIONS = [
   'components/LearnHome.tsx: getItem x1',
   'components/LearnHome.tsx: localStorage x1',
   'components/LearnHome.tsx: location x2',
-  'components/LearnHome.tsx: posthog x6',
+  'components/LearnHome.tsx: posthog x4',
   'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',
@@ -306,7 +306,7 @@ const EXPECTED_MENTIONS = [
   'components/LoanCompare.tsx: cookie x1',
   'components/LoanCompare.tsx: location x5',
   'components/LoanCompare.tsx: navigator x1',
-  'components/LoanCompare.tsx: posthog x4',
+  'components/LoanCompare.tsx: posthog x1',
   'components/LoanCompare.tsx: track x25',
   'components/MonteCarloSimulator.tsx: Worker x2',
   'components/MonteCarloSimulator.tsx: capture x1',
@@ -318,15 +318,15 @@ const EXPECTED_MENTIONS = [
   'components/MultiCurrencyNetWorth.tsx: fetch x2',
   'components/MultiCurrencyNetWorth.tsx: location x5',
   'components/MultiCurrencyNetWorth.tsx: navigator x1',
-  'components/MultiCurrencyNetWorth.tsx: posthog x3',
+  'components/MultiCurrencyNetWorth.tsx: posthog x1',
   'components/MultiCurrencyNetWorth.tsx: track x18',
   'components/SubscribeSection.astro: capture x7',
   'components/SubscribeSection.astro: cookie x1',
   'components/SubscribeSection.astro: fetch x1',
   'components/SubscribeSection.astro: getItem x2',
-  'components/SubscribeSection.astro: localStorage x11',
+  'components/SubscribeSection.astro: localStorage x7',
   'components/SubscribeSection.astro: location x2',
-  'components/SubscribeSection.astro: posthog x14',
+  'components/SubscribeSection.astro: posthog x13',
   'components/SubscribeSection.astro: removeItem x3',
   'components/SubscribeSection.astro: setAttribute x1',
   'components/SubscribeSection.astro: setItem x2',
@@ -340,7 +340,7 @@ const EXPECTED_MENTIONS = [
   'components/WaitlistSection.astro: capture x2',
   'components/WaitlistSection.astro: fetch x1',
   'components/WaitlistSection.astro: getItem x1',
-  'components/WaitlistSection.astro: localStorage x3',
+  'components/WaitlistSection.astro: localStorage x2',
   'components/WaitlistSection.astro: location x2',
   'components/WaitlistSection.astro: posthog x4',
   'components/WaitlistSection.astro: setAttribute x1',
@@ -357,7 +357,6 @@ const EXPECTED_MENTIONS = [
   'components/pages/InvestOrPayOffPage.astro: location x1',
   'components/pages/MonteCarloPage.astro: setAttribute x1',
   'components/pages/MultiCurrencyNetWorthPage.astro: fetch x1',
-  'i18n/config.ts: localStorage x1',
   'i18n/config.ts: navigator x1',
   'layouts/BlogIndex.astro: location x2',
   'layouts/BlogPost.astro: cookie x1',
@@ -877,7 +876,10 @@ describe('privacy surface reader: hosts and requests', () => {
     }
   });
 
-  it('a name on a line that is wholly a comment is not a use', () => {
+  it('a comment is given no pass: a name spelt in one is refused like any other', () => {
+    // Nothing decides what a comment is, so nothing made to look like one can
+    // hide code. The price is that a comment says "browser storage" and
+    // "PostHog's capture call" instead of spelling the names.
     for (const source of [
       '// localStorage holds the answer when cookies are blocked',
       '  // posthog is a stub until the SDK loads',
@@ -886,12 +888,14 @@ describe('privacy surface reader: hosts and requests', () => {
       '{/* posthog note in markup */}',
       '<!-- localStorage is not used on this page -->',
       '<!--\n  posthog\n-->\n<p>text</p>',
+      'const s = `\n// ${localStorage.amount = typedAmount}\n`;',
+      'const s = `\n * ${window.posthog.people.set({ amount: typedAmount })}\n`;',
+      'const s = `\n<!-- ${send(sessionStorage)} -->\n`;',
+      '/* note */\nconst s = localStorage;',
+      '/*\n note\n*/ const s = localStorage;',
     ]) {
-      assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
+      assert.notDeepEqual(scanHolders(file(source), []).unresolved, [], source);
     }
-    // The comment has ended: the next line is code again.
-    assert.notDeepEqual(scanHolders(file('/* note */\nconst s = localStorage;'), []).unresolved, []);
-    assert.notDeepEqual(scanHolders(file('/*\n note\n*/ const s = localStorage;'), []).unresolved, [], 'after the closing mark on the same line');
   });
 
   it('refuses every way of holding storage or PostHog, or a part of one', () => {
@@ -953,6 +957,16 @@ describe('privacy surface reader: hosts and requests', () => {
       'if ((window.posthog)++) go();',
       'if ((window.posthog) <<= 1) go();',
       '// if (\n(window.posthog);\nfoo(bar));',
+      'keep( // if (\n  window.posthog)',
+      'keep( /* if ( */ window.posthog)',
+      'keep( /*\n if (\n*/ window.posthog)',
+      'keep(/if [(]/ && window.posthog)',
+      'keep(/while [(]/.test(s) || localStorage)',
+      "keep('if (' && window.posthog)",
+      'keep(`if (` && window.posthog)',
+      'const all = [ // if (\n (window.posthog)\n// )\n];',
+      '<!-- if ( --> {keep(window.posthog)}',
+      'if (ready; window.posthog) go();',
       '/* if ( */ (window.posthog);\nfoo(bar));',
       '/* while ( */\nkeep(localStorage);\n/* ) */',
       'if ((window.posthog) >>= 1) go();',
