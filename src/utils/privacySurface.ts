@@ -15,6 +15,7 @@
  *
  * Node-only: it reads files. Only the tests run it.
  */
+import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
@@ -343,15 +344,18 @@ export function scanPublicEnv(files: SourceFile[]): string[] {
   return [...out].sort();
 }
 
-// Every word through which code can reach analytics, browser storage or the
-// network. The readers above understand the usual ways of writing a call; a
-// way they do not understand still has to spell one of these words.
+// The names of the browser features through which code reaches analytics,
+// browser storage or the network, and of this site's own wrapper (`track`).
+// The readers above understand the usual ways of writing a call; this list
+// is what is counted whatever the way. It covers these names and the forms
+// below, no more: when a count changes because a new wrapper or another name
+// for one of them was added, that name belongs in this list from then on.
 const SENSITIVE = [
   'posthog', 'capture', 'track', 'localStorage', 'sessionStorage', 'setItem', 'getItem', 'removeItem', 'cookie', 'indexedDB', 'caches',
   'fetch', 'sendBeacon', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'importScripts', 'Worker', 'Image',
   // A request can also be made by building an element that loads something,
   // by sending a form, or by going to an address.
-  'createElement', 'innerHTML', 'outerHTML', 'insertAdjacentHTML', 'setAttribute', 'location', 'submit', 'navigator',
+  'createElement', 'innerHTML', 'outerHTML', 'insertAdjacentHTML', 'setAttribute', 'location', 'submit', 'requestSubmit', 'navigator',
   'eval', 'Function',
 ];
 
@@ -362,15 +366,18 @@ const SENSITIVE = [
 const SENSITIVE_FORMS: [string, RegExp][] = [
   ['.src=', /\.\s*src(?:set)?\s*=(?!=)/g],
   ['.open(', /\.\s*open\s*\??\.?\s*\(/g],
+  // Where a form is sent to.
+  ['.action=', /\.\s*(?:formA|a)ction\s*=(?!=)/g],
 ];
 
 /**
  * How many times each file spells each sensitive word, as `file: word xN`,
- * sorted. This is the closed half of the surface: an alias
- * (`const ph = window.posthog`), an index (`window['posthog']`), a property
- * write (`ls.amount = v`, after `const ls = localStorage`) or an optional call
+ * sorted. This is the closed half of the surface: another name for PostHog
+ * (`const ph = window.posthog`), an index (`window['posthog']`), storage put
+ * in a variable (`const ls = localStorage`) or an optional call
  * (`fetch?.(...)`) each add a mention, whatever the readers above make of
- * them.
+ * them. What is then done through such a variable spells none of these words
+ * (`ls.amount = v`); `scanHolders` covers that.
  *
  * It counts the file exactly as written, comments and strings included. The
  * readers blank comments first, and anything that decides what is a comment
@@ -396,4 +403,55 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
     }
   }
   return out.sort();
+}
+
+const HELD = '(?:localStorage|sessionStorage|posthog)';
+// `const ph = window.posthog;`: the object under another name.
+const ALIAS = new RegExp(`(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*(?:[\\w$]+\\s*\\.\\s*)?${HELD}\\s*(?:;|\\n)`, 'g');
+// The object used as a value in any other way: returned, passed on, put in a
+// list, assigned to something, or replaced.
+const VALUE_USE = new RegExp(`(?<![\\w$])${HELD}(?![\\w$])(?!\\s*\\??\\.\\s*[A-Za-z_$])`, 'g');
+// Not a use as a value: asking whether it exists.
+const EXISTENCE = new RegExp(`(?:typeof\\s+|\\b(?:if|while)\\s*\\(\\s*!?\\s*|[!&|]\\s*)(?:[\\w$]+\\s*\\.\\s*)?${HELD}\\s*(?:\\)|&&|\\|\\||[!=]==)`, 'g');
+// A string that only names it: `persistence: 'localStorage'`.
+const QUOTED = new RegExp(`(['"\`])${HELD}\\1`, 'g');
+
+export interface HolderScan {
+  /** `file: sha256 <first 16 hex>` for each file named in `wholeFiles`. */
+  pinned: string[];
+  /** `file: <line>` for every line that names a variable holding storage or PostHog. */
+  lines: string[];
+  /** Files that use such an object as a value in a way this reader does not follow, and are not pinned whole. */
+  unresolved: string[];
+}
+
+/**
+ * What is done with storage or PostHog once it is held in a variable.
+ *
+ * `const ph = window.posthog` adds a mention, but `ph.anything(...)` and
+ * `ls.amount = v` after it spell no sensitive word. So for each such
+ * variable, every line of the file that names it is listed, to be pinned: a
+ * new line through the variable is a changed snapshot. A file that does more
+ * with the object than that (returns it, passes it on, replaces it) cannot
+ * be followed line by line; it has to be one of `wholeFiles`, which are
+ * pinned by their whole content, so any edit to them at all is looked at.
+ */
+export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderScan {
+  const pinned: string[] = [];
+  const lines: string[] = [];
+  const unresolved: string[] = [];
+  for (const { path, text, raw } of files) {
+    if (wholeFiles.includes(path)) {
+      pinned.push(`${path}: sha256 ${createHash('sha256').update(raw).digest('hex').slice(0, 16)}`);
+      continue;
+    }
+    const aliases = [...text.matchAll(ALIAS)];
+    const followed = aliases.length + [...text.matchAll(EXISTENCE)].length + [...text.matchAll(QUOTED)].length;
+    if ([...text.matchAll(VALUE_USE)].length > followed) unresolved.push(path);
+    for (const name of new Set(aliases.map((m) => m[1]))) {
+      const word = new RegExp(`(?<![\\w$.])${name.replace(/\$/g, '\\$')}(?![\\w$])`);
+      for (const line of raw.split('\n')) if (word.test(line)) lines.push(`${path}: ${line.trim()}`);
+    }
+  }
+  return { pinned: pinned.sort(), lines, unresolved: unresolved.sort() };
 }

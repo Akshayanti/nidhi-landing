@@ -18,7 +18,7 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { scanLabels } from './analyticsLabels.ts';
 import {
-  codeFiles, eventProperties, scanEvents, scanHosts, scanMentions, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, sourceFile, withoutComments,
+  codeFiles, eventProperties, scanEvents, scanHolders, scanHosts, scanMentions, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, sourceFile, withoutComments,
   type SourceFile,
 } from './privacySurface.ts';
 
@@ -241,23 +241,28 @@ const EXPECTED_DYNAMIC_STORAGE = [
   'utils/shared/consentRuntime.js: removeItem(k)',
 ];
 
-// The closed half of the surface: how many times each file spells each word
-// through which code can reach analytics, storage or the network. The readers
-// above understand the usual ways of writing a call. A way they do not
-// understand (another name for PostHog, an index, a property written on a
-// storage object held in a variable) still has to spell one of these words,
-// and so changes a count here. When a count changes, read the change: if it
-// is a new way of sending or storing, the rule at the top of this file
-// applies; if it is not (a moved line, a new check for `window.posthog`),
-// update the count. The count is of the file exactly as written, comments
-// included, so that nothing which decides what a comment is can hide code
-// from it. The privacy notice's own page is left out: it is words.
+// The closed half of the surface: how many times each file spells each name
+// through which code reaches analytics, storage or the network (the list is
+// SENSITIVE and SENSITIVE_FORMS in privacySurface.ts). The readers above
+// understand the usual ways of writing a call. Another way of writing one
+// (another name for PostHog, an index, an optional call) still spells one of
+// the listed names, and so changes a count here. When a count changes, read
+// the change: if it is a new way of sending or storing, the rule at the top
+// of this file applies; if it is not (a moved line, a new check for
+// `window.posthog`), update the count. If the change adds a wrapper or
+// another name for one of these, add that name to SENSITIVE as well, so that
+// its uses are counted from then on.
 //
-// What this does not see, by its nature: a word assembled at run time
-// (`window['post' + 'hog']`), a property set through an index
-// (`img['src'] = ...`), and a link a reader follows (`href` is on every
-// page). What a tool page really sends, to any address at all, is
-// checked in a browser by scripts/verify-tool-privacy.mjs.
+// The count is of the file exactly as written, comments included, so that
+// nothing which decides what a comment is can hide code from it. The privacy
+// notice's own page is left out: it is words.
+//
+// What this covers is those names and forms, no more. It does not see a name
+// assembled at run time (`window['post' + 'hog']`), a property set through an
+// index (`img['src'] = ...`), a browser feature that is not on the list, or
+// a link a reader follows (`href` is on every page). What a tool page really
+// sends, to any address, during everything the browser check does on it, is
+// checked by scripts/verify-tool-privacy.mjs.
 const NOTICE_PAGE = /^components\/pages\/PrivacyPage\.astro$/;
 const EXPECTED_MENTIONS = [
   'components/Analytics.astro: .src= x1',
@@ -411,6 +416,37 @@ const EXPECTED_MENTIONS = [
   'utils/shared/toolStateGuard.js: location x7',
 ];
 
+// What is done with storage or PostHog once a variable holds it spells none
+// of the names above (`ls.amount = v`, `ph.capture(...)`). Two files do more
+// with these objects than call them (the consent runtime keeps storage in
+// variables and returns it; Analytics.astro replaces PostHog with a stand-in
+// when analytics are off; the type file declares its shape). They are pinned
+// by their whole content: any edit to them is a reason to look. When one
+// changes, check it against the rule at the top, then update its line.
+const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
+const EXPECTED_WHOLE_FILES = [
+  'components/Analytics.astro: sha256 b257474919ba014c',
+  'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
+  'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
+];
+
+// Everywhere else, every line that names a variable holding PostHog or
+// storage is pinned. A new line through such a variable changes this list.
+const EXPECTED_HELD_LINES = [
+  'components/InvestOrPayOff.tsx: // (council, Oct 30, 2026). So the form is marked ph-no-capture, its choices',
+  "components/InvestOrPayOff.tsx: // ignore ph-no-capture, are paused on this page, as the learning path's",
+  'components/InvestOrPayOff.tsx: const ph = window.posthog;',
+  "components/InvestOrPayOff.tsx: if (ph && ph.__loaded && typeof ph.set_config === 'function') ph.set_config({ enable_heatmaps: false });",
+  'components/InvestOrPayOff.tsx: <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>',
+  'components/LearnHome.tsx: *   ph-no-capture and heatmaps are paused while it is open, so no click',
+  'components/LearnHome.tsx: * Heatmaps record where every click lands and ignore ph-no-capture, so the',
+  'components/LearnHome.tsx: const ph = window.posthog;',
+  "components/LearnHome.tsx: if (!ph || !ph.__loaded || typeof ph.set_config !== 'function') return;",
+  'components/LearnHome.tsx: ph.set_config({ enable_heatmaps: false });',
+  'components/LearnHome.tsx: if (window.nidhiConsent?.accepted()) ph.set_config({ enable_heatmaps: true });',
+  'components/LearnHome.tsx: <div id="learn-helper" className="learn-card learn-helper ph-no-capture" ref={helperRef}>',
+];
+
 describe('privacy surface: click labels', () => {
   const scan = scanLabels(SRC);
 
@@ -507,6 +543,17 @@ describe('privacy surface: outside hosts and requests', () => {
   it('every mention of analytics, storage or the network is a pinned one', () => {
     const actual = scanMentions(FILES, NOTICE_PAGE);
     assert.deepEqual(actual, EXPECTED_MENTIONS, diff('Mentions', actual, EXPECTED_MENTIONS));
+  });
+
+  const held = scanHolders(FILES.filter((f) => !NOTICE_PAGE.test(f.path)), WHOLE_FILES);
+
+  it('the files that hold storage or PostHog as a value are the pinned ones, unchanged', () => {
+    assert.deepEqual(held.unresolved, [], `These files use storage or PostHog as a value. Follow it by hand, then add the file to WHOLE_FILES.${RULE}`);
+    assert.deepEqual(held.pinned, EXPECTED_WHOLE_FILES, diff('Pinned files', held.pinned, EXPECTED_WHOLE_FILES));
+  });
+
+  it('every line that goes through a variable holding storage or PostHog is a pinned one', () => {
+    assert.deepEqual(held.lines, EXPECTED_HELD_LINES, diff('Lines', held.lines, EXPECTED_HELD_LINES));
   });
 
   it('the privacy notice page, left out of that count, runs no script of its own', () => {
@@ -766,6 +813,9 @@ describe('privacy surface reader: hosts and requests', () => {
       "document.querySelector('img').src = '/?a=' + typedAmount;",
       "pic.srcset = '/?a=' + typedAmount;",
       "const x = new XMLHttpRequest(); x.open('GET', u);",
+      "const form = document.querySelector('form');\nform.elements.namedItem('amount').value = typedAmount;\nform.requestSubmit();",
+      "form.action = '/?a=' + typedAmount;",
+      "button.formAction = '/?a=' + typedAmount;",
     ]) {
       assert.notDeepEqual(scanMentions(file(source)), [], source);
     }
@@ -803,6 +853,46 @@ describe('privacy surface reader: hosts and requests', () => {
     assert.match(text, /fetch\(a\)/);
     assert.doesNotMatch(text, /fetch\(b\)/);
     assert.deepEqual(scanRequests([{ path: 'x.ts', text, raw: text }]), ['x.ts: fetch(a)']);
+  });
+
+  it('pins what is done through a variable that holds storage or PostHog', () => {
+    const base = "const store = localStorage;\nstore.getItem('nidhi-a');";
+    const before = scanHolders(file(base), []);
+    assert.deepEqual(before.lines, ['components/X.tsx: const store = localStorage;', "components/X.tsx: store.getItem('nidhi-a');"]);
+    assert.deepEqual(before.unresolved, []);
+    for (const added of ['store.amount = typedAmount;', "store['amount'] = typedAmount;", 'send(store);', 'Object.assign(store, { amount });']) {
+      assert.notDeepEqual(scanHolders(file(`${base}\n${added}`), []).lines, before.lines, added);
+    }
+    const ph = scanHolders(file("const ph = window.posthog;\nif (ph) ph.capture('e');\nph['capture']('free_x', { amount });"), []);
+    assert.equal(ph.lines.length, 3);
+  });
+
+  it('a file that uses storage or PostHog as a value in any other way must be pinned whole', () => {
+    for (const source of [
+      'function storage() { return window.localStorage; }',
+      'stores.push(root.sessionStorage);',
+      'send(localStorage);',
+      'const all = [localStorage, sessionStorage];',
+      'window.posthog = { capture: noop };',
+      'export const store = { s: localStorage };',
+    ]) {
+      assert.deepEqual(scanHolders(file(source), []).unresolved, ['components/X.tsx'], source);
+      const whole = scanHolders(file(source), ['components/X.tsx']);
+      assert.deepEqual(whole.unresolved, []);
+      assert.match(whole.pinned[0], /^components\/X\.tsx: sha256 [0-9a-f]{16}$/);
+      assert.notDeepEqual(scanHolders(file(`${source}\n// one more line`), ['components/X.tsx']).pinned, whole.pinned);
+    }
+  });
+
+  it('asking whether PostHog is there, or naming storage in a string, is not holding it', () => {
+    for (const source of [
+      "if (window.posthog) window.posthog.capture('e');",
+      "if (typeof localStorage !== 'undefined') localStorage.getItem('nidhi-a');",
+      "posthog.init(key, { persistence: on ? 'localStorage' : 'memory' });",
+      "window.posthog?.capture?.('e');",
+    ]) {
+      assert.deepEqual(scanHolders(file(source), []), { pinned: [], lines: [], unresolved: [] }, source);
+    }
   });
 
   it('lists the build-time settings read', () => {
