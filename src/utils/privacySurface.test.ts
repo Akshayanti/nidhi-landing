@@ -877,6 +877,23 @@ describe('privacy surface reader: hosts and requests', () => {
     }
   });
 
+  it('a name on a line that is wholly a comment is not a use', () => {
+    for (const source of [
+      '// localStorage holds the answer when cookies are blocked',
+      '  // posthog is a stub until the SDK loads',
+      '/**\n * Reads sessionStorage once.\n * posthog.capture is never called here.\n */\nrun();',
+      '/* localStorage */',
+      '{/* posthog note in markup */}',
+      '<!-- localStorage is not used on this page -->',
+      '<!--\n  posthog\n-->\n<p>text</p>',
+    ]) {
+      assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
+    }
+    // The comment has ended: the next line is code again.
+    assert.notDeepEqual(scanHolders(file('/* note */\nconst s = localStorage;'), []).unresolved, []);
+    assert.notDeepEqual(scanHolders(file('/*\n note\n*/ const s = localStorage;'), []).unresolved, [], 'after the closing mark on the same line');
+  });
+
   it('refuses every way of holding storage or PostHog, or a part of one', () => {
     for (const source of [
       'const store = localStorage;',
@@ -885,6 +902,14 @@ describe('privacy surface reader: hosts and requests', () => {
       'const people = window.posthog.people;\npeople.set({ amount: typedAmount });',
       "const store = (typeof window !== 'undefined' && window.localStorage) || null;\nstore.amount = typedAmount;",
       "const store = window['localStorage'];",
+      'const re = /[/*]/; const store = localStorage;\nstore.amount = typedAmount;',
+      'const re = /[/*]/;\nlocalStorage.amount = typedAmount; /* */',
+      'const s = "localStorage.getItem(\'x\')";',
+      "const s = 'if (window.posthog) {}';",
+      'const s = `${localStorage.getItem("k")}`;',
+      "go(); // then localStorage is read",
+      "go(); /* posthog */ more();",
+      "a\n* localStorage.length;",
       "const store = window[('localStorage')];\nstore.amount = typedAmount;",
       "const store = window[                    'localStorage'];",
       'const store = window[`localStorage`];',

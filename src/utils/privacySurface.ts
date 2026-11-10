@@ -429,7 +429,8 @@ export interface HolderScan {
  * for it has had a next case (a copy of a copy, a member kept in a variable,
  * a guard expression that hands the object on). So there is nothing to
  * follow. Outside the files named in `wholeFiles`, each appearance of
- * `localStorage`, `sessionStorage` or `posthog` must be one of:
+ * `localStorage`, `sessionStorage` or `posthog`, in the file as written
+ * and outside a line that is wholly a comment, must be one of:
  *
  *   - one of a fixed list of its methods called on it, there and then:
  *     `localStorage.getItem(...)`, `window.posthog?.capture?.(...)`. The list
@@ -508,6 +509,45 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
 }
 
+/**
+ * For each line of `raw`, whether the whole line is a comment, judged from
+ * how the line itself begins and nothing cleverer: it starts with `//`; or
+ * it is part of a block that was opened by a line starting with `/*`,
+ * `{/*` or `<!--` and has not been closed yet. Nothing that is code can
+ * start a line that way.
+ */
+function commentLines(raw: string): boolean[] {
+  const out: boolean[] = [];
+  let closer = '';
+  // The line is wholly a comment only if nothing follows the mark that closes it.
+  const endsWith = (rest: string, end: string): boolean => rest.slice(rest.indexOf(end) + end.length).trim() === '';
+  for (const line of raw.split('\n')) {
+    if (closer) {
+      if (!line.includes(closer)) { out.push(true); continue; }
+      out.push(endsWith(line, closer));
+      closer = '';
+      continue;
+    }
+    const open = /^\s*(?:\{?\/\*|<!--)/.exec(line);
+    if (open) {
+      const end = open[0].includes('<!--') ? '-->' : '*/';
+      const rest = line.slice(open[0].length);
+      if (!rest.includes(end)) { closer = end; out.push(true); continue; }
+      // `{/* ... */}` in markup ends with the brace that opened it.
+      out.push(endsWith(rest, end) || (open[0].includes('{') && rest.slice(rest.indexOf(end) + end.length).trim() === '}'));
+      continue;
+    }
+    out.push(/^\s*\/\//.test(line));
+  }
+  return out;
+}
+
+/** Whether a position preceded on its line by `before` is inside a string: an odd number of some quote mark stands before it. */
+function insideString(before: string): boolean {
+  const plain = before.replace(/\\./g, '');
+  return ['"', "'", '`'].some((q) => plain.split(q).length % 2 === 0);
+}
+
 export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderScan {
   const pinned: string[] = [];
   const unresolved: string[] = [];
@@ -533,8 +573,23 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
       if (/=|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(compared)) continue;
       conditions.push([open, open + inner.length + 1]);
     }
-    for (const m of text.matchAll(HELD)) {
+    // The names are looked for in the file as written, not in the
+    // comment-blanked text: whatever decides what a comment is can be fooled
+    // into blanking code (a `/*` inside a regular expression, say), and a
+    // name it blanked would never be seen. Only a line that is a comment by
+    // its own first characters is left out.
+    const comment = commentLines(raw);
+    let line = 0;
+    let lineEnd = raw.indexOf('\n');
+    for (const m of raw.matchAll(HELD)) {
       const at = m.index;
+      while (lineEnd !== -1 && lineEnd < at) { line++; lineEnd = raw.indexOf('\n', lineEnd + 1); }
+      if (comment[line]) continue;
+      // Blanked where the file still has it, or inside a string: not a use
+      // in plain sight. (A name in a string can be used to reach the object.)
+      const lineStart = raw.lastIndexOf('\n', at) + 1;
+      const hidden = text.slice(at, at + m[0].length) !== m[0] || insideString(raw.slice(lineStart, at));
+      if (hidden) { unresolved.push(`${path}: ${raw.slice(lineStart, lineEnd === -1 ? raw.length : lineEnd).trim()}`); continue; }
       const before = text.slice(Math.max(0, at - 40), at);
       const after = text.slice(at + m[0].length, at + m[0].length + 80);
       const call = /^\s*\??\.\s*([A-Za-z_$][\w$]*)\s*(?:\?\.)?\s*\(/.exec(after);
@@ -544,8 +599,6 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
         // A test of whether it, or a member of it, is there.
         conditions.some(([from, to]) => at > from && at < to && isTest(text, from, at, at + m[0].length));
       if (plain) continue;
-      const lineStart = text.lastIndexOf('\n', at) + 1;
-      const lineEnd = text.indexOf('\n', at);
       unresolved.push(`${path}: ${raw.slice(lineStart, lineEnd === -1 ? raw.length : lineEnd).trim()}`);
     }
   }
