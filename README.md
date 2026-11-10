@@ -27,7 +27,7 @@ Some dependencies run code of their own when they are installed. npm only runs i
 |---|---|---|---|
 | root | `puppeteer` | approved, pinned to one version | Its script downloads the Chrome that the build's figure renders use. Without it, `npm run build` fails on a fresh machine. |
 | root, `remotion/` | `fsevents` | denied | macOS only. Its script would recompile a file watcher that already ships compiled; file watching was checked working with the script blocked. |
-| `remotion/` | `esbuild` | denied | Its script only checks and speeds up a binary that installs anyway; with it blocked, `tsc` passes and a reel renders byte for byte the same. |
+| root, `remotion/` | `esbuild` | denied | Comes with `tsx`, which runs the tests and the reel renders. Its script only checks and speeds up a binary that installs anyway; with it blocked, the tests pass, `tsc` passes and a reel renders byte for byte the same. |
 
 CI is strict: every workflow sets `NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true`, so `npm ci` fails when a dependency has an install script that `allowScripts` does not cover. It is not set in `.npmrc`, because there it would stop Dependabot from opening those updates at all.
 
