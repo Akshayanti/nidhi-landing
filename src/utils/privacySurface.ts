@@ -495,6 +495,10 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
       if (depth > 0) { depth--; continue; }
       // An open bracket around the name: accepted only if it plainly groups.
       if (!startsTest(text.slice(from, i))) return false;
+      // A group that goes on after it closes is not a test of what is in
+      // it: `(localStorage).clear()` calls a method on the object.
+      const inner = balanced(text, i);
+      if (inner === null || /^\s*(?:\?\.|\.|\[|\(|`)/.test(text.slice(i + inner.length + 2, i + inner.length + 12))) return false;
     }
   }
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
