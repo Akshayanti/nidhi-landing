@@ -17,7 +17,7 @@ npm test             # run the test suite
 npm run lint         # lint the project
 ```
 
-Requires **Node.js >= 22**.
+Requires **Node.js 24 or later**; CI and deploys run the exact version in `.nvmrc` (`nvm use` picks it up).
 
 ## License
 

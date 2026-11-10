@@ -17,7 +17,7 @@ typography, karaoke captions, LLM-driven scripts. Rendered with Remotion.
 ```sh
 # One-time setup
 echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env
-nvm use 22                                    # node >= 22.12
+nvm use                                       # reads .nvmrc (node 24.22.2)
 npm install
 python3 -m pip install --upgrade edge-tts     # if not already
 
